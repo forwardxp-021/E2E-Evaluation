@@ -1,92 +1,127 @@
 # E2E-Evaluation
 
-E2E Evaluation research in automated driving — learning driving-style representations
-from trajectory data (Waymo Open Dataset).
+End-to-end evaluation research for automated driving with a focus on
+**driving-style representation learning** from trajectory data (Waymo Open Dataset).
 
 ---
 
-## UMAP Feature-Coloring Analysis
+## Project Overview
 
-> **Tracked in:** GitHub Issue — [Add UMAP feature-coloring analysis to validate driving-style embeddings](../../issues)
+The goal of this project is to learn a compact *style embedding* from vehicle
+trajectory data such that the embedding space captures semantic driving-style
+differences — aggressive vs. conservative, smooth vs. jerky, close-following
+vs. cautious, etc.
 
-The goal of this analysis is to verify whether the learned embedding encodes
-**driving style** (激进/保守/平滑/跟车习惯) or primarily captures motion/scene patterns.
+### Current approach (V3)
+
+| Component | Details |
+|-----------|---------|
+| Input | Trajectory `[N, T, D]` (position, velocity, acceleration) |
+| Encoder | GRU → MLP → embedding (64-dim) |
+| Supervision | Hand-crafted style features `[N, F]` (≈20 dims) |
+| Loss | `0.2 × contrastive + 1.0 × feature_structure + 0.1 × variance` |
+
+---
+
+## Analysis Scripts
+
+| Script | Description | Docs |
+|--------|-------------|------|
+| [`analysis/umap_feature_coloring.py`](analysis/umap_feature_coloring.py) | UMAP/2-D projection coloured by style features to validate whether the embedding encodes semantic style gradients | [docs/umap_feature_coloring.md](docs/umap_feature_coloring.md) |
+| [`analysis/umap_embedding_vis.py`](analysis/umap_embedding_vis.py) | UMAP 2-D embedding visualization with combined overview grid | [docs/umap_visualization.md](docs/umap_visualization.md) |
+| [`scripts/umap_analysis.py`](scripts/umap_analysis.py) | CLI wrapper: runs UMAP + produces 4 per-feature scatter plots + metadata | [docs/umap_validation_checklist.md](docs/umap_validation_checklist.md) |
 
 ### Quick-start
 
 ```bash
-pip install umap-learn matplotlib numpy pandas
+pip install -r requirements-analysis.txt
 
+# Feature-coloring analysis (validates style gradients with Spearman report)
 python analysis/umap_feature_coloring.py \
     --embeddings path/to/embeddings.npy \
+    --features   path/to/features.npy \
+    --feat-names rel_speed_mean thw_mean jerk_p95 speed_norm \
+    --out-dir    outputs/umap_coloring
+
+# Standalone UMAP analysis CLI (CSV features, saves coords + metadata)
+python scripts/umap_analysis.py \
+    --embeddings path/to/embeddings.npy \
     --features   path/to/features.csv \
-    --output_dir outputs/umap_coloring \
-    --n_neighbors 30 \
-    --min_dist 0.1 \
-    --seed 42 \
-    --sample_size 10000
+    --output-dir outputs/umap_run1
+
+# Embedding visualisation tool (multi-feature overview grid)
+python analysis/umap_embedding_vis.py \
+    --embeddings data/embeddings.npy \
+    --features   data/features.npz \
+    --output-dir outputs/umap
 ```
-
-The script generates **4 UMAP scatter plots** — one per style feature — all
-projected from the **same 2-D embedding** so layouts are directly comparable.
-
-| Plot file | Feature | Driving-style axis |
-|---|---|---|
-| `umap_colored_rel_speed_mean.png` | `rel_speed_mean` | Aggressiveness (激进程度) |
-| `umap_colored_thw_mean.png` | `thw_mean` | Following distance (跟车习惯) |
-| `umap_colored_jerk_p95.png` | `jerk_p95` | Smoothness (平滑性) |
-| `umap_colored_speed_norm.png` | `speed_norm` | Speed preference (速度偏好) |
-
-A `run_record.json` sidecar is also written containing UMAP params, seed, and
-sample size for reproducibility.
 
 ---
 
-### 判定标准 / 怎么看图 (Interpretation checklist)
+## 判定标准 / 怎么看图 (Interpretation checklist)
 
 Use the checklist below when reviewing each of the 4 feature-colored UMAP plots.
+A full version is available in [docs/umap_validation_checklist.md](docs/umap_validation_checklist.md).
 
 #### `rel_speed_mean` — Relative Speed
 - [ ] Look for a **monotonic, continuous colour gradient along an axis** (e.g. left → right transitions from low to high relative speed), not just isolated clusters of a single colour.
-- [ ] Re-run with at least 2 different random seeds (e.g. `--seed 0`, `--seed 123`) and 2 different `n_neighbors` values (e.g. 15 and 50); a meaningful gradient should remain **stable** across settings.
-- [ ] Flag if the gradient is **fragmented** into many disconnected patches — this indicates the embedding has not formed a continuous style axis for this feature.
-- [ ] **Confounder check:** split data into speed buckets (e.g. `speed_norm` quartiles) and re-plot within each bucket; if the gradient disappears after splitting, `rel_speed_mean` may be a proxy for overall speed rather than a style signal.
+- [ ] Re-run with at least 2 different random seeds and 2 different `n_neighbors` values; a meaningful gradient should remain **stable** across settings.
+- [ ] Flag if the gradient is **fragmented** into many disconnected patches.
+- [ ] **Confounder check:** split data into speed buckets and re-plot within each bucket.
 
 #### `thw_mean` — Time Headway
-- [ ] Look for a **monotonic, continuous colour gradient along an axis** (short headway → long headway should map to a smooth colour transition in 2-D space).
-- [ ] Re-run with at least 2 different random seeds and 2 different `n_neighbors` values; the gradient should be **stable** across settings.
-- [ ] Flag **fragmented gradients** (many small patches instead of a smooth band) as evidence that headway behaviour is not globally structured in the embedding.
-- [ ] **Confounder check:** if road-type or scene labels are available, colour by those and compare — ensure the headway gradient is not explained purely by road type (e.g. motorway vs. urban).
+- [ ] Look for a **monotonic, continuous colour gradient along an axis**.
+- [ ] Re-run with at least 2 different random seeds and 2 different `n_neighbors` values.
+- [ ] Flag **fragmented gradients** as evidence that headway behaviour is not globally structured.
+- [ ] **Confounder check:** if road-type labels are available, compare with those.
 
 #### `jerk_p95` — 95th-Percentile Jerk
-- [ ] Look for a **monotonic, continuous colour gradient** — one region should contain consistently high jerk (aggressive/jerky driving) and another should contain low jerk (smooth driving).
-- [ ] Verify **stability** across seeds and `n_neighbors` settings (gradient should not appear or disappear with minor parameter changes).
-- [ ] Flag if the gradient is **fragmented** — high-jerk and low-jerk points interleaved without structure.
-- [ ] **Confounder check:** jerk can be inflated by sensor noise at high speeds; check whether the gradient correlates with `speed_norm` alone by colouring those points with speed and comparing.
+- [ ] Look for a **monotonic, continuous colour gradient**.
+- [ ] Verify **stability** across seeds and `n_neighbors` settings.
+- [ ] Flag if the gradient is **fragmented**.
+- [ ] **Confounder check:** check whether the gradient correlates with `speed_norm` alone.
 
 #### `speed_norm` — Normalised Speed
-- [ ] Look for a **monotonic, continuous colour gradient** (slow → fast driving mapped to a smooth axis).
+- [ ] Look for a **monotonic, continuous colour gradient**.
 - [ ] Verify **stability** across seeds and `n_neighbors` settings.
-- [ ] Flag **fragmentation** — scattered high-speed/low-speed patches without a clear axis.
-- [ ] **Confounder check:** `speed_norm` is the most likely scene confound (motorways are fast by definition). If scene/road-type labels are available, re-plot within each scene type; a true style signal should persist within scene type.
+- [ ] Flag **fragmentation**.
+- [ ] **Confounder check:** re-plot within each scene type if scene labels are available.
 
 #### Cross-feature stability
-- [ ] After reviewing all 4 plots: do at least 2 features show **stable gradients** under the same UMAP layout? If yes, the embedding is likely encoding style information.
-- [ ] If all 4 features show only fragmented patches, the embedding is primarily capturing motion/scene — model changes (longer time window, multi-segment aggregation) are needed.
+- [ ] Do at least 2 features show **stable gradients** under the same UMAP layout? If yes, the embedding is likely encoding style information.
+- [ ] If all 4 features show only fragmented patches, model changes are needed (longer time window, multi-segment aggregation).
 
 #### Recordkeeping
-- [ ] Save `run_record.json` (auto-generated) alongside every set of plots. It captures: UMAP `n_neighbors`, `min_dist`, `metric`, random seed, and sample size.
+- [ ] Save the `run_record.json` / `run_metadata.json` sidecar alongside every set of plots.
 - [ ] Store plots in a versioned directory (e.g. `outputs/umap_coloring/v3_epoch8_seed42/`).
-- [ ] Note the epoch/checkpoint used in the directory name or in a `README` inside the output directory.
 
 ---
 
-## Repository structure
+## Issue Tracking
+
+Active tasks are tracked as GitHub Issues:
+
+| # | Title | Label |
+|---|-------|-------|
+| [#1](https://github.com/forwardxp-021/E2E-Evaluation/issues/1) | Add UMAP feature-coloring analysis to validate driving-style embeddings | `test` |
+
+---
+
+## Repository Structure
 
 ```
-analysis/
-  umap_feature_coloring.py   # UMAP feature-coloring script (4 plots per run)
-data/
-  .gitkeep                   # placeholder — add data files here (not committed)
-outputs/                     # generated plots and records (gitignored)
+.
+├── analysis/                        # Analysis and evaluation scripts
+│   ├── umap_feature_coloring.py     # UMAP feature-coloring (Spearman gradient report)
+│   └── umap_embedding_vis.py        # UMAP embedding visualisation (overview grid)
+├── scripts/
+│   └── umap_analysis.py             # CLI: UMAP + 4 scatter plots + metadata
+├── data/                            # Data files (not committed – see .gitignore)
+├── docs/
+│   ├── umap_feature_coloring.md     # Detailed docs for umap_feature_coloring.py
+│   ├── umap_visualization.md        # Detailed docs for umap_embedding_vis.py
+│   └── umap_validation_checklist.md # Full 判定标准 checklist
+├── outputs/                         # Generated plots and records (gitignored)
+├── requirements-analysis.txt        # Python dependencies for analysis scripts
+└── README.md
 ```
