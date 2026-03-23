@@ -8,7 +8,7 @@ from trajectory data (Waymo Open Dataset).
 ## UMAP Feature-Coloring Analysis
 
 > **Tracked in:** GitHub Issue — [Add UMAP feature-coloring analysis to validate driving-style embeddings](../../issues)  
-> **Interpretation checklist**: [`docs/umap_validation_checklist.md`](docs/umap_validation_checklist.md)
+> **Full checklist**: [`docs/umap_validation_checklist.md`](docs/umap_validation_checklist.md)
 
 The goal of this analysis is to verify whether the learned embedding encodes
 **driving style** (激进/保守/平滑/跟车习惯) or primarily captures motion/scene patterns.
@@ -18,7 +18,7 @@ The goal of this analysis is to verify whether the learned embedding encodes
 ```bash
 pip install umap-learn matplotlib numpy pandas
 
-# Option A — original script (simple CLI)
+# Option A — simple CLI
 python analysis/umap_feature_coloring.py \
     --embeddings path/to/embeddings.npy \
     --features   path/to/features.csv \
@@ -28,7 +28,7 @@ python analysis/umap_feature_coloring.py \
     --seed 42 \
     --sample_size 10000
 
-# Option B — extended script (more CLI options, saves 2D coords for reuse)
+# Option B — extended CLI (more options, saves 2D coords for reuse across colorings)
 python scripts/umap_analysis.py \
     --embeddings  path/to/embeddings.npy \
     --features    path/to/features.csv \
@@ -43,21 +43,21 @@ python scripts/umap_analysis.py \
 Both scripts generate **4 UMAP scatter plots** — one per style feature — all
 projected from the **same 2-D embedding** so layouts are directly comparable.
 
-| Feature | Driving-style axis |
-|---|---|
-| `rel_speed_mean` | Aggressiveness (激进程度) |
-| `thw_mean` | Following distance (跟车习惯) |
-| `jerk_p95` | Smoothness (平滑性) |
-| `speed_norm` | Speed preference (速度偏好) |
+| Plot file | Feature | Driving-style axis |
+|---|---|---|
+| `umap_colored_rel_speed_mean.png` | `rel_speed_mean` | Aggressiveness (激进程度) |
+| `umap_colored_thw_mean.png` | `thw_mean` | Following distance (跟车习惯) |
+| `umap_colored_jerk_p95.png` | `jerk_p95` | Smoothness (平滑性) |
+| `umap_colored_speed_norm.png` | `speed_norm` | Speed preference (速度偏好) |
 
-A run record / metadata JSON sidecar is written alongside plots for reproducibility.
+A `run_record.json` sidecar is also written containing UMAP params, seed, and
+sample size for reproducibility.
 
 ---
 
 ### 判定标准 / 怎么看图 (Interpretation checklist)
 
 Use the checklist below when reviewing each of the 4 feature-colored UMAP plots.
-The full checklist is also available in [`docs/umap_validation_checklist.md`](docs/umap_validation_checklist.md).
 
 #### `rel_speed_mean` — Relative Speed
 - [ ] Look for a **monotonic, continuous colour gradient along an axis** (e.g. left → right transitions from low to high relative speed), not just isolated clusters of a single colour.
@@ -88,7 +88,7 @@ The full checklist is also available in [`docs/umap_validation_checklist.md`](do
 - [ ] If all 4 features show only fragmented patches, the embedding is primarily capturing motion/scene — model changes (longer time window, multi-segment aggregation) are needed.
 
 #### Recordkeeping
-- [ ] Save the run record JSON (auto-generated) alongside every set of plots. It captures: UMAP `n_neighbors`, `min_dist`, `metric`, random seed, and sample size.
+- [ ] Save `run_record.json` (auto-generated) alongside every set of plots. It captures: UMAP `n_neighbors`, `min_dist`, `metric`, random seed, and sample size.
 - [ ] Store plots in a versioned directory (e.g. `outputs/umap_coloring/v3_epoch8_seed42/`).
 - [ ] Note the epoch/checkpoint used in the directory name or in a `README` inside the output directory.
 
