@@ -1,0 +1,25 @@
+# Generated outputs (plots, UMAP coordinates, run records)
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Data files (add your data under data/ but don't commit large binaries)
+data/*.npy
+data/*.csv
+data/*.h5
+data/*.hdf5
+data/*.parquet
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
