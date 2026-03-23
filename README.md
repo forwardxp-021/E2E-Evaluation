@@ -7,8 +7,7 @@ from trajectory data (Waymo Open Dataset).
 
 ## UMAP Feature-Coloring Analysis
 
-> **Tracked in:** GitHub Issue — [Add UMAP feature-coloring analysis to validate driving-style embeddings](../../issues)  
-> **Full checklist**: [`docs/umap_validation_checklist.md`](docs/umap_validation_checklist.md)
+> **Tracked in:** GitHub Issue — [Add UMAP feature-coloring analysis to validate driving-style embeddings](../../issues)
 
 The goal of this analysis is to verify whether the learned embedding encodes
 **driving style** (激进/保守/平滑/跟车习惯) or primarily captures motion/scene patterns.
@@ -18,7 +17,6 @@ The goal of this analysis is to verify whether the learned embedding encodes
 ```bash
 pip install umap-learn matplotlib numpy pandas
 
-# Option A — simple CLI
 python analysis/umap_feature_coloring.py \
     --embeddings path/to/embeddings.npy \
     --features   path/to/features.csv \
@@ -27,20 +25,9 @@ python analysis/umap_feature_coloring.py \
     --min_dist 0.1 \
     --seed 42 \
     --sample_size 10000
-
-# Option B — extended CLI (more options, saves 2D coords for reuse across colorings)
-python scripts/umap_analysis.py \
-    --embeddings  path/to/embeddings.npy \
-    --features    path/to/features.csv \
-    --output-dir  outputs/umap_run1 \
-    --n-neighbors 15 \
-    --min-dist    0.1 \
-    --metric      cosine \
-    --random-state 42 \
-    --sample-size 50000
 ```
 
-Both scripts generate **4 UMAP scatter plots** — one per style feature — all
+The script generates **4 UMAP scatter plots** — one per style feature — all
 projected from the **same 2-D embedding** so layouts are directly comparable.
 
 | Plot file | Feature | Driving-style axis |
@@ -98,12 +85,8 @@ Use the checklist below when reviewing each of the 4 feature-colored UMAP plots.
 
 ```
 analysis/
-  umap_feature_coloring.py      # UMAP feature-coloring script (simple CLI)
-scripts/
-  umap_analysis.py              # Extended UMAP script (more options, saves 2D coords)
-docs/
-  umap_validation_checklist.md  # Full 判定标准 checklist
+  umap_feature_coloring.py   # UMAP feature-coloring script (4 plots per run)
 data/
-  .gitkeep                      # placeholder — add data files here (not committed)
-outputs/                        # generated plots and records (gitignored)
+  .gitkeep                   # placeholder — add data files here (not committed)
+outputs/                     # generated plots and records (gitignored)
 ```

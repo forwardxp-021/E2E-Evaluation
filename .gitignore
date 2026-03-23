@@ -4,13 +4,9 @@ outputs/
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
 *.egg-info/
-.eggs/
 .venv/
 venv/
-env/
 dist/
 build/
 
@@ -20,15 +16,10 @@ data/*.csv
 data/*.h5
 data/*.hdf5
 data/*.parquet
-*.npy
-*.parquet
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
 
-# OS / editor
+# OS
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
-*.swp
