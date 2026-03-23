@@ -22,8 +22,8 @@ python scripts/umap_analysis.py \\
     --random-state 42 \\
     --sample-size  50000
 
-Related issue: see GitHub Issue "Add UMAP feature-coloring analysis to validate
-driving-style embeddings" (label: test) in forwardxp-021/E2E-Evaluation.
+Related issue: see forwardxp-021/E2E-Evaluation#1 "Add UMAP feature-coloring
+analysis to validate driving-style embeddings" (label: test).
 
 判定标准 / 怎么看图 checklist is reproduced in docs/umap_validation_checklist.md.
 """

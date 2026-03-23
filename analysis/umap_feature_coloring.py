@@ -33,8 +33,8 @@ the script saves:
 
 Related issue
 -------------
-GitHub Issue: Add UMAP feature-coloring analysis to validate driving-style
-embeddings  →  forwardxp-021/E2E-Evaluation#1
+See issue forwardxp-021/E2E-Evaluation#1: Add UMAP feature-coloring analysis
+to validate driving-style embeddings.
 """
 
 from __future__ import annotations
