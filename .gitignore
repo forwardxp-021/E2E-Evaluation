@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Output files
+outputs/
+
+# Data files (place actual data in data/ but don't commit large files)
+*.npy
+*.parquet
+
+# Editor/OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
