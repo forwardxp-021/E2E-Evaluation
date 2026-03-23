@@ -7,7 +7,7 @@ from trajectory data (Waymo Open Dataset).
 
 ## UMAP Feature-Coloring Analysis
 
-> **Tracked in:** GitHub Issue — *Add UMAP feature-coloring analysis to validate driving-style embeddings*
+> **Tracked in:** GitHub Issue — [Add UMAP feature-coloring analysis to validate driving-style embeddings](../../issues)
 
 The goal of this analysis is to verify whether the learned embedding encodes
 **driving style** (激进/保守/平滑/跟车习惯) or primarily captures motion/scene patterns.

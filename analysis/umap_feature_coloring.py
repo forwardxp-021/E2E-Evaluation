@@ -28,7 +28,8 @@ Each run writes a JSON sidecar next to the output plots that captures:
   - random seed
   - sample size actually used
   - output directory
-This makes results reproducible and auditable (see Issue #<ISSUE_NUMBER>).
+This makes results reproducible and auditable (see the tracking issue:
+  "Add UMAP feature-coloring analysis to validate driving-style embeddings").
 """
 
 from __future__ import annotations
