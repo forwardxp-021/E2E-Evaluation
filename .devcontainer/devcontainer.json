@@ -1,0 +1,38 @@
+{
+  // Minimal devcontainer for E2E-Evaluation (automated driving research).
+  // Uses a lightweight Python base image to keep the Codespace footprint small.
+  "name": "E2E-Evaluation",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-slim",
+
+  "features": {
+    // Git is pre-installed in the base image; add only what is essential.
+    "ghcr.io/devcontainers/features/git-lfs:1": {}
+  },
+
+  // Install project dependencies ONLY when a requirements file exists,
+  // and use --no-cache to avoid pip bloating the layer cache.
+  "postCreateCommand": "pip install --no-cache-dir --upgrade pip && ([ -f requirements.txt ] && pip install --no-cache-dir -r requirements.txt || true)",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        }
+      }
+    }
+  },
+
+  // Forward no ports by default to avoid keeping services alive unnecessarily.
+  "forwardPorts": [],
+
+  // Run as the default non-root user supplied by the Microsoft base image.
+  "remoteUser": "vscode"
+}

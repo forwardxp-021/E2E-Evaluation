@@ -1,0 +1,103 @@
+# ==============================================================
+# .gitignore for E2E-Evaluation (automated driving research)
+# Keep the repo lean: exclude large data/model/cache files
+# ==============================================================
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+*.cover
+pip-log.txt
+
+# ── Virtual environments ───────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+.conda/
+conda-env/
+
+# ── Jupyter ────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Large data & model files ───────────────────────────────────
+data/*
+!data/.gitkeep
+models/
+checkpoints/
+weights/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.onnx
+*.pb
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.parquet
+*.feather
+*.arrow
+
+# ── Dataset archives ───────────────────────────────────────────
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tar.xz
+*.7z
+*.rar
+
+# ── Video / image assets ───────────────────────────────────────
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# ── Logs & experiment outputs ──────────────────────────────────
+logs/
+runs/
+wandb/
+mlruns/
+tensorboard/
+outputs/
+results/
+*.log
+
+# ── Docker ────────────────────────────────────────────────────
+.docker/
+
+# ── Node (if any tooling uses it) ─────────────────────────────
+node_modules/
+
+# ── IDE / editor ──────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Secrets & credentials ─────────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+secrets/
