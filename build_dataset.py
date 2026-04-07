@@ -1,79 +1,92 @@
-import tensorflow as tf
-import numpy as np
+import argparse
+import csv
 import glob
+import hashlib
 import os
+from collections import Counter
+from pathlib import Path
+
+import numpy as np
+import tensorflow as tf
 from waymo_open_dataset.protos import scenario_pb2
 
-WINDOW = 50
+
+def align_tracks(ego_track, front_track):
+    seq_ego, seq_front = [], []
+    T = min(len(ego_track.states), len(front_track.states))
+    for t in range(T):
+        ego_state = ego_track.states[t]
+        front_state = front_track.states[t]
+        if ego_state.valid and front_state.valid:
+            seq_ego.append([
+                ego_state.center_x,
+                ego_state.center_y,
+                ego_state.velocity_x,
+                ego_state.velocity_y,
+            ])
+            seq_front.append([
+                front_state.center_x,
+                front_state.center_y,
+                front_state.velocity_x,
+                front_state.velocity_y,
+            ])
+    return np.asarray(seq_ego), np.asarray(seq_front)
+
 
 def extract_ego_and_front(scenario):
     if scenario.sdc_track_index is None:
-        return None, None
+        return None, None, -1
 
     ego_track = scenario.tracks[scenario.sdc_track_index]
+    if len(ego_track.states) == 0:
+        return np.empty((0, 4)), None, -1
 
-    ego = []
-    for s in ego_track.states:
-        if s.valid:
-            ego.append([s.center_x, s.center_y, s.velocity_x, s.velocity_y])
-    ego = np.array(ego)
-
-    if len(ego) == 0:
-        return ego, None
-
-    # 改进：识别同车道的前向车辆
     front = None
-    min_forward_dist = float('inf')
+    front_id = -1
+    min_forward_dist = 999.0
 
     for i, track in enumerate(scenario.tracks):
         if i == scenario.sdc_track_index:
             continue
 
-        states = track.states
         forward_dists = []
         valid_count = 0
+        T = min(len(track.states), len(ego_track.states))
 
-        for t in range(min(len(states), len(ego_track.states))):
-            if states[t].valid and ego_track.states[t].valid:
-                # 计算自车到其他车辆的向量
-                dx = states[t].center_x - ego_track.states[t].center_x
-                dy = states[t].center_y - ego_track.states[t].center_y
-                
-                # 计算自车行驶方向向量
-                if t < len(ego_track.states) - 1 and ego_track.states[t+1].valid:
-                    ego_dx = ego_track.states[t+1].center_x - ego_track.states[t].center_x
-                    ego_dy = ego_track.states[t+1].center_y - ego_track.states[t].center_y
-                else:
-                    # 如果没有下一个状态，使用当前速度方向
-                    ego_dx = ego_track.states[t].velocity_x
-                    ego_dy = ego_track.states[t].velocity_y
-                
-                # 计算向量点积，判断是否在自车前方
-                dot_product = dx * ego_dx + dy * ego_dy
-                
-                # 计算距离
-                dist = np.sqrt(dx*dx + dy*dy)
-                
-                # 只有在自车前方且距离合理的车辆才被考虑
-                if dot_product > 0 and dist < 100:  # 100米以内的前向车辆
-                    forward_dists.append(dist)
-                    valid_count += 1
+        for t in range(T):
+            e = ego_track.states[t]
+            o = track.states[t]
+            if not (e.valid and o.valid):
+                continue
+
+            dx = o.center_x - e.center_x
+            dy = o.center_y - e.center_y
+
+            if t < len(ego_track.states) - 1 and ego_track.states[t + 1].valid:
+                ego_dx = ego_track.states[t + 1].center_x - e.center_x
+                ego_dy = ego_track.states[t + 1].center_y - e.center_y
+            else:
+                ego_dx = e.velocity_x
+                ego_dy = e.velocity_y
+
+            dot = dx * ego_dx + dy * ego_dy
+            dist = np.sqrt(dx * dx + dy * dy)
+            if dot > 0 and dist < 100:
+                forward_dists.append(dist)
+                valid_count += 1
 
         if valid_count > 0:
-            mean_forward_dist = np.mean(forward_dists)
+            mean_forward_dist = float(np.mean(forward_dists))
             if mean_forward_dist < min_forward_dist:
                 min_forward_dist = mean_forward_dist
                 front = track
+                front_id = i
 
     if front is None:
-        return ego, None
+        return np.empty((0, 4)), None, -1
 
-    front_traj = []
-    for s in front.states:
-        if s.valid:
-            front_traj.append([s.center_x, s.center_y, s.velocity_x, s.velocity_y])
-
-    return ego, np.array(front_traj)
+    ego_aligned, front_aligned = align_tracks(ego_track, front)
+    return ego_aligned, front_aligned, front_id
 
 
 def compute_features(ego, front):
@@ -81,148 +94,216 @@ def compute_features(ego, front):
         return None
 
     ego_speed = np.linalg.norm(ego[:, 2:4], axis=1)
-    front_speed = np.linalg.norm(front[:len(ego), 2:4], axis=1)
+    front_speed = np.linalg.norm(front[: len(ego), 2:4], axis=1)
 
     rel_speed = ego_speed - front_speed
-
     ego_acc = np.diff(ego_speed, prepend=ego_speed[0])
     front_acc = np.diff(front_speed, prepend=front_speed[0])
-
     rel_acc = ego_acc - front_acc
 
-    dist = np.linalg.norm(ego[:, :2] - front[:len(ego), :2], axis=1)
+    dist = np.linalg.norm(ego[:, :2] - front[: len(ego), :2], axis=1)
     thw = dist / (ego_speed + 1e-3)
-
     jerk = np.diff(ego_acc, prepend=ego_acc[0])
 
-    # =========================
-    # 1️⃣ reaction time（简化版）
-    # =========================
     front_brake = front_acc < -0.5
     ego_brake = ego_acc < -0.5
-
-    reaction_time = np.nan  # 默认为NaN表示无效
+    reaction_time = 0.0
     for i in range(len(front_brake)):
         if front_brake[i]:
-            for j in range(i, min(i+10, len(ego_brake))):
+            for j in range(i, min(i + 10, len(ego_brake))):
                 if ego_brake[j]:
                     reaction_time = j - i
                     break
             break
-    
-    # 如果没有检测到反应时间，使用中位值替代
-    if np.isnan(reaction_time):
-        reaction_time = 0.0
 
-    # =========================
-    # 2️⃣ yaw_rate（横向）
-    # =========================
-    dx = np.diff(ego[:, 0], prepend=ego[0,0])
-    dy = np.diff(ego[:, 1], prepend=ego[0,1])
+    dx = np.diff(ego[:, 0], prepend=ego[0, 0])
+    dy = np.diff(ego[:, 1], prepend=ego[0, 1])
     heading = np.arctan2(dy, dx)
     yaw_rate = np.diff(heading, prepend=heading[0])
 
-    # =========================
-    # 3️⃣ lane change（简化）
-    # =========================
     lane_change_count = np.sum(np.abs(yaw_rate) > 0.1)
     lane_change_duration = np.mean(np.abs(yaw_rate) > 0.1)
 
-    # =========================
-    # 4️⃣ speed normalization
-    # =========================
-    traffic_speed = front_speed  # 简化
-    speed_norm = ego_speed / (traffic_speed + 1e-3)
+    speed_norm = ego_speed / (front_speed + 1e-3)
 
-    # =========================
-    # FINAL FEATURE (19D)
-    # =========================
     features = [
-
-        # rel speed (3)
         rel_speed.mean(),
         rel_speed.std(),
         np.mean(rel_speed > 0),
-
-        # thw (3)
         thw.mean(),
         thw.std(),
         thw.min(),
-
-        # jerk (3)
         jerk.mean(),
         jerk.std(),
         np.percentile(jerk, 95),
-
-        # rel acc (2)
         rel_acc.mean(),
         rel_acc.std(),
-
-        # reaction (1)
         reaction_time,
-
-        # lateral (3)
         yaw_rate.std(),
         lane_change_count,
         lane_change_duration,
-
-        # env norm (2)
         speed_norm.mean(),
         speed_norm.std(),
-
-        # stability (2)
         ego_speed.std(),
-        ego_acc.std()
+        ego_acc.std(),
+        ego_speed.mean(),
     ]
+    return np.asarray(features, dtype=np.float32)
 
-    return np.array(features)
+
+def get_ego_speeds(scenario):
+    ego_idx = scenario.sdc_track_index
+    if ego_idx is None or ego_idx < 0 or ego_idx >= len(scenario.tracks):
+        return np.array([])
+    ego_track = scenario.tracks[ego_idx]
+    speeds = []
+    for st in ego_track.states:
+        if st.valid:
+            speeds.append(np.hypot(st.velocity_x, st.velocity_y))
+    return np.asarray(speeds)
 
 
-traj_data = []
-feat_data = []
+def assign_split(scenario_id, train_ratio, val_ratio, test_ratio):
+    total = train_ratio + val_ratio + test_ratio
+    if not np.isclose(total, 1.0):
+        raise ValueError(f"split ratios must sum to 1.0, got {total}")
+    digest = hashlib.md5(str(scenario_id).encode("utf-8")).hexdigest()
+    bucket = int(digest[:8], 16) / 0xFFFFFFFF
+    if bucket < train_ratio:
+        return "train"
+    if bucket < train_ratio + val_ratio:
+        return "val"
+    return "test"
 
-# 数据路径配置：默认读取仓库内 data/，也可通过 WAYMO_DATA_PATH 覆盖
-repo_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-data_path = os.getenv('WAYMO_DATA_PATH', repo_data_dir)
-files = sorted(glob.glob(os.path.join(data_path, '**', '*.tfrecord*'), recursive=True))
 
-if not files:
-    print(f"Warning: No tfrecord files found in {data_path}")
-    print("Please upload TFRecord files under data/ or set WAYMO_DATA_PATH to your data directory")
+def write_summary(output_dir, summary_map):
+    output_dir = Path(output_dir)
+    txt_path = output_dir / "summary.txt"
+    csv_path = output_dir / "summary.csv"
 
-for file in files:
-    dataset_tf = tf.data.TFRecordDataset(file)
+    lines = ["Dataset summary"] + [f"{k}: {v}" for k, v in summary_map.items()]
+    txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    for data in dataset_tf:
-        scenario = scenario_pb2.Scenario()
-        scenario.ParseFromString(data.numpy())
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["key", "value"])
+        for k, v in summary_map.items():
+            writer.writerow([k, v])
 
-        ego, front = extract_ego_and_front(scenario)
 
-        if ego is None or len(ego) < WINDOW:
-            continue
+def parse_args():
+    root = Path(__file__).resolve().parent
+    parser = argparse.ArgumentParser(description="Build traj/feat/meta/split from Waymo TFRecords")
+    parser.add_argument("--tfrecord_glob", type=str, default="/mnt/d/WMdata/*.tfrecord-*")
+    parser.add_argument("--output_dir", type=str, default=str(root / "output"))
+    parser.add_argument("--limit_files", type=int, default=None)
+    parser.add_argument("--log_every", type=int, default=500)
+    parser.add_argument("--min_ego_speed", type=float, default=5.5)
+    parser.add_argument("--train_ratio", type=float, default=0.8)
+    parser.add_argument("--val_ratio", type=float, default=0.1)
+    parser.add_argument("--test_ratio", type=float, default=0.1)
+    return parser.parse_args()
 
-        for j in range(len(ego) - WINDOW):
-            seg_ego = ego[j:j+WINDOW]
-            seg_front = front[j:j+WINDOW] if front is not None else None
 
-            feat = compute_features(seg_ego, seg_front)
+def main():
+    args = parse_args()
 
+    try:
+        tf.config.set_visible_devices([], "GPU")
+    except Exception:
+        pass
+
+    os.makedirs(args.output_dir, exist_ok=True)
+
+    files = sorted(glob.glob(args.tfrecord_glob))
+    if args.limit_files is not None:
+        files = files[: args.limit_files]
+    print(f"Found {len(files)} TFRecord files via glob: {args.tfrecord_glob}")
+
+    traj_data, feat_data, meta_data, split_data = [], [], [], []
+    all_speeds = []
+    filtered_scenarios = 0
+    kept_scenarios = 0
+
+    for file in files:
+        dataset_tf = tf.data.TFRecordDataset(file)
+        for data in dataset_tf:
+            scenario = scenario_pb2.Scenario()
+            scenario.ParseFromString(data.numpy())
+
+            speeds = get_ego_speeds(scenario)
+            if len(speeds) == 0 or np.min(speeds) < args.min_ego_speed:
+                filtered_scenarios += 1
+                continue
+
+            ego, front, front_id = extract_ego_and_front(scenario)
+            if ego is None or len(ego) == 0:
+                continue
+
+            feat = compute_features(ego, front)
             if feat is None:
                 continue
 
-            traj_data.append(seg_ego)
+            split = assign_split(scenario.scenario_id, args.train_ratio, args.val_ratio, args.test_ratio)
+
+            traj_data.append(ego)
             feat_data.append(feat)
+            meta_data.append((scenario.scenario_id, 0, -1 if front is None else front_id))
+            split_data.append(split)
+            all_speeds.extend(speeds.tolist())
+            kept_scenarios += 1
 
-traj_data = np.array(traj_data)
-feat_data = np.array(feat_data)
+            if args.log_every and kept_scenarios % args.log_every == 0:
+                print(f"Processed {kept_scenarios} kept scenarios...")
 
-# 特征标准化
-print("Standardizing features...")
-feat_data = (feat_data - feat_data.mean(axis=0)) / (feat_data.std(axis=0) + 1e-6)
-print("Feature standardization completed.")
+    traj_data = np.asarray(traj_data, dtype=object)
+    feat_data = np.asarray(feat_data, dtype=np.float32)
+    meta_data = np.asarray(meta_data, dtype=object)
+    split_data = np.asarray(split_data, dtype=object)
 
-np.save("traj.npy", traj_data)
-np.save("feat.npy", feat_data)
+    if len(feat_data) == 0:
+        raise RuntimeError("No valid scenarios after filtering. Try lowering --min_ego_speed")
 
-print("Saved:", traj_data.shape, feat_data.shape)
+    feat_data = (feat_data - feat_data.mean(axis=0)) / (feat_data.std(axis=0) + 1e-6)
+
+    split_counter = Counter(split_data.tolist())
+
+    traj_path = os.path.join(args.output_dir, "traj.npy")
+    feat_path = os.path.join(args.output_dir, "feat.npy")
+    meta_path = os.path.join(args.output_dir, "meta.npy")
+    split_path = os.path.join(args.output_dir, "split.npy")
+
+    np.save(traj_path, traj_data)
+    np.save(feat_path, feat_data)
+    np.save(meta_path, meta_data)
+    np.save(split_path, split_data)
+
+    speeds_np = np.asarray(all_speeds, dtype=float) if all_speeds else np.asarray([0.0])
+    summary_map = {
+        "tfrecord_glob": args.tfrecord_glob,
+        "min_ego_speed": args.min_ego_speed,
+        "filtered_out_scenarios": filtered_scenarios,
+        "kept_scenarios": kept_scenarios,
+        "speed_mean": f"{speeds_np.mean():.6f}",
+        "speed_std": f"{speeds_np.std():.6f}",
+        "speed_min": f"{speeds_np.min():.6f}",
+        "speed_max": f"{speeds_np.max():.6f}",
+        "train_count": split_counter.get("train", 0),
+        "val_count": split_counter.get("val", 0),
+        "test_count": split_counter.get("test", 0),
+        "traj_shape": str(traj_data.shape),
+        "feat_shape": str(feat_data.shape),
+        "meta_shape": str(meta_data.shape),
+        "split_shape": str(split_data.shape),
+    }
+    write_summary(args.output_dir, summary_map)
+
+    print(f"Saved traj to {traj_path}")
+    print(f"Saved feat to {feat_path}")
+    print(f"Saved meta to {meta_path}")
+    print(f"Saved split to {split_path}")
+    print("Shapes:", traj_data.shape, feat_data.shape, meta_data.shape, split_data.shape)
+
+
+if __name__ == "__main__":
+    main()
