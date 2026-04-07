@@ -1,198 +1,84 @@
-# 代码审查与修复总结
+# 代码审查与重构记录
 
-## 发现的问题及修复方案
+## 2026-04-07 重大重构（sync from laptop A1000）
 
-### 1. ❌ [严重] Model 维度不一致
-
-**问题位置**: `generate_embeddings.py` 第30行
-
-**问题描述**:
-- `generate_embeddings.py` 中硬编码 `feat_dim=19`
-- `train_embedding.py` 中动态传入 `feat.shape[1]`
-- 如果实际特征维度不是19，加载模型时会**维度不匹配**导致运行失败
-
-**修复前**:
-```python
-class Model(torch.nn.Module):
-    def __init__(self, feat_dim=19):  # ❌ 硬编码
-        super().__init__()
-        self.traj_enc = TrajEncoder()
-        self.feat_enc = FeatureEncoder(feat_dim)
-        self.projector = torch.nn.Linear(64 + 32, 32)
-```
-
-**修复后**:
-```python
-class Model(torch.nn.Module):
-    def __init__(self, feat_dim):  # ✅ 动态传入
-        super().__init__()
-        self.traj_enc = TrajEncoder()
-        self.feat_enc = FeatureEncoder(feat_dim)
-        self.projector = torch.nn.Linear(64 + 32, 32)
-```
-
-**影响**: 确保所有脚本使用一致的特征维度
+本次重构对项目进行了全面升级，涉及模型架构、数据管道和评估流程。
 
 ---
 
-### 2. ❌ [中度] 特征维度注释错误
+### 重构内容
 
-**问题位置**: `build_dataset.py` 第148行
+#### ✅ `build_dataset.py` — 重构为 CLI 脚本
 
-**问题描述**:
-- 注释声称生成 "FINAL FEATURE (20D)" 
-- 但实际只计算了 **19个维度**
-- 容易导致后续维度混淆和数据不匹配
+| 变更 | 说明 |
+|---|---|
+| 添加 `argparse` CLI | 所有路径和参数均可命令行配置，不再有硬编码路径 |
+| 新增 `align_tracks()` | 自车与前车按时间步对齐，确保序列长度一致 |
+| 新增 `get_ego_speeds()` | 提取自车速度序列，用于场景过滤 |
+| 新增 `assign_split()` | MD5 哈希确定性划分 train/val/test，无随机性、可重复 |
+| 新增 `write_summary()` | 自动写出 `summary.txt` 和 `summary.csv` 统计摘要 |
+| 输出从 2 个增至 4 个 | 新增 `meta.npy`（scenario/track 元数据）和 `split.npy`（划分标签） |
+| 特征维度 19D → 20D | 新增 `ego_speed_mean` 特征 |
+| 速度过滤 | `--min_ego_speed`（默认 5.5 m/s）过滤低速/静止场景 |
 
-**修复前**:
-```python
-# =========================
-# FINAL FEATURE (20D)  # ❌ 错误的维度标注
-# =========================
+#### ✅ 新增 `dataset.py`
+
+- `TrajFeatureDataset`：支持变长轨迹，读取 traj/feat/split，按 split key 索引
+- `precompute_knn_pairs()`：基于特征距离预计算 KNN 正负样本对（cosine 或 L2）
+- `collate_variable_traj()`：将变长轨迹 pad 并返回 `lengths`，供 GRU pack 使用
+
+#### ✅ 新增 `model.py` — `TrajectoryEncoder`
+
+旧架构（`TrajEncoder` LSTM + `FeatureEncoder` + `projector`）替换为：
 ```
-
-**修复后**:
-```python
-# =========================
-# FINAL FEATURE (19D)  # ✅ 正确的维度标注
-# =========================
+GRU(input=4, hidden=128) → h[-1] → Linear(128,128) → ReLU → Linear(128,64) → L2 normalize
 ```
+- 仅编码轨迹，特征仅作为监督信号，不进入网络前向路径
+- 输出 64D L2 归一化 embedding
 
-**影响**: 消除注释与代码的不一致，提高代码可维护性
+#### ✅ 新增 `loss.py` — `SoftContrastiveLoss`
+
+- 特征引导软对比损失：批内所有对按特征相似度计算软标签权重
+- `multi_positive_infonce()`：支持多正样本的 SupCon 风格 InfoNCE
+- 不依赖硬正负对挖掘，避免 pair 质量问题
+
+#### ✅ `train_embedding.py` — 适配新架构
+
+- 使用 `TrajFeatureDataset` + `collate_variable_traj` 加载变长轨迹
+- 使用 `split.npy` 划分 train/val/test，不再自行划分
+- 使用 `SoftContrastiveLoss` 替代旧对比损失
+- 保存 `best_model.pth`（含完整 checkpoint dict）和 `model_final.pth`
+
+#### ✅ 新增 `export_embeddings.py`
+
+- 对全量 `traj.npy` 运行推理，输出 `embeddings_all.npy (N, 64)`
+- 保持样本顺序与 traj/feat/split 完全对齐
+
+#### ✅ 新增 `evaluate_embedding.py`
+
+- UMAP 可视化（按各维度特征着色）
+- Ridge 线性探针（R² + Spearman 相关系数）
+- 邻域一致性分析（embedding 邻域 vs. 特征邻域 vs. 随机基线）
+
+#### ✅ 移除旧脚本
+
+| 移除文件 | 替代方案 |
+|---|---|
+| `generate_embeddings.py` | `export_embeddings.py` |
+| `visualize_umap.py` | `evaluate_embedding.py` |
+| `analyze_style_embedding.py` | `evaluate_embedding.py` |
+| `analysis/umap_feature_coloring.py` | `evaluate_embedding.py` |
+| `scripts/umap_analysis.py` | `evaluate_embedding.py` |
+| `docs/umap_validation_checklist.md` | `README.md` 和 `QUICK_REFERENCE.md` |
 
 ---
 
-### 3. ❌ [中度] 数据路径硬编码
+## 2026-03-23 早期修复记录
 
-**问题位置**: `build_dataset.py` 第193行
-
-**问题描述**:
-- 数据路径硬编码为 `/mnt/d/WMdata/*.tfrecord-*`
-- 在不同系统或环境中可能不存在
-- 脚本无法移植到其他机器
-
-**修复前**:
-```python
-files = glob.glob("/mnt/d/WMdata/*.tfrecord-*")
-```
-
-**修复后**:
-```python
-import os
-data_path = os.getenv('WAYMO_DATA_PATH', '/mnt/d/WMdata')
-files = glob.glob(os.path.join(data_path, '*.tfrecord-*'))
-
-if not files:
-    print(f"Warning: No tfrecord files found in {data_path}")
-    print(f"Please set WAYMO_DATA_PATH environment variable to the correct data directory")
-```
-
-**使用方法**:
-```bash
-# 设置环境变量后运行
-export WAYMO_DATA_PATH=/path/to/waymo/data
-python build_dataset.py
-```
-
-**影响**: 提高代码可移植性和灵活性
-
----
-
-### 4. ❌ [低度] Reaction Time 异常处理不足
-
-**问题位置**: `build_dataset.py` 第103-114行
-
-**问题描述**:
-- 如果前车没有制动，`reaction_time` 始终为 0.0
-- 无法区分"无反应检测"和"反应时间为0"两种情况
-- 可能导致统计偏差
-
-**修复前**:
-```python
-reaction_time = 0.0
-for i in range(len(front_brake)):
-    if front_brake[i]:
-        for j in range(i, min(i+10, len(ego_brake))):
-            if ego_brake[j]:
-                reaction_time = j - i
-                break
-        break
-```
-
-**修复后**:
-```python
-reaction_time = np.nan  # 默认为NaN表示无效
-for i in range(len(front_brake)):
-    if front_brake[i]:
-        for j in range(i, min(i+10, len(ego_brake))):
-            if ego_brake[j]:
-                reaction_time = j - i
-                break
-        break
-
-# 如果没有检测到反应时间，使用中位值替代
-if np.isnan(reaction_time):
-    reaction_time = 0.0
-```
-
-**影响**: 更精确的数据记录和后续处理
-
----
-
-### 5. ❌ [低度] visualize_umap.py 中的 plt.show() 无效
-
-**问题位置**: `visualize_umap.py` 第67行
-
-**问题描述**:
-- 代码使用 `matplotlib.use('Agg')` 设置非交互式后端
-- 但后面仍然调用 `plt.show()` 
-- 在 Agg 后端中 `plt.show()` 会被忽略，造成代码混淆
-
-**修复前**:
-```python
-matplotlib.use('Agg')  # 非交互式后端
-...
-plt.show()  # ❌ 在 Agg 后端这会被忽略
-```
-
-**修复后**:
-```python
-matplotlib.use('Agg')  # 非交互式后端
-...
-plt.savefig("umap_visualization.png", dpi=300, bbox_inches='tight')
-print("UMAP visualization saved as umap_visualization.png")
-plt.close()  # ✅ 关闭图表以释放内存
-```
-
-**影响**: 正确的内存管理和代码逻辑清晰
-
----
-
-## 修复总结
-
-| 问题级别 | 文件 | 问题描述 | 状态 |
-|---------|------|--------|------|
-| 严重 | generate_embeddings.py | Model feat_dim 硬编码 | ✅ 已修复 |
-| 中度 | build_dataset.py | 特征维度注释错误 | ✅ 已修复 |
-| 中度 | build_dataset.py | 数据路径硬编码 | ✅ 已修复 |
-| 低度 | build_dataset.py | Reaction time 处理 | ✅ 已修复 |
-| 低度 | visualize_umap.py | plt.show() 无效 | ✅ 已修复 |
-
----
-
-## 验证检查清单
-
-- [x] Model 类维度一致（64+32=96，投影到32维）
-- [x] 特征维度标注正确（19维）
-- [x] 数据路径支持环境变量配置
-- [x] Reaction time 异常值处理完善
-- [x] 图表保存正确，内存正确释放
-
----
-
-## 建议
-
-1. **添加单元测试**: 测试 Model 类的前向传播维度
-2. **配置文件**: 考虑使用 JSON/YAML 配置文件管理路径和参数
-3. **日志记录**: 添加更详细的日志记录以便调试
-4. **文档更新**: 更新 README.md 说明数据路径的设置方法
+| 级别 | 文件 | 问题 | 状态 |
+|---|---|---|---|
+| 严重 | `generate_embeddings.py` | `feat_dim` 硬编码为 19，与训练不一致 | ✅ 已在本次重构中随文件一起移除 |
+| 中度 | `build_dataset.py` | 特征维度注释 20D 与实际 19D 不符 | ✅ 已修复（当前实际为 20D） |
+| 中度 | `build_dataset.py` | 数据路径硬编码 | ✅ 已改为 `--tfrecord_glob` CLI 参数 |
+| 低度 | `build_dataset.py` | `reaction_time` 默认值处理 | ✅ 保持 `0.0` 作为默认值 |
+| 低度 | `visualize_umap.py` | 非交互后端下调用 `plt.show()` | ✅ 已随文件一起移除 |
