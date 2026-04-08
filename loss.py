@@ -73,6 +73,9 @@ class SoftContrastiveLoss(nn.Module):
         self,
         temperature: float = 0.1,
         tau_feat_min: float = 1e-3,
+        feat_norm: str = "none",
+        tau_mode: str = "anchor_median",
+        gate_topm: int = 0,
         eps: float = 1e-8,
         debug_sim: bool = False,
         debug_topk: int = 10,
@@ -80,6 +83,9 @@ class SoftContrastiveLoss(nn.Module):
         super().__init__()
         self.temperature = temperature
         self.tau_feat_min = tau_feat_min
+        self.feat_norm = feat_norm
+        self.tau_mode = tau_mode
+        self.gate_topm = gate_topm
         self.eps = eps
         self.debug_sim = debug_sim
         self.debug_topk = debug_topk
@@ -89,6 +95,11 @@ class SoftContrastiveLoss(nn.Module):
         bsz = z.size(0)
         device = z.device
 
+        if self.feat_norm not in {"none", "batch_std", "l2"}:
+            raise ValueError(f"Unsupported feat_norm: {self.feat_norm}")
+        if self.tau_mode not in {"batch_median", "anchor_median"}:
+            raise ValueError(f"Unsupported tau_mode: {self.tau_mode}")
+
         # 1) Normalize embedding
         z = F.normalize(z, dim=1)
 
@@ -96,7 +107,10 @@ class SoftContrastiveLoss(nn.Module):
         sim_emb = (z @ z.T) / max(self.temperature, self.eps)
 
         # 3) Feature normalization
-        feat = (feat - feat.mean(dim=0, keepdim=True)) / (feat.std(dim=0, keepdim=True) + 1e-6)
+        if self.feat_norm == "batch_std":
+            feat = (feat - feat.mean(dim=0, keepdim=True)) / (feat.std(dim=0, keepdim=True) + 1e-6)
+        elif self.feat_norm == "l2":
+            feat = F.normalize(feat, dim=1)
 
         # 4) Feature distance
         dist_feat = torch.cdist(feat, feat, p=2)
@@ -105,16 +119,55 @@ class SoftContrastiveLoss(nn.Module):
         eye = torch.eye(bsz, device=device, dtype=torch.bool)
         dist_feat = dist_feat.masked_fill(eye, float("inf"))
 
+        # 5.5) Optional gate to top-M nearest neighbors per anchor.
+        if self.gate_topm > 0 and bsz > 1:
+            m = min(self.gate_topm, bsz - 1)
+            topm_idx = torch.topk(dist_feat, k=m, dim=1, largest=False).indices
+            gate_mask = torch.zeros((bsz, bsz), dtype=torch.bool, device=device)
+            gate_mask.scatter_(1, topm_idx, True)
+            dist_feat = torch.where(gate_mask, dist_feat, torch.full_like(dist_feat, float("inf")))
+
         # 6) Adaptive feature temperature (median distance)
-        finite_dist = dist_feat[torch.isfinite(dist_feat)]
-        if finite_dist.numel() == 0:
-            tau_feat = torch.tensor(self.tau_feat_min, device=device, dtype=dist_feat.dtype)
+        finite_mask = torch.isfinite(dist_feat)
+        if self.tau_mode == "batch_median":
+            finite_dist = dist_feat[finite_mask]
+            if finite_dist.numel() == 0:
+                tau_feat = torch.tensor(self.tau_feat_min, device=device, dtype=dist_feat.dtype)
+            else:
+                tau_feat = torch.median(finite_dist.detach())
+                tau_feat = torch.clamp(tau_feat, min=self.tau_feat_min)
+            tau_row = tau_feat
+            tau_stats = {"tau_feat": float(tau_feat.detach().item())}
         else:
-            tau_feat = torch.median(finite_dist.detach())
-            tau_feat = torch.clamp(tau_feat, min=self.tau_feat_min)
+            tau_row = torch.full((bsz, 1), self.tau_feat_min, device=device, dtype=dist_feat.dtype)
+            for i in range(bsz):
+                row_vals = dist_feat[i, finite_mask[i]]
+                if row_vals.numel() > 0:
+                    tau_row[i, 0] = torch.clamp(torch.median(row_vals.detach()), min=self.tau_feat_min)
+            tau_stats = {
+                "tau_feat_mean": float(tau_row.mean().detach().item()),
+                "tau_feat_median": float(tau_row.median().detach().item()),
+            }
 
         # 7) Soft similarity from feature distance (critical fix)
-        sim_feat = F.softmax(-dist_feat / tau_feat, dim=1)
+        logits_feat = -dist_feat / tau_row
+        sim_feat = F.softmax(logits_feat, dim=1)
+
+        # Diagonal should stay zero in supervision target.
+        sim_feat = sim_feat.masked_fill(eye, 0.0)
+        row_sum = sim_feat.sum(dim=1, keepdim=True)
+        valid_rows = row_sum.squeeze(1) > self.eps
+        if valid_rows.any():
+            sim_feat = torch.where(valid_rows[:, None], sim_feat / (row_sum + self.eps), sim_feat)
+
+        # If any row has no finite candidates (very small batches with aggressive gating),
+        # fall back to uniform over non-self positions for that row.
+        invalid_idx = torch.where(~valid_rows)[0]
+        if invalid_idx.numel() > 0 and bsz > 1:
+            for ridx in invalid_idx.tolist():
+                row = torch.full((bsz,), 1.0 / float(bsz - 1), device=device, dtype=sim_feat.dtype)
+                row[ridx] = 0.0
+                sim_feat[ridx] = row
 
         if self.debug_sim and (not self._debug_printed) and bsz > 0:
             vals = sim_feat[0, : min(self.debug_topk, bsz)].detach().cpu().tolist()
@@ -132,8 +185,14 @@ class SoftContrastiveLoss(nn.Module):
         if not torch.isfinite(loss):
             loss = torch.nan_to_num(loss, nan=0.0, posinf=1e4, neginf=1e4)
 
+        entropy = -(sim_feat * torch.log(sim_feat + self.eps)).sum(dim=1)
+        effective_k = 1.0 / (sim_feat.pow(2).sum(dim=1) + self.eps)
+
         stats = {
             "valid_anchors": int(bsz),
-            "mean_pos_per_anchor": float((sim_feat > 0).sum(dim=1).float().mean().item()),
+            "sim_feat_entropy_mean": float(entropy.mean().detach().item()),
+            "effective_k_mean": float(effective_k.mean().detach().item()),
         }
+        stats.update(tau_stats)
         return loss, stats
+
