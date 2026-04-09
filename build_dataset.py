@@ -219,7 +219,7 @@ def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
     except np.linalg.LinAlgError:
         return np.nan, np.nan, np.nan
     kv, kd, b = float(beta[0]), float(beta[1]), float(beta[2])
-    d0 = -b / (kd + EPS_DIV_SAFETY)  # Desired gap when fitted acceleration approaches zero.
+    d0 = -b / (kd + EPS_DIV_SAFETY)  # Desired gap where fitted acceleration equals zero.
     return kv, kd, float(d0)
 
 
@@ -474,7 +474,8 @@ def main():
 
     feat_legacy_data = (feat_legacy_data - feat_legacy_data.mean(axis=0)) / (feat_legacy_data.std(axis=0) + EPS_DIV_SAFETY)
     # Missing/invalid style values (mostly CF-only stats when mask is insufficient) are zero-filled
-    # before global standardization so training receives dense numeric supervision vectors.
+    # before global standardization so training receives dense numeric supervision vectors and
+    # keeps behavior consistent with downstream loaders expecting finite float arrays.
     feat_style_raw_filled = np.nan_to_num(feat_style_raw_data, nan=0.0, posinf=0.0, neginf=0.0)
     feat_style_data = (feat_style_raw_filled - feat_style_raw_filled.mean(axis=0)) / (
         feat_style_raw_filled.std(axis=0) + EPS_DIV_SAFETY

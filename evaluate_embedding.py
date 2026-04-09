@@ -36,7 +36,7 @@ def resolve_feature_name(feature_names: list[str] | None, idx: int) -> str:
 
 
 def replace_unsafe_chars(name: str) -> str:
-    """Replace unsafe filename characters with underscores."""
+    """Keep [a-zA-Z0-9_.-] and replace all other characters with underscores."""
     return re.sub(r"[^a-zA-Z0-9_.-]+", "_", name)
 
 
