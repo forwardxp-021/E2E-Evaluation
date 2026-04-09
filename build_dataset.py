@@ -174,6 +174,7 @@ STYLE_FEATURE_NAMES = [
     "acc_sync_lag",
     "acc_sync_corr",
 ]
+CF_VALID_FRAC_IDX = STYLE_FEATURE_NAMES.index("cf_valid_frac")
 EPS_DIV_SAFETY = 1e-6
 
 
@@ -537,7 +538,9 @@ def main():
         json.dump(STYLE_FEATURE_NAMES, f, ensure_ascii=False, indent=2)
 
     speeds_np = np.asarray(all_speeds, dtype=float) if all_speeds else np.asarray([0.0])
-    cf_valid_frac_values = feat_style_raw_data[:, 10] if feat_style_raw_data.size > 0 else np.asarray([0.0])
+    cf_valid_frac_values = (
+        feat_style_raw_data[:, CF_VALID_FRAC_IDX] if feat_style_raw_data.size > 0 else np.asarray([0.0])
+    )
     style_nan_counts = np.isnan(feat_style_raw_data).sum(axis=0)
     summary_map = {
         "tfrecord_glob": args.tfrecord_glob,
