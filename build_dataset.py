@@ -178,17 +178,19 @@ EPS_DIV_SAFETY = 1e-6
 
 
 def _wrap_angle_to_pi(x):
-    """Wrap angles (rad) into [-pi, pi] for stable heading/yaw-rate differences."""
+    """Wrap scalar/array angles in radians into [-pi, pi]."""
     return (x + np.pi) % (2 * np.pi) - np.pi
 
 
 def _safe_percentile(arr, q):
+    """Return percentile for non-empty array, otherwise NaN."""
     if arr.size == 0:
         return np.nan
     return float(np.percentile(arr, q))
 
 
 def _speed_control_oscillation(v_e, eps=1e-3):
+    """Compute sign-change rate of speed increments, ignoring near-zero increments."""
     dv = np.diff(v_e)
     if dv.size == 0:
         return 0.0
@@ -201,6 +203,7 @@ def _speed_control_oscillation(v_e, eps=1e-3):
 
 
 def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
+    """Fit kv/kd/d0 in a_e ≈ kv*v_rel + kd*d + b using ridge-regularized least squares."""
     if len(a_e_cf) < 3:
         return np.nan, np.nan, np.nan
     # Fit a_e ≈ kv * v_rel + kd * d + b via closed-form ridge for stability.
@@ -221,6 +224,7 @@ def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
 
 
 def _best_lag_corr(a_e_cf, a_f_cf, max_lag=10, var_eps=1e-8):
+    """Find lag in [-max_lag,max_lag] that maximizes Pearson corr between a_e and a_f."""
     if len(a_e_cf) < 3:
         return np.nan, np.nan
     if np.var(a_e_cf) < var_eps or np.var(a_f_cf) < var_eps:
