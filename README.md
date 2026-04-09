@@ -10,7 +10,7 @@ from trajectory data (Waymo Open Dataset).
 本项目从 Waymo Open Dataset 轨迹数据中学习**驾驶风格表示（embedding）**，判断是否编码了激进/保守/平滑/跟车等驾驶风格信息。
 
 核心流程：
-1. **数据构建** — 从原始 TFRecord 提取自车+前车对齐轨迹，计算 20 维驾驶风格特征，按 MD5 哈希确定性地划分 train/val/test
+1. **数据构建** — 从原始 TFRecord 提取自车+前车对齐轨迹，输出 legacy(20D) 与 style(20D) 两套特征，按 MD5 哈希确定性地划分 train/val/test
 2. **模型训练** — GRU 轨迹编码器 + 特征引导软对比损失，输出 L2 归一化 embedding
 3. **导出 embedding** — 对全量数据运行推理，保存为 `embeddings_all.npy`
 4. **评估分析** — UMAP 可视化、线性探针、邻域一致性分析
@@ -32,7 +32,7 @@ python build_dataset.py \
 # 2. 训练 embedding 模型
 python train_embedding.py \
     --traj_path output/traj.npy \
-    --feat_path output/feat.npy \
+    --feat_path output/feat_style.npy \
     --split_path output/split.npy \
     --output_dir output \
     --epochs 50
@@ -46,8 +46,9 @@ python export_embeddings.py \
 # 4. 评估分析
 python evaluate_embedding.py \
     --embeddings_path output/embeddings_all.npy \
-    --feat_path output/feat.npy \
+    --feat_path output/feat_style.npy \
     --split_path output/split.npy \
+    --feature_names_path output/feature_names_style.json \
     --analysis_dir output/analysis
 ```
 
@@ -77,36 +78,41 @@ output/                # 生成的模型、embedding 及分析结果（gitignore
 | 文件 | 说明 |
 |---|---|
 | `output/traj.npy` | 对象数组，每行为 `(T, 4)` 轨迹片段 `[x, y, vx, vy]` |
-| `output/feat.npy` | `(N, 20)` float32，标准化后的驾驶风格特征 |
+| `output/front.npy` | 对象数组，每行为 `(T, 4)` 前车对齐轨迹 `[x, y, vx, vy]` |
+| `output/feat_legacy.npy` | `(N, 20)` float32，标准化后的 legacy 对照特征 |
+| `output/feat_style_raw.npy` | `(N, 20)` float32，新 style 特征（未标准化，含 NaN） |
+| `output/feat_style.npy` | `(N, 20)` float32，新 style 特征（NaN→0 后全局标准化，训练默认） |
+| `output/feat.npy` | 与 `feat_legacy.npy` 相同（兼容旧脚本） |
+| `output/feature_names_style.json` | style 特征名列表（与 `feat_style.npy` 维度严格对齐） |
 | `output/meta.npy` | `(N, 3)` 对象数组 `(scenario_id, ego_idx, front_id)` |
 | `output/split.npy` | `(N,)` 字符串数组 `"train"/"val"/"test"`（MD5 确定性划分） |
 | `output/summary.txt` | 数据集统计摘要 |
 | `output/summary.csv` | 同上（CSV 格式） |
 
-### 特征维度（20D）
+### 新 style 特征（20D）
 
 | 维度 | 特征名 | 含义 |
 |---|---|---|
-| 0 | `rel_speed_mean` | 相对速度均值（激进程度） |
-| 1 | `rel_speed_std` | 相对速度标准差 |
-| 2 | `rel_speed_pos_frac` | 相对速度为正的比例 |
-| 3 | `thw_mean` | 时距均值（跟车习惯） |
-| 4 | `thw_std` | 时距标准差 |
-| 5 | `thw_min` | 时距最小值 |
-| 6 | `jerk_mean` | Jerk 均值 |
-| 7 | `jerk_std` | Jerk 标准差 |
-| 8 | `jerk_p95` | Jerk 95 分位（平滑性） |
-| 9 | `rel_acc_mean` | 相对加速度均值 |
-| 10 | `rel_acc_std` | 相对加速度标准差 |
-| 11 | `reaction_time` | 制动反应时间（帧数） |
-| 12 | `yaw_rate_std` | 横摆角速率标准差 |
-| 13 | `lane_change_count` | 变道次数 |
-| 14 | `lane_change_duration` | 变道时长比例 |
-| 15 | `speed_norm_mean` | 归一化速度均值（速度偏好） |
-| 16 | `speed_norm_std` | 归一化速度标准差 |
-| 17 | `ego_speed_std` | 自车速度标准差（稳定性） |
-| 18 | `ego_acc_std` | 自车加速度标准差 |
-| 19 | `ego_speed_mean` | 自车速度均值 |
+| 0 | `acc_abs_p95` | 自车加速度绝对值 95 分位 |
+| 1 | `acc_abs_p99` | 自车加速度绝对值 99 分位 |
+| 2 | `acc_rms` | 自车加速度 RMS |
+| 3 | `jerk_abs_p95` | 自车 jerk 绝对值 95 分位 |
+| 4 | `jerk_abs_p99` | 自车 jerk 绝对值 99 分位 |
+| 5 | `jerk_rms` | 自车 jerk RMS |
+| 6 | `yaw_rate_rms` | 横摆角速度 RMS |
+| 7 | `yaw_rate_abs_p95` | 横摆角速度绝对值 95 分位 |
+| 8 | `heading_change_total` | 累计航向变化绝对值 |
+| 9 | `speed_control_oscillation` | 速度增量符号翻转率 |
+| 10 | `cf_valid_frac` | 严格跟车态有效占比 |
+| 11 | `thw_p50` | 跟车态 THW 中位数 |
+| 12 | `thw_p20` | 跟车态 THW 20 分位 |
+| 13 | `thw_iqr` | 跟车态 THW 四分位距 |
+| 14 | `v_rel_p50` | 跟车态相对速度中位数 |
+| 15 | `closing_gain_kv` | 跟驰拟合闭合速度增益 |
+| 16 | `gap_gain_kd` | 跟驰拟合间距增益 |
+| 17 | `desired_gap_d0` | 跟驰拟合期望间距 |
+| 18 | `acc_sync_lag` | 跟车态前后车加速度同步滞后（帧） |
+| 19 | `acc_sync_corr` | 跟车态前后车加速度最大互相关 |
 
 ---
 
@@ -148,7 +154,7 @@ conda run -n waymo_dev python build_dataset.py \
 Main outputs:
 
 - `output/traj.npy`
-- `output/feat.npy`
+- `output/feat_style.npy`
 - `output/split.npy`
 
 ## 2) Train
@@ -156,7 +162,7 @@ Main outputs:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
 	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output" \
 	--epochs 50 \
@@ -212,7 +218,7 @@ conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based 
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
 	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--eval_split test \
 	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/analysis" \
@@ -224,7 +230,7 @@ conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based 
 ```bash
 conda run -n waymo_dev python evaluate_embedding.py \
 	--embeddings_path output/embeddings_test.npy \
-	--feat_path output/feat.npy \
+	--feat_path output/feat_style.npy \
 	--split_path output/split.npy \
 	--eval_split test \
 	--analysis_dir output/analysis
@@ -235,7 +241,7 @@ conda run -n waymo_dev python evaluate_embedding.py \
 ```bash
 conda run -n waymo_dev python evaluate_embedding.py \
 	--embeddings_path output/embeddings_all.npy \
-	--feat_path output/feat.npy \
+	--feat_path output/feat_style.npy \
 	--analysis_dir output/analysis \
 	--probe_test_ratio 0.2
 ```
@@ -264,7 +270,7 @@ Train:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
 	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline" \
 	--epochs 50 --batch_size 64 --temperature 0.1 \
@@ -286,7 +292,7 @@ Evaluate:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
 	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--eval_split test \
 	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline/analysis" \
@@ -300,7 +306,7 @@ Train:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
 	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std" \
 	--epochs 50 --batch_size 64 --temperature 0.1 \
@@ -322,7 +328,7 @@ Evaluate:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
 	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--eval_split test \
 	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std/analysis" \
@@ -336,7 +342,7 @@ Train:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
 	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau" \
 	--epochs 50 --batch_size 64 --temperature 0.1 \
@@ -358,7 +364,7 @@ Evaluate:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
 	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--eval_split test \
 	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau/analysis" \
@@ -372,7 +378,7 @@ Train:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
 	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated" \
 	--epochs 50 --batch_size 64 --temperature 0.1 \
@@ -394,7 +400,7 @@ Evaluate:
 ```bash
 conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
 	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
+	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
 	--eval_split test \
 	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated/analysis" \
@@ -414,7 +420,7 @@ EXPORT="$ROOT/export_embeddings.py"
 EVAL="$ROOT/evaluate_embedding.py"
 
 TRAJ="$ROOT/output/traj.npy"
-FEAT="$ROOT/output/feat.npy"
+FEAT="$ROOT/output/feat_style.npy"
 SPLIT="$ROOT/output/split.npy"
 
 # name feat_norm tau_mode gate_topm
@@ -459,4 +465,3 @@ done
 
 echo "All ablations finished."
 ```
-

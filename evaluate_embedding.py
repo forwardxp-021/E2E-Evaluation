@@ -1,4 +1,6 @@
 import argparse
+import json
+import re
 from pathlib import Path
 
 import matplotlib
@@ -26,6 +28,16 @@ FEATURE_NAME_MAP = {
 }
 
 
+def resolve_feature_name(feature_names: list[str] | None, idx: int) -> str:
+    if feature_names is not None and 0 <= idx < len(feature_names):
+        return feature_names[idx]
+    return FEATURE_NAME_MAP.get(idx, f"feature_{idx}")
+
+
+def sanitize_filename(name: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9_.-]+", "_", name)
+
+
 def parse_args() -> argparse.Namespace:
     root = Path(__file__).resolve().parent
     out_dir = root / "output"
@@ -33,6 +45,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate learned driving behavior embedding")
     parser.add_argument("--embeddings_path", type=str, default=str(out_dir / "embeddings_all.npy"))
     parser.add_argument("--feat_path", type=str, default=str(out_dir / "feat.npy"))
+    parser.add_argument("--feature_names_path", type=str, default=str(out_dir / "feature_names_style.json"))
     parser.add_argument("--split_path", type=str, default=None)
     parser.add_argument(
         "--eval_split",
@@ -54,6 +67,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--neighbor_clip_quantile", type=float, default=0.99)
     parser.add_argument("--probe_test_ratio", type=float, default=0.2, help="Used only when split_path is not provided")
     parser.add_argument("--kmeans_clusters", type=int, default=0, help="If >0, save UMAP plot colored by KMeans labels")
+    parser.add_argument("--plot_first_k", type=int, default=12, help="UMAP feature-colored plots use the first K feature dims")
     return parser.parse_args()
 
 
@@ -97,6 +111,7 @@ def evaluate_probe(
     feat_train: np.ndarray,
     emb_test: np.ndarray,
     feat_test: np.ndarray,
+    feature_names: list[str] | None,
     ridge_alpha: float,
     feature_std_eps: float,
 ) -> pd.DataFrame:
@@ -113,7 +128,7 @@ def evaluate_probe(
             rows.append(
                 {
                     "feature_idx": f_idx,
-                    "feature_name": FEATURE_NAME_MAP.get(f_idx, f"feature_{f_idx}"),
+                    "feature_name": resolve_feature_name(feature_names, f_idx),
                     "spearman_linear": np.nan,
                     "r2_linear": np.nan,
                     "spearman_ridge": np.nan,
@@ -133,7 +148,7 @@ def evaluate_probe(
 
         row = {
             "feature_idx": f_idx,
-            "feature_name": FEATURE_NAME_MAP.get(f_idx, f"feature_{f_idx}"),
+            "feature_name": resolve_feature_name(feature_names, f_idx),
             "spearman_linear": spearman_corr(y_test, pred_lin),
             "r2_linear": float(r2_score(y_test, pred_lin)),
             "rmse_linear": float(np.sqrt(mean_squared_error(y_test, pred_lin))),
@@ -155,6 +170,7 @@ def evaluate_neighbor_consistency(
     feature_std_eps: float,
     denominator_eps: float,
     clip_quantile: float,
+    feature_names: list[str] | None,
 ) -> pd.DataFrame:
     n = len(emb_test)
     if n <= k + 1:
@@ -175,7 +191,7 @@ def evaluate_neighbor_consistency(
             rows.append(
                 {
                     "feature_idx": f_idx,
-                    "feature_name": FEATURE_NAME_MAP.get(f_idx, f"feature_{f_idx}"),
+                    "feature_name": resolve_feature_name(feature_names, f_idx),
                     "ratio_mean": np.nan,
                     "ratio_median": np.nan,
                     "note": f"skipped_low_variance(std={f_std:.3e})",
@@ -202,7 +218,7 @@ def evaluate_neighbor_consistency(
         rows.append(
             {
                 "feature_idx": f_idx,
-                "feature_name": FEATURE_NAME_MAP.get(f_idx, f"feature_{f_idx}"),
+                "feature_name": resolve_feature_name(feature_names, f_idx),
                 "embed_dist_mean": float(np.mean(embed_dists)),
                 "random_dist_mean": float(np.mean(rand_dists)),
                 "ratio_mean": float(np.mean(ratio)),
@@ -223,6 +239,8 @@ def save_umap_plots(
     max_points: int,
     seed: int,
     kmeans_clusters: int,
+    feature_names: list[str] | None,
+    plot_first_k: int,
 ) -> None:
     rng = np.random.default_rng(seed)
     n = len(emb_eval)
@@ -262,17 +280,18 @@ def save_umap_plots(
     plt.close()
 
     # Feature-colored plots
-    for f_idx in [0, 3, 8, 15]:
+    for f_idx in range(min(plot_first_k, feat_plot.shape[1])):
         if f_idx >= feat_plot.shape[1]:
             continue
 
-        name = FEATURE_NAME_MAP.get(f_idx, f"feature_{f_idx}")
+        name = resolve_feature_name(feature_names, f_idx)
+        safe_name = sanitize_filename(name)
         plt.figure(figsize=(8, 6))
         sc = plt.scatter(xy[:, 0], xy[:, 1], c=feat_plot[:, f_idx], s=3, alpha=0.8, cmap="viridis")
         plt.colorbar(sc, label=name)
         plt.title(f"UMAP colored by {name}")
         plt.tight_layout()
-        plt.savefig(analysis_dir / f"umap_feat_{name}.png", dpi=180)
+        plt.savefig(analysis_dir / f"umap_feat_{safe_name}.png", dpi=180)
         plt.close()
 
     if kmeans_clusters > 0 and len(emb_plot) >= kmeans_clusters:
@@ -284,6 +303,21 @@ def save_umap_plots(
         plt.tight_layout()
         plt.savefig(analysis_dir / "umap_kmeans_labels.png", dpi=180)
         plt.close()
+
+
+def load_feature_names(feature_names_path: str | None) -> list[str] | None:
+    if not feature_names_path:
+        return None
+    path = Path(feature_names_path)
+    if not path.exists():
+        print(f"[WARN] feature names file not found: {path}, fallback to legacy naming")
+        return None
+    with path.open("r", encoding="utf-8") as f:
+        names = json.load(f)
+    if not isinstance(names, list) or not all(isinstance(x, str) for x in names):
+        print(f"[WARN] invalid feature names format in {path}, fallback to legacy naming")
+        return None
+    return names
 
 
 def _load_eval_views(
@@ -355,6 +389,7 @@ def main() -> None:
     emb = np.load(args.embeddings_path, allow_pickle=False)
     feat = np.load(args.feat_path, allow_pickle=False)
     split = np.load(args.split_path, allow_pickle=True) if args.split_path else None
+    feature_names = load_feature_names(args.feature_names_path)
 
     emb_train, emb_eval, feat_train, feat_eval, split_note = _load_eval_views(
         emb=emb,
@@ -372,6 +407,7 @@ def main() -> None:
             feat_train=feat_train,
             emb_test=emb_eval,
             feat_test=feat_eval,
+            feature_names=feature_names,
             ridge_alpha=args.ridge_alpha,
             feature_std_eps=args.feature_std_eps,
         )
@@ -402,6 +438,7 @@ def main() -> None:
         feature_std_eps=args.feature_std_eps,
         denominator_eps=args.neighbor_denominator_eps,
         clip_quantile=args.neighbor_clip_quantile,
+        feature_names=feature_names,
     )
     neigh_path = analysis_dir / "neighbor_results.csv"
     neigh_df.to_csv(neigh_path, index=False)
@@ -416,6 +453,8 @@ def main() -> None:
         max_points=args.umap_max_points,
         seed=args.seed,
         kmeans_clusters=args.kmeans_clusters,
+        feature_names=feature_names,
+        plot_first_k=args.plot_first_k,
     )
 
     # Summary
