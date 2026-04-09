@@ -406,6 +406,10 @@ def parse_args():
 
 def main():
     args = parse_args()
+    if args.window_len <= 0:
+        raise ValueError(f"--window_len must be > 0, got {args.window_len}")
+    if args.stride <= 0:
+        raise ValueError(f"--stride must be > 0, got {args.stride}")
 
     try:
         tf.config.set_visible_devices([], "GPU")
