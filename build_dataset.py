@@ -216,7 +216,7 @@ def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
     except np.linalg.LinAlgError:
         return np.nan, np.nan, np.nan
     kv, kd, b = float(beta[0]), float(beta[1]), float(beta[2])
-    d0 = -b / (kd + EPS_DIV_SAFETY)
+    d0 = -b / (kd + EPS_DIV_SAFETY)  # Desired gap when fitted acceleration approaches zero.
     return kv, kd, float(d0)
 
 
@@ -532,7 +532,7 @@ def main():
         "split_shape": str(split_data.shape),
     }
     for i, name in enumerate(STYLE_FEATURE_NAMES):
-        summary_map[f"feat_style_nan_count__{name}"] = int(style_nan_counts[i])
+        summary_map[f"feat_style_nan_count_{name}"] = int(style_nan_counts[i])
     write_summary(args.output_dir, summary_map)
 
     print(f"Saved traj to {traj_path}")
