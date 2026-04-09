@@ -2,6 +2,7 @@ import argparse
 import csv
 import glob
 import hashlib
+import json
 import os
 from collections import Counter
 from pathlib import Path
@@ -151,6 +152,205 @@ def compute_features(ego, front):
     return np.asarray(features, dtype=np.float32)
 
 
+STYLE_FEATURE_NAMES = [
+    "acc_abs_p95",
+    "acc_abs_p99",
+    "acc_rms",
+    "jerk_abs_p95",
+    "jerk_abs_p99",
+    "jerk_rms",
+    "yaw_rate_rms",
+    "yaw_rate_abs_p95",
+    "heading_change_total",
+    "speed_control_oscillation",
+    "cf_valid_frac",
+    "thw_p50",
+    "thw_p20",
+    "thw_iqr",
+    "v_rel_p50",
+    "closing_gain_kv",
+    "gap_gain_kd",
+    "desired_gap_d0",
+    "acc_sync_lag",
+    "acc_sync_corr",
+]
+EPS_DIV_SAFETY = 1e-6
+
+
+def _wrap_angle_to_pi(x):
+    """Wrap scalar/array angles in radians into [-pi, pi]."""
+    return (x + np.pi) % (2 * np.pi) - np.pi
+
+
+def _safe_percentile(arr, q):
+    """Return percentile for non-empty array, otherwise NaN."""
+    if arr.size == 0:
+        return np.nan
+    return float(np.percentile(arr, q))
+
+
+def _speed_control_oscillation(v_e, eps=1e-3):
+    """Compute sign-change rate of speed increments, ignoring near-zero increments."""
+    dv = np.diff(v_e)
+    if dv.size == 0:
+        return 0.0
+    valid = np.abs(dv) > eps
+    dv = dv[valid]
+    if dv.size < 2:
+        return 0.0
+    signs = np.sign(dv)
+    return float(np.mean(signs[1:] * signs[:-1] < 0))
+
+
+def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
+    """Fit kv/kd/d0 in a_e ≈ kv*v_rel + kd*d + b using ridge-regularized least squares."""
+    if len(a_e_cf) < 3:
+        return np.nan, np.nan, np.nan
+    # Fit a_e ≈ kv * v_rel + kd * d + b via closed-form ridge for stability.
+    x = np.column_stack([v_rel_cf, d_cf, np.ones_like(v_rel_cf)])
+    y = a_e_cf
+    xtx = x.T @ x
+    reg = ridge_lambda * np.eye(3, dtype=np.float64)
+    cond = np.linalg.cond(xtx + reg)
+    if not np.isfinite(cond) or cond > 1e12:
+        return np.nan, np.nan, np.nan
+    try:
+        beta = np.linalg.solve(xtx + reg, x.T @ y)
+    except np.linalg.LinAlgError:
+        return np.nan, np.nan, np.nan
+    kv, kd, b = float(beta[0]), float(beta[1]), float(beta[2])
+    d0 = -b / (kd + EPS_DIV_SAFETY)  # Desired gap where fitted acceleration equals zero.
+    return kv, kd, float(d0)
+
+
+def _best_lag_corr(a_e_cf, a_f_cf, max_lag=10, var_eps=1e-8):
+    """Find lag in [-max_lag,max_lag] that maximizes Pearson corr between a_e and a_f."""
+    if len(a_e_cf) < 3:
+        return np.nan, np.nan
+    if np.var(a_e_cf) < var_eps or np.var(a_f_cf) < var_eps:
+        return np.nan, np.nan
+    best_lag, best_corr = np.nan, -np.inf
+    # Sweep lag window and keep the lag with max Pearson correlation.
+    for lag in range(-max_lag, max_lag + 1):
+        if lag > 0:
+            x = a_e_cf[lag:]
+            y = a_f_cf[:-lag]
+        elif lag < 0:
+            x = a_e_cf[:lag]
+            y = a_f_cf[-lag:]
+        else:
+            x = a_e_cf
+            y = a_f_cf
+        if len(x) < 3:
+            continue
+        x_std = np.std(x)
+        y_std = np.std(y)
+        if x_std < var_eps or y_std < var_eps:
+            continue
+        corr = float(np.corrcoef(x, y)[0, 1])
+        if np.isfinite(corr) and corr > best_corr:
+            best_corr = corr
+            best_lag = lag
+    if not np.isfinite(best_corr):
+        return np.nan, np.nan
+    return float(best_lag), float(best_corr)
+
+
+def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: int = 20) -> tuple[np.ndarray, dict]:
+    """
+    Compute 20D style feature vector from aligned ego/front trajectories.
+
+    Args:
+        ego: (T, 4) aligned ego states [x, y, vx, vy].
+        front: (T, 4) aligned front states [x, y, vx, vy].
+        min_points_cf: minimum strict car-following mask points required to emit
+            car-following stats other than cf_valid_frac.
+
+    Returns:
+        feat_style: float32 vector [core(10), car-following(10)].
+            core(10): acc/jerk/yaw/heading/speed-control oscillation metrics.
+            car-following(10): cf coverage, THW, relative speed, fitted gains,
+            and acceleration synchronization lag/correlation.
+        debug_dict: currently includes cf_valid_frac and cf_points.
+
+    Notes:
+        Car-following terms are computed under a strict mask
+        (v_e>5.5, d∈[8,60], |v_rel|<6), including ridge-fit gains and
+        acceleration cross-correlation lag search in [-10, 10].
+    """
+    v_e = np.linalg.norm(ego[:, 2:4], axis=1)
+    v_f = np.linalg.norm(front[:, 2:4], axis=1)
+
+    a_e = np.diff(v_e, prepend=v_e[0])
+    a_f = np.diff(v_f, prepend=v_f[0])
+    jerk_e = np.diff(a_e, prepend=a_e[0])
+
+    dx = np.diff(ego[:, 0], prepend=ego[0, 0])
+    dy = np.diff(ego[:, 1], prepend=ego[0, 1])
+    heading_pos = np.arctan2(dy, dx)
+    heading_vel = np.arctan2(ego[:, 3], ego[:, 2])
+    stationary = np.hypot(dx, dy) < EPS_DIV_SAFETY
+    # For near-stationary steps, fall back to velocity heading to avoid unstable arctan2(0,0).
+    heading = np.where(stationary, heading_vel, heading_pos)
+    yaw_rate = _wrap_angle_to_pi(np.diff(heading, prepend=heading[0]))
+
+    d = np.linalg.norm(front[:, :2] - ego[:, :2], axis=1)
+    v_rel = v_e - v_f
+    thw = d / (v_e + 1e-3)
+
+    # Strict car-following mask: cruising speed + reasonable distance + small relative speed.
+    m_cf = (v_e > 5.5) & (d >= 8.0) & (d <= 60.0) & (np.abs(v_rel) < 6.0)
+    cf_valid_frac = float(np.mean(m_cf)) if len(m_cf) > 0 else 0.0
+    cf_n = int(np.sum(m_cf))
+
+    heading_diff = np.diff(heading)
+    core = [
+        _safe_percentile(np.abs(a_e), 95),
+        _safe_percentile(np.abs(a_e), 99),
+        float(np.sqrt(np.mean(a_e * a_e))),
+        _safe_percentile(np.abs(jerk_e), 95),
+        _safe_percentile(np.abs(jerk_e), 99),
+        float(np.sqrt(np.mean(jerk_e * jerk_e))),
+        float(np.sqrt(np.mean(yaw_rate * yaw_rate))),
+        _safe_percentile(np.abs(yaw_rate), 95),
+        float(np.sum(np.abs(_wrap_angle_to_pi(heading_diff)))) if heading_diff.size > 0 else 0.0,
+        _speed_control_oscillation(v_e),
+    ]
+
+    if cf_n < min_points_cf:
+        cf = [cf_valid_frac] + [np.nan] * 9
+    else:
+        thw_cf = thw[m_cf]
+        v_rel_cf = v_rel[m_cf]
+        d_cf = d[m_cf]
+        a_e_cf = a_e[m_cf]
+        a_f_cf = a_f[m_cf]
+        thw_q25, thw_q75 = np.percentile(thw_cf, [25, 75])
+
+        kv, kd, d0 = _fit_cf_gains(v_rel_cf=v_rel_cf, d_cf=d_cf, a_e_cf=a_e_cf, ridge_lambda=1e-3)
+        lag, corr = _best_lag_corr(a_e_cf=a_e_cf, a_f_cf=a_f_cf, max_lag=10, var_eps=1e-8)
+
+        cf = [
+            cf_valid_frac,
+            _safe_percentile(thw_cf, 50),
+            _safe_percentile(thw_cf, 20),
+            float(thw_q75 - thw_q25),
+            _safe_percentile(v_rel_cf, 50),
+            kv,
+            kd,
+            d0,
+            lag,
+            corr,
+        ]
+
+    feat_style = np.asarray(core + cf, dtype=np.float32)
+    debug_dict = {
+        "cf_valid_frac": cf_valid_frac,
+        "cf_points": cf_n,
+    }
+    return feat_style, debug_dict
+
+
 def get_ego_speeds(scenario):
     ego_idx = scenario.sdc_track_index
     if ego_idx is None or ego_idx < 0 or ego_idx >= len(scenario.tracks):
@@ -199,6 +399,7 @@ def parse_args():
     parser.add_argument("--limit_files", type=int, default=None)
     parser.add_argument("--log_every", type=int, default=500)
     parser.add_argument("--min_ego_speed", type=float, default=5.5)
+    parser.add_argument("--min_points_cf", type=int, default=20)
     parser.add_argument("--train_ratio", type=float, default=0.8)
     parser.add_argument("--val_ratio", type=float, default=0.1)
     parser.add_argument("--test_ratio", type=float, default=0.1)
@@ -220,7 +421,8 @@ def main():
         files = files[: args.limit_files]
     print(f"Found {len(files)} TFRecord files via glob: {args.tfrecord_glob}")
 
-    traj_data, feat_data, meta_data, split_data = [], [], [], []
+    traj_data, front_data, feat_legacy_data, feat_style_raw_data, meta_data, split_data = [], [], [], [], [], []
+    style_debug_list = []
     all_speeds = []
     filtered_scenarios = 0
     kept_scenarios = 0
@@ -240,14 +442,18 @@ def main():
             if ego is None or len(ego) == 0:
                 continue
 
-            feat = compute_features(ego, front)
-            if feat is None:
+            feat_legacy = compute_features(ego, front)
+            if feat_legacy is None:
                 continue
+            feat_style_raw, style_debug = compute_style_features(ego=ego, front=front, min_points_cf=args.min_points_cf)
 
             split = assign_split(scenario.scenario_id, args.train_ratio, args.val_ratio, args.test_ratio)
 
             traj_data.append(ego)
-            feat_data.append(feat)
+            front_data.append(front)
+            feat_legacy_data.append(feat_legacy)
+            feat_style_raw_data.append(feat_style_raw)
+            style_debug_list.append(style_debug)
             meta_data.append((scenario.scenario_id, 0, -1 if front is None else front_id))
             split_data.append(split)
             all_speeds.extend(speeds.tolist())
@@ -257,31 +463,55 @@ def main():
                 print(f"Processed {kept_scenarios} kept scenarios...")
 
     traj_data = np.asarray(traj_data, dtype=object)
-    feat_data = np.asarray(feat_data, dtype=np.float32)
+    front_data = np.asarray(front_data, dtype=object)
+    feat_legacy_data = np.asarray(feat_legacy_data, dtype=np.float32)
+    feat_style_raw_data = np.asarray(feat_style_raw_data, dtype=np.float32)
     meta_data = np.asarray(meta_data, dtype=object)
     split_data = np.asarray(split_data, dtype=object)
 
-    if len(feat_data) == 0:
+    if len(feat_legacy_data) == 0:
         raise RuntimeError("No valid scenarios after filtering. Try lowering --min_ego_speed")
 
-    feat_data = (feat_data - feat_data.mean(axis=0)) / (feat_data.std(axis=0) + 1e-6)
+    feat_legacy_data = (feat_legacy_data - feat_legacy_data.mean(axis=0)) / (feat_legacy_data.std(axis=0) + EPS_DIV_SAFETY)
+    # Missing/invalid style values (mostly CF-only stats when mask is insufficient) are zero-filled
+    # before global standardization so training receives dense numeric supervision vectors and
+    # keeps behavior consistent with downstream loaders expecting finite float arrays.
+    feat_style_raw_filled = np.nan_to_num(feat_style_raw_data, nan=0.0, posinf=0.0, neginf=0.0)
+    feat_style_data = (feat_style_raw_filled - feat_style_raw_filled.mean(axis=0)) / (
+        feat_style_raw_filled.std(axis=0) + EPS_DIV_SAFETY
+    )
+    feat_style_data = feat_style_data.astype(np.float32)
 
     split_counter = Counter(split_data.tolist())
 
     traj_path = os.path.join(args.output_dir, "traj.npy")
+    front_path = os.path.join(args.output_dir, "front.npy")
     feat_path = os.path.join(args.output_dir, "feat.npy")
+    feat_legacy_path = os.path.join(args.output_dir, "feat_legacy.npy")
+    feat_style_path = os.path.join(args.output_dir, "feat_style.npy")
+    feat_style_raw_path = os.path.join(args.output_dir, "feat_style_raw.npy")
+    feature_names_style_path = os.path.join(args.output_dir, "feature_names_style.json")
     meta_path = os.path.join(args.output_dir, "meta.npy")
     split_path = os.path.join(args.output_dir, "split.npy")
 
     np.save(traj_path, traj_data)
-    np.save(feat_path, feat_data)
+    np.save(front_path, front_data)
+    np.save(feat_path, feat_legacy_data)
+    np.save(feat_legacy_path, feat_legacy_data)
+    np.save(feat_style_path, feat_style_data)
+    np.save(feat_style_raw_path, feat_style_raw_data)
     np.save(meta_path, meta_data)
     np.save(split_path, split_data)
+    with open(feature_names_style_path, "w", encoding="utf-8") as f:
+        json.dump(STYLE_FEATURE_NAMES, f, ensure_ascii=False, indent=2)
 
     speeds_np = np.asarray(all_speeds, dtype=float) if all_speeds else np.asarray([0.0])
+    cf_valid_frac_values = np.asarray([item["cf_valid_frac"] for item in style_debug_list], dtype=float)
+    style_nan_counts = np.isnan(feat_style_raw_data).sum(axis=0)
     summary_map = {
         "tfrecord_glob": args.tfrecord_glob,
         "min_ego_speed": args.min_ego_speed,
+        "min_points_cf": args.min_points_cf,
         "filtered_out_scenarios": filtered_scenarios,
         "kept_scenarios": kept_scenarios,
         "speed_mean": f"{speeds_np.mean():.6f}",
@@ -292,17 +522,33 @@ def main():
         "val_count": split_counter.get("val", 0),
         "test_count": split_counter.get("test", 0),
         "traj_shape": str(traj_data.shape),
-        "feat_shape": str(feat_data.shape),
+        "front_shape": str(front_data.shape),
+        "feat_shape": str(feat_legacy_data.shape),
+        "feat_legacy_shape": str(feat_legacy_data.shape),
+        "feat_style_shape": str(feat_style_data.shape),
+        "feat_style_raw_shape": str(feat_style_raw_data.shape),
+        "feat_style_dim": len(STYLE_FEATURE_NAMES),
+        "cf_valid_frac_mean": f"{cf_valid_frac_values.mean():.6f}",
+        "cf_valid_frac_std": f"{cf_valid_frac_values.std():.6f}",
+        "cf_valid_frac_p10": f"{np.percentile(cf_valid_frac_values, 10):.6f}",
+        "cf_valid_frac_p50": f"{np.percentile(cf_valid_frac_values, 50):.6f}",
+        "cf_valid_frac_p90": f"{np.percentile(cf_valid_frac_values, 90):.6f}",
         "meta_shape": str(meta_data.shape),
         "split_shape": str(split_data.shape),
     }
+    for i, name in enumerate(STYLE_FEATURE_NAMES):
+        summary_map[f"feat_style_nan_count_{name}"] = int(style_nan_counts[i])
     write_summary(args.output_dir, summary_map)
 
     print(f"Saved traj to {traj_path}")
-    print(f"Saved feat to {feat_path}")
+    print(f"Saved front to {front_path}")
+    print(f"Saved legacy feat to {feat_legacy_path} (and {feat_path} for backward compatibility)")
+    print(f"Saved style feat to {feat_style_path}")
+    print(f"Saved raw style feat to {feat_style_raw_path}")
+    print(f"Saved style feature names to {feature_names_style_path}")
     print(f"Saved meta to {meta_path}")
     print(f"Saved split to {split_path}")
-    print("Shapes:", traj_data.shape, feat_data.shape, meta_data.shape, split_data.shape)
+    print("Shapes:", traj_data.shape, front_data.shape, feat_legacy_data.shape, feat_style_data.shape, meta_data.shape, split_data.shape)
 
 
 if __name__ == "__main__":
