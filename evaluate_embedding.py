@@ -35,7 +35,7 @@ def resolve_feature_name(feature_names: list[str] | None, idx: int) -> str:
     return FEATURE_NAME_MAP.get(idx, f"feature_{idx}")
 
 
-def sanitize_filename(name: str) -> str:
+def replace_unsafe_chars(name: str) -> str:
     """Replace unsafe filename characters with underscores."""
     return re.sub(r"[^a-zA-Z0-9_.-]+", "_", name)
 
@@ -284,7 +284,7 @@ def save_umap_plots(
     # Feature-colored plots
     for f_idx in range(min(plot_first_k, feat_plot.shape[1])):
         name = resolve_feature_name(feature_names, f_idx)
-        safe_name = sanitize_filename(name)
+        safe_name = replace_unsafe_chars(name)
         plt.figure(figsize=(8, 6))
         sc = plt.scatter(xy[:, 0], xy[:, 1], c=feat_plot[:, f_idx], s=3, alpha=0.8, cmap="viridis")
         plt.colorbar(sc, label=name)

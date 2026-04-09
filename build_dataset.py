@@ -174,9 +174,10 @@ STYLE_FEATURE_NAMES = [
     "acc_sync_lag",
     "acc_sync_corr",
 ]
+EPS_DIV_SAFETY = 1e-6
 
 
-def _wrap_to_pi(x):
+def _wrap_angle_to_pi(x):
     """Wrap angles (rad) into [-pi, pi] for stable heading/yaw-rate differences."""
     return (x + np.pi) % (2 * np.pi) - np.pi
 
@@ -215,7 +216,7 @@ def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
     except np.linalg.LinAlgError:
         return np.nan, np.nan, np.nan
     kv, kd, b = float(beta[0]), float(beta[1]), float(beta[2])
-    d0 = -b / (kd + 1e-6)
+    d0 = -b / (kd + EPS_DIV_SAFETY)
     return kv, kd, float(d0)
 
 
@@ -282,8 +283,12 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
 
     dx = np.diff(ego[:, 0], prepend=ego[0, 0])
     dy = np.diff(ego[:, 1], prepend=ego[0, 1])
-    heading = np.arctan2(dy, dx)
-    yaw_rate = _wrap_to_pi(np.diff(heading, prepend=heading[0]))
+    heading_pos = np.arctan2(dy, dx)
+    heading_vel = np.arctan2(ego[:, 3], ego[:, 2])
+    stationary = np.hypot(dx, dy) < EPS_DIV_SAFETY
+    # For near-stationary steps, fall back to velocity heading to avoid unstable arctan2(0,0).
+    heading = np.where(stationary, heading_vel, heading_pos)
+    yaw_rate = _wrap_angle_to_pi(np.diff(heading, prepend=heading[0]))
 
     d = np.linalg.norm(front[:, :2] - ego[:, :2], axis=1)
     v_rel = v_e - v_f
@@ -304,7 +309,7 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
         float(np.sqrt(np.mean(jerk_e * jerk_e))),
         float(np.sqrt(np.mean(yaw_rate * yaw_rate))),
         _safe_percentile(np.abs(yaw_rate), 95),
-        float(np.sum(np.abs(_wrap_to_pi(heading_diff)))) if heading_diff.size > 0 else 0.0,
+        float(np.sum(np.abs(_wrap_angle_to_pi(heading_diff)))) if heading_diff.size > 0 else 0.0,
         _speed_control_oscillation(v_e),
     ]
 
@@ -463,10 +468,12 @@ def main():
     if len(feat_legacy_data) == 0:
         raise RuntimeError("No valid scenarios after filtering. Try lowering --min_ego_speed")
 
-    feat_legacy_data = (feat_legacy_data - feat_legacy_data.mean(axis=0)) / (feat_legacy_data.std(axis=0) + 1e-6)
+    feat_legacy_data = (feat_legacy_data - feat_legacy_data.mean(axis=0)) / (feat_legacy_data.std(axis=0) + EPS_DIV_SAFETY)
+    # Missing/invalid style values (mostly CF-only stats when mask is insufficient) are zero-filled
+    # before global standardization so training receives dense numeric supervision vectors.
     feat_style_raw_filled = np.nan_to_num(feat_style_raw_data, nan=0.0, posinf=0.0, neginf=0.0)
     feat_style_data = (feat_style_raw_filled - feat_style_raw_filled.mean(axis=0)) / (
-        feat_style_raw_filled.std(axis=0) + 1e-6
+        feat_style_raw_filled.std(axis=0) + EPS_DIV_SAFETY
     )
     feat_style_data = feat_style_data.astype(np.float32)
 
