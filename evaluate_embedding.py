@@ -29,12 +29,14 @@ FEATURE_NAME_MAP = {
 
 
 def resolve_feature_name(feature_names: list[str] | None, idx: int) -> str:
+    """Resolve feature name by priority: loaded names -> legacy map -> feature_{idx}."""
     if feature_names is not None and 0 <= idx < len(feature_names):
         return feature_names[idx]
     return FEATURE_NAME_MAP.get(idx, f"feature_{idx}")
 
 
 def sanitize_filename(name: str) -> str:
+    """Replace unsafe filename characters with underscores."""
     return re.sub(r"[^a-zA-Z0-9_.-]+", "_", name)
 
 

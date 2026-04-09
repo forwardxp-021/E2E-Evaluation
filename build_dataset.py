@@ -263,6 +263,9 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
 
     Returns:
         feat_style: float32 vector [core(10), car-following(10)].
+            core(10): acc/jerk/yaw/heading/speed-control oscillation metrics.
+            car-following(10): cf coverage, THW, relative speed, fitted gains,
+            and acceleration synchronization lag/correlation.
         debug_dict: currently includes cf_valid_frac and cf_points.
 
     Notes:
@@ -313,6 +316,7 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
         d_cf = d[m_cf]
         a_e_cf = a_e[m_cf]
         a_f_cf = a_f[m_cf]
+        thw_q25, thw_q75 = np.percentile(thw_cf, [25, 75])
 
         kv, kd, d0 = _fit_cf_gains(v_rel_cf=v_rel_cf, d_cf=d_cf, a_e_cf=a_e_cf, ridge_lambda=1e-3)
         lag, corr = _best_lag_corr(a_e_cf=a_e_cf, a_f_cf=a_f_cf, max_lag=10, var_eps=1e-8)
@@ -321,7 +325,7 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
             cf_valid_frac,
             _safe_percentile(thw_cf, 50),
             _safe_percentile(thw_cf, 20),
-            _safe_percentile(thw_cf, 75) - _safe_percentile(thw_cf, 25),
+            float(thw_q75 - thw_q25),
             _safe_percentile(v_rel_cf, 50),
             kv,
             kd,
