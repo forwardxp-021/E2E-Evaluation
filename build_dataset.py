@@ -177,6 +177,7 @@ STYLE_FEATURE_NAMES = [
 
 
 def _wrap_to_pi(x):
+    """Wrap angles (rad) into [-pi, pi] for stable heading/yaw-rate differences."""
     return (x + np.pi) % (2 * np.pi) - np.pi
 
 
@@ -251,6 +252,24 @@ def _best_lag_corr(a_e_cf, a_f_cf, max_lag=10, var_eps=1e-8):
 
 
 def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: int = 20) -> tuple[np.ndarray, dict]:
+    """
+    Compute 20D style feature vector from aligned ego/front trajectories.
+
+    Args:
+        ego: (T, 4) aligned ego states [x, y, vx, vy].
+        front: (T, 4) aligned front states [x, y, vx, vy].
+        min_points_cf: minimum strict car-following mask points required to emit
+            car-following stats other than cf_valid_frac.
+
+    Returns:
+        feat_style: float32 vector [core(10), car-following(10)].
+        debug_dict: currently includes cf_valid_frac and cf_points.
+
+    Notes:
+        Car-following terms are computed under a strict mask
+        (v_e>5.5, d∈[8,60], |v_rel|<6), including ridge-fit gains and
+        acceleration cross-correlation lag search in [-10, 10].
+    """
     v_e = np.linalg.norm(ego[:, 2:4], axis=1)
     v_f = np.linalg.norm(front[:, 2:4], axis=1)
 

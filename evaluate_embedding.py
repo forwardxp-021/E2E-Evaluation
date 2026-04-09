@@ -281,9 +281,6 @@ def save_umap_plots(
 
     # Feature-colored plots
     for f_idx in range(min(plot_first_k, feat_plot.shape[1])):
-        if f_idx >= feat_plot.shape[1]:
-            continue
-
         name = resolve_feature_name(feature_names, f_idx)
         safe_name = sanitize_filename(name)
         plt.figure(figsize=(8, 6))
