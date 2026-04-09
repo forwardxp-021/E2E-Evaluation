@@ -10,7 +10,7 @@ from trajectory data (Waymo Open Dataset).
 本项目从 Waymo Open Dataset 轨迹数据中学习**驾驶风格表示（embedding）**，判断是否编码了激进/保守/平滑/跟车等驾驶风格信息。
 
 核心流程：
-1. **数据构建** — 从原始 TFRecord 提取自车+前车对齐轨迹，输出 legacy(20D) 与 style(20D) 两套特征，按 MD5 哈希确定性地划分 train/val/test
+1. **数据构建** — 从原始 TFRecord 提取自车+前车对齐轨迹，按滑窗切片输出片段级样本与 style(20D) 特征，按 `scenario_id` 的 MD5 哈希确定性地划分 train/val/test（窗口继承 scenario split）
 2. **模型训练** — GRU 轨迹编码器 + 特征引导软对比损失，输出 L2 归一化 embedding
 3. **导出 embedding** — 对全量数据运行推理，保存为 `embeddings_all.npy`
 4. **评估分析** — UMAP 可视化、线性探针、邻域一致性分析
@@ -27,6 +27,9 @@ python build_dataset.py \
     --tfrecord_glob "/mnt/d/WMdata/*.tfrecord-*" \
     --output_dir output \
     --min_ego_speed 5.5 \
+    --window_len 80 \
+    --stride 20 \
+    --min_points_cf 20 \
     --train_ratio 0.8 --val_ratio 0.1 --test_ratio 0.1
 
 # 2. 训练 embedding 模型
@@ -77,17 +80,18 @@ output/                # 生成的模型、embedding 及分析结果（gitignore
 
 | 文件 | 说明 |
 |---|---|
-| `output/traj.npy` | 对象数组，每行为 `(T, 4)` 轨迹片段 `[x, y, vx, vy]` |
-| `output/front.npy` | 对象数组，每行为 `(T, 4)` 前车对齐轨迹 `[x, y, vx, vy]` |
-| `output/feat_legacy.npy` | `(N, 20)` float32，标准化后的 legacy 对照特征 |
+| `output/traj.npy` | 对象数组，每行为 `(window_len, 4)` 自车滑窗轨迹 `[x, y, vx, vy]` |
+| `output/front.npy` | 对象数组，每行为 `(window_len, 4)` 前车对齐滑窗轨迹 `[x, y, vx, vy]` |
 | `output/feat_style_raw.npy` | `(N, 20)` float32，新 style 特征（未标准化，含 NaN） |
 | `output/feat_style.npy` | `(N, 20)` float32，新 style 特征（NaN→0 后全局标准化，训练默认） |
-| `output/feat.npy` | 与 `feat_legacy.npy` 相同（兼容旧脚本） |
 | `output/feature_names_style.json` | style 特征名列表（与 `feat_style.npy` 维度严格对齐） |
-| `output/meta.npy` | `(N, 3)` 对象数组 `(scenario_id, ego_idx, front_id)` |
-| `output/split.npy` | `(N,)` 字符串数组 `"train"/"val"/"test"`（MD5 确定性划分） |
+| `output/meta.npy` | `(N, 4)` 对象数组 `(scenario_id, start, window_len, front_id)` |
+| `output/split.npy` | `(N,)` 字符串数组 `"train"/"val"/"test"`（按 `scenario_id` MD5 确定性划分） |
+| `output/feat_legacy.npy` *(可选)* | `--save_legacy_features` 开启时保存 `(N, 20)` 标准化 legacy 对照特征，同时写出兼容文件 `output/feat.npy` |
 | `output/summary.txt` | 数据集统计摘要 |
 | `output/summary.csv` | 同上（CSV 格式） |
+
+`build_dataset.py` 新增参数：`--window_len`、`--stride`、`--min_points_cf`、`--save_legacy_features`（默认关闭）。
 
 ### 新 style 特征（20D）
 
@@ -148,7 +152,10 @@ This project trains a trajectory-only encoder with feature-guided soft contrasti
 
 ```bash
 conda run -n waymo_dev python build_dataset.py \
-	--output_dir output
+	--output_dir output \
+	--window_len 80 \
+	--stride 20 \
+	--min_points_cf 20
 ```
 
 Main outputs:
@@ -220,6 +227,7 @@ conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based 
 	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/embeddings_all.npy" \
 	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat_style.npy" \
 	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
+	--feature_names_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feature_names_style.json" \
 	--eval_split test \
 	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/analysis" \
 	--kmeans_clusters 8
@@ -232,6 +240,7 @@ conda run -n waymo_dev python evaluate_embedding.py \
 	--embeddings_path output/embeddings_test.npy \
 	--feat_path output/feat_style.npy \
 	--split_path output/split.npy \
+	--feature_names_path output/feature_names_style.json \
 	--eval_split test \
 	--analysis_dir output/analysis
 ```
@@ -242,6 +251,7 @@ conda run -n waymo_dev python evaluate_embedding.py \
 conda run -n waymo_dev python evaluate_embedding.py \
 	--embeddings_path output/embeddings_all.npy \
 	--feat_path output/feat_style.npy \
+	--feature_names_path output/feature_names_style.json \
 	--analysis_dir output/analysis \
 	--probe_test_ratio 0.2
 ```
