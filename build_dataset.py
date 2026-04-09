@@ -256,7 +256,7 @@ def _best_lag_corr(a_e_cf, a_f_cf, max_lag=10, var_eps=1e-8):
     return float(best_lag), float(best_corr)
 
 
-def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: int = 20) -> tuple[np.ndarray, dict]:
+def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: int = 20) -> np.ndarray:
     """
     Compute 20D style feature vector from aligned ego/front trajectories.
 
@@ -271,7 +271,6 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
             core(10): acc/jerk/yaw/heading/speed-control oscillation metrics.
             car-following(10): cf coverage, THW, relative speed, fitted gains,
             and acceleration synchronization lag/correlation.
-        debug_dict: currently includes cf_valid_frac and cf_points.
 
     Notes:
         Car-following terms are computed under a strict mask
@@ -344,11 +343,7 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
         ]
 
     feat_style = np.asarray(core + cf, dtype=np.float32)
-    debug_dict = {
-        "cf_valid_frac": cf_valid_frac,
-        "cf_points": cf_n,
-    }
-    return feat_style, debug_dict
+    return feat_style
 
 
 def get_ego_speeds(scenario):
@@ -399,7 +394,10 @@ def parse_args():
     parser.add_argument("--limit_files", type=int, default=None)
     parser.add_argument("--log_every", type=int, default=500)
     parser.add_argument("--min_ego_speed", type=float, default=5.5)
+    parser.add_argument("--window_len", type=int, default=80)
+    parser.add_argument("--stride", type=int, default=20)
     parser.add_argument("--min_points_cf", type=int, default=20)
+    parser.add_argument("--save_legacy_features", action="store_true")
     parser.add_argument("--train_ratio", type=float, default=0.8)
     parser.add_argument("--val_ratio", type=float, default=0.1)
     parser.add_argument("--test_ratio", type=float, default=0.1)
@@ -422,10 +420,9 @@ def main():
     print(f"Found {len(files)} TFRecord files via glob: {args.tfrecord_glob}")
 
     traj_data, front_data, feat_legacy_data, feat_style_raw_data, meta_data, split_data = [], [], [], [], [], []
-    style_debug_list = []
     all_speeds = []
-    filtered_scenarios = 0
-    kept_scenarios = 0
+    scenarios_filtered = 0
+    scenarios_kept = 0
 
     for file in files:
         dataset_tf = tf.data.TFRecordDataset(file)
@@ -435,44 +432,67 @@ def main():
 
             speeds = get_ego_speeds(scenario)
             if len(speeds) == 0 or np.min(speeds) < args.min_ego_speed:
-                filtered_scenarios += 1
+                scenarios_filtered += 1
                 continue
 
             ego, front, front_id = extract_ego_and_front(scenario)
-            if ego is None or len(ego) == 0:
+            if ego is None or front is None or len(ego) == 0 or len(front) == 0:
+                scenarios_filtered += 1
                 continue
 
-            feat_legacy = compute_features(ego, front)
-            if feat_legacy is None:
+            t = min(len(ego), len(front))
+            if t < args.window_len:
+                scenarios_filtered += 1
                 continue
-            feat_style_raw, style_debug = compute_style_features(ego=ego, front=front, min_points_cf=args.min_points_cf)
 
-            split = assign_split(scenario.scenario_id, args.train_ratio, args.val_ratio, args.test_ratio)
-
-            traj_data.append(ego)
-            front_data.append(front)
-            feat_legacy_data.append(feat_legacy)
-            feat_style_raw_data.append(feat_style_raw)
-            style_debug_list.append(style_debug)
-            meta_data.append((scenario.scenario_id, 0, -1 if front is None else front_id))
-            split_data.append(split)
+            split = assign_split(
+                scenario.scenario_id,
+                args.train_ratio,
+                args.val_ratio,
+                args.test_ratio,
+            )
+            scenario_window_count = 0
             all_speeds.extend(speeds.tolist())
-            kept_scenarios += 1
+            for start in range(0, t - args.window_len + 1, args.stride):
+                end = start + args.window_len
+                ego_win = ego[start:end]
+                front_win = front[start:end]
+                feat_style_raw = compute_style_features(
+                    ego=ego_win,
+                    front=front_win,
+                    min_points_cf=args.min_points_cf,
+                )
+                traj_data.append(ego_win)
+                front_data.append(front_win)
+                feat_style_raw_data.append(feat_style_raw)
+                meta_data.append((scenario.scenario_id, start, args.window_len, front_id))
+                split_data.append(split)
+                if args.save_legacy_features:
+                    feat_legacy = compute_features(ego_win, front_win)
+                    if feat_legacy is None:
+                        feat_legacy = np.full((20,), np.nan, dtype=np.float32)
+                    feat_legacy_data.append(feat_legacy)
+                scenario_window_count += 1
 
-            if args.log_every and kept_scenarios % args.log_every == 0:
-                print(f"Processed {kept_scenarios} kept scenarios...")
+            if scenario_window_count > 0:
+                scenarios_kept += 1
+            else:
+                scenarios_filtered += 1
+
+            if args.log_every and scenarios_kept % args.log_every == 0 and scenarios_kept > 0:
+                print(f"Processed {scenarios_kept} kept scenarios...")
 
     traj_data = np.asarray(traj_data, dtype=object)
     front_data = np.asarray(front_data, dtype=object)
-    feat_legacy_data = np.asarray(feat_legacy_data, dtype=np.float32)
     feat_style_raw_data = np.asarray(feat_style_raw_data, dtype=np.float32)
     meta_data = np.asarray(meta_data, dtype=object)
     split_data = np.asarray(split_data, dtype=object)
 
-    if len(feat_legacy_data) == 0:
-        raise RuntimeError("No valid scenarios after filtering. Try lowering --min_ego_speed")
+    if len(feat_style_raw_data) == 0:
+        raise RuntimeError(
+            "No valid sliding windows after filtering. Try lowering --min_ego_speed or adjusting --window_len/--stride"
+        )
 
-    feat_legacy_data = (feat_legacy_data - feat_legacy_data.mean(axis=0)) / (feat_legacy_data.std(axis=0) + EPS_DIV_SAFETY)
     # Missing/invalid style values (mostly CF-only stats when mask is insufficient) are zero-filled
     # before global standardization so training receives dense numeric supervision vectors and
     # keeps behavior consistent with downstream loaders expecting finite float arrays.
@@ -496,24 +516,34 @@ def main():
 
     np.save(traj_path, traj_data)
     np.save(front_path, front_data)
-    np.save(feat_path, feat_legacy_data)
-    np.save(feat_legacy_path, feat_legacy_data)
     np.save(feat_style_path, feat_style_data)
     np.save(feat_style_raw_path, feat_style_raw_data)
     np.save(meta_path, meta_data)
     np.save(split_path, split_data)
+    if args.save_legacy_features:
+        feat_legacy_data = np.asarray(feat_legacy_data, dtype=np.float32)
+        feat_legacy_filled = np.nan_to_num(feat_legacy_data, nan=0.0, posinf=0.0, neginf=0.0)
+        feat_legacy_data = (feat_legacy_filled - feat_legacy_filled.mean(axis=0)) / (
+            feat_legacy_filled.std(axis=0) + EPS_DIV_SAFETY
+        )
+        feat_legacy_data = feat_legacy_data.astype(np.float32)
+        np.save(feat_path, feat_legacy_data)
+        np.save(feat_legacy_path, feat_legacy_data)
     with open(feature_names_style_path, "w", encoding="utf-8") as f:
         json.dump(STYLE_FEATURE_NAMES, f, ensure_ascii=False, indent=2)
 
     speeds_np = np.asarray(all_speeds, dtype=float) if all_speeds else np.asarray([0.0])
-    cf_valid_frac_values = np.asarray([item["cf_valid_frac"] for item in style_debug_list], dtype=float)
+    cf_valid_frac_values = feat_style_raw_data[:, 10] if feat_style_raw_data.size > 0 else np.asarray([0.0])
     style_nan_counts = np.isnan(feat_style_raw_data).sum(axis=0)
     summary_map = {
         "tfrecord_glob": args.tfrecord_glob,
         "min_ego_speed": args.min_ego_speed,
+        "window_len": args.window_len,
+        "stride": args.stride,
         "min_points_cf": args.min_points_cf,
-        "filtered_out_scenarios": filtered_scenarios,
-        "kept_scenarios": kept_scenarios,
+        "total_windows": len(feat_style_raw_data),
+        "scenarios_filtered": scenarios_filtered,
+        "scenarios_kept": scenarios_kept,
         "speed_mean": f"{speeds_np.mean():.6f}",
         "speed_std": f"{speeds_np.std():.6f}",
         "speed_min": f"{speeds_np.min():.6f}",
@@ -523,8 +553,6 @@ def main():
         "test_count": split_counter.get("test", 0),
         "traj_shape": str(traj_data.shape),
         "front_shape": str(front_data.shape),
-        "feat_shape": str(feat_legacy_data.shape),
-        "feat_legacy_shape": str(feat_legacy_data.shape),
         "feat_style_shape": str(feat_style_data.shape),
         "feat_style_raw_shape": str(feat_style_raw_data.shape),
         "feat_style_dim": len(STYLE_FEATURE_NAMES),
@@ -536,19 +564,23 @@ def main():
         "meta_shape": str(meta_data.shape),
         "split_shape": str(split_data.shape),
     }
+    if args.save_legacy_features:
+        summary_map["feat_shape"] = str(feat_legacy_data.shape)
+        summary_map["feat_legacy_shape"] = str(feat_legacy_data.shape)
     for i, name in enumerate(STYLE_FEATURE_NAMES):
         summary_map[f"feat_style_nan_count_{name}"] = int(style_nan_counts[i])
     write_summary(args.output_dir, summary_map)
 
     print(f"Saved traj to {traj_path}")
     print(f"Saved front to {front_path}")
-    print(f"Saved legacy feat to {feat_legacy_path} (and {feat_path} for backward compatibility)")
+    if args.save_legacy_features:
+        print(f"Saved legacy feat to {feat_legacy_path} (and {feat_path} for backward compatibility)")
     print(f"Saved style feat to {feat_style_path}")
     print(f"Saved raw style feat to {feat_style_raw_path}")
     print(f"Saved style feature names to {feature_names_style_path}")
     print(f"Saved meta to {meta_path}")
     print(f"Saved split to {split_path}")
-    print("Shapes:", traj_data.shape, front_data.shape, feat_legacy_data.shape, feat_style_data.shape, meta_data.shape, split_data.shape)
+    print("Shapes:", traj_data.shape, front_data.shape, feat_style_data.shape, meta_data.shape, split_data.shape)
 
 
 if __name__ == "__main__":
