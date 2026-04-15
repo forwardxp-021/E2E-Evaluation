@@ -9,7 +9,63 @@ from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
-from waymo_open_dataset.protos import scenario_pb2
+try:
+    from waymo_open_dataset.protos import scenario_pb2
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependency 'waymo_open_dataset'. Install 'waymo-open-dataset-tf-2-11-0' "
+        "and use Python 3.10/3.11 (the official wheel is not compatible with Python 3.12)."
+    ) from exc
+
+
+def _scenario_looks_valid(scenario):
+    """Heuristic validity check after protobuf parse."""
+    try:
+        if len(scenario.tracks) == 0:
+            return False
+        ego_idx = scenario.sdc_track_index
+        return ego_idx is not None and 0 <= ego_idx < len(scenario.tracks)
+    except Exception:
+        return False
+
+
+def parse_scenario_from_record(record_bytes):
+    """Parse a Scenario from one TFRecord entry.
+
+    Supports two common encodings:
+    1) raw Scenario proto bytes
+    2) tf.train.Example wrapping Scenario bytes in a bytes_list feature
+    """
+    scenario = scenario_pb2.Scenario()
+
+    # Case 1: record is already raw Scenario bytes.
+    try:
+        scenario.ParseFromString(record_bytes)
+        if _scenario_looks_valid(scenario):
+            return scenario
+    except Exception:
+        pass
+
+    # Case 2: record is tf.train.Example; scan bytes features for Scenario payload.
+    try:
+        example = tf.train.Example()
+        example.ParseFromString(record_bytes)
+        for feature in example.features.feature.values():
+            values = feature.bytes_list.value
+            if not values:
+                continue
+            for blob in values:
+                candidate = scenario_pb2.Scenario()
+                try:
+                    candidate.ParseFromString(blob)
+                except Exception:
+                    continue
+                if _scenario_looks_valid(candidate):
+                    return candidate
+    except Exception:
+        pass
+
+    return None
 
 
 def align_tracks(ego_track, front_track):
@@ -432,8 +488,10 @@ def main():
     for file in files:
         dataset_tf = tf.data.TFRecordDataset(file)
         for data in dataset_tf:
-            scenario = scenario_pb2.Scenario()
-            scenario.ParseFromString(data.numpy())
+            scenario = parse_scenario_from_record(data.numpy())
+            if scenario is None:
+                scenarios_filtered += 1
+                continue
 
             speeds = get_ego_speeds(scenario)
             if len(speeds) == 0 or np.min(speeds) < args.min_ego_speed:
