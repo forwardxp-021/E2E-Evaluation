@@ -75,7 +75,13 @@ class TrajFeatureDataset(Dataset):
         pair_cache_path: str | None = None,
         build_pairs: bool = True,
     ):
-        self.traj = np.load(traj_path, allow_pickle=True)
+        traj_loaded = np.load(traj_path, allow_pickle=True)
+        # Some serialized object arrays contain nested object dtypes per sample.
+        # Convert once at load time so collate can safely build float tensors.
+        if isinstance(traj_loaded, np.ndarray) and traj_loaded.dtype == object:
+            self.traj = [np.asarray(t, dtype=np.float32) for t in traj_loaded]
+        else:
+            self.traj = [np.asarray(t, dtype=np.float32) for t in traj_loaded]
         self.feat = np.load(feat_path, allow_pickle=False).astype(np.float32)
         self.split = np.load(split_path, allow_pickle=True)
 
