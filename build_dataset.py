@@ -231,6 +231,7 @@ STYLE_FEATURE_NAMES = [
     "acc_sync_corr",
 ]
 CF_VALID_FRAC_IDX = STYLE_FEATURE_NAMES.index("cf_valid_frac")
+D0_IDX = STYLE_FEATURE_NAMES.index("desired_gap_d0")
 EPS_DIV_SAFETY = 1e-6
 
 
@@ -259,10 +260,10 @@ def _speed_control_oscillation(v_e, eps=1e-3):
     return float(np.mean(signs[1:] * signs[:-1] < 0))
 
 
-def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
+def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3, kd_min=1e-3):
     """Fit kv/kd/d0 in a_e ≈ kv*v_rel + kd*d + b using ridge-regularized least squares."""
     if len(a_e_cf) < 3:
-        return np.nan, np.nan, np.nan
+        return np.nan, np.nan, np.nan, False
     # Fit a_e ≈ kv * v_rel + kd * d + b via closed-form ridge for stability.
     x = np.column_stack([v_rel_cf, d_cf, np.ones_like(v_rel_cf)])
     y = a_e_cf
@@ -270,14 +271,29 @@ def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3):
     reg = ridge_lambda * np.eye(3, dtype=np.float64)
     cond = np.linalg.cond(xtx + reg)
     if not np.isfinite(cond) or cond > 1e12:
-        return np.nan, np.nan, np.nan
+        return np.nan, np.nan, np.nan, False
     try:
         beta = np.linalg.solve(xtx + reg, x.T @ y)
     except np.linalg.LinAlgError:
-        return np.nan, np.nan, np.nan
+        return np.nan, np.nan, np.nan, False
     kv, kd, b = float(beta[0]), float(beta[1]), float(beta[2])
-    d0 = -b / (kd + EPS_DIV_SAFETY)  # Desired gap where fitted acceleration equals zero.
-    return kv, kd, float(d0)
+    if np.abs(kd) < kd_min:
+        return kv, kd, np.nan, True
+    d0 = -b / kd
+    return kv, kd, float(d0), False
+
+
+def _sanitize_desired_gap_d0(d0_raw: np.ndarray, *, min_gap: float, max_gap: float, log1p: bool) -> np.ndarray:
+    """Apply physical constraints and robust compression to desired-gap d0."""
+    d0 = np.asarray(d0_raw, dtype=np.float64).copy()
+    valid = np.isfinite(d0)
+    valid &= d0 > min_gap
+    d0[~valid] = np.nan
+    if np.any(valid):
+        d0[valid] = np.clip(d0[valid], min_gap, max_gap)
+        if log1p:
+            d0[valid] = np.log1p(d0[valid])
+    return d0.astype(np.float32)
 
 
 def _best_lag_corr(a_e_cf, a_f_cf, max_lag=10, var_eps=1e-8):
@@ -313,7 +329,16 @@ def _best_lag_corr(a_e_cf, a_f_cf, max_lag=10, var_eps=1e-8):
     return float(best_lag), float(best_corr)
 
 
-def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: int = 20) -> np.ndarray:
+def compute_style_features(
+    ego: np.ndarray,
+    front: np.ndarray,
+    min_points_cf: int = 20,
+    kd_min: float = 1e-3,
+    d0_min_gap: float = 1.0,
+    d0_max_gap: float = 200.0,
+    d0_log1p: bool = True,
+    return_debug: bool = False,
+) -> np.ndarray:
     """
     Compute 20D style feature vector from aligned ego/front trajectories.
 
@@ -322,6 +347,11 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
         front: (T, 4) aligned front states [x, y, vx, vy].
         min_points_cf: minimum strict car-following mask points required to emit
             car-following stats other than cf_valid_frac.
+        kd_min: minimum valid |kd| for desired-gap recovery in CF gain fitting.
+        d0_min_gap: physical lower bound for valid desired-gap values.
+        d0_max_gap: clipping upper bound for desired-gap values.
+        d0_log1p: whether to apply log1p compression after clipping.
+        return_debug: when True, return a tuple of (feature, debug_dict).
 
     Returns:
         feat_style: float32 vector [core(10), car-following(10)].
@@ -375,6 +405,7 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
 
     if cf_n < min_points_cf:
         cf = [cf_valid_frac] + [np.nan] * 9
+        debug_dict = {"d0_raw_unsanitized": np.nan, "kd_small": False}
     else:
         thw_cf = thw[m_cf]
         v_rel_cf = v_rel[m_cf]
@@ -383,7 +414,19 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
         a_f_cf = a_f[m_cf]
         thw_q25, thw_q75 = np.percentile(thw_cf, [25, 75])
 
-        kv, kd, d0 = _fit_cf_gains(v_rel_cf=v_rel_cf, d_cf=d_cf, a_e_cf=a_e_cf, ridge_lambda=1e-3)
+        kv, kd, d0_raw_unsanitized, kd_small = _fit_cf_gains(
+            v_rel_cf=v_rel_cf,
+            d_cf=d_cf,
+            a_e_cf=a_e_cf,
+            ridge_lambda=1e-3,
+            kd_min=kd_min,
+        )
+        d0 = _sanitize_desired_gap_d0(
+            np.asarray([d0_raw_unsanitized], dtype=np.float64),
+            min_gap=d0_min_gap,
+            max_gap=d0_max_gap,
+            log1p=d0_log1p,
+        )[0]
         lag, corr = _best_lag_corr(a_e_cf=a_e_cf, a_f_cf=a_f_cf, max_lag=10, var_eps=1e-8)
 
         cf = [
@@ -398,8 +441,11 @@ def compute_style_features(ego: np.ndarray, front: np.ndarray, min_points_cf: in
             lag,
             corr,
         ]
+        debug_dict = {"d0_raw_unsanitized": float(d0_raw_unsanitized), "kd_small": bool(kd_small)}
 
     feat_style = np.asarray(core + cf, dtype=np.float32)
+    if return_debug:
+        return feat_style, debug_dict
     return feat_style
 
 
@@ -454,6 +500,10 @@ def parse_args():
     parser.add_argument("--window_len", type=int, default=80)
     parser.add_argument("--stride", type=int, default=20)
     parser.add_argument("--min_points_cf", type=int, default=20)
+    parser.add_argument("--kd_min", type=float, default=1e-3)
+    parser.add_argument("--d0_min_gap", type=float, default=1.0)
+    parser.add_argument("--d0_max_gap", type=float, default=200.0)
+    parser.add_argument("--d0_log1p", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--save_legacy_features", action="store_true")
     parser.add_argument("--train_ratio", type=float, default=0.8)
     parser.add_argument("--val_ratio", type=float, default=0.1)
@@ -481,6 +531,8 @@ def main():
     print(f"Found {len(files)} TFRecord files via glob: {args.tfrecord_glob}")
 
     traj_data, front_data, feat_legacy_data, feat_style_raw_data, meta_data, split_data = [], [], [], [], [], []
+    d0_raw_unsanitized_list = []
+    kd_small_count = 0
     all_speeds = []
     scenarios_filtered = 0
     scenarios_kept = 0
@@ -520,14 +572,21 @@ def main():
                 end = start + args.window_len
                 ego_win = ego[start:end]
                 front_win = front[start:end]
-                feat_style_raw = compute_style_features(
+                feat_style_raw, debug_dict = compute_style_features(
                     ego=ego_win,
                     front=front_win,
                     min_points_cf=args.min_points_cf,
+                    kd_min=args.kd_min,
+                    d0_min_gap=args.d0_min_gap,
+                    d0_max_gap=args.d0_max_gap,
+                    d0_log1p=args.d0_log1p,
+                    return_debug=True,
                 )
                 traj_data.append(ego_win)
                 front_data.append(front_win)
                 feat_style_raw_data.append(feat_style_raw)
+                d0_raw_unsanitized_list.append(debug_dict["d0_raw_unsanitized"])
+                kd_small_count += int(debug_dict["kd_small"])
                 meta_data.append((scenario.scenario_id, start, args.window_len, front_id))
                 split_data.append(split)
                 if args.save_legacy_features:
@@ -548,6 +607,7 @@ def main():
     traj_data = np.asarray(traj_data, dtype=object)
     front_data = np.asarray(front_data, dtype=object)
     feat_style_raw_data = np.asarray(feat_style_raw_data, dtype=np.float32)
+    d0_raw_unsanitized_data = np.asarray(d0_raw_unsanitized_list, dtype=np.float32)
     meta_data = np.asarray(meta_data, dtype=object)
     split_data = np.asarray(split_data, dtype=object)
 
@@ -600,12 +660,25 @@ def main():
         feat_style_raw_data[:, CF_VALID_FRAC_IDX] if feat_style_raw_data.size > 0 else np.asarray([0.0])
     )
     style_nan_counts = np.isnan(feat_style_raw_data).sum(axis=0)
+    d0_sanitized_values = feat_style_raw_data[:, D0_IDX]
+    d0_raw_valid = d0_raw_unsanitized_data[np.isfinite(d0_raw_unsanitized_data)]
+    d0_sanitized_valid = d0_sanitized_values[np.isfinite(d0_sanitized_values)]
+
+    def _safe_fmt_stat(values, q):
+        if values.size == 0:
+            return "nan"
+        return f"{np.percentile(values, q):.6f}"
+
     summary_map = {
         "tfrecord_glob": args.tfrecord_glob,
         "min_ego_speed": args.min_ego_speed,
         "window_len": args.window_len,
         "stride": args.stride,
         "min_points_cf": args.min_points_cf,
+        "kd_min": args.kd_min,
+        "d0_min_gap": args.d0_min_gap,
+        "d0_max_gap": args.d0_max_gap,
+        "d0_log1p": args.d0_log1p,
         "total_windows": len(feat_style_raw_data),
         "scenarios_filtered": scenarios_filtered,
         "scenarios_kept": scenarios_kept,
@@ -621,6 +694,20 @@ def main():
         "feat_style_shape": str(feat_style_data.shape),
         "feat_style_raw_shape": str(feat_style_raw_data.shape),
         "feat_style_dim": len(STYLE_FEATURE_NAMES),
+        "d0_raw_valid_count": int(d0_raw_valid.size),
+        "d0_raw_min": _safe_fmt_stat(d0_raw_valid, 0),
+        "d0_raw_p1": _safe_fmt_stat(d0_raw_valid, 1),
+        "d0_raw_p50": _safe_fmt_stat(d0_raw_valid, 50),
+        "d0_raw_p99": _safe_fmt_stat(d0_raw_valid, 99),
+        "d0_raw_max": _safe_fmt_stat(d0_raw_valid, 100),
+        "d0_sanitized_valid_count": int(d0_sanitized_valid.size),
+        "d0_sanitized_min": _safe_fmt_stat(d0_sanitized_valid, 0),
+        "d0_sanitized_p1": _safe_fmt_stat(d0_sanitized_valid, 1),
+        "d0_sanitized_p50": _safe_fmt_stat(d0_sanitized_valid, 50),
+        "d0_sanitized_p99": _safe_fmt_stat(d0_sanitized_valid, 99),
+        "d0_sanitized_max": _safe_fmt_stat(d0_sanitized_valid, 100),
+        "kd_small_count": int(kd_small_count),
+        "d0_nan_count": int(np.isnan(d0_sanitized_values).sum()),
         "cf_valid_frac_mean": f"{cf_valid_frac_values.mean():.6f}",
         "cf_valid_frac_std": f"{cf_valid_frac_values.std():.6f}",
         "cf_valid_frac_p10": f"{np.percentile(cf_valid_frac_values, 10):.6f}",
