@@ -78,8 +78,24 @@ python build_dataset.py \
   --window_len 80 \
   --stride 20 \
   --min_points_cf 20 \
+  --kd_min 1e-3 \
+  --d0_min_gap 1.0 \
+  --d0_max_gap 200.0 \
+  --d0_log1p \
   --train_ratio 0.8 --val_ratio 0.1 --test_ratio 0.1
 ```
+
+### desired_gap_d0 清洗说明（病态长尾防护）
+
+- `desired_gap_d0` 来自拟合关系 `a_e ≈ kv*v_rel + kd*d + b` 的零加速度间距 `d0=-b/kd`。当 `kd` 过小或拟合病态时，`d0` 会数值爆炸并污染 feature 距离，导致 soft target 过平。
+- 数据构建中已增加两层防护：
+  - 拟合阶段：`abs(kd) < kd_min` 时不计算 `d0`（置为 NaN）。
+  - 特征阶段：对窗口级 `d0` 做 sanitize（`<=d0_min_gap` 置 NaN、clip 到 `[d0_min_gap,d0_max_gap]`、可选 `log1p` 压缩长尾）。
+- 相关参数：
+  - `--kd_min`（默认 `1e-3`）
+  - `--d0_min_gap`（默认 `1.0`）
+  - `--d0_max_gap`（默认 `200.0`）
+  - `--d0_log1p / --no-d0_log1p`（默认开启）
 
 ### 2) 训练
 
