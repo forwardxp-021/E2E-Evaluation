@@ -261,7 +261,13 @@ def _speed_control_oscillation(v_e, eps=1e-3):
 
 
 def _fit_cf_gains(v_rel_cf, d_cf, a_e_cf, ridge_lambda=1e-3, kd_min=1e-3):
-    """Fit kv/kd/d0 in a_e ≈ kv*v_rel + kd*d + b using ridge-regularized least squares."""
+    """Fit kv/kd/d0 in a_e ≈ kv*v_rel + kd*d + b using ridge-regularized least squares.
+
+    Returns:
+        (kv, kd, d0, kd_small):
+            - d0 is NaN when |kd| < kd_min.
+            - kd_small indicates whether d0 was invalidated by the kd_min guard.
+    """
     if len(a_e_cf) < 3:
         return np.nan, np.nan, np.nan, False
     # Fit a_e ≈ kv * v_rel + kd * d + b via closed-form ridge for stability.
