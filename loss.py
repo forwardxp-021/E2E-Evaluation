@@ -174,9 +174,8 @@ class SoftContrastiveLoss(nn.Module):
                     continue
                 k_eff = min(self.ls_k, int(row_vals.numel()))
                 # Use the k_eff-th nearest finite distance as local scale sigma_i.
-                sigma_i = torch.topk(row_vals, k=k_eff, largest=False).values[-1]
+                sigma_i = torch.topk(row_vals, k=k_eff, largest=False).values[k_eff - 1]
                 sigma[i] = torch.clamp(sigma_i.detach(), min=self.ls_sigma_min)
-            sigma = torch.clamp(sigma, min=self.ls_sigma_min)
 
             if self.ls_mode == "row":
                 logits_feat = -dist_feat / sigma[:, None]
