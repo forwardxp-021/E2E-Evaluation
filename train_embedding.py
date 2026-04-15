@@ -61,6 +61,16 @@ def parse_args() -> argparse.Namespace:
         default=0,
         help="If >0, only top-M nearest feature neighbors participate in softmax per anchor",
     )
+    parser.add_argument(
+        "--feat_sim",
+        type=str,
+        choices=["tau", "local_scale"],
+        default="tau",
+        help="Feature similarity soft-target mode",
+    )
+    parser.add_argument("--ls_k", type=int, default=10, help="k-th neighbor distance used as local scaling sigma")
+    parser.add_argument("--ls_mode", type=str, choices=["row", "sym"], default="row", help="Local scaling mode")
+    parser.add_argument("--ls_sigma_min", type=float, default=1e-3, help="Lower bound for local scaling sigma")
     parser.add_argument("--debug_sim_feat", action="store_true", help="Print first-row sim_feat values once for sanity check")
     parser.add_argument("--debug_sim_topk", type=int, default=10, help="How many sim_feat entries to print for debug")
 
@@ -172,6 +182,10 @@ def main() -> None:
         feat_norm=args.feat_norm,
         tau_mode=args.tau_mode,
         gate_topm=args.gate_topm,
+        feat_sim=args.feat_sim,
+        ls_k=args.ls_k,
+        ls_mode=args.ls_mode,
+        ls_sigma_min=args.ls_sigma_min,
         debug_sim=args.debug_sim_feat,
         debug_topk=args.debug_sim_topk,
     )
@@ -223,6 +237,10 @@ def main() -> None:
             epoch_msg += f" | entropy={avg_stats['sim_feat_entropy_mean']:.4f}"
         if "effective_k_mean" in avg_stats:
             epoch_msg += f" | effective_k={avg_stats['effective_k_mean']:.2f}"
+        if "sigma_mean" in avg_stats:
+            epoch_msg += f" | sigma_mean={avg_stats['sigma_mean']:.4f}"
+        if "sigma_median" in avg_stats:
+            epoch_msg += f" | sigma_median={avg_stats['sigma_median']:.4f}"
         print(epoch_msg)
 
         if epoch % args.eval_every == 0:
