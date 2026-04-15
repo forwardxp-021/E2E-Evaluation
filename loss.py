@@ -173,6 +173,7 @@ class SoftContrastiveLoss(nn.Module):
                 if row_vals.numel() == 0:
                     continue
                 k_eff = min(self.ls_k, int(row_vals.numel()))
+                # k_eff is always >= 1 (ls_k validated, row non-empty), so [k_eff - 1] is safe.
                 # Use the k_eff-th nearest finite distance as local scale sigma_i.
                 sigma_i = torch.topk(row_vals, k=k_eff, largest=False).values[k_eff - 1]
                 sigma[i] = torch.clamp(sigma_i.detach(), min=self.ls_sigma_min)
@@ -180,7 +181,8 @@ class SoftContrastiveLoss(nn.Module):
             if self.ls_mode == "row":
                 logits_feat = -dist_feat / sigma[:, None]
             else:
-                # Symmetric self-tuning kernel: exp(-d(i,j)^2 / (sigma_i * sigma_j)).
+                # Symmetric self-tuning kernel where dist_feat(i,j)=d(i,j):
+                # exp(-dist_feat(i,j)^2 / (sigma_i * sigma_j)).
                 denom = sigma[:, None] * sigma[None, :] + self.eps
                 logits_feat = -(dist_feat.pow(2)) / denom
 
