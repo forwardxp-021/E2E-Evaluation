@@ -113,6 +113,30 @@ python train_embedding.py \
   --gate_topm 0
 ```
 
+### Soft target ablation（tau vs local scaling）
+
+- 原始（tau）：
+  - `--feat_sim tau --tau_mode anchor_median`
+- local scaling（推荐）：
+  - `--feat_sim local_scale --ls_k 10 --ls_mode row --ls_sigma_min 1e-3`
+
+local scaling 的目标是让 soft target 更局部化，避免 `effective_k` 接近 batch size。
+
+可用以下命令验收（期望日志里 `effective_k_mean` 显著下降）：
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --feat_path output/feat_style.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_style_ls_k10 \
+  --epochs 50 --batch_size 64 \
+  --temperature 0.1 \
+  --feat_norm none \
+  --feat_sim local_scale \
+  --ls_k 10 --ls_mode row --ls_sigma_min 1e-3
+```
+
 ### 3) 导出全量 embedding
 
 ```bash
