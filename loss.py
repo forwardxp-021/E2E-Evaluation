@@ -3,6 +3,24 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+def masked_pairwise_l2(
+    feat: torch.Tensor,
+    feat_valid: torch.Tensor,
+    min_common_dims: int = 1,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    valid = (feat_valid > 0).to(feat.dtype)
+    common_dims = valid[:, None, :] * valid[None, :, :]
+    common_counts = common_dims.sum(dim=-1)
+
+    diff2 = (feat[:, None, :] - feat[None, :, :]).pow(2)
+    denom = common_counts.clamp(min=1.0)
+    dist = torch.sqrt((diff2 * common_dims).sum(dim=-1) / denom)
+
+    if min_common_dims > 1:
+        dist = dist.masked_fill(common_counts < float(min_common_dims), float("inf"))
+    return dist, common_counts
+
+
 def _masked_logsumexp(logits: torch.Tensor, mask: torch.Tensor, dim: int = -1) -> torch.Tensor:
     neg_inf = torch.finfo(logits.dtype).min
     masked = torch.where(mask, logits, torch.full_like(logits, neg_inf))
@@ -81,6 +99,8 @@ class SoftContrastiveLoss(nn.Module):
         ls_mode: str = "row",
         ls_sigma_min: float = 1e-3,
         ls_alpha: float = 1.0,
+        feat_dist_mode: str = "plain",
+        min_common_dims: int = 5,
         eps: float = 1e-8,
         debug_sim: bool = False,
         debug_topk: int = 10,
@@ -96,12 +116,19 @@ class SoftContrastiveLoss(nn.Module):
         self.ls_mode = ls_mode
         self.ls_sigma_min = ls_sigma_min
         self.ls_alpha = ls_alpha
+        self.feat_dist_mode = feat_dist_mode
+        self.min_common_dims = min_common_dims
         self.eps = eps
         self.debug_sim = debug_sim
         self.debug_topk = debug_topk
         self._debug_printed = False
 
-    def forward(self, z: torch.Tensor, feat: torch.Tensor) -> tuple[torch.Tensor, dict]:
+    def forward(
+        self,
+        z: torch.Tensor,
+        feat: torch.Tensor,
+        feat_valid: torch.Tensor | None = None,
+    ) -> tuple[torch.Tensor, dict]:
         bsz = z.size(0)
         device = z.device
 
@@ -113,10 +140,14 @@ class SoftContrastiveLoss(nn.Module):
             raise ValueError(f"Unsupported feat_sim: {self.feat_sim}")
         if self.ls_mode not in {"row", "sym"}:
             raise ValueError(f"Unsupported ls_mode: {self.ls_mode}")
+        if self.feat_dist_mode not in {"plain", "masked"}:
+            raise ValueError(f"Unsupported feat_dist_mode: {self.feat_dist_mode}")
         if self.ls_k < 1:
             raise ValueError(f"ls_k must be >= 1, got {self.ls_k}")
         if self.ls_alpha <= 0:
             raise ValueError(f"ls_alpha must be > 0 to keep sharpening valid, got {self.ls_alpha}")
+        if self.min_common_dims < 1:
+            raise ValueError(f"min_common_dims must be >= 1, got {self.min_common_dims}")
 
         # 1) Normalize embedding
         z = F.normalize(z, dim=1)
@@ -131,7 +162,27 @@ class SoftContrastiveLoss(nn.Module):
             feat = F.normalize(feat, dim=1)
 
         # 4) Feature distance
-        dist_feat = torch.cdist(feat, feat, p=2)
+        common_stats = {}
+        if self.feat_dist_mode == "masked" and feat_valid is not None:
+            dist_feat, common_counts = masked_pairwise_l2(feat, feat_valid, min_common_dims=self.min_common_dims)
+            if bsz > 1:
+                off_diag = ~torch.eye(bsz, dtype=torch.bool, device=device)
+                off_diag_counts = common_counts[off_diag]
+                common_stats = {
+                    "common_dims_mean": float(off_diag_counts.float().mean().detach().item()),
+                    "common_dims_p10": float(torch.quantile(off_diag_counts.float(), 0.10).detach().item()),
+                    "common_dims_p50": float(torch.quantile(off_diag_counts.float(), 0.50).detach().item()),
+                    "common_dims_p90": float(torch.quantile(off_diag_counts.float(), 0.90).detach().item()),
+                }
+            else:
+                common_stats = {
+                    "common_dims_mean": 0.0,
+                    "common_dims_p10": 0.0,
+                    "common_dims_p50": 0.0,
+                    "common_dims_p90": 0.0,
+                }
+        else:
+            dist_feat = torch.cdist(feat, feat, p=2)
 
         # 5) Remove diagonal
         eye = torch.eye(bsz, device=device, dtype=torch.bool)
@@ -239,5 +290,6 @@ class SoftContrastiveLoss(nn.Module):
             "sim_feat_entropy_mean": float(entropy.mean().detach().item()),
             "effective_k_mean": float(effective_k.mean().detach().item()),
         }
+        stats.update(common_stats)
         stats.update(tau_stats)
         return loss, stats

@@ -27,6 +27,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Feature-guided contrastive training for driving style representation")
     parser.add_argument("--traj_path", type=str, default=str(out_dir / "traj.npy"))
     parser.add_argument("--feat_path", type=str, default=str(out_dir / "feat.npy"))
+    parser.add_argument("--feat_raw_path", type=str, default=None)
     parser.add_argument("--split_path", type=str, default=str(out_dir / "split.npy"))
     parser.add_argument("--pair_cache_path", type=str, default=str(out_dir / "pair_index.npz"))
     parser.add_argument("--output_dir", type=str, default=str(out_dir))
@@ -72,6 +73,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ls_mode", type=str, choices=["row", "sym"], default="row", help="Local scaling mode")
     parser.add_argument("--ls_sigma_min", type=float, default=1e-3, help="Lower bound for local scaling sigma")
     parser.add_argument("--ls_alpha", type=float, default=1.0, help="Sharpening coefficient for local_scale logits")
+    parser.add_argument("--feat_dist_mode", type=str, choices=["plain", "masked"], default="plain")
+    parser.add_argument("--min_common_dims", type=int, default=5)
     parser.add_argument("--debug_sim_feat", action="store_true", help="Print first-row sim_feat values once for sanity check")
     parser.add_argument("--debug_sim_topk", type=int, default=10, help="How many sim_feat entries to print for debug")
 
@@ -142,6 +145,7 @@ def main() -> None:
         metric=args.distance,
         pair_cache_path=args.pair_cache_path,
         build_pairs=False,
+        feat_raw_path=args.feat_raw_path,
     )
 
     train_idx = dataset.indices_by_split("train")
@@ -193,6 +197,8 @@ def main() -> None:
         ls_mode=args.ls_mode,
         ls_sigma_min=args.ls_sigma_min,
         ls_alpha=args.ls_alpha,
+        feat_dist_mode=args.feat_dist_mode,
+        min_common_dims=args.min_common_dims,
         debug_sim=args.debug_sim_feat,
         debug_topk=args.debug_sim_topk,
     )
@@ -211,11 +217,14 @@ def main() -> None:
             traj = batch["traj"].to(device)
             lengths = batch["lengths"].to(device)
             feat = batch["feat"].to(device)
+            feat_valid = batch.get("feat_valid", None)
+            if isinstance(feat_valid, torch.Tensor):
+                feat_valid = feat_valid.to(device)
 
             z = model(traj, lengths)
             # Replace hard pair contrastive with soft feature-guided contrastive loss.
             # feat is supervision signal only; it is never fed into the trajectory encoder forward path.
-            loss, stats = criterion(z, feat)
+            loss, stats = criterion(z, feat, feat_valid=feat_valid)
 
             optimizer.zero_grad()
             loss.backward()
