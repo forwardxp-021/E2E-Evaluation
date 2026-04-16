@@ -8,7 +8,7 @@ def masked_pairwise_l2(
     feat_valid: torch.Tensor,
     min_common_dims: int = 1,
 ) -> tuple[torch.Tensor, torch.Tensor]:
-    """Compute pairwise L2 distance on commonly valid feature dimensions only.
+    """Compute masked pairwise L2 distances and common valid-dimension counts.
 
     For each pair (i, j), this uses mask m_ij = valid_i * valid_j, averages squared
     difference over common valid dimensions, then applies sqrt. Pairs with common
@@ -18,6 +18,7 @@ def masked_pairwise_l2(
         dist: [B, B] masked pairwise distance matrix.
         common_counts: [B, B] number of common valid dimensions per pair.
     """
+    # feat_valid is binary {0,1} mask; >0 keeps behavior robust to float mask tensors.
     valid = (feat_valid > 0).to(feat.dtype)
     common_dims = valid[:, None, :] * valid[None, :, :]
     common_counts = common_dims.sum(dim=-1)

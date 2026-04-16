@@ -218,7 +218,7 @@ def main() -> None:
             lengths = batch["lengths"].to(device)
             feat = batch["feat"].to(device)
             feat_valid = batch.get("feat_valid", None)
-            if isinstance(feat_valid, torch.Tensor):
+            if feat_valid is not None:
                 feat_valid = feat_valid.to(device)
 
             z = model(traj, lengths)

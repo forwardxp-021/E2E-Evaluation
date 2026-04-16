@@ -92,6 +92,7 @@ class TrajFeatureDataset(Dataset):
                     f"feat_raw shape {feat_raw.shape} must match feat shape {self.feat.shape}"
                 )
             # Valid mask for missing-aware distance: only finite raw dimensions are usable.
+            # Keep float32 for direct tensor batching/device transfer and loss-side arithmetic.
             self.feat_valid = np.isfinite(feat_raw).astype(np.float32)
         self.split = np.load(split_path, allow_pickle=True)
 
