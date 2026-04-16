@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
@@ -75,7 +74,7 @@ class TrajFeatureDataset(Dataset):
         metric: str = "cosine",
         pair_cache_path: str | None = None,
         build_pairs: bool = True,
-        feat_raw_path: Optional[str] = None,
+        feat_raw_path: str | None = None,
     ):
         traj_loaded = np.load(traj_path, allow_pickle=True)
         # Some serialized object arrays contain nested object dtypes per sample.
