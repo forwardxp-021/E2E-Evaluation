@@ -183,7 +183,7 @@ class SoftContrastiveLoss(nn.Module):
                 sigma[i] = torch.clamp(sigma_i.detach(), min=self.ls_sigma_min)
 
             if self.ls_mode == "row":
-                logits_feat = -(dist_feat / sigma[:, None]) * self.ls_alpha
+                logits_feat = -((dist_feat / sigma[:, None]) * self.ls_alpha)
             else:
                 # Symmetric self-tuning kernel where dist_feat(i,j)=d(i,j):
                 # exp(-dist_feat(i,j)^2 / (sigma_i * sigma_j)).

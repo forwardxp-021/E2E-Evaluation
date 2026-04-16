@@ -199,8 +199,10 @@ def main() -> None:
 
     best_sil = -1.0
     best_ckpt = out_dir / "best_model.pth"
+    last_epoch = 0
 
     for epoch in range(1, args.epochs + 1):
+        last_epoch = epoch
         model.train()
         running_loss = 0.0
         running_steps = 0
@@ -285,7 +287,7 @@ def main() -> None:
     if args.skip_val_clustering:
         torch.save(
             {
-                "epoch": args.epochs,
+                "epoch": last_epoch,
                 "model_state_dict": model.state_dict(),
                 "optimizer_state_dict": optimizer.state_dict(),
                 "best_val_silhouette": float("nan"),
