@@ -74,6 +74,7 @@ class TrajFeatureDataset(Dataset):
         metric: str = "cosine",
         pair_cache_path: str | None = None,
         build_pairs: bool = True,
+        feat_raw_path: str | None = None,
     ):
         traj_loaded = np.load(traj_path, allow_pickle=True)
         # Some serialized object arrays contain nested object dtypes per sample.
@@ -83,6 +84,16 @@ class TrajFeatureDataset(Dataset):
         else:
             self.traj = [np.asarray(t, dtype=np.float32) for t in traj_loaded]
         self.feat = np.load(feat_path, allow_pickle=False).astype(np.float32)
+        self.feat_valid = None
+        if feat_raw_path is not None:
+            feat_raw = np.load(feat_raw_path, allow_pickle=False).astype(np.float32)
+            if feat_raw.shape != self.feat.shape:
+                raise ValueError(
+                    f"feat_raw shape {feat_raw.shape} must match feat shape {self.feat.shape}"
+                )
+            # Valid mask for missing-aware distance: only finite raw dimensions are usable.
+            # Keep float32 for direct tensor batching/device transfer and loss-side arithmetic.
+            self.feat_valid = np.isfinite(feat_raw).astype(np.float32)
         self.split = np.load(split_path, allow_pickle=True)
 
         if not (len(self.traj) == len(self.feat) == len(self.split)):
@@ -136,6 +147,7 @@ class TrajFeatureDataset(Dataset):
         return {
             "traj": self.traj[index],
             "feat": self.feat[index],
+            "feat_valid": None if self.feat_valid is None else self.feat_valid[index],
             "global_idx": index,
             "pos_global": pos_global,
             "neg_global": neg_global,
@@ -149,6 +161,9 @@ def collate_variable_traj(batch: list[dict]) -> dict:
     traj = pad_sequence(traj_list, batch_first=True)
 
     feat = torch.as_tensor(np.stack([item["feat"] for item in batch], axis=0), dtype=torch.float32)
+    feat_valid = None
+    if batch[0]["feat_valid"] is not None:
+        feat_valid = torch.as_tensor(np.stack([item["feat_valid"] for item in batch], axis=0), dtype=torch.float32)
     global_idx = torch.as_tensor([item["global_idx"] for item in batch], dtype=torch.long)
     pos_global = torch.as_tensor(np.stack([item["pos_global"] for item in batch], axis=0), dtype=torch.long)
     neg_global = torch.as_tensor(np.stack([item["neg_global"] for item in batch], axis=0), dtype=torch.long)
@@ -157,6 +172,7 @@ def collate_variable_traj(batch: list[dict]) -> dict:
         "traj": traj,
         "lengths": lengths,
         "feat": feat,
+        "feat_valid": feat_valid,
         "global_idx": global_idx,
         "pos_global": pos_global,
         "neg_global": neg_global,

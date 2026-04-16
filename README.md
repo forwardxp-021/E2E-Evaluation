@@ -138,6 +138,28 @@ python train_embedding.py \
   --ls_alpha 1.5
 ```
 
+### 缺失感知特征距离（处理 cf 缺失导致的伪相似）
+
+- `feat_style.npy` 在构建时会把 NaN/inf 填 0；对于 cf 相关维度（11–19）缺失较多时，“共同缺失样本对”会在特征距离上被错误拉近。
+- 训练时可额外提供 `feat_style_raw.npy` 生成有效维 mask，仅在双方都有效的维度上计算 pairwise feature distance，并按共同有效维度数归一化，减少伪近邻。
+
+推荐命令（local scaling + masked distance）：
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_style_masked_ls_k1_a3 \
+  --epochs 50 --batch_size 64 \
+  --temperature 0.1 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --eval_every 10
+```
+
 快速扫参（降低训练时评估开销）可把评估频率调低，并按需跳过 val 聚类评估：
 
 ```bash
