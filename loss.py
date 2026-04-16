@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+# Default cf_valid_frac bucket edges for condition gating.
+# Samples are bucketed into [0, edge0), [edge0, edge1), [edge1, inf).
+DEFAULT_CF_BUCKET_EDGES: list[float] = [0.2, 0.6]
+
 
 def masked_pairwise_l2(
     feat: torch.Tensor,
@@ -196,7 +200,7 @@ class SoftContrastiveLoss(nn.Module):
         self.cond_speed_tol = cond_speed_tol
         self.cond_dist_tol = cond_dist_tol
         self.cond_vrel_tol = cond_vrel_tol
-        self.cond_cf_bucket_edges: list[float] = cond_cf_bucket_edges if cond_cf_bucket_edges is not None else [0.2, 0.6]
+        self.cond_cf_bucket_edges: list[float] = cond_cf_bucket_edges if cond_cf_bucket_edges is not None else list(DEFAULT_CF_BUCKET_EDGES)
         self.min_cond_candidates = min_cond_candidates
         # Loss mode.
         self.loss_mode = loss_mode
@@ -415,7 +419,7 @@ class SoftContrastiveLoss(nn.Module):
                 "supcon_loss": float(loss_sup.detach().item()),
                 "softkl_loss": float(loss_soft.detach().item()),
             }
-            mode_stats.update({f"sup_{k}": v for k, v in sup_stats.items() if k != "valid_anchors"})
+            mode_stats.update({f"supcon_{k}": v for k, v in sup_stats.items() if k != "valid_anchors"})
 
         if not torch.isfinite(loss):
             loss = torch.nan_to_num(loss, nan=0.0, posinf=1e4, neginf=1e4)

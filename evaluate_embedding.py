@@ -826,7 +826,7 @@ def main() -> None:
     print(f"mean neighbor ratio: {mean_neighbor_ratio:.4f}")
     if neigh_cond_path is not None:
         mean_cond_ratio = float(np.nanmean(neigh_cond_df["ratio_mean"].to_numpy()))
-        mean_cond_cands = float(np.nanmean(neigh_cond_df["mean_cond_candidates"].dropna().to_numpy())) if "mean_cond_candidates" in neigh_cond_df.columns else float("nan")
+        mean_cond_cands = float(np.nanmean(neigh_cond_df["mean_cond_candidates"].to_numpy()))
         print(f"mean neighbor ratio (cond-aware): {mean_cond_ratio:.4f}")
         print(f"mean cond candidates: {mean_cond_cands:.1f}")
     print(f"eval mode: {split_note}")

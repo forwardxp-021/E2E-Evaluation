@@ -116,7 +116,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--w_soft", type=float, default=0.2, help="Weight for softkl term in hybrid loss")
 
     # Two-stage training schedule.
-    parser.add_argument("--stage1_epochs", type=int, default=0, help="Epochs for stage 1 (reserved for future use; currently a no-op)")
+    # stage1_epochs: hook for future condition-invariance pretraining; currently accepted but not implemented.
+    # Set to 0 (default) to use the standard single-stage schedule.
+    parser.add_argument("--stage1_epochs", type=int, default=0, help="Epochs for stage 1 invariance pretraining (hook for future use; currently accepted but not active)")
     parser.add_argument("--stage2_epochs", type=int, default=0, help="Epochs for stage 2; if 0, uses --epochs")
 
     parser.add_argument("--epochs", type=int, default=50)
