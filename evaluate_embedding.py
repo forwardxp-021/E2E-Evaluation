@@ -69,6 +69,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--neighbor_denominator_eps", type=float, default=1e-3)
     parser.add_argument("--neighbor_clip_quantile", type=float, default=0.99)
     parser.add_argument("--probe_test_ratio", type=float, default=0.2, help="Used only when split_path is not provided")
+    parser.add_argument("--probe_min_samples", type=int, default=5, help="Minimum masked samples per split for probe fitting/eval")
     parser.add_argument("--kmeans_clusters", type=int, default=0, help="If >0, save UMAP plot colored by KMeans labels")
     parser.add_argument("--plot_first_k", type=int, default=12, help="UMAP feature-colored plots use the first K feature dims")
     parser.add_argument("--nan_policy", type=str, choices=["ignore", "zero"], default="ignore")
@@ -122,10 +123,10 @@ def evaluate_probe(
     feature_names: list[str] | None,
     ridge_alpha: float,
     feature_std_eps: float,
+    probe_min_samples: int,
 ) -> pd.DataFrame:
     rows = []
     n_feat = feat_train.shape[1]
-    min_samples = 5
 
     for f_idx in range(n_feat):
         if feat_raw_train is not None and feat_raw_test is not None and nan_policy == "ignore":
@@ -144,7 +145,7 @@ def evaluate_probe(
         n_train_used = int(len(y_train))
         n_test_used = int(len(y_test))
 
-        if n_train_used < min_samples or n_test_used < min_samples:
+        if n_train_used < probe_min_samples or n_test_used < probe_min_samples:
             rows.append(
                 {
                     "feature_idx": f_idx,
@@ -484,6 +485,8 @@ def main() -> None:
 
     if feat_raw is not None and feat_raw.shape != feat.shape:
         raise ValueError(f"feat_raw shape {feat_raw.shape} must equal feat shape {feat.shape}")
+    if args.umap_color_source == "raw" and feat_raw is None:
+        print("[WARN] --umap_color_source raw requested but --feat_raw_path is not provided; fallback to feat")
 
     emb_train, emb_eval, feat_train, feat_eval, train_idx, eval_idx, split_note = _load_eval_views(
         emb=emb,
@@ -509,6 +512,7 @@ def main() -> None:
             feature_names=feature_names,
             ridge_alpha=args.ridge_alpha,
             feature_std_eps=args.feature_std_eps,
+            probe_min_samples=args.probe_min_samples,
         )
     else:
         probe_df = pd.DataFrame(
