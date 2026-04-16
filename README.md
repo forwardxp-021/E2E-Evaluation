@@ -138,7 +138,7 @@ python train_embedding.py \
   --ls_alpha 1.5
 ```
 
-### Missing-aware feature distance（处理 cf 缺失导致的伪相似）
+### 缺失感知特征距离（处理 cf 缺失导致的伪相似）
 
 - `feat_style.npy` 在构建时会把 NaN/inf 填 0；对于 cf 相关维度（11–19）缺失较多时，“共同缺失样本对”会在特征距离上被错误拉近。
 - 训练时可额外提供 `feat_style_raw.npy` 生成有效维 mask，仅在双方都有效的维度上计算 pairwise feature distance，并按共同有效维度数归一化，减少伪近邻。
