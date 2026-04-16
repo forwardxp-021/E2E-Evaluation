@@ -118,7 +118,7 @@ python train_embedding.py \
 - 原始（tau）：
   - `--feat_sim tau --tau_mode anchor_median`
 - local scaling（推荐）：
-  - `--feat_sim local_scale --ls_k 10 --ls_mode row --ls_sigma_min 1e-3`
+  - `--feat_sim local_scale --ls_k 10 --ls_mode row --ls_sigma_min 1e-3 --ls_alpha 1.0`
 
 local scaling 的目标是让 soft target 更局部化，避免 `effective_k` 接近 batch size。
 
@@ -134,7 +134,23 @@ python train_embedding.py \
   --temperature 0.1 \
   --feat_norm none \
   --feat_sim local_scale \
-  --ls_k 10 --ls_mode row --ls_sigma_min 1e-3
+  --ls_k 10 --ls_mode row --ls_sigma_min 1e-3 \
+  --ls_alpha 1.5
+```
+
+快速扫参（降低训练时评估开销）可把评估频率调低，并按需跳过 val 聚类评估：
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --feat_path output/feat_style.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_style_sweep_fast \
+  --epochs 50 --batch_size 64 \
+  --feat_sim local_scale \
+  --ls_k 10 --ls_mode row --ls_sigma_min 1e-3 --ls_alpha 1.5 \
+  --eval_every 10 \
+  --skip_val_clustering
 ```
 
 ### 3) 导出全量 embedding

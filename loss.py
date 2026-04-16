@@ -80,6 +80,7 @@ class SoftContrastiveLoss(nn.Module):
         ls_k: int = 10,
         ls_mode: str = "row",
         ls_sigma_min: float = 1e-3,
+        ls_alpha: float = 1.0,
         eps: float = 1e-8,
         debug_sim: bool = False,
         debug_topk: int = 10,
@@ -94,6 +95,7 @@ class SoftContrastiveLoss(nn.Module):
         self.ls_k = ls_k
         self.ls_mode = ls_mode
         self.ls_sigma_min = ls_sigma_min
+        self.ls_alpha = ls_alpha
         self.eps = eps
         self.debug_sim = debug_sim
         self.debug_topk = debug_topk
@@ -113,6 +115,8 @@ class SoftContrastiveLoss(nn.Module):
             raise ValueError(f"Unsupported ls_mode: {self.ls_mode}")
         if self.ls_k < 1:
             raise ValueError(f"ls_k must be >= 1, got {self.ls_k}")
+        if self.ls_alpha <= 0:
+            raise ValueError(f"ls_alpha must be > 0, got {self.ls_alpha}")
 
         # 1) Normalize embedding
         z = F.normalize(z, dim=1)
@@ -179,16 +183,17 @@ class SoftContrastiveLoss(nn.Module):
                 sigma[i] = torch.clamp(sigma_i.detach(), min=self.ls_sigma_min)
 
             if self.ls_mode == "row":
-                logits_feat = -dist_feat / sigma[:, None]
+                logits_feat = -(dist_feat / sigma[:, None]) * self.ls_alpha
             else:
                 # Symmetric self-tuning kernel where dist_feat(i,j)=d(i,j):
                 # exp(-dist_feat(i,j)^2 / (sigma_i * sigma_j)).
                 denom = sigma[:, None] * sigma[None, :] + self.eps
-                logits_feat = -(dist_feat.pow(2)) / denom
+                logits_feat = -((dist_feat.pow(2)) / denom) * self.ls_alpha
 
             tau_stats = {
                 "sigma_mean": float(sigma.mean().detach().item()),
                 "sigma_median": float(sigma.median().detach().item()),
+                "ls_alpha": float(self.ls_alpha),
             }
 
         logits_feat = logits_feat.masked_fill(~finite_mask, float("-inf"))
