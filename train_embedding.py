@@ -71,6 +71,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ls_k", type=int, default=10, help="k-th neighbor distance used as local scaling sigma")
     parser.add_argument("--ls_mode", type=str, choices=["row", "sym"], default="row", help="Local scaling mode")
     parser.add_argument("--ls_sigma_min", type=float, default=1e-3, help="Lower bound for local scaling sigma")
+    parser.add_argument("--ls_alpha", type=float, default=1.0, help="Sharpening coefficient for local_scale logits")
     parser.add_argument("--debug_sim_feat", action="store_true", help="Print first-row sim_feat values once for sanity check")
     parser.add_argument("--debug_sim_topk", type=int, default=10, help="How many sim_feat entries to print for debug")
 
@@ -81,6 +82,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--eval_every", type=int, default=2)
     parser.add_argument("--n_clusters", type=int, default=3)
+    parser.add_argument(
+        "--skip_val_clustering",
+        action="store_true",
+        help="Skip val KMeans clustering metrics and silhouette-based best checkpoint selection",
+    )
 
     parser.add_argument("--device", type=str, default=None)
     return parser.parse_args()
@@ -186,6 +192,7 @@ def main() -> None:
         ls_k=args.ls_k,
         ls_mode=args.ls_mode,
         ls_sigma_min=args.ls_sigma_min,
+        ls_alpha=args.ls_alpha,
         debug_sim=args.debug_sim_feat,
         debug_topk=args.debug_sim_topk,
     )
@@ -241,35 +248,53 @@ def main() -> None:
             epoch_msg += f" | sigma_mean={avg_stats['sigma_mean']:.4f}"
         if "sigma_median" in avg_stats:
             epoch_msg += f" | sigma_median={avg_stats['sigma_median']:.4f}"
+        if "ls_alpha" in avg_stats:
+            epoch_msg += f" | ls_alpha={avg_stats['ls_alpha']:.3f}"
         print(epoch_msg)
 
         if epoch % args.eval_every == 0:
-            emb_val = encode_subset(model, val_loader, device)
-            metrics_val = clustering_metrics(emb_val, args.n_clusters)
-            print(
-                "Val metrics | "
-                f"sil={metrics_val['sil']:.4f} "
-                f"ch={metrics_val['ch']:.2f} "
-                f"db={metrics_val['db']:.4f}"
-            )
-
-            if not np.isnan(metrics_val["sil"]) and metrics_val["sil"] > best_sil:
-                best_sil = metrics_val["sil"]
-                torch.save(
-                    {
-                        "epoch": epoch,
-                        "model_state_dict": model.state_dict(),
-                        "optimizer_state_dict": optimizer.state_dict(),
-                        "best_val_silhouette": best_sil,
-                        "args": vars(args),
-                    },
-                    best_ckpt,
+            if args.skip_val_clustering:
+                print("Val metrics skipped (--skip_val_clustering).")
+            else:
+                emb_val = encode_subset(model, val_loader, device)
+                metrics_val = clustering_metrics(emb_val, args.n_clusters)
+                print(
+                    "Val metrics | "
+                    f"sil={metrics_val['sil']:.4f} "
+                    f"ch={metrics_val['ch']:.2f} "
+                    f"db={metrics_val['db']:.4f}"
                 )
-                print(f"Saved best checkpoint: {best_ckpt} (sil={best_sil:.4f})")
+
+                if not np.isnan(metrics_val["sil"]) and metrics_val["sil"] > best_sil:
+                    best_sil = metrics_val["sil"]
+                    torch.save(
+                        {
+                            "epoch": epoch,
+                            "model_state_dict": model.state_dict(),
+                            "optimizer_state_dict": optimizer.state_dict(),
+                            "best_val_silhouette": best_sil,
+                            "args": vars(args),
+                        },
+                        best_ckpt,
+                    )
+                    print(f"Saved best checkpoint: {best_ckpt} (sil={best_sil:.4f})")
 
     final_ckpt = out_dir / "model_final.pth"
     torch.save(model.state_dict(), final_ckpt)
     print(f"Saved final model: {final_ckpt}")
+    if args.skip_val_clustering:
+        torch.save(
+            {
+                "epoch": args.epochs,
+                "model_state_dict": model.state_dict(),
+                "optimizer_state_dict": optimizer.state_dict(),
+                "best_val_silhouette": -1.0,
+                "val_clustering_skipped": True,
+                "args": vars(args),
+            },
+            best_ckpt,
+        )
+        print(f"Saved best checkpoint fallback (skip val clustering): {best_ckpt}")
 
     emb_test = encode_subset(model, test_loader, device)
     metrics_test = clustering_metrics(emb_test, args.n_clusters)
