@@ -116,7 +116,7 @@ class SoftContrastiveLoss(nn.Module):
         if self.ls_k < 1:
             raise ValueError(f"ls_k must be >= 1, got {self.ls_k}")
         if self.ls_alpha <= 0:
-            raise ValueError(f"ls_alpha must be > 0, got {self.ls_alpha}")
+            raise ValueError(f"ls_alpha must be > 0 to keep sharpening valid, got {self.ls_alpha}")
 
         # 1) Normalize embedding
         z = F.normalize(z, dim=1)

@@ -289,6 +289,7 @@ def main() -> None:
                 "model_state_dict": model.state_dict(),
                 "optimizer_state_dict": optimizer.state_dict(),
                 "best_val_silhouette": -1.0,
+                "val_clustering_skipped": True,
                 "args": vars(args),
             },
             best_ckpt,
