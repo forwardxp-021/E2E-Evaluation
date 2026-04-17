@@ -16,7 +16,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.neighbors import NearestNeighbors
 
 from dataset import _compute_cond
-from loss import build_cond_mask
+from loss import build_cond_mask, build_cond_knn_mask
 
 
 if not hasattr(cbook, "_Stack") and hasattr(cbook, "Stack"):
@@ -70,7 +70,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--cond_mode",
         type=str,
-        choices=["off", "hard_box"],
+        choices=["off", "hard_box", "knn"],
         default="off",
         help="Condition gating mode for neighbor consistency evaluation",
     )
@@ -88,6 +88,14 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=8,
         help="Minimum condition candidates for within-condition neighbor evaluation",
+    )
+    parser.add_argument("--cond_k", type=int, default=24, help="Number of nearest compatible samples per anchor for cond_mode=knn")
+    parser.add_argument(
+        "--cond_scale_mode",
+        type=str,
+        choices=["mad", "iqr", "std"],
+        default="mad",
+        help="Robust scale estimator for cond_mode=knn distance normalization",
     )
 
     parser.add_argument("--k_neighbors", type=int, default=10)
@@ -378,17 +386,24 @@ def evaluate_neighbor_consistency_cond(
     clip_quantile: float,
     nan_policy: str,
     feature_names: list[str] | None,
+    cond_mode: str,
     cond_speed_tol: float,
     cond_dist_tol: float,
     cond_vrel_tol: float,
     cf_bucket_edges: list[float],
     min_cond_candidates: int,
+    cond_k: int = 24,
+    cond_scale_mode: str = "mad",
 ) -> pd.DataFrame:
     """Neighbor consistency evaluated within condition-compatible sets only.
 
     For each anchor, nearest neighbors are found globally in embedding space but
     the random baseline is drawn only from condition-compatible candidates.
     This makes the ratio meaningful within comparable operating conditions.
+
+    Supports cond_mode in {"hard_box", "knn"}:
+      - hard_box: uses absolute-tolerance box filter; falls back when < min_cond_candidates.
+      - knn: uses robust-scale kNN mask; fallback only for zero-compatible anchors.
     """
     import torch
 
@@ -397,15 +412,27 @@ def evaluate_neighbor_consistency_cond(
 
     # Build full condition mask [N, N].
     cond_t = torch.as_tensor(cond_eval, dtype=torch.float32)
-    cond_gate = build_cond_mask(
-        cond_t,
-        speed_tol=cond_speed_tol,
-        dist_tol=cond_dist_tol,
-        vrel_tol=cond_vrel_tol,
-        cf_bucket_edges=cf_bucket_edges,
-    )
-    eye = torch.eye(n, dtype=torch.bool)
-    cond_gate = (cond_gate & ~eye).numpy()  # [N, N] bool, exclude self
+
+    if cond_mode == "knn":
+        cond_gate_tensor, fallback_rows_global = build_cond_knn_mask(
+            cond_t,
+            cond_k=cond_k,
+            cond_scale_mode=cond_scale_mode,
+            cf_bucket_edges=cf_bucket_edges,
+        )
+        cond_gate = cond_gate_tensor.numpy()  # [N, N] bool, self excluded
+        fallback_arr_global: np.ndarray | None = fallback_rows_global.numpy()
+    else:  # hard_box
+        cond_gate_raw = build_cond_mask(
+            cond_t,
+            speed_tol=cond_speed_tol,
+            dist_tol=cond_dist_tol,
+            vrel_tol=cond_vrel_tol,
+            cf_bucket_edges=cf_bucket_edges,
+        )
+        eye = torch.eye(n, dtype=torch.bool)
+        cond_gate = (cond_gate_raw & ~eye).numpy()  # [N, N] bool, exclude self
+        fallback_arr_global = None  # tracked per-feature loop for hard_box
 
     rows = []
     for f_idx in range(feat_test.shape[1]):
@@ -414,10 +441,12 @@ def evaluate_neighbor_consistency_cond(
             emb_sub = emb_test[mask]
             f = feat_test[mask, f_idx]
             cond_sub = cond_gate[np.ix_(mask, mask)]
+            fallback_sub = fallback_arr_global[mask] if fallback_arr_global is not None else None
         else:
             emb_sub = emb_test
             f = feat_test[:, f_idx]
             cond_sub = cond_gate
+            fallback_sub = fallback_arr_global
 
         n_sub = int(len(f))
         if n_sub <= k + 1:
@@ -460,19 +489,37 @@ def evaluate_neighbor_consistency_cond(
         # Random baseline: draw from condition-compatible candidates only.
         rand_dists = np.zeros(n_sub, dtype=np.float64)
         cand_counts = np.zeros(n_sub, dtype=np.int64)
-        fallback_count = 0
         all_idx = np.arange(n_sub)
-        for i in range(n_sub):
-            compat = np.where(cond_sub[i])[0]  # condition-compatible, excluding self
-            cand_counts[i] = len(compat)
-            if len(compat) >= min_cond_candidates:
+
+        if cond_mode == "knn":
+            # For knn mode, cond_sub already encodes the correct candidate set
+            # (cond_k nearest, or all compatible if fewer, or all non-self for fallback rows).
+            # frac_fallback comes from fallback_sub (zero-compatible anchors).
+            fallback_count = int(fallback_sub.sum()) if fallback_sub is not None else 0
+            for i in range(n_sub):
+                compat = np.where(cond_sub[i])[0]
+                cand_counts[i] = len(compat)
+                # build_cond_knn_mask guarantees >=1 candidate per anchor (last-resort
+                # fallback expands to all non-self for zero-compatible anchors), so
+                # len(compat) >= 1 is always true here for knn mode.
+                if len(compat) == 0:
+                    # Defensive: should not happen; fall back to all non-self.
+                    compat = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
                 ridx = rng.choice(compat, size=min(k, len(compat)), replace=False)
-            else:
-                # Fallback: use all non-self samples.
-                fallback_count += 1
-                candidates = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
-                ridx = rng.choice(candidates, size=k, replace=False)
-            rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
+                rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
+        else:  # hard_box
+            fallback_count = 0
+            for i in range(n_sub):
+                compat = np.where(cond_sub[i])[0]
+                cand_counts[i] = len(compat)
+                if len(compat) >= min_cond_candidates:
+                    ridx = rng.choice(compat, size=min(k, len(compat)), replace=False)
+                else:
+                    # Fallback: use all non-self samples.
+                    fallback_count += 1
+                    candidates = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
+                    ridx = rng.choice(candidates, size=k, replace=False)
+                rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
 
         denom = np.maximum(rand_dists, denominator_eps)
         ratio = embed_dists / denom
@@ -783,11 +830,14 @@ def main() -> None:
                 clip_quantile=args.neighbor_clip_quantile,
                 nan_policy=args.nan_policy,
                 feature_names=feature_names,
+                cond_mode=args.cond_mode,
                 cond_speed_tol=args.cond_speed_tol,
                 cond_dist_tol=args.cond_dist_tol,
                 cond_vrel_tol=args.cond_vrel_tol,
                 cf_bucket_edges=cf_bucket_edges,
                 min_cond_candidates=args.min_cond_candidates,
+                cond_k=args.cond_k,
+                cond_scale_mode=args.cond_scale_mode,
             )
             neigh_cond_path = analysis_dir / "neighbor_results_cond.csv"
             neigh_cond_df.to_csv(neigh_cond_path, index=False)

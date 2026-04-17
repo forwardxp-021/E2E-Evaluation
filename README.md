@@ -106,12 +106,37 @@ python build_dataset.py \
 
 这导致评估中 `neighbor_consistency ratio_mean > 1`（embedding 邻居的特征差异反而比随机邻居更大），以及线性探针 Spearman 偏弱。
 
-### 解决方案：工况门控 + 混合 SupCon 损失
-1. **工况向量**：从 `traj.npy` 和 `front.npy` 计算每个样本的工况特征 `[speed_mean, dist_mean, vrel_mean, cf_valid_frac]`
-2. **硬盒门控**（`--cond_mode hard_box`）：只在工况相似的样本间计算特征距离和对比学习监督，消除不可比样本的干扰
-3. **混合损失**（`--loss_mode hybrid`）：`softkl`（软 KL 对齐）+ `supcon`（多正例 InfoNCE），前者保持全局软分布对齐，后者在工况内做强监督
+### 解决方案：工况门控（kNN 模式）
+- **工况向量**：从 `traj.npy` 和 `front.npy` 计算每个样本的工况特征 `[speed_mean, dist_mean, vrel_mean, cf_valid_frac]`
+- **kNN 门控**（`--cond_mode knn`，推荐）：对每个 anchor 选取工况距离最近的 `cond_k` 个样本（距离用鲁棒尺度 MAD/IQR/STD 归一化，无需手动调容差）。仅在候选数为 0 时触发最后兜底（回退全局）。
+- **硬盒门控**（`--cond_mode hard_box`，保留向后兼容）：基于绝对容差盒子过滤，候选数不足时退回全局。
 
-### 2) 训练（推荐：工况门控 + 混合 SupCon）
+### 2) 训练（推荐：kNN 工况门控 + 混合 SupCon）
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_cond_knn \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 0.2 \
+  --eval_every 10 --skip_val_clustering
+```
+
+训练日志中新增诊断指标：
+- `cond_cands`：每个 anchor 平均可用的工况兼容候选数（knn 模式下应接近 cond_k）
+- `cond_fallback`：触发最后兜底（候选数=0）的 anchor 比例（knn 模式下应接近 0）
+- `supcon`/`softkl`：hybrid 模式下两个分项的损失值
+
+### 2b) 旧版硬盒门控训练（向后兼容）
 
 ```bash
 python train_embedding.py \
@@ -132,12 +157,7 @@ python train_embedding.py \
   --eval_every 10 --skip_val_clustering
 ```
 
-训练日志中新增诊断指标：
-- `cond_cands`：每个 anchor 平均可用的工况兼容候选数
-- `cond_fallback`：因候选数不足而退回无门控行为的 anchor 比例
-- `supcon`/`softkl`：hybrid 模式下两个分项的损失值
-
-### 2b) 不使用工况门控的基础训练（向后兼容）
+### 2c) 不使用工况门控的基础训练（向后兼容）
 
 ```bash
 python train_embedding.py \
@@ -159,15 +179,15 @@ python train_embedding.py \
 python export_embeddings.py \
   --traj_path output/traj.npy \
   --split_path output/split.npy \
-  --checkpoint output/run_cond_hybrid/best_model.pth \
-  --output_path output/run_cond_hybrid/embeddings_all.npy
+  --checkpoint output/run_cond_knn/best_model.pth \
+  --output_path output/run_cond_knn/embeddings_all.npy
 ```
 
 ### 4) 评估（含工况感知邻域一致性）
 
 ```bash
 python evaluate_embedding.py \
-  --embeddings_path output/run_cond_hybrid/embeddings_all.npy \
+  --embeddings_path output/run_cond_knn/embeddings_all.npy \
   --feat_path output/feat_style.npy \
   --feat_raw_path output/feat_style_raw.npy \
   --split_path output/split.npy \
@@ -175,10 +195,9 @@ python evaluate_embedding.py \
   --front_path output/front.npy \
   --eval_split test \
   --feature_names_path output/feature_names_style.json \
-  --analysis_dir output/run_cond_hybrid/analysis_best \
-  --cond_mode hard_box \
-  --cond_speed_tol 2 --cond_dist_tol 5 --cond_vrel_tol 1 \
-  --cond_cf_bucket_edges "0.2,0.6" --min_cond_candidates 8 \
+  --analysis_dir output/run_cond_knn/analysis_best \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
   --plot_first_k 20 --k_neighbors 10 \
   --umap_neighbors 30 --umap_min_dist 0.1 \
   --seed 42 --kmeans_clusters 8

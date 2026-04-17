@@ -83,9 +83,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--cond_mode",
         type=str,
-        choices=["off", "hard_box"],
+        choices=["off", "hard_box", "knn"],
         default="off",
-        help="Condition gating mode: off (disabled) or hard_box (within-tolerance filtering)",
+        help="Condition gating mode: off (disabled), hard_box (within-tolerance filtering), or knn (robust kNN-based gating)",
     )
     parser.add_argument("--cond_speed_tol", type=float, default=2.0, help="Speed tolerance for condition gating (m/s)")
     parser.add_argument("--cond_dist_tol", type=float, default=5.0, help="Distance tolerance for condition gating (m)")
@@ -101,6 +101,14 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=8,
         help="Minimum number of condition-compatible candidates before falling back to ungated behavior",
+    )
+    parser.add_argument("--cond_k", type=int, default=24, help="Number of nearest compatible samples per anchor for cond_mode=knn")
+    parser.add_argument(
+        "--cond_scale_mode",
+        type=str,
+        choices=["mad", "iqr", "std"],
+        default="mad",
+        help="Robust scale estimator for cond_mode=knn distance normalization",
     )
 
     # Loss mode arguments.
@@ -267,6 +275,8 @@ def main() -> None:
         cond_vrel_tol=args.cond_vrel_tol,
         cond_cf_bucket_edges=cf_bucket_edges,
         min_cond_candidates=args.min_cond_candidates,
+        cond_k=args.cond_k,
+        cond_scale_mode=args.cond_scale_mode,
         loss_mode=args.loss_mode,
         pos_topk=args.pos_topk,
         w_supcon=args.w_supcon,
