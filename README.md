@@ -292,3 +292,120 @@ python export_embeddings.py \
 - `output/<run>/analysis_*/neighbor_results.csv`: 全局邻域一致性
 - `output/<run>/analysis_*/neighbor_results_cond.csv`: 工况内邻域一致性（条件感知评估）
 - `output/<run>/analysis_*`: 评估结果图表与 CSV
+
+---
+
+## 合成策略 Rollout：在无真实 E2E 推理代码时验证 Embedding 区分能力
+
+### 背景与目标
+
+在没有多个 E2E 模型 rollout 数据时，可以利用已有的 Waymo log-replay 窗口生成若干条规则控制策略（conservative / aggressive / lateral_stable）的合成轨迹，用于验证 style embedding 是否能够区分不同策略的驾驶行为。
+
+### 关键文件
+
+| 脚本 | 功能 |
+|------|------|
+| `generate_policy_rollouts.py` | 从已有 traj/front 窗口为每个策略生成模拟自车轨迹 |
+| `compute_style_features.py` | 对已有 traj/front npy 计算 20D style 特征（不依赖 TFRecord） |
+| `evaluate_policy_separation.py` | 用 embedding 做策略分类 + Recall@K 检索评估 |
+
+### 三种合成策略说明
+
+| 策略 | THW 目标 | 最大加速度 | Jerk 限制 | 横向稳定性 |
+|------|----------|------------|-----------|------------|
+| `conservative` | 2.5 s | ±1.5/3.0 m/s² | 0.5 m/s²/step | 强（yaw_rate_clip=0.05 rad/step） |
+| `aggressive` | 1.0 s | ±3.5/5.0 m/s² | 2.0 m/s²/step | 弱（yaw_rate_clip=0.20 rad/step） |
+| `lateral_stable` | 1.8 s | ±2.0/3.5 m/s² | 0.8 m/s²/step | 极强（yaw_rate_clip=0.03 rad/step） |
+
+### 完整工作流（复制可用命令）
+
+#### a) 生成合成策略 Rollout
+
+```bash
+python generate_policy_rollouts.py \
+  --src_traj_path  output/traj.npy \
+  --src_front_path output/front.npy \
+  --src_split_path output/split.npy \
+  --src_meta_path  output/meta.npy \
+  --output_dir     output_policy_rollouts \
+  --dt 0.1 \
+  --policies "conservative,aggressive,lateral_stable" \
+  --seed 42
+```
+
+输出文件：
+- `output_policy_rollouts/traj.npy` — 模拟自车轨迹（N_policies × N_src 个窗口）
+- `output_policy_rollouts/front.npy` — 原始前车轨迹（直接复制）
+- `output_policy_rollouts/policy_id.npy` — 策略标签（int）
+- `output_policy_rollouts/scenario_id.npy` — 场景 ID（来自 meta 或自动生成）
+- `output_policy_rollouts/source_index.npy` — 回溯原始窗口索引
+- `output_policy_rollouts/split.npy` — train/val/test 分割
+- `output_policy_rollouts/policy_names.json` — 策略 id→名称映射
+
+#### b) 计算 Style 特征
+
+```bash
+python compute_style_features.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --output_dir output_policy_rollouts
+```
+
+#### c) 训练 Embedding
+
+```bash
+python train_embedding.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --feat_path  output_policy_rollouts/feat_style.npy \
+  --feat_raw_path output_policy_rollouts/feat_style_raw.npy \
+  --split_path output_policy_rollouts/split.npy \
+  --output_dir output_policy_rollouts/run_relkin_knn \
+  --input_mode rel_kinematics --dt 0.1 \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 1.0 \
+  --feat_clip_value 3.0 \
+  --eval_every 10 --skip_val_clustering
+```
+
+#### d) 导出全量 Embedding
+
+```bash
+python export_embeddings.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --split_path output_policy_rollouts/split.npy \
+  --checkpoint output_policy_rollouts/run_relkin_knn/best_model.pth \
+  --output_path output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --input_mode rel_kinematics --dt 0.1
+```
+
+#### e) 评估策略区分能力
+
+```bash
+python evaluate_policy_separation.py \
+  --embeddings_path output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --policy_id_path  output_policy_rollouts/policy_id.npy \
+  --split_path      output_policy_rollouts/split.npy \
+  --policy_names_path output_policy_rollouts/policy_names.json \
+  --eval_split test \
+  --k_neighbors 10 \
+  --analysis_dir output_policy_rollouts/run_relkin_knn/analysis_policy \
+  --seed 42
+```
+
+输出：
+- `policy_separation_summary.json` — 分类准确率、Macro-F1、Recall@K（汇总）
+- `policy_retrieval.csv` — 每个测试样本的 Recall@K
+
+### 注意事项
+
+- 合成轨迹基于简单纵向控制器 + yaw-rate 限幅，**不追踪车道**，仅保持与原始轨迹方向大致对齐。
+- `front.npy` 中的前车轨迹保持不变（外生 log-replay，不响应 ego）。
+- 下游 `train_embedding.py` / `export_embeddings.py` / `evaluate_embedding.py` 均无需修改，直接指向新 output_dir 即可。
+- 若 `--src_split_path` 未提供，脚本会按 scenario_id MD5 哈希自动分配 train/val/test（与 `build_dataset.py` 一致）。
