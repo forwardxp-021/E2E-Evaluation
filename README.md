@@ -1,462 +1,294 @@
-# E2E-Evaluation
+# E2E-Evaluation (20260413_features_new_design)
 
-E2E Evaluation research in automated driving — learning driving-style representations
-from trajectory data (Waymo Open Dataset).
+基于 Waymo 轨迹数据学习驾驶风格 embedding 的实验工程。
 
----
+## 项目目标
 
-## 项目概述
+从自车与前车的对齐轨迹中构建 style feature，用 feature-guided soft contrastive 训练轨迹编码器，最后通过 UMAP、线性探针和邻域一致性验证 embedding 是否编码了行为风格信息。
 
-本项目从 Waymo Open Dataset 轨迹数据中学习**驾驶风格表示（embedding）**，判断是否编码了激进/保守/平滑/跟车等驾驶风格信息。
+## 近期代码更改总结 (2026-04)
 
-核心流程：
-1. **数据构建** — 从原始 TFRecord 提取自车+前车对齐轨迹，计算 20 维驾驶风格特征，按 MD5 哈希确定性地划分 train/val/test
-2. **模型训练** — GRU 轨迹编码器 + 特征引导软对比损失，输出 L2 归一化 embedding
-3. **导出 embedding** — 对全量数据运行推理，保存为 `embeddings_all.npy`
-4. **评估分析** — UMAP 可视化、线性探针、邻域一致性分析
+### 1) 数据构建重构为滑窗 + 新 style 特征
+- `build_dataset.py` 新增滑窗参数：`--window_len`、`--stride`。
+- 每个 scenario 按窗口输出样本，不再只输出整段场景级样本。
+- 新增 20 维 style 特征计算函数 `compute_style_features(...)`，并写出：
+  - `output/feat_style_raw.npy`：原始特征（可能含 NaN）
+  - `output/feat_style.npy`：NaN 填 0 后全局标准化特征（训练默认建议使用）
+  - `output/feature_names_style.json`：特征名映射
+- 保留兼容开关 `--save_legacy_features`，需要时可额外输出旧特征到 `feat_legacy.npy` 和兼容文件 `feat.npy`。
 
----
+### 2) TFRecord 解析健壮性增强
+- `build_dataset.py` 增加 `parse_scenario_from_record(...)`：
+  - 支持“直接 Scenario proto”
+  - 支持“tf.train.Example 中 bytes 特征包裹 Scenario”
+- 增加 `_scenario_looks_valid(...)` 做解析后有效性检查，降低脏样本导致的崩溃风险。
 
-## 快速开始
+### 3) 训练数据读取兼容修复（已解决真实报错）
+- `dataset.py` 中 `TrajFeatureDataset` 对 `traj.npy` 进行统一 `float32` 转换。
+- 修复问题：`numpy.object_` 轨迹样本在 `collate_variable_traj` 中无法转 tensor，报错
+  - `TypeError: can't convert np.ndarray of type numpy.object_`
+- 修复后已通过训练冒烟验证。
+
+### 4) 导出脚本修复与增强（已解决真实报错）
+- `export_embeddings.py` 删除了误粘贴的重复代码块，修复
+  - `SyntaxError: 'return' outside function`
+- `TrajOnlyDataset` 同步增加轨迹 `float32` 转换，避免导出阶段再次触发 object dtype 问题。
+- 保留 `--checkpoint_path` 作为 `--checkpoint` 的兼容别名，并支持 `--split_path` 行数一致性校验。
+
+### 5) 评估流程对齐新特征
+- 推荐在评估中显式指定：
+  - `--feat_path output/feat_style.npy`
+  - `--feature_names_path output/feature_names_style.json`
+- 已完成一轮 `train -> export -> evaluate` 全链路跑通。
+
+## 新 style 特征 (20D)
+
+顺序与 `feature_names_style.json` 一致：
+
+1. `acc_abs_p95`
+2. `acc_abs_p99`
+3. `acc_rms`
+4. `jerk_abs_p95`
+5. `jerk_abs_p99`
+6. `jerk_rms`
+7. `yaw_rate_rms`
+8. `yaw_rate_abs_p95`
+9. `heading_change_total`
+10. `speed_control_oscillation`
+11. `cf_valid_frac`
+12. `thw_p50`
+13. `thw_p20`
+14. `thw_iqr`
+15. `v_rel_p50`
+16. `closing_gain_kv`
+17. `gap_gain_kd`
+18. `desired_gap_d0`
+19. `acc_sync_lag`
+20. `acc_sync_corr`
+
+## 快速使用
+
+### 1) 构建数据
 
 ```bash
-pip install -r requirements-cpu.txt
-
-# 1. 构建数据集
 python build_dataset.py \
-    --tfrecord_glob "/mnt/d/WMdata/*.tfrecord-*" \
-    --output_dir output \
-    --min_ego_speed 5.5 \
-    --train_ratio 0.8 --val_ratio 0.1 --test_ratio 0.1
+  --tfrecord_glob "/mnt/d/WMdata/*.tfrecord-*" \
+  --output_dir output \
+  --min_ego_speed 5.5 \
+  --window_len 80 \
+  --stride 20 \
+  --min_points_cf 20 \
+  --kd_min 1e-3 \
+  --d0_min_gap 1.0 \
+  --d0_max_gap 200.0 \
+  --d0_log1p \
+  --train_ratio 0.8 --val_ratio 0.1 --test_ratio 0.1
+```
 
-# 2. 训练 embedding 模型
+### desired_gap_d0 清洗说明（病态长尾防护）
+
+- `desired_gap_d0` 来自拟合关系 `a_e ≈ kv*v_rel + kd*d + b` 的零加速度间距 `d0=-b/kd`。当 `kd` 过小或拟合病态时，`d0` 会数值爆炸并污染 feature 距离，导致 soft target 过平。
+- 数据构建中已增加两层防护：
+  - 拟合阶段：`abs(kd) < kd_min` 时不计算 `d0`（置为 NaN）。
+  - 特征阶段：对窗口级 `d0` 做 sanitize（`<=d0_min_gap` 置 NaN、clip 到 `[d0_min_gap,d0_max_gap]`、可选 `log1p` 压缩长尾）。
+- 相关参数：
+  - `--kd_min`（默认 `1e-3`）
+  - `--d0_min_gap`（默认 `1.0`）
+  - `--d0_max_gap`（默认 `200.0`）
+  - `--d0_log1p / --no-d0_log1p`（默认开启）
+
+## 为什么需要工况门控（条件感知训练）
+
+### 问题
+直接在全体样本间做特征距离对比存在一个根本缺陷：**不同工况（速度/跟车距离/相对速度/跟车覆盖率）下的驾驶行为是不可比的**。例如：
+- 高速行驶时的急刹与低速跟车时的轻刹，加速度指标天然不同，但不能据此判断它们风格相似或不同。
+- 非跟车段（cf_valid_frac ≈ 0）没有 thw、kv、kd 等跟车特征，与跟车段的特征距离毫无意义（cf 维度都填 0，错误地认为"完全一样"）。
+
+这导致评估中 `neighbor_consistency ratio_mean > 1`（embedding 邻居的特征差异反而比随机邻居更大），以及线性探针 Spearman 偏弱。
+
+### 解决方案：工况门控（kNN 模式）
+- **工况向量**：从 `traj.npy` 和 `front.npy` 计算每个样本的工况特征 `[speed_mean, dist_mean, vrel_mean, cf_valid_frac]`
+- **kNN 门控**（`--cond_mode knn`，推荐）：对每个 anchor 选取工况距离最近的 `cond_k` 个样本（距离用鲁棒尺度 MAD/IQR/STD 归一化，无需手动调容差）。仅在候选数为 0 时触发最后兜底（回退全局）。
+- **硬盒门控**（`--cond_mode hard_box`，保留向后兼容）：基于绝对容差盒子过滤，候选数不足时退回全局。
+
+### 2) 训练（推荐：kNN 工况门控 + 混合 SupCon）
+
+```bash
 python train_embedding.py \
-    --traj_path output/traj.npy \
-    --feat_path output/feat.npy \
-    --split_path output/split.npy \
-    --output_dir output \
-    --epochs 50
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_cond_knn \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 0.2 \
+  --feat_clip_value 3.0 \
+  --eval_every 10 --skip_val_clustering
+```
 
-# 3. 导出全量 embedding
+> **说明**：`--feat_clip_value 3.0` 在特征归一化之后、距离计算之前，将标准化特征值裁剪到 [-3, 3]，可有效抑制 jerk/yaw 等长尾维度对距离计算的影响（推荐值 3.0；默认 0.0 表示不裁剪，与旧行为完全兼容）。
+
+训练日志中新增诊断指标：
+- `cond_cands`：每个 anchor 平均可用的工况兼容候选数（knn 模式下应接近 cond_k）
+- `cond_fallback`：触发最后兜底（候选数=0）的 anchor 比例（knn 模式下应接近 0）
+- `supcon`/`softkl`：hybrid 模式下两个分项的损失值
+
+### 2b) 旧版硬盒门控训练（向后兼容）
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_cond_hybrid \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode hard_box \
+  --cond_speed_tol 2 --cond_dist_tol 5 --cond_vrel_tol 1 \
+  --cond_cf_bucket_edges "0.2,0.6" --min_cond_candidates 8 \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 0.2 \
+  --eval_every 10 --skip_val_clustering
+```
+
+### 2c) 不使用工况门控的基础训练（向后兼容）
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_style_masked_ls_k1_a3 \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --eval_every 10
+```
+
+### 3) 导出全量 embedding
+
+```bash
 python export_embeddings.py \
-    --traj_path output/traj.npy \
-    --checkpoint output/best_model.pth \
-    --output_path output/embeddings_all.npy
+  --traj_path output/traj.npy \
+  --split_path output/split.npy \
+  --checkpoint output/run_cond_knn/best_model.pth \
+  --output_path output/run_cond_knn/embeddings_all.npy
+```
 
-# 4. 评估分析
+### 4) 评估（含工况感知邻域一致性）
+
+```bash
 python evaluate_embedding.py \
-    --embeddings_path output/embeddings_all.npy \
-    --feat_path output/feat.npy \
-    --split_path output/split.npy \
-    --analysis_dir output/analysis
+  --embeddings_path output/run_cond_knn/embeddings_all.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --eval_split test \
+  --feature_names_path output/feature_names_style.json \
+  --analysis_dir output/run_cond_knn/analysis_best \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --plot_first_k 20 --k_neighbors 10 \
+  --umap_neighbors 30 --umap_min_dist 0.1 \
+  --seed 42 --kmeans_clusters 8
 ```
 
----
+工况感知评估额外生成 `neighbor_results_cond.csv`：
+- `ratio_mean`：在工况兼容候选集内的随机基线比较（更公平）
+- `mean_cond_candidates`：每个 anchor 在工况内的平均候选数
+- `frac_fallback`：因候选数不足而退回全局随机基线的比例
 
-## 仓库结构
+## rel_kinematics 输入模式
 
-```
-build_dataset.py       # 从 Waymo TFRecord 构建 traj/feat/meta/split
-dataset.py             # TrajFeatureDataset + KNN pair 预计算
-model.py               # TrajectoryEncoder (GRU + MLP head)
-loss.py                # SoftContrastiveLoss + multi_positive_infonce
-train_embedding.py     # 训练主脚本
-export_embeddings.py   # 导出全量 embedding (.npy)
-evaluate_embedding.py  # UMAP 可视化 + 线性探针 + 邻域一致性分析
-data/
-  .gitkeep             # 数据目录占位（数据不提交）
-output/                # 生成的模型、embedding 及分析结果（gitignored）
-```
+### 动机
 
----
+原始 `raw_xyv` 模式直接将 ego 轨迹的 `[x, y, vx, vy]` 送入 GRU，缺少显式的相对运动信息。对于 jerk、yaw_rate、thw 等风格特征，它们本质上是**差分**和**相对量**，如果在输入层就提供这些归纳偏置，模型更容易学习出可分离的风格维度。
 
-## 数据与特征
+`rel_kinematics` 模式从对齐的 ego/front 窗口计算 12 维逐帧特征后再送入 GRU，可改善 jerk/yaw/thw 等维度的邻域一致性。
 
-### `build_dataset.py` 输出
+### 12 维特征说明（dt = 0.1 s，Waymo 10 Hz）
 
-| 文件 | 说明 |
-|---|---|
-| `output/traj.npy` | 对象数组，每行为 `(T, 4)` 轨迹片段 `[x, y, vx, vy]` |
-| `output/feat.npy` | `(N, 20)` float32，标准化后的驾驶风格特征 |
-| `output/meta.npy` | `(N, 3)` 对象数组 `(scenario_id, ego_idx, front_id)` |
-| `output/split.npy` | `(N,)` 字符串数组 `"train"/"val"/"test"`（MD5 确定性划分） |
-| `output/summary.txt` | 数据集统计摘要 |
-| `output/summary.csv` | 同上（CSV 格式） |
+| 索引 | 名称 | 公式 |
+|------|------|------|
+| 0 | `ego_v` | √(vx²+vy²) |
+| 1 | `front_v` | √(front_vx²+front_vy²) |
+| 2 | `v_rel` | ego_v − front_v |
+| 3 | `dx` | front_x − ego_x |
+| 4 | `dy` | front_y − ego_y |
+| 5 | `dist` | √(dx²+dy²) |
+| 6 | `closing_rate` | diff(dist) / dt（t=0 置 0） |
+| 7 | `ego_a` | diff(ego_v) / dt（t=0 置 0） |
+| 8 | `front_a` | diff(front_v) / dt（t=0 置 0） |
+| 9 | `ego_heading` | atan2(vy, vx) |
+| 10 | `ego_yaw_rate` | wrap(diff(ego_heading)) / dt（t=0 置 0） |
+| 11 | `thw` | dist / max(ego_v, ε) |
 
-### 特征维度（20D）
+填充帧被置零（用 `lengths` mask）。角度差通过 `wrap_angle` 归约到 `[-π, π]`。
 
-| 维度 | 特征名 | 含义 |
-|---|---|---|
-| 0 | `rel_speed_mean` | 相对速度均值（激进程度） |
-| 1 | `rel_speed_std` | 相对速度标准差 |
-| 2 | `rel_speed_pos_frac` | 相对速度为正的比例 |
-| 3 | `thw_mean` | 时距均值（跟车习惯） |
-| 4 | `thw_std` | 时距标准差 |
-| 5 | `thw_min` | 时距最小值 |
-| 6 | `jerk_mean` | Jerk 均值 |
-| 7 | `jerk_std` | Jerk 标准差 |
-| 8 | `jerk_p95` | Jerk 95 分位（平滑性） |
-| 9 | `rel_acc_mean` | 相对加速度均值 |
-| 10 | `rel_acc_std` | 相对加速度标准差 |
-| 11 | `reaction_time` | 制动反应时间（帧数） |
-| 12 | `yaw_rate_std` | 横摆角速率标准差 |
-| 13 | `lane_change_count` | 变道次数 |
-| 14 | `lane_change_duration` | 变道时长比例 |
-| 15 | `speed_norm_mean` | 归一化速度均值（速度偏好） |
-| 16 | `speed_norm_std` | 归一化速度标准差 |
-| 17 | `ego_speed_std` | 自车速度标准差（稳定性） |
-| 18 | `ego_acc_std` | 自车加速度标准差 |
-| 19 | `ego_speed_mean` | 自车速度均值 |
-
----
-
-## 模型架构
-
-```
-TrajectoryEncoder
-  GRU(input=4, hidden=128, batch_first=True)
-  → 最后时刻隐状态 h[-1]
-  → Linear(128, 128) → ReLU → Linear(128, 64)
-  → L2 normalize → embedding (64D)
-```
-
-训练使用 `SoftContrastiveLoss`（特征引导软对比损失）：批内所有样本对根据特征空间距离计算软标签权重，不依赖硬正负对挖掘。
-
----
-
-## 评估指标
-
-`evaluate_embedding.py` 产出以下分析结果（保存在 `output/analysis/`）：
-
-| 分析 | 说明 |
-|---|---|
-| UMAP 可视化 | 按各维度特征着色的 2D 散点图 |
-| 线性探针（Ridge Regression）| 各特征的 R² 和 Spearman 相关系数 |
-| 邻域一致性 | embedding 邻域 vs. 特征邻域 vs. 随机基线的 overlap 比较 |
-
-# Feature-Guided Behavior Embedding (Soft Contrastive)
-
-This project trains a trajectory-only encoder with feature-guided soft contrastive supervision.
-
-## 1) Build Dataset
+### 示例训练命令（rel_kinematics）
 
 ```bash
-conda run -n waymo_dev python build_dataset.py \
-	--output_dir output
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_relkin_knn \
+  --input_mode rel_kinematics --dt 0.1 \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 1.0 \
+  --feat_clip_value 3.0 \
+  --eval_every 10 --skip_val_clustering
 ```
 
-Main outputs:
+启动时会打印：
+```
+Input mode: rel_kinematics (12-dim) | dt=0.1s | front loaded: <N> windows
+```
 
-- `output/traj.npy`
-- `output/feat.npy`
-- `output/split.npy`
-
-## 2) Train
+### 示例导出命令（rel_kinematics）
 
 ```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output" \
-	--epochs 50 \
-	--batch_size 64 \
-	--temperature 0.1 \
-	--feat_norm none \
-	--tau_mode anchor_median \
-	--gate_topm 0
+python export_embeddings.py \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --split_path output/split.npy \
+  --checkpoint output/run_relkin_knn/best_model.pth \
+  --output_path output/run_relkin_knn/embeddings_all.npy \
+  --input_mode rel_kinematics --dt 0.1
 ```
 
-Important training outputs:
+> **注意**：`--input_mode` 和 `--dt` 必须与训练时使用的值一致，否则模型结构不匹配会导致权重加载失败。
 
-- `output/best_model.pth`
-- `output/model_final.pth`
-- `output/embeddings_test.npy`
+## 关键输出文件
 
-New loss-related CLI options:
-
-- `--feat_norm {none,batch_std,l2}`
-	- `none` (default): no extra normalization inside loss.
-	- `batch_std`: batch-wise per-dimension standardization.
-	- `l2`: per-sample L2 normalization.
-- `--tau_mode {batch_median,anchor_median}`
-	- `anchor_median` is the default.
-- `--gate_topm INT`
-	- `0` (default) disables gating.
-	- `>0` keeps only top-M nearest feature neighbors per anchor in the softmax.
-
-Per-epoch logs include:
-
-- loss
-- valid anchors per batch
-- tau statistics (`tau_feat` or `tau_feat_mean`/`tau_feat_median`)
-- `sim_feat_entropy_mean`
-- `effective_k_mean`
-
-## 3) Export Full Embeddings (optional but recommended)
-
-Use this to evaluate with train/test split-aware probe:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/export_embeddings.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--checkpoint "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/best_model.pth" \
-	--output_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/embeddings_all.npy"
-```
-
-## 4) Evaluate (UMAP + Probe + Neighbor Consistency)
-
-### 4.1 Split-aware evaluation (recommended)
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
-	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--eval_split test \
-	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/analysis" \
-	--kmeans_clusters 8
-```
-
-### 4.2 Evaluate with test-only embeddings
-
-```bash
-conda run -n waymo_dev python evaluate_embedding.py \
-	--embeddings_path output/embeddings_test.npy \
-	--feat_path output/feat.npy \
-	--split_path output/split.npy \
-	--eval_split test \
-	--analysis_dir output/analysis
-```
-
-### 4.3 Evaluate without split file (random holdout for probe)
-
-```bash
-conda run -n waymo_dev python evaluate_embedding.py \
-	--embeddings_path output/embeddings_all.npy \
-	--feat_path output/feat.npy \
-	--analysis_dir output/analysis \
-	--probe_test_ratio 0.2
-```
-
-Evaluation outputs in `output/analysis`:
-
-- `probe_results.csv` (Linear/Ridge: R2, RMSE, Spearman)
-- `neighbor_results.csv` (embedding-neighbor vs random-neighbor statistics)
-- `umap_coordinates.csv`
-- `umap_base.png`
-- `umap_feat_*.png`
-- `umap_kmeans_labels.png` (if `--kmeans_clusters > 0`)
-
-## 5) Ablation Runs (train + export + evaluate)
-
-For fair comparison, use the same evaluation settings for all runs:
-
-- `--umap_neighbors 30`
-- `--umap_min_dist 0.1`
-- `--seed 42`
-
-### 5.1 Baseline (old behavior replication)
-
-Train:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline" \
-	--epochs 50 --batch_size 64 --temperature 0.1 \
-	--feat_norm batch_std --tau_mode batch_median --gate_topm 0
-```
-
-Export full embeddings:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/export_embeddings.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--checkpoint "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline/best_model.pth" \
-	--output_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline/embeddings_all.npy"
-```
-
-Evaluate:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
-	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--eval_split test \
-	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_baseline/analysis" \
-	--umap_neighbors 30 --umap_min_dist 0.1 --seed 42 --kmeans_clusters 8
-```
-
-### 5.2 Remove Batch Standardization
-
-Train:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std" \
-	--epochs 50 --batch_size 64 --temperature 0.1 \
-	--feat_norm none --tau_mode batch_median --gate_topm 0
-```
-
-Export full embeddings:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/export_embeddings.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--checkpoint "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std/best_model.pth" \
-	--output_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std/embeddings_all.npy"
-```
-
-Evaluate:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
-	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--eval_split test \
-	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_no_batch_std/analysis" \
-	--umap_neighbors 30 --umap_min_dist 0.1 --seed 42 --kmeans_clusters 8
-```
-
-### 5.3 Per-Anchor Tau
-
-Train:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau" \
-	--epochs 50 --batch_size 64 --temperature 0.1 \
-	--feat_norm none --tau_mode anchor_median --gate_topm 0
-```
-
-Export full embeddings:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/export_embeddings.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--checkpoint "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau/best_model.pth" \
-	--output_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau/embeddings_all.npy"
-```
-
-Evaluate:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
-	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--eval_split test \
-	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_anchor_tau/analysis" \
-	--umap_neighbors 30 --umap_min_dist 0.1 --seed 42 --kmeans_clusters 8
-```
-
-### 5.4 Gated Neighborhood
-
-Train:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/train_embedding.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--output_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated" \
-	--epochs 50 --batch_size 64 --temperature 0.1 \
-	--feat_norm none --tau_mode anchor_median --gate_topm 32
-```
-
-Export full embeddings:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/export_embeddings.py" \
-	--traj_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/traj.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--checkpoint "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated/best_model.pth" \
-	--output_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated/embeddings_all.npy"
-```
-
-Evaluate:
-
-```bash
-conda run -n waymo_dev python "/home/king/liuqingphd/20260402_add_feature-based positive pairs/evaluate_embedding.py" \
-	--embeddings_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated/embeddings_all.npy" \
-	--feat_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/feat.npy" \
-	--split_path "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/split.npy" \
-	--eval_split test \
-	--analysis_dir "/home/king/liuqingphd/20260402_add_feature-based positive pairs/output/ablation_gated/analysis" \
-	--umap_neighbors 30 --umap_min_dist 0.1 --seed 42 --kmeans_clusters 8
-```
-
-## 6) One-Click Run for All 4 Ablations
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-PY="conda run -n waymo_dev python"
-ROOT="/home/king/liuqingphd/20260402_add_feature-based positive pairs"
-TRAIN="$ROOT/train_embedding.py"
-EXPORT="$ROOT/export_embeddings.py"
-EVAL="$ROOT/evaluate_embedding.py"
-
-TRAJ="$ROOT/output/traj.npy"
-FEAT="$ROOT/output/feat.npy"
-SPLIT="$ROOT/output/split.npy"
-
-# name feat_norm tau_mode gate_topm
-CONFIGS=(
-	"ablation_baseline batch_std batch_median 0"
-	"ablation_no_batch_std none batch_median 0"
-	"ablation_anchor_tau none anchor_median 0"
-	"ablation_gated none anchor_median 32"
-)
-
-for cfg in "${CONFIGS[@]}"; do
-	read -r NAME FEAT_NORM TAU_MODE GATE_TOPM <<< "$cfg"
-	OUT_DIR="$ROOT/output/$NAME"
-	ANALYSIS_DIR="$OUT_DIR/analysis"
-
-	echo "[RUN] $NAME"
-
-	$PY "$TRAIN" \
-		--traj_path "$TRAJ" \
-		--feat_path "$FEAT" \
-		--split_path "$SPLIT" \
-		--output_dir "$OUT_DIR" \
-		--epochs 50 --batch_size 64 --temperature 0.1 \
-		--feat_norm "$FEAT_NORM" --tau_mode "$TAU_MODE" --gate_topm "$GATE_TOPM"
-
-	$PY "$EXPORT" \
-		--traj_path "$TRAJ" \
-		--split_path "$SPLIT" \
-		--checkpoint "$OUT_DIR/best_model.pth" \
-		--output_path "$OUT_DIR/embeddings_all.npy"
-
-	$PY "$EVAL" \
-		--embeddings_path "$OUT_DIR/embeddings_all.npy" \
-		--feat_path "$FEAT" \
-		--split_path "$SPLIT" \
-		--eval_split test \
-		--analysis_dir "$ANALYSIS_DIR" \
-		--umap_neighbors 30 --umap_min_dist 0.1 --seed 42 --kmeans_clusters 8
-
-	echo "[DONE] $NAME"
-done
-
-echo "All ablations finished."
-```
-
+- `output/traj.npy`: 自车滑窗轨迹
+- `output/front.npy`: 前车滑窗轨迹
+- `output/feat_style_raw.npy`: 原始 style 特征
+- `output/feat_style.npy`: 训练用标准化 style 特征
+- `output/feature_names_style.json`: 特征名
+- `output/split.npy`: train/val/test
+- `output/<run>/best_model.pth`: 最优模型
+- `output/<run>/embeddings_all.npy`: 全量 embedding
+- `output/<run>/analysis_*/neighbor_results.csv`: 全局邻域一致性
+- `output/<run>/analysis_*/neighbor_results_cond.csv`: 工况内邻域一致性（条件感知评估）
+- `output/<run>/analysis_*`: 评估结果图表与 CSV

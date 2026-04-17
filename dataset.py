@@ -63,6 +63,42 @@ def precompute_knn_pairs(
     return PairIndex(pos_index=pos_index.astype(np.int64), neg_index=neg_index.astype(np.int64))
 
 
+def _compute_cond(
+    traj: list,
+    front: list,
+    cf_frac: np.ndarray | None,
+) -> np.ndarray:
+    """Compute per-sample condition vector [speed_mean, dist_mean, vrel_mean, cf_valid_frac].
+
+    - speed_mean: mean ego speed (L2 norm of vx,vy) over the window.
+    - dist_mean: mean Euclidean distance between ego and front positions.
+      If front is unavailable or all-zero, set to 0.0.
+    - vrel_mean: mean relative speed (ego_speed - front_speed).
+    - cf_valid_frac: car-following valid fraction (already computed from features if available).
+
+    Returns ndarray of shape (N, 4) float32.
+    """
+    n = len(traj)
+    cond = np.zeros((n, 4), dtype=np.float32)
+    for i in range(n):
+        t = traj[i]   # (T, 4): [x, y, vx, vy]
+        f = front[i]  # (T, 4): [x, y, vx, vy]
+        T = min(len(t), len(f))
+        if T == 0:
+            continue
+        t_win = t[:T]
+        f_win = f[:T]
+        ego_speed = np.sqrt(t_win[:, 2] ** 2 + t_win[:, 3] ** 2)
+        front_speed = np.sqrt(f_win[:, 2] ** 2 + f_win[:, 3] ** 2)
+        dist = np.sqrt((t_win[:, 0] - f_win[:, 0]) ** 2 + (t_win[:, 1] - f_win[:, 1]) ** 2)
+        cond[i, 0] = float(ego_speed.mean())
+        cond[i, 1] = float(dist.mean())
+        cond[i, 2] = float((ego_speed - front_speed).mean())
+    if cf_frac is not None:
+        cond[:, 3] = cf_frac
+    return cond
+
+
 class TrajFeatureDataset(Dataset):
     def __init__(
         self,
@@ -74,13 +110,52 @@ class TrajFeatureDataset(Dataset):
         metric: str = "cosine",
         pair_cache_path: str | None = None,
         build_pairs: bool = True,
+        feat_raw_path: str | None = None,
+        front_path: str | None = None,
     ):
-        self.traj = np.load(traj_path, allow_pickle=True)
+        traj_loaded = np.load(traj_path, allow_pickle=True)
+        # Some serialized object arrays contain nested object dtypes per sample.
+        # Convert once at load time so collate can safely build float tensors.
+        if isinstance(traj_loaded, np.ndarray) and traj_loaded.dtype == object:
+            self.traj = [np.asarray(t, dtype=np.float32) for t in traj_loaded]
+        else:
+            self.traj = [np.asarray(t, dtype=np.float32) for t in traj_loaded]
         self.feat = np.load(feat_path, allow_pickle=False).astype(np.float32)
+        self.feat_valid = None
+        feat_raw: np.ndarray | None = None
+        if feat_raw_path is not None:
+            feat_raw = np.load(feat_raw_path, allow_pickle=False).astype(np.float32)
+            if feat_raw.shape != self.feat.shape:
+                raise ValueError(
+                    f"feat_raw shape {feat_raw.shape} must match feat shape {self.feat.shape}"
+                )
+            # Valid mask for missing-aware distance: only finite raw dimensions are usable.
+            # Keep float32 for direct tensor batching/device transfer and loss-side arithmetic.
+            self.feat_valid = np.isfinite(feat_raw).astype(np.float32)
         self.split = np.load(split_path, allow_pickle=True)
 
         if not (len(self.traj) == len(self.feat) == len(self.split)):
             raise ValueError("traj/feat/split lengths must match")
+
+        # Condition vector: [speed_mean, dist_mean, vrel_mean, cf_valid_frac] (N, 4)
+        # Front trajectories are also retained for rel_kinematics input mode.
+        self.cond: np.ndarray | None = None
+        self.front: list | None = None
+        if front_path is not None:
+            front_loaded = np.load(front_path, allow_pickle=True)
+            front = [np.asarray(f, dtype=np.float32) for f in front_loaded]
+            if len(front) != len(self.traj):
+                raise ValueError(
+                    f"front length {len(front)} must match traj length {len(self.traj)}"
+                )
+            self.front = front
+            # cf_valid_frac: prefer raw (0-1 scale) when available, else use standardized feat col.
+            if feat_raw is not None and feat_raw.shape[1] > 10:
+                cf_col = feat_raw[:, 10].copy()
+                cf_col = np.where(np.isfinite(cf_col), cf_col, 0.0).astype(np.float32)
+            else:
+                cf_col = self.feat[:, 10].copy() if self.feat.shape[1] > 10 else None
+            self.cond = _compute_cond(self.traj, front, cf_col)
 
         self.pair_index = None
         if build_pairs:
@@ -129,7 +204,10 @@ class TrajFeatureDataset(Dataset):
 
         return {
             "traj": self.traj[index],
+            "front_traj": None if self.front is None else self.front[index],
             "feat": self.feat[index],
+            "feat_valid": None if self.feat_valid is None else self.feat_valid[index],
+            "cond": None if self.cond is None else self.cond[index],
             "global_idx": index,
             "pos_global": pos_global,
             "neg_global": neg_global,
@@ -142,15 +220,29 @@ def collate_variable_traj(batch: list[dict]) -> dict:
     lengths = torch.tensor([x.shape[0] for x in traj_list], dtype=torch.long)
     traj = pad_sequence(traj_list, batch_first=True)
 
+    front_traj = None
+    if batch[0]["front_traj"] is not None:
+        front_list = [torch.as_tensor(item["front_traj"], dtype=torch.float32) for item in batch]
+        front_traj = pad_sequence(front_list, batch_first=True)
+
     feat = torch.as_tensor(np.stack([item["feat"] for item in batch], axis=0), dtype=torch.float32)
+    feat_valid = None
+    if batch[0]["feat_valid"] is not None:
+        feat_valid = torch.as_tensor(np.stack([item["feat_valid"] for item in batch], axis=0), dtype=torch.float32)
+    cond = None
+    if batch[0]["cond"] is not None:
+        cond = torch.as_tensor(np.stack([item["cond"] for item in batch], axis=0), dtype=torch.float32)
     global_idx = torch.as_tensor([item["global_idx"] for item in batch], dtype=torch.long)
     pos_global = torch.as_tensor(np.stack([item["pos_global"] for item in batch], axis=0), dtype=torch.long)
     neg_global = torch.as_tensor(np.stack([item["neg_global"] for item in batch], axis=0), dtype=torch.long)
 
     return {
         "traj": traj,
+        "front_traj": front_traj,
         "lengths": lengths,
         "feat": feat,
+        "feat_valid": feat_valid,
+        "cond": cond,
         "global_idx": global_idx,
         "pos_global": pos_global,
         "neg_global": neg_global,
