@@ -95,6 +95,118 @@ def multi_positive_infonce(
     return loss, stats
 
 
+def build_cond_knn_mask(
+    cond: torch.Tensor,
+    cond_k: int,
+    cond_scale_mode: str,
+    cf_bucket_edges: list[float],
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Build per-anchor kNN condition compatibility mask [B, B].
+
+    For each anchor i, selects the cond_k nearest compatible samples (excluding self).
+    Compatibility is defined by same cf_valid_frac bucket (when cf_bucket_edges is
+    non-empty).  Distances are normalized by per-dim robust scales so no manual
+    tolerance tuning is required.
+
+    Fallback rules (in priority order):
+      1. Anchor has >= cond_k compatible samples  → select exactly cond_k nearest.
+      2. Anchor has 0 < n_compat < cond_k        → use all n_compat (no global fallback).
+      3. Anchor has 0 compatible samples          → last-resort: use all non-self.
+
+    cond columns: [speed_mean, dist_mean, vrel_mean, cf_valid_frac (optional)]
+
+    Args:
+        cond: [B, 3+] condition tensor.
+        cond_k: Number of nearest compatible samples to select per anchor.
+        cond_scale_mode: Robust scale estimator, one of {"mad", "iqr", "std"}.
+        cf_bucket_edges: Sorted edges for cf_valid_frac bucketing.
+
+    Returns:
+        mask: [B, B] bool. mask[i,j]=True iff j is in i's compatible candidate set.
+        fallback_rows: [B] bool. True iff anchor i used the last-resort fallback
+                       (zero compatible samples).
+    """
+    device = cond.device
+    bsz = cond.size(0)
+    eye = torch.eye(bsz, dtype=torch.bool, device=device)
+
+    if bsz <= 1:
+        # Edge case: single sample — no non-self candidates possible.
+        mask = torch.zeros(bsz, bsz, dtype=torch.bool, device=device)
+        fallback_rows = torch.ones(bsz, dtype=torch.bool, device=device)
+        return mask, fallback_rows
+
+    n_dims = min(3, cond.size(1))  # speed, dist, vrel
+    eps = 1e-6
+
+    # Compute pairwise differences [B, B, n_dims], then scale each dim.
+    diff = cond[:, :n_dims]  # [B, n_dims]
+    pairwise_diff = diff[:, None, :] - diff[None, :, :]  # [B, B, n_dims]
+
+    for d in range(n_dims):
+        col = cond[:, d]
+        if cond_scale_mode == "mad":
+            med = col.median()
+            scale = (col - med).abs().median()
+        elif cond_scale_mode == "iqr":
+            q75 = torch.quantile(col, 0.75)
+            q25 = torch.quantile(col, 0.25)
+            scale = q75 - q25
+        else:  # std
+            scale = col.std()
+        scale = torch.clamp(scale, min=eps)
+        pairwise_diff[:, :, d] = pairwise_diff[:, :, d] / scale
+
+    # Normalized Euclidean distance [B, B].
+    dist = pairwise_diff.pow(2).sum(dim=-1).sqrt()
+
+    # Apply CF bucket gating: cross-bucket pairs get infinite distance.
+    if cond.size(1) >= 4 and len(cf_bucket_edges) > 0:
+        cf_frac = cond[:, 3]
+        edges = sorted(cf_bucket_edges)
+        bucket = torch.zeros(bsz, dtype=torch.long, device=device)
+        for edge in edges:
+            bucket = bucket + (cf_frac > edge).long()
+        bucket_match = bucket[:, None] == bucket[None, :]
+        dist = dist.masked_fill(~bucket_match, float("inf"))
+
+    # Exclude self from candidates.
+    dist = dist.masked_fill(eye, float("inf"))
+
+    # Count compatible (finite-distance) candidates per anchor.
+    n_compat = torch.isfinite(dist).sum(dim=1)  # [B]
+
+    # Last-resort fallback: anchors with zero compatible samples.
+    fallback_rows = (n_compat == 0)
+
+    # Select up to cond_k nearest per anchor; for n_compat < cond_k, take all compatible.
+    k_select = min(cond_k, bsz - 1)
+    mask = torch.zeros(bsz, bsz, dtype=torch.bool, device=device)
+
+    if k_select > 0:
+        topk_vals, topk_idx = torch.topk(dist, k=k_select, dim=1, largest=False)
+        finite_topk = torch.isfinite(topk_vals)  # [B, k_select]
+        # Only scatter into mask for non-fallback anchors with finite candidates.
+        for ki in range(k_select):
+            valid = finite_topk[:, ki] & (~fallback_rows)
+            if valid.any():
+                rows = torch.where(valid)[0]
+                cols = topk_idx[valid, ki]
+                mask[rows, cols] = True
+
+    # Apply last-resort fallback: use all non-self samples.
+    if fallback_rows.any():
+        mask = torch.where(fallback_rows[:, None], ~eye, mask)
+
+    # Invariant checks: mask must exclude self-pairs and guarantee >=1 candidate per anchor.
+    if mask.diagonal().any():
+        raise ValueError("kNN mask invariant violated: mask must exclude self-pairs")
+    if not mask.any(dim=1).all():
+        raise ValueError("kNN mask invariant violated: every anchor must have >=1 candidate after fallback")
+
+    return mask, fallback_rows
+
+
 def build_cond_mask(
     cond: torch.Tensor,
     speed_tol: float,
@@ -143,8 +255,12 @@ class SoftContrastiveLoss(nn.Module):
 
     - Uses all pairs with soft weights from feature similarity.
     - No hard positive/negative mining inside the loss.
-    - Optionally applies condition gating (cond_mode='hard_box') to restrict
-      comparisons to samples with similar operating conditions.
+    - Optionally applies condition gating to restrict comparisons to samples with
+      similar operating conditions.  Supported cond_mode values:
+        - 'off'      : no gating (default).
+        - 'hard_box' : within-tolerance box filter; fallback when < min_cond_candidates.
+        - 'knn'      : kNN-based robust gating; selects cond_k nearest compatible
+                       samples per anchor; only falls back for zero-compatible anchors.
     - Supports loss_mode in {softkl, supcon, hybrid} for flexible supervision.
     """
 
@@ -172,6 +288,8 @@ class SoftContrastiveLoss(nn.Module):
         cond_vrel_tol: float = 1.0,
         cond_cf_bucket_edges: list[float] | None = None,
         min_cond_candidates: int = 8,
+        cond_k: int = 24,
+        cond_scale_mode: str = "mad",
         # Loss mode parameters.
         loss_mode: str = "softkl",
         pos_topk: int = 8,
@@ -202,6 +320,8 @@ class SoftContrastiveLoss(nn.Module):
         self.cond_vrel_tol = cond_vrel_tol
         self.cond_cf_bucket_edges: list[float] = cond_cf_bucket_edges if cond_cf_bucket_edges is not None else list(DEFAULT_CF_BUCKET_EDGES)
         self.min_cond_candidates = min_cond_candidates
+        self.cond_k = cond_k
+        self.cond_scale_mode = cond_scale_mode
         # Loss mode.
         self.loss_mode = loss_mode
         self.pos_topk = pos_topk
@@ -210,10 +330,18 @@ class SoftContrastiveLoss(nn.Module):
 
     def _build_cond_gate(
         self, bsz: int, cond: torch.Tensor | None, device: torch.device
-    ) -> torch.Tensor | None:
+    ) -> tuple[torch.Tensor, torch.Tensor] | None:
         """Build [B, B] boolean condition gate mask or return None if gating is off/unavailable."""
         if self.cond_mode == "off" or cond is None:
             return None
+        if self.cond_mode == "knn":
+            return build_cond_knn_mask(
+                cond,
+                cond_k=self.cond_k,
+                cond_scale_mode=self.cond_scale_mode,
+                cf_bucket_edges=self.cond_cf_bucket_edges,
+            )
+        # hard_box mode.
         raw_mask = build_cond_mask(
             cond,
             speed_tol=self.cond_speed_tol,
