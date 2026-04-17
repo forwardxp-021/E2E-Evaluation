@@ -290,6 +290,8 @@ class SoftContrastiveLoss(nn.Module):
         min_cond_candidates: int = 8,
         cond_k: int = 24,
         cond_scale_mode: str = "mad",
+        # Feature clipping: clip standardized features before distance computation.
+        feat_clip_value: float = 0.0,
         # Loss mode parameters.
         loss_mode: str = "softkl",
         pos_topk: int = 8,
@@ -322,6 +324,8 @@ class SoftContrastiveLoss(nn.Module):
         self.min_cond_candidates = min_cond_candidates
         self.cond_k = cond_k
         self.cond_scale_mode = cond_scale_mode
+        # Feature clipping.
+        self.feat_clip_value = feat_clip_value
         # Loss mode.
         self.loss_mode = loss_mode
         self.pos_topk = pos_topk
@@ -403,6 +407,10 @@ class SoftContrastiveLoss(nn.Module):
             feat = (feat - feat.mean(dim=0, keepdim=True)) / (feat.std(dim=0, keepdim=True) + 1e-6)
         elif self.feat_norm == "l2":
             feat = F.normalize(feat, dim=1)
+
+        # Optional feature clipping after normalization (robust to long-tail dims like jerk/yaw).
+        if self.feat_clip_value > 0:
+            feat = torch.clamp(feat, -self.feat_clip_value, self.feat_clip_value)
 
         # 4) Feature distance
         common_stats = {}

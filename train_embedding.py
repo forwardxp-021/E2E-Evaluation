@@ -122,6 +122,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--pos_topk", type=int, default=8, help="Number of top-K positives for supcon/hybrid loss mode")
     parser.add_argument("--w_supcon", type=float, default=1.0, help="Weight for supcon term in hybrid loss")
     parser.add_argument("--w_soft", type=float, default=0.2, help="Weight for softkl term in hybrid loss")
+    parser.add_argument(
+        "--feat_clip_value",
+        type=float,
+        default=0.0,
+        help="If >0, clip standardized feature values to [-feat_clip_value, feat_clip_value] before distance computation (recommended: 3.0 for long-tail jerk/yaw dims)",
+    )
 
     # Two-stage training schedule.
     # stage1_epochs: hook for future condition-invariance pretraining; currently accepted but not implemented.
@@ -281,6 +287,7 @@ def main() -> None:
         pos_topk=args.pos_topk,
         w_supcon=args.w_supcon,
         w_soft=args.w_soft,
+        feat_clip_value=args.feat_clip_value,
     )
 
     best_sil = -1.0

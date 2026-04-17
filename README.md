@@ -128,8 +128,11 @@ python train_embedding.py \
   --cond_mode knn --cond_k 24 --cond_scale_mode mad \
   --cond_cf_bucket_edges "0.2,0.6" \
   --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 0.2 \
+  --feat_clip_value 3.0 \
   --eval_every 10 --skip_val_clustering
 ```
+
+> **说明**：`--feat_clip_value 3.0` 在特征归一化之后、距离计算之前，将标准化特征值裁剪到 [-3, 3]，可有效抑制 jerk/yaw 等长尾维度对距离计算的影响（推荐值 3.0；默认 0.0 表示不裁剪，与旧行为完全兼容）。
 
 训练日志中新增诊断指标：
 - `cond_cands`：每个 anchor 平均可用的工况兼容候选数（knn 模式下应接近 cond_k）
