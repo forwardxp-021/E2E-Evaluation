@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+# Default cf_valid_frac bucket edges for condition gating.
+# Samples are bucketed into [0, edge0), [edge0, edge1), [edge1, inf).
+DEFAULT_CF_BUCKET_EDGES: list[float] = [0.2, 0.6]
+
 
 def masked_pairwise_l2(
     feat: torch.Tensor,
@@ -91,12 +95,57 @@ def multi_positive_infonce(
     return loss, stats
 
 
+def build_cond_mask(
+    cond: torch.Tensor,
+    speed_tol: float,
+    dist_tol: float,
+    vrel_tol: float,
+    cf_bucket_edges: list[float],
+) -> torch.Tensor:
+    """Build pairwise condition compatibility mask [B, B].
+
+    cond columns: [speed_mean, dist_mean, vrel_mean, cf_valid_frac (optional)]
+    Two samples are compatible if all their condition differences are within the
+    respective tolerances AND they fall in the same cf_valid_frac bucket.
+    Self-pairs are included in the mask; callers should exclude them as needed.
+    """
+    device = cond.device
+    bsz = cond.size(0)
+
+    # Speed, dist, vrel gating using absolute difference.
+    speed = cond[:, 0]
+    dist = cond[:, 1]
+    vrel = cond[:, 2]
+
+    speed_diff = (speed[:, None] - speed[None, :]).abs()
+    dist_diff = (dist[:, None] - dist[None, :]).abs()
+    vrel_diff = (vrel[:, None] - vrel[None, :]).abs()
+
+    mask = (speed_diff <= speed_tol) & (dist_diff <= dist_tol) & (vrel_diff <= vrel_tol)
+
+    # CF bucket gating: only when cf_valid_frac column is present.
+    if cond.size(1) >= 4 and len(cf_bucket_edges) > 0:
+        cf_frac = cond[:, 3]
+        # Compute bucket index for each sample using digitize-style logic.
+        edges = sorted(cf_bucket_edges)
+        bucket = torch.zeros(bsz, dtype=torch.long, device=device)
+        for edge in edges:
+            bucket = bucket + (cf_frac > edge).long()
+        bucket_match = bucket[:, None] == bucket[None, :]
+        mask = mask & bucket_match
+
+    return mask
+
+
 class SoftContrastiveLoss(nn.Module):
     """
     Feature-guided soft contrastive loss (soft-label InfoNCE / KL form).
 
     - Uses all pairs with soft weights from feature similarity.
     - No hard positive/negative mining inside the loss.
+    - Optionally applies condition gating (cond_mode='hard_box') to restrict
+      comparisons to samples with similar operating conditions.
+    - Supports loss_mode in {softkl, supcon, hybrid} for flexible supervision.
     """
 
     def __init__(
@@ -116,6 +165,18 @@ class SoftContrastiveLoss(nn.Module):
         eps: float = 1e-8,
         debug_sim: bool = False,
         debug_topk: int = 10,
+        # Condition gating parameters.
+        cond_mode: str = "off",
+        cond_speed_tol: float = 2.0,
+        cond_dist_tol: float = 5.0,
+        cond_vrel_tol: float = 1.0,
+        cond_cf_bucket_edges: list[float] | None = None,
+        min_cond_candidates: int = 8,
+        # Loss mode parameters.
+        loss_mode: str = "softkl",
+        pos_topk: int = 8,
+        w_supcon: float = 1.0,
+        w_soft: float = 0.2,
     ):
         super().__init__()
         self.temperature = temperature
@@ -134,12 +195,52 @@ class SoftContrastiveLoss(nn.Module):
         self.debug_sim = debug_sim
         self.debug_topk = debug_topk
         self._debug_printed = False
+        # Condition gating.
+        self.cond_mode = cond_mode
+        self.cond_speed_tol = cond_speed_tol
+        self.cond_dist_tol = cond_dist_tol
+        self.cond_vrel_tol = cond_vrel_tol
+        self.cond_cf_bucket_edges: list[float] = cond_cf_bucket_edges if cond_cf_bucket_edges is not None else list(DEFAULT_CF_BUCKET_EDGES)
+        self.min_cond_candidates = min_cond_candidates
+        # Loss mode.
+        self.loss_mode = loss_mode
+        self.pos_topk = pos_topk
+        self.w_supcon = w_supcon
+        self.w_soft = w_soft
+
+    def _build_cond_gate(
+        self, bsz: int, cond: torch.Tensor | None, device: torch.device
+    ) -> torch.Tensor | None:
+        """Build [B, B] boolean condition gate mask or return None if gating is off/unavailable."""
+        if self.cond_mode == "off" or cond is None:
+            return None
+        raw_mask = build_cond_mask(
+            cond,
+            speed_tol=self.cond_speed_tol,
+            dist_tol=self.cond_dist_tol,
+            vrel_tol=self.cond_vrel_tol,
+            cf_bucket_edges=self.cond_cf_bucket_edges,
+        )
+        # Exclude self.
+        eye = torch.eye(bsz, dtype=torch.bool, device=device)
+        raw_mask = raw_mask & (~eye)
+
+        # Per-anchor fallback: if an anchor has fewer than min_cond_candidates comparable
+        # samples, fall back to all non-self samples for that anchor.
+        n_cands = raw_mask.sum(dim=1)  # [B]
+        fallback_rows = n_cands < self.min_cond_candidates
+        if fallback_rows.any():
+            fallback_mask = ~eye  # use all non-self pairs
+            # Apply fallback per row where needed.
+            raw_mask = torch.where(fallback_rows[:, None], fallback_mask, raw_mask)
+        return raw_mask, fallback_rows
 
     def forward(
         self,
         z: torch.Tensor,
         feat: torch.Tensor,
         feat_valid: torch.Tensor | None = None,
+        cond: torch.Tensor | None = None,
     ) -> tuple[torch.Tensor, dict]:
         bsz = z.size(0)
         device = z.device
@@ -160,6 +261,8 @@ class SoftContrastiveLoss(nn.Module):
             raise ValueError(f"ls_alpha must be > 0 to keep sharpening valid, got {self.ls_alpha}")
         if self.min_common_dims < 1:
             raise ValueError(f"min_common_dims must be >= 1, got {self.min_common_dims}")
+        if self.loss_mode not in {"softkl", "supcon", "hybrid"}:
+            raise ValueError(f"Unsupported loss_mode: {self.loss_mode}")
 
         # 1) Normalize embedding
         z = F.normalize(z, dim=1)
@@ -199,6 +302,22 @@ class SoftContrastiveLoss(nn.Module):
         # 5) Remove diagonal
         eye = torch.eye(bsz, device=device, dtype=torch.bool)
         dist_feat = dist_feat.masked_fill(eye, float("inf"))
+
+        # 5a) Build condition gate and apply to feature distance.
+        cond_result = self._build_cond_gate(bsz, cond, device)
+        cond_mask: torch.Tensor | None = None
+        fallback_rows: torch.Tensor | None = None
+        cond_stats: dict = {}
+        if cond_result is not None:
+            cond_mask, fallback_rows = cond_result
+            # Gate feature distances: pairs outside cond_mask become +inf.
+            dist_feat = dist_feat.masked_fill(~cond_mask, float("inf"))
+            n_cands = cond_mask.sum(dim=1).float()
+            n_fallback = int(fallback_rows.sum().item()) if fallback_rows is not None else 0
+            cond_stats = {
+                "cond_candidates_mean": float(n_cands.mean().detach().item()),
+                "cond_fallback_frac": float(n_fallback) / max(1, bsz),
+            }
 
         # 5.5) Optional gate to top-M nearest neighbors per anchor.
         if self.gate_topm > 0 and bsz > 1:
@@ -284,12 +403,23 @@ class SoftContrastiveLoss(nn.Module):
             self._debug_printed = True
 
         # 8) Log-softmax for embedding
-        sim_emb = sim_emb - sim_emb.max(dim=1, keepdim=True).values
-        log_prob = F.log_softmax(sim_emb, dim=1)
+        sim_emb_shifted = sim_emb - sim_emb.max(dim=1, keepdim=True).values
+        log_prob = F.log_softmax(sim_emb_shifted, dim=1)
 
-        # 9) Final soft cross entropy
-        loss_vec = -(sim_feat * log_prob).sum(dim=1)
-        loss = loss_vec.mean()
+        # 9) Compute loss according to loss_mode.
+        if self.loss_mode == "softkl":
+            loss, mode_stats = self._softkl_loss(sim_feat, log_prob, bsz)
+        elif self.loss_mode == "supcon":
+            loss, mode_stats = self._supcon_loss(z, dist_feat, finite_mask, cond_mask, bsz, device)
+        else:  # hybrid
+            loss_soft, soft_stats = self._softkl_loss(sim_feat, log_prob, bsz)
+            loss_sup, sup_stats = self._supcon_loss(z, dist_feat, finite_mask, cond_mask, bsz, device)
+            loss = self.w_soft * loss_soft + self.w_supcon * loss_sup
+            mode_stats = {
+                "supcon_loss": float(loss_sup.detach().item()),
+                "softkl_loss": float(loss_soft.detach().item()),
+            }
+            mode_stats.update({f"supcon_{k}": v for k, v in sup_stats.items() if k != "valid_anchors"})
 
         if not torch.isfinite(loss):
             loss = torch.nan_to_num(loss, nan=0.0, posinf=1e4, neginf=1e4)
@@ -297,11 +427,72 @@ class SoftContrastiveLoss(nn.Module):
         entropy = -(sim_feat * torch.log(sim_feat + self.eps)).sum(dim=1)
         effective_k = 1.0 / (sim_feat.pow(2).sum(dim=1) + self.eps)
 
-        stats = {
+        stats: dict = {
             "valid_anchors": int(bsz),
             "sim_feat_entropy_mean": float(entropy.mean().detach().item()),
             "effective_k_mean": float(effective_k.mean().detach().item()),
         }
         stats.update(common_stats)
         stats.update(tau_stats)
+        stats.update(cond_stats)
+        stats.update(mode_stats)
         return loss, stats
+
+    def _softkl_loss(
+        self,
+        sim_feat: torch.Tensor,
+        log_prob: torch.Tensor,
+        bsz: int,
+    ) -> tuple[torch.Tensor, dict]:
+        """Soft cross-entropy KL loss."""
+        loss_vec = -(sim_feat * log_prob).sum(dim=1)
+        loss = loss_vec.mean()
+        return loss, {"valid_anchors": bsz}
+
+    def _supcon_loss(
+        self,
+        z: torch.Tensor,
+        dist_feat: torch.Tensor,
+        finite_mask: torch.Tensor,
+        cond_mask: torch.Tensor | None,
+        bsz: int,
+        device: torch.device,
+    ) -> tuple[torch.Tensor, dict]:
+        """Multi-positive SupCon loss: positives = TopK nearest by (gated) feature distance."""
+        eye = torch.eye(bsz, dtype=torch.bool, device=device)
+
+        # Determine candidate pool for each anchor.
+        if cond_mask is not None:
+            # Only use condition-compatible pairs as candidates.
+            candidate_mask = cond_mask & (~eye) & finite_mask
+        else:
+            candidate_mask = (~eye) & finite_mask
+
+        # TopK positives per anchor from the candidate pool.
+        k = min(self.pos_topk, bsz - 1)
+        # Use +inf for non-candidates so they're never chosen as positives.
+        dist_for_topk = dist_feat.masked_fill(~candidate_mask, float("inf"))
+        # Build pos_mask: anchor i's positives are the k nearest by feature dist among candidates.
+        pos_mask = torch.zeros((bsz, bsz), dtype=torch.bool, device=device)
+        if k > 0 and candidate_mask.any():
+            # For each anchor, select top-k finite candidates.
+            topk_vals, topk_idx = torch.topk(dist_for_topk, k=k, dim=1, largest=False)
+            valid_topk = torch.isfinite(topk_vals)  # [B, k]
+            # Scatter valid positives into pos_mask.
+            for ki in range(k):
+                valid_row = valid_topk[:, ki]
+                if valid_row.any():
+                    row_idx = torch.where(valid_row)[0]
+                    col_idx = topk_idx[valid_row, ki]
+                    pos_mask[row_idx, col_idx] = True
+
+        # Negatives: remaining candidates (not positives, not self).
+        neg_mask = candidate_mask & (~pos_mask)
+
+        loss, sup_stats = multi_positive_infonce(
+            z=z,
+            pos_mask=pos_mask,
+            temperature=self.temperature,
+            neg_mask=neg_mask,
+        )
+        return loss, sup_stats

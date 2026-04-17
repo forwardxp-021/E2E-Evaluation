@@ -28,6 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--traj_path", type=str, default=str(out_dir / "traj.npy"))
     parser.add_argument("--feat_path", type=str, default=str(out_dir / "feat.npy"))
     parser.add_argument("--feat_raw_path", type=str, default=None)
+    parser.add_argument("--front_path", type=str, default=None, help="Path to front.npy for condition vector computation")
     parser.add_argument("--split_path", type=str, default=str(out_dir / "split.npy"))
     parser.add_argument("--pair_cache_path", type=str, default=str(out_dir / "pair_index.npz"))
     parser.add_argument("--output_dir", type=str, default=str(out_dir))
@@ -77,6 +78,48 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min_common_dims", type=int, default=5)
     parser.add_argument("--debug_sim_feat", action="store_true", help="Print first-row sim_feat values once for sanity check")
     parser.add_argument("--debug_sim_topk", type=int, default=10, help="How many sim_feat entries to print for debug")
+
+    # Condition gating arguments.
+    parser.add_argument(
+        "--cond_mode",
+        type=str,
+        choices=["off", "hard_box"],
+        default="off",
+        help="Condition gating mode: off (disabled) or hard_box (within-tolerance filtering)",
+    )
+    parser.add_argument("--cond_speed_tol", type=float, default=2.0, help="Speed tolerance for condition gating (m/s)")
+    parser.add_argument("--cond_dist_tol", type=float, default=5.0, help="Distance tolerance for condition gating (m)")
+    parser.add_argument("--cond_vrel_tol", type=float, default=1.0, help="Relative speed tolerance for condition gating (m/s)")
+    parser.add_argument(
+        "--cond_cf_bucket_edges",
+        type=str,
+        default="0.2,0.6",
+        help="Comma-separated edges for cf_valid_frac bucketing (e.g. '0.2,0.6')",
+    )
+    parser.add_argument(
+        "--min_cond_candidates",
+        type=int,
+        default=8,
+        help="Minimum number of condition-compatible candidates before falling back to ungated behavior",
+    )
+
+    # Loss mode arguments.
+    parser.add_argument(
+        "--loss_mode",
+        type=str,
+        choices=["softkl", "supcon", "hybrid"],
+        default="softkl",
+        help="Loss mode: softkl (soft KL), supcon (SupCon with topk positives), hybrid (weighted sum)",
+    )
+    parser.add_argument("--pos_topk", type=int, default=8, help="Number of top-K positives for supcon/hybrid loss mode")
+    parser.add_argument("--w_supcon", type=float, default=1.0, help="Weight for supcon term in hybrid loss")
+    parser.add_argument("--w_soft", type=float, default=0.2, help="Weight for softkl term in hybrid loss")
+
+    # Two-stage training schedule.
+    # stage1_epochs: hook for future condition-invariance pretraining; currently accepted but not implemented.
+    # Set to 0 (default) to use the standard single-stage schedule.
+    parser.add_argument("--stage1_epochs", type=int, default=0, help="Epochs for stage 1 invariance pretraining (hook for future use; currently accepted but not active)")
+    parser.add_argument("--stage2_epochs", type=int, default=0, help="Epochs for stage 2; if 0, uses --epochs")
 
     parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--batch_size", type=int, default=64)
@@ -136,6 +179,17 @@ def main() -> None:
     device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
+    # Parse cf bucket edges.
+    cf_bucket_edges: list[float] = []
+    if args.cond_cf_bucket_edges:
+        try:
+            cf_bucket_edges = [float(x.strip()) for x in args.cond_cf_bucket_edges.split(",") if x.strip()]
+        except ValueError as e:
+            raise ValueError(f"Invalid --cond_cf_bucket_edges '{args.cond_cf_bucket_edges}': {e}") from e
+
+    # Determine total epochs (stage2_epochs overrides epochs if set).
+    total_epochs = args.stage2_epochs if args.stage2_epochs > 0 else args.epochs
+
     dataset = TrajFeatureDataset(
         traj_path=args.traj_path,
         feat_path=args.feat_path,
@@ -146,12 +200,18 @@ def main() -> None:
         pair_cache_path=args.pair_cache_path,
         build_pairs=False,
         feat_raw_path=args.feat_raw_path,
+        front_path=args.front_path,
     )
 
     train_idx = dataset.indices_by_split("train")
     val_idx = dataset.indices_by_split("val")
     test_idx = dataset.indices_by_split("test")
     print(f"Split sizes | train={len(train_idx)} val={len(val_idx)} test={len(test_idx)}")
+    if dataset.cond is not None:
+        print(f"Condition vector shape: {dataset.cond.shape} (speed_mean, dist_mean, vrel_mean, cf_valid_frac)")
+    else:
+        if args.cond_mode != "off":
+            print("[WARN] --cond_mode is not 'off' but --front_path was not provided; condition gating will be skipped.")
 
     train_loader = DataLoader(
         Subset(dataset, train_idx),
@@ -201,12 +261,22 @@ def main() -> None:
         min_common_dims=args.min_common_dims,
         debug_sim=args.debug_sim_feat,
         debug_topk=args.debug_sim_topk,
+        cond_mode=args.cond_mode,
+        cond_speed_tol=args.cond_speed_tol,
+        cond_dist_tol=args.cond_dist_tol,
+        cond_vrel_tol=args.cond_vrel_tol,
+        cond_cf_bucket_edges=cf_bucket_edges,
+        min_cond_candidates=args.min_cond_candidates,
+        loss_mode=args.loss_mode,
+        pos_topk=args.pos_topk,
+        w_supcon=args.w_supcon,
+        w_soft=args.w_soft,
     )
 
     best_sil = -1.0
     best_ckpt = out_dir / "best_model.pth"
 
-    for epoch in range(1, args.epochs + 1):
+    for epoch in range(1, total_epochs + 1):
         model.train()
         running_loss = 0.0
         running_steps = 0
@@ -220,11 +290,14 @@ def main() -> None:
             feat_valid = batch.get("feat_valid", None)
             if feat_valid is not None:
                 feat_valid = feat_valid.to(device)
+            cond = batch.get("cond", None)
+            if cond is not None:
+                cond = cond.to(device)
 
             z = model(traj, lengths)
             # Replace hard pair contrastive with soft feature-guided contrastive loss.
             # feat is supervision signal only; it is never fed into the trajectory encoder forward path.
-            loss, stats = criterion(z, feat, feat_valid=feat_valid)
+            loss, stats = criterion(z, feat, feat_valid=feat_valid, cond=cond)
 
             optimizer.zero_grad()
             loss.backward()
@@ -242,7 +315,7 @@ def main() -> None:
         avg_stats: dict[str, Any] = {
             k: (v / max(1, running_steps)) for k, v in stats_acc.items() if k != "valid_anchors"
         }
-        epoch_msg = f"Epoch {epoch}/{args.epochs} | loss={avg_loss:.4f} | valid_anchors/batch={avg_valid:.2f}"
+        epoch_msg = f"Epoch {epoch}/{total_epochs} | loss={avg_loss:.4f} | valid_anchors/batch={avg_valid:.2f}"
         if "tau_feat" in avg_stats:
             epoch_msg += f" | tau_feat={avg_stats['tau_feat']:.4f}"
         if "tau_feat_mean" in avg_stats:
@@ -259,6 +332,14 @@ def main() -> None:
             epoch_msg += f" | sigma_median={avg_stats['sigma_median']:.4f}"
         if "ls_alpha" in avg_stats:
             epoch_msg += f" | ls_alpha={avg_stats['ls_alpha']:.3f}"
+        if "cond_candidates_mean" in avg_stats:
+            epoch_msg += f" | cond_cands={avg_stats['cond_candidates_mean']:.1f}"
+        if "cond_fallback_frac" in avg_stats:
+            epoch_msg += f" | cond_fallback={avg_stats['cond_fallback_frac']:.2f}"
+        if "supcon_loss" in avg_stats:
+            epoch_msg += f" | supcon={avg_stats['supcon_loss']:.4f}"
+        if "softkl_loss" in avg_stats:
+            epoch_msg += f" | softkl={avg_stats['softkl_loss']:.4f}"
         print(epoch_msg)
 
         if epoch % args.eval_every == 0:
@@ -294,7 +375,7 @@ def main() -> None:
     if args.skip_val_clustering:
         torch.save(
             {
-                "epoch": args.epochs,
+                "epoch": total_epochs,
                 "model_state_dict": model.state_dict(),
                 "optimizer_state_dict": optimizer.state_dict(),
                 "best_val_silhouette": -1.0,

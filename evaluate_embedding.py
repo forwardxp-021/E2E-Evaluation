@@ -15,6 +15,9 @@ from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.neighbors import NearestNeighbors
 
+from dataset import _compute_cond
+from loss import build_cond_mask
+
 
 if not hasattr(cbook, "_Stack") and hasattr(cbook, "Stack"):
     cbook._Stack = cbook.Stack
@@ -58,6 +61,34 @@ def parse_args() -> argparse.Namespace:
         help="When split_path is provided, evaluate this split. 'all' uses all rows.",
     )
     parser.add_argument("--analysis_dir", type=str, default=str(out_dir / "analysis"))
+
+    # Condition-aware evaluation inputs.
+    parser.add_argument("--traj_path", type=str, default=str(out_dir / "traj.npy"), help="Trajectory file for condition vector (requires --front_path)")
+    parser.add_argument("--front_path", type=str, default=None, help="Front vehicle trajectory file for condition-aware evaluation")
+
+    # Condition gating options (should match training settings for consistent evaluation).
+    parser.add_argument(
+        "--cond_mode",
+        type=str,
+        choices=["off", "hard_box"],
+        default="off",
+        help="Condition gating mode for neighbor consistency evaluation",
+    )
+    parser.add_argument("--cond_speed_tol", type=float, default=2.0, help="Speed tolerance for condition gating (m/s)")
+    parser.add_argument("--cond_dist_tol", type=float, default=5.0, help="Distance tolerance for condition gating (m)")
+    parser.add_argument("--cond_vrel_tol", type=float, default=1.0, help="Relative speed tolerance for condition gating (m/s)")
+    parser.add_argument(
+        "--cond_cf_bucket_edges",
+        type=str,
+        default="0.2,0.6",
+        help="Comma-separated edges for cf_valid_frac bucketing (e.g. '0.2,0.6')",
+    )
+    parser.add_argument(
+        "--min_cond_candidates",
+        type=int,
+        default=8,
+        help="Minimum condition candidates for within-condition neighbor evaluation",
+    )
 
     parser.add_argument("--k_neighbors", type=int, default=10)
     parser.add_argument("--umap_neighbors", type=int, default=30)
@@ -301,6 +332,172 @@ def evaluate_neighbor_consistency(
     return pd.DataFrame(rows)
 
 
+def _load_cond_for_eval(
+    traj_path: str,
+    front_path: str,
+    split: np.ndarray | None,
+    eval_split: str,
+    feat_raw: np.ndarray | None,
+    feat: np.ndarray,
+    eval_idx: np.ndarray,
+) -> np.ndarray | None:
+    """Load traj/front, compute condition vectors, and return the eval-split subset."""
+    try:
+        traj_loaded = np.load(traj_path, allow_pickle=True)
+        traj = [np.asarray(t, dtype=np.float32) for t in traj_loaded]
+        front_loaded = np.load(front_path, allow_pickle=True)
+        front = [np.asarray(f, dtype=np.float32) for f in front_loaded]
+    except Exception as exc:
+        print(f"[WARN] Could not load traj/front for condition-aware eval: {exc}")
+        return None
+
+    if len(traj) != len(front):
+        print(f"[WARN] traj length ({len(traj)}) != front length ({len(front)}); skipping condition eval")
+        return None
+
+    # Build cf_col from feat_raw if available.
+    if feat_raw is not None and feat_raw.shape[1] > 10:
+        cf_col = feat_raw[:, 10].copy()
+        cf_col = np.where(np.isfinite(cf_col), cf_col, 0.0).astype(np.float32)
+    else:
+        cf_col = feat[:, 10].copy() if feat.shape[1] > 10 else None
+
+    cond_all = _compute_cond(traj, front, cf_col)  # (N, 4)
+    return cond_all[eval_idx]  # return eval-split subset
+
+
+def evaluate_neighbor_consistency_cond(
+    emb_test: np.ndarray,
+    feat_test: np.ndarray,
+    feat_raw_test: np.ndarray | None,
+    cond_eval: np.ndarray,
+    k: int,
+    seed: int,
+    feature_std_eps: float,
+    denominator_eps: float,
+    clip_quantile: float,
+    nan_policy: str,
+    feature_names: list[str] | None,
+    cond_speed_tol: float,
+    cond_dist_tol: float,
+    cond_vrel_tol: float,
+    cf_bucket_edges: list[float],
+    min_cond_candidates: int,
+) -> pd.DataFrame:
+    """Neighbor consistency evaluated within condition-compatible sets only.
+
+    For each anchor, nearest neighbors are found globally in embedding space but
+    the random baseline is drawn only from condition-compatible candidates.
+    This makes the ratio meaningful within comparable operating conditions.
+    """
+    import torch
+
+    n = len(emb_test)
+    rng = np.random.default_rng(seed)
+
+    # Build full condition mask [N, N].
+    cond_t = torch.as_tensor(cond_eval, dtype=torch.float32)
+    cond_gate = build_cond_mask(
+        cond_t,
+        speed_tol=cond_speed_tol,
+        dist_tol=cond_dist_tol,
+        vrel_tol=cond_vrel_tol,
+        cf_bucket_edges=cf_bucket_edges,
+    )
+    eye = torch.eye(n, dtype=torch.bool)
+    cond_gate = (cond_gate & ~eye).numpy()  # [N, N] bool, exclude self
+
+    rows = []
+    for f_idx in range(feat_test.shape[1]):
+        if feat_raw_test is not None and nan_policy == "ignore":
+            mask = np.isfinite(feat_raw_test[:, f_idx])
+            emb_sub = emb_test[mask]
+            f = feat_test[mask, f_idx]
+            cond_sub = cond_gate[np.ix_(mask, mask)]
+        else:
+            emb_sub = emb_test
+            f = feat_test[:, f_idx]
+            cond_sub = cond_gate
+
+        n_sub = int(len(f))
+        if n_sub <= k + 1:
+            rows.append(
+                {
+                    "feature_idx": f_idx,
+                    "feature_name": resolve_feature_name(feature_names, f_idx),
+                    "ratio_mean": np.nan,
+                    "ratio_median": np.nan,
+                    "mean_cond_candidates": np.nan,
+                    "frac_fallback": np.nan,
+                    "n_eval_used": n_sub,
+                    "note": f"skipped_small_n(n={n_sub}, k={k})",
+                }
+            )
+            continue
+
+        f_std = float(np.std(f))
+        if f_std < feature_std_eps:
+            rows.append(
+                {
+                    "feature_idx": f_idx,
+                    "feature_name": resolve_feature_name(feature_names, f_idx),
+                    "ratio_mean": np.nan,
+                    "ratio_median": np.nan,
+                    "mean_cond_candidates": np.nan,
+                    "frac_fallback": np.nan,
+                    "n_eval_used": n_sub,
+                    "note": f"skipped_low_variance(std={f_std:.3e})",
+                }
+            )
+            continue
+
+        nn = NearestNeighbors(n_neighbors=k + 1, metric="cosine")
+        nn.fit(emb_sub)
+        neigh_idx = nn.kneighbors(emb_sub, return_distance=False)[:, 1:]  # remove self
+
+        embed_dists = np.abs(f[:, None] - f[neigh_idx]).mean(axis=1)
+
+        # Random baseline: draw from condition-compatible candidates only.
+        rand_dists = np.zeros(n_sub, dtype=np.float64)
+        cand_counts = np.zeros(n_sub, dtype=np.int64)
+        fallback_count = 0
+        all_idx = np.arange(n_sub)
+        for i in range(n_sub):
+            compat = np.where(cond_sub[i])[0]  # condition-compatible, excluding self
+            cand_counts[i] = len(compat)
+            if len(compat) >= min_cond_candidates:
+                ridx = rng.choice(compat, size=min(k, len(compat)), replace=False)
+            else:
+                # Fallback: use all non-self samples.
+                fallback_count += 1
+                candidates = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
+                ridx = rng.choice(candidates, size=k, replace=False)
+            rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
+
+        denom = np.maximum(rand_dists, denominator_eps)
+        ratio = embed_dists / denom
+        if 0.0 < clip_quantile < 1.0:
+            hi = float(np.quantile(ratio, clip_quantile))
+            ratio = np.clip(ratio, 0.0, hi)
+
+        rows.append(
+            {
+                "feature_idx": f_idx,
+                "feature_name": resolve_feature_name(feature_names, f_idx),
+                "embed_dist_mean": float(np.mean(embed_dists)),
+                "random_dist_mean": float(np.mean(rand_dists)),
+                "ratio_mean": float(np.mean(ratio)),
+                "ratio_median": float(np.median(ratio)),
+                "mean_cond_candidates": float(np.mean(cand_counts)),
+                "frac_fallback": float(fallback_count) / max(1, n_sub),
+                "n_eval_used": n_sub,
+                "note": "ok",
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
 def save_umap_plots(
     emb_eval: np.ndarray,
     feat_eval: np.ndarray,
@@ -488,6 +685,14 @@ def main() -> None:
     if args.umap_color_source == "raw" and feat_raw is None:
         print("[WARN] --umap_color_source raw requested but --feat_raw_path is not provided; fallback to feat")
 
+    # Parse cf bucket edges.
+    cf_bucket_edges: list[float] = []
+    if args.cond_cf_bucket_edges:
+        try:
+            cf_bucket_edges = [float(x.strip()) for x in args.cond_cf_bucket_edges.split(",") if x.strip()]
+        except ValueError as e:
+            print(f"[WARN] Invalid --cond_cf_bucket_edges '{args.cond_cf_bucket_edges}': {e}; using empty")
+
     emb_train, emb_eval, feat_train, feat_eval, train_idx, eval_idx, split_note = _load_eval_views(
         emb=emb,
         feat=feat,
@@ -552,6 +757,43 @@ def main() -> None:
     neigh_path = analysis_dir / "neighbor_results.csv"
     neigh_df.to_csv(neigh_path, index=False)
 
+    # Task 2b: condition-aware neighbor consistency (optional, requires --front_path).
+    neigh_cond_path: Path | None = None
+    cond_eval: np.ndarray | None = None
+    if args.cond_mode != "off" and args.front_path is not None:
+        cond_eval = _load_cond_for_eval(
+            traj_path=args.traj_path,
+            front_path=args.front_path,
+            split=split,
+            eval_split=args.eval_split,
+            feat_raw=feat_raw,
+            feat=feat,
+            eval_idx=eval_idx,
+        )
+        if cond_eval is not None:
+            neigh_cond_df = evaluate_neighbor_consistency_cond(
+                emb_test=emb_eval,
+                feat_test=feat_eval,
+                feat_raw_test=feat_raw_eval,
+                cond_eval=cond_eval,
+                k=args.k_neighbors,
+                seed=args.seed,
+                feature_std_eps=args.feature_std_eps,
+                denominator_eps=args.neighbor_denominator_eps,
+                clip_quantile=args.neighbor_clip_quantile,
+                nan_policy=args.nan_policy,
+                feature_names=feature_names,
+                cond_speed_tol=args.cond_speed_tol,
+                cond_dist_tol=args.cond_dist_tol,
+                cond_vrel_tol=args.cond_vrel_tol,
+                cf_bucket_edges=cf_bucket_edges,
+                min_cond_candidates=args.min_cond_candidates,
+            )
+            neigh_cond_path = analysis_dir / "neighbor_results_cond.csv"
+            neigh_cond_df.to_csv(neigh_cond_path, index=False)
+    elif args.cond_mode != "off" and args.front_path is None:
+        print("[WARN] --cond_mode is not 'off' but --front_path was not provided; skipping condition-aware neighbor eval.")
+
     # Task 3: UMAP (evaluation split)
     save_umap_plots(
         emb_eval=emb_eval,
@@ -582,9 +824,16 @@ def main() -> None:
     print(f"best Spearman (ridge): {best_spearman:.4f}")
     print(f"mean Spearman (ridge): {mean_spearman:.4f}")
     print(f"mean neighbor ratio: {mean_neighbor_ratio:.4f}")
+    if neigh_cond_path is not None:
+        mean_cond_ratio = float(np.nanmean(neigh_cond_df["ratio_mean"].to_numpy()))
+        mean_cond_cands = float(np.nanmean(neigh_cond_df["mean_cond_candidates"].to_numpy()))
+        print(f"mean neighbor ratio (cond-aware): {mean_cond_ratio:.4f}")
+        print(f"mean cond candidates: {mean_cond_cands:.1f}")
     print(f"eval mode: {split_note}")
     print(f"Saved: {probe_path}")
     print(f"Saved: {neigh_path}")
+    if neigh_cond_path is not None:
+        print(f"Saved: {neigh_cond_path}")
     print(f"Saved: {analysis_dir / 'umap_coordinates.csv'}")
     print(f"Saved UMAP images in: {analysis_dir}")
 

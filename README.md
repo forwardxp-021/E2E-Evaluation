@@ -97,53 +97,47 @@ python build_dataset.py \
   - `--d0_max_gap`（默认 `200.0`）
   - `--d0_log1p / --no-d0_log1p`（默认开启）
 
-### 2) 训练
+## 为什么需要工况门控（条件感知训练）
+
+### 问题
+直接在全体样本间做特征距离对比存在一个根本缺陷：**不同工况（速度/跟车距离/相对速度/跟车覆盖率）下的驾驶行为是不可比的**。例如：
+- 高速行驶时的急刹与低速跟车时的轻刹，加速度指标天然不同，但不能据此判断它们风格相似或不同。
+- 非跟车段（cf_valid_frac ≈ 0）没有 thw、kv、kd 等跟车特征，与跟车段的特征距离毫无意义（cf 维度都填 0，错误地认为"完全一样"）。
+
+这导致评估中 `neighbor_consistency ratio_mean > 1`（embedding 邻居的特征差异反而比随机邻居更大），以及线性探针 Spearman 偏弱。
+
+### 解决方案：工况门控 + 混合 SupCon 损失
+1. **工况向量**：从 `traj.npy` 和 `front.npy` 计算每个样本的工况特征 `[speed_mean, dist_mean, vrel_mean, cf_valid_frac]`
+2. **硬盒门控**（`--cond_mode hard_box`）：只在工况相似的样本间计算特征距离和对比学习监督，消除不可比样本的干扰
+3. **混合损失**（`--loss_mode hybrid`）：`softkl`（软 KL 对齐）+ `supcon`（多正例 InfoNCE），前者保持全局软分布对齐，后者在工况内做强监督
+
+### 2) 训练（推荐：工况门控 + 混合 SupCon）
 
 ```bash
 python train_embedding.py \
   --traj_path output/traj.npy \
+  --front_path output/front.npy \
   --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
   --split_path output/split.npy \
-  --output_dir output/run_style_win80_stride20 \
-  --epochs 50 \
-  --batch_size 64 \
-  --temperature 0.1 \
-  --feat_norm none \
-  --tau_mode anchor_median \
-  --gate_topm 0
-```
-
-### Soft target ablation（tau vs local scaling）
-
-- 原始（tau）：
-  - `--feat_sim tau --tau_mode anchor_median`
-- local scaling（推荐）：
-  - `--feat_sim local_scale --ls_k 10 --ls_mode row --ls_sigma_min 1e-3 --ls_alpha 1.0`
-
-local scaling 的目标是让 soft target 更局部化，避免 `effective_k` 接近 batch size。
-
-可用以下命令验收（期望日志里 `effective_k_mean` 显著下降）：
-
-```bash
-python train_embedding.py \
-  --traj_path output/traj.npy \
-  --feat_path output/feat_style.npy \
-  --split_path output/split.npy \
-  --output_dir output/run_style_ls_k10 \
+  --output_dir output/run_cond_hybrid \
   --epochs 50 --batch_size 64 \
-  --temperature 0.1 \
   --feat_norm none \
-  --feat_sim local_scale \
-  --ls_k 10 --ls_mode row --ls_sigma_min 1e-3 \
-  --ls_alpha 1.5
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode hard_box \
+  --cond_speed_tol 2 --cond_dist_tol 5 --cond_vrel_tol 1 \
+  --cond_cf_bucket_edges "0.2,0.6" --min_cond_candidates 8 \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 0.2 \
+  --eval_every 10 --skip_val_clustering
 ```
 
-### 缺失感知特征距离（处理 cf 缺失导致的伪相似）
+训练日志中新增诊断指标：
+- `cond_cands`：每个 anchor 平均可用的工况兼容候选数
+- `cond_fallback`：因候选数不足而退回无门控行为的 anchor 比例
+- `supcon`/`softkl`：hybrid 模式下两个分项的损失值
 
-- `feat_style.npy` 在构建时会把 NaN/inf 填 0；对于 cf 相关维度（11–19）缺失较多时，“共同缺失样本对”会在特征距离上被错误拉近。
-- 训练时可额外提供 `feat_style_raw.npy` 生成有效维 mask，仅在双方都有效的维度上计算 pairwise feature distance，并按共同有效维度数归一化，减少伪近邻。
-
-推荐命令（local scaling + masked distance）：
+### 2b) 不使用工况门控的基础训练（向后兼容）
 
 ```bash
 python train_embedding.py \
@@ -153,26 +147,10 @@ python train_embedding.py \
   --split_path output/split.npy \
   --output_dir output/run_style_masked_ls_k1_a3 \
   --epochs 50 --batch_size 64 \
-  --temperature 0.1 \
   --feat_norm none \
   --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
   --feat_dist_mode masked --min_common_dims 5 \
   --eval_every 10
-```
-
-快速扫参（降低训练时评估开销）可把评估频率调低，并按需跳过 val 聚类评估：
-
-```bash
-python train_embedding.py \
-  --traj_path output/traj.npy \
-  --feat_path output/feat_style.npy \
-  --split_path output/split.npy \
-  --output_dir output/run_style_sweep_fast \
-  --epochs 50 --batch_size 64 \
-  --feat_sim local_scale \
-  --ls_k 10 --ls_mode row --ls_sigma_min 1e-3 --ls_alpha 1.5 \
-  --eval_every 10 \
-  --skip_val_clustering
 ```
 
 ### 3) 导出全量 embedding
@@ -181,27 +159,35 @@ python train_embedding.py \
 python export_embeddings.py \
   --traj_path output/traj.npy \
   --split_path output/split.npy \
-  --checkpoint output/run_style_win80_stride20/best_model.pth \
-  --output_path output/run_style_win80_stride20/embeddings_all.npy
+  --checkpoint output/run_cond_hybrid/best_model.pth \
+  --output_path output/run_cond_hybrid/embeddings_all.npy
 ```
 
-### 4) 评估
+### 4) 评估（含工况感知邻域一致性）
 
 ```bash
 python evaluate_embedding.py \
-  --embeddings_path output/run_style_win80_stride20/embeddings_all.npy \
+  --embeddings_path output/run_cond_hybrid/embeddings_all.npy \
   --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
   --split_path output/split.npy \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
   --eval_split test \
   --feature_names_path output/feature_names_style.json \
-  --analysis_dir output/run_style_win80_stride20/analysis_best \
-  --plot_first_k 20 \
-  --k_neighbors 10 \
-  --umap_neighbors 30 \
-  --umap_min_dist 0.1 \
-  --seed 42 \
-  --kmeans_clusters 8
+  --analysis_dir output/run_cond_hybrid/analysis_best \
+  --cond_mode hard_box \
+  --cond_speed_tol 2 --cond_dist_tol 5 --cond_vrel_tol 1 \
+  --cond_cf_bucket_edges "0.2,0.6" --min_cond_candidates 8 \
+  --plot_first_k 20 --k_neighbors 10 \
+  --umap_neighbors 30 --umap_min_dist 0.1 \
+  --seed 42 --kmeans_clusters 8
 ```
+
+工况感知评估额外生成 `neighbor_results_cond.csv`：
+- `ratio_mean`：在工况兼容候选集内的随机基线比较（更公平）
+- `mean_cond_candidates`：每个 anchor 在工况内的平均候选数
+- `frac_fallback`：因候选数不足而退回全局随机基线的比例
 
 ## 关键输出文件
 
@@ -213,4 +199,6 @@ python evaluate_embedding.py \
 - `output/split.npy`: train/val/test
 - `output/<run>/best_model.pth`: 最优模型
 - `output/<run>/embeddings_all.npy`: 全量 embedding
+- `output/<run>/analysis_*/neighbor_results.csv`: 全局邻域一致性
+- `output/<run>/analysis_*/neighbor_results_cond.csv`: 工况内邻域一致性（条件感知评估）
 - `output/<run>/analysis_*`: 评估结果图表与 CSV
