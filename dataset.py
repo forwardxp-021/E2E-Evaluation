@@ -138,7 +138,9 @@ class TrajFeatureDataset(Dataset):
             raise ValueError("traj/feat/split lengths must match")
 
         # Condition vector: [speed_mean, dist_mean, vrel_mean, cf_valid_frac] (N, 4)
+        # Front trajectories are also retained for rel_kinematics input mode.
         self.cond: np.ndarray | None = None
+        self.front: list | None = None
         if front_path is not None:
             front_loaded = np.load(front_path, allow_pickle=True)
             front = [np.asarray(f, dtype=np.float32) for f in front_loaded]
@@ -146,6 +148,7 @@ class TrajFeatureDataset(Dataset):
                 raise ValueError(
                     f"front length {len(front)} must match traj length {len(self.traj)}"
                 )
+            self.front = front
             # cf_valid_frac: prefer raw (0-1 scale) when available, else use standardized feat col.
             if feat_raw is not None and feat_raw.shape[1] > 10:
                 cf_col = feat_raw[:, 10].copy()
@@ -201,6 +204,7 @@ class TrajFeatureDataset(Dataset):
 
         return {
             "traj": self.traj[index],
+            "front_traj": None if self.front is None else self.front[index],
             "feat": self.feat[index],
             "feat_valid": None if self.feat_valid is None else self.feat_valid[index],
             "cond": None if self.cond is None else self.cond[index],
@@ -216,6 +220,11 @@ def collate_variable_traj(batch: list[dict]) -> dict:
     lengths = torch.tensor([x.shape[0] for x in traj_list], dtype=torch.long)
     traj = pad_sequence(traj_list, batch_first=True)
 
+    front_traj = None
+    if batch[0]["front_traj"] is not None:
+        front_list = [torch.as_tensor(item["front_traj"], dtype=torch.float32) for item in batch]
+        front_traj = pad_sequence(front_list, batch_first=True)
+
     feat = torch.as_tensor(np.stack([item["feat"] for item in batch], axis=0), dtype=torch.float32)
     feat_valid = None
     if batch[0]["feat_valid"] is not None:
@@ -229,6 +238,7 @@ def collate_variable_traj(batch: list[dict]) -> dict:
 
     return {
         "traj": traj,
+        "front_traj": front_traj,
         "lengths": lengths,
         "feat": feat,
         "feat_valid": feat_valid,
