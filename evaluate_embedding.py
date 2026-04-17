@@ -397,12 +397,19 @@ def evaluate_neighbor_consistency_cond(
 ) -> pd.DataFrame:
     """Neighbor consistency evaluated within condition-compatible sets only.
 
-    For each anchor, nearest neighbors are found globally in embedding space but
-    the random baseline is drawn only from condition-compatible candidates.
-    This makes the ratio meaningful within comparable operating conditions.
+    For each anchor, BOTH the embedding kNN neighbors AND the random baseline are
+    drawn exclusively from condition-compatible candidates.  This matches the
+    training objective (which uses cond gating) and avoids inflating cond-aware
+    ratios by cross-condition pairs.
+
+    Embedding kNN selection uses cosine distance restricted to compat, computed
+    efficiently via unit-vector dot product (n<=395 typical, so per-anchor loop
+    is fast enough).  When compat has fewer than k candidates, all compat
+    members are used as neighbors (for both embedding and random baseline).
 
     Supports cond_mode in {"hard_box", "knn"}:
-      - hard_box: uses absolute-tolerance box filter; falls back when < min_cond_candidates.
+      - hard_box: uses absolute-tolerance box filter; falls back to all non-self
+        when < min_cond_candidates.
       - knn: uses robust-scale kNN mask; fallback only for zero-compatible anchors.
     """
     import torch
@@ -480,46 +487,52 @@ def evaluate_neighbor_consistency_cond(
             )
             continue
 
-        nn = NearestNeighbors(n_neighbors=k + 1, metric="cosine")
-        nn.fit(emb_sub)
-        neigh_idx = nn.kneighbors(emb_sub, return_distance=False)[:, 1:]  # remove self
+        # Pre-compute unit-normalized embeddings once for efficient per-anchor
+        # cosine similarity via dot product (n<=395, so this per-anchor loop is fast).
+        emb_norms = np.linalg.norm(emb_sub, axis=1, keepdims=True)
+        emb_unit = emb_sub / np.where(emb_norms > 0, emb_norms, 1.0)
 
-        embed_dists = np.abs(f[:, None] - f[neigh_idx]).mean(axis=1)
-
-        # Random baseline: draw from condition-compatible candidates only.
+        embed_dists = np.zeros(n_sub, dtype=np.float64)
         rand_dists = np.zeros(n_sub, dtype=np.float64)
         cand_counts = np.zeros(n_sub, dtype=np.int64)
         all_idx = np.arange(n_sub)
 
+        # For knn mode, fallback tracking is derived from the pre-built mask tensor.
         if cond_mode == "knn":
-            # For knn mode, cond_sub already encodes the correct candidate set
-            # (cond_k nearest, or all compatible if fewer, or all non-self for fallback rows).
-            # frac_fallback comes from fallback_sub (zero-compatible anchors).
             fallback_count = int(fallback_sub.sum()) if fallback_sub is not None else 0
-            for i in range(n_sub):
-                compat = np.where(cond_sub[i])[0]
-                cand_counts[i] = len(compat)
-                # build_cond_knn_mask guarantees >=1 candidate per anchor (last-resort
-                # fallback expands to all non-self for zero-compatible anchors), so
-                # len(compat) >= 1 is always true here for knn mode.
-                if len(compat) == 0:
-                    # Defensive: should not happen; fall back to all non-self.
-                    compat = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
-                ridx = rng.choice(compat, size=min(k, len(compat)), replace=False)
-                rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
-        else:  # hard_box
+        else:
             fallback_count = 0
-            for i in range(n_sub):
-                compat = np.where(cond_sub[i])[0]
-                cand_counts[i] = len(compat)
-                if len(compat) >= min_cond_candidates:
-                    ridx = rng.choice(compat, size=min(k, len(compat)), replace=False)
-                else:
-                    # Fallback: use all non-self samples.
+
+        for i in range(n_sub):
+            compat = np.where(cond_sub[i])[0]  # self already excluded by cond_sub
+            cand_counts[i] = len(compat)
+
+            if cond_mode == "knn":
+                if len(compat) == 0:
+                    # Defensive: build_cond_knn_mask guarantees >=1; fall back to all non-self.
+                    compat = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
+            else:  # hard_box
+                if len(compat) < min_cond_candidates:
                     fallback_count += 1
-                    candidates = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
-                    ridx = rng.choice(candidates, size=k, replace=False)
-                rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
+                    compat = np.concatenate([all_idx[:i], all_idx[i + 1 :]])
+
+            n_compat = len(compat)
+            k_use = min(k, n_compat)
+
+            # Cond-restricted embedding kNN: select k_use nearest among compat
+            # using cosine similarity (1 - cosine_distance = dot of unit vectors).
+            cos_sims = emb_unit[i] @ emb_unit[compat].T  # [n_compat]
+            if n_compat < k:
+                # Fewer compat candidates than k; use all of them.
+                top_compat = compat
+            else:
+                top_local = np.argpartition(-cos_sims, k_use - 1)[:k_use]
+                top_compat = compat[top_local]
+            embed_dists[i] = np.abs(f[i] - f[top_compat]).mean()
+
+            # Random baseline: draw k_use samples from the same compat set.
+            ridx = rng.choice(compat, size=k_use, replace=False)
+            rand_dists[i] = np.abs(f[i] - f[ridx]).mean()
 
         denom = np.maximum(rand_dists, denominator_eps)
         ratio = embed_dists / denom
@@ -876,8 +889,10 @@ def main() -> None:
     print(f"mean neighbor ratio: {mean_neighbor_ratio:.4f}")
     if neigh_cond_path is not None:
         mean_cond_ratio = float(np.nanmean(neigh_cond_df["ratio_mean"].to_numpy()))
+        median_cond_ratio = float(np.nanmedian(neigh_cond_df["ratio_mean"].to_numpy()))
         mean_cond_cands = float(np.nanmean(neigh_cond_df["mean_cond_candidates"].to_numpy()))
         print(f"mean neighbor ratio (cond-aware): {mean_cond_ratio:.4f}")
+        print(f"median neighbor ratio (cond-aware): {median_cond_ratio:.4f}")
         print(f"mean cond candidates: {mean_cond_cands:.1f}")
     print(f"eval mode: {split_note}")
     print(f"Saved: {probe_path}")
