@@ -211,6 +211,74 @@ python evaluate_embedding.py \
 - `mean_cond_candidates`：每个 anchor 在工况内的平均候选数
 - `frac_fallback`：因候选数不足而退回全局随机基线的比例
 
+## rel_kinematics 输入模式
+
+### 动机
+
+原始 `raw_xyv` 模式直接将 ego 轨迹的 `[x, y, vx, vy]` 送入 GRU，缺少显式的相对运动信息。对于 jerk、yaw_rate、thw 等风格特征，它们本质上是**差分**和**相对量**，如果在输入层就提供这些归纳偏置，模型更容易学习出可分离的风格维度。
+
+`rel_kinematics` 模式从对齐的 ego/front 窗口计算 12 维逐帧特征后再送入 GRU，可改善 jerk/yaw/thw 等维度的邻域一致性。
+
+### 12 维特征说明（dt = 0.1 s，Waymo 10 Hz）
+
+| 索引 | 名称 | 公式 |
+|------|------|------|
+| 0 | `ego_v` | √(vx²+vy²) |
+| 1 | `front_v` | √(front_vx²+front_vy²) |
+| 2 | `v_rel` | ego_v − front_v |
+| 3 | `dx` | front_x − ego_x |
+| 4 | `dy` | front_y − ego_y |
+| 5 | `dist` | √(dx²+dy²) |
+| 6 | `closing_rate` | diff(dist) / dt（t=0 置 0） |
+| 7 | `ego_a` | diff(ego_v) / dt（t=0 置 0） |
+| 8 | `front_a` | diff(front_v) / dt（t=0 置 0） |
+| 9 | `ego_heading` | atan2(vy, vx) |
+| 10 | `ego_yaw_rate` | wrap(diff(ego_heading)) / dt（t=0 置 0） |
+| 11 | `thw` | dist / max(ego_v, ε) |
+
+填充帧被置零（用 `lengths` mask）。角度差通过 `wrap_angle` 归约到 `[-π, π]`。
+
+### 示例训练命令（rel_kinematics）
+
+```bash
+python train_embedding.py \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --feat_path output/feat_style.npy \
+  --feat_raw_path output/feat_style_raw.npy \
+  --split_path output/split.npy \
+  --output_dir output/run_relkin_knn \
+  --input_mode rel_kinematics --dt 0.1 \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 1.0 \
+  --feat_clip_value 3.0 \
+  --eval_every 10 --skip_val_clustering
+```
+
+启动时会打印：
+```
+Input mode: rel_kinematics (12-dim) | dt=0.1s | front loaded: <N> windows
+```
+
+### 示例导出命令（rel_kinematics）
+
+```bash
+python export_embeddings.py \
+  --traj_path output/traj.npy \
+  --front_path output/front.npy \
+  --split_path output/split.npy \
+  --checkpoint output/run_relkin_knn/best_model.pth \
+  --output_path output/run_relkin_knn/embeddings_all.npy \
+  --input_mode rel_kinematics --dt 0.1
+```
+
+> **注意**：`--input_mode` 和 `--dt` 必须与训练时使用的值一致，否则模型结构不匹配会导致权重加载失败。
+
 ## 关键输出文件
 
 - `output/traj.npy`: 自车滑窗轨迹

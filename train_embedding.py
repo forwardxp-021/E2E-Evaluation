@@ -37,6 +37,24 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hidden_dim", type=int, default=128)
     parser.add_argument("--mlp_dim", type=int, default=128)
     parser.add_argument("--emb_dim", type=int, default=64)
+    parser.add_argument(
+        "--input_mode",
+        type=str,
+        choices=["raw_xyv", "rel_kinematics"],
+        default="raw_xyv",
+        help=(
+            "Input representation for TrajectoryEncoder. "
+            "'raw_xyv' (default): feed raw ego [x,y,vx,vy] to GRU. "
+            "'rel_kinematics': compute 12-dim relative kinematics from ego+front before GRU; "
+            "requires --front_path."
+        ),
+    )
+    parser.add_argument(
+        "--dt",
+        type=float,
+        default=0.1,
+        help="Time step in seconds between frames (Waymo 10 Hz → 0.1 s). Used by rel_kinematics.",
+    )
 
     parser.add_argument("--k_pos", type=int, default=8)
     parser.add_argument("--k_neg", type=int, default=32)
@@ -159,7 +177,10 @@ def encode_subset(model: TrajectoryEncoder, loader: DataLoader, device: str) -> 
         for batch in loader:
             traj = batch["traj"].to(device)
             lengths = batch["lengths"].to(device)
-            z = model(traj, lengths)
+            front = None
+            if model.input_mode == "rel_kinematics" and batch.get("front_traj") is not None:
+                front = batch["front_traj"].to(device)
+            z = model(traj, lengths, front=front)
             embs.append(z.cpu().numpy())
     return np.concatenate(embs, axis=0) if embs else np.zeros((0, model.head[-1].out_features), dtype=np.float32)
 
@@ -227,6 +248,15 @@ def main() -> None:
         if args.cond_mode != "off":
             print("[WARN] --cond_mode is not 'off' but --front_path was not provided; condition gating will be skipped.")
 
+    if args.input_mode == "rel_kinematics":
+        if args.front_path is None:
+            raise ValueError("--input_mode rel_kinematics requires --front_path to be provided.")
+        if dataset.front is None:
+            raise ValueError("front trajectories were not loaded; ensure --front_path points to a valid file.")
+        print(f"Input mode: rel_kinematics (12-dim) | dt={args.dt}s | front loaded: {len(dataset.front)} windows")
+    else:
+        print(f"Input mode: raw_xyv ({args.input_dim}-dim)")
+
     train_loader = DataLoader(
         Subset(dataset, train_idx),
         batch_size=args.batch_size,
@@ -257,6 +287,8 @@ def main() -> None:
         hidden_dim=args.hidden_dim,
         mlp_dim=args.mlp_dim,
         emb_dim=args.emb_dim,
+        input_mode=args.input_mode,
+        dt=args.dt,
     ).to(device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
@@ -311,7 +343,11 @@ def main() -> None:
             if cond is not None:
                 cond = cond.to(device)
 
-            z = model(traj, lengths)
+            front = None
+            if model.input_mode == "rel_kinematics" and batch.get("front_traj") is not None:
+                front = batch["front_traj"].to(device)
+
+            z = model(traj, lengths, front=front)
             # Replace hard pair contrastive with soft feature-guided contrastive loss.
             # feat is supervision signal only; it is never fed into the trajectory encoder forward path.
             loss, stats = criterion(z, feat, feat_valid=feat_valid, cond=cond)
