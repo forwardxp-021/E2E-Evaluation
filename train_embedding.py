@@ -251,8 +251,6 @@ def main() -> None:
     if args.input_mode == "rel_kinematics":
         if args.front_path is None:
             raise ValueError("--input_mode rel_kinematics requires --front_path to be provided.")
-        if dataset.front is None:
-            raise ValueError("front trajectories were not loaded; ensure --front_path points to a valid file.")
         print(f"Input mode: rel_kinematics (12-dim) | dt={args.dt}s | front loaded: {len(dataset.front)} windows")
     else:
         print(f"Input mode: raw_xyv ({args.input_dim}-dim)")
