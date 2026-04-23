@@ -315,7 +315,7 @@ python export_embeddings.py \
 |------|----------|------------|-----------|------------|
 | `conservative` | 2.5 s | ±1.5/3.0 m/s² | 0.5 m/s²/step | 强（yaw_rate_clip=0.05 rad/step） |
 | `aggressive` | 1.0 s | ±3.5/5.0 m/s² | 2.0 m/s²/step | 弱（yaw_rate_clip=0.20 rad/step） |
-| `lateral_stable` | 1.8 s | ±2.0/3.5 m/s² | 0.8 m/s²/step | 极强（yaw_rate_clip=0.03 rad/step） |
+| `lateral_stable` | 1.8 s | ±2.0/3.5 m/s² | 0.8 m/s²/step | 极强（yaw_rate_clip=0.01 rad/step, heading_smooth_alpha=0.7） |
 
 ### 完整工作流（复制可用命令）
 
@@ -409,3 +409,72 @@ python evaluate_policy_separation.py \
 - `front.npy` 中的前车轨迹保持不变（外生 log-replay，不响应 ego）。
 - 下游 `train_embedding.py` / `export_embeddings.py` / `evaluate_embedding.py` 均无需修改，直接指向新 output_dir 即可。
 - 若 `--src_split_path` 未提供，脚本会按 scenario_id MD5 哈希自动分配 train/val/test（与 `build_dataset.py` 一致）。
+
+---
+
+## Source-aligned policy separation
+
+### Why it matters
+
+The basic policy separation evaluation (`evaluate_policy_separation.py`) pools all evaluation
+samples together, so differences between policies may partly reflect differences in the *source
+window distribution* (different scenarios, speeds, road types) rather than genuine policy-specific
+behaviour.
+
+Source-aligned evaluation removes this confound by comparing policies **only within the same
+source window**: for each of the `N_src` original log-replay windows there is exactly one rollout
+per policy, so every within-source comparison holds the scenario constant and measures the
+policy-only signal.
+
+### Metrics
+
+| Metric | Interpretation |
+|---|---|
+| **Pairwise inter-policy distance** | Mean cosine distance between two policies for the same source window. A higher value → policies produce more distinct embedding vectors on the same scenario. |
+| **Within-group centroid accuracy** | For each source group (P embeddings), assign each to the nearest global policy centroid; fraction correctly assigned. Should approach 1.0 for well-separated policies. |
+| **Within-source clustering score** | Ratio of mean within-source inter-policy distance to mean cross-source same-policy distance. >1 means policies differ more than scenario variance. |
+
+### How to run source-aligned evaluation
+
+```bash
+python evaluate_policy_separation_aligned.py \
+  --embeddings_path output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --policy_id_path  output_policy_rollouts/policy_id.npy \
+  --source_index_path output_policy_rollouts/source_index.npy \
+  --split_path      output_policy_rollouts/split.npy \
+  --policy_names_path output_policy_rollouts/policy_names.json \
+  --eval_split test \
+  --centroid_split train \
+  --analysis_dir output_policy_rollouts/run_relkin_knn/analysis_policy_aligned
+```
+
+Outputs:
+- `policy_separation_aligned_summary.json` — all aligned metrics (pairwise distances, clustering score, within-group accuracy)
+- `policy_pairwise_dist.csv` — per-source, per-policy-pair cosine distances
+
+### Improving lateral_stable separability
+
+If `lateral_stable` Recall@10 or within-group accuracy is low, tighten the yaw-rate clip and
+add heading smoothing when generating rollouts:
+
+```bash
+python generate_policy_rollouts.py \
+  --src_traj_path  output/traj.npy \
+  --src_front_path output/front.npy \
+  --src_split_path output/split.npy \
+  --output_dir     output_policy_rollouts \
+  --lateral_stable_yaw_rate_clip 0.005 \
+  --heading_smooth_alpha 0.8
+```
+
+The end-of-run report shows `yaw_rate_abs_p95` and `heading_change_total` per policy, so you can
+verify the difference without running the full feature pipeline:
+
+```
+Per-policy kinematics report (from generated trajectories):
+  Policy                  yaw_rate|abs|p95    heading_change_total   yaw_rate_clip
+  --------------------  ------------------  ----------------------  --------------
+  conservative                     0.05000                 x.xxxxx          0.0500
+  aggressive                       0.20000                 x.xxxxx          0.2000
+  lateral_stable                   0.00500                 x.xxxxx          0.0050
+```
