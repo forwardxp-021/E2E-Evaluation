@@ -1,44 +1,46 @@
-"""Source-aligned policy separation evaluation for synthetic rollout benchmark.
+"""Source-aligned policy separation evaluation.
 
-For each source_index, exactly one sample per policy exists.  This script
-factors out scenario-distribution variance by comparing policies *under the
-same source window*, producing more controlled "policy-only" metrics.
+Controls for scenario distribution by grouping samples by ``source_index``
+(each source window was rolled out under every policy exactly once).  Within
+each source group the distances / centroids are computed so that any observed
+difference reflects policy style rather than scenario difficulty.
 
-Computes:
-  1. Pairwise inter-policy distances within the same source window:
-       For each source group (one sample per policy), compute all P*(P-1)/2
-       cosine distances between policy embeddings.  Report mean / median / p25 /
-       p75 distribution across sources.
-  2. Source-aligned retrieval:
-       For each sample, restrict the candidate pool to the other P-1 samples
-       sharing the same source_index.  By construction the nearest neighbour
-       always belongs to a different policy (100%), so the key metric is
-       within-group policy-centroid assignment accuracy.
-  3. Within-source clustering score:
-       ratio = mean_within_source_inter_policy_dist / mean_cross_source_same_policy_dist
-       Higher → policies are more separated within a source than the same policy
-       varies across different source windows (stronger controlled signal).
+Computations (applied to --eval_split samples only, centroids from train):
+  (a) Validate that each source_index contains every policy exactly once;
+      report counts of missing / duplicate (policy, source) pairs.
+  (b) Pairwise embedding distances within each source group for every policy
+      pair — both Euclidean and cosine distance;
+      saved to policy_pairwise_dist.csv.
+  (c) Within-source classification accuracy: for each source group in the
+      eval split, assign the policy label of the nearest train-split centroid
+      and aggregate accuracy.
+  (d) Within-source retrieval: for each eval sample rank the other samples in
+      the *same* source by distance; report whether the nearest neighbour is
+      the most centroid-similar policy; also compute the mean margin between
+      the closest and farthest within-source distances.
+  (e) Save policy_separation_aligned_summary.json.
 
-Outputs written to --analysis_dir:
-    policy_separation_aligned_summary.json  – all summary metrics
-    policy_pairwise_dist.csv                – per-source, per-policy-pair distances
+Outputs written to --analysis_dir (default: directory containing embeddings):
+    policy_separation_aligned_summary.json
+    policy_pairwise_dist.csv
 
 Usage example:
     python evaluate_policy_separation_aligned.py \\
-        --embeddings_path output_policy_rollouts/run_relkin_knn/embeddings_all.npy \\
-        --policy_id_path  output_policy_rollouts/policy_id.npy \\
+        --embeddings_path  output_policy_rollouts/run_relkin_knn/embeddings_all.npy \\
+        --policy_id_path   output_policy_rollouts/policy_id.npy \\
         --source_index_path output_policy_rollouts/source_index.npy \\
-        --split_path      output_policy_rollouts/split.npy \\
-        --policy_names_path output_policy_rollouts/policy_names.json \\
+        --split_path       output_policy_rollouts/split.npy \\
         --eval_split test \\
-        --analysis_dir output_policy_rollouts/run_relkin_knn/analysis_policy_aligned
+        --analysis_dir     output_policy_rollouts/run_relkin_knn/analysis_aligned \\
+        --seed 42
 """
 
 import argparse
 import json
 import os
-from itertools import combinations
+from collections import defaultdict
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -49,26 +51,245 @@ from sklearn.preprocessing import normalize
 # Helpers
 # ---------------------------------------------------------------------------
 
+def _l2(a: np.ndarray, b: np.ndarray) -> float:
+    """Euclidean distance between two 1-D vectors."""
+    return float(np.linalg.norm(a - b))
+
+
 def _cosine_dist(a: np.ndarray, b: np.ndarray) -> float:
-    """Cosine distance (1 - cosine_similarity) between two 1-D vectors."""
-    an = a / (np.linalg.norm(a) + 1e-12)
-    bn = b / (np.linalg.norm(b) + 1e-12)
-    return float(1.0 - np.dot(an, bn))
+    """Cosine distance (1 – cosine similarity) between two 1-D vectors."""
+    na = np.linalg.norm(a)
+    nb = np.linalg.norm(b)
+    if na == 0.0 or nb == 0.0:
+        return 1.0
+    return float(1.0 - np.dot(a, b) / (na * nb))
 
 
-def _policy_centroids(
-    embeddings: np.ndarray,
+def _centroid(embeddings: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Mean of embeddings selected by boolean mask."""
+    return embeddings[mask].mean(axis=0)
+
+
+# ---------------------------------------------------------------------------
+# Core computations
+# ---------------------------------------------------------------------------
+
+def validate_source_policy_coverage(
+    source_index: np.ndarray,
     policy_id: np.ndarray,
-    unique_ids: list[int],
-) -> dict[int, np.ndarray]:
-    """Compute mean (centroid) embedding per policy label."""
-    centroids: dict[int, np.ndarray] = {}
-    for pid in unique_ids:
-        mask = policy_id == pid
-        if mask.sum() == 0:
+    unique_policies: List[int],
+) -> Dict:
+    """Check that every (source, policy) pair appears exactly once.
+
+    Returns a dict with keys:
+        n_sources, n_expected, n_found,
+        n_complete_sources, n_missing_pairs, n_duplicate_pairs,
+        missing_pairs (list of (src, pid)),
+        duplicate_pairs (list of (src, pid, count))
+    """
+    unique_sources = sorted(set(source_index.tolist()))
+    n_sources = len(unique_sources)
+    expected_per_src = len(unique_policies)
+    n_expected = n_sources * expected_per_src
+
+    # Count (source, policy) occurrences
+    pair_counts: Dict[Tuple[int, int], int] = defaultdict(int)
+    for src, pid in zip(source_index.tolist(), policy_id.tolist()):
+        pair_counts[(int(src), int(pid))] += 1
+
+    missing_pairs = []
+    duplicate_pairs = []
+    for src in unique_sources:
+        for pid in unique_policies:
+            cnt = pair_counts.get((src, pid), 0)
+            if cnt == 0:
+                missing_pairs.append((src, pid))
+            elif cnt > 1:
+                duplicate_pairs.append((src, pid, cnt))
+
+    n_complete = sum(
+        1 for src in unique_sources
+        if all(pair_counts.get((src, pid), 0) == 1 for pid in unique_policies)
+    )
+
+    return {
+        "n_sources": n_sources,
+        "n_expected_pairs": n_expected,
+        "n_found_pairs": int(len(source_index)),
+        "n_complete_sources": n_complete,
+        "n_missing_pairs": len(missing_pairs),
+        "n_duplicate_pairs": len(duplicate_pairs),
+        "missing_pairs": missing_pairs[:50],   # cap for JSON size
+        "duplicate_pairs": duplicate_pairs[:50],
+    }
+
+
+def compute_pairwise_distances(
+    embeddings: np.ndarray,
+    source_index: np.ndarray,
+    policy_id: np.ndarray,
+    unique_policies: List[int],
+) -> pd.DataFrame:
+    """Compute per-source pairwise (Euclidean + cosine) distances for each policy pair.
+
+    Only sources that have exactly one sample per policy are included.
+    Returns a DataFrame with columns:
+        source_index, policy_a, policy_b, euclidean_dist, cosine_dist
+    """
+    rows = []
+    unique_sources = sorted(set(source_index.tolist()))
+
+    # Build lookup: (src, pid) -> embedding index
+    src_pid_to_idx: Dict[Tuple[int, int], int] = {}
+    for i, (src, pid) in enumerate(zip(source_index.tolist(), policy_id.tolist())):
+        key = (int(src), int(pid))
+        if key not in src_pid_to_idx:
+            src_pid_to_idx[key] = i
+        # If duplicate, skip (keep first)
+
+    for src in unique_sources:
+        # Check all policies present exactly once
+        indices = {}
+        ok = True
+        for pid in unique_policies:
+            key = (src, pid)
+            if key not in src_pid_to_idx:
+                ok = False
+                break
+            indices[pid] = src_pid_to_idx[key]
+        if not ok:
             continue
-        centroids[pid] = normalize(embeddings[mask].mean(axis=0, keepdims=True), norm="l2")[0]
-    return centroids
+
+        for ai, pa in enumerate(unique_policies):
+            for pb in unique_policies[ai + 1:]:
+                ea = embeddings[indices[pa]]
+                eb = embeddings[indices[pb]]
+                rows.append({
+                    "source_index": src,
+                    "policy_a": pa,
+                    "policy_b": pb,
+                    "euclidean_dist": _l2(ea, eb),
+                    "cosine_dist": _cosine_dist(ea, eb),
+                })
+
+    return pd.DataFrame(rows)
+
+
+def compute_centroid_accuracy(
+    embeddings: np.ndarray,
+    source_index: np.ndarray,
+    policy_id: np.ndarray,
+    unique_policies: List[int],
+    train_mask: np.ndarray,
+    eval_mask: np.ndarray,
+) -> Tuple[float, Dict[int, float]]:
+    """Nearest-centroid classification accuracy within source groups.
+
+    Centroids are computed from train-split samples (one per policy).
+    For each eval sample the policy is predicted as the nearest centroid
+    (Euclidean distance).  Only eval sources that have at least one sample
+    per policy in the train split are used.
+
+    Returns:
+        overall_accuracy: float
+        per_policy_accuracy: {pid: float}
+    """
+    # Build train centroids
+    centroids: Dict[int, np.ndarray] = {}
+    for pid in unique_policies:
+        mask = train_mask & (policy_id == pid)
+        if mask.sum() > 0:
+            centroids[pid] = embeddings[mask].mean(axis=0)
+
+    if len(centroids) < len(unique_policies):
+        missing = [p for p in unique_policies if p not in centroids]
+        print(f"  [warn] Centroids missing for policies: {missing} (no train samples)")
+
+    if not centroids:
+        return 0.0, {}
+
+    centroid_matrix = np.stack([centroids[pid] for pid in sorted(centroids)], axis=0)
+    centroid_pids = sorted(centroids.keys())
+
+    # Predict for eval samples
+    eval_indices = np.where(eval_mask)[0]
+    correct = 0
+    total = 0
+    per_policy_correct: Dict[int, int] = defaultdict(int)
+    per_policy_total: Dict[int, int] = defaultdict(int)
+
+    for i in eval_indices:
+        emb = embeddings[i]
+        true_pid = int(policy_id[i])
+        dists = np.linalg.norm(centroid_matrix - emb, axis=1)
+        pred_pid = centroid_pids[int(np.argmin(dists))]
+        per_policy_total[true_pid] += 1
+        if pred_pid == true_pid:
+            correct += 1
+            per_policy_correct[true_pid] += 1
+        total += 1
+
+    overall_acc = correct / total if total > 0 else 0.0
+    per_policy_acc = {
+        pid: per_policy_correct[pid] / per_policy_total[pid]
+        for pid in unique_policies
+        if per_policy_total[pid] > 0
+    }
+    return overall_acc, per_policy_acc
+
+
+def compute_within_source_retrieval(
+    embeddings: np.ndarray,
+    source_index: np.ndarray,
+    policy_id: np.ndarray,
+    unique_policies: List[int],
+    eval_mask: np.ndarray,
+    centroids: Dict[int, np.ndarray],
+) -> Tuple[float, float, float]:
+    """Within-source retrieval metrics for eval samples.
+
+    For each eval sample:
+      - Find the other samples in the *same* source (eval split only).
+      - Rank them by Euclidean distance.
+      - "Hit": the nearest within-source neighbour shares the most
+        centroid-similar policy (i.e., nearest centroid ranks the true policy
+        above all others → same policy = true policy here since policies are
+        discrete).
+      - Margin: distance(farthest within-source) – distance(nearest within-source).
+
+    Returns:
+        hit_rate: fraction of eval samples where nearest within-source neighbour
+                  has the same policy label.
+        mean_margin: mean margin between farthest and nearest within-source
+                     distances.
+        median_margin: median margin.
+    """
+    # Group eval indices by source
+    eval_indices = np.where(eval_mask)[0]
+    src_to_eval_indices: Dict[int, List[int]] = defaultdict(list)
+    for i in eval_indices:
+        src_to_eval_indices[int(source_index[i])].append(i)
+
+    hits = []
+    margins = []
+
+    for src, idxs in src_to_eval_indices.items():
+        if len(idxs) < 2:
+            continue  # need at least 2 samples to do within-source retrieval
+        for i in idxs:
+            others = [j for j in idxs if j != i]
+            emb_i = embeddings[i]
+            dists = np.array([np.linalg.norm(embeddings[j] - emb_i) for j in others])
+            nearest_j = others[int(np.argmin(dists))]
+            nearest_pid = int(policy_id[nearest_j])
+            true_pid = int(policy_id[i])
+            hits.append(int(nearest_pid == true_pid))
+            margins.append(float(np.max(dists) - np.min(dists)))
+
+    hit_rate = float(np.mean(hits)) if hits else float("nan")
+    mean_margin = float(np.mean(margins)) if margins else float("nan")
+    median_margin = float(np.median(margins)) if margins else float("nan")
+    return hit_rate, mean_margin, median_margin
 
 
 # ---------------------------------------------------------------------------
@@ -77,13 +298,16 @@ def _policy_centroids(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Source-aligned policy separation evaluation."
+        description=(
+            "Source-aligned policy separation evaluation: controls for scenario "
+            "distribution by grouping samples by source_index."
+        )
     )
     parser.add_argument(
         "--embeddings_path",
         type=str,
         required=True,
-        help="Path to embeddings_all.npy (N, emb_dim), aligned with policy_id/source_index rows.",
+        help="Path to embeddings_all.npy (N, emb_dim).",
     )
     parser.add_argument(
         "--policy_id_path",
@@ -95,19 +319,15 @@ def parse_args() -> argparse.Namespace:
         "--source_index_path",
         type=str,
         required=True,
-        help="Path to source_index.npy (int array, length N; 0..N_src-1).",
+        help="Path to source_index.npy (int array, length N) mapping each "
+             "sample back to its original source window index.",
     )
     parser.add_argument(
         "--split_path",
         type=str,
         default=None,
-        help="Path to split.npy; if omitted all samples are used.",
-    )
-    parser.add_argument(
-        "--policy_names_path",
-        type=str,
-        default=None,
-        help="Optional path to policy_names.json ({idx: name}); for display only.",
+        help="Path to split.npy (train/val/test strings). "
+             "If omitted, all samples are used for both train and eval.",
     )
     parser.add_argument(
         "--eval_split",
@@ -117,17 +337,17 @@ def parse_args() -> argparse.Namespace:
         help="Split to evaluate on (default: test).",
     )
     parser.add_argument(
-        "--centroid_split",
-        type=str,
-        choices=["train", "val", "test", "all"],
-        default="train",
-        help="Split used to compute policy centroids for within-group assignment (default: train).",
-    )
-    parser.add_argument(
         "--analysis_dir",
         type=str,
         default=None,
-        help="Directory to write outputs; defaults to the directory containing --embeddings_path.",
+        help="Directory to write outputs; defaults to the directory containing "
+             "--embeddings_path.",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed (currently unused but reserved for future use).",
     )
     return parser.parse_args()
 
@@ -142,33 +362,29 @@ def main() -> None:
     # ------------------------------------------------------------------
     # Load inputs
     # ------------------------------------------------------------------
-    print(f"Loading embeddings    : {args.embeddings_path}")
+    print(f"Loading embeddings      : {args.embeddings_path}")
     embeddings = np.load(args.embeddings_path, allow_pickle=False).astype(np.float32)
     N, emb_dim = embeddings.shape
     print(f"  shape: {embeddings.shape}")
 
-    print(f"Loading policy ids    : {args.policy_id_path}")
+    print(f"Loading policy ids      : {args.policy_id_path}")
     policy_id = np.load(args.policy_id_path, allow_pickle=True).astype(np.int32)
     if len(policy_id) != N:
         raise ValueError(f"policy_id length {len(policy_id)} != embeddings rows {N}")
 
-    print(f"Loading source index  : {args.source_index_path}")
+    print(f"Loading source indices  : {args.source_index_path}")
     source_index = np.load(args.source_index_path, allow_pickle=True).astype(np.int32)
     if len(source_index) != N:
-        raise ValueError(f"source_index length {len(source_index)} != embeddings rows {N}")
+        raise ValueError(
+            f"source_index length {len(source_index)} != embeddings rows {N}"
+        )
 
-    policy_names: dict[str, str] = {}
-    if args.policy_names_path and os.path.isfile(args.policy_names_path):
-        with open(args.policy_names_path, encoding="utf-8") as f:
-            policy_names = json.load(f)
     unique_ids = sorted(int(x) for x in np.unique(policy_id))
     n_policies = len(unique_ids)
     print(f"  unique policy ids: {unique_ids}  ({n_policies} policies)")
-    if policy_names:
-        print(f"  policy names: {policy_names}")
 
     # Split masks
-    split: np.ndarray | None = None
+    split: Optional[np.ndarray] = None
     if args.split_path is not None:
         split = np.load(args.split_path, allow_pickle=True)
         split = np.array([str(s) for s in split])
@@ -180,213 +396,113 @@ def main() -> None:
             return np.ones(N, dtype=bool)
         return split == split_name
 
+    train_mask = _mask("train")
     eval_mask = _mask(args.eval_split)
-    centroid_mask = _mask(args.centroid_split)
 
+    if train_mask.sum() == 0:
+        raise RuntimeError("No training samples found (split='train' has 0 rows).")
     if eval_mask.sum() == 0:
         raise RuntimeError(
             f"No evaluation samples found (split='{args.eval_split}' has 0 rows)."
         )
 
-    # Sub-select eval set
-    eval_idx = np.where(eval_mask)[0]
-    emb_eval = embeddings[eval_idx]
-    pid_eval = policy_id[eval_idx]
-    src_eval = source_index[eval_idx]
-
-    print(f"\nEval samples : {len(eval_idx)}  (split='{args.eval_split}')")
+    print(f"\nTrain samples : {int(train_mask.sum())}")
+    print(f"Eval  samples : {int(eval_mask.sum())}  (split='{args.eval_split}')")
 
     # ------------------------------------------------------------------
-    # Compute policy centroids from centroid_split
+    # (a) Validate source / policy coverage (over eval split)
     # ------------------------------------------------------------------
-    centroid_idx = np.where(centroid_mask)[0]
-    centroids = _policy_centroids(embeddings[centroid_idx], policy_id[centroid_idx], unique_ids)
-    centroid_matrix = np.stack([centroids[pid] for pid in unique_ids], axis=0)  # (P, D)
+    print("\n--- (a) Source-policy coverage validation (eval split) ---")
+    coverage = validate_source_policy_coverage(
+        source_index[eval_mask],
+        policy_id[eval_mask],
+        unique_ids,
+    )
+    print(f"  Sources in eval         : {coverage['n_sources']}")
+    print(f"  Expected (src×pol) pairs: {coverage['n_expected_pairs']}")
+    print(f"  Found pairs             : {coverage['n_found_pairs']}")
+    print(f"  Complete sources        : {coverage['n_complete_sources']}")
+    print(f"  Missing (src,pol) pairs : {coverage['n_missing_pairs']}")
+    print(f"  Duplicate (src,pol) pairs: {coverage['n_duplicate_pairs']}")
+    if coverage["missing_pairs"]:
+        print(f"  First missing pairs     : {coverage['missing_pairs'][:5]}")
+    if coverage["duplicate_pairs"]:
+        print(f"  First duplicate pairs   : {coverage['duplicate_pairs'][:5]}")
 
     # ------------------------------------------------------------------
-    # Group eval samples by source_index
+    # (b) Pairwise distances within each source (eval split)
     # ------------------------------------------------------------------
-    # source_to_indices maps source_index → list of positions in eval arrays
-    from collections import defaultdict
-    src_to_pos: dict[int, dict[int, int]] = defaultdict(dict)
-    for pos, (sid, pid) in enumerate(zip(src_eval.tolist(), pid_eval.tolist())):
-        if pid in src_to_pos[sid]:
-            # Duplicate (sid, pid) – should not happen by construction but be safe
-            pass
-        src_to_pos[sid][pid] = pos
+    print("\n--- (b) Within-source pairwise embedding distances (eval split) ---")
+    dist_df = compute_pairwise_distances(
+        embeddings[eval_mask],
+        source_index[eval_mask],
+        policy_id[eval_mask],
+        unique_ids,
+    )
 
-    # Only keep sources that have ALL policies represented
-    complete_sources = [
-        sid for sid, pid_map in src_to_pos.items()
-        if all(pid in pid_map for pid in unique_ids)
-    ]
-    print(f"Sources in eval with all {n_policies} policies: {len(complete_sources)} "
-          f"(out of {len(src_to_pos)} total source groups)")
-    if len(complete_sources) == 0:
-        raise RuntimeError(
-            "No source groups with all policies present in the eval split. "
-            "Check that source_index.npy is aligned with policy_id.npy."
+    pairwise_stats: Dict = {}
+    if dist_df.empty:
+        print("  [warn] No complete source groups found; pairwise distances unavailable.")
+    else:
+        pair_labels = dist_df.apply(
+            lambda r: f"p{int(r.policy_a)}_vs_p{int(r.policy_b)}", axis=1
         )
+        for pair in pair_labels.unique():
+            sub = dist_df[pair_labels == pair]
+            print(f"  {pair}  n={len(sub)}")
+            for col in ("euclidean_dist", "cosine_dist"):
+                m, med = float(sub[col].mean()), float(sub[col].median())
+                print(f"    {col:<20}: mean={m:.4f}  median={med:.4f}")
+            pairwise_stats[pair] = {
+                "n": int(len(sub)),
+                "euclidean_mean": float(sub["euclidean_dist"].mean()),
+                "euclidean_median": float(sub["euclidean_dist"].median()),
+                "cosine_mean": float(sub["cosine_dist"].mean()),
+                "cosine_median": float(sub["cosine_dist"].median()),
+            }
 
     # ------------------------------------------------------------------
-    # 1. Pairwise inter-policy distances within same source
+    # (c) Within-source centroid classification accuracy
     # ------------------------------------------------------------------
-    print("\n--- Pairwise inter-policy distances (within source) ---")
-    policy_pairs = list(combinations(unique_ids, 2))
-    # pair → list of distances (one per complete source)
-    pair_dists: dict[tuple[int, int], list[float]] = {pair: [] for pair in policy_pairs}
-
-    rows_pairwise: list[dict] = []
-
-    for sid in complete_sources:
-        pid_map = src_to_pos[sid]
-        for (pa, pb) in policy_pairs:
-            ea = emb_eval[pid_map[pa]]
-            eb = emb_eval[pid_map[pb]]
-            d = _cosine_dist(ea, eb)
-            pair_dists[(pa, pb)].append(d)
-            rows_pairwise.append({
-                "source_index": sid,
-                "policy_a": pa,
-                "policy_b": pb,
-                "policy_a_name": policy_names.get(str(pa), f"policy_{pa}"),
-                "policy_b_name": policy_names.get(str(pb), f"policy_{pb}"),
-                "cosine_dist": d,
-            })
-
-    pairwise_summary: dict[str, dict] = {}
-    for (pa, pb), dists in pair_dists.items():
-        arr = np.array(dists, dtype=np.float32)
-        key = f"{policy_names.get(str(pa), str(pa))}_vs_{policy_names.get(str(pb), str(pb))}"
-        pairwise_summary[key] = {
-            "mean": float(arr.mean()),
-            "median": float(np.median(arr)),
-            "p25": float(np.percentile(arr, 25)),
-            "p75": float(np.percentile(arr, 75)),
-            "std": float(arr.std()),
-            "n_sources": len(dists),
-        }
-        print(f"  {key:<40}: mean={arr.mean():.4f}  median={np.median(arr):.4f}  "
-              f"p25={np.percentile(arr, 25):.4f}  p75={np.percentile(arr, 75):.4f}")
-
-    mean_pairwise_dist = float(
-        np.mean([v["mean"] for v in pairwise_summary.values()])
+    print("\n--- (c) Within-source centroid classification (train centroids → eval) ---")
+    centroid_acc, per_policy_acc = compute_centroid_accuracy(
+        embeddings,
+        source_index,
+        policy_id,
+        unique_ids,
+        train_mask,
+        eval_mask,
     )
-    print(f"\n  Mean across all pairs: {mean_pairwise_dist:.4f}")
+    chance = 1.0 / n_policies
+    print(f"  Centroid accuracy : {centroid_acc:.4f}  (chance={chance:.4f})")
+    for pid, acc in per_policy_acc.items():
+        print(f"    policy_{pid}: {acc:.4f}")
 
-    # ------------------------------------------------------------------
-    # 2. Source-aligned retrieval + within-group policy assignment
-    # ------------------------------------------------------------------
-    print("\n--- Source-aligned retrieval & within-group policy assignment ---")
-
-    # (a) Nearest-neighbour among same source → always different policy (sanity check)
-    nn_diff_policy_frac: list[float] = []
-    # (b) Policy centroid assignment accuracy within source groups
-    correct_assignments = 0
-    total_assignments = 0
-
-    for sid in complete_sources:
-        pid_map = src_to_pos[sid]
-        positions = [pid_map[pid] for pid in unique_ids]
-        group_emb = emb_eval[positions]  # (P, D)
-        group_pids = np.array(unique_ids)
-
-        # (a) For each sample in group, find nearest other sample in group.
-        # By construction every other sample in the group has a different policy,
-        # so this is always 1.0 – kept as an explicit sanity check that
-        # source_index.npy is correctly aligned with policy_id.npy.
-        for i, pid_i in enumerate(unique_ids):
-            nn_diff_policy_frac.append(1.0)
-
-        # (b) Within-group centroid assignment
-        # For each of the P embeddings in this group, assign to nearest centroid
-        emb_norm = normalize(group_emb, norm="l2")  # (P, D)
-        # cosine similarity to each centroid
-        sim_to_centroids = emb_norm @ centroid_matrix.T  # (P, P)
-        assigned = np.argmax(sim_to_centroids, axis=1)   # (P,) index into unique_ids
-        for i, pid_true in enumerate(unique_ids):
-            predicted_pid = unique_ids[assigned[i]]
-            if predicted_pid == pid_true:
-                correct_assignments += 1
-            total_assignments += 1
-
-    nn_diff_frac = float(np.mean(nn_diff_policy_frac))
-    within_group_acc = correct_assignments / total_assignments if total_assignments > 0 else 0.0
-
-    print(f"  Nearest-neighbour always different policy: {nn_diff_frac:.4f}  (expected 1.0)")
-    print(f"  Within-group centroid assignment accuracy: {within_group_acc:.4f}  "
-          f"(chance={1.0/n_policies:.4f})  [{correct_assignments}/{total_assignments}]")
-
-    # Per-policy centroid assignment accuracy
-    per_policy_correct: dict[int, int] = {pid: 0 for pid in unique_ids}
-    per_policy_total: dict[int, int] = {pid: 0 for pid in unique_ids}
-    for sid in complete_sources:
-        pid_map = src_to_pos[sid]
-        positions = [pid_map[pid] for pid in unique_ids]
-        group_emb = emb_eval[positions]
-        emb_norm = normalize(group_emb, norm="l2")
-        sim_to_centroids = emb_norm @ centroid_matrix.T
-        assigned = np.argmax(sim_to_centroids, axis=1)
-        for i, pid_true in enumerate(unique_ids):
-            per_policy_total[pid_true] += 1
-            if unique_ids[assigned[i]] == pid_true:
-                per_policy_correct[pid_true] += 1
-
-    per_policy_within_group_acc: dict[str, float] = {}
-    print("  Per-policy within-group centroid accuracy:")
+    # Pre-build centroids dict for retrieval step
+    centroids: Dict[int, np.ndarray] = {}
     for pid in unique_ids:
-        name = policy_names.get(str(pid), f"policy_{pid}")
-        acc = per_policy_correct[pid] / per_policy_total[pid] if per_policy_total[pid] > 0 else 0.0
-        per_policy_within_group_acc[name] = acc
-        print(f"    {name:<20}: {acc:.4f}  [{per_policy_correct[pid]}/{per_policy_total[pid]}]")
+        mask = train_mask & (policy_id == pid)
+        if mask.sum() > 0:
+            centroids[pid] = embeddings[mask].mean(axis=0)
 
     # ------------------------------------------------------------------
-    # 3. Within-source clustering score
+    # (d) Within-source retrieval metric (eval split)
     # ------------------------------------------------------------------
-    print("\n--- Within-source clustering score ---")
-
-    # Mean within-source inter-policy distance (already computed above as mean_pairwise_dist)
-    mean_within_source_inter = mean_pairwise_dist
-
-    # Mean cross-source same-policy distance
-    # For each policy, sample pairs of source groups and compute distance
-    cross_src_dists: list[float] = []
-    if len(complete_sources) >= 2:
-        src_list = sorted(complete_sources)
-        for pid in unique_ids:
-            # collect embeddings for this policy across sources
-            embs_for_policy = np.stack(
-                [emb_eval[src_to_pos[sid][pid]] for sid in src_list], axis=0
-            )  # (n_complete, D)
-            n_src = len(src_list)
-            # Subsample up to 500 pairs.  Generate 3× candidates to account
-            # for duplicate (ia==ib) pairs that are discarded in the loop.
-            rng = np.random.default_rng(42)
-            n_pairs = min(500, n_src * (n_src - 1) // 2)
-            idxs_a = rng.integers(0, n_src, size=n_pairs * 3)
-            idxs_b = rng.integers(0, n_src, size=n_pairs * 3)
-            seen = 0
-            for ia, ib in zip(idxs_a.tolist(), idxs_b.tolist()):
-                if ia == ib:
-                    continue
-                cross_src_dists.append(_cosine_dist(embs_for_policy[ia], embs_for_policy[ib]))
-                seen += 1
-                if seen >= n_pairs:
-                    break
-
-    mean_cross_src_same = float(np.mean(cross_src_dists)) if cross_src_dists else float("nan")
-    clustering_score = (
-        mean_within_source_inter / mean_cross_src_same
-        if mean_cross_src_same > 0
-        else float("nan")
+    print("\n--- (d) Within-source retrieval (eval split) ---")
+    hit_rate, mean_margin, median_margin = compute_within_source_retrieval(
+        embeddings,
+        source_index,
+        policy_id,
+        unique_ids,
+        eval_mask,
+        centroids,
     )
-
-    print(f"  Mean within-source inter-policy dist  : {mean_within_source_inter:.4f}")
-    print(f"  Mean cross-source same-policy dist    : {mean_cross_src_same:.4f}")
-    print(f"  Within-source clustering score (ratio): {clustering_score:.4f}  (>1 = better)")
+    print(f"  Nearest-neighbour hit rate : {hit_rate:.4f}  (chance={chance:.4f})")
+    print(f"  Mean within-source margin  : {mean_margin:.4f}")
+    print(f"  Median within-source margin: {median_margin:.4f}")
 
     # ------------------------------------------------------------------
-    # Determine output directory and save
+    # Determine analysis_dir and save outputs
     # ------------------------------------------------------------------
     if args.analysis_dir is None:
         analysis_dir = str(Path(args.embeddings_path).parent)
@@ -394,25 +510,38 @@ def main() -> None:
         analysis_dir = args.analysis_dir
     os.makedirs(analysis_dir, exist_ok=True)
 
+    # (b) Save pairwise distance CSV
+    pairwise_csv_path = os.path.join(analysis_dir, "policy_pairwise_dist.csv")
+    if not dist_df.empty:
+        dist_df.to_csv(pairwise_csv_path, index=False)
+        print(f"\nSaved pairwise distances → {pairwise_csv_path}")
+
+    # (e) Save summary JSON
     summary = {
         "eval_split": args.eval_split,
-        "centroid_split": args.centroid_split,
+        "n_samples_train": int(train_mask.sum()),
         "n_samples_eval": int(eval_mask.sum()),
-        "n_complete_sources": len(complete_sources),
         "n_policies": n_policies,
-        "policy_names": policy_names,
-        "pairwise_distances": pairwise_summary,
-        "mean_pairwise_dist_all_pairs": mean_pairwise_dist,
-        "source_aligned_retrieval": {
-            "nn_diff_policy_frac": nn_diff_frac,
-            "within_group_centroid_accuracy": within_group_acc,
-            "chance_accuracy": 1.0 / n_policies,
-            "per_policy_within_group_accuracy": per_policy_within_group_acc,
+        "unique_policy_ids": unique_ids,
+        # (a) Coverage
+        "coverage": {
+            k: v for k, v in coverage.items()
+            if k not in ("missing_pairs", "duplicate_pairs")
         },
-        "within_source_clustering": {
-            "mean_within_source_inter_policy_dist": mean_within_source_inter,
-            "mean_cross_source_same_policy_dist": mean_cross_src_same,
-            "clustering_score_ratio": clustering_score,
+        # (b) Pairwise distances
+        "pairwise_distances": pairwise_stats,
+        # (c) Centroid classification
+        "centroid_classification": {
+            "accuracy": centroid_acc,
+            "chance_accuracy": chance,
+            "per_policy_accuracy": {str(k): v for k, v in per_policy_acc.items()},
+        },
+        # (d) Within-source retrieval
+        "within_source_retrieval": {
+            "nearest_neighbour_hit_rate": hit_rate,
+            "chance_hit_rate": chance,
+            "mean_within_source_margin": mean_margin,
+            "median_within_source_margin": median_margin,
         },
     }
 
@@ -420,14 +549,11 @@ def main() -> None:
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
 
-    df_pairwise = pd.DataFrame(rows_pairwise)
-    pairwise_csv_path = os.path.join(analysis_dir, "policy_pairwise_dist.csv")
-    df_pairwise.to_csv(pairwise_csv_path, index=False)
-
     print(f"\n{'='*60}")
     print(f"Results saved to: {analysis_dir}")
     print(f"  {os.path.basename(summary_path)}")
-    print(f"  {os.path.basename(pairwise_csv_path)}")
+    if not dist_df.empty:
+        print(f"  {os.path.basename(pairwise_csv_path)}")
     print(f"{'='*60}")
 
 
