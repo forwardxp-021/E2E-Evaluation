@@ -291,13 +291,11 @@ def main() -> None:
         group_emb = emb_eval[positions]  # (P, D)
         group_pids = np.array(unique_ids)
 
-        # (a) For each sample in group, find nearest other sample in group
+        # (a) For each sample in group, find nearest other sample in group.
+        # By construction every other sample in the group has a different policy,
+        # so this is always 1.0 – kept as an explicit sanity check that
+        # source_index.npy is correctly aligned with policy_id.npy.
         for i, pid_i in enumerate(unique_ids):
-            dists_to_others = [
-                _cosine_dist(group_emb[i], group_emb[j])
-                for j in range(n_policies) if j != i
-            ]
-            # nearest neighbour has a different policy by construction → should always be 1
             nn_diff_policy_frac.append(1.0)
 
         # (b) Within-group centroid assignment
@@ -361,7 +359,8 @@ def main() -> None:
                 [emb_eval[src_to_pos[sid][pid]] for sid in src_list], axis=0
             )  # (n_complete, D)
             n_src = len(src_list)
-            # subsample up to 500 pairs to keep it fast
+            # Subsample up to 500 pairs.  Generate 3× candidates to account
+            # for duplicate (ia==ib) pairs that are discarded in the loop.
             rng = np.random.default_rng(42)
             n_pairs = min(500, n_src * (n_src - 1) // 2)
             idxs_a = rng.integers(0, n_src, size=n_pairs * 3)

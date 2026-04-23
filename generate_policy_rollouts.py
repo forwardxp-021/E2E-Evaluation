@@ -342,11 +342,10 @@ def main() -> None:
     # Apply CLI overrides to a local copy of POLICY_PARAMS
     import copy
     active_params: dict[str, dict] = copy.deepcopy(POLICY_PARAMS)
-    _clip_overrides = {
-        "conservative": args.conservative_yaw_rate_clip,
-        "aggressive": args.aggressive_yaw_rate_clip,
-        "lateral_stable": args.lateral_stable_yaw_rate_clip,
-    }
+    _clip_overrides: dict[str, float | None] = {}
+    for p_name in POLICY_PARAMS:
+        attr = f"{p_name}_yaw_rate_clip"
+        _clip_overrides[p_name] = getattr(args, attr, None)
     for p_name, clip_val in _clip_overrides.items():
         if clip_val is not None and p_name in active_params:
             active_params[p_name]["yaw_rate_clip"] = clip_val
