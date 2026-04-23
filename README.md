@@ -308,6 +308,7 @@ python export_embeddings.py \
 | `generate_policy_rollouts.py` | 从已有 traj/front 窗口为每个策略生成模拟自车轨迹 |
 | `compute_style_features.py` | 对已有 traj/front npy 计算 20D style 特征（不依赖 TFRecord） |
 | `evaluate_policy_separation.py` | 用 embedding 做策略分类 + Recall@K 检索评估 |
+| `evaluate_policy_separation_aligned.py` | Source-aligned 策略区分评估（按 source_index 分组，控制场景分布） |
 
 ### 三种合成策略说明
 
@@ -409,3 +410,131 @@ python evaluate_policy_separation.py \
 - `front.npy` 中的前车轨迹保持不变（外生 log-replay，不响应 ego）。
 - 下游 `train_embedding.py` / `export_embeddings.py` / `evaluate_embedding.py` 均无需修改，直接指向新 output_dir 即可。
 - 若 `--src_split_path` 未提供，脚本会按 scenario_id MD5 哈希自动分配 train/val/test（与 `build_dataset.py` 一致）。
+
+---
+
+## Synthetic policy rollouts: source-aligned evaluation
+
+### Background
+
+The standard `evaluate_policy_separation.py` measures global classification and
+retrieval performance but does not control for *scenario distribution*: if different
+policies happen to be evaluated on systematically different scenarios, the metric may
+reflect difficulty differences rather than policy style differences.
+
+`evaluate_policy_separation_aligned.py` addresses this by grouping samples by their
+`source_index` — each source window was rolled out under every policy exactly once, so
+within a source group the only variable is the policy.  All four computations below are
+therefore scenario-controlled.
+
+### Computations
+
+| Step | Description | Output |
+|------|-------------|--------|
+| (a) Coverage validation | Checks each `(source_index, policy_id)` pair appears exactly once; reports missing / duplicate counts | summary JSON |
+| (b) Within-source pairwise distances | Euclidean + cosine distance between every policy pair within each source group | `policy_pairwise_dist.csv` |
+| (c) Centroid classification accuracy | Nearest-centroid prediction using train-split centroids; evaluated per source group on eval split | summary JSON |
+| (d) Within-source retrieval | Hit-rate of nearest within-source neighbour sharing the same policy label; mean/median distance margin | summary JSON |
+
+### Copy-pastable commands (using default paths)
+
+#### Step 1 — Generate rollouts
+
+```bash
+python generate_policy_rollouts.py \
+  --src_traj_path  output/traj.npy \
+  --src_front_path output/front.npy \
+  --src_split_path output/split.npy \
+  --src_meta_path  output/meta.npy \
+  --output_dir     output_policy_rollouts \
+  --dt 0.1 \
+  --policies "conservative,aggressive,lateral_stable" \
+  --seed 42
+```
+
+#### Step 2 — Compute style features
+
+```bash
+python compute_style_features.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --output_dir output_policy_rollouts
+```
+
+#### Step 3 — Train embedding
+
+```bash
+python train_embedding.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --feat_path  output_policy_rollouts/feat_style.npy \
+  --feat_raw_path output_policy_rollouts/feat_style_raw.npy \
+  --split_path output_policy_rollouts/split.npy \
+  --output_dir output_policy_rollouts/run_relkin_knn \
+  --input_mode rel_kinematics --dt 0.1 \
+  --epochs 50 --batch_size 64 \
+  --feat_norm none \
+  --feat_sim local_scale --ls_k 1 --ls_mode row --ls_alpha 3 \
+  --feat_dist_mode masked --min_common_dims 5 \
+  --cond_mode knn --cond_k 24 --cond_scale_mode mad \
+  --cond_cf_bucket_edges "0.2,0.6" \
+  --loss_mode hybrid --pos_topk 8 --w_supcon 1.0 --w_soft 1.0 \
+  --feat_clip_value 3.0 \
+  --eval_every 10 --skip_val_clustering
+```
+
+#### Step 4 — Export embeddings
+
+```bash
+python export_embeddings.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --split_path output_policy_rollouts/split.npy \
+  --checkpoint output_policy_rollouts/run_relkin_knn/best_model.pth \
+  --output_path output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --input_mode rel_kinematics --dt 0.1
+```
+
+#### Step 5 — Run standard policy separation evaluation
+
+```bash
+python evaluate_policy_separation.py \
+  --embeddings_path output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --policy_id_path  output_policy_rollouts/policy_id.npy \
+  --split_path      output_policy_rollouts/split.npy \
+  --policy_names_path output_policy_rollouts/policy_names.json \
+  --eval_split test \
+  --k_neighbors 10 \
+  --analysis_dir output_policy_rollouts/run_relkin_knn/analysis_policy \
+  --seed 42
+```
+
+#### Step 6 — Run source-aligned evaluation
+
+```bash
+python evaluate_policy_separation_aligned.py \
+  --embeddings_path   output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --policy_id_path    output_policy_rollouts/policy_id.npy \
+  --source_index_path output_policy_rollouts/source_index.npy \
+  --split_path        output_policy_rollouts/split.npy \
+  --eval_split test \
+  --analysis_dir output_policy_rollouts/run_relkin_knn/analysis_aligned \
+  --seed 42
+```
+
+### Outputs
+
+| File | Description |
+|------|-------------|
+| `policy_separation_aligned_summary.json` | Coverage stats, centroid accuracy, pairwise distance stats (mean/median), within-source retrieval hit rate and margin |
+| `policy_pairwise_dist.csv` | Per-source-group pairwise (Euclidean + cosine) distances for each policy pair |
+
+### Notes
+
+- `source_index.npy` is generated automatically by `generate_policy_rollouts.py`
+  alongside the other output files.
+- Samples where a source group does not have all policies present (e.g. at split
+  boundaries) are excluded from computations (b) and (d); the coverage report in step
+  (a) will list any such gaps.
+- Centroids for classification (step c) are always estimated from the **train** split,
+  regardless of `--eval_split`.
