@@ -17,12 +17,18 @@ Outputs written to --output_dir:
                          else scenario-stratified 0.8/0.1/0.1
     policy_names.json  – {0: "conservative", 1: "aggressive", 2: "lateral_stable"}
 
-Lateral-stability knobs (new):
+Lateral-stability knobs:
     --conservative_yaw_rate_clip   override yaw_rate_clip for conservative
     --aggressive_yaw_rate_clip     override yaw_rate_clip for aggressive
     --lateral_stable_yaw_rate_clip override yaw_rate_clip for lateral_stable
     --heading_smooth_alpha         EMA smoothing on desired heading for lateral_stable
-                                   (0.0=no smoothing, 0.7=strong; default 0.7)
+                                   (0.0=no smoothing, closer to 1.0=stronger; default 0.45)
+
+Lateral-stable longitudinal overrides (for quick parameter sweeps):
+    --lateral_stable_thw_target    override thw_target for lateral_stable (default 1.4 s)
+    --lateral_stable_jerk_limit    override jerk_limit for lateral_stable (default 0.35 m/s²/step)
+    --lateral_stable_a_max         override a_max for lateral_stable (default 1.5 m/s²)
+    --lateral_stable_a_min         override a_min for lateral_stable (default -2.8 m/s²)
 
 Usage example:
     python generate_policy_rollouts.py \\
@@ -31,13 +37,17 @@ Usage example:
         --src_split_path output/split.npy \\
         --output_dir output_policy_rollouts
 
-    # Sharpen lateral_stable separation:
+    # Parameter sweep to tune lateral_stable separability:
     python generate_policy_rollouts.py \\
         --src_traj_path output/traj.npy \\
         --src_front_path output/front.npy \\
-        --output_dir output_policy_rollouts \\
-        --lateral_stable_yaw_rate_clip 0.005 \\
-        --heading_smooth_alpha 0.8
+        --output_dir output_policy_rollouts_sweep \\
+        --lateral_stable_thw_target 1.2 \\
+        --lateral_stable_jerk_limit 0.25 \\
+        --lateral_stable_a_max 1.3 \\
+        --lateral_stable_a_min -2.5 \\
+        --lateral_stable_yaw_rate_clip 0.02 \\
+        --heading_smooth_alpha 0.45
 """
 
 import argparse
@@ -84,12 +94,16 @@ POLICY_PARAMS: dict[str, dict] = {
         "kd_vrel": 0.8,
     },
     "lateral_stable": {
-        "thw_target": 1.8,
-        "a_max": 2.0,
-        "a_min": -3.5,
-        "jerk_limit": 0.8,
-        "yaw_rate_clip": 0.01,   # very tight lateral – nearly zero lateral movement
-        "heading_smooth_alpha": 0.7,  # strong EMA smoothing on desired heading
+        # "lateral-stable + comfortable but not conservative"
+        # thw_target sits between conservative (2.5 s) and aggressive (1.0 s),
+        # but longitudinal dynamics are deliberately softer than conservative to
+        # create a distinct third cluster in embedding space.
+        "thw_target": 1.4,
+        "a_max": 1.5,
+        "a_min": -2.8,
+        "jerk_limit": 0.35,
+        "yaw_rate_clip": 0.02,   # slightly looser than before – keeps lateral signal visible
+        "heading_smooth_alpha": 0.45,  # moderate EMA smoothing – separable from conservative
         "kp_thw": 1.0,
         "kd_vrel": 0.6,
     },
@@ -315,7 +329,7 @@ def parse_args() -> argparse.Namespace:
         "--lateral_stable_yaw_rate_clip",
         type=float,
         default=None,
-        help="Override yaw_rate_clip for lateral_stable policy (default: use table value 0.01 rad/step).",
+        help="Override yaw_rate_clip for lateral_stable policy (default: use table value 0.02 rad/step).",
     )
     parser.add_argument(
         "--heading_smooth_alpha",
@@ -323,8 +337,32 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help=(
             "Override heading EMA smoothing factor for lateral_stable policy "
-            "(0.0 = no smoothing, 1.0 = no update; default: use table value 0.7)."
+            "(0.0 = no smoothing, closer to 1.0 = stronger; default: use table value 0.45)."
         ),
+    )
+    parser.add_argument(
+        "--lateral_stable_thw_target",
+        type=float,
+        default=None,
+        help="Override thw_target for lateral_stable policy (default: use table value 1.4 s).",
+    )
+    parser.add_argument(
+        "--lateral_stable_jerk_limit",
+        type=float,
+        default=None,
+        help="Override jerk_limit for lateral_stable policy (default: use table value 0.35 m/s²/step).",
+    )
+    parser.add_argument(
+        "--lateral_stable_a_max",
+        type=float,
+        default=None,
+        help="Override a_max for lateral_stable policy (default: use table value 1.5 m/s²).",
+    )
+    parser.add_argument(
+        "--lateral_stable_a_min",
+        type=float,
+        default=None,
+        help="Override a_min for lateral_stable policy (default: use table value -2.8 m/s²).",
     )
     return parser.parse_args()
 
@@ -351,6 +389,19 @@ def main() -> None:
             active_params[p_name]["yaw_rate_clip"] = clip_val
     if args.heading_smooth_alpha is not None and "lateral_stable" in active_params:
         active_params["lateral_stable"]["heading_smooth_alpha"] = args.heading_smooth_alpha
+
+    # Apply lateral_stable longitudinal overrides
+    long_overrides: dict[str, str] = {
+        "thw_target": "lateral_stable_thw_target",
+        "jerk_limit": "lateral_stable_jerk_limit",
+        "a_max": "lateral_stable_a_max",
+        "a_min": "lateral_stable_a_min",
+    }
+    if "lateral_stable" in active_params:
+        for param_key, arg_attr in long_overrides.items():
+            val = getattr(args, arg_attr, None)
+            if val is not None:
+                active_params["lateral_stable"][param_key] = val
 
     os.makedirs(args.output_dir, exist_ok=True)
 
@@ -488,6 +539,23 @@ def main() -> None:
     print(f"Split breakdown  : { {k: split_counts[k] for k in sorted(split_counts)} }")
     print(f"Policy breakdown : { {policy_names[k]: policy_counts[k] for k in sorted(policy_counts)} }")
     print(f"Policy names     : {policy_names_map}")
+
+    # ------------------------------------------------------------------
+    # Per-policy params summary
+    # ------------------------------------------------------------------
+    print(f"\n{'='*60}")
+    print("Per-policy active parameters:")
+    param_cols = ["thw_target", "a_max", "a_min", "jerk_limit", "yaw_rate_clip", "heading_smooth_alpha"]
+    header = f"  {'Policy':<20}" + "".join(f"  {c:>22}" for c in param_cols)
+    print(header)
+    print(f"  {'-'*20}" + "".join(f"  {'-'*22}" for _ in param_cols))
+    for p_name in policy_names:
+        p = active_params[p_name]
+        row = f"  {p_name:<20}"
+        for c in param_cols:
+            val = p.get(c)
+            row += f"  {val:>22.4f}" if val is not None else f"  {'N/A':>22}"
+        print(row)
 
     # ------------------------------------------------------------------
     # Per-policy yaw_rate / heading_change report

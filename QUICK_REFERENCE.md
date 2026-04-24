@@ -112,7 +112,68 @@ python evaluate_embedding.py \
 | `export_embeddings.py` | traj.npy + checkpoint | `embeddings_all.npy (N,64)` |
 | `evaluate_embedding.py` | embeddings + feat + split | UMAP 图, 探针结果, 邻域分析 |
 
-## 常见问题
+## 合成策略 Rollout（generate_policy_rollouts.py）
+
+### lateral_stable 可分性调优
+`lateral_stable` 策略被设计为**第三种独立风格**（"横向稳定 + 舒适但不保守"），与 `conservative`（大间距/低动态）和 `aggressive`（小间距/高动态）在 embedding 空间中形成明显区分。关键设计：
+- **thw_target = 1.4 s**：处于 conservative (2.5 s) 和 aggressive (1.0 s) 之间，但纵向动态更软
+- **jerk_limit = 0.35 m/s²/step**：比 conservative (0.5) 更软，避免纵向特征与之重合
+- **yaw_rate_clip = 0.02 rad/step**：适度的横向约束，在 embedding 中保留横向信号
+- **heading_smooth_alpha = 0.45**：中等 EMA 平滑，与 conservative (0.0) 有明显差异
+
+### generate_policy_rollouts.py 参数
+| 参数 | 默认值 | 说明 |
+|---|---|---|
+| `--src_traj_path` | `output/traj.npy` | 源轨迹文件 |
+| `--src_front_path` | `output/front.npy` | 源前车轨迹文件 |
+| `--src_split_path` | `None` | 源 split 文件（可选） |
+| `--src_meta_path` | `None` | 源 meta 文件（可选） |
+| `--output_dir` | `output_policy_rollouts` | 输出目录 |
+| `--policies` | `conservative,aggressive,lateral_stable` | 要生成的策略列表 |
+| `--dt` | `0.1` | 时间步长 (s) |
+| `--seed` | `42` | 随机种子 |
+| `--conservative_yaw_rate_clip` | `None` | 覆盖 conservative 的 yaw_rate_clip |
+| `--aggressive_yaw_rate_clip` | `None` | 覆盖 aggressive 的 yaw_rate_clip |
+| `--lateral_stable_yaw_rate_clip` | `None` | 覆盖 lateral_stable 的 yaw_rate_clip（默认 0.02） |
+| `--heading_smooth_alpha` | `None` | 覆盖 lateral_stable 的 heading EMA 平滑系数（默认 0.45） |
+| `--lateral_stable_thw_target` | `None` | 覆盖 lateral_stable 的 thw_target（默认 1.4 s） |
+| `--lateral_stable_jerk_limit` | `None` | 覆盖 lateral_stable 的 jerk_limit（默认 0.35） |
+| `--lateral_stable_a_max` | `None` | 覆盖 lateral_stable 的 a_max（默认 1.5 m/s²） |
+| `--lateral_stable_a_min` | `None` | 覆盖 lateral_stable 的 a_min（默认 -2.8 m/s²） |
+
+### 基本生成命令
+```bash
+python generate_policy_rollouts.py \
+    --src_traj_path  output/traj.npy \
+    --src_front_path output/front.npy \
+    --src_split_path output/split.npy \
+    --src_meta_path  output/meta.npy \
+    --output_dir     output_policy_rollouts
+```
+
+### 参数扫描示例（无需修改代码）
+```bash
+# 调整 lateral_stable 纵向参数以提升可分性
+python generate_policy_rollouts.py \
+    --src_traj_path  output/traj.npy \
+    --src_front_path output/front.npy \
+    --output_dir     output_policy_rollouts_sweep1 \
+    --lateral_stable_thw_target 1.2 \
+    --lateral_stable_jerk_limit 0.25 \
+    --lateral_stable_a_max 1.3 \
+    --lateral_stable_a_min -2.5 \
+    --lateral_stable_yaw_rate_clip 0.02 \
+    --heading_smooth_alpha 0.45
+```
+生成后对比 `Per-policy active parameters` 摘要输出，确认参数已生效，并观察 `yaw_rate|abs|p95` 变化。
+
+### 冒烟测试
+```bash
+python scripts/smoke_test_policy_rollouts.py
+```
+验证输出形状正确且 `lateral_stable` 的 `yaw_rate_p95` 与 `aggressive` 有显著差异。
+
+
 
 ### Q: 如何修改特征维度?
 A: 修改 `build_dataset.py` 中 `compute_features()` 函数的返回列表（当前 20D）
