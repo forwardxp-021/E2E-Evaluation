@@ -245,30 +245,51 @@ def compute_within_source_retrieval(
     unique_policies: List[int],
     eval_mask: np.ndarray,
     centroids: Dict[int, np.ndarray],
-) -> Tuple[float, float, float]:
+) -> Tuple[Optional[float], float, float, str]:
     """Within-source retrieval metrics for eval samples.
 
     For each eval sample:
       - Find the other samples in the *same* source (eval split only).
       - Rank them by Euclidean distance.
-      - "Hit": the nearest within-source neighbour shares the most
-        centroid-similar policy (i.e., nearest centroid ranks the true policy
-        above all others → same policy = true policy here since policies are
-        discrete).
+      - "Hit": the nearest within-source neighbour shares the same policy label.
       - Margin: distance(farthest within-source) – distance(nearest within-source).
+
+    .. note::
+        In the standard within-source setting each source contains **exactly one
+        sample per policy** (1 conservative, 1 aggressive, 1 lateral_stable).
+        Under this constraint the nearest within-source neighbour of any sample
+        is always a *different* policy – same-policy retrieval is structurally
+        impossible and a hit rate of 0.0 would be misleading.  When this
+        condition is detected the hit rate is returned as ``None`` and
+        ``retrieval_mode`` explains why.
 
     Returns:
         hit_rate: fraction of eval samples where nearest within-source neighbour
-                  has the same policy label.
+                  has the same policy label, or ``None`` if the within-source
+                  layout precludes same-policy hits (single sample per policy per
+                  source).
         mean_margin: mean margin between farthest and nearest within-source
                      distances.
         median_margin: median margin.
+        retrieval_mode: human-readable string describing the mode used (or the
+                        reason the hit rate was skipped).
     """
     # Group eval indices by source
     eval_indices = np.where(eval_mask)[0]
     src_to_eval_indices: Dict[int, List[int]] = defaultdict(list)
     for i in eval_indices:
         src_to_eval_indices[int(source_index[i])].append(i)
+
+    # Detect whether any source group contains ≥2 samples with the same policy.
+    # If every group has at most one sample per policy then a same-policy hit is
+    # structurally impossible (all within-source neighbours have different labels).
+    can_hit = False
+    for src, idxs in src_to_eval_indices.items():
+        if len(idxs) >= 2:
+            pids = [int(policy_id[j]) for j in idxs]
+            if len(pids) != len(set(pids)):  # at least one duplicate policy
+                can_hit = True
+                break
 
     hits = []
     margins = []
@@ -280,16 +301,27 @@ def compute_within_source_retrieval(
             others = [j for j in idxs if j != i]
             emb_i = embeddings[i]
             dists = np.array([np.linalg.norm(embeddings[j] - emb_i) for j in others])
-            nearest_j = others[int(np.argmin(dists))]
-            nearest_pid = int(policy_id[nearest_j])
-            true_pid = int(policy_id[i])
-            hits.append(int(nearest_pid == true_pid))
             margins.append(float(np.max(dists) - np.min(dists)))
+            if can_hit:
+                nearest_j = others[int(np.argmin(dists))]
+                nearest_pid = int(policy_id[nearest_j])
+                true_pid = int(policy_id[i])
+                hits.append(int(nearest_pid == true_pid))
 
-    hit_rate = float(np.mean(hits)) if hits else float("nan")
     mean_margin = float(np.mean(margins)) if margins else float("nan")
     median_margin = float(np.median(margins)) if margins else float("nan")
-    return hit_rate, mean_margin, median_margin
+
+    if not can_hit:
+        retrieval_mode = (
+            "N/A - single sample per policy per source: "
+            "same-policy nearest-neighbour hit is structurally impossible "
+            "(all within-source neighbours have different policy labels)"
+        )
+        return None, mean_margin, median_margin, retrieval_mode
+
+    hit_rate = float(np.mean(hits)) if hits else float("nan")
+    retrieval_mode = "within-source nearest-neighbour"
+    return hit_rate, mean_margin, median_margin, retrieval_mode
 
 
 # ---------------------------------------------------------------------------
@@ -489,7 +521,7 @@ def main() -> None:
     # (d) Within-source retrieval metric (eval split)
     # ------------------------------------------------------------------
     print("\n--- (d) Within-source retrieval (eval split) ---")
-    hit_rate, mean_margin, median_margin = compute_within_source_retrieval(
+    hit_rate, mean_margin, median_margin, retrieval_mode = compute_within_source_retrieval(
         embeddings,
         source_index,
         policy_id,
@@ -497,7 +529,11 @@ def main() -> None:
         eval_mask,
         centroids,
     )
-    print(f"  Nearest-neighbour hit rate : {hit_rate:.4f}  (chance={chance:.4f})")
+    if hit_rate is None:
+        print(f"  Nearest-neighbour hit rate : N/A")
+        print(f"    Reason: {retrieval_mode}")
+    else:
+        print(f"  Nearest-neighbour hit rate : {hit_rate:.4f}  (chance={chance:.4f})")
     print(f"  Mean within-source margin  : {mean_margin:.4f}")
     print(f"  Median within-source margin: {median_margin:.4f}")
 
@@ -538,8 +574,9 @@ def main() -> None:
         },
         # (d) Within-source retrieval
         "within_source_retrieval": {
+            "retrieval_mode": retrieval_mode,
             "nearest_neighbour_hit_rate": hit_rate,
-            "chance_hit_rate": chance,
+            "chance_hit_rate": chance if hit_rate is not None else None,
             "mean_within_source_margin": mean_margin,
             "median_within_source_margin": median_margin,
         },

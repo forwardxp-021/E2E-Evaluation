@@ -322,9 +322,36 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=None,
         help=(
-            "Override heading EMA smoothing factor for lateral_stable policy "
-            "(0.0 = no smoothing, 1.0 = no update; default: use table value 0.7)."
+            "Override heading EMA smoothing factor for lateral_stable policy. "
+            "0.0 = no smoothing (desired heading tracks source exactly); "
+            "close to 1.0 = strong smoothing / slower heading update "
+            "(default: use table value 0.7)."
         ),
+    )
+    # Longitudinal parameter overrides for lateral_stable
+    parser.add_argument(
+        "--lateral_stable_thw_target",
+        type=float,
+        default=None,
+        help="Override thw_target for lateral_stable policy (default: use table value 1.8 s).",
+    )
+    parser.add_argument(
+        "--lateral_stable_jerk_limit",
+        type=float,
+        default=None,
+        help="Override jerk_limit for lateral_stable policy (default: use table value 0.8 m/s²/step).",
+    )
+    parser.add_argument(
+        "--lateral_stable_a_max",
+        type=float,
+        default=None,
+        help="Override a_max for lateral_stable policy (default: use table value 2.0 m/s²).",
+    )
+    parser.add_argument(
+        "--lateral_stable_a_min",
+        type=float,
+        default=None,
+        help="Override a_min for lateral_stable policy (default: use table value -3.5 m/s²).",
     )
     return parser.parse_args()
 
@@ -351,6 +378,26 @@ def main() -> None:
             active_params[p_name]["yaw_rate_clip"] = clip_val
     if args.heading_smooth_alpha is not None and "lateral_stable" in active_params:
         active_params["lateral_stable"]["heading_smooth_alpha"] = args.heading_smooth_alpha
+
+    # Longitudinal overrides for lateral_stable
+    _lateral_long_overrides = {
+        "thw_target": args.lateral_stable_thw_target,
+        "jerk_limit": args.lateral_stable_jerk_limit,
+        "a_max": args.lateral_stable_a_max,
+        "a_min": args.lateral_stable_a_min,
+    }
+    if "lateral_stable" in active_params:
+        for param, val in _lateral_long_overrides.items():
+            if val is not None:
+                active_params["lateral_stable"][param] = val
+
+    # Print final effective parameters for reproducibility
+    print("\nFinal effective parameters per policy:")
+    for p_name in policy_names:
+        p = active_params[p_name]
+        print(f"  [{p_name}]")
+        for k, v in p.items():
+            print(f"    {k:<25} = {v}")
 
     os.makedirs(args.output_dir, exist_ok=True)
 

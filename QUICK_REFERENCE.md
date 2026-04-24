@@ -126,6 +126,134 @@ A: 使用 `--limit_files 5` 参数限制读取文件数
 ### Q: 数据集划分如何保证可重复?
 A: `assign_split()` 使用 `scenario_id` 的 MD5 哈希值确定性划分，无随机性
 
+---
+
+## Synthetic Policy Rollouts: End-to-End Pipeline & Verification
+
+### Minimum Reproduction Commands
+
+```bash
+# Step 1 — Generate synthetic policy rollouts (conservative / aggressive / lateral_stable)
+python generate_policy_rollouts.py \
+  --src_traj_path  output/traj.npy \
+  --src_front_path output/front.npy \
+  --src_split_path output/split.npy \
+  --src_meta_path  output/meta.npy \
+  --output_dir     output_policy_rollouts \
+  --dt 0.1 \
+  --policies "conservative,aggressive,lateral_stable" \
+  --seed 42
+
+# Step 2 — Compute style features
+python compute_style_features.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --front_path output_policy_rollouts/front.npy \
+  --output_dir output_policy_rollouts
+
+# Step 3 — Train embedding model on policy rollouts
+python train_embedding.py \
+  --traj_path  output_policy_rollouts/traj.npy \
+  --feat_path  output_policy_rollouts/feat.npy \
+  --split_path output_policy_rollouts/split.npy \
+  --output_dir output_policy_rollouts/run_relkin_knn \
+  --epochs 50
+
+# Step 4 — Export embeddings
+python export_embeddings.py \
+  --traj_path      output_policy_rollouts/traj.npy \
+  --checkpoint     output_policy_rollouts/run_relkin_knn/best_model.pth \
+  --output_path    output_policy_rollouts/run_relkin_knn/embeddings_all.npy
+
+# Step 5 — Aligned evaluation (source-controlled policy separation)
+python evaluate_policy_separation_aligned.py \
+  --embeddings_path   output_policy_rollouts/run_relkin_knn/embeddings_all.npy \
+  --policy_id_path    output_policy_rollouts/policy_id.npy \
+  --source_index_path output_policy_rollouts/source_index.npy \
+  --split_path        output_policy_rollouts/split.npy \
+  --eval_split test \
+  --analysis_dir      output_policy_rollouts/run_relkin_knn/analysis_aligned
+```
+
+### Verifying Policy Separation with Aligned Metrics
+
+After running Step 5, inspect `policy_separation_aligned_summary.json` and the printed output.
+The two most informative indicators are:
+
+1. **`p0_vs_p2` pairwise Euclidean distance** (`pairwise_distances.p0_vs_p2.euclidean_mean`)  
+   Measures how far apart `conservative` (p0) and `lateral_stable` (p2) embeddings are
+   within the same source window.  A healthy separation shows a mean ≥ 0.30 (the larger
+   the better).  If this value is low (< 0.15) the `lateral_stable` policy has not yet
+   differentiated itself from `conservative`.
+
+2. **`policy_2` centroid classification accuracy** (`centroid_classification.per_policy_accuracy."2"`)  
+   Measures how well the embedding of `lateral_stable` examples can be classified back to
+   their correct policy using train-split centroids.  Target ≥ 0.60 (chance = 0.333 for 3
+   policies).  If this number stays near chance the embedding is not capturing the
+   lateral-stability style signal.
+
+**Typical healthy result** (395 test sources, 1185 eval samples):
+```
+p0_vs_p1  euclidean mean ≈ 0.71
+p0_vs_p2  euclidean mean ≈ 0.35   ← key separation signal
+p1_vs_p2  euclidean mean ≈ 0.50
+Centroid accuracy overall ≈ 0.66  (chance 0.333)
+  policy_0 ≈ 0.64
+  policy_1 ≈ 0.69
+  policy_2 ≈ 0.66                 ← key lateral_stable classification
+```
+
+### `lateral_stable` Policy Parameters
+
+The `lateral_stable` policy introduces a distinct driving style through two lateral
+mechanisms and tighter longitudinal comfort bounds:
+
+| Parameter | Default | Meaning |
+|---|---|---|
+| `yaw_rate_clip` | `0.01 rad/step` | Maximum per-step heading change. Smaller → smoother lateral motion. |
+| `heading_smooth_alpha` | `0.7` | EMA smoothing weight applied to the desired heading target. |
+| `thw_target` | `1.8 s` | Desired time-headway (between conservative 2.5 s and aggressive 1.0 s). |
+| `jerk_limit` | `0.8 m/s²/step` | Maximum longitudinal jerk. |
+| `a_max` | `2.0 m/s²` | Maximum acceleration. |
+| `a_min` | `-3.5 m/s²` | Maximum deceleration. |
+
+**`heading_smooth_alpha` semantics:**
+
+```
+heading_smooth_alpha = 0.0  → no smoothing: desired heading tracks source exactly
+heading_smooth_alpha = 0.5  → moderate smoothing: heading updates at half the raw delta
+heading_smooth_alpha = 0.7  → strong smoothing (default): heading lags source by ~3 steps
+heading_smooth_alpha → 1.0  → heading frozen: no response to source path changes (extreme)
+```
+
+Formally the EMA update is:
+```
+smoothed_target ← smoothed_target + (1 − alpha) × wrap(raw_target − smoothed_target)
+```
+A value close to `1.0` means `(1 − alpha) → 0`, so the target barely moves per step
+(strong smoothing / very slow update). A value of `0.0` disables smoothing entirely.
+
+**CLI overrides for `lateral_stable`** (all optional; print in "Final effective parameters"):
+```bash
+python generate_policy_rollouts.py ... \
+  --lateral_stable_yaw_rate_clip 0.005 \
+  --heading_smooth_alpha         0.8 \
+  --lateral_stable_thw_target    2.0 \
+  --lateral_stable_jerk_limit    0.6 \
+  --lateral_stable_a_max         1.8 \
+  --lateral_stable_a_min        -3.0
+```
+
+### Retrieval Metric Note
+
+In the standard within-source setting (1 sample per policy per source), the
+**Nearest-neighbour hit rate** is structurally impossible to be non-zero: every
+within-source neighbour has a *different* policy label.  The evaluator detects this
+automatically and reports `N/A` with an explanation rather than the misleading `0.0`.
+The `pairwise_distances` and `centroid_classification` metrics are unaffected and remain
+the primary indicators of policy separation quality.
+
+---
+
 ## 依赖库
 
 详见 `requirements-cpu.txt`。主要依赖：
