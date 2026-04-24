@@ -316,7 +316,7 @@ python export_embeddings.py \
 |------|----------|------------|-----------|------------|
 | `conservative` | 2.5 s | ±1.5/3.0 m/s² | 0.5 m/s²/step | 强（yaw_rate_clip=0.05 rad/step） |
 | `aggressive` | 1.0 s | ±3.5/5.0 m/s² | 2.0 m/s²/step | 弱（yaw_rate_clip=0.20 rad/step） |
-| `lateral_stable` | 1.8 s | ±2.0/3.5 m/s² | 0.8 m/s²/step | 极强（yaw_rate_clip=0.03 rad/step） |
+| `lateral_stable` | 1.8 s | ±2.0/3.5 m/s² | 0.8 m/s²/step | 极强（yaw_rate_clip=0.01 rad/step, heading_smooth_alpha=0.7） |
 
 ### 完整工作流（复制可用命令）
 
