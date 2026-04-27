@@ -89,8 +89,23 @@ def compute_traj_signals(traj: np.ndarray, dt: float = 0.1) -> Dict[str, np.ndar
     """Compute speed, accel, jerk, and curvature proxy from (T, ≥4) array.
 
     Columns assumed: [center_x, center_y, vx, vy, ...].
-    All derivatives are approximate finite differences; curvature is a proxy
-    (yaw_rate / max(speed, EPS)) and is explicitly labelled as such.
+    All derivatives are approximate finite differences via ``numpy.gradient``.
+
+    Curvature proxy (``curvature_proxy``) is estimated as::
+
+        curvature_proxy[t] = yaw_rate[t] / max(speed[t], EPS)
+
+    where yaw_rate is the finite-difference of the heading angle
+    ``atan2(vy, vx)``.  This is an **approximation** rather than the true
+    geometric curvature of the path because:
+
+    * Heading is estimated from the velocity vector, not from position derivatives.
+    * The division by speed is ill-conditioned at very low speeds (< ~0.01 m/s
+      near ``EPS``); values at near-zero speed should be treated with caution
+      and may appear artificially large.
+    * Waymo log-replay trajectories already contain quantisation noise in vx/vy.
+
+    Label this as "curvature proxy (approx)" in any paper or figure caption.
     """
     vx = traj[:, 2].astype(float)
     vy = traj[:, 3].astype(float)
@@ -103,6 +118,8 @@ def compute_traj_signals(traj: np.ndarray, dt: float = 0.1) -> Dict[str, np.ndar
     jerk = np.gradient(accel, dt)
 
     # curvature proxy: yaw_rate / speed
+    # Note: near-zero speed produces large curvature_proxy values; use EPS
+    # (1e-8) as a numerical floor – this is intentional and documented above.
     heading = np.arctan2(vy, vx)
     # wrap heading differences to [-π, π]
     d_heading = np.diff(heading)
@@ -323,20 +340,25 @@ def plot_timeseries(
     quiet: bool = False,
 ) -> None:
     """Plot speed/accel/jerk/curvature proxy for query and Top-K retrieved windows."""
-    signal_names = ["speed [m/s]", "accel [m/s²]", "jerk [m/s³]", "curvature proxy [1/m] (approx)"]
-    signal_keys = ["speed", "accel", "jerk", "curvature_proxy"]
+    # Coupled (key, y-axis label) pairs – keep in sync here rather than as separate lists.
+    SIGNALS = [
+        ("speed",           "speed [m/s]"),
+        ("accel",           "accel [m/s²]"),
+        ("jerk",            "jerk [m/s³]"),
+        ("curvature_proxy", "curvature proxy [1/m] (approx)"),
+    ]
 
     q_sig = compute_traj_signals(_traj_as_array(traj[query_idx]), dt=dt)
     T = len(q_sig["speed"])
     t_axis = np.arange(T) * dt
 
-    fig, axes = plt.subplots(4, 1, figsize=(12, 10), sharex=True)
+    fig, axes = plt.subplots(len(SIGNALS), 1, figsize=(12, 10), sharex=True)
 
     cmap = plt.cm.plasma  # type: ignore[attr-defined]
     non_excl = result_df[~result_df["excluded"]].head(topk)
     n_show = len(non_excl)
 
-    for ax, key, ylabel in zip(axes, signal_keys, signal_names):
+    for ax, (key, ylabel) in zip(axes, SIGNALS):
         ax.plot(t_axis, q_sig[key], color="black", lw=2.5, label="query", zorder=10)
 
         for rank, (_, row) in enumerate(non_excl.iterrows()):
@@ -395,7 +417,7 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--query_scenario_id", default=None,
                    help="Find first row whose meta[0] matches this scenario_id")
     p.add_argument("--query_start", type=int, default=None,
-                   help="When combined with --query_scenario_id, also match meta[1]==start")
+                   help="When combined with --query_scenario_id, also match the 'start' field")
 
     # Retrieval settings
     p.add_argument("--mode", choices=["global", "within-source"], default="global",

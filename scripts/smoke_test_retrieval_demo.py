@@ -68,10 +68,16 @@ def test_global_retrieval_shapes():
 
 
 def test_within_source_retrieval():
-    """within-source retrieval finds only same-meta-key rows (excluding query)."""
+    """within-source retrieval finds only same-meta-key rows (excluding query).
+
+    With n_items=60 and n_groups=20, each group gets exactly 3 items
+    (indices i where i % n_groups == group_id). Query at index 0 belongs to
+    group 0, so the same-meta-key rows (excluding query itself) are indices 20
+    and 40 → exactly 2 candidates expected.
+    """
     embeddings, meta, traj, front, split = _make_synthetic_data(n_items=60, T=20, n_groups=20)
     # Query at index 0: meta key = (scenario_000, 0, 20, front_000)
-    # Same meta key: indices 0, 20, 40 (all i%20==0)
+    # Same meta key: indices 0, 20, 40 (all i%20==0); query excluded → 2 candidates
     result = retrieve(
         query_idx=0,
         embeddings=embeddings,
