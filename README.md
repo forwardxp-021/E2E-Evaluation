@@ -434,7 +434,7 @@ therefore scenario-controlled.
 | (a) Coverage validation | Checks each `(source_index, policy_id)` pair appears exactly once; reports missing / duplicate counts | summary JSON |
 | (b) Within-source pairwise distances | Euclidean + cosine distance between every policy pair within each source group | `policy_pairwise_dist.csv` |
 | (c) Centroid classification accuracy | Nearest-centroid prediction using train-split centroids; evaluated per source group on eval split | summary JSON |
-| (d) Within-source retrieval | Hit-rate of nearest within-source neighbour sharing the same policy label; mean/median distance margin | summary JSON |
+| (d) Within-source retrieval applicability + margin | Check whether within-source same-policy NN retrieval is well-defined; report mean/median within-source distance margin | summary JSON |
 
 ### Copy-pastable commands (using default paths)
 
@@ -526,7 +526,7 @@ python evaluate_policy_separation_aligned.py \
 
 | File | Description |
 |------|-------------|
-| `policy_separation_aligned_summary.json` | Coverage stats, centroid accuracy, pairwise distance stats (mean/median), within-source retrieval hit rate and margin |
+| `policy_separation_aligned_summary.json` | Coverage stats, centroid accuracy, pairwise distance stats (mean/median), within-source retrieval applicability and margin |
 | `policy_pairwise_dist.csv` | Per-source-group pairwise (Euclidean + cosine) distances for each policy pair |
 
 ### Notes
@@ -538,6 +538,10 @@ python evaluate_policy_separation_aligned.py \
   (a) will list any such gaps.
 - Centroids for classification (step c) are always estimated from the **train** split,
   regardless of `--eval_split`.
+- If each source has only one sample per policy (common aligned setup), within-source
+  same-policy nearest-neighbour retrieval is undefined; summary JSON will report
+  `retrieval_applicable=false` and set NN hit-rate/chance to `null` instead of a
+  misleading numeric 0.0.
 
 ---
 
