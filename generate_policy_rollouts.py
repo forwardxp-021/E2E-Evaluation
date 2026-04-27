@@ -557,6 +557,20 @@ def main() -> None:
             row += f"  {val:>22.4f}" if val is not None else f"  {'N/A':>22}"
         print(row)
 
+    if "lateral_stable" in active_params and "lateral_stable" in policy_names:
+        lat = active_params["lateral_stable"]
+        print(f"\n{'='*60}")
+        print("lateral_stable effective parameters (after defaults + CLI overrides):")
+        for key in [
+            "yaw_rate_clip",
+            "heading_smooth_alpha",
+            "thw_target",
+            "jerk_limit",
+            "a_max",
+            "a_min",
+        ]:
+            print(f"  {key:<22}: {float(lat[key]):.6f}")
+
     # ------------------------------------------------------------------
     # Per-policy yaw_rate / heading_change report
     # ------------------------------------------------------------------

@@ -14,13 +14,14 @@ Computations (applied to --eval_split samples only, centroids from train):
   (c) Within-source classification accuracy: for each source group in the
       eval split, assign the policy label of the nearest train-split centroid
       and aggregate accuracy.
-  (d) Within-source retrieval (centroid-agreement): for each eval sample rank the
-      other policies in the *same* source by distance; report whether the nearest
-      neighbour is the policy whose train-split centroid is globally nearest to the
-      query policy's centroid.  Chance = 1/(n_policies−1).  The old "same-policy
-      nearest neighbour" definition is inapplicable here because each source has
-      exactly one sample per policy.
-  (e) Save policy_separation_aligned_summary.json.
+  (d) Within-source margin diagnostics (no within-source NN hit rate by default):
+      for each eval sample compute distance margin between farthest and nearest
+      neighbour within the same source.
+  (e) Within-source nearest-neighbour retrieval applicability check:
+      "same-policy nearest-neighbour hit rate" is only reported when at least one
+      query has a valid same-policy positive within the same source group.
+      Otherwise this metric is marked N/A to avoid misleading zeros.
+  (f) Save policy_separation_aligned_summary.json.
 
 Outputs written to --analysis_dir (default: directory containing embeddings):
     policy_separation_aligned_summary.json
@@ -46,9 +47,6 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import normalize
-
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -240,94 +238,61 @@ def compute_centroid_accuracy(
     return overall_acc, per_policy_acc
 
 
-def compute_within_source_retrieval(
+def compute_within_source_margin(
     embeddings: np.ndarray,
     source_index: np.ndarray,
-    policy_id: np.ndarray,
-    unique_policies: List[int],
     eval_mask: np.ndarray,
-    centroids: Dict[int, np.ndarray],
-) -> Tuple[float, float, float]:
-    """Within-source centroid-agreement retrieval metrics for eval samples.
+    ) -> Tuple[float, float]:
+    """Within-source distance margin diagnostics for eval samples.
 
-    In the within-source setting each source has exactly **one** sample per
-    policy, so a "same-policy nearest neighbour" metric is undefined (there are
-    no other samples with the same policy label in the same source).
-
-    Instead, this function measures **centroid-agreement**: for each eval sample
-    with policy p_i, the *expected* nearest within-source neighbour is the
-    policy whose **train-split centroid** is closest to the centroid of p_i.
-    A "hit" occurs when the actual nearest within-source neighbour matches this
-    centroid-derived expectation.
-
-    Formally:
-      1. Compute centroid-nearest policy t(p_i) = argmin_{p_j ≠ p_i} ‖c_{p_i} − c_{p_j}‖
-         for each policy p_i (using train centroids).
-      2. For each eval sample i (policy p_i) in source s:
-           others = all eval samples in source s with policy ≠ p_i
-           nearest = argmin_{j ∈ others} ‖emb_i − emb_j‖
-           hit = 1 if policy_id[nearest] == t(p_i) else 0
-      3. Chance level = 1 / (n_policies − 1)  (random pick among other policies).
-
-    Margin (unchanged): distance(farthest within-source) − distance(nearest
-    within-source).  This is always well-defined when there are ≥ 2 policies per
-    source.
+    For each eval sample i inside source-group s:
+      others = all eval samples in source s excluding i
+      margin_i = max_j d(i,j) - min_j d(i,j)
 
     Returns:
-        hit_rate:      fraction of eval samples where nearest within-source
-                       neighbour agrees with the centroid-order expectation.
-        mean_margin:   mean of per-sample distance margins.
-        median_margin: median of per-sample distance margins.
+        mean_margin: mean margin over eval samples with >=1 within-source neighbour
+        median_margin: median margin over eval samples with >=1 within-source neighbour
     """
-    # Pre-compute centroid-nearest policy for each policy using train centroids.
-    centroid_target: Dict[int, int] = {}
-    for p_i in unique_policies:
-        if p_i not in centroids:
-            continue
-        best_p = -1
-        best_d = float("inf")
-        for p_j in unique_policies:
-            if p_j == p_i or p_j not in centroids:
-                continue
-            d = float(np.linalg.norm(centroids[p_i] - centroids[p_j]))
-            if d < best_d:
-                best_d = d
-                best_p = p_j
-        if best_p >= 0:
-            centroid_target[p_i] = best_p
-
     # Group eval indices by source
     eval_indices = np.where(eval_mask)[0]
     src_to_eval_indices: Dict[int, List[int]] = defaultdict(list)
     for i in eval_indices:
         src_to_eval_indices[int(source_index[i])].append(i)
 
-    hits: List[int] = []
     margins: List[float] = []
-
     for src, idxs in src_to_eval_indices.items():
         if len(idxs) < 2:
-            continue  # need at least 2 samples to do within-source retrieval
+            continue
         for i in idxs:
-            true_pid = int(policy_id[i])
-            target_pid = centroid_target.get(true_pid, -1)
-            if target_pid < 0:
-                continue  # no centroid available for this policy – skip
-
             others = [j for j in idxs if j != i]
             emb_i = embeddings[i]
             dists = np.array([np.linalg.norm(embeddings[j] - emb_i) for j in others])
-            nearest_j = others[int(np.argmin(dists))]
-            nearest_pid = int(policy_id[nearest_j])
-
-            # Hit: nearest within-source neighbour is the centroid-nearest policy
-            hits.append(int(nearest_pid == target_pid))
             margins.append(float(np.max(dists) - np.min(dists)))
 
-    hit_rate = float(np.mean(hits)) if hits else float("nan")
     mean_margin = float(np.mean(margins)) if margins else float("nan")
     median_margin = float(np.median(margins)) if margins else float("nan")
-    return hit_rate, mean_margin, median_margin
+    return mean_margin, median_margin
+
+
+def evaluate_within_source_retrieval_applicability(
+    source_index: np.ndarray,
+    policy_id: np.ndarray,
+    eval_mask: np.ndarray,
+) -> Tuple[bool, str]:
+    """Determine whether within-source same-policy NN retrieval is well-defined."""
+    eval_src = source_index[eval_mask].astype(np.int64)
+    eval_pid = policy_id[eval_mask].astype(np.int64)
+    pair_counts: Dict[Tuple[int, int], int] = defaultdict(int)
+    for src, pid in zip(eval_src.tolist(), eval_pid.tolist()):
+        pair_counts[(int(src), int(pid))] += 1
+
+    any_positive = any(cnt > 1 for cnt in pair_counts.values())
+    if not any_positive:
+        return (
+            False,
+            "Nearest-neighbour same-policy hit rate is not well-defined for within-source groups with one sample per policy, because there is no same-policy positive candidate within the same source group.",
+        )
+    return (True, "Within-source same-policy positive candidates exist.")
 
 
 # ---------------------------------------------------------------------------
@@ -516,30 +481,27 @@ def main() -> None:
     for pid, acc in per_policy_acc.items():
         print(f"    policy_{pid}: {acc:.4f}")
 
-    # Pre-build centroids dict for retrieval step
-    centroids: Dict[int, np.ndarray] = {}
-    for pid in unique_ids:
-        mask = train_mask & (policy_id == pid)
-        if mask.sum() > 0:
-            centroids[pid] = embeddings[mask].mean(axis=0)
-
     # ------------------------------------------------------------------
-    # (d) Within-source retrieval metric (eval split)
+    # (d) Within-source margin + retrieval applicability
     # ------------------------------------------------------------------
-    print("\n--- (d) Within-source retrieval (eval split) ---")
-    hit_rate, mean_margin, median_margin = compute_within_source_retrieval(
+    print("\n--- (d) Within-source margin / retrieval applicability (eval split) ---")
+    mean_margin, median_margin = compute_within_source_margin(
         embeddings,
         source_index,
-        policy_id,
-        unique_ids,
         eval_mask,
-        centroids,
     )
-    retrieval_chance = 1.0 / (n_policies - 1) if n_policies > 1 else float("nan")
-    print(f"  Centroid-agreement hit rate: {hit_rate:.4f}  (chance={retrieval_chance:.4f})")
-    print(f"  [metric] within-source; hit = nearest neighbour matches centroid-nearest policy")
     print(f"  Mean within-source margin  : {mean_margin:.4f}")
     print(f"  Median within-source margin: {median_margin:.4f}")
+    retrieval_applicable, retrieval_reason = evaluate_within_source_retrieval_applicability(
+        source_index,
+        policy_id,
+        eval_mask,
+    )
+    if retrieval_applicable:
+        print("  Retrieval applicability    : applicable")
+    else:
+        print("  Retrieval applicability    : N/A (not applicable)")
+        print(f"  Reason                     : {retrieval_reason}")
 
     # ------------------------------------------------------------------
     # Determine analysis_dir and save outputs
@@ -563,6 +525,11 @@ def main() -> None:
         "n_samples_eval": int(eval_mask.sum()),
         "n_policies": n_policies,
         "unique_policy_ids": unique_ids,
+        "retrieval_mode": "within_source",
+        "retrieval_applicable": retrieval_applicable,
+        "retrieval_reason": retrieval_reason,
+        "nearest_neighbor_hit_rate": None,
+        "nearest_neighbor_chance": None,
         # (a) Coverage
         "coverage": {
             k: v for k, v in coverage.items()
@@ -576,17 +543,13 @@ def main() -> None:
             "chance_accuracy": chance,
             "per_policy_accuracy": {str(k): v for k, v in per_policy_acc.items()},
         },
-        # (d) Within-source retrieval
+        # (d) Within-source retrieval applicability
         "within_source_retrieval": {
-            "metric_mode": "within_source_centroid_agreement",
-            "metric_definition": (
-                "For each eval sample with policy p, among the other policies in the same "
-                "source, hit = the nearest within-source neighbour is the policy whose "
-                "train-split centroid is globally nearest to centroid[p]. "
-                "Chance = 1 / (n_policies - 1)."
-            ),
-            "centroid_agreement_hit_rate": hit_rate,
-            "chance_hit_rate": retrieval_chance,
+            "retrieval_mode": "within_source",
+            "retrieval_applicable": retrieval_applicable,
+            "retrieval_reason": retrieval_reason,
+            "nearest_neighbor_hit_rate": None,
+            "nearest_neighbor_chance": None,
             "mean_within_source_margin": mean_margin,
             "median_within_source_margin": median_margin,
         },
