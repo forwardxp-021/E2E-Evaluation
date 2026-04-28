@@ -404,7 +404,9 @@ python scripts/smoke_test_retrieval_demo.py
 
 ### 5) 限制说明
 - `yaw_rate_proxy/curvature_proxy` 来自速度方向估计，是近似 proxy
-- 若 `policy_id` 只能由行顺序推断，会在 `summary.json` 写明 `policy_id_source`
+- demo 需要多 policy rollout 数据（同 source 至少 3 条记录）才能稳定展示 p0/p1/p2 对比
+- 若 `policy_id` 缺失，`summary.json` 会写明 `policy_id_source=unavailable`，并将 same-policy hit@k 置为 `null`
+- 此时会给出强提醒：global retrieval 仅能展示最近邻，不能验证 same-policy style retrieval
 - 跨 source 轨迹叠加仅用于风格参考，不代表同一场景几何对齐
 
 ### 运行示例
@@ -418,9 +420,26 @@ python tools/embedding_interpretability_demo.py \
   --mode both \
   --distance euclidean \
   --topk 5 \
+  --source_key_fields scenario_id,start,window_len,front_id \
+  --auto_select_valid_source \
   --exclude_same_source \
   --exclude_same_scenario
 ```
+
+> 若 rollout 的 `front_id` 在不同 policy 下不一致，可改用：  
+> `--source_key_fields scenario_id,start,window_len`
+
+### summary.json 诊断字段（重点看）
+- `diagnostics.n_total_rows` / `n_rows_after_split`
+- `diagnostics.n_unique_source_keys_total` / `n_unique_source_keys_after_split`
+- `diagnostics.source_group_size_histogram_total` / `..._after_split`
+- `diagnostics.has_policy_id` / `policy_id_source` / `policy_id_counts`
+- `diagnostics.split_array_shape` / `embedding_shape` / `meta_shape` / `traj_shape` / `front_shape`
+
+这组字段可直接判断：
+1) split 是否把每个 source 只保留成单条（导致 within-source 失效）  
+2) 当前数据是否包含可用 `policy_id`（或至少可恢复）  
+3) 是否满足“每 source ≥3 条”的可解释 triplet 前提
 
 ### Smoke test
 ```bash
@@ -428,3 +447,9 @@ python tools/embedding_interpretability_demo.py \
   --out_dir outputs/embedding_demo/smoke \
   --smoke_test
 ```
+
+### 关键输出文件
+- `summary.json`：含 `diagnostics`（group histogram / policy_id 可用性 / shape）
+- `embedding_2d_projection.png`：2D embedding 投影（默认 PCA，UMAP 可选）
+- `within_source_triplet.png` / `within_source_style_signals.png` / `embedding_distance_matrix.png`：同源 triplet 对比（满足条件时生成）
+- `global_retrieval_cards.png` / `global_retrieval_style_signals.png`：跨源 Top-K 检索可视化

@@ -677,3 +677,34 @@ and the aligned evaluator (`evaluate_policy_separation_aligned.py`).
 ```bash
 python scripts/smoke_test_retrieval_demo.py
 ```
+
+### PR2 interpretability demo (`tools/embedding_interpretability_demo.py`)
+
+For PR2-style interpretability (same-source triplet + global retrieval cards), use:
+
+```bash
+python tools/embedding_interpretability_demo.py \
+  --data_dir output_policy_rollouts \
+  --out_dir outputs/embedding_demo/case_000 \
+  --embedding feat_style \
+  --split test \
+  --mode both \
+  --topk 5 \
+  --source_key_fields scenario_id,start,window_len,front_id \
+  --auto_select_valid_source
+```
+
+If `front_id` changes across policy rollouts, relax grouping with:
+
+```bash
+--source_key_fields scenario_id,start,window_len
+```
+
+The demo requires multi-policy rollout rows (typically 3 rows per source key).  
+Check `summary.json -> diagnostics` to verify:
+- row counts before/after split,
+- source-group size histograms,
+- policy-id availability/source/counts,
+- core array shapes (`embedding/meta/traj/front/split`).
+
+When `policy_id` is unavailable, hit@k for same-policy retrieval is intentionally set to `null` and a warning explains that nearest-neighbour visualization is still possible but same-policy verification is not.
