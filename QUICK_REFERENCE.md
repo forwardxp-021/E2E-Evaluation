@@ -379,3 +379,52 @@ python scripts/smoke_test_retrieval_demo.py
 | `traj_overlay.png` | 对齐后的 ego + front 轨迹叠加图 |
 | `timeseries.png` | speed / accel / jerk / curvature proxy 时序对比图 |
 | `summary.json` | 运行参数（mode、distance、topk、数据路径等） |
+
+## Embedding interpretability demo
+
+新增脚本：`tools/embedding_interpretability_demo.py`，用于**可解释可视化**，不修改 benchmark 指标定义。
+
+### 1) Same-source triplet demo
+在同一 `source_key = scenario_id|start|window_len|front_id` 下，比较不同 policy 的轨迹与信号，展示受控条件下风格分离。
+
+### 2) Global retrieval demo
+给定 query，执行跨 source 的 Top-K 检索，输出卡片图与信号对比，观察 embedding 邻居是否呈现相近驾驶风格。
+
+### 3) within-source 与 global 区别
+- `within-source`：受控对比（同源窗口）
+- `global`：跨源检索（风格相似性）
+
+### 4) 风格信号定义（轨迹级）
+- `speed = sqrt(vx^2 + vy^2)`
+- `accel = d(speed)/dt`
+- `jerk = d(accel)/dt`
+- `yaw_rate_proxy = d(unwrap(atan2(vy,vx)))/dt`
+- `curvature_proxy = yaw_rate_proxy / max(speed, eps)`
+- 若有 `front.npy`：`gap` 与 `thw = gap/max(speed,eps)`
+
+### 5) 限制说明
+- `yaw_rate_proxy/curvature_proxy` 来自速度方向估计，是近似 proxy
+- 若 `policy_id` 只能由行顺序推断，会在 `summary.json` 写明 `policy_id_source`
+- 跨 source 轨迹叠加仅用于风格参考，不代表同一场景几何对齐
+
+### 运行示例
+```bash
+python tools/embedding_interpretability_demo.py \
+  --data_dir output_policy_rollouts \
+  --out_dir outputs/embedding_demo/case_000 \
+  --embedding feat_style \
+  --split test \
+  --query_index 0 \
+  --mode both \
+  --distance euclidean \
+  --topk 5 \
+  --exclude_same_source \
+  --exclude_same_scenario
+```
+
+### Smoke test
+```bash
+python tools/embedding_interpretability_demo.py \
+  --out_dir outputs/embedding_demo/smoke \
+  --smoke_test
+```
