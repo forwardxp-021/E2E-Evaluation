@@ -64,6 +64,137 @@ def _make_source_key(meta_row: Any, fields: Sequence[str]) -> str:
     return "|".join(str(m.get(f, "")) for f in fields)
 
 
+def _load_metadata_table(
+    data_dir: Path,
+    n: int,
+    meta: Optional[np.ndarray],
+    split_arr: np.ndarray,
+    source_key_fields: Sequence[str],
+) -> Tuple[pd.DataFrame, Dict[str, str], List[str]]:
+    warnings: List[str] = []
+    sources: Dict[str, str] = {
+        "meta_source": "none",
+        "source_index_source": "unavailable",
+        "policy_id_source": "unavailable",
+        "policy_name_source": "unavailable",
+        "source_key_source": "source_key_fields",
+    }
+    table = pd.DataFrame({"row_index": np.arange(n, dtype=int)})
+
+    meta_csv_path = data_dir / "meta.csv"
+    if meta_csv_path.exists():
+        m = pd.read_csv(meta_csv_path)
+        if len(m) == n:
+            sources["meta_source"] = "meta.csv"
+            table = m.copy()
+        else:
+            warnings.append(f"meta.csv length={len(m)} does not match n={n}; ignoring meta.csv.")
+
+    if sources["meta_source"] == "none" and meta is not None and len(meta) == n:
+        rows = []
+        for i in range(n):
+            m = _extract_meta_dict(meta[i])
+            m["row_index"] = i
+            rows.append(m)
+        table = pd.DataFrame(rows)
+        sources["meta_source"] = "meta.npy"
+
+    if "row_index" not in table.columns:
+        table["row_index"] = np.arange(n, dtype=int)
+    table["row_index"] = pd.to_numeric(table["row_index"], errors="coerce").fillna(np.arange(n)).astype(int)
+    table = table.sort_values("row_index").reset_index(drop=True)
+    if len(table) != n or not np.array_equal(table["row_index"].values, np.arange(n)):
+        warnings.append("Metadata table row_index is not a complete 0..N-1 range; rebuilding canonical row_index.")
+        table = table.iloc[:n].copy()
+        table["row_index"] = np.arange(len(table))
+
+    for c, default in [("scenario_id", ""), ("start", 0), ("window_len", 0), ("front_id", "")]:
+        if c not in table.columns:
+            table[c] = default
+    table["scenario_id"] = table["scenario_id"].fillna("").astype(str)
+    table["start"] = pd.to_numeric(table["start"], errors="coerce").fillna(0).astype(int)
+    table["window_len"] = pd.to_numeric(table["window_len"], errors="coerce").fillna(0).astype(int)
+    table["front_id"] = table["front_id"].fillna("").astype(str)
+
+    split_npy = data_dir / "split.npy"
+    if "split" not in table.columns:
+        table["split"] = split_arr.astype(str)
+        sources["split_source"] = "split.npy" if split_npy.exists() else "default_all"
+    else:
+        table["split"] = table["split"].fillna(split_arr.astype(str) if len(split_arr) == len(table) else "all").astype(str)
+        sources["split_source"] = sources["meta_source"]
+
+    src_idx_npy = data_dir / "source_index.npy"
+    if src_idx_npy.exists():
+        arr = np.load(src_idx_npy, allow_pickle=True)
+        if len(arr) == n:
+            table["source_index"] = pd.to_numeric(pd.Series(arr), errors="coerce").astype("Int64")
+            sources["source_index_source"] = "source_index.npy"
+    elif "source_index" in table.columns:
+        table["source_index"] = pd.to_numeric(table["source_index"], errors="coerce").astype("Int64")
+        sources["source_index_source"] = sources["meta_source"]
+
+    pid_npy = data_dir / "policy_id.npy"
+    if pid_npy.exists():
+        arr = np.load(pid_npy, allow_pickle=True)
+        if len(arr) == n:
+            table["policy_id"] = pd.to_numeric(pd.Series(arr), errors="coerce").astype("Int64")
+            sources["policy_id_source"] = "policy_id.npy"
+    elif "policy_id" in table.columns:
+        table["policy_id"] = pd.to_numeric(table["policy_id"], errors="coerce").astype("Int64")
+        sources["policy_id_source"] = sources["meta_source"]
+
+    pname_npy = data_dir / "policy_name.npy"
+    if pname_npy.exists():
+        arr = np.load(pname_npy, allow_pickle=True)
+        if len(arr) == n:
+            table["policy_name"] = pd.Series(arr).astype(str)
+            sources["policy_name_source"] = "policy_name.npy"
+    elif "policy_name" in table.columns:
+        table["policy_name"] = table["policy_name"].fillna("").astype(str)
+        sources["policy_name_source"] = sources["meta_source"]
+
+    if "source_key" in table.columns:
+        table["source_key"] = table["source_key"].fillna("").astype(str)
+        sources["source_key_source"] = sources["meta_source"]
+    else:
+        table["source_key"] = (
+            table["scenario_id"].astype(str) + "|" + table["start"].astype(str) + "|" +
+            table["window_len"].astype(str) + "|" + table["front_id"].astype(str)
+        )
+        sources["source_key_source"] = "source_key_fields"
+
+    if "source_index" not in table.columns:
+        if table["source_key"].nunique() < n:
+            table["source_index"] = table.groupby("source_key").ngroup().astype("Int64")
+            sources["source_index_source"] = "inferred_from_source_key"
+            warnings.append("source_index inferred from source_key groups.")
+        else:
+            table["source_index"] = pd.Series([pd.NA] * n, dtype="Int64")
+    if "policy_id" not in table.columns:
+        table["policy_id"] = pd.Series([pd.NA] * n, dtype="Int64")
+
+    if table["policy_id"].isna().all():
+        # Safe inference only when every group size identical and policy ordering unambiguous.
+        g = table.groupby("source_index", dropna=True)["row_index"].apply(list) if not table["source_index"].isna().all() else pd.Series([], dtype=object)
+        if len(g) > 0:
+            sizes = sorted({len(v) for v in g.tolist()})
+            if len(sizes) == 1 and sizes[0] >= 2:
+                inferred = [pd.NA] * n
+                for idxs in g.tolist():
+                    for pid, row_idx in enumerate(sorted(idxs)):
+                        inferred[int(row_idx)] = pid
+                table["policy_id"] = pd.Series(inferred, dtype="Int64")
+                sources["policy_id_source"] = "inferred_from_within_source_order"
+                warnings.append("policy_id inferred from within-source row order.")
+    if "policy_name" not in table.columns or table["policy_name"].isna().all():
+        table["policy_name"] = table["policy_id"].apply(lambda v: f"policy_{int(v)}" if pd.notna(v) else "")
+        if sources["policy_name_source"] == "unavailable":
+            sources["policy_name_source"] = "derived_from_policy_id"
+
+    return table, sources, warnings
+
+
 def _infer_policy_ids(meta: np.ndarray, selected_indices: np.ndarray, source_keys: List[str], aux_policy_id: Optional[np.ndarray]) -> Tuple[List[Optional[int]], str, List[str]]:
     warnings = []
     if aux_policy_id is not None and len(aux_policy_id) == len(meta):
@@ -262,29 +393,43 @@ def _plot_embedding_projection(path: Path, emb: np.ndarray, selected: np.ndarray
     top_indices = set(top_df["index"].astype(int).tolist()) if len(top_df) else set()
 
     plt.figure(figsize=(8, 6))
-    if any(pid is not None for pid in (policy_ids[i] for i in selected.tolist())):
+    has_policy = any(pid is not None for pid in (policy_ids[i] for i in selected.tolist()))
+    if has_policy:
         valid_pids = sorted({int(policy_ids[i]) for i in selected.tolist() if policy_ids[i] is not None})
         cmap = plt.cm.get_cmap("tab10", max(1, len(valid_pids)))
         pid_to_color = {pid: cmap(k) for k, pid in enumerate(valid_pids)}
+        legend_handles = []
         for i in selected.tolist():
             pos = idx_to_pos[i]
             c = pid_to_color.get(policy_ids[i], (0.6, 0.6, 0.6, 0.8))
             plt.scatter(coords[pos, 0], coords[pos, 1], c=[c], s=28, alpha=0.7)
+        for pid in valid_pids:
+            legend_handles.append(plt.Line2D([0], [0], marker="o", color="w", label=f"policy_{pid}",
+                                             markerfacecolor=pid_to_color[pid], markersize=7))
+        if legend_handles:
+            plt.legend(handles=legend_handles, loc="best", fontsize=8, title="Policies")
     else:
         sizes = np.array([group_sizes[source_keys[i]] for i in selected.tolist()], dtype=float)
         plt.scatter(coords[:, 0], coords[:, 1], c=sizes, cmap="viridis", s=28, alpha=0.7)
+        warnings.append("policy_id unavailable for projection coloring.")
 
     for i in top_indices:
         if i in idx_to_pos:
             pos = idx_to_pos[i]
             plt.scatter(coords[pos, 0], coords[pos, 1], facecolors="none", edgecolors="red", s=120, linewidths=1.6)
+            if "rank" in top_df.columns:
+                rank = top_df.loc[top_df["index"] == i, "rank"].iloc[0]
+                if not pd.isna(rank):
+                    plt.annotate(f"r{int(rank)}", (coords[pos, 0], coords[pos, 1]), fontsize=7, color="red")
     qpos = idx_to_pos[query_idx]
     plt.scatter(coords[qpos, 0], coords[qpos, 1], c="gold", edgecolors="black", marker="*", s=280, linewidths=1.0, label="query")
-    plt.title(f"Embedding 2D projection ({proj_used.upper()})")
+    if has_policy:
+        plt.title(f"Embedding 2D projection ({proj_used.upper()}) | colored by policy_id")
+    else:
+        plt.title(f"Embedding 2D projection ({proj_used.upper()}) | policy_id unavailable")
     plt.xlabel("component 1")
     plt.ylabel("component 2")
     plt.grid(alpha=0.3)
-    plt.legend(loc="best", fontsize=8)
     _savefig(path)
 
 
@@ -368,6 +513,7 @@ def run_demo(args):
         embeddings, meta, traj, front, split = _make_synth()
         embedding_path = "<synthetic>"
         meta_path = traj_path = front_path = split_path = "<synthetic>"
+        data_dir = None
     else:
         data_dir = Path(args.data_dir)
         embeddings = np.load(data_dir / f"{args.embedding}.npy", allow_pickle=True)
@@ -377,38 +523,110 @@ def run_demo(args):
         front = np.load(front_file, allow_pickle=True) if front_file.exists() else None
         split_file = data_dir / "split.npy"
         split = np.load(split_file, allow_pickle=True) if split_file.exists() else None
-        aux_policy_id_file = data_dir / "policy_id.npy"
-        aux_policy_id = np.load(aux_policy_id_file, allow_pickle=True) if aux_policy_id_file.exists() else None
         embedding_path = str(data_dir / f"{args.embedding}.npy")
         meta_path = str(data_dir / "meta.npy")
         traj_path = str(data_dir / "traj.npy")
         front_path = str(front_file) if front is not None else None
         split_path = str(split_file) if split is not None else None
-    if args.smoke_test:
-        aux_policy_id = None
 
     n = len(embeddings)
+    if len(traj) != n:
+        raise ValueError(f"len(embedding)={n} must equal len(traj)={len(traj)}")
+    if front is not None and len(front) != n:
+        raise ValueError(f"len(front)={len(front)} must equal len(embedding)={n}")
+    if len(meta) != n:
+        raise ValueError(f"len(meta)={len(meta)} must equal len(embedding)={n}")
+    if not args.smoke_test and data_dir is not None:
+        for feat_name in ("feat_style.npy", "feat_style_raw.npy"):
+            feat_path = data_dir / feat_name
+            if feat_path.exists():
+                feat_arr = np.load(feat_path, allow_pickle=True)
+                if len(feat_arr) != n:
+                    raise ValueError(f"len({feat_name})={len(feat_arr)} must equal len(embedding)={n}")
     split_arr = _get_split(split, n)
     source_key_fields = [x.strip() for x in args.source_key_fields.split(",") if x.strip()]
     if len(source_key_fields) == 0:
         raise ValueError("source_key_fields must include at least one field")
-    source_keys = [_make_source_key(meta[i], source_key_fields) for i in range(n)]
-    group_sizes_total: Dict[str, int] = Counter(source_keys)
-    group_hist_total: Dict[str, int] = Counter(group_sizes_total.values())
+
+    metadata_sources: Dict[str, str] = {
+        "meta_source": "synthetic",
+        "source_index_source": "synthetic",
+        "policy_id_source": "synthetic",
+        "policy_name_source": "synthetic",
+        "source_key_source": "synthetic",
+    }
+    if args.smoke_test:
+        md_rows = []
+        for i in range(n):
+            m = _extract_meta_dict(meta[i])
+            md_rows.append({
+                "row_index": i,
+                "source_index": i // 3,
+                "source_key": _make_source_key(meta[i], source_key_fields),
+                "policy_id": i % 3,
+                "policy_name": f"policy_{i%3}",
+                "scenario_id": m["scenario_id"],
+                "start": m["start"],
+                "window_len": m["window_len"],
+                "front_id": m["front_id"],
+                "split": split_arr[i],
+            })
+        metadata_table = pd.DataFrame(md_rows)
+    else:
+        metadata_table, metadata_sources, md_warn = _load_metadata_table(data_dir, n, meta, split_arr, source_key_fields)
+        warnings.extend(md_warn)
+
+    source_keys = metadata_table["source_key"].astype(str).tolist()
+    source_index_vals = metadata_table["source_index"]
+    has_source_index = not source_index_vals.isna().all()
+    source_group_series = metadata_table.groupby("source_index").size().to_dict() if has_source_index else {}
+    source_group_sizes_total = {int(k): int(v) for k, v in source_group_series.items()} if has_source_index else {}
+    group_sizes_total_key: Dict[str, int] = Counter(source_keys)
+    group_hist_total_key: Dict[str, int] = Counter(group_sizes_total_key.values())
+    group_hist_total_source_idx: Dict[str, int] = Counter(source_group_sizes_total.values()) if has_source_index else {}
 
     if args.split == "all":
         selected = np.arange(n)
     else:
-        selected = np.where(split_arr == args.split)[0]
+        selected = np.where(metadata_table["split"].astype(str).values == args.split)[0]
     if len(selected) == 0:
         raise ValueError(f"No samples for split={args.split}")
-    group_sizes_after: Dict[str, int] = Counter([source_keys[i] for i in selected.tolist()])
-    group_hist_after: Dict[str, int] = Counter(group_sizes_after.values())
+    selected_mask = metadata_table["row_index"].isin(selected.tolist())
+    group_sizes_after_key: Dict[str, int] = Counter([source_keys[i] for i in selected.tolist()])
+    group_hist_after_key: Dict[str, int] = Counter(group_sizes_after_key.values())
+    group_sizes_after_source_idx = (
+        metadata_table.loc[selected_mask].groupby("source_index").size().to_dict()
+        if has_source_index else {}
+    )
+    group_hist_after_source_idx: Dict[str, int] = Counter(group_sizes_after_source_idx.values()) if has_source_index else {}
+
+    policy_ids: List[Optional[int]] = [
+        int(x) if pd.notna(x) else None
+        for x in metadata_table["policy_id"].tolist()
+    ]
+    policy_names: List[str] = [
+        str(x) if (x is not None and str(x) != "nan") else ""
+        for x in metadata_table["policy_name"].tolist()
+    ]
+    pid_source = metadata_sources["policy_id_source"]
+    has_policy_id = any(pid is not None for pid in policy_ids)
+
+    policy_ids_observed = sorted({pid for pid in policy_ids if pid is not None})
+    expected_num_policies = len(policy_ids_observed)
+    if not args.smoke_test and data_dir is not None:
+        pnames_json = data_dir / "policy_names.json"
+        if pnames_json.exists():
+            try:
+                mapping = json.loads(pnames_json.read_text(encoding="utf-8"))
+                if isinstance(mapping, dict):
+                    expected_num_policies = max(expected_num_policies, len(mapping))
+            except Exception:
+                warnings.append("Failed to parse policy_names.json for expected_num_policies.")
 
     query_idx = args.query_index if args.query_index is not None else int(selected.min())
     if query_idx not in selected.tolist():
         if args.auto_select_valid_source and args.mode in ("within_source", "both"):
-            valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after[source_keys[i]] >= 3)
+            valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after_key[source_keys[i]] >= 3)
             if valid_candidates:
                 query_idx = valid_candidates[0]
                 warnings.append("query_index not in selected split; auto-selected replacement from source group with >=3 samples.")
@@ -416,23 +634,45 @@ def run_demo(args):
                 raise ValueError("query_index is not in selected split and no valid source group found for auto-select.")
         else:
             raise ValueError("query_index is not in selected split")
-
-    policy_ids, pid_source, pid_warn = _infer_policy_ids(meta, selected, source_keys, aux_policy_id)
-    warnings.extend(pid_warn)
     if policy_ids[query_idx] is None:
         warnings.append(
             "policy_id unavailable: global retrieval can show nearest embedding neighbors, but cannot verify same-policy style retrieval."
         )
 
-    query_meta = _extract_meta_dict(meta[query_idx])
+    query_meta = {
+        "scenario_id": str(metadata_table.at[query_idx, "scenario_id"]),
+        "start": int(metadata_table.at[query_idx, "start"]),
+        "window_len": int(metadata_table.at[query_idx, "window_len"]),
+        "front_id": str(metadata_table.at[query_idx, "front_id"]),
+    }
     q_source = source_keys[query_idx]
-    if args.mode in ("within_source", "both") and group_sizes_after.get(q_source, 0) < 2:
+    q_source_index = metadata_table.at[query_idx, "source_index"] if has_source_index else None
+    if args.mode in ("within_source", "both") and group_sizes_after_key.get(q_source, 0) < 2:
         if args.auto_select_valid_source:
-            valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after[source_keys[i]] >= 3)
+            valid_candidates: List[int] = []
+            if has_source_index and expected_num_policies > 0:
+                selected_df = metadata_table.loc[selected_mask]
+                grouped = selected_df.groupby("source_index")
+                full_groups = []
+                for sidx, gdf in grouped:
+                    pset = set(int(x) for x in gdf["policy_id"].dropna().tolist())
+                    if len(gdf) >= expected_num_policies and len(pset) >= expected_num_policies:
+                        full_groups.append((int(sidx), sorted(gdf["row_index"].astype(int).tolist())))
+                if full_groups:
+                    full_groups = sorted(full_groups, key=lambda x: x[0])
+                    valid_candidates = [full_groups[0][1][0]]
+            if not valid_candidates:
+                valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after_key[source_keys[i]] >= 3)
             if valid_candidates:
                 query_idx = valid_candidates[0]
-                query_meta = _extract_meta_dict(meta[query_idx])
+                query_meta = {
+                    "scenario_id": str(metadata_table.at[query_idx, "scenario_id"]),
+                    "start": int(metadata_table.at[query_idx, "start"]),
+                    "window_len": int(metadata_table.at[query_idx, "window_len"]),
+                    "front_id": str(metadata_table.at[query_idx, "front_id"]),
+                }
                 q_source = source_keys[query_idx]
+                q_source_index = metadata_table.at[query_idx, "source_index"] if has_source_index else None
                 warnings.append("query source group had fewer than 2 samples; auto-selected replacement from a source group with >=3 samples.")
         else:
             warnings.append("query source group has fewer than 2 samples; within-source demo is not applicable.")
@@ -452,7 +692,7 @@ def run_demo(args):
             else:
                 excluded, reason = False, ""
             same_source = source_keys[i] == q_source
-            same_scenario = _extract_meta_dict(meta[i])["scenario_id"] == query_meta["scenario_id"]
+            same_scenario = str(metadata_table.at[i, "scenario_id"]) == query_meta["scenario_id"]
             if args.exclude_same_source and same_source and i != query_idx:
                 excluded, reason = True, (reason + ";same_source").strip(";")
             if args.exclude_same_scenario and same_scenario and i != query_idx:
@@ -466,12 +706,14 @@ def run_demo(args):
                 "query_policy_id": qpid,
                 "index": i,
                 "policy_id": pid,
+                "policy_name": policy_names[i] if policy_names[i] else (f"policy_{pid}" if pid is not None else ""),
                 "source_key": source_keys[i],
-                "scenario_id": _extract_meta_dict(meta[i])["scenario_id"],
-                "start": _extract_meta_dict(meta[i])["start"],
-                "window_len": _extract_meta_dict(meta[i])["window_len"],
-                "front_id": _extract_meta_dict(meta[i])["front_id"],
-                "split": split_arr[i],
+                "source_index": int(metadata_table.at[i, "source_index"]) if pd.notna(metadata_table.at[i, "source_index"]) else None,
+                "scenario_id": str(metadata_table.at[i, "scenario_id"]),
+                "start": int(metadata_table.at[i, "start"]),
+                "window_len": int(metadata_table.at[i, "window_len"]),
+                "front_id": str(metadata_table.at[i, "front_id"]),
+                "split": str(metadata_table.at[i, "split"]),
                 "distance": d,
                 "distance_type": args.distance,
                 "same_policy_as_query": (pid == qpid) if (pid is not None and qpid is not None) else None,
@@ -512,13 +754,20 @@ def run_demo(args):
     selected_for_fingerprint = {query_idx}
 
     if within["enabled"]:
-        ws = [i for i in selected.tolist() if source_keys[i] == q_source]
+        if has_source_index and pd.notna(q_source_index):
+            ws = [i for i in selected.tolist() if pd.notna(metadata_table.at[i, "source_index"]) and int(metadata_table.at[i, "source_index"]) == int(q_source_index)]
+            within["source_index"] = int(q_source_index)
+        else:
+            ws = [i for i in selected.tolist() if source_keys[i] == q_source]
+            within["source_index"] = None
         within["available_indices"] = ws
         within["available_policy_ids"] = [policy_ids[i] for i in ws]
         selected_for_fingerprint.update(ws)
-        if len(ws) >= 3:
+        min_needed = max(3, expected_num_policies if expected_num_policies > 0 else 3)
+        if len(ws) >= min_needed:
             within["applicable"] = True
-            ws_plot = sorted(ws)[:3]
+            ws_sorted = sorted(ws)
+            ws_plot = ws_sorted[:max(3, min(len(ws_sorted), expected_num_policies if expected_num_policies > 0 else 3))]
             _plot_within_triplet(out_dir / "within_source_triplet.png", query_idx, ws_plot, traj, front, policy_ids, q_source)
             _plot_within_signals(out_dir / "within_source_style_signals.png", ws_plot, traj, front, policy_ids, args.dt)
             mat = _plot_distance_matrix(out_dir / "embedding_distance_matrix.png", ws_plot, embeddings, policy_ids, args.distance)
@@ -526,7 +775,7 @@ def run_demo(args):
                 f"{ws_plot[r]}->{ws_plot[c]}": float(mat[r, c]) for r in range(len(ws_plot)) for c in range(len(ws_plot))
             }
         else:
-            msg = "within-source not applicable: fewer than 3 samples under query source_key"
+            msg = "within-source not applicable: fewer than expected policy samples under query source group"
             warnings.append(msg)
             within["reason_if_not_applicable"] = msg
 
@@ -544,7 +793,7 @@ def run_demo(args):
         query_idx,
         top_df,
         policy_ids,
-        group_sizes_after,
+        group_sizes_after_key,
         source_keys,
         args.projection,
         warnings,
@@ -552,16 +801,17 @@ def run_demo(args):
 
     fp_rows = []
     for i in sorted(selected_for_fingerprint):
-        m = _extract_meta_dict(meta[i])
         row = {
             "index": i,
             "source_key": source_keys[i],
-            "scenario_id": m["scenario_id"],
-            "start": m["start"],
-            "window_len": m["window_len"],
-            "front_id": m["front_id"],
-            "split": split_arr[i],
+            "source_index": int(metadata_table.at[i, "source_index"]) if pd.notna(metadata_table.at[i, "source_index"]) else None,
+            "scenario_id": str(metadata_table.at[i, "scenario_id"]),
+            "start": int(metadata_table.at[i, "start"]),
+            "window_len": int(metadata_table.at[i, "window_len"]),
+            "front_id": str(metadata_table.at[i, "front_id"]),
+            "split": str(metadata_table.at[i, "split"]),
             "policy_id": policy_ids[i],
+            "policy_name": policy_names[i] if policy_names[i] else (f"policy_{policy_ids[i]}" if policy_ids[i] is not None else ""),
         }
         row.update(stats[i])
         fp_rows.append(row)
@@ -579,6 +829,22 @@ def run_demo(args):
     else:
         hit_reason = "policy_id unavailable" if policy_ids[query_idx] is None else "no retrieval candidates"
 
+    if (not has_source_index or not has_policy_id) and not args.smoke_test:
+        warnings.append(
+            "This data directory cannot support policy-level interpretability because policy_id/source_index metadata is missing. "
+            "Please regenerate rollouts with the updated generator metadata output."
+        )
+
+    policy_counts = Counter([pid for pid in policy_ids if pid is not None])
+    pname_counts = Counter([p for p in policy_names if p])
+    n_sources_with_all_policies = 0
+    if has_source_index and expected_num_policies > 0:
+        grouped = metadata_table.groupby("source_index")
+        for _, gdf in grouped:
+            pset = set(int(v) for v in gdf["policy_id"].dropna().tolist())
+            if len(pset) >= expected_num_policies:
+                n_sources_with_all_policies += 1
+
     summary = {
         "run_id": str(uuid.uuid4())[:8],
         "data_dir": args.data_dir,
@@ -592,6 +858,8 @@ def run_demo(args):
         "query_meta": query_meta,
         "query_source_key": q_source,
         "query_policy_id": policy_ids[query_idx],
+        "query_policy_name": policy_names[query_idx] if policy_names[query_idx] else (f"policy_{policy_ids[query_idx]}" if policy_ids[query_idx] is not None else None),
+        "query_source_index": int(q_source_index) if (q_source_index is not None and pd.notna(q_source_index)) else None,
         "policy_id_source": pid_source,
         "split_filter": args.split,
         "distance": args.distance,
@@ -615,13 +883,21 @@ def run_demo(args):
         "diagnostics": {
             "n_total_rows": int(n),
             "n_rows_after_split": int(len(selected)),
-            "n_unique_source_keys_total": int(len(group_sizes_total)),
-            "n_unique_source_keys_after_split": int(len(group_sizes_after)),
-            "source_group_size_histogram_total": {str(k): int(v) for k, v in sorted(group_hist_total.items())},
-            "source_group_size_histogram_after_split": {str(k): int(v) for k, v in sorted(group_hist_after.items())},
-            "has_policy_id": bool(any(pid is not None for pid in policy_ids)),
+            "n_unique_source_keys_total": int(len(group_sizes_total_key)),
+            "n_unique_source_keys_after_split": int(len(group_sizes_after_key)),
+            "source_group_size_histogram_total": {str(k): int(v) for k, v in sorted(group_hist_total_key.items())},
+            "source_group_size_histogram_after_split": {str(k): int(v) for k, v in sorted(group_hist_after_key.items())},
+            "source_group_size_histogram_by_source_index": {str(k): int(v) for k, v in sorted(group_hist_after_source_idx.items())},
+            "source_group_size_histogram_by_source_key": {str(k): int(v) for k, v in sorted(group_hist_after_key.items())},
+            "has_source_index": has_source_index,
+            "source_index_source": metadata_sources["source_index_source"],
+            "has_policy_id": has_policy_id,
             "policy_id_source": pid_source,
-            "policy_id_counts": {str(k): int(v) for k, v in sorted(Counter([pid for pid in policy_ids if pid is not None]).items())},
+            "policy_id_counts": {str(k): int(v) for k, v in sorted(policy_counts.items())},
+            "policy_name_counts": {str(k): int(v) for k, v in sorted(pname_counts.items())},
+            "n_sources_with_all_policies": int(n_sources_with_all_policies),
+            "expected_num_policies": int(expected_num_policies),
+            "policy_ids_observed": [int(x) for x in policy_ids_observed],
             "split_array_shape": list(split.shape) if split is not None else None,
             "embedding_shape": list(np.asarray(embeddings).shape),
             "meta_shape": list(np.asarray(meta).shape),
