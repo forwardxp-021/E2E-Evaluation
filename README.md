@@ -434,7 +434,7 @@ therefore scenario-controlled.
 | (a) Coverage validation | Checks each `(source_index, policy_id)` pair appears exactly once; reports missing / duplicate counts | summary JSON |
 | (b) Within-source pairwise distances | Euclidean + cosine distance between every policy pair within each source group | `policy_pairwise_dist.csv` |
 | (c) Centroid classification accuracy | Nearest-centroid prediction using train-split centroids; evaluated per source group on eval split | summary JSON |
-| (d) Within-source retrieval | Hit-rate of nearest within-source neighbour sharing the same policy label; mean/median distance margin | summary JSON |
+| (d) Within-source retrieval applicability + margin | Check whether within-source same-policy NN retrieval is well-defined; report mean/median within-source distance margin | summary JSON |
 
 ### Copy-pastable commands (using default paths)
 
@@ -526,7 +526,7 @@ python evaluate_policy_separation_aligned.py \
 
 | File | Description |
 |------|-------------|
-| `policy_separation_aligned_summary.json` | Coverage stats, centroid accuracy, pairwise distance stats (mean/median), within-source retrieval hit rate and margin |
+| `policy_separation_aligned_summary.json` | Coverage stats, centroid accuracy, pairwise distance stats (mean/median), within-source retrieval applicability and margin |
 | `policy_pairwise_dist.csv` | Per-source-group pairwise (Euclidean + cosine) distances for each policy pair |
 
 ### Notes
@@ -538,3 +538,190 @@ python evaluate_policy_separation_aligned.py \
   (a) will list any such gaps.
 - Centroids for classification (step c) are always estimated from the **train** split,
   regardless of `--eval_split`.
+- If each source has only one sample per policy (common aligned setup), within-source
+  same-policy nearest-neighbour retrieval is undefined; summary JSON will report
+  `retrieval_applicable=false` and set NN hit-rate/chance to `null` instead of a
+  misleading numeric 0.0.
+
+---
+
+## Embedding interpretability demo: retrieval + trajectory replay
+
+`tools/embedding_retrieval_demo.py` provides the most intuitive way to visually
+verify that embeddings cluster/separate driving styles into different regions.  Given a
+query window it:
+
+1. Retrieves the Top-K most-similar windows in embedding space.
+2. Overlays ego + front trajectories (aligned to the query's initial position and heading).
+3. Plots time-series style signals: speed, acceleration, jerk, and a curvature proxy.
+
+### Prerequisites
+
+```bash
+pip install numpy scipy scikit-learn pandas matplotlib
+```
+
+No additional dependencies beyond the standard project requirements.
+
+### Minimal command examples
+
+#### Global retrieval (query against all items in the selected split)
+
+```bash
+python tools/embedding_retrieval_demo.py \
+    --emb_path   output_policy_rollouts/feat_style.npy \
+    --meta_path  output_policy_rollouts/meta.npy \
+    --traj_path  output_policy_rollouts/traj.npy \
+    --front_path output_policy_rollouts/front.npy \
+    --split_path output_policy_rollouts/split.npy \
+    --query_index 0 \
+    --topk 5 \
+    --mode global \
+    --split_filter test
+```
+
+#### Within-source retrieval (only other rows sharing the same source meta-key)
+
+```bash
+python tools/embedding_retrieval_demo.py \
+    --emb_path   output_policy_rollouts/feat_style.npy \
+    --meta_path  output_policy_rollouts/meta.npy \
+    --traj_path  output_policy_rollouts/traj.npy \
+    --front_path output_policy_rollouts/front.npy \
+    --split_path output_policy_rollouts/split.npy \
+    --query_index 0 \
+    --mode within-source
+```
+
+#### Select query by scenario ID (instead of array index)
+
+```bash
+python tools/embedding_retrieval_demo.py \
+    --emb_path   output_policy_rollouts/feat_style.npy \
+    --meta_path  output_policy_rollouts/meta.npy \
+    --traj_path  output_policy_rollouts/traj.npy \
+    --front_path output_policy_rollouts/front.npy \
+    --split_path output_policy_rollouts/split.npy \
+    --query_scenario_id "my_scenario_id" \
+    --query_start 10 \
+    --topk 5 \
+    --mode global
+```
+
+#### Exclude same-scenario neighbours (prevent trivial retrieval)
+
+```bash
+python tools/embedding_retrieval_demo.py \
+    --emb_path   output_policy_rollouts/feat_style.npy \
+    --meta_path  output_policy_rollouts/meta.npy \
+    --traj_path  output_policy_rollouts/traj.npy \
+    --front_path output_policy_rollouts/front.npy \
+    --split_path output_policy_rollouts/split.npy \
+    --query_index 0 \
+    --topk 5 \
+    --mode global \
+    --exclude_same_scenario
+```
+
+#### Self-contained smoke test (no data files needed)
+
+```bash
+python tools/embedding_retrieval_demo.py --smoke_test
+```
+
+### Outputs
+
+All files are written to `outputs/<run_id>/` (configurable with `--output_dir` and
+`--run_id`).
+
+| File | Description |
+|------|-------------|
+| `retrieval_table.csv` | Top-K results with index, meta fields, distance, and excluded flag |
+| `traj_overlay.png` | Ego + front trajectories overlaid in aligned coordinates |
+| `timeseries.png` | Speed / accel / jerk / curvature-proxy time series for query and Top-K |
+| `summary.json` | Run parameters: mode, distance, topk, exclusions, data paths |
+
+### Explanation of plots and what to look for
+
+**`traj_overlay.png`** — Both ego and front trajectories are translated so the query
+starts at the origin and rotated so the query's initial velocity vector points along +x.
+This makes cross-scenario overlays comparable.  If the embedding is meaningful you
+should see that Top-K retrieved trajectories follow a similar *shape* to the query (e.g.
+similar following distance, similar lateral deviation).
+
+**`timeseries.png`** — Shows four derived style signals sampled at `--dt` seconds per
+step:
+- **speed** — `sqrt(vx² + vy²)`
+- **accel** — finite-difference of speed
+- **jerk** — finite-difference of accel
+- **curvature proxy** — `yaw_rate / max(speed, ε)`, where yaw_rate is estimated from
+  heading differences.  This is an *approximation*; label it accordingly in any paper.
+
+For a well-trained embedding the retrieved trajectories should show **similar profiles**
+to the query across all four signals, especially in the features the embedding was
+trained on (THW, jerk, lateral yaw-rate, etc.).
+
+### Within-source limitation (no explicit policy_id)
+
+The base dataset (`build_dataset.py`) stores meta as
+`(scenario_id, start, window_len, front_id)` with **no** explicit `policy_id` field.
+In `within-source` mode the script groups all rows sharing the same meta-key tuple and
+plots all of them against the query.  When data was produced by `generate_policy_rollouts.py`
+there will be exactly `n_policies` rows per meta-key (one per policy), and you can
+inspect their relative ordering by distance to verify separability.  If you need
+precise per-policy labels use the `policy_id.npy` output of `generate_policy_rollouts.py`
+and the aligned evaluator (`evaluate_policy_separation_aligned.py`).
+
+### Running the smoke / unit tests
+
+```bash
+python scripts/smoke_test_retrieval_demo.py
+```
+
+### PR2 interpretability demo (`tools/embedding_interpretability_demo.py`)
+
+For PR2-style interpretability (same-source triplet + global retrieval cards), use:
+
+```bash
+python tools/embedding_interpretability_demo.py \
+  --data_dir output_policy_rollouts \
+  --out_dir outputs/embedding_demo/case_000 \
+  --embedding feat_style \
+  --split test \
+  --mode both \
+  --projection both \
+  --case_selection best_human_readable \
+  --topk 5 \
+  --source_key_fields scenario_id,start,window_len,front_id \
+  --auto_select_valid_source
+```
+
+If `front_id` changes across policy rollouts, relax grouping with:
+
+```bash
+--source_key_fields scenario_id,start,window_len
+```
+
+The demo requires multi-policy rollout rows (typically 3 rows per source key).  
+Check `summary.json -> diagnostics` to verify:
+- row counts before/after split,
+- source-group size histograms,
+- policy-id availability/source/counts,
+- core array shapes (`embedding/meta/traj/front/split`).
+
+When `policy_id` is unavailable, hit@k for same-policy retrieval is intentionally set to `null` and a warning explains that nearest-neighbour visualization is still possible but same-policy verification is not.
+
+#### Embedding interpretability demo outputs (for paper/presentation)
+
+- `summary.json`: includes `policy_mapping`, `case_selection`, within-source distances, retrieval hit@k, and diagnostics.
+- `embedding_2d_projection.png` / `embedding_2d_projection.csv`: PCA projection (visualization only; lossy).
+- `embedding_2d_projection_umap.png` / `.csv`: produced when `--projection umap|both` and `umap-learn` is available.
+- `embedding_distance_matrix.png` / `.csv`: within-source embedding distances with per-cell numeric annotation and policy labels.
+- `within_source_triplet.png`, `within_source_style_signals.png`, `within_source_style_fingerprint_kinematic.png`, `within_source_style_fingerprint_dynamics.png`, `within_source_style_fingerprint_normalized.png`, `within_source_style_fingerprint.csv`: same-source policy contrast and style statistics.
+- `global_retrieval_cards.png`, `global_retrieval_style_signals.png`, `retrieval_table.csv`, `style_fingerprint.csv`: global nearest-neighbor interpretability and style fingerprints.
+- `interpretability_report.md`: auto-generated textual summary from summary/CSV outputs.
+
+Interpretation guidance:
+- PCA/UMAP are visualization-only; benchmark conclusions should rely on aligned metrics and high-dimensional embedding distances.
+- Lack of perfectly separated 2D clusters does not invalidate high-dimensional separation.
+- Metadata (`policy_id`, `policy_name`, `source_index`) is required for policy-level same-source contrast and same-policy hit@k verification.
