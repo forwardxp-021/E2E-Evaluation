@@ -1,0 +1,49 @@
+{
+  "run_id": "sample123",
+  "data_dir": "output_policy_rollouts",
+  "query_index": 12,
+  "query_source_key": "scenario_004|40|40|front_004",
+  "query_policy_id": 0,
+  "policy_id_source": "policy_id.npy",
+  "within_source": {
+    "enabled": true,
+    "source_key": "scenario_004|40|40|front_004",
+    "available_indices": [12, 407, 802],
+    "available_policy_ids": [0, 1, 2],
+    "applicable": true,
+    "reason_if_not_applicable": null
+  },
+  "global_retrieval": {
+    "enabled": true,
+    "n_candidates_before_filter": 1185,
+    "n_candidates_after_filter": 1179,
+    "hit_at_1_same_policy": true,
+    "hit_at_k_same_policy": true,
+    "reason_if_hit_rate_unavailable": null
+  },
+  "diagnostics": {
+    "n_total_rows": 1185,
+    "n_rows_after_split": 1185,
+    "n_unique_source_keys_total": 395,
+    "n_unique_source_keys_after_split": 395,
+    "source_group_size_histogram_total": {
+      "3": 395
+    },
+    "source_group_size_histogram_after_split": {
+      "3": 395
+    },
+    "has_policy_id": true,
+    "policy_id_source": "policy_id.npy",
+    "policy_id_counts": {
+      "0": 395,
+      "1": 395,
+      "2": 395
+    },
+    "split_array_shape": [1185],
+    "embedding_shape": [1185, 128],
+    "meta_shape": [1185],
+    "traj_shape": [1185],
+    "front_shape": [1185]
+  },
+  "warnings": []
+}

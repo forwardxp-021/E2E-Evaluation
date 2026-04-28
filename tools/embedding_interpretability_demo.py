@@ -2,6 +2,7 @@
 """Embedding interpretability demo for trajectory-level driving style embeddings."""
 
 import argparse
+from collections import Counter
 import json
 import math
 import uuid
@@ -58,8 +59,20 @@ def source_key(meta_row: Any) -> str:
     return f"{m['scenario_id']}|{m['start']}|{m['window_len']}|{m['front_id']}"
 
 
-def _infer_policy_ids(meta: np.ndarray, selected_indices: np.ndarray) -> Tuple[List[Optional[int]], str, List[str]]:
+def _make_source_key(meta_row: Any, fields: Sequence[str]) -> str:
+    m = _extract_meta_dict(meta_row)
+    return "|".join(str(m.get(f, "")) for f in fields)
+
+
+def _infer_policy_ids(meta: np.ndarray, selected_indices: np.ndarray, source_keys: List[str], aux_policy_id: Optional[np.ndarray]) -> Tuple[List[Optional[int]], str, List[str]]:
     warnings = []
+    if aux_policy_id is not None and len(aux_policy_id) == len(meta):
+        try:
+            parsed = [int(x) for x in aux_policy_id.tolist()]
+            return parsed, "policy_id.npy", warnings
+        except Exception:
+            warnings.append("policy_id.npy found but failed integer parsing; falling back to metadata inference.")
+
     # explicit policy id from structured/object dict rows
     explicit: List[Optional[int]] = []
     has_any_explicit = False
@@ -73,7 +86,7 @@ def _infer_policy_ids(meta: np.ndarray, selected_indices: np.ndarray) -> Tuple[L
 
     groups: Dict[str, List[int]] = {}
     for i in selected_indices.tolist():
-        groups.setdefault(source_key(meta[i]), []).append(i)
+        groups.setdefault(source_keys[i], []).append(i)
     sizes = sorted({len(v) for v in groups.values()})
     if sizes == [3]:
         inferred = [None] * len(meta)
@@ -224,6 +237,57 @@ def _plot_distance_matrix(path: Path, indices: Sequence[int], emb: np.ndarray, p
     return mat
 
 
+def _plot_embedding_projection(path: Path, emb: np.ndarray, selected: np.ndarray, query_idx: int, top_df: pd.DataFrame, policy_ids: List[Optional[int]], group_sizes: Dict[str, int], source_keys: List[str], projection: str, warnings: List[str]):
+    selected_emb = emb[selected]
+    coords = None
+    proj_used = "pca"
+    if projection in ("auto", "umap"):
+        try:
+            import umap  # type: ignore
+
+            reducer = umap.UMAP(n_components=2, random_state=42)
+            coords = reducer.fit_transform(selected_emb)
+            proj_used = "umap"
+        except Exception:
+            if projection == "umap":
+                warnings.append("UMAP requested but unavailable; falling back to PCA.")
+    if coords is None:
+        x = selected_emb - selected_emb.mean(axis=0, keepdims=True)
+        _, _, vh = np.linalg.svd(x, full_matrices=False)
+        basis = vh[:2].T
+        coords = x @ basis
+        proj_used = "pca"
+
+    idx_to_pos = {int(idx): pos for pos, idx in enumerate(selected.tolist())}
+    top_indices = set(top_df["index"].astype(int).tolist()) if len(top_df) else set()
+
+    plt.figure(figsize=(8, 6))
+    if any(pid is not None for pid in (policy_ids[i] for i in selected.tolist())):
+        valid_pids = sorted({int(policy_ids[i]) for i in selected.tolist() if policy_ids[i] is not None})
+        cmap = plt.cm.get_cmap("tab10", max(1, len(valid_pids)))
+        pid_to_color = {pid: cmap(k) for k, pid in enumerate(valid_pids)}
+        for i in selected.tolist():
+            pos = idx_to_pos[i]
+            c = pid_to_color.get(policy_ids[i], (0.6, 0.6, 0.6, 0.8))
+            plt.scatter(coords[pos, 0], coords[pos, 1], c=[c], s=28, alpha=0.7)
+    else:
+        sizes = np.array([group_sizes[source_keys[i]] for i in selected.tolist()], dtype=float)
+        plt.scatter(coords[:, 0], coords[:, 1], c=sizes, cmap="viridis", s=28, alpha=0.7)
+
+    for i in top_indices:
+        if i in idx_to_pos:
+            pos = idx_to_pos[i]
+            plt.scatter(coords[pos, 0], coords[pos, 1], facecolors="none", edgecolors="red", s=120, linewidths=1.6)
+    qpos = idx_to_pos[query_idx]
+    plt.scatter(coords[qpos, 0], coords[qpos, 1], c="gold", edgecolors="black", marker="*", s=280, linewidths=1.0, label="query")
+    plt.title(f"Embedding 2D projection ({proj_used.upper()})")
+    plt.xlabel("component 1")
+    plt.ylabel("component 2")
+    plt.grid(alpha=0.3)
+    plt.legend(loc="best", fontsize=8)
+    _savefig(path)
+
+
 def _plot_cards(path: Path, query_idx: int, top_df: pd.DataFrame, traj: np.ndarray, front: Optional[np.ndarray], policy_ids: List[Optional[int]], stats: Dict[int, Dict[str, float]]):
     rows = 1 + len(top_df)
     fig, axes = plt.subplots(rows, 2, figsize=(10, 2.6 * rows))
@@ -313,30 +377,65 @@ def run_demo(args):
         front = np.load(front_file, allow_pickle=True) if front_file.exists() else None
         split_file = data_dir / "split.npy"
         split = np.load(split_file, allow_pickle=True) if split_file.exists() else None
+        aux_policy_id_file = data_dir / "policy_id.npy"
+        aux_policy_id = np.load(aux_policy_id_file, allow_pickle=True) if aux_policy_id_file.exists() else None
         embedding_path = str(data_dir / f"{args.embedding}.npy")
         meta_path = str(data_dir / "meta.npy")
         traj_path = str(data_dir / "traj.npy")
         front_path = str(front_file) if front is not None else None
         split_path = str(split_file) if split is not None else None
+    if args.smoke_test:
+        aux_policy_id = None
 
     n = len(embeddings)
     split_arr = _get_split(split, n)
+    source_key_fields = [x.strip() for x in args.source_key_fields.split(",") if x.strip()]
+    if len(source_key_fields) == 0:
+        raise ValueError("source_key_fields must include at least one field")
+    source_keys = [_make_source_key(meta[i], source_key_fields) for i in range(n)]
+    group_sizes_total: Dict[str, int] = Counter(source_keys)
+    group_hist_total: Dict[str, int] = Counter(group_sizes_total.values())
+
     if args.split == "all":
         selected = np.arange(n)
     else:
         selected = np.where(split_arr == args.split)[0]
     if len(selected) == 0:
         raise ValueError(f"No samples for split={args.split}")
+    group_sizes_after: Dict[str, int] = Counter([source_keys[i] for i in selected.tolist()])
+    group_hist_after: Dict[str, int] = Counter(group_sizes_after.values())
 
     query_idx = args.query_index if args.query_index is not None else int(selected.min())
-    if query_idx not in selected:
-        raise ValueError("query_index is not in selected split")
+    if query_idx not in selected.tolist():
+        if args.auto_select_valid_source and args.mode in ("within_source", "both"):
+            valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after[source_keys[i]] >= 3)
+            if valid_candidates:
+                query_idx = valid_candidates[0]
+                warnings.append("query_index not in selected split; auto-selected replacement from source group with >=3 samples.")
+            else:
+                raise ValueError("query_index is not in selected split and no valid source group found for auto-select.")
+        else:
+            raise ValueError("query_index is not in selected split")
 
-    policy_ids, pid_source, pid_warn = _infer_policy_ids(meta, selected)
+    policy_ids, pid_source, pid_warn = _infer_policy_ids(meta, selected, source_keys, aux_policy_id)
     warnings.extend(pid_warn)
+    if policy_ids[query_idx] is None:
+        warnings.append(
+            "policy_id unavailable: global retrieval can show nearest embedding neighbors, but cannot verify same-policy style retrieval."
+        )
 
     query_meta = _extract_meta_dict(meta[query_idx])
-    q_source = source_key(meta[query_idx])
+    q_source = source_keys[query_idx]
+    if args.mode in ("within_source", "both") and group_sizes_after.get(q_source, 0) < 2:
+        if args.auto_select_valid_source:
+            valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after[source_keys[i]] >= 3)
+            if valid_candidates:
+                query_idx = valid_candidates[0]
+                query_meta = _extract_meta_dict(meta[query_idx])
+                q_source = source_keys[query_idx]
+                warnings.append("query source group had fewer than 2 samples; auto-selected replacement from a source group with >=3 samples.")
+        else:
+            warnings.append("query source group has fewer than 2 samples; within-source demo is not applicable.")
 
     # Precompute stats
     stats: Dict[int, Dict[str, float]] = {}
@@ -352,7 +451,7 @@ def run_demo(args):
                 excluded, reason = True, "self"
             else:
                 excluded, reason = False, ""
-            same_source = source_key(meta[i]) == q_source
+            same_source = source_keys[i] == q_source
             same_scenario = _extract_meta_dict(meta[i])["scenario_id"] == query_meta["scenario_id"]
             if args.exclude_same_source and same_source and i != query_idx:
                 excluded, reason = True, (reason + ";same_source").strip(";")
@@ -367,7 +466,7 @@ def run_demo(args):
                 "query_policy_id": qpid,
                 "index": i,
                 "policy_id": pid,
-                "source_key": source_key(meta[i]),
+                "source_key": source_keys[i],
                 "scenario_id": _extract_meta_dict(meta[i])["scenario_id"],
                 "start": _extract_meta_dict(meta[i])["start"],
                 "window_len": _extract_meta_dict(meta[i])["window_len"],
@@ -413,20 +512,21 @@ def run_demo(args):
     selected_for_fingerprint = {query_idx}
 
     if within["enabled"]:
-        ws = [i for i in selected.tolist() if source_key(meta[i]) == q_source]
+        ws = [i for i in selected.tolist() if source_keys[i] == q_source]
         within["available_indices"] = ws
         within["available_policy_ids"] = [policy_ids[i] for i in ws]
         selected_for_fingerprint.update(ws)
-        if len(ws) >= 2:
+        if len(ws) >= 3:
             within["applicable"] = True
-            _plot_within_triplet(out_dir / "within_source_triplet.png", query_idx, ws, traj, front, policy_ids, q_source)
-            _plot_within_signals(out_dir / "within_source_style_signals.png", ws, traj, front, policy_ids, args.dt)
-            mat = _plot_distance_matrix(out_dir / "embedding_distance_matrix.png", ws, embeddings, policy_ids, args.distance)
+            ws_plot = sorted(ws)[:3]
+            _plot_within_triplet(out_dir / "within_source_triplet.png", query_idx, ws_plot, traj, front, policy_ids, q_source)
+            _plot_within_signals(out_dir / "within_source_style_signals.png", ws_plot, traj, front, policy_ids, args.dt)
+            mat = _plot_distance_matrix(out_dir / "embedding_distance_matrix.png", ws_plot, embeddings, policy_ids, args.distance)
             within["pairwise_embedding_distances"] = {
-                f"{ws[r]}->{ws[c]}": float(mat[r, c]) for r in range(len(ws)) for c in range(len(ws))
+                f"{ws_plot[r]}->{ws_plot[c]}": float(mat[r, c]) for r in range(len(ws_plot)) for c in range(len(ws_plot))
             }
         else:
-            msg = "within-source not applicable: fewer than 2 samples under query source_key"
+            msg = "within-source not applicable: fewer than 3 samples under query source_key"
             warnings.append(msg)
             within["reason_if_not_applicable"] = msg
 
@@ -437,13 +537,25 @@ def run_demo(args):
             _plot_global_signals(out_dir / "global_retrieval_style_signals.png", query_idx, top_df, traj, front, policy_ids, args.dt, args.max_signal_topk)
         else:
             warnings.append("global retrieval plot skipped: no non-excluded candidates")
+    _plot_embedding_projection(
+        out_dir / "embedding_2d_projection.png",
+        embeddings,
+        selected,
+        query_idx,
+        top_df,
+        policy_ids,
+        group_sizes_after,
+        source_keys,
+        args.projection,
+        warnings,
+    )
 
     fp_rows = []
     for i in sorted(selected_for_fingerprint):
         m = _extract_meta_dict(meta[i])
         row = {
             "index": i,
-            "source_key": source_key(meta[i]),
+            "source_key": source_keys[i],
             "scenario_id": m["scenario_id"],
             "start": m["start"],
             "window_len": m["window_len"],
@@ -475,6 +587,7 @@ def run_demo(args):
         "traj_path": traj_path,
         "front_path": front_path,
         "split_path": split_path,
+        "source_key_fields": source_key_fields,
         "query_index": query_idx,
         "query_meta": query_meta,
         "query_source_key": q_source,
@@ -498,6 +611,22 @@ def run_demo(args):
             "hit_at_k_same_policy": hitk,
             "num_same_policy_in_topk": topk_same_policy,
             "reason_if_hit_rate_unavailable": hit_reason,
+        },
+        "diagnostics": {
+            "n_total_rows": int(n),
+            "n_rows_after_split": int(len(selected)),
+            "n_unique_source_keys_total": int(len(group_sizes_total)),
+            "n_unique_source_keys_after_split": int(len(group_sizes_after)),
+            "source_group_size_histogram_total": {str(k): int(v) for k, v in sorted(group_hist_total.items())},
+            "source_group_size_histogram_after_split": {str(k): int(v) for k, v in sorted(group_hist_after.items())},
+            "has_policy_id": bool(any(pid is not None for pid in policy_ids)),
+            "policy_id_source": pid_source,
+            "policy_id_counts": {str(k): int(v) for k, v in sorted(Counter([pid for pid in policy_ids if pid is not None]).items())},
+            "split_array_shape": list(split.shape) if split is not None else None,
+            "embedding_shape": list(np.asarray(embeddings).shape),
+            "meta_shape": list(np.asarray(meta).shape),
+            "traj_shape": list(np.asarray(traj).shape),
+            "front_shape": list(np.asarray(front).shape) if front is not None else None,
         },
         "style_signal_definitions": {
             "speed": "sqrt(vx^2 + vy^2)",
@@ -541,6 +670,9 @@ def parse_args():
     p.add_argument("--exclude_same_source", action="store_true", default=True)
     p.add_argument("--exclude_same_scenario", action="store_true", default=True)
     p.add_argument("--max_signal_topk", type=int, default=3)
+    p.add_argument("--source_key_fields", type=str, default="scenario_id,start,window_len,front_id")
+    p.add_argument("--auto_select_valid_source", action="store_true")
+    p.add_argument("--projection", type=str, default="pca", choices=["pca", "umap", "auto"])
     p.add_argument("--smoke_test", action="store_true")
     args = p.parse_args()
     if args.include_self:
