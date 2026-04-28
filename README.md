@@ -690,7 +690,7 @@ python tools/embedding_interpretability_demo.py \
   --split test \
   --mode both \
   --projection both \
-  --case_selection best_p2_separation \
+  --case_selection best_human_readable \
   --topk 5 \
   --source_key_fields scenario_id,start,window_len,front_id \
   --auto_select_valid_source
@@ -717,7 +717,7 @@ When `policy_id` is unavailable, hit@k for same-policy retrieval is intentionall
 - `embedding_2d_projection.png` / `embedding_2d_projection.csv`: PCA projection (visualization only; lossy).
 - `embedding_2d_projection_umap.png` / `.csv`: produced when `--projection umap|both` and `umap-learn` is available.
 - `embedding_distance_matrix.png` / `.csv`: within-source embedding distances with per-cell numeric annotation and policy labels.
-- `within_source_triplet.png`, `within_source_style_signals.png`, `within_source_style_fingerprint_bar.png`, `within_source_style_fingerprint.csv`: same-source policy contrast and style statistics.
+- `within_source_triplet.png`, `within_source_style_signals.png`, `within_source_style_fingerprint_kinematic.png`, `within_source_style_fingerprint_dynamics.png`, `within_source_style_fingerprint_normalized.png`, `within_source_style_fingerprint.csv`: same-source policy contrast and style statistics.
 - `global_retrieval_cards.png`, `global_retrieval_style_signals.png`, `retrieval_table.csv`, `style_fingerprint.csv`: global nearest-neighbor interpretability and style fingerprints.
 - `interpretability_report.md`: auto-generated textual summary from summary/CSV outputs.
 
