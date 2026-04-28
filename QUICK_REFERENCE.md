@@ -455,7 +455,7 @@ python tools/embedding_interpretability_demo.py \
 - `embedding_2d_projection.png` + `embedding_2d_projection.csv`：PCA 2D 投影（仅可视化；query 星标 + Top-K 红圈 + rank）
 - `embedding_2d_projection_umap.png` + `.csv`：`--projection umap|both` 且安装 `umap-learn` 时输出（仅可视化）
 - `embedding_distance_matrix.png` + `embedding_distance_matrix.csv`：同源 embedding 距离矩阵（图中含数值标注）
-- `within_source_triplet.png` / `within_source_style_signals.png` / `within_source_style_fingerprint_bar.png` / `within_source_style_fingerprint.csv`：同源 policy 对比与风格统计
+- `within_source_triplet.png` / `within_source_style_signals.png` / `within_source_style_fingerprint_kinematic.png` / `within_source_style_fingerprint_dynamics.png` / `within_source_style_fingerprint_normalized.png` / `within_source_style_fingerprint.csv`：同源 policy 对比与风格统计
 - `global_retrieval_cards.png` / `global_retrieval_style_signals.png` / `retrieval_table.csv` / `style_fingerprint.csv`：跨源 Top-K 检索解释
 - `interpretability_report.md`：自动文本报告（query、同源距离、Top-K、hit@1/hit@k、局限性）
 

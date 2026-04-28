@@ -341,9 +341,11 @@ def _plot_within_triplet(
 ):
     q = _to_traj_array(traj[query_idx])
     plt.figure(figsize=(8, 6))
+    all_xy: List[np.ndarray] = []
     for i in indices:
         t = _to_traj_array(traj[i])
         xy = _align_xy(t, q)
+        all_xy.append(xy)
         pid = policy_ids[i]
         label = f"idx={i}, {_policy_label(pid, _policy_name_for(pid, policy_mapping))}"
         lw = 2.5 if pid in (0, 1, 2) and len(indices) == 3 else 1.8
@@ -351,10 +353,19 @@ def _plot_within_triplet(
     if front is not None:
         fq = _to_traj_array(front[query_idx])
         fxy = _align_xy(fq, q)
+        all_xy.append(fxy)
         plt.plot(fxy[:, 0], fxy[:, 1], "k--", alpha=0.6, label="front(query)")
     plt.xlabel("x local (m)")
     plt.ylabel("y local (m)")
     plt.title(f"Within-source trajectories | source_key={skey} | query={query_idx}")
+    if all_xy:
+        pts = np.concatenate(all_xy, axis=0)
+        x_min, x_max = float(np.min(pts[:, 0])), float(np.max(pts[:, 0]))
+        y_min, y_max = float(np.min(pts[:, 1])), float(np.max(pts[:, 1]))
+        x_margin = max(1.0, 0.08 * (x_max - x_min + EPS))
+        y_margin = max(0.5, 0.08 * (y_max - y_min + EPS))
+        plt.xlim(x_min - x_margin, x_max + x_margin)
+        plt.ylim(y_min - y_margin, y_max + y_margin)
     plt.legend(fontsize=8)
     _savefig(path)
 
@@ -523,14 +534,12 @@ def _plot_embedding_projection(
     else:
         plt.xlabel("component 1")
         plt.ylabel("component 2")
-    plt.figtext(
-        0.5,
-        0.01,
-        "2D PCA is a lossy projection; policy separation should be judged by high-dimensional metrics and aligned evaluation.",
-        ha="center",
-        va="bottom",
-        fontsize=8,
+    caption = (
+        "2D PCA is a lossy projection; policy separation should be judged by high-dimensional metrics and aligned evaluation."
+        if proj_used == "pca"
+        else "2D UMAP is a nonlinear visualization; policy separation should be judged by high-dimensional metrics and aligned evaluation."
     )
+    plt.figtext(0.5, 0.01, caption, ha="center", va="bottom", fontsize=8)
     plt.grid(alpha=0.3)
     _savefig(path)
     csv_rows = []
@@ -655,18 +664,52 @@ def _plot_within_style_fingerprint_bar(
 
     if len(df) == 0 or len(available) == 0:
         return
-    x = np.arange(len(available), dtype=float)
-    width = 0.8 / max(1, len(df))
-    plt.figure(figsize=(max(8, 1.2 * len(available)), 4.5))
-    for k, row in enumerate(df.itertuples()):
-        y = [getattr(row, m) if hasattr(row, m) else np.nan for m in available]
-        label = _policy_label(row.policy_id, row.policy_name)
-        plt.bar(x + (k - (len(df) - 1) / 2.0) * width, y, width=width, label=label, alpha=0.85)
-    plt.xticks(x, available, rotation=25, ha="right")
-    plt.title("Within-source style fingerprint (policy-level summary)")
-    plt.grid(axis="y", alpha=0.3)
-    plt.legend(fontsize=8)
-    _savefig(path)
+    def _plot_metric_subset(target_path: Path, metric_subset: List[str], title: str, norm: bool = False):
+        subset = [m for m in metric_subset if m in df.columns]
+        if not subset:
+            return
+        x = np.arange(len(subset), dtype=float)
+        width = 0.8 / max(1, len(df))
+        plt.figure(figsize=(max(7, 1.1 * len(subset)), 4.5))
+        for k, row in enumerate(df.itertuples()):
+            raw_y = np.array([getattr(row, m) if hasattr(row, m) else np.nan for m in subset], dtype=float)
+            y = raw_y.copy()
+            if norm:
+                for midx, m in enumerate(subset):
+                    col = pd.to_numeric(df[m], errors="coerce").astype(float).values
+                    lo = np.nanmin(col)
+                    hi = np.nanmax(col)
+                    denom = hi - lo
+                    if np.isfinite(denom) and denom > EPS and np.isfinite(raw_y[midx]):
+                        y[midx] = (raw_y[midx] - lo) / denom
+                    else:
+                        y[midx] = 0.0
+            label = _policy_label(row.policy_id, row.policy_name)
+            plt.bar(x + (k - (len(df) - 1) / 2.0) * width, y, width=width, label=label, alpha=0.85)
+        plt.xticks(x, subset, rotation=25, ha="right")
+        plt.title(title)
+        plt.grid(axis="y", alpha=0.3)
+        if norm:
+            plt.ylim(-0.05, 1.05)
+        plt.legend(fontsize=8)
+        _savefig(target_path)
+
+    _plot_metric_subset(
+        path,
+        ["mean_speed", "mean_thw", "min_thw"],
+        "Within-source style fingerprint (kinematic)",
+    )
+    _plot_metric_subset(
+        path.with_name("within_source_style_fingerprint_dynamics.png"),
+        ["rms_accel", "rms_jerk", "rms_yaw_rate_proxy", "rms_curvature_proxy"],
+        "Within-source style fingerprint (dynamics)",
+    )
+    _plot_metric_subset(
+        path.with_name("within_source_style_fingerprint_normalized.png"),
+        ["mean_speed", "rms_accel", "rms_jerk", "rms_yaw_rate_proxy", "rms_curvature_proxy", "mean_thw", "min_thw"],
+        "Within-source style fingerprint (normalized across p0/p1/p2)",
+        norm=True,
+    )
 
 
 def _generate_report(path: Path, summary: Dict[str, Any], retrieval_csv: Path):
@@ -694,6 +737,12 @@ def _generate_report(path: Path, summary: Dict[str, Any], retrieval_csv: Path):
         for k in sorted(pdists.keys()):
             md.append(f"  - {k}: {pdists[k]:.4f}")
     md.append("- style interpretation: compare mean_speed / rms_jerk / yaw_rate_proxy / curvature_proxy / THW across p0-p1-p2 in within_source_style_fingerprint.csv.")
+    auto_interp = ws.get("automatic_interpretation", {})
+    if isinstance(auto_interp, dict) and len(auto_interp) > 0:
+        md.append("- automatic interpretation:")
+        for k in ["highest_mean_speed", "lowest_rms_jerk", "lowest_rms_yaw_rate_proxy", "p2_farthest_in_embedding"]:
+            if k in auto_interp:
+                md.append(f"  - {k}: {auto_interp[k]}")
     md.append("")
     md.append("## Global retrieval Top-K")
     if len(top_df) > 0 and len(top_cols) > 0:
@@ -747,6 +796,8 @@ def _choose_case(
     embeddings: np.ndarray,
     distance: str,
     topk: int,
+    stats: Optional[Dict[int, Dict[str, float]]] = None,
+    traj: Optional[np.ndarray] = None,
 ) -> Tuple[int, Dict[str, Any]]:
     selected_list = [int(i) for i in selected.tolist()]
     if explicit_query_idx is not None:
@@ -800,6 +851,87 @@ def _choose_case(
                 best_score = float(score)
                 best_q = int(p2)
         return int(best_q), {"mode": mode, "selected_query_index": int(best_q), "reason": "Largest min(d(p2,p0), d(p2,p1)) in selected split.", "score": (best_score if best_score >= 0 else None)}
+
+    if mode == "best_human_readable":
+        group_by_source_idx: Dict[int, List[int]] = {}
+        for i in selected_list:
+            sidx = source_indices[i]
+            if sidx is not None:
+                group_by_source_idx.setdefault(int(sidx), []).append(i)
+        if not group_by_source_idx:
+            q = selected_list[0]
+            return int(q), {"mode": mode, "selected_query_index": int(q), "reason": "No valid source_index groups; fallback to first selected.", "score": None}
+
+        component_rows = []
+        for _, g in group_by_source_idx.items():
+            idx_by_pid = {policy_ids[i]: i for i in g if policy_ids[i] is not None}
+            if 0 not in idx_by_pid or 1 not in idx_by_pid or 2 not in idx_by_pid:
+                continue
+            p0, p1, p2 = idx_by_pid[0], idx_by_pid[1], idx_by_pid[2]
+            sep = min(_dist(embeddings[p2], embeddings[p0], distance), _dist(embeddings[p2], embeddings[p1], distance))
+            yaw_curv = 0.0
+            jerk_diff = 0.0
+            endpoint_diff = 0.0
+            hit_cnt = 0.0
+            if stats is not None:
+                yaw_curv = (
+                    abs(stats[p2].get("rms_yaw_rate_proxy", 0.0) - stats[p0].get("rms_yaw_rate_proxy", 0.0))
+                    + abs(stats[p2].get("rms_curvature_proxy", 0.0) - stats[p0].get("rms_curvature_proxy", 0.0))
+                    + abs(stats[p2].get("rms_yaw_rate_proxy", 0.0) - stats[p1].get("rms_yaw_rate_proxy", 0.0))
+                    + abs(stats[p2].get("rms_curvature_proxy", 0.0) - stats[p1].get("rms_curvature_proxy", 0.0))
+                ) / 2.0
+                jerk_diff = (
+                    abs(stats[p2].get("rms_jerk", 0.0) - stats[p0].get("rms_jerk", 0.0))
+                    + abs(stats[p2].get("rms_jerk", 0.0) - stats[p1].get("rms_jerk", 0.0))
+                ) / 2.0
+            drows = []
+            for i in selected_list:
+                if i == p2:
+                    continue
+                drows.append((i, _dist(embeddings[p2], embeddings[i], distance)))
+            drows.sort(key=lambda x: x[1])
+            hit_cnt = float(sum(1 for i, _ in drows[:topk] if policy_ids[i] == 2))
+            component_rows.append(
+                {
+                    "p2": int(p2),
+                    "sep": float(sep),
+                    "yaw_curv": float(yaw_curv),
+                    "jerk_diff": float(jerk_diff),
+                    "hit_cnt": float(hit_cnt),
+                    "endpoint_diff": float(endpoint_diff),
+                }
+            )
+
+        if not component_rows:
+            q = selected_list[0]
+            return int(q), {"mode": mode, "selected_query_index": int(q), "reason": "No complete p0/p1/p2 groups; fallback to first selected.", "score": None}
+
+        # endpoint diff uses trajectory endpoints (computed once group candidates are known)
+        for row in component_rows:
+            p2 = row["p2"]
+            sidx = source_indices[p2]
+            group = group_by_source_idx[int(sidx)] if sidx is not None else []
+            idx_by_pid = {policy_ids[i]: i for i in group if policy_ids[i] is not None}
+            if traj is not None and 0 in idx_by_pid and 1 in idx_by_pid:
+                ep2 = _to_traj_array(traj[p2])[-1, :2]
+                ep0 = _to_traj_array(traj[idx_by_pid[0]])[-1, :2]
+                ep1 = _to_traj_array(traj[idx_by_pid[1]])[-1, :2]
+                row["endpoint_diff"] = float((np.linalg.norm(ep2 - ep0) + np.linalg.norm(ep2 - ep1)) / 2.0)
+
+        comp_keys = ["sep", "yaw_curv", "jerk_diff", "endpoint_diff", "hit_cnt"]
+        norms: Dict[str, Tuple[float, float]] = {}
+        for k in comp_keys:
+            vals = [r[k] for r in component_rows]
+            norms[k] = (min(vals), max(vals))
+        for r in component_rows:
+            score = 0.0
+            for k in comp_keys:
+                lo, hi = norms[k]
+                if hi - lo > EPS:
+                    score += (r[k] - lo) / (hi - lo)
+            r["score"] = float(score)
+        best = max(component_rows, key=lambda x: x["score"])
+        return int(best["p2"]), {"mode": mode, "selected_query_index": int(best["p2"]), "reason": "Best combined human-readable separation score.", "score": float(best["score"]), "components": best}
 
     q = selected_list[0]
     return int(q), {"mode": mode, "selected_query_index": int(q), "reason": "Unknown case_selection mode fallback.", "score": None}
@@ -939,6 +1071,12 @@ def run_demo(args):
         if pid is not None and not policy_names[i]:
             policy_names[i] = policy_mapping.get(pid, f"policy_{pid}")
 
+    # Precompute stats
+    stats: Dict[int, Dict[str, float]] = {}
+    for i in selected.tolist():
+        sig = _compute_signals(_to_traj_array(traj[i]), _to_traj_array(front[i]) if front is not None else None, args.dt)
+        stats[i] = _summary_stats(sig)
+
     case_mode = args.case_selection
     if args.query_index is not None and args.case_selection == "first_valid":
         case_mode = "query_index"
@@ -952,6 +1090,8 @@ def run_demo(args):
         embeddings=embeddings,
         distance=args.distance,
         topk=args.topk,
+        stats=stats,
+        traj=traj,
     )
     if query_idx not in selected.tolist():
         raise ValueError("Selected query_index is not in selected split")
@@ -997,12 +1137,6 @@ def run_demo(args):
                 warnings.append("query source group had fewer than 2 samples; auto-selected replacement from a source group with >=3 samples.")
         else:
             warnings.append("query source group has fewer than 2 samples; within-source demo is not applicable.")
-
-    # Precompute stats
-    stats: Dict[int, Dict[str, float]] = {}
-    for i in selected.tolist():
-        sig = _compute_signals(_to_traj_array(traj[i]), _to_traj_array(front[i]) if front is not None else None, args.dt)
-        stats[i] = _summary_stats(sig)
 
     retrieval_rows = []
     top_rows = []
@@ -1075,6 +1209,7 @@ def run_demo(args):
         "applicable": False,
         "reason_if_not_applicable": None,
         "pairwise_embedding_distances": None,
+        "automatic_interpretation": {},
     }
     selected_for_fingerprint = {query_idx}
 
@@ -1111,7 +1246,7 @@ def run_demo(args):
                 q_source,
             )
             _plot_within_style_fingerprint_bar(
-                out_dir / "within_source_style_fingerprint_bar.png",
+                out_dir / "within_source_style_fingerprint_kinematic.png",
                 out_dir / "within_source_style_fingerprint.csv",
                 ws_plot,
                 stats,
@@ -1121,6 +1256,21 @@ def run_demo(args):
             within["pairwise_embedding_distances"] = {
                 f"{ws_plot[r]}->{ws_plot[c]}": float(mat[r, c]) for r in range(len(ws_plot)) for c in range(len(ws_plot))
             }
+            idx_by_pid = {policy_ids[i]: i for i in ws_plot if policy_ids[i] is not None}
+            auto_interp: Dict[str, Any] = {}
+            if idx_by_pid:
+                highest_speed_idx = max(idx_by_pid.values(), key=lambda i: stats[i].get("mean_speed", -np.inf))
+                lowest_jerk_idx = min(idx_by_pid.values(), key=lambda i: stats[i].get("rms_jerk", np.inf))
+                lowest_yaw_idx = min(idx_by_pid.values(), key=lambda i: stats[i].get("rms_yaw_rate_proxy", np.inf))
+                auto_interp["highest_mean_speed"] = _policy_label(policy_ids[highest_speed_idx], _policy_name_for(policy_ids[highest_speed_idx], policy_mapping))
+                auto_interp["lowest_rms_jerk"] = _policy_label(policy_ids[lowest_jerk_idx], _policy_name_for(policy_ids[lowest_jerk_idx], policy_mapping))
+                auto_interp["lowest_rms_yaw_rate_proxy"] = _policy_label(policy_ids[lowest_yaw_idx], _policy_name_for(policy_ids[lowest_yaw_idx], policy_mapping))
+            if 0 in idx_by_pid and 1 in idx_by_pid and 2 in idx_by_pid:
+                d20 = _dist(embeddings[idx_by_pid[2]], embeddings[idx_by_pid[0]], args.distance)
+                d21 = _dist(embeddings[idx_by_pid[2]], embeddings[idx_by_pid[1]], args.distance)
+                d01 = _dist(embeddings[idx_by_pid[0]], embeddings[idx_by_pid[1]], args.distance)
+                auto_interp["p2_farthest_in_embedding"] = bool(min(d20, d21) > d01)
+            within["automatic_interpretation"] = auto_interp
         else:
             msg = "within-source not applicable: fewer than expected policy samples under query source group"
             warnings.append(msg)
@@ -1345,7 +1495,7 @@ def parse_args():
     p.add_argument("--source_key_fields", type=str, default="scenario_id,start,window_len,front_id")
     p.add_argument("--auto_select_valid_source", action="store_true")
     p.add_argument("--projection", type=str, default="pca", choices=["pca", "umap", "both"])
-    p.add_argument("--case_selection", type=str, default="first_valid", choices=["query_index", "first_valid", "best_hit_at_k", "best_p2_separation"])
+    p.add_argument("--case_selection", type=str, default="first_valid", choices=["query_index", "first_valid", "best_hit_at_k", "best_p2_separation", "best_human_readable"])
     p.add_argument("--smoke_test", action="store_true")
     args = p.parse_args()
     if args.include_self:
