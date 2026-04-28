@@ -689,6 +689,8 @@ python tools/embedding_interpretability_demo.py \
   --embedding feat_style \
   --split test \
   --mode both \
+  --projection both \
+  --case_selection best_p2_separation \
   --topk 5 \
   --source_key_fields scenario_id,start,window_len,front_id \
   --auto_select_valid_source
@@ -708,3 +710,18 @@ Check `summary.json -> diagnostics` to verify:
 - core array shapes (`embedding/meta/traj/front/split`).
 
 When `policy_id` is unavailable, hit@k for same-policy retrieval is intentionally set to `null` and a warning explains that nearest-neighbour visualization is still possible but same-policy verification is not.
+
+#### Embedding interpretability demo outputs (for paper/presentation)
+
+- `summary.json`: includes `policy_mapping`, `case_selection`, within-source distances, retrieval hit@k, and diagnostics.
+- `embedding_2d_projection.png` / `embedding_2d_projection.csv`: PCA projection (visualization only; lossy).
+- `embedding_2d_projection_umap.png` / `.csv`: produced when `--projection umap|both` and `umap-learn` is available.
+- `embedding_distance_matrix.png` / `.csv`: within-source embedding distances with per-cell numeric annotation and policy labels.
+- `within_source_triplet.png`, `within_source_style_signals.png`, `within_source_style_fingerprint_bar.png`, `within_source_style_fingerprint.csv`: same-source policy contrast and style statistics.
+- `global_retrieval_cards.png`, `global_retrieval_style_signals.png`, `retrieval_table.csv`, `style_fingerprint.csv`: global nearest-neighbor interpretability and style fingerprints.
+- `interpretability_report.md`: auto-generated textual summary from summary/CSV outputs.
+
+Interpretation guidance:
+- PCA/UMAP are visualization-only; benchmark conclusions should rely on aligned metrics and high-dimensional embedding distances.
+- Lack of perfectly separated 2D clusters does not invalidate high-dimensional separation.
+- Metadata (`policy_id`, `policy_name`, `source_index`) is required for policy-level same-source contrast and same-policy hit@k verification.

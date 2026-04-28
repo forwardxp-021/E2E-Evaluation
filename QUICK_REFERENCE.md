@@ -418,6 +418,8 @@ python tools/embedding_interpretability_demo.py \
   --split test \
   --query_index 0 \
   --mode both \
+  --projection both \
+  --case_selection best_hit_at_k \
   --distance euclidean \
   --topk 5 \
   --source_key_fields scenario_id,start,window_len,front_id \
@@ -450,6 +452,14 @@ python tools/embedding_interpretability_demo.py \
 
 ### 关键输出文件
 - `summary.json`：含 `diagnostics`（group histogram / policy_id 可用性 / shape）
-- `embedding_2d_projection.png`：2D embedding 投影（默认 PCA，UMAP 可选）
-- `within_source_triplet.png` / `within_source_style_signals.png` / `embedding_distance_matrix.png`：同源 triplet 对比（满足条件时生成）
-- `global_retrieval_cards.png` / `global_retrieval_style_signals.png`：跨源 Top-K 检索可视化
+- `embedding_2d_projection.png` + `embedding_2d_projection.csv`：PCA 2D 投影（仅可视化；query 星标 + Top-K 红圈 + rank）
+- `embedding_2d_projection_umap.png` + `.csv`：`--projection umap|both` 且安装 `umap-learn` 时输出（仅可视化）
+- `embedding_distance_matrix.png` + `embedding_distance_matrix.csv`：同源 embedding 距离矩阵（图中含数值标注）
+- `within_source_triplet.png` / `within_source_style_signals.png` / `within_source_style_fingerprint_bar.png` / `within_source_style_fingerprint.csv`：同源 policy 对比与风格统计
+- `global_retrieval_cards.png` / `global_retrieval_style_signals.png` / `retrieval_table.csv` / `style_fingerprint.csv`：跨源 Top-K 检索解释
+- `interpretability_report.md`：自动文本报告（query、同源距离、Top-K、hit@1/hit@k、局限性）
+
+解释建议：
+- PCA/UMAP 是降维可视化，不能替代高维 embedding 距离与 aligned evaluator 指标。
+- 2D 上不出现完美三团，并不意味着高维空间没有有效分离。
+- policy-level 解释依赖 `policy_id/policy_name/source_index` 元数据完整性。

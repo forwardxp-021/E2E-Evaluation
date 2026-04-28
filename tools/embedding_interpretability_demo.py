@@ -284,6 +284,20 @@ def _summary_stats(signals: Dict[str, np.ndarray]) -> Dict[str, float]:
     return s
 
 
+def _policy_label(pid: Optional[int], pname: str) -> str:
+    if pid is None:
+        return "pNA: unknown"
+    if pname:
+        return f"p{pid}: {pname}"
+    return f"p{pid}: policy_{pid}"
+
+
+def _policy_name_for(pid: Optional[int], policy_mapping: Dict[int, str]) -> str:
+    if pid is None:
+        return ""
+    return policy_mapping.get(pid, f"policy_{pid}")
+
+
 def _dist(a: np.ndarray, b: np.ndarray, distance: str) -> float:
     if distance == "cosine":
         na, nb = np.linalg.norm(a), np.linalg.norm(b)
@@ -315,14 +329,23 @@ def _savefig(path: Path):
     plt.close()
 
 
-def _plot_within_triplet(path: Path, query_idx: int, indices: Sequence[int], traj: np.ndarray, front: Optional[np.ndarray], policy_ids: List[Optional[int]], skey: str):
+def _plot_within_triplet(
+    path: Path,
+    query_idx: int,
+    indices: Sequence[int],
+    traj: np.ndarray,
+    front: Optional[np.ndarray],
+    policy_ids: List[Optional[int]],
+    policy_mapping: Dict[int, str],
+    skey: str,
+):
     q = _to_traj_array(traj[query_idx])
     plt.figure(figsize=(8, 6))
     for i in indices:
         t = _to_traj_array(traj[i])
         xy = _align_xy(t, q)
         pid = policy_ids[i]
-        label = f"idx={i}, p={pid if pid is not None else 'NA'}"
+        label = f"idx={i}, {_policy_label(pid, _policy_name_for(pid, policy_mapping))}"
         lw = 2.5 if pid in (0, 1, 2) and len(indices) == 3 else 1.8
         plt.plot(xy[:, 0], xy[:, 1], label=label, linewidth=lw)
     if front is not None:
@@ -336,12 +359,21 @@ def _plot_within_triplet(path: Path, query_idx: int, indices: Sequence[int], tra
     _savefig(path)
 
 
-def _plot_within_signals(path: Path, indices: Sequence[int], traj: np.ndarray, front: Optional[np.ndarray], policy_ids: List[Optional[int]], dt: float):
+def _plot_within_signals(
+    path: Path,
+    indices: Sequence[int],
+    traj: np.ndarray,
+    front: Optional[np.ndarray],
+    policy_ids: List[Optional[int]],
+    policy_mapping: Dict[int, str],
+    dt: float,
+):
     fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharex=True)
     keys = ["speed", "accel", "jerk", "yaw_rate_proxy"]
     for i in indices:
         sig = _compute_signals(_to_traj_array(traj[i]), _to_traj_array(front[i]) if front is not None else None, dt)
-        label = f"idx={i}, p={policy_ids[i] if policy_ids[i] is not None else 'NA'}"
+        pid = policy_ids[i]
+        label = f"idx={i}, {_policy_label(pid, _policy_name_for(pid, policy_mapping))}"
         for ax, k in zip(axes.flat, keys):
             ax.plot(sig[k], label=label)
             ax.set_title(k)
@@ -351,28 +383,79 @@ def _plot_within_signals(path: Path, indices: Sequence[int], traj: np.ndarray, f
     _savefig(path)
 
 
-def _plot_distance_matrix(path: Path, indices: Sequence[int], emb: np.ndarray, policy_ids: List[Optional[int]], distance: str):
+def _plot_distance_matrix(
+    path: Path,
+    csv_path: Path,
+    indices: Sequence[int],
+    emb: np.ndarray,
+    policy_ids: List[Optional[int]],
+    policy_mapping: Dict[int, str],
+    distance: str,
+    source_index: Optional[int],
+    source_key: str,
+):
     n = len(indices)
     mat = np.zeros((n, n), dtype=float)
     for r, i in enumerate(indices):
         for c, j in enumerate(indices):
             mat[r, c] = _dist(emb[i], emb[j], distance)
-    labels = [f"p{policy_ids[i]}|{i}" if policy_ids[i] is not None else f"i{i}" for i in indices]
+    labels = []
+    rows = []
+    for i in indices:
+        pid = policy_ids[i]
+        pname = _policy_name_for(pid, policy_mapping)
+        labels.append(f"p{pid} {pname} | idx={i}" if pid is not None else f"idx={i}")
+    for r, i in enumerate(indices):
+        for c, j in enumerate(indices):
+            rpid, cpid = policy_ids[i], policy_ids[j]
+            rows.append(
+                {
+                    "row_index": int(i),
+                    "row_policy_id": rpid,
+                    "row_policy_name": _policy_name_for(rpid, policy_mapping),
+                    "col_index": int(j),
+                    "col_policy_id": cpid,
+                    "col_policy_name": _policy_name_for(cpid, policy_mapping),
+                    "distance": float(mat[r, c]),
+                }
+            )
+    pd.DataFrame(rows).to_csv(csv_path, index=False)
     plt.figure(figsize=(6, 5))
     plt.imshow(mat, cmap="viridis")
     plt.colorbar(label=f"{distance} distance")
     plt.xticks(range(n), labels, rotation=45, ha="right", fontsize=8)
     plt.yticks(range(n), labels, fontsize=8)
-    plt.title("Within-source embedding distance matrix")
+    for r in range(n):
+        for c in range(n):
+            plt.text(c, r, f"{mat[r, c]:.3f}", ha="center", va="center", fontsize=8, color="white")
+    plt.title(f"Within-source embedding distance matrix | source_index={source_index} | source_key={source_key}")
     _savefig(path)
     return mat
 
 
-def _plot_embedding_projection(path: Path, emb: np.ndarray, selected: np.ndarray, query_idx: int, top_df: pd.DataFrame, policy_ids: List[Optional[int]], group_sizes: Dict[str, int], source_keys: List[str], projection: str, warnings: List[str]):
+def _plot_embedding_projection(
+    path: Path,
+    csv_path: Path,
+    emb: np.ndarray,
+    selected: np.ndarray,
+    query_idx: int,
+    top_df: pd.DataFrame,
+    policy_ids: List[Optional[int]],
+    policy_names: List[str],
+    policy_mapping: Dict[int, str],
+    group_sizes: Dict[str, int],
+    source_keys: List[str],
+    source_indices: List[Optional[int]],
+    splits: List[str],
+    projection: str,
+    warnings: List[str],
+    method: str = "pca",
+):
     selected_emb = emb[selected]
     coords = None
-    proj_used = "pca"
-    if projection in ("auto", "umap"):
+    proj_used = method
+    explained = None
+    if method == "umap":
         try:
             import umap  # type: ignore
 
@@ -380,17 +463,25 @@ def _plot_embedding_projection(path: Path, emb: np.ndarray, selected: np.ndarray
             coords = reducer.fit_transform(selected_emb)
             proj_used = "umap"
         except Exception:
-            if projection == "umap":
-                warnings.append("UMAP requested but unavailable; falling back to PCA.")
+            warnings.append("UMAP requested but unavailable; falling back to PCA.")
+            proj_used = "pca"
     if coords is None:
         x = selected_emb - selected_emb.mean(axis=0, keepdims=True)
-        _, _, vh = np.linalg.svd(x, full_matrices=False)
+        _, svals, vh = np.linalg.svd(x, full_matrices=False)
         basis = vh[:2].T
         coords = x @ basis
         proj_used = "pca"
+        denom = float(np.sum(svals ** 2))
+        if denom > 0:
+            explained = (svals[:2] ** 2) / denom
 
     idx_to_pos = {int(idx): pos for pos, idx in enumerate(selected.tolist())}
     top_indices = set(top_df["index"].astype(int).tolist()) if len(top_df) else set()
+    rank_map = {
+        int(r["index"]): int(r["rank"])
+        for _, r in top_df.iterrows()
+        if pd.notna(r.get("rank")) and not pd.isna(r.get("index"))
+    }
 
     plt.figure(figsize=(8, 6))
     has_policy = any(pid is not None for pid in (policy_ids[i] for i in selected.tolist()))
@@ -404,7 +495,8 @@ def _plot_embedding_projection(path: Path, emb: np.ndarray, selected: np.ndarray
             c = pid_to_color.get(policy_ids[i], (0.6, 0.6, 0.6, 0.8))
             plt.scatter(coords[pos, 0], coords[pos, 1], c=[c], s=28, alpha=0.7)
         for pid in valid_pids:
-            legend_handles.append(plt.Line2D([0], [0], marker="o", color="w", label=f"policy_{pid}",
+            pname = _policy_name_for(pid, policy_mapping)
+            legend_handles.append(plt.Line2D([0], [0], marker="o", color="w", label=_policy_label(pid, pname),
                                              markerfacecolor=pid_to_color[pid], markersize=7))
         if legend_handles:
             plt.legend(handles=legend_handles, loc="best", fontsize=8, title="Policies")
@@ -417,23 +509,61 @@ def _plot_embedding_projection(path: Path, emb: np.ndarray, selected: np.ndarray
         if i in idx_to_pos:
             pos = idx_to_pos[i]
             plt.scatter(coords[pos, 0], coords[pos, 1], facecolors="none", edgecolors="red", s=120, linewidths=1.6)
-            if "rank" in top_df.columns:
-                rank = top_df.loc[top_df["index"] == i, "rank"].iloc[0]
-                if not pd.isna(rank):
-                    plt.annotate(f"r{int(rank)}", (coords[pos, 0], coords[pos, 1]), fontsize=7, color="red")
+            if i in rank_map:
+                plt.annotate(f"r{rank_map[i]}", (coords[pos, 0], coords[pos, 1]), fontsize=7, color="red")
     qpos = idx_to_pos[query_idx]
     plt.scatter(coords[qpos, 0], coords[qpos, 1], c="gold", edgecolors="black", marker="*", s=280, linewidths=1.0, label="query")
-    if has_policy:
-        plt.title(f"Embedding 2D projection ({proj_used.upper()}) | colored by policy_id")
+    if proj_used == "pca":
+        plt.title("Embedding 2D projection (PCA; visualization only)")
     else:
-        plt.title(f"Embedding 2D projection ({proj_used.upper()}) | policy_id unavailable")
-    plt.xlabel("component 1")
-    plt.ylabel("component 2")
+        plt.title("Embedding 2D projection (UMAP; visualization only)")
+    if explained is not None:
+        plt.xlabel(f"PC1 ({100.0 * explained[0]:.1f}%)")
+        plt.ylabel(f"PC2 ({100.0 * explained[1]:.1f}%)")
+    else:
+        plt.xlabel("component 1")
+        plt.ylabel("component 2")
+    plt.figtext(
+        0.5,
+        0.01,
+        "2D PCA is a lossy projection; policy separation should be judged by high-dimensional metrics and aligned evaluation.",
+        ha="center",
+        va="bottom",
+        fontsize=8,
+    )
     plt.grid(alpha=0.3)
     _savefig(path)
+    csv_rows = []
+    for i in selected.tolist():
+        pos = idx_to_pos[i]
+        pid = policy_ids[i]
+        pname = policy_names[i] if policy_names[i] else _policy_name_for(pid, policy_mapping)
+        csv_rows.append(
+            {
+                "index": int(i),
+                "pc1": float(coords[pos, 0]),
+                "pc2": float(coords[pos, 1]),
+                "policy_id": pid,
+                "policy_name": pname,
+                "source_index": source_indices[i],
+                "split": splits[i],
+                "is_query": bool(i == query_idx),
+                "retrieval_rank": rank_map.get(int(i)),
+            }
+        )
+    pd.DataFrame(csv_rows).to_csv(csv_path, index=False)
 
 
-def _plot_cards(path: Path, query_idx: int, top_df: pd.DataFrame, traj: np.ndarray, front: Optional[np.ndarray], policy_ids: List[Optional[int]], stats: Dict[int, Dict[str, float]]):
+def _plot_cards(
+    path: Path,
+    query_idx: int,
+    top_df: pd.DataFrame,
+    traj: np.ndarray,
+    front: Optional[np.ndarray],
+    policy_ids: List[Optional[int]],
+    policy_mapping: Dict[int, str],
+    stats: Dict[int, Dict[str, float]],
+):
     rows = 1 + len(top_df)
     fig, axes = plt.subplots(rows, 2, figsize=(10, 2.6 * rows))
     if rows == 1:
@@ -447,11 +577,23 @@ def _plot_cards(path: Path, query_idx: int, top_df: pd.DataFrame, traj: np.ndarr
         xy = _align_xy(t, ref)
         sig = _compute_signals(t, _to_traj_array(front[idx]) if front is not None else None, 0.1)
         ax_traj.plot(xy[:, 0], xy[:, 1])
-        ax_traj.set_title(f"{name}: idx={idx}, p={policy_ids[idx] if policy_ids[idx] is not None else 'NA'}, d={dval:.4f}")
+        qpid = policy_ids[query_idx]
+        pid = policy_ids[idx]
+        same_policy = bool(pid == qpid) if (pid is not None and qpid is not None) else False
+        ptxt = _policy_label(pid, _policy_name_for(pid, policy_mapping))
+        same_marker = " [same policy]" if same_policy and name != "Query" else ""
+        ax_traj.set_title(f"{name}: idx={idx}, {ptxt}{same_marker}, d={dval:.4f}")
+        ax_traj.axis("equal")
         ax_traj.grid(alpha=0.3)
         ax_speed.plot(sig["speed"])
         st = stats[idx]
-        txt = f"mean_v={st['mean_speed']:.2f}\nrms_jerk={st['rms_jerk']:.2f}\nrms_yaw={st['rms_yaw_rate_proxy']:.3f}\nrms_curv={st['rms_curvature_proxy']:.3f}"
+        txt = (
+            f"same_policy_as_query={str(same_policy).lower()}\n"
+            f"mean_speed={st['mean_speed']:.2f}\n"
+            f"rms_jerk={st['rms_jerk']:.2f}\n"
+            f"rms_yaw={st['rms_yaw_rate_proxy']:.3f}\n"
+            f"rms_curv={st['rms_curvature_proxy']:.3f}"
+        )
         if "mean_thw" in st:
             txt += f"\nmean_thw={st['mean_thw']:.2f}"
         ax_speed.text(0.02, 0.98, txt, va="top", ha="left", transform=ax_speed.transAxes, fontsize=8)
@@ -460,7 +602,17 @@ def _plot_cards(path: Path, query_idx: int, top_df: pd.DataFrame, traj: np.ndarr
     _savefig(path)
 
 
-def _plot_global_signals(path: Path, query_idx: int, top_df: pd.DataFrame, traj: np.ndarray, front: Optional[np.ndarray], policy_ids: List[Optional[int]], dt: float, max_signal_topk: int):
+def _plot_global_signals(
+    path: Path,
+    query_idx: int,
+    top_df: pd.DataFrame,
+    traj: np.ndarray,
+    front: Optional[np.ndarray],
+    policy_ids: List[Optional[int]],
+    policy_mapping: Dict[int, str],
+    dt: float,
+    max_signal_topk: int,
+):
     fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharex=True)
     keys = ["speed", "jerk", "yaw_rate_proxy", "curvature_proxy"]
     qsig = _compute_signals(_to_traj_array(traj[query_idx]), _to_traj_array(front[query_idx]) if front is not None else None, dt)
@@ -469,7 +621,8 @@ def _plot_global_signals(path: Path, query_idx: int, top_df: pd.DataFrame, traj:
     for _, r in top_df.head(max_signal_topk).iterrows():
         idx = int(r["index"])
         sig = _compute_signals(_to_traj_array(traj[idx]), _to_traj_array(front[idx]) if front is not None else None, dt)
-        lbl = f"r{int(r['rank'])} idx={idx} p={policy_ids[idx] if policy_ids[idx] is not None else 'NA'} d={float(r['distance']):.3f}"
+        pid = policy_ids[idx]
+        lbl = f"r{int(r['rank'])} idx={idx} {_policy_label(pid, _policy_name_for(pid, policy_mapping))} d={float(r['distance']):.3f}"
         for ax, k in zip(axes.flat, keys):
             ax.plot(sig[k], label=lbl)
             ax.set_title(k)
@@ -477,6 +630,86 @@ def _plot_global_signals(path: Path, query_idx: int, top_df: pd.DataFrame, traj:
     for ax in axes.flat:
         ax.legend(fontsize=7)
     _savefig(path)
+
+
+def _plot_within_style_fingerprint_bar(
+    path: Path,
+    csv_path: Path,
+    indices: Sequence[int],
+    stats: Dict[int, Dict[str, float]],
+    policy_ids: List[Optional[int]],
+    policy_mapping: Dict[int, str],
+):
+    metrics = ["mean_speed", "rms_accel", "rms_jerk", "rms_yaw_rate_proxy", "rms_curvature_proxy", "mean_thw", "min_thw"]
+    available = [m for m in metrics if any(m in stats[i] for i in indices)]
+    rows = []
+    for i in indices:
+        pid = policy_ids[i]
+        pname = _policy_name_for(pid, policy_mapping)
+        row = {"index": int(i), "policy_id": pid, "policy_name": pname}
+        for m in available:
+            row[m] = stats[i].get(m, np.nan)
+        rows.append(row)
+    df = pd.DataFrame(rows)
+    df.to_csv(csv_path, index=False)
+
+    if len(df) == 0 or len(available) == 0:
+        return
+    x = np.arange(len(available), dtype=float)
+    width = 0.8 / max(1, len(df))
+    plt.figure(figsize=(max(8, 1.2 * len(available)), 4.5))
+    for k, row in enumerate(df.itertuples()):
+        y = [getattr(row, m) if hasattr(row, m) else np.nan for m in available]
+        label = _policy_label(row.policy_id, row.policy_name)
+        plt.bar(x + (k - (len(df) - 1) / 2.0) * width, y, width=width, label=label, alpha=0.85)
+    plt.xticks(x, available, rotation=25, ha="right")
+    plt.title("Within-source style fingerprint (policy-level summary)")
+    plt.grid(axis="y", alpha=0.3)
+    plt.legend(fontsize=8)
+    _savefig(path)
+
+
+def _generate_report(path: Path, summary: Dict[str, Any], retrieval_csv: Path):
+    retrieval_df = pd.read_csv(retrieval_csv) if retrieval_csv.exists() else pd.DataFrame()
+    top_df = retrieval_df[(~retrieval_df.get("excluded", False)) & (retrieval_df.get("rank", 0) <= summary.get("topk", 0))].copy()
+    top_cols = [
+        c for c in ["rank", "index", "policy_id", "policy_name", "distance", "same_policy_as_query", "mean_speed", "rms_jerk", "rms_yaw_rate_proxy", "rms_curvature_proxy", "mean_thw"]
+        if c in top_df.columns
+    ]
+    md = []
+    md.append("# Interpretability Report")
+    md.append("")
+    md.append("## Query")
+    md.append(f"- query_index: {summary.get('query_index')}")
+    md.append(f"- source_index: {summary.get('query_source_index')}")
+    md.append(f"- source_key: {summary.get('query_source_key')}")
+    md.append(f"- query policy: p{summary.get('query_policy_id')}: {summary.get('query_policy_name')}")
+    md.append("")
+    md.append("## Within-source")
+    ws = summary.get("within_source", {})
+    md.append(f"- policy list: {ws.get('available_policy_ids')}")
+    pdists = ws.get("pairwise_embedding_distances")
+    if isinstance(pdists, dict) and len(pdists) > 0:
+        md.append("- embedding distances:")
+        for k in sorted(pdists.keys()):
+            md.append(f"  - {k}: {pdists[k]:.4f}")
+    md.append("- style interpretation: compare mean_speed / rms_jerk / yaw_rate_proxy / curvature_proxy / THW across p0-p1-p2 in within_source_style_fingerprint.csv.")
+    md.append("")
+    md.append("## Global retrieval Top-K")
+    if len(top_df) > 0 and len(top_cols) > 0:
+        md.append(top_df[top_cols].to_markdown(index=False))
+    else:
+        md.append("- No valid Top-K rows.")
+    gr = summary.get("global_retrieval", {})
+    md.append("")
+    md.append(f"- same-policy hit@1: {gr.get('hit_at_1_same_policy')}")
+    md.append(f"- same-policy hit@k: {gr.get('hit_at_k_same_policy')}")
+    md.append("")
+    md.append("## Limitations")
+    md.append("- PCA/UMAP are visualization-only and lossy.")
+    md.append("- Benchmark conclusions should rely on aligned metrics and high-dimensional embedding distances.")
+    md.append("- yaw_rate_proxy / curvature_proxy are approximate proxies from velocity direction.")
+    path.write_text("\n".join(md) + "\n", encoding="utf-8")
 
 
 def _make_synth(n_src: int = 5, n_policy: int = 3, t: int = 40):
@@ -502,6 +735,74 @@ def _make_synth(n_src: int = 5, n_policy: int = 3, t: int = 40):
             emb[idx] = np.array([s, p, np.mean(v), np.std(v), np.std(yaw), 0.1 * p, 0.01 * s, 1.0], dtype=np.float32)
             idx += 1
     return emb, meta, traj, front, split
+
+
+def _choose_case(
+    mode: str,
+    explicit_query_idx: Optional[int],
+    selected: np.ndarray,
+    source_keys: List[str],
+    source_indices: List[Optional[int]],
+    policy_ids: List[Optional[int]],
+    embeddings: np.ndarray,
+    distance: str,
+    topk: int,
+) -> Tuple[int, Dict[str, Any]]:
+    selected_list = [int(i) for i in selected.tolist()]
+    if explicit_query_idx is not None:
+        mode = "query_index"
+    if mode == "query_index":
+        q = explicit_query_idx if explicit_query_idx is not None else selected_list[0]
+        return int(q), {"mode": "query_index", "selected_query_index": int(q), "reason": "Explicit query index.", "score": None}
+
+    groups: Dict[str, List[int]] = {}
+    for i in selected_list:
+        groups.setdefault(source_keys[i], []).append(i)
+    valid_groups = [sorted(v) for v in groups.values() if len(v) >= 3]
+    if mode == "first_valid":
+        if valid_groups:
+            q = valid_groups[0][0]
+            return int(q), {"mode": mode, "selected_query_index": int(q), "reason": "First deterministic source with >=3 policies.", "score": None}
+        q = selected_list[0]
+        return int(q), {"mode": mode, "selected_query_index": int(q), "reason": "Fallback to first selected row.", "score": None}
+
+    if mode == "best_hit_at_k":
+        best = (-1, selected_list[0])
+        for q in selected_list:
+            qpid = policy_ids[q]
+            if qpid is None:
+                continue
+            drows = []
+            for i in selected_list:
+                if i == q:
+                    continue
+                drows.append((i, _dist(embeddings[q], embeddings[i], distance)))
+            drows.sort(key=lambda x: x[1])
+            hits = sum(1 for i, _ in drows[:topk] if policy_ids[i] == qpid)
+            best = max(best, (hits, q))
+        return int(best[1]), {"mode": mode, "selected_query_index": int(best[1]), "reason": "Maximum same-policy count in top-k.", "score": float(best[0])}
+
+    if mode == "best_p2_separation":
+        group_by_source_idx: Dict[int, List[int]] = {}
+        for i in selected_list:
+            sidx = source_indices[i]
+            if sidx is not None:
+                group_by_source_idx.setdefault(int(sidx), []).append(i)
+        best_score = -1.0
+        best_q = selected_list[0]
+        for _, g in group_by_source_idx.items():
+            idx_by_pid = {policy_ids[i]: i for i in g if policy_ids[i] is not None}
+            if 0 not in idx_by_pid or 1 not in idx_by_pid or 2 not in idx_by_pid:
+                continue
+            p0, p1, p2 = idx_by_pid[0], idx_by_pid[1], idx_by_pid[2]
+            score = min(_dist(embeddings[p2], embeddings[p0], distance), _dist(embeddings[p2], embeddings[p1], distance))
+            if score > best_score:
+                best_score = float(score)
+                best_q = int(p2)
+        return int(best_q), {"mode": mode, "selected_query_index": int(best_q), "reason": "Largest min(d(p2,p0), d(p2,p1)) in selected split.", "score": (best_score if best_score >= 0 else None)}
+
+    q = selected_list[0]
+    return int(q), {"mode": mode, "selected_query_index": int(q), "reason": "Unknown case_selection mode fallback.", "score": None}
 
 
 def run_demo(args):
@@ -623,17 +924,37 @@ def run_demo(args):
             except Exception:
                 warnings.append("Failed to parse policy_names.json for expected_num_policies.")
 
-    query_idx = args.query_index if args.query_index is not None else int(selected.min())
+    policy_mapping: Dict[int, str] = {}
+    for i in selected.tolist():
+        pid = policy_ids[i]
+        if pid is None:
+            continue
+        pname = policy_names[i] if policy_names[i] else f"policy_{pid}"
+        if pid not in policy_mapping:
+            policy_mapping[pid] = pname
+    for pid in policy_ids_observed:
+        policy_mapping.setdefault(pid, f"policy_{pid}")
+    for i in range(n):
+        pid = policy_ids[i]
+        if pid is not None and not policy_names[i]:
+            policy_names[i] = policy_mapping.get(pid, f"policy_{pid}")
+
+    case_mode = args.case_selection
+    if args.query_index is not None and args.case_selection == "first_valid":
+        case_mode = "query_index"
+    query_idx, case_selection_info = _choose_case(
+        mode=case_mode,
+        explicit_query_idx=args.query_index,
+        selected=selected,
+        source_keys=source_keys,
+        source_indices=[int(x) if pd.notna(x) else None for x in metadata_table["source_index"].tolist()],
+        policy_ids=policy_ids,
+        embeddings=embeddings,
+        distance=args.distance,
+        topk=args.topk,
+    )
     if query_idx not in selected.tolist():
-        if args.auto_select_valid_source and args.mode in ("within_source", "both"):
-            valid_candidates = sorted(i for i in selected.tolist() if group_sizes_after_key[source_keys[i]] >= 3)
-            if valid_candidates:
-                query_idx = valid_candidates[0]
-                warnings.append("query_index not in selected split; auto-selected replacement from source group with >=3 samples.")
-            else:
-                raise ValueError("query_index is not in selected split and no valid source group found for auto-select.")
-        else:
-            raise ValueError("query_index is not in selected split")
+        raise ValueError("Selected query_index is not in selected split")
     if policy_ids[query_idx] is None:
         warnings.append(
             "policy_id unavailable: global retrieval can show nearest embedding neighbors, but cannot verify same-policy style retrieval."
@@ -704,9 +1025,12 @@ def run_demo(args):
                 "rank": None,
                 "query_index": query_idx,
                 "query_policy_id": qpid,
+                "query_policy_name": policy_names[query_idx] if policy_names[query_idx] else _policy_name_for(qpid, policy_mapping),
+                "query_policy_label": _policy_label(qpid, policy_names[query_idx] if policy_names[query_idx] else _policy_name_for(qpid, policy_mapping)),
                 "index": i,
                 "policy_id": pid,
-                "policy_name": policy_names[i] if policy_names[i] else (f"policy_{pid}" if pid is not None else ""),
+                "policy_name": policy_names[i] if policy_names[i] else _policy_name_for(pid, policy_mapping),
+                "policy_label": _policy_label(pid, policy_names[i] if policy_names[i] else _policy_name_for(pid, policy_mapping)),
                 "source_key": source_keys[i],
                 "source_index": int(metadata_table.at[i, "source_index"]) if pd.notna(metadata_table.at[i, "source_index"]) else None,
                 "scenario_id": str(metadata_table.at[i, "scenario_id"]),
@@ -747,6 +1071,7 @@ def run_demo(args):
         "source_key": q_source,
         "available_indices": [],
         "available_policy_ids": [],
+        "available_policy_labels": [],
         "applicable": False,
         "reason_if_not_applicable": None,
         "pairwise_embedding_distances": None,
@@ -762,15 +1087,37 @@ def run_demo(args):
             within["source_index"] = None
         within["available_indices"] = ws
         within["available_policy_ids"] = [policy_ids[i] for i in ws]
+        within["available_policy_labels"] = [
+            _policy_label(policy_ids[i], policy_names[i] if policy_names[i] else _policy_name_for(policy_ids[i], policy_mapping))
+            for i in ws
+        ]
         selected_for_fingerprint.update(ws)
         min_needed = max(3, expected_num_policies if expected_num_policies > 0 else 3)
         if len(ws) >= min_needed:
             within["applicable"] = True
             ws_sorted = sorted(ws)
             ws_plot = ws_sorted[:max(3, min(len(ws_sorted), expected_num_policies if expected_num_policies > 0 else 3))]
-            _plot_within_triplet(out_dir / "within_source_triplet.png", query_idx, ws_plot, traj, front, policy_ids, q_source)
-            _plot_within_signals(out_dir / "within_source_style_signals.png", ws_plot, traj, front, policy_ids, args.dt)
-            mat = _plot_distance_matrix(out_dir / "embedding_distance_matrix.png", ws_plot, embeddings, policy_ids, args.distance)
+            _plot_within_triplet(out_dir / "within_source_triplet.png", query_idx, ws_plot, traj, front, policy_ids, policy_mapping, q_source)
+            _plot_within_signals(out_dir / "within_source_style_signals.png", ws_plot, traj, front, policy_ids, policy_mapping, args.dt)
+            mat = _plot_distance_matrix(
+                out_dir / "embedding_distance_matrix.png",
+                out_dir / "embedding_distance_matrix.csv",
+                ws_plot,
+                embeddings,
+                policy_ids,
+                policy_mapping,
+                args.distance,
+                int(q_source_index) if (q_source_index is not None and pd.notna(q_source_index)) else None,
+                q_source,
+            )
+            _plot_within_style_fingerprint_bar(
+                out_dir / "within_source_style_fingerprint_bar.png",
+                out_dir / "within_source_style_fingerprint.csv",
+                ws_plot,
+                stats,
+                policy_ids,
+                policy_mapping,
+            )
             within["pairwise_embedding_distances"] = {
                 f"{ws_plot[r]}->{ws_plot[c]}": float(mat[r, c]) for r in range(len(ws_plot)) for c in range(len(ws_plot))
             }
@@ -782,22 +1129,66 @@ def run_demo(args):
     if args.mode in ("global", "both"):
         if len(top_df) > 0:
             selected_for_fingerprint.update(top_df["index"].astype(int).tolist())
-            _plot_cards(out_dir / "global_retrieval_cards.png", query_idx, top_df, traj, front, policy_ids, stats)
-            _plot_global_signals(out_dir / "global_retrieval_style_signals.png", query_idx, top_df, traj, front, policy_ids, args.dt, args.max_signal_topk)
+            _plot_cards(out_dir / "global_retrieval_cards.png", query_idx, top_df, traj, front, policy_ids, policy_mapping, stats)
+            _plot_global_signals(out_dir / "global_retrieval_style_signals.png", query_idx, top_df, traj, front, policy_ids, policy_mapping, args.dt, args.max_signal_topk)
         else:
             warnings.append("global retrieval plot skipped: no non-excluded candidates")
-    _plot_embedding_projection(
-        out_dir / "embedding_2d_projection.png",
-        embeddings,
-        selected,
-        query_idx,
-        top_df,
-        policy_ids,
-        group_sizes_after_key,
-        source_keys,
-        args.projection,
-        warnings,
-    )
+
+    source_index_list = [int(x) if pd.notna(x) else None for x in metadata_table["source_index"].tolist()]
+    split_list = metadata_table["split"].astype(str).tolist()
+    projection_mode = args.projection
+    umap_available = False
+    if projection_mode in ("umap", "both"):
+        try:
+            import umap  # type: ignore # noqa: F401
+            umap_available = True
+        except Exception:
+            warnings.append("UMAP requested but umap-learn is not installed; continuing with PCA visualization.")
+    if projection_mode == "both":
+        methods = ["pca"] + (["umap"] if umap_available else [])
+    elif projection_mode == "umap":
+        methods = ["umap"] if umap_available else ["pca"]
+    else:
+        methods = ["pca"]
+    for m in methods:
+        if m == "pca":
+            _plot_embedding_projection(
+                out_dir / "embedding_2d_projection.png",
+                out_dir / "embedding_2d_projection.csv",
+                embeddings,
+                selected,
+                query_idx,
+                top_df,
+                policy_ids,
+                policy_names,
+                policy_mapping,
+                group_sizes_after_key,
+                source_keys,
+                source_index_list,
+                split_list,
+                projection_mode,
+                warnings,
+                method="pca",
+            )
+        else:
+            _plot_embedding_projection(
+                out_dir / "embedding_2d_projection_umap.png",
+                out_dir / "embedding_2d_projection_umap.csv",
+                embeddings,
+                selected,
+                query_idx,
+                top_df,
+                policy_ids,
+                policy_names,
+                policy_mapping,
+                group_sizes_after_key,
+                source_keys,
+                source_index_list,
+                split_list,
+                projection_mode,
+                warnings,
+                method="umap",
+            )
 
     fp_rows = []
     for i in sorted(selected_for_fingerprint):
@@ -858,8 +1249,12 @@ def run_demo(args):
         "query_meta": query_meta,
         "query_source_key": q_source,
         "query_policy_id": policy_ids[query_idx],
-        "query_policy_name": policy_names[query_idx] if policy_names[query_idx] else (f"policy_{policy_ids[query_idx]}" if policy_ids[query_idx] is not None else None),
+        "query_policy_name": policy_names[query_idx] if policy_names[query_idx] else (_policy_name_for(policy_ids[query_idx], policy_mapping) if policy_ids[query_idx] is not None else None),
+        "query_policy_label": _policy_label(policy_ids[query_idx], policy_names[query_idx] if policy_names[query_idx] else _policy_name_for(policy_ids[query_idx], policy_mapping)),
         "query_source_index": int(q_source_index) if (q_source_index is not None and pd.notna(q_source_index)) else None,
+        "case_selection": case_selection_info,
+        "projection": args.projection,
+        "policy_mapping": {str(k): str(v) for k, v in sorted(policy_mapping.items())},
         "policy_id_source": pid_source,
         "split_filter": args.split,
         "distance": args.distance,
@@ -918,6 +1313,7 @@ def run_demo(args):
         "warnings": warnings,
     }
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    _generate_report(out_dir / "interpretability_report.md", summary, out_dir / "retrieval_table.csv")
 
     if args.smoke_test:
         must = ["summary.json", "retrieval_table.csv", "style_fingerprint.csv"]
@@ -948,7 +1344,8 @@ def parse_args():
     p.add_argument("--max_signal_topk", type=int, default=3)
     p.add_argument("--source_key_fields", type=str, default="scenario_id,start,window_len,front_id")
     p.add_argument("--auto_select_valid_source", action="store_true")
-    p.add_argument("--projection", type=str, default="pca", choices=["pca", "umap", "auto"])
+    p.add_argument("--projection", type=str, default="pca", choices=["pca", "umap", "both"])
+    p.add_argument("--case_selection", type=str, default="first_valid", choices=["query_index", "first_valid", "best_hit_at_k", "best_p2_separation"])
     p.add_argument("--smoke_test", action="store_true")
     args = p.parse_args()
     if args.include_self:
