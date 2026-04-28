@@ -51,6 +51,7 @@ Usage example:
 """
 
 import argparse
+from collections import Counter
 import hashlib
 import json
 import os
@@ -112,6 +113,38 @@ POLICY_PARAMS: dict[str, dict] = {
 _DT_DEFAULT = 0.1          # [s] implicit Waymo 10 Hz
 _EPS_SPEED = 1e-3          # avoid division by zero in THW
 _EPS_DIST = 0.5            # minimum dist to avoid collapse [m]
+
+
+def _parse_src_meta_row(row: object, fallback_source_index: int, fallback_window_len: int) -> dict:
+    """Parse a source metadata row into canonical fields."""
+    scenario_id = f"src_{fallback_source_index}"
+    start = 0
+    window_len = fallback_window_len
+    front_id = f"front_{fallback_source_index}"
+    if isinstance(row, np.void) and row.dtype.names:
+        d = {name: row[name].item() if hasattr(row[name], "item") else row[name] for name in row.dtype.names}
+    elif isinstance(row, dict):
+        d = dict(row)
+    elif isinstance(row, (list, tuple, np.ndarray)):
+        vals = list(row)
+        d = {
+            "scenario_id": vals[0] if len(vals) > 0 else scenario_id,
+            "start": vals[1] if len(vals) > 1 else start,
+            "window_len": vals[2] if len(vals) > 2 else window_len,
+            "front_id": vals[3] if len(vals) > 3 else front_id,
+        }
+    else:
+        d = {}
+    scenario_id = str(d.get("scenario_id", scenario_id))
+    start = int(d.get("start", start))
+    window_len = int(d.get("window_len", window_len))
+    front_id = str(d.get("front_id", front_id))
+    return {
+        "scenario_id": scenario_id,
+        "start": start,
+        "window_len": window_len,
+        "front_id": front_id,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -441,13 +474,27 @@ def main() -> None:
             )
 
     # Source meta (scenario ids)
-    src_scenario_ids: list[str] = [f"src_{i}" for i in range(N_src)]
+    src_meta_rows: list[dict] = []
+    for i in range(N_src):
+        src_meta_rows.append(
+            _parse_src_meta_row(
+                row={},
+                fallback_source_index=i,
+                fallback_window_len=int(len(src_traj[i])),
+            )
+        )
     if args.src_meta_path is not None:
         print(f"Loading source metadata from: {args.src_meta_path}")
         meta = np.load(args.src_meta_path, allow_pickle=True)
-        # meta rows: (scenario_id, start, window_len, front_id)
         if len(meta) == N_src:
-            src_scenario_ids = [str(row[0]) for row in meta]
+            src_meta_rows = [
+                _parse_src_meta_row(
+                    row=meta[i],
+                    fallback_source_index=i,
+                    fallback_window_len=int(len(src_traj[i])),
+                )
+                for i in range(N_src)
+            ]
         else:
             print(
                 f"  Warning: meta length {len(meta)} != traj length {N_src}; "
@@ -465,8 +512,13 @@ def main() -> None:
     out_traj: list[np.ndarray] = []
     out_front: list[np.ndarray] = []
     out_policy_id: list[int] = []
+    out_policy_name: list[str] = []
     out_scenario_id: list[str] = []
     out_source_index: list[int] = []
+    out_start: list[int] = []
+    out_window_len: list[int] = []
+    out_front_id: list[str] = []
+    out_source_key: list[str] = []
     out_split: list[str] = []
 
     for p_idx, p_name in enumerate(policy_names):
@@ -486,14 +538,22 @@ def main() -> None:
             out_traj.append(sim_ego)
             out_front.append(front_win.copy())
             out_policy_id.append(p_idx)
-            out_scenario_id.append(src_scenario_ids[i])
+            out_policy_name.append(p_name)
+            out_scenario_id.append(src_meta_rows[i]["scenario_id"])
             out_source_index.append(i)
+            out_start.append(src_meta_rows[i]["start"])
+            out_window_len.append(src_meta_rows[i]["window_len"])
+            out_front_id.append(src_meta_rows[i]["front_id"])
+            out_source_key.append(
+                f"{src_meta_rows[i]['scenario_id']}|{src_meta_rows[i]['start']}|"
+                f"{src_meta_rows[i]['window_len']}|{src_meta_rows[i]['front_id']}"
+            )
 
             if src_split is not None:
                 out_split.append(src_split[i])
             else:
                 out_split.append(
-                    _assign_split_by_hash(src_scenario_ids[i])
+                    _assign_split_by_hash(src_meta_rows[i]["scenario_id"])
                 )
 
     # ------------------------------------------------------------------
@@ -506,19 +566,98 @@ def main() -> None:
         front_arr[k] = out_front[k]
 
     policy_id_arr = np.array(out_policy_id, dtype=np.int32)
+    policy_name_arr = np.array(out_policy_name, dtype=object)
     scenario_id_arr = np.array(out_scenario_id, dtype=object)
     source_index_arr = np.array(out_source_index, dtype=np.int32)
+    start_arr = np.array(out_start, dtype=np.int32)
+    window_len_arr = np.array(out_window_len, dtype=np.int32)
+    front_id_arr = np.array(out_front_id, dtype=object)
+    source_key_arr = np.array(out_source_key, dtype=object)
     split_arr = np.array(out_split, dtype=object)
+    row_index_arr = np.arange(N_out, dtype=np.int32)
+
+    meta_dtype = np.dtype([
+        ("row_index", np.int32),
+        ("source_index", np.int32),
+        ("source_key", object),
+        ("policy_id", np.int32),
+        ("policy_name", object),
+        ("scenario_id", object),
+        ("start", np.int32),
+        ("window_len", np.int32),
+        ("front_id", object),
+        ("split", object),
+    ])
+    meta_arr = np.empty(N_out, dtype=meta_dtype)
+    meta_arr["row_index"] = row_index_arr
+    meta_arr["source_index"] = source_index_arr
+    meta_arr["source_key"] = source_key_arr
+    meta_arr["policy_id"] = policy_id_arr
+    meta_arr["policy_name"] = policy_name_arr
+    meta_arr["scenario_id"] = scenario_id_arr
+    meta_arr["start"] = start_arr
+    meta_arr["window_len"] = window_len_arr
+    meta_arr["front_id"] = front_id_arr
+    meta_arr["split"] = split_arr
+
+    # Alignment and integrity checks.
+    assert len(meta_arr) == len(traj_arr) == len(front_arr), "Output metadata and trajectory arrays must align."
+    assert np.all(source_index_arr >= 0), "Invalid source_index: expected non-negative integers."
+    assert np.all(policy_id_arr >= 0), "Invalid policy_id: expected non-negative integers."
+    rows_per_source = Counter(source_index_arr.tolist())
+    expected_rows_per_source = len(policy_names)
+    underfilled_sources = [s for s, c in rows_per_source.items() if c != expected_rows_per_source]
+    if underfilled_sources:
+        raise AssertionError(
+            "Each source_index should have exactly one row per policy. "
+            f"Expected {expected_rows_per_source}, mismatches for source_index values: {underfilled_sources[:10]}"
+        )
 
     # ------------------------------------------------------------------
     # Write outputs
     # ------------------------------------------------------------------
     np.save(os.path.join(args.output_dir, "traj.npy"), traj_arr)
     np.save(os.path.join(args.output_dir, "front.npy"), front_arr)
+    np.save(os.path.join(args.output_dir, "meta.npy"), meta_arr)
     np.save(os.path.join(args.output_dir, "policy_id.npy"), policy_id_arr)
+    np.save(os.path.join(args.output_dir, "policy_name.npy"), policy_name_arr)
     np.save(os.path.join(args.output_dir, "scenario_id.npy"), scenario_id_arr)
     np.save(os.path.join(args.output_dir, "source_index.npy"), source_index_arr)
+    np.save(os.path.join(args.output_dir, "source_key.npy"), source_key_arr)
     np.save(os.path.join(args.output_dir, "split.npy"), split_arr)
+    try:
+        import csv
+
+        meta_csv_path = os.path.join(args.output_dir, "meta.csv")
+        with open(meta_csv_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "row_index",
+                "source_index",
+                "source_key",
+                "policy_id",
+                "policy_name",
+                "scenario_id",
+                "start",
+                "window_len",
+                "front_id",
+                "split",
+            ])
+            for i in range(N_out):
+                writer.writerow([
+                    int(row_index_arr[i]),
+                    int(source_index_arr[i]),
+                    str(source_key_arr[i]),
+                    int(policy_id_arr[i]),
+                    str(policy_name_arr[i]),
+                    str(scenario_id_arr[i]),
+                    int(start_arr[i]),
+                    int(window_len_arr[i]),
+                    str(front_id_arr[i]),
+                    str(split_arr[i]),
+                ])
+    except Exception as exc:
+        raise RuntimeError(f"Failed writing meta.csv: {exc}") from exc
 
     policy_names_map = {str(idx): name for idx, name in enumerate(policy_names)}
     with open(os.path.join(args.output_dir, "policy_names.json"), "w", encoding="utf-8") as f:
@@ -527,8 +666,6 @@ def main() -> None:
     # ------------------------------------------------------------------
     # Summary
     # ------------------------------------------------------------------
-    from collections import Counter
-
     split_counts = Counter(out_split)
     policy_counts = Counter(out_policy_id)
 
@@ -603,9 +740,13 @@ def main() -> None:
     for fname in [
         "traj.npy",
         "front.npy",
+        "meta.npy",
+        "meta.csv",
         "policy_id.npy",
+        "policy_name.npy",
         "scenario_id.npy",
         "source_index.npy",
+        "source_key.npy",
         "split.npy",
         "policy_names.json",
     ]:
