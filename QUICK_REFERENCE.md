@@ -463,3 +463,24 @@ python tools/embedding_interpretability_demo.py \
 - PCA/UMAP 是降维可视化，不能替代高维 embedding 距离与 aligned evaluator 指标。
 - 2D 上不出现完美三团，并不意味着高维空间没有有效分离。
 - policy-level 解释依赖 `policy_id/policy_name/source_index` 元数据完整性。
+
+## Experiment 2: lateral_stable Ablation Sweep
+
+### 一键运行（debug）
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable
+```
+
+### 常用参数
+- `--dry_run`：仅打印命令与生效参数，不执行。
+- `--skip_generation`：只跑评估（复用已生成 rollouts）。
+- `--skip_evaluation`：只生成 rollouts。
+- `--embedding {feat_style,feat_style_raw,feat,feat_legacy}`
+- `--split {train,val,test}`
+- `--distance {euclidean,cosine}`
+- `--topk INT`
+- `--configs a,b,c`（按名称选择消融子集）
