@@ -725,3 +725,42 @@ Interpretation guidance:
 - PCA/UMAP are visualization-only; benchmark conclusions should rely on aligned metrics and high-dimensional embedding distances.
 - Lack of perfectly separated 2D clusters does not invalidate high-dimensional separation.
 - Metadata (`policy_id`, `policy_name`, `source_index`) is required for policy-level same-source contrast and same-policy hit@k verification.
+
+## Experiment 2: Lateral_stable Ablation and Parameter Sweep
+
+新增脚本：`tools/run_lateral_stable_ablation.py`，用于批量运行 `lateral_stable` 参数消融（生成 + population 评估 + 汇总 + 推荐 + 报告 + 图表）。
+
+### Debug 命令
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable
+```
+
+### Full 命令
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_full \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### 仅预览配置（不执行）
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_plan \
+  --dry_run
+```
+
+输出包括：
+- `ablation_summary.csv` / `ablation_summary.json`
+- `ablation_recommendation.json`
+- `ablation_report.md`
+- 汇总图：`ablation_*.png`
+- 每个 config 独立目录下的 `rollouts/` 与 `population_eval/`
