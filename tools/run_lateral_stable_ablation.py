@@ -14,6 +14,19 @@ import generate_policy_rollouts as gpr
 
 PARAM_KEYS = ["heading_smooth_alpha", "yaw_rate_clip", "thw_target", "jerk_limit", "a_max", "a_min"]
 REQ_ROLLOUT_FILES = ["source_index.npy", "policy_id.npy", "policy_name.npy", "split.npy", "traj.npy", "front.npy", "meta.npy", "feat_style.npy"]
+REQ_AGGREGATE_FILES = [
+    "ablation_summary.csv",
+    "ablation_summary.json",
+    "ablation_recommendation.json",
+    "ablation_report.md",
+    "ablation_p2_separation_margin.png",
+    "ablation_p2_farthest_rate.png",
+    "ablation_pairwise_distances.png",
+    "ablation_retrieval_classification.png",
+    "ablation_p2_style_metrics.png",
+    "ablation_tradeoff_plot.png",
+]
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def parse_args():
@@ -136,7 +149,7 @@ def main():
         rdir.mkdir(parents=True, exist_ok=True); edir.mkdir(parents=True, exist_ok=True)
 
         if not args.skip_generation:
-            gcmd = [sys.executable, "generate_policy_rollouts.py", "--src_traj_path", str(files["traj"]), "--src_front_path", str(files["front"]), "--output_dir", str(rdir), "--seed", str(args.seed), "--heading_smooth_alpha", str(cfg["heading_smooth_alpha"]), "--lateral_stable_yaw_rate_clip", str(cfg["yaw_rate_clip"]), "--lateral_stable_thw_target", str(cfg["thw_target"]), "--lateral_stable_jerk_limit", str(cfg["jerk_limit"]), "--lateral_stable_a_max", str(cfg["a_max"]), "--lateral_stable_a_min", str(cfg["a_min"])]
+            gcmd = [sys.executable, str(REPO_ROOT / "generate_policy_rollouts.py"), "--src_traj_path", str(files["traj"]), "--src_front_path", str(files["front"]), "--output_dir", str(rdir), "--seed", str(args.seed), "--heading_smooth_alpha", str(cfg["heading_smooth_alpha"]), "--lateral_stable_yaw_rate_clip", str(cfg["yaw_rate_clip"]), "--lateral_stable_thw_target", str(cfg["thw_target"]), "--lateral_stable_jerk_limit", str(cfg["jerk_limit"]), "--lateral_stable_a_max", str(cfg["a_max"]), "--lateral_stable_a_min", str(cfg["a_min"])]
             if args.num_workers is not None:
                 print("[WARN] --num_workers provided but generator has no such argument; ignoring")
             if files["split"].exists(): gcmd += ["--src_split_path", str(files["split"])]
@@ -144,7 +157,7 @@ def main():
             run_cmd(gcmd, args.dry_run)
 
         if not args.skip_evaluation:
-            ecmd = [sys.executable, "tools/evaluate_policy_population.py", "--data_dir", str(rdir), "--out_dir", str(edir), "--embedding", args.embedding, "--split", args.split, "--distance", args.distance, "--topk", str(args.topk), "--projection", "pca"]
+            ecmd = [sys.executable, str(REPO_ROOT / "tools/evaluate_policy_population.py"), "--data_dir", str(rdir), "--out_dir", str(edir), "--embedding", args.embedding, "--split", args.split, "--distance", args.distance, "--topk", str(args.topk), "--projection", "pca"]
             run_cmd(ecmd, args.dry_run)
 
         if not args.dry_run and not args.skip_evaluation:
@@ -236,6 +249,10 @@ Synthetic policy rollouts only (not human-driver validation); replayed front veh
 Perform a local fine-grained sweep around the recommended config and repeat on additional splits.
 """
     (out_root / "ablation_report.md").write_text(report, encoding="utf-8")
+
+    missing_agg = [f for f in REQ_AGGREGATE_FILES if not (out_root / f).exists()]
+    if missing_agg:
+        raise FileNotFoundError(f"Missing ablation aggregate files in {out_root}: {missing_agg}")
 
 
 if __name__ == "__main__":

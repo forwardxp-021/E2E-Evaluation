@@ -547,3 +547,61 @@ python tools/run_lateral_stable_ablation.py \
 - Synthetic policies (not human labels).
 - Replayed front-vehicle setup (not full closed-loop multi-agent simulation).
 - No sensor rendering/perception stack.
+
+
+## Experiment 2 Ablation（必须产出 base_output_dir 聚合文件）
+
+### 推荐命令（可直接复制）
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### 期望输出结构
+```text
+outputs/ablation_debug/
+  ablation_summary.csv
+  ablation_summary.json
+  ablation_recommendation.json
+  ablation_report.md
+  ablation_p2_separation_margin.png
+  ablation_p2_farthest_rate.png
+  ablation_pairwise_distances.png
+  ablation_retrieval_classification.png
+  ablation_p2_style_metrics.png
+  ablation_tradeoff_plot.png
+
+  baseline_current/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  no_lateral_smoothing/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  lateral_only/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  comfort_only/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  full_strong_lateral_stable/
+    rollouts/
+    population_eval/
+      population_summary.json
+```
+
+> 完成标准：`ablation_summary.csv` 与 `ablation_report.md` 必须存在于 `base_output_dir` 根目录。
