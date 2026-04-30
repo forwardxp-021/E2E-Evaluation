@@ -891,3 +891,75 @@ outputs/ablation_debug/
 ```
 
 > 完成标准：`ablation_summary.csv` 与 `ablation_report.md` 必须存在于 `base_output_dir` 根目录。
+
+## Experiment 2B: Local Fine-Grained Sweep Around full_strong_lateral_stable
+
+### 1) Motivation
+Broad ablation selected `full_strong_lateral_stable` as best overall, but `mean_p2_separation_margin` remained negative. Experiment 2B performs a focused local sweep around that center to improve p2 independence while preserving comfort/stability.
+
+### 2) Script usage
+Use the existing script with `--config_set local_fine`:
+- `tools/run_lateral_stable_ablation.py`
+- optional `--config_file configs/lateral_stable_local_sweep.json`
+
+### 3) Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_debug \
+  --config_set local_fine \
+  --max_sources 100 \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### 4) Full command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_full \
+  --config_set local_fine \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### 5) Output files
+- `local_sweep_summary.csv` / `local_sweep_summary.json`
+- `local_sweep_recommendation.json`
+- `local_sweep_report.md`
+- `local_sweep_integrity_report.json`
+- `local_sweep_rollout_sanity.csv`
+- plots: `local_sweep_*.png`
+
+### 6) How to interpret results
+Primary targets:
+- increase `p2_farthest_rate`
+- improve `mean_p2_separation_margin` toward 0 / positive
+- keep `p2_rms_jerk_mean` below baseline_current
+- keep `p2_rms_yaw_rate_proxy_mean` low
+- preserve `centroid_accuracy_p2` and retrieval metrics.
+If margin stays negative, report: **"p2 independence improved but remains incomplete."**
+
+### 7) Broad ablation vs local sweep
+- Broad ablation: mechanism-level comparison across distinct config families.
+- Local sweep: fine-grained perturbation around `full_strong_lateral_stable` (yaw clip / heading smoothing / THW / jerk interactions).
+
+### 8) Limitations
+- Synthetic policy rollouts only.
+- No public-data human validation yet.
+- Replayed-front setup, not full closed-loop multi-agent evaluation.
+
+### Dry run
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_debug \
+  --config_set local_fine \
+  --dry_run
+```
