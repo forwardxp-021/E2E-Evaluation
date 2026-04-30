@@ -764,3 +764,72 @@ python tools/run_lateral_stable_ablation.py \
 - `ablation_report.md`
 - 汇总图：`ablation_*.png`
 - 每个 config 独立目录下的 `rollouts/` 与 `population_eval/`
+
+## Experiment 2: Lateral_stable Ablation and Parameter Sweep
+
+**Motivation**: Experiment 1 showed p2/lateral_stable is recognizable but remains too close to conservative, so p2 is not consistently an independent third style.
+
+**Script**: `tools/run_lateral_stable_ablation.py`
+
+**Required inputs**:
+- `--source_data_dir` containing generator-compatible `traj.npy` and `front.npy` (optional but recommended `split.npy`, `meta.npy`).
+- Existing tools: `generate_policy_rollouts.py`, `tools/evaluate_policy_population.py`.
+
+**Debug command (max_sources=100)**:
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+**Dry-run command**:
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_debug \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --dry_run
+```
+
+**Full command**:
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_full \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+**Output directory structure**:
+- `base_output_dir/<config_name>/rollouts/`
+- `base_output_dir/<config_name>/population_eval/`
+- `base_output_dir/ablation_summary.csv`
+- `base_output_dir/ablation_summary.json`
+- `base_output_dir/ablation_recommendation.json`
+- `base_output_dir/ablation_report.md`
+- `base_output_dir/ablation_p2_separation_margin.png`
+- `base_output_dir/ablation_p2_farthest_rate.png`
+- `base_output_dir/ablation_pairwise_distances.png`
+- `base_output_dir/ablation_retrieval_classification.png`
+- `base_output_dir/ablation_p2_style_metrics.png`
+- `base_output_dir/ablation_tradeoff_plot.png`
+
+**How to interpret core metrics**:
+- `p2_farthest_rate`: higher is better.
+- `mean_p2_separation_margin > 0`: p2 is farther from both p0/p1 than p0-p1 are from each other.
+- Lower `p2_rms_yaw_rate_proxy_mean` indicates stronger lateral stability.
+- Lower `p2_rms_jerk_mean` indicates smoother longitudinal comfort.
+- Retrieval + centroid metrics quantify policy discriminability.
+
+**Known limitations**:
+- Synthetic policies (no human labels).
+- Replayed front vehicle (not full multi-agent closed loop).
+- No sensor rendering/perception stack.

@@ -484,3 +484,66 @@ python tools/run_lateral_stable_ablation.py \
 - `--distance {euclidean,cosine}`
 - `--topk INT`
 - `--configs a,b,c`（按名称选择消融子集）
+
+## Experiment 2: Lateral_stable Ablation and Parameter Sweep
+
+- **Purpose**: Test which lateral_stable controls improve p2 independence while keeping comfort/stability metrics acceptable.
+- **Script**: `tools/run_lateral_stable_ablation.py`
+- **Required inputs**: `--source_data_dir` with `traj.npy`, `front.npy` (plus `split.npy` / `meta.npy` if available).
+
+### Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### Dry-run command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_debug \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --dry_run
+```
+
+### Full command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_full \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### Main outputs
+- `ablation_summary.csv`, `ablation_summary.json`
+- `ablation_recommendation.json`
+- `ablation_report.md`
+- `ablation_p2_separation_margin.png`
+- `ablation_p2_farthest_rate.png`
+- `ablation_pairwise_distances.png`
+- `ablation_retrieval_classification.png`
+- `ablation_p2_style_metrics.png`
+- `ablation_tradeoff_plot.png`
+- per-config `population_eval/`
+
+### Interpretation
+- Higher `p2_farthest_rate` is better.
+- `mean_p2_separation_margin > 0` means p2 is a stronger independent mode.
+- Lower `p2_rms_yaw_rate_proxy_mean` means stronger lateral stability.
+- Lower `p2_rms_jerk_mean` means smoother comfort.
+- Retrieval/centroid metrics measure style discriminability.
+
+### Limitations
+- Synthetic policies (not human labels).
+- Replayed front-vehicle setup (not full closed-loop multi-agent simulation).
+- No sensor rendering/perception stack.
