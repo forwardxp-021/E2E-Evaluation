@@ -173,22 +173,29 @@ def main():
         print(n, json.dumps({k: grid[n][k] for k in PARAM_KEYS}, sort_keys=True))
 
     rows = []
-    for n in selected:
+    total_configs = len(selected)
+    print(f"=== Sweep progress: total configs = {total_configs} ===")
+    for idx, n in enumerate(selected, start=1):
+        print(f"\n=== [{idx}/{total_configs}] Running config: {n} ===")
         cfg = grid[n]
         cdir = out_root / n; rdir = cdir / "rollouts"; edir = cdir / "population_eval"
         rdir.mkdir(parents=True, exist_ok=True); edir.mkdir(parents=True, exist_ok=True)
 
         if not args.skip_generation:
+            print(f"[{idx}/{total_configs}] generation start: {n}")
             gcmd = [sys.executable, str(REPO_ROOT / "generate_policy_rollouts.py"), "--src_traj_path", str(files["traj"]), "--src_front_path", str(files["front"]), "--output_dir", str(rdir), "--seed", str(args.seed), "--heading_smooth_alpha", str(cfg["heading_smooth_alpha"]), "--lateral_stable_yaw_rate_clip", str(cfg["yaw_rate_clip"]), "--lateral_stable_thw_target", str(cfg["thw_target"]), "--lateral_stable_jerk_limit", str(cfg["jerk_limit"]), "--lateral_stable_a_max", str(cfg["a_max"]), "--lateral_stable_a_min", str(cfg["a_min"])]
             if args.num_workers is not None:
                 print("[WARN] --num_workers provided but generator has no such argument; ignoring")
             if files["split"].exists(): gcmd += ["--src_split_path", str(files["split"])]
             if files["meta"].exists(): gcmd += ["--src_meta_path", str(files["meta"])]
             run_cmd(gcmd, args.dry_run)
+            print(f"[{idx}/{total_configs}] generation done: {n}")
 
         if not args.skip_evaluation:
+            print(f"[{idx}/{total_configs}] evaluation start: {n}")
             ecmd = [sys.executable, str(REPO_ROOT / "tools/evaluate_policy_population.py"), "--data_dir", str(rdir), "--out_dir", str(edir), "--embedding", args.embedding, "--split", args.split, "--distance", args.distance, "--topk", str(args.topk), "--projection", "pca"]
             run_cmd(ecmd, args.dry_run)
+            print(f"[{idx}/{total_configs}] evaluation done: {n}")
 
         if not args.dry_run and not args.skip_evaluation:
             missing = [f for f in REQ_ROLLOUT_FILES if not (rdir / f).exists()]
