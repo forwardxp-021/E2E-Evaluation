@@ -605,3 +605,62 @@ outputs/ablation_debug/
 ```
 
 > 完成标准：`ablation_summary.csv` 与 `ablation_report.md` 必须存在于 `base_output_dir` 根目录。
+
+## Experiment 2B: Local Fine-Grained Sweep Around full_strong_lateral_stable
+
+### Motivation
+Run a focused local sweep around `full_strong_lateral_stable` to improve p2 separation while preserving comfort and lateral stability.
+
+### Script usage
+`python tools/run_lateral_stable_ablation.py --config_set local_fine ...`
+
+### Dry run
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_debug \
+  --config_set local_fine \
+  --dry_run
+```
+
+### Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_debug \
+  --config_set local_fine \
+  --max_sources 100 \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Full command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_full \
+  --config_set local_fine \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Output files
+- `local_sweep_summary.csv`, `local_sweep_summary.json`
+- `local_sweep_recommendation.json`, `local_sweep_report.md`
+- `local_sweep_integrity_report.json`, `local_sweep_rollout_sanity.csv`
+- `local_sweep_p2_separation_margin.png`, `local_sweep_p2_farthest_rate.png`
+- `local_sweep_pairwise_distances.png`, `local_sweep_retrieval_classification.png`
+- `local_sweep_p2_style_metrics.png`, `local_sweep_tradeoff_yaw_vs_margin.png`
+- `local_sweep_tradeoff_jerk_vs_margin.png`, `local_sweep_delta_vs_center.png`
+
+### Interpretation
+Broad ablation compares families; local sweep tests nearby parameter perturbations around the best broad config. If separation margin remains negative, conclude: **p2 independence improved but remains incomplete**.
+
+### Limitations
+No public data validation yet.
