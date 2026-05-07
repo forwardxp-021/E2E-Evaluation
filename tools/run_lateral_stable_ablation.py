@@ -364,7 +364,7 @@ Synthetic policy rollouts only (not human-driver validation); replayed front veh
 ## 11. Next suggested experiment
 Perform a local fine-grained sweep around the recommended config and repeat on additional splits.
 """
-    if args.config_set == "local_fine":
+    if args.config_set in {"local_fine", "final_compare"}:
         (out_root / "local_sweep_rollout_sanity.csv").write_text("config_name,generation_status,evaluation_status\n" + "\n".join(f"{r['config_name']},{r['generation_status']},{r['evaluation_status']}" for r in rows), encoding="utf-8")
         (out_root / "local_sweep_integrity_report.json").write_text(json.dumps({"local_sweep_valid": valid, "n_configs": len(rows)}, indent=2), encoding="utf-8")
         if all("delta_mean_p2_separation_margin" in r for r in rows):
@@ -379,6 +379,7 @@ Perform a local fine-grained sweep around the recommended config and repeat on a
         (out_root / "final_config_comparison_summary.json").write_text(json.dumps(final_rows, indent=2), encoding="utf-8")
 
         fnames = [r["config_name"] for r in final_rows]
+        fx = np.arange(len(fnames))
         grouped("final_config_p2_separation.png", {"p2_farthest_rate": [r["p2_farthest_rate"] for r in final_rows], "pct_p2_separation_margin_gt_0": [r["pct_p2_separation_margin_gt_0"] for r in final_rows]})
         plt.figure(figsize=(10, 5)); plt.bar(fnames, [r["mean_p2_separation_margin"] for r in final_rows]); plt.axhline(0.0, color="red", linestyle="--", linewidth=1); plt.title("p2 separation margin; higher is better; positive means p2 is farther than p0-p1"); plt.xticks(rotation=20, ha="right"); plt.tight_layout(); plt.savefig(out_root / "final_config_margin.png"); plt.close()
         grouped("final_config_classification_retrieval.png", {"centroid_accuracy_p2": [r["centroid_accuracy_p2"] for r in final_rows], "retrieval_hit_at_1": [r["retrieval_hit_at_1"] for r in final_rows], "retrieval_hit_at_k": [r["retrieval_hit_at_k"] for r in final_rows], "retrieval_mean_same_policy_fraction_topk": [r["retrieval_mean_same_policy_fraction_topk"] for r in final_rows]})
