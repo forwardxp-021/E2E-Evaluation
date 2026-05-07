@@ -664,3 +664,69 @@ Broad ablation compares families; local sweep tests nearby parameter perturbatio
 
 ### Limitations
 No public data validation yet.
+
+## Experiment 2C: recommended_lateral_stable_v2 Final Comparison
+
+### Experiment 2B result
+Local fine sweep selected `recommended_lateral_stable_v2` (`yaw_008_jerk_020`).
+
+### Recommended lateral_stable v2 parameters
+- `heading_smooth_alpha = 0.75`
+- `yaw_rate_clip = 0.008`
+- `thw_target = 1.70`
+- `jerk_limit = 0.200`
+- `a_max = 1.275`
+- `a_min = -2.52`
+
+### Final comparison command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/final_lateral_stable_v2 \
+  --config_set final_compare \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/final_lateral_stable_v2_debug \
+  --config_set final_compare \
+  --max_sources 100 \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Expected outputs
+- `final_config_comparison_summary.csv`
+- `final_config_comparison_summary.json`
+- `final_config_comparison_report.md`
+- `final_config_p2_separation.png`
+- `final_config_margin.png`
+- `final_config_classification_retrieval.png`
+- `final_config_style_metrics.png`
+- `final_config_tradeoff.png`
+- `ablation_integrity_report.json`
+
+### How to interpret
+- `p2_farthest_rate` higher is better.
+- `mean_p2_separation_margin` closer to or above 0 is better.
+- `centroid_accuracy_p2` measures p2 recognizability.
+- `p2_rms_jerk` lower means smoother longitudinal behavior.
+- `p2_rms_yaw_rate_proxy` lower means stronger lateral stability.
+- negative `mean_p2_separation_margin` means p2 is not yet fully independent.
+
+### Limitations
+- Synthetic policy rollout only.
+- Replayed front vehicle.
+- No real human driver labels yet.
+- No sensor rendering / perception stack.
+- PCA / UMAP are visualization only.

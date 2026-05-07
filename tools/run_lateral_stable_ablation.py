@@ -55,7 +55,7 @@ def parse_args():
     p.add_argument("--topk", type=int, default=5)
     p.add_argument("--max_sources", type=int, default=None)
     p.add_argument("--configs", type=str, default=None)
-    p.add_argument("--config_set", choices=["broad", "local_fine"], default="broad")
+    p.add_argument("--config_set", choices=["broad", "local_fine", "final_compare"], default="broad")
     p.add_argument("--config_file", type=str, default=None, help="Optional JSON file mapping config_name -> parameter dict.")
     p.add_argument("--dry_run", action="store_true")
     p.add_argument("--skip_generation", action="store_true")
@@ -104,6 +104,7 @@ def build_config_grid():
         "comfort_only": cfg(heading_smooth_alpha=0.0, yaw_rate_clip=cons["yaw_rate_clip"]),
         "lateral_only": cfg(thw_target=aggr["thw_target"], jerk_limit=aggr["jerk_limit"], a_max=aggr["a_max"], a_min=aggr["a_min"]),
         "full_strong_lateral_stable": cfg(heading_smooth_alpha=min(0.85, base["heading_smooth_alpha"] + 0.3), yaw_rate_clip=max(0.005, base["yaw_rate_clip"] * 0.5), thw_target=min(base["thw_target"] + 0.3, cons["thw_target"]), jerk_limit=max(0.1, base["jerk_limit"] * 0.7), a_max=max(0.8, base["a_max"] * 0.85), a_min=min(-0.5, base["a_min"] * 0.9)),
+        "recommended_lateral_stable_v2": cfg(heading_smooth_alpha=0.75, yaw_rate_clip=0.008, thw_target=1.70, jerk_limit=0.200, a_max=1.275, a_min=-2.52),
     }
 
 
@@ -127,6 +128,12 @@ def build_local_fine_grid():
         "balanced_strong": {"heading_smooth_alpha": 0.80, "yaw_rate_clip": 0.008, "thw_target": 1.80, "jerk_limit": 0.220, "a_max": 1.25, "a_min": -2.40},
     }
 
+
+
+
+def build_final_compare_grid():
+    grid = build_config_grid()
+    return {k: grid[k] for k in ["baseline_current", "full_strong_lateral_stable", "recommended_lateral_stable_v2"]}
 
 def find_source(source_dir: Path):
     files = {k: source_dir / f"{k}.npy" for k in ["traj", "front", "split", "meta"]}
@@ -174,7 +181,7 @@ def main():
     args = parse_args()
     out_root = Path(args.base_output_dir); out_root.mkdir(parents=True, exist_ok=True)
     files = subset_sources(find_source(Path(args.source_data_dir)), out_root, args.max_sources)
-    grid = build_config_grid() if args.config_set == "broad" else build_local_fine_grid()
+    grid = build_config_grid() if args.config_set == "broad" else build_local_fine_grid() if args.config_set == "local_fine" else build_final_compare_grid()
     if args.config_file:
         cfg_file = Path(args.config_file)
         loaded = json.loads(cfg_file.read_text(encoding="utf-8"))
@@ -240,17 +247,18 @@ def main():
     if args.dry_run or (args.skip_evaluation and not args.report_only):
         return
 
-    prefix = "ablation" if args.config_set == "broad" else "local_sweep"
-    if args.config_set == "local_fine":
-        center = next(r for r in rows if r["config_name"] == "local_center_full_strong")
-        for r in rows:
-            r["delta_p2_farthest_rate"] = r["p2_farthest_rate"] - center["p2_farthest_rate"]
-            r["delta_mean_p2_separation_margin"] = r["mean_p2_separation_margin"] - center["mean_p2_separation_margin"]
-            r["delta_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - center["centroid_accuracy_p2"]
-            r["delta_retrieval_same_policy_fraction"] = r["retrieval_mean_same_policy_fraction_topk"] - center["retrieval_mean_same_policy_fraction_topk"]
-            r["delta_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - center["p2_rms_jerk_mean"]
-            r["delta_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - center["p2_rms_yaw_rate_proxy_mean"]
-            r["delta_p2_mean_thw"] = r["p2_mean_thw"] - center["p2_mean_thw"]
+    prefix = "ablation" if args.config_set in {"broad", "final_compare"} else "local_sweep"
+    if args.config_set in {"local_fine", "final_compare"}:
+        center = next((r for r in rows if r["config_name"] == "local_center_full_strong"), None)
+        if center is not None:
+            for r in rows:
+                r["delta_p2_farthest_rate"] = r["p2_farthest_rate"] - center["p2_farthest_rate"]
+                r["delta_mean_p2_separation_margin"] = r["mean_p2_separation_margin"] - center["mean_p2_separation_margin"]
+                r["delta_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - center["centroid_accuracy_p2"]
+                r["delta_retrieval_same_policy_fraction"] = r["retrieval_mean_same_policy_fraction_topk"] - center["retrieval_mean_same_policy_fraction_topk"]
+                r["delta_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - center["p2_rms_jerk_mean"]
+                r["delta_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - center["p2_rms_yaw_rate_proxy_mean"]
+                r["delta_p2_mean_thw"] = r["p2_mean_thw"] - center["p2_mean_thw"]
         baseline = next((r for r in rows if r["config_name"] == "baseline_current"), None)
         if baseline:
             for r in rows:
@@ -259,6 +267,17 @@ def main():
                 r["delta_vs_baseline_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - baseline["centroid_accuracy_p2"]
                 r["delta_vs_baseline_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - baseline["p2_rms_jerk_mean"]
                 r["delta_vs_baseline_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - baseline["p2_rms_yaw_rate_proxy_mean"]
+                r["delta_vs_baseline_p2_mean_thw"] = r["p2_mean_thw"] - baseline["p2_mean_thw"]
+        full_strong = next((r for r in rows if r["config_name"] == "full_strong_lateral_stable"), None)
+        if full_strong:
+            for r in rows:
+                r["delta_vs_full_strong_p2_farthest_rate"] = r["p2_farthest_rate"] - full_strong["p2_farthest_rate"]
+                r["delta_vs_full_strong_mean_p2_separation_margin"] = r["mean_p2_separation_margin"] - full_strong["mean_p2_separation_margin"]
+                r["delta_vs_full_strong_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - full_strong["centroid_accuracy_p2"]
+                r["delta_vs_full_strong_retrieval_same_policy_fraction"] = r["retrieval_mean_same_policy_fraction_topk"] - full_strong["retrieval_mean_same_policy_fraction_topk"]
+                r["delta_vs_full_strong_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - full_strong["p2_rms_jerk_mean"]
+                r["delta_vs_full_strong_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - full_strong["p2_rms_yaw_rate_proxy_mean"]
+                r["delta_vs_full_strong_p2_mean_thw"] = r["p2_mean_thw"] - full_strong["p2_mean_thw"]
 
     cols = list(rows[0].keys())
     with (out_root / f"{prefix}_summary.csv").open("w", newline="", encoding="utf-8") as f:
@@ -348,9 +367,65 @@ Perform a local fine-grained sweep around the recommended config and repeat on a
     if args.config_set == "local_fine":
         (out_root / "local_sweep_rollout_sanity.csv").write_text("config_name,generation_status,evaluation_status\n" + "\n".join(f"{r['config_name']},{r['generation_status']},{r['evaluation_status']}" for r in rows), encoding="utf-8")
         (out_root / "local_sweep_integrity_report.json").write_text(json.dumps({"local_sweep_valid": valid, "n_configs": len(rows)}, indent=2), encoding="utf-8")
-        dvals = [r["delta_mean_p2_separation_margin"] for r in rows]
-        plt.figure(figsize=(11, 5)); plt.bar(names, dvals); plt.axhline(0, color="black", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / "local_sweep_delta_vs_center.png"); plt.close()
+        if all("delta_mean_p2_separation_margin" in r for r in rows):
+            dvals = [r["delta_mean_p2_separation_margin"] for r in rows]
+            plt.figure(figsize=(11, 5)); plt.bar(names, dvals); plt.axhline(0, color="black", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / "local_sweep_delta_vs_center.png"); plt.close()
     (out_root / f"{prefix}_report.md").write_text(report, encoding="utf-8")
+
+    if args.config_set == "final_compare":
+        final_rows = [r for r in rows if r["config_name"] in {"baseline_current", "full_strong_lateral_stable", "recommended_lateral_stable_v2"}]
+        with (out_root / "final_config_comparison_summary.csv").open("w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(final_rows[0].keys())); w.writeheader(); w.writerows(final_rows)
+        (out_root / "final_config_comparison_summary.json").write_text(json.dumps(final_rows, indent=2), encoding="utf-8")
+
+        fnames = [r["config_name"] for r in final_rows]
+        grouped("final_config_p2_separation.png", {"p2_farthest_rate": [r["p2_farthest_rate"] for r in final_rows], "pct_p2_separation_margin_gt_0": [r["pct_p2_separation_margin_gt_0"] for r in final_rows]})
+        plt.figure(figsize=(10, 5)); plt.bar(fnames, [r["mean_p2_separation_margin"] for r in final_rows]); plt.axhline(0.0, color="red", linestyle="--", linewidth=1); plt.title("p2 separation margin; higher is better; positive means p2 is farther than p0-p1"); plt.xticks(rotation=20, ha="right"); plt.tight_layout(); plt.savefig(out_root / "final_config_margin.png"); plt.close()
+        grouped("final_config_classification_retrieval.png", {"centroid_accuracy_p2": [r["centroid_accuracy_p2"] for r in final_rows], "retrieval_hit_at_1": [r["retrieval_hit_at_1"] for r in final_rows], "retrieval_hit_at_k": [r["retrieval_hit_at_k"] for r in final_rows], "retrieval_mean_same_policy_fraction_topk": [r["retrieval_mean_same_policy_fraction_topk"] for r in final_rows]})
+        grouped("final_config_style_metrics.png", {"p2_rms_jerk_mean": [r["p2_rms_jerk_mean"] for r in final_rows], "p2_rms_yaw_rate_proxy_mean": [r["p2_rms_yaw_rate_proxy_mean"] for r in final_rows], "p2_rms_curvature_proxy_mean": [r["p2_rms_curvature_proxy_mean"] for r in final_rows]})
+        plt.figure(figsize=(8, 5)); plt.scatter([r["p2_rms_jerk_mean"] for r in final_rows], [r["mean_p2_separation_margin"] for r in final_rows])
+        for r in final_rows: plt.annotate(r["config_name"], (r["p2_rms_jerk_mean"], r["mean_p2_separation_margin"]), fontsize=8)
+        plt.xlabel("p2_rms_jerk_mean (lower better)"); plt.ylabel("mean_p2_separation_margin (higher better)"); plt.tight_layout(); plt.savefig(out_root / "final_config_tradeoff.png"); plt.close()
+
+        final_report = """# Final Config Comparison Report
+
+## 1. Goal
+Compare baseline_current, full_strong_lateral_stable, and recommended_lateral_stable_v2 for paper-level ablation.
+
+## 2. Compared configs
+- baseline_current
+- full_strong_lateral_stable
+- recommended_lateral_stable_v2
+
+## 3. Parameter table
+See `final_config_comparison_summary.csv`.
+
+## 4. Main result table
+See `final_config_comparison_summary.csv` and `.json`.
+
+## 5. Improvement over baseline_current
+Use `delta_vs_baseline_*` columns.
+
+## 6. Improvement over full_strong_lateral_stable
+Use `delta_vs_full_strong_*` columns (recommended_lateral_stable_v2 focus).
+
+## 7. Interpretation
+- baseline_current is the original lateral_stable setting.
+- full_strong_lateral_stable improves p2 stability and recognizability.
+- recommended_lateral_stable_v2 further improves p2 classification, p2 farthest rate, separation margin, jerk, and yaw-rate proxy.
+- However, mean_p2_separation_margin remains negative, so p2 independence is improved but incomplete.
+- This recommended config should be used for subsequent population evaluation, interpretability demo, and external validation.
+
+## 8. Limitations
+- Synthetic policy rollout only.
+- Replayed front vehicle.
+- No real human driver labels yet.
+- No sensor rendering / perception stack.
+
+## 9. Recommended config for subsequent experiments
+recommended_lateral_stable_v2
+"""
+        (out_root / "final_config_comparison_report.md").write_text(final_report, encoding="utf-8")
 
     if not args.skip_validation:
         req_agg_files = REQ_AGGREGATE_FILES_BROAD if args.config_set == "broad" else REQ_AGGREGATE_FILES_LOCAL_FINE
