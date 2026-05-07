@@ -463,3 +463,270 @@ python tools/embedding_interpretability_demo.py \
 - PCA/UMAP 是降维可视化，不能替代高维 embedding 距离与 aligned evaluator 指标。
 - 2D 上不出现完美三团，并不意味着高维空间没有有效分离。
 - policy-level 解释依赖 `policy_id/policy_name/source_index` 元数据完整性。
+
+## Experiment 2: lateral_stable Ablation Sweep
+
+### 一键运行（debug）
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable
+```
+
+### 常用参数
+- `--dry_run`：仅打印命令与生效参数，不执行。
+- `--skip_generation`：只跑评估（复用已生成 rollouts）。
+- `--skip_evaluation`：只生成 rollouts。
+- `--embedding {feat_style,feat_style_raw,feat,feat_legacy}`
+- `--split {train,val,test}`
+- `--distance {euclidean,cosine}`
+- `--topk INT`
+- `--configs a,b,c`（按名称选择消融子集）
+
+## Experiment 2: Lateral_stable Ablation and Parameter Sweep
+
+- **Purpose**: Test which lateral_stable controls improve p2 independence while keeping comfort/stability metrics acceptable.
+- **Script**: `tools/run_lateral_stable_ablation.py`
+- **Required inputs**: `--source_data_dir` with `traj.npy`, `front.npy` (plus `split.npy` / `meta.npy` if available).
+
+### Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### Dry-run command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_debug \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --dry_run
+```
+
+### Full command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/ablation_full \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### Main outputs
+- `ablation_summary.csv`, `ablation_summary.json`
+- `ablation_recommendation.json`
+- `ablation_report.md`
+- `ablation_p2_separation_margin.png`
+- `ablation_p2_farthest_rate.png`
+- `ablation_pairwise_distances.png`
+- `ablation_retrieval_classification.png`
+- `ablation_p2_style_metrics.png`
+- `ablation_tradeoff_plot.png`
+- per-config `population_eval/`
+
+### Interpretation
+- Higher `p2_farthest_rate` is better.
+- `mean_p2_separation_margin > 0` means p2 is a stronger independent mode.
+- Lower `p2_rms_yaw_rate_proxy_mean` means stronger lateral stability.
+- Lower `p2_rms_jerk_mean` means smoother comfort.
+- Retrieval/centroid metrics measure style discriminability.
+
+### Limitations
+- Synthetic policies (not human labels).
+- Replayed front-vehicle setup (not full closed-loop multi-agent simulation).
+- No sensor rendering/perception stack.
+
+
+## Experiment 2 Ablation（必须产出 base_output_dir 聚合文件）
+
+### 推荐命令（可直接复制）
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir output \
+  --base_output_dir outputs/ablation_debug \
+  --max_sources 100 \
+  --configs baseline_current,no_lateral_smoothing,lateral_only,comfort_only,full_strong_lateral_stable \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5
+```
+
+### 期望输出结构
+```text
+outputs/ablation_debug/
+  ablation_summary.csv
+  ablation_summary.json
+  ablation_recommendation.json
+  ablation_report.md
+  ablation_p2_separation_margin.png
+  ablation_p2_farthest_rate.png
+  ablation_pairwise_distances.png
+  ablation_retrieval_classification.png
+  ablation_p2_style_metrics.png
+  ablation_tradeoff_plot.png
+
+  baseline_current/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  no_lateral_smoothing/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  lateral_only/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  comfort_only/
+    rollouts/
+    population_eval/
+      population_summary.json
+
+  full_strong_lateral_stable/
+    rollouts/
+    population_eval/
+      population_summary.json
+```
+
+> 完成标准：`ablation_summary.csv` 与 `ablation_report.md` 必须存在于 `base_output_dir` 根目录。
+
+## Experiment 2B: Local Fine-Grained Sweep Around full_strong_lateral_stable
+
+### Motivation
+Run a focused local sweep around `full_strong_lateral_stable` to improve p2 separation while preserving comfort and lateral stability.
+
+### Script usage
+`python tools/run_lateral_stable_ablation.py --config_set local_fine ...`
+
+### Dry run
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_debug \
+  --config_set local_fine \
+  --dry_run
+```
+
+### Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_debug \
+  --config_set local_fine \
+  --max_sources 100 \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Full command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/local_sweep_full \
+  --config_set local_fine \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Output files
+- `local_sweep_summary.csv`, `local_sweep_summary.json`
+- `local_sweep_recommendation.json`, `local_sweep_report.md`
+- `local_sweep_integrity_report.json`, `local_sweep_rollout_sanity.csv`
+- `local_sweep_p2_separation_margin.png`, `local_sweep_p2_farthest_rate.png`
+- `local_sweep_pairwise_distances.png`, `local_sweep_retrieval_classification.png`
+- `local_sweep_p2_style_metrics.png`, `local_sweep_tradeoff_yaw_vs_margin.png`
+- `local_sweep_tradeoff_jerk_vs_margin.png`, `local_sweep_delta_vs_center.png`
+
+### Interpretation
+Broad ablation compares families; local sweep tests nearby parameter perturbations around the best broad config. If separation margin remains negative, conclude: **p2 independence improved but remains incomplete**.
+
+### Limitations
+No public data validation yet.
+
+## Experiment 2C: recommended_lateral_stable_v2 Final Comparison
+
+### Experiment 2B result
+Local fine sweep selected `recommended_lateral_stable_v2` (`yaw_008_jerk_020`).
+
+### Recommended lateral_stable v2 parameters
+- `heading_smooth_alpha = 0.75`
+- `yaw_rate_clip = 0.008`
+- `thw_target = 1.70`
+- `jerk_limit = 0.200`
+- `a_max = 1.275`
+- `a_min = -2.52`
+
+### Final comparison command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/final_lateral_stable_v2 \
+  --config_set final_compare \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Debug command
+```bash
+python tools/run_lateral_stable_ablation.py \
+  --source_data_dir <SOURCE_DATA_DIR> \
+  --base_output_dir outputs/final_lateral_stable_v2_debug \
+  --config_set final_compare \
+  --max_sources 100 \
+  --embedding feat_style \
+  --split test \
+  --distance euclidean \
+  --topk 5 \
+  --overwrite
+```
+
+### Expected outputs
+- `final_config_comparison_summary.csv`
+- `final_config_comparison_summary.json`
+- `final_config_comparison_report.md`
+- `final_config_p2_separation.png`
+- `final_config_margin.png`
+- `final_config_classification_retrieval.png`
+- `final_config_style_metrics.png`
+- `final_config_tradeoff.png`
+- `ablation_integrity_report.json`
+
+### How to interpret
+- `p2_farthest_rate` higher is better.
+- `mean_p2_separation_margin` closer to or above 0 is better.
+- `centroid_accuracy_p2` measures p2 recognizability.
+- `p2_rms_jerk` lower means smoother longitudinal behavior.
+- `p2_rms_yaw_rate_proxy` lower means stronger lateral stability.
+- negative `mean_p2_separation_margin` means p2 is not yet fully independent.
+
+### Limitations
+- Synthetic policy rollout only.
+- Replayed front vehicle.
+- No real human driver labels yet.
+- No sensor rendering / perception stack.
+- PCA / UMAP are visualization only.

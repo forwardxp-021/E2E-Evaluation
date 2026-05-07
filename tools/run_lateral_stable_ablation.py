@@ -1,0 +1,470 @@
+#!/usr/bin/env python3
+"""Experiment 2: lateral_stable ablation + parameter sweep orchestrator."""
+
+import argparse
+import csv
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+import generate_policy_rollouts as gpr
+
+PARAM_KEYS = ["heading_smooth_alpha", "yaw_rate_clip", "thw_target", "jerk_limit", "a_max", "a_min"]
+REQ_ROLLOUT_FILES = ["source_index.npy", "policy_id.npy", "policy_name.npy", "split.npy", "traj.npy", "front.npy", "meta.npy", "feat_style.npy"]
+REQ_AGGREGATE_FILES_BROAD = [
+    "ablation_summary.csv",
+    "ablation_summary.json",
+    "ablation_recommendation.json",
+    "ablation_report.md",
+    "ablation_p2_separation_margin.png",
+    "ablation_p2_farthest_rate.png",
+    "ablation_pairwise_distances.png",
+    "ablation_retrieval_classification.png",
+    "ablation_p2_style_metrics.png",
+    "ablation_tradeoff_plot.png",
+]
+
+REQ_AGGREGATE_FILES_LOCAL_FINE = [
+    "local_sweep_summary.csv",
+    "local_sweep_summary.json",
+    "local_sweep_recommendation.json",
+    "local_sweep_report.md",
+    "local_sweep_p2_separation_margin.png",
+    "local_sweep_p2_farthest_rate.png",
+    "local_sweep_pairwise_distances.png",
+    "local_sweep_retrieval_classification.png",
+    "local_sweep_p2_style_metrics.png",
+    "local_sweep_tradeoff_yaw_vs_margin.png",
+    "local_sweep_tradeoff_jerk_vs_margin.png",
+    "local_sweep_delta_vs_center.png",
+]
+REQ_AGGREGATE_FILES_FINAL_COMPARE = [
+    "ablation_summary.csv",
+    "ablation_summary.json",
+    "ablation_recommendation.json",
+    "ablation_report.md",
+    "final_config_comparison_summary.csv",
+    "final_config_comparison_summary.json",
+    "final_config_comparison_report.md",
+    "final_config_p2_separation.png",
+    "final_config_margin.png",
+    "final_config_classification_retrieval.png",
+    "final_config_style_metrics.png",
+    "final_config_tradeoff.png",
+]
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+def parse_args():
+    p = argparse.ArgumentParser(description="Run lateral_stable ablation and population evaluator sweep.")
+    p.add_argument("--source_data_dir", required=True)
+    p.add_argument("--base_output_dir", required=True)
+    p.add_argument("--embedding", default="feat_style")
+    p.add_argument("--split", default="test")
+    p.add_argument("--distance", default="euclidean")
+    p.add_argument("--topk", type=int, default=5)
+    p.add_argument("--max_sources", type=int, default=None)
+    p.add_argument("--configs", type=str, default=None)
+    p.add_argument("--config_set", choices=["broad", "local_fine", "final_compare"], default="broad")
+    p.add_argument("--config_file", type=str, default=None, help="Optional JSON file mapping config_name -> parameter dict.")
+    p.add_argument("--dry_run", action="store_true")
+    p.add_argument("--skip_generation", action="store_true")
+    p.add_argument("--skip_evaluation", action="store_true")
+    p.add_argument("--report_only", action="store_true", help="Skip all computation and only generate report from existing evaluation results.")
+    p.add_argument("--skip_validation", action="store_true", help="Skip final file validation check.")
+    p.add_argument("--num_workers", type=int, default=None)
+    p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--overwrite", action="store_true", help="Accepted for compatibility; existing outputs are overwritten by default.")
+    return p.parse_args()
+
+
+def zscore(x):
+    arr = np.asarray(x, dtype=float)
+    if arr.size == 0:
+        return arr
+    sd = arr.std()
+    return np.zeros_like(arr) if sd < 1e-12 else (arr - arr.mean()) / sd
+
+
+def run_cmd(cmd, dry):
+    print("[CMD]", " ".join(cmd))
+    if not dry:
+        subprocess.run(cmd, check=True)
+
+
+def build_config_grid():
+    base = dict(gpr.POLICY_PARAMS["lateral_stable"])
+    cons = gpr.POLICY_PARAMS["conservative"]
+    aggr = gpr.POLICY_PARAMS["aggressive"]
+    for k in PARAM_KEYS:
+        if k not in base:
+            raise KeyError(f"Missing expected lateral_stable parameter in generator: {k}")
+
+    def cfg(**kw):
+        out = dict(base)
+        out.update(kw)
+        return out
+
+    return {
+        "baseline_current": cfg(),
+        "no_lateral_smoothing": cfg(heading_smooth_alpha=0.0),
+        "weak_lateral_stable": cfg(heading_smooth_alpha=max(0.15, base["heading_smooth_alpha"] * 0.7), yaw_rate_clip=min(base["yaw_rate_clip"] * 1.25, aggr["yaw_rate_clip"])),
+        "strong_yaw_clip": cfg(yaw_rate_clip=max(0.005, base["yaw_rate_clip"] * 0.6)),
+        "strong_heading_smoothing": cfg(heading_smooth_alpha=min(0.85, base["heading_smooth_alpha"] + 0.25)),
+        "comfort_only": cfg(heading_smooth_alpha=0.0, yaw_rate_clip=cons["yaw_rate_clip"]),
+        "lateral_only": cfg(thw_target=aggr["thw_target"], jerk_limit=aggr["jerk_limit"], a_max=aggr["a_max"], a_min=aggr["a_min"]),
+        "full_strong_lateral_stable": cfg(heading_smooth_alpha=min(0.85, base["heading_smooth_alpha"] + 0.3), yaw_rate_clip=max(0.005, base["yaw_rate_clip"] * 0.5), thw_target=min(base["thw_target"] + 0.3, cons["thw_target"]), jerk_limit=max(0.1, base["jerk_limit"] * 0.7), a_max=max(0.8, base["a_max"] * 0.85), a_min=min(-0.5, base["a_min"] * 0.9)),
+        "recommended_lateral_stable_v2": cfg(heading_smooth_alpha=0.75, yaw_rate_clip=0.008, thw_target=1.70, jerk_limit=0.200, a_max=1.275, a_min=-2.52),
+    }
+
+
+def build_local_fine_grid():
+    return {
+        "local_center_full_strong": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.010, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_006": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.006, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_008": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.008, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_012": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.012, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_015": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.015, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "alpha_065": {"heading_smooth_alpha": 0.65, "yaw_rate_clip": 0.010, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "alpha_085": {"heading_smooth_alpha": 0.85, "yaw_rate_clip": 0.010, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "thw_150": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.010, "thw_target": 1.50, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "thw_190": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.010, "thw_target": 1.90, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "jerk_020": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.010, "thw_target": 1.70, "jerk_limit": 0.200, "a_max": 1.275, "a_min": -2.52},
+        "jerk_030": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.010, "thw_target": 1.70, "jerk_limit": 0.300, "a_max": 1.275, "a_min": -2.52},
+        "yaw_008_alpha_085": {"heading_smooth_alpha": 0.85, "yaw_rate_clip": 0.008, "thw_target": 1.70, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_008_thw_190": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.008, "thw_target": 1.90, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_006_thw_190": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.006, "thw_target": 1.90, "jerk_limit": 0.245, "a_max": 1.275, "a_min": -2.52},
+        "yaw_008_jerk_020": {"heading_smooth_alpha": 0.75, "yaw_rate_clip": 0.008, "thw_target": 1.70, "jerk_limit": 0.200, "a_max": 1.275, "a_min": -2.52},
+        "balanced_strong": {"heading_smooth_alpha": 0.80, "yaw_rate_clip": 0.008, "thw_target": 1.80, "jerk_limit": 0.220, "a_max": 1.25, "a_min": -2.40},
+    }
+
+
+
+
+def build_final_compare_grid():
+    grid = build_config_grid()
+    return {k: grid[k] for k in ["baseline_current", "full_strong_lateral_stable", "recommended_lateral_stable_v2"]}
+
+def find_source(source_dir: Path):
+    files = {k: source_dir / f"{k}.npy" for k in ["traj", "front", "split", "meta"]}
+    for req in ["traj", "front"]:
+        if not files[req].exists():
+            raise FileNotFoundError(f"Missing required source file: {files[req]}")
+    return files
+
+
+def subset_sources(files, out_root: Path, n):
+    if n is None:
+        return files
+    tmp = out_root / "_tmp_subset_sources"
+    tmp.mkdir(parents=True, exist_ok=True)
+    for k, f in files.items():
+        if f.exists():
+            arr = np.load(f, allow_pickle=True)
+            np.save(tmp / f"{k}.npy", arr[:n], allow_pickle=True)
+    return find_source(tmp)
+
+
+def read_eval_row(cfg_name, cfg, eval_dir: Path):
+    s = json.loads((eval_dir / "population_summary.json").read_text())
+    style_csv = eval_dir / "per_source_style_summary.csv"
+    import pandas as pd
+    st = pd.read_csv(style_csv)
+    p = {pid: st[st["policy_id"] == pid] for pid in [0, 1, 2]}
+    row = {"config_name": cfg_name, "generation_status": "success", "evaluation_status": "success", **{k: cfg[k] for k in PARAM_KEYS}}
+    row.update({
+        "n_complete_sources": s.get("n_complete_sources"), "n_rows_after_split": s.get("n_rows_after_split"), "warnings_count": len(s.get("warnings", [])),
+        "centroid_accuracy_overall": s.get("centroid_accuracy_overall"), "centroid_accuracy_p0": s.get("centroid_accuracy_by_policy", {}).get("0"), "centroid_accuracy_p1": s.get("centroid_accuracy_by_policy", {}).get("1"), "centroid_accuracy_p2": s.get("centroid_accuracy_by_policy", {}).get("2"),
+        "retrieval_hit_at_1": s.get("retrieval_hit_at_1"), "retrieval_hit_at_k": s.get("retrieval_hit_at_k"), "retrieval_mean_same_policy_count_topk": s.get("retrieval_mean_same_policy_count_topk"), "retrieval_mean_same_policy_fraction_topk": s.get("retrieval_mean_same_policy_fraction_topk"),
+        "d_p0_p1_mean": s.get("d_p0_p1_stats", {}).get("mean"), "d_p0_p2_mean": s.get("d_p0_p2_stats", {}).get("mean"), "d_p1_p2_mean": s.get("d_p1_p2_stats", {}).get("mean"),
+        "d_p0_p1_median": s.get("d_p0_p1_stats", {}).get("median"), "d_p0_p2_median": s.get("d_p0_p2_stats", {}).get("median"), "d_p1_p2_median": s.get("d_p1_p2_stats", {}).get("median"),
+        "p2_farthest_rate": s.get("p2_farthest_rate"), "mean_p2_separation_margin": s.get("mean_p2_separation_margin"), "median_p2_separation_margin": s.get("median_p2_separation_margin"), "pct_p2_separation_margin_gt_0": s.get("pct_p2_separation_margin_gt_0"),
+        "p2_mean_speed": float(p[2]["mean_speed"].mean()), "p2_rms_jerk_mean": float(p[2]["rms_jerk"].mean()), "p2_rms_yaw_rate_proxy_mean": float(p[2]["rms_yaw_rate_proxy"].mean()), "p2_rms_curvature_proxy_mean": float(p[2]["rms_curvature_proxy"].mean()), "p2_mean_thw": float(p[2]["mean_thw"].mean()), "p2_min_thw": float(p[2]["min_thw"].mean()),
+        "p2_vs_p0_rms_jerk_delta": float(p[2]["rms_jerk"].mean() - p[0]["rms_jerk"].mean()), "p2_vs_p1_rms_jerk_delta": float(p[2]["rms_jerk"].mean() - p[1]["rms_jerk"].mean()),
+        "p2_vs_p0_rms_yaw_delta": float(p[2]["rms_yaw_rate_proxy"].mean() - p[0]["rms_yaw_rate_proxy"].mean()), "p2_vs_p1_rms_yaw_delta": float(p[2]["rms_yaw_rate_proxy"].mean() - p[1]["rms_yaw_rate_proxy"].mean()),
+        "p2_vs_p0_curvature_delta": float(p[2]["rms_curvature_proxy"].mean() - p[0]["rms_curvature_proxy"].mean()), "p2_vs_p1_curvature_delta": float(p[2]["rms_curvature_proxy"].mean() - p[1]["rms_curvature_proxy"].mean()),
+    })
+    return row
+
+
+def main():
+    args = parse_args()
+    out_root = Path(args.base_output_dir); out_root.mkdir(parents=True, exist_ok=True)
+    files = subset_sources(find_source(Path(args.source_data_dir)), out_root, args.max_sources)
+    grid = build_config_grid() if args.config_set == "broad" else build_local_fine_grid() if args.config_set == "local_fine" else build_final_compare_grid()
+    if args.config_file:
+        cfg_file = Path(args.config_file)
+        loaded = json.loads(cfg_file.read_text(encoding="utf-8"))
+        if not isinstance(loaded, dict):
+            raise ValueError("--config_file JSON must be an object: {config_name: {param: value}}")
+        grid = loaded
+    selected = list(grid.keys()) if not args.configs else [x.strip() for x in args.configs.split(",") if x.strip()]
+    bad = [x for x in selected if x not in grid]
+    if bad:
+        raise ValueError(f"Unknown config(s): {bad}; available={list(grid)}")
+
+    print("=== Resolved configs ===")
+    for n in selected:
+        print(n, json.dumps({k: grid[n][k] for k in PARAM_KEYS}, sort_keys=True))
+
+    rows = []
+    total_configs = len(selected)
+    
+    if args.report_only:
+        print(f"=== Report-only mode: loading existing evaluation results ===")
+        for idx, n in enumerate(selected, start=1):
+            print(f"[{idx}/{total_configs}] Loading: {n}")
+            cfg = grid[n]
+            cdir = out_root / n; edir = cdir / "population_eval"
+            summary_file = edir / "population_summary.json"
+            if not summary_file.exists():
+                raise FileNotFoundError(f"Missing evaluation summary: {summary_file}")
+            rows.append(read_eval_row(n, cfg, edir))
+    else:
+        print(f"=== Sweep progress: total configs = {total_configs} ===")
+        for idx, n in enumerate(selected, start=1):
+            print(f"\n=== [{idx}/{total_configs}] Running config: {n} ===")
+            cfg = grid[n]
+            cdir = out_root / n; rdir = cdir / "rollouts"; edir = cdir / "population_eval"
+            rdir.mkdir(parents=True, exist_ok=True); edir.mkdir(parents=True, exist_ok=True)
+
+            if not args.skip_generation:
+                print(f"[{idx}/{total_configs}] generation start: {n}")
+                gcmd = [sys.executable, str(REPO_ROOT / "generate_policy_rollouts.py"), "--src_traj_path", str(files["traj"]), "--src_front_path", str(files["front"]), "--output_dir", str(rdir), "--seed", str(args.seed), "--heading_smooth_alpha", str(cfg["heading_smooth_alpha"]), "--lateral_stable_yaw_rate_clip", str(cfg["yaw_rate_clip"]), "--lateral_stable_thw_target", str(cfg["thw_target"]), "--lateral_stable_jerk_limit", str(cfg["jerk_limit"]), "--lateral_stable_a_max", str(cfg["a_max"]), "--lateral_stable_a_min", str(cfg["a_min"])]
+                if args.num_workers is not None:
+                    print("[WARN] --num_workers provided but generator has no such argument; ignoring")
+                if files["split"].exists(): gcmd += ["--src_split_path", str(files["split"])]
+                if files["meta"].exists(): gcmd += ["--src_meta_path", str(files["meta"])]
+                run_cmd(gcmd, args.dry_run)
+                print(f"[{idx}/{total_configs}] generation done: {n}")
+
+                sf_cmd = [sys.executable, str(REPO_ROOT / "compute_style_features.py"), "--traj_path", str(rdir / "traj.npy"), "--front_path", str(rdir / "front.npy"), "--output_dir", str(rdir)]
+                run_cmd(sf_cmd, args.dry_run)
+                print(f"[{idx}/{total_configs}] style features computed: {n}")
+
+            if not args.skip_evaluation:
+                print(f"[{idx}/{total_configs}] evaluation start: {n}")
+                ecmd = [sys.executable, str(REPO_ROOT / "tools/evaluate_policy_population.py"), "--data_dir", str(rdir), "--out_dir", str(edir), "--embedding", args.embedding, "--split", args.split, "--distance", args.distance, "--topk", str(args.topk), "--projection", "pca"]
+                run_cmd(ecmd, args.dry_run)
+                print(f"[{idx}/{total_configs}] evaluation done: {n}")
+
+            if not args.dry_run and not args.skip_evaluation:
+                missing = [f for f in REQ_ROLLOUT_FILES if not (rdir / f).exists()]
+                if missing:
+                    raise FileNotFoundError(f"{n}: missing rollout files {missing}")
+                rows.append(read_eval_row(n, cfg, edir))
+
+    if args.dry_run or (args.skip_evaluation and not args.report_only):
+        return
+
+    prefix = "ablation" if args.config_set in {"broad", "final_compare"} else "local_sweep"
+    if args.config_set in {"local_fine", "final_compare"}:
+        center = next((r for r in rows if r["config_name"] == "local_center_full_strong"), None)
+        if center is not None:
+            for r in rows:
+                r["delta_p2_farthest_rate"] = r["p2_farthest_rate"] - center["p2_farthest_rate"]
+                r["delta_mean_p2_separation_margin"] = r["mean_p2_separation_margin"] - center["mean_p2_separation_margin"]
+                r["delta_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - center["centroid_accuracy_p2"]
+                r["delta_retrieval_same_policy_fraction"] = r["retrieval_mean_same_policy_fraction_topk"] - center["retrieval_mean_same_policy_fraction_topk"]
+                r["delta_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - center["p2_rms_jerk_mean"]
+                r["delta_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - center["p2_rms_yaw_rate_proxy_mean"]
+                r["delta_p2_mean_thw"] = r["p2_mean_thw"] - center["p2_mean_thw"]
+        baseline = next((r for r in rows if r["config_name"] == "baseline_current"), None)
+        if baseline:
+            for r in rows:
+                r["delta_vs_baseline_p2_farthest_rate"] = r["p2_farthest_rate"] - baseline["p2_farthest_rate"]
+                r["delta_vs_baseline_mean_p2_separation_margin"] = r["mean_p2_separation_margin"] - baseline["mean_p2_separation_margin"]
+                r["delta_vs_baseline_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - baseline["centroid_accuracy_p2"]
+                r["delta_vs_baseline_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - baseline["p2_rms_jerk_mean"]
+                r["delta_vs_baseline_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - baseline["p2_rms_yaw_rate_proxy_mean"]
+                r["delta_vs_baseline_p2_mean_thw"] = r["p2_mean_thw"] - baseline["p2_mean_thw"]
+        full_strong = next((r for r in rows if r["config_name"] == "full_strong_lateral_stable"), None)
+        if full_strong:
+            for r in rows:
+                r["delta_vs_full_strong_p2_farthest_rate"] = r["p2_farthest_rate"] - full_strong["p2_farthest_rate"]
+                r["delta_vs_full_strong_mean_p2_separation_margin"] = r["mean_p2_separation_margin"] - full_strong["mean_p2_separation_margin"]
+                r["delta_vs_full_strong_centroid_accuracy_p2"] = r["centroid_accuracy_p2"] - full_strong["centroid_accuracy_p2"]
+                r["delta_vs_full_strong_retrieval_same_policy_fraction"] = r["retrieval_mean_same_policy_fraction_topk"] - full_strong["retrieval_mean_same_policy_fraction_topk"]
+                r["delta_vs_full_strong_p2_rms_jerk"] = r["p2_rms_jerk_mean"] - full_strong["p2_rms_jerk_mean"]
+                r["delta_vs_full_strong_p2_rms_yaw_rate_proxy"] = r["p2_rms_yaw_rate_proxy_mean"] - full_strong["p2_rms_yaw_rate_proxy_mean"]
+                r["delta_vs_full_strong_p2_mean_thw"] = r["p2_mean_thw"] - full_strong["p2_mean_thw"]
+
+    cols = list(rows[0].keys())
+    with (out_root / f"{prefix}_summary.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=cols); w.writeheader(); w.writerows(rows)
+    (out_root / f"{prefix}_summary.json").write_text(json.dumps(rows, indent=2), encoding="utf-8")
+
+    sep = zscore([r["mean_p2_separation_margin"] for r in rows]); far = zscore([r["p2_farthest_rate"] for r in rows]); cp2 = zscore([r["centroid_accuracy_p2"] for r in rows]); ret = zscore([r["retrieval_mean_same_policy_fraction_topk"] for r in rows])
+    jerk_th, thw_th, yaw_th = (1.8, 0.8, None) if args.config_set == "broad" else (1.6, 0.8, 0.022)
+    scored = []
+    for i, r in enumerate(rows):
+        pen_jerk = max(0.0, float((r["p2_rms_jerk_mean"] - jerk_th) / max(jerk_th, 1e-6)))
+        pen_thw = max(0.0, float((thw_th - r["p2_min_thw"]) / max(thw_th, 1e-6)))
+        pen_yaw = 0.0 if yaw_th is None else max(0.0, float((r["p2_rms_yaw_rate_proxy_mean"] - yaw_th) / max(yaw_th, 1e-6)))
+        score = float(sep[i] + far[i] + cp2[i] + ret[i] - pen_jerk - pen_thw - pen_yaw)
+        warns = [w for w, c in [("high_p2_jerk", pen_jerk > 0), ("low_p2_min_thw", pen_thw > 0), ("high_p2_yaw_proxy", pen_yaw > 0)] if c]
+        scored.append({"config_name": r["config_name"], "local_p2_score" if args.config_set == "local_fine" else "p2_independence_score": score, "score_components": {"z_mean_p2_separation_margin": float(sep[i]), "z_p2_farthest_rate": float(far[i]), "z_centroid_accuracy_p2": float(cp2[i]), "z_retrieval_mean_same_policy_fraction_topk": float(ret[i]), "penalty_high_p2_rms_jerk": pen_jerk, "penalty_low_p2_min_thw": pen_thw, "penalty_high_p2_rms_yaw_rate_proxy": pen_yaw}, "warning_flags": warns})
+    score_key = "local_p2_score" if args.config_set == "local_fine" else "p2_independence_score"
+    best = max(scored, key=lambda x: x[score_key])
+    valid = len({(r["p2_farthest_rate"], r["mean_p2_separation_margin"], r["centroid_accuracy_p2"]) for r in rows}) > 1
+    rec = {"local_sweep_valid" if args.config_set == "local_fine" else "ablation_valid": valid, "best_config_name": best["config_name"] if valid else None, "best_config_params": next((r for r in rows if r["config_name"] == best["config_name"]), None) if valid else None, score_key: best[score_key], "score_components": best["score_components"], "warning_flags": best["warning_flags"], "reason": f"Best combined separation/discriminability with penalties (jerk>{jerk_th}, min_thw<{thw_th}{'' if yaw_th is None else f', yaw>{yaw_th}'})." if valid else "All configs appear identical; no recommendation.", "all_config_scores": scored}
+    (out_root / f"{prefix}_recommendation.json").write_text(json.dumps(rec, indent=2), encoding="utf-8")
+
+    import matplotlib; matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    names = [r["config_name"] for r in rows]
+    x = np.arange(len(names))
+    plt.figure(figsize=(11, 5)); vals = [r["mean_p2_separation_margin"] for r in rows]; plt.bar(names, vals); plt.axhline(0.0, color="red", linestyle="--", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / f"{prefix}_p2_separation_margin.png"); plt.close()
+    plt.figure(figsize=(11, 5)); plt.bar(names, [r["p2_farthest_rate"] for r in rows]); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / f"{prefix}_p2_farthest_rate.png"); plt.close()
+
+    def grouped(path, series):
+        plt.figure(figsize=(12, 5)); w = 0.8 / len(series)
+        for i, (lab, vals) in enumerate(series.items()): plt.bar(x + i * w, vals, w, label=lab)
+        plt.xticks(x + w * (len(series) - 1) / 2, names, rotation=30, ha="right"); plt.legend(); plt.tight_layout(); plt.savefig(out_root / f"{prefix}_{path}"); plt.close()
+
+    def grouped_direct(path, labels, series):
+        lx = np.arange(len(labels))
+        plt.figure(figsize=(12, 5)); w = 0.8 / len(series)
+        for i, (lab, vals) in enumerate(series.items()):
+            plt.bar(lx + i * w, vals, w, label=lab)
+        plt.xticks(lx + w * (len(series) - 1) / 2, labels, rotation=30, ha="right")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(out_root / path)
+        plt.close()
+
+    grouped("pairwise_distances.png", {"d_p0_p1_mean": [r["d_p0_p1_mean"] for r in rows], "d_p0_p2_mean": [r["d_p0_p2_mean"] for r in rows], "d_p1_p2_mean": [r["d_p1_p2_mean"] for r in rows]})
+    grouped("retrieval_classification.png", {"centroid_accuracy_overall": [r["centroid_accuracy_overall"] for r in rows], "centroid_accuracy_p2": [r["centroid_accuracy_p2"] for r in rows], "retrieval_hit_at_1": [r["retrieval_hit_at_1"] for r in rows], "retrieval_hit_at_k": [r["retrieval_hit_at_k"] for r in rows]})
+    grouped("p2_style_metrics.png", {"p2_rms_jerk_mean": [r["p2_rms_jerk_mean"] for r in rows], "p2_rms_yaw_rate_proxy_mean": [r["p2_rms_yaw_rate_proxy_mean"] for r in rows], "p2_rms_curvature_proxy_mean": [r["p2_rms_curvature_proxy_mean"] for r in rows], "p2_mean_thw": [r["p2_mean_thw"] for r in rows]})
+
+    xs = [r["p2_rms_yaw_rate_proxy_mean"] for r in rows]; ys = [r["mean_p2_separation_margin"] for r in rows]
+    plt.figure(figsize=(8, 5)); plt.scatter(xs, ys)
+    for xi, yi, nm in zip(xs, ys, names): plt.annotate(nm, (xi, yi), fontsize=8)
+    plt.xlabel("p2_rms_yaw_rate_proxy_mean"); plt.ylabel("mean_p2_separation_margin"); plt.tight_layout(); plt.savefig(out_root / f"{prefix}_tradeoff_yaw_vs_margin.png"); plt.close()
+    plt.figure(figsize=(8, 5)); xs2 = [r["p2_rms_jerk_mean"] for r in rows]; plt.scatter(xs2, ys)
+    for xi, yi, nm in zip(xs2, ys, names): plt.annotate(nm, (xi, yi), fontsize=8)
+    plt.xlabel("p2_rms_jerk_mean"); plt.ylabel("mean_p2_separation_margin"); plt.tight_layout(); plt.savefig(out_root / f"{prefix}_tradeoff_jerk_vs_margin.png"); plt.close()
+
+    report = f"""# Experiment 2: Lateral_stable Ablation and Parameter Sweep
+
+## 1. Experiment goal
+Experiment 1 showed embedding discriminability is strong, but p2/lateral_stable was not consistently farthest. This ablation evaluates which lateral_stable mechanisms improve p2 independence.
+
+## 2. Dataset / split / config overview
+- Split: `{args.split}`
+- Embedding: `{args.embedding}`
+- Distance: `{args.distance}`
+- topk: `{args.topk}`
+- Config count: {len(rows)}
+
+## 3. Config table
+See `ablation_summary.csv`.
+
+## 4. Main metrics table
+See `ablation_summary.csv` / `ablation_summary.json`.
+
+## 5. P2 separation result
+Primary metrics: `mean_p2_separation_margin`, `p2_farthest_rate`, `pct_p2_separation_margin_gt_0`.
+
+## 6. Classification and retrieval result
+Use centroid accuracy (overall + p2) and retrieval hit@1/hit@k.
+
+## 7. P2 style metric comparison
+Use p2 jerk/yaw/curvature/THW metrics to check comfort and lateral stability tradeoff.
+
+## 8. Recommended config
+- Best config: `{rec['best_config_name']}`
+- {score_key}: {rec[score_key]:.4f}
+
+## 9. Interpretation
+Higher p2 separation with low jerk/yaw is preferred. PCA/UMAP outputs (if generated elsewhere) are visualization-only.
+
+## 10. Limitations
+Synthetic policy rollouts only (not human-driver validation); replayed front vehicle; no sensor rendering/perception stack.
+
+## 11. Next suggested experiment
+Perform a local fine-grained sweep around the recommended config and repeat on additional splits.
+"""
+    if args.config_set in {"local_fine", "final_compare"}:
+        (out_root / "local_sweep_rollout_sanity.csv").write_text("config_name,generation_status,evaluation_status\n" + "\n".join(f"{r['config_name']},{r['generation_status']},{r['evaluation_status']}" for r in rows), encoding="utf-8")
+        (out_root / "local_sweep_integrity_report.json").write_text(json.dumps({"local_sweep_valid": valid, "n_configs": len(rows)}, indent=2), encoding="utf-8")
+        if all("delta_mean_p2_separation_margin" in r for r in rows):
+            dvals = [r["delta_mean_p2_separation_margin"] for r in rows]
+            plt.figure(figsize=(11, 5)); plt.bar(names, dvals); plt.axhline(0, color="black", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / "local_sweep_delta_vs_center.png"); plt.close()
+    (out_root / f"{prefix}_report.md").write_text(report, encoding="utf-8")
+
+    if args.config_set == "final_compare":
+        final_rows = [r for r in rows if r["config_name"] in {"baseline_current", "full_strong_lateral_stable", "recommended_lateral_stable_v2"}]
+        with (out_root / "final_config_comparison_summary.csv").open("w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(final_rows[0].keys())); w.writeheader(); w.writerows(final_rows)
+        (out_root / "final_config_comparison_summary.json").write_text(json.dumps(final_rows, indent=2), encoding="utf-8")
+
+        fnames = [r["config_name"] for r in final_rows]
+        fx = np.arange(len(fnames))
+        grouped("final_config_p2_separation.png", {"p2_farthest_rate": [r["p2_farthest_rate"] for r in final_rows], "pct_p2_separation_margin_gt_0": [r["pct_p2_separation_margin_gt_0"] for r in final_rows]})
+        plt.figure(figsize=(10, 5)); plt.bar(fnames, [r["mean_p2_separation_margin"] for r in final_rows]); plt.axhline(0.0, color="red", linestyle="--", linewidth=1); plt.title("p2 separation margin; higher is better; positive means p2 is farther than p0-p1"); plt.xticks(rotation=20, ha="right"); plt.tight_layout(); plt.savefig(out_root / "final_config_margin.png"); plt.close()
+        grouped("final_config_classification_retrieval.png", {"centroid_accuracy_p2": [r["centroid_accuracy_p2"] for r in final_rows], "retrieval_hit_at_1": [r["retrieval_hit_at_1"] for r in final_rows], "retrieval_hit_at_k": [r["retrieval_hit_at_k"] for r in final_rows], "retrieval_mean_same_policy_fraction_topk": [r["retrieval_mean_same_policy_fraction_topk"] for r in final_rows]})
+        grouped("final_config_style_metrics.png", {"p2_rms_jerk_mean": [r["p2_rms_jerk_mean"] for r in final_rows], "p2_rms_yaw_rate_proxy_mean": [r["p2_rms_yaw_rate_proxy_mean"] for r in final_rows], "p2_rms_curvature_proxy_mean": [r["p2_rms_curvature_proxy_mean"] for r in final_rows]})
+        plt.figure(figsize=(8, 5)); plt.scatter([r["p2_rms_jerk_mean"] for r in final_rows], [r["mean_p2_separation_margin"] for r in final_rows])
+        for r in final_rows: plt.annotate(r["config_name"], (r["p2_rms_jerk_mean"], r["mean_p2_separation_margin"]), fontsize=8)
+        plt.xlabel("p2_rms_jerk_mean (lower better)"); plt.ylabel("mean_p2_separation_margin (higher better)"); plt.tight_layout(); plt.savefig(out_root / "final_config_tradeoff.png"); plt.close()
+
+        final_report = """# Final Config Comparison Report
+
+## 1. Goal
+Compare baseline_current, full_strong_lateral_stable, and recommended_lateral_stable_v2 for paper-level ablation.
+
+## 2. Compared configs
+- baseline_current
+- full_strong_lateral_stable
+- recommended_lateral_stable_v2
+
+## 3. Parameter table
+See `final_config_comparison_summary.csv`.
+
+## 4. Main result table
+See `final_config_comparison_summary.csv` and `.json`.
+
+## 5. Improvement over baseline_current
+Use `delta_vs_baseline_*` columns.
+
+## 6. Improvement over full_strong_lateral_stable
+Use `delta_vs_full_strong_*` columns (recommended_lateral_stable_v2 focus).
+
+## 7. Interpretation
+- baseline_current is the original lateral_stable setting.
+- full_strong_lateral_stable improves p2 stability and recognizability.
+- recommended_lateral_stable_v2 further improves p2 classification, p2 farthest rate, separation margin, jerk, and yaw-rate proxy.
+- However, mean_p2_separation_margin remains negative, so p2 independence is improved but incomplete.
+- This recommended config should be used for subsequent population evaluation, interpretability demo, and external validation.
+
+## 8. Limitations
+- Synthetic policy rollout only.
+- Replayed front vehicle.
+- No real human driver labels yet.
+- No sensor rendering / perception stack.
+
+## 9. Recommended config for subsequent experiments
+recommended_lateral_stable_v2
+"""
+        (out_root / "final_config_comparison_report.md").write_text(final_report, encoding="utf-8")
+
+    if not args.skip_validation:
+        if args.config_set == "broad":
+            req_agg_files = REQ_AGGREGATE_FILES_BROAD
+        elif args.config_set == "local_fine":
+            req_agg_files = REQ_AGGREGATE_FILES_LOCAL_FINE
+        else:
+            req_agg_files = REQ_AGGREGATE_FILES_FINAL_COMPARE
+        missing_agg = [f for f in req_agg_files if not (out_root / f).exists()]
+        if missing_agg:
+            raise FileNotFoundError(f"Missing ablation aggregate files in {out_root}: {missing_agg}")
+
+
+if __name__ == "__main__":
+    main()
