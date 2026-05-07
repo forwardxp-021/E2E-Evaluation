@@ -326,6 +326,17 @@ def main():
         for i, (lab, vals) in enumerate(series.items()): plt.bar(x + i * w, vals, w, label=lab)
         plt.xticks(x + w * (len(series) - 1) / 2, names, rotation=30, ha="right"); plt.legend(); plt.tight_layout(); plt.savefig(out_root / f"{prefix}_{path}"); plt.close()
 
+    def grouped_direct(path, labels, series):
+        lx = np.arange(len(labels))
+        plt.figure(figsize=(12, 5)); w = 0.8 / len(series)
+        for i, (lab, vals) in enumerate(series.items()):
+            plt.bar(lx + i * w, vals, w, label=lab)
+        plt.xticks(lx + w * (len(series) - 1) / 2, labels, rotation=30, ha="right")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(out_root / path)
+        plt.close()
+
     grouped("pairwise_distances.png", {"d_p0_p1_mean": [r["d_p0_p1_mean"] for r in rows], "d_p0_p2_mean": [r["d_p0_p2_mean"] for r in rows], "d_p1_p2_mean": [r["d_p1_p2_mean"] for r in rows]})
     grouped("retrieval_classification.png", {"centroid_accuracy_overall": [r["centroid_accuracy_overall"] for r in rows], "centroid_accuracy_p2": [r["centroid_accuracy_p2"] for r in rows], "retrieval_hit_at_1": [r["retrieval_hit_at_1"] for r in rows], "retrieval_hit_at_k": [r["retrieval_hit_at_k"] for r in rows]})
     grouped("p2_style_metrics.png", {"p2_rms_jerk_mean": [r["p2_rms_jerk_mean"] for r in rows], "p2_rms_yaw_rate_proxy_mean": [r["p2_rms_yaw_rate_proxy_mean"] for r in rows], "p2_rms_curvature_proxy_mean": [r["p2_rms_curvature_proxy_mean"] for r in rows], "p2_mean_thw": [r["p2_mean_thw"] for r in rows]})
