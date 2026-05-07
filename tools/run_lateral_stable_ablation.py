@@ -42,6 +42,20 @@ REQ_AGGREGATE_FILES_LOCAL_FINE = [
     "local_sweep_tradeoff_jerk_vs_margin.png",
     "local_sweep_delta_vs_center.png",
 ]
+REQ_AGGREGATE_FILES_FINAL_COMPARE = [
+    "ablation_summary.csv",
+    "ablation_summary.json",
+    "ablation_recommendation.json",
+    "ablation_report.md",
+    "final_config_comparison_summary.csv",
+    "final_config_comparison_summary.json",
+    "final_config_comparison_report.md",
+    "final_config_p2_separation.png",
+    "final_config_margin.png",
+    "final_config_classification_retrieval.png",
+    "final_config_style_metrics.png",
+    "final_config_tradeoff.png",
+]
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -367,8 +381,9 @@ Perform a local fine-grained sweep around the recommended config and repeat on a
     if args.config_set in {"local_fine", "final_compare"}:
         (out_root / "local_sweep_rollout_sanity.csv").write_text("config_name,generation_status,evaluation_status\n" + "\n".join(f"{r['config_name']},{r['generation_status']},{r['evaluation_status']}" for r in rows), encoding="utf-8")
         (out_root / "local_sweep_integrity_report.json").write_text(json.dumps({"local_sweep_valid": valid, "n_configs": len(rows)}, indent=2), encoding="utf-8")
-        dvals = [r["delta_mean_p2_separation_margin"] for r in rows]
-        plt.figure(figsize=(11, 5)); plt.bar(names, dvals); plt.axhline(0, color="black", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / "local_sweep_delta_vs_center.png"); plt.close()
+        if all("delta_mean_p2_separation_margin" in r for r in rows):
+            dvals = [r["delta_mean_p2_separation_margin"] for r in rows]
+            plt.figure(figsize=(11, 5)); plt.bar(names, dvals); plt.axhline(0, color="black", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / "local_sweep_delta_vs_center.png"); plt.close()
     (out_root / f"{prefix}_report.md").write_text(report, encoding="utf-8")
 
     if args.config_set == "final_compare":
@@ -428,7 +443,12 @@ recommended_lateral_stable_v2
         (out_root / "final_config_comparison_report.md").write_text(final_report, encoding="utf-8")
 
     if not args.skip_validation:
-        req_agg_files = REQ_AGGREGATE_FILES_BROAD if args.config_set == "broad" else REQ_AGGREGATE_FILES_LOCAL_FINE
+        if args.config_set == "broad":
+            req_agg_files = REQ_AGGREGATE_FILES_BROAD
+        elif args.config_set == "local_fine":
+            req_agg_files = REQ_AGGREGATE_FILES_LOCAL_FINE
+        else:
+            req_agg_files = REQ_AGGREGATE_FILES_FINAL_COMPARE
         missing_agg = [f for f in req_agg_files if not (out_root / f).exists()]
         if missing_agg:
             raise FileNotFoundError(f"Missing ablation aggregate files in {out_root}: {missing_agg}")
