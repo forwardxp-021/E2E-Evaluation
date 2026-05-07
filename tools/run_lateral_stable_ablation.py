@@ -10,11 +10,12 @@ from pathlib import Path
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).parent.parent))
 import generate_policy_rollouts as gpr
 
 PARAM_KEYS = ["heading_smooth_alpha", "yaw_rate_clip", "thw_target", "jerk_limit", "a_max", "a_min"]
 REQ_ROLLOUT_FILES = ["source_index.npy", "policy_id.npy", "policy_name.npy", "split.npy", "traj.npy", "front.npy", "meta.npy", "feat_style.npy"]
-REQ_AGGREGATE_FILES = [
+REQ_AGGREGATE_FILES_BROAD = [
     "ablation_summary.csv",
     "ablation_summary.json",
     "ablation_recommendation.json",
@@ -25,6 +26,21 @@ REQ_AGGREGATE_FILES = [
     "ablation_retrieval_classification.png",
     "ablation_p2_style_metrics.png",
     "ablation_tradeoff_plot.png",
+]
+
+REQ_AGGREGATE_FILES_LOCAL_FINE = [
+    "local_sweep_summary.csv",
+    "local_sweep_summary.json",
+    "local_sweep_recommendation.json",
+    "local_sweep_report.md",
+    "local_sweep_p2_separation_margin.png",
+    "local_sweep_p2_farthest_rate.png",
+    "local_sweep_pairwise_distances.png",
+    "local_sweep_retrieval_classification.png",
+    "local_sweep_p2_style_metrics.png",
+    "local_sweep_tradeoff_yaw_vs_margin.png",
+    "local_sweep_tradeoff_jerk_vs_margin.png",
+    "local_sweep_delta_vs_center.png",
 ]
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -44,6 +60,8 @@ def parse_args():
     p.add_argument("--dry_run", action="store_true")
     p.add_argument("--skip_generation", action="store_true")
     p.add_argument("--skip_evaluation", action="store_true")
+    p.add_argument("--report_only", action="store_true", help="Skip all computation and only generate report from existing evaluation results.")
+    p.add_argument("--skip_validation", action="store_true", help="Skip final file validation check.")
     p.add_argument("--num_workers", type=int, default=None)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--overwrite", action="store_true", help="Accepted for compatibility; existing outputs are overwritten by default.")
@@ -174,36 +192,52 @@ def main():
 
     rows = []
     total_configs = len(selected)
-    print(f"=== Sweep progress: total configs = {total_configs} ===")
-    for idx, n in enumerate(selected, start=1):
-        print(f"\n=== [{idx}/{total_configs}] Running config: {n} ===")
-        cfg = grid[n]
-        cdir = out_root / n; rdir = cdir / "rollouts"; edir = cdir / "population_eval"
-        rdir.mkdir(parents=True, exist_ok=True); edir.mkdir(parents=True, exist_ok=True)
-
-        if not args.skip_generation:
-            print(f"[{idx}/{total_configs}] generation start: {n}")
-            gcmd = [sys.executable, str(REPO_ROOT / "generate_policy_rollouts.py"), "--src_traj_path", str(files["traj"]), "--src_front_path", str(files["front"]), "--output_dir", str(rdir), "--seed", str(args.seed), "--heading_smooth_alpha", str(cfg["heading_smooth_alpha"]), "--lateral_stable_yaw_rate_clip", str(cfg["yaw_rate_clip"]), "--lateral_stable_thw_target", str(cfg["thw_target"]), "--lateral_stable_jerk_limit", str(cfg["jerk_limit"]), "--lateral_stable_a_max", str(cfg["a_max"]), "--lateral_stable_a_min", str(cfg["a_min"])]
-            if args.num_workers is not None:
-                print("[WARN] --num_workers provided but generator has no such argument; ignoring")
-            if files["split"].exists(): gcmd += ["--src_split_path", str(files["split"])]
-            if files["meta"].exists(): gcmd += ["--src_meta_path", str(files["meta"])]
-            run_cmd(gcmd, args.dry_run)
-            print(f"[{idx}/{total_configs}] generation done: {n}")
-
-        if not args.skip_evaluation:
-            print(f"[{idx}/{total_configs}] evaluation start: {n}")
-            ecmd = [sys.executable, str(REPO_ROOT / "tools/evaluate_policy_population.py"), "--data_dir", str(rdir), "--out_dir", str(edir), "--embedding", args.embedding, "--split", args.split, "--distance", args.distance, "--topk", str(args.topk), "--projection", "pca"]
-            run_cmd(ecmd, args.dry_run)
-            print(f"[{idx}/{total_configs}] evaluation done: {n}")
-
-        if not args.dry_run and not args.skip_evaluation:
-            missing = [f for f in REQ_ROLLOUT_FILES if not (rdir / f).exists()]
-            if missing:
-                raise FileNotFoundError(f"{n}: missing rollout files {missing}")
+    
+    if args.report_only:
+        print(f"=== Report-only mode: loading existing evaluation results ===")
+        for idx, n in enumerate(selected, start=1):
+            print(f"[{idx}/{total_configs}] Loading: {n}")
+            cfg = grid[n]
+            cdir = out_root / n; edir = cdir / "population_eval"
+            summary_file = edir / "population_summary.json"
+            if not summary_file.exists():
+                raise FileNotFoundError(f"Missing evaluation summary: {summary_file}")
             rows.append(read_eval_row(n, cfg, edir))
+    else:
+        print(f"=== Sweep progress: total configs = {total_configs} ===")
+        for idx, n in enumerate(selected, start=1):
+            print(f"\n=== [{idx}/{total_configs}] Running config: {n} ===")
+            cfg = grid[n]
+            cdir = out_root / n; rdir = cdir / "rollouts"; edir = cdir / "population_eval"
+            rdir.mkdir(parents=True, exist_ok=True); edir.mkdir(parents=True, exist_ok=True)
 
-    if args.dry_run or args.skip_evaluation:
+            if not args.skip_generation:
+                print(f"[{idx}/{total_configs}] generation start: {n}")
+                gcmd = [sys.executable, str(REPO_ROOT / "generate_policy_rollouts.py"), "--src_traj_path", str(files["traj"]), "--src_front_path", str(files["front"]), "--output_dir", str(rdir), "--seed", str(args.seed), "--heading_smooth_alpha", str(cfg["heading_smooth_alpha"]), "--lateral_stable_yaw_rate_clip", str(cfg["yaw_rate_clip"]), "--lateral_stable_thw_target", str(cfg["thw_target"]), "--lateral_stable_jerk_limit", str(cfg["jerk_limit"]), "--lateral_stable_a_max", str(cfg["a_max"]), "--lateral_stable_a_min", str(cfg["a_min"])]
+                if args.num_workers is not None:
+                    print("[WARN] --num_workers provided but generator has no such argument; ignoring")
+                if files["split"].exists(): gcmd += ["--src_split_path", str(files["split"])]
+                if files["meta"].exists(): gcmd += ["--src_meta_path", str(files["meta"])]
+                run_cmd(gcmd, args.dry_run)
+                print(f"[{idx}/{total_configs}] generation done: {n}")
+
+                sf_cmd = [sys.executable, str(REPO_ROOT / "compute_style_features.py"), "--traj_path", str(rdir / "traj.npy"), "--front_path", str(rdir / "front.npy"), "--output_dir", str(rdir)]
+                run_cmd(sf_cmd, args.dry_run)
+                print(f"[{idx}/{total_configs}] style features computed: {n}")
+
+            if not args.skip_evaluation:
+                print(f"[{idx}/{total_configs}] evaluation start: {n}")
+                ecmd = [sys.executable, str(REPO_ROOT / "tools/evaluate_policy_population.py"), "--data_dir", str(rdir), "--out_dir", str(edir), "--embedding", args.embedding, "--split", args.split, "--distance", args.distance, "--topk", str(args.topk), "--projection", "pca"]
+                run_cmd(ecmd, args.dry_run)
+                print(f"[{idx}/{total_configs}] evaluation done: {n}")
+
+            if not args.dry_run and not args.skip_evaluation:
+                missing = [f for f in REQ_ROLLOUT_FILES if not (rdir / f).exists()]
+                if missing:
+                    raise FileNotFoundError(f"{n}: missing rollout files {missing}")
+                rows.append(read_eval_row(n, cfg, edir))
+
+    if args.dry_run or (args.skip_evaluation and not args.report_only):
         return
 
     prefix = "ablation" if args.config_set == "broad" else "local_sweep"
@@ -300,7 +334,7 @@ Use p2 jerk/yaw/curvature/THW metrics to check comfort and lateral stability tra
 
 ## 8. Recommended config
 - Best config: `{rec['best_config_name']}`
-- p2_independence_score: {rec['p2_independence_score']:.4f}
+- {score_key}: {rec[score_key]:.4f}
 
 ## 9. Interpretation
 Higher p2 separation with low jerk/yaw is preferred. PCA/UMAP outputs (if generated elsewhere) are visualization-only.
@@ -318,9 +352,11 @@ Perform a local fine-grained sweep around the recommended config and repeat on a
         plt.figure(figsize=(11, 5)); plt.bar(names, dvals); plt.axhline(0, color="black", linewidth=1); plt.xticks(rotation=30, ha="right"); plt.tight_layout(); plt.savefig(out_root / "local_sweep_delta_vs_center.png"); plt.close()
     (out_root / f"{prefix}_report.md").write_text(report, encoding="utf-8")
 
-    missing_agg = [f for f in REQ_AGGREGATE_FILES if not (out_root / f).exists()]
-    if missing_agg:
-        raise FileNotFoundError(f"Missing ablation aggregate files in {out_root}: {missing_agg}")
+    if not args.skip_validation:
+        req_agg_files = REQ_AGGREGATE_FILES_BROAD if args.config_set == "broad" else REQ_AGGREGATE_FILES_LOCAL_FINE
+        missing_agg = [f for f in req_agg_files if not (out_root / f).exists()]
+        if missing_agg:
+            raise FileNotFoundError(f"Missing ablation aggregate files in {out_root}: {missing_agg}")
 
 
 if __name__ == "__main__":
