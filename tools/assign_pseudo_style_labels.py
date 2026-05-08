@@ -72,9 +72,12 @@ def assign_labels(sig,q=0.25,mode='percentile',unl=-1):
 def run(args):
     np.random.seed(args.seed)
     data=Path(args.data_dir); out=Path(args.out_dir); out.mkdir(parents=True,exist_ok=True)
-    traj=_to_dense_traj(_load_required(args.traj_path or data/'traj.npy'),'traj')
-    front_raw=_load_optional(args.front_path or data/'front.npy')
-    front=_to_dense_traj(front_raw,'front') if front_raw is not None else None
+    traj=np.load(args.traj_path or data/'traj.npy', allow_pickle=True)
+    if traj.dtype == object:
+        traj = np.stack(traj, axis=0)
+    front=_load_optional(args.front_path or data/'front.npy')
+    if front is not None and front.dtype == object:
+        front = np.stack(front, axis=0)
     split=_load_optional(args.split_path or data/'split.npy')
     sig=_compute_signals(traj,front,args.dt)
     labels,ag,co,la,reasons=assign_labels(sig,args.target_quantile,args.label_mode,args.unlabeled_value)
