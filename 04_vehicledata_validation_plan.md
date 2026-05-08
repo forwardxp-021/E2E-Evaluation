@@ -485,3 +485,65 @@ Both scripts support `--smoke_test` and generate synthetic arrays locally withou
 3. Chance/lift retrieval metrics added to contextualize saturated hit@K.
 4. Distinct cluster size and cluster style fingerprint outputs.
 5. Expanded reporting and warning language for weak-label limitations.
+
+## Embedding alignment requirement
+
+- `traj/meta/feat_style/pseudo_label` 均为 row-level 数组，`evaluate_vehicledata_validation.py` 中 learned embedding 必须行数一致。
+- source-level embedding 不能作为 policy-level 结论依据；默认报错，只有显式 `--allow_source_level_embedding_expansion` 才允许调试展开，并标记为 `learned_embedding_valid_for_policy_eval=false`。
+
+`data1` 示例：
+- traj rows = 33471
+- embeddings rows = 11157
+- 33471 = 11157 x 3（每个 source 三个策略 rollout）
+- 结论：需先再生成 row-level embeddings。
+
+TODO command placeholder:
+```bash
+python tools/export_row_level_embeddings.py \
+  --data_dir data1 \
+  --model_ckpt <CHECKPOINT> \
+  --out_path data1/embeddings_row_level.npy
+```
+
+## Stage 4B: Waymo human trajectory extraction
+
+输入：
+- original Waymo scenario / motion tfrecords
+
+输出：
+- traj.npy
+- front.npy
+- meta.npy
+- split.npy
+- feat_style.npy
+- feat_style_raw.npy
+- feature_names_style.json
+
+关键约束：
+- 不运行 synthetic policy generator。
+- 使用观测到的人类 agent 轨迹。
+- 每行代表一个 human agent trajectory window。
+- 不包含 p0/p1/p2 `policy_id`。
+- `pseudo_label` 在后续通过 `tools/assign_pseudo_style_labels.py` 生成。
+
+建议新增脚本（TODO）：`tools/build_waymo_human_trajectory_dataset.py`
+
+建议 CLI：
+- `--waymo_tfrecord_dir`
+- `--out_dir`
+- `--window_len 80`
+- `--stride 20`
+- `--min_speed`
+- `--max_agents_per_scenario`
+- `--dt 0.1`
+- `--split_by_scenario`
+
+建议输出：
+- traj.npy
+- front.npy
+- meta.npy
+- split.npy
+- feat_style.npy
+- feat_style_raw.npy
+- feature_names_style.json
+- build_summary.json

@@ -90,9 +90,26 @@ def run(args):
     by_split=df.groupby(['split','pseudo_label_name']).size().reset_index(name='count')
     by_split.to_csv(out/'pseudo_label_distribution_by_split.csv',index=False)
     split_counts={sp:{k:int(v) for k,v in g.set_index('pseudo_label_name')['count'].to_dict().items()} for sp,g in by_split.groupby('split')}
-    summary={'n_total':int(n),'n_labeled':int(np.sum(labels!=-1)),'n_unlabeled':int(np.sum(labels==-1)),'label_counts':{k:int(v) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'label_percentages':{k:float(v/n) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'train_label_counts':split_counts.get('train',{}),'val_label_counts':split_counts.get('val',{}),'test_label_counts':split_counts.get('test',{}),'thresholds_used':{'target_quantile':args.target_quantile},'label_mode':args.label_mode,'target_quantile':args.target_quantile,'warnings':['Pseudo labels are weak labels, not ground truth.']}
+    meta_path=Path(args.meta_path or data/'meta.npy')
+    contains_policy_labels=False
+    if meta_path.exists():
+        meta=np.load(meta_path,allow_pickle=True)
+        if getattr(meta.dtype,'names',None):
+            contains_policy_labels=('policy_id' in meta.dtype.names or 'policy_name' in meta.dtype.names)
+        elif meta.dtype==object and len(meta)>0 and isinstance(meta[0],dict):
+            contains_policy_labels=('policy_id' in meta[0] or 'policy_name' in meta[0])
+    contains_source_index=Path(args.source_index_path or data/'source_index.npy').exists()
+    auto_dataset_type='synthetic_rollout' if contains_policy_labels else 'unknown'
+    dataset_type=args.dataset_type if args.dataset_type!='unknown' else auto_dataset_type
+    contains_synthetic_policy_rollouts=bool(dataset_type=='synthetic_rollout' or contains_policy_labels)
+    summary={'n_total':int(n),'n_labeled':int(np.sum(labels!=-1)),'n_unlabeled':int(np.sum(labels==-1)),'label_counts':{k:int(v) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'label_percentages':{k:float(v/n) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'train_label_counts':split_counts.get('train',{}),'val_label_counts':split_counts.get('val',{}),'test_label_counts':split_counts.get('test',{}),'thresholds_used':{'target_quantile':args.target_quantile},'label_mode':args.label_mode,'target_quantile':args.target_quantile,'dataset_type':dataset_type,'contains_policy_labels':contains_policy_labels,'contains_source_index':contains_source_index,'contains_synthetic_policy_rollouts':contains_synthetic_policy_rollouts,'warnings':['Pseudo labels are weak labels, not ground truth.']}
     (out/'pseudo_label_summary.json').write_text(json.dumps(summary,indent=2))
-    (out/'pseudo_label_report.md').write_text('# Pseudo Label Report\n\nPseudo labels are rule-based weak labels and not ground truth.\n')
+    note='Dataset type is unknown.'
+    if dataset_type=='synthetic_rollout':
+        note='This dataset contains synthetic policy rollouts and should be used for scaffold testing or synthetic evaluation, not as public human trajectory external validation.'
+    elif dataset_type=='human_public':
+        note='This dataset is treated as public human trajectory validation data.'
+    (out/'pseudo_label_report.md').write_text(f'# Pseudo Label Report\n\nPseudo labels are rule-based weak labels and not ground truth.\n\n- dataset_type: {dataset_type}\n- contains_policy_labels: {contains_policy_labels}\n- contains_source_index: {contains_source_index}\n- contains_synthetic_policy_rollouts: {contains_synthetic_policy_rollouts}\n\n{note}\n')
 
 def smoke_test():
     with tempfile.TemporaryDirectory() as td:
@@ -103,7 +120,7 @@ def smoke_test():
         v=6+4*np.sin(np.linspace(0,1,t)*np.pi)+(i%3)
         traj[i,:,2]=v; traj[i,:,0]=np.cumsum(v*0.1); front[i,:,2]=v-0.5; front[i,:,0]=traj[i,:,0]+20+(i%5)
       np.save(d/'traj.npy',traj); np.save(d/'front.npy',front); np.save(d/'split.npy',np.array(['train']*20+['val']*20+['test']*24))
-      run(argparse.Namespace(data_dir=str(d),out_dir=str(o),traj_path=None,front_path=None,split_path=None,label_mode='percentile',target_quantile=0.25,min_class_count=10,allow_overlap=False,unlabeled_value=-1,dt=0.1,seed=42))
+      run(argparse.Namespace(data_dir=str(d),out_dir=str(o),traj_path=None,front_path=None,split_path=None,meta_path=None,source_index_path=None,dataset_type='unknown',label_mode='percentile',target_quantile=0.25,min_class_count=10,allow_overlap=False,unlabeled_value=-1,dt=0.1,seed=42))
       assert (o/'pseudo_label_summary.json').exists()
       print('smoke_test_pass')
 
@@ -112,6 +129,8 @@ if __name__=='__main__':
     p.add_argument('--data_dir'); p.add_argument('--out_dir')
     p.add_argument('--feat_path',default=None); p.add_argument('--feature_names_path',default=None)
     p.add_argument('--traj_path',default=None); p.add_argument('--front_path',default=None); p.add_argument('--split_path',default=None)
+    p.add_argument('--meta_path',default=None); p.add_argument('--source_index_path',default=None)
+    p.add_argument('--dataset_type',choices=['synthetic_rollout','human_public','unknown'],default='unknown')
     p.add_argument('--label_mode',choices=['percentile','rule'],default='percentile'); p.add_argument('--target_quantile',type=float,default=0.25)
     p.add_argument('--min_class_count',type=int,default=50); p.add_argument('--allow_overlap',action='store_true'); p.add_argument('--unlabeled_value',type=int,default=-1)
     p.add_argument('--dt',type=float,default=0.1); p.add_argument('--seed',type=int,default=42); p.add_argument('--smoke_test',action='store_true')
