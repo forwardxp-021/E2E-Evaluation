@@ -1083,3 +1083,10 @@ Pseudo labels are rule-based weak labels (not ground truth) for external validat
 
 ### Smoke tests
 Both scripts support `--smoke_test` and generate synthetic arrays locally without external dataset downloads.
+
+## Phase 4A Validation Integrity Updates (2026-05-08)
+- Added `--allow_skip_learned` to skip learned embedding only with explicit opt-in.
+- Default retrieval mode is now `--retrieval_mode strict` with exclusions for same scenario/agent/track/source and temporal neighbors.
+- Added retrieval chance and lift metrics in `baseline_comparison_summary.csv`.
+- Expected plots include baseline classification/retrieval/style-correlation bars and representation PCA fallback plot.
+- Cluster outputs are split into `cluster_size_distribution.*` and style fingerprint heatmap/csv outputs.
