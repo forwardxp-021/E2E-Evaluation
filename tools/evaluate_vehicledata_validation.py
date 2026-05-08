@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-import argparse, json, tempfile
+import argparse, json, tempfile, sys
 from pathlib import Path
 import numpy as np, pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import confusion_matrix
 from scipy.stats import spearmanr
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from tools.assign_pseudo_style_labels import _compute_signals, run as run_labels
 
 def dist(a,b,metric='euclidean'):
@@ -35,7 +38,12 @@ def eval_method(X,labels,splits,eval_split='test',topk=5,metric='euclidean'):
 def run(args):
     out=Path(args.out_dir); out.mkdir(parents=True,exist_ok=True)
     data=Path(args.data_dir); lab=Path(args.label_dir)
-    traj=np.load(args.traj_path or data/'traj.npy'); front=np.load(args.front_path or data/'front.npy') if (args.front_path or data/'front.npy').exists() else None
+    traj=np.load(args.traj_path or data/'traj.npy', allow_pickle=True)
+    if traj.dtype == object:
+        traj = np.stack(traj, axis=0)
+    front=np.load(args.front_path or data/'front.npy', allow_pickle=True) if (args.front_path or data/'front.npy').exists() else None
+    if front is not None and front.dtype == object:
+        front = np.stack(front, axis=0)
     split=np.load(args.split_path or data/'split.npy',allow_pickle=True).astype(str)
     labels=np.load(lab/'pseudo_label.npy')
     sig=_compute_signals(traj,front,args.dt)
@@ -44,8 +52,14 @@ def run(args):
     warnings=[]
     if 'learned' in args.baselines.split(','):
       ep=args.embedding_path
-      if ep and Path(ep).exists(): methods['learned']=np.load(ep)
-      else: warnings.append('learned embedding missing; skipped')
+      if ep:
+        ep_path=Path(ep)
+        if ep_path.is_file(): emb=np.load(ep)
+        elif ep_path.is_dir() and (ep_path/'embeddings.npy').exists(): emb=np.load(str(ep_path/'embeddings.npy'))
+        else: warnings.append('learned embedding missing; skipped')
+        if 'emb' in locals():
+          if len(emb)==len(labels): methods['learned']=emb
+          else: warnings.append(f'learned embedding length mismatch: {len(emb)} vs {len(labels)}; skipped')
     methods['raw_feature']=(feat-feat.mean(0))/(feat.std(0)+1e-6)
     xy=traj[:,:,:2].copy(); xy=xy-xy[:,[0],:]; ang=np.arctan2(xy[:,1,1],xy[:,1,0]); c=np.cos(-ang); s=np.sin(-ang)
     xr=xy[:,:,0]*c[:,None]-xy[:,:,1]*s[:,None]; yr=xy[:,:,0]*s[:,None]+xy[:,:,1]*c[:,None]; methods['trajectory_l2']=np.concatenate([xr,yr],1)
