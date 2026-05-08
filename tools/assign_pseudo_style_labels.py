@@ -9,6 +9,26 @@ LABEL_MAP={-1:'unlabeled',0:'conservative_like',1:'aggressive_like',2:'lateral_s
 def _load_optional(path):
     return np.load(path, allow_pickle=True) if path and os.path.exists(path) else None
 
+def _load_required(path):
+    return np.load(path, allow_pickle=True)
+
+def _to_dense_traj(arr, name):
+    arr=np.asarray(arr)
+    if arr.dtype!=object:
+        if arr.ndim!=3 or arr.shape[-1]<4:
+            raise ValueError(f'{name} must be shape [N,T,D>=4], got {arr.shape}')
+        return arr.astype(np.float32, copy=False)
+    rows=[]
+    for i,row in enumerate(arr):
+        rr=np.asarray(row)
+        if rr.ndim!=2 or rr.shape[-1]<4:
+            raise ValueError(f'{name}[{i}] must be [T,D>=4], got {rr.shape}')
+        rows.append(rr.astype(np.float32, copy=False))
+    t_min=min(r.shape[0] for r in rows)
+    if len({r.shape[0] for r in rows})>1:
+        rows=[r[:t_min] for r in rows]
+    return np.stack(rows,axis=0)
+
 def _infer_split(split,n):
     if split is None: return np.array(['all']*n)
     arr=np.asarray(split)
@@ -52,8 +72,9 @@ def assign_labels(sig,q=0.25,mode='percentile',unl=-1):
 def run(args):
     np.random.seed(args.seed)
     data=Path(args.data_dir); out=Path(args.out_dir); out.mkdir(parents=True,exist_ok=True)
-    traj=np.load(args.traj_path or data/'traj.npy')
-    front=_load_optional(args.front_path or data/'front.npy')
+    traj=_to_dense_traj(_load_required(args.traj_path or data/'traj.npy'),'traj')
+    front_raw=_load_optional(args.front_path or data/'front.npy')
+    front=_to_dense_traj(front_raw,'front') if front_raw is not None else None
     split=_load_optional(args.split_path or data/'split.npy')
     sig=_compute_signals(traj,front,args.dt)
     labels,ag,co,la,reasons=assign_labels(sig,args.target_quantile,args.label_mode,args.unlabeled_value)
