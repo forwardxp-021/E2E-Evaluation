@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, json, tempfile
+import argparse, json, tempfile, sys
 from pathlib import Path
 import numpy as np, pandas as pd
 from sklearn.cluster import KMeans
@@ -10,6 +10,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from tools.assign_pseudo_style_labels import _compute_signals, run as run_labels
 
 STYLE_KEYS=['mean_speed','rms_accel','rms_jerk','rms_yaw_rate_proxy','rms_curvature_proxy','mean_thw','min_thw']
@@ -136,11 +137,19 @@ def run(args):
             emb=np.load(ep,allow_pickle=True)
             learned_shape=list(emb.shape)
             if emb.shape[0]!=len(labels):
-                msg=f'Learned embedding row count mismatch: embedding has {emb.shape[0]} rows, data has {len(labels)} rows. Please provide a human-data embedding file aligned with this dataset.'
-                if args.allow_skip_learned:
-                    learned_skip_reason=msg
+                source_index=np.load(data/'source_index.npy',allow_pickle=True)
+                unique_sources=np.unique(source_index)
+                if len(unique_sources)==emb.shape[0]:
+                    emb_aligned=emb[source_index]
+                    methods['learned']=emb_aligned
+                    learned_evaluated=True
+                    warnings.append(f'Learned embeddings aligned via source_index: {emb.shape[0]} unique sources -> {len(labels)} samples')
                 else:
-                    raise ValueError(msg)
+                    msg=f'Learned embedding row count mismatch: embedding has {emb.shape[0]} rows, data has {len(labels)} rows. Source_index has {len(unique_sources)} unique values. Cannot align embeddings.'
+                    if args.allow_skip_learned:
+                        learned_skip_reason=msg
+                    else:
+                        raise ValueError(msg)
             else:
                 methods['learned']=emb
                 learned_evaluated=True
