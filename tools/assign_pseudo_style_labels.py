@@ -87,7 +87,10 @@ def run(args):
     df.to_csv(out/'pseudo_label_scores.csv',index=False)
     dist=df['pseudo_label_name'].value_counts().rename_axis('pseudo_label_name').reset_index(name='count'); dist.to_csv(out/'pseudo_label_distribution.csv',index=False)
     np.save(out/'pseudo_label.npy',labels); np.save(out/'pseudo_label_name.npy',names)
-    summary={'n_total':int(n),'n_labeled':int(np.sum(labels!=-1)),'n_unlabeled':int(np.sum(labels==-1)),'label_counts':{k:int(v) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'label_percentages':{k:float(v/n) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'thresholds_used':{'target_quantile':args.target_quantile},'label_mode':args.label_mode,'target_quantile':args.target_quantile,'warnings':['Pseudo labels are weak labels, not ground truth.']}
+    by_split=df.groupby(['split','pseudo_label_name']).size().reset_index(name='count')
+    by_split.to_csv(out/'pseudo_label_distribution_by_split.csv',index=False)
+    split_counts={sp:{k:int(v) for k,v in g.set_index('pseudo_label_name')['count'].to_dict().items()} for sp,g in by_split.groupby('split')}
+    summary={'n_total':int(n),'n_labeled':int(np.sum(labels!=-1)),'n_unlabeled':int(np.sum(labels==-1)),'label_counts':{k:int(v) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'label_percentages':{k:float(v/n) for k,v in df['pseudo_label_name'].value_counts().to_dict().items()},'train_label_counts':split_counts.get('train',{}),'val_label_counts':split_counts.get('val',{}),'test_label_counts':split_counts.get('test',{}),'thresholds_used':{'target_quantile':args.target_quantile},'label_mode':args.label_mode,'target_quantile':args.target_quantile,'warnings':['Pseudo labels are weak labels, not ground truth.']}
     (out/'pseudo_label_summary.json').write_text(json.dumps(summary,indent=2))
     (out/'pseudo_label_report.md').write_text('# Pseudo Label Report\n\nPseudo labels are rule-based weak labels and not ground truth.\n')
 

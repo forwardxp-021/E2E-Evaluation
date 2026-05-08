@@ -784,3 +784,8 @@ Pseudo labels are rule-based weak labels (not ground truth) for external validat
 
 ### Smoke tests
 Both scripts support `--smoke_test` and generate synthetic arrays locally without external dataset downloads.
+
+- `evaluate_vehicledata_validation.py` new flags: `--allow_skip_learned`, `--retrieval_mode strict`, exclusion flags.
+- Learned embedding mismatches now fail by default; optional skip records warnings and marks `learned_embedding_evaluated=false`.
+- Retrieval outputs now include chance/lift metrics and strict anti-leakage behavior.
+- Expected outputs: baseline_* plots, cluster_size_distribution.png, cluster_style_fingerprint.png/csv, cluster_label_distribution.csv.

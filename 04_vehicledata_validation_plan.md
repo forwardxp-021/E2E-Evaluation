@@ -478,3 +478,10 @@ Pseudo labels are rule-based weak labels (not ground truth) for external validat
 
 ### Smoke tests
 Both scripts support `--smoke_test` and generate synthetic arrays locally without external dataset downloads.
+
+## Integrity hardening updates
+1. Strict learned embedding validation (`--allow_skip_learned` escape hatch).
+2. Strict retrieval exclusion mode defaulted to prevent near-duplicate leakage.
+3. Chance/lift retrieval metrics added to contextualize saturated hit@K.
+4. Distinct cluster size and cluster style fingerprint outputs.
+5. Expanded reporting and warning language for weak-label limitations.
