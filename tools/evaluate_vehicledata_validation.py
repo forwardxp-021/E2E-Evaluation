@@ -112,9 +112,18 @@ def run(args):
     sig=_compute_signals(traj,front,args.dt)
     meta,meta_warnings=_parse_meta(Path(args.meta_path or data/'meta.npy'),len(labels))
     warnings=list(meta_warnings)
+    meta_arr=np.load(args.meta_path or data/'meta.npy',allow_pickle=True) if Path(args.meta_path or data/'meta.npy').exists() else None
+    contains_policy_labels=bool((meta_arr is not None and meta_arr.dtype.names and ('policy_id' in meta_arr.dtype.names or 'policy_name' in meta_arr.dtype.names))
+                                or (meta_arr is not None and meta_arr.dtype==object and len(meta_arr)>0 and isinstance(meta_arr[0],dict) and ('policy_id' in meta_arr[0] or 'policy_name' in meta_arr[0])))
+    contains_source_index=bool(meta.get('source_index') is not None or (data/'source_index.npy').exists())
+    auto_dataset_type='synthetic_rollout' if contains_policy_labels else 'unknown'
+    dataset_type=args.dataset_type if args.dataset_type!='unknown' else auto_dataset_type
+    contains_synthetic_policy_rollouts=bool(dataset_type=='synthetic_rollout' or contains_policy_labels)
 
     methods={}
     learned_evaluated=False; learned_skip_reason=None; learned_shape=None
+    learned_embedding_alignment='not_requested'
+    learned_embedding_valid_for_policy_eval=None
     baseline_list=[x.strip() for x in args.baselines.split(',') if x.strip()]
     if 'learned' in baseline_list:
         if not args.embedding_path:
@@ -137,22 +146,31 @@ def run(args):
             emb=np.load(ep,allow_pickle=True)
             learned_shape=list(emb.shape)
             if emb.shape[0]!=len(labels):
-                source_index=np.load(data/'source_index.npy',allow_pickle=True)
-                unique_sources=np.unique(source_index)
-                if len(unique_sources)==emb.shape[0]:
+                mismatch_msg=f"Learned embedding row count mismatch: embedding has {emb.shape[0]} rows, data has {len(labels)} rows. This evaluator requires row-aligned embeddings. Source-level embeddings must not be auto-expanded for policy-level or pseudo-label evaluation. Regenerate row-level embeddings or run without learned baseline."
+                if args.allow_source_level_embedding_expansion:
+                    if not (data/'source_index.npy').exists():
+                        raise ValueError(mismatch_msg + " source_index.npy not found for optional expansion.")
+                    source_index=np.load(data/'source_index.npy',allow_pickle=True)
+                    unique_sources=np.unique(source_index)
+                    if len(unique_sources)!=emb.shape[0]:
+                        raise ValueError(mismatch_msg + f" source_index has {len(unique_sources)} unique values which does not match embedding rows.")
                     emb_aligned=emb[source_index]
                     methods['learned']=emb_aligned
                     learned_evaluated=True
-                    warnings.append(f'Learned embeddings aligned via source_index: {emb.shape[0]} unique sources -> {len(labels)} samples')
+                    learned_embedding_alignment='source_index_expanded'
+                    learned_embedding_valid_for_policy_eval=False
+                    warnings.append('WARNING: Learned embeddings were expanded via source_index from source-level rows to rollout rows. This is debug-only and invalid for policy-level evaluation.')
+                elif args.allow_skip_learned:
+                    learned_skip_reason=mismatch_msg
+                    learned_embedding_alignment='skipped_mismatch'
+                    learned_embedding_valid_for_policy_eval=False
                 else:
-                    msg=f'Learned embedding row count mismatch: embedding has {emb.shape[0]} rows, data has {len(labels)} rows. Source_index has {len(unique_sources)} unique values. Cannot align embeddings.'
-                    if args.allow_skip_learned:
-                        learned_skip_reason=msg
-                    else:
-                        raise ValueError(msg)
+                    raise ValueError(mismatch_msg)
             else:
                 methods['learned']=emb
                 learned_evaluated=True
+                learned_embedding_alignment='row_aligned'
+                learned_embedding_valid_for_policy_eval=True
     if (not learned_evaluated) and 'learned' in baseline_list and learned_skip_reason:
         warnings.append(learned_skip_reason)
 
@@ -209,9 +227,18 @@ def run(args):
     z=(fp[STYLE_KEYS]-fp[STYLE_KEYS].mean())/(fp[STYLE_KEYS].std()+1e-6)
     plt.figure(figsize=(10,4)); plt.imshow(z.values,aspect='auto',cmap='coolwarm'); plt.yticks(np.arange(len(fp)),fp['cluster_id']); plt.xticks(np.arange(len(STYLE_KEYS)),STYLE_KEYS,rotation=45,ha='right'); plt.colorbar(); plt.tight_layout(); plt.savefig(out/'cluster_style_fingerprint.png'); plt.close()
 
-    summary={'retrieval_mode':args.retrieval_mode,'learned_embedding_evaluated':learned_evaluated,'learned_embedding_path':args.embedding_path,'learned_embedding_shape':learned_shape,'learned_embedding_skip_reason':learned_skip_reason,'evaluated_methods':eval_methods,'warnings':warnings}
+    summary={'retrieval_mode':args.retrieval_mode,'dataset_type':dataset_type,'contains_policy_labels':contains_policy_labels,'contains_source_index':contains_source_index,'contains_synthetic_policy_rollouts':contains_synthetic_policy_rollouts,'learned_embedding_evaluated':learned_evaluated,'learned_embedding_path':args.embedding_path,'learned_embedding_shape':learned_shape,'learned_embedding_alignment':learned_embedding_alignment,'learned_embedding_valid_for_policy_eval':learned_embedding_valid_for_policy_eval,'learned_embedding_skip_reason':learned_skip_reason,'evaluated_methods':eval_methods,'warnings':warnings}
     (out/'human_validation_summary.json').write_text(json.dumps(summary,indent=2))
-    report='''# Human Validation Report\n\n## Dataset summary\n\n## Pseudo-label distribution\n\n## Evaluation split\n\n## Methods evaluated\n\n## Learned embedding status\n\n## Classification table\n\n## Retrieval table and chance / label-prior baseline\n\n## Style-distance correlation table\n\n## Cluster fingerprint summary\n\n## Leakage / anti-leakage warnings\nPseudo labels are rule-based weak labels, not ground truth. Because pseudo labels are constructed from style features, classification and retrieval metrics may contain feature leakage. Results should be interpreted together with strict retrieval exclusion, baseline comparison, cluster fingerprints, and qualitative retrieval cases.\n\n## Limitations\n\n## Next steps\n'''
+    if dataset_type=='synthetic_rollout':
+        title='Stage 4A Scaffold Test on Synthetic Rollout Data'
+        ds_note='This dataset contains synthetic policy rollouts and should be used for scaffold testing or synthetic evaluation, not as public human trajectory external validation.'
+    elif dataset_type=='human_public':
+        title='Public Human Trajectory External Validation'
+        ds_note='This dataset is treated as public human trajectory validation data.'
+    else:
+        title='Human Validation Report'
+        ds_note='Dataset type is unknown; avoid over-claiming external human validation.'
+    report=f'''# {title}\n\n## Dataset summary\n- dataset_type: {dataset_type}\n- contains_policy_labels: {contains_policy_labels}\n- contains_source_index: {contains_source_index}\n- contains_synthetic_policy_rollouts: {contains_synthetic_policy_rollouts}\n\n{ds_note}\n\n## Pseudo-label distribution\n\n## Evaluation split\n\n## Methods evaluated\n\n## Learned embedding status\n- learned_embedding_alignment: {learned_embedding_alignment}\n- learned_embedding_valid_for_policy_eval: {learned_embedding_valid_for_policy_eval}\n- learned_embedding_skip_reason: {learned_skip_reason}\n\n## Classification table\n\n## Retrieval table and chance / label-prior baseline\n\n## Style-distance correlation table\n\n## Cluster fingerprint summary\n\n## Leakage / anti-leakage warnings\nPseudo labels are rule-based weak labels, not ground truth. Because pseudo labels are constructed from style features, classification and retrieval metrics may contain feature leakage. Results should be interpreted together with strict retrieval exclusion, baseline comparison, cluster fingerprints, and qualitative retrieval cases.\n\n## Limitations\n\n## Next steps\n'''
     (out/'human_validation_report.md').write_text(report)
 
 
@@ -225,10 +252,22 @@ def smoke_test():
         np.save(d/'traj.npy',traj); np.save(d/'front.npy',front); np.save(d/'split.npy',np.array(['train']*30+['val']*20+['test']*30)); np.save(d/'feat_style.npy',np.random.randn(n,12).astype(np.float32))
         np.save(d/'meta.npy',np.array([{'scenario_id':i//10,'agent_id':i%3,'track_id':i%7,'source_index':i,'start':i} for i in range(n)],dtype=object))
         run_labels(argparse.Namespace(data_dir=str(d),out_dir=str(l),feat_path=None,feature_names_path=None,traj_path=None,front_path=None,split_path=None,label_mode='percentile',target_quantile=0.25,min_class_count=10,allow_overlap=False,unlabeled_value=-1,dt=0.1,seed=42))
-        np.save(d/'bad.npy', np.random.randn(10,8).astype(np.float32))
-        run(argparse.Namespace(data_dir=str(d),label_dir=str(l),out_dir=str(o),embedding_path=str(d/'bad.npy'),allow_skip_learned=True,allow_embedding_dir_lookup=False,meta_path=None,feat_path=None,feat_raw_path=None,feature_names_path=None,traj_path=None,front_path=None,split_path=None,eval_split='test',distance='euclidean',topk=5,dt=0.1,baselines='learned,raw_feature,trajectory_l2,random,pca_feature',num_clusters=4,projection='pca',seed=42,retrieval_mode='strict',exclude_same_scenario=True,exclude_same_agent=True,exclude_same_track=True,exclude_temporal_neighbors=20,exclude_same_source=True))
+        # Case A: row-aligned embedding should pass
+        np.save(d/'good.npy', np.random.randn(n,8).astype(np.float32))
+        run(argparse.Namespace(data_dir=str(d),label_dir=str(l),out_dir=str(o/'case_a'),embedding_path=str(d/'good.npy'),allow_skip_learned=False,allow_source_level_embedding_expansion=False,allow_embedding_dir_lookup=False,meta_path=None,feat_path=None,feat_raw_path=None,feature_names_path=None,traj_path=None,front_path=None,split_path=None,eval_split='test',distance='euclidean',topk=5,dt=0.1,baselines='learned,raw_feature,trajectory_l2,random,pca_feature',num_clusters=4,projection='pca',seed=42,retrieval_mode='strict',exclude_same_scenario=True,exclude_same_agent=True,exclude_same_track=True,exclude_temporal_neighbors=20,exclude_same_source=True,dataset_type='unknown'))
+        # Case B: source-level embedding should fail by default and pass with expansion
+        source_index=np.repeat(np.arange(n//2),2)
+        np.save(d/'source_index.npy',source_index)
+        np.save(d/'bad.npy', np.random.randn(n//2,8).astype(np.float32))
+        try:
+            run(argparse.Namespace(data_dir=str(d),label_dir=str(l),out_dir=str(o/'case_b_fail'),embedding_path=str(d/'bad.npy'),allow_skip_learned=False,allow_source_level_embedding_expansion=False,allow_embedding_dir_lookup=False,meta_path=None,feat_path=None,feat_raw_path=None,feature_names_path=None,traj_path=None,front_path=None,split_path=None,eval_split='test',distance='euclidean',topk=5,dt=0.1,baselines='learned,raw_feature,trajectory_l2,random,pca_feature',num_clusters=4,projection='pca',seed=42,retrieval_mode='strict',exclude_same_scenario=True,exclude_same_agent=True,exclude_same_track=True,exclude_temporal_neighbors=20,exclude_same_source=True,dataset_type='unknown'))
+            raise AssertionError('Expected mismatch failure without expansion.')
+        except ValueError as e:
+            assert 'row count mismatch' in str(e)
+        run(argparse.Namespace(data_dir=str(d),label_dir=str(l),out_dir=str(o/'case_b_expand'),embedding_path=str(d/'bad.npy'),allow_skip_learned=False,allow_source_level_embedding_expansion=True,allow_embedding_dir_lookup=False,meta_path=None,feat_path=None,feat_raw_path=None,feature_names_path=None,traj_path=None,front_path=None,split_path=None,eval_split='test',distance='euclidean',topk=5,dt=0.1,baselines='learned,raw_feature,trajectory_l2,random,pca_feature',num_clusters=4,projection='pca',seed=42,retrieval_mode='strict',exclude_same_scenario=True,exclude_same_agent=True,exclude_same_track=True,exclude_temporal_neighbors=20,exclude_same_source=True,dataset_type='unknown'))
         req=['baseline_classification_bar.png','baseline_retrieval_bar.png','baseline_style_correlation_bar.png','cluster_size_distribution.png','cluster_style_fingerprint.png','human_validation_summary.json']
-        for r in req: assert (o/r).exists(), r
+        for r in req: assert (o/'case_a'/r).exists(), r
+        for r in req: assert (o/'case_b_expand'/r).exists(), r
         print('smoke_test_pass')
 
 
@@ -236,6 +275,8 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--data_dir'); p.add_argument('--label_dir'); p.add_argument('--out_dir'); p.add_argument('--embedding_path',default=None)
     p.add_argument('--allow_skip_learned',action='store_true'); p.add_argument('--allow_embedding_dir_lookup',action='store_true')
+    p.add_argument('--allow_source_level_embedding_expansion',action='store_true')
+    p.add_argument('--dataset_type',choices=['synthetic_rollout','human_public','unknown'],default='unknown')
     p.add_argument('--meta_path',default=None)
     p.add_argument('--feat_path',default=None); p.add_argument('--feat_raw_path',default=None); p.add_argument('--feature_names_path',default=None)
     p.add_argument('--traj_path',default=None); p.add_argument('--front_path',default=None); p.add_argument('--split_path',default=None)

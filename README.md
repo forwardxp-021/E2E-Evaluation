@@ -1090,3 +1090,27 @@ Both scripts support `--smoke_test` and generate synthetic arrays locally withou
 - Added retrieval chance and lift metrics in `baseline_comparison_summary.csv`.
 - Expected plots include baseline classification/retrieval/style-correlation bars and representation PCA fallback plot.
 - Cluster outputs are split into `cluster_size_distribution.*` and style fingerprint heatmap/csv outputs.
+
+## Embedding alignment requirement（阶段4A关键约束）
+
+- `traj.npy` / `meta.npy` / `feat_style.npy` / `pseudo_label.npy` 都是**按行对齐**的样本级数组。
+- learned embedding 在 `tools/evaluate_vehicledata_validation.py` 中必须满足 `embedding.shape[0] == N_samples`。
+- source-level embedding（例如每个 `source_index` 一行）**不能**默认用于 policy-level / pseudo-label evaluation。
+- 仅在显式传入 `--allow_source_level_embedding_expansion` 时，才允许按 `source_index` 展开，且该结果仅用于 debug，不可作为 policy-level 有效结论。
+
+`data1` 的已知情况：
+
+- `traj` 行数 = `33471`
+- `embeddings` 行数 = `11157`
+- `33471 = 11157 x 3`，对应每个 source 的 3 个 rollout（p0/p1/p2）
+
+这说明 `data1/embeddings.npy` 是 source-level，不是 row-level。评估 learned baseline 前必须先再生成 row-level embedding。
+
+建议命令（当前为 TODO 占位，`tools/export_row_level_embeddings.py` 尚未实现）：
+
+```bash
+python tools/export_row_level_embeddings.py \
+  --data_dir data1 \
+  --model_ckpt <CHECKPOINT> \
+  --out_path data1/embeddings_row_level.npy
+```

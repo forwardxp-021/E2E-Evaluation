@@ -789,3 +789,22 @@ Both scripts support `--smoke_test` and generate synthetic arrays locally withou
 - Learned embedding mismatches now fail by default; optional skip records warnings and marks `learned_embedding_evaluated=false`.
 - Retrieval outputs now include chance/lift metrics and strict anti-leakage behavior.
 - Expected outputs: baseline_* plots, cluster_size_distribution.png, cluster_style_fingerprint.png/csv, cluster_label_distribution.csv.
+
+## Embedding alignment requirement
+
+- 评估阶段的 `traj/meta/feat_style/pseudo_label` 是 row-level 数组，learned embedding 必须同样 row-level。
+- `embedding.shape[0]` 必须等于样本行数 `N`。
+- source-level embedding 默认禁止自动扩展；仅可在 `--allow_source_level_embedding_expansion` 下用于调试，并会标记 `learned_embedding_valid_for_policy_eval=false`。
+
+`data1` 提示：
+- `traj` = 33471 rows
+- `embeddings` = 11157 rows
+- 11157x3=33471，表示 source-level + 3 rollout/policy，不是 row-level learned embedding。
+
+TODO（脚本占位）：
+```bash
+python tools/export_row_level_embeddings.py \
+  --data_dir data1 \
+  --model_ckpt <CHECKPOINT> \
+  --out_path data1/embeddings_row_level.npy
+```
