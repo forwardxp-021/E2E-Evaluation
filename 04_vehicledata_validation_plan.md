@@ -424,3 +424,57 @@ baseline_comparison_report.md
 ```
 
 建议第一版不要追求复杂模型，先把数据链路和评价指标跑通。
+
+
+## Phase 4A: Public Human Trajectory External Validation Scaffold
+
+Purpose: validate whether embedding structure transfers beyond synthetic generator artifacts using trajectory-level weak-label evaluation.
+
+### Unified input format
+`traj.npy`, optional `front.npy`, `meta.npy`, `split.npy`, `feat_style.npy`, optional `feat_style_raw.npy`, optional `feature_names_style.json`, optional `embeddings.npy`.
+
+### Pseudo-label assignment
+```bash
+python tools/assign_pseudo_style_labels.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --out_dir outputs/vehicledata_validation/pseudo_labels \
+  --label_mode percentile \
+  --target_quantile 0.25 \
+  --dt 0.1
+```
+
+### Evaluation
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --label_dir outputs/vehicledata_validation/pseudo_labels \
+  --out_dir outputs/vehicledata_validation/eval \
+  --embedding_path <OPTIONAL_EMBEDDING_PATH> \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --projection pca
+```
+
+Baselines-only mode:
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --label_dir outputs/vehicledata_validation/pseudo_labels \
+  --out_dir outputs/vehicledata_validation/eval_baselines_only \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines raw_feature,trajectory_l2,random,pca_feature \
+  --projection pca
+```
+
+### Outputs
+Pseudo-label outputs include summary/report/distribution files. Evaluation outputs include `human_validation_summary.json`, `human_validation_report.md`, `baseline_comparison_summary.csv`, retrieval/classification/correlation/cluster artifacts and figures.
+
+### Interpretation and limitations
+Pseudo labels are rule-based weak labels (not ground truth) for external validation only. Label-defining features can leak into classification metrics, so retrieval, cluster fingerprints, and baseline comparisons must be interpreted jointly.
+
+### Smoke tests
+Both scripts support `--smoke_test` and generate synthetic arrays locally without external dataset downloads.
