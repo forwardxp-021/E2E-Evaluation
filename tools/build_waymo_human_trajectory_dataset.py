@@ -3,6 +3,11 @@ import argparse, hashlib, json, math, os, shutil
 from collections import Counter, defaultdict
 from pathlib import Path
 import numpy as np
+try:
+    from tqdm import tqdm
+except ImportError:
+    def tqdm(x, **kwargs):
+        return x
 
 FEATURE_NAMES = [
   "mean_speed","std_speed","rms_accel","rms_jerk","rms_yaw_rate_proxy","rms_curvature_proxy",
@@ -106,7 +111,7 @@ def main():
             raise RuntimeError("Waymo parser dependencies are missing. Please install the same Waymo Open Dataset package used by the existing repo, or run with --smoke_test to verify the pipeline.")
         files=sorted([str(p) for p in Path(a.waymo_dir).glob('*.tfrecord*')])
         if a.max_files: files=files[:a.max_files]
-        for fp in files:
+        for fp in tqdm(files, desc='Processing tfrecord files'):
             ds=tf.data.TFRecordDataset(fp)
             for rec in ds:
                 sc=scenario_pb2.Scenario(); sc.ParseFromString(bytes(rec.numpy()))
@@ -124,7 +129,7 @@ def main():
 
     traj=[]; front=[]; meta=[]; split=[]; feats=[]
     cnt=defaultdict(int)
-    for sid,tracks in scenarios:
+    for sid,tracks in tqdm(scenarios, desc='Processing scenarios'):
         sp=split_of_sid(sid,a.train_ratio,a.val_ratio,a.test_ratio)
         agent_ids=list(tracks.keys())[:a.max_agents_per_scenario]
         cnt['agents']+=len(agent_ids)
