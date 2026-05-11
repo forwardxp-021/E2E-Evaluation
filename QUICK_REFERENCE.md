@@ -915,15 +915,17 @@ python tools/evaluate_vehicledata_validation.py \
 ```
 
 ### 期望行为
-- 只使用 train split 训练，不使用 pseudo labels 训练。
-- pseudo labels 仅用于评估。
-- embeddings_row_level.npy 与 traj.npy 行数严格对齐。
+- Waymo human trajectory 可能包含 NaN（部分观测轨迹存在无效片段）。
+- 训练脚本默认对 trajectory NaN 做插值修复，并对 feature 标准化后做 clipping。
+- 训练过程必须数值稳定，`train_loss` 和 `val_loss` 必须为 finite。
+- 只使用 train split 训练，不使用 pseudo labels 训练；pseudo labels 仅用于评估。
 - learned 与 raw_feature/trajectory_l2/random/pca_feature 同台评估，并输出分类、检索、相关性、cluster fingerprint 与 report。
 
 ### 通过标准
-- 生成 `train_summary.json`、`model.pt`、`embeddings_row_level.npy`。
+- 生成 `train_summary.json`、`train_debug.json`、`model.pt`、`embeddings_row_level.npy`。
+- `train_summary.json` 显示 sanitize 后 trajectory NaN/Inf 为 0，feature clip 后无 NaN/Inf，且 `feat_norm_max_after_clip <= feature_clip`。
+- `train_loss` 与 `val_loss` 均为 finite；若 loss 为 NaN，禁止导出 embedding。
 - `embeddings_row_level.npy.shape[0] == len(traj.npy) == 168191`。
 - `human_validation_summary.json` 中 `learned_embedding_evaluated=true`。
 - `baseline_comparison_summary.csv` 与主要图表均包含 learned。
-- `human_validation_report.md` 自动填充真实表格。
 - 不发生 source-level embedding expansion。

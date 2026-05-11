@@ -53,3 +53,8 @@ Stage 3 主要是合成策略；Stage 4 需要外部真实人类轨迹验证，�
 | human row-level learned embedding | 未完成 | Stage 4D |
 | learned vs baselines | 未完成 | Stage 4D |
 | report auto-fill | 待完善 | human_validation_report.md still too empty |
+
+## 13. Stage 4D 当前问题与修复
+- 初始 Stage 4D 训练出现 `train_loss=nan` 与 `val_loss=nan`。
+- 根因：`traj.npy` 中存在 trajectory/velocity NaN，且 feature 标准化后出现极端值。
+- 修复：加入 trajectory NaN 插值与对齐过滤、feature 标准化后 clipping、稳定 soft contrastive loss（log_softmax/softmax + 对角 mask + 非有限检查）。
