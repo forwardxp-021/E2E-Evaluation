@@ -1182,3 +1182,54 @@ python tools/evaluate_vehicledata_validation.py \
 - front_found_rate 被记录。
 - feature_names_style.json 与 feat_style 的列数一致。
 - smoke_test 可以不依赖真实 Waymo 数据运行成功。
+
+
+## 阶段 4D：训练并导出 Waymo human row-level learned embedding
+
+### 命令
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --device cuda \
+  --seed 42
+
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level.npy \
+  --batch_size 1024 \
+  --device cuda
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+### 期望行为
+- 只使用 train split 训练，不使用 pseudo labels 训练。
+- pseudo labels 仅用于评估。
+- embeddings_row_level.npy 与 traj.npy 行数严格对齐。
+- learned 与 raw_feature/trajectory_l2/random/pca_feature 同台评估，并输出分类、检索、相关性、cluster fingerprint 与 report。
+
+### 通过标准
+- 生成 `train_summary.json`、`model.pt`、`embeddings_row_level.npy`。
+- `embeddings_row_level.npy.shape[0] == len(traj.npy) == 168191`。
+- `human_validation_summary.json` 中 `learned_embedding_evaluated=true`。
+- `baseline_comparison_summary.csv` 与主要图表均包含 learned。
+- `human_validation_report.md` 自动填充真实表格。
+- 不发生 source-level embedding expansion。
