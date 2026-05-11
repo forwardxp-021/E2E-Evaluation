@@ -74,10 +74,35 @@ def run(args):
     data=Path(args.data_dir); out=Path(args.out_dir); out.mkdir(parents=True,exist_ok=True)
     traj=np.load(args.traj_path or data/'traj.npy', allow_pickle=True)
     if traj.dtype == object:
-        traj = np.stack(traj, axis=0)
+        # Handle case where traj contains float scalars or arrays
+        traj_arrays = []
+        for t in traj:
+            if isinstance(t, np.ndarray):
+                traj_arrays.append(t)
+            elif np.isscalar(t) or isinstance(t, float):
+                # Replace scalar float with NaN-filled array
+                traj_arrays.append(np.full((80, 4), np.nan, dtype=np.float32))
+            else:
+                traj_arrays.append(np.full((80, 4), np.nan, dtype=np.float32))
+        traj = np.stack(traj_arrays, axis=0)
+    # Ensure float32 dtype
+    traj = traj.astype(np.float32)
     front=_load_optional(args.front_path or data/'front.npy')
-    if front is not None and front.dtype == object:
-        front = np.stack(front, axis=0)
+    if front is not None:
+        if front.dtype == object:
+            # Handle case where front contains float scalars or arrays
+            front_arrays = []
+            for f in front:
+                if isinstance(f, np.ndarray):
+                    front_arrays.append(f)
+                elif np.isscalar(f) or isinstance(f, float):
+                    # Replace scalar float with NaN-filled array matching traj shape
+                    front_arrays.append(np.full((traj.shape[1], 4), np.nan, dtype=np.float32))
+                else:
+                    front_arrays.append(np.full((traj.shape[1], 4), np.nan, dtype=np.float32))
+            front = np.stack(front_arrays, axis=0)
+        # Ensure float32 dtype
+        front = front.astype(np.float32)
     split=_load_optional(args.split_path or data/'split.npy')
     sig=_compute_signals(traj,front,args.dt)
     labels,ag,co,la,reasons=assign_labels(sig,args.target_quantile,args.label_mode,args.unlabeled_value)
