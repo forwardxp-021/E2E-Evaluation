@@ -703,3 +703,11 @@ Pseudo-label threshold sensitivity。
 ## Appendix E
 
 Dataset conversion details。
+
+
+## Stage 4A/4B/4C/4D 更新（2026-05）
+- Stage 4A：确认 data1 为 synthetic_rollout scaffold，不可作为公开人类验证证据。
+- Stage 4B：Waymo human builder 已完成，full51 抽取 168191 条窗口，来自 24872 scenarios。
+- Stage 4C：full51 baseline-only 已完成，learned 尚未在 human_public full51 上评估。
+- Stage 4D：新增 row-level learned embedding 训练/导出与 learned-vs-baselines 对比能力。
+- 反泄漏声明：pseudo labels 为弱标签且来自规则/特征，必须联合 strict retrieval、baseline、style correlation、cluster fingerprint 解读。
