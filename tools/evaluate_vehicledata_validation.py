@@ -9,6 +9,11 @@ from scipy.stats import spearmanr
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+try:
+    from tqdm import tqdm
+except ImportError:
+    def tqdm(x, **kwargs):
+        return x
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from tools.assign_pseudo_style_labels import _compute_signals, run as run_labels
@@ -71,7 +76,7 @@ def _eval_method(X,labels,splits,eval_split,topk,metric,retrieval_mode,args,meta
     D=dist(X[ev],X[ev],metric)
     top_rows=[]
     hits=[]; hitk=[]; frac=[]
-    for qi in range(len(ev)):
+    for qi in tqdm(range(len(ev)), desc='Evaluating retrieval'):
         mask=np.ones(len(ev),dtype=bool); mask[qi]=False
         if retrieval_mode=='strict':
             ei=ev[qi]
@@ -103,12 +108,36 @@ def run(args):
     out=Path(args.out_dir); out.mkdir(parents=True,exist_ok=True)
     data=Path(args.data_dir); lab=Path(args.label_dir)
     traj=np.load(args.traj_path or data/'traj.npy', allow_pickle=True)
-    if traj.dtype==object: traj=np.stack(traj, axis=0)
+    if traj.dtype==object:
+        # Handle case where traj contains float scalars or arrays
+        traj_arrays = []
+        for t in traj:
+            if isinstance(t, np.ndarray):
+                traj_arrays.append(t)
+            elif np.isscalar(t) or isinstance(t, float):
+                traj_arrays.append(np.full((80, 4), np.nan, dtype=np.float32))
+            else:
+                traj_arrays.append(np.full((80, 4), np.nan, dtype=np.float32))
+        traj = np.stack(traj_arrays, axis=0)
+    traj = traj.astype(np.float32)
     split=np.load(args.split_path or data/'split.npy',allow_pickle=True).astype(str)
     labels=np.load(lab/'pseudo_label.npy')
     feat=np.load(args.feat_path or data/'feat_style.npy')
     front=np.load(args.front_path or data/'front.npy',allow_pickle=True) if (args.front_path or data/'front.npy').exists() else None
-    if front is not None and front.dtype==object: front=np.stack(front,axis=0)
+    if front is not None:
+        if front.dtype==object:
+            # Handle case where front contains float scalars or arrays
+            front_arrays = []
+            seq_len = traj.shape[1] if len(traj.shape) > 1 else 80
+            for f in front:
+                if isinstance(f, np.ndarray):
+                    front_arrays.append(f)
+                elif np.isscalar(f) or isinstance(f, float):
+                    front_arrays.append(np.full((seq_len, 4), np.nan, dtype=np.float32))
+                else:
+                    front_arrays.append(np.full((seq_len, 4), np.nan, dtype=np.float32))
+            front = np.stack(front_arrays, axis=0)
+        front = front.astype(np.float32)
     sig=_compute_signals(traj,front,args.dt)
     meta,meta_warnings=_parse_meta(Path(args.meta_path or data/'meta.npy'),len(labels))
     warnings=list(meta_warnings)
