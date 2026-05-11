@@ -1114,3 +1114,71 @@ python tools/export_row_level_embeddings.py \
   --model_ckpt <CHECKPOINT> \
   --out_path data1/embeddings_row_level.npy
 ```
+
+
+## 阶段 4B：Waymo 真实人类轨迹数据提取
+
+### 命令
+```bash
+python tools/build_waymo_human_trajectory_dataset.py \
+  --waymo_dir <WAYMO_TFRECORD_DIR> \
+  --out_dir outputs/waymo_human_v1 \
+  --window_len 80 \
+  --stride 20 \
+  --min_speed 1.0 \
+  --max_files 5 \
+  --max_scenarios 200 \
+  --max_agents_per_scenario 64 \
+  --split_by_scenario \
+  --overwrite
+
+python tools/build_waymo_human_trajectory_dataset.py \
+  --out_dir outputs/waymo_human_smoke \
+  --smoke_test \
+  --overwrite
+```
+
+后续 Stage 4C：
+```bash
+python tools/assign_pseudo_style_labels.py \
+  --data_dir outputs/waymo_human_v1 \
+  --out_dir outputs/waymo_human_v1/pseudo_labels \
+  --label_mode percentile \
+  --target_quantile 0.25 \
+  --dt 0.1 \
+  --dataset_type human_public
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1 \
+  --label_dir outputs/waymo_human_v1/pseudo_labels \
+  --out_dir outputs/waymo_human_v1/eval_baselines_only \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+### 期望行为
+- 从原始 Waymo 场景中提取真实 human vehicle agent 的 observed trajectory window。
+- 不调用 synthetic policy generator。
+- 不生成 p0/p1/p2。
+- 不生成 policy_id / policy_name。
+- 输出统一格式 npy 文件。
+- 每一行对应一个真实 human agent trajectory window。
+- split 按 scenario_id hash 分配，避免同一 scenario 泄漏到不同 split。
+- 自动计算 style features 和标准化特征。
+- 自动生成 build_summary.json 和 build_report.md。
+
+### 通过标准
+- out_dir 下生成 traj.npy / front.npy / meta.npy / split.npy / feat_style.npy / feat_style_raw.npy / feature_names_style.json。
+- meta.npy 中 dataset_type = human_public。
+- meta.npy 中不包含 policy_id / policy_name。
+- len(traj) == len(front) == len(meta) == len(split) == feat_style.shape[0]。
+- build_summary.json 中 n_windows_kept > 0。
+- split_counts 中 train/val/test 至少有一个非空，正式运行应三者都有数据。
+- front_found_rate 被记录。
+- feature_names_style.json 与 feat_style 的列数一致。
+- smoke_test 可以不依赖真实 Waymo 数据运行成功。
