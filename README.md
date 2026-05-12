@@ -1211,3 +1211,58 @@ python tools/export_human_row_embeddings.py \
 - `embedding_export_summary.json` 与 `embedding_export_debug.json` 成功生成。
 - `embeddings_row_level.npy` 全量 finite，且 `shape[0] == len(traj.npy)`。
 - `row_aligned = true`（官方 Stage 4D 默认不允许 drop）。
+
+
+## 阶段 4E：jerk/comfort-aware learned embedding 训练
+
+### 命令
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_jerk_comfort \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode jerk_comfort \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_jerk_comfort/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_jerk_comfort.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_jerk_comfort.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+### 期望行为
+- 使用 train split 训练。
+- 不使用 pseudo labels 训练。
+- 提高 jerk/comfort 特征在 soft contrastive distance 中的权重。
+- 导出 row-aligned embedding。
+- 在 test split 上与 Stage 4D v1 和 baselines 对比。
+
+### 通过标准
+- train_loss / val_loss finite。
+- embeddings_row_level_jerk_comfort.npy shape = [168191, 64]。
+- learned_embedding_evaluated=true。
+- 若权重生效，rms_jerk_delta 相关性优于 Stage 4D v1。
+- retrieval/classification 不低于 random。
+- report 与 paper tables 均生成。

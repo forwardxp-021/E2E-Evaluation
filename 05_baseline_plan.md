@@ -374,3 +374,8 @@ random_embedding
 - Stage 4C：full51 baseline-only 已完成，learned 尚未在 human_public full51 上评估。
 - Stage 4D：新增 row-level learned embedding 训练/导出与 learned-vs-baselines 对比能力。
 - 反泄漏声明：pseudo labels 为弱标签且来自规则/特征，必须联合 strict retrieval、baseline、style correlation、cluster fingerprint 解读。
+
+
+## Stage 4D/4E baseline 说明
+- learned embedding 有效但不在检索上超越 raw_feature/pca_feature。
+- Stage 4E 将通过 feature weighting 做改进实验。

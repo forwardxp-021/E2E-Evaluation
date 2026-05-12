@@ -905,3 +905,24 @@ python tools/export_human_row_embeddings.py \
 - `embedding_export_summary.json` 与 `embedding_export_debug.json` 成功生成。
 - `embeddings_row_level.npy` 全量 finite，且 `shape[0] == len(traj.npy)`。
 - `row_aligned = true`（官方 Stage 4D 默认不允许 drop）。
+
+
+## 阶段 4E：jerk/comfort-aware learned embedding 训练
+
+### 命令
+同 README 的三条命令（训练/导出/评估），并可追加：
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables
+```
+
+### 期望行为
+- 训练保持 Stage 4D v1 可复现（uniform 默认）。
+- jerk_comfort 模式重点提升舒适性相关差异建模。
+- 输出可直接用于论文表格。
+
+### 通过标准
+- 评估摘要包含 learned_embedding_evaluated=true。
+- style_distance_correlation.csv 含各指标 valid_pairs_* 列。
+- human_validation_report.md 的 next steps 与 Stage 4D 已完成状态一致。

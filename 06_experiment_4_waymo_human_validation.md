@@ -64,3 +64,66 @@ Stage 3 主要是合成策略；Stage 4 需要外部真实人类轨迹验证，�
 - export 初始报错：`normalize_local produced non-finite values`。
 - 根因：导出脚本未对含 NaN/Inf 的 Waymo human 轨迹执行与训练一致的清洗流程。
 - 修复：将 `sanitize_trajectory_array` 与 `normalize_local` 抽取到共享预处理模块，并在训练/导出两侧统一调用。
+
+# Stage 4D：Waymo human row-level learned embedding 结果
+
+Stage 4D 已完成，learned embedding 已在 human_public full51 上完成评估，且导出为 row-aligned。
+
+## 数据规模
+- n_files_processed: 51
+- n_scenarios_processed: 24872
+- n_windows_kept: 168191
+- split: train=134637, val=16823, test=16731
+
+## 训练结果
+- best_val_loss: 6.101393699645996
+- final_train_loss: 6.105895535574213
+- final_val_loss: 6.101393699645996
+
+## 导出结果
+- embeddings_row_level.npy shape=[168191, 64]
+- row_aligned=true
+
+## evaluation summary
+- learned_embedding_evaluated=true
+- learned_embedding_alignment=row_aligned
+- learned_embedding_valid_for_policy_eval=true
+
+## learned vs baselines table
+| method | acc | hit@1 | mean_same_topk |
+|---|---:|---:|---:|
+| learned | 0.665990 | 0.695752 | 0.684713 |
+| raw_feature | 0.587933 | 0.910308 | 0.895076 |
+| trajectory_l2 | 0.695887 | 0.684389 | 0.680195 |
+| random | 0.311418 | 0.424107 | 0.415260 |
+| pca_feature | 0.579410 | 0.915990 | 0.896104 |
+
+## style-distance correlation table
+| method | mean_speed | rms_jerk | rms_yaw_rate | rms_curvature |
+|---|---:|---:|---:|---:|
+| learned | 0.571203 | 0.069744 | 0.339976 | 0.502536 |
+| raw_feature | - | 0.325408 | 0.318599 | 0.433656 |
+| trajectory_l2 | 0.915366 | - | 0.089636 | 0.010284 |
+| pca_feature | - | 0.327921 | 0.324885 | 0.453873 |
+
+## 当前结论
+learned embedding 提供非随机且可解释的行为结构，分类较强，且对横向/曲率风格敏感。
+
+## 不能过度声称的内容
+- 不可声称 learned 全面优于所有 baseline。
+- pseudo labels 不是 ground truth。
+
+## 当前短板
+jerk/comfort 敏感性偏弱；raw_feature/pca_feature 在检索上仍显著更强。
+
+## Stage 4E 下一步
+面向 jerk/comfort 的特征加权训练与消融比较。
+
+| Task | Status | Notes |
+|---|---|---|
+| Stage 4A scaffold | 完成 | data1 synthetic scaffold |
+| Stage 4B Waymo human extraction | 完成 | full51 = 168191 windows |
+| Stage 4C baseline-only validation | 完成 | raw_feature / trajectory_l2 / pca_feature |
+| Stage 4D row-level learned embedding | 完成 | learned evaluated on full51 |
+| Report auto-fill | 部分完成 | needs next-step correction and NaN handling |
+| Stage 4E jerk/comfort-aware embedding | 未完成 | next target |
