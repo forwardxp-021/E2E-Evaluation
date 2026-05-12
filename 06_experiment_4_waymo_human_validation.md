@@ -181,4 +181,22 @@ python tools/compare_embedding_runs.py \
 | Stage 4E export | 待执行 | export row-level embeddings |
 | Stage 4E evaluation | 待执行 | eval_with_learned_jerk_comfort |
 | Stage 4D vs 4E comparison | 待执行 | compare_embedding_runs |
-| README merge | 待完成 | README as single source of truth |
+| README restore | 完成 | overview document |
+| QUICK_REFERENCE restore | 完成 | command document |
+
+
+## 14. 文档职责恢复（README / QUICK_REFERENCE）
+- README.md 与 QUICK_REFERENCE.md 均为持续维护文档。
+- README.md 负责项目目标、研究方向、阶段进展与结论。
+- QUICK_REFERENCE.md 负责可执行命令、期望行为、通过标准。
+- Stage 4E 训练已完成；当前最近一步是按顺序执行 export → evaluation → comparison。
+- Stage 4D 与 Stage 4E 输出目录必须分离，禁止覆盖。
+
+| Task | Status | Notes |
+|---|---|---|
+| README restore | 完成 | overview document |
+| QUICK_REFERENCE restore | 完成 | command document |
+| Stage 4E training | 完成 | jerk_comfort model trained |
+| Stage 4E export | 待执行 | export row-level embeddings |
+| Stage 4E evaluation | 待执行 | eval_with_learned_jerk_comfort |
+| Stage 4D vs 4E comparison | 待执行 | compare_embedding_runs |
