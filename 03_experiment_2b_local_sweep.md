@@ -265,5 +265,5 @@ recommended_lateral_stable_v2 significantly improves p2 recognizability, retriev
 | recommended_lateral_stable_v2 固化 | 完成/待代码最终确认 | 已生成 final compare 输出 |
 | final compare | 完成 | 三配置对比表可用于论文 |
 | final compare plots | 完成 | margin / retrieval / tradeoff 等 |
-| README / QUICK_REFERENCE 更新 | 待最终确认 | 必须同步最新命令 |
+| README 更新 | 待最终确认 | 必须同步最新命令 |
 | 阶段 3 总结 | 完成 | 可以进入阶段 4 |

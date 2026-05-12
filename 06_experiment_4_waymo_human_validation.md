@@ -127,3 +127,58 @@ jerk/comfort 敏感性偏弱；raw_feature/pca_feature 在检索上仍显著更�
 | Stage 4D row-level learned embedding | 完成 | learned evaluated on full51 |
 | Report auto-fill | 部分完成 | needs next-step correction and NaN handling |
 | Stage 4E jerk/comfort-aware embedding | 未完成 | next target |
+
+# Stage 4E：jerk/comfort-aware 训练完成后的下一步
+
+Stage 4E 训练已完成（jerk_comfort 权重训练）。当前必须按顺序执行后处理：先导出 row-level embedding，再进行 evaluation，最后对比 Stage 4D v1 vs Stage 4E。
+
+- Stage 4E training has completed.
+- Next required step is export.
+- Then evaluate.
+- Then compare Stage 4D v1 vs Stage 4E.
+- Do not overwrite Stage 4D v1 results.
+- Stage 4E result should be judged by:
+  - learned classification
+  - learned hit@1
+  - learned mean_same_label_fraction_topk
+  - learned rms_jerk_delta correlation
+  - learned rms_yaw_rate_delta correlation
+  - learned rms_curvature_delta correlation
+  - no collapse to random
+
+建议执行命令：
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_jerk_comfort/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_jerk_comfort.npy \
+  --batch_size 1024 --device cuda --overwrite
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_jerk_comfort.npy \
+  --eval_split test --distance euclidean --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict --dataset_type human_public --projection pca
+
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_stage4e
+```
+
+论文表格输入必须区分：
+- Stage 4D v1: `eval_with_learned` + `human_embedding_model` + `embeddings_row_level.npy`
+- Stage 4E: `eval_with_learned_jerk_comfort` + `human_embedding_model_jerk_comfort` + `embeddings_row_level_jerk_comfort.npy`
+- 除 `compare_embedding_runs.py` 外，不应混用 Stage 4D 与 Stage 4E 输入。
+
+| Task | Status | Notes |
+|---|---|---|
+| Stage 4E training | 完成 | jerk_comfort model trained |
+| Stage 4E export | 待执行 | export row-level embeddings |
+| Stage 4E evaluation | 待执行 | eval_with_learned_jerk_comfort |
+| Stage 4D vs 4E comparison | 待执行 | compare_embedding_runs |
+| README merge | 待完成 | README as single source of truth |
