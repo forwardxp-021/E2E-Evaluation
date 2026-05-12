@@ -1266,3 +1266,7 @@ python tools/evaluate_vehicledata_validation.py \
 - 若权重生效，rms_jerk_delta 相关性优于 Stage 4D v1。
 - retrieval/classification 不低于 random。
 - report 与 paper tables 均生成。
+
+## 阶段 4F：comfort-aware auxiliary regression（当前主线）
+
+Stage 4D learned embedding 在 jerk 相关性上偏弱；Stage 4E 的 jerk/comfort feature weighting 没有改善 jerk correlation，且分类/检索略有退化。因此 Stage 4F 不再仅靠特征权重，而是在 embedding 上增加显式 comfort auxiliary regression 监督（rms_accel/rms_jerk/max_abs_accel/max_abs_jerk/mean_thw/min_thw），目标是提升 jerk/comfort 敏感性，同时保持 learned embedding 的判别能力。训练依然不使用 pseudo labels。

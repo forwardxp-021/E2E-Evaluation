@@ -926,3 +926,72 @@ python tools/generate_paper_tables.py \
 - 评估摘要包含 learned_embedding_evaluated=true。
 - style_distance_correlation.csv 含各指标 valid_pairs_* 列。
 - human_validation_report.md 的 next steps 与 Stage 4D 已完成状态一致。
+
+# Stage 4F：comfort-aware auxiliary regression
+
+## 1. 命令
+
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode uniform \
+  --aux_regression \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --aux_loss_weight 0.2 \
+  --aux_loss_type huber \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_aux.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_aux.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+    stage4f_comfort_aux=outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_stage4e_stage4f
+```
+
+## 2. 期望行为
+- 使用 train split 训练。
+- 不使用 pseudo labels 训练。
+- 在 soft contrastive loss 基础上增加 comfort auxiliary regression。
+- 明确预测 rms_accel / rms_jerk / max_abs_accel / max_abs_jerk / mean_thw / min_thw。
+- 导出 row-aligned embedding。
+- 在 test split 上评估 learned vs baselines。
+- 与 Stage 4D / Stage 4E 对比。
+
+## 3. 通过标准
+- train_total_loss / val_total_loss finite。
+- aux_loss finite。
+- embeddings_row_level_comfort_aux.npy shape = [168191, 64]。
+- evaluation learned_embedding_evaluated=true。
+- learned 的 classification/retrieval 明显高于 random。
+- rms_jerk_delta correlation 相比 Stage 4D v1 有明显提升。
+- 如果 jerk 未提升，报告中明确记录 Stage 4F 未达到目标。

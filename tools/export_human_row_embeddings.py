@@ -81,7 +81,7 @@ def run(args):
 
     emb_dim = int(obj.get("embedding_dim", 64))
     model = Enc(emb_dim)
-    model.load_state_dict(obj["model"])
+    model.load_state_dict(obj["model"], strict=False)
     dev = torch.device(args.device if args.device != "cuda" or torch.cuda.is_available() else "cpu")
     model.to(dev)
     model.eval()
