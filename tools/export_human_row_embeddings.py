@@ -157,7 +157,8 @@ def run(args):
         "batch_size": int(args.batch_size),
         "warnings": warnings,
     }
-    (op.parent / "embedding_export_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    summary_path = Path(args.summary_path) if args.summary_path else op.with_name(f"{op.stem}_export_summary.json")
+    summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     (op.parent / "embedding_export_debug.json").write_text(json.dumps(debug, indent=2), encoding="utf-8")
 
     if args.smoke_test:
@@ -181,4 +182,5 @@ if __name__ == "__main__":
     p.add_argument("--fail_on_nonfinite", action="store_true")
     p.add_argument("--allow_drop", action="store_true")
     p.add_argument("--allow_nan_checkpoint", action="store_true")
+    p.add_argument("--summary_path", default=None)
     run(p.parse_args())

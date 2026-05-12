@@ -69,7 +69,7 @@ GRU(input=4, hidden=128) → h[-1] → Linear(128,128) → ReLU → Linear(128,6
 | `analyze_style_embedding.py` | `evaluate_embedding.py` |
 | `analysis/umap_feature_coloring.py` | `evaluate_embedding.py` |
 | `scripts/umap_analysis.py` | `evaluate_embedding.py` |
-| `docs/umap_validation_checklist.md` | `README.md` 和 `QUICK_REFERENCE.md` |
+| `docs/umap_validation_checklist.md` | `README.md` |
 
 ---
 

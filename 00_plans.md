@@ -580,7 +580,7 @@ mean_p2_separation_margin 仍然为负。
 | local fine sweep | 完成 | 找到 yaw_008_jerk_020 |
 | recommended_lateral_stable_v2 固化 | 完成/待代码最终确认 | 已生成 final compare 输出 |
 | final comparison summary | 完成 | 三配置论文级对比表已生成 |
-| README / QUICK_REFERENCE 更新 | 待最终确认 | 每次代码变更需同步更新 |
+| README 更新 | 待最终确认 | 每次代码变更需同步更新 |
 
 ---
 
@@ -798,7 +798,7 @@ lateral_stable 的独立性显著增强，但仍未完全成立。
 
 - 确认 `recommended_lateral_stable_v2` 已固化；
 - 确认 `final_compare` 三配置对比输出稳定；
-- 确认 README / QUICK_REFERENCE 已更新；
+- 确认 README 已更新；
 - 整理 final comparison 表格和图。
 
 ### P1：启动阶段 4 public human trajectory validation
@@ -862,7 +862,7 @@ paper_outline.md                      # 论文结构草稿
 | broad ablation | 完成 | 已得机制结论 |
 | local fine sweep | 完成 | 已得 v2 配置 |
 | final compare | 完成/待代码最终确认 | 作为论文表格 |
-| README / QUICK_REFERENCE | 待确认 | 必须同步最新命令 |
+| README | 待确认 | 必须同步最新命令 |
 | public human trajectory validation | 未开始 | 下一大阶段 |
 | baselines | 未开始 | 顶会必要 |
 | paper outline | 未开始 | 建议尽快启动 |
