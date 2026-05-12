@@ -23,15 +23,18 @@ from trajectory_preprocessing import (
 
 
 class HumanDS(Dataset):
-    def __init__(self, traj, feat):
+    def __init__(self, traj, feat, aux_targets=None):
         self.traj = traj.astype(np.float32)
         self.feat = feat.astype(np.float32)
+        self.aux_targets = None if aux_targets is None else aux_targets.astype(np.float32)
 
     def __len__(self):
         return len(self.traj)
 
     def __getitem__(self, i):
-        return self.traj[i], self.feat[i]
+        if self.aux_targets is None:
+            return self.traj[i], self.feat[i], np.zeros((0,), dtype=np.float32)
+        return self.traj[i], self.feat[i], self.aux_targets[i]
 
 
 class Enc(nn.Module):
@@ -43,6 +46,38 @@ class Enc(nn.Module):
     def forward(self, x):
         _, h = self.gru(x)
         return self.head(h[-1])
+
+
+class AuxRegHead(nn.Module):
+    def __init__(self, emb_dim, hidden_dim, out_dim):
+        super().__init__()
+        self.mlp = nn.Sequential(
+            nn.Linear(emb_dim, hidden_dim),
+            nn.ReLU(),
+            nn.LayerNorm(hidden_dim),
+            nn.Linear(hidden_dim, out_dim),
+        )
+
+    def forward(self, z):
+        return self.mlp(z)
+
+
+def load_feature_names(data_dir):
+    p = Path(data_dir) / "feature_names_style.json"
+    if p.exists():
+        names = json.loads(p.read_text(encoding="utf-8"))
+        if isinstance(names, dict):
+            names = names.get("feature_names", [])
+        return list(names)
+    return ['mean_speed', 'rms_accel', 'rms_jerk', 'rms_yaw_rate_proxy', 'rms_curvature_proxy', 'mean_thw', 'min_thw', 'max_abs_accel', 'max_abs_jerk']
+
+
+def select_aux_target_indices(feature_names, aux_targets):
+    name_to_idx = {n: i for i, n in enumerate(feature_names)}
+    missing = [n for n in aux_targets if n not in name_to_idx]
+    if missing:
+        raise ValueError(f"Aux targets missing from feature names: {missing}")
+    return [name_to_idx[n] for n in aux_targets]
 
 
 def soft_loss(z, f, temperature, feature_temperature, feature_weights=None):
@@ -133,7 +168,7 @@ def run(args):
     print(f"feat norm after clip: min={min_after:.4f}, max={max_after:.4f}, clipped={clipped_count}")
     print(f"feat has_nan={np.isnan(feat_norm).any()}, has_inf={np.isinf(feat_norm).any()}")
 
-    feature_names = ['mean_speed','rms_accel','rms_jerk','rms_yaw_rate_proxy','rms_curvature_proxy','mean_thw','min_thw','max_abs_accel','max_abs_jerk']
+    feature_names = load_feature_names(args.data_dir)
     weights = {k:1.0 for k in feature_names}
     if args.feature_weight_mode == 'jerk_comfort':
         weights.update({'rms_accel':2.0,'rms_jerk':4.0,'max_abs_accel':2.0,'max_abs_jerk':4.0,'mean_thw':2.0,'min_thw':2.0})
@@ -147,21 +182,48 @@ def run(args):
     (out / 'feature_weights.json').write_text(json.dumps({'mode': args.feature_weight_mode, 'weights': weights}, indent=2))
     fw_t = torch.tensor(fw, dtype=torch.float32)
     dev = torch.device(args.device if (args.device != 'cuda' or torch.cuda.is_available()) else 'cpu')
-    tr_ds = HumanDS(traj_clean[split == 'train'], feat_norm[split == 'train'])
-    va_ds = HumanDS(traj_clean[split == 'val'], feat_norm[split == 'val'])
+    aux_targets = [x.strip() for x in args.aux_targets.split(",") if x.strip()]
+    aux_idx = []
+    aux_data = None
+    if args.aux_regression:
+        aux_idx = select_aux_target_indices(feature_names, aux_targets)
+        source_feat = feat_norm if args.aux_target_normalize else feat
+        aux_data = source_feat[:, aux_idx]
+        aux_data = np.nan_to_num(aux_data, nan=0.0, posinf=0.0, neginf=0.0)
+        aux_data = np.clip(aux_data, -args.aux_target_clip, args.aux_target_clip)
+        if aux_data.ndim != 2 or aux_data.shape[0] != len(feat):
+            raise RuntimeError(f"bad aux target shape: {aux_data.shape}")
+    tr_ds = HumanDS(traj_clean[split == 'train'], feat_norm[split == 'train'], None if aux_data is None else aux_data[split == 'train'])
+    va_ds = HumanDS(traj_clean[split == 'val'], feat_norm[split == 'val'], None if aux_data is None else aux_data[split == 'val'])
     tr = DataLoader(tr_ds, batch_size=args.batch_size, shuffle=True, num_workers=0)
     va = DataLoader(va_ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
     model = Enc(args.embedding_dim).to(dev)
+    aux_head = AuxRegHead(args.embedding_dim, args.aux_hidden_dim, len(aux_idx)).to(dev) if args.aux_regression else None
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr)
+    if aux_head is not None:
+        opt = torch.optim.AdamW(list(model.parameters()) + list(aux_head.parameters()), lr=args.lr)
+    if args.aux_loss_type == "huber":
+        aux_criterion = nn.HuberLoss()
+    elif args.aux_loss_type == "mse":
+        aux_criterion = nn.MSELoss()
+    else:
+        aux_criterion = nn.SmoothL1Loss()
     best, bad, logs, debug = 1e9, 0, [], []
 
-    def run_batch(tb, fb, batch_i, train_mode):
+    def run_batch(tb, fb, ab, batch_i, train_mode, ep):
         tb, fb = tb.to(dev), fb.to(dev)
+        ab = ab.to(dev)
         tb = normalize_local(tb)
         assert torch.isfinite(tb).all(), "non-finite trajectory batch before forward"
         z = model(tb)
-        loss, logits, tlogits = soft_loss(z, fb, args.temperature, args.feature_temperature, feature_weights=fw_t)
-        finite = bool(torch.isfinite(loss).item()) and bool(torch.isfinite(logits).all().item()) and bool(torch.isfinite(tlogits).all().item())
+        loss_soft, logits, tlogits = soft_loss(z, fb, args.temperature, args.feature_temperature, feature_weights=fw_t)
+        aux_loss = torch.tensor(0.0, device=dev)
+        if args.aux_regression:
+            pred_aux = aux_head(z)
+            aux_loss = aux_criterion(pred_aux, ab)
+        aux_weight = args.aux_loss_weight if ep >= args.aux_warmup_epochs else 0.0
+        loss_total = loss_soft + aux_weight * aux_loss
+        finite = bool(torch.isfinite(loss_total).item()) and bool(torch.isfinite(logits).all().item()) and bool(torch.isfinite(tlogits).all().item())
         if (len(debug) < args.debug_n_batches) and train_mode:
             debug.append({
                 "batch": int(batch_i), "traj_min": float(tb.min().item()), "traj_max": float(tb.max().item()),
@@ -180,29 +242,38 @@ def run(args):
                 print("[warn]", msg)
                 return None
             raise RuntimeError(msg)
-        return loss
+        return loss_soft, aux_loss, loss_total
 
     epoch_bar = tqdm(range(args.epochs), desc="Training epochs")
     for ep in epoch_bar:
-        model.train(); tl = []
-        for bi, (tb, fb) in enumerate(tqdm(tr, desc=f"Epoch {ep + 1}/{args.epochs} - Train", leave=False)):
-            loss = run_batch(tb, fb, bi, train_mode=True)
-            if loss is None:
+        model.train(); tls, tla, tlt = [], [], []
+        if aux_head is not None:
+            aux_head.train()
+        for bi, (tb, fb, ab) in enumerate(tqdm(tr, desc=f"Epoch {ep + 1}/{args.epochs} - Train", leave=False)):
+            losses = run_batch(tb, fb, ab, bi, train_mode=True, ep=ep)
+            if losses is None:
                 continue
-            opt.zero_grad(); loss.backward(); opt.step(); tl.append(float(loss.item()))
-        model.eval(); vl = []
+            ls, la, lt = losses
+            opt.zero_grad(); lt.backward(); opt.step()
+            tls.append(float(ls.item())); tla.append(float(la.item())); tlt.append(float(lt.item()))
+        model.eval(); vls, vla, vlt = [], [], []
+        if aux_head is not None:
+            aux_head.eval()
         with torch.no_grad():
-            for bi, (tb, fb) in enumerate(tqdm(va, desc=f"Epoch {ep + 1}/{args.epochs} - Val", leave=False)):
-                loss = run_batch(tb, fb, bi, train_mode=False)
-                if loss is not None:
-                    vl.append(float(loss.item()))
-        t = float(np.mean(tl)) if tl else float('nan')
-        v = float(np.mean(vl)) if vl else t
-        logs.append({'epoch': ep + 1, 'train_loss': t, 'val_loss': v})
-        epoch_bar.set_postfix(train_loss=f"{t:.4f}", val_loss=f"{v:.4f}", best_val=f"{best if np.isfinite(best) else float('nan'):.4f}")
-        if np.isfinite(v) and v < best:
-            best = v; bad = 0
-            torch.save({'model': model.state_dict(), 'embedding_dim': args.embedding_dim}, out / 'model.pt')
+            for bi, (tb, fb, ab) in enumerate(tqdm(va, desc=f"Epoch {ep + 1}/{args.epochs} - Val", leave=False)):
+                losses = run_batch(tb, fb, ab, bi, train_mode=False, ep=ep)
+                if losses is not None:
+                    ls, la, lt = losses
+                    vls.append(float(ls.item())); vla.append(float(la.item())); vlt.append(float(lt.item()))
+        t_soft, v_soft = (float(np.mean(tls)) if tls else float('nan')), (float(np.mean(vls)) if vls else float('nan'))
+        t_aux, v_aux = (float(np.mean(tla)) if tla else 0.0), (float(np.mean(vla)) if vla else 0.0)
+        t_total, v_total = (float(np.mean(tlt)) if tlt else float('nan')), (float(np.mean(vlt)) if vlt else float('nan'))
+        logs.append({'epoch': ep + 1, 'train_soft_loss': t_soft, 'train_aux_loss': t_aux, 'train_total_loss': t_total, 'val_soft_loss': v_soft, 'val_aux_loss': v_aux, 'val_total_loss': v_total})
+        metric_value = v_total if args.early_stop_metric == "total" else (v_soft if args.early_stop_metric == "soft" else v_aux)
+        epoch_bar.set_postfix(train_total_loss=f"{t_total:.4f}", val_total_loss=f"{v_total:.4f}", best_val=f"{best if np.isfinite(best) else float('nan'):.4f}")
+        if np.isfinite(metric_value) and metric_value < best:
+            best = metric_value; bad = 0
+            torch.save({'model': model.state_dict(), 'aux_head': None if aux_head is None else aux_head.state_dict(), 'embedding_dim': args.embedding_dim, 'aux_regression': args.aux_regression, 'aux_targets': aux_targets, 'feature_weight_mode': args.feature_weight_mode, 'model_architecture': {'embedding_dim': args.embedding_dim, 'aux_hidden_dim': args.aux_hidden_dim}, 'train_summary': {'best_val_total_loss': best, 'early_stop_metric': args.early_stop_metric}}, out / 'model.pt')
         else:
             bad += 1
         if bad >= args.patience:
@@ -222,7 +293,7 @@ def run(args):
         'feat_norm_min_after_clip': min_after, 'feat_norm_max_after_clip': max_after,
         'feature_clip': args.feature_clip, 'temperature': args.temperature, 'feature_temperature': args.feature_temperature,
         'batch_size': args.batch_size, 'epochs': args.epochs, 'best_val_loss': best,
-        'final_train_loss': logs[-1]['train_loss'] if logs else None, 'final_val_loss': logs[-1]['val_loss'] if logs else None,
+        'final_train_loss': logs[-1]['train_total_loss'] if logs else None, 'final_val_loss': logs[-1]['val_total_loss'] if logs else None,
         'stopped_early': bad >= args.patience,
         'warnings': warnings,
         'dropped_due_to_nonfinite_traj': int(sdiag['dropped_count']),
@@ -232,12 +303,27 @@ def run(args):
         'feature_weight_mode': args.feature_weight_mode,
         'feature_weights_json': args.feature_weights_json,
         'feature_weights': weights,
+        'aux_regression': args.aux_regression,
+        'aux_targets': aux_targets,
+        'aux_target_indices': aux_idx,
+        'aux_loss_weight': args.aux_loss_weight,
+        'aux_loss_type': args.aux_loss_type,
+        'aux_hidden_dim': args.aux_hidden_dim,
+        'aux_target_clip': args.aux_target_clip,
+        'early_stop_metric': args.early_stop_metric,
+        'best_val_total_loss': best,
+        'final_train_soft_loss': logs[-1]['train_soft_loss'] if logs else None,
+        'final_train_aux_loss': logs[-1]['train_aux_loss'] if logs else None,
+        'final_train_total_loss': logs[-1]['train_total_loss'] if logs else None,
+        'final_val_soft_loss': logs[-1]['val_soft_loss'] if logs else None,
+        'final_val_aux_loss': logs[-1]['val_aux_loss'] if logs else None,
+        'final_val_total_loss': logs[-1]['val_total_loss'] if logs else None,
     }
     (out / 'train_summary.json').write_text(json.dumps(summary, indent=2))
     (out / 'val_metrics.json').write_text(json.dumps({'best_val_loss': best}, indent=2))
-    plt.figure(); plt.plot([x['epoch'] for x in logs], [x['train_loss'] for x in logs], label='train'); plt.plot([x['epoch'] for x in logs], [x['val_loss'] for x in logs], label='val'); plt.legend(); plt.tight_layout(); plt.savefig(out / 'training_curve.png'); plt.close()
-    final_train_loss = logs[-1]['train_loss'] if logs else float('nan')
-    final_val_loss = logs[-1]['val_loss'] if logs else float('nan')
+    plt.figure(); plt.plot([x['epoch'] for x in logs], [x['train_total_loss'] for x in logs], label='train_total'); plt.plot([x['epoch'] for x in logs], [x['val_total_loss'] for x in logs], label='val_total'); plt.legend(); plt.tight_layout(); plt.savefig(out / 'training_curve.png'); plt.close()
+    final_train_loss = logs[-1]['train_total_loss'] if logs else float('nan')
+    final_val_loss = logs[-1]['val_total_loss'] if logs else float('nan')
     print('=' * 50)
     print('训练完成!')
     print(f'最终 Train Loss: {final_train_loss:.6f}')
@@ -271,6 +357,16 @@ if __name__ == '__main__':
     p.add_argument('--overwrite', action='store_true')
     p.add_argument('--feature_weight_mode', choices=['uniform','jerk_comfort','lateral','custom'], default='uniform')
     p.add_argument('--feature_weights_json', default=None)
+    p.add_argument('--aux_regression', action='store_true')
+    p.add_argument('--aux_targets', default='rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw')
+    p.add_argument('--aux_loss_weight', type=float, default=0.2)
+    p.add_argument('--aux_loss_type', choices=['huber', 'mse', 'smooth_l1'], default='huber')
+    p.add_argument('--aux_hidden_dim', type=int, default=128)
+    p.add_argument('--aux_target_clip', type=float, default=10.0)
+    p.add_argument('--aux_target_normalize', action='store_true', default=True)
+    p.add_argument('--aux_warmup_epochs', type=int, default=0)
+    p.add_argument('--save_aux_predictions', action='store_true')
+    p.add_argument('--early_stop_metric', choices=['total', 'soft', 'aux'], default='total')
     a = p.parse_args()
     torch.manual_seed(a.seed)
     np.random.seed(a.seed)

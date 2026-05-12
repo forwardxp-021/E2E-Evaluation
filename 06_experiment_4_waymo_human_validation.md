@@ -200,3 +200,10 @@ python tools/compare_embedding_runs.py \
 | Stage 4E export | 待执行 | export row-level embeddings |
 | Stage 4E evaluation | 待执行 | eval_with_learned_jerk_comfort |
 | Stage 4D vs 4E comparison | 待执行 | compare_embedding_runs |
+
+## Stage 4F：为什么要做 comfort auxiliary regression
+
+- Stage 4D learned embedding 的 jerk correlation 明显偏弱（例如 `spearman_rms_jerk_delta` 远低于 yaw/curvature/speed）。
+- Stage 4E 的 jerk_comfort 特征加权未提升 jerk correlation，且整体指标轻微回退，说明简单重加权不足。
+- Stage 4F 在 soft contrastive 主目标之外，增加从 embedding 到 comfort 特征的辅助回归监督，直接约束 embedding 保留 jerk/comfort 信息。
+- Stage 4F 训练仍不使用 pseudo labels；pseudo labels 仅用于下游评估对比。
