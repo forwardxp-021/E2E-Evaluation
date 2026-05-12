@@ -45,10 +45,13 @@ class Enc(nn.Module):
         return self.head(h[-1])
 
 
-def soft_loss(z, f, temperature, feature_temperature):
+def soft_loss(z, f, temperature, feature_temperature, feature_weights=None):
     z = F.normalize(z, dim=1, eps=1e-8)
     logits = z @ z.T / temperature
     f = F.normalize(f, dim=1, eps=1e-8)
+    if feature_weights is not None:
+        fw = feature_weights.to(f.device).view(1, -1)
+        f = f * torch.sqrt(fw)
     dist2 = torch.cdist(f, f, p=2) ** 2
     target_logits = -dist2 / feature_temperature
     b = z.shape[0]
@@ -130,6 +133,19 @@ def run(args):
     print(f"feat norm after clip: min={min_after:.4f}, max={max_after:.4f}, clipped={clipped_count}")
     print(f"feat has_nan={np.isnan(feat_norm).any()}, has_inf={np.isinf(feat_norm).any()}")
 
+    feature_names = ['mean_speed','rms_accel','rms_jerk','rms_yaw_rate_proxy','rms_curvature_proxy','mean_thw','min_thw','max_abs_accel','max_abs_jerk']
+    weights = {k:1.0 for k in feature_names}
+    if args.feature_weight_mode == 'jerk_comfort':
+        weights.update({'rms_accel':2.0,'rms_jerk':4.0,'max_abs_accel':2.0,'max_abs_jerk':4.0,'mean_thw':2.0,'min_thw':2.0})
+    elif args.feature_weight_mode == 'lateral':
+        weights.update({'rms_yaw_rate_proxy':3.0,'rms_curvature_proxy':3.0,'heading_change_total':2.0})
+    elif args.feature_weight_mode == 'custom':
+        weights.update(json.loads(Path(args.feature_weights_json).read_text()))
+    fw = np.ones(feat_norm.shape[1], dtype=np.float32)
+    for i, n in enumerate(feature_names[:feat_norm.shape[1]]):
+        fw[i] = float(weights.get(n, 1.0))
+    (out / 'feature_weights.json').write_text(json.dumps({'mode': args.feature_weight_mode, 'weights': weights}, indent=2))
+    fw_t = torch.tensor(fw, dtype=torch.float32)
     dev = torch.device(args.device if (args.device != 'cuda' or torch.cuda.is_available()) else 'cpu')
     tr_ds = HumanDS(traj_clean[split == 'train'], feat_norm[split == 'train'])
     va_ds = HumanDS(traj_clean[split == 'val'], feat_norm[split == 'val'])
@@ -144,7 +160,7 @@ def run(args):
         tb = normalize_local(tb)
         assert torch.isfinite(tb).all(), "non-finite trajectory batch before forward"
         z = model(tb)
-        loss, logits, tlogits = soft_loss(z, fb, args.temperature, args.feature_temperature)
+        loss, logits, tlogits = soft_loss(z, fb, args.temperature, args.feature_temperature, feature_weights=fw_t)
         finite = bool(torch.isfinite(loss).item()) and bool(torch.isfinite(logits).all().item()) and bool(torch.isfinite(tlogits).all().item())
         if (len(debug) < args.debug_n_batches) and train_mode:
             debug.append({
@@ -213,6 +229,9 @@ def run(args):
         'dropped_due_to_nonfinite_feat': int(len(dropped_feat_idx)),
         'traj_repaired_count': int(sdiag['repaired_count']),
         'feature_clipped_values': clipped_count,
+        'feature_weight_mode': args.feature_weight_mode,
+        'feature_weights_json': args.feature_weights_json,
+        'feature_weights': weights,
     }
     (out / 'train_summary.json').write_text(json.dumps(summary, indent=2))
     (out / 'val_metrics.json').write_text(json.dumps({'best_val_loss': best}, indent=2))
@@ -250,7 +269,10 @@ if __name__ == '__main__':
     p.add_argument('--skip_bad_batches', action='store_true')
     p.add_argument('--debug_n_batches', type=int, default=1)
     p.add_argument('--overwrite', action='store_true')
+    p.add_argument('--feature_weight_mode', choices=['uniform','jerk_comfort','lateral','custom'], default='uniform')
+    p.add_argument('--feature_weights_json', default=None)
     a = p.parse_args()
     torch.manual_seed(a.seed)
     np.random.seed(a.seed)
     run(a)
+    print('[warning] 训练不使用 pseudo labels；feature weighting 仅用于弱监督特征对齐，不是 pseudo-label 监督训练。')

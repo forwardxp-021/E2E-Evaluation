@@ -711,3 +711,11 @@ Dataset conversion details。
 - Stage 4C：full51 baseline-only 已完成，learned 尚未在 human_public full51 上评估。
 - Stage 4D：新增 row-level learned embedding 训练/导出与 learned-vs-baselines 对比能力。
 - 反泄漏声明：pseudo labels 为弱标签且来自规则/特征，必须联合 strict retrieval、baseline、style correlation、cluster fingerprint 解读。
+
+
+## 新增结果表
+- Dataset statistics
+- Pseudo label distribution
+- Learned vs baselines
+- Style-distance correlation（含 valid pair count）
+- Training/export summary

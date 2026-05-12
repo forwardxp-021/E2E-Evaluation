@@ -623,3 +623,8 @@ python tools/evaluate_vehicledata_validation.py \
 - Stage 4C：full51 baseline-only 已完成，learned 尚未在 human_public full51 上评估。
 - Stage 4D：新增 row-level learned embedding 训练/导出与 learned-vs-baselines 对比能力。
 - 反泄漏声明：pseudo labels 为弱标签且来自规则/特征，必须联合 strict retrieval、baseline、style correlation、cluster fingerprint 解读。
+
+
+## Stage 4D 结果固化与 Stage 4E 计划
+- Stage 4D 已完成并形成文档/表格化证据链。
+- Stage 4E 目标：提升 jerk/comfort 相关风格相关性，不替代 Stage 4D v1。
