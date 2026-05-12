@@ -58,3 +58,9 @@ Stage 3 主要是合成策略；Stage 4 需要外部真实人类轨迹验证，�
 - 初始 Stage 4D 训练出现 `train_loss=nan` 与 `val_loss=nan`。
 - 根因：`traj.npy` 中存在 trajectory/velocity NaN，且 feature 标准化后出现极端值。
 - 修复：加入 trajectory NaN 插值与对齐过滤、feature 标准化后 clipping、稳定 soft contrastive loss（log_softmax/softmax + 对角 mask + 非有限检查）。
+
+
+### Stage 4D export 问题与修复
+- export 初始报错：`normalize_local produced non-finite values`。
+- 根因：导出脚本未对含 NaN/Inf 的 Waymo human 轨迹执行与训练一致的清洗流程。
+- 修复：将 `sanitize_trajectory_array` 与 `normalize_local` 抽取到共享预处理模块，并在训练/导出两侧统一调用。
