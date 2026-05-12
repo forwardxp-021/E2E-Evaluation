@@ -926,3 +926,32 @@ python tools/generate_paper_tables.py \
 - 评估摘要包含 learned_embedding_evaluated=true。
 - style_distance_correlation.csv 含各指标 valid_pairs_* 列。
 - human_validation_report.md 的 next steps 与 Stage 4D 已完成状态一致。
+
+## 阶段 4D：生成论文表格
+
+### 1. 命令
+
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned \
+  --train_summary outputs/waymo_human_v1_full51/human_embedding_model/train_summary.json \
+  --export_summary outputs/waymo_human_v1_full51/embedding_export_summary.json \
+  --pseudo_label_summary outputs/waymo_human_v1_full51/pseudo_labels/pseudo_label_summary.json \
+  --build_summary outputs/waymo_human_v1_full51/build_summary.json \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables
+```
+
+### 2. 期望行为
+
+- 读取 Stage 4D v1 的 build / pseudo-label / training / export / evaluation 输出。
+- 生成论文用 Markdown 和 CSV 表格。
+- 不混入 Stage 4E jerk/comfort-aware 结果。
+- paper_tables_summary.md 应包含完整结论，不是空骨架。
+
+### 3. 通过标准
+
+- paper_tables_summary.md 包含 Dataset statistics / Pseudo-label distribution / Learned vs baselines / Style-distance correlation / Training export summary。
+- 每个 table_*.md 都包含真实 Markdown 表格。
+- 每个 table_*.csv 都包含有效行。
+- 如果输入文件缺失，脚本明确报错。
+- summary 中明确标注 experiment_stage = Stage 4D v1。
