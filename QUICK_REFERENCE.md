@@ -880,52 +880,28 @@ python tools/evaluate_vehicledata_validation.py \
 
 ## 阶段 4D：训练并导出 Waymo human row-level learned embedding
 
-### 命令
+### 1. 命令
 ```bash
-python tools/train_human_behavior_embedding.py \
-  --data_dir outputs/waymo_human_v1_full51 \
-  --out_dir outputs/waymo_human_v1_full51/human_embedding_model \
-  --embedding_dim 64 \
-  --batch_size 512 \
-  --epochs 20 \
-  --lr 1e-3 \
-  --temperature 0.1 \
-  --device cuda \
-  --seed 42
-
 python tools/export_human_row_embeddings.py \
   --data_dir outputs/waymo_human_v1_full51 \
   --checkpoint outputs/waymo_human_v1_full51/human_embedding_model/model.pt \
   --out_path outputs/waymo_human_v1_full51/embeddings_row_level.npy \
   --batch_size 1024 \
-  --device cuda
-
-python tools/evaluate_vehicledata_validation.py \
-  --data_dir outputs/waymo_human_v1_full51 \
-  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
-  --out_dir outputs/waymo_human_v1_full51/eval_with_learned \
-  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level.npy \
-  --eval_split test \
-  --distance euclidean \
-  --topk 5 \
-  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
-  --retrieval_mode strict \
-  --dataset_type human_public \
-  --projection pca
+  --device cuda \
+  --traj_nan_mode interpolate \
+  --max_traj_nan_ratio 0.2 \
+  --overwrite
 ```
 
-### 期望行为
-- Waymo human trajectory 可能包含 NaN（部分观测轨迹存在无效片段）。
-- 训练脚本默认对 trajectory NaN 做插值修复，并对 feature 标准化后做 clipping。
-- 训练过程必须数值稳定，`train_loss` 和 `val_loss` 必须为 finite。
-- 只使用 train split 训练，不使用 pseudo labels 训练；pseudo labels 仅用于评估。
-- learned 与 raw_feature/trajectory_l2/random/pca_feature 同台评估，并输出分类、检索、相关性、cluster fingerprint 与 report。
+### 2. 期望行为
+- Waymo human `traj.npy` 可能包含 NaN，因为观测轨迹可能部分无效。
+- `export_human_row_embeddings.py` 必须复用训练脚本相同的轨迹清洗与局部归一化逻辑。
+- 导出的 embedding 必须与 `traj.npy` 行对齐（row-aligned）。
+- 若 `normalize_local` 产生非有限值（NaN/Inf），必须立即失败，禁止保存坏 embedding。
+- 若 checkpoint 训练过程中出现 NaN loss，禁止导出，必须先修复并重训。
 
-### 通过标准
-- 生成 `train_summary.json`、`train_debug.json`、`model.pt`、`embeddings_row_level.npy`。
-- `train_summary.json` 显示 sanitize 后 trajectory NaN/Inf 为 0，feature clip 后无 NaN/Inf，且 `feat_norm_max_after_clip <= feature_clip`。
-- `train_loss` 与 `val_loss` 均为 finite；若 loss 为 NaN，禁止导出 embedding。
-- `embeddings_row_level.npy.shape[0] == len(traj.npy) == 168191`。
-- `human_validation_summary.json` 中 `learned_embedding_evaluated=true`。
-- `baseline_comparison_summary.csv` 与主要图表均包含 learned。
-- 不发生 source-level embedding expansion。
+### 3. 通过标准
+- 控制台输出 raw/sanitized 的 NaN/Inf 统计。
+- `embedding_export_summary.json` 与 `embedding_export_debug.json` 成功生成。
+- `embeddings_row_level.npy` 全量 finite，且 `shape[0] == len(traj.npy)`。
+- `row_aligned = true`（官方 Stage 4D 默认不允许 drop）。
