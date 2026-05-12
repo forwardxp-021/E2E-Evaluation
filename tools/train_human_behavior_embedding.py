@@ -13,8 +13,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
-from tools.trajectory_preprocessing import (
+from trajectory_preprocessing import (
     load_traj_as_dense_array,
     normalize_local,
     sanitize_trajectory_array,
@@ -82,7 +83,7 @@ def run(args):
         d = Path(args.data_dir)
         traj = np.load(d / 'traj.npy', allow_pickle=True)
         feat = np.load(d / 'feat_style.npy')
-        split = np.load(d / 'split.npy').astype(str)
+        split = np.load(d / 'split.npy', allow_pickle=True).astype(str)
 
     traj_raw = load_traj_as_dense_array(traj)
     traj_nan_raw = int(np.isnan(traj_raw).sum())
@@ -144,13 +145,13 @@ def run(args):
         assert torch.isfinite(tb).all(), "non-finite trajectory batch before forward"
         z = model(tb)
         loss, logits, tlogits = soft_loss(z, fb, args.temperature, args.feature_temperature)
-        finite = bool(torch.isfinite(loss)) and torch.isfinite(logits).all() and torch.isfinite(tlogits).all()
+        finite = bool(torch.isfinite(loss).item()) and bool(torch.isfinite(logits).all().item()) and bool(torch.isfinite(tlogits).all().item())
         if (len(debug) < args.debug_n_batches) and train_mode:
             debug.append({
                 "batch": int(batch_i), "traj_min": float(tb.min().item()), "traj_max": float(tb.max().item()),
-                "traj_has_nan": bool(torch.isnan(tb).any()), "traj_has_inf": bool(torch.isinf(tb).any()),
+                "traj_has_nan": bool(torch.isnan(tb).any().item()), "traj_has_inf": bool(torch.isinf(tb).any().item()),
                 "feat_min": float(fb.min().item()), "feat_max": float(fb.max().item()),
-                "feat_has_nan": bool(torch.isnan(fb).any()), "feat_has_inf": bool(torch.isinf(fb).any()),
+                "feat_has_nan": bool(torch.isnan(fb).any().item()), "feat_has_inf": bool(torch.isinf(fb).any().item()),
                 "embedding_min": float(z.min().item()), "embedding_max": float(z.max().item()),
                 "logits_min": float(logits.min().item()), "logits_max": float(logits.max().item()),
                 "target_logits_min": float(tlogits.min().item()), "target_logits_max": float(tlogits.max().item()),
@@ -165,22 +166,24 @@ def run(args):
             raise RuntimeError(msg)
         return loss
 
-    for ep in range(args.epochs):
+    epoch_bar = tqdm(range(args.epochs), desc="Training epochs")
+    for ep in epoch_bar:
         model.train(); tl = []
-        for bi, (tb, fb) in enumerate(tr):
+        for bi, (tb, fb) in enumerate(tqdm(tr, desc=f"Epoch {ep + 1}/{args.epochs} - Train", leave=False)):
             loss = run_batch(tb, fb, bi, train_mode=True)
             if loss is None:
                 continue
             opt.zero_grad(); loss.backward(); opt.step(); tl.append(float(loss.item()))
         model.eval(); vl = []
         with torch.no_grad():
-            for bi, (tb, fb) in enumerate(va):
+            for bi, (tb, fb) in enumerate(tqdm(va, desc=f"Epoch {ep + 1}/{args.epochs} - Val", leave=False)):
                 loss = run_batch(tb, fb, bi, train_mode=False)
                 if loss is not None:
                     vl.append(float(loss.item()))
         t = float(np.mean(tl)) if tl else float('nan')
         v = float(np.mean(vl)) if vl else t
         logs.append({'epoch': ep + 1, 'train_loss': t, 'val_loss': v})
+        epoch_bar.set_postfix(train_loss=f"{t:.4f}", val_loss=f"{v:.4f}", best_val=f"{best if np.isfinite(best) else float('nan'):.4f}")
         if np.isfinite(v) and v < best:
             best = v; bad = 0
             torch.save({'model': model.state_dict(), 'embedding_dim': args.embedding_dim}, out / 'model.pt')
@@ -214,6 +217,14 @@ def run(args):
     (out / 'train_summary.json').write_text(json.dumps(summary, indent=2))
     (out / 'val_metrics.json').write_text(json.dumps({'best_val_loss': best}, indent=2))
     plt.figure(); plt.plot([x['epoch'] for x in logs], [x['train_loss'] for x in logs], label='train'); plt.plot([x['epoch'] for x in logs], [x['val_loss'] for x in logs], label='val'); plt.legend(); plt.tight_layout(); plt.savefig(out / 'training_curve.png'); plt.close()
+    final_train_loss = logs[-1]['train_loss'] if logs else float('nan')
+    final_val_loss = logs[-1]['val_loss'] if logs else float('nan')
+    print('=' * 50)
+    print('训练完成!')
+    print(f'最终 Train Loss: {final_train_loss:.6f}')
+    print(f'最终 Val Loss: {final_val_loss:.6f}')
+    print(f'最佳 Val Loss: {best:.6f}')
+    print('=' * 50)
     print('train_done')
 
 

@@ -7,9 +7,10 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn.functional as F
+from tqdm import tqdm
 
-from tools.train_human_behavior_embedding import Enc
-from tools.trajectory_preprocessing import (
+from train_human_behavior_embedding import Enc
+from trajectory_preprocessing import (
     assert_finite_array,
     compute_traj_nan_stats,
     load_traj_as_dense_array,
@@ -101,7 +102,7 @@ def run(args):
     debug = []
     bs = args.batch_size
     with torch.no_grad():
-        for i in range(0, len(traj_clean), bs):
+        for i in tqdm(range(0, len(traj_clean), bs), desc="Exporting embeddings", leave=False):
             batch_np = traj_clean[i : i + bs]
             x = torch.from_numpy(batch_np).float().to(dev)
             x_local = normalize_local(x)
@@ -120,8 +121,8 @@ def run(args):
                     "local_max": float(x_local.max().item()),
                     "embedding_min": float(z.min().item()),
                     "embedding_max": float(z.max().item()),
-                    "has_nan": bool(torch.isnan(z).any()),
-                    "has_inf": bool(torch.isinf(z).any()),
+                    "has_nan": bool(torch.isnan(z).any().item()),
+                    "has_inf": bool(torch.isinf(z).any().item()),
                 })
             out.append(z.detach().cpu().numpy())
 
