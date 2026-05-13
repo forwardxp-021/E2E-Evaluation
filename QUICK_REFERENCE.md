@@ -991,7 +991,8 @@ python tools/compare_embedding_runs.py \
 - 使用 train split 训练。
 - 不使用 pseudo labels 训练。
 - 在 soft contrastive loss 基础上增加 comfort auxiliary regression。
-- evaluate_aux_predictions.py 用于验证 auxiliary regression head 是否真的学到舒适性目标。
+- evaluate_aux_predictions.py 是训练后、导出前的必做诊断，用于验证 auxiliary regression head 是否真的学到舒适性目标。
+- evaluate_aux_predictions.py 与训练/导出共享同一套轨迹 NaN 清洗逻辑（sanitize + normalize_local），可处理 Waymo human traj.npy 的非有限值。
 - 报告 rms_accel / rms_jerk / max_abs_accel / max_abs_jerk / mean_thw / min_thw 的 MAE / RMSE / Spearman。
 - 该诊断独立于 embedding retrieval/classification 评估。
 - 导出 row-aligned embedding。
@@ -1002,7 +1003,10 @@ python tools/compare_embedding_runs.py \
 - train_total_loss / val_total_loss finite。
 - aux_loss finite。
 - outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/aux_prediction_metrics_test.json 存在。
-- rms_jerk / max_abs_jerk 的 Spearman 为有限值（finite）。
+- aux_prediction_metrics_test.json 中 row_aligned=true。
+- traj_nan_count_after_sanitize=0。
+- aux_head_loaded=true。
+- rms_jerk / max_abs_jerk 的 Spearman 为有限值（finite），或显式报告为 N/A（含原因与 warning）。
 - 若 rms_jerk Spearman 近似 0，视为 Stage 4F 未学到 jerk（即使训练 loss 有限）。
 - 若 aux prediction 指标良好但 embedding jerk correlation 未提升，记录为“aux head 学到但未转移到 embedding geometry”。
 - embeddings_row_level_comfort_aux.npy shape = [168191, 64]。
