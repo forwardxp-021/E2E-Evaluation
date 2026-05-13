@@ -1276,7 +1276,11 @@ python tools/generate_paper_tables.py \
 - table_stage4_ablation.md / .csv 存在。
 - table_stage4g_learned_vs_baselines.md / .csv 存在。
 - table_stage4g_aux_prediction.md / .csv 存在。
+- Stage 4G auxiliary prediction 表格不能全是 NaN。
 - table_stage4h_sanity_check.md / .csv 存在。
+- table_stage4h_sanity_check.md 必须使用按指标定制的解释文本。
+- 若 Stage 4H 的 yaw/curvature 高于 Stage 4G，报告不得错误宣称其“退化”。
+- 报告必须明确：sanity check 的关键证据是 jerk collapse + retrieval/classification 回落。
 - figure_stage4_style_correlation.png 存在。
 - figure_stage4_jerk_delta.png 存在。
 - stage4_final_numbers.json 存在。
