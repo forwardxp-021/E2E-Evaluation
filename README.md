@@ -4,6 +4,14 @@
 
 ## 项目目标
 
+## 当前状态（Stage 4）
+
+- Stage 4G（comfort metric alignment）是当前最佳结果（current best）。
+- Stage 4H（shuffled comfort target）sanity check 已通过。
+- Stage 4I 负责最终结果固化与论文图表包生成，不引入新训练方法。
+- 具体命令请见 `QUICK_REFERENCE.md`。
+
+
 从自车与前车的对齐轨迹中构建 style feature，用 feature-guided soft contrastive 训练轨迹编码器，最后通过 UMAP、线性探针和邻域一致性验证 embedding 是否编码了行为风格信息。
 
 ## 近期代码更改总结 (2026-04)

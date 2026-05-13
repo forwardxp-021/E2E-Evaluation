@@ -262,3 +262,38 @@ Stage 4H 使用与 Stage 4G 相同训练流程，但仅打乱 metric alignment t
 | 4F | aux regression | jerk decodable | 0.0558 | - | - | geometry not aligned |
 | 4G | comfort metric alignment | align geometry | 0.5259 | 0.900 | 0.735 | current best |
 | 4H | shuffled metric target | sanity check | TBD | TBD | TBD | should not match 4G |
+
+# Stage 4I：最终结果固化
+
+## 为什么停止新增模型
+Stage 4D~4H 已经形成完整因果链：4D baseline、4E weighting 无效、4F decodable 但几何未对齐、4G 几何显著改善、4H shuffled sanity 验证改善依赖有效 target。当前优先级是结果固化和论文打包，而不是继续叠加新损失或新训练方法。
+
+## 当前结论
+- Stage 4G 是 current best。
+- Stage 4H sanity check passed（shuffle 后 jerk improvement 消失）。
+
+## 最终报告生成命令
+```bash
+python tools/generate_stage4_final_report.py \
+  --out_dir outputs/waymo_human_v1_full51/stage4_final_report
+```
+
+## 预期输出
+- stage4_final_report.md
+- Stage 4 ablation / learned-vs-baselines / aux / sanity tables（csv + md）
+- Stage 4 final figures（style correlation, jerk, classification, retrieval, sanity）
+- stage4_final_numbers.json
+
+## 下一步论文写作
+- 整理方法章节（soft contrastive + aux + metric alignment）。
+- 增加 Stage 4G 定性检索样例。
+- 可选增加跨数据集或 seed 稳定性附录。
+
+| Task | Status | Notes |
+|---|---|---|
+| Stage 4D baseline | 完成 | weak jerk geometry |
+| Stage 4E weighting | 完成 | ineffective |
+| Stage 4F aux regression | 完成 | jerk decodable but geometry not aligned |
+| Stage 4G metric alignment | 完成 | current best |
+| Stage 4H shuffled sanity | 完成 | sanity check passed |
+| Stage 4I final report | 待执行 | generate paper package |

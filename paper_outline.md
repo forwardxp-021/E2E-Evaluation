@@ -737,3 +737,26 @@ Dataset conversion details。
 - 方法：behavior embedding + comfort metric alignment。
 - 当前主结论：comfort metric alignment 让 embedding geometry 对 jerk/comfort 统计敏感。
 - 关键技术主张：**Comfort metric alignment converts comfort-related trajectory statistics from merely decodable attributes into explicit geometric structure in the behavior embedding space.**
+
+---
+
+# Stage 4 最终实验叙事（4G/4H）
+
+1. **Motivation**  
+Traditional trajectory metrics are insufficient for style/comfort behavior evaluation.
+
+2. **Method**  
+Trajectory-level behavior embedding with:
+- soft style contrastive learning
+- comfort auxiliary prediction
+- comfort metric alignment
+
+3. **Evaluation**  
+- synthetic policy separation
+- Waymo human public validation
+- learned vs baselines
+- ablation 4D/4E/4F/4G
+- shuffled-target sanity check 4H
+
+4. **Main result**  
+Comfort metric alignment turns jerk/comfort from decodable attributes into explicit embedding geometry.
