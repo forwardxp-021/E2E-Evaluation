@@ -730,3 +730,560 @@ python tools/run_lateral_stable_ablation.py \
 - No real human driver labels yet.
 - No sensor rendering / perception stack.
 - PCA / UMAP are visualization only.
+
+
+## Phase 4A: Public Human Trajectory External Validation Scaffold
+
+Purpose: validate whether embedding structure transfers beyond synthetic generator artifacts using trajectory-level weak-label evaluation.
+
+### Unified input format
+`traj.npy`, optional `front.npy`, `meta.npy`, `split.npy`, `feat_style.npy`, optional `feat_style_raw.npy`, optional `feature_names_style.json`, optional `embeddings.npy`.
+
+### Pseudo-label assignment
+```bash
+python tools/assign_pseudo_style_labels.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --out_dir outputs/vehicledata_validation/pseudo_labels \
+  --label_mode percentile \
+  --target_quantile 0.25 \
+  --dt 0.1
+```
+
+### Evaluation
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --label_dir outputs/vehicledata_validation/pseudo_labels \
+  --out_dir outputs/vehicledata_validation/eval \
+  --embedding_path <OPTIONAL_EMBEDDING_PATH> \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --projection pca
+```
+
+Baselines-only mode:
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --label_dir outputs/vehicledata_validation/pseudo_labels \
+  --out_dir outputs/vehicledata_validation/eval_baselines_only \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines raw_feature,trajectory_l2,random,pca_feature \
+  --projection pca
+```
+
+### Outputs
+Pseudo-label outputs include summary/report/distribution files. Evaluation outputs include `human_validation_summary.json`, `human_validation_report.md`, `baseline_comparison_summary.csv`, retrieval/classification/correlation/cluster artifacts and figures.
+
+### Interpretation and limitations
+Pseudo labels are rule-based weak labels (not ground truth) for external validation only. Label-defining features can leak into classification metrics, so retrieval, cluster fingerprints, and baseline comparisons must be interpreted jointly.
+
+### Smoke tests
+Both scripts support `--smoke_test` and generate synthetic arrays locally without external dataset downloads.
+
+- `evaluate_vehicledata_validation.py` new flags: `--allow_skip_learned`, `--retrieval_mode strict`, exclusion flags.
+- Learned embedding mismatches now fail by default; optional skip records warnings and marks `learned_embedding_evaluated=false`.
+- Retrieval outputs now include chance/lift metrics and strict anti-leakage behavior.
+- Expected outputs: baseline_* plots, cluster_size_distribution.png, cluster_style_fingerprint.png/csv, cluster_label_distribution.csv.
+
+## Embedding alignment requirement
+
+- 评估阶段的 `traj/meta/feat_style/pseudo_label` 是 row-level 数组，learned embedding 必须同样 row-level。
+- `embedding.shape[0]` 必须等于样本行数 `N`。
+- source-level embedding 默认禁止自动扩展；仅可在 `--allow_source_level_embedding_expansion` 下用于调试，并会标记 `learned_embedding_valid_for_policy_eval=false`。
+
+`data1` 提示：
+- `traj` = 33471 rows
+- `embeddings` = 11157 rows
+- 11157x3=33471，表示 source-level + 3 rollout/policy，不是 row-level learned embedding。
+
+TODO（脚本占位）：
+```bash
+python tools/export_row_level_embeddings.py \
+  --data_dir data1 \
+  --model_ckpt <CHECKPOINT> \
+  --out_path data1/embeddings_row_level.npy
+```
+
+
+## 阶段 4B：Waymo 真实人类轨迹数据提取
+
+### 命令
+```bash
+python tools/build_waymo_human_trajectory_dataset.py \
+  --waymo_dir <WAYMO_TFRECORD_DIR> \
+  --out_dir outputs/waymo_human_v1 \
+  --window_len 80 \
+  --stride 20 \
+  --min_speed 1.0 \
+  --max_files 5 \
+  --max_scenarios 200 \
+  --max_agents_per_scenario 64 \
+  --split_by_scenario \
+  --overwrite
+
+python tools/build_waymo_human_trajectory_dataset.py \
+  --out_dir outputs/waymo_human_smoke \
+  --smoke_test \
+  --overwrite
+```
+
+后续 Stage 4C：
+```bash
+python tools/assign_pseudo_style_labels.py \
+  --data_dir outputs/waymo_human_v1 \
+  --out_dir outputs/waymo_human_v1/pseudo_labels \
+  --label_mode percentile \
+  --target_quantile 0.25 \
+  --dt 0.1 \
+  --dataset_type human_public
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1 \
+  --label_dir outputs/waymo_human_v1/pseudo_labels \
+  --out_dir outputs/waymo_human_v1/eval_baselines_only \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+### 期望行为
+- 从原始 Waymo 场景中提取真实 human vehicle agent 的 observed trajectory window。
+- 不调用 synthetic policy generator。
+- 不生成 p0/p1/p2。
+- 不生成 policy_id / policy_name。
+- 输出统一格式 npy 文件。
+- 每一行对应一个真实 human agent trajectory window。
+- split 按 scenario_id hash 分配，避免同一 scenario 泄漏到不同 split。
+- 自动计算 style features 和标准化特征。
+- 自动生成 build_summary.json 和 build_report.md。
+
+### 通过标准
+- out_dir 下生成 traj.npy / front.npy / meta.npy / split.npy / feat_style.npy / feat_style_raw.npy / feature_names_style.json。
+- meta.npy 中 dataset_type = human_public。
+- meta.npy 中不包含 policy_id / policy_name。
+- len(traj) == len(front) == len(meta) == len(split) == feat_style.shape[0]。
+- build_summary.json 中 n_windows_kept > 0。
+- split_counts 中 train/val/test 至少有一个非空，正式运行应三者都有数据。
+- front_found_rate 被记录。
+- feature_names_style.json 与 feat_style 的列数一致。
+- smoke_test 可以不依赖真实 Waymo 数据运行成功。
+
+
+## 阶段 4D：训练并导出 Waymo human row-level learned embedding
+
+### 1. 命令
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --traj_nan_mode interpolate \
+  --max_traj_nan_ratio 0.2 \
+  --overwrite
+```
+
+### 2. 期望行为
+- Waymo human `traj.npy` 可能包含 NaN，因为观测轨迹可能部分无效。
+- `export_human_row_embeddings.py` 必须复用训练脚本相同的轨迹清洗与局部归一化逻辑。
+- 导出的 embedding 必须与 `traj.npy` 行对齐（row-aligned）。
+- 若 `normalize_local` 产生非有限值（NaN/Inf），必须立即失败，禁止保存坏 embedding。
+- 若 checkpoint 训练过程中出现 NaN loss，禁止导出，必须先修复并重训。
+
+### 3. 通过标准
+- 控制台输出 raw/sanitized 的 NaN/Inf 统计。
+- `embedding_export_summary.json` 与 `embedding_export_debug.json` 成功生成。
+- `embeddings_row_level.npy` 全量 finite，且 `shape[0] == len(traj.npy)`。
+- `row_aligned = true`（官方 Stage 4D 默认不允许 drop）。
+
+
+## 阶段 4E：jerk/comfort-aware learned embedding 训练
+
+### 命令
+同 README 的三条命令（训练/导出/评估），并可追加：
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables
+```
+
+### 期望行为
+- 训练保持 Stage 4D v1 可复现（uniform 默认）。
+- jerk_comfort 模式重点提升舒适性相关差异建模。
+- 输出可直接用于论文表格。
+
+### 通过标准
+- 评估摘要包含 learned_embedding_evaluated=true。
+- style_distance_correlation.csv 含各指标 valid_pairs_* 列。
+- human_validation_report.md 的 next steps 与 Stage 4D 已完成状态一致。
+
+# Stage 4F：comfort-aware auxiliary regression
+
+## 1. 命令
+
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode uniform \
+  --aux_regression \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --aux_loss_weight 0.2 \
+  --aux_loss_type huber \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+python tools/evaluate_aux_predictions.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/model.pt \
+  --eval_split test \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --batch_size 1024 \
+  --device cuda \
+  --out_path outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/aux_prediction_metrics_test.json
+
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_aux.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_aux.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+    stage4f_comfort_aux=outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_stage4e_stage4f
+```
+
+## 2. 期望行为
+- 使用 train split 训练。
+- 不使用 pseudo labels 训练。
+- 在 soft contrastive loss 基础上增加 comfort auxiliary regression。
+- evaluate_aux_predictions.py 是训练后、导出前的必做诊断，用于验证 auxiliary regression head 是否真的学到舒适性目标。
+- evaluate_aux_predictions.py 与训练/导出共享同一套轨迹 NaN 清洗逻辑（sanitize + normalize_local），可处理 Waymo human traj.npy 的非有限值。
+- 报告 rms_accel / rms_jerk / max_abs_accel / max_abs_jerk / mean_thw / min_thw 的 MAE / RMSE / Spearman。
+- 该诊断独立于 embedding retrieval/classification 评估。
+- 导出 row-aligned embedding。
+- 在 test split 上评估 learned vs baselines。
+- 与 Stage 4D / Stage 4E 对比。
+
+## 3. 通过标准
+- train_total_loss / val_total_loss finite。
+- aux_loss finite。
+- outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/aux_prediction_metrics_test.json 存在。
+- aux_prediction_metrics_test.json 中 row_aligned=true。
+- traj_nan_count_after_sanitize=0。
+- aux_head_loaded=true。
+- rms_jerk / max_abs_jerk 的 Spearman 为有限值（finite），或显式报告为 N/A（含原因与 warning）。
+- 若 rms_jerk Spearman 近似 0，视为 Stage 4F 未学到 jerk（即使训练 loss 有限）。
+- 若 aux prediction 指标良好但 embedding jerk correlation 未提升，记录为“aux head 学到但未转移到 embedding geometry”。
+- embeddings_row_level_comfort_aux.npy shape = [168191, 64]。
+- evaluation learned_embedding_evaluated=true。
+- learned 的 classification/retrieval 明显高于 random。
+- rms_jerk_delta correlation 相比 Stage 4D v1 有明显提升。
+- 如果 jerk 未提升，报告中明确记录 Stage 4F 未达到目标。
+
+# Stage 4G：comfort metric alignment
+
+## 1. 命令
+
+Training:
+
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode uniform \
+  --aux_regression \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --aux_loss_weight 0.2 \
+  --aux_loss_type huber \
+  --comfort_metric_alignment \
+  --metric_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type mse \
+  --metric_distance euclidean \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+Aux prediction diagnostic:
+
+```bash
+python tools/evaluate_aux_predictions.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/model.pt \
+  --eval_split test \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --batch_size 1024 \
+  --device cuda \
+  --out_path outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/aux_prediction_metrics_test.json
+```
+
+Export:
+
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+```
+
+Evaluate:
+
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+Compare Stage 4D / 4E / 4F / 4G:
+
+```bash
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+    stage4f_comfort_aux=outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+    stage4g_comfort_metric=outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_stage4e_stage4f_stage4g
+```
+
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --train_summary outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/train_summary.json \
+  --export_summary outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_export_summary.json \
+  --pseudo_label_summary outputs/waymo_human_v1_full51/pseudo_labels/pseudo_label_summary.json \
+  --build_summary outputs/waymo_human_v1_full51/build_summary.json \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables_stage4g_comfort_metric
+```
+
+## 2. 期望行为
+
+- Stage 4G 在 Stage 4F 的 auxiliary regression 基础上，进一步增加 comfort metric alignment loss。
+- auxiliary regression 让 embedding 中可解码 jerk/comfort 信息。
+- comfort metric alignment 直接约束 embedding pairwise distance 与 comfort feature pairwise distance 对齐。
+- 训练仍然只使用 train split。
+- 不使用 pseudo labels 训练。
+- pseudo labels 仅用于 test split evaluation。
+- 导出的 embeddings_row_level_comfort_metric.npy 必须与 traj.npy 行对齐。
+- 评估重点不是只看分类和检索，还要重点看 rms_jerk_delta correlation 是否高于 Stage 4D / 4F。
+- Stage 4G 是为了让 embedding geometry 更 jerk/comfort-sensitive。
+
+## 3. 通过标准
+
+- train_total_loss / val_total_loss finite。
+- train_metric_loss / val_metric_loss finite。
+- aux_loss finite。
+- embeddings_row_level_comfort_metric.npy.shape[0] == len(traj.npy) == 168191。
+- embedding 全部 finite，无 NaN/Inf。
+- human_validation_summary.json 中 learned_embedding_evaluated=true。
+- learned 的 classification / retrieval 明显高于 random。
+- rms_jerk_delta correlation 相比 Stage 4D v1 的约 0.0697 有明显提升。
+- 目标：
+  - rms_jerk_delta >= 0.15：初步有效
+  - rms_jerk_delta >= 0.20：明显改善
+  - rms_jerk_delta >= 0.30：非常理想
+- 如果 rms_jerk_delta 未提升，但 aux prediction 仍然很好，说明 metric alignment 权重或距离形式还需要调整。
+- 如果 classification/retrieval 接近 random，说明 metric alignment 过强导致 embedding 崩塌。
+- compare_stage4d_stage4e_stage4f_stage4g/comparison_summary.csv 生成。
+
+# Stage 4H：4G sanity check — shuffled comfort metric target
+
+## 1. 命令
+
+Training:
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode uniform \
+  --aux_regression \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --aux_loss_weight 0.2 \
+  --aux_loss_type huber \
+  --comfort_metric_alignment \
+  --metric_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type mse \
+  --metric_distance euclidean \
+  --metric_target_shuffle \
+  --metric_target_shuffle_seed 42 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+Aux prediction diagnostic:
+```bash
+python tools/evaluate_aux_predictions.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled/model.pt \
+  --eval_split test \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --batch_size 1024 \
+  --device cuda \
+  --out_path outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled/aux_prediction_metrics_test.json
+```
+
+Export:
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_shuffled.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+```
+
+Evaluation:
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric_shuffled \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_shuffled.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+Comparison:
+```bash
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+    stage4f_comfort_aux=outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+    stage4g_comfort_metric=outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+    stage4h_metric_shuffled=outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric_shuffled \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_to_stage4h
+```
+
+## 2. 期望行为
+
+- Stage 4H 是 sanity check，不是主方法。
+- 它使用与 Stage 4G 相同的模型和训练流程。
+- 唯一区别是 comfort metric alignment 的 target 被打乱。
+- 如果 Stage 4G 的提升是真实的，Stage 4H 的 jerk correlation 应该明显低于 Stage 4G。
+- auxiliary regression target 不打乱。
+- pseudo labels 仍然不用于训练。
+- 这个实验用于排除代码 bug、随机偶然、以及无意义 metric alignment 也能提升的可能性。
+
+## 3. 通过标准
+
+- 训练 loss finite。
+- 导出 embedding row-aligned。
+- evaluation learned_embedding_evaluated=true。
+- compare_stage4d_to_stage4h/comparison_summary.csv 生成。
+- Stage 4H 的 rms_jerk_delta 应明显低于 Stage 4G。
+- 如果 Stage 4H 仍然接近 Stage 4G 的 rms_jerk_delta，需要警惕 metric alignment 实现或评估存在泄漏/bug。
+- Stage 4G 仍应作为主结果，Stage 4H 仅作为 sanity check。
+
+# Stage 4I：最终结果固化与论文图表包
+
+## 1. 命令
+
+```bash
+python tools/generate_stage4_final_report.py \
+  --out_dir outputs/waymo_human_v1_full51/stage4_final_report
+```
+
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --train_summary outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/train_summary.json \
+  --export_summary outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_export_summary.json \
+  --pseudo_label_summary outputs/waymo_human_v1_full51/pseudo_labels/pseudo_label_summary.json \
+  --build_summary outputs/waymo_human_v1_full51/build_summary.json \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables_stage4g_comfort_metric
+```
+
+## 2. 期望行为
+
+- 汇总 Stage 4D/4E/4F/4G/4H 的结果。
+- 生成最终 ablation 表格。
+- 生成 Stage 4G learned vs baselines 表格。
+- 生成 Stage 4G auxiliary prediction 表格。
+- 生成 Stage 4H shuffled-target sanity check 表格。
+- 生成论文可用的图和 Markdown 报告。
+- 不启动新训练，不修改模型。
+
+## 3. 通过标准
+
+- stage4_final_report.md 存在且非空。
+- table_stage4_ablation.md / .csv 存在。
+- table_stage4g_learned_vs_baselines.md / .csv 存在。
+- table_stage4g_aux_prediction.md / .csv 存在。
+- Stage 4G auxiliary prediction 表格不能全是 NaN。
+- table_stage4h_sanity_check.md / .csv 存在。
+- table_stage4h_sanity_check.md 必须使用按指标定制的解释文本。
+- 若 Stage 4H 的 yaw/curvature 高于 Stage 4G，报告不得错误宣称其“退化”。
+- 报告必须明确：sanity check 的关键证据是 jerk collapse + retrieval/classification 回落。
+- figure_stage4_style_correlation.png 存在。
+- figure_stage4_jerk_delta.png 存在。
+- stage4_final_numbers.json 存在。
+- 报告明确写出 Stage 4G 是 current best。
+- 报告明确写出 Stage 4H shuffled target 使 jerk improvement 消失。
+- 报告明确写出限制：pseudo labels 是 weak labels，4G 是 metric-aligned embedding，不是纯无监督发现。

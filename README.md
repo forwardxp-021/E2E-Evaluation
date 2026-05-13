@@ -1,8 +1,16 @@
-# E2E-Evaluation (20260413_features_new_design)
+# E2E-Evaluation
 
 基于 Waymo 轨迹数据学习驾驶风格 embedding 的实验工程。
 
 ## 项目目标
+
+## 当前状态（Stage 4）
+
+- Stage 4G（comfort metric alignment）是当前最佳结果（current best）。
+- Stage 4H（shuffled comfort target）sanity check 已通过。
+- Stage 4I 负责最终结果固化与论文图表包生成，不引入新训练方法。
+- 具体命令请见 `QUICK_REFERENCE.md`。
+
 
 从自车与前车的对齐轨迹中构建 style feature，用 feature-guided soft contrastive 训练轨迹编码器，最后通过 UMAP、线性探针和邻域一致性验证 embedding 是否编码了行为风格信息。
 
@@ -1029,3 +1037,267 @@ python tools/run_lateral_stable_ablation.py \
 - No real human driver labels yet.
 - No sensor rendering / perception stack.
 - PCA / UMAP are visualization only.
+
+
+## Phase 4A: Public Human Trajectory External Validation Scaffold
+
+Purpose: validate whether embedding structure transfers beyond synthetic generator artifacts using trajectory-level weak-label evaluation.
+
+### Unified input format
+`traj.npy`, optional `front.npy`, `meta.npy`, `split.npy`, `feat_style.npy`, optional `feat_style_raw.npy`, optional `feature_names_style.json`, optional `embeddings.npy`.
+
+### Pseudo-label assignment
+```bash
+python tools/assign_pseudo_style_labels.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --out_dir outputs/vehicledata_validation/pseudo_labels \
+  --label_mode percentile \
+  --target_quantile 0.25 \
+  --dt 0.1
+```
+
+### Evaluation
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --label_dir outputs/vehicledata_validation/pseudo_labels \
+  --out_dir outputs/vehicledata_validation/eval \
+  --embedding_path <OPTIONAL_EMBEDDING_PATH> \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --projection pca
+```
+
+Baselines-only mode:
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir <HUMAN_DATA_DIR> \
+  --label_dir outputs/vehicledata_validation/pseudo_labels \
+  --out_dir outputs/vehicledata_validation/eval_baselines_only \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines raw_feature,trajectory_l2,random,pca_feature \
+  --projection pca
+```
+
+### Outputs
+Pseudo-label outputs include summary/report/distribution files. Evaluation outputs include `human_validation_summary.json`, `human_validation_report.md`, `baseline_comparison_summary.csv`, retrieval/classification/correlation/cluster artifacts and figures.
+
+### Interpretation and limitations
+Pseudo labels are rule-based weak labels (not ground truth) for external validation only. Label-defining features can leak into classification metrics, so retrieval, cluster fingerprints, and baseline comparisons must be interpreted jointly.
+
+### Smoke tests
+Both scripts support `--smoke_test` and generate synthetic arrays locally without external dataset downloads.
+
+## Phase 4A Validation Integrity Updates (2026-05-08)
+- Added `--allow_skip_learned` to skip learned embedding only with explicit opt-in.
+- Default retrieval mode is now `--retrieval_mode strict` with exclusions for same scenario/agent/track/source and temporal neighbors.
+- Added retrieval chance and lift metrics in `baseline_comparison_summary.csv`.
+- Expected plots include baseline classification/retrieval/style-correlation bars and representation PCA fallback plot.
+- Cluster outputs are split into `cluster_size_distribution.*` and style fingerprint heatmap/csv outputs.
+
+## Embedding alignment requirement（阶段4A关键约束）
+
+- `traj.npy` / `meta.npy` / `feat_style.npy` / `pseudo_label.npy` 都是**按行对齐**的样本级数组。
+- learned embedding 在 `tools/evaluate_vehicledata_validation.py` 中必须满足 `embedding.shape[0] == N_samples`。
+- source-level embedding（例如每个 `source_index` 一行）**不能**默认用于 policy-level / pseudo-label evaluation。
+- 仅在显式传入 `--allow_source_level_embedding_expansion` 时，才允许按 `source_index` 展开，且该结果仅用于 debug，不可作为 policy-level 有效结论。
+
+`data1` 的已知情况：
+
+- `traj` 行数 = `33471`
+- `embeddings` 行数 = `11157`
+- `33471 = 11157 x 3`，对应每个 source 的 3 个 rollout（p0/p1/p2）
+
+这说明 `data1/embeddings.npy` 是 source-level，不是 row-level。评估 learned baseline 前必须先再生成 row-level embedding。
+
+建议命令（当前为 TODO 占位，`tools/export_row_level_embeddings.py` 尚未实现）：
+
+```bash
+python tools/export_row_level_embeddings.py \
+  --data_dir data1 \
+  --model_ckpt <CHECKPOINT> \
+  --out_path data1/embeddings_row_level.npy
+```
+
+
+## 阶段 4B：Waymo 真实人类轨迹数据提取
+
+### 命令
+```bash
+python tools/build_waymo_human_trajectory_dataset.py \
+  --waymo_dir <WAYMO_TFRECORD_DIR> \
+  --out_dir outputs/waymo_human_v1 \
+  --window_len 80 \
+  --stride 20 \
+  --min_speed 1.0 \
+  --max_files 5 \
+  --max_scenarios 200 \
+  --max_agents_per_scenario 64 \
+  --split_by_scenario \
+  --overwrite
+
+python tools/build_waymo_human_trajectory_dataset.py \
+  --out_dir outputs/waymo_human_smoke \
+  --smoke_test \
+  --overwrite
+```
+
+后续 Stage 4C：
+```bash
+python tools/assign_pseudo_style_labels.py \
+  --data_dir outputs/waymo_human_v1 \
+  --out_dir outputs/waymo_human_v1/pseudo_labels \
+  --label_mode percentile \
+  --target_quantile 0.25 \
+  --dt 0.1 \
+  --dataset_type human_public
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1 \
+  --label_dir outputs/waymo_human_v1/pseudo_labels \
+  --out_dir outputs/waymo_human_v1/eval_baselines_only \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+### 期望行为
+- 从原始 Waymo 场景中提取真实 human vehicle agent 的 observed trajectory window。
+- 不调用 synthetic policy generator。
+- 不生成 p0/p1/p2。
+- 不生成 policy_id / policy_name。
+- 输出统一格式 npy 文件。
+- 每一行对应一个真实 human agent trajectory window。
+- split 按 scenario_id hash 分配，避免同一 scenario 泄漏到不同 split。
+- 自动计算 style features 和标准化特征。
+- 自动生成 build_summary.json 和 build_report.md。
+
+### 通过标准
+- out_dir 下生成 traj.npy / front.npy / meta.npy / split.npy / feat_style.npy / feat_style_raw.npy / feature_names_style.json。
+- meta.npy 中 dataset_type = human_public。
+- meta.npy 中不包含 policy_id / policy_name。
+- len(traj) == len(front) == len(meta) == len(split) == feat_style.shape[0]。
+- build_summary.json 中 n_windows_kept > 0。
+- split_counts 中 train/val/test 至少有一个非空，正式运行应三者都有数据。
+- front_found_rate 被记录。
+- feature_names_style.json 与 feat_style 的列数一致。
+- smoke_test 可以不依赖真实 Waymo 数据运行成功。
+
+
+## 阶段 4D：训练并导出 Waymo human row-level learned embedding
+
+### 1. 命令
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --traj_nan_mode interpolate \
+  --max_traj_nan_ratio 0.2 \
+  --overwrite
+```
+
+### 2. 期望行为
+- Waymo human `traj.npy` 可能包含 NaN，因为观测轨迹可能部分无效。
+- `export_human_row_embeddings.py` 必须复用训练脚本相同的轨迹清洗与局部归一化逻辑。
+- 导出的 embedding 必须与 `traj.npy` 行对齐（row-aligned）。
+- 若 `normalize_local` 产生非有限值（NaN/Inf），必须立即失败，禁止保存坏 embedding。
+- 若 checkpoint 训练过程中出现 NaN loss，禁止导出，必须先修复并重训。
+
+### 3. 通过标准
+- 控制台输出 raw/sanitized 的 NaN/Inf 统计。
+- `embedding_export_summary.json` 与 `embedding_export_debug.json` 成功生成。
+- `embeddings_row_level.npy` 全量 finite，且 `shape[0] == len(traj.npy)`。
+- `row_aligned = true`（官方 Stage 4D 默认不允许 drop）。
+
+
+## 阶段 4E：jerk/comfort-aware learned embedding 训练
+
+### 命令
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_jerk_comfort \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode jerk_comfort \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_jerk_comfort/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_jerk_comfort.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_jerk_comfort.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+### 期望行为
+- 使用 train split 训练。
+- 不使用 pseudo labels 训练。
+- 提高 jerk/comfort 特征在 soft contrastive distance 中的权重。
+- 导出 row-aligned embedding。
+- 在 test split 上与 Stage 4D v1 和 baselines 对比。
+
+### 通过标准
+- train_loss / val_loss finite。
+- embeddings_row_level_jerk_comfort.npy shape = [168191, 64]。
+- learned_embedding_evaluated=true。
+- 若权重生效，rms_jerk_delta 相关性优于 Stage 4D v1。
+- retrieval/classification 不低于 random。
+- report 与 paper tables 均生成。
+
+## 阶段 4F：comfort-aware auxiliary regression（当前主线）
+
+Stage 4D learned embedding 在 jerk 相关性上偏弱；Stage 4E 的 jerk/comfort feature weighting 没有改善 jerk correlation，且分类/检索略有退化。因此 Stage 4F 不再仅靠特征权重，而是在 embedding 上增加显式 comfort auxiliary regression 监督（rms_accel/rms_jerk/max_abs_accel/max_abs_jerk/mean_thw/min_thw），目标是提升 jerk/comfort 敏感性，同时保持 learned embedding 的判别能力。训练依然不使用 pseudo labels。
+
+Stage 4F 评估分两部分，缺一不可：
+1. auxiliary head prediction quality（`tools/evaluate_aux_predictions.py`，检查 MAE/RMSE/Spearman，确认 head 真的学到 comfort 目标）；
+2. embedding retrieval/classification/style-distance correlation（`tools/evaluate_vehicledata_validation.py` 等，下游几何泛化能力）。
+
+## Stage 4G（当前进行中）：comfort metric alignment
+
+- 当前 active experiment 为 **Stage 4G**。
+- Stage 4F 结论是：auxiliary regression 证明 jerk/comfort 信息在 embedding 中可解码，但 embedding 的欧氏距离几何仍未与 jerk 差异对齐。
+- Stage 4G 在 Stage 4F 基础上增加 pairwise metric alignment：直接对齐 `embedding distance matrix` 与 `comfort feature distance matrix`。
+- 目标是不仅“可预测 jerk”，还要让 embedding 几何本身对 jerk/comfort 更敏感，并提升 `spearman_rms_jerk_delta`。
+
+
+## Stage 4D/4E/4F/4G 结论更新（当前主结果）
+
+当前主方法为 **Stage 4G: comfort metric alignment**。
+
+- Stage 4D：建立了可用的 learned behavior embedding，但 jerk 敏感性较弱。
+- Stage 4E：仅做 jerk/comfort 特征重加权，未有效提升 jerk-sensitive 几何。
+- Stage 4F：辅助回归证明 jerk/comfort 在 embedding 中“可解码”，但 embedding 距离几何本身仍未对齐 comfort。
+- Stage 4G：直接约束 embedding pairwise distance 对齐 comfort metric pairwise distance，显著提升 jerk/comfort-sensitive 检索，同时保持分类/检索不塌缩。
+
+> 重要说明：Stage 4G 不是“纯无监督发现”，而是 **metric-aligned behavior embedding**（通过 comfort metric 对 embedding geometry 施加显式结构约束）。
