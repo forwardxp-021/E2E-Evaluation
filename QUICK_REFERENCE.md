@@ -1138,3 +1138,105 @@ python tools/generate_paper_tables.py \
 - 如果 rms_jerk_delta 未提升，但 aux prediction 仍然很好，说明 metric alignment 权重或距离形式还需要调整。
 - 如果 classification/retrieval 接近 random，说明 metric alignment 过强导致 embedding 崩塌。
 - compare_stage4d_stage4e_stage4f_stage4g/comparison_summary.csv 生成。
+
+# Stage 4H：4G sanity check — shuffled comfort metric target
+
+## 1. 命令
+
+Training:
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode uniform \
+  --aux_regression \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --aux_loss_weight 0.2 \
+  --aux_loss_type huber \
+  --comfort_metric_alignment \
+  --metric_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type mse \
+  --metric_distance euclidean \
+  --metric_target_shuffle \
+  --metric_target_shuffle_seed 42 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+Aux prediction diagnostic:
+```bash
+python tools/evaluate_aux_predictions.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled/model.pt \
+  --eval_split test \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --batch_size 1024 \
+  --device cuda \
+  --out_path outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled/aux_prediction_metrics_test.json
+```
+
+Export:
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric_shuffled/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_shuffled.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+```
+
+Evaluation:
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric_shuffled \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_shuffled.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+Comparison:
+```bash
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+    stage4f_comfort_aux=outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+    stage4g_comfort_metric=outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+    stage4h_metric_shuffled=outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric_shuffled \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_to_stage4h
+```
+
+## 2. 期望行为
+
+- Stage 4H 是 sanity check，不是主方法。
+- 它使用与 Stage 4G 相同的模型和训练流程。
+- 唯一区别是 comfort metric alignment 的 target 被打乱。
+- 如果 Stage 4G 的提升是真实的，Stage 4H 的 jerk correlation 应该明显低于 Stage 4G。
+- auxiliary regression target 不打乱。
+- pseudo labels 仍然不用于训练。
+- 这个实验用于排除代码 bug、随机偶然、以及无意义 metric alignment 也能提升的可能性。
+
+## 3. 通过标准
+
+- 训练 loss finite。
+- 导出 embedding row-aligned。
+- evaluation learned_embedding_evaluated=true。
+- compare_stage4d_to_stage4h/comparison_summary.csv 生成。
+- Stage 4H 的 rms_jerk_delta 应明显低于 Stage 4G。
+- 如果 Stage 4H 仍然接近 Stage 4G 的 rms_jerk_delta，需要警惕 metric alignment 实现或评估存在泄漏/bug。
+- Stage 4G 仍应作为主结果，Stage 4H 仅作为 sanity check。

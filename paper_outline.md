@@ -719,3 +719,21 @@ Dataset conversion details。
 - Learned vs baselines
 - Style-distance correlation（含 valid pair count）
 - Training/export summary
+
+---
+
+# Stage 4D/4E/4F/4G/4H 实验主线（更新）
+
+1. Synthetic policy separation 证明 benchmark 能区分可控策略差异。  
+2. Waymo human_public validation 证明流程可运行于真实人类轨迹。  
+3. Stage 4D 基线 learned embedding 可表示行为结构，但 jerk 敏感性弱。  
+4. Stage 4E 仅做特征重加权，不足以改善 jerk-sensitive 几何。  
+5. Stage 4F auxiliary regression 证明 jerk 可解码，但几何未对齐。  
+6. Stage 4G comfort metric alignment 直接重塑 embedding 几何，并显著提升 jerk-sensitive retrieval。  
+7. Stage 4H shuffled-target sanity check 验证 4G 改善依赖有意义 comfort target，而非泄漏或 artifact。  
+
+## 当前方法定位
+
+- 方法：behavior embedding + comfort metric alignment。
+- 当前主结论：comfort metric alignment 让 embedding geometry 对 jerk/comfort 统计敏感。
+- 关键技术主张：**Comfort metric alignment converts comfort-related trajectory statistics from merely decodable attributes into explicit geometric structure in the behavior embedding space.**

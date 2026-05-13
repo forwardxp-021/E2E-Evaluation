@@ -55,6 +55,16 @@ def _validate_inputs(paths: dict[str, Path], allow_missing: bool):
     return missing
 
 
+def _suggest_alternative_summary(path: Path) -> str | None:
+    parent = path.parent
+    if not parent.exists():
+        return None
+    candidates = sorted(parent.glob("*export_summary*.json"))
+    if not candidates:
+        return None
+    return str(candidates[0])
+
+
 def run(args):
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -70,10 +80,16 @@ def run(args):
         "style_distance_correlation": corr_csv,
     }
     missing = _validate_inputs(input_paths, args.allow_missing)
+    for name, missing_path in missing:
+        if name == "export_summary":
+            alt = _suggest_alternative_summary(missing_path)
+            if alt:
+                print(f"[error] Missing export summary: {missing_path}")
+                print(f"[hint] Try: --export_summary {alt}")
 
     if missing:
         warning_lines = [
-            "# Paper Tables Summary — Stage 4D v1 Waymo Human Learned Embedding",
+            "# Paper Tables Summary — Stage 4G comfort metric alignment",
             "",
             "## Warnings",
             "Required input files are missing. Tables were not generated.",
@@ -183,14 +199,14 @@ def run(args):
     has_nan_thw = thw_col and corr_df[thw_col].isna().any()
 
     summary = []
-    summary.append("# Paper Tables Summary — Stage 4D v1 Waymo Human Learned Embedding")
+    summary.append("# Paper Tables Summary — Stage 4G comfort metric alignment")
     summary.append("")
     summary.append("## 1. Experiment identity")
-    summary.append("- experiment_stage: Stage 4D v1")
+    summary.append("- experiment_stage: Stage 4G comfort metric alignment")
     summary.append("- dataset: Waymo human_public full51")
-    summary.append("- learned_embedding: row-level learned embedding")
+    summary.append("- learned_embedding: behavior embedding + comfort metric alignment")
     summary.append("- evaluation_split: test")
-    summary.append("- note: Stage 4E jerk/comfort-aware model is not included in this table unless explicitly requested.")
+    summary.append("- note: This table is the current main Stage 4G result.")
     summary.append("")
 
     summary.append("## 2. Dataset statistics")
@@ -229,11 +245,12 @@ def run(args):
 
     summary.append("## 7. Main conclusion")
     summary.append(
-        "Stage 4D v1 completed row-level learned embedding validation on Waymo human_public full51. "
+        "Experiment: Stage 4G comfort metric alignment. "
+        "Stage 4G completed row-level learned embedding validation on Waymo human_public full51. "
         "The learned embedding is row-aligned, finite, and evaluated on the held-out test split. "
         "It captures non-random, interpretable behavior structure and is useful for pseudo-style classification and "
         "lateral/curvature style sensitivity. However, it does not outperform raw_feature/pca_feature retrieval baselines, "
-        "and jerk/comfort sensitivity remains a target for Stage 4E."
+        "and jerk/comfort-sensitive geometry improved substantially."
     )
     summary.append("")
 
@@ -241,14 +258,12 @@ def run(args):
     summary.append("- pseudo labels are weak labels, not ground truth.")
     summary.append("- pseudo labels are derived from style features, so raw_feature/pca_feature have a natural advantage.")
     summary.append("- learned embedding should not be claimed to outperform all baselines.")
-    summary.append("- Stage 4E jerk/comfort-aware training is not part of this Stage 4D table.")
+    summary.append("- Stage 4H shuffled-target sanity check should still be run to rule out leakage/artifacts.")
     summary.append("")
 
     summary.append("## 9. Next steps")
-    summary.append("- run Stage 4E jerk/comfort-aware training")
-    summary.append("- export row-level embeddings")
-    summary.append("- evaluate eval_with_learned_jerk_comfort")
-    summary.append("- compare Stage 4D v1 vs Stage 4E using compare_embedding_runs.py")
+    summary.append("- run Stage 4H shuffled-target sanity check")
+    summary.append("- compare Stage 4D/4E/4F/4G/4H using compare_embedding_runs.py")
     summary.append("")
 
     summary.append("## Source files")
