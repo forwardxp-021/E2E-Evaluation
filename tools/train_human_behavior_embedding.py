@@ -80,6 +80,56 @@ def select_aux_target_indices(feature_names, aux_targets):
     return [name_to_idx[n] for n in aux_targets]
 
 
+def comfort_metric_alignment_loss(
+    z,
+    comfort_targets,
+    metric_loss_type="mse",
+    metric_distance="euclidean",
+    metric_pair_sample=0,
+    metric_use_z_normalized=True,
+    metric_detach_target=True,
+    eps=1e-8,
+):
+    bsz = int(z.shape[0])
+    if bsz < 2:
+        print("[warn] metric alignment skipped: batch size < 2")
+        return torch.zeros((), device=z.device, dtype=z.dtype)
+    if metric_loss_type == "rank":
+        raise NotImplementedError("metric_loss_type=rank is not implemented yet; use mse or huber.")
+    if metric_use_z_normalized:
+        z = F.normalize(z, dim=1, eps=eps)
+    if metric_distance == "euclidean":
+        d_z = torch.cdist(z, z, p=2)
+    elif metric_distance == "cosine":
+        d_z = 1.0 - (z @ z.T)
+    else:
+        raise ValueError(f"Unknown metric_distance={metric_distance}")
+    c = comfort_targets.detach() if metric_detach_target else comfort_targets
+    d_c = torch.cdist(c, c, p=2)
+    mask = ~torch.eye(bsz, dtype=torch.bool, device=z.device)
+    d_z_off = d_z[mask]
+    d_c_off = d_c[mask]
+    if metric_pair_sample > 0 and metric_pair_sample < d_z_off.numel():
+        idx = torch.randperm(d_z_off.numel(), device=z.device)[:metric_pair_sample]
+        d_z_off = d_z_off[idx]
+        d_c_off = d_c_off[idx]
+    if d_z_off.numel() < 2:
+        print("[warn] metric alignment skipped: too few off-diagonal pairs")
+        return torch.zeros((), device=z.device, dtype=z.dtype)
+    d_z_norm = (d_z_off - d_z_off.mean()) / (d_z_off.std(unbiased=False) + eps)
+    d_c_norm = (d_c_off - d_c_off.mean()) / (d_c_off.std(unbiased=False) + eps)
+    if metric_loss_type == "mse":
+        loss = F.mse_loss(d_z_norm, d_c_norm)
+    elif metric_loss_type == "huber":
+        loss = F.smooth_l1_loss(d_z_norm, d_c_norm)
+    else:
+        raise ValueError(f"Unknown metric_loss_type={metric_loss_type}")
+    if not torch.isfinite(loss):
+        print("[warn] non-finite metric alignment loss; fallback to zero")
+        return torch.zeros((), device=z.device, dtype=z.dtype)
+    return loss
+
+
 def soft_loss(z, f, temperature, feature_temperature, feature_weights=None):
     z = F.normalize(z, dim=1, eps=1e-8)
     logits = z @ z.T / temperature
@@ -183,6 +233,7 @@ def run(args):
     fw_t = torch.tensor(fw, dtype=torch.float32)
     dev = torch.device(args.device if (args.device != 'cuda' or torch.cuda.is_available()) else 'cpu')
     aux_targets = [x.strip() for x in args.aux_targets.split(",") if x.strip()]
+    metric_targets = [x.strip() for x in args.metric_targets.split(",") if x.strip()]
     aux_idx = []
     aux_data = None
     if args.aux_regression:
@@ -193,8 +244,27 @@ def run(args):
         aux_data = np.clip(aux_data, -args.aux_target_clip, args.aux_target_clip)
         if aux_data.ndim != 2 or aux_data.shape[0] != len(feat):
             raise RuntimeError(f"bad aux target shape: {aux_data.shape}")
-    tr_ds = HumanDS(traj_clean[split == 'train'], feat_norm[split == 'train'], None if aux_data is None else aux_data[split == 'train'])
-    va_ds = HumanDS(traj_clean[split == 'val'], feat_norm[split == 'val'], None if aux_data is None else aux_data[split == 'val'])
+    metric_idx = []
+    metric_data = None
+    if args.comfort_metric_alignment:
+        metric_idx = select_aux_target_indices(feature_names, metric_targets)
+        source_feat = feat_norm if args.metric_target_normalize else feat
+        metric_data = source_feat[:, metric_idx]
+        metric_data = np.nan_to_num(metric_data, nan=0.0, posinf=0.0, neginf=0.0)
+        metric_data = np.clip(metric_data, -args.metric_target_clip, args.metric_target_clip)
+        if metric_data.ndim != 2 or metric_data.shape[0] != len(feat):
+            raise RuntimeError(f"bad metric target shape: {metric_data.shape}")
+        if not np.isfinite(metric_data).all():
+            raise RuntimeError("metric targets contain non-finite values after sanitization")
+    combo_data = None
+    if args.aux_regression and args.comfort_metric_alignment:
+        combo_data = np.concatenate([aux_data, metric_data], axis=1)
+    elif args.aux_regression:
+        combo_data = aux_data
+    elif args.comfort_metric_alignment:
+        combo_data = metric_data
+    tr_ds = HumanDS(traj_clean[split == 'train'], feat_norm[split == 'train'], None if combo_data is None else combo_data[split == 'train'])
+    va_ds = HumanDS(traj_clean[split == 'val'], feat_norm[split == 'val'], None if combo_data is None else combo_data[split == 'val'])
     tr = DataLoader(tr_ds, batch_size=args.batch_size, shuffle=True, num_workers=0)
     va = DataLoader(va_ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
     model = Enc(args.embedding_dim).to(dev)
@@ -218,11 +288,24 @@ def run(args):
         z = model(tb)
         loss_soft, logits, tlogits = soft_loss(z, fb, args.temperature, args.feature_temperature, feature_weights=fw_t)
         aux_loss = torch.tensor(0.0, device=dev)
+        metric_loss = torch.tensor(0.0, device=dev)
+        aux_target_batch = ab[:, :len(aux_idx)] if args.aux_regression else None
+        metric_target_batch = ab[:, -len(metric_idx):] if args.comfort_metric_alignment else None
         if args.aux_regression:
             pred_aux = aux_head(z)
-            aux_loss = aux_criterion(pred_aux, ab)
+            aux_loss = aux_criterion(pred_aux, aux_target_batch)
+        if args.comfort_metric_alignment:
+            metric_loss = comfort_metric_alignment_loss(
+                z=z,
+                comfort_targets=metric_target_batch,
+                metric_loss_type=args.metric_loss_type,
+                metric_distance=args.metric_distance,
+                metric_pair_sample=args.metric_pair_sample,
+                metric_use_z_normalized=args.metric_use_z_normalized,
+                metric_detach_target=args.metric_detach_target,
+            )
         aux_weight = args.aux_loss_weight if ep >= args.aux_warmup_epochs else 0.0
-        loss_total = loss_soft + aux_weight * aux_loss
+        loss_total = loss_soft + aux_weight * aux_loss + args.metric_loss_weight * metric_loss
         finite = bool(torch.isfinite(loss_total).item()) and bool(torch.isfinite(logits).all().item()) and bool(torch.isfinite(tlogits).all().item())
         if (len(debug) < args.debug_n_batches) and train_mode:
             debug.append({
@@ -242,38 +325,39 @@ def run(args):
                 print("[warn]", msg)
                 return None
             raise RuntimeError(msg)
-        return loss_soft, aux_loss, loss_total
+        return loss_soft, aux_loss, metric_loss, loss_total
 
     epoch_bar = tqdm(range(args.epochs), desc="Training epochs")
     for ep in epoch_bar:
-        model.train(); tls, tla, tlt = [], [], []
+        model.train(); tls, tla, tlm, tlt = [], [], [], []
         if aux_head is not None:
             aux_head.train()
         for bi, (tb, fb, ab) in enumerate(tqdm(tr, desc=f"Epoch {ep + 1}/{args.epochs} - Train", leave=False)):
             losses = run_batch(tb, fb, ab, bi, train_mode=True, ep=ep)
             if losses is None:
                 continue
-            ls, la, lt = losses
+            ls, la, lm, lt = losses
             opt.zero_grad(); lt.backward(); opt.step()
-            tls.append(float(ls.item())); tla.append(float(la.item())); tlt.append(float(lt.item()))
-        model.eval(); vls, vla, vlt = [], [], []
+            tls.append(float(ls.item())); tla.append(float(la.item())); tlm.append(float(lm.item())); tlt.append(float(lt.item()))
+        model.eval(); vls, vla, vlm, vlt = [], [], [], []
         if aux_head is not None:
             aux_head.eval()
         with torch.no_grad():
             for bi, (tb, fb, ab) in enumerate(tqdm(va, desc=f"Epoch {ep + 1}/{args.epochs} - Val", leave=False)):
                 losses = run_batch(tb, fb, ab, bi, train_mode=False, ep=ep)
                 if losses is not None:
-                    ls, la, lt = losses
-                    vls.append(float(ls.item())); vla.append(float(la.item())); vlt.append(float(lt.item()))
+                    ls, la, lm, lt = losses
+                    vls.append(float(ls.item())); vla.append(float(la.item())); vlm.append(float(lm.item())); vlt.append(float(lt.item()))
         t_soft, v_soft = (float(np.mean(tls)) if tls else float('nan')), (float(np.mean(vls)) if vls else float('nan'))
         t_aux, v_aux = (float(np.mean(tla)) if tla else 0.0), (float(np.mean(vla)) if vla else 0.0)
+        t_metric, v_metric = (float(np.mean(tlm)) if tlm else 0.0), (float(np.mean(vlm)) if vlm else 0.0)
         t_total, v_total = (float(np.mean(tlt)) if tlt else float('nan')), (float(np.mean(vlt)) if vlt else float('nan'))
-        logs.append({'epoch': ep + 1, 'train_soft_loss': t_soft, 'train_aux_loss': t_aux, 'train_total_loss': t_total, 'val_soft_loss': v_soft, 'val_aux_loss': v_aux, 'val_total_loss': v_total})
+        logs.append({'epoch': ep + 1, 'train_soft_loss': t_soft, 'train_aux_loss': t_aux, 'train_metric_loss': t_metric, 'train_total_loss': t_total, 'val_soft_loss': v_soft, 'val_aux_loss': v_aux, 'val_metric_loss': v_metric, 'val_total_loss': v_total})
         metric_value = v_total if args.early_stop_metric == "total" else (v_soft if args.early_stop_metric == "soft" else v_aux)
         epoch_bar.set_postfix(train_total_loss=f"{t_total:.4f}", val_total_loss=f"{v_total:.4f}", best_val=f"{best if np.isfinite(best) else float('nan'):.4f}")
         if np.isfinite(metric_value) and metric_value < best:
             best = metric_value; bad = 0
-            torch.save({'model': model.state_dict(), 'aux_head': None if aux_head is None else aux_head.state_dict(), 'embedding_dim': args.embedding_dim, 'aux_regression': args.aux_regression, 'aux_targets': aux_targets, 'feature_weight_mode': args.feature_weight_mode, 'model_architecture': {'embedding_dim': args.embedding_dim, 'aux_hidden_dim': args.aux_hidden_dim}, 'train_summary': {'best_val_total_loss': best, 'early_stop_metric': args.early_stop_metric}}, out / 'model.pt')
+            torch.save({'model': model.state_dict(), 'aux_head': None if aux_head is None else aux_head.state_dict(), 'embedding_dim': args.embedding_dim, 'aux_regression': args.aux_regression, 'aux_targets': aux_targets, 'comfort_metric_alignment': args.comfort_metric_alignment, 'metric_targets': metric_targets, 'feature_weight_mode': args.feature_weight_mode, 'model_architecture': {'embedding_dim': args.embedding_dim, 'aux_hidden_dim': args.aux_hidden_dim}, 'train_summary': {'best_val_total_loss': best, 'early_stop_metric': args.early_stop_metric}}, out / 'model.pt')
         else:
             bad += 1
         if bad >= args.patience:
@@ -310,6 +394,14 @@ def run(args):
         'aux_loss_type': args.aux_loss_type,
         'aux_hidden_dim': args.aux_hidden_dim,
         'aux_target_clip': args.aux_target_clip,
+        'comfort_metric_alignment': args.comfort_metric_alignment,
+        'metric_targets': metric_targets,
+        'metric_target_indices': metric_idx,
+        'metric_loss_weight': args.metric_loss_weight,
+        'metric_loss_type': args.metric_loss_type,
+        'metric_distance': args.metric_distance,
+        'metric_pair_sample': args.metric_pair_sample,
+        'metric_target_clip': args.metric_target_clip,
         'early_stop_metric': args.early_stop_metric,
         'best_val_total_loss': best,
         'final_train_soft_loss': logs[-1]['train_soft_loss'] if logs else None,
@@ -317,6 +409,8 @@ def run(args):
         'final_train_total_loss': logs[-1]['train_total_loss'] if logs else None,
         'final_val_soft_loss': logs[-1]['val_soft_loss'] if logs else None,
         'final_val_aux_loss': logs[-1]['val_aux_loss'] if logs else None,
+        'final_train_metric_loss': logs[-1]['train_metric_loss'] if logs else None,
+        'final_val_metric_loss': logs[-1]['val_metric_loss'] if logs else None,
         'final_val_total_loss': logs[-1]['val_total_loss'] if logs else None,
     }
     (out / 'train_summary.json').write_text(json.dumps(summary, indent=2))
@@ -367,6 +461,16 @@ if __name__ == '__main__':
     p.add_argument('--aux_warmup_epochs', type=int, default=0)
     p.add_argument('--save_aux_predictions', action='store_true')
     p.add_argument('--early_stop_metric', choices=['total', 'soft', 'aux'], default='total')
+    p.add_argument('--comfort_metric_alignment', action='store_true')
+    p.add_argument('--metric_targets', default='rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw')
+    p.add_argument('--metric_loss_weight', type=float, default=0.1)
+    p.add_argument('--metric_loss_type', choices=['mse', 'huber', 'rank'], default='mse')
+    p.add_argument('--metric_distance', choices=['euclidean', 'cosine'], default='euclidean')
+    p.add_argument('--metric_target_normalize', action='store_true', default=True)
+    p.add_argument('--metric_target_clip', type=float, default=10.0)
+    p.add_argument('--metric_pair_sample', type=int, default=0)
+    p.add_argument('--metric_detach_target', action='store_true', default=True)
+    p.add_argument('--metric_use_z_normalized', action='store_true', default=True)
     a = p.parse_args()
     torch.manual_seed(a.seed)
     np.random.seed(a.seed)

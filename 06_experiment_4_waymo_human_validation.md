@@ -210,3 +210,31 @@ python tools/compare_embedding_runs.py \
 - 【流程修正】`evaluate_aux_predictions.py` 在早期 Stage 4F workflow 中缺失；现已列为必做诊断步骤（训练后、导出前）。
 - 该脚本用于确认 auxiliary head 是否真正预测 jerk/comfort targets，而不只看训练 loss。
 - 脚本在 `normalize_local` 前必须先做 Waymo human 轨迹 NaN 清洗（与 train/export 共用 sanitization 逻辑）。
+
+# Stage 4G：comfort metric alignment
+
+## 为什么需要 Stage 4G
+- Stage 4E 说明简单 jerk/comfort 特征加权不足以改善 jerk-sensitive 几何。
+- Stage 4F 说明 auxiliary head 可以从 embedding 预测 jerk/comfort，但 embedding pairwise distance 仍不够 jerk-aligned。
+- 因此 Stage 4G 直接把目标改为距离结构对齐：让 embedding distance 与 comfort feature distance 在 batch 内成对一致。
+
+## 与 Stage 4E / 4F 的差异
+- Stage 4E：改 feature weighting（输入侧权重），不直接约束 embedding 距离几何。
+- Stage 4F：加 auxiliary regression（可解码性），仍不直接约束 embedding 距离几何。
+- Stage 4G：新增 metric alignment loss（几何约束），与 soft contrastive + aux loss 联合训练。
+
+## 预期成功标准
+- 训练与验证的 total/aux/metric loss 全部 finite。
+- learned classification/retrieval 明显高于 random，避免塌缩。
+- `spearman_rms_jerk_delta` 相对 Stage 4D v1（约 0.0697）有明显提升。
+
+## Task 表
+
+| Task | Status | Notes |
+|---|---|---|
+| Stage 4G metric loss implementation | 待完成 | comfort pairwise distance alignment |
+| Stage 4G training | 待执行 | human_embedding_model_comfort_metric |
+| Stage 4G aux diagnostic | 待执行 | evaluate_aux_predictions |
+| Stage 4G export | 待执行 | embeddings_row_level_comfort_metric.npy |
+| Stage 4G evaluation | 待执行 | eval_with_learned_comfort_metric |
+| Stage 4D/4E/4F/4G comparison | 待执行 | compare_embedding_runs |

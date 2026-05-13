@@ -1274,3 +1274,10 @@ Stage 4D learned embedding 在 jerk 相关性上偏弱；Stage 4E 的 jerk/comfo
 Stage 4F 评估分两部分，缺一不可：
 1. auxiliary head prediction quality（`tools/evaluate_aux_predictions.py`，检查 MAE/RMSE/Spearman，确认 head 真的学到 comfort 目标）；
 2. embedding retrieval/classification/style-distance correlation（`tools/evaluate_vehicledata_validation.py` 等，下游几何泛化能力）。
+
+## Stage 4G（当前进行中）：comfort metric alignment
+
+- 当前 active experiment 为 **Stage 4G**。
+- Stage 4F 结论是：auxiliary regression 证明 jerk/comfort 信息在 embedding 中可解码，但 embedding 的欧氏距离几何仍未与 jerk 差异对齐。
+- Stage 4G 在 Stage 4F 基础上增加 pairwise metric alignment：直接对齐 `embedding distance matrix` 与 `comfort feature distance matrix`。
+- 目标是不仅“可预测 jerk”，还要让 embedding 几何本身对 jerk/comfort 更敏感，并提升 `spearman_rms_jerk_delta`。

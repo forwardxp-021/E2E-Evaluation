@@ -1014,3 +1014,127 @@ python tools/compare_embedding_runs.py \
 - learned 的 classification/retrieval 明显高于 random。
 - rms_jerk_delta correlation 相比 Stage 4D v1 有明显提升。
 - 如果 jerk 未提升，报告中明确记录 Stage 4F 未达到目标。
+
+# Stage 4G：comfort metric alignment
+
+## 1. 命令
+
+Training:
+
+```bash
+python tools/train_human_behavior_embedding.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --out_dir outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric \
+  --embedding_dim 64 \
+  --batch_size 512 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_weight_mode uniform \
+  --aux_regression \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --aux_loss_weight 0.2 \
+  --aux_loss_type huber \
+  --comfort_metric_alignment \
+  --metric_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type mse \
+  --metric_distance euclidean \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+Aux prediction diagnostic:
+
+```bash
+python tools/evaluate_aux_predictions.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/model.pt \
+  --eval_split test \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --batch_size 1024 \
+  --device cuda \
+  --out_path outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/aux_prediction_metrics_test.json
+```
+
+Export:
+
+```bash
+python tools/export_human_row_embeddings.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/model.pt \
+  --out_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric.npy \
+  --batch_size 1024 \
+  --device cuda \
+  --overwrite
+```
+
+Evaluate:
+
+```bash
+python tools/evaluate_vehicledata_validation.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --label_dir outputs/waymo_human_v1_full51/pseudo_labels \
+  --out_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --embedding_path outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric.npy \
+  --eval_split test \
+  --distance euclidean \
+  --topk 5 \
+  --baselines learned,raw_feature,trajectory_l2,random,pca_feature \
+  --retrieval_mode strict \
+  --dataset_type human_public \
+  --projection pca
+```
+
+Compare Stage 4D / 4E / 4F / 4G:
+
+```bash
+python tools/compare_embedding_runs.py \
+  --runs \
+    stage4d_v1=outputs/waymo_human_v1_full51/eval_with_learned \
+    stage4e_jerk_comfort=outputs/waymo_human_v1_full51/eval_with_learned_jerk_comfort \
+    stage4f_comfort_aux=outputs/waymo_human_v1_full51/eval_with_learned_comfort_aux \
+    stage4g_comfort_metric=outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --out_dir outputs/waymo_human_v1_full51/compare_stage4d_stage4e_stage4f_stage4g
+```
+
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --train_summary outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/train_summary.json \
+  --export_summary outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_export_summary.json \
+  --pseudo_label_summary outputs/waymo_human_v1_full51/pseudo_labels/pseudo_label_summary.json \
+  --build_summary outputs/waymo_human_v1_full51/build_summary.json \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables_stage4g_comfort_metric
+```
+
+## 2. 期望行为
+
+- Stage 4G 在 Stage 4F 的 auxiliary regression 基础上，进一步增加 comfort metric alignment loss。
+- auxiliary regression 让 embedding 中可解码 jerk/comfort 信息。
+- comfort metric alignment 直接约束 embedding pairwise distance 与 comfort feature pairwise distance 对齐。
+- 训练仍然只使用 train split。
+- 不使用 pseudo labels 训练。
+- pseudo labels 仅用于 test split evaluation。
+- 导出的 embeddings_row_level_comfort_metric.npy 必须与 traj.npy 行对齐。
+- 评估重点不是只看分类和检索，还要重点看 rms_jerk_delta correlation 是否高于 Stage 4D / 4F。
+- Stage 4G 是为了让 embedding geometry 更 jerk/comfort-sensitive。
+
+## 3. 通过标准
+
+- train_total_loss / val_total_loss finite。
+- train_metric_loss / val_metric_loss finite。
+- aux_loss finite。
+- embeddings_row_level_comfort_metric.npy.shape[0] == len(traj.npy) == 168191。
+- embedding 全部 finite，无 NaN/Inf。
+- human_validation_summary.json 中 learned_embedding_evaluated=true。
+- learned 的 classification / retrieval 明显高于 random。
+- rms_jerk_delta correlation 相比 Stage 4D v1 的约 0.0697 有明显提升。
+- 目标：
+  - rms_jerk_delta >= 0.15：初步有效
+  - rms_jerk_delta >= 0.20：明显改善
+  - rms_jerk_delta >= 0.30：非常理想
+- 如果 rms_jerk_delta 未提升，但 aux prediction 仍然很好，说明 metric alignment 权重或距离形式还需要调整。
+- 如果 classification/retrieval 接近 random，说明 metric alignment 过强导致 embedding 崩塌。
+- compare_stage4d_stage4e_stage4f_stage4g/comparison_summary.csv 生成。
