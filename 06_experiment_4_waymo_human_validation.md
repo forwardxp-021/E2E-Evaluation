@@ -207,3 +207,6 @@ python tools/compare_embedding_runs.py \
 - Stage 4E 的 jerk_comfort 特征加权未提升 jerk correlation，且整体指标轻微回退，说明简单重加权不足。
 - Stage 4F 在 soft contrastive 主目标之外，增加从 embedding 到 comfort 特征的辅助回归监督，直接约束 embedding 保留 jerk/comfort 信息。
 - Stage 4F 训练仍不使用 pseudo labels；pseudo labels 仅用于下游评估对比。
+- 【流程修正】`evaluate_aux_predictions.py` 在早期 Stage 4F workflow 中缺失；现已列为必做诊断步骤（训练后、导出前）。
+- 该脚本用于确认 auxiliary head 是否真正预测 jerk/comfort targets，而不只看训练 loss。
+- 脚本在 `normalize_local` 前必须先做 Waymo human 轨迹 NaN 清洗（与 train/export 共用 sanitization 逻辑）。

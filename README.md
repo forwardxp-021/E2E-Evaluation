@@ -1270,3 +1270,7 @@ python tools/evaluate_vehicledata_validation.py \
 ## 阶段 4F：comfort-aware auxiliary regression（当前主线）
 
 Stage 4D learned embedding 在 jerk 相关性上偏弱；Stage 4E 的 jerk/comfort feature weighting 没有改善 jerk correlation，且分类/检索略有退化。因此 Stage 4F 不再仅靠特征权重，而是在 embedding 上增加显式 comfort auxiliary regression 监督（rms_accel/rms_jerk/max_abs_accel/max_abs_jerk/mean_thw/min_thw），目标是提升 jerk/comfort 敏感性，同时保持 learned embedding 的判别能力。训练依然不使用 pseudo labels。
+
+Stage 4F 评估分两部分，缺一不可：
+1. auxiliary head prediction quality（`tools/evaluate_aux_predictions.py`，检查 MAE/RMSE/Spearman，确认 head 真的学到 comfort 目标）；
+2. embedding retrieval/classification/style-distance correlation（`tools/evaluate_vehicledata_validation.py` 等，下游几何泛化能力）。
