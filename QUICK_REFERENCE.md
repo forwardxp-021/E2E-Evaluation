@@ -949,6 +949,15 @@ python tools/train_human_behavior_embedding.py \
   --seed 42 \
   --overwrite
 
+python tools/evaluate_aux_predictions.py \
+  --data_dir outputs/waymo_human_v1_full51 \
+  --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/model.pt \
+  --eval_split test \
+  --aux_targets rms_accel,rms_jerk,max_abs_accel,max_abs_jerk,mean_thw,min_thw \
+  --batch_size 1024 \
+  --device cuda \
+  --out_path outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/aux_prediction_metrics_test.json
+
 python tools/export_human_row_embeddings.py \
   --data_dir outputs/waymo_human_v1_full51 \
   --checkpoint outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/model.pt \
@@ -982,7 +991,9 @@ python tools/compare_embedding_runs.py \
 - 使用 train split 训练。
 - 不使用 pseudo labels 训练。
 - 在 soft contrastive loss 基础上增加 comfort auxiliary regression。
-- 明确预测 rms_accel / rms_jerk / max_abs_accel / max_abs_jerk / mean_thw / min_thw。
+- evaluate_aux_predictions.py 用于验证 auxiliary regression head 是否真的学到舒适性目标。
+- 报告 rms_accel / rms_jerk / max_abs_accel / max_abs_jerk / mean_thw / min_thw 的 MAE / RMSE / Spearman。
+- 该诊断独立于 embedding retrieval/classification 评估。
 - 导出 row-aligned embedding。
 - 在 test split 上评估 learned vs baselines。
 - 与 Stage 4D / Stage 4E 对比。
@@ -990,6 +1001,10 @@ python tools/compare_embedding_runs.py \
 ## 3. 通过标准
 - train_total_loss / val_total_loss finite。
 - aux_loss finite。
+- outputs/waymo_human_v1_full51/human_embedding_model_comfort_aux/aux_prediction_metrics_test.json 存在。
+- rms_jerk / max_abs_jerk 的 Spearman 为有限值（finite）。
+- 若 rms_jerk Spearman 近似 0，视为 Stage 4F 未学到 jerk（即使训练 loss 有限）。
+- 若 aux prediction 指标良好但 embedding jerk correlation 未提升，记录为“aux head 学到但未转移到 embedding geometry”。
 - embeddings_row_level_comfort_aux.npy shape = [168191, 64]。
 - evaluation learned_embedding_evaluated=true。
 - learned 的 classification/retrieval 明显高于 random。
