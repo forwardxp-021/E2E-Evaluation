@@ -238,3 +238,27 @@ python tools/compare_embedding_runs.py \
 | Stage 4G export | 待执行 | embeddings_row_level_comfort_metric.npy |
 | Stage 4G evaluation | 待执行 | eval_with_learned_comfort_metric |
 | Stage 4D/4E/4F/4G comparison | 待执行 | compare_embedding_runs |
+
+# Stage 4G 结果总结（当前最佳）
+
+- Stage 4G（comfort metric alignment）当前为主结果：
+  - rms_jerk_delta ≈ 0.5259
+  - rms_yaw_rate_delta ≈ 0.227
+  - rms_curvature_delta ≈ 0.346
+  - mean_speed_delta ≈ 0.410
+- 分类/检索未塌缩：centroid accuracy≈0.735，hit@1≈0.900。
+- 解释：通过对齐 embedding 距离与 comfort metric 距离，直接重塑几何结构，而不是只提升可解码性。
+
+# Stage 4H 计划（sanity check）
+
+Stage 4H 使用与 Stage 4G 相同训练流程，但仅打乱 metric alignment target（默认 train split），用于验证提升并非泄漏、偶然或实现 artifact。辅助回归 target 与 pseudo labels 不参与该打乱。
+
+## Stage 4D~4H 任务表
+
+| Stage | Method | Purpose | rms_jerk_delta | Hit@1 | Centroid Acc | Interpretation |
+|---|---|---|---:|---:|---:|---|
+| 4D | soft contrastive | baseline learned embedding | 0.0697 | - | - | valid but jerk weak |
+| 4E | feature weighting | simple comfort weighting | 0.0695 | - | - | ineffective |
+| 4F | aux regression | jerk decodable | 0.0558 | - | - | geometry not aligned |
+| 4G | comfort metric alignment | align geometry | 0.5259 | 0.900 | 0.735 | current best |
+| 4H | shuffled metric target | sanity check | TBD | TBD | TBD | should not match 4G |

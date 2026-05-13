@@ -256,6 +256,18 @@ def run(args):
             raise RuntimeError(f"bad metric target shape: {metric_data.shape}")
         if not np.isfinite(metric_data).all():
             raise RuntimeError("metric targets contain non-finite values after sanitization")
+        if args.metric_target_shuffle:
+            print("[warning] Metric targets are shuffled for sanity check. This run should not be used as main model.")
+            rng = np.random.default_rng(args.metric_target_shuffle_seed)
+            if args.metric_target_shuffle_scope == "all":
+                perm = rng.permutation(metric_data.shape[0])
+                metric_data = metric_data[perm]
+            else:
+                train_ids = np.where(split == "train")[0]
+                shuffled = metric_data[train_ids].copy()
+                rng.shuffle(shuffled, axis=0)
+                metric_data = metric_data.copy()
+                metric_data[train_ids] = shuffled
     combo_data = None
     if args.aux_regression and args.comfort_metric_alignment:
         combo_data = np.concatenate([aux_data, metric_data], axis=1)
@@ -402,6 +414,9 @@ def run(args):
         'metric_distance': args.metric_distance,
         'metric_pair_sample': args.metric_pair_sample,
         'metric_target_clip': args.metric_target_clip,
+        'metric_target_shuffle': bool(args.metric_target_shuffle),
+        'metric_target_shuffle_scope': args.metric_target_shuffle_scope,
+        'metric_target_shuffle_seed': int(args.metric_target_shuffle_seed),
         'early_stop_metric': args.early_stop_metric,
         'best_val_total_loss': best,
         'final_train_soft_loss': logs[-1]['train_soft_loss'] if logs else None,
@@ -471,6 +486,9 @@ if __name__ == '__main__':
     p.add_argument('--metric_pair_sample', type=int, default=0)
     p.add_argument('--metric_detach_target', action='store_true', default=True)
     p.add_argument('--metric_use_z_normalized', action='store_true', default=True)
+    p.add_argument('--metric_target_shuffle', action='store_true', help='Shuffle only comfort metric alignment targets for sanity-check experiments')
+    p.add_argument('--metric_target_shuffle_scope', choices=['train_only', 'all'], default='train_only')
+    p.add_argument('--metric_target_shuffle_seed', type=int, default=42)
     a = p.parse_args()
     torch.manual_seed(a.seed)
     np.random.seed(a.seed)

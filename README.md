@@ -1281,3 +1281,15 @@ Stage 4F 评估分两部分，缺一不可：
 - Stage 4F 结论是：auxiliary regression 证明 jerk/comfort 信息在 embedding 中可解码，但 embedding 的欧氏距离几何仍未与 jerk 差异对齐。
 - Stage 4G 在 Stage 4F 基础上增加 pairwise metric alignment：直接对齐 `embedding distance matrix` 与 `comfort feature distance matrix`。
 - 目标是不仅“可预测 jerk”，还要让 embedding 几何本身对 jerk/comfort 更敏感，并提升 `spearman_rms_jerk_delta`。
+
+
+## Stage 4D/4E/4F/4G 结论更新（当前主结果）
+
+当前主方法为 **Stage 4G: comfort metric alignment**。
+
+- Stage 4D：建立了可用的 learned behavior embedding，但 jerk 敏感性较弱。
+- Stage 4E：仅做 jerk/comfort 特征重加权，未有效提升 jerk-sensitive 几何。
+- Stage 4F：辅助回归证明 jerk/comfort 在 embedding 中“可解码”，但 embedding 距离几何本身仍未对齐 comfort。
+- Stage 4G：直接约束 embedding pairwise distance 对齐 comfort metric pairwise distance，显著提升 jerk/comfort-sensitive 检索，同时保持分类/检索不塌缩。
+
+> 重要说明：Stage 4G 不是“纯无监督发现”，而是 **metric-aligned behavior embedding**（通过 comfort metric 对 embedding geometry 施加显式结构约束）。
