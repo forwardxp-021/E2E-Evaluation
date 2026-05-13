@@ -1240,3 +1240,46 @@ python tools/compare_embedding_runs.py \
 - Stage 4H 的 rms_jerk_delta 应明显低于 Stage 4G。
 - 如果 Stage 4H 仍然接近 Stage 4G 的 rms_jerk_delta，需要警惕 metric alignment 实现或评估存在泄漏/bug。
 - Stage 4G 仍应作为主结果，Stage 4H 仅作为 sanity check。
+
+# Stage 4I：最终结果固化与论文图表包
+
+## 1. 命令
+
+```bash
+python tools/generate_stage4_final_report.py \
+  --out_dir outputs/waymo_human_v1_full51/stage4_final_report
+```
+
+```bash
+python tools/generate_paper_tables.py \
+  --eval_dir outputs/waymo_human_v1_full51/eval_with_learned_comfort_metric \
+  --train_summary outputs/waymo_human_v1_full51/human_embedding_model_comfort_metric/train_summary.json \
+  --export_summary outputs/waymo_human_v1_full51/embeddings_row_level_comfort_metric_export_summary.json \
+  --pseudo_label_summary outputs/waymo_human_v1_full51/pseudo_labels/pseudo_label_summary.json \
+  --build_summary outputs/waymo_human_v1_full51/build_summary.json \
+  --out_dir outputs/waymo_human_v1_full51/paper_tables_stage4g_comfort_metric
+```
+
+## 2. 期望行为
+
+- 汇总 Stage 4D/4E/4F/4G/4H 的结果。
+- 生成最终 ablation 表格。
+- 生成 Stage 4G learned vs baselines 表格。
+- 生成 Stage 4G auxiliary prediction 表格。
+- 生成 Stage 4H shuffled-target sanity check 表格。
+- 生成论文可用的图和 Markdown 报告。
+- 不启动新训练，不修改模型。
+
+## 3. 通过标准
+
+- stage4_final_report.md 存在且非空。
+- table_stage4_ablation.md / .csv 存在。
+- table_stage4g_learned_vs_baselines.md / .csv 存在。
+- table_stage4g_aux_prediction.md / .csv 存在。
+- table_stage4h_sanity_check.md / .csv 存在。
+- figure_stage4_style_correlation.png 存在。
+- figure_stage4_jerk_delta.png 存在。
+- stage4_final_numbers.json 存在。
+- 报告明确写出 Stage 4G 是 current best。
+- 报告明确写出 Stage 4H shuffled target 使 jerk improvement 消失。
+- 报告明确写出限制：pseudo labels 是 weak labels，4G 是 metric-aligned embedding，不是纯无监督发现。
