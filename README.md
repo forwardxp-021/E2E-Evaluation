@@ -9,6 +9,9 @@
 - Stage 4G（comfort metric alignment）是当前最佳结果（current best）。
 - Stage 4H（shuffled comfort target）sanity check 已通过。
 - Stage 4I 负责最终结果固化与论文图表包生成，不引入新训练方法。
+- Stage 5（interaction-aware design）为规划中的扩展方向：在 Stage 4G 轨迹基线上引入 lane-aware 5-neighbor 上下文。
+- Stage 4G 仍是当前最佳 trajectory-only baseline，Stage 5 不替代 Stage 4G。
+- Stage 5 详细设计见 `07_stage5_interaction_design.md`。
 - 具体命令请见 `QUICK_REFERENCE.md`。
 
 
