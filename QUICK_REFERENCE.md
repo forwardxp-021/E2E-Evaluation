@@ -1372,3 +1372,16 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 - build_report.md 用中文说明数据规模、slot coverage、fallback 情况、限制。
 - context_traj.npy 和 interaction_feat_style.npy 无 NaN/Inf。
 - Stage 4 结果文件未被覆盖。
+
+### Stage 5A 非有限值排查（补充）
+
+若 Stage 5A 在非有限值断言/报错处失败：
+- 检查 `nonfinite_debug_*.json`。
+- 常见原因是：窗口整体 valid_ratio 达标，但内部仍包含 Waymo invalid 帧（`x/y/vx/vy/heading` 为 NaN）。
+- 构建脚本应对该类帧执行插值/清洗（sanitize），并确保最终输出不含 NaN/Inf。
+
+通过标准：
+- `build_summary.json` 中 `trajectory_nan_count_after_sanitize = 0`。
+- `context_traj.npy` 的 finite 检查为 `true`。
+- `interaction_feat_style.npy` 的 finite 检查为 `true`。
+- 成功构建时不应产生 `nonfinite_debug_*.json`。
