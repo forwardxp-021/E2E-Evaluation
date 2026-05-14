@@ -1304,3 +1304,8 @@ Stage 4F 评估分两部分，缺一不可：
 - Stage 4G：直接约束 embedding pairwise distance 对齐 comfort metric pairwise distance，显著提升 jerk/comfort-sensitive 检索，同时保持分类/检索不塌缩。
 
 > 重要说明：Stage 4G 不是“纯无监督发现”，而是 **metric-aligned behavior embedding**（通过 comfort metric 对 embedding geometry 施加显式结构约束）。
+
+
+## Stage 5A 数据构建
+
+仓库已新增 Stage 5A lane-aware 5-neighbor context 数据构建脚本：`tools/build_waymo_5neighbor_context_dataset.py`，用于在训练前验证交互上下文输入质量。设计说明见 `07_stage5_interaction_design.md`。
