@@ -1320,3 +1320,55 @@ grep -R "Stage 5" -n README.md QUICK_REFERENCE.md 07_stage5_interaction_design.m
 - 文档明确说明三个 explicit heads。
 - 文档明确说明 Version A flatten GRU 与 Version B slot encoder + attention。
 - 文档明确说明本阶段不启动训练。
+
+
+# Stage 5A：lane-aware 5-neighbor context 数据构建
+
+## 1. 命令
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --out_dir outputs/waymo_5neighbor_context_smoke \
+  --smoke_test \
+  --overwrite
+```
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 从 Waymo 场景中提取 target vehicle 轨迹窗口。
+- 为每个 target vehicle 分配 front / left_front / left_rear / right_front / right_rear 五个邻车 slot。
+- 优先使用 lane-aware assignment。
+- lane-aware 失败时 fallback 到 ego-centric geometric assignment。
+- 输出 ego_seq / neighbor_seq / context_traj / context_mask / interaction features。
+- 输出 slot coverage、fallback rate、heading fallback rate 等诊断信息。
+- 不启动模型训练。
+- 不覆盖 Stage 4G 输出。
+
+## 3. 通过标准
+
+- smoke test 能跑通。
+- context_traj.npy / ego_seq.npy / neighbor_seq.npy / context_mask.npy 存在。
+- interaction_feat_style.npy 和 interaction_feat_style_raw.npy 存在。
+- build_summary.json 中包含 slot_valid_ratio、fallback_assignment_rate、heading_proxy_fallback_rate。
+- neighbor_slot_valid_ratio.csv 存在。
+- lane_assignment_debug.csv 存在。
+- build_report.md 用中文说明数据规模、slot coverage、fallback 情况、限制。
+- context_traj.npy 和 interaction_feat_style.npy 无 NaN/Inf。
+- Stage 4 结果文件未被覆盖。

@@ -392,3 +392,10 @@ Stage 5 预计新增输出文件：
 - 不应直接使用邻车全局坐标作为输入。
 - heading 在可用时应优先使用 raw heading，而非仅依赖 velocity proxy。
 - pseudo labels 仍是评估标签，不作为训练真值标签。
+
+
+## Stage 5A implementation status
+
+- Status: planned / implementation in progress.
+- This stage is currently focused on data construction and diagnostics only.
+- No Stage 5 training results are claimed in this document section.
