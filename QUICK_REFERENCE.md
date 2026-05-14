@@ -1287,3 +1287,36 @@ python tools/generate_paper_tables.py \
 - 报告明确写出 Stage 4G 是 current best。
 - 报告明确写出 Stage 4H shuffled target 使 jerk improvement 消失。
 - 报告明确写出限制：pseudo labels 是 weak labels，4G 是 metric-aligned embedding，不是纯无监督发现。
+
+
+# Stage 5：interaction-aware input design
+
+## 1. 命令
+
+> 当前仅做设计评审，不新增训练命令。
+
+```bash
+python -m py_compile tools/train_human_behavior_embedding.py
+grep -R "Stage 5" -n README.md QUICK_REFERENCE.md 07_stage5_interaction_design.md
+```
+
+## 2. 期望行为
+
+- 本阶段是设计阶段，不启动训练。
+- 明确 5-neighbor lane-aware 输入设计。
+- 明确 weak supervision feature 分组。
+- 明确 longitudinal / lateral / interaction 三个显性 head。
+- 明确 flatten GRU 与 slot encoder 两种架构路线。
+- 不覆盖 Stage 4G 结果。
+
+## 3. 通过标准
+
+- 07_stage5_interaction_design.md 存在。
+- README.md 中能看到 Stage 5 的高层说明。
+- QUICK_REFERENCE.md 中能看到 Stage 5 设计阶段说明。
+- 文档明确说明 5 个 neighbor slot。
+- 文档明确说明 heading 使用 raw heading 优先。
+- 文档明确说明 longitudinal / lateral / interaction 三组 features。
+- 文档明确说明三个 explicit heads。
+- 文档明确说明 Version A flatten GRU 与 Version B slot encoder + attention。
+- 文档明确说明本阶段不启动训练。

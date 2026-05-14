@@ -760,3 +760,12 @@ Trajectory-level behavior embedding with:
 
 4. **Main result**  
 Comfort metric alignment turns jerk/comfort from decodable attributes into explicit embedding geometry.
+
+
+# Stage 5（未来扩展 / 下一实验）
+
+- 方向：interaction-conditioned behavior embedding。
+- 输入：lane-aware 5-neighbor local context（ego + front/left_front/left_rear/right_front/right_rear）。
+- 监督与诊断：longitudinal / lateral / interaction 三类显性 heads。
+- 关键消融：Stage 4G ego-only 输入 vs Stage 5 context-aware 输入。
+- 说明：本节仅定义下一步实验设计，不声明 Stage 5 已取得结果。
