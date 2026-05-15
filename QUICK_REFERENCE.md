@@ -1703,3 +1703,35 @@ build script 与 `lane_aware_assignment.py` 的接口不一致。
 - full51 不再一次性缓存所有 scenario；
 - 不出现 `/tmp/old.py`；
 - 不出现 `SlotAssignResult` 接口错误。
+
+## Stage 5A：并行分片结果合并
+
+命令（示例）：
+
+```bash
+python tools/merge_waymo_5neighbor_context_shards.py \
+  --input_roots \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26 \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39 \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51 \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --recompute_global_standardization \
+  --overwrite
+```
+
+预期行为：
+- 以 manifest/统计信息方式合并 Stage 5A 并行分片输出；
+- 默认不在 merged root 生成 `ego_seq.npy`、`neighbor_seq.npy`、`context_traj.npy` 等超大单体文件；
+- 重新基于 train split 计算全局交互特征标准化，并回写每个 shard 的 `interaction_feat_style.npy`；
+- 输出 `shard_manifest.json`、`build_summary.json`、`merged_build_summary.json`、`build_report.md`。
+
+通过标准：
+- `shard_manifest.json` 存在；
+- `build_summary.json` 存在；
+- `interaction_feature_standardization.json` 存在；
+- merged `n_windows_kept` 等于四个输入分片之和；
+- `fallback_assignment_rate` 仍为 0；
+- `good_lane_context_rate` 仍为 1；
+- global standardization 的 `train_count > 0`；
+- 默认不创建 monolithic 大 `.npy` 文件。
