@@ -1663,6 +1663,19 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 - 需要运行 `python tools/check_no_tmp_dependencies.py`。
 - 所有 helper function 必须在仓库源码内定义或从 `tools` 模块导入。
 
+## Stage 5A-v5 故障排查（slot_method 接口不一致）
+
+如果出现：
+`AttributeError: 'SlotAssignResult' object has no attribute 'slot_method'`
+
+原因：
+build script 与 `lane_aware_assignment.py` 的接口不一致。
+
+修复原则：
+- 优先从 `assign.per_slot_debug` 推导每个 slot 的 `assignment_method`。
+- 不要假设 `SlotAssignResult` 存在未定义字段。
+- smoke test 必须覆盖 streaming mode。
+
 通过标准：
 - `python -m py_compile tools/build_waymo_5neighbor_context_dataset.py` 通过。
 - `python tools/check_no_tmp_dependencies.py` 通过。

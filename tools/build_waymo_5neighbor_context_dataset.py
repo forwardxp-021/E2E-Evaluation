@@ -43,6 +43,14 @@ def split_of_sid(sid):
     return 'train' if h < 0.8 else ('val' if h < 0.9 else 'test')
 def wrap(a): return (a + np.pi) % (2 * np.pi) - np.pi
 
+def get_slot_method(assign, slot_name):
+    for row in assign.per_slot_debug:
+        if row.get("slot_name") == slot_name:
+            method = row.get("assignment_method", "empty")
+            if method in {"lane_aware", "geometric_fallback", "empty", "sanitize_failed"}:
+                return method
+    return "empty"
+
 @dataclass
 class ScenarioOutputBatch:
     ego_seq:list=field(default_factory=list); neighbor_seq:list=field(default_factory=list); context_traj:list=field(default_factory=list)
@@ -72,10 +80,11 @@ def process_one_scenario(sid,tracks,lane_infos,args,cnt,timing,global_row_start)
         nbr=np.zeros((5,args.window_len,15),np.float32); sidrow=[]
         for si,sn in enumerate(SLOT_NAMES):
           nid=assign.slot_to_agent.get(sn,''); sidrow.append(nid if nid else '-1')
-          if not nid: assignment_method_counts[sn]['empty']+=1; continue
+          method=get_slot_method(assign,sn)
+          if not nid: assignment_method_counts[sn][method]+=1; continue
           nw,n_valid,_=sanitize_track_window(candidates[nid],args.dt,'',1.0-args.min_valid_ratio)
-          if nw is None: assignment_method_counts[sn]['sanitize_failed']+=1; continue
-          assignment_method_counts[sn][assign.slot_method.get(sn,'lane_aware') if assign.slot_method.get(sn,'lane_aware') in assignment_method_counts[sn] else 'lane_aware']+=1
+          if nw is None: method='sanitize_failed'; assignment_method_counts[sn][method]+=1; continue
+          assignment_method_counts[sn][method]+=1
           n_speed=np.hypot(nw[:,2],nw[:,3]); n_acc=np.diff(n_speed,prepend=n_speed[0])/max(args.dt,1e-6); n_heading=np.where(np.isfinite(nw[:,4]),nw[:,4],np.arctan2(nw[:,3],nw[:,2])); n_yaw=wrap(np.diff(n_heading,prepend=n_heading[0]))/max(args.dt,1e-6)
           for t in range(args.window_len):
             if n_valid[t]<=0.5: continue
@@ -102,6 +111,7 @@ def main():
     if out.exists() and a.overwrite and not a.resume: shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True); (out/'shards').mkdir(exist_ok=True)
     cnt=defaultdict(int); timing=defaultdict(float); shard_idx=0; inter_names=None
+    assignment_method_counts_total={s:{'lane_aware':0,'geometric_fallback':0,'empty':0,'sanitize_failed':0} for s in SLOT_NAMES}
     agg={'sum':None,'sumsq':None,'count':0}; shard_paths=[]; g_batch={k:[] for k in ['ego_seq','neighbor_seq','context_traj','context_mask','context_mask_window','neighbor_slot_ids','meta_rows','splits','interaction_raw','debug_rows']}
     global_row=0
     import tensorflow as tf
@@ -116,7 +126,10 @@ def main():
         for tr in sc.tracks:
           if a.agent_types=='vehicle' and tr.object_type!=1: continue
           tracks[str(tr.id)]=np.asarray([[st.center_x,st.center_y,st.velocity_x,st.velocity_y,st.heading,1.0] if st.valid else [np.nan]*5+[0.0] for st in tr.states],np.float32)
-        b,_,_,names=process_one_scenario(sc.scenario_id,tracks,extract_lane_polylines(sc),a,cnt,timing,global_row)
+        b,_,assignment_method_counts_scenario,names=process_one_scenario(sc.scenario_id,tracks,extract_lane_polylines(sc),a,cnt,timing,global_row)
+        for sn in SLOT_NAMES:
+          for method,count in assignment_method_counts_scenario[sn].items():
+            assignment_method_counts_total[sn][method]+=count
         if inter_names is None and names is not None: inter_names=names
         for k in g_batch: g_batch[k].extend(getattr(b,k) if hasattr(b,k) else [])
         if len(g_batch['ego_seq'])>=a.output_shard_size:
@@ -135,7 +148,18 @@ def main():
     for sp in shard_paths:
       sp=Path(sp); raw=np.load(sp/'interaction_feat_style_raw.npy'); std=((raw-mu)/np.where(sd<1e-6,1e-6,sd)).astype(np.float32); np.save(sp/'interaction_feat_style.npy',std)
     (out/'interaction_feature_standardization.json').write_text(json.dumps({'mean':mu.tolist(),'std':sd.tolist(),'feature_names':inter_names or [],'train_count':int(agg['count']),'clip_value':None},indent=2,ensure_ascii=False),encoding='utf-8')
-    summary={'streaming_mode':bool(streaming),'output_format':'sharded','n_shards':len(shard_paths),'shard_size':a.output_shard_size,'shard_paths':shard_paths,'n_windows_kept':cnt['kept'],'split_counts':{},'nonfinite_output_detected':0,'interaction_feature_standardization':'interaction_feature_standardization.json','n_files_processed':len(files)}
+    expected_kept=int(cnt['kept'])
+    mismatch_slots={}
+    for sn in SLOT_NAMES:
+      slot_total=int(sum(assignment_method_counts_total[sn].values()))
+      if slot_total!=expected_kept:
+        mismatch_slots[sn]={'expected':expected_kept,'actual':slot_total}
+    if mismatch_slots:
+      msg=f"assignment_method_counts_by_slot mismatch: {mismatch_slots}"
+      if a.smoke_test:
+        raise RuntimeError(msg)
+      print(f"[WARN] {msg}")
+    summary={'streaming_mode':bool(streaming),'output_format':'sharded','n_shards':len(shard_paths),'shard_size':a.output_shard_size,'shard_paths':shard_paths,'n_windows_kept':cnt['kept'],'split_counts':{},'nonfinite_output_detected':0,'interaction_feature_standardization':'interaction_feature_standardization.json','n_files_processed':len(files),'assignment_method_counts_by_slot':assignment_method_counts_total}
     (out/'build_summary.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding='utf-8')
     (out/'neighbor_context_summary.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding='utf-8')
     (out/'build_report.md').write_text('# Stage 5A 构建报告\n\n- full51 使用分片输出（sharded）避免 OOM。\n- 除非显式合并，否则不保证存在 monolithic .npy。\n- 训练/评估需要支持 shard 输入或后续 merge。\n- Stage 5A full51 不应将全部 scenario 常驻内存。\n',encoding='utf-8')
