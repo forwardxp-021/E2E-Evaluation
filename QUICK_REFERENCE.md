@@ -1498,3 +1498,57 @@ python tools/build_waymo_5neighbor_context_dataset.py \
   --assignment_mode geometric_only \
   --overwrite
 ```
+
+
+## Stage 5A-v3（lane-aware + fallback）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --overwrite
+```
+
+## Stage 5A-v3（clean 训练集）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --overwrite
+```
+
+通过标准（中文）：fallback_assignment_rate 低；clean run 的 lane_context_quality 以 good 为主；报告 static_front_count；无 NaN/Inf；每个 slot 的 assignment_method_counts_by_slot 求和等于 n_windows_kept；lane_assignment_debug.csv 包含 delta_s / heading_diff / neighbor_is_static。

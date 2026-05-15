@@ -403,3 +403,16 @@ Stage 5 预计新增输出文件：
 - Stage 5A-v1 geometric fallback passed.
 - Stage 5A-v2 true lane-aware assignment is now required before training.
 - Do not proceed to Stage 5B if fallback_assignment_rate remains 1.0.
+
+
+## Stage 5A-v3 车道感知槽位规则收紧
+- front_max_distance = 120m
+- side_front_max_distance = 80m
+- side_rear_max_distance = 120m
+- lane_lateral_tolerance = 2.0m
+- heading_diff_threshold = 45°
+- static_speed_threshold = 0.5m/s
+
+静止前车不会被自动丢弃：只要同车道且在前方可作为有效 front，并在诊断中标记为 `neighbor_is_static`。
+
+路口场景说明：Waymo 在路口常有地图，但相邻车道拓扑可能存在歧义。Stage 5 清洁训练建议优先 `lane_context_quality=good`；无地图或 ego lane 缺失可在 clean 模式下丢弃。
