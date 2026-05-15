@@ -1524,7 +1524,7 @@ python tools/build_waymo_5neighbor_context_dataset.py \
   --overwrite
 ```
 
-## Stage 5A-v3（clean 训练集）
+## Stage 5A-v4（normal clean，保留 good + ambiguous_intersection）
 ```bash
 python tools/build_waymo_5neighbor_context_dataset.py \
   --waymo_dir /mnt/d/WMdata \
@@ -1551,7 +1551,41 @@ python tools/build_waymo_5neighbor_context_dataset.py \
   --overwrite
 ```
 
-通过标准（中文）：fallback_assignment_rate 低；clean run 的 lane_context_quality 以 good 为主；报告 static_front_count；无 NaN/Inf；每个 slot 的 assignment_method_counts_by_slot 求和等于 n_windows_kept；lane_assignment_debug.csv 包含 delta_s / heading_diff / neighbor_is_static。
+## Stage 5A-v4（strict quality，仅保留 good）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_strict_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --drop_if_lane_context_ambiguous \
+  --overwrite
+```
+
+期望行为（中文）：
+- normal clean run 保留 good + ambiguous_intersection，丢弃 bad/fallback。
+- strict run 仅保留 good。
+- empty neighbor slots 不应自动触发 ambiguous_intersection。
+- slot coverage 与 empty slot ratio 单独报告。
+
+通过标准（中文）：clean run 完成；lane_context_quality_counts 合理；good_lane_context_rate 不应仅因 slot 为空而接近 0；empty_slot_ratio_by_slot 存在；assignment_method_counts_by_slot 每个 slot 总和等于 n_windows_kept；context_traj.npy 与 interaction_feat_style.npy 无 NaN/Inf。
 
 ### Stage 5A-v3 常见错误与排查（clean 模式）
 
