@@ -23,6 +23,7 @@ class SlotAssignResult:
     right_lane_id: str = ""
     adjacency_source: str = "none"
     lane_context_quality: str = "bad"
+    slot_rejection_reason_counts: Dict[str, Dict[str, int]] = None
 
 
 def _to_ego_frame(dx: float, dy: float, h: float) -> Tuple[float, float]:
@@ -162,11 +163,11 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
             debug.append(dict(slot_name=slot, assignment_method="empty", neighbor_id="", fallback_used=False, fallback_reason="no_laneaware_candidate", neighbor_lane_id=lid, ego_lane_id=cur, slot_lane_id=lid,
                               candidate_lateral_offset=np.nan, candidate_heading_diff=np.nan, neighbor_speed=np.nan, neighbor_is_static=False,
                               distance_threshold_used=front_max if slot=="front" else (side_front_max if 'front' in slot else side_rear_max), lane_lateral_tolerance=lat_tol, slot_heading_diff_threshold=float(np.rad2deg(slot_hd)),
-                              slot_rejection_reason_counts=rejection_counts[slot]))
+                              rejection_reason="no_laneaware_candidate"))
 
     lane_context_quality = "good"
     if src == "none":
         lane_context_quality = "ambiguous_intersection"
     elif any(d.get("assignment_method") == "empty" for d in debug):
         lane_context_quality = "ambiguous_intersection"
-    return SlotAssignResult(slot_to_agent, True, False, "", debug, cur, left, right, src, lane_context_quality)
+    return SlotAssignResult(slot_to_agent, True, False, "", debug, cur, left, right, src, lane_context_quality, rejection_counts)
