@@ -1552,3 +1552,25 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 ```
 
 通过标准（中文）：fallback_assignment_rate 低；clean run 的 lane_context_quality 以 good 为主；报告 static_front_count；无 NaN/Inf；每个 slot 的 assignment_method_counts_by_slot 求和等于 n_windows_kept；lane_assignment_debug.csv 包含 delta_s / heading_diff / neighbor_is_static。
+
+### Stage 5A-v3 常见错误与排查（clean 模式）
+
+常见错误：
+1. `timing referenced before assignment`
+   - 原因：`timing` 初始化太晚。
+   - 修复：在 `main` 开始处（参数解析与 out_dir 创建后）立即初始化 `t_global` 和 `timing`。
+
+2. `boolean index did not match`
+   - 原因：clean filtering 后输出列表行数不一致（先 append 后过滤）。
+   - 修复：先完成过滤判断，再原子化统一 append。
+
+3. `CSV dict contains fields not in fieldnames`
+   - 原因：debug row schema 不统一。
+   - 修复：统一 `LANE_DEBUG_FIELDS`，写 CSV 时使用 `normalize_debug_row`。
+
+通过标准：
+- clean run 不报错。
+- `split.npy / meta.npy / interaction_feat_style.npy / context_traj.npy` 行数一致。
+- `assignment_method_counts_by_slot` 每个 slot 的总数等于 `n_windows_kept`。
+- `lane_assignment_debug.csv` 可以正常写出。
+- `build_summary.json` 包含 clean filtering drop counts。

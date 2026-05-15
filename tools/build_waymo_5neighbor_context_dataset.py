@@ -49,6 +49,7 @@ def parse_args():
     p.add_argument('--drop_if_no_lane_map', action='store_true')
     p.add_argument('--drop_if_ego_lane_missing', action='store_true')
     p.add_argument('--drop_if_lane_context_bad', action='store_true')
+    p.add_argument('--allow_empty', action='store_true')
     return p.parse_args()
 
 def split_of_sid(sid):
@@ -93,10 +94,24 @@ def localize(xy, origin, heading):
     c, s = np.cos(-heading), np.sin(-heading)
     return np.stack([d[:,0]*c - d[:,1]*s, d[:,0]*s + d[:,1]*c], axis=1)
 
+LANE_DEBUG_FIELDS = [
+    "scenario_id", "target_agent_id", "start", "slot_name", "assignment_method", "neighbor_id",
+    "fallback_used", "fallback_reason", "ego_lane_id", "slot_lane_id", "neighbor_lane_id",
+    "ego_s", "neighbor_s", "delta_s", "ego_l", "neighbor_l", "projection_distance",
+    "candidate_lateral_offset", "candidate_heading_diff", "neighbor_speed", "neighbor_is_static",
+    "distance_threshold_used", "lane_lateral_tolerance", "slot_heading_diff_threshold", "distance",
+    "longitudinal_gap", "lateral_gap", "rejection_reason"
+]
+
+def normalize_debug_row(row):
+    return {k: row.get(k, "") for k in LANE_DEBUG_FIELDS}
+
 def main():
     a = parse_args(); out = Path(a.out_dir)
     if out.exists() and a.overwrite: shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
+    t_global=time.perf_counter()
+    timing=defaultdict(float)
     scenarios = []; rng = np.random.default_rng(7)
     if a.smoke_test:
         for s in range(3):
@@ -131,11 +146,11 @@ def main():
                 if a.max_scenarios and len(scenarios)>=a.max_scenarios: break
             if a.max_scenarios and len(scenarios)>=a.max_scenarios: break
 
-    t_global=time.perf_counter()
-    timing=defaultdict(float)
     ego_feats=["ego_x_local","ego_y_local","ego_vx_local","ego_vy_local","ego_heading_local","ego_speed","ego_accel","ego_yaw_rate"]
     nbr_feats=["valid_mask","dx_ego","dy_ego","rel_vx_ego","rel_vy_ego","distance","longitudinal_gap","lateral_gap","closing_rate","ttc_proxy","thw_proxy","neighbor_speed","neighbor_accel","neighbor_heading_rel","neighbor_yaw_rate"]
     ego_seq=[]; nbr_seq=[]; ctx=[]; cmask=[]; cmask_win=[]; slot_ids=[]; meta=[]; splits=[]; inter=[]; debug_rows=[]; cnt=defaultdict(int); slot_valid_counts=defaultdict(int)
+    assignment_method_counts_by_slot={s:{'lane_aware':0,'geometric_fallback':0,'empty':0,'sanitize_failed':0} for s in SLOT_NAMES}
+    slot_rejection_reason_counts={s:defaultdict(int) for s in SLOT_NAMES}
     scenario_bar=tqdm(scenarios, desc="Processing scenarios")
     for sid,tracks,lane_infos in scenario_bar:
         scenario_bar.set_postfix({"scenario_id":str(sid)[:16],"kept":cnt["kept"]})
@@ -187,7 +202,7 @@ def main():
                 cnt['left_lane_found_count']+=int(bool(assign.left_lane_id))
                 cnt['right_lane_found_count']+=int(bool(assign.right_lane_id))
                 cnt[f'adjacency_source::{assign.adjacency_source}']+=1
-                nbr=np.zeros((5,a.window_len,len(nbr_feats)),np.float32); sidrow=[]
+                nbr=np.zeros((5,a.window_len,len(nbr_feats)),np.float32); sidrow=[]; sample_debug_rows=[]
                 for si,sn in enumerate(SLOT_NAMES):
                     nid=assign.slot_to_agent.get(sn,''); sidrow.append(nid if nid else '-1')
                     if not nid: continue
@@ -195,7 +210,7 @@ def main():
                     cnt['trajectory_nan_count_raw']+=ndiag['nan_count_raw']; cnt['trajectory_inf_count_raw']+=ndiag['inf_count_raw']
                     if nw is None:
                         cnt['neighbor_windows_dropped_sanitize_failed']+=1
-                        debug_rows.append({'scenario_id':str(sid),'target_agent_id':str(aid),'start':int(st),'slot_name':sn,'assignment_method':'sanitize_failed','neighbor_id':str(nid),'fallback_used':True,'fallback_reason':ndiag['dropped_reason'],'distance':'','longitudinal_gap':'','lateral_gap':''})
+                        sample_debug_rows.append({'scenario_id':str(sid),'target_agent_id':str(aid),'start':int(st),'slot_name':sn,'assignment_method':'sanitize_failed','neighbor_id':str(nid),'fallback_used':True,'fallback_reason':ndiag['dropped_reason'],'distance':'','longitudinal_gap':'','lateral_gap':'','rejection_reason':'sanitize_failed'})
                         continue
                     if ndiag['repaired_frame_count']>0: cnt['neighbor_windows_repaired']+=1
                     cnt['trajectory_nan_count_after_sanitize']+=int(np.isnan(nw[:,:5]).sum()); cnt['trajectory_inf_count_after_sanitize']+=int(np.isinf(nw[:,:5]).sum())
@@ -206,23 +221,56 @@ def main():
                         dist=max(0.0,float(np.hypot(dxy[0],dxy[1]))); closing=float(v_local[t,0]-rv[0]) if np.isfinite(v_local[t,0]-rv[0]) else 0.0
                         ttc=min((dist/max(closing,1e-3)) if closing>1e-3 else a.ttc_cap,a.ttc_cap); thw=min(dist/max(float(speed[t]),1e-3),a.thw_cap)
                         nbr[si,t]=[1,dxy[0],dxy[1],rv[0],rv[1],dist,dxy[0],dxy[1],closing,ttc,thw,n_speed[t],n_acc[t],wrap(n_heading[t]-heading[t]),n_yaw[t]]
-                    nbr[si]=np.nan_to_num(nbr[si],nan=0.0,posinf=a.ttc_cap,neginf=-a.ttc_cap); slot_valid_counts[sn]+=int(np.sum(nbr[si,:,0]>0.5))
-                for d in assign.per_slot_debug: d.update(dict(scenario_id=str(sid),target_agent_id=str(aid),start=int(st))); debug_rows.append(d)
-                context=np.concatenate([ego,nbr.reshape(a.window_len,-1)],1); eidx=len(ego_seq)
-                ego_seq.append(ego); nbr_seq.append(nbr); ctx.append(context); cmask.append((nbr[:,:,0]>0.5).T); cmask_win.append(np.max(nbr[:,:,0],axis=1)>0.5); slot_ids.append(sidrow); splits.append(sp)
+                    nbr[si]=np.nan_to_num(nbr[si],nan=0.0,posinf=a.ttc_cap,neginf=-a.ttc_cap)
+                for d in assign.per_slot_debug:
+                    d=dict(d)
+                    d.update(dict(scenario_id=str(sid),target_agent_id=str(aid),start=int(st)))
+                    sample_debug_rows.append(d)
+                if assign.slot_rejection_reason_counts:
+                    for slot, reasons in assign.slot_rejection_reason_counts.items():
+                        for reason, rc in reasons.items():
+                            slot_rejection_reason_counts[slot][reason] += int(rc)
+                context=np.concatenate([ego,nbr.reshape(a.window_len,-1)],1)
                 lane_ctx=assign.lane_context_quality
+                drop_reasons=[]
                 if a.drop_if_no_lane_map and not lane_infos:
-                    cnt['n_windows_dropped_no_lane_map']+=1; continue
+                    cnt['n_windows_dropped_no_lane_map']+=1; drop_reasons.append('no_lane_map')
                 if a.drop_if_ego_lane_missing and not assign.current_lane_id:
-                    cnt['n_windows_dropped_ego_lane_missing']+=1; continue
+                    cnt['n_windows_dropped_ego_lane_missing']+=1; drop_reasons.append('ego_lane_missing')
                 if a.drop_if_lane_context_bad and lane_ctx in ('bad','fallback'):
-                    cnt['n_windows_dropped_bad_lane_context']+=1; continue
+                    cnt['n_windows_dropped_bad_lane_context']+=1; drop_reasons.append('bad_lane_context')
+                if drop_reasons:
+                    cnt['n_windows_dropped_clean_filter_total'] += 1
+                    continue
+                eidx=len(ego_seq)
+                ego_seq.append(ego); nbr_seq.append(nbr); ctx.append(context); cmask.append((nbr[:,:,0]>0.5).T); cmask_win.append(np.max(nbr[:,:,0],axis=1)>0.5); slot_ids.append(sidrow); splits.append(sp)
                 cnt[f'lane_context_quality::{lane_ctx}']+=1
-                meta.append((eidx,str(sid),str(aid),int(st),int(a.window_len),sp,a.assignment_mode,assign.lane_assignment_available,assign.fallback_assignment_used,lane_ctx)); inter_feat, inter_names = aggregate_interaction_features(ego,nbr,a.dt); inter.append(np.nan_to_num(inter_feat,nan=0.0,posinf=1e6,neginf=-1e6)); cnt['kept']+=1
+                meta.append((eidx,str(sid),str(aid),int(st),int(a.window_len),sp,a.assignment_mode,assign.lane_assignment_available,assign.fallback_assignment_used,lane_ctx)); inter_feat, inter_names = aggregate_interaction_features(ego,nbr,a.dt); inter.append(np.nan_to_num(inter_feat,nan=0.0,posinf=1e6,neginf=-1e6))
+                for sn in SLOT_NAMES:
+                    row = next((r for r in sample_debug_rows if r.get('slot_name')==sn and r.get('assignment_method')!='sanitize_failed'), None)
+                    method='sanitize_failed' if any(r.get('slot_name')==sn and r.get('assignment_method')=='sanitize_failed' for r in sample_debug_rows) else (row.get('assignment_method') if row else 'empty')
+                    if method not in assignment_method_counts_by_slot[sn]:
+                        method='empty'
+                    assignment_method_counts_by_slot[sn][method]+=1
+                    slot_valid_counts[sn]+=int(np.sum(nbr[SLOT_NAMES.index(sn),:,0]>0.5))
+                debug_rows.extend(sample_debug_rows)
+                cnt['kept']+=1
 
+    n=len(ctx)
+    lengths={'ego_seq':len(ego_seq),'nbr_seq':len(nbr_seq),'ctx':len(ctx),'cmask':len(cmask),'cmask_win':len(cmask_win),'slot_ids':len(slot_ids),'splits':len(splits),'meta':len(meta),'inter':len(inter),'kept':cnt['kept']}
+    if any(v!=n for v in lengths.values()):
+        raise RuntimeError(f"Row alignment assertion failed: {lengths}")
     ego_arr=np.asarray(ego_seq,np.float32); nbr_arr=np.asarray(nbr_seq,np.float32); ctx_arr=np.asarray(ctx,np.float32); cmask_arr=np.asarray(cmask,np.float32); cmw=np.asarray(cmask_win,np.float32)
     inter_raw=np.asarray(inter,np.float32); split_arr=np.asarray(splits,dtype=object)
-    train=(split_arr=='train'); mu=np.mean(inter_raw[train],axis=0) if np.any(train) else np.mean(inter_raw,axis=0); sd=np.std(inter_raw[train],axis=0) if np.any(train) else np.std(inter_raw,axis=0)
+    if len(inter_raw) != len(split_arr):
+        raise RuntimeError(f"Row mismatch: inter_raw={len(inter_raw)}, split={len(split_arr)}, ctx={len(ctx_arr)}")
+    if n == 0:
+        summary={'warnings':['No windows kept after clean lane filtering.'],'n_windows_kept':0,'n_windows_total':cnt['windows_total']}
+        (out/'build_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
+        if not a.allow_empty:
+            raise RuntimeError('No windows kept after clean lane filtering.')
+    train=(split_arr=='train')
+    mu=np.mean(inter_raw[train],axis=0) if (n>0 and np.any(train)) else (np.mean(inter_raw,axis=0) if n>0 else np.zeros((1,),dtype=np.float32)); sd=np.std(inter_raw[train],axis=0) if (n>0 and np.any(train)) else (np.std(inter_raw,axis=0) if n>0 else np.ones((1,),dtype=np.float32))
     sd=np.where(sd<1e-6,1e-6,sd); inter_std=((inter_raw-mu)/sd).astype(np.float32)
     np.save(out/'ego_seq.npy',ego_arr); np.save(out/'neighbor_seq.npy',nbr_arr); np.save(out/'context_traj.npy',ctx_arr); np.save(out/'context_mask.npy',cmask_arr); np.save(out/'context_mask_window.npy',cmw); np.save(out/'neighbor_slot_ids.npy',np.asarray(slot_ids,dtype=object))
     meta_dtype=np.dtype([('row_index','i4'),('scenario_id','O'),('target_agent_id','O'),('start','i4'),('window_len','i4'),('split','O'),('assignment_mode','O'),('lane_assignment_success','?'),('fallback_used','?'),('lane_context_quality','O')])
@@ -235,7 +283,7 @@ def main():
         for s in SLOT_NAMES: w.writerow({'slot_name':s,'valid_ratio':slot_valid_counts[s]/total,'valid_count':slot_valid_counts[s],'total_count':total})
     with (out/'lane_assignment_debug.csv').open('w',newline='',encoding='utf-8') as f:
         fn=['scenario_id','target_agent_id','start','slot_name','assignment_method','neighbor_id','fallback_used','fallback_reason','ego_lane_id','slot_lane_id','neighbor_lane_id','ego_s','neighbor_s','delta_s','ego_l','neighbor_l','projection_distance','candidate_lateral_offset','candidate_heading_diff','neighbor_speed','neighbor_is_static','distance_threshold_used','lane_lateral_tolerance','slot_heading_diff_threshold']
-        w=csv.DictWriter(f,fieldnames=fn); w.writeheader(); w.writerows(debug_rows)
+        w=csv.DictWriter(f,fieldnames=LANE_DEBUG_FIELDS,extrasaction='ignore'); w.writeheader(); w.writerows(normalize_debug_row(r) for r in debug_rows)
     def finite_report(name, arr):
         finite=np.isfinite(arr)
         if finite.all(): return True
@@ -258,7 +306,7 @@ def main():
     summary={
         'dataset_type':'waymo_5neighbor_context','n_files_processed':0 if a.smoke_test else (a.max_files or -1),
         'n_scenarios_processed':len(scenarios),'n_target_agents_considered':cnt['targets'],'n_windows_total':cnt['windows_total'],'n_windows_kept':cnt['kept'],
-        'n_windows_filtered_static':cnt['f_static'],'n_windows_filtered_invalid':cnt['f_invalid'],'split_counts':dict(Counter(splits)),'window_len':a.window_len,'dt':a.dt,
+        'n_windows_filtered_static':cnt['f_static'],'n_windows_filtered_invalid':cnt['f_invalid'],'n_windows_dropped_no_lane_map':cnt['n_windows_dropped_no_lane_map'],'n_windows_dropped_ego_lane_missing':cnt['n_windows_dropped_ego_lane_missing'],'n_windows_dropped_bad_lane_context':cnt['n_windows_dropped_bad_lane_context'],'n_windows_dropped_clean_filter_total':cnt['n_windows_dropped_clean_filter_total'],'split_counts':dict(Counter(splits)),'window_len':a.window_len,'dt':a.dt,
         'slot_valid_ratio':slot_ratio,'lane_map_available_scenarios':lane_map_avail,'lane_map_missing_scenarios':lane_map_missing,
         'lane_projection_attempt_count':cnt['lane_projection_attempt_count'],'lane_projection_success_count':cnt['lane_projection_success_count'],'lane_projection_success_rate':float(cnt['lane_projection_success_count']/max(1,cnt['lane_projection_attempt_count'])),'lane_projection_failure_count':cnt['lane_projection_failure_count'],'lane_projection_avg_candidate_lanes':float(cnt['lane_projection_candidate_total']/max(1,cnt['lane_projection_attempt_count'])),'lane_projection_max_candidate_lanes':cnt['lane_projection_candidate_max'],'lane_projection_cache_hits':cnt['lane_projection_cache_hits'],'lane_projection_cache_misses':cnt['lane_projection_cache_misses'],'lane_spatial_index_enabled':bool(not a.disable_lane_spatial_index),'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,
         'lane_assignment_success_count':cnt['lane_assignment_success_count'],'lane_assignment_success_rate':lane_assignment_success_rate,
@@ -268,7 +316,7 @@ def main():
         'trajectory_nan_count_raw':cnt['trajectory_nan_count_raw'],'trajectory_inf_count_raw':cnt['trajectory_inf_count_raw'],'trajectory_nan_count_after_sanitize':cnt['trajectory_nan_count_after_sanitize'],'trajectory_inf_count_after_sanitize':cnt['trajectory_inf_count_after_sanitize'],
         'ego_windows_repaired':cnt['ego_windows_repaired'],'ego_windows_dropped_sanitize_failed':cnt['ego_windows_dropped_sanitize_failed'],'neighbor_windows_repaired':cnt['neighbor_windows_repaired'],'neighbor_windows_dropped_sanitize_failed':cnt['neighbor_windows_dropped_sanitize_failed'],
         'origin_frame_not_zero_count':cnt['origin_frame_not_zero_count'],'base_heading_raw_count':cnt['base_heading_raw_count'],'base_heading_velocity_fallback_count':cnt['base_heading_velocity_fallback_count'],'nonfinite_output_detected':cnt['nonfinite_output_detected'],
-        'assignment_method_counts_by_slot':{s:{'lane_aware':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='lane_aware'),'geometric_fallback':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='geometric_fallback'),'empty':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method') in ('empty','sanitize_failed'))} for s in SLOT_NAMES},
+        'assignment_method_counts_by_slot':assignment_method_counts_by_slot,
         'slot_thresholds':{'front_max_distance':a.front_max_distance,'side_front_max_distance':a.side_front_max_distance,'side_rear_max_distance':a.side_rear_max_distance,'lane_lateral_tolerance':a.lane_lateral_tolerance,'slot_heading_diff_deg':a.slot_heading_diff_deg,'static_speed_threshold':a.static_speed_threshold},
         'static_neighbor_count_by_slot':{s:int(sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('neighbor_is_static') is True)) for s in SLOT_NAMES},
         'static_front_count':int(sum(1 for r in debug_rows if r.get('slot_name')=='front' and r.get('neighbor_is_static') is True)),
@@ -276,12 +324,18 @@ def main():
         'lane_context_quality_counts':lane_context_quality_counts,'good_lane_context_rate':float(lane_context_quality_counts.get('good',0)/max(1,cnt['kept'])),'ambiguous_intersection_rate':float(lane_context_quality_counts.get('ambiguous_intersection',0)/max(1,cnt['kept'])),'bad_lane_context_rate':float(lane_context_quality_counts.get('bad',0)/max(1,cnt['kept'])),
         'mean_projection_distance':float(np.nanmean([r.get('projection_distance',np.nan) for r in debug_rows])) if debug_rows else np.nan,
         'p95_projection_distance':float(np.nanpercentile([r.get('projection_distance',np.nan) for r in debug_rows if np.isfinite(r.get('projection_distance',np.nan))],95)) if any(np.isfinite(r.get('projection_distance',np.nan)) for r in debug_rows) else np.nan,
-        'fallback_reason_counts':dict(Counter([r.get('fallback_reason','') for r in debug_rows if r.get('fallback_reason')])), 'progress_enabled':True, 'timing_seconds':{'total':0.0,'load_tfrecord':float(timing['load_tfrecord']),'extract_lanes':float(timing['extract_lanes']),'build_lane_index':float(timing['build_lane_index']),'lane_projection':float(timing['lane_projection']),'assignment':float(timing['assignment']),'feature_build':float(timing['feature_build']),'write_outputs':0.0}, 'warnings':[], 'notes':['Some lane-change features are proxy.']
+        'fallback_reason_counts':dict(Counter([r.get('fallback_reason','') for r in debug_rows if r.get('fallback_reason')])), 'slot_rejection_reason_counts':{k:dict(v) for k,v in slot_rejection_reason_counts.items()}, 'progress_enabled':True, 'timing_seconds':{'total':0.0,'load_tfrecord':float(timing['load_tfrecord']),'extract_lanes':float(timing['extract_lanes']),'build_lane_index':float(timing['build_lane_index']),'lane_projection':float(timing['lane_projection']),'assignment':float(timing['assignment']),'feature_build':float(timing['feature_build']),'write_outputs':0.0}, 'warnings':[], 'notes':['Some lane-change features are proxy.']
     }
     if summary['fallback_assignment_rate'] > 0.5:
         summary['warnings'].append('High fallback rate; lane-aware assignment quality may be insufficient for training.')
     if summary['lane_assignment_success_rate'] < 0.5:
         summary['warnings'].append('Lane-aware assignment success rate is low; do not proceed to Stage 5B training until investigated.')
+    for slot in SLOT_NAMES:
+        total = sum(assignment_method_counts_by_slot[slot].values())
+        if total != cnt['kept']:
+            summary['warnings'].append(f"assignment_method_counts_by_slot[{slot}] sum={total} != n_windows_kept={cnt['kept']}")
+    if cnt['windows_total'] < (cnt['f_invalid'] + cnt['f_static'] + cnt['n_windows_dropped_clean_filter_total'] + cnt['kept']):
+        summary['warnings'].append('Window accounting mismatch detected.')
     summary['timing_seconds']['total']=float(time.perf_counter()-t_global)
     print('Timing summary (s):', summary['timing_seconds'])
     (out/'neighbor_context_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
