@@ -23,6 +23,7 @@ class SlotAssignResult:
     right_lane_id: str = ""
     adjacency_source: str = "none"
     lane_context_quality: str = "bad"
+    lane_context_quality_reasons: List[str] = None
     slot_rejection_reason_counts: Dict[str, Dict[str, int]] = None
 
 
@@ -53,7 +54,7 @@ def assign_neighbors_geometric(ego_xyh: np.ndarray, candidates_xy: Dict[str, np.
         else:
             debug.append(dict(slot_name=slot, assignment_method="empty", neighbor_id="", fallback_used=True, fallback_reason="no_candidate_for_slot",
                               distance=np.nan, longitudinal_gap=np.nan, lateral_gap=np.nan))
-    return SlotAssignResult(slot_to_agent, False, True, reason, debug, lane_context_quality="fallback")
+    return SlotAssignResult(slot_to_agent, False, True, reason, debug, lane_context_quality="fallback", lane_context_quality_reasons=["geometric_fallback_used"])
 
 
 def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, assignment_mode="lane_aware_with_geometric_fallback", config=None, ego_projection=None, candidate_projections=None):
@@ -62,7 +63,7 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
         return assign_neighbors_geometric(np.array([ego_state["x"], ego_state["y"], ego_state["heading"]], np.float32), {k: np.array([v["x"], v["y"]]) for k, v in candidate_states.items()}, "geometric_only_mode")
     if not lane_infos:
         if assignment_mode == "lane_aware_only":
-            return SlotAssignResult({}, False, False, "lane_map_unavailable", [dict(slot_name=s, assignment_method="empty", neighbor_id="", fallback_used=False, fallback_reason="lane_map_unavailable") for s in SLOT_NAMES], lane_context_quality="bad")
+            return SlotAssignResult({}, False, False, "lane_map_unavailable", [dict(slot_name=s, assignment_method="empty", neighbor_id="", fallback_used=False, fallback_reason="lane_map_unavailable") for s in SLOT_NAMES], lane_context_quality="bad", lane_context_quality_reasons=["lane_map_unavailable"])
         return assign_neighbors_geometric(np.array([ego_state["x"], ego_state["y"], ego_state["heading"]], np.float32), {k: np.array([v["x"], v["y"]]) for k, v in candidate_states.items()}, "lane_map_unavailable")
 
     max_lat = float(cfg.get("lane_max_lateral_distance", 3.0)); max_hd = np.deg2rad(float(cfg.get("lane_max_heading_diff_deg", 45.0)));
@@ -79,7 +80,7 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
         ego_proj, reason = ego_projection, "ok"
     if ego_proj is None:
         if assignment_mode == "lane_aware_only":
-            return SlotAssignResult({}, False, False, reason, [dict(slot_name=s, assignment_method="empty", neighbor_id="", fallback_used=False, fallback_reason=reason) for s in SLOT_NAMES], lane_context_quality="bad")
+            return SlotAssignResult({}, False, False, reason, [dict(slot_name=s, assignment_method="empty", neighbor_id="", fallback_used=False, fallback_reason=reason) for s in SLOT_NAMES], lane_context_quality="bad", lane_context_quality_reasons=[f"ego_projection_failed:{reason}"])
         return assign_neighbors_geometric(np.array([ego_state["x"], ego_state["y"], ego_state["heading"]], np.float32), {k: np.array([v["x"], v["y"]]) for k, v in candidate_states.items()}, reason)
 
     cur = ego_proj["lane_id"]; left = ""; right = ""; src = "none"
@@ -166,8 +167,25 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
                               rejection_reason="no_laneaware_candidate"))
 
     lane_context_quality = "good"
-    if src == "none":
+    reasons = ["current_lane_found", "empty_slots_allowed"]
+    if src == "proto_topology":
+        reasons.append("proto_topology_adjacency")
+    elif src == "geometric":
+        reasons.append("geometric_adjacency")
+    else:
+        reasons.append("adjacency_source_none")
         lane_context_quality = "ambiguous_intersection"
-    elif any(d.get("assignment_method") == "empty" for d in debug):
-        lane_context_quality = "ambiguous_intersection"
-    return SlotAssignResult(slot_to_agent, True, False, "", debug, cur, left, right, src, lane_context_quality, rejection_counts)
+
+    ego_dist = float(ego_proj.get("distance_to_lane", np.nan))
+    ego_hd = abs(float(wrap_to_pi(float(ego_state.get("heading", 0.0)) - float(ego_proj.get("heading", 0.0)))))
+    near_lat = 0.8 * max_lat
+    near_hd = 0.8 * max_hd
+    if np.isfinite(ego_dist) and ego_dist > near_lat:
+        reasons.append("ego_projection_distance_near_threshold")
+        if lane_context_quality == "good":
+            lane_context_quality = "ambiguous_intersection"
+    if np.isfinite(ego_hd) and ego_hd > near_hd:
+        reasons.append("ego_heading_diff_near_threshold")
+        if lane_context_quality == "good":
+            lane_context_quality = "ambiguous_intersection"
+    return SlotAssignResult(slot_to_agent, True, False, "", debug, cur, left, right, src, lane_context_quality, reasons, rejection_counts)
