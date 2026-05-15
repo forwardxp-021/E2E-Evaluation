@@ -1385,3 +1385,68 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 - `context_traj.npy` 的 finite 检查为 `true`。
 - `interaction_feat_style.npy` 的 finite 检查为 `true`。
 - 成功构建时不应产生 `nonfinite_debug_*.json`。
+
+# Stage 5A-v2：真正 lane-aware 5-neighbor assignment
+
+## 1. 命令
+
+Smoke test:
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_smoke \
+  --smoke_test \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+
+Small real data:
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+
+Geometric-only debug baseline:
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_geometric_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode geometric_only \
+  --overwrite
+
+## 2. 期望行为
+
+- 优先使用 Waymo map/lane 信息给 target vehicle 找 current lane、left lane、right lane。
+- 根据 lane s 坐标分配 front / left_front / left_rear / right_front / right_rear。
+- lane-aware 失败时才 fallback 到几何分配。
+- 输出 lane projection / fallback / slot method 诊断。
+- 不启动训练。
+
+## 3. 通过标准
+
+- smoke test 中 lane_assignment_success_rate > 0。
+- real small data 中 lane_assignment_success_rate 不能为 0。
+- fallback_assignment_rate 不能等于 1.0。
+- build_summary.json 包含 lane projection 诊断字段。
+- lane_assignment_debug.csv 包含 ego_lane_id / neighbor_lane_id / delta_s 等字段。
+- 如果 fallback_assignment_rate > 0.5，需要暂停 Stage 5B 训练，先分析原因。
+- context_traj.npy / interaction_feat_style.npy 无 NaN/Inf。
+- Stage 4 结果不被覆盖。
