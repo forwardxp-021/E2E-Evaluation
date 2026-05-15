@@ -10,6 +10,7 @@ from tqdm import tqdm
 from tools.interaction_context_features import aggregate_interaction_features
 from tools.lane_aware_assignment import SLOT_NAMES, assign_neighbors_lane_aware
 from tools.waymo_lane_utils import extract_lane_polylines, find_best_lane_for_agent
+from tools.trajectory_context_utils import sanitize_track_window, localize, LANE_DEBUG_FIELDS, normalize_debug_row
 
 # (keep helper fns from previous version)
 # ...
@@ -41,14 +42,6 @@ def split_of_sid(sid):
     h = int(hashlib.md5(str(sid).encode()).hexdigest()[:8], 16) / 0xFFFFFFFF
     return 'train' if h < 0.8 else ('val' if h < 0.9 else 'test')
 def wrap(a): return (a + np.pi) % (2 * np.pi) - np.pi
-# reusing unchanged funcs via exec from backup to avoid rewrite
-from types import SimpleNamespace
-ns={}
-code=Path('/tmp/old.py').read_text()
-for fn in ['sanitize_track_window','localize','LANE_DEBUG_FIELDS','normalize_debug_row']:
-    pass
-exec('\n'.join([l for l in code.splitlines() if l.startswith('def sanitize_track_window') or l.startswith('def localize') or l.startswith('LANE_DEBUG_FIELDS') or l.startswith('def normalize_debug_row')]))
-sanitize_track_window=locals()['sanitize_track_window']; localize=locals()['localize']; LANE_DEBUG_FIELDS=locals()['LANE_DEBUG_FIELDS']; normalize_debug_row=locals()['normalize_debug_row']
 
 @dataclass
 class ScenarioOutputBatch:
@@ -135,7 +128,10 @@ def main():
     if g_batch['ego_seq']:
       sd=flush_shard(g_batch,shard_idx,out); shard_paths.append(str(sd)); global_row+=len(g_batch['ego_seq']); train=np.asarray(g_batch['splits'],dtype=object)=='train'; raw=np.asarray(g_batch['interaction_raw'],np.float64)
       if raw.size and np.any(train): x=raw[train]; agg['sum']=x.sum(0) if agg['sum'] is None else agg['sum']+x.sum(0); agg['sumsq']=(x*x).sum(0) if agg['sumsq'] is None else agg['sumsq']+(x*x).sum(0); agg['count']+=x.shape[0]
-    mu=agg['sum']/max(1,agg['count']); var=np.maximum(agg['sumsq']/max(1,agg['count'])-mu*mu,1e-12); sd=np.sqrt(var)
+    if agg['sum'] is None:
+      mu=np.zeros((0,),dtype=np.float64); sd=np.ones((0,),dtype=np.float64)
+    else:
+      mu=agg['sum']/max(1,agg['count']); var=np.maximum(agg['sumsq']/max(1,agg['count'])-mu*mu,1e-12); sd=np.sqrt(var)
     for sp in shard_paths:
       sp=Path(sp); raw=np.load(sp/'interaction_feat_style_raw.npy'); std=((raw-mu)/np.where(sd<1e-6,1e-6,sd)).astype(np.float32); np.save(sp/'interaction_feat_style.npy',std)
     (out/'interaction_feature_standardization.json').write_text(json.dumps({'mean':mu.tolist(),'std':sd.tolist(),'feature_names':inter_names or [],'train_count':int(agg['count']),'clip_value':None},indent=2,ensure_ascii=False),encoding='utf-8')

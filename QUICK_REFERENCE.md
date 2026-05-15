@@ -1654,3 +1654,17 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 - 不要用非 streaming 模式跑 full51。
 - 如果在 “Processing TFRecord files” 阶段被 killed，通常表示 scenario 被整体堆在内存里。
 - 请使用 streaming 或 `--file_start/--file_end` 分段运行。
+
+## Stage 5A-v5 故障排查（临时文件依赖）
+
+如果出现 `FileNotFoundError: /tmp/old.py`：
+- 说明代码错误依赖了 Codex 临时文件。
+- 仓库代码不能依赖 `/tmp/old.py`。
+- 需要运行 `python tools/check_no_tmp_dependencies.py`。
+- 所有 helper function 必须在仓库源码内定义或从 `tools` 模块导入。
+
+通过标准：
+- `python -m py_compile tools/build_waymo_5neighbor_context_dataset.py` 通过。
+- `python tools/check_no_tmp_dependencies.py` 通过。
+- smoke test 通过。
+- full51 streaming 命令可启动，且不会出现 `/tmp/old.py` 的 FileNotFoundError。
