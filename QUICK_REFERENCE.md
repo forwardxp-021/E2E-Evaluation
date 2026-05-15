@@ -1450,3 +1450,51 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 - 如果 fallback_assignment_rate > 0.5，需要暂停 Stage 5B 训练，先分析原因。
 - context_traj.npy / interaction_feat_style.npy 无 NaN/Inf。
 - Stage 4 结果不被覆盖。
+
+## Stage 5A-v2 卡住排查（lane-aware，中文）
+
+如果脚本看起来卡住：
+- 先看进度条（TFRecord / scenario / target agents / windows）。
+- 检查 `build_summary.json` 里的 `timing_seconds`，确认是否 `lane_projection` 占比过高。
+- 检查 `lane_projection_avg_candidate_lanes` 是否过大。
+- 降低 `--lane_topk_candidates`。
+- 降低 `--lane_search_radius`。
+- 临时切到 `--assignment_mode geometric_only` 做 baseline/debug。
+
+### 小规模 lane-aware（保守投影限制）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --lane_search_radius 20 \
+  --lane_topk_candidates 32 \
+  --overwrite
+```
+
+### geometric-only 调试
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_geometric_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode geometric_only \
+  --overwrite
+```

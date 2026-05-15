@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-import argparse, csv, hashlib, json, shutil
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import argparse, csv, hashlib, json, shutil, time
 from collections import Counter, defaultdict
 from pathlib import Path
 import numpy as np
+from tqdm import tqdm
 
 from tools.interaction_context_features import aggregate_interaction_features
 from tools.lane_aware_assignment import SLOT_NAMES, assign_neighbors_lane_aware
-from tools.waymo_lane_utils import extract_lane_polylines
+from tools.waymo_lane_utils import extract_lane_polylines, find_best_lane_for_agent
 
 def parse_args():
     p = argparse.ArgumentParser()
@@ -31,6 +35,11 @@ def parse_args():
     p.add_argument('--thw_cap', type=float, default=999.0)
     p.add_argument('--overwrite', action='store_true')
     p.add_argument('--smoke_test', action='store_true')
+    p.add_argument('--lane_search_radius', type=float, default=20.0)
+    p.add_argument('--lane_topk_candidates', type=int, default=32)
+    p.add_argument('--lane_projection_max_candidates', type=int, default=32)
+    p.add_argument('--lane_projection_timeout_warning_sec', type=float, default=5.0)
+    p.add_argument('--disable_lane_spatial_index', action='store_true')
     return p.parse_args()
 
 def split_of_sid(sid):
@@ -92,16 +101,17 @@ def main():
                 'lane_left': {'lane_id':'lane_left','centerline_xy':np.stack([np.linspace(0,120,121),np.full(121,3.5)],1).astype(np.float32),'seg_heading':np.zeros(120), 'seg_len':np.ones(120), 's_prefix':np.arange(121,dtype=np.float32), 'left_neighbor_lane_ids':[],'right_neighbor_lane_ids':['lane_cur']},
                 'lane_right': {'lane_id':'lane_right','centerline_xy':np.stack([np.linspace(0,120,121),np.full(121,-3.5)],1).astype(np.float32),'seg_heading':np.zeros(120), 'seg_len':np.ones(120), 's_prefix':np.arange(121,dtype=np.float32), 'left_neighbor_lane_ids':['lane_cur'],'right_neighbor_lane_ids':[]}
             }
-            from tools.waymo_lane_utils import LaneInfo
-            lane_infos={k:LaneInfo(**v,entry_lane_ids=[],exit_lane_ids=[],lane_type='driving',topology_source='proto_topology') for k,v in lane_infos.items()}
+            from tools.waymo_lane_utils import LaneInfo, _build_lane_geom
+            lane_infos={k:LaneInfo(**v,seg_start_xy=_build_lane_geom(v['centerline_xy'])[3],seg_vec_xy=_build_lane_geom(v['centerline_xy'])[4],seg_den=_build_lane_geom(v['centerline_xy'])[5],bbox_min_xy=_build_lane_geom(v['centerline_xy'])[6],bbox_max_xy=_build_lane_geom(v['centerline_xy'])[7],bbox_center_xy=_build_lane_geom(v['centerline_xy'])[8],entry_lane_ids=[],exit_lane_ids=[],lane_type='driving',topology_source='proto_topology') for k,v in lane_infos.items()}
             scenarios.append((f'smoke_{s}', tracks, lane_infos))
     else:
         import tensorflow as tf
         from waymo_open_dataset.protos import scenario_pb2
         files=sorted([str(p) for p in Path(a.waymo_dir).glob('*.tfrecord*')])
         if a.max_files: files=files[:a.max_files]
-        for fp in files:
-            ds=tf.data.TFRecordDataset(fp)
+        for fp in tqdm(files, desc="Processing TFRecord files"):
+            t0=time.perf_counter(); ds=tf.data.TFRecordDataset(fp)
+            timing["load_tfrecord"] += time.perf_counter()-t0
             for rec in ds:
                 sc=scenario_pb2.Scenario(); sc.ParseFromString(bytes(rec.numpy())); tracks={}
                 for tr in sc.tracks:
@@ -112,14 +122,18 @@ def main():
                 if a.max_scenarios and len(scenarios)>=a.max_scenarios: break
             if a.max_scenarios and len(scenarios)>=a.max_scenarios: break
 
+    t_global=time.perf_counter()
+    timing=defaultdict(float)
     ego_feats=["ego_x_local","ego_y_local","ego_vx_local","ego_vy_local","ego_heading_local","ego_speed","ego_accel","ego_yaw_rate"]
     nbr_feats=["valid_mask","dx_ego","dy_ego","rel_vx_ego","rel_vy_ego","distance","longitudinal_gap","lateral_gap","closing_rate","ttc_proxy","thw_proxy","neighbor_speed","neighbor_accel","neighbor_heading_rel","neighbor_yaw_rate"]
     ego_seq=[]; nbr_seq=[]; ctx=[]; cmask=[]; cmask_win=[]; slot_ids=[]; meta=[]; splits=[]; inter=[]; debug_rows=[]; cnt=defaultdict(int); slot_valid_counts=defaultdict(int)
-    for sid,tracks,lane_infos in scenarios:
+    scenario_bar=tqdm(scenarios, desc="Processing scenarios")
+    for sid,tracks,lane_infos in scenario_bar:
+        scenario_bar.set_postfix({"scenario_id":str(sid)[:16],"kept":cnt["kept"]})
         sp=split_of_sid(sid); ids=list(tracks.keys())[:a.max_agents_per_scenario]; cnt['targets']+=len(ids)
-        for aid in ids:
+        for aid in tqdm(ids, desc="Processing target agents", leave=False):
             tr=tracks[aid]; T=len(tr)
-            for st in range(0,max(0,T-a.window_len+1),a.stride):
+            for st in tqdm(range(0,max(0,T-a.window_len+1),a.stride), desc="Building windows", leave=False):
                 cnt['windows_total']+=1
                 ew,ego_valid,ediag=sanitize_track_window(tr[st:st+a.window_len],a.dt,f'{sid}:{aid}:{st}:ego',1.0-a.min_valid_ratio)
                 cnt['trajectory_nan_count_raw']+=ediag['nan_count_raw']; cnt['trajectory_inf_count_raw']+=ediag['inf_count_raw']
@@ -142,7 +156,21 @@ def main():
                 candidates={nid:ntr[st:st+a.window_len] for nid,ntr in tracks.items() if nid!=aid and len(ntr)>=st+a.window_len}
                 ego_state={'x':float(origin[0]),'y':float(origin[1]),'heading':float(base_h),'velocity_x':float(ew[ref,2]),'velocity_y':float(ew[ref,3])}
                 cand_states={k:{'x':float(v[0,0]),'y':float(v[0,1]),'heading':float(v[0,4]) if np.isfinite(v[0,4]) else np.nan,'velocity_x':float(v[0,2]) if np.isfinite(v[0,2]) else 0.0,'velocity_y':float(v[0,3]) if np.isfinite(v[0,3]) else 0.0} for k,v in candidates.items() if np.isfinite(v[0,:2]).all()}
-                assign=assign_neighbors_lane_aware(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=a.assignment_mode,config={'lane_max_lateral_distance':a.lane_max_lateral_distance,'lane_max_heading_diff_deg':a.lane_max_heading_diff_deg,'adjacent_lane_min_offset':a.adjacent_lane_min_offset,'adjacent_lane_max_offset':a.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':a.adjacent_lane_max_heading_diff_deg})
+                proj_cache={}
+                t_lp=time.perf_counter()
+                for ck,cst in cand_states.items():
+                    key=(str(ck),int(st))
+                    if key in proj_cache: cnt['lane_projection_cache_hits']+=1; continue
+                    cnt['lane_projection_cache_misses']+=1
+                    pbest,_,cand_n=find_best_lane_for_agent(np.array([cst['x'],cst['y']]), cst.get('heading', np.nan), lane_infos, a.lane_max_lateral_distance, np.deg2rad(a.lane_max_heading_diff_deg), a.lane_search_radius, min(a.lane_topk_candidates,a.lane_projection_max_candidates), a.disable_lane_spatial_index)
+                    cnt['lane_projection_candidate_total']+=cand_n; cnt['lane_projection_candidate_max']=max(cnt['lane_projection_candidate_max'],cand_n); cnt['lane_projection_attempt_count']+=1
+                    if pbest is not None: cnt['lane_projection_success_count']+=1; proj_cache[key]=pbest
+                    else: cnt['lane_projection_failure_count']+=1
+                timing['lane_projection'] += time.perf_counter()-t_lp
+                cproj={k:v for (k,_),v in proj_cache.items()}
+                t_as=time.perf_counter()
+                assign=assign_neighbors_lane_aware(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=a.assignment_mode,config={'lane_max_lateral_distance':a.lane_max_lateral_distance,'lane_max_heading_diff_deg':a.lane_max_heading_diff_deg,'adjacent_lane_min_offset':a.adjacent_lane_min_offset,'adjacent_lane_max_offset':a.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':a.adjacent_lane_max_heading_diff_deg,'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,'disable_lane_spatial_index':a.disable_lane_spatial_index}, candidate_projections=cproj)
+                timing['assignment'] += time.perf_counter()-t_as
                 cnt['lane_assignment_success_count']+=int(assign.lane_assignment_available)
                 cnt['fallback_assignment_count']+=int(assign.fallback_assignment_used)
                 cnt['geometric_only_assignment_count']+=int(a.assignment_mode=='geometric_only')
@@ -214,7 +242,7 @@ def main():
         'n_scenarios_processed':len(scenarios),'n_target_agents_considered':cnt['targets'],'n_windows_total':cnt['windows_total'],'n_windows_kept':cnt['kept'],
         'n_windows_filtered_static':cnt['f_static'],'n_windows_filtered_invalid':cnt['f_invalid'],'split_counts':dict(Counter(splits)),'window_len':a.window_len,'dt':a.dt,
         'slot_valid_ratio':slot_ratio,'lane_map_available_scenarios':lane_map_avail,'lane_map_missing_scenarios':lane_map_missing,
-        'lane_projection_attempt_count':cnt['kept'],'lane_projection_success_count':cnt['lane_assignment_success_count'],'lane_projection_success_rate':lane_assignment_success_rate,
+        'lane_projection_attempt_count':cnt['lane_projection_attempt_count'],'lane_projection_success_count':cnt['lane_projection_success_count'],'lane_projection_success_rate':float(cnt['lane_projection_success_count']/max(1,cnt['lane_projection_attempt_count'])),'lane_projection_failure_count':cnt['lane_projection_failure_count'],'lane_projection_avg_candidate_lanes':float(cnt['lane_projection_candidate_total']/max(1,cnt['lane_projection_attempt_count'])),'lane_projection_max_candidate_lanes':cnt['lane_projection_candidate_max'],'lane_projection_cache_hits':cnt['lane_projection_cache_hits'],'lane_projection_cache_misses':cnt['lane_projection_cache_misses'],'lane_spatial_index_enabled':bool(not a.disable_lane_spatial_index),'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,
         'lane_assignment_success_count':cnt['lane_assignment_success_count'],'lane_assignment_success_rate':lane_assignment_success_rate,
         'fallback_assignment_count':cnt['fallback_assignment_count'],'fallback_assignment_rate':fallback_rate,'geometric_only_assignment_count':cnt['geometric_only_assignment_count'],
         'current_lane_found_rate':float(cnt['current_lane_found_count']/max(1,cnt['kept'])),'left_lane_found_rate':float(cnt['left_lane_found_count']/max(1,cnt['kept'])),'right_lane_found_rate':float(cnt['right_lane_found_count']/max(1,cnt['kept'])),
@@ -222,15 +250,17 @@ def main():
         'trajectory_nan_count_raw':cnt['trajectory_nan_count_raw'],'trajectory_inf_count_raw':cnt['trajectory_inf_count_raw'],'trajectory_nan_count_after_sanitize':cnt['trajectory_nan_count_after_sanitize'],'trajectory_inf_count_after_sanitize':cnt['trajectory_inf_count_after_sanitize'],
         'ego_windows_repaired':cnt['ego_windows_repaired'],'ego_windows_dropped_sanitize_failed':cnt['ego_windows_dropped_sanitize_failed'],'neighbor_windows_repaired':cnt['neighbor_windows_repaired'],'neighbor_windows_dropped_sanitize_failed':cnt['neighbor_windows_dropped_sanitize_failed'],
         'origin_frame_not_zero_count':cnt['origin_frame_not_zero_count'],'base_heading_raw_count':cnt['base_heading_raw_count'],'base_heading_velocity_fallback_count':cnt['base_heading_velocity_fallback_count'],'nonfinite_output_detected':cnt['nonfinite_output_detected'],
-        'slot_assignment_method_counts':{s:{'lane_aware':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='lane_aware'),'geometric_fallback':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='geometric_fallback'),'empty':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method') in ('empty','sanitize_failed'))} for s in SLOT_NAMES},
+        'assignment_method_counts_by_slot':{s:{'lane_aware':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='lane_aware'),'geometric_fallback':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='geometric_fallback'),'empty':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method') in ('empty','sanitize_failed'))} for s in SLOT_NAMES},
         'mean_projection_distance':float(np.nanmean([r.get('projection_distance',np.nan) for r in debug_rows])) if debug_rows else np.nan,
         'p95_projection_distance':float(np.nanpercentile([r.get('projection_distance',np.nan) for r in debug_rows if np.isfinite(r.get('projection_distance',np.nan))],95)) if any(np.isfinite(r.get('projection_distance',np.nan)) for r in debug_rows) else np.nan,
-        'warnings':[], 'notes':['Some lane-change features are proxy.']
+        'fallback_reason_counts':dict(Counter([r.get('fallback_reason','') for r in debug_rows if r.get('fallback_reason')])), 'progress_enabled':True, 'timing_seconds':{'total':0.0,'load_tfrecord':float(timing['load_tfrecord']),'extract_lanes':float(timing['extract_lanes']),'build_lane_index':float(timing['build_lane_index']),'lane_projection':float(timing['lane_projection']),'assignment':float(timing['assignment']),'feature_build':float(timing['feature_build']),'write_outputs':0.0}, 'warnings':[], 'notes':['Some lane-change features are proxy.']
     }
     if summary['fallback_assignment_rate'] > 0.5:
         summary['warnings'].append('High fallback rate; lane-aware assignment quality may be insufficient for training.')
     if summary['lane_assignment_success_rate'] < 0.5:
         summary['warnings'].append('Lane-aware assignment success rate is low; do not proceed to Stage 5B training until investigated.')
+    summary['timing_seconds']['total']=float(time.perf_counter()-t_global)
+    print('Timing summary (s):', summary['timing_seconds'])
     (out/'neighbor_context_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
     (out/'build_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
     report=f"# Stage 5A 构建报告\n\n- 样本数: {cnt['kept']}\n- slot coverage: {slot_ratio}\n- fallback rate: {summary['fallback_assignment_rate']:.4f}\n- heading fallback rate: {summary['heading_proxy_fallback_rate']:.4f}\n- ego windows repaired: {cnt['ego_windows_repaired']}\n- neighbor windows repaired: {cnt['neighbor_windows_repaired']}\n- sanitize failed / dropped count: {cnt['ego_windows_dropped_sanitize_failed'] + cnt['neighbor_windows_dropped_sanitize_failed']}\n- raw NaN count: {cnt['trajectory_nan_count_raw']}\n- after sanitize NaN count: {cnt['trajectory_nan_count_after_sanitize']}\n\n## 已知限制\n- lane-change 相关特征部分为 proxy（名称后缀 `_proxy`）。\n- 本阶段仅做数据构建与诊断，不启动训练。\n"

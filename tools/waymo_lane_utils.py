@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-from __future__ import annotations
-
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
+import argparse
 import math
+import time
 import numpy as np
 
 
@@ -18,6 +21,12 @@ class LaneInfo:
     seg_heading: np.ndarray
     seg_len: np.ndarray
     s_prefix: np.ndarray
+    seg_start_xy: np.ndarray
+    seg_vec_xy: np.ndarray
+    seg_den: np.ndarray
+    bbox_min_xy: np.ndarray
+    bbox_max_xy: np.ndarray
+    bbox_center_xy: np.ndarray
     left_neighbor_lane_ids: List[str] = field(default_factory=list)
     right_neighbor_lane_ids: List[str] = field(default_factory=list)
     entry_lane_ids: List[str] = field(default_factory=list)
@@ -39,20 +48,34 @@ def _lane_points_from_feature(feature) -> Optional[np.ndarray]:
     return pts
 
 
+def _build_lane_geom(pts: np.ndarray):
+    dxy = np.diff(pts, axis=0)
+    seg_len = np.linalg.norm(dxy, axis=1)
+    valid = seg_len > 1e-6
+    if not np.any(valid):
+        return None
+    seg_len_safe = np.where(valid, seg_len, 1e-6)
+    seg_heading = np.arctan2(dxy[:, 1], dxy[:, 0])
+    s_prefix = np.concatenate([[0.0], np.cumsum(seg_len_safe)])
+    seg_start = pts[:-1].astype(np.float64)
+    seg_vec = dxy.astype(np.float64)
+    seg_den = np.sum(seg_vec * seg_vec, axis=1)
+    bbox_min = np.min(pts, axis=0).astype(np.float64)
+    bbox_max = np.max(pts, axis=0).astype(np.float64)
+    bbox_ctr = ((bbox_min + bbox_max) * 0.5).astype(np.float64)
+    return seg_heading, seg_len_safe, s_prefix, seg_start, seg_vec, seg_den, bbox_min, bbox_max, bbox_ctr
+
+
 def extract_lane_polylines(scenario) -> Dict[str, LaneInfo]:
     lanes: Dict[str, LaneInfo] = {}
     for mf in getattr(scenario, "map_features", []):
         pts = _lane_points_from_feature(mf)
         if pts is None:
             continue
-        dxy = np.diff(pts, axis=0)
-        seg_len = np.linalg.norm(dxy, axis=1)
-        valid = seg_len > 1e-6
-        if not np.any(valid):
+        geom = _build_lane_geom(pts)
+        if geom is None:
             continue
-        seg_len = np.where(valid, seg_len, 1e-6)
-        seg_heading = np.arctan2(dxy[:, 1], dxy[:, 0])
-        s_prefix = np.concatenate([[0.0], np.cumsum(seg_len)])
+        seg_heading, seg_len, s_prefix, seg_start, seg_vec, seg_den, bbox_min, bbox_max, bbox_ctr = geom
         lane = getattr(mf, "lane", None)
         left_ids = []
         right_ids = []
@@ -65,45 +88,63 @@ def extract_lane_polylines(scenario) -> Dict[str, LaneInfo]:
         exit_ids = [str(x) for x in getattr(lane, "exit_lanes", [])]
         lanes[str(getattr(mf, "id"))] = LaneInfo(
             lane_id=str(getattr(mf, "id")), centerline_xy=pts, seg_heading=seg_heading,
-            seg_len=seg_len, s_prefix=s_prefix, left_neighbor_lane_ids=left_ids,
-            right_neighbor_lane_ids=right_ids, entry_lane_ids=entry_ids, exit_lane_ids=exit_ids,
+            seg_len=seg_len, s_prefix=s_prefix, seg_start_xy=seg_start, seg_vec_xy=seg_vec,
+            seg_den=seg_den, bbox_min_xy=bbox_min, bbox_max_xy=bbox_max, bbox_center_xy=bbox_ctr,
+            left_neighbor_lane_ids=left_ids, right_neighbor_lane_ids=right_ids,
+            entry_lane_ids=entry_ids, exit_lane_ids=exit_ids,
             lane_type=str(getattr(lane, "type", "unknown")),
             topology_source="proto_topology" if (left_ids or right_ids) else "geometric_lane_adjacency",
         )
     return lanes
 
 
-def project_point_to_lane(point_xy, lane_info: LaneInfo) -> dict:
-    p = np.asarray(point_xy, dtype=np.float64)
-    pts = lane_info.centerline_xy.astype(np.float64)
-    best = None
-    for i in range(len(pts) - 1):
-        a = pts[i]
-        b = pts[i + 1]
-        ab = b - a
-        den = float(np.dot(ab, ab))
-        if den < 1e-9:
-            continue
-        t = float(np.clip(np.dot(p - a, ab) / den, 0.0, 1.0))
-        q = a + t * ab
-        d = p - q
-        eu = float(np.linalg.norm(d))
-        h = float(lane_info.seg_heading[i])
-        left = np.array([-math.sin(h), math.cos(h)])
-        l = float(np.dot(d, left))
-        s = float(lane_info.s_prefix[i] + t * lane_info.seg_len[i])
-        row = (eu, i, s, l, h)
-        if best is None or row[0] < best[0]:
-            best = row
-    if best is None:
+def project_point_to_lane(point_xy, lane_info: LaneInfo, eps: float = 1e-9) -> dict:
+    p = np.asarray(point_xy, dtype=np.float64)[None, :]
+    den = lane_info.seg_den
+    valid = den > eps
+    if not np.any(valid):
         return dict(lane_id=lane_info.lane_id, s=np.nan, l=np.nan, heading=np.nan, distance_to_lane=np.inf, projection_success=False)
-    return dict(lane_id=lane_info.lane_id, s=best[2], l=best[3], heading=best[4], distance_to_lane=abs(best[3]), projection_success=True)
+    A = lane_info.seg_start_xy
+    AB = lane_info.seg_vec_xy
+    u = np.sum((p - A) * AB, axis=1) / np.where(valid, den, 1.0)
+    u = np.clip(u, 0.0, 1.0)
+    q = A + u[:, None] * AB
+    d = p - q
+    eu = np.linalg.norm(d, axis=1)
+    eu[~valid] = np.inf
+    bi = int(np.argmin(eu))
+    if not np.isfinite(eu[bi]):
+        return dict(lane_id=lane_info.lane_id, s=np.nan, l=np.nan, heading=np.nan, distance_to_lane=np.inf, projection_success=False)
+    h = float(lane_info.seg_heading[bi])
+    left = np.array([-math.sin(h), math.cos(h)], dtype=np.float64)
+    l = float(np.dot(d[bi], left))
+    s = float(lane_info.s_prefix[bi] + u[bi] * lane_info.seg_len[bi])
+    return dict(lane_id=lane_info.lane_id, s=s, l=l, heading=h, distance_to_lane=abs(l), projection_success=True)
 
 
-def find_best_lane_for_agent(point_xy, heading, lane_infos: Dict[str, LaneInfo], max_lateral_distance: float, max_heading_diff: float):
-    cand = []
+def _candidate_lane_ids(point_xy, lane_infos, search_radius=20.0, topk=32):
+    p = np.asarray(point_xy, dtype=np.float64)
+    hits = []
+    near = []
     for lid, ln in lane_infos.items():
-        proj = project_point_to_lane(point_xy, ln)
+        c = ln.bbox_center_xy
+        cd = float(np.hypot(*(p - c)))
+        near.append((cd, lid))
+        lo = ln.bbox_min_xy - search_radius
+        hi = ln.bbox_max_xy + search_radius
+        if lo[0] <= p[0] <= hi[0] and lo[1] <= p[1] <= hi[1]:
+            hits.append((cd, lid))
+    rows = hits if hits else near
+    rows.sort(key=lambda x: x[0])
+    return [lid for _, lid in rows[:max(1, int(topk))]], len(hits)
+
+
+def find_best_lane_for_agent(point_xy, heading, lane_infos: Dict[str, LaneInfo], max_lateral_distance: float, max_heading_diff: float,
+                             search_radius: float = 20.0, topk_candidates: int = 32, disable_spatial_index: bool = False):
+    candidate_ids = list(lane_infos.keys()) if disable_spatial_index else _candidate_lane_ids(point_xy, lane_infos, search_radius, topk_candidates)[0]
+    cand = []
+    for lid in candidate_ids:
+        proj = project_point_to_lane(point_xy, lane_infos[lid])
         if not proj["projection_success"]:
             continue
         if proj["distance_to_lane"] > max_lateral_distance:
@@ -115,6 +156,33 @@ def find_best_lane_for_agent(point_xy, heading, lane_infos: Dict[str, LaneInfo],
                 continue
         cand.append((proj["distance_to_lane"], hd, lid, proj))
     if not cand:
-        return None, "no_lane_passed_threshold"
+        return None, "no_lane_passed_threshold", len(candidate_ids)
     cand.sort(key=lambda x: (x[0], x[1]))
-    return cand[0][3], "ok"
+    return cand[0][3], "ok", len(candidate_ids)
+
+
+def _self_test():
+    rng = np.random.default_rng(0)
+    lanes = {}
+    for i in range(100):
+        x = np.linspace(0, 200, 101)
+        y = np.full_like(x, i * 2.0)
+        pts = np.stack([x, y], axis=1).astype(np.float32)
+        g = _build_lane_geom(pts)
+        lanes[str(i)] = LaneInfo(str(i), pts, g[0], g[1], g[2], g[3], g[4], g[5], g[6], g[7], g[8])
+    points = np.stack([rng.uniform(0, 200, size=1000), rng.uniform(-20, 220, size=1000)], axis=1)
+    t0 = time.perf_counter()
+    ok = 0
+    for p in points:
+        proj, _, _ = find_best_lane_for_agent(p, np.nan, lanes, 10.0, math.pi, 20.0, 32, False)
+        ok += int(proj is not None and np.isfinite(proj["s"]))
+    dt = time.perf_counter() - t0
+    print(f"self_test: projected 1000 points over 100x100 segments in {dt:.3f}s; finite={ok}")
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--self_test", action="store_true")
+    args = ap.parse_args()
+    if args.self_test:
+        _self_test()

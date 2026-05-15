@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-from __future__ import annotations
-
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 import numpy as np
@@ -53,7 +54,7 @@ def assign_neighbors_geometric(ego_xyh: np.ndarray, candidates_xy: Dict[str, np.
     return SlotAssignResult(slot_to_agent, False, True, reason, debug)
 
 
-def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, assignment_mode="lane_aware_with_geometric_fallback", config=None):
+def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, assignment_mode="lane_aware_with_geometric_fallback", config=None, ego_projection=None, candidate_projections=None):
     cfg = config or {}
     if assignment_mode == "geometric_only":
         return assign_neighbors_geometric(np.array([ego_state["x"], ego_state["y"], ego_state["heading"]], np.float32), {k: np.array([v["x"], v["y"]]) for k, v in candidate_states.items()}, "geometric_only_mode")
@@ -63,7 +64,12 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
         return assign_neighbors_geometric(np.array([ego_state["x"], ego_state["y"], ego_state["heading"]], np.float32), {k: np.array([v["x"], v["y"]]) for k, v in candidate_states.items()}, "lane_map_unavailable")
 
     max_lat = float(cfg.get("lane_max_lateral_distance", 3.0)); max_hd = np.deg2rad(float(cfg.get("lane_max_heading_diff_deg", 45.0)))
-    ego_proj, reason = find_best_lane_for_agent(np.array([ego_state["x"], ego_state["y"]]), ego_state["heading"], lane_infos, max_lat, max_hd)
+    if ego_projection is None:
+        ego_proj, reason, _ = find_best_lane_for_agent(np.array([ego_state["x"], ego_state["y"]]), ego_state["heading"], lane_infos, max_lat, max_hd,
+            search_radius=float(cfg.get("lane_search_radius",20.0)), topk_candidates=int(cfg.get("lane_topk_candidates",32)),
+            disable_spatial_index=bool(cfg.get("disable_lane_spatial_index",False)))
+    else:
+        ego_proj, reason = ego_projection, "ok"
     if ego_proj is None:
         if assignment_mode == "lane_aware_only":
             return SlotAssignResult({}, False, False, reason, [dict(slot_name=s, assignment_method="empty", neighbor_id="", fallback_used=False, fallback_reason=reason) for s in SLOT_NAMES])
@@ -92,9 +98,13 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
     if left in lane_infos: ego_s_map[left] = project_point_to_lane(np.array([ego_state["x"], ego_state["y"]]), lane_infos[left])["s"]
     if right in lane_infos: ego_s_map[right] = project_point_to_lane(np.array([ego_state["x"], ego_state["y"]]), lane_infos[right])["s"]
 
-    proj_cache = {}
+    proj_cache = candidate_projections.copy() if candidate_projections else {}
     for aid, st in candidate_states.items():
-        p, _ = find_best_lane_for_agent(np.array([st["x"], st["y"]]), st.get("heading", np.nan), lane_infos, max_lat, max_hd)
+        if aid in proj_cache:
+            continue
+        p, _, _ = find_best_lane_for_agent(np.array([st["x"], st["y"]]), st.get("heading", np.nan), lane_infos, max_lat, max_hd,
+            search_radius=float(cfg.get("lane_search_radius",20.0)), topk_candidates=int(cfg.get("lane_topk_candidates",32)),
+            disable_spatial_index=bool(cfg.get("disable_lane_spatial_index",False)))
         if p is not None: proj_cache[aid] = p
 
     def choose(slot, lane_id, front=True):
