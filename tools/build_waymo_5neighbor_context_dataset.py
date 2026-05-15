@@ -51,6 +51,7 @@ def parse_args():
     p.add_argument('--drop_if_lane_context_bad', action='store_true')
     p.add_argument('--drop_if_lane_context_ambiguous', action='store_true')
     p.add_argument('--allow_empty', action='store_true')
+    p.add_argument('--strict_summary_validation', action='store_true')
     return p.parse_args()
 
 def split_of_sid(sid):
@@ -197,12 +198,12 @@ def main():
                 t_as=time.perf_counter()
                 assign=assign_neighbors_lane_aware(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=a.assignment_mode,config={'lane_max_lateral_distance':a.lane_max_lateral_distance,'lane_max_heading_diff_deg':a.lane_max_heading_diff_deg,'adjacent_lane_min_offset':a.adjacent_lane_min_offset,'adjacent_lane_max_offset':a.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':a.adjacent_lane_max_heading_diff_deg,'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,'disable_lane_spatial_index':a.disable_lane_spatial_index,'front_max_distance':a.front_max_distance,'side_front_max_distance':a.side_front_max_distance,'side_rear_max_distance':a.side_rear_max_distance,'lane_lateral_tolerance':a.lane_lateral_tolerance,'slot_heading_diff_deg':a.slot_heading_diff_deg,'static_speed_threshold':a.static_speed_threshold}, candidate_projections=cproj)
                 timing['assignment'] += time.perf_counter()-t_as
-                cnt['lane_assignment_success_count']+=int(assign.lane_assignment_available)
-                cnt['fallback_assignment_count']+=int(assign.fallback_assignment_used)
+                cnt['lane_assignment_success_count_pre_filter']+=int(assign.lane_assignment_available)
+                cnt['fallback_assignment_count_pre_filter']+=int(assign.fallback_assignment_used)
                 cnt['geometric_only_assignment_count']+=int(a.assignment_mode=='geometric_only')
-                cnt['current_lane_found_count']+=int(bool(assign.current_lane_id))
-                cnt['left_lane_found_count']+=int(bool(assign.left_lane_id))
-                cnt['right_lane_found_count']+=int(bool(assign.right_lane_id))
+                cnt['current_lane_found_count_pre_filter']+=int(bool(assign.current_lane_id))
+                cnt['left_lane_found_count_pre_filter']+=int(bool(assign.left_lane_id))
+                cnt['right_lane_found_count_pre_filter']+=int(bool(assign.right_lane_id))
                 cnt[f'adjacency_source::{assign.adjacency_source}']+=1
                 nbr=np.zeros((5,a.window_len,len(nbr_feats)),np.float32); sidrow=[]; sample_debug_rows=[]
                 for si,sn in enumerate(SLOT_NAMES):
@@ -247,6 +248,11 @@ def main():
                 if drop_reasons:
                     cnt['n_windows_dropped_clean_filter_total'] += 1
                     continue
+                cnt['lane_assignment_success_count_kept']+=int(assign.lane_assignment_available)
+                cnt['fallback_assignment_count_kept']+=int(assign.fallback_assignment_used)
+                cnt['current_lane_found_count_kept']+=int(bool(assign.current_lane_id))
+                cnt['left_lane_found_count_kept']+=int(bool(assign.left_lane_id))
+                cnt['right_lane_found_count_kept']+=int(bool(assign.right_lane_id))
                 eidx=len(ego_seq)
                 ego_seq.append(ego); nbr_seq.append(nbr); ctx.append(context); cmask.append((nbr[:,:,0]>0.5).T); cmask_win.append(np.max(nbr[:,:,0],axis=1)>0.5); slot_ids.append(sidrow); splits.append(sp)
                 cnt[f'lane_context_quality::{lane_ctx}']+=1
@@ -308,8 +314,13 @@ def main():
     lane_context_quality_counts={k.split('::',1)[1]:v for k,v in cnt.items() if k.startswith('lane_context_quality::')}
     lane_map_avail=sum(1 for _,_,li in scenarios if li)
     lane_map_missing=len(scenarios)-lane_map_avail
-    lane_assignment_success_rate=float(cnt['lane_assignment_success_count']/max(1,cnt['kept']))
-    fallback_rate=float(cnt['fallback_assignment_count']/max(1,cnt['kept']))
+    lane_assignment_success_rate=float(cnt['lane_assignment_success_count_kept']/max(1,cnt['kept']))
+    fallback_rate=float(cnt['fallback_assignment_count_kept']/max(1,cnt['kept']))
+    current_lane_found_rate=float(cnt['current_lane_found_count_kept']/max(1,cnt['kept']))
+    left_lane_found_rate=float(cnt['left_lane_found_count_kept']/max(1,cnt['kept']))
+    right_lane_found_rate=float(cnt['right_lane_found_count_kept']/max(1,cnt['kept']))
+    lane_assignment_success_rate_pre_filter=float(cnt['lane_assignment_success_count_pre_filter']/max(1,cnt['windows_total']))
+    current_lane_found_rate_pre_filter=float(cnt['current_lane_found_count_pre_filter']/max(1,cnt['windows_total']))
     empty_slot_count_by_slot = {s:int(assignment_method_counts_by_slot[s].get('empty', 0)) for s in SLOT_NAMES}
     empty_slot_ratio_by_slot = {s:float(empty_slot_count_by_slot[s]/max(1,cnt['kept'])) for s in SLOT_NAMES}
     summary={
@@ -318,9 +329,24 @@ def main():
         'n_windows_filtered_static':cnt['f_static'],'n_windows_filtered_invalid':cnt['f_invalid'],'n_windows_dropped_no_lane_map':cnt['n_windows_dropped_no_lane_map'],'n_windows_dropped_ego_lane_missing':cnt['n_windows_dropped_ego_lane_missing'],'n_windows_dropped_bad_lane_context':cnt['n_windows_dropped_bad_lane_context'],'n_windows_dropped_lane_context_ambiguous':cnt['n_windows_dropped_lane_context_ambiguous'],'n_windows_dropped_clean_filter_total':cnt['n_windows_dropped_clean_filter_total'],'split_counts':dict(Counter(splits)),'window_len':a.window_len,'dt':a.dt,
         'slot_valid_ratio':slot_ratio,'lane_map_available_scenarios':lane_map_avail,'lane_map_missing_scenarios':lane_map_missing,
         'lane_projection_attempt_count':cnt['lane_projection_attempt_count'],'lane_projection_success_count':cnt['lane_projection_success_count'],'lane_projection_success_rate':float(cnt['lane_projection_success_count']/max(1,cnt['lane_projection_attempt_count'])),'lane_projection_failure_count':cnt['lane_projection_failure_count'],'lane_projection_avg_candidate_lanes':float(cnt['lane_projection_candidate_total']/max(1,cnt['lane_projection_attempt_count'])),'lane_projection_max_candidate_lanes':cnt['lane_projection_candidate_max'],'lane_projection_cache_hits':cnt['lane_projection_cache_hits'],'lane_projection_cache_misses':cnt['lane_projection_cache_misses'],'lane_spatial_index_enabled':bool(not a.disable_lane_spatial_index),'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,
-        'lane_assignment_success_count':cnt['lane_assignment_success_count'],'lane_assignment_success_rate':lane_assignment_success_rate,
-        'fallback_assignment_count':cnt['fallback_assignment_count'],'fallback_assignment_rate':fallback_rate,'geometric_only_assignment_count':cnt['geometric_only_assignment_count'],
-        'current_lane_found_rate':float(cnt['current_lane_found_count']/max(1,cnt['kept'])),'left_lane_found_rate':float(cnt['left_lane_found_count']/max(1,cnt['kept'])),'right_lane_found_rate':float(cnt['right_lane_found_count']/max(1,cnt['kept'])),
+        'lane_assignment_success_count_pre_filter':cnt['lane_assignment_success_count_pre_filter'],
+        'current_lane_found_count_pre_filter':cnt['current_lane_found_count_pre_filter'],
+        'left_lane_found_count_pre_filter':cnt['left_lane_found_count_pre_filter'],
+        'right_lane_found_count_pre_filter':cnt['right_lane_found_count_pre_filter'],
+        'fallback_assignment_count_pre_filter':cnt['fallback_assignment_count_pre_filter'],
+        'lane_assignment_success_count_kept':cnt['lane_assignment_success_count_kept'],
+        'current_lane_found_count_kept':cnt['current_lane_found_count_kept'],
+        'left_lane_found_count_kept':cnt['left_lane_found_count_kept'],
+        'right_lane_found_count_kept':cnt['right_lane_found_count_kept'],
+        'fallback_assignment_count_kept':cnt['fallback_assignment_count_kept'],
+        'lane_assignment_success_rate':lane_assignment_success_rate,
+        'current_lane_found_rate':current_lane_found_rate,
+        'left_lane_found_rate':left_lane_found_rate,
+        'right_lane_found_rate':right_lane_found_rate,
+        'fallback_assignment_rate':fallback_rate,
+        'lane_assignment_success_rate_pre_filter':lane_assignment_success_rate_pre_filter,
+        'current_lane_found_rate_pre_filter':current_lane_found_rate_pre_filter,
+        'geometric_only_assignment_count':cnt['geometric_only_assignment_count'],
         'adjacency_source_counts':adj_counts,'heading_raw_available_rate':float(cnt['heading_raw']/max(1,cnt['heading_total'])),'heading_proxy_fallback_rate':float(cnt['heading_fallback']/max(1,cnt['heading_total'])),
         'trajectory_nan_count_raw':cnt['trajectory_nan_count_raw'],'trajectory_inf_count_raw':cnt['trajectory_inf_count_raw'],'trajectory_nan_count_after_sanitize':cnt['trajectory_nan_count_after_sanitize'],'trajectory_inf_count_after_sanitize':cnt['trajectory_inf_count_after_sanitize'],
         'ego_windows_repaired':cnt['ego_windows_repaired'],'ego_windows_dropped_sanitize_failed':cnt['ego_windows_dropped_sanitize_failed'],'neighbor_windows_repaired':cnt['neighbor_windows_repaired'],'neighbor_windows_dropped_sanitize_failed':cnt['neighbor_windows_dropped_sanitize_failed'],
@@ -347,13 +373,26 @@ def main():
         total = sum(assignment_method_counts_by_slot[slot].values())
         if total != cnt['kept']:
             summary['warnings'].append(f"assignment_method_counts_by_slot[{slot}] sum={total} != n_windows_kept={cnt['kept']}")
+    main_rates = {
+        'lane_assignment_success_rate': summary['lane_assignment_success_rate'],
+        'current_lane_found_rate': summary['current_lane_found_rate'],
+        'left_lane_found_rate': summary['left_lane_found_rate'],
+        'right_lane_found_rate': summary['right_lane_found_rate'],
+        'fallback_assignment_rate': summary['fallback_assignment_rate'],
+    }
+    high_rates = [k for k, v in main_rates.items() if v > 1.0]
+    if high_rates:
+        msg=f"Main rates exceed 1.0: {high_rates}"
+        summary['warnings'].append(msg)
+        if a.strict_summary_validation:
+            raise RuntimeError(msg)
     if cnt['windows_total'] < (cnt['f_invalid'] + cnt['f_static'] + cnt['n_windows_dropped_clean_filter_total'] + cnt['kept']):
         summary['warnings'].append('Window accounting mismatch detected.')
     summary['timing_seconds']['total']=float(time.perf_counter()-t_global)
     print('Timing summary (s):', summary['timing_seconds'])
     (out/'neighbor_context_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
     (out/'build_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
-    report=f"# Stage 5A 构建报告\n\n- 样本数: {cnt['kept']}\n- slot coverage: {slot_ratio}\n- empty_slot_ratio_by_slot: {summary['empty_slot_ratio_by_slot']}\n- lane_context_quality_counts: {summary['lane_context_quality_counts']}\n- fallback rate: {summary['fallback_assignment_rate']:.4f}\n- heading fallback rate: {summary['heading_proxy_fallback_rate']:.4f}\n- ego windows repaired: {cnt['ego_windows_repaired']}\n- neighbor windows repaired: {cnt['neighbor_windows_repaired']}\n- sanitize failed / dropped count: {cnt['ego_windows_dropped_sanitize_failed'] + cnt['neighbor_windows_dropped_sanitize_failed']}\n- raw NaN count: {cnt['trajectory_nan_count_raw']}\n- after sanitize NaN count: {cnt['trajectory_nan_count_after_sanitize']}\n\n## lane context 解释\n- lane_context_quality 衡量的是 lane/map 语义可靠性，不是五个邻车 slot 是否都有车。\n- empty slot 是正常交通稀疏现象，不应自动判定为 ambiguous_intersection。\n- slot coverage / empty slot ratio 单独报告。\n- 如需只保留最严格 lane context，可启用 --drop_if_lane_context_ambiguous。\n\n## 已知限制\n- lane-change 相关特征部分为 proxy（名称后缀 `_proxy`）。\n- 本阶段仅做数据构建与诊断，不启动训练。\n"
+    report=f"# Stage 5A 构建报告\n\n- 样本数: {cnt['kept']}\n- slot coverage: {slot_ratio}\n- empty_slot_ratio_by_slot: {summary['empty_slot_ratio_by_slot']}\n- lane_context_quality_counts: {summary['lane_context_quality_counts']}\n- lane_assignment_success_rate(kept): {summary['lane_assignment_success_rate']:.4f}\n- current_lane_found_rate(kept): {summary['current_lane_found_rate']:.4f}\n- lane_assignment_success_rate(pre_filter): {summary['lane_assignment_success_rate_pre_filter']:.4f}\n- current_lane_found_rate(pre_filter): {summary['current_lane_found_rate_pre_filter']:.4f}\n- fallback rate(kept): {summary['fallback_assignment_rate']:.4f}\n- heading fallback rate: {summary['heading_proxy_fallback_rate']:.4f}\n- ego windows repaired: {cnt['ego_windows_repaired']}\n- neighbor windows repaired: {cnt['neighbor_windows_repaired']}\n- sanitize failed / dropped count: {cnt['ego_windows_dropped_sanitize_failed'] + cnt['neighbor_windows_dropped_sanitize_failed']}\n- raw NaN count: {cnt['trajectory_nan_count_raw']}\n- after sanitize NaN count: {cnt['trajectory_nan_count_after_sanitize']}\n\n## lane context 解释\n- lane_context_quality 衡量的是 lane/map 语义可靠性，不是五个邻车 slot 是否都有车。\n- empty slot 是正常交通稀疏现象，不应自动判定为 ambiguous_intersection。\n- slot coverage / empty slot ratio 单独报告。\n- 主指标 rate 使用 kept 分母，pre_filter 指标单独报告，避免分母不一致。\n- 如需严格检查主指标 rate<=1.0，可启用 --strict_summary_validation。\n\n## 已知限制\n- lane-change 相关特征部分为 proxy（名称后缀 `_proxy`）。\n- 本阶段仅做数据构建与诊断，不启动训练。\n"
     (out/'build_report.md').write_text(report, encoding='utf-8')
 
 if __name__ == '__main__':

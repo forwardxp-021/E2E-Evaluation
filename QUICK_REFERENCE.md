@@ -1602,9 +1602,20 @@ python tools/build_waymo_5neighbor_context_dataset.py \
    - 原因：debug row schema 不统一。
    - 修复：统一 `LANE_DEBUG_FIELDS`，写 CSV 时使用 `normalize_debug_row`。
 
+4. `lane_assignment_success_rate > 1.0`（或 `current_lane_found_rate > 1.0`）
+   - 原因：分子在 clean filtering 之前累计，分母用 `n_windows_kept`（clean filtering 之后），导致分母不一致。
+   - 修复：summary 中拆分 pre-filter 与 kept 计数：
+     - pre-filter：`lane_assignment_success_count_pre_filter`、`current_lane_found_count_pre_filter`、`left_lane_found_count_pre_filter`、`right_lane_found_count_pre_filter`。
+     - kept：`lane_assignment_success_count_kept`、`current_lane_found_count_kept`、`left_lane_found_count_kept`、`right_lane_found_count_kept`、`fallback_assignment_count_kept`。
+   - 主指标 rate 统一使用 kept 分母：`n_windows_kept`。
+   - 额外输出 pre-filter rate：`lane_assignment_success_rate_pre_filter`、`current_lane_found_rate_pre_filter`。
+   - 可选启用 `--strict_summary_validation`，当任一主指标 rate > 1.0 时直接报错。
+
 通过标准：
 - clean run 不报错。
 - `split.npy / meta.npy / interaction_feat_style.npy / context_traj.npy` 行数一致。
 - `assignment_method_counts_by_slot` 每个 slot 的总数等于 `n_windows_kept`。
 - `lane_assignment_debug.csv` 可以正常写出。
 - `build_summary.json` 包含 clean filtering drop counts。
+- `lane_assignment_success_count_kept <= n_windows_kept` 且 `current_lane_found_count_kept <= n_windows_kept`。
+- 主指标 rate（`lane_assignment_success_rate/current_lane_found_rate/left_lane_found_rate/right_lane_found_rate/fallback_assignment_rate`）均 `<=1.0`。
