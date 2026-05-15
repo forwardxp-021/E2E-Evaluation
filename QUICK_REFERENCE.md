@@ -1619,3 +1619,38 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 - `build_summary.json` 包含 clean filtering drop counts。
 - `lane_assignment_success_count_kept <= n_windows_kept` 且 `current_lane_found_count_kept <= n_windows_kept`。
 - 主指标 rate（`lane_assignment_success_rate/current_lane_found_rate/left_lane_found_rate/right_lane_found_rate/fallback_assignment_rate`）均 `<=1.0`。
+
+## Stage 5A full51 安全构建（流式分片，避免 OOM）
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51 \
+  --max_files 51 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --drop_if_lane_context_ambiguous \
+  --streaming \
+  --output_shard_size 5000 \
+  --overwrite
+```
+
+说明：
+- 不要用非 streaming 模式跑 full51。
+- 如果在 “Processing TFRecord files” 阶段被 killed，通常表示 scenario 被整体堆在内存里。
+- 请使用 streaming 或 `--file_start/--file_end` 分段运行。
