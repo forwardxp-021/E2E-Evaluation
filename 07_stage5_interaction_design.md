@@ -399,3 +399,7 @@ Stage 5 预计新增输出文件：
 - Status: planned / implementation in progress.
 - This stage is currently focused on data construction and diagnostics only.
 - No Stage 5 training results are claimed in this document section.
+
+- Stage 5A-v1 geometric fallback passed.
+- Stage 5A-v2 true lane-aware assignment is now required before training.
+- Do not proceed to Stage 5B if fallback_assignment_rate remains 1.0.

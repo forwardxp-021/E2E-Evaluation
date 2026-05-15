@@ -1309,3 +1309,5 @@ Stage 4F 评估分两部分，缺一不可：
 ## Stage 5A 数据构建
 
 仓库已新增 Stage 5A lane-aware 5-neighbor context 数据构建脚本：`tools/build_waymo_5neighbor_context_dataset.py`，用于在训练前验证交互上下文输入质量。设计说明见 `07_stage5_interaction_design.md`。
+
+- Stage 5A-v2 focuses on true lane-aware neighbor assignment.
