@@ -40,6 +40,15 @@ def parse_args():
     p.add_argument('--lane_projection_max_candidates', type=int, default=32)
     p.add_argument('--lane_projection_timeout_warning_sec', type=float, default=5.0)
     p.add_argument('--disable_lane_spatial_index', action='store_true')
+    p.add_argument('--front_max_distance', type=float, default=120.0)
+    p.add_argument('--side_front_max_distance', type=float, default=80.0)
+    p.add_argument('--side_rear_max_distance', type=float, default=120.0)
+    p.add_argument('--lane_lateral_tolerance', type=float, default=2.0)
+    p.add_argument('--slot_heading_diff_deg', type=float, default=45.0)
+    p.add_argument('--static_speed_threshold', type=float, default=0.5)
+    p.add_argument('--drop_if_no_lane_map', action='store_true')
+    p.add_argument('--drop_if_ego_lane_missing', action='store_true')
+    p.add_argument('--drop_if_lane_context_bad', action='store_true')
     return p.parse_args()
 
 def split_of_sid(sid):
@@ -155,7 +164,7 @@ def main():
                 cnt['trajectory_nan_count_after_sanitize']+=int(np.isnan(ew[:,:5]).sum()); cnt['trajectory_inf_count_after_sanitize']+=int(np.isinf(ew[:,:5]).sum())
                 candidates={nid:ntr[st:st+a.window_len] for nid,ntr in tracks.items() if nid!=aid and len(ntr)>=st+a.window_len}
                 ego_state={'x':float(origin[0]),'y':float(origin[1]),'heading':float(base_h),'velocity_x':float(ew[ref,2]),'velocity_y':float(ew[ref,3])}
-                cand_states={k:{'x':float(v[0,0]),'y':float(v[0,1]),'heading':float(v[0,4]) if np.isfinite(v[0,4]) else np.nan,'velocity_x':float(v[0,2]) if np.isfinite(v[0,2]) else 0.0,'velocity_y':float(v[0,3]) if np.isfinite(v[0,3]) else 0.0} for k,v in candidates.items() if np.isfinite(v[0,:2]).all()}
+                cand_states={k:{'x':float(v[0,0]),'y':float(v[0,1]),'heading':float(v[0,4]) if np.isfinite(v[0,4]) else np.nan,'velocity_x':float(v[0,2]) if np.isfinite(v[0,2]) else 0.0,'velocity_y':float(v[0,3]) if np.isfinite(v[0,3]) else 0.0,'speed':float(np.hypot(v[0,2],v[0,3])) if np.isfinite(v[0,2:4]).all() else 0.0,'valid':bool(v[0,5]>0.5)} for k,v in candidates.items() if np.isfinite(v[0,:2]).all()}
                 proj_cache={}
                 t_lp=time.perf_counter()
                 for ck,cst in cand_states.items():
@@ -169,7 +178,7 @@ def main():
                 timing['lane_projection'] += time.perf_counter()-t_lp
                 cproj={k:v for (k,_),v in proj_cache.items()}
                 t_as=time.perf_counter()
-                assign=assign_neighbors_lane_aware(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=a.assignment_mode,config={'lane_max_lateral_distance':a.lane_max_lateral_distance,'lane_max_heading_diff_deg':a.lane_max_heading_diff_deg,'adjacent_lane_min_offset':a.adjacent_lane_min_offset,'adjacent_lane_max_offset':a.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':a.adjacent_lane_max_heading_diff_deg,'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,'disable_lane_spatial_index':a.disable_lane_spatial_index}, candidate_projections=cproj)
+                assign=assign_neighbors_lane_aware(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=a.assignment_mode,config={'lane_max_lateral_distance':a.lane_max_lateral_distance,'lane_max_heading_diff_deg':a.lane_max_heading_diff_deg,'adjacent_lane_min_offset':a.adjacent_lane_min_offset,'adjacent_lane_max_offset':a.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':a.adjacent_lane_max_heading_diff_deg,'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,'disable_lane_spatial_index':a.disable_lane_spatial_index,'front_max_distance':a.front_max_distance,'side_front_max_distance':a.side_front_max_distance,'side_rear_max_distance':a.side_rear_max_distance,'lane_lateral_tolerance':a.lane_lateral_tolerance,'slot_heading_diff_deg':a.slot_heading_diff_deg,'static_speed_threshold':a.static_speed_threshold}, candidate_projections=cproj)
                 timing['assignment'] += time.perf_counter()-t_as
                 cnt['lane_assignment_success_count']+=int(assign.lane_assignment_available)
                 cnt['fallback_assignment_count']+=int(assign.fallback_assignment_used)
@@ -201,14 +210,22 @@ def main():
                 for d in assign.per_slot_debug: d.update(dict(scenario_id=str(sid),target_agent_id=str(aid),start=int(st))); debug_rows.append(d)
                 context=np.concatenate([ego,nbr.reshape(a.window_len,-1)],1); eidx=len(ego_seq)
                 ego_seq.append(ego); nbr_seq.append(nbr); ctx.append(context); cmask.append((nbr[:,:,0]>0.5).T); cmask_win.append(np.max(nbr[:,:,0],axis=1)>0.5); slot_ids.append(sidrow); splits.append(sp)
-                meta.append((eidx,str(sid),str(aid),int(st),int(a.window_len),sp,a.assignment_mode,assign.lane_assignment_available,assign.fallback_assignment_used)); inter_feat, inter_names = aggregate_interaction_features(ego,nbr,a.dt); inter.append(np.nan_to_num(inter_feat,nan=0.0,posinf=1e6,neginf=-1e6)); cnt['kept']+=1
+                lane_ctx=assign.lane_context_quality
+                if a.drop_if_no_lane_map and not lane_infos:
+                    cnt['n_windows_dropped_no_lane_map']+=1; continue
+                if a.drop_if_ego_lane_missing and not assign.current_lane_id:
+                    cnt['n_windows_dropped_ego_lane_missing']+=1; continue
+                if a.drop_if_lane_context_bad and lane_ctx in ('bad','fallback'):
+                    cnt['n_windows_dropped_bad_lane_context']+=1; continue
+                cnt[f'lane_context_quality::{lane_ctx}']+=1
+                meta.append((eidx,str(sid),str(aid),int(st),int(a.window_len),sp,a.assignment_mode,assign.lane_assignment_available,assign.fallback_assignment_used,lane_ctx)); inter_feat, inter_names = aggregate_interaction_features(ego,nbr,a.dt); inter.append(np.nan_to_num(inter_feat,nan=0.0,posinf=1e6,neginf=-1e6)); cnt['kept']+=1
 
     ego_arr=np.asarray(ego_seq,np.float32); nbr_arr=np.asarray(nbr_seq,np.float32); ctx_arr=np.asarray(ctx,np.float32); cmask_arr=np.asarray(cmask,np.float32); cmw=np.asarray(cmask_win,np.float32)
     inter_raw=np.asarray(inter,np.float32); split_arr=np.asarray(splits,dtype=object)
     train=(split_arr=='train'); mu=np.mean(inter_raw[train],axis=0) if np.any(train) else np.mean(inter_raw,axis=0); sd=np.std(inter_raw[train],axis=0) if np.any(train) else np.std(inter_raw,axis=0)
     sd=np.where(sd<1e-6,1e-6,sd); inter_std=((inter_raw-mu)/sd).astype(np.float32)
     np.save(out/'ego_seq.npy',ego_arr); np.save(out/'neighbor_seq.npy',nbr_arr); np.save(out/'context_traj.npy',ctx_arr); np.save(out/'context_mask.npy',cmask_arr); np.save(out/'context_mask_window.npy',cmw); np.save(out/'neighbor_slot_ids.npy',np.asarray(slot_ids,dtype=object))
-    meta_dtype=np.dtype([('row_index','i4'),('scenario_id','O'),('target_agent_id','O'),('start','i4'),('window_len','i4'),('split','O'),('assignment_mode','O'),('lane_assignment_success','?'),('fallback_used','?')])
+    meta_dtype=np.dtype([('row_index','i4'),('scenario_id','O'),('target_agent_id','O'),('start','i4'),('window_len','i4'),('split','O'),('assignment_mode','O'),('lane_assignment_success','?'),('fallback_used','?'),('lane_context_quality','O')])
     np.save(out/'meta.npy',np.array(meta,dtype=meta_dtype)); np.save(out/'split.npy',split_arr); np.save(out/'interaction_feat_style_raw.npy',inter_raw); np.save(out/'interaction_feat_style.npy',inter_std)
     (out/'ego_feature_names.json').write_text(json.dumps(ego_feats,indent=2),encoding='utf-8'); (out/'neighbor_feature_names.json').write_text(json.dumps(nbr_feats,indent=2),encoding='utf-8'); (out/'neighbor_slot_names.json').write_text(json.dumps(SLOT_NAMES,indent=2),encoding='utf-8')
     (out/'context_feature_names.json').write_text(json.dumps(ego_feats+[f'{s}.{n}' for s in SLOT_NAMES for n in nbr_feats],indent=2),encoding='utf-8'); (out/'interaction_feature_names.json').write_text(json.dumps(inter_names,indent=2,ensure_ascii=False),encoding='utf-8')
@@ -217,7 +234,7 @@ def main():
         w=csv.DictWriter(f,fieldnames=['slot_name','valid_ratio','valid_count','total_count']); w.writeheader(); total=max(1,cnt['kept']*a.window_len)
         for s in SLOT_NAMES: w.writerow({'slot_name':s,'valid_ratio':slot_valid_counts[s]/total,'valid_count':slot_valid_counts[s],'total_count':total})
     with (out/'lane_assignment_debug.csv').open('w',newline='',encoding='utf-8') as f:
-        fn=['scenario_id','target_agent_id','start','slot_name','assignment_method','neighbor_id','fallback_used','fallback_reason','distance','longitudinal_gap','lateral_gap','ego_lane_id','slot_lane_id','neighbor_lane_id','ego_s','neighbor_s','delta_s','ego_l','neighbor_l','projection_distance']
+        fn=['scenario_id','target_agent_id','start','slot_name','assignment_method','neighbor_id','fallback_used','fallback_reason','ego_lane_id','slot_lane_id','neighbor_lane_id','ego_s','neighbor_s','delta_s','ego_l','neighbor_l','projection_distance','candidate_lateral_offset','candidate_heading_diff','neighbor_speed','neighbor_is_static','distance_threshold_used','lane_lateral_tolerance','slot_heading_diff_threshold']
         w=csv.DictWriter(f,fieldnames=fn); w.writeheader(); w.writerows(debug_rows)
     def finite_report(name, arr):
         finite=np.isfinite(arr)
@@ -233,6 +250,7 @@ def main():
 
     slot_ratio={s:float(slot_valid_counts[s]/max(1,cnt['kept']*a.window_len)) for s in SLOT_NAMES}
     adj_counts={k.split('::',1)[1]:v for k,v in cnt.items() if k.startswith('adjacency_source::')}
+    lane_context_quality_counts={k.split('::',1)[1]:v for k,v in cnt.items() if k.startswith('lane_context_quality::')}
     lane_map_avail=sum(1 for _,_,li in scenarios if li)
     lane_map_missing=len(scenarios)-lane_map_avail
     lane_assignment_success_rate=float(cnt['lane_assignment_success_count']/max(1,cnt['kept']))
@@ -251,6 +269,11 @@ def main():
         'ego_windows_repaired':cnt['ego_windows_repaired'],'ego_windows_dropped_sanitize_failed':cnt['ego_windows_dropped_sanitize_failed'],'neighbor_windows_repaired':cnt['neighbor_windows_repaired'],'neighbor_windows_dropped_sanitize_failed':cnt['neighbor_windows_dropped_sanitize_failed'],
         'origin_frame_not_zero_count':cnt['origin_frame_not_zero_count'],'base_heading_raw_count':cnt['base_heading_raw_count'],'base_heading_velocity_fallback_count':cnt['base_heading_velocity_fallback_count'],'nonfinite_output_detected':cnt['nonfinite_output_detected'],
         'assignment_method_counts_by_slot':{s:{'lane_aware':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='lane_aware'),'geometric_fallback':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method')=='geometric_fallback'),'empty':sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('assignment_method') in ('empty','sanitize_failed'))} for s in SLOT_NAMES},
+        'slot_thresholds':{'front_max_distance':a.front_max_distance,'side_front_max_distance':a.side_front_max_distance,'side_rear_max_distance':a.side_rear_max_distance,'lane_lateral_tolerance':a.lane_lateral_tolerance,'slot_heading_diff_deg':a.slot_heading_diff_deg,'static_speed_threshold':a.static_speed_threshold},
+        'static_neighbor_count_by_slot':{s:int(sum(1 for r in debug_rows if r.get('slot_name')==s and r.get('neighbor_is_static') is True)) for s in SLOT_NAMES},
+        'static_front_count':int(sum(1 for r in debug_rows if r.get('slot_name')=='front' and r.get('neighbor_is_static') is True)),
+        'static_front_ratio':float(sum(1 for r in debug_rows if r.get('slot_name')=='front' and r.get('neighbor_is_static') is True)/max(1,sum(1 for r in debug_rows if r.get('slot_name')=='front' and r.get('assignment_method')!='empty'))),
+        'lane_context_quality_counts':lane_context_quality_counts,'good_lane_context_rate':float(lane_context_quality_counts.get('good',0)/max(1,cnt['kept'])),'ambiguous_intersection_rate':float(lane_context_quality_counts.get('ambiguous_intersection',0)/max(1,cnt['kept'])),'bad_lane_context_rate':float(lane_context_quality_counts.get('bad',0)/max(1,cnt['kept'])),
         'mean_projection_distance':float(np.nanmean([r.get('projection_distance',np.nan) for r in debug_rows])) if debug_rows else np.nan,
         'p95_projection_distance':float(np.nanpercentile([r.get('projection_distance',np.nan) for r in debug_rows if np.isfinite(r.get('projection_distance',np.nan))],95)) if any(np.isfinite(r.get('projection_distance',np.nan)) for r in debug_rows) else np.nan,
         'fallback_reason_counts':dict(Counter([r.get('fallback_reason','') for r in debug_rows if r.get('fallback_reason')])), 'progress_enabled':True, 'timing_seconds':{'total':0.0,'load_tfrecord':float(timing['load_tfrecord']),'extract_lanes':float(timing['extract_lanes']),'build_lane_index':float(timing['build_lane_index']),'lane_projection':float(timing['lane_projection']),'assignment':float(timing['assignment']),'feature_build':float(timing['feature_build']),'write_outputs':0.0}, 'warnings':[], 'notes':['Some lane-change features are proxy.']
