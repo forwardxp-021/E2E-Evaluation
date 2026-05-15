@@ -124,6 +124,24 @@ def validate_source_policy_coverage(
     }
 
 
+def assert_expected_policies_per_complete_source(
+    coverage: Dict,
+    expected_policies: int,
+) -> None:
+    """Sanity check: complete sources should contribute exactly P pairs each."""
+    n_complete = int(coverage["n_complete_sources"])
+    n_missing = int(coverage["n_missing_pairs"])
+    n_dup = int(coverage["n_duplicate_pairs"])
+    if n_complete > 0 and n_missing == 0 and n_dup == 0:
+        expected_pairs = n_complete * expected_policies
+        found_pairs = int(coverage["n_found_pairs"])
+        if found_pairs != expected_pairs:
+            raise AssertionError(
+                "Coverage inconsistency: expected complete-source pairs to equal "
+                f"{expected_pairs}, got {found_pairs}."
+            )
+
+
 def compute_pairwise_distances(
     embeddings: np.ndarray,
     source_index: np.ndarray,
@@ -420,6 +438,10 @@ def main() -> None:
         source_index[eval_mask],
         policy_id[eval_mask],
         unique_ids,
+    )
+    assert_expected_policies_per_complete_source(
+        coverage=coverage,
+        expected_policies=n_policies,
     )
     print(f"  Sources in eval         : {coverage['n_sources']}")
     print(f"  Expected (src×pol) pairs: {coverage['n_expected_pairs']}")

@@ -12,6 +12,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from evaluate_policy_separation_aligned import (
+    assert_expected_policies_per_complete_source,
     compute_within_source_margin,
     evaluate_within_source_retrieval_applicability,
     validate_source_policy_coverage,
@@ -60,10 +61,12 @@ def _make_structured_data(
 def test_retrieval_marked_not_applicable_for_one_sample_per_policy():
     """Within-source same-policy NN must be N/A when no same-policy positives exist."""
     embeddings, source_index, policy_id, eval_mask = _make_structured_data()
+    n_policies = len(np.unique(policy_id))
     unique_policies = sorted(int(p) for p in np.unique(policy_id))
     coverage = validate_source_policy_coverage(source_index, policy_id, unique_policies)
     assert coverage["n_missing_pairs"] == 0
     assert coverage["n_duplicate_pairs"] == 0
+    assert_expected_policies_per_complete_source(coverage, expected_policies=n_policies)
 
     applicable, reason = evaluate_within_source_retrieval_applicability(
         source_index, policy_id, eval_mask
