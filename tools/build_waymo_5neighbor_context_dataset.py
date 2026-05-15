@@ -36,6 +36,7 @@ def parse_args():
     p.add_argument('--streaming', dest='streaming', action='store_true'); p.add_argument('--no_streaming', dest='streaming', action='store_false'); p.set_defaults(streaming=None)
     p.add_argument('--output_shard_size', type=int, default=5000); p.add_argument('--merge_shards_at_end', action='store_true')
     p.add_argument('--file_start', type=int, default=0); p.add_argument('--file_end', type=int, default=None); p.add_argument('--resume', action='store_true')
+    p.add_argument('--progress_every', type=int, default=50)
     return p.parse_args()
 
 def split_of_sid(sid):
@@ -103,7 +104,9 @@ def flush_shard(batch, shard_idx, out_dir):
     meta_dtype=np.dtype([('row_index','i4'),('scenario_id','O'),('target_agent_id','O'),('start','i4'),('window_len','i4'),('split','O'),('assignment_mode','O'),('lane_assignment_success','?'),('fallback_used','?'),('lane_context_quality','O')])
     np.save(sd/'ego_seq.npy',np.asarray(batch['ego_seq'],np.float32)); np.save(sd/'neighbor_seq.npy',np.asarray(batch['neighbor_seq'],np.float32)); np.save(sd/'context_traj.npy',np.asarray(batch['context_traj'],np.float32)); np.save(sd/'context_mask.npy',np.asarray(batch['context_mask'],np.float32)); np.save(sd/'context_mask_window.npy',np.asarray(batch['context_mask_window'],np.float32)); np.save(sd/'neighbor_slot_ids.npy',np.asarray(batch['neighbor_slot_ids'],dtype=object)); np.save(sd/'meta.npy',np.array(batch['meta_rows'],dtype=meta_dtype)); np.save(sd/'split.npy',np.asarray(batch['splits'],dtype=object)); np.save(sd/'interaction_feat_style_raw.npy',np.asarray(batch['interaction_raw'],np.float32))
     with (sd/'lane_assignment_debug.csv').open('w',newline='',encoding='utf-8') as f: w=csv.DictWriter(f,fieldnames=LANE_DEBUG_FIELDS); w.writeheader(); w.writerows(normalize_debug_row(r) for r in batch['debug_rows'])
-    (sd/'shard_summary.json').write_text(json.dumps({'n_windows':len(batch['ego_seq']),'path':str(sd)},indent=2,ensure_ascii=False),encoding='utf-8')
+    row_indices=[int(r[0]) for r in batch['meta_rows']] if batch['meta_rows'] else []
+    summary_payload={'n_windows':len(batch['ego_seq']),'path':str(sd),'row_index_min':min(row_indices) if row_indices else None,'row_index_max':max(row_indices) if row_indices else None,'row_index_unique':(len(set(row_indices))==len(row_indices))}
+    (sd/'shard_summary.json').write_text(json.dumps(summary_payload,indent=2,ensure_ascii=False),encoding='utf-8')
     return sd
 
 def main():
@@ -113,33 +116,65 @@ def main():
     cnt=defaultdict(int); timing=defaultdict(float); shard_idx=0; inter_names=None
     assignment_method_counts_total={s:{'lane_aware':0,'geometric_fallback':0,'empty':0,'sanitize_failed':0} for s in SLOT_NAMES}
     agg={'sum':None,'sumsq':None,'count':0}; shard_paths=[]; g_batch={k:[] for k in ['ego_seq','neighbor_seq','context_traj','context_mask','context_mask_window','neighbor_slot_ids','meta_rows','splits','interaction_raw','debug_rows']}
-    global_row=0
+    global_row_committed=0
+    global_row_index_min=None
+    global_row_index_max=None
+    global_row_index_unique_check=True
+    scenario_count=0
+    total_start=time.time()
     import tensorflow as tf
     from waymo_open_dataset.protos import scenario_pb2
     files=sorted([str(p) for p in Path(a.waymo_dir).glob('*.tfrecord*')]) if not a.smoke_test else []
     files=files[a.file_start:a.file_end]
     if a.max_files: files=files[:a.max_files]
-    for fp in tqdm(files, desc='Processing TFRecord files'):
+    stop_all=False
+    for file_idx,fp in enumerate(tqdm(files, desc='Processing TFRecord files'), start=1):
       ds=tf.data.TFRecordDataset(fp)
-      for rec in ds:
+      scen_pbar=tqdm(ds, desc=f"Processing scenarios in {Path(fp).name}", leave=False)
+      for rec in scen_pbar:
         sc=scenario_pb2.Scenario(); sc.ParseFromString(bytes(rec.numpy())); tracks={}
         for tr in sc.tracks:
           if a.agent_types=='vehicle' and tr.object_type!=1: continue
           tracks[str(tr.id)]=np.asarray([[st.center_x,st.center_y,st.velocity_x,st.velocity_y,st.heading,1.0] if st.valid else [np.nan]*5+[0.0] for st in tr.states],np.float32)
-        b,_,assignment_method_counts_scenario,names=process_one_scenario(sc.scenario_id,tracks,extract_lane_polylines(sc),a,cnt,timing,global_row)
+        scenario_count += 1
+        global_row_start_for_scenario = global_row_committed + len(g_batch['ego_seq'])
+        b,slot_valid_counts_scenario,assignment_method_counts_scenario,names=process_one_scenario(sc.scenario_id,tracks,extract_lane_polylines(sc),a,cnt,timing,global_row_start_for_scenario)
+        cnt['scenarios_processed']=scenario_count
+        for sn in SLOT_NAMES:
+          cnt[f"slot_valid_{sn}"] += int(slot_valid_counts_scenario.get(sn,0))
         for sn in SLOT_NAMES:
           for method,count in assignment_method_counts_scenario[sn].items():
             assignment_method_counts_total[sn][method]+=count
         if inter_names is None and names is not None: inter_names=names
         for k in g_batch: g_batch[k].extend(getattr(b,k) if hasattr(b,k) else [])
+        if a.progress_every>0 and (scenario_count % a.progress_every)==0:
+          print(f"[heartbeat] file {file_idx}/{len(files)} scenarios_processed={scenario_count} n_windows_kept={cnt['kept']} n_windows_total={cnt['windows_total']} shard_idx={shard_idx} current_batch_size={len(g_batch['ego_seq'])} elapsed_sec={time.time()-total_start:.1f} scenario_id={sc.scenario_id}")
         if len(g_batch['ego_seq'])>=a.output_shard_size:
-          sd=flush_shard(g_batch,shard_idx,out); shard_paths.append(str(sd)); shard_idx+=1; global_row+=len(g_batch['ego_seq'])
+          sd=flush_shard(g_batch,shard_idx,out); shard_paths.append(str(sd)); shard_idx+=1
+          if g_batch['meta_rows']:
+            shard_rows=[int(r[0]) for r in g_batch['meta_rows']]
+            global_row_index_min=min(shard_rows) if global_row_index_min is None else min(global_row_index_min,min(shard_rows))
+            global_row_index_max=max(shard_rows) if global_row_index_max is None else max(global_row_index_max,max(shard_rows))
+            global_row_index_unique_check=global_row_index_unique_check and (len(set(shard_rows))==len(shard_rows))
+          global_row_committed+=len(g_batch['ego_seq'])
           train=np.asarray(g_batch['splits'],dtype=object)=='train'; raw=np.asarray(g_batch['interaction_raw'],np.float64)
           if raw.size and np.any(train):
             x=raw[train]; agg['sum']=x.sum(0) if agg['sum'] is None else agg['sum']+x.sum(0); agg['sumsq']= (x*x).sum(0) if agg['sumsq'] is None else agg['sumsq']+(x*x).sum(0); agg['count']+=x.shape[0]
           g_batch={k:[] for k in g_batch}
+        if a.max_scenarios is not None and scenario_count>=a.max_scenarios:
+          stop_all=True
+          break
+      scen_pbar.close()
+      if stop_all:
+        break
     if g_batch['ego_seq']:
-      sd=flush_shard(g_batch,shard_idx,out); shard_paths.append(str(sd)); global_row+=len(g_batch['ego_seq']); train=np.asarray(g_batch['splits'],dtype=object)=='train'; raw=np.asarray(g_batch['interaction_raw'],np.float64)
+      sd=flush_shard(g_batch,shard_idx,out); shard_paths.append(str(sd))
+      if g_batch['meta_rows']:
+        shard_rows=[int(r[0]) for r in g_batch['meta_rows']]
+        global_row_index_min=min(shard_rows) if global_row_index_min is None else min(global_row_index_min,min(shard_rows))
+        global_row_index_max=max(shard_rows) if global_row_index_max is None else max(global_row_index_max,max(shard_rows))
+        global_row_index_unique_check=global_row_index_unique_check and (len(set(shard_rows))==len(shard_rows))
+      global_row_committed+=len(g_batch['ego_seq']); train=np.asarray(g_batch['splits'],dtype=object)=='train'; raw=np.asarray(g_batch['interaction_raw'],np.float64)
       if raw.size and np.any(train): x=raw[train]; agg['sum']=x.sum(0) if agg['sum'] is None else agg['sum']+x.sum(0); agg['sumsq']=(x*x).sum(0) if agg['sumsq'] is None else agg['sumsq']+(x*x).sum(0); agg['count']+=x.shape[0]
     if agg['sum'] is None:
       mu=np.zeros((0,),dtype=np.float64); sd=np.ones((0,),dtype=np.float64)
@@ -159,7 +194,10 @@ def main():
       if a.smoke_test:
         raise RuntimeError(msg)
       print(f"[WARN] {msg}")
-    summary={'streaming_mode':bool(streaming),'output_format':'sharded','n_shards':len(shard_paths),'shard_size':a.output_shard_size,'shard_paths':shard_paths,'n_windows_kept':cnt['kept'],'split_counts':{},'nonfinite_output_detected':0,'interaction_feature_standardization':'interaction_feature_standardization.json','n_files_processed':len(files),'assignment_method_counts_by_slot':assignment_method_counts_total}
+    empty_slot_count_by_slot={sn:int(expected_kept-cnt.get(f"slot_valid_{sn}",0)) for sn in SLOT_NAMES}
+    empty_slot_ratio_by_slot={sn:(float(empty_slot_count_by_slot[sn])/max(1,expected_kept)) for sn in SLOT_NAMES}
+    slot_valid_ratio={sn:(float(cnt.get(f"slot_valid_{sn}",0))/max(1,expected_kept)) for sn in SLOT_NAMES}
+    summary={'dataset_type':'waymo_5neighbor_context_laneaware','streaming_mode':bool(streaming),'output_format':'sharded','n_shards':len(shard_paths),'shard_size':a.output_shard_size,'shard_paths':shard_paths,'n_files_processed':len(files if not stop_all else files[:file_idx]),'n_scenarios_processed':int(scenario_count),'n_target_agents_considered':int(cnt['targets']),'n_windows_total':int(cnt['windows_total']),'n_windows_kept':cnt['kept'],'n_windows_filtered_static':int(cnt['f_static']),'n_windows_filtered_invalid':int(cnt['f_invalid']),'n_windows_dropped_no_lane_map':int(cnt['n_windows_dropped_no_lane_map']),'n_windows_dropped_ego_lane_missing':int(cnt['n_windows_dropped_ego_lane_missing']),'n_windows_dropped_bad_lane_context':int(cnt['n_windows_dropped_bad_lane_context']),'n_windows_dropped_lane_context_ambiguous':int(cnt['n_windows_dropped_lane_context_ambiguous']),'n_windows_dropped_clean_filter_total':int(cnt['n_windows_dropped_clean_filter_total']),'split_counts':{},'window_len':a.window_len,'dt':a.dt,'slot_valid_ratio':slot_valid_ratio,'empty_slot_count_by_slot':empty_slot_count_by_slot,'empty_slot_ratio_by_slot':empty_slot_ratio_by_slot,'lane_map_available_scenarios':int(cnt['lane_map_available_scenarios']),'lane_map_missing_scenarios':int(cnt['lane_map_missing_scenarios']),'lane_projection_attempt_count':int(cnt['lane_projection_attempt_count']),'lane_projection_success_count':int(cnt['lane_projection_success_count']),'lane_projection_success_rate':float(cnt['lane_projection_success_count'])/max(1,int(cnt['lane_projection_attempt_count'])),'lane_projection_failure_count':int(cnt['lane_projection_failure_count']),'lane_projection_avg_candidate_lanes':float(cnt['lane_projection_avg_candidate_lanes']) if cnt.get('lane_projection_avg_candidate_lanes') else 0.0,'lane_projection_max_candidate_lanes':int(cnt['lane_projection_max_candidate_lanes']),'lane_spatial_index_enabled':(not a.disable_lane_spatial_index),'lane_search_radius':a.lane_search_radius,'lane_topk_candidates':a.lane_topk_candidates,'lane_assignment_success_count_kept':int(cnt['lane_assignment_success_count_kept']),'current_lane_found_count_kept':int(cnt['current_lane_found_count_kept']),'left_lane_found_count_kept':int(cnt['left_lane_found_count_kept']),'right_lane_found_count_kept':int(cnt['right_lane_found_count_kept']),'fallback_assignment_count_kept':int(cnt['fallback_assignment_count_kept']),'lane_assignment_success_rate':float(cnt['lane_assignment_success_count_kept'])/max(1,int(cnt['kept'])),'current_lane_found_rate':float(cnt['current_lane_found_count_kept'])/max(1,int(cnt['kept'])),'left_lane_found_rate':float(cnt['left_lane_found_count_kept'])/max(1,int(cnt['kept'])),'right_lane_found_rate':float(cnt['right_lane_found_count_kept'])/max(1,int(cnt['kept'])),'fallback_assignment_rate':float(cnt['fallback_assignment_count_kept'])/max(1,int(cnt['kept'])),'adjacency_source_counts':{},'heading_raw_available_rate':0.0,'heading_proxy_fallback_rate':0.0,'trajectory_nan_count_raw':int(cnt['trajectory_nan_count_raw']),'trajectory_inf_count_raw':int(cnt['trajectory_inf_count_raw']),'trajectory_nan_count_after_sanitize':int(cnt['trajectory_nan_count_after_sanitize']),'trajectory_inf_count_after_sanitize':int(cnt['trajectory_inf_count_after_sanitize']),'ego_windows_repaired':int(cnt['ego_windows_repaired']),'ego_windows_dropped_sanitize_failed':int(cnt['ego_windows_dropped_sanitize_failed']),'neighbor_windows_repaired':int(cnt['neighbor_windows_repaired']),'neighbor_windows_dropped_sanitize_failed':int(cnt['neighbor_windows_dropped_sanitize_failed']),'origin_frame_not_zero_count':int(cnt['origin_frame_not_zero_count']),'base_heading_raw_count':int(cnt['base_heading_raw_count']),'base_heading_velocity_fallback_count':int(cnt['base_heading_velocity_fallback_count']),'nonfinite_output_detected':0,'assignment_method_counts_by_slot':assignment_method_counts_total,'slot_thresholds':{'front_max_distance':a.front_max_distance,'side_front_max_distance':a.side_front_max_distance,'side_rear_max_distance':a.side_rear_max_distance,'lane_lateral_tolerance':a.lane_lateral_tolerance,'slot_heading_diff_deg':a.slot_heading_diff_deg,'static_speed_threshold':a.static_speed_threshold},'static_neighbor_count_by_slot':{},'static_front_count':int(cnt['static_front_count']),'static_front_ratio':float(cnt['static_front_count'])/max(1,int(cnt['kept'])),'lane_context_quality_counts':{},'good_lane_context_rate':0.0,'ambiguous_intersection_rate':0.0,'bad_lane_context_rate':0.0,'fallback_lane_context_rate':0.0,'lane_context_quality_reason_counts':{},'mean_projection_distance':0.0,'p95_projection_distance':0.0,'fallback_reason_counts':{},'slot_rejection_reason_counts':{},'timing_seconds':dict(timing),'warnings':[],'notes':['streaming shard mode'],'interaction_feature_standardization':'interaction_feature_standardization.json','global_row_index_min':global_row_index_min,'global_row_index_max':global_row_index_max,'global_row_index_unique_check':bool(global_row_index_unique_check)}
     (out/'build_summary.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding='utf-8')
     (out/'neighbor_context_summary.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding='utf-8')
     (out/'build_report.md').write_text('# Stage 5A 构建报告\n\n- full51 使用分片输出（sharded）避免 OOM。\n- 除非显式合并，否则不保证存在 monolithic .npy。\n- 训练/评估需要支持 shard 输入或后续 merge。\n- Stage 5A full51 不应将全部 scenario 常驻内存。\n',encoding='utf-8')

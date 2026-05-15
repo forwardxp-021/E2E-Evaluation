@@ -1681,3 +1681,25 @@ build script 与 `lane_aware_assignment.py` 的接口不一致。
 - `python tools/check_no_tmp_dependencies.py` 通过。
 - smoke test 通过。
 - full51 streaming 命令可启动，且不会出现 `/tmp/old.py` 的 FileNotFoundError。
+
+## Stage 5A-v5 Streaming 排障（新增）
+
+### 常见现象
+- 只看到 `Processing TFRecord files: 0/51` 不动。
+
+### 原因
+- 只有外层文件进度条，没有内部 scenario 进度；
+- 或第一个 TFRecord 内部处理耗时较长。
+
+### 修复
+- streaming 模式必须显示 scenario 级别进度或每 N 个 scenario 的 heartbeat；
+- full51 前必须先跑 `max_scenarios=10` 和 `max_scenarios=50` 的 streaming debug 命令。
+
+### 通过标准
+- `max_scenarios=10` 能快速完成；
+- `max_scenarios=50` 能生成 shard；
+- `build_summary.json` 保留完整诊断字段；
+- `row_index` 不重复；
+- full51 不再一次性缓存所有 scenario；
+- 不出现 `/tmp/old.py`；
+- 不出现 `SlotAssignResult` 接口错误。
