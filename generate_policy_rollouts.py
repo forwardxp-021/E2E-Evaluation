@@ -421,6 +421,11 @@ def main() -> None:
         if clip_val is not None and p_name in active_params:
             active_params[p_name]["yaw_rate_clip"] = clip_val
     if args.heading_smooth_alpha is not None and "lateral_stable" in active_params:
+        if not (0.0 <= args.heading_smooth_alpha < 1.0):
+            raise ValueError(
+                "--heading_smooth_alpha must be in [0.0, 1.0) "
+                "(0.0=no smoothing, closer to 1.0=stronger smoothing)."
+            )
         active_params["lateral_stable"]["heading_smooth_alpha"] = args.heading_smooth_alpha
 
     # Apply lateral_stable longitudinal overrides
@@ -662,6 +667,8 @@ def main() -> None:
     policy_names_map = {str(idx): name for idx, name in enumerate(policy_names)}
     with open(os.path.join(args.output_dir, "policy_names.json"), "w", encoding="utf-8") as f:
         json.dump(policy_names_map, f, ensure_ascii=False, indent=2)
+    with open(os.path.join(args.output_dir, "policy_effective_params.json"), "w", encoding="utf-8") as f:
+        json.dump(active_params, f, ensure_ascii=False, indent=2)
 
     # ------------------------------------------------------------------
     # Summary
@@ -749,6 +756,7 @@ def main() -> None:
         "source_key.npy",
         "split.npy",
         "policy_names.json",
+        "policy_effective_params.json",
     ]:
         fpath = os.path.join(args.output_dir, fname)
         size_kb = os.path.getsize(fpath) / 1024
