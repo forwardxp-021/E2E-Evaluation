@@ -1834,11 +1834,12 @@ python tools/export_context_row_embeddings.py \
 ## 3. 通过标准
 
 - preflight 1 epoch 能跑通。
-- train_loss / val_loss finite。
-- `model.pt` 存在。
+- Stage 5B smoke 通过标准：`train_loss` / `val_loss` 为有限值且 `model.pt` 存在。
+- 单 epoch 时 `loss_curve.png` / `val_loss_curve.png` 看起来“空白”通常只是可视化尺度问题，不代表训练失败。
 - `training_summary.json` 存在。
 - `context_dim` 和 `feature_dim` 正确记录。
 - full training 不 OOM。
+- full training 建议开启 `--metric_alignment`。
 - `embedding_manifest.json` 存在。
 - exported embedding 总行数 = 164871。
 - `nonfinite_embedding_detected = 0`。
