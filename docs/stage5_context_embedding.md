@@ -1,37 +1,16 @@
-# Stage 5 Context Embedding (Stage 5C-1 Schema-Fixed)
+# Stage 5 Context Embedding (Stage 5C-1 Strict Schema)
 
-## Paths
-- Stage 5A dataset root: `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged`
-- Stage 5B embeddings root: `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings`
+## Current Stage 5 feature schema (33-D)
+Canonical feature order in `feature_schema.json`:
 
-## Stage 5C purpose
-Evaluate whether learned context embeddings preserve behavior/style similarity better than baselines.
+`rms_accel, rms_jerk, max_abs_accel, max_abs_jerk, mean_thw, min_thw, mean_front_distance, min_front_distance, mean_rel_speed, p95_rel_speed, rms_yaw_rate, rms_curvature, heading_change_total, lane_change_count_proxy, lane_change_rate_proxy, lane_change_left_count_proxy, lane_change_right_count_proxy, lane_change_duration_mean_proxy, max_lateral_speed, rms_lateral_accel, lane_change_oscillation_score_proxy, front_pressure_score, left_front_min_gap, left_rear_min_gap, right_front_min_gap, right_rear_min_gap, left_gap_min, right_gap_min, left_gap_acceptance_proxy, right_gap_acceptance_proxy, rear_vehicle_pressure_proxy, yielding_score_proxy, assertiveness_score_proxy`.
 
-## Why Stage 5C v1 was preliminary
-- `feature_names_used` was empty.
-- Evaluator used fallback hardcoded feature indices.
-- Therefore results were smoke-test only, not paper-grade validity.
+## Why `mean_speed` and `std_rel_speed` are not required
+- They are **not present** in the canonical Stage 5 schema.
+- Strict evaluator logic resolves indices by **feature name from schema only**.
+- Therefore `mean_speed`/`std_rel_speed` are not evaluated; `p95_rel_speed` is used for relative-speed spread behavior.
 
-## Stage 5C-1 fixes
-- Canonical `feature_schema.json` (33 ordered dimensions) is defined from the same source as feature construction.
-- Builder now writes `feature_schema.json` with manifest outputs.
-- Strict schema loading is default in evaluator; no silent fallback in strict mode.
-- Context sensitivity now uses named schema features (`mean_thw`, `min_thw`, `mean_front_distance`, `min_front_distance`, `mean_rel_speed`, `std_rel_speed`) with neighbor absolute-delta metric.
-
-## Generate schema (no full rebuild required)
-```bash
-python tools/write_feature_schema.py \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
-```
-
-Alternative (builder utility mode):
-```bash
-python tools/build_waymo_5neighbor_context_dataset.py \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
-  --write_schema_only
-```
-
-## Re-run Stage 5C strict evaluation
+## Exact rerun command
 ```bash
 python tools/evaluate_context_embedding.py \
   --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings/embedding_manifest.json \
@@ -44,21 +23,26 @@ python tools/evaluate_context_embedding.py \
   --overwrite
 ```
 
-## Expected output directory
+## Output directory
 `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_eval_schema_fixed`
 
-## Expected files
+## Expected output files
 - `evaluation_summary.json`
+- `evaluation_report.md`
 - `retrieval_metrics.csv`
 - `style_distance_correlation.csv`
 - `context_sensitivity_metrics.csv`
 - `retrieval_bar.png`
 - `feature_delta_correlation_bar.png`
-- `pca_embedding.png`
-- `pca_feature.png`
-- `evaluation_report.md`
 
-## Interpretation
-- `learned_context_embedding > random/context_l2`: embedding is meaningful.
-- `learned_context_embedding > raw_feature/pca_feature`: strong evidence.
-- `learned_context_embedding < raw_feature/pca_feature`: proceed to Stage 5D model improvements.
+## Interpretation guide
+- **`learned_context_embedding`**: target representation from Stage 5B.
+- **`raw_feature`**: oracle-like direct handcrafted feature baseline.
+- **`pca_feature`**: lower-dimensional handcrafted baseline.
+- **`context_l2`**: raw flattened trajectory/context baseline.
+- **`random`**: sanity-floor baseline.
+
+Interpretation:
+- `learned_context_embedding` > `random` and > `context_l2`: embedding captures meaningful structure.
+- Close to `raw_feature`/`pca_feature`: representation is competitive with handcrafted semantics.
+- Worse than `raw_feature`/`pca_feature`: embedding training/objective likely needs tuning.
