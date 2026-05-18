@@ -195,22 +195,35 @@ def _aggregate_from_shards(shard_paths: list[Path], validate_only: bool) -> tupl
             lane_success_count += int(np.asarray(meta['lane_assignment_success']).astype(np.int64).sum())
 
         debug_csv = shard / 'lane_assignment_debug.csv'
+        shard_assigned_from_debug = False
         if debug_csv.exists():
             with debug_csv.open('r', encoding='utf-8', newline='') as f:
                 reader = csv.DictReader(f)
                 rows = list(reader)
             if len(rows) != n * len(SLOTS):
                 warnings.append(f'{shard}: lane_assignment_debug.csv 行数异常，期望 {n * len(SLOTS)}，实际 {len(rows)}')
-            for r in rows:
-                slot = r.get('slot', '')
-                method = r.get('assignment_method', '')
-                if slot not in SLOTS:
-                    continue
-                if method not in ALLOWED_METHODS:
-                    method = 'sanitize_failed'
-                assign_method[slot][method] += 1
+            has_assignment_method_col = ('assignment_method' in (reader.fieldnames or []))
+            if has_assignment_method_col:
+                shard_assigned_from_debug = True
+                for r in rows:
+                    slot = r.get('slot', '')
+                    method = r.get('assignment_method', '')
+                    if slot not in SLOTS:
+                        continue
+                    if method not in ALLOWED_METHODS:
+                        method = 'sanitize_failed'
+                    assign_method[slot][method] += 1
+            else:
+                warnings.append(f'{shard}: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window')
         else:
-            warnings.append(f'{shard}: 缺少 lane_assignment_debug.csv，assignment_method 统计将不完整')
+            warnings.append(f'{shard}: 缺少 lane_assignment_debug.csv，回退到 context_mask_window')
+
+        if not shard_assigned_from_debug:
+            for i, slot in enumerate(SLOTS):
+                lane_aware = int(occ[:, i].sum())
+                empty = int(n - lane_aware)
+                assign_method[slot]['lane_aware'] += lane_aware
+                assign_method[slot]['empty'] += empty
 
         check_files = ['ego_seq.npy', 'neighbor_seq.npy', 'context_traj.npy', 'interaction_feat_style_raw.npy']
         if (shard / 'interaction_feat_style.npy').exists():
@@ -254,6 +267,19 @@ def _aggregate_from_shards(shard_paths: list[Path], validate_only: bool) -> tupl
     summary['fallback_assignment_rate'] = float(fallback_used_count) / max(1, n_windows_kept)
 
     assignment_counts = {slot: {m: int(assign_method[slot].get(m, 0)) for m in ALLOWED_METHODS} for slot in SLOTS}
+
+    if summary['fallback_assignment_rate'] == 0.0:
+        for slot in SLOTS:
+            slot_sum = sum(assignment_counts[slot].values())
+            if slot_sum != n_windows_kept:
+                lane_aware = int(summary['slot_occupied_window_count_by_slot'][slot])
+                empty = int(summary['empty_slot_count_by_slot'][slot])
+                assignment_counts[slot] = {
+                    'lane_aware': lane_aware,
+                    'geometric_fallback': 0,
+                    'empty': empty,
+                    'sanitize_failed': 0,
+                }
     summary['assignment_method_counts_by_slot'] = assignment_counts
     for slot in SLOTS:
         slot_sum = sum(assignment_counts[slot].values())
