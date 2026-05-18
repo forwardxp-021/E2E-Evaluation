@@ -63,8 +63,20 @@ def run(args):
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     dev = torch.device(args.device if (args.device != 'cuda' or torch.cuda.is_available()) else 'cpu')
 
-    train_ds = ContextShardDataset(args.shard_manifest, split='train', max_samples=args.max_train_samples)
-    val_ds = ContextShardDataset(args.shard_manifest, split='val', max_samples=args.max_val_samples)
+    train_ds = ContextShardDataset(
+        args.shard_manifest,
+        split='train',
+        max_samples=args.max_train_samples,
+        cache_shards=args.cache_shards,
+        mmap_mode="r",
+    )
+    val_ds = ContextShardDataset(
+        args.shard_manifest,
+        split='val',
+        max_samples=args.max_val_samples,
+        cache_shards=args.cache_shards,
+        mmap_mode="r",
+    )
     sample = train_ds[0]
     context_dim = int(sample['context'].shape[-1]); feature_dim = int(sample['feat'].shape[-1])
 
@@ -72,8 +84,26 @@ def run(args):
     aux_head = nn.Linear(args.embedding_dim, feature_dim).to(dev) if args.aux_regression else None
     opt = torch.optim.Adam(list(model.parameters()) + ([] if aux_head is None else list(aux_head.parameters())), lr=args.lr)
 
-    train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True)
-    val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False)
+    train_loader_kwargs = {
+        "batch_size": args.batch_size,
+        "shuffle": True,
+        "num_workers": args.num_workers,
+        "pin_memory": args.pin_memory,
+    }
+    val_loader_kwargs = {
+        "batch_size": args.batch_size,
+        "shuffle": False,
+        "num_workers": args.num_workers,
+        "pin_memory": args.pin_memory,
+    }
+    if args.num_workers > 0:
+        train_loader_kwargs["prefetch_factor"] = args.prefetch_factor
+        train_loader_kwargs["persistent_workers"] = args.persistent_workers
+        val_loader_kwargs["prefetch_factor"] = args.prefetch_factor
+        val_loader_kwargs["persistent_workers"] = args.persistent_workers
+
+    train_loader = DataLoader(train_ds, **train_loader_kwargs)
+    val_loader = DataLoader(val_ds, **val_loader_kwargs)
 
     best_val, best_epoch = float('inf'), -1
     train_losses, val_losses = [], []
@@ -137,6 +167,12 @@ def run(args):
         'context_dim': context_dim, 'feature_dim': feature_dim, 'embedding_dim': args.embedding_dim,
         'best_val_loss': best_val, 'best_epoch': best_epoch, 'final_train_loss': train_losses[-1], 'final_val_loss': val_losses[-1],
         'device': str(dev), 'warnings': warnings, 'manifest_report': manifest_info,
+        'cache_shards': args.cache_shards,
+        'num_workers': args.num_workers,
+        'pin_memory': args.pin_memory,
+        'prefetch_factor': args.prefetch_factor,
+        'persistent_workers': args.persistent_workers,
+        'mmap_mode_enabled': True,
     }
     (out / 'training_summary.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
 
@@ -163,6 +199,11 @@ if __name__ == '__main__':
     p.add_argument('--aux_targets', default='all')
     p.add_argument('--max_train_samples', type=int, default=None)
     p.add_argument('--max_val_samples', type=int, default=None)
+    p.add_argument('--cache_shards', type=int, default=1)
+    p.add_argument('--num_workers', type=int, default=0)
+    p.add_argument('--pin_memory', action='store_true')
+    p.add_argument('--prefetch_factor', type=int, default=2)
+    p.add_argument('--persistent_workers', action='store_true')
     p.add_argument('--device', default='cuda')
     p.add_argument('--seed', type=int, default=42)
     p.add_argument('--smoke_test_real_data', action='store_true')

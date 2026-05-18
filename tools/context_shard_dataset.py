@@ -84,7 +84,8 @@ class ContextShardDataset(Dataset):
         split: str = "train",
         use_standardized_features: bool = True,
         max_samples: Optional[int] = None,
-        cache_shards: int = 2,
+        cache_shards: int = 1,
+        mmap_mode: Optional[str] = "r",
         strict: bool = True,
     ):
         self.manifest_path = Path(shard_manifest)
@@ -92,6 +93,7 @@ class ContextShardDataset(Dataset):
         self.split = split
         self.use_standardized_features = use_standardized_features
         self.cache_shards = max(1, int(cache_shards))
+        self.mmap_mode = mmap_mode
         self.strict = strict
 
         self.shards = self.manifest.get("shards", self.manifest.get("shard_infos", []))
@@ -126,9 +128,12 @@ class ContextShardDataset(Dataset):
 
         d = self._shard_dir(self.shards[shard_id])
         arrays = {
-            "context": np.load(d / "context_traj.npy"),
-            "context_mask": np.load(d / "context_mask.npy") if (d / "context_mask.npy").exists() else None,
-            "feat": np.load(d / ("interaction_feat_style.npy" if self.use_standardized_features else "interaction_feat_style_raw.npy")),
+            "context": np.load(d / "context_traj.npy", mmap_mode=self.mmap_mode),
+            "context_mask": np.load(d / "context_mask.npy", mmap_mode=self.mmap_mode) if (d / "context_mask.npy").exists() else None,
+            "feat": np.load(
+                d / ("interaction_feat_style.npy" if self.use_standardized_features else "interaction_feat_style_raw.npy"),
+                mmap_mode=self.mmap_mode,
+            ),
         }
         self._cache[shard_id] = arrays
         if len(self._cache) > self.cache_shards:

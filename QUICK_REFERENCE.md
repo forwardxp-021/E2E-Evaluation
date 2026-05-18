@@ -60,6 +60,14 @@ python evaluate_embedding.py \
 
 ## 关键参数
 
+### Stage 5B 训练性能/内存排查（GPU 利用率低）
+- GPU 利用率低通常不是模型太慢，而是 **DataLoader / CPU / 内存瓶颈**。
+- 优先使用 `mmap` 方式加载 shard（避免一次性将大 `.npy` 完整读入 RAM）。
+- 建议先从 `batch_size=64` 开始稳定跑通，再逐步调大。
+- 可先尝试：`--num_workers 2 --pin_memory` 提升主机到 GPU 的喂数效率。
+- 如果系统 RAM 已经很高，优先保持 `--num_workers 0 --cache_shards 1`，降低并发加载压力。
+- 训练日志出现 `Killed` 通常是 **系统 RAM OOM**，而不是 CUDA OOM。
+
 ### build_dataset.py
 | 参数 | 默认值 | 说明 |
 |---|---|---|
