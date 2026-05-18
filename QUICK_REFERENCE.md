@@ -1851,3 +1851,49 @@ python tools/export_context_row_embeddings.py \
 - `embedding_manifest.json` 存在。
 - exported embedding 总行数 = 164871。
 - `nonfinite_embedding_detected = 0`。
+
+## Stage 5D 组加权训练（context GRU）
+
+### 1. 命令
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --batch_size 256 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --metric_loss_type huber \
+  --overwrite
+
+python tools/export_context_row_embeddings.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1/best_model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings \
+  --split all \
+  --merge_embeddings
+
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```
+
+### 2. 期望行为
+- 训练脚本会读取既有 Stage 5 shard 数据与 `feature_schema.json`，按特征名解析分组索引；不会重建 Stage 5A 数据集。
+- 训练输出目录会保存模型、最优模型、训练配置、分组配置、日志和 summary。
+- 导出脚本会生成与 shard 行顺序对齐的 embedding 文件与 manifest。
+- 评估脚本使用现有 Stage 5C evaluator，对新 embedding 进行 strict-schema paper-grade 评估。
+
+### 3. 通过标准
+- 训练命令可正常启动并产生 `best_model.pt` 与 `training_summary.json`。
+- `feature_group_config.json` 中可看到按 feature name 解析出的 group indices。
+- 导出命令产出 `embedding_manifest.json`，且 `nonfinite_embedding_detected=0`。
+- 评估命令产出 `evaluation_summary.json` 与 `category_correlation_summary.csv`，可用于验证 following 是否提升且 lateral 优势是否保持。
