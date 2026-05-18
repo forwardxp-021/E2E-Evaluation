@@ -23,6 +23,11 @@ def inspect_shard_manifest(manifest_path):
     manifest_path = Path(manifest_path)
     obj = json.loads(manifest_path.read_text(encoding="utf-8"))
     shard_entries = obj.get("shards", obj.get("shard_infos", []))
+    
+    # Handle shard_paths format (path list)
+    if not shard_entries and "shard_paths" in obj:
+        shard_entries = [{"shard_path": sp} for sp in obj["shard_paths"]]
+    
     if not shard_entries:
         raise RuntimeError(f"No shard entries in manifest: {manifest_path}")
     first_dir = manifest_path.parent / shard_entries[0]["shard_path"]
@@ -31,7 +36,7 @@ def inspect_shard_manifest(manifest_path):
     for name in ["context_traj.npy", "context_mask.npy", "context_mask_window.npy", "interaction_feat_style.npy", "split.npy", "meta.npy"]:
         p = first_dir / name
         if p.exists():
-            first_shapes[name] = list(np.load(p, mmap_mode="r").shape)
+            first_shapes[name] = list(np.load(p, allow_pickle=True).shape)
 
     context_dim = first_shapes.get("context_traj.npy", [None, None, None])[-1]
     feature_dim = first_shapes.get("interaction_feat_style.npy", [None, None])[-1]
@@ -66,13 +71,18 @@ class ContextShardDataset(Dataset):
         self.strict = strict
 
         self.shards = self.manifest.get("shards", self.manifest.get("shard_infos", []))
+        
+        # Handle shard_paths format (path list)
+        if not self.shards and "shard_paths" in self.manifest:
+            self.shards = [{"shard_path": sp} for sp in self.manifest["shard_paths"]]
+        
         if not self.shards:
             raise RuntimeError(f"No shards found in {self.manifest_path}")
 
         self.global_index: List[Dict[str, int]] = []
         for shard_id, shard_info in enumerate(self.shards):
             split_path = self._shard_dir(shard_info) / "split.npy"
-            split_arr = _split_to_str(np.load(split_path, mmap_mode="r"))
+            split_arr = _split_to_str(np.load(split_path, allow_pickle=True))
             for local_idx, s in enumerate(split_arr):
                 if self.split == "all" or s == self.split:
                     self.global_index.append({"global_index": len(self.global_index), "shard_id": shard_id, "local_index": int(local_idx)})
@@ -92,9 +102,9 @@ class ContextShardDataset(Dataset):
 
         d = self._shard_dir(self.shards[shard_id])
         arrays = {
-            "context": np.load(d / "context_traj.npy", mmap_mode="r"),
-            "context_mask": np.load(d / "context_mask.npy", mmap_mode="r") if (d / "context_mask.npy").exists() else None,
-            "feat": np.load(d / ("interaction_feat_style.npy" if self.use_standardized_features else "interaction_feat_style_raw.npy"), mmap_mode="r"),
+            "context": np.load(d / "context_traj.npy"),
+            "context_mask": np.load(d / "context_mask.npy") if (d / "context_mask.npy").exists() else None,
+            "feat": np.load(d / ("interaction_feat_style.npy" if self.use_standardized_features else "interaction_feat_style_raw.npy")),
         }
         self._cache[shard_id] = arrays
         if len(self._cache) > self.cache_shards:
