@@ -1735,3 +1735,34 @@ python tools/merge_waymo_5neighbor_context_shards.py \
 - `good_lane_context_rate` 仍为 1；
 - global standardization 的 `train_count > 0`；
 - 默认不创建 monolithic 大 `.npy` 文件。
+
+# Stage 5A：重建 sharded summary
+
+## 1. 命令
+
+```bash
+python tools/rebuild_waymo_5neighbor_context_summary.py \
+  --data_root outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+  --overwrite
+
+python tools/rebuild_waymo_5neighbor_context_summary.py \
+  --data_root outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+  --validate_only
+```
+
+## 2. 期望行为
+
+- 从 shards 反扫 split/meta/context_mask/debug csv。
+- 重建 build_summary.json。
+- 修复 split_counts 为空的问题。
+- 不拼接大型 npy。
+- 不重新生成数据。
+
+## 3. 通过标准
+
+- split_counts 不为空。
+- sum(split_counts) == n_windows_kept。
+- assignment_method_counts_by_slot 每个 slot 合计等于 n_windows_kept。
+- nonfinite_output_detected = 0。
+- build_report.md 显示 summary_rebuilt_from_shards=true。
+- 不修改 Stage 4。
