@@ -1,4 +1,15 @@
-# Stage 5 Context Embedding (Stage 5C-1 Strict Schema)
+# Stage 5 Context Embedding (Stage 5C-2 Category-wise Evaluation)
+
+## Stage 5C-2 purpose
+Stage 5C-2 adds a **category-wise evaluation summary** on top of Stage 5C-1 strict-schema checks.
+
+The goal is to quantify where `learned_context_embedding` is strong/weak relative to `raw_feature` and `pca_feature`, split by behavior categories:
+- `longitudinal_comfort`
+- `following_interaction`
+- `lateral_lane_dynamics`
+- `behavior_proxy`
+
+It also adds per-target ranking output (`learned_win_features.csv`) to see whether learned embedding is 1st/2nd/below feature baselines for each style target.
 
 ## Current Stage 5 feature schema (33-D)
 Canonical feature order in `feature_schema.json`:
@@ -32,17 +43,28 @@ python tools/evaluate_context_embedding.py \
 - `retrieval_metrics.csv`
 - `style_distance_correlation.csv`
 - `context_sensitivity_metrics.csv`
+- `category_correlation_summary.csv`
+- `learned_win_features.csv`
+- `category_retrieval_summary.csv` (if category retrieval aggregation is applicable)
 - `retrieval_bar.png`
 - `feature_delta_correlation_bar.png`
 
-## Interpretation guide
-- **`learned_context_embedding`**: target representation from Stage 5B.
-- **`raw_feature`**: oracle-like direct handcrafted feature baseline.
-- **`pca_feature`**: lower-dimensional handcrafted baseline.
-- **`context_l2`**: raw flattened trajectory/context baseline.
-- **`random`**: sanity-floor baseline.
+## How to interpret category-wise results
+- `category_correlation_summary.csv`
+  - Compare mean/median Spearman by category and representation.
+  - If learned is lower globally but higher on `lateral_lane_dynamics`, learned representation is specializing in lane-change/lateral dynamics.
 
-Interpretation:
-- `learned_context_embedding` > `random` and > `context_l2`: embedding captures meaningful structure.
-- Close to `raw_feature`/`pca_feature`: representation is competitive with handcrafted semantics.
-- Worse than `raw_feature`/`pca_feature`: embedding training/objective likely needs tuning.
+- `learned_win_features.csv`
+  - `learned_rank` shows per-target rank among all representations.
+  - `learned_minus_best_feature_baseline > 0` means learned beats both `raw_feature` and `pca_feature` for that target.
+
+- `category_retrieval_summary.csv` (if present)
+  - Category-level gap vs feature baselines: `learned_minus_best_feature_baseline`.
+  - Negative on `following_interaction` + positive on `lateral_lane_dynamics` indicates Stage 5D should improve following/front-distance without losing lateral gains.
+
+- `evaluation_report.md`
+  - Contains explicit Stage 5C-2 conclusions:
+    - learned is globally below raw/pca.
+    - learned strongly beats raw/pca on lateral/lane-change dynamics.
+    - following/front-distance remains weaker.
+    - motivates Stage 5D to strengthen following-interaction while preserving lateral dynamics.

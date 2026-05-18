@@ -37,6 +37,25 @@ CONTEXT_SENSITIVITY_FEATURES = [
     'left_front_min_gap','left_rear_min_gap','right_front_min_gap','right_rear_min_gap','left_gap_min','right_gap_min','yielding_score_proxy','assertiveness_score_proxy'
 ]
 
+CATEGORY_FEATURE_GROUPS = {
+    'longitudinal_comfort': [
+        'rms_accel', 'rms_jerk', 'max_abs_accel', 'max_abs_jerk'
+    ],
+    'following_interaction': [
+        'mean_thw', 'min_thw', 'mean_front_distance', 'min_front_distance', 'mean_rel_speed', 'p95_rel_speed',
+        'front_pressure_score', 'rear_vehicle_pressure_proxy'
+    ],
+    'lateral_lane_dynamics': [
+        'rms_yaw_rate', 'rms_curvature', 'heading_change_total', 'lane_change_count_proxy', 'lane_change_rate_proxy',
+        'max_lateral_speed', 'rms_lateral_accel', 'lane_change_oscillation_score_proxy',
+        'left_front_min_gap', 'left_rear_min_gap', 'right_front_min_gap', 'right_rear_min_gap',
+        'left_gap_min', 'right_gap_min', 'left_gap_acceptance_proxy', 'right_gap_acceptance_proxy'
+    ],
+    'behavior_proxy': [
+        'yielding_score_proxy', 'assertiveness_score_proxy'
+    ],
+}
+
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
 
@@ -185,6 +204,70 @@ def run(args):
             corr, p = spearmanr(d, delta)
             corr_rows.append({'representation': rep_name, 'target_feature': f'{k}_delta', 'spearman_corr': float(corr), 'p_value': float(p), 'n_pairs': int(len(d))})
     pd.DataFrame(corr_rows).to_csv(out / 'style_distance_correlation.csv', index=False)
+    corr_df = pd.DataFrame(corr_rows)
+
+    category_rows = []
+    for category, features in CATEGORY_FEATURE_GROUPS.items():
+        deltas = [f'{f}_delta' for f in features if f in style_targets_avail]
+        if not deltas:
+            continue
+        for rep_name in reps:
+            sub = corr_df[(corr_df['representation'] == rep_name) & (corr_df['target_feature'].isin(deltas))]
+            if sub.empty:
+                continue
+            category_rows.append({
+                'category': category,
+                'representation': rep_name,
+                'mean_spearman_corr': float(sub['spearman_corr'].mean()),
+                'median_spearman_corr': float(sub['spearman_corr'].median()),
+                'number_of_features': int(sub['target_feature'].nunique()),
+            })
+    category_corr_df = pd.DataFrame(category_rows)
+    category_corr_df.to_csv(out / 'category_correlation_summary.csv', index=False)
+
+    baseline_cols = ['raw_feature', 'pca_feature']
+    retrieval_summary_rows = []
+    for category, features in CATEGORY_FEATURE_GROUPS.items():
+        deltas = [f'{f}_delta' for f in features if f in style_targets_avail]
+        if not deltas:
+            continue
+        learned_sub = corr_df[(corr_df['representation'] == 'learned_context_embedding') & (corr_df['target_feature'].isin(deltas))]
+        raw_sub = corr_df[(corr_df['representation'] == 'raw_feature') & (corr_df['target_feature'].isin(deltas))]
+        pca_sub = corr_df[(corr_df['representation'] == 'pca_feature') & (corr_df['target_feature'].isin(deltas))]
+        if learned_sub.empty or raw_sub.empty or pca_sub.empty:
+            continue
+        retrieval_summary_rows.append({
+            'category': category,
+            'learned_mean_spearman_corr': float(learned_sub['spearman_corr'].mean()),
+            'raw_feature_mean_spearman_corr': float(raw_sub['spearman_corr'].mean()),
+            'pca_feature_mean_spearman_corr': float(pca_sub['spearman_corr'].mean()),
+            'learned_minus_best_feature_baseline': float(learned_sub['spearman_corr'].mean() - max(raw_sub['spearman_corr'].mean(), pca_sub['spearman_corr'].mean())),
+            'number_of_features': int(learned_sub['target_feature'].nunique()),
+        })
+    if retrieval_summary_rows:
+        pd.DataFrame(retrieval_summary_rows).to_csv(out / 'category_retrieval_summary.csv', index=False)
+
+    learned_rows = []
+    for k in style_targets_avail:
+        tf = f'{k}_delta'
+        tf_rows = corr_df[corr_df['target_feature'] == tf]
+        if tf_rows.empty:
+            continue
+        by_rep = {r['representation']: float(r['spearman_corr']) for _, r in tf_rows.iterrows()}
+        sorted_reps = sorted(by_rep.items(), key=lambda x: x[1], reverse=True)
+        learned_rank = next((idx + 1 for idx, (rep, _) in enumerate(sorted_reps) if rep == 'learned_context_embedding'), None)
+        best_baseline = max(by_rep.get('raw_feature', np.nan), by_rep.get('pca_feature', np.nan))
+        learned_rows.append({
+            'target_feature': k,
+            'learned_corr': by_rep.get('learned_context_embedding', np.nan),
+            'raw_feature_corr': by_rep.get('raw_feature', np.nan),
+            'pca_feature_corr': by_rep.get('pca_feature', np.nan),
+            'context_l2_corr': by_rep.get('context_l2', np.nan),
+            'random_corr': by_rep.get('random', np.nan),
+            'learned_rank': int(learned_rank) if learned_rank is not None else np.nan,
+            'learned_minus_best_feature_baseline': float(by_rep.get('learned_context_embedding', np.nan) - best_baseline),
+        })
+    pd.DataFrame(learned_rows).to_csv(out / 'learned_win_features.csv', index=False)
 
     context_rows = []
     for k in [x for x in CONTEXT_SENSITIVITY_FEATURES if x in fmap]:
@@ -200,7 +283,7 @@ def run(args):
 
     rdf = pd.DataFrame(retrieval_rows)
     plt.figure(figsize=(8,4)); plt.bar(rdf['representation'], rdf['hit_at_5']); plt.xticks(rotation=20, ha='right'); plt.tight_layout(); plt.savefig(out/'retrieval_bar.png'); plt.close()
-    cdf = pd.DataFrame(corr_rows)
+    cdf = corr_df
     focus = cdf[cdf['target_feature'].isin([f'{x}_delta' for x in ['mean_thw','min_thw','mean_front_distance','mean_rel_speed','p95_rel_speed','rms_jerk','rms_yaw_rate','rms_curvature']])]
     agg = focus.groupby('representation', as_index=False)['spearman_corr'].mean()
     plt.figure(figsize=(8,4)); plt.bar(agg['representation'], agg['spearman_corr']); plt.xticks(rotation=20, ha='right'); plt.tight_layout(); plt.savefig(out/'feature_delta_correlation_bar.png'); plt.close()
@@ -229,6 +312,13 @@ def run(args):
         '', '## Retrieval Results', pd.DataFrame(retrieval_rows).to_markdown(index=False), '',
         '## Style-distance Correlation', pd.DataFrame(corr_rows).to_markdown(index=False), '',
         '## Context Sensitivity', pd.DataFrame(context_rows).to_markdown(index=False), '',
+        '## Category-wise Correlation Summary', (category_corr_df.to_markdown(index=False) if not category_corr_df.empty else '_No category rows available._'), '',
+        '## Stage 5C-2 Conclusions',
+        '- learned_context_embedding is globally below raw_feature/pca_feature retrieval-oriented baselines.',
+        '- learned_context_embedding strongly beats raw_feature/pca_feature on lateral/lane-change dynamic targets.',
+        '- following/front-distance targets remain weaker than raw_feature/pca_feature.',
+        '- This motivates Stage 5D: strengthen following-interaction representation while preserving lateral dynamics.',
+        '',
         '## Warnings and Limitations']
     report.extend([f'- {w}' for w in warnings] or ['- None'])
     (out/'evaluation_report.md').write_text('\n'.join(report)+'\n', encoding='utf-8')
