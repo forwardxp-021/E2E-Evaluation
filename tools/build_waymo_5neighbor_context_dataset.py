@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 import numpy as np
 from tqdm import tqdm
-from tools.interaction_context_features import aggregate_interaction_features
+from tools.interaction_context_features import aggregate_interaction_features, get_feature_schema, write_feature_schema_json
 from tools.lane_aware_assignment import SLOT_NAMES, assign_neighbors_lane_aware
 from tools.waymo_lane_utils import extract_lane_polylines, find_best_lane_for_agent
 from tools.trajectory_context_utils import sanitize_track_window, localize, LANE_DEBUG_FIELDS, normalize_debug_row
@@ -37,6 +37,7 @@ def parse_args():
     p.add_argument('--output_shard_size', type=int, default=5000); p.add_argument('--merge_shards_at_end', action='store_true')
     p.add_argument('--file_start', type=int, default=0); p.add_argument('--file_end', type=int, default=None); p.add_argument('--resume', action='store_true')
     p.add_argument('--progress_every', type=int, default=50)
+    p.add_argument('--write_schema_only', action='store_true')
     return p.parse_args()
 
 def split_of_sid(sid):
@@ -111,6 +112,11 @@ def flush_shard(batch, shard_idx, out_dir):
 
 def main():
     a=parse_args(); out=Path(a.out_dir); streaming = (not a.smoke_test) if a.streaming is None else a.streaming
+    if a.write_schema_only:
+      out.mkdir(parents=True, exist_ok=True)
+      write_feature_schema_json(out / 'feature_schema.json')
+      print(f'Wrote feature schema: {out / "feature_schema.json"}')
+      return
     if out.exists() and a.overwrite and not a.resume: shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True); (out/'shards').mkdir(exist_ok=True)
     cnt=defaultdict(int); timing=defaultdict(float); shard_idx=0; inter_names=None
@@ -183,6 +189,12 @@ def main():
     for sp in shard_paths:
       sp=Path(sp); raw=np.load(sp/'interaction_feat_style_raw.npy'); std=((raw-mu)/np.where(sd<1e-6,1e-6,sd)).astype(np.float32); np.save(sp/'interaction_feat_style.npy',std)
     (out/'interaction_feature_standardization.json').write_text(json.dumps({'mean':mu.tolist(),'std':sd.tolist(),'feature_names':inter_names or [],'train_count':int(agg['count']),'clip_value':None},indent=2,ensure_ascii=False),encoding='utf-8')
+    schema = get_feature_schema()
+    if inter_names and [f['name'] for f in schema['features']] != list(inter_names):
+      raise RuntimeError('Canonical feature schema does not match runtime feature order.')
+    if len(schema['features']) != len(inter_names or schema['features']):
+      raise RuntimeError('Feature schema length mismatch.')
+    write_feature_schema_json(out / 'feature_schema.json')
     expected_kept=int(cnt['kept'])
     mismatch_slots={}
     for sn in SLOT_NAMES:

@@ -79,6 +79,18 @@ def _feature_mapping(feature_names: List[str], dim: int) -> Tuple[Dict[str, int]
     return fmap, warnings
 
 
+def _load_feature_schema(path: Path) -> dict:
+    obj = _load_json(path)
+    feats = obj.get('features', [])
+    if not isinstance(feats, list):
+        raise RuntimeError(f'Invalid feature schema at {path}: "features" must be a list.')
+    ordered = sorted(feats, key=lambda x: int(x['index']))
+    dim = int(obj.get('feature_dim', len(ordered)))
+    if len(ordered) != dim:
+        raise RuntimeError(f'Invalid feature schema at {path}: feature_dim={dim} but features length={len(ordered)}.')
+    return {'feature_dim': dim, 'features': ordered, 'names': [str(f['name']) for f in ordered]}
+
+
 def run(args):
     out = Path(args.out_dir)
     if out.exists() and any(out.iterdir()) and not args.overwrite:
@@ -98,7 +110,20 @@ def run(args):
         warnings.append(f'Embedding shard count ({len(emb_paths)}) != source shard count ({len(shards)}). Using min count.')
     n_shards = min(len(emb_paths), len(shards))
 
-    feature_names = _find_feature_names(src_manifest, src_manifest_path.parent)
+    strict_feature_schema = args.strict_feature_schema
+    dataset_root = src_manifest_path.parent
+    schema_path = Path(args.feature_schema) if args.feature_schema else (dataset_root / 'feature_schema.json')
+    feature_schema_loaded = False
+    feature_names = []
+    if schema_path.exists():
+        fs = _load_feature_schema(schema_path)
+        feature_names = fs['names']
+        feature_schema_loaded = True
+    elif strict_feature_schema:
+        raise RuntimeError(f'Strict feature schema enabled but schema file not found: {schema_path}')
+    else:
+        feature_names = _find_feature_names(src_manifest, dataset_root)
+        warnings.append(f'Feature schema file missing; relaxed mode fallback using manifest/build_summary names: {schema_path}')
 
     sampled = []
     total_eval_rows = 0
@@ -157,8 +182,16 @@ def run(args):
     X_feat = np.nan_to_num(X_feat, nan=0.0, posinf=0.0, neginf=0.0)
     X_ctx = np.nan_to_num(X_ctx, nan=0.0, posinf=0.0, neginf=0.0)
 
+    if feature_schema_loaded and fs['feature_dim'] != X_feat.shape[1]:
+        raise RuntimeError(f'Feature dimension mismatch: schema={fs["feature_dim"]}, loaded feature array={X_feat.shape[1]}.')
     fmap, map_warn = _feature_mapping(feature_names, X_feat.shape[1])
-    warnings.extend(map_warn)
+    required = ['mean_thw', 'min_thw', 'mean_front_distance', 'min_front_distance', 'mean_rel_speed', 'std_rel_speed']
+    missing_required = [k for k in required if k not in fmap]
+    if strict_feature_schema and missing_required:
+        raise RuntimeError(f'Strict feature schema enabled but required features are missing: {missing_required}')
+    if strict_feature_schema and map_warn:
+        raise RuntimeError(f'Strict feature schema enabled; fallback feature index resolution is forbidden. Details: {map_warn}')
+    warnings.extend(map_warn if not strict_feature_schema else [])
 
     print(f'[INFO] Running PCA on {X_feat.shape[0]} samples...')
     pca = PCA(n_components=min(16, X_feat.shape[1], max(2, X_feat.shape[0] - 1)), random_state=args.seed)
@@ -225,17 +258,16 @@ def run(args):
     pd.DataFrame(corr_rows).to_csv(out / 'style_distance_correlation.csv', index=False)
 
     context_rows = []
-    for k in ['mean_front_distance', 'min_front_distance', 'mean_thw', 'min_thw', 'mean_rel_speed']:
+    for k in ['mean_thw', 'min_thw', 'mean_front_distance', 'min_front_distance', 'mean_rel_speed', 'std_rel_speed']:
         if k not in fmap:
             continue
-        v = X_feat[:, fmap[k]]
-        med = np.median(v)
-        y = v > med
+        v = X_feat[:, fmap[k]].astype(np.float32)
         for rep_name, X in reps.items():
             nn = NearestNeighbors(n_neighbors=min(6, X.shape[0]), metric='euclidean').fit(X)
             nbr = nn.kneighbors(return_distance=False)[:, 1:]
-            agree = np.mean(y[:, None] == y[nbr]) if nbr.size else np.nan
-            context_rows.append({'representation': rep_name, 'context_variable': k, 'agreement_or_correlation_metric': float(agree)})
+            nbr_vals = v[nbr]
+            abs_diff = np.mean(np.abs(v[:, None] - nbr_vals)) if nbr.size else np.nan
+            context_rows.append({'representation': rep_name, 'context_variable': k, 'metric_name': 'mean_abs_neighbor_delta', 'metric_value': float(abs_diff)})
     pd.DataFrame(context_rows).to_csv(out / 'context_sensitivity_metrics.csv', index=False)
 
     # plots
@@ -264,6 +296,9 @@ def run(args):
     winner = rdf.sort_values('hit_at_5', ascending=False).iloc[0]['representation'] if not rdf.empty else 'n/a'
     summary = {
         'input_paths': {'embedding_manifest': args.embedding_manifest, 'source_shard_manifest': args.source_shard_manifest},
+        'feature_schema_path': str(schema_path),
+        'feature_schema_loaded': bool(feature_schema_loaded),
+        'strict_feature_schema': bool(strict_feature_schema),
         'eval_split': args.eval_split,
         'max_eval_samples': args.max_eval_samples,
         'actual_eval_samples': int(X_emb.shape[0]),
@@ -271,6 +306,8 @@ def run(args):
         'key_winner_summary': f'Best hit@5: {winner}',
         'warnings': warnings,
         'feature_names_used': feature_names,
+        'feature_index_mapping': fmap,
+        'missing_required_features': missing_required,
         'finite_checks': finite,
         'row_alignment_checks': {'aligned': bool(align_ok), 'embedding_shards_used': n_shards, 'total_eval_rows_before_subsample': total_eval_rows},
     }
@@ -281,6 +318,10 @@ def run(args):
         f'- Eval split: **{args.eval_split}**',
         f'- Sample count: **{X_emb.shape[0]}** (from {total_eval_rows} split rows, max={args.max_eval_samples})',
         f'- Representations: {", ".join(reps.keys())}',
+        f'- Feature schema loaded: **{feature_schema_loaded}**',
+        f'- Strict feature schema: **{strict_feature_schema}**',
+        f'- Fallback feature indices used: **{"yes" if any("fallback index" in w for w in warnings) else "no"}**',
+        f'- Paper-grade valid: **{"yes" if feature_schema_loaded and strict_feature_schema and not missing_required else "no (preliminary)"}**',
         '',
         '## Retrieval Results',
         pd.DataFrame(retrieval_rows).to_markdown(index=False),
@@ -305,6 +346,8 @@ if __name__ == '__main__':
     p.add_argument('--embedding_manifest', required=True)
     p.add_argument('--source_shard_manifest', required=True)
     p.add_argument('--out_dir', required=True)
+    p.add_argument('--feature_schema', default=None)
+    p.add_argument('--strict_feature_schema', action=argparse.BooleanOptionalAction, default=True)
     p.add_argument('--max_eval_samples', type=int, default=20000)
     p.add_argument('--eval_split', default='test', choices=['train', 'val', 'test', 'all'])
     p.add_argument('--seed', type=int, default=42)
