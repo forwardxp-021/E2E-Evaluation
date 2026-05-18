@@ -1766,3 +1766,79 @@ python tools/rebuild_waymo_5neighbor_context_summary.py \
 - nonfinite_output_detected = 0。
 - build_report.md 显示 summary_rebuilt_from_shards=true。
 - 不修改 Stage 4。
+
+# Stage 5B：Flatten Context GRU 训练
+
+## 1. 命令
+
+### 1.1 Preflight（真实数据 smoke）
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_smoke \
+  --batch_size 64 \
+  --epochs 1 \
+  --max_train_samples 2048 \
+  --max_val_samples 512 \
+  --device cuda \
+  --smoke_test_real_data \
+  --overwrite
+```
+
+### 1.2 全量训练
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 256 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_alignment \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type huber \
+  --metric_targets all \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+如遇 CUDA OOM：将 `--batch_size` 降到 `128`。
+
+### 1.3 导出 embedding（按 shard）
+```bash
+python tools/export_context_row_embeddings.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1/model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings \
+  --batch_size 512 \
+  --device cuda \
+  --split all \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 从 `shard_manifest.json` 读取 Stage 5A 数据。
+- 不拼接大型 npy。
+- `context_traj.npy` 作为输入。
+- `interaction_feat_style.npy` 作为弱监督。
+- 训练 Flatten Context GRU。
+- 导出 row-aligned sharded embedding。
+- 不修改 Stage 4 / Stage 5A 数据构建逻辑。
+
+## 3. 通过标准
+
+- preflight 1 epoch 能跑通。
+- train_loss / val_loss finite。
+- `model.pt` 存在。
+- `training_summary.json` 存在。
+- `context_dim` 和 `feature_dim` 正确记录。
+- full training 不 OOM。
+- `embedding_manifest.json` 存在。
+- exported embedding 总行数 = 164871。
+- `nonfinite_embedding_detected = 0`。
