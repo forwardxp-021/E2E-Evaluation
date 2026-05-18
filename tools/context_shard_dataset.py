@@ -19,6 +19,20 @@ def _split_to_str(split_arr: np.ndarray) -> np.ndarray:
     return np.array([ID_TO_SPLIT.get(int(x), str(int(x))) for x in split_arr], dtype=object)
 
 
+def _scan_split_counts(manifest_path: Path, shard_entries):
+    counts = {"train": 0, "val": 0, "test": 0}
+    for shard_info in shard_entries:
+        split_path = manifest_path.parent / shard_info["shard_path"] / "split.npy"
+        split_arr = _split_to_str(np.load(split_path, allow_pickle=True))
+        for k, v in zip(*np.unique(split_arr, return_counts=True)):
+            key = str(k)
+            if key in counts:
+                counts[key] += int(v)
+            else:
+                counts[key] = counts.get(key, 0) + int(v)
+    return counts
+
+
 def inspect_shard_manifest(manifest_path):
     manifest_path = Path(manifest_path)
     obj = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -40,8 +54,18 @@ def inspect_shard_manifest(manifest_path):
 
     context_dim = first_shapes.get("context_traj.npy", [None, None, None])[-1]
     feature_dim = first_shapes.get("interaction_feat_style.npy", [None, None])[-1]
-    split_counts = obj.get("split_counts", {})
-    total_rows = int(obj.get("n_windows_kept", sum(int(x.get("n_rows", 0)) for x in shard_entries)))
+    split_counts = obj.get("split_counts")
+    if not split_counts:
+        build_summary_path = manifest_path.parent / "build_summary.json"
+        if build_summary_path.exists():
+            build_summary = json.loads(build_summary_path.read_text(encoding="utf-8"))
+            split_counts = build_summary.get("split_counts")
+    if not split_counts:
+        split_counts = _scan_split_counts(manifest_path, shard_entries)
+
+    total_rows = int(
+        obj.get("total_windows", obj.get("n_windows_kept", sum(int(x.get("n_rows", 0)) for x in shard_entries)))
+    )
     report = {
         "total_shards": len(shard_entries),
         "total_rows": total_rows,

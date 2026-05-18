@@ -118,7 +118,16 @@ def run(args):
         for i,(a,b) in enumerate(zip(train_losses,val_losses),1): w.writerow([i,a,b])
     for vals, name in [(train_losses,'loss_curve.png'), (val_losses,'val_loss_curve.png')]:
         if plt is not None:
-            plt.figure(); plt.plot(range(1,len(vals)+1), vals); plt.xlabel('epoch'); plt.ylabel('loss'); plt.tight_layout(); plt.savefig(out / name); plt.close()
+            xs = list(range(1, len(vals) + 1))
+            plt.figure()
+            plt.plot(xs, vals, marker='o')
+            if len(xs) == 1:
+                plt.xlim(xs[0] - 0.5, xs[0] + 0.5)
+            plt.xlabel('epoch')
+            plt.ylabel('loss')
+            plt.tight_layout()
+            plt.savefig(out / name)
+            plt.close()
 
     manifest_info = inspect_shard_manifest(args.shard_manifest)
     (out / 'feature_stats_used.json').write_text(json.dumps({'use_standardized_features': True, 'feature_dim': feature_dim}, indent=2), encoding='utf-8')
