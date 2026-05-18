@@ -157,7 +157,7 @@ def _aggregate_from_shards(shard_paths: list[Path], validate_only: bool) -> tupl
         n = int(split.shape[0])
 
         def _rows(fname: str) -> int:
-            return int(np.load(shard / fname, mmap_mode='r').shape[0])
+            return int(np.load(shard / fname, allow_pickle=True).shape[0])
 
         for fname in ['meta.npy', 'ego_seq.npy', 'neighbor_seq.npy', 'context_traj.npy', 'context_mask_window.npy', 'interaction_feat_style_raw.npy']:
             rn = _rows(fname)
