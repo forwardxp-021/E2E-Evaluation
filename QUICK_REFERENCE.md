@@ -1852,7 +1852,46 @@ python tools/export_context_row_embeddings.py \
 - exported embedding 总行数 = 164871。
 - `nonfinite_embedding_detected = 0`。
 
-## Stage 5D 组加权训练（context GRU）
+# Exact Stage 5C evaluator command
+```bash
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```
+
+## Expected outputs
+Training output dir:
+- `model.pt`
+- `best_model.pt`
+- `training_config.json`
+- `feature_group_config.json`
+- `train_log.csv`
+- `training_summary.json`
+
+Embedding output dir:
+- `embedding_manifest.json`
+- `embeddings/` (shard-aligned outputs)
+- optional merged `embeddings.npy`
+
+Evaluation output dir:
+- `evaluation_summary.json`
+- `evaluation_report.md`
+- `category_correlation_summary.csv`
+- retrieval/correlation plots and CSVs
+
+## Success criteria
+- learned still beats `random/context_l2`.
+- following_interaction mean correlation improves vs Stage 5B baseline.
+- lateral_lane_dynamics advantage is preserved.
+- global retrieval improves, or at least does not degrade significantly.
+
+# Stage 5D 组加权训练（context GRU）
 
 ### 1. 命令
 ```bash
@@ -1862,10 +1901,26 @@ python tools/train_context_behavior_embedding.py \
   --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1 \
   --embedding_dim 64 \
   --hidden_dim 128 \
-  --batch_size 256 \
+  --num_layers 1 \
+  --batch_size 64 \
   --epochs 20 \
   --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
   --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.5 \
+  --aux_lateral_dynamics_weight 1.0 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 2.0 \
+  --metric_lateral_dynamics_weight 1.0 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
   --overwrite
 
 python tools/export_context_row_embeddings.py \
