@@ -416,3 +416,454 @@ Stage 5 预计新增输出文件：
 静止前车不会被自动丢弃：只要同车道且在前方可作为有效 front，并在诊断中标记为 `neighbor_is_static`。
 
 路口场景说明：Waymo 在路口常有地图，但相邻车道拓扑可能存在歧义。Stage 5 清洁训练建议优先 `lane_context_quality=good`；无地图或 ego lane 缺失可在 clean 模式下丢弃。
+
+## Stage 5A-V4 / Full51 Lane-aware 5-neighbor Context Dataset
+
+Stage 5A 已从早期 prototype/sample 版本扩展到 full51 merged 数据集。
+
+数据集目录：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged`
+
+关键统计：
+
+- `n_windows_kept = 164871`
+- `n_shards = 35`
+- `split_counts`：
+  - `train = 131998`
+  - `val = 16481`
+  - `test = 16392`
+- `context_dim = 83`
+- `feature_dim = 33`
+- `fallback_assignment_rate = 0`
+- `nonfinite_output_detected = 0`
+- `good_lane_context_rate ≈ 0.99`
+
+解读：
+
+这意味着 Stage 5 数据已不再是 toy subset，而是可用于正式训练/评估的全量分片数据集；lane-aware 5-neighbor context 稳定，特征输出干净。
+
+重要约束：
+
+- 该数据集是 **sharded** 形式。
+- **不要**把 shard 直接拼接成一个巨大的 monolithic `.npy`。
+- shard 内及 shard 间行顺序必须保持不变，后续 embedding 导出与评估对齐依赖该顺序。
+
+## Stage 5A Feature Schema
+
+Stage 5 现已采用严格 33 维特征 schema。
+
+schema 路径：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json`
+
+有序 33 维特征如下（按索引）：
+
+0. `rms_accel`
+1. `rms_jerk`
+2. `max_abs_accel`
+3. `max_abs_jerk`
+4. `mean_thw`
+5. `min_thw`
+6. `mean_front_distance`
+7. `min_front_distance`
+8. `mean_rel_speed`
+9. `p95_rel_speed`
+10. `rms_yaw_rate`
+11. `rms_curvature`
+12. `heading_change_total`
+13. `lane_change_count_proxy`
+14. `lane_change_rate_proxy`
+15. `lane_change_left_count_proxy`
+16. `lane_change_right_count_proxy`
+17. `lane_change_duration_mean_proxy`
+18. `max_lateral_speed`
+19. `rms_lateral_accel`
+20. `lane_change_oscillation_score_proxy`
+21. `front_pressure_score`
+22. `left_front_min_gap`
+23. `left_rear_min_gap`
+24. `right_front_min_gap`
+25. `right_rear_min_gap`
+26. `left_gap_min`
+27. `right_gap_min`
+28. `left_gap_acceptance_proxy`
+29. `right_gap_acceptance_proxy`
+30. `rear_vehicle_pressure_proxy`
+31. `yielding_score_proxy`
+32. `assertiveness_score_proxy`
+
+注意事项：
+
+- `mean_speed` **不属于** Stage 5 schema。
+- `std_rel_speed` **不属于** Stage 5 schema。
+- 使用 `p95_rel_speed` 替代 `std_rel_speed`。
+- 后续评估必须按 schema 名称解析索引，禁止依赖硬编码 fallback 索引。
+
+## Stage 5B: Context GRU Baseline Embedding
+
+训练脚本：
+
+`tools/train_context_behavior_embedding.py`
+
+Stage 5B baseline 命令（历史基线）：
+
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 256 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_alignment \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type huber \
+  --metric_targets all \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+Stage 5B 输出目录：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1`
+
+Stage 5B embedding 导出目录：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings`
+
+Embedding manifest：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings/embedding_manifest.json`
+
+Embedding 统计：
+
+- `embedding_dim = 64`
+- `total_rows = 164871`
+- `embedding_shards = 35`
+- `split = all`
+- `nonfinite_embedding_detected = 0`
+- 行对齐遵循 source shard 行顺序
+
+解读：
+
+Stage 5B 是 context-aware GRU 的基线 embedding，作为 Stage 5D group-weighted loss 改进前的对照。
+
+## Stage 5C-V1: Preliminary Evaluation and Its Problem
+
+评估脚本：
+
+`tools/evaluate_context_embedding.py`
+
+Stage 5C 初始评估比较了：
+
+- `learned_context_embedding`
+- `raw_feature`
+- `pca_feature`
+- `context_l2`
+- `random`
+
+初始现象：
+
+- `learned_context_embedding` 明显优于 `random` 和 `context_l2`；
+- 但落后于 `raw_feature` 与 `pca_feature`。
+
+问题根因：
+
+`evaluation_summary.json` 显示：
+
+- `feature_names_used = []`
+- 使用了 fallback feature indices；
+- 错误假设了 `mean_speed` 与 `std_rel_speed`；
+- evaluator 并不知道真实 33D schema。
+
+结论：
+
+Stage 5C-V1 仅是 smoke test，不是 paper-grade 证据。
+
+## Stage 5C-1: Strict Feature Schema Evaluation
+
+Stage 5C-1 修复了 evaluator 有效性，关键改动包括：
+
+- 显式加载 `feature_schema.json`。
+- 默认启用 strict feature schema。
+- 禁止 fallback feature index resolution。
+- 缺失 required features 直接报错。
+- optional features 缺失时 warning 并跳过。
+- 不再评估 `mean_speed` 与 `std_rel_speed`。
+- 用 `p95_rel_speed` 替代 `std_rel_speed`。
+
+paper-grade 校验结果：
+
+- `strict_feature_schema = true`
+- `feature_schema_loaded = true`
+- no fallback feature index was used
+- `missing_required_features = []`
+- `warnings = []`
+- `paper_grade_valid = true`
+- `actual_eval_samples = 16392`
+- `row_alignment_checks.aligned = true`
+
+评估命令：
+
+```bash
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_eval_schema_fixed \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```
+
+期望输出文件：
+
+- `evaluation_summary.json`
+- `retrieval_metrics.csv`
+- `style_distance_correlation.csv`
+- `context_sensitivity_metrics.csv`
+- `retrieval_bar.png`
+- `feature_delta_correlation_bar.png`
+- `pca_embedding.png`
+- `pca_feature.png`
+- `evaluation_report.md`
+
+## Stage 5C-2: Category-wise Evaluation
+
+新增 Stage 5C-2 的原因：
+
+仅看 global retrieval 会掩盖 embedding 在不同行为维度上的差异，因此新增 category-wise correlation summary 与 learned-win feature 分析。
+
+新增输出文件：
+
+- `category_correlation_summary.csv`
+- `category_retrieval_summary.csv`
+- `learned_win_features.csv`
+
+类别分组：
+
+- `longitudinal_comfort`
+  - `rms_accel`
+  - `rms_jerk`
+  - `max_abs_accel`
+  - `max_abs_jerk`
+- `following_interaction`
+  - `mean_thw`
+  - `min_thw`
+  - `mean_front_distance`
+  - `min_front_distance`
+  - `mean_rel_speed`
+  - `p95_rel_speed`
+  - `front_pressure_score`
+  - `rear_vehicle_pressure_proxy`
+- `lateral_lane_dynamics`
+  - `rms_yaw_rate`
+  - `rms_curvature`
+  - `heading_change_total`
+  - `lane_change_count_proxy`
+  - `lane_change_rate_proxy`
+  - `max_lateral_speed`
+  - `rms_lateral_accel`
+  - `lane_change_oscillation_score_proxy`
+  - `left_front_min_gap`
+  - `left_rear_min_gap`
+  - `right_front_min_gap`
+  - `right_rear_min_gap`
+  - `left_gap_min`
+  - `right_gap_min`
+  - `left_gap_acceptance_proxy`
+  - `right_gap_acceptance_proxy`
+- `behavior_proxy`
+  - `yielding_score_proxy`
+  - `assertiveness_score_proxy`
+
+Stage 5C-2 retrieval 结果：
+
+| representation | hit@1 | hit@5 | mean_same_label_fraction_at_5 |
+|---|---:|---:|---:|
+| learned_context_embedding | 0.191862 | 0.490300 | 0.174024 |
+| raw_feature | 0.266227 | 0.585774 | 0.233821 |
+| pca_feature | 0.266959 | 0.595839 | 0.236323 |
+| context_l2 | 0.085713 | 0.267692 | 0.080942 |
+| random | 0.010920 | 0.060090 | 0.012384 |
+
+结论：
+
+- `learned_context_embedding` 显著优于 `context_l2` 与 `random`；
+- 但在 global retrieval 上仍弱于 `raw_feature` 与 `pca_feature`。
+
+Stage 5C-2 category-wise correlation summary：
+
+| category | learned_context_embedding | raw_feature | pca_feature |
+|---|---:|---:|---:|
+| longitudinal_comfort | 0.150833 | 0.172702 | 0.174362 |
+| following_interaction | 0.302917 | 0.469712 | 0.467968 |
+| lateral_lane_dynamics | 0.266777 | 0.251786 | 0.251469 |
+| behavior_proxy | 0.190567 | 0.296595 | 0.298821 |
+
+核心结论：
+
+- learned embedding 全局上仍低于 raw/pca retrieval baseline；
+- learned embedding 在 lateral/lane-change dynamics 最强；
+- 在 `lateral_lane_dynamics` 类别均值上优于 raw_feature 与 pca_feature；
+- following/front-distance 相关目标仍明显偏弱；
+- 这直接驱动 Stage 5D。
+
+重要 feature-level learned wins（learned embedding 更强）：
+
+- `lane_change_count_proxy`
+- `lane_change_rate_proxy`
+- `lane_change_oscillation_score_proxy`
+- `max_lateral_speed`
+- `heading_change_total`
+- `rms_yaw_rate`
+- `rms_lateral_accel`
+
+解释：
+
+序列编码器并非简单复制手工特征距离；它在横向时序行为上优于静态 feature-space 距离。但在 following interaction、THW、front distance 与前后车压力上仍存在欠表达。
+
+## Stage 5D: Group-weighted Training Improvement
+
+动机：
+
+Stage 5C-2 表明 Stage 5B embedding 在 lateral dynamics 上较强，但在 following_interaction 上偏弱。Stage 5D 的目标是保留 lateral 优势，同时增强 following/front-distance interaction。
+
+训练脚本：
+
+`tools/train_context_behavior_embedding.py`
+
+与 Stage 5B 的关键差异：
+
+- Stage 5D **不再使用** `--metric_alignment`。
+- Stage 5D 使用 group-specific metric loss weights：
+  - `--metric_longitudinal_weight`
+  - `--metric_following_weight`
+  - `--metric_lateral_dynamics_weight`
+  - `--metric_lateral_gap_weight`
+  - `--metric_behavior_proxy_weight`
+
+Stage 5D 正确训练命令：
+
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 64 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.5 \
+  --aux_lateral_dynamics_weight 1.0 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 2.0 \
+  --metric_lateral_dynamics_weight 1.0 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+补充说明：
+
+- `batch_size=64` 用于更稳健的 GPU 显存控制。
+- 若显存充足，可后续试验 `batch_size=128` 或 `256`。
+- 训练支持 tqdm 进度条。
+- 日志优先模式可用 `--no_progress` 关闭 tqdm。
+
+Stage 5D 预期输出目录：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1`
+
+预期训练产物：
+
+- `best_model.pt`
+- `training_config.json`
+- `feature_group_config.json`
+- `train_log.csv`
+- `training_summary.json`
+
+Stage 5D 目标判据（相对 Stage 5B）：
+
+- `following_interaction` mean correlation 从 `0.302917` 朝 `0.38+` 提升；
+- `lateral_lane_dynamics` 保持在 `0.25` 附近或以上；
+- `hit@5` 从 `0.4903` 朝 `0.52+` 提升；
+- learned embedding 仍需稳定优于 `context_l2` 与 `random`。
+
+## Current Stage 5 Status
+
+截至本次更新：
+
+1. Stage 5A full51 lane-aware 5-neighbor context 数据集已完成。
+2. Stage 5B context GRU baseline 已训练并评估。
+3. Stage 5C evaluator 已切换为 strict-schema 且具备 paper-grade 有效性。
+4. Stage 5C-2 得到关键科学结论：
+   - learned embedding 在 lateral/lane-change dynamics 上强于 feature baselines；
+   - following/front-distance interaction 仍偏弱。
+5. Stage 5D 是当前进行中的 active stage：
+   - 加入 group-weighted auxiliary + metric losses；
+   - 提升 following_interaction 权重；
+   - 保持 lateral dynamics 优势。
+
+## Paper-level Interpretation
+
+Stage 5 提供了首条超越 synthetic policy rollout 的、基于真实公共人类轨迹数据的验证路径。当前结果并非“全面胜利”：`learned_context_embedding` 在全局上尚未超过 handcrafted raw/pca feature baselines。但已有一个关键正结果：序列式 embedding 在 lateral 与 lane-change 的时序动态表达上优于静态特征空间距离，这与 earlier lateral_stable 结论（yaw-rate / lateral stability 对可分性关键）一致。
+
+平衡结论应明确：
+
+- Stage 5B embedding 有意义，但并不完整；
+- 它在 lateral dynamics 上较强；
+- 它在 following/front-distance interaction 上较弱；
+- 需要 Stage 5D 继续强化 interaction-awareness。
+
+## Known Pitfalls / Lessons Learned
+
+1. 不要依赖 fallback feature indices；feature schema 必须显式给定。
+2. `mean_speed` 与 `std_rel_speed` 不属于 Stage 5 schema，必须用 `p95_rel_speed`。
+3. `raw_feature` 与 `pca_feature` 是强 baseline；仅优于 random/context_l2 还不够。
+4. global retrieval 会掩盖类别差异，必须做 category-wise 评估。
+5. Stage 5D 训练命令必须 **不包含** `--metric_alignment`，改用 group-specific metric weights。
+6. 文档必须与代码变更同步更新，且给出可运行命令与期望输出。
+
+## Next Immediate Actions
+
+1. 在 `tools/train_context_behavior_embedding.py` 中确认（或修复）训练进度条支持。
+2. 用修正后的 Stage 5D 命令启动训练。
+3. 导出 Stage 5D embeddings（已有命令可复用）：
+
+```bash
+python tools/export_context_row_embeddings.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1/best_model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings \
+  --batch_size 256 \
+  --device cuda \
+  --split all \
+  --overwrite
+```
+
+4. 对 Stage 5D embeddings 重新运行 Stage 5C evaluator。
+5. 对比 Stage 5D 与 Stage 5B：
+   - global retrieval
+   - category-wise correlation
+   - learned-win features
+   - following_interaction
+   - lateral_lane_dynamics
