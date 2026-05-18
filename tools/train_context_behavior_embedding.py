@@ -20,6 +20,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from tools.context_shard_dataset import ContextShardDataset, inspect_shard_manifest
 
@@ -81,6 +82,10 @@ def _load_feature_schema(path: Path):
         raise FileNotFoundError(f"feature_schema.json not found: {path}")
     data = json.loads(path.read_text(encoding='utf-8'))
     names = data.get('feature_names', [])
+    if not isinstance(names, list) or not names:
+        features = data.get('features', [])
+        if isinstance(features, list) and features:
+            names = [f.get('name') for f in features if f.get('name')]
     if not isinstance(names, list) or not names:
         raise ValueError(f"Invalid feature_schema.json at {path}: missing feature_names list")
     return names
@@ -154,7 +159,8 @@ def run(args):
     train_losses, val_losses = [], []
     for ep in range(args.epochs):
         model.train(); aux_heads.train(); total=0.0; n=0
-        for b in train_loader:
+        pbar = tqdm(train_loader, desc=f'Epoch {ep+1}/{args.epochs} [Train]', leave=False)
+        for b in pbar:
             x = b['context'].float().to(dev); feat = b['feat'].float().to(dev)
             z = model(x)
             loss, _ = _compute_losses(z, feat)
@@ -162,18 +168,22 @@ def run(args):
                 raise RuntimeError(f"Non-finite training loss at epoch={ep}")
             opt.zero_grad(); loss.backward(); opt.step()
             total += loss.item() * x.size(0); n += x.size(0)
+            pbar.set_postfix({'loss': f'{loss.item():.4f}'})
         tr = total / max(1, n); train_losses.append(tr)
 
         model.eval(); aux_heads.eval(); total=0.0; n=0
         with torch.no_grad():
-            for b in val_loader:
+            pbar_val = tqdm(val_loader, desc=f'Epoch {ep+1}/{args.epochs} [Val]', leave=False)
+            for b in pbar_val:
                 x = b['context'].float().to(dev); feat = b['feat'].float().to(dev)
                 z = model(x)
                 vl, _ = _compute_losses(z, feat)
                 if not torch.isfinite(vl):
                     raise RuntimeError(f"Non-finite val loss at epoch={ep}")
                 total += vl.item() * x.size(0); n += x.size(0)
+                pbar_val.set_postfix({'val_loss': f'{vl.item():.4f}'})
         va = total / max(1, n); val_losses.append(va)
+        print(f'Epoch {ep+1}/{args.epochs} - Train Loss: {tr:.4f}, Val Loss: {va:.4f}')
         if va < best_val:
             best_val, best_epoch = va, ep + 1
             state = {'model': model.state_dict(), 'aux_heads': aux_heads.state_dict(), 'embedding_dim': args.embedding_dim, 'context_dim': context_dim}
