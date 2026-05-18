@@ -12,6 +12,7 @@ import pandas as pd
 from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
+from tqdm import tqdm
 
 
 def _load_json(path: Path) -> dict:
@@ -19,7 +20,10 @@ def _load_json(path: Path) -> dict:
 
 
 def _safe_load_npy(path: Path, mmap_mode='r'):
-    return np.load(path, mmap_mode=mmap_mode, allow_pickle=True)
+    try:
+        return np.load(path, mmap_mode=mmap_mode, allow_pickle=True)
+    except ValueError:
+        return np.load(path, allow_pickle=True)
 
 
 def _find_feature_names(manifest_obj: dict, manifest_dir: Path) -> List[str]:
@@ -98,7 +102,7 @@ def run(args):
 
     sampled = []
     total_eval_rows = 0
-    for sid in range(n_shards):
+    for sid in tqdm(range(n_shards), desc='Collecting samples', unit='shard'):
         sdir = src_manifest_path.parent / shards[sid]['shard_path']
         split = _safe_load_npy(sdir / 'split.npy')
         if split.dtype.kind not in {'U', 'S', 'O'}:
@@ -124,7 +128,7 @@ def run(args):
     align_ok = True
     finite = {'embedding_nonfinite': 0, 'feature_nonfinite': 0, 'context_nonfinite': 0}
 
-    for sid, lids in by_shard.items():
+    for sid, lids in tqdm(by_shard.items(), desc='Loading data', unit='shard'):
         emb = _safe_load_npy(Path(emb_paths[sid]))
         sdir = src_manifest_path.parent / shards[sid]['shard_path']
         feat_path = sdir / 'interaction_feat_style.npy'
@@ -156,6 +160,7 @@ def run(args):
     fmap, map_warn = _feature_mapping(feature_names, X_feat.shape[1])
     warnings.extend(map_warn)
 
+    print(f'[INFO] Running PCA on {X_feat.shape[0]} samples...')
     pca = PCA(n_components=min(16, X_feat.shape[1], max(2, X_feat.shape[0] - 1)), random_state=args.seed)
     X_pca = pca.fit_transform(X_feat) if X_feat.shape[0] >= 2 else np.zeros_like(X_feat)
 
@@ -179,7 +184,7 @@ def run(args):
     labels = np.array(['_'.join(map(str, row.tolist())) for row in bins], dtype=object)
 
     retrieval_rows = []
-    for rep_name, X in reps.items():
+    for rep_name, X in tqdm(reps.items(), desc='Running retrieval', unit='rep'):
         n_neighbors = min(11, max(2, X.shape[0]))
         nn = NearestNeighbors(n_neighbors=n_neighbors, metric='euclidean').fit(X)
         idx = nn.kneighbors(return_distance=False)
@@ -209,7 +214,7 @@ def run(args):
     j = rng.integers(0, X_feat.shape[0], size=n_pairs)
     valid = i != j
     i, j = i[valid], j[valid]
-    for rep_name, X in reps.items():
+    for rep_name, X in tqdm(reps.items(), desc='Computing correlations', unit='rep'):
         d = np.linalg.norm(X[i] - X[j], axis=1)
         for k in target_keys:
             if k not in fmap:
