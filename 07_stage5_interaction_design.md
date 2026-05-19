@@ -939,3 +939,56 @@ python tools/evaluate_context_embedding.py \
    - learned embedding vs raw_feature / pca_feature / context_l2 / random
    - public-human trajectory validation narrative
    - relation to earlier lateral_stable findings
+
+## Stage 5E Final Comparison
+
+### 为什么新增 Stage 5E
+
+Stage 5B / Stage 5D-v1 / Stage 5D-balanced-v2 已经完成训练与评估。新增 Stage 5E 的目的，是在**不改训练逻辑、不重建数据集**前提下，统一读取三组既有评估产物并给出最终对比结论，形成可复现实验报告与当前推荐模型。
+
+### 比较脚本路径
+
+- `tools/compare_stage5_embedding_runs.py`
+
+### 运行命令
+
+```bash
+python tools/compare_stage5_embedding_runs.py \
+  --stage5b_eval outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_eval_schema_fixed \
+  --stage5d_v1_eval outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
+  --stage5d_v2_eval outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/stage5_final_comparison \
+  --overwrite
+```
+
+### 期望输出目录
+
+- `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/stage5_final_comparison`
+
+### 期望输出文件
+
+- `final_stage5_model_comparison.csv`
+- `final_stage5_category_comparison.csv`
+- `final_stage5_retrieval_comparison.csv`
+- `final_stage5_learned_win_summary.csv`
+- `final_stage5_recommendation.md`
+- `final_stage5_comparison_plot.png`
+
+### Final comparison（当前记录）
+
+| model | hit@5 | following_interaction | lateral_lane_dynamics | behavior_proxy | interpretation |
+|---|---:|---:|---:|---:|---|
+| Stage 5B baseline | 0.490300 | 0.302917 | 0.266777 | - | meaningful baseline; strong lateral; weak following |
+| Stage 5D-v1 group_weighted | 0.507992 | 0.582954 | 0.204637 | - | following strongly improved but lateral over-corrected downward |
+| Stage 5D-balanced-v2 | 0.526232 | 0.501998 | 0.245608 | 0.322344 | best current trade-off and current recommended Stage 5 model |
+
+### 当前推荐
+
+- **Stage 5D-balanced-v2**。
+
+### 研究解释
+
+Stage 5D 系列属于受控的多目标权衡（multi-objective trade-off）实验：
+- v1 强化 following_interaction 后出现 lateral_lane_dynamics 下探；
+- balanced-v2 在保持较强 following 的同时恢复 lateral，并在 behavior_proxy 上超过特征基线；
+- 该路线是有约束的目标权重调节，不是随机调参。
