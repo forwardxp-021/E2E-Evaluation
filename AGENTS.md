@@ -27,7 +27,8 @@
 8. 不要引入任何依赖仓库外临时文件的逻辑。
 9. README.md 讲研究方向、当前进展、阶段结论、限制、下一步，如有必要需要更新。
 10. QUICK_REFERENCE.md 讲命令、期望行为、通过标准。
-11. 如有training, evaluate embedding, export embedding等负责计算的过程，请加入进度条显示功能。
+11. 如有training, evaluate embedding, export embedding等消耗较大计算的过程，请加入进度条显示功能。
+12. 关于stage5的所有设计和验证都更新到 07_stage5_interaction_design.md文档中。
 
 ---
 
