@@ -85,6 +85,81 @@ def _build_feature_mapping(feature_names: List[str]) -> Dict[str, int]:
         lowered[key] = i
     return {name: lowered[name.lower()] for name in feature_names}
 
+def _verdict(learned: float, baseline: float, near_tie_threshold: float = 0.01) -> str:
+    if learned > baseline:
+        return 'win'
+    if abs(learned - baseline) <= near_tie_threshold:
+        return 'near_tie'
+    return 'lose'
+
+def summarize_model_position(category_corr_df: pd.DataFrame, retrieval_df: pd.DataFrame, learned_win_df: pd.DataFrame = None) -> dict:
+    def _fmt(name: str) -> str:
+        return name.replace('_', ' ')
+
+    retrieval_row = retrieval_df[retrieval_df['representation'] == 'learned_context_embedding']
+    raw_row = retrieval_df[retrieval_df['representation'] == 'raw_feature']
+    pca_row = retrieval_df[retrieval_df['representation'] == 'pca_feature']
+    if retrieval_row.empty or raw_row.empty or pca_row.empty:
+        raise RuntimeError('Missing retrieval metrics for learned_context_embedding/raw_feature/pca_feature.')
+
+    learned_hit5 = float(retrieval_row.iloc[0]['hit_at_5'])
+    best_baseline_hit5 = max(float(raw_row.iloc[0]['hit_at_5']), float(pca_row.iloc[0]['hit_at_5']))
+    global_verdict = _verdict(learned_hit5, best_baseline_hit5)
+
+    category_verdicts = {}
+    for category in CATEGORY_FEATURE_GROUPS.keys():
+        learned_row = category_corr_df[(category_corr_df['category'] == category) & (category_corr_df['representation'] == 'learned_context_embedding')]
+        raw_cat = category_corr_df[(category_corr_df['category'] == category) & (category_corr_df['representation'] == 'raw_feature')]
+        pca_cat = category_corr_df[(category_corr_df['category'] == category) & (category_corr_df['representation'] == 'pca_feature')]
+        if learned_row.empty or raw_cat.empty or pca_cat.empty:
+            continue
+        learned_val = float(learned_row.iloc[0]['mean_spearman_corr'])
+        best_baseline = max(float(raw_cat.iloc[0]['mean_spearman_corr']), float(pca_cat.iloc[0]['mean_spearman_corr']))
+        verdict = _verdict(learned_val, best_baseline)
+        category_verdicts[category] = {
+            'verdict': verdict,
+            'learned_mean_spearman_corr': learned_val,
+            'best_feature_baseline_mean_spearman_corr': best_baseline,
+            'delta_vs_best_feature_baseline': learned_val - best_baseline,
+        }
+
+    win_count = sum(1 for v in category_verdicts.values() if v['verdict'] == 'win')
+    near_tie_count = sum(1 for v in category_verdicts.values() if v['verdict'] == 'near_tie')
+    if global_verdict == 'win' and win_count >= 2:
+        recommended = 'learned_context_embedding'
+    elif win_count + near_tie_count >= 2:
+        recommended = 'learned_context_embedding_best_tradeoff_so_far'
+    else:
+        recommended = 'feature_baseline_preferred_for_global_retrieval'
+
+    key_win_features = []
+    if learned_win_df is not None and not learned_win_df.empty:
+        for _, row in learned_win_df.iterrows():
+            if float(row.get('learned_minus_best_feature_baseline', -np.inf)) > 0:
+                key_win_features.append(str(row['target_feature']))
+
+    lines = [
+        f"Global retrieval (hit@5): learned_context_embedding is {_fmt(global_verdict)} vs best feature baseline.",
+    ]
+    for category in ['longitudinal_comfort', 'following_interaction', 'lateral_lane_dynamics', 'behavior_proxy']:
+        if category in category_verdicts:
+            lines.append(f"{_fmt(category)}: learned_context_embedding is {_fmt(category_verdicts[category]['verdict'])} vs best feature baseline.")
+    if key_win_features:
+        lines.append(f"Feature-level learned wins observed on {len(key_win_features)} targets (see learned_win_features.csv).")
+    if recommended == 'learned_context_embedding_best_tradeoff_so_far':
+        lines.append('Overall: learned_context_embedding is the best current trade-off learned representation, but not a full global retrieval win over handcrafted baselines.')
+    elif recommended == 'learned_context_embedding':
+        lines.append('Overall: learned_context_embedding is the recommended model candidate.')
+    else:
+        lines.append('Overall: handcrafted feature baselines remain stronger for retrieval-oriented ranking.')
+
+    return {
+        'dynamic_conclusion': ' '.join(lines),
+        'global_retrieval_verdict': global_verdict,
+        'category_verdicts': category_verdicts,
+        'recommended_model_candidate': recommended,
+    }
+
 def run(args):
     out = Path(args.out_dir)
     if out.exists() and any(out.iterdir()) and not args.overwrite:
@@ -268,6 +343,7 @@ def run(args):
             'learned_minus_best_feature_baseline': float(by_rep.get('learned_context_embedding', np.nan) - best_baseline),
         })
     pd.DataFrame(learned_rows).to_csv(out / 'learned_win_features.csv', index=False)
+    learned_win_df = pd.DataFrame(learned_rows)
 
     context_rows = []
     for k in [x for x in CONTEXT_SENSITIVITY_FEATURES if x in fmap]:
@@ -288,6 +364,7 @@ def run(args):
     agg = focus.groupby('representation', as_index=False)['spearman_corr'].mean()
     plt.figure(figsize=(8,4)); plt.bar(agg['representation'], agg['spearman_corr']); plt.xticks(rotation=20, ha='right'); plt.tight_layout(); plt.savefig(out/'feature_delta_correlation_bar.png'); plt.close()
 
+    dynamic_summary = summarize_model_position(category_corr_df, rdf, learned_win_df)
     paper_grade_valid = bool(strict_feature_schema and not missing_required)
     summary = {
         'input_paths': {'embedding_manifest': args.embedding_manifest, 'source_shard_manifest': args.source_shard_manifest},
@@ -298,6 +375,10 @@ def run(args):
         'eval_split': args.eval_split, 'max_eval_samples': args.max_eval_samples, 'actual_eval_samples': int(X_emb.shape[0]),
         'representation_list': list(reps.keys()), 'finite_checks': finite,
         'row_alignment_checks': {'aligned': bool(align_ok), 'embedding_shards_used': n_shards, 'total_eval_rows_before_subsample': total_eval_rows},
+        'dynamic_conclusion': dynamic_summary['dynamic_conclusion'],
+        'global_retrieval_verdict': dynamic_summary['global_retrieval_verdict'],
+        'category_verdicts': dynamic_summary['category_verdicts'],
+        'recommended_model_candidate': dynamic_summary['recommended_model_candidate'],
     }
     (out/'evaluation_summary.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
 
@@ -313,11 +394,15 @@ def run(args):
         '## Style-distance Correlation', pd.DataFrame(corr_rows).to_markdown(index=False), '',
         '## Context Sensitivity', pd.DataFrame(context_rows).to_markdown(index=False), '',
         '## Category-wise Correlation Summary', (category_corr_df.to_markdown(index=False) if not category_corr_df.empty else '_No category rows available._'), '',
-        '## Stage 5C-2 Conclusions',
-        '- learned_context_embedding is globally below raw_feature/pca_feature retrieval-oriented baselines.',
-        '- learned_context_embedding strongly beats raw_feature/pca_feature on lateral/lane-change dynamic targets.',
-        '- following/front-distance targets remain weaker than raw_feature/pca_feature.',
-        '- This motivates Stage 5D: strengthen following-interaction representation while preserving lateral dynamics.',
+        '## Dynamic Evaluation Conclusions',
+        f"- Global retrieval verdict: **{dynamic_summary['global_retrieval_verdict']}**",
+        f"- Longitudinal comfort verdict: **{dynamic_summary['category_verdicts'].get('longitudinal_comfort', {}).get('verdict', 'not_available')}**",
+        f"- Following interaction verdict: **{dynamic_summary['category_verdicts'].get('following_interaction', {}).get('verdict', 'not_available')}**",
+        f"- Lateral/lane dynamics verdict: **{dynamic_summary['category_verdicts'].get('lateral_lane_dynamics', {}).get('verdict', 'not_available')}**",
+        f"- Behavior proxy verdict: **{dynamic_summary['category_verdicts'].get('behavior_proxy', {}).get('verdict', 'not_available')}**",
+        f"- Overall recommendation: **{dynamic_summary['recommended_model_candidate']}**",
+        '',
+        dynamic_summary['dynamic_conclusion'],
         '',
         '## Warnings and Limitations']
     report.extend([f'- {w}' for w in warnings] or ['- None'])

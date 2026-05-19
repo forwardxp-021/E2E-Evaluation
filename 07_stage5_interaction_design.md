@@ -730,33 +730,155 @@ Stage 5C-2 category-wise correlation summary：
 
 序列编码器并非简单复制手工特征距离；它在横向时序行为上优于静态 feature-space 距离。但在 following interaction、THW、front distance 与前后车压力上仍存在欠表达。
 
-## Stage 5D: Group-weighted Training Improvement
+## Stage 5D Training Adjustment Principle
 
-动机：
+Stage 5B 使用了 general context GRU embedding + 全局 style/metric 目标。Stage 5C-2 的诊断是：该 embedding 有效，但结构不均衡：
 
-Stage 5C-2 表明 Stage 5B embedding 在 lateral dynamics 上较强，但在 following_interaction 上偏弱。Stage 5D 的目标是保留 lateral 优势，同时增强 following/front-distance interaction。
+- 对 lateral/lane-change dynamics 捕捉较强；
+- 对 following/front-distance interaction 捕捉偏弱。
 
-训练脚本：
+因此 Stage 5D **不改数据集**，而是改训练目标：使用 multi-objective group-weighted representation learning，让 embedding `z` 同时保留多类行为结构：
 
-`tools/train_context_behavior_embedding.py`
+1. `longitudinal_comfort`
+2. `following_interaction`
+3. `lateral_lane_dynamics`
+4. `lateral_gap_interaction`
+5. `behavior_proxy`
 
-与 Stage 5B 的关键差异：
+每组都包含两类约束：
 
-- Stage 5D **不再使用** `--metric_alignment`。
-- Stage 5D 使用 group-specific metric loss weights：
-  - `--metric_longitudinal_weight`
-  - `--metric_following_weight`
-  - `--metric_lateral_dynamics_weight`
-  - `--metric_lateral_gap_weight`
-  - `--metric_behavior_proxy_weight`
+- auxiliary regression loss
+- group metric alignment loss（embedding pairwise distance 对齐该组 feature pairwise distance）
 
-Stage 5D 正确训练命令：
+简化公式：
+
+`Total loss = style loss + weighted auxiliary losses + weighted group metric alignment losses`
+
+权重决定 embedding 几何重点：
+
+- following 权重过低：THW/front distance/rel speed 欠表达；
+- following 权重过高：following 主导、lateral 结构被冲淡；
+- lateral 权重过低：yaw/heading/lane-change 结构减弱；
+- lateral 权重过高：可能恢复 lateral，但牺牲 following interaction。
+
+目标不是单项极值，而是多交互风格的**平衡表示**。
+
+研究逻辑：
+
+- Stage 5D-v1：ablation，证明上调 following 权重可以修复 following 弱项；
+- Stage 5D-balanced-v2：回调 following、上调 lateral，保持 following 强化同时恢复 lateral。
+
+## Stage 5B Baseline Result
+
+关键结果：
+
+- hit@5 = `0.490300`
+- longitudinal_comfort = `0.150833`
+- following_interaction = `0.302917`
+- lateral_lane_dynamics = `0.266777`
+- behavior_proxy = `0.190567`
+
+解释：
+
+- Stage 5B learned embedding 有效（优于 random/context_l2）；
+- strongest signal 在 lateral/lane-change dynamics；
+- following/front-distance interaction 偏弱；
+- 这直接驱动 Stage 5D。
+
+## Stage 5D-v1: Group-weighted Following Enhancement
+
+训练思想：
+
+- 上调 following_interaction 相关损失权重；
+- lateral 权重保持中等；
+- 目标：修复 Stage 5B following 弱项。
+
+关键结果：
+
+- hit@5 = `0.507992`
+- longitudinal_comfort = `0.151584`
+- following_interaction = `0.582954`
+- lateral_lane_dynamics = `0.204637`
+- behavior_proxy = `0.355707`
+
+解释：
+
+- Stage 5D-v1 成功强化 following_interaction，且超过 raw/pca；
+- behavior_proxy 明显提升；
+- 但存在 following 过校正；
+- lateral_lane_dynamics 从 Stage 5B 的 `0.266777` 下降到 `0.204637`；
+- 因此 v1 是关键 ablation，但不是最终推荐模型。
+
+结论（固定表述）：
+
+Stage 5D-v1 proves that group-weighted following losses are effective, but also reveals a trade-off: over-emphasizing following interaction can partially erase lateral dynamic structure.
+
+## Stage 5D-balanced-v2: Current Recommended Model
+
+训练思想：
+
+- 相比 v1，下调 following 权重；
+- 相比 v1，上调 lateral dynamics 权重；
+- 保持 following 显著高于 Stage 5B；
+- 目标：following 与 lateral 两类结构平衡。
+
+关键结果：
+
+- hit@1 = `0.213092`
+- hit@5 = `0.526232`
+- mean_same_label_fraction_at_5 = `0.189776`
+- longitudinal_comfort = `0.171751`
+- following_interaction = `0.501998`
+- lateral_lane_dynamics = `0.245608`
+- behavior_proxy = `0.322344`
+
+相对 raw/pca：
+
+- Global retrieval 仍低于 raw_feature / pca_feature；
+- following_interaction 超过 raw_feature 与 pca_feature；
+- lateral_lane_dynamics 与 raw/pca 接近；
+- behavior_proxy 超过 raw_feature 与 pca_feature；
+- longitudinal_comfort 与 raw/pca 接近。
+
+重要 feature-level learned wins：
+
+- `mean_thw_delta`、`min_thw_delta`
+- `mean_front_distance_delta`、`min_front_distance_delta`
+- `mean_rel_speed_delta`、`p95_rel_speed_delta`
+- `front_pressure_score_delta`
+- `lane_change_count_proxy_delta`、`lane_change_rate_proxy_delta`、`lane_change_oscillation_score_proxy_delta`
+- `max_lateral_speed_delta`、`rms_yaw_rate_delta`、`heading_change_total_delta`
+- `yielding_score_proxy_delta`
+
+平衡结论：
+
+不应声称 learned embedding 在 global retrieval 上全面超过 handcrafted baselines；应表述为：Stage 5D-balanced-v2 是当前最优 learned trade-off 表示，在多个行为类别上实现超过或接近 feature baselines。
+
+## Final Comparison Table
+
+```bash
+| Model | hit@5 | longitudinal | following | lateral | behavior_proxy | Interpretation |
+|---|---:|---:|---:|---:|---:|---|
+| Stage 5B baseline | 0.490300 | 0.150833 | 0.302917 | 0.266777 | 0.190567 | strong lateral, weak following |
+| Stage 5D-v1 | 0.507992 | 0.151584 | 0.582954 | 0.204637 | 0.355707 | following over-correction |
+| Stage 5D-balanced-v2 | 0.526232 | 0.171751 | 0.501998 | 0.245608 | 0.322344 | best current trade-off |
+```
+
+进展逻辑不是随机调参，而是受控的 multi-objective trade-off 研究：
+
+- Stage 5B 先诊断弱项；
+- Stage 5D-v1 证明 following 可被显著强化；
+- Stage 5D-balanced-v2 恢复平衡并成为当前推荐模型。
+
+## Stage 5D-balanced-v2 Commands
+
+训练命令（Stage 5D 不使用 `--metric_alignment`）：
 
 ```bash
 python tools/train_context_behavior_embedding.py \
   --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1 \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2 \
   --embedding_dim 64 \
   --hidden_dim 128 \
   --num_layers 1 \
@@ -768,13 +890,13 @@ python tools/train_context_behavior_embedding.py \
   --metric_loss_type huber \
   --style_loss_weight 1.0 \
   --aux_longitudinal_weight 0.5 \
-  --aux_following_weight 1.5 \
-  --aux_lateral_dynamics_weight 1.0 \
+  --aux_following_weight 1.2 \
+  --aux_lateral_dynamics_weight 1.5 \
   --aux_lateral_gap_weight 1.0 \
   --aux_behavior_proxy_weight 0.5 \
   --metric_longitudinal_weight 0.5 \
-  --metric_following_weight 2.0 \
-  --metric_lateral_dynamics_weight 1.0 \
+  --metric_following_weight 1.5 \
+  --metric_lateral_dynamics_weight 1.5 \
   --metric_lateral_gap_weight 1.0 \
   --metric_behavior_proxy_weight 0.5 \
   --device cuda \
@@ -782,88 +904,38 @@ python tools/train_context_behavior_embedding.py \
   --overwrite
 ```
 
-补充说明：
-
-- `batch_size=64` 用于更稳健的 GPU 显存控制。
-- 若显存充足，可后续试验 `batch_size=128` 或 `256`。
-- 训练支持 tqdm 进度条。
-- 日志优先模式可用 `--no_progress` 关闭 tqdm。
-
-Stage 5D 预期输出目录：
-
-`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1`
-
-预期训练产物：
-
-- `best_model.pt`
-- `training_config.json`
-- `feature_group_config.json`
-- `train_log.csv`
-- `training_summary.json`
-
-Stage 5D 目标判据（相对 Stage 5B）：
-
-- `following_interaction` mean correlation 从 `0.302917` 朝 `0.38+` 提升；
-- `lateral_lane_dynamics` 保持在 `0.25` 附近或以上；
-- `hit@5` 从 `0.4903` 朝 `0.52+` 提升；
-- learned embedding 仍需稳定优于 `context_l2` 与 `random`。
-
-## Current Stage 5 Status
-
-截至本次更新：
-
-1. Stage 5A full51 lane-aware 5-neighbor context 数据集已完成。
-2. Stage 5B context GRU baseline 已训练并评估。
-3. Stage 5C evaluator 已切换为 strict-schema 且具备 paper-grade 有效性。
-4. Stage 5C-2 得到关键科学结论：
-   - learned embedding 在 lateral/lane-change dynamics 上强于 feature baselines；
-   - following/front-distance interaction 仍偏弱。
-5. Stage 5D 是当前进行中的 active stage：
-   - 加入 group-weighted auxiliary + metric losses；
-   - 提升 following_interaction 权重；
-   - 保持 lateral dynamics 优势。
-
-## Paper-level Interpretation
-
-Stage 5 提供了首条超越 synthetic policy rollout 的、基于真实公共人类轨迹数据的验证路径。当前结果并非“全面胜利”：`learned_context_embedding` 在全局上尚未超过 handcrafted raw/pca feature baselines。但已有一个关键正结果：序列式 embedding 在 lateral 与 lane-change 的时序动态表达上优于静态特征空间距离，这与 earlier lateral_stable 结论（yaw-rate / lateral stability 对可分性关键）一致。
-
-平衡结论应明确：
-
-- Stage 5B embedding 有意义，但并不完整；
-- 它在 lateral dynamics 上较强；
-- 它在 following/front-distance interaction 上较弱；
-- 需要 Stage 5D 继续强化 interaction-awareness。
-
-## Known Pitfalls / Lessons Learned
-
-1. 不要依赖 fallback feature indices；feature schema 必须显式给定。
-2. `mean_speed` 与 `std_rel_speed` 不属于 Stage 5 schema，必须用 `p95_rel_speed`。
-3. `raw_feature` 与 `pca_feature` 是强 baseline；仅优于 random/context_l2 还不够。
-4. global retrieval 会掩盖类别差异，必须做 category-wise 评估。
-5. Stage 5D 训练命令必须 **不包含** `--metric_alignment`，改用 group-specific metric weights。
-6. 文档必须与代码变更同步更新，且给出可运行命令与期望输出。
-
-## Next Immediate Actions
-
-1. 在 `tools/train_context_behavior_embedding.py` 中确认（或修复）训练进度条支持。
-2. 用修正后的 Stage 5D 命令启动训练。
-3. 导出 Stage 5D embeddings（已有命令可复用）：
+导出命令：
 
 ```bash
 python tools/export_context_row_embeddings.py \
   --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
-  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1/best_model.pt \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings \
-  --batch_size 256 \
-  --device cuda \
-  --split all \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings \
+  --split all
+```
+
+评估命令：
+
+```bash
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
   --overwrite
 ```
 
-4. 对 Stage 5D embeddings 重新运行 Stage 5C evaluator。
-5. 对比 Stage 5D 与 Stage 5B：
-   - global retrieval
-   - category-wise correlation
-   - learned-win features
-   - following_interaction
-   - lateral_lane_dynamics
+## Next Immediate Actions
+
+1. Treat Stage 5D-balanced-v2 as the current recommended Stage 5 model.
+2. Fix evaluator report to generate dynamic conclusions.
+3. Update result tables in this design document whenever a new model is trained.
+4. Do not run many more weight sweeps immediately unless needed.
+5. Next research step: final comparison + paper framing
+   - Stage 5B vs Stage 5D-v1 vs Stage 5D-balanced-v2
+   - learned embedding vs raw_feature / pca_feature / context_l2 / random
+   - public-human trajectory validation narrative
+   - relation to earlier lateral_stable findings
