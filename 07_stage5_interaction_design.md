@@ -974,6 +974,16 @@ python tools/compare_stage5_embedding_runs.py \
 - `final_stage5_recommendation.md`
 - `final_stage5_comparison_plot.png`
 
+### Stage 5E 兼容性说明（learned-win）
+
+- `tools/compare_stage5_embedding_runs.py` 会优先读取 `learned_win_features.csv`。
+- 若 `learned_minus_raw_feature` / `learned_minus_pca_feature` 缺失，脚本会在比较阶段内部自动计算：
+  - `learned_minus_raw_feature = learned_corr - raw_corr`
+  - `learned_minus_pca_feature = learned_corr - pca_corr`
+- 若 `learned_win_features.csv` 不可用或字段不足，脚本会回退到 `style_distance_correlation.csv`，按 `target_feature` + `representation` 透视后再计算两类 delta。
+- 因此 Stage 5E 比较与旧版 evaluator 产物兼容，不要求 evaluator 预先写出 delta 列。
+- 注意：paper-grade 校验不放宽，仍要求 `paper_grade_valid=true`、`strict_feature_schema=true`、`feature_schema_loaded=true`、`row_alignment_checks.aligned=true`。
+
 ### Final comparison（当前记录）
 
 | model | hit@5 | following_interaction | lateral_lane_dynamics | behavior_proxy | interpretation |

@@ -18,7 +18,6 @@ REQUIRED_RETRIEVAL_COLS = {
     'mean_neighbor_feature_distance', 'median_neighbor_feature_distance'
 }
 REQUIRED_CATEGORY_COLS = {'representation', 'category', 'mean_spearman_corr'}
-REQUIRED_WIN_COLS = {'target_feature', 'learned_minus_raw_feature', 'learned_minus_pca_feature'}
 KEY_CATEGORIES = ['longitudinal_comfort', 'following_interaction', 'lateral_lane_dynamics', 'behavior_proxy']
 
 MODEL_CONFIG = [
@@ -38,11 +37,9 @@ def _read_eval(model_name: str, eval_dir: Path):
     summary_path = eval_dir / 'evaluation_summary.json'
     retrieval_path = eval_dir / 'retrieval_metrics.csv'
     category_path = eval_dir / 'category_correlation_summary.csv'
-    win_path = eval_dir / 'learned_win_features.csv'
     _must_exist(summary_path)
     _must_exist(retrieval_path)
     _must_exist(category_path)
-    _must_exist(win_path)
 
     summary = json.loads(summary_path.read_text(encoding='utf-8'))
     if not summary.get('paper_grade_valid', False):
@@ -62,18 +59,17 @@ def _read_eval(model_name: str, eval_dir: Path):
 
     retrieval_df = pd.read_csv(retrieval_path)
     category_df = pd.read_csv(category_path)
-    win_df = pd.read_csv(win_path)
 
     for need, df, name in [
         (REQUIRED_RETRIEVAL_COLS, retrieval_df, 'retrieval_metrics.csv'),
         (REQUIRED_CATEGORY_COLS, category_df, 'category_correlation_summary.csv'),
-        (REQUIRED_WIN_COLS, win_df, 'learned_win_features.csv'),
     ]:
         miss = need - set(df.columns)
         if miss:
             raise RuntimeError(f'{model_name}: missing columns in {name}: {sorted(miss)}')
 
-    return summary, retrieval_df, category_df, win_df, warnings
+    learned_win_df = _extract_learned_win_df(model_name, eval_dir)
+    return summary, retrieval_df, category_df, learned_win_df, warnings
 
 
 def _pick_row(df: pd.DataFrame, representation: str):
@@ -88,6 +84,82 @@ def _category_value(category_df: pd.DataFrame, representation: str, category: st
     if rows.empty:
         raise RuntimeError(f'Missing category row: representation={representation}, category={category}')
     return float(rows.iloc[0]['mean_spearman_corr'])
+
+
+def _resolve_col(df: pd.DataFrame, candidates, column_kind: str, source_name: str, model_name: str):
+    for col in candidates:
+        if col in df.columns:
+            return col
+    raise RuntimeError(
+        f"{model_name}: could not resolve {column_kind} column in {source_name}. "
+        f"Candidates={candidates}, available={sorted(df.columns.tolist())}"
+    )
+
+
+def _extract_learned_win_df(model_name: str, eval_dir: Path):
+    win_path = eval_dir / 'learned_win_features.csv'
+    style_corr_path = eval_dir / 'style_distance_correlation.csv'
+
+    if win_path.exists():
+        win_df = pd.read_csv(win_path)
+        print(f'[INFO] {model_name}: using learned_win_features.csv')
+        feature_col = _resolve_col(
+            win_df, ['target_feature', 'feature', 'target'], 'feature', 'learned_win_features.csv', model_name
+        )
+
+        computed_raw_delta = False
+        computed_pca_delta = False
+        learned_candidates = ['learned_corr', 'learned_context_embedding_corr', 'learned_context_embedding', 'learned_spearman_corr']
+
+        if 'learned_minus_raw_feature' not in win_df.columns:
+            learned_col = _resolve_col(win_df, learned_candidates, 'learned correlation', 'learned_win_features.csv', model_name)
+            raw_col = _resolve_col(
+                win_df, ['raw_feature_corr', 'raw_feature', 'raw_spearman_corr'], 'raw correlation', 'learned_win_features.csv', model_name
+            )
+            win_df['learned_minus_raw_feature'] = win_df[learned_col] - win_df[raw_col]
+            computed_raw_delta = True
+
+        if 'learned_minus_pca_feature' not in win_df.columns:
+            learned_col = _resolve_col(win_df, learned_candidates, 'learned correlation', 'learned_win_features.csv', model_name)
+            pca_col = _resolve_col(
+                win_df, ['pca_feature_corr', 'pca_feature', 'pca_spearman_corr'], 'pca correlation', 'learned_win_features.csv', model_name
+            )
+            win_df['learned_minus_pca_feature'] = win_df[learned_col] - win_df[pca_col]
+            computed_pca_delta = True
+
+        if computed_raw_delta or computed_pca_delta:
+            print(
+                f'[INFO] {model_name}: computed missing delta columns from learned_win_features.csv '
+                f'(raw_delta_computed={computed_raw_delta}, pca_delta_computed={computed_pca_delta})'
+            )
+        else:
+            print(f'[INFO] {model_name}: learned_win_features.csv already contains delta columns')
+
+        return pd.DataFrame({
+            'target_feature': win_df[feature_col].astype(str),
+            'learned_minus_raw_feature': win_df['learned_minus_raw_feature'],
+            'learned_minus_pca_feature': win_df['learned_minus_pca_feature'],
+        })
+
+    _must_exist(style_corr_path)
+    print(f'[WARN] {model_name}: learned_win_features.csv missing, fallback to style_distance_correlation.csv')
+    style_df = pd.read_csv(style_corr_path)
+    need_cols = {'representation', 'target_feature', 'spearman_corr'}
+    missing = need_cols - set(style_df.columns)
+    if missing:
+        raise RuntimeError(f'{model_name}: style_distance_correlation.csv missing columns: {sorted(missing)}')
+
+    pivot_df = style_df.pivot_table(index='target_feature', columns='representation', values='spearman_corr', aggfunc='first').reset_index()
+    for rep_col in ['learned_context_embedding', 'raw_feature', 'pca_feature']:
+        if rep_col not in pivot_df.columns:
+            raise RuntimeError(f'{model_name}: fallback style_distance_correlation.csv missing representation={rep_col}')
+
+    print(f'[INFO] {model_name}: fallback style_distance_correlation.csv used successfully')
+    return pd.DataFrame({
+        'target_feature': pivot_df['target_feature'].astype(str),
+        'learned_minus_raw_feature': pivot_df['learned_context_embedding'] - pivot_df['raw_feature'],
+        'learned_minus_pca_feature': pivot_df['learned_context_embedding'] - pivot_df['pca_feature'],
+    })
 
 
 def run(args):
