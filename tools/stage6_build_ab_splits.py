@@ -16,8 +16,14 @@ def _load_json(path):
 
 def _iter_shard_feature_split(shard_manifest_path):
     manifest = _load_json(shard_manifest_path)
-    for shard in manifest.get('shard_paths', []):
-        d = Path(shard)
+    base = Path(shard_manifest_path).parent
+    shards = manifest.get('shards', manifest.get('shard_infos', []))
+    if shards:
+        shard_paths = [s['shard_path'] for s in shards]
+    else:
+        shard_paths = manifest.get('shard_paths', [])
+    for shard in shard_paths:
+        d = base / shard
         yield np.load(d / 'interaction_feat_style.npy', mmap_mode='r'), np.load(d / 'split.npy', allow_pickle=True)
 
 
@@ -101,7 +107,7 @@ def main(a):
 
     np.save(out / 'a_indices.npy', A)
     np.save(out / 'b_indices.npy', B)
-    summary = {'mode': a.mode, 'n_A': int(len(A)), 'n_B': int(len(B)), 'criteria': criteria, 'warnings': warns}
+    summary = {'mode': a.mode, 'eval_split': 'test', 'n_A': int(len(A)), 'n_B': int(len(B)), 'global_row_indices': True, 'shard_manifest': a.shard_manifest, 'feature_schema_path': a.feature_schema_path, 'seed': int(a.seed), 'criteria': criteria, 'warnings': warns}
     (out / 'split_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
 
 
