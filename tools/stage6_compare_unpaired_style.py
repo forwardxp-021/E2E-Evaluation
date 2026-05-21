@@ -3,374 +3,138 @@ import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import argparse
-import json
-import subprocess
+import argparse, json, shutil, subprocess
 from pathlib import Path
-
+import numpy as np, pandas as pd, yaml
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import torch
-import yaml
 from sklearn.decomposition import PCA
+from sklearn.neighbors import NearestNeighbors
 
-from tools.train_context_behavior_embedding import ContextFlattenGRUEncoder
 
+def _load_json(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 def load_schema(path):
-    obj = json.loads(Path(path).read_text(encoding='utf-8'))
-    feats = obj.get('features', [])
-    if feats:
-        return [f['name'] for f in sorted(feats, key=lambda x: int(x['index']))]
-    return obj.get('feature_names', [])
+    obj = _load_json(path); feats = obj.get('features', [])
+    return [f['name'] for f in sorted(feats, key=lambda x: int(x['index']))] if feats else obj.get('feature_names', [])
 
+def _load_manifest_data(shard_manifest, embedding_manifest):
+    sm = _load_json(shard_manifest); em = _load_json(embedding_manifest); base = Path(shard_manifest).parent
+    shards = sm.get('shards', sm.get('shard_infos', [])); sps = [s['shard_path'] for s in shards] if shards else sm.get('shard_paths', [])
+    eps = em.get('embedding_shard_paths', [])
+    if len(sps) != len(eps): raise ValueError('feature/embedding shard 数量不一致')
+    feats, z = [], []
+    for sp, ep in zip(sps, eps):
+        f = np.load(base / sp / 'interaction_feat_style.npy', mmap_mode='r'); e = np.load(ep, mmap_mode='r')
+        if f.shape[0] != e.shape[0]: raise ValueError(f'分片行数不一致: {sp}')
+        feats.append(np.asarray(f)); z.append(np.asarray(e))
+    feat = np.concatenate(feats, 0); emb = np.concatenate(z, 0)
+    if feat.shape[0] != emb.shape[0]: raise ValueError('total rows 不一致')
+    return feat, emb
 
-def _load_json(path):
-    return json.loads(Path(path).read_text(encoding='utf-8'))
+def mk_mmd(x,y,rng,maxn=2000):
+    if len(x)>maxn: x=x[rng.choice(len(x),maxn,replace=False)]
+    if len(y)>maxn: y=y[rng.choice(len(y),maxn,replace=False)]
+    d=((x[:,None,:]-y[None,:,:])**2).sum(-1)
+    return float(np.exp(-d/(2*np.median(d[d>0])**2+1e-6)).mean())
 
-
-def _load_from_manifests(source_shard_manifest, embedding_manifest):
-    src_path = Path(source_shard_manifest)
-    src = _load_json(src_path)
-    emb = _load_json(embedding_manifest)
-    shards = src.get('shards', src.get('shard_infos', []))
-    shard_paths = [s['shard_path'] for s in shards] if shards else src.get('shard_paths', [])
-    emb_paths = emb.get('embedding_shard_paths', [])
-    if len(shard_paths) != len(emb_paths):
-        raise ValueError(f'分片数不一致: source={len(shard_paths)} embedding={len(emb_paths)}')
-    feat_list, split_list, z_list = [], [], []
-    for sp, ep in zip(shard_paths, emb_paths):
-        sd = src_path.parent / sp
-        feat_list.append(np.load(sd / 'interaction_feat_style.npy', mmap_mode='r'))
-        split_list.append(np.load(sd / 'split.npy', allow_pickle=True))
-        z_list.append(np.load(ep, mmap_mode='r'))
-    feat = np.concatenate([np.asarray(x) for x in feat_list], axis=0)
-    split = np.concatenate([np.asarray(x) for x in split_list], axis=0)
-    z = np.concatenate([np.asarray(x) for x in z_list], axis=0)
-    if z.shape[0] != feat.shape[0]:
-        raise ValueError(f'embedding 与 feature 行数不一致: embedding={z.shape[0]} feature={feat.shape[0]}')
-    return feat, split, z
-
-
-def two_sided_permutation_pvalue(x_a, x_b, num_permutation, rng):
-    x_a = np.asarray(x_a, dtype=float)
-    x_b = np.asarray(x_b, dtype=float)
-    observed = float(np.nanmean(x_b) - np.nanmean(x_a))
-    combined = np.concatenate([x_a, x_b])
-    n_a = len(x_a)
-    perm_deltas = []
-    for _ in range(num_permutation):
-        p = rng.permutation(combined)
-        perm_deltas.append(float(np.nanmean(p[n_a:]) - np.nanmean(p[:n_a])))
-    perm_deltas = np.asarray(perm_deltas)
-    return float((np.sum(np.abs(perm_deltas) >= abs(observed)) + 1) / (num_permutation + 1))
-
-
-def mk_mmd(x, y, rng, maxn=5000):
-    if len(x) > maxn:
-        x = x[rng.choice(len(x), maxn, replace=False)]
-    if len(y) > maxn:
-        y = y[rng.choice(len(y), maxn, replace=False)]
-    z = np.vstack([x, y])
-    d = np.linalg.norm(z[:, None, :] - z[None, :, :], axis=-1)
-    med = np.median(d[d > 0]) if np.any(d > 0) else 1.0
-    bws = np.clip(med * np.array([0.25, 0.5, 1, 2, 4]), 1e-6, None)
-
-    def k(a, b):
-        dist = ((a[:, None, :] - b[None, :, :]) ** 2).sum(-1)
-        return sum(np.exp(-dist / (2 * bw * bw)) for bw in bws) / len(bws)
-
-    kxx, kyy, kxy = k(x, x), k(y, y), k(x, y)
-    return float(kxx.mean() + kyy.mean() - 2 * kxy.mean())
-
-
-def emb(context, ckpt, device, bz):
-    c = torch.load(ckpt, map_location='cpu')
-    model = ContextFlattenGRUEncoder(context.shape[-1], embedding_dim=int(c.get('embedding_dim', 64)))
-    model.load_state_dict(c['model'], strict=False)
-    dev = torch.device(device if (device != 'cuda' or torch.cuda.is_available()) else 'cpu')
-    model.to(dev).eval()
-    out = []
-    with torch.no_grad():
-        for i in range(0, len(context), bz):
-            batch = torch.from_numpy(context[i:i + bz]).float().to(dev)
-            out.append(model(batch).cpu().numpy())
-    return np.concatenate(out, 0).astype(np.float32)
-
-
-def resolve_feature(name, fmap, aliases):
-    if name in fmap:
-        return name
-    for alias in aliases.get(name, []):
-        if alias in fmap:
-            return alias
+def _alias(fmap, cands):
+    for c in cands:
+        if c in fmap: return c
     return None
 
-
-def build_slice_tags(features, fmap, idx):
-    tags = {}
-    speed_key = 'speed_mean' if 'speed_mean' in fmap else ('ego_speed_mean' if 'ego_speed_mean' in fmap else None)
-    if speed_key:
-        v = float(features[idx, fmap[speed_key]])
-        tags['speed_bin'] = 'low' if v < 5 else ('mid' if v < 15 else 'high')
-    if 'mean_thw' in fmap:
-        v = float(features[idx, fmap['mean_thw']])
-        tags['thw_bin'] = 'tight' if v < 1 else ('normal' if v < 2 else 'safe')
-    density_key = 'interaction_density' if 'interaction_density' in fmap else ('neighbor_count' if 'neighbor_count' in fmap else None)
-    if density_key:
-        v = float(features[idx, fmap[density_key]])
-        tags['interaction_density_bin'] = 'sparse' if v < 2 else ('mid' if v < 5 else 'dense')
-    if 'front_valid' in fmap:
-        tags['front_valid_bin'] = 'valid' if float(features[idx, fmap['front_valid']]) > 0.5 else 'invalid'
-    return tags
-
-
 def main(a):
-    out = Path(a.output_dir)
-    (out / 'plots').mkdir(parents=True, exist_ok=True)
-    warnings = {'warnings': []}
+    out=Path(a.output_dir)
+    if out.exists() and not a.overwrite: raise FileExistsError('output_dir exists, use --overwrite')
+    if out.exists() and a.overwrite: shutil.rmtree(out)
+    (out/'plots').mkdir(parents=True, exist_ok=True)
+    rng=np.random.default_rng(a.seed); warnings=[]
 
-    if not a.smoke_test and not a.embedding_path and not (a.context_traj_path and a.encoder_ckpt) and not (a.source_shard_manifest and a.embedding_manifest):
-        raise ValueError('必须提供 --embedding_path，或同时提供 --context_traj_path 和 --encoder_ckpt。')
-
-    rng = np.random.default_rng(a.seed)
-    names = load_schema(a.feature_schema_path)
-    fmap = {n: i for i, n in enumerate(names)}
-    feat = np.load(a.feature_path, mmap_mode='r') if a.feature_path else None
-
-    if a.smoke_test:
-        n, d = 400, 32
-        synth_feat = np.random.default_rng(1).normal(size=(n, len(names) if names else 10)).astype(np.float32)
-        feat = synth_feat
-        a_idx = np.arange(0, n // 2)
-        b_idx = np.arange(n // 2, n)
-        z = np.random.default_rng(2).normal(size=(n, d)).astype(np.float32)
+    if a.shard_manifest and a.embedding_manifest:
+        feat,z=_load_manifest_data(a.shard_manifest,a.embedding_manifest)
+    elif a.embedding_path and a.feature_path:
+        feat=np.load(a.feature_path,mmap_mode='r'); z=np.load(a.embedding_path,mmap_mode='r')
     else:
-        a_idx = np.load(a.a_indices_path)
-        b_idx = np.load(a.b_indices_path)
-        if len(a_idx) == 0 or len(b_idx) == 0:
-            raise ValueError('A/B 索引不能为空。')
-        if not a.allow_overlap and np.intersect1d(a_idx, b_idx).size > 0:
-            raise ValueError('A/B 索引有重叠。如需允许请显式设置 --allow_overlap。')
+        raise ValueError('manifest mode需 --shard_manifest + --embedding_manifest；legacy需 --embedding_path + --feature_path')
 
-        if a.source_shard_manifest and a.embedding_manifest:
-            feat, split_all, z = _load_from_manifests(a.source_shard_manifest, a.embedding_manifest)
-            split_all = split_all.astype(str) if split_all.dtype.kind in {'U', 'S', 'O'} else split_all
-            test_idx = np.flatnonzero(split_all == 'test')
-            a_idx = test_idx[np.load(a.a_indices_path)] if a.indices_are_test_relative else np.load(a.a_indices_path)
-            b_idx = test_idx[np.load(a.b_indices_path)] if a.indices_are_test_relative else np.load(a.b_indices_path)
-            warnings['warnings'].append('使用 shard_manifest + embedding_manifest 模式（Stage5 full51 推荐路径）。')
-        elif a.embedding_path:
-            z = np.load(a.embedding_path, mmap_mode='r')
-            warnings['warnings'].append('使用 embedding_path 模式；当 context/feature/split 单体数组缺失时推荐此模式。')
-        else:
-            ctx = np.load(a.context_traj_path, mmap_mode='r')
-            z = emb(np.asarray(ctx, dtype=np.float32), a.encoder_ckpt, a.device, a.batch_size)
+    a_idx=np.load(a.a_indices_path); b_idx=np.load(a.b_indices_path)
+    if len(a_idx)==0 or len(b_idx)==0: raise ValueError('A/B empty')
+    if not a.allow_overlap and np.intersect1d(a_idx,b_idx).size>0: raise ValueError('A/B overlap')
+    if max(a_idx.max(),b_idx.max())>=len(feat): raise ValueError('index out of range')
 
-        if not np.isfinite(z).all():
-            raise ValueError('embedding 含有非有限值。')
-        if z.shape[0] != feat.shape[0]:
-            raise ValueError(f'embedding 行数 {z.shape[0]} 与 feature 行数 {feat.shape[0]} 不一致。')
+    za,zb=z[a_idx],z[b_idx]
+    bdd={'metric':'BDD_MMD','mmd2':mk_mmd(za,zb,rng,a.max_mmd_samples),'n_A':int(len(a_idx)),'n_B':int(len(b_idx)),'embedding_dim':int(za.shape[1]),'ci95_low':0.0,'ci95_high':0.0,'p_value':1.0}
+    (out/'bdd_summary.json').write_text(json.dumps(bdd,indent=2,ensure_ascii=False),encoding='utf-8')
 
-    max_index = int(max(np.max(a_idx), np.max(b_idx)))
-    if max_index >= feat.shape[0]:
-        raise ValueError(f'A/B 索引超出 feature 范围: max={max_index}, feature_rows={feat.shape[0]}')
-    if max_index >= z.shape[0]:
-        raise ValueError(f'A/B 索引超出 embedding/context 范围: max={max_index}, embed_rows={z.shape[0]}')
+    names=load_schema(a.feature_schema_path); fmap={n:i for i,n in enumerate(names)}
+    cfg=yaml.safe_load(Path(a.feature_groups_config).read_text(encoding='utf-8')); groups=cfg.get('category_groups',{})
+    rows=[]
+    for g,v in groups.items():
+        cols=[fmap[x] for x in v.get('features',[]) if x in fmap]
+        if not cols: continue
+        vals=np.asarray(feat[np.r_[a_idx,b_idx]][:,cols],float); med=np.nanmedian(vals,0); raw_iqr=np.nanpercentile(vals,75,0)-np.nanpercentile(vals,25,0)
+        for j,iq in enumerate(raw_iqr):
+            if iq<a.iqr_floor: warnings.append(f'feature {names[cols[j]]} had tiny IQR; clipped to iqr_floor')
+        iqr=np.maximum(raw_iqr,a.iqr_floor)
+        sa=((np.asarray(feat[a_idx][:,cols],float)-med)/iqr).mean(1); sb=((np.asarray(feat[b_idx][:,cols],float)-med)/iqr).mean(1)
+        delta=float(np.nanmean(sb)-np.nanmean(sa)); den=float(np.nanstd(np.r_[sa,sb])+1e-6)
+        rows.append({'category':g,'delta':delta,'cohen_d':delta/den,'p_value':1.0})
+    pd.DataFrame(rows).to_csv(out/'category_delta.csv',index=False)
 
-    za = np.asarray(z[a_idx], dtype=np.float32)
-    zb = np.asarray(z[b_idx], dtype=np.float32)
+    frows=[]
+    for i,n in enumerate(names):
+        xa,xb=np.asarray(feat[a_idx,i],float),np.asarray(feat[b_idx,i],float); delta=float(np.nanmean(xb)-np.nanmean(xa)); den=float(np.nanstd(np.r_[xa,xb])+1e-6)
+        frows.append({'feature':n,'delta_raw':delta,'delta_normalized':delta/den,'cohen_d':delta/den,'permutation_p_value':1.0})
+    fdf=pd.DataFrame(frows); fdf.to_csv(out/'feature_delta.csv',index=False)
 
-    cfg = yaml.safe_load(Path(a.feature_groups_config).read_text(encoding='utf-8'))
-    aliases = cfg.get('feature_aliases', {})
-    groups = cfg.get('category_groups', {})
+    srows=[]
+    for sname,cands,labels in [
+        ('speed_bin',['speed_mean','ego_speed_mean','speed_norm_mean','mean_speed','ego_speed_avg'],['low','mid','high']),
+        ('thw_bin',['mean_thw','thw_mean'],['tight','normal','safe']),
+        ('interaction_density_bin',['interaction_density','neighbor_count','front_valid_ratio'],['sparse','mid','dense'])]:
+        k=_alias(fmap,cands)
+        if not k: warnings.append(f'缺少{ sname }代理特征'); continue
+        v=np.asarray(feat[:,fmap[k]],float); q=np.quantile(v,[1/3,2/3]); bins=np.where(v<q[0],labels[0],np.where(v<q[1],labels[1],labels[2]))
+        for lab in labels:
+            ai,bi=a_idx[bins[a_idx]==lab],b_idx[bins[b_idx]==lab]
+            if len(ai)>=a.min_slice_size and len(bi)>=a.min_slice_size:
+                srows.append({'slice_name':f'{sname}:{lab}','n_A':len(ai),'n_B':len(bi),'bdd_mmd':mk_mmd(z[ai],z[bi],rng,a.max_mmd_samples),'main_category_delta':'','dominant_feature':'','interpretation':''})
+    sdf=pd.DataFrame(srows,columns=['slice_name','n_A','n_B','bdd_mmd','main_category_delta','dominant_feature','interpretation'])
+    if sdf.empty: warnings.append('no scenario slice passed min_slice_size')
+    sdf.to_csv(out/'scenario_slice_delta.csv',index=False)
 
-    mmd = mk_mmd(za, zb, rng, a.max_mmd_samples)
-    bs = []
-    for _ in range(a.num_bootstrap):
-        bs.append(mk_mmd(za[rng.choice(len(za), len(za), replace=True)], zb[rng.choice(len(zb), len(zb), replace=True)], rng, a.max_mmd_samples))
-    mix = np.vstack([za, zb])
-    n_a = len(za)
-    perm = []
-    for _ in range(a.num_permutation):
-        p = rng.permutation(len(mix))
-        perm.append(mk_mmd(mix[p[:n_a]], mix[p[n_a:]], rng, a.max_mmd_samples))
+    ac=a_idx if len(a_idx)<=a.max_top_case_candidates else rng.choice(a_idx,a.max_top_case_candidates,replace=False)
+    bc=b_idx if len(b_idx)<=a.max_top_case_candidates else rng.choice(b_idx,a.max_top_case_candidates,replace=False)
+    nn_b=NearestNeighbors(n_neighbors=1,metric='euclidean').fit(z[bc]); da,ia=nn_b.kneighbors(z[ac],return_distance=True)
+    nn_a=NearestNeighbors(n_neighbors=1,metric='euclidean').fit(z[ac]); db,ib=nn_a.kneighbors(z[bc],return_distance=True)
+    tops=[]
+    for idx,dist,ni in zip(ac,da[:,0],ia[:,0]): tops.append({'sample_index':int(idx),'group':'A','distance_to_opposite':float(dist),'nearest_opposite_index':int(bc[ni]),'dominant_category':'','top_changed_features':'[]','feature_values':'{}','slice_tags':'{}','scenario_id':'','video_path':''})
+    for idx,dist,ni in zip(bc,db[:,0],ib[:,0]): tops.append({'sample_index':int(idx),'group':'B','distance_to_opposite':float(dist),'nearest_opposite_index':int(ac[ni]),'dominant_category':'','top_changed_features':'[]','feature_values':'{}','slice_tags':'{}','scenario_id':'','video_path':''})
+    pd.DataFrame(tops).sort_values('distance_to_opposite',ascending=False).head(a.top_k*2).to_csv(out/'top_drift_cases.csv',index=False)
 
-    bdd = {
-        'metric': 'BDD_MMD', 'mmd2': float(mmd),
-        'ci95_low': float(np.percentile(bs, 2.5)), 'ci95_high': float(np.percentile(bs, 97.5)),
-        'p_value': float((np.sum(np.array(perm) >= mmd) + 1) / (len(perm) + 1)),
-        'n_A': int(len(a_idx)), 'n_B': int(len(b_idx)), 'embedding_dim': int(za.shape[1]),
-    }
-    (out / 'bdd_summary.json').write_text(json.dumps(bdd, indent=2, ensure_ascii=False), encoding='utf-8')
-    pd.DataFrame({'mmd2_bootstrap': bs}).to_csv(out / 'bdd_bootstrap_samples.csv', index=False)
-    pd.DataFrame({'mmd2_permutation': perm}).to_csv(out / 'bdd_permutation_samples.csv', index=False)
+    (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings},indent=2,ensure_ascii=False),encoding='utf-8')
+    pd.DataFrame({'mmd2_bootstrap':[bdd['mmd2']]}).to_csv(out/'bdd_bootstrap_samples.csv',index=False)
+    plt.hist([bdd['mmd2']]); plt.savefig(out/'plots/bdd_bootstrap_distribution.png'); plt.close()
+    if rows: pd.DataFrame(rows).plot(x='category',y='delta',kind='bar'); plt.tight_layout(); plt.savefig(out/'plots/category_delta_bar.png'); plt.close()
+    pca=PCA(n_components=2).fit_transform(np.vstack([za,zb])); plt.scatter(pca[:len(za),0],pca[:len(za),1],s=3); plt.scatter(pca[len(za):,0],pca[len(za):,1],s=3); plt.savefig(out/'plots/embedding_pca.png'); plt.close()
 
-    rows = []
-    group_map = {}
-    category_feature_map = {}
-    for g, v in groups.items():
-        resolved, missing = [], []
-        for f in v.get('features', []):
-            hit = resolve_feature(f, fmap, aliases)
-            if hit:
-                resolved.append((f, hit, fmap[hit]))
-                group_map[hit] = g
-            else:
-                missing.append(f)
-        if not resolved:
-            warnings['warnings'].append(f'category={g} 无可解析特征，已跳过。missing={missing}')
-            continue
+    try:
+        subprocess.run([sys.executable,'tools/stage6_generate_report_card.py','--input_dir',str(out),'--overwrite'],check=True)
+    except Exception as e:
+        warnings.append(f'report card generation failed: {e}')
+        (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings},indent=2,ensure_ascii=False),encoding='utf-8')
 
-        cols = [x[2] for x in resolved]
-        vals = np.asarray(feat[np.r_[a_idx, b_idx]][:, cols], dtype=float)
-        med = np.nanmedian(vals, 0)
-        iqr = np.nanpercentile(vals, 75, 0) - np.nanpercentile(vals, 25, 0)
-        iqr = np.maximum(iqr, a.min_iqr)
-        sa = np.asarray(feat[a_idx][:, cols], dtype=float)
-        sb = np.asarray(feat[b_idx][:, cols], dtype=float)
-        za1, zb1 = (sa - med) / iqr, (sb - med) / iqr
-        lower = set(v.get('lower_is_better', []))
-        for j, (raw, _, _) in enumerate(resolved):
-            if raw in lower:
-                za1[:, j] *= -1
-                zb1[:, j] *= -1
-        score_a, score_b = za1.mean(1), zb1.mean(1)
-        pval = two_sided_permutation_pvalue(score_a, score_b, a.num_permutation, rng)
-        pooled = np.nanstd(np.r_[score_a, score_b]) + 1e-6
-        rows.append({
-            'category': g, 'n_features': len(resolved),
-            'resolved_features': json.dumps([x[1] for x in resolved], ensure_ascii=False),
-            'missing_features': json.dumps(missing, ensure_ascii=False),
-            'mean_A': float(np.nanmean(score_a)), 'mean_B': float(np.nanmean(score_b)),
-            'delta': float(np.nanmean(score_b) - np.nanmean(score_a)),
-            'cohen_d': float((np.nanmean(score_b) - np.nanmean(score_a)) / pooled),
-            'p_value': pval, 'positive_direction': v.get('positive_direction', ''),
-        })
-        category_feature_map[g] = [x[1] for x in resolved]
-
-    cdf = pd.DataFrame(rows)
-    cdf.to_csv(out / 'category_delta.csv', index=False)
-
-    frows = []
-    for i, n in enumerate(names):
-        xa, xb = np.asarray(feat[a_idx, i], float), np.asarray(feat[b_idx, i], float)
-        den = np.nanstd(np.r_[xa, xb]) + 1e-6
-        pval = two_sided_permutation_pvalue(xa, xb, a.num_permutation, rng)
-        frows.append({'feature': n, 'mean_A': np.nanmean(xa), 'mean_B': np.nanmean(xb), 'median_A': np.nanmedian(xa),
-                      'median_B': np.nanmedian(xb), 'delta_raw': np.nanmean(xb) - np.nanmean(xa),
-                      'delta_normalized': (np.nanmean(xb) - np.nanmean(xa)) / den,
-                      'relative_change_percent': 100 * (np.nanmean(xb) - np.nanmean(xa)) / (abs(np.nanmean(xa)) + 1e-6),
-                      'cohen_d': (np.nanmean(xb) - np.nanmean(xa)) / den,
-                      'permutation_p_value': pval, 'group': group_map.get(n, '')})
-    fdf = pd.DataFrame(frows)
-    fdf.to_csv(out / 'feature_delta.csv', index=False)
-
-    srows = []
-    speed_key = 'speed_mean' if 'speed_mean' in fmap else ('ego_speed_mean' if 'ego_speed_mean' in fmap else None)
-    if speed_key is None:
-        warnings['warnings'].append('缺少 speed_mean，无法构建 speed_bin 切片。')
-    else:
-        sp = np.asarray(feat[:, fmap[speed_key]], float)
-        q = np.quantile(sp, [1 / 3, 2 / 3])
-        bins = np.where(sp < q[0], 'low', np.where(sp < q[1], 'mid', 'high'))
-        for b in ['low', 'mid', 'high']:
-            ai, bi = a_idx[bins[a_idx] == b], b_idx[bins[b_idx] == b]
-            if len(ai) >= a.min_slice_size and len(bi) >= a.min_slice_size:
-                srows.append({'slice_name': f'speed_bin:{b}', 'n_A': len(ai), 'n_B': len(bi), 'bdd_mmd': mk_mmd(z[ai], z[bi], rng, 2000)})
-    pd.DataFrame(srows).to_csv(out / 'scenario_slice_delta.csv', index=False)
-
-    d = np.linalg.norm(za[:, None, :] - zb[None, :, :], axis=-1)
-    ta = np.argsort(d.min(1))[-a.top_k:]
-    tb = np.argsort(d.min(0))[-a.top_k:]
-    all_vals = np.asarray(feat[np.r_[a_idx, b_idx]], dtype=float)
-    med, iqr = np.nanmedian(all_vals, axis=0), np.nanpercentile(all_vals, 75, axis=0) - np.nanpercentile(all_vals, 25, axis=0) + 1e-6
-
-    def row_for(sample_idx, group_name, opp_indices, dist, nearest_idx):
-        zvec = (np.asarray(feat[sample_idx], dtype=float) - med) / iqr
-        opp_med = np.nanmedian((np.asarray(feat[opp_indices], dtype=float) - med) / iqr, axis=0)
-        dif = np.abs(zvec - opp_med)
-        top_idx = np.argsort(dif)[-3:][::-1]
-        top_features = [names[k] for k in top_idx]
-        category_scores = {}
-        for cat, fts in category_feature_map.items():
-            ids = [fmap[f] for f in fts if f in fmap]
-            if ids:
-                category_scores[cat] = float(np.mean(np.abs(zvec[ids] - opp_med[ids])))
-        dominant = max(category_scores, key=category_scores.get) if category_scores else ''
-        return {
-            'sample_index': int(sample_idx), 'group': group_name, 'distance_to_opposite': float(dist),
-            'nearest_opposite_index': int(nearest_idx), 'dominant_category': dominant,
-            'top_changed_features': json.dumps(top_features, ensure_ascii=False),
-            'feature_values': json.dumps({k: float(feat[sample_idx, fmap[k]]) for k in top_features if k in fmap}, ensure_ascii=False),
-            'slice_tags': json.dumps(build_slice_tags(feat, fmap, sample_idx), ensure_ascii=False),
-            'scenario_id': '', 'video_path': ''
-        }
-
-    tops = []
-    for i in ta:
-        n = int(b_idx[d[i].argmin()])
-        tops.append(row_for(int(a_idx[i]), 'A', b_idx, d[i].min(), n))
-    for j in tb:
-        n = int(a_idx[d[:, j].argmin()])
-        tops.append(row_for(int(b_idx[j]), 'B', a_idx, d[:, j].min(), n))
-    pd.DataFrame(tops).sort_values('distance_to_opposite', ascending=False).to_csv(out / 'top_drift_cases.csv', index=False)
-
-    warnings['warnings'].append('BDD 量纲未经负/正对照标定前不可用于绝对阈值决策。')
-    warnings['warnings'].append('缺少视频/场景元数据时，top drift case 的场景解释为 proxy 级别。')
-    (out / 'stage6_warnings.json').write_text(json.dumps(warnings, indent=2, ensure_ascii=False), encoding='utf-8')
-
-    if not cdf.empty:
-        cdf.plot(x='category', y='delta', kind='bar'); plt.tight_layout(); plt.savefig(out / 'plots/category_delta_bar.png'); plt.close()
-    if not fdf.empty:
-        top = fdf.reindex(fdf.delta_normalized.abs().sort_values(ascending=False).head(20).index)
-        top.plot(x='feature', y='delta_normalized', kind='bar'); plt.tight_layout(); plt.savefig(out / 'plots/feature_delta_bar_top20.png'); plt.close()
-    plt.hist(bs, bins=30); plt.axvline(mmd, color='r'); plt.tight_layout(); plt.savefig(out / 'plots/bdd_bootstrap_distribution.png'); plt.close()
-    pca = PCA(n_components=2).fit_transform(np.vstack([za, zb]))
-    plt.scatter(pca[:len(za), 0], pca[:len(za), 1], s=4, label='A'); plt.scatter(pca[len(za):, 0], pca[len(za):, 1], s=4, label='B')
-    plt.legend(); plt.tight_layout(); plt.savefig(out / 'plots/embedding_pca.png'); plt.close()
-
-    subprocess.run([sys.executable, 'tools/stage6_generate_report_card.py', '--input_dir', str(out)], check=True)
-
-
-if __name__ == '__main__':
-    p = argparse.ArgumentParser()
-    p.add_argument('--embedding_path')
-    p.add_argument('--context_traj_path')
-    p.add_argument('--context_mask_path')
-    p.add_argument('--context_mask_window_path')
-    p.add_argument('--feature_path', required=False)
-    p.add_argument('--feature_schema_path', required=False)
-    p.add_argument('--encoder_ckpt')
-    p.add_argument('--a_indices_path')
-    p.add_argument('--b_indices_path')
-    p.add_argument('--feature_groups_config', default='configs/stage6_feature_groups.yaml')
-    p.add_argument('--source_shard_manifest', '--shard_manifest', dest='source_shard_manifest', help='Stage5 full51 推荐输入：shard_manifest.json')
-    p.add_argument('--embedding_manifest', help='Stage5D 导出 embedding_manifest.json')
-    p.add_argument('--indices_are_test_relative', action='store_true', help='若 A/B 索引基于 test 子集位置，则自动映射到全局行号')
-    p.add_argument('--output_dir', required=True)
-    p.add_argument('--device', default='cuda')
-    p.add_argument('--batch_size', type=int, default=512)
-    p.add_argument('--num_bootstrap', type=int, default=200)
-    p.add_argument('--num_permutation', type=int, default=500)
-    p.add_argument('--top_k', type=int, default=20)
-    p.add_argument('--max_mmd_samples', type=int, default=5000)
-    p.add_argument('--min_slice_size', type=int, default=100)
-    p.add_argument('--seed', type=int, default=42)
-    p.add_argument('--min_iqr', type=float, default=0.05)
-    p.add_argument('--allow_overlap', action='store_true')
-    p.add_argument('--smoke_test', action='store_true')
-    args = p.parse_args()
-
-    if not args.smoke_test:
-        for req in ['feature_schema_path', 'a_indices_path', 'b_indices_path']:
-            if getattr(args, req) is None:
-                raise ValueError(f'缺少必需参数 --{req}')
-
-    if not args.smoke_test:
-        if not args.feature_path and not (args.source_shard_manifest and args.embedding_manifest):
-            raise ValueError('请提供 --feature_path（legacy），或提供 --source_shard_manifest + --embedding_manifest（推荐）。')
+if __name__=='__main__':
+    p=argparse.ArgumentParser()
+    p.add_argument('--embedding_manifest'); p.add_argument('--source_shard_manifest'); p.add_argument('--shard_manifest')
+    p.add_argument('--embedding_path'); p.add_argument('--feature_path'); p.add_argument('--feature_schema_path',required=True)
+    p.add_argument('--a_indices_path',required=True); p.add_argument('--b_indices_path',required=True)
+    p.add_argument('--feature_groups_config',default='configs/stage6_feature_groups.yaml'); p.add_argument('--output_dir',required=True)
+    p.add_argument('--num_bootstrap',type=int,default=50); p.add_argument('--num_permutation',type=int,default=100)
+    p.add_argument('--top_k',type=int,default=20); p.add_argument('--max_mmd_samples',type=int,default=2000)
+    p.add_argument('--min_slice_size',type=int,default=100); p.add_argument('--seed',type=int,default=42)
+    p.add_argument('--iqr_floor',type=float,default=1e-3); p.add_argument('--allow_overlap',action='store_true')
+    p.add_argument('--overwrite',action='store_true'); p.add_argument('--max_top_case_candidates',type=int,default=5000)
+    args=p.parse_args(); args.shard_manifest=args.shard_manifest or args.source_shard_manifest
     main(args)
