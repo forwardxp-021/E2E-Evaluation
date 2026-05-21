@@ -1,0 +1,12 @@
+seed: 42
+quantiles:
+  low: 0.3
+  high: 0.7
+mmd:
+  max_mmd_samples: 5000
+  num_bootstrap: 200
+  num_permutation: 500
+compare:
+  batch_size: 512
+  top_k: 20
+  min_slice_size: 100
