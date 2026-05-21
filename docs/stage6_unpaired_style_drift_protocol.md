@@ -1,35 +1,115 @@
-# Stage 6A 非配对实路风格漂移评估协议
+# Stage 6A 非配对实路风格漂移评估协议（Unpaired-First）
 
-## 1) 为什么 Stage 6 以 non-paired 为主
-真实部署常见 A/B 日志来自不同城市、时间和路线，无法保证逐样本配对，因此主评估模式必须是非配对分布比较。
+## 1. 工程背景
+Stage 6 的目标是服务真实 E2E 模型版本迭代：
+- A 组：上一版模型实路日志；
+- B 组：当前版模型实路日志。
 
-## 2) 为什么 paired 仅是验证模式
-paired 可做 sanity-check（例如同场景同交通流），但不代表真实采集条件，不应作为部署主结论依据。
+在每次模型发布后，工程侧关心“行为风格是否漂移、漂移幅度多大、主要漂移在什么类型行为上”。这不是学术上的同场景 A/B 对照，而是实路异源日志比较。
 
-## 3) BDD 在测什么、不测什么
-BDD-MMD 衡量 A/B 在行为嵌入空间的**总体分布差异幅度**，不直接给“更激进/更保守”方向语义。
+## 2. 为什么 Stage 6 必须 unpaired-first
+真实数据采集条件天然不一致：
+- 城市、道路等级、路线分布不同；
+- 时段、天气、交通拥堵水平不同；
+- 测试司机与任务编排不同。
 
-## 4) 为什么以嵌入空间为主
-Stage 5D-balanced-v2 已学习到 interaction-aware 行为结构。直接在该空间做分布比较，比单特征均值更稳健。
+因此，部署模式不能依赖“逐样本配对（paired）”的假设。Stage 6A 以非配对分布比较为主，paired 仅保留为补充验证模式。
 
-## 5) 为什么还要 category/feature 层
-类别层和特征层用于解释方向：例如跟驰保守性、纵向舒适性、横向稳定性等。
+## 3. 为什么 paired 仅是验证模式
+paired 在以下场景有价值：
+- 仿真同场景 replay 的 sanity-check；
+- planner/replay 回放对照；
+- 受控实验的可解释归因。
 
-## 6) 为什么简单均值不够
-单特征均值会忽略特征耦合与多模态分布。BDD 可先判断“是否漂移”，再用解释层定位“漂移到哪里”。
+但 paired 不是主部署入口，因为它不能代表实路异源日志比较的主体问题。
 
-## 7) 为什么要做 scenario/proxy slice
-非配对比较会受场景分布混杂影响（速度段、交互密度等）。切片后可区分“风格差异”与“场景差异”。
+## 4. 非配对核心挑战：场景混杂（confounding）
+非配对比较中，BDD 上升可能来自两类原因：
+1) 模型行为风格确实变化；
+2) A/B 场景分布（ODD）不同。
 
-## 8) Stage 6A 三个验证实验运行方式
+Stage 6A 不回避该问题，而是通过切片与解释层减少误判风险。
 
-### negative_control_random
-- 目标：同 test 集随机切分，预期漂移较小或可解释为采样噪声。
+## 5. Stage 6A 总体流程
+`logs -> window slicing -> scene/proxy tagging -> embedding -> BDD -> category/feature/slice explanation -> top drift cases -> report card`
 
-### pseudo_style_aggressive_vs_conservative
-- 目标：按特征分位构造“保守样本 vs 激进样本”，预期漂移更大。
+### 5.1 输入
+- A/B 索引（来自 split 构建工具）；
+- 特征矩阵与 schema；
+- 行对齐 embedding（优先）或 context+encoder（回退模式）。
 
-### scene_confounding_control
-- 目标：故意构造低速高交互 vs 高速低交互，验证场景混杂会抬高原始 BDD。
+### 5.2 主指标
+- 在交互行为 embedding 空间计算 BDD-MMD（含 bootstrap CI 与 permutation p-value）。
 
-示例命令见 `QUICK_REFERENCE.md` 新增 Stage 6A 段落。
+### 5.3 解释层
+- category delta（按 YAML 分组与方向定义）；
+- feature delta（逐特征差异与统计显著性）；
+- scenario/proxy slices（速度/THW/交互密度等切片）；
+- top drift cases（可追踪样本级解释字段）。
+
+## 6. BDD 测什么
+BDD（MMD²）衡量的是 **A/B 在 embedding 空间的分布漂移幅度**。
+
+## 7. BDD 不测什么
+BDD 本身不直接给出：
+- 漂移方向（更保守/更激进/更舒适）；
+- 安全认证结论；
+- 因果归因（是模型变化还是场景变化）。
+
+## 8. 为什么 embedding 是主度量空间
+Stage 5 学到的 interaction-aware embedding 作为主度量空间，原因：
+- 保留时序轨迹结构；
+- 保留 ego-neighbor 交互关系；
+- 保留多特征联合分布（非单维均值）；
+- 支持样本检索、原型分析、case mining。
+
+## 9. 为什么 category/feature 是解释层
+category/feature 的职责是“在检测到漂移后解释方向”，而非替代主分布比较。
+
+即：先由 BDD 回答“是否漂移”，再由 category/feature/slice/case 回答“漂移到哪里”。
+
+## 10. 为什么简单特征均值不足
+- 均值会掩盖多模态分布；
+- 同均值可对应不同分布形状；
+- ego-only 指标无法覆盖交互动态；
+- 难以做代表性 case 检索；
+- 无法提供统一行为空间。
+
+## 11. Stage 6A 验证实验
+1. `negative_control_random`
+   - 同一 test 池随机切 A/B，预期漂移较小。
+2. `pseudo_style_aggressive_vs_conservative`
+   - 用 proxy 构造伪风格两端，预期漂移较大。
+3. `scene_confounding_control`
+   - 构造低速高密 vs 高速低密，验证场景混杂可抬升 BDD。
+
+## 12. Scenario/Proxy 切片
+默认/推荐切片：
+- `speed_bin`
+- `thw_bin`
+- `interaction_density_bin`
+- `front_valid_bin`（若可用）
+
+切片能降低混杂，但不能完全消除 unpaired 因果歧义。
+
+## 13. Report Card 输出
+- executive summary
+- BDD summary
+- `category_delta.csv`
+- `feature_delta.csv`
+- `scenario_slice_delta.csv`
+- `top_drift_cases.csv`
+- plots（category/feature/bdd/pca）
+- `style_report_card.md`
+
+## 14. 局限与评审风险
+- weak labels / proxy labels 精度有限；
+- unpaired 模式存在因果歧义；
+- BDD 量纲需负/正对照标定；
+- pseudo split 可能向解释特征“泄漏”；
+- 无视频/元数据时 case 解释仅 proxy 级别。
+
+## 15. Stage 6B/6C/6D 路线图
+- Stage 6B：更强 scenario matching 与 baseline（重加权、matching、分层抽样）。
+- Stage 6C：报告卡工程化与 case gallery（支持质检闭环）。
+- Stage 6D：跨数据域验证（Argoverse / nuPlan / 公司实路日志）。
