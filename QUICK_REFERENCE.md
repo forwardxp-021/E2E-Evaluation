@@ -1985,6 +1985,45 @@ python tools/stage6_compare_unpaired_style.py \
 
 ## Stage 6A 非配对风格漂移（Issue #114）
 
+
+### Stage 6A（Issue #116）推荐：full51 分片清单模式
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+EMB_ROOT=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings
+
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $DATA_ROOT/shard_manifest.json \
+  --feature_schema_path $DATA_ROOT/feature_schema.json \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random
+
+python tools/stage6_compare_unpaired_style.py \
+  --source_shard_manifest $DATA_ROOT/shard_manifest.json \
+  --embedding_manifest $EMB_ROOT/embedding_manifest.json \
+  --feature_schema_path $DATA_ROOT/feature_schema.json \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --indices_are_test_relative \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random
+```
+
+## 2. 期望行为
+
+- 默认按 Stage 5 full51 的 `shard_manifest.json` 读取分片特征与 split，不依赖根目录扁平 `.npy`。
+- compare 默认按 Stage 5D-balanced-v2 的 `embedding_manifest.json` 读取分片 embedding。
+- `--feature_path/--split_path` 与 `--embedding_path` 仅保留为 legacy fallback。
+
+## 3. 通过标准
+
+- split 目录产出 `a_indices.npy`、`b_indices.npy`、`split_summary.json`。
+- compare 目录产出 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`stage6_warnings.json` 与图表。
+- 日志包含“使用 shard_manifest + embedding_manifest 模式（Stage5 full51 推荐路径）”提示。
+
 ### 1. 命令
 
 ```bash

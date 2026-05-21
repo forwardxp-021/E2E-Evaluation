@@ -113,3 +113,11 @@ category/feature 的职责是“在检测到漂移后解释方向”，而非替
 - Stage 6B：更强 scenario matching 与 baseline（重加权、matching、分层抽样）。
 - Stage 6C：报告卡工程化与 case gallery（支持质检闭环）。
 - Stage 6D：跨数据域验证（Argoverse / nuPlan / 公司实路日志）。
+
+
+## 12. Issue #116 实施约束（full51）
+
+- Stage 5 full51 数据默认是 **sharded dataset + manifest**，不是根目录扁平 npy。
+- Stage 6A 构建 split 时，推荐使用 `--shard_manifest .../shard_manifest.json`。
+- Stage 6A compare 时，推荐使用 `--source_shard_manifest` + `--embedding_manifest`（Stage5D-balanced-v2 导出的 `embedding_manifest.json`）。
+- 扁平 `--feature_path/--split_path/--embedding_path` 模式仅作为 legacy fallback，不能作为 full51 主流程。
