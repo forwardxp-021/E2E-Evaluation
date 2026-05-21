@@ -1982,3 +1982,108 @@ python tools/stage6_compare_unpaired_style.py \
 ## 3. 通过标准
 
 输出目录包含 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`scenario_slice_delta.csv`、`top_drift_cases.csv`、`style_report_card.md` 与 `plots/*.png`。
+
+## Stage 6A 非配对风格漂移（Issue #114）
+
+### 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+FEATURE_PATH=$DATA_ROOT/interaction_feat_style.npy
+SCHEMA_PATH=$DATA_ROOT/feature_schema.json
+SPLIT_PATH=$DATA_ROOT/split.npy
+CONTEXT_PATH=$DATA_ROOT/context_traj.npy
+EMBEDDING_PATH=$DATA_ROOT/context_gru_stage5d_group_weighted_v1_embeddings/embeddings.npy
+CKPT=$DATA_ROOT/context_gru_stage5d_group_weighted_v1/best_model.pt
+
+ls -lh \
+  $FEATURE_PATH \
+  $SCHEMA_PATH \
+  $SPLIT_PATH \
+  $CONTEXT_PATH \
+  $EMBEDDING_PATH \
+  $CKPT
+```
+
+> 重要警告：如果 `context_traj.npy`、`interaction_feat_style.npy` 或 `split.npy` 在 full51 merged 目录下缺失，单体数组命令不可用。若已有与 feature 行对齐的 embedding，请优先使用 `--embedding_path` 模式。
+
+```bash
+# 1) negative_control_random
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --split_path $SPLIT_PATH \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random
+
+# 2) pseudo_style_aggressive_vs_conservative
+python tools/stage6_build_ab_splits.py \
+  --mode pseudo_style_aggressive_vs_conservative \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --split_path $SPLIT_PATH \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name pseudo_style_aggressive_vs_conservative
+
+# 3) scene_confounding_control
+python tools/stage6_build_ab_splits.py \
+  --mode scene_confounding_control \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --split_path $SPLIT_PATH \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name scene_confounding_control
+```
+
+```bash
+# A. embedding_path 模式（推荐）
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_path $EMBEDDING_PATH \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --top_k 20
+
+# B. context/encoder 模式（回退）
+python tools/stage6_compare_unpaired_style.py \
+  --context_traj_path $CONTEXT_PATH \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --encoder_ckpt $CKPT \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare_ctx/negative_control_random \
+  --device cuda \
+  --batch_size 256 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --top_k 20
+```
+
+### 2. 期望行为
+- split 脚本读取 `feature/split/schema`，生成 A/B 索引与 split summary。
+- compare 脚本读取 A/B、embedding（或 context+ckpt）与 feature，输出 BDD、category/feature/slice/case 与报告卡。
+- compare 脚本会写 `stage6_warnings.json`，提醒缺失特征、未标定 BDD、元数据缺失等风险。
+
+### 3. 通过标准
+- 三个 split 实验都能生成 `a_indices.npy`、`b_indices.npy`。
+- compare 产物包含：
+  - `bdd_summary.json`
+  - `bdd_bootstrap_samples.csv`
+  - `bdd_permutation_samples.csv`
+  - `category_delta.csv`
+  - `feature_delta.csv`
+  - `scenario_slice_delta.csv`
+  - `top_drift_cases.csv`
+  - `stage6_warnings.json`
+  - `style_report_card.md`
+- `feature_delta.csv` 的 `permutation_p_value` 不应全是 1.0（除非数据本身极端巧合）。
