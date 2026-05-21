@@ -1855,7 +1855,7 @@ python tools/export_context_row_embeddings.py \
 # Exact Stage 5C evaluator command
 ```bash
 python tools/evaluate_context_embedding.py \
-  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
   --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
   --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
@@ -1926,12 +1926,12 @@ python tools/train_context_behavior_embedding.py \
 python tools/export_context_row_embeddings.py \
   --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1/best_model.pt \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings \
   --split all \
   --merge_embeddings
 
 python tools/evaluate_context_embedding.py \
-  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
   --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
   --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
@@ -2032,7 +2032,7 @@ FEATURE_PATH=$DATA_ROOT/interaction_feat_style.npy
 SCHEMA_PATH=$DATA_ROOT/feature_schema.json
 SPLIT_PATH=$DATA_ROOT/split.npy
 CONTEXT_PATH=$DATA_ROOT/context_traj.npy
-EMBEDDING_PATH=$DATA_ROOT/context_gru_stage5d_group_weighted_v1_embeddings/embeddings.npy
+EMBEDDING_PATH=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embeddings.npy
 CKPT=$DATA_ROOT/context_gru_stage5d_group_weighted_v1/best_model.pt
 
 ls -lh \

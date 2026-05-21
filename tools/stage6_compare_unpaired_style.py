@@ -33,15 +33,17 @@ def _load_json(path):
 
 
 def _load_from_manifests(source_shard_manifest, embedding_manifest):
-    src = _load_json(source_shard_manifest)
+    src_path = Path(source_shard_manifest)
+    src = _load_json(src_path)
     emb = _load_json(embedding_manifest)
-    shard_paths = src.get('shard_paths', [])
+    shards = src.get('shards', src.get('shard_infos', []))
+    shard_paths = [s['shard_path'] for s in shards] if shards else src.get('shard_paths', [])
     emb_paths = emb.get('embedding_shard_paths', [])
     if len(shard_paths) != len(emb_paths):
         raise ValueError(f'分片数不一致: source={len(shard_paths)} embedding={len(emb_paths)}')
     feat_list, split_list, z_list = [], [], []
     for sp, ep in zip(shard_paths, emb_paths):
-        sd = Path(sp)
+        sd = src_path.parent / sp
         feat_list.append(np.load(sd / 'interaction_feat_style.npy', mmap_mode='r'))
         split_list.append(np.load(sd / 'split.npy', allow_pickle=True))
         z_list.append(np.load(ep, mmap_mode='r'))
@@ -110,8 +112,9 @@ def resolve_feature(name, fmap, aliases):
 
 def build_slice_tags(features, fmap, idx):
     tags = {}
-    if 'speed_mean' in fmap:
-        v = float(features[idx, fmap['speed_mean']])
+    speed_key = 'speed_mean' if 'speed_mean' in fmap else ('ego_speed_mean' if 'ego_speed_mean' in fmap else None)
+    if speed_key:
+        v = float(features[idx, fmap[speed_key]])
         tags['speed_bin'] = 'low' if v < 5 else ('mid' if v < 15 else 'high')
     if 'mean_thw' in fmap:
         v = float(features[idx, fmap['mean_thw']])
@@ -130,7 +133,7 @@ def main(a):
     (out / 'plots').mkdir(parents=True, exist_ok=True)
     warnings = {'warnings': []}
 
-    if not a.smoke_test and not a.embedding_path and not (a.context_traj_path and a.encoder_ckpt):
+    if not a.smoke_test and not a.embedding_path and not (a.context_traj_path and a.encoder_ckpt) and not (a.source_shard_manifest and a.embedding_manifest):
         raise ValueError('必须提供 --embedding_path，或同时提供 --context_traj_path 和 --encoder_ckpt。')
 
     rng = np.random.default_rng(a.seed)
@@ -225,7 +228,8 @@ def main(a):
         cols = [x[2] for x in resolved]
         vals = np.asarray(feat[np.r_[a_idx, b_idx]][:, cols], dtype=float)
         med = np.nanmedian(vals, 0)
-        iqr = np.nanpercentile(vals, 75, 0) - np.nanpercentile(vals, 25, 0) + 1e-6
+        iqr = np.nanpercentile(vals, 75, 0) - np.nanpercentile(vals, 25, 0)
+        iqr = np.maximum(iqr, a.min_iqr)
         sa = np.asarray(feat[a_idx][:, cols], dtype=float)
         sb = np.asarray(feat[b_idx][:, cols], dtype=float)
         za1, zb1 = (sa - med) / iqr, (sb - med) / iqr
@@ -266,10 +270,11 @@ def main(a):
     fdf.to_csv(out / 'feature_delta.csv', index=False)
 
     srows = []
-    if 'speed_mean' not in fmap:
+    speed_key = 'speed_mean' if 'speed_mean' in fmap else ('ego_speed_mean' if 'ego_speed_mean' in fmap else None)
+    if speed_key is None:
         warnings['warnings'].append('缺少 speed_mean，无法构建 speed_bin 切片。')
     else:
-        sp = np.asarray(feat[:, fmap['speed_mean']], float)
+        sp = np.asarray(feat[:, fmap[speed_key]], float)
         q = np.quantile(sp, [1 / 3, 2 / 3])
         bins = np.where(sp < q[0], 'low', np.where(sp < q[1], 'mid', 'high'))
         for b in ['low', 'mid', 'high']:
@@ -343,7 +348,7 @@ if __name__ == '__main__':
     p.add_argument('--a_indices_path')
     p.add_argument('--b_indices_path')
     p.add_argument('--feature_groups_config', default='configs/stage6_feature_groups.yaml')
-    p.add_argument('--source_shard_manifest', help='Stage5 full51 推荐输入：shard_manifest.json')
+    p.add_argument('--source_shard_manifest', '--shard_manifest', dest='source_shard_manifest', help='Stage5 full51 推荐输入：shard_manifest.json')
     p.add_argument('--embedding_manifest', help='Stage5D 导出 embedding_manifest.json')
     p.add_argument('--indices_are_test_relative', action='store_true', help='若 A/B 索引基于 test 子集位置，则自动映射到全局行号')
     p.add_argument('--output_dir', required=True)
@@ -355,6 +360,7 @@ if __name__ == '__main__':
     p.add_argument('--max_mmd_samples', type=int, default=5000)
     p.add_argument('--min_slice_size', type=int, default=100)
     p.add_argument('--seed', type=int, default=42)
+    p.add_argument('--min_iqr', type=float, default=0.05)
     p.add_argument('--allow_overlap', action='store_true')
     p.add_argument('--smoke_test', action='store_true')
     args = p.parse_args()

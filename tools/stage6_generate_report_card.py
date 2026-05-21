@@ -10,13 +10,22 @@ from pathlib import Path
 import pandas as pd
 
 
+def _safe_read_csv(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame()
+
+
 def main(a):
     d = Path(a.input_dir)
     bdd = json.loads((d / 'bdd_summary.json').read_text(encoding='utf-8'))
-    c = pd.read_csv(d / 'category_delta.csv') if (d / 'category_delta.csv').exists() else pd.DataFrame()
-    f = pd.read_csv(d / 'feature_delta.csv') if (d / 'feature_delta.csv').exists() else pd.DataFrame()
-    s = pd.read_csv(d / 'scenario_slice_delta.csv') if (d / 'scenario_slice_delta.csv').exists() else pd.DataFrame()
-    t = pd.read_csv(d / 'top_drift_cases.csv') if (d / 'top_drift_cases.csv').exists() else pd.DataFrame()
+    c = _safe_read_csv(d / 'category_delta.csv')
+    f = _safe_read_csv(d / 'feature_delta.csv')
+    s = _safe_read_csv(d / 'scenario_slice_delta.csv')
+    t = _safe_read_csv(d / 'top_drift_cases.csv')
     w = json.loads((d / 'stage6_warnings.json').read_text(encoding='utf-8')) if (d / 'stage6_warnings.json').exists() else {'warnings': []}
 
     topc = c.reindex(c.delta.abs().sort_values(ascending=False).head(10).index) if not c.empty else pd.DataFrame()
