@@ -10,6 +10,29 @@ from pathlib import Path
 import numpy as np
 
 
+def _load_json(path):
+    return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def _iter_shard_feature_split(shard_manifest_path):
+    manifest = _load_json(shard_manifest_path)
+    for shard in manifest.get('shard_paths', []):
+        d = Path(shard)
+        yield np.load(d / 'interaction_feat_style.npy', mmap_mode='r'), np.load(d / 'split.npy', allow_pickle=True)
+
+
+def _load_feature_split(args):
+    if args.shard_manifest:
+        feats, splits = [], []
+        for f, s in _iter_shard_feature_split(args.shard_manifest):
+            feats.append(np.asarray(f))
+            splits.append(np.asarray(s))
+        if not feats:
+            raise ValueError(f'shard_manifest 中未找到有效分片: {args.shard_manifest}')
+        return np.concatenate(feats, axis=0), np.concatenate(splits, axis=0)
+    return np.load(args.feature_path, mmap_mode='r'), np.load(args.split_path, allow_pickle=True)
+
+
 def load_schema(path):
     obj = json.loads(Path(path).read_text(encoding='utf-8'))
     feats = obj.get('features', [])
@@ -31,8 +54,7 @@ def col(arr, m, keys, warns):
 def main(a):
     out = Path(a.output_dir) / a.experiment_name
     out.mkdir(parents=True, exist_ok=True)
-    feat = np.load(a.feature_path, mmap_mode='r')
-    split = np.load(a.split_path, allow_pickle=True)
+    feat, split = _load_feature_split(a)
     split = split.astype(str) if split.dtype.kind in {'U', 'S', 'O'} else np.array([['train', 'val', 'test'][int(x)] if int(x) in [0, 1, 2] else str(int(x)) for x in split], dtype=object)
     test_idx = np.flatnonzero(split == 'test')
     names = load_schema(a.feature_schema_path)
@@ -86,13 +108,17 @@ def main(a):
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('--mode', choices=['negative_control_random', 'pseudo_style_aggressive_vs_conservative', 'scene_confounding_control'], required=True)
-    p.add_argument('--feature_path', required=True)
+    p.add_argument('--feature_path')
     p.add_argument('--feature_schema_path', required=True)
-    p.add_argument('--split_path', required=True)
+    p.add_argument('--split_path')
+    p.add_argument('--shard_manifest', help='推荐：Stage5 full51 使用 shard_manifest.json')
     p.add_argument('--output_dir', default='outputs/stage6A_splits')
     p.add_argument('--experiment_name', required=True)
     p.add_argument('--q_low', type=float, default=0.3)
     p.add_argument('--q_high', type=float, default=0.7)
     p.add_argument('--seed', type=int, default=42)
     p.add_argument('--allow_degraded_split', action='store_true')
-    main(p.parse_args())
+    args = p.parse_args()
+    if not args.shard_manifest and (not args.feature_path or not args.split_path):
+        raise ValueError('请提供 --shard_manifest，或同时提供 --feature_path 与 --split_path（legacy）。')
+    main(args)

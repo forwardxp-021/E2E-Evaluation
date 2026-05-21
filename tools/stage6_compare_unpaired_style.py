@@ -28,6 +28,31 @@ def load_schema(path):
     return obj.get('feature_names', [])
 
 
+def _load_json(path):
+    return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def _load_from_manifests(source_shard_manifest, embedding_manifest):
+    src = _load_json(source_shard_manifest)
+    emb = _load_json(embedding_manifest)
+    shard_paths = src.get('shard_paths', [])
+    emb_paths = emb.get('embedding_shard_paths', [])
+    if len(shard_paths) != len(emb_paths):
+        raise ValueError(f'分片数不一致: source={len(shard_paths)} embedding={len(emb_paths)}')
+    feat_list, split_list, z_list = [], [], []
+    for sp, ep in zip(shard_paths, emb_paths):
+        sd = Path(sp)
+        feat_list.append(np.load(sd / 'interaction_feat_style.npy', mmap_mode='r'))
+        split_list.append(np.load(sd / 'split.npy', allow_pickle=True))
+        z_list.append(np.load(ep, mmap_mode='r'))
+    feat = np.concatenate([np.asarray(x) for x in feat_list], axis=0)
+    split = np.concatenate([np.asarray(x) for x in split_list], axis=0)
+    z = np.concatenate([np.asarray(x) for x in z_list], axis=0)
+    if z.shape[0] != feat.shape[0]:
+        raise ValueError(f'embedding 与 feature 行数不一致: embedding={z.shape[0]} feature={feat.shape[0]}')
+    return feat, split, z
+
+
 def two_sided_permutation_pvalue(x_a, x_b, num_permutation, rng):
     x_a = np.asarray(x_a, dtype=float)
     x_b = np.asarray(x_b, dtype=float)
@@ -111,7 +136,7 @@ def main(a):
     rng = np.random.default_rng(a.seed)
     names = load_schema(a.feature_schema_path)
     fmap = {n: i for i, n in enumerate(names)}
-    feat = np.load(a.feature_path, mmap_mode='r')
+    feat = np.load(a.feature_path, mmap_mode='r') if a.feature_path else None
 
     if a.smoke_test:
         n, d = 400, 32
@@ -128,7 +153,14 @@ def main(a):
         if not a.allow_overlap and np.intersect1d(a_idx, b_idx).size > 0:
             raise ValueError('A/B 索引有重叠。如需允许请显式设置 --allow_overlap。')
 
-        if a.embedding_path:
+        if a.source_shard_manifest and a.embedding_manifest:
+            feat, split_all, z = _load_from_manifests(a.source_shard_manifest, a.embedding_manifest)
+            split_all = split_all.astype(str) if split_all.dtype.kind in {'U', 'S', 'O'} else split_all
+            test_idx = np.flatnonzero(split_all == 'test')
+            a_idx = test_idx[np.load(a.a_indices_path)] if a.indices_are_test_relative else np.load(a.a_indices_path)
+            b_idx = test_idx[np.load(a.b_indices_path)] if a.indices_are_test_relative else np.load(a.b_indices_path)
+            warnings['warnings'].append('使用 shard_manifest + embedding_manifest 模式（Stage5 full51 推荐路径）。')
+        elif a.embedding_path:
             z = np.load(a.embedding_path, mmap_mode='r')
             warnings['warnings'].append('使用 embedding_path 模式；当 context/feature/split 单体数组缺失时推荐此模式。')
         else:
@@ -311,6 +343,9 @@ if __name__ == '__main__':
     p.add_argument('--a_indices_path')
     p.add_argument('--b_indices_path')
     p.add_argument('--feature_groups_config', default='configs/stage6_feature_groups.yaml')
+    p.add_argument('--source_shard_manifest', help='Stage5 full51 推荐输入：shard_manifest.json')
+    p.add_argument('--embedding_manifest', help='Stage5D 导出 embedding_manifest.json')
+    p.add_argument('--indices_are_test_relative', action='store_true', help='若 A/B 索引基于 test 子集位置，则自动映射到全局行号')
     p.add_argument('--output_dir', required=True)
     p.add_argument('--device', default='cuda')
     p.add_argument('--batch_size', type=int, default=512)
@@ -325,7 +360,11 @@ if __name__ == '__main__':
     args = p.parse_args()
 
     if not args.smoke_test:
-        for req in ['feature_path', 'feature_schema_path', 'a_indices_path', 'b_indices_path']:
+        for req in ['feature_schema_path', 'a_indices_path', 'b_indices_path']:
             if getattr(args, req) is None:
                 raise ValueError(f'缺少必需参数 --{req}')
+
+    if not args.smoke_test:
+        if not args.feature_path and not (args.source_shard_manifest and args.embedding_manifest):
+            raise ValueError('请提供 --feature_path（legacy），或提供 --source_shard_manifest + --embedding_manifest（推荐）。')
     main(args)
