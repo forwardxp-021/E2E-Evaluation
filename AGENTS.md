@@ -29,6 +29,15 @@
 10. QUICK_REFERENCE.md 讲命令、期望行为、通过标准。
 11. 如有training, evaluate embedding, export embedding等消耗较大计算的过程，请加入进度条显示功能。
 12. 关于stage5的所有设计和验证都更新到 07_stage5_interaction_design.md文档中。
+13. chatgpt先 review 当前代码 / 文档 / 分支状态，把问题整理成 GitHub Issue，Issue 里写清楚：
+   - 背景
+   - 目标
+   - 要改哪些文件
+   - 实现要求
+   - 验收标准
+   - 运行命令
+用户把 Issue 链接交给 Codex， Codex 修改并提交， chatgpt再 review Codex 的改动，不合格就继续开 follow-up issue
+14. 关于stage6的所有设计和验证都更新到 stage6_unpaired_style_drift_protocol.md文档中。
 
 ---
 
