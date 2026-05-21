@@ -60,6 +60,14 @@ python evaluate_embedding.py \
 
 ## 关键参数
 
+### Stage 5B 训练性能/内存排查（GPU 利用率低）
+- GPU 利用率低通常不是模型太慢，而是 **DataLoader / CPU / 内存瓶颈**。
+- 优先使用 `mmap` 方式加载 shard（避免一次性将大 `.npy` 完整读入 RAM）。
+- 建议先从 `batch_size=64` 开始稳定跑通，再逐步调大。
+- 可先尝试：`--num_workers 2 --pin_memory` 提升主机到 GPU 的喂数效率。
+- 如果系统 RAM 已经很高，优先保持 `--num_workers 0 --cache_shards 1`，降低并发加载压力。
+- 训练日志出现 `Killed` 通常是 **系统 RAM OOM**，而不是 CUDA OOM。
+
 ### build_dataset.py
 | 参数 | 默认值 | 说明 |
 |---|---|---|
@@ -1287,3 +1295,660 @@ python tools/generate_paper_tables.py \
 - 报告明确写出 Stage 4G 是 current best。
 - 报告明确写出 Stage 4H shuffled target 使 jerk improvement 消失。
 - 报告明确写出限制：pseudo labels 是 weak labels，4G 是 metric-aligned embedding，不是纯无监督发现。
+
+
+# Stage 5：interaction-aware input design
+
+## 1. 命令
+
+> 当前仅做设计评审，不新增训练命令。
+
+```bash
+python -m py_compile tools/train_human_behavior_embedding.py
+grep -R "Stage 5" -n README.md QUICK_REFERENCE.md 07_stage5_interaction_design.md
+```
+
+## 2. 期望行为
+
+- 本阶段是设计阶段，不启动训练。
+- 明确 5-neighbor lane-aware 输入设计。
+- 明确 weak supervision feature 分组。
+- 明确 longitudinal / lateral / interaction 三个显性 head。
+- 明确 flatten GRU 与 slot encoder 两种架构路线。
+- 不覆盖 Stage 4G 结果。
+
+## 3. 通过标准
+
+- 07_stage5_interaction_design.md 存在。
+- README.md 中能看到 Stage 5 的高层说明。
+- QUICK_REFERENCE.md 中能看到 Stage 5 设计阶段说明。
+- 文档明确说明 5 个 neighbor slot。
+- 文档明确说明 heading 使用 raw heading 优先。
+- 文档明确说明 longitudinal / lateral / interaction 三组 features。
+- 文档明确说明三个 explicit heads。
+- 文档明确说明 Version A flatten GRU 与 Version B slot encoder + attention。
+- 文档明确说明本阶段不启动训练。
+
+
+# Stage 5A：lane-aware 5-neighbor context 数据构建
+
+## 1. 命令
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --out_dir outputs/waymo_5neighbor_context_smoke \
+  --smoke_test \
+  --overwrite
+```
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 从 Waymo 场景中提取 target vehicle 轨迹窗口。
+- 为每个 target vehicle 分配 front / left_front / left_rear / right_front / right_rear 五个邻车 slot。
+- 优先使用 lane-aware assignment。
+- lane-aware 失败时 fallback 到 ego-centric geometric assignment。
+- 输出 ego_seq / neighbor_seq / context_traj / context_mask / interaction features。
+- 输出 slot coverage、fallback rate、heading fallback rate 等诊断信息。
+- 不启动模型训练。
+- 不覆盖 Stage 4G 输出。
+
+## 3. 通过标准
+
+- smoke test 能跑通。
+- context_traj.npy / ego_seq.npy / neighbor_seq.npy / context_mask.npy 存在。
+- interaction_feat_style.npy 和 interaction_feat_style_raw.npy 存在。
+- build_summary.json 中包含 slot_valid_ratio、fallback_assignment_rate、heading_proxy_fallback_rate。
+- neighbor_slot_valid_ratio.csv 存在。
+- lane_assignment_debug.csv 存在。
+- build_report.md 用中文说明数据规模、slot coverage、fallback 情况、限制。
+- context_traj.npy 和 interaction_feat_style.npy 无 NaN/Inf。
+- Stage 4 结果文件未被覆盖。
+
+### Stage 5A 非有限值排查（补充）
+
+若 Stage 5A 在非有限值断言/报错处失败：
+- 检查 `nonfinite_debug_*.json`。
+- 常见原因是：窗口整体 valid_ratio 达标，但内部仍包含 Waymo invalid 帧（`x/y/vx/vy/heading` 为 NaN）。
+- 构建脚本应对该类帧执行插值/清洗（sanitize），并确保最终输出不含 NaN/Inf。
+
+通过标准：
+- `build_summary.json` 中 `trajectory_nan_count_after_sanitize = 0`。
+- `context_traj.npy` 的 finite 检查为 `true`。
+- `interaction_feat_style.npy` 的 finite 检查为 `true`。
+- 成功构建时不应产生 `nonfinite_debug_*.json`。
+
+# Stage 5A-v2：真正 lane-aware 5-neighbor assignment
+
+## 1. 命令
+
+Smoke test:
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_smoke \
+  --smoke_test \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+
+Small real data:
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+
+Geometric-only debug baseline:
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_geometric_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode geometric_only \
+  --overwrite
+
+## 2. 期望行为
+
+- 优先使用 Waymo map/lane 信息给 target vehicle 找 current lane、left lane、right lane。
+- 根据 lane s 坐标分配 front / left_front / left_rear / right_front / right_rear。
+- lane-aware 失败时才 fallback 到几何分配。
+- 输出 lane projection / fallback / slot method 诊断。
+- 不启动训练。
+
+## 3. 通过标准
+
+- smoke test 中 lane_assignment_success_rate > 0。
+- real small data 中 lane_assignment_success_rate 不能为 0。
+- fallback_assignment_rate 不能等于 1.0。
+- build_summary.json 包含 lane projection 诊断字段。
+- lane_assignment_debug.csv 包含 ego_lane_id / neighbor_lane_id / delta_s 等字段。
+- 如果 fallback_assignment_rate > 0.5，需要暂停 Stage 5B 训练，先分析原因。
+- context_traj.npy / interaction_feat_style.npy 无 NaN/Inf。
+- Stage 4 结果不被覆盖。
+
+## Stage 5A-v2 卡住排查（lane-aware，中文）
+
+如果脚本看起来卡住：
+- 先看进度条（TFRecord / scenario / target agents / windows）。
+- 检查 `build_summary.json` 里的 `timing_seconds`，确认是否 `lane_projection` 占比过高。
+- 检查 `lane_projection_avg_candidate_lanes` 是否过大。
+- 降低 `--lane_topk_candidates`。
+- 降低 `--lane_search_radius`。
+- 临时切到 `--assignment_mode geometric_only` 做 baseline/debug。
+
+### 小规模 lane-aware（保守投影限制）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --lane_search_radius 20 \
+  --lane_topk_candidates 32 \
+  --overwrite
+```
+
+### geometric-only 调试
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_geometric_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode geometric_only \
+  --overwrite
+```
+
+
+## Stage 5A-v3（lane-aware + fallback）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --overwrite
+```
+
+## Stage 5A-v4（normal clean，保留 good + ambiguous_intersection）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --overwrite
+```
+
+## Stage 5A-v4（strict quality，仅保留 good）
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_strict_v1_small \
+  --max_files 2 \
+  --max_scenarios 50 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --drop_if_lane_context_ambiguous \
+  --overwrite
+```
+
+期望行为（中文）：
+- normal clean run 保留 good + ambiguous_intersection，丢弃 bad/fallback。
+- strict run 仅保留 good。
+- empty neighbor slots 不应自动触发 ambiguous_intersection。
+- slot coverage 与 empty slot ratio 单独报告。
+
+通过标准（中文）：clean run 完成；lane_context_quality_counts 合理；good_lane_context_rate 不应仅因 slot 为空而接近 0；empty_slot_ratio_by_slot 存在；assignment_method_counts_by_slot 每个 slot 总和等于 n_windows_kept；context_traj.npy 与 interaction_feat_style.npy 无 NaN/Inf。
+
+### Stage 5A-v3 常见错误与排查（clean 模式）
+
+常见错误：
+1. `timing referenced before assignment`
+   - 原因：`timing` 初始化太晚。
+   - 修复：在 `main` 开始处（参数解析与 out_dir 创建后）立即初始化 `t_global` 和 `timing`。
+
+2. `boolean index did not match`
+   - 原因：clean filtering 后输出列表行数不一致（先 append 后过滤）。
+   - 修复：先完成过滤判断，再原子化统一 append。
+
+3. `CSV dict contains fields not in fieldnames`
+   - 原因：debug row schema 不统一。
+   - 修复：统一 `LANE_DEBUG_FIELDS`，写 CSV 时使用 `normalize_debug_row`。
+
+4. `lane_assignment_success_rate > 1.0`（或 `current_lane_found_rate > 1.0`）
+   - 原因：分子在 clean filtering 之前累计，分母用 `n_windows_kept`（clean filtering 之后），导致分母不一致。
+   - 修复：summary 中拆分 pre-filter 与 kept 计数：
+     - pre-filter：`lane_assignment_success_count_pre_filter`、`current_lane_found_count_pre_filter`、`left_lane_found_count_pre_filter`、`right_lane_found_count_pre_filter`。
+     - kept：`lane_assignment_success_count_kept`、`current_lane_found_count_kept`、`left_lane_found_count_kept`、`right_lane_found_count_kept`、`fallback_assignment_count_kept`。
+   - 主指标 rate 统一使用 kept 分母：`n_windows_kept`。
+   - 额外输出 pre-filter rate：`lane_assignment_success_rate_pre_filter`、`current_lane_found_rate_pre_filter`。
+   - 可选启用 `--strict_summary_validation`，当任一主指标 rate > 1.0 时直接报错。
+
+通过标准：
+- clean run 不报错。
+- `split.npy / meta.npy / interaction_feat_style.npy / context_traj.npy` 行数一致。
+- `assignment_method_counts_by_slot` 每个 slot 的总数等于 `n_windows_kept`。
+- `lane_assignment_debug.csv` 可以正常写出。
+- `build_summary.json` 包含 clean filtering drop counts。
+- `lane_assignment_success_count_kept <= n_windows_kept` 且 `current_lane_found_count_kept <= n_windows_kept`。
+- 主指标 rate（`lane_assignment_success_rate/current_lane_found_rate/left_lane_found_rate/right_lane_found_rate/fallback_assignment_rate`）均 `<=1.0`。
+
+## Stage 5A full51 安全构建（流式分片，避免 OOM）
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51 \
+  --max_files 51 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --drop_if_lane_context_ambiguous \
+  --streaming \
+  --output_shard_size 5000 \
+  --overwrite
+```
+
+说明：
+- 不要用非 streaming 模式跑 full51。
+- 如果在 “Processing TFRecord files” 阶段被 killed，通常表示 scenario 被整体堆在内存里。
+- 请使用 streaming 或 `--file_start/--file_end` 分段运行。
+
+## Stage 5A-v5 故障排查（临时文件依赖）
+
+如果出现 `FileNotFoundError: /tmp/old.py`：
+- 说明代码错误依赖了 Codex 临时文件。
+- 仓库代码不能依赖 `/tmp/old.py`。
+- 需要运行 `python tools/check_no_tmp_dependencies.py`。
+- 所有 helper function 必须在仓库源码内定义或从 `tools` 模块导入。
+
+## Stage 5A-v5 故障排查（slot_method 接口不一致）
+
+如果出现：
+`AttributeError: 'SlotAssignResult' object has no attribute 'slot_method'`
+
+原因：
+build script 与 `lane_aware_assignment.py` 的接口不一致。
+
+修复原则：
+- 优先从 `assign.per_slot_debug` 推导每个 slot 的 `assignment_method`。
+- 不要假设 `SlotAssignResult` 存在未定义字段。
+- smoke test 必须覆盖 streaming mode。
+
+通过标准：
+- `python -m py_compile tools/build_waymo_5neighbor_context_dataset.py` 通过。
+- `python tools/check_no_tmp_dependencies.py` 通过。
+- smoke test 通过。
+- full51 streaming 命令可启动，且不会出现 `/tmp/old.py` 的 FileNotFoundError。
+
+## Stage 5A-v5 Streaming 排障（新增）
+
+### 常见现象
+- 只看到 `Processing TFRecord files: 0/51` 不动。
+
+### 原因
+- 只有外层文件进度条，没有内部 scenario 进度；
+- 或第一个 TFRecord 内部处理耗时较长。
+
+### 修复
+- streaming 模式必须显示 scenario 级别进度或每 N 个 scenario 的 heartbeat；
+- full51 前必须先跑 `max_scenarios=10` 和 `max_scenarios=50` 的 streaming debug 命令。
+
+### 通过标准
+- `max_scenarios=10` 能快速完成；
+- `max_scenarios=50` 能生成 shard；
+- `build_summary.json` 保留完整诊断字段；
+- `row_index` 不重复；
+- full51 不再一次性缓存所有 scenario；
+- 不出现 `/tmp/old.py`；
+- 不出现 `SlotAssignResult` 接口错误。
+
+## Stage 5A：并行分片结果合并
+
+命令（示例）：
+
+```bash
+python tools/merge_waymo_5neighbor_context_shards.py \
+  --input_roots \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26 \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39 \
+    outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51 \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --recompute_global_standardization \
+  --overwrite
+```
+
+预期行为：
+- 以 manifest/统计信息方式合并 Stage 5A 并行分片输出；
+- 默认不在 merged root 生成 `ego_seq.npy`、`neighbor_seq.npy`、`context_traj.npy` 等超大单体文件；
+- 重新基于 train split 计算全局交互特征标准化，并回写每个 shard 的 `interaction_feat_style.npy`；
+- 输出 `shard_manifest.json`、`build_summary.json`、`merged_build_summary.json`、`build_report.md`。
+
+通过标准：
+- `shard_manifest.json` 存在；
+- `build_summary.json` 存在；
+- `interaction_feature_standardization.json` 存在；
+- merged `n_windows_kept` 等于四个输入分片之和；
+- `fallback_assignment_rate` 仍为 0；
+- `good_lane_context_rate` 仍为 1；
+- global standardization 的 `train_count > 0`；
+- 默认不创建 monolithic 大 `.npy` 文件。
+
+# Stage 5A：重建 sharded summary
+
+## 1. 命令
+
+```bash
+python tools/rebuild_waymo_5neighbor_context_summary.py \
+  --data_root outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+  --overwrite
+
+python tools/rebuild_waymo_5neighbor_context_summary.py \
+  --data_root outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+  --validate_only
+```
+
+## 2. 期望行为
+
+- 从 shards 反扫 split/meta/context_mask/debug csv。
+- 重建 build_summary.json。
+- 修复 split_counts 为空的问题。
+- 不拼接大型 npy。
+- 不重新生成数据。
+
+## 3. 通过标准
+
+- split_counts 不为空。
+- sum(split_counts) == n_windows_kept。
+- assignment_method_counts_by_slot 每个 slot 合计等于 n_windows_kept。
+- nonfinite_output_detected = 0。
+- build_report.md 显示 summary_rebuilt_from_shards=true。
+- 不修改 Stage 4。
+
+# Stage 5B：Flatten Context GRU 训练
+
+## 1. 命令
+
+### 1.1 Preflight（真实数据 smoke）
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_smoke \
+  --batch_size 64 \
+  --epochs 1 \
+  --max_train_samples 2048 \
+  --max_val_samples 512 \
+  --device cuda \
+  --smoke_test_real_data \
+  --overwrite
+```
+
+### 1.2 全量训练
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 256 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_alignment \
+  --metric_loss_weight 0.1 \
+  --metric_loss_type huber \
+  --metric_targets all \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+如遇 CUDA OOM：将 `--batch_size` 降到 `128`。
+
+### 1.3 导出 embedding（按 shard）
+```bash
+python tools/export_context_row_embeddings.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1/model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings \
+  --batch_size 512 \
+  --device cuda \
+  --split all \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 从 `shard_manifest.json` 读取 Stage 5A 数据。
+- 不拼接大型 npy。
+- `context_traj.npy` 作为输入。
+- `interaction_feat_style.npy` 作为弱监督。
+- 训练 Flatten Context GRU。
+- 导出 row-aligned sharded embedding。
+- 不修改 Stage 4 / Stage 5A 数据构建逻辑。
+
+## 3. 通过标准
+
+- preflight 1 epoch 能跑通。
+- Stage 5B smoke 通过标准：`train_loss` / `val_loss` 为有限值且 `model.pt` 存在。
+- 单 epoch 时 `loss_curve.png` / `val_loss_curve.png` 看起来“空白”通常只是可视化尺度问题，不代表训练失败。
+- `training_summary.json` 存在。
+- `context_dim` 和 `feature_dim` 正确记录。
+- full training 不 OOM。
+- full training 建议开启 `--metric_alignment`。
+- `embedding_manifest.json` 存在。
+- exported embedding 总行数 = 164871。
+- `nonfinite_embedding_detected = 0`。
+
+# Exact Stage 5C evaluator command
+```bash
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```
+
+## Expected outputs
+Training output dir:
+- `model.pt`
+- `best_model.pt`
+- `training_config.json`
+- `feature_group_config.json`
+- `train_log.csv`
+- `training_summary.json`
+
+Embedding output dir:
+- `embedding_manifest.json`
+- `embeddings/` (shard-aligned outputs)
+- optional merged `embeddings.npy`
+
+Evaluation output dir:
+- `evaluation_summary.json`
+- `evaluation_report.md`
+- `category_correlation_summary.csv`
+- retrieval/correlation plots and CSVs
+
+## Success criteria
+- learned still beats `random/context_l2`.
+- following_interaction mean correlation improves vs Stage 5B baseline.
+- lateral_lane_dynamics advantage is preserved.
+- global retrieval improves, or at least does not degrade significantly.
+
+# Stage 5D 组加权训练（context GRU）
+
+### 1. 命令
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 64 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.5 \
+  --aux_lateral_dynamics_weight 1.0 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 2.0 \
+  --metric_lateral_dynamics_weight 1.0 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+python tools/export_context_row_embeddings.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1/best_model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings \
+  --split all \
+  --merge_embeddings
+
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```
+
+### 2. 期望行为
+- 训练脚本会读取既有 Stage 5 shard 数据与 `feature_schema.json`，按特征名解析分组索引；不会重建 Stage 5A 数据集。
+- 训练输出目录会保存模型、最优模型、训练配置、分组配置、日志和 summary。
+- 导出脚本会生成与 shard 行顺序对齐的 embedding 文件与 manifest。
+- 评估脚本使用现有 Stage 5C evaluator，对新 embedding 进行 strict-schema paper-grade 评估。
+
+### 3. 通过标准
+- 训练命令可正常启动并产生 `best_model.pt` 与 `training_summary.json`。
+- `feature_group_config.json` 中可看到按 feature name 解析出的 group indices。
+- 导出命令产出 `embedding_manifest.json`，且 `nonfinite_embedding_detected=0`。
+- 评估命令产出 `evaluation_summary.json` 与 `category_correlation_summary.csv`，可用于验证 following 是否提升且 lateral 优势是否保持。

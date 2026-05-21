@@ -1,47 +1,49 @@
 # 00_plans — E2E 行为风格评估论文路线与进展
 
-> 更新时间：2026-05-07  
-> 当前分支：`20260507_vehicledata_validation`  
+> 更新时间：2026-05-19  
+> 当前分支：`20260514_interaction_design`  
 > 项目定位：博士论文 / 论文实验工程  
-> 研究对象：自动驾驶端到端（E2E）决策/规划模型的 trajectory-level closed-loop 行为评估
+> 当前主线：从 ego-only behavior embedding 升级到 lane-aware 5-neighbor interaction-aware behavior embedding，并进入 Stage 5C evaluation。
 
 ---
 
 ## 1. 一句话总结当前路线
 
-我们要做的不是传统感知/检测/渲染闭环，也不是只看 ADE/FDE、collision rate 这类传统指标，而是建立一套 **trajectory-level behavior evaluation benchmark**：
+本项目要建立一套 **trajectory-level behavior evaluation benchmark**，用于评价自动驾驶 E2E / planning policy 的驾驶行为风格，而不是只依赖 ADE/FDE、collision rate、规则触发率等传统指标。
 
-> 给定任意规划/决策 policy 的轨迹级 rollout，将其编码为 behavior embedding，并通过 aligned policy separation、global retrieval、style fingerprint、style drift / BDD 等指标，评价不同 policy 或不同模型版本之间的驾驶风格差异。
+核心思想是：
 
-当前研究可以概括为：
+> 把一段驾驶行为编码成 behavior embedding，再用 embedding distance、retrieval、style-distance correlation、BDD / style drift 等指标，评价不同模型版本或不同 policy 的驾驶风格差异。
+
+截至目前，项目路线已经从最初的 synthetic policy validation，推进到 public human trajectory validation，再升级到 interaction-aware context embedding：
 
 ```text
-source window
+Stage 1-3: synthetic controlled policy validation
   ↓
-controlled synthetic policy rollout generator
+Stage 4: public human trajectory / ego-only behavior embedding
   ↓
-p0 / p1 / p2 policy rollouts
+Stage 5A: lane-aware 5-neighbor context dataset construction
   ↓
-behavior embedding / style feature representation
+Stage 5B: Flatten Context GRU interaction-aware embedding training
   ↓
-within-source aligned evaluation
-  ↓
-population-level statistics
-  ↓
-ablation / local sweep
-  ↓
-recommended_lateral_stable_v2
-  ↓
-public human trajectory external validation（下一阶段）
+Stage 5C: context-aware embedding evaluation（当前下一步）
+```
+
+当前最重要结论：
+
+```text
+Stage 5A 数据构建完成；
+Stage 5B context-aware embedding 已训练完成并导出；
+现在正式进入 Stage 5C evaluation。
 ```
 
 ---
 
 ## 2. 研究背景与最初动机
 
-最初的问题来自自动驾驶端到端（E2E）模型开发中的一个真实观察：
+最初的问题来自自动驾驶端到端模型开发中的真实观察：
 
-- E2E 决策/规划模型越来越像“驾驶员”；
+- E2E 决策 / 规划模型越来越像“驾驶员”；
 - 模型版本之间会出现明显驾驶风格变化；
 - 有的版本更激进，有的版本更保守，有的版本更关注舒适性；
 - 传统评价指标很难描述“风格变化”；
@@ -59,13 +61,13 @@ public human trajectory external validation（下一阶段）
 
 建议论文定位为：
 
-> **A trajectory-level behavior evaluation benchmark for closed-loop planning policies.**
+> **A trajectory-level behavior evaluation benchmark for interaction-aware autonomous driving behavior representation.**
 
 也就是：
 
-- 输入：trajectory rollout；
+- 输入：trajectory window / policy rollout / human trajectory；
 - 输出：behavior embedding / style feature / report card；
-- 指标：policy separation、style drift、global retrieval、BDD、comfort/risk/style fingerprint；
+- 指标：retrieval、style-distance correlation、style drift、BDD、comfort / aggressiveness / interaction fingerprint；
 - 适用对象：synthetic policy、rule-based policy、learning-based planner、E2E planner，只要能输出轨迹即可。
 
 重要边界：
@@ -73,167 +75,106 @@ public human trajectory external validation（下一阶段）
 - 不做 sensor rendering；
 - 不做 perception stack；
 - 不要求实车私有数据作为第一阶段前提；
-- 不评估完整 perception-to-control stack；
-- 关注 planning policy behavior。
+- 不声称等价于完整自动驾驶闭环仿真；
+- 当前主要关注 planning / behavior trajectory。
 
 论文中可以使用这样的表述：
 
-> The benchmark is model-agnostic and accepts any trajectory-level rollout, including learned E2E planners, rule-based policies, and synthetic policies.
+> The benchmark is model-agnostic and accepts any trajectory-level rollout or trajectory window, including learned E2E planners, rule-based policies, synthetic policies, and public human trajectory data.
 
 ---
 
 ## 4. 核心研究问题
 
-当前围绕以下问题展开：
-
-### Q1. Behavior embedding 是否能区分不同 policy 的驾驶行为？
+### Q1. Behavior embedding 是否能区分不同驾驶风格？
 
 需要证明：
 
-- 不同 policy 在 embedding 空间中有可分性；
+- 不同行为在 embedding 空间中有可分性；
 - embedding 不是随机的；
-- centroid classification 明显高于 chance；
-- global retrieval 能找回同 policy / 相似行为样本。
+- retrieval 能找回相似行为样本；
+- embedding distance 与 style feature delta 有稳定相关性。
 
-### Q2. 同一个 source 下，不同 policy 的差异是否可解释？
+### Q2. Ego-only embedding 是否足够？
 
-需要证明：
+Stage 4 的经验表明：
 
-- 同一 source window 下，p0/p1/p2 轨迹不同；
-- 差异可以用 speed、accel、jerk、yaw_rate、curvature、THW 等 style signal 解释；
-- embedding distance matrix 能反映这些差异。
+- ego trajectory 可以学到 speed / jerk / yaw / comfort 等一部分风格；
+- 但跟车、让行、压迫感、变道交互等行为不能只靠 ego trajectory 完整表达；
+- 周围车辆，尤其是前车和左右相邻车道前后车，是驾驶风格的重要上下文。
 
-### Q3. lateral_stable 是否真的形成独立第三类风格？
+因此进入 Stage 5：加入 lane-aware 5-neighbor context。
 
-这是当前阶段最重要的具体问题。
+### Q3. 加入 5-neighbor context 后，embedding 是否更 interaction-aware？
 
-目前结论：
+这是 Stage 5C 当前最核心的问题。
 
-- lateral_stable 可识别、可检索；
-- recommended_lateral_stable_v2 显著提升了 p2 的可识别性和稳定性；
-- 但 mean p2 separation margin 仍为负，因此 p2 independence 仍然 incomplete。
+需要证明 Stage 5B context-aware embedding 在以下方面优于或至少补充 Stage 4 ego-only：
 
-### Q4. 这个方法是否只是在识别 synthetic generator artifact？
+- THW / front distance；
+- relative speed；
+- front slot occupied；
+- left/right adjacent slot occupied；
+- lateral interaction proxy；
+- comfort / jerk / yaw / curvature 不塌缩。
 
-这是最大审稿风险。
+### Q4. 如何避免 synthetic generator artifact 风险？
 
-下一阶段需要用公开真实人类轨迹数据做 external validation。
+早期 synthetic policy validation 的最大审稿风险是：
+
+> embedding 可能只是在识别 synthetic generator artifact。
+
+因此 Stage 4 / Stage 5 改为使用 Waymo public human trajectories，并用 weak supervision / pseudo style / interaction features 验证真实轨迹上的行为结构。
 
 ---
 
-## 5. 当前数据与实验设定
+## 5. 阶段总览
 
-### 5.1 数据来源
+| 阶段 | 目标 | 当前状态 |
+|---|---|---|
+| Stage 1 | PR2 interpretability demo | 已完成 |
+| Stage 2 | population-level synthetic policy evaluation | 已完成 |
+| Stage 3 | generator ablation + local fine sweep | 已完成，形成 recommended_lateral_stable_v2 |
+| Stage 4 | public human trajectory ego-only validation | 已完成主要链路，结论推动 Stage 5 |
+| Stage 5A | lane-aware 5-neighbor context dataset | 已完成 full51 构建与 merge |
+| Stage 5B | Flatten Context GRU context-aware embedding | 已完成训练与 embedding 导出 |
+| Stage 5C | context-aware embedding evaluation | 当前下一步 |
 
-当前主要使用 Waymo 轨迹数据构造 source window。
+---
 
-### 5.2 当前 synthetic policy rollout 设定
+## 6. Stage 1-3 简要回顾：synthetic controlled validation
 
-对同一个 source window 生成三个 policy rollout：
+Stage 1-3 的目标是先在可控 synthetic policy 环境中验证 behavior embedding 的基本有效性。
 
-| policy_id | policy_name | 当前含义 |
+### 6.1 三类 synthetic policy
+
+| policy_id | policy_name | 含义 |
 |---|---|---|
 | p0 | conservative | 保守型 policy |
 | p1 | aggressive | 激进型 policy |
 | p2 | lateral_stable | 横向稳定 / 舒适型 policy |
 
-### 5.3 当前关键假设
+### 6.2 核心概念
 
-当前为 trajectory-level closed-loop / ego-only rollout：
-
-- ego 自车根据不同 policy 生成 rollout；
-- front vehicle 使用 replay 轨迹；
-- front vehicle 不受 ego policy 影响；
-- 不做完整多智能体闭环仿真。
-
-这个设定的优点：
-
-- 成本低；
-- 可控；
-- 可复现；
-- 适合对齐同一 source 下的 policy 差异。
-
-限制：
-
-- 不是完整 multi-agent closed-loop；
-- 不能声称等价于实车闭环；
-- 需要在论文中明确边界。
-
----
-
-## 6. 关键概念定义
-
-### 6.1 source / source window
-
-`source` 指一个原始场景窗口，例如：
+#### source / source window
 
 ```text
 scenario_id + start + window_len + front_id
 ```
 
-它代表同一段场景上下文：
+代表同一段场景上下文。
 
-- 同一个场景；
-- 同一个起始时间；
-- 同一个窗口长度；
-- 同一个前车关系。
+#### within-source
 
-### 6.2 within-source
+同一 source 下比较 p0 / p1 / p2，控制场景变量，让差异主要来自 policy。
 
-`within-source` 指在同一个 source window 下比较不同 policy。
-
-例如：
-
-```text
-source_i:
-  p0 rollout
-  p1 rollout
-  p2 rollout
-```
-
-它的价值在于控制场景变量，让差异主要来自 policy。
-
-### 6.3 embedding
-
-`embedding` 是将一段驾驶轨迹/行为压缩成固定长度向量，例如：
-
-```text
-trajectory window -> z ∈ R^D
-```
-
-embedding 空间中的距离表示行为差异，而不是物理米制距离。
-
-### 6.4 embedding distance matrix
-
-同一 source 下 p0/p1/p2 的 embedding 两两距离矩阵。
-
-它回答：
-
-> 模型认为这三种 policy 的行为有多不同？
-
-### 6.5 global retrieval
-
-给定一个 query embedding，在全局测试集里检索 Top-K 最近邻。
-
-它回答：
-
-> embedding 是否能跨 source 找回相似行为 / 同 policy 样本？
-
-### 6.6 p2_farthest_rate
-
-定义：
+#### p2_farthest_rate
 
 ```text
 p2_farthest = true if d(p0,p2) > d(p0,p1) and d(p1,p2) > d(p0,p1)
 ```
 
-`p2_farthest_rate` 表示有多少比例的 source 中，p2 比 p0-p1 更远。
-
-这是判断 lateral_stable 是否形成独立第三类的重要指标。
-
-### 6.7 p2 separation margin
-
-定义：
+#### p2 separation margin
 
 ```text
 p2_separation_margin = min(d(p0,p2), d(p1,p2)) - d(p0,p1)
@@ -241,242 +182,31 @@ p2_separation_margin = min(d(p0,p2), d(p1,p2)) - d(p0,p1)
 
 解释：
 
-- margin > 0：p2 比 p0-p1 之间还远，说明 p2 有较强独立性；
-- margin < 0：p2 仍然更接近 p0 或 p1，独立性不完全。
+- margin > 0：p2 比 p0-p1 之间还远，说明 p2 有强独立性；
+- margin < 0：p2 仍更接近 p0 或 p1，独立性不完全。
 
----
+### 6.3 Stage 1-2 结论
 
-## 7. 阶段规划与当前进展
+Stage 1-2 已经证明：
 
-当前整体规划分为四个阶段：
+- embedding 能区分 synthetic policy；
+- centroid classification 明显高于 chance；
+- global retrieval 能找回同 policy / 相似行为样本；
+- within-source aligned evaluation 对控制场景变量很有价值。
 
-| 阶段 | 目标 | 当前状态 |
-|---|---|---|
-| 阶段 1 | PR2 interpretability demo | 已完成 |
-| 阶段 2 | population-level 统计 | 已完成 |
-| 阶段 3 | generator ablation + local sweep | 基本完成，正在收尾固化 |
-| 阶段 4 | public human trajectory external validation | 尚未开始，下一大阶段 |
+但同时发现：
 
----
+> 原始 lateral_stable 不足以成为完全独立第三类。
 
-## 8. 阶段 1：PR2 interpretability demo
+### 6.4 Stage 3 ablation 结论
 
-### 8.1 目标
-
-做一个人类能直观看懂的 demo，展示 embedding 是否能区分不同 policy / driving style。
-
-### 8.2 已完成内容
-
-已经支持：
-
-- 加载 `source_index.npy`；
-- 加载 `policy_id.npy`；
-- 加载 `policy_name.npy`；
-- source group 按 source_index 对齐；
-- policy-aware PCA / UMAP；
-- within-source triplet 展示；
-- within-source style signals；
-- embedding distance matrix；
-- global retrieval cards；
-- global retrieval style signals；
-- 自动生成 interpretability report。
-
-### 8.3 当前正式保留输出
+Stage 3 通过 broad ablation 和 local fine sweep，最终得到推荐配置：
 
 ```text
-embedding_2d_projection.png
-embedding_2d_projection_umap.png
-embedding_distance_matrix.png
-within_source_triplet.png
-within_source_style_signals.png
-within_source_style_fingerprint_dynamics.png
-within_source_style_fingerprint_kinematic.png
-within_source_style_fingerprint_normalized.png
-global_retrieval_cards.png
-global_retrieval_style_signals.png
-interpretability_report.md
-summary.json
-retrieval_table.csv
-style_fingerprint.csv
+recommended_lateral_stable_v2
 ```
 
-### 8.4 当前结论
-
-PR2 已经可以作为人类可解释展示工具，不建议继续无限美化图。
-
-### 8.5 任务状态
-
-| 任务 | 状态 | 说明 |
-|---|---|---|
-| policy_id/source_index metadata 修复 | 完成 | 从 generator 到 demo 已打通 |
-| within-source triplet 图 | 完成 | 可展示同 source 下三 policy 轨迹 |
-| embedding distance matrix | 完成 | 可解释高维 embedding 距离 |
-| policy-colored PCA/UMAP | 完成 | 仅作为 visualization，不作为强证据 |
-| global retrieval demo | 完成 | 可展示 Top-K 与 query 的行为相似性 |
-| interpretability_report.md | 完成 | 可自动记录 query/source/retrieval/limitations |
-
----
-
-## 9. 阶段 2：population-level 统计
-
-### 9.1 目标
-
-从单个 hero case 扩展到全部 test sources，证明结果不是偶然。
-
-### 9.2 已完成内容
-
-实现了 population evaluator，输出：
-
-```text
-population_summary.json
-population_report.md
-per_source_pairwise_distances.csv
-per_source_style_summary.csv
-centroid_classification.csv
-centroid_confusion_matrix.csv
-global_retrieval_summary.csv
-global_retrieval_topk.csv
-pairwise_distance_boxplot.png
-p2_separation_margin_hist.png
-p2_farthest_rate_bar.png
-centroid_confusion_matrix.png
-retrieval_hit_at_k_bar.png
-policy_style_fingerprint_boxplot.png
-p2_distance_vs_style_delta_scatter.png
-embedding_2d_population_pca.png
-```
-
-### 9.3 数据完整性结论
-
-当前 test split 数据结构正确：
-
-```text
-395 sources × 3 policies = 1185 samples
-```
-
-每个 source 都有 p0/p1/p2 三条 rollout。
-
-### 9.4 核心结果
-
-阶段 2 的关键发现：
-
-- centroid classification accuracy 明显高于 chance；
-- global retrieval hit@1 / hit@5 很好；
-- embedding 具备 policy-level discriminability；
-- 但 p2/lateral_stable 在初始配置下并不是独立第三极，更接近 conservative。
-
-典型结论：
-
-```text
-centroid classification accuracy ≈ 0.64
-chance = 0.333
-retrieval hit@1 ≈ 0.82
-retrieval hit@5 ≈ 0.98
-p2_farthest_rate ≈ 0.05
-mean_p2_separation_margin < 0
-```
-
-### 9.5 阶段 2 的学术意义
-
-阶段 2 证明了：
-
-> embedding 能区分 policy，也能检索同 policy / 相似 behavior。
-
-同时也发现了：
-
-> 原始 lateral_stable 不足以成为独立第三类，需要 generator ablation 和参数优化。
-
-### 9.6 任务状态
-
-| 任务 | 状态 | 说明 |
-|---|---|---|
-| population evaluator | 完成 | 支持全量 source 统计 |
-| pairwise distance distribution | 完成 | p0-p1 / p0-p2 / p1-p2 |
-| p2_farthest_rate | 完成 | 发现初始 p2 独立性不足 |
-| centroid classification | 完成 | 明显高于 chance |
-| global retrieval hit@k | 完成 | 检索能力较强 |
-| style-distance correlation | 完成 | jerk delta 与 embedding distance 相关较明显 |
-
----
-
-## 10. 阶段 3：generator ablation 与 local fine sweep
-
-### 10.1 目标
-
-证明 lateral_stable 的差异来自明确 generator 机制，而不是偶然。
-
-重点机制包括：
-
-- heading delta clip / yaw_rate_clip；
-- heading_smooth_alpha；
-- thw_target；
-- jerk_limit；
-- a_max / a_min。
-
----
-
-## 10.2 阶段 3A：broad ablation
-
-### 已比较配置
-
-```text
-baseline_current
-no_lateral_smoothing
-weak_lateral_stable
-strong_yaw_clip
-strong_heading_smoothing
-comfort_only
-lateral_only
-full_strong_lateral_stable
-```
-
-### 工程修复
-
-初版 ablation 出现过严重问题：所有 config 指标完全一样。
-
-后来增加了完整性检查：
-
-```text
-effective_config.json
-file_fingerprints.json
-ablation_integrity_report.json
-ablation_rollout_sanity.csv
---overwrite
-hash check
-```
-
-确保不同 config 真的产生不同 rollout / embedding。
-
-### broad ablation 结论
-
-- `full_strong_lateral_stable` 是 broad ablation 最优；
-- `strong_yaw_clip` 是最关键的单项机制；
-- `comfort_only` 不足以形成独立 lateral_stable；
-- `lateral_only` 会破坏舒适性和可分性；
-- lateral_stable 需要横向稳定 + 纵向舒适联合塑形。
-
----
-
-## 10.3 阶段 3B：local fine sweep
-
-### 目标
-
-围绕 broad ablation 最优配置 `full_strong_lateral_stable` 做细粒度搜索。
-
-### 搜索重点
-
-- yaw_rate_clip；
-- jerk_limit；
-- heading_smooth_alpha；
-- thw_target。
-
-### local sweep 最优配置
-
-```text
-yaw_008_jerk_020
-```
-
-参数：
+关键参数：
 
 ```text
 heading_smooth_alpha = 0.75
@@ -487,404 +217,1057 @@ a_max = 1.275
 a_min = -2.52
 ```
 
-这个配置后来被固化为：
-
-```text
-recommended_lateral_stable_v2
-```
-
-### local sweep 结论
-
-相比 `full_strong_lateral_stable`，`yaw_008_jerk_020`：
+它相比 baseline_current 和 full_strong_lateral_stable：
 
 - 提升 p2_farthest_rate；
 - 改善 mean_p2_separation_margin；
-- 显著提升 centroid_accuracy_p2；
+- 提升 centroid_accuracy_p2；
 - 提升 retrieval same-policy fraction；
 - 降低 p2_rms_jerk；
 - 降低 p2_rms_yaw_rate_proxy；
+- 降低 curvature proxy；
 - 基本保持 THW。
 
----
-
-## 10.4 阶段 3C：final compare / recommended_lateral_stable_v2 固化
-
-### 目标
-
-形成论文级最终三配置对比表：
+谨慎结论：
 
 ```text
-baseline_current
-full_strong_lateral_stable
-recommended_lateral_stable_v2
+p2 independence is improved but incomplete.
 ```
 
-### 当前已完成结果
-
-`recommended_lateral_stable_v2` 参数：
-
-```text
-heading_smooth_alpha = 0.75
-yaw_rate_clip = 0.008
-thw_target = 1.70
-jerk_limit = 0.200
-a_max = 1.275
-a_min = -2.52
-```
-
-三配置对比显示：
-
-| 指标 | baseline_current | full_strong_lateral_stable | recommended_lateral_stable_v2 |
-|---|---:|---:|---:|
-| p2_farthest_rate | 0.0489 | 0.0810 | 0.0954 |
-| mean_p2_separation_margin | -2.3983 | -2.1522 | -1.9354 |
-| centroid_accuracy_p2 | 0.6354 | 0.7283 | 0.8439 |
-| retrieval_hit@1 | 0.8127 | 0.8197 | 0.8298 |
-| retrieval_hit@k | 0.9218 | 0.9153 | 0.9294 |
-| same-policy fraction@TopK | 0.7896 | 0.7983 | 0.8102 |
-| p2_rms_jerk | 1.4173 | 1.2421 | 1.1441 |
-| p2_rms_yaw_rate_proxy | 0.0211 | 0.0151 | 0.0139 |
-| p2_rms_curvature_proxy | 0.00334 | 0.00239 | 0.00214 |
-| p2_mean_thw | 1.4308 | 1.5067 | 1.5093 |
-
-### 阶段 3 当前结论
-
-`recommended_lateral_stable_v2` 已经可以作为后续实验的推荐配置。
-
-它通过更紧的 yaw-rate clipping 和更严格的 jerk limitation：
-
-- 显著提升 p2/lateral_stable 的可识别性；
-- 提升检索一致性；
-- 降低 jerk；
-- 降低 yaw_rate_proxy；
-- 降低 curvature proxy；
-- 保持/提升 THW。
-
-但需要谨慎表达：
-
-> p2 independence is improved but incomplete.
-
-因为：
+原因：
 
 ```text
 mean_p2_separation_margin 仍然为负。
 ```
 
-### 阶段 3 任务状态
+---
 
-| 任务 | 状态 | 说明 |
+## 7. Stage 4：public human trajectory ego-only validation
+
+Stage 4 的目标是从 synthetic policy 转向公开真实人类轨迹，降低 generator artifact 风险。
+
+### 7.1 Stage 4 初始目标
+
+最初定义为：
+
+```text
+输入统一格式 human trajectory arrays
+↓
+计算 / 加载 style features
+↓
+构造 pseudo style labels
+↓
+评估 embedding / baselines
+↓
+输出 validation report
+```
+
+统一格式包括：
+
+```text
+traj.npy
+front.npy
+meta.npy
+split.npy
+feat_style.npy
+feat_style_raw.npy
+feature_names_style.json
+```
+
+### 7.2 关于 data1 的误解与澄清
+
+当时曾经误以为 `data1` 是真实公开 human trajectory 数据。
+
+后来澄清：
+
+```text
+data1 不是新的公开真实 human trajectory 数据；
+它主要是之前 ablation / synthetic pipeline 里基于 Waymo 提炼出来的数据；
+Stage 4 软件版本一开始更多是统一格式和验证协议，而不是已经完成真正 public human validation。
+```
+
+这个澄清推动我们重新构建真正的 Waymo public human trajectory 数据。
+
+### 7.3 Stage 4B：Waymo human trajectory dataset 构建
+
+工具：
+
+```text
+tools/build_waymo_human_trajectory_dataset.py
+```
+
+最小 smoke 输出：
+
+```text
+n_windows_kept = 36
+feature_dim = 16
+```
+
+small 输出：
+
+```text
+n_windows_kept = 260
+split_counts = train 194 / val 27 / test 39
+front_found_rate ≈ 0.9538
+```
+
+随后扩大到 full51。
+
+### 7.4 Stage 4 full51 数据结果
+
+Waymo human public full51 数据构建结果：
+
+```text
+out_dir = outputs/waymo_human_v1_full51
+n_files_processed = 51
+n_scenarios_processed = 24872
+n_agents_considered = 1127346
+n_windows_total = 1127346
+n_windows_kept = 168191
+n_front_found = 161682
+front_found_rate ≈ 0.9613
+split_counts:
+  train = 134637
+  val   = 16823
+  test  = 16731
+```
+
+feature_names 共 16 个：
+
+```text
+mean_speed
+std_speed
+rms_accel
+rms_jerk
+rms_yaw_rate_proxy
+rms_curvature_proxy
+mean_thw
+min_thw
+mean_front_distance
+min_front_distance
+mean_rel_speed
+std_rel_speed
+max_abs_accel
+max_abs_jerk
+heading_change_total
+valid_ratio
+```
+
+### 7.5 Stage 4C：pseudo style labels
+
+pseudo label 规则使用 percentile 模式，target_quantile=0.25。
+
+full51 pseudo label 结果：
+
+```text
+n_total = 168191
+n_labeled = 75421
+n_unlabeled = 92770
+label_counts:
+  conservative_like = 34416
+  aggressive_like   = 33662
+  lateral_stable_like = 7343
+  unlabeled = 92770
+```
+
+这些 label 是 weak labels，不是 ground truth。
+
+注意：
+
+```text
+pseudo labels 是由 style features 构造的；
+因此 classification / retrieval 指标需要与 baseline、strict retrieval、feature correlation 一起解释，避免 feature leakage 审稿质疑。
+```
+
+### 7.6 Stage 4D-G：ego-only embedding 训练与改进
+
+Stage 4 输入：
+
+```text
+traj.npy: [N, 80, 4]
+feat_style.npy: [N, 16]
+```
+
+模型：
+
+```text
+ego trajectory
+↓
+GRU
+↓
+64-D embedding
+```
+
+训练目标逐步演化：
+
+| 版本 | 思路 | 说明 |
 |---|---|---|
-| broad ablation pipeline | 完成 | 已支持多配置对比 |
-| integrity check | 完成 | 防止不同 config 复用同一输出 |
-| broad ablation 分析 | 完成 | 找到 full_strong_lateral_stable |
-| local fine sweep | 完成 | 找到 yaw_008_jerk_020 |
-| recommended_lateral_stable_v2 固化 | 完成/待代码最终确认 | 已生成 final compare 输出 |
-| final comparison summary | 完成 | 三配置论文级对比表已生成 |
-| README 更新 | 待最终确认 | 每次代码变更需同步更新 |
+| Stage 4D | ego-only baseline | soft contrastive learning |
+| Stage 4E | jerk / comfort feature weighting | 重点增强 comfort / jerk |
+| Stage 4F | comfort-aware auxiliary regression | 显式预测 comfort targets |
+| Stage 4G | comfort metric alignment | 对齐 embedding distance 与 comfort feature distance |
+| Stage 4H | shuffled sanity check | 验证提升不是随机 target 造成 |
+| Stage 4I | comparison / reporting | 汇总训练与评估结果 |
+
+过程中遇到并修复了：
+
+- traj.npy 中存在 NaN；
+- export embedding 时 normalize_local 遇到 non-finite；
+- sanitizer / trajectory_preprocessing 需要统一；
+- evaluate_aux_predictions.py 初期没有正确纳入主流程；
+- paper table 一度误用 4D 而不是 4E/4F/4G 的结果；
+- README / QUICK_REFERENCE 需要持续同步。
+
+### 7.7 Stage 4 的核心结论
+
+Stage 4 证明：
+
+```text
+ego-only human behavior embedding 可以在真实 Waymo human trajectory 上稳定训练；
+comfort / jerk / yaw / curvature 等弱监督信号可以塑造 embedding；
+metric alignment 比单纯 soft contrastive 更适合提升 jerk / comfort distance correlation。
+```
+
+但 Stage 4 也暴露出局限：
+
+```text
+ego-only trajectory 不能完整表达跟车、邻车压迫、让行、变道交互等 interaction style。
+```
+
+因此进入 Stage 5。
 
 ---
 
-## 11. 阶段 4：public human trajectory external validation
+## 8. 从 Stage 4 到 Stage 5 的关键思想转变
 
-### 11.1 阶段 4 尚未开始
+### 8.1 旧 rel_kinematics 与新 Stage 5 输入的区别
 
-这是下一大阶段。
+之前曾讨论 `train_embedding.py` 中的 rel_kinematics 思路。它强调从 ego 与周围对象的相对运动中提取信息。
 
-### 11.2 为什么必须做
-
-当前最大的学术风险是：
-
-> synthetic policy 过于规则化，embedding 可能只是在识别 generator artifact。
-
-因此需要用公开真实人类轨迹做 external validation。
-
-### 11.3 阶段 4 目标
-
-证明：
-
-> embedding 不仅能区分 synthetic policy，在真实 human driving trajectory 上也能形成可解释的 behavior structure。
-
-### 11.4 可选数据集
-
-候选：
+Stage 5 的核心变化是：
 
 ```text
-Waymo Open Motion Dataset
-Argoverse Motion Forecasting
-nuScenes prediction / tracking
-INTERACTION
-highD / inD
+不再只把 interaction 信息压缩成 handcrafted weak features；
+而是把 lane-aware 5-neighbor relative trajectory / relative kinematics 作为模型输入。
 ```
 
-建议优先使用与当前工程兼容度最高的数据。
+### 8.2 模型输入与弱监督 feature 的区别
 
-### 11.5 推荐方案：pseudo-label validation
+需要严格区分：
 
-真实数据没有 policy label，因此构造 pseudo style labels：
-
-#### aggressive-like
+#### 模型输入
 
 ```text
-high mean speed
-low THW
-high accel / jerk
+ego trajectory + 5-neighbor ego-centric relative trajectory / kinematics
 ```
 
-#### conservative-like
+模型需要从时序上下文中学习驾驶行为表示。
+
+#### 弱监督 feature
 
 ```text
-low speed
-high THW
-low jerk
+speed / accel / jerk / yaw_rate / curvature / THW / front_distance / rel_speed / slot occupancy 等统计特征
 ```
 
-#### lateral-stable-like
+这些用于指导 embedding 空间，但不是模型唯一输入。
+
+换句话说：
 
 ```text
-low yaw_rate RMS
-low curvature RMS
-smooth heading
+relative trajectory 是原始时序输入；
+style features 是训练信号 / evaluation target。
 ```
 
-### 11.6 需要验证的指标
+### 8.3 为什么不是输入 neighbor absolute trajectory？
 
-- pseudo-label classification；
-- same pseudo-label global retrieval；
-- embedding distance vs style delta correlation；
-- cluster style fingerprint；
-- retrieval case visualization；
-- baselines comparison。
+不直接输入全局 absolute neighbor trajectory，原因是：
 
-### 11.7 阶段 4 任务状态
+- 全局坐标原点无意义；
+- road heading / map orientation 会引入不必要 variation；
+- ego-centric representation 更符合驾驶决策；
+- relative kinematics 更能表达“对我有什么影响”。
 
-| 任务 | 状态 | 说明 |
+因此 Stage 5 输入采用：
+
+```text
+neighbor absolute state
+↓
+ego-centric transform
+↓
+relative trajectory / relative kinematics
+```
+
+---
+
+## 9. Stage 5 输入设计：lane-aware 5-neighbor context
+
+### 9.1 5 个关键邻车 slot
+
+最终确定 5 个邻车：
+
+```text
+front
+left_front
+left_rear
+right_front
+right_rear
+```
+
+理由：
+
+- front：跟车、THW、TTC、压迫感、舒适性核心；
+- left_front / left_rear：左变道可行性、让行、被压迫感；
+- right_front / right_rear：右变道可行性、让行、被压迫感。
+
+### 9.2 为什么必须 lane-aware assignment
+
+曾经尝试 geometric fallback，但最终认为：
+
+> neighbor car 定义如果不干净，会直接污染后面的 interaction embedding。
+
+因此 Stage 5A 选择一开始就做 lane-aware assignment。
+
+### 9.3 最终 slot eligibility 规则
+
+#### front
+
+```text
+candidate lane == ego current lane
+0 < delta_s <= 120m
+abs(candidate_l) <= 2.0m
+heading_diff <= 45°
+当前帧有效
+允许静止车
+```
+
+#### left_front / right_front
+
+```text
+candidate lane == left/right adjacent lane
+0 < delta_s <= 80m
+abs(candidate_l) <= 2.0m
+heading_diff <= 45°
+```
+
+#### left_rear / right_rear
+
+```text
+candidate lane == left/right adjacent lane
+-120m <= delta_s < 0
+abs(candidate_l) <= 2.0m
+heading_diff <= 45°
+```
+
+选择规则：
+
+```text
+1. abs(delta_s) 最小
+2. projection_distance 最小
+3. abs(candidate_l) 最小
+4. heading_diff 最小
+```
+
+### 9.4 静止前车处理
+
+最终结论：
+
+```text
+静止前车不直接排除。
+```
+
+原因：
+
+- 红灯排队；
+- 拥堵；
+- 前车停车；
+- 静止前车对跟车风格、刹车风格、舒适性有强影响。
+
+但必须标记：
+
+```text
+neighbor_is_static
+static_front_count
+static_front_ratio
+```
+
+### 9.5 路口与 lane_context_quality
+
+不是因为“路口”就删除，而是根据 lane context 质量判断：
+
+```text
+good
+ambiguous_intersection
+fallback
+bad
+```
+
+重要修正：
+
+```text
+empty slot 是正常交通稀疏现象，不等于 ambiguous_intersection。
+```
+
+最开始出现过一个 bug：只要任一 slot empty，就把样本标成 ambiguous_intersection，导致 ambiguous rate 接近 99%。后来修正为：
+
+```text
+lane_context_quality 衡量 lane/map 语义可靠性；
+slot coverage / empty slot ratio 单独统计。
+```
+
+---
+
+## 10. Stage 5A：lane-aware 5-neighbor context dataset 构建
+
+工具：
+
+```text
+tools/build_waymo_5neighbor_context_dataset.py
+```
+
+### 10.1 输出文件
+
+每个 shard 包含：
+
+```text
+ego_seq.npy
+neighbor_seq.npy
+context_traj.npy
+context_mask.npy
+context_mask_window.npy
+neighbor_slot_ids.npy
+meta.npy
+split.npy
+interaction_feat_style_raw.npy
+interaction_feat_style.npy
+lane_assignment_debug.csv
+shard_summary.json
+```
+
+合并目录包含：
+
+```text
+shard_manifest.json
+build_summary.json
+merged_build_summary.json
+neighbor_context_summary.json
+interaction_feature_standardization.json
+build_report.md
+```
+
+### 10.2 Stage 5A 过程中修复的重要工程问题
+
+Stage 5A 遇到并修复了大量问题：
+
+```text
+1. trajectory NaN / Inf 清洗问题；
+2. project_point_to_lane 卡住，需要空间预筛 / top-k candidate；
+3. tools import path 问题；
+4. timing 初始化位置错误；
+5. clean filtering 后 row alignment mismatch；
+6. lane_assignment_debug.csv 字段不统一；
+7. assignment_method_counts_by_slot 总数不等于 n_windows_kept；
+8. lane_context_quality 把 empty slot 误判为 ambiguous；
+9. full51 非 streaming 版本 OOM；
+10. Codex 引入 /tmp/old.py 临时依赖；
+11. SlotAssignResult 接口不一致；
+12. streaming 版本缺 inner progress；
+13. streaming summary 硬编码 split_counts = {}；
+14. merge 脚本 shard path 拼接错误；
+15. assignment_method_counts_by_slot merge 后全 0；
+16. full51 需要 4 进程 file_start/file_end 分片并行。
+```
+
+最终工程原则：
+
+```text
+不把 full51 所有 scenario 一次性读入内存；
+不拼接大型 npy；
+使用 streaming + sharded output；
+用 manifest + global standardization 合并；
+大型数据读取优先 mmap。
+```
+
+### 10.3 full51 并行分片构建
+
+由于单进程 CPU/GPU 利用率不高，最终采用 4 个外部进程按 TFRecord file range 分片并行：
+
+```text
+part_00_13
+part_13_26
+part_26_39
+part_39_51
+```
+
+不在代码内部做 multiprocessing，原因是：
+
+- TensorFlow Dataset 多进程安全复杂；
+- shard 写入锁复杂；
+- counter 聚合复杂；
+- Codex 当时不稳定，大改风险高。
+
+### 10.4 Stage 5A final merged 结果
+
+最终合并目录：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+```
+
+最终数据规模：
+
+```text
+n_windows_kept = 164871
+n_shards = 35
+split_counts:
+  train = 131998
+  val   = 16481
+  test  = 16392
+```
+
+质量指标：
+
+```text
+nonfinite_output_detected = 0
+lane_assignment_success_rate = 1.0
+fallback_assignment_rate = 0.0
+good_lane_context_rate = 0.9899861103529426
+ambiguous_intersection_rate = 0.010013889647057397
+```
+
+slot occupied window ratio：
+
+```text
+front       = 0.2670390790
+left_front  = 0.1412619563
+left_rear   = 0.1514092836
+right_front = 0.1580144477
+right_rear  = 0.1589545766
+```
+
+slot valid frame ratio：
+
+```text
+front       = 0.2640142141
+left_front  = 0.1396579750
+left_rear   = 0.1501427631
+right_front = 0.1562976509
+right_rear  = 0.1577124691
+```
+
+empty slot ratio：
+
+```text
+front       = 0.7329609210
+left_front  = 0.8587380437
+left_rear   = 0.8485907164
+right_front = 0.8419855523
+right_rear  = 0.8410454234
+```
+
+解释：
+
+```text
+lane-aware 严格定义后，neighbor slot 是稀疏的；
+但这种稀疏性是正常交通现象，不是数据错误；
+训练和评估必须使用 context_mask / context_mask_window。
+```
+
+### 10.5 global interaction feature standardization
+
+合并后重新计算全局标准化，使用所有 shard 的 train split：
+
+```text
+train_count = 131998
+feature_dim = 33
+```
+
+重要原则：
+
+```text
+不能使用每个 part 自己的局部 mean/std；
+必须使用 full51 train split 全局 statistics。
+```
+
+---
+
+## 11. Stage 5B：Flatten Context GRU context-aware embedding
+
+Stage 5B 是第一版 interaction-aware behavior embedding。
+
+### 11.1 输入
+
+```text
+context_traj.npy: [N, 80, 83]
+context_mask.npy: [N, 80, 5]
+context_mask_window.npy: [N, 5]
+interaction_feat_style.npy: [N, 33]
+```
+
+其中：
+
+```text
+context_dim = 83
+feature_dim = 33
+```
+
+### 11.2 模型
+
+```text
+context_seq [B, 80, 83]
+↓
+GRU hidden_dim=128
+↓
+MLP projection
+↓
+64-D embedding
+```
+
+脚本：
+
+```text
+tools/context_shard_dataset.py
+tools/train_context_behavior_embedding.py
+tools/export_context_row_embeddings.py
+```
+
+### 11.3 训练目标
+
+Stage 5B v1 使用：
+
+```text
+soft contrastive loss
++ metric alignment loss
+```
+
+其中 interaction_feat_style.npy 作为 weak supervision。
+
+### 11.4 训练性能问题与解决
+
+训练时观察到：
+
+```text
+batch_size 128 / 256 会被 Killed；
+batch_size 64 可以跑；
+GPU 算力利用率低；
+CPU / 系统内存压力高。
+```
+
+结论：
+
+```text
+这不是 GPU 没用上，而是 dataloader / CPU / RAM bottleneck。
+```
+
+修复：
+
+```text
+np.load(..., mmap_mode="r")
+cache_shards = 1
+num_workers = 2
+pin_memory = true
+persistent_workers = true
+```
+
+### 11.5 正式训练配置
+
+```text
+batch_size = 64
+epochs = 20
+lr = 1e-3
+temperature = 0.1
+feature_temperature = 1.0
+metric_alignment = true
+metric_loss_weight = 0.1
+metric_loss_type = huber
+metric_targets = all
+hidden_dim = 128
+embedding_dim = 64
+num_layers = 1
+```
+
+### 11.6 Stage 5B 训练结果
+
+输出目录：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1
+```
+
+结果：
+
+```text
+total_train_samples = 131998
+total_val_samples = 16481
+context_dim = 83
+feature_dim = 33
+embedding_dim = 64
+best_val_loss = 3.8376607806942546
+best_epoch = 19
+final_train_loss = 3.840105953356572
+final_val_loss = 3.8383810137683967
+warnings = []
+```
+
+判断：
+
+```text
+训练稳定；
+train / val loss 都下降；
+train / val 接近；
+无明显过拟合；
+best epoch 在 19；
+Stage 5B v1 训练成功。
+```
+
+### 11.7 Stage 5B embedding 导出
+
+导出目录：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings
+```
+
+embedding manifest：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_embeddings/embedding_manifest.json
+```
+
+结果：
+
+```text
+embedding_dim = 64
+total_rows = 164871
+split = all
+embedding_shards = 35
+nonfinite_embedding_detected = 0
+row_alignment = Each embedding shard follows source shard row order
+```
+
+结论：
+
+```text
+Stage 5B v1 embedding export completed.
+```
+
+---
+
+## 12. Stage 5C：strict-schema context embedding evaluation
+
+Stage 5C 已完成，且采用严格 schema 对齐流程完成复核。
+
+### 12.1 Stage 5C 的两轮修正
+
+- 初始 Stage 5C-v1 属于预评估版本，当时存在 fallback feature index，结论只可作为方向性参考。
+- Stage 5C-1 修复为 strict feature schema，统一按 `feature_schema.json` 强约束映射，不再允许 fallback。
+- Stage 5C-2 在 strict schema 基础上增加 category-wise evaluation，使各行为组表现可解释、可横向比较。
+
+### 12.2 strict schema 核验结论
+
+- `feature_schema_loaded = true`
+- `strict_feature_schema = true`
+- `paper_grade_valid = true`
+- `no fallback feature index`
+- `row_alignment_checks.aligned = true`
+
+### 12.3 Stage 5B 基线在 strict schema 下的评估结果
+
+- `hit@5 = 0.490300`
+- `longitudinal_comfort = 0.150833`
+- `following_interaction = 0.302917`
+- `lateral_lane_dynamics = 0.266777`
+- `behavior_proxy = 0.190567`
+
+### 12.4 解释
+
+- Stage 5B 结果是有意义的，不是随机波动。
+- 相比 `random/context_l2` 有稳定优势。
+- 在横向动态（lateral dynamics）上表现较强。
+- 在跟驰/前车距离相关行为上相对偏弱。
+- 因此直接推动 Stage 5D：在训练目标层面做 group-weighted 的多目标平衡优化。
+
+---
+
+## 13. Stage 5D：group-weighted multi-objective training
+
+Stage 5D 不改数据集，核心只改训练目标。
+
+### 13.1 原理
+
+总损失：
+
+```text
+Total loss =
+  style loss
+  + weighted auxiliary regression losses
+  + weighted group metric alignment losses
+```
+
+行为组：
+
+- longitudinal_comfort
+- following_interaction
+- lateral_lane_dynamics
+- lateral_gap_interaction
+- behavior_proxy
+
+训练权重逻辑：
+
+- following 权重过低：THW/front distance/relative speed 学不强。
+- following 权重过高：embedding 会被 following 主导，横向动态被挤压。
+- lateral 权重过低：yaw/heading/lane-change 结构会弱化。
+- 目标是“平衡行为表示”，而不是只把单一类别刷到最高。
+
+### 13.2 Stage 5D-v1：following enhancement
+
+结果：
+
+- `hit@5 = 0.507992`
+- `longitudinal_comfort = 0.151584`
+- `following_interaction = 0.582954`
+- `lateral_lane_dynamics = 0.204637`
+- `behavior_proxy = 0.355707`
+
+解释：
+
+- following 显著增强。
+- behavior_proxy 同步提升。
+- lateral dynamics 出现过度校正下滑。
+- 因此 v1 是重要 ablation，不是最终推荐模型。
+
+### 13.3 Stage 5D-balanced-v2：current recommended model
+
+结果：
+
+- `hit@1 = 0.213092`
+- `hit@5 = 0.526232`
+- `mean_same_label_fraction_at_5 = 0.189776`
+- `longitudinal_comfort = 0.171751`
+- `following_interaction = 0.501998`
+- `lateral_lane_dynamics = 0.245608`
+- `behavior_proxy = 0.322344`
+
+解释：
+
+- 当前最优综合权衡（best current trade-off）。
+- 全局 retrieval 指标提升。
+- 修复 Stage 5B 的 following 弱项。
+- 恢复了大部分 lateral dynamics 能力。
+- 在 following_interaction 与 behavior_proxy 上明显胜出。
+- longitudinal_comfort 与 lateral_lane_dynamics 与强基线接近或近似持平。
+- 但仍不能宣称全局超越 `raw_feature/pca_feature` retrieval baselines。
+
+---
+
+## 14. Stage 5E：final comparison report
+
+Stage 5E 在同一 strict-schema evaluation protocol 下，对 Stage 5B、Stage 5D-v1、Stage 5D-balanced-v2 做最终对比。
+
+输出目录：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/stage5_final_comparison
+```
+
+关键文件：
+
+- `final_stage5_recommendation.md`
+- `final_stage5_model_comparison.csv`
+- `final_stage5_category_comparison.csv`
+- `final_stage5_retrieval_comparison.csv`
+- `final_stage5_learned_win_summary.csv`
+- `final_stage5_comparison_plot.png`
+
+对比表：
+
+| Model | hit@5 | longitudinal | following | lateral | behavior_proxy | Interpretation |
+|---|---:|---:|---:|---:|---:|---|
+| Stage 5B baseline | 0.490300 | 0.150833 | 0.302917 | 0.266777 | 0.190567 | strong lateral, weak following |
+| Stage 5D-v1 | 0.507992 | 0.151584 | 0.582954 | 0.204637 | 0.355707 | following over-correction |
+| Stage 5D-balanced-v2 | 0.526232 | 0.171751 | 0.501998 | 0.245608 | 0.322344 | best current trade-off |
+
+learned-win 特征统计：
+
+- Stage 5B 同时胜过 raw/pca 的特征数：8。
+- Stage 5D-v1 同时胜过 raw/pca 的特征数：10。
+- Stage 5D-balanced-v2 同时胜过 raw/pca 的特征数：17。
+
+最终推荐：
+
+```text
+Stage 5D-balanced-v2
+```
+
+研究解释：
+
+- Stage 5D 是受控多目标权衡，不是随机调参。
+- Stage 5B 暴露 following 弱项。
+- Stage 5D-v1 证明 following 可被显著增强。
+- Stage 5D-balanced-v2 将 following 增强与横向结构恢复到更平衡状态，成为当前推荐模型。
+
+---
+
+## 15. Stage 5F：paper-level experiment consolidation
+
+Stage 5F 是当前下一阶段，且 **不是训练阶段**，而是论文级实验整合阶段。
+
+计划输出目录：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/stage5_paper_package
+```
+
+计划文件：
+
+- `README.md`
+- `stage5_paper_experiment_summary.md`
+- `stage5_paper_tables.md`
+- `stage5_method_section_draft.md`
+- `stage5_results_section_draft.md`
+- `stage5_limitations_and_next_steps.md`
+- `final_stage5_comparison_plot.png`
+
+目的：
+
+- 汇总 Stage 5A-E。
+- 冻结当前推荐模型。
+- 形成 paper-ready 方法章节草稿。
+- 形成 paper-ready 结果章节草稿。
+- 明确当前限制与后续工作。
+- 将 Stage 5 embedding 与后续 BDD / E2E style comparison 对接。
+
+---
+
+## 16. Stage 5G：optional Slot Encoder + Attention Pooling ablation
+
+当前主线模型是 Flatten Context GRU，优势是简单、稳定，并且已经得到推荐模型 Stage 5D-balanced-v2。
+
+Slot Encoder + Attention Pooling 延后至 Stage 5G（可选消融）。
+
+动机：
+
+- 保留显式 slot 结构。
+- 分别编码 ego/front/left_front/left_rear/right_front/right_rear。
+- 通过 attention pooling 学习关键交互槽位。
+- 提高解释性与交互敏感度。
+- 若论文需要更强架构贡献，可作为体系化架构消融补充。
+
+重要边界：
+
+- Stage 5G 是可选项。
+- 不应阻塞 Stage 5F。
+- 未经实证提升，不应替代 Stage 5D-balanced-v2 主线推荐地位。
+
+---
+
+## 17. Stage 6：E2E model style comparison / BDD report card
+
+Stage 6 将 Stage 5D-balanced-v2 embedding 用于两版 E2E 模型（或两份 policy rollout 数据）之间的风格差异比较。
+
+输入：
+
+- Model A trajectory logs
+- Model B trajectory logs
+- trained Stage 5D-balanced-v2 encoder
+- `feature_schema.json`
+- scenario metadata（如可用）
+
+BDD：Behavioral Distribution Distance
+
+```text
+BDD(A, B) = distance between embedding distributions Z_A and Z_B
+```
+
+可选距离：
+
+- MMD
+- Wasserstein
+- Fréchet distance
+- energy distance
+
+BDD 回答“差多少”；为回答“差在哪”，Stage 6 输出：
+
+- `category_delta.csv`
+- `scenario_slice_delta.csv`
+- `top_drift_cases.csv`
+- `style_report_card.md/pdf`
+- `style_radar.png`
+- `embedding_umap.png`
+- `case_gallery.html`
+
+面向不同受众的表达形式：
+
+1. Leadership：E2E Driving Style Report Card
+2. Academic reviewers：Behavior Distribution Shift Evaluation
+3. Engineering colleagues：Style Drift Debug Dashboard
+
+Stage 6 需要真实 E2E 模型轨迹日志或成对 policy rollout 数据。
+
+---
+
+## 18. Synthetic Policy / BDD framework reminder
+
+Stage 1-3 synthetic policy validation 是受控验证阶段。
+
+synthetic policies 是可控行为变体：
+
+- conservative
+- aggressive
+- lateral_stable
+- comfort
+- following_safe
+- assertive
+- yielding
+
+目的：
+
+这些可控策略提供“已知行为差异”，用于验证 behavior embedding 与 BDD 是否能正确检出风格偏移。
+
+BDD：Behavioral Distribution Distance，是两份 policy / model 版本 embedding 分布之间的距离。
+
+连接关系：
+
+- Stage 5 提供更强的 interaction-aware 公共人类轨迹编码器。
+- Stage 6 将用该编码器计算真实 E2E 版本间的 BDD。
+
+---
+
+## 19. 当前不能夸大的结论
+
+当前不能声称：
+
+- learned embedding 在全局上全面超越 raw/pca feature retrieval baselines；
+- Stage 5D-balanced-v2 可替代全部 handcrafted metrics；
+- 本 benchmark 等价于 closed-loop autonomous driving simulation；
+- Waymo public human trajectory 验证等价于私有 E2E 实车验证。
+
+当前可以声称：
+
+- Stage 5D-balanced-v2 是目前 Stage 5 learned representation 中最优版本；
+- 其在 learned retrieval 全局指标上优于 Stage 5B 与 Stage 5D-v1；
+- 在关键行为类别上取得胜出或近似持平；
+- 为 BDD / E2E model style comparison 提供了可落地基础。
+
+---
+
+## 20. 当前项目状态总览
+
+| Module | Current status | Next step |
 |---|---|---|
-| 数据集选择 | 未开始 | 需要确定 Waymo / Argoverse / nuScenes 等 |
-| human trajectory 数据转换 | 未开始 | 需要转成当前 traj/front/meta/split 格式 |
-| pseudo-label 规则定义 | 未开始 | 需要避免过拟合和规则循环论证 |
-| human embedding 生成 | 未开始 | 复用现有 embedding 或单独导出 |
-| pseudo-label classification | 未开始 | 验证 embedding 是否编码真实风格 |
-| retrieval validation | 未开始 | 检索同 pseudo style 样本 |
-| cluster fingerprint | 未开始 | 检查聚类是否可解释 |
-| baseline comparison | 未开始 | 顶会必要 |
-
----
-
-## 12. 必须补的 baseline
-
-如果要冲高水平会议，必须补 baseline。
-
-当前建议 baseline：
-
-| baseline | 用途 |
-|---|---|
-| raw handcrafted feature distance | 判断 embedding 是否只是 feature 包装 |
-| feature-only retrieval | 对比 learned embedding retrieval |
-| trajectory distance | 轨迹几何距离 baseline |
-| DTW / Frechet distance | 序列轨迹距离 baseline |
-| random embedding | 随机对照 |
-| untrained encoder | 模型结构随机初始化对照 |
-| PCA feature embedding | 简单降维 baseline |
-
-### baseline 当前状态
-
-| 任务 | 状态 |
-|---|---|
-| baseline 设计 | 初步提出 |
-| baseline 代码 | 未开始 |
-| baseline 实验 | 未开始 |
-| baseline 论文表格 | 未开始 |
-
----
-
-## 13. 当前可写入论文的核心结论
-
-### 13.1 synthetic controlled validation
-
-> The learned behavior embedding is policy-discriminative and retrieval-capable under controlled synthetic rollout settings.
-
-### 13.2 within-source aligned evaluation
-
-> Within-source comparison controls scene variation and allows policy-induced behavior differences to be measured directly.
-
-### 13.3 lateral_stable 机制结论
-
-> Lateral-stable behavior requires joint lateral and longitudinal shaping. Stronger yaw-rate clipping and stricter jerk limitation improve p2 recognizability, retrieval consistency, yaw-rate stability, and longitudinal comfort.
-
-### 13.4 推荐配置结论
-
-> `recommended_lateral_stable_v2` outperforms both the original baseline and full_strong_lateral_stable in p2 classification accuracy, retrieval consistency, separation margin, jerk, and yaw-rate proxy.
-
-### 13.5 谨慎限制
-
-> However, p2 independence remains incomplete because the average p2 separation margin is still negative.
-
----
-
-## 14. 当前不应该夸大的结论
-
-不能写：
-
-```text
-lateral_stable 已经完全成为独立第三类驾驶风格。
-```
-
-不能写：
-
-```text
-embedding 已经证明适用于真实人类驾驶风格。
-```
-
-不能写：
-
-```text
-该 benchmark 等价于完整自动驾驶闭环仿真。
-```
-
-应该写：
-
-```text
-lateral_stable 的独立性显著增强，但仍未完全成立。
-```
-
-```text
-当前结论主要来自 controlled synthetic rollout，下一步需要 public human trajectory external validation。
-```
-
-```text
-当前 benchmark 是 trajectory-level closed-loop policy behavior evaluation，不包含 sensor rendering / perception stack。
-```
-
----
-
-## 15. 当前论文成熟度判断
-
-当前状态：
-
-```text
-已有论文雏形和投稿潜力，但还不是顶会-ready。
-```
-
-强项：
-
-- 问题真实；
-- trajectory-level benchmark 定位清楚；
-- controlled rollout generator 有价值；
-- aligned within-source evaluation 很关键；
-- PR2 demo / population eval / ablation / local sweep 已成体系；
-- recommended_lateral_stable_v2 结果清晰。
-
-短板：
-
-- 主要还是 synthetic policy validation；
-- public human trajectory external validation 未做；
-- baselines 未补齐；
-- p2 independence 仍不完全；
-- benchmark package 需要整理成论文协议。
-
-顶会判断：
-
-| 当前状态 | 可能性 |
-|---|---|
-| 现在直接投顶会主会 | 偏低 |
-| 补完 public validation + baselines | 有机会冲强会/顶会 workshop，主会机会提升 |
-| 再接入真实 planner rollout / public planner benchmark | 顶会主会机会进一步提升 |
-
----
-
-## 16. 接下来最优先任务
-
-### P0：完成阶段 3 收尾
-
-- 确认 `recommended_lateral_stable_v2` 已固化；
-- 确认 `final_compare` 三配置对比输出稳定；
-- 确认 README 已更新；
-- 整理 final comparison 表格和图。
-
-### P1：启动阶段 4 public human trajectory validation
-
-需要先设计文档，不要直接写代码。
-
-待确定：
-
-- 选哪个公开数据集；
-- 如何转成当前统一格式；
-- pseudo-label 如何定义；
-- 是否复用当前 embedding；
-- 需要哪些 baseline；
-- 评价指标和图表输出。
-
-### P2：设计 baseline suite
-
-先做最小 baseline：
-
-```text
-raw feature distance
-trajectory distance
-random embedding
-feature-only retrieval
-```
-
-### P3：论文结构草稿
-
-建议开始维护：
-
-```text
-paper_outline.md
-experiment_table.md
-```
-
----
-
-## 17. 建议后续新增文档
-
-建议在仓库中逐步增加：
-
-```text
-00_plans.md                          # 当前总计划与进展
-01_experiment_1_population_eval.md    # 阶段 2 详细总结
-02_experiment_2_ablation.md           # 阶段 3 broad ablation 总结
-03_experiment_2b_local_sweep.md       # local sweep 总结
-04_vehicledata_validation_plan.md     # 阶段 4 public/human 数据验证计划
-05_baseline_plan.md                   # baseline suite 计划
-paper_outline.md                      # 论文结构草稿
-```
-
----
-
-## 18. 当前项目状态总览
-
-| 模块 | 当前状态 | 下一步 |
-|---|---|---|
-| synthetic policy generator | 可用 | 使用 recommended_lateral_stable_v2 |
-| PR2 interpretability demo | 完成 | 保持，不再过度美化 |
-| population evaluator | 完成 | 后续可复用于 v2 / human validation |
-| broad ablation | 完成 | 已得机制结论 |
-| local fine sweep | 完成 | 已得 v2 配置 |
-| final compare | 完成/待代码最终确认 | 作为论文表格 |
-| README | 待确认 | 必须同步最新命令 |
-| public human trajectory validation | 未开始 | 下一大阶段 |
-| baselines | 未开始 | 顶会必要 |
-| paper outline | 未开始 | 建议尽快启动 |
-
----
-
-## 19. 最后结论
-
-截至目前，项目已经完成了从单案例 demo 到全量统计、再到 generator 机制 ablation 和推荐配置优化的完整链路。
-
-当前最重要成果是：
-
-> `recommended_lateral_stable_v2` 已经显著优于 baseline_current 和 full_strong_lateral_stable，可以作为后续实验默认推荐配置。
-
-当前最重要限制是：
-
-> 结论仍主要来自 synthetic controlled rollout，必须通过 public human trajectory validation 和 baseline suite 来提升论文可信度。
-
-下一阶段建议正式进入：
-
-```text
-阶段 4：public human trajectory external validation
-```
-
-目标是把当前工作从 synthetic benchmark 推进到更有顶会潜力的 behavior evaluation benchmark。
+| synthetic policy generator | completed | can support BDD controlled validation |
+| Stage 4 ego-only validation | completed main chain | paper background / baseline reference |
+| Stage 5A context dataset | completed | do not modify builder |
+| Stage 5B baseline | completed | baseline result |
+| Stage 5C strict-schema evaluation | completed | use final eval outputs |
+| Stage 5D training improvements | completed | Stage 5D-balanced-v2 recommended |
+| Stage 5E final comparison | completed | use final comparison report |
+| Stage 5F paper package | current next task | generate paper-ready files |
+| Stage 5G slot encoder | optional future ablation | defer |
+| Stage 6 E2E style report | future application | design later |
+
+Priority：
+
+- P0：repair `00_plans.md` without deleting old history
+- P1：Stage 5F paper package
+- P2：Stage 6 report card design
+- P3：optional Stage 5G architecture ablation

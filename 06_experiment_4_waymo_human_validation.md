@@ -297,3 +297,11 @@ python tools/generate_stage4_final_report.py \
 | Stage 4G metric alignment | 完成 | current best |
 | Stage 4H shuffled sanity | 完成 | sanity check passed |
 | Stage 4I final report | 待执行 | generate paper package |
+
+
+# 从 Stage 4 到 Stage 5 的过渡
+
+- Stage 4G 已解决 trajectory-only comfort metric alignment，并成为当前轨迹基线。
+- Stage 5 将在该基线上加入 interaction context（而不是回退或替换 Stage 4G）。
+- Stage 5 的设计不应使 Stage 4G 结论失效，Stage 4G 继续作为 trajectory-only baseline。
+- Stage 5 聚焦 lane-aware 5-neighbor local context 与 interaction-conditioned style 建模。
