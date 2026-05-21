@@ -1952,3 +1952,33 @@ python tools/evaluate_context_embedding.py \
 - `feature_group_config.json` 中可看到按 feature name 解析出的 group indices。
 - 导出命令产出 `embedding_manifest.json`，且 `nonfinite_embedding_detected=0`。
 - 评估命令产出 `evaluation_summary.json` 与 `category_correlation_summary.csv`，可用于验证 following 是否提升且 lateral 优势是否保持。
+
+## Stage 6A：非配对风格漂移评估
+
+## 1. 命令
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --feature_path <interaction_feat_style.npy> \
+  --feature_schema_path <feature_schema.json> \
+  --split_path <split.npy> \
+  --experiment_name neg_ctrl
+
+python tools/stage6_compare_unpaired_style.py \
+  --context_traj_path <context_traj.npy> \
+  --feature_path <interaction_feat_style.npy> \
+  --feature_schema_path <feature_schema.json> \
+  --encoder_ckpt <stage5d_balanced_v2.pt> \
+  --a_indices_path outputs/stage6A_splits/neg_ctrl/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/neg_ctrl/b_indices.npy \
+  --output_dir outputs/stage6A_compare/neg_ctrl
+```
+
+## 2. 期望行为
+
+读取 Stage 5 处理产物与 Stage 5D 编码器，输出 BDD、类别/特征/slice 漂移、top drift case、markdown report 与最小图表；不会触发新训练或下载新数据。
+
+## 3. 通过标准
+
+输出目录包含 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`scenario_slice_delta.csv`、`top_drift_cases.csv`、`style_report_card.md` 与 `plots/*.png`。
