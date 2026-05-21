@@ -1002,3 +1002,347 @@ Stage 5D 系列属于受控的多目标权衡（multi-objective trade-off）实�
 - v1 强化 following_interaction 后出现 lateral_lane_dynamics 下探；
 - balanced-v2 在保持较强 following 的同时恢复 lateral，并在 behavior_proxy 上超过特征基线；
 - 该路线是有约束的目标权重调节，不是随机调参。
+
+## Stage 5F：论文级实验固化与章节材料整理
+
+### Stage 5F 的目标
+
+Stage 5F 不是新的训练阶段，也不是新的数据构建阶段。Stage 5F 的定位是**论文级实验固化**：将 Stage 5A~5E 的已完成工作，整理为可追溯、可复现、可直接进入论文实验章节的完整叙事。
+
+Stage 5F 重点固化的内容包括：
+
+- 数据集构建摘要（Stage 5A）
+- 特征 schema 摘要（33-D 严格 schema）
+- 模型设计摘要（Stage 5B/5D）
+- 训练目标演化（从 baseline 到 group-weighted）
+- 评估协议（Stage 5C 严格评估）
+- 最终对比（Stage 5E）
+- 当前推荐模型
+- 限制与边界
+- 后续阶段方向
+
+关键说明：Stage 5F 的输出**不是新模型**，而是把 Stage 5 的实验链路在 `07_stage5_interaction_design.md` 中固化为干净、可核查的论文级材料。
+
+### Stage 5A-E 总链路
+
+Stage 5 全链路如下：
+
+- Stage 5A：lane-aware 5-neighbor context dataset
+- Stage 5B：Flatten Context GRU baseline
+- Stage 5C：strict-schema evaluation
+- Stage 5D：group-weighted multi-objective training
+- Stage 5E：final comparison
+- Stage 5F：paper-level consolidation
+
+这意味着 Stage 5 已经不再只是“数据 + 训练”实验，而是形成了完整的 interaction-aware behavior embedding 验证管线：
+
+Waymo public human trajectory  
+↓  
+lane-aware 5-neighbor context dataset  
+↓  
+Flatten Context GRU / group-weighted encoder  
+↓  
+64-D behavior embedding  
+↓  
+strict-schema evaluation  
+↓  
+final model comparison  
+↓  
+paper-ready behavior representation conclusion
+
+### Stage 5A 数据集摘要
+
+数据集目录：
+
+`outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged`
+
+关键统计：
+
+- `n_windows_kept = 164871`
+- `n_shards = 35`
+- `train = 131998`
+- `val = 16481`
+- `test = 16392`
+- `context_dim = 83`
+- `feature_dim = 33`
+- `fallback_assignment_rate = 0`
+- `nonfinite_output_detected = 0`
+- `good_lane_context_rate ≈ 0.99`
+
+论文级解释：
+
+- 数据采用 lane-aware assignment，而非纯几何邻车选择。
+- 固定五个邻车槽位：`front`、`left_front`、`left_rear`、`right_front`、`right_rear`。
+- 数据以 shard 形式组织，保证大规模样本可处理。
+- 行对齐（row alignment）是后续 embedding 导出与评估的前提。
+- 不应把数据粗暴合并为单个超大 `.npy`。
+- lane-aware slot 的稀疏性是预期行为，不是 bug。
+
+### 33-D interaction feature schema and behavior groups
+
+Stage 5 评估采用严格 33-D schema，并按行为组进行分析：
+
+- `longitudinal_comfort`
+  - `rms_accel`
+  - `rms_jerk`
+  - `max_abs_accel`
+  - `max_abs_jerk`
+- `following_interaction`
+  - `mean_thw`
+  - `min_thw`
+  - `mean_front_distance`
+  - `min_front_distance`
+  - `mean_rel_speed`
+  - `p95_rel_speed`
+  - `front_pressure_score`
+  - `rear_vehicle_pressure_proxy`
+- `lateral_lane_dynamics`
+  - `rms_yaw_rate`
+  - `rms_curvature`
+  - `heading_change_total`
+  - `lane_change_count_proxy`
+  - `lane_change_rate_proxy`
+  - `max_lateral_speed`
+  - `rms_lateral_accel`
+  - `lane_change_oscillation_score_proxy`
+  - `left_front_min_gap`
+  - `left_rear_min_gap`
+  - `right_front_min_gap`
+  - `right_rear_min_gap`
+  - `left_gap_min`
+  - `right_gap_min`
+  - `left_gap_acceptance_proxy`
+  - `right_gap_acceptance_proxy`
+- `behavior_proxy`
+  - `yielding_score_proxy`
+  - `assertiveness_score_proxy`
+
+重要约束：
+
+- `mean_speed` 不在 Stage 5 schema 中。
+- `std_rel_speed` 不在 Stage 5 schema 中。
+- Stage 5 使用 `p95_rel_speed` 替代 `std_rel_speed`。
+- 严格 schema 防止 silent index mismatch。
+- 特征索引必须由 schema 名称解析，不能依赖硬编码下标。
+
+### 模型版本与训练目标演化
+
+Stage 5B baseline：
+
+- 模型：Flatten Context GRU
+- 输入：`context_traj [N, 80, 83]`
+- `embedding_dim = 64`
+- 训练目标：
+  - soft contrastive loss
+  - global metric alignment loss
+- 结果：
+  - meaningful baseline
+  - lateral 强
+  - following 弱
+
+Stage 5D-v1：
+
+- 模型：group-weighted multi-objective loss
+- 目的：上调 following_interaction
+- 结果：following 大幅提升，但 lateral 下探（over-correction）
+- 解释：证明 following 可被显式强化，但不是最终模型
+
+Stage 5D-balanced-v2：
+
+- 相比 v1，下调 following 权重
+- 相比 v1，上调 lateral dynamics 权重
+- 目标：在保持 following 的同时恢复 lateral 结构
+- 当前推荐模型
+
+训练调整原则：
+
+Stage 5D 不是随机调参，而是由 Stage 5C 诊断驱动的受控多目标权衡研究：
+
+- Stage 5C 发现 Stage 5B 的 following_interaction 偏弱、lateral_lane_dynamics 偏强；
+- Stage 5D-v1 回答“following 能否通过 group weights 强化”；
+- Stage 5D-balanced-v2 回答“following 强化后 lateral 能否恢复”；
+- 最终形成可解释的 trade-off 路线，而非盲目试参。
+
+### Group-weighted multi-objective loss
+
+总损失形式：
+
+`Total loss = style loss + weighted auxiliary regression losses + weighted group metric alignment losses`
+
+直观解释：
+
+- style loss：保持整体行为几何结构。
+- auxiliary heads：约束 embedding 保留各行为组可回归信息。
+- group metric alignment：让 embedding 距离与各行为组 feature-space 距离一致。
+
+权重机制解释：
+
+- following 权重过低：THW / front distance / rel speed 会被弱表达。
+- following 权重过高：embedding 会被 following 主导并削弱 lateral。
+- lateral 权重过低：yaw / heading / lane-change 结构变弱。
+- lateral 权重过高：可能恢复 lateral 但损害 following。
+- balanced-v2 被选中，是因为其在 following 与 lateral 之间取得更优平衡，同时提升全局 learned retrieval。
+
+### 评估协议
+
+对比表示：
+
+- `learned_context_embedding`
+- `raw_feature`
+- `pca_feature`
+- `context_l2`
+- `random`
+
+核心指标：
+
+- retrieval `hit@1`
+- retrieval `hit@5`
+- `mean_same_label_fraction_at_5`
+- style-distance Spearman correlation
+- category-wise correlation
+- learned-win feature count
+- context sensitivity
+
+严格 schema 有效性要求：
+
+- `feature_schema_loaded = true`
+- `strict_feature_schema = true`
+- no fallback feature index
+- `paper_grade_valid = true`
+- `row_alignment_checks.aligned = true`
+
+阶段解释：
+
+- Stage 5C-v1 属于 preliminary（使用 fallback 索引）。
+- Stage 5C-1 修复 strict schema 并达到 paper-grade validity。
+- Stage 5C-2 增加 category-wise 分析。
+- Stage 5E 完成跨模型最终比较。
+
+### Stage 5E 最终对比结果
+
+| Model | hit@5 | longitudinal | following | lateral | behavior_proxy | Interpretation |
+|---|---:|---:|---:|---:|---:|---|
+| Stage 5B baseline | 0.490300 | 0.150833 | 0.302917 | 0.266777 | 0.190567 | strong lateral, weak following |
+| Stage 5D-v1 | 0.507992 | 0.151584 | 0.582954 | 0.204637 | 0.355707 | following over-correction |
+| Stage 5D-balanced-v2 | 0.526232 | 0.171751 | 0.501998 | 0.245608 | 0.322344 | best current trade-off |
+
+解释：
+
+- Stage 5B 建立了有意义的 context-aware baseline，但 following 明显偏弱。
+- Stage 5D-v1 证明了 following 可以被显著强化，但对 lateral 产生过校正。
+- Stage 5D-balanced-v2 在全局 learned retrieval、following 保持、lateral 恢复与 behavior_proxy 上取得最好折中，是当前推荐模型。
+
+### learned-win feature analysis
+
+- Stage 5B：同时超过 raw/pca 的特征数为 8，主要集中在 lateral dynamics。
+- Stage 5D-v1：同时超过 raw/pca 的特征数为 10，主要集中在 following/front-distance/yielding。
+- Stage 5D-balanced-v2：同时超过 raw/pca 的特征数为 17，覆盖 following、lateral dynamics、comfort、yielding 多维度。
+
+这说明 balanced-v2 并非只提升单一类别，而是把 learned representation 的优势扩展到更多行为维度。
+
+balanced-v2 关键 learned wins（示例）：
+
+- `mean_thw`
+- `min_thw`
+- `mean_front_distance`
+- `min_front_distance`
+- `mean_rel_speed`
+- `p95_rel_speed`
+- `front_pressure_score`
+- `rear_vehicle_pressure_proxy`
+- `rms_yaw_rate`
+- `heading_change_total`
+- `lane_change_count_proxy`
+- `lane_change_rate_proxy`
+- `max_lateral_speed`
+- `rms_lateral_accel`
+- `lane_change_oscillation_score_proxy`
+- `yielding_score_proxy`
+
+### Stage 5 论文级结论
+
+我们已经构建了 lane-aware 的 5-neighbor interaction-aware 轨迹数据集，并在此基础上训练 context-aware behavior embedding。严格 schema 评估表明 learned embedding 具备有效行为结构信息。
+
+从阶段性诊断看，Stage 5B 揭示了结构不均衡：lateral 强、following 弱；Stage 5D-v1 证明 following 可被增强，但会带来 lateral 退化；Stage 5D-balanced-v2 在两者之间取得当前最佳 trade-off，因此被选为当前推荐模型。
+
+同时必须保持审慎：当前 learned embedding 仍未在 global retrieval 上全面超过 raw_feature / pca_feature，因此不能宣称“完全战胜手工特征”。但 balanced-v2 已提供了坚实的 learned representation 基础，可支撑后续 BDD / E2E 风格对比研究。
+
+### 关键命令与可复现路径
+
+关键评估目录：
+
+- Stage 5B eval final：
+  - `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_eval_final`
+- Stage 5D-v1 eval final：
+  - `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval_final`
+- Stage 5D-balanced-v2 eval final：
+  - `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval_final`
+- Stage 5E final comparison：
+  - `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/stage5_final_comparison`
+
+Stage 5E 对比命令：
+
+```bash
+python tools/compare_stage5_embedding_runs.py \
+  --stage5b_eval outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5b_v1_eval_final \
+  --stage5d_v1_eval outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval_final \
+  --stage5d_v2_eval outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval_final \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/stage5_final_comparison \
+  --overwrite
+```
+
+Stage 5D-balanced-v2 训练/导出/评估命令见前文“Stage 5D-balanced-v2 Commands”章节，可直接复现。注意：Stage 5D 路线不使用 `--metric_alignment`，而是使用 group-specific metric 权重。
+
+### 当前限制
+
+- learned embedding 仍未在 global retrieval 上全面超过 raw/pca baselines。
+- Stage 5 使用的是 Waymo public human trajectory，不是私有 E2E 实车日志。
+- pseudo style labels 与 interaction features 属于弱监督，不是 ground truth。
+- 当前属于 trajectory-level behavior evaluation，不是闭环仿真验证。
+- Slot Encoder + Attention Pooling 尚未完成正式对比评估。
+- Stage 6 的真实 E2E style comparison 仍是后续工作。
+
+### 后续阶段规划
+
+Stage 5G（可选架构消融）：Slot Encoder + Attention Pooling
+
+- 当前主线是 Flatten Context GRU。
+- slot encoder 可能提升交互可解释性。
+- 可分别编码 `ego/front/left_front/left_rear/right_front/right_rear`。
+- 通过 attention pooling 聚合上下文表示。
+- 该方向属于后续研究，不阻塞当前 Stage 5F 固化。
+
+Stage 6（E2E model style comparison / BDD report card）：
+
+- 使用 Stage 5D-balanced-v2 embedding 对比两版 E2E 模型轨迹数据。
+- 计算 BDD（Behavioral Distribution Distance）。
+- 输出驾驶风格报告卡（report card）。
+- 输出类别级差异（category deltas）。
+- 输出场景切片差异（scenario-sliced deltas）。
+- 输出 top drift cases。
+- 服务管理层、学术审稿与工程同事的共同决策需求。
+
+### Synthetic Policy / BDD 框架回顾
+
+Synthetic policy 属于 Stage 1-3 的受控验证框架，构建了多种已知风格变体：
+
+- conservative
+- aggressive
+- lateral_stable
+- comfort
+- following_safe
+- assertive
+- yielding
+
+其目的在于：通过已知行为差异，验证 embedding 与 style drift 指标是否能正确感知风格变化。
+
+BDD（Behavioral Distribution Distance）定义为：比较 policy/model A 与 B 在 embedding 分布上的距离，即 `BDD(A, B)`。
+
+可选实现包括：
+
+- MMD
+- Wasserstein
+- Fréchet distance
+- energy distance
+
+关系总结：Stage 5 提供了更强的 interaction-aware encoder；Stage 6 将在此基础上对真实 E2E 模型版本计算 BDD，并形成风格漂移与行为差异报告。
