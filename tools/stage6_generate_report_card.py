@@ -20,7 +20,7 @@ def _safe_read_csv(path: Path) -> pd.DataFrame:
 
 
 def main(a):
-    d = Path(a.input_dir)
+    d = Path(a.input_dir or a.compare_dir)
     bdd = json.loads((d / 'bdd_summary.json').read_text(encoding='utf-8'))
     c = _safe_read_csv(d / 'category_delta.csv')
     f = _safe_read_csv(d / 'feature_delta.csv')
@@ -53,10 +53,19 @@ def main(a):
         '- Embedding space is the primary metric space; category/feature are interpretation layers.',
         '- Negative/positive controls are required for BDD scale calibration.',
     ]
-    (d / 'style_report_card.md').write_text('\n'.join(lines), encoding='utf-8')
+    out_path = Path(a.output_path) if a.output_path else (d / 'style_report_card.md')
+    if out_path.exists() and not a.overwrite:
+        raise FileExistsError(f'输出文件已存在: {out_path}；如需覆盖请加 --overwrite')
+    out_path.write_text('\n'.join(lines), encoding='utf-8')
 
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
-    p.add_argument('--input_dir', required=True)
-    main(p.parse_args())
+    p.add_argument('--input_dir')
+    p.add_argument('--compare_dir')
+    p.add_argument('--output_path')
+    p.add_argument('--overwrite', action='store_true')
+    args = p.parse_args()
+    if not args.input_dir and not args.compare_dir:
+        raise ValueError('请提供 --input_dir 或 --compare_dir')
+    main(args)

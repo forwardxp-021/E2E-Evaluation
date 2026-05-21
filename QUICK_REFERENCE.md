@@ -2126,3 +2126,59 @@ python tools/stage6_compare_unpaired_style.py \
   - `stage6_warnings.json`
   - `style_report_card.md`
 - `feature_delta.csv` 的 `permutation_p_value` 不应全是 1.0（除非数据本身极端巧合）。
+
+## Stage 6A（推荐流程，Manifest 模式，仅此为当前建议）
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python -m py_compile \
+  tools/stage6_build_ab_splits.py \
+  tools/stage6_compare_unpaired_style.py \
+  tools/stage6_generate_report_card.py
+
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 使用 `shard_manifest.json` + `embedding_manifest.json`，按分片顺序对齐读取特征和 embedding。
+- A/B 索引为全局行号；top drift 不再构建完整 A×B 距离矩阵，避免 OOM。
+- 即使无可用切片，也会输出仅含表头的 `scenario_slice_delta.csv`，并继续生成报告卡。
+
+## 3. 通过标准
+
+- 无需 `--embedding_path __unused_manifest_mode_guard_workaround__` 之类临时参数。
+- 输出目录包含 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`scenario_slice_delta.csv`、`top_drift_cases.csv`、`stage6_warnings.json`、`style_report_card.md` 和核心图表。
+- 上述命令可直接复制执行且不依赖根目录扁平 `interaction_feat_style.npy/split.npy/context_traj.npy`。
+
+> LEGACY/DEPRECATED：任何依赖 `$DATA_ROOT/interaction_feat_style.npy`、`$DATA_ROOT/split.npy`、`$DATA_ROOT/context_traj.npy`、`context_gru_stage5d_group_weighted_v1*` 的 Stage 6A 命令都不是当前推荐流程。
