@@ -30,6 +30,9 @@ def main(a):
 
     topc = c.reindex(c.delta.abs().sort_values(ascending=False).head(10).index) if not c.empty else pd.DataFrame()
     topf = f.reindex(f.delta_normalized.abs().sort_values(ascending=False).head(10).index) if not f.empty else pd.DataFrame()
+    if not topf.empty:
+        preferred = [c for c in ['feature','delta_normalized','cohen_d','permutation_p_value','group'] if c in topf.columns]
+        topf = topf[preferred] if preferred else topf
 
     lines = [
         '# Style Report Card', '',
