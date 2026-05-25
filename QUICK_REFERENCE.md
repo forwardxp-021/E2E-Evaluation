@@ -2182,3 +2182,50 @@ python tools/stage6_compare_unpaired_style.py \
 - 上述命令可直接复制执行且不依赖根目录扁平 `interaction_feat_style.npy/split.npy/context_traj.npy`。
 
 > LEGACY/DEPRECATED：任何依赖 `$DATA_ROOT/interaction_feat_style.npy`、`$DATA_ROOT/split.npy`、`$DATA_ROOT/context_traj.npy`、`context_gru_stage5d_group_weighted_v1*` 的 Stage 6A 命令都不是当前推荐流程。
+
+
+## Stage 6A — Full Negative Control（Manifest 模式，当前标准流程）
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python -m py_compile   tools/stage6_build_ab_splits.py   tools/stage6_compare_unpaired_style.py   tools/stage6_generate_report_card.py
+
+python tools/stage6_build_ab_splits.py   --mode negative_control_random   --shard_manifest $SHARD_MANIFEST   --feature_schema_path $FEATURE_SCHEMA   --eval_split test   --output_dir outputs/stage6A_splits   --experiment_name negative_control_random   --seed 42   --overwrite
+
+python tools/stage6_compare_unpaired_style.py   --embedding_manifest $EMBEDDING_MANIFEST   --shard_manifest $SHARD_MANIFEST   --feature_schema_path $FEATURE_SCHEMA   --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy   --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy   --feature_groups_config configs/stage6_feature_groups.yaml   --output_dir outputs/stage6A_compare/negative_control_random   --num_bootstrap 50   --num_permutation 100   --max_mmd_samples 2000   --max_top_case_candidates 5000   --top_k 20   --seed 42   --overwrite
+```
+
+## 2. 期望行为
+
+- `negative_control_random` 是在 `test` 集内做同分布随机切分（A/B）。
+- 期望结果：BDD 很小、`p-value` 不显著、category/feature effect size 整体较小。
+- 该实验用于验证 Stage 6A 不会把同分布样本误报为 style drift。
+- 输出目录：`outputs/stage6A_compare/negative_control_random/`，包含：
+  - `bdd_summary.json`
+  - `category_delta.csv`
+  - `feature_delta.csv`
+  - `scenario_slice_delta.csv`
+  - `top_drift_cases.csv`
+  - `stage6_warnings.json`
+  - `style_report_card.md`
+  - `plots/`
+
+## 3. 通过标准
+
+- `BDD_MMD` 约 `0.0004`、`p-value` 约 `0.396`（数量级接近即可），表示整体分布漂移不显著。
+- category/feature 的 effect size 应整体较小；若个别特征 p-value 显著但 effect size 很小，不应过度解读。
+- `scenario_slice_delta.csv` 存在（即使仅表头也要有明确 warning）。
+
+> 重要说明：
+> - Stage 6A 当前推荐路径是 manifest 模式，不推荐根目录扁平 npy 作为主流程。
+> - 不推荐命令中使用：`$DATA_ROOT/interaction_feat_style.npy`、`$DATA_ROOT/split.npy`、`$DATA_ROOT/context_traj.npy`、`context_gru_stage5d_group_weighted_v1`。
+> - 以上仅作为 legacy/fallback。
+> - 当前推荐 embedding 模型：`context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json`。
+>
+> 已知限制：scenario slicing 依赖 `feature_schema.json` 可用代理特征；若 speed/density proxy 缺失会产生 warnings。Stage 6B 需要更丰富 scene metadata/scene descriptor matching。

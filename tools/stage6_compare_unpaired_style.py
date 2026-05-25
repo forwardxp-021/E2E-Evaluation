@@ -100,26 +100,36 @@ def two_sided_permutation_pvalue(x_a, x_b, num_permutation, rng):
         if abs(d) >= abs(obs): cnt += 1
     return float((cnt + 1) / (num_permutation + 1))
 
-def _alias(fmap, cands):
-    for c in cands:
-        if c in fmap: return c
+def _resolve_alias(feature_map, candidates):
+    for c in candidates:
+        if c in feature_map:
+            return c
     return None
 
-def _build_tertile_bins(values, labels):
+def _build_quantile_bins(values, quantiles, labels):
     vv = np.asarray(values, float)
     ok = np.isfinite(vv)
-    if ok.sum() < 3:
-        return None, '有效样本不足，无法计算分位数'
-    qs = np.quantile(vv[ok], [1/3, 2/3])
-    if not np.all(np.isfinite(qs)) or qs[0] >= qs[1]:
-        return None, '分位点退化，无法形成三分位切片'
+    if ok.sum() < len(labels):
+        return None, {'reason': 'insufficient_valid_rows', 'valid_rows': int(ok.sum())}
+    qs = np.quantile(vv[ok], quantiles)
+    if not np.all(np.isfinite(qs)):
+        return None, {'reason': 'degenerate_quantiles', 'valid_rows': int(ok.sum())}
+    if len(np.unique(qs)) < len(qs):
+        return None, {'reason': 'degenerate_quantiles', 'valid_rows': int(ok.sum()), 'quantiles': [float(x) for x in qs]}
     bins = np.array(['unknown'] * len(vv), dtype=object)
-    bins[ok & (vv < qs[0])] = labels[0]
-    bins[ok & (vv >= qs[0]) & (vv < qs[1])] = labels[1]
-    bins[ok & (vv >= qs[1])] = labels[2]
-    if len(np.unique(bins[ok])) < 2:
-        return None, '所有样本落入单一分箱，切片无信息量'
-    return bins, None
+    lo = -np.inf
+    for q,lab in zip(list(qs)+[np.inf], labels):
+        mask = ok & (vv >= lo) & (vv < q)
+        bins[mask] = lab
+        lo = q
+    uniq = [u for u in np.unique(bins[ok]) if u != 'unknown']
+    if len(uniq) < 2:
+        return None, {'reason': 'all_samples_in_one_bin', 'valid_rows': int(ok.sum()), 'unique_bins': uniq}
+    return bins, {'reason': 'ok', 'valid_rows': int(ok.sum())}
+
+def _build_tertile_bins(values, labels):
+    return _build_quantile_bins(values, [1/3, 2/3], labels)
+
 
 def main(a):
     t0 = time.perf_counter()
@@ -190,24 +200,42 @@ def main(a):
 
     srows=[]
     slice_bins = {}
-    for sname,cands,labels in [
-        ('speed_bin',['speed_mean','ego_speed_mean','speed_norm_mean','mean_speed','ego_speed_avg'],['low','mid','high']),
-        ('thw_bin',['mean_thw','thw_mean','min_thw','thw_min'],['tight','normal','safe']),
-        ('interaction_density_bin',['interaction_density','neighbor_count','front_valid_ratio','neighbor_valid_count'],['sparse','mid','dense'])]:
-        k=_alias(fmap,cands)
-        if not k: warnings.append(f'缺少{ sname }代理特征'); continue
-        v=np.asarray(feat[:,fmap[k]],float)
-        bins, msg = _build_tertile_bins(v, labels)
-        if bins is None:
-            warnings.append(f'{sname} 跳过: {msg}')
+    slice_resolution = {'available_feature_count': int(len(names))}
+    slice_cfgs = [
+        ('speed_bin',['speed_mean','ego_speed_mean','speed_norm_mean','mean_speed','ego_speed_avg','speed_std','speed_norm_std'],['low','mid','high'],None),
+        ('thw_bin',['mean_thw','thw_mean','min_thw','thw_min'],['tight','normal','safe'],([0.3,0.7],['tight','normal','safe'])),
+        ('interaction_bin',['interaction_density','neighbor_count','neighbor_valid_count','front_valid_ratio','front_vehicle_valid_ratio','front_pressure_score'],['sparse','mid','dense'],None),
+        ('lateral_activity_bin',['lane_change_count_proxy','lane_change_left_count_proxy','lane_change_right_count_proxy','rms_yaw_rate','rms_curvature','heading_change_total'],['low','mid','high'],None),
+    ]
+    for sname,cands,labels,fallback in slice_cfgs:
+        k=_resolve_alias(fmap,cands)
+        info={'resolved_feature':k,'candidates_tried':cands,'status':'pending','attempted_bins':{}}
+        if not k:
+            info['status']='missing'
+            warnings.append(f'missing {sname} proxy feature')
+            slice_resolution[sname]=info
             continue
+        v=np.asarray(feat[:,fmap[k]],float)
+        bins, meta = _build_tertile_bins(v, labels)
+        if bins is None and fallback is not None:
+            bins, meta = _build_quantile_bins(v, fallback[0], fallback[1])
+            labels = fallback[1]
+        if bins is None:
+            info.update(meta)
+            info['status']=meta.get('reason','failed')
+            warnings.append(f'{sname} skipped: {info["status"]}')
+            slice_resolution[sname]=info
+            continue
+        info['status']='ok'
         slice_bins[sname]=bins
         for lab in labels:
             ai,bi=a_idx[bins[a_idx]==lab],b_idx[bins[b_idx]==lab]
+            info['attempted_bins'][lab]={'n_A':int(len(ai)),'n_B':int(len(bi))}
             if len(ai)>=a.min_slice_size and len(bi)>=a.min_slice_size:
                 srows.append({'slice_name':f'{sname}:{lab}','n_A':len(ai),'n_B':len(bi),'bdd_mmd':compute_mmd2(z[ai],z[bi],rng,a.max_mmd_samples,a.kernel_block_size),'main_category_delta':'','dominant_feature':'','interpretation':''})
             else:
-                warnings.append(f'{sname}:{lab} 样本不足，A={len(ai)} B={len(bi)}')
+                warnings.append(f'{sname}:{lab} insufficient samples, A={len(ai)} B={len(bi)}')
+        slice_resolution[sname]=info
     sdf=pd.DataFrame(srows,columns=['slice_name','n_A','n_B','bdd_mmd','main_category_delta','dominant_feature','interpretation'])
     if sdf.empty: warnings.append('no scenario slice passed min_slice_size')
     sdf.to_csv(out/'scenario_slice_delta.csv',index=False)
@@ -251,7 +279,7 @@ def main(a):
     for idx,dist,ni in zip(bc,db[:,0],ib[:,0]): tops.append(_mk_case(idx,'B',dist,ac[ni]))
     pd.DataFrame(tops).sort_values('distance_to_opposite',ascending=False).head(a.top_k*2).to_csv(out/'top_drift_cases.csv',index=False)
 
-    (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings},indent=2,ensure_ascii=False),encoding='utf-8')
+    (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings,'slice_resolution':slice_resolution},indent=2,ensure_ascii=False),encoding='utf-8')
     plt.hist(b_samples if b_samples else [obs_mmd2]); plt.savefig(out/'plots/bdd_bootstrap_distribution.png'); plt.close()
     if rows: pd.DataFrame(rows).plot(x='category',y='delta',kind='bar'); plt.tight_layout(); plt.savefig(out/'plots/category_delta_bar.png'); plt.close()
     pca=PCA(n_components=2).fit_transform(np.vstack([za,zb])); plt.scatter(pca[:len(za),0],pca[:len(za),1],s=3); plt.scatter(pca[len(za):,0],pca[len(za):,1],s=3); plt.savefig(out/'plots/embedding_pca.png'); plt.close()
@@ -260,7 +288,7 @@ def main(a):
         subprocess.run([sys.executable,'tools/stage6_generate_report_card.py','--input_dir',str(out),'--overwrite'],check=True)
     except Exception as e:
         warnings.append(f'report card generation failed: {e}')
-        (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings},indent=2,ensure_ascii=False),encoding='utf-8')
+        (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings,'slice_resolution':slice_resolution},indent=2,ensure_ascii=False),encoding='utf-8')
 
     runtime = time.perf_counter() - t0
     max_rss_kb = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
