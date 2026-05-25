@@ -37,18 +37,17 @@ def _rbf_mean_sqdist(a, b):
     d = np.sum((a[:, None, :] - b[None, :, :]) ** 2, axis=-1)
     return d
 
-def _safe_bandwidth_from_pairwise(x, y):
-    n = min(512, len(x), len(y))
-    xs = x[np.random.choice(len(x), n, replace=False)] if len(x) > n else x
-    ys = y[np.random.choice(len(y), n, replace=False)] if len(y) > n else y
-    dxx = _rbf_mean_sqdist(xs, xs)
-    dyy = _rbf_mean_sqdist(ys, ys)
-    dxy = _rbf_mean_sqdist(xs, ys)
-    vec = np.concatenate([dxx.ravel(), dyy.ravel(), dxy.ravel()])
-    vec = vec[np.isfinite(vec) & (vec > 0)]
-    if vec.size == 0:
+def _safe_bandwidth_from_samples(x, y):
+    comb = np.vstack([x, y])
+    if len(comb) < 2:
         return 1.0
-    med = float(np.median(np.sqrt(vec)))
+    d = _rbf_mean_sqdist(comb, comb)
+    iu = np.triu_indices(len(comb), k=1)
+    pairwise = np.sqrt(d[iu])
+    pairwise = pairwise[np.isfinite(pairwise) & (pairwise > 0)]
+    if pairwise.size == 0:
+        return 1.0
+    med = float(np.median(pairwise))
     return med if np.isfinite(med) and med > 1e-8 else 1.0
 
 def compute_mmd2(x, y, rng, max_samples):
@@ -56,7 +55,7 @@ def compute_mmd2(x, y, rng, max_samples):
     if len(y) > max_samples: y = y[rng.choice(len(y), max_samples, replace=False)]
     if len(x) == 0 or len(y) == 0:
         return float('nan')
-    base_bw = _safe_bandwidth_from_pairwise(x, y)
+    base_bw = _safe_bandwidth_from_samples(x, y)
     bws = [base_bw * s for s in [0.25, 0.5, 1.0, 2.0, 4.0]]
     dxx = _rbf_mean_sqdist(x, x)
     dyy = _rbf_mean_sqdist(y, y)
@@ -91,6 +90,22 @@ def _alias(fmap, cands):
     for c in cands:
         if c in fmap: return c
     return None
+
+def _build_tertile_bins(values, labels):
+    vv = np.asarray(values, float)
+    ok = np.isfinite(vv)
+    if ok.sum() < 3:
+        return None, '有效样本不足，无法计算分位数'
+    qs = np.quantile(vv[ok], [1/3, 2/3])
+    if not np.all(np.isfinite(qs)) or qs[0] >= qs[1]:
+        return None, '分位点退化，无法形成三分位切片'
+    bins = np.array(['unknown'] * len(vv), dtype=object)
+    bins[ok & (vv < qs[0])] = labels[0]
+    bins[ok & (vv >= qs[0]) & (vv < qs[1])] = labels[1]
+    bins[ok & (vv >= qs[1])] = labels[2]
+    if len(np.unique(bins[ok])) < 2:
+        return None, '所有样本落入单一分箱，切片无信息量'
+    return bins, None
 
 def main(a):
     out=Path(a.output_dir)
@@ -162,16 +177,22 @@ def main(a):
     slice_bins = {}
     for sname,cands,labels in [
         ('speed_bin',['speed_mean','ego_speed_mean','speed_norm_mean','mean_speed','ego_speed_avg'],['low','mid','high']),
-        ('thw_bin',['mean_thw','thw_mean'],['tight','normal','safe']),
-        ('interaction_density_bin',['interaction_density','neighbor_count','front_valid_ratio'],['sparse','mid','dense'])]:
+        ('thw_bin',['mean_thw','thw_mean','min_thw','thw_min'],['tight','normal','safe']),
+        ('interaction_density_bin',['interaction_density','neighbor_count','front_valid_ratio','neighbor_valid_count'],['sparse','mid','dense'])]:
         k=_alias(fmap,cands)
         if not k: warnings.append(f'缺少{ sname }代理特征'); continue
-        v=np.asarray(feat[:,fmap[k]],float); q=np.quantile(v,[1/3,2/3]); bins=np.where(v<q[0],labels[0],np.where(v<q[1],labels[1],labels[2]))
+        v=np.asarray(feat[:,fmap[k]],float)
+        bins, msg = _build_tertile_bins(v, labels)
+        if bins is None:
+            warnings.append(f'{sname} 跳过: {msg}')
+            continue
         slice_bins[sname]=bins
         for lab in labels:
             ai,bi=a_idx[bins[a_idx]==lab],b_idx[bins[b_idx]==lab]
             if len(ai)>=a.min_slice_size and len(bi)>=a.min_slice_size:
                 srows.append({'slice_name':f'{sname}:{lab}','n_A':len(ai),'n_B':len(bi),'bdd_mmd':compute_mmd2(z[ai],z[bi],rng,a.max_mmd_samples),'main_category_delta':'','dominant_feature':'','interpretation':''})
+            else:
+                warnings.append(f'{sname}:{lab} 样本不足，A={len(ai)} B={len(bi)}')
     sdf=pd.DataFrame(srows,columns=['slice_name','n_A','n_B','bdd_mmd','main_category_delta','dominant_feature','interpretation'])
     if sdf.empty: warnings.append('no scenario slice passed min_slice_size')
     sdf.to_csv(out/'scenario_slice_delta.csv',index=False)
@@ -208,7 +229,7 @@ def main(a):
             score=float(np.nanmean(dev[cols]))
             if score>best:
                 best=score; dominant=g
-        tags={k:str(v[idx]) for k,v in slice_bins.items()} if slice_bins else {}
+        tags={k:str(v[idx]) for k,v in slice_bins.items() if idx < len(v) and v[idx] != 'unknown'}
         return {'sample_index':int(idx),'group':group,'distance_to_opposite':float(dist),'nearest_opposite_index':int(near_idx),'dominant_category':dominant,'top_changed_features':json.dumps(top_features,ensure_ascii=False),'feature_values':json.dumps(feature_values,ensure_ascii=False),'slice_tags':json.dumps(tags,ensure_ascii=False),'scenario_id':'','video_path':''}
 
     for idx,dist,ni in zip(ac,da[:,0],ia[:,0]): tops.append(_mk_case(idx,'A',dist,bc[ni]))

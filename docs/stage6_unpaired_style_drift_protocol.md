@@ -121,3 +121,22 @@ category/feature 的职责是“在检测到漂移后解释方向”，而非替
 - Stage 6A 构建 split 时，推荐使用 `--shard_manifest .../shard_manifest.json`。
 - Stage 6A compare 时，推荐使用 `--source_shard_manifest` + `--embedding_manifest`（Stage5D-balanced-v2 导出的 `embedding_manifest.json`）。
 - 扁平 `--feature_path/--split_path/--embedding_path` 模式仅作为 legacy fallback，不能作为 full51 主流程。
+
+## 13. 2026-05-21：Stage 6A 统计与解释修正（negative control 复核）
+
+- BDD 主度量使用标准 multi-kernel RBF MMD²：
+  - `MMD² = mean(Kxx) + mean(Kyy) - 2*mean(Kxy)`；
+  - 带宽来自 A/B 合并采样后的 pairwise distance 中位数，并使用 `[0.25, 0.5, 1, 2, 4]` 多尺度；
+  - 中位数无效时回退到 `bandwidth=1.0` 并记录 warning。
+- BDD 不再输出占位统计量：
+  - `bdd_bootstrap_samples.csv` 输出 bootstrap 样本；
+  - `bdd_permutation_samples.csv` 输出 permutation 样本；
+  - `bdd_summary.json` 写入真实 `ci95_low/ci95_high/p_value`。
+- category/feature 层的 `p_value` 改为双侧 permutation 计算，禁止默认写死 `1.0`。
+- top drift cases 恢复解释字段：
+  - `dominant_category` 基于 robust deviation（median/IQR）；
+  - `top_changed_features`、`feature_values` 输出样本级特征变化；
+  - `slice_tags` 使用 speed/thw/interaction density 代理分箱（可用即填）。
+- scenario slicing 改为鲁棒三分位切片：
+  - 代理特征支持 alias 扩展（含 `min_thw/thw_min/neighbor_valid_count`）；
+  - 分位退化、单箱塌缩、样本不足会 warning 并跳过，不再伪造“全样本单切片”。
