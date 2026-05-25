@@ -2359,3 +2359,86 @@ python tools/stage6_compare_unpaired_style.py   --embedding_manifest $EMBEDDING_
 > - 当前推荐 embedding 模型：`context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json`。
 >
 > 已知限制：scenario slicing 依赖 `feature_schema.json` 可用代理特征；若 speed/density proxy 缺失会产生 warnings。Stage 6B 需要更丰富 scene metadata/scene descriptor matching。
+
+## Stage 6B — Baseline Comparison and Scenario-Controlled BDD
+
+### 1. 命令
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python tools/stage6b_compare_baselines.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6B_baselines/negative_control_random \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --pca_dim 16 --seed 42 --overwrite
+
+python tools/stage6b_compare_baselines.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6B_baselines/pseudo_agg_vs_cons \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --pca_dim 16 --seed 42 --overwrite
+
+python tools/stage6b_compare_baselines.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6B_baselines/scene_confounding \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --pca_dim 16 --seed 42 --overwrite
+
+python tools/stage6b_scenario_balanced_bdd.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --output_dir outputs/stage6B_balanced/scene_confounding \
+  --balance_keys lateral_activity_bin \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --min_bin_size 100 --seed 42 --overwrite
+
+python tools/stage6b_scenario_balanced_bdd.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --output_dir outputs/stage6B_balanced/pseudo_agg_vs_cons \
+  --balance_keys lateral_activity_bin \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --min_bin_size 100 --seed 42 --overwrite
+
+python tools/stage6b_summarize_experiments.py \
+  --experiment_roots \
+  outputs/stage6A_compare/negative_control_random \
+  outputs/stage6A_compare/pseudo_agg_vs_cons \
+  outputs/stage6A_compare/scene_confounding \
+  outputs/stage6B_baselines/negative_control_random \
+  outputs/stage6B_baselines/pseudo_agg_vs_cons \
+  outputs/stage6B_baselines/scene_confounding \
+  outputs/stage6B_balanced/scene_confounding \
+  outputs/stage6B_balanced/pseudo_agg_vs_cons \
+  --output_dir outputs/stage6B_summary \
+  --overwrite
+```
+
+### 2. 期望行为
+- baseline 脚本读取 manifest 模式特征与 embedding，输出 embedding/feature/PCA-feature 三套 MMD 统计与特征效应量。
+- balanced 脚本按 `lateral_activity_bin` 做 A/B bin 内配平，再对比 raw 与 balanced BDD。
+- summarize 脚本汇总 Stage6A/6B 输出，生成统一校准表与图。
+
+### 3. 通过标准
+- 三个 baseline 实验均生成 `baseline_summary.json`、`baseline_mmd.csv`、`top_feature_effects.csv` 和图。
+- 两个 balanced 实验均生成 `balanced_bdd_summary.json`，且 `bins_used` 非空。
+- summary 生成 `stage6b_calibration_table.csv` 与三张汇总图。
