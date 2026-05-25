@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import argparse, json, shutil, subprocess
+import argparse, json, shutil, subprocess, time, resource
 from pathlib import Path
 import numpy as np, pandas as pd, yaml
 import matplotlib
@@ -33,42 +33,55 @@ def _load_manifest_data(shard_manifest, embedding_manifest):
     if feat.shape[0] != emb.shape[0]: raise ValueError('total rows 不一致')
     return feat, emb
 
-def _rbf_mean_sqdist(a, b):
-    d = np.sum((a[:, None, :] - b[None, :, :]) ** 2, axis=-1)
-    return d
+def _squared_l2_chunk(a, b):
+    aa = np.sum(a * a, axis=1, keepdims=True)
+    bb = np.sum(b * b, axis=1, keepdims=True).T
+    d2 = aa + bb - 2.0 * (a @ b.T)
+    return np.maximum(d2, 0.0)
 
-def _safe_bandwidth_from_samples(x, y):
+def _safe_bandwidth_from_samples(x, y, rng, max_pairs=20000):
     comb = np.vstack([x, y])
     if len(comb) < 2:
         return 1.0
-    d = _rbf_mean_sqdist(comb, comb)
-    iu = np.triu_indices(len(comb), k=1)
-    pairwise = np.sqrt(d[iu])
+    n = len(comb)
+    num_pairs = min(max_pairs, max(1, n * (n - 1) // 2))
+    i = rng.integers(0, n, size=num_pairs)
+    j = rng.integers(0, n, size=num_pairs)
+    neq = i != j
+    if not np.any(neq):
+        return 1.0
+    i = i[neq]
+    j = j[neq]
+    pairwise = np.sqrt(np.sum((comb[i] - comb[j]) ** 2, axis=1))
     pairwise = pairwise[np.isfinite(pairwise) & (pairwise > 0)]
     if pairwise.size == 0:
         return 1.0
     med = float(np.median(pairwise))
     return med if np.isfinite(med) and med > 1e-8 else 1.0
 
-def compute_mmd2(x, y, rng, max_samples):
+def _rbf_kernel_mean(x, y, gamma, block_size):
+    if len(x) == 0 or len(y) == 0:
+        return float('nan')
+    total = 0.0
+    count = 0
+    for i in range(0, len(x), block_size):
+        xb = x[i:i + block_size]
+        d2 = _squared_l2_chunk(xb, y)
+        total += float(np.exp(-gamma * d2).sum())
+        count += d2.size
+    return total / max(1, count)
+
+def compute_mmd2(x, y, rng, max_samples, kernel_block_size):
     if len(x) > max_samples: x = x[rng.choice(len(x), max_samples, replace=False)]
     if len(y) > max_samples: y = y[rng.choice(len(y), max_samples, replace=False)]
     if len(x) == 0 or len(y) == 0:
         return float('nan')
-    base_bw = _safe_bandwidth_from_samples(x, y)
-    bws = [base_bw * s for s in [0.25, 0.5, 1.0, 2.0, 4.0]]
-    dxx = _rbf_mean_sqdist(x, x)
-    dyy = _rbf_mean_sqdist(y, y)
-    dxy = _rbf_mean_sqdist(x, y)
-    mmd2 = 0.0
-    for bw in bws:
-        bw = max(float(bw), 1e-6)
-        gamma = 1.0 / (2.0 * (bw ** 2))
-        kxx = np.exp(-gamma * dxx).mean()
-        kyy = np.exp(-gamma * dyy).mean()
-        kxy = np.exp(-gamma * dxy).mean()
-        mmd2 += (kxx + kyy - 2.0 * kxy)
-    return float(mmd2 / len(bws))
+    bw = max(float(_safe_bandwidth_from_samples(x, y, rng)), 1e-6)
+    gamma = 1.0 / (2.0 * (bw ** 2))
+    kxx = _rbf_kernel_mean(x, x, gamma, kernel_block_size)
+    kyy = _rbf_kernel_mean(y, y, gamma, kernel_block_size)
+    kxy = _rbf_kernel_mean(x, y, gamma, kernel_block_size)
+    return float(kxx + kyy - 2.0 * kxy)
 
 def two_sided_permutation_pvalue(x_a, x_b, num_permutation, rng):
     x_a = np.asarray(x_a, float); x_b = np.asarray(x_b, float)
@@ -108,6 +121,7 @@ def _build_tertile_bins(values, labels):
     return bins, None
 
 def main(a):
+    t0 = time.perf_counter()
     out=Path(a.output_dir)
     if out.exists() and not a.overwrite: raise FileExistsError('output_dir exists, use --overwrite')
     if out.exists() and a.overwrite: shutil.rmtree(out)
@@ -127,12 +141,12 @@ def main(a):
     if max(a_idx.max(),b_idx.max())>=len(feat): raise ValueError('index out of range')
 
     za,zb=z[a_idx],z[b_idx]
-    obs_mmd2 = compute_mmd2(za, zb, rng, a.max_mmd_samples)
+    obs_mmd2 = compute_mmd2(za, zb, rng, a.max_mmd_samples, a.kernel_block_size)
 
     b_samples=[]
     for _ in range(a.num_bootstrap):
         ia=rng.choice(len(za),len(za),replace=True); ib=rng.choice(len(zb),len(zb),replace=True)
-        b_samples.append(compute_mmd2(za[ia],zb[ib],rng,a.max_mmd_samples))
+        b_samples.append(compute_mmd2(za[ia],zb[ib],rng,a.max_mmd_samples,a.kernel_block_size))
     bdf = pd.DataFrame({'mmd2_bootstrap':b_samples})
     bdf.to_csv(out/'bdd_bootstrap_samples.csv',index=False)
 
@@ -140,7 +154,7 @@ def main(a):
     zz=np.vstack([za,zb]); na=len(za)
     for _ in range(a.num_permutation):
         pidx=rng.permutation(len(zz)); pa=zz[pidx[:na]]; pb=zz[pidx[na:]]
-        perm_samples.append(compute_mmd2(pa,pb,rng,a.max_mmd_samples))
+        perm_samples.append(compute_mmd2(pa,pb,rng,a.max_mmd_samples,a.kernel_block_size))
     pdf = pd.DataFrame({'mmd2_permutation':perm_samples})
     pdf.to_csv(out/'bdd_permutation_samples.csv',index=False)
     pval=float((np.sum(np.asarray(perm_samples)>=obs_mmd2)+1)/(a.num_permutation+1)) if a.num_permutation>0 else 1.0
@@ -190,7 +204,7 @@ def main(a):
         for lab in labels:
             ai,bi=a_idx[bins[a_idx]==lab],b_idx[bins[b_idx]==lab]
             if len(ai)>=a.min_slice_size and len(bi)>=a.min_slice_size:
-                srows.append({'slice_name':f'{sname}:{lab}','n_A':len(ai),'n_B':len(bi),'bdd_mmd':compute_mmd2(z[ai],z[bi],rng,a.max_mmd_samples),'main_category_delta':'','dominant_feature':'','interpretation':''})
+                srows.append({'slice_name':f'{sname}:{lab}','n_A':len(ai),'n_B':len(bi),'bdd_mmd':compute_mmd2(z[ai],z[bi],rng,a.max_mmd_samples,a.kernel_block_size),'main_category_delta':'','dominant_feature':'','interpretation':''})
             else:
                 warnings.append(f'{sname}:{lab} 样本不足，A={len(ai)} B={len(bi)}')
     sdf=pd.DataFrame(srows,columns=['slice_name','n_A','n_B','bdd_mmd','main_category_delta','dominant_feature','interpretation'])
@@ -247,6 +261,20 @@ def main(a):
         warnings.append(f'report card generation failed: {e}')
         (out/'stage6_warnings.json').write_text(json.dumps({'warnings':warnings},indent=2,ensure_ascii=False),encoding='utf-8')
 
+    runtime = time.perf_counter() - t0
+    max_rss_kb = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    (out/'runtime_stats.json').write_text(
+        json.dumps({
+            'runtime_seconds': float(runtime),
+            'max_rss_kb': int(max_rss_kb),
+            'max_rss_mb': float(max_rss_kb / 1024.0),
+            'num_bootstrap': int(a.num_bootstrap),
+            'num_permutation': int(a.num_permutation),
+            'kernel_block_size': int(a.kernel_block_size),
+        }, indent=2, ensure_ascii=False),
+        encoding='utf-8'
+    )
+
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--embedding_manifest'); p.add_argument('--source_shard_manifest'); p.add_argument('--shard_manifest')
@@ -258,5 +286,6 @@ if __name__=='__main__':
     p.add_argument('--min_slice_size',type=int,default=100); p.add_argument('--seed',type=int,default=42)
     p.add_argument('--iqr_floor',type=float,default=1e-3); p.add_argument('--allow_overlap',action='store_true')
     p.add_argument('--overwrite',action='store_true'); p.add_argument('--max_top_case_candidates',type=int,default=5000)
+    p.add_argument('--kernel_block_size',type=int,default=512)
     args=p.parse_args(); args.shard_manifest=args.shard_manifest or args.source_shard_manifest
     main(args)
