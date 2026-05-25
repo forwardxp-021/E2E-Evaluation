@@ -11,6 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
+from tqdm import tqdm
 
 
 def _load_json(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -144,7 +145,7 @@ def main(a):
     obs_mmd2 = compute_mmd2(za, zb, rng, a.max_mmd_samples, a.kernel_block_size)
 
     b_samples=[]
-    for _ in range(a.num_bootstrap):
+    for _ in tqdm(range(a.num_bootstrap), desc='Bootstrap sampling', leave=False):
         ia=rng.choice(len(za),len(za),replace=True); ib=rng.choice(len(zb),len(zb),replace=True)
         b_samples.append(compute_mmd2(za[ia],zb[ib],rng,a.max_mmd_samples,a.kernel_block_size))
     bdf = pd.DataFrame({'mmd2_bootstrap':b_samples})
@@ -152,7 +153,7 @@ def main(a):
 
     perm_samples=[]
     zz=np.vstack([za,zb]); na=len(za)
-    for _ in range(a.num_permutation):
+    for _ in tqdm(range(a.num_permutation), desc='Permutation testing', leave=False):
         pidx=rng.permutation(len(zz)); pa=zz[pidx[:na]]; pb=zz[pidx[na:]]
         perm_samples.append(compute_mmd2(pa,pb,rng,a.max_mmd_samples,a.kernel_block_size))
     pdf = pd.DataFrame({'mmd2_permutation':perm_samples})
@@ -167,7 +168,7 @@ def main(a):
     names=load_schema(a.feature_schema_path); fmap={n:i for i,n in enumerate(names)}
     cfg=yaml.safe_load(Path(a.feature_groups_config).read_text(encoding='utf-8')); groups=cfg.get('category_groups',{})
     rows=[]
-    for g,v in groups.items():
+    for g,v in tqdm(groups.items(), desc='Processing category groups', leave=False):
         cols=[fmap[x] for x in v.get('features',[]) if x in fmap]
         if not cols: continue
         vals=np.asarray(feat[np.r_[a_idx,b_idx]][:,cols],float); med=np.nanmedian(vals,0); raw_iqr=np.nanpercentile(vals,75,0)-np.nanpercentile(vals,25,0)
@@ -181,7 +182,7 @@ def main(a):
     pd.DataFrame(rows).to_csv(out/'category_delta.csv',index=False)
 
     frows=[]
-    for i,n in enumerate(names):
+    for i,n in tqdm(enumerate(names), desc='Processing features', total=len(names), leave=False):
         xa,xb=np.asarray(feat[a_idx,i],float),np.asarray(feat[b_idx,i],float); delta=float(np.nanmean(xb)-np.nanmean(xa)); den=float(np.nanstd(np.r_[xa,xb])+1e-6)
         p = two_sided_permutation_pvalue(xa, xb, a.num_permutation, rng)
         frows.append({'feature':n,'delta_raw':delta,'delta_normalized':delta/den,'cohen_d':delta/den,'permutation_p_value':p})
