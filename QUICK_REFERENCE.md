@@ -1988,6 +1988,136 @@ python tools/stage6_compare_unpaired_style.py \
 
 ### Stage 6A（Issue #116）推荐：full51 分片清单模式
 
+
+#### Stage 6A-1：Negative control
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+随机同分布拆分 A/B，作为“无真实风格漂移”的负对照，BDD 与 permutation p-value 不应提示显著漂移。
+
+## 3. 通过标准
+
+- 结果目录包含 split 与 compare 全套产物。
+- BDD 接近 0 且 p-value 不显著（与历史负对照量级一致）。
+
+#### Stage 6A-2：Pseudo style positive control
+
+## 1. 命令
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode pseudo_style_aggressive_vs_conservative \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name pseudo_agg_vs_cons \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/pseudo_agg_vs_cons \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+A（conservative_like）与 B（aggressive_like）应产生更明显风格差异；BDD 应高于 negative control，类别/特征变化应可解释 B 更激进、舒适性更弱。
+
+## 3. 通过标准
+
+- BDD 明显高于负对照。
+- `category_delta.csv` 与 `feature_delta.csv` 支撑“更激进/更不舒适”解释。
+
+#### Stage 6A-3：Scene confounding control
+
+## 1. 命令
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode scene_confounding_control \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name scene_confounding \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/scene_confounding \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+A（easy_scene_like）与 B（complex_scene_like）场景代理分布不同，BDD 可能抬升，报告应提示潜在 scenario/ODD confounding。
+
+## 3. 通过标准
+
+- `scenario_slice_delta.csv` 存在且可解释哪些场景代理切片驱动差异。
+- warning 与 report card 提示“可能由场景分布差异驱动”。
+
+
 ## 1. 命令
 
 ```bash
