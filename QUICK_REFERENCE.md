@@ -2442,3 +2442,43 @@ python tools/stage6b_summarize_experiments.py \
 - 三个 baseline 实验均生成 `baseline_summary.json`、`baseline_mmd.csv`、`top_feature_effects.csv` 和图。
 - 两个 balanced 实验均生成 `balanced_bdd_summary.json`，且 `bins_used` 非空。
 - summary 生成 `stage6b_calibration_table.csv` 与三张汇总图。
+
+## Stage 6B — ODD bins and Behavior-event BDD
+
+### 1. 命令
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+RAW_SCENARIO_DIR=<path_to_original_waymo_scenario_tfrecords>
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1 \
+  --overwrite
+
+python tools/stage6b_build_odd_bins.py \
+  --map_odd_manifest $DATA_ROOT/map_odd_features_v1/map_odd_manifest.json \
+  --shard_manifest $SHARD_MANIFEST \
+  --output_dir $DATA_ROOT/map_odd_bins_v1 \
+  --overwrite
+
+python tools/stage6b_build_behavior_event_bins.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --output_dir $DATA_ROOT/behavior_event_bins_v1 \
+  --overwrite
+```
+
+### 2. 期望行为
+- ODD bins 用于外部场景公平性控制（map/static context）。
+- Behavior-event bins 用于定位漂移发生在哪些驾驶任务。
+- `event_lateral_activity_bin` 仅用于行为报告，不作为主 ODD 控制变量。
+
+### 3. 通过标准
+- `map_odd_feat.npy` 与分片 `interaction_feat_style.npy` 行对齐。
+- `odd_bins.csv` / `behavior_event_bins.csv` 必须包含 `global_row, shard_id, local_row`。
+- ODD 平衡后可输出 `BDD_odd_balanced`，并与 `BDD_overall` 对比解释。
