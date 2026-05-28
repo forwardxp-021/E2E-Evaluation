@@ -2447,6 +2447,17 @@ python tools/stage6b_summarize_experiments.py \
 
 ### 1. 命令
 ```bash
+# 推荐 Stage6A/6B 工作流（manifest 模式）
+# 1) shard_manifest.json
+# 2) feature_schema.json
+# 3) context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --inspect_metadata
+
 DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
 SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
 FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
@@ -2475,10 +2486,17 @@ python tools/stage6b_build_behavior_event_bins.py \
 
 ### 2. 期望行为
 - ODD bins 用于外部场景公平性控制（map/static context）。
+- 若 `map_match_valid` 低于阈值，构建脚本会失败；不会再输出默认全零伪特征。
 - Behavior-event bins 用于定位漂移发生在哪些驾驶任务。
 - `event_lateral_activity_bin` 仅用于行为报告，不作为主 ODD 控制变量。
 
 ### 3. 通过标准
 - `map_odd_feat.npy` 与分片 `interaction_feat_style.npy` 行对齐。
+- `stage6b_build_map_odd_features.py` 必须报告 metadata/raw scenario overlap，且 `map_match_valid` 非零。
 - `odd_bins.csv` / `behavior_event_bins.csv` 必须包含 `global_row, shard_id, local_row`。
 - ODD 平衡后可输出 `BDD_odd_balanced`，并与 `BDD_overall` 对比解释。
+
+
+## Legacy 说明
+
+旧的 root-level flat npy 命令仅保留兼容，不再作为 Stage6A/6B 主流程推荐。
