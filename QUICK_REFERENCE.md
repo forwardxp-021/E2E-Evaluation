@@ -2500,3 +2500,57 @@ python tools/stage6b_build_behavior_event_bins.py \
 ## Legacy 说明
 
 旧的 root-level flat npy 命令仅保留兼容，不再作为 Stage6A/6B 主流程推荐。
+
+## Stage 6B（map-derived ODD）安全流程（2026-05 更新）
+
+### 1. 命令
+
+```bash
+python -m py_compile \
+  tools/stage6b_build_map_odd_features.py \
+  tools/stage6b_build_odd_bins.py \
+  tools/stage6b_build_behavior_event_bins.py \
+  tools/stage6b_bin_bdd_report.py \
+  tools/stage6b_scenario_balanced_bdd.py
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1_debug \
+  --max_scenarios 1000 \
+  --inspect_metadata
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1_debug \
+  --max_scenarios 1000 \
+  --min_match_rate 0.01 \
+  --overwrite
+
+python tools/stage6b_build_odd_bins.py \
+  --map_odd_manifest $DATA_ROOT/map_odd_features_v1_debug/map_odd_manifest.json \
+  --shard_manifest $SHARD_MANIFEST \
+  --output_dir $DATA_ROOT/map_odd_bins_v1_debug \
+  --min_map_match_rate 0.01 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 先做语法检查，再做 metadata inspect。
+- inspect 阶段会检查 processed/raw scenario overlap、context_traj 是否存在、窗口字段是否存在。
+- 仅当 inspect 建议可运行时再执行 debug build。
+- map ODD 分箱仅使用 `map_match_valid=1` 行计算分位点，`map_match_valid=0` 行统一标记 `unknown`。
+- behavior-event bins 保持独立报告层，不与 map ODD bins 混用。
+- 旧版 flat-npy Stage6 命令视为 **LEGACY/DEPRECATED**，不建议继续作为主流程。
+
+### 3. 通过标准
+
+- `py_compile` 全部通过。
+- inspect 输出包含 overlap 与 context 检查，recommendation 为可执行状态。
+- map_odd 输出包含 `map_odd_warnings.json` 且 `map_match_valid_rate` 不低于阈值（或显式允许低匹配率）。
+- odd_bin_report 同时给出 valid/invalid 统计与 valid/overall 分布。
+- behavior_event_bin_report 明确声明 `event_lateral_activity_bin` 是 behavior-contaminated。
