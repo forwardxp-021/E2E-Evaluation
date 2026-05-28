@@ -2,14 +2,32 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import argparse, json, shutil
+import argparse, json, shutil, time
 from pathlib import Path
 import numpy as np, pandas as pd
 from tools.stage6_compare_unpaired_style import _resolve_alias, _build_tertile_bins, load_schema
 from tools.stage6b_compare_baselines import load_manifest_arrays, mmd_with_stats
 
 
+def get_tqdm():
+    try:
+        from tqdm import tqdm
+        return tqdm
+    except Exception:
+        def tqdm(x, **kwargs):
+            return x
+        return tqdm
+
+
+def iter_progress(iterable, enabled=True, **kwargs):
+    if not enabled:
+        return iterable
+    return get_tqdm()(iterable, **kwargs)
+
+
 def main(a):
+    t0=time.time()
+    progress_enabled = not a.no_progress
     out = Path(a.output_dir)
     if out.exists() and not a.overwrite:
         raise FileExistsError('output_dir exists, use --overwrite')
@@ -44,7 +62,8 @@ def main(a):
         tb = odd[odd.global_row.isin(b_idx)]
         ba, bb, rows = [], [], []
         gb = tb.groupby(keys)
-        for kval, ga in ta.groupby(keys):
+        for kval, ga in iter_progress(list(ta.groupby(keys)), enabled=progress_enabled, desc="balance ODD bins", unit="bin"):
+
             if kval not in gb.groups:
                 rows.append({'bin': str(kval), 'n_A_before': len(ga), 'n_B_before': 0, 'n_used': 0, 'used': False})
                 continue
@@ -107,6 +126,9 @@ def main(a):
         'n_A_balanced': int(len(bal_a)),
         'n_B_balanced': int(len(bal_b)),
         'bins_used': table[table['used']]['bin'].tolist(),
+        'bins_skipped': table[~table['used']]['bin'].tolist(),
+        'num_bins': int(len(table)),
+        'total_runtime_seconds': float(time.time()-t0),
     }
     (out / 'balanced_bdd_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding='utf-8')
     (out / 'balanced_report.md').write_text('# Stage6B Scenario-balanced BDD\n\n详见 balanced_bdd_summary.json。\n', encoding='utf-8')
@@ -128,4 +150,5 @@ if __name__ == '__main__':
     p.add_argument('--min_bin_size', type=int, default=100)
     p.add_argument('--seed', type=int, default=42)
     p.add_argument('--overwrite', action='store_true')
+    p.add_argument('--no_progress', action='store_true')
     main(p.parse_args())

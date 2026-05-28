@@ -2530,6 +2530,16 @@ python tools/stage6b_build_map_odd_features.py \
   --min_match_rate 0.01 \
   --overwrite
 
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1_debug \
+  --max_scenarios 1000 \
+  --min_match_rate 0.01 \
+  --overwrite \
+  --no_progress
+
 python tools/stage6b_build_odd_bins.py \
   --map_odd_manifest $DATA_ROOT/map_odd_features_v1_debug/map_odd_manifest.json \
   --shard_manifest $SHARD_MANIFEST \
@@ -2541,6 +2551,8 @@ python tools/stage6b_build_odd_bins.py \
 ### 2. 期望行为
 
 - 先做语法检查，再做 metadata inspect。
+- Stage6B 重计算脚本默认开启进度条；非交互式 CI/日志环境可加 `--no_progress` 关闭。
+- 完整 map ODD 抽取会显示三个关键进度：`scan processed shards`、`scan raw tfrecords`、`compute ODD per shard/row`。
 - inspect 阶段会检查 processed/raw scenario overlap、context_traj 是否存在、窗口字段是否存在。
 - 仅当 inspect 建议可运行时再执行 debug build。
 - map ODD 分箱仅使用 `map_match_valid=1` 行计算分位点，`map_match_valid=0` 行统一标记 `unknown`。
