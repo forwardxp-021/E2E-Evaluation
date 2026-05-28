@@ -2527,18 +2527,10 @@ python tools/stage6b_build_map_odd_features.py \
   --raw_scenario_dir $RAW_SCENARIO_DIR \
   --output_dir $DATA_ROOT/map_odd_features_v1_debug \
   --max_scenarios 1000 \
+  --path_source raw_track \
   --min_match_rate 0.01 \
+  --min_lane_match_rate 0.5 \
   --overwrite
-
-python tools/stage6b_build_map_odd_features.py \
-  --shard_manifest $SHARD_MANIFEST \
-  --feature_schema_path $FEATURE_SCHEMA \
-  --raw_scenario_dir $RAW_SCENARIO_DIR \
-  --output_dir $DATA_ROOT/map_odd_features_v1_debug \
-  --max_scenarios 1000 \
-  --min_match_rate 0.01 \
-  --overwrite \
-  --no_progress
 
 python tools/stage6b_build_odd_bins.py \
   --map_odd_manifest $DATA_ROOT/map_odd_features_v1_debug/map_odd_manifest.json \
@@ -2546,6 +2538,8 @@ python tools/stage6b_build_odd_bins.py \
   --output_dir $DATA_ROOT/map_odd_bins_v1_debug \
   --min_map_match_rate 0.01 \
   --overwrite
+
+head $DATA_ROOT/map_odd_features_v1_debug/map_odd_debug_samples.csv
 ```
 
 ### 2. 期望行为
@@ -2553,9 +2547,15 @@ python tools/stage6b_build_odd_bins.py \
 - 先做语法检查，再做 metadata inspect。
 - Stage6B 重计算脚本默认开启进度条；非交互式 CI/日志环境可加 `--no_progress` 关闭。
 - 完整 map ODD 抽取会显示三个关键进度：`scan processed shards`、`scan raw tfrecords`、`compute ODD per shard/row`。
-- inspect 阶段会检查 processed/raw scenario overlap、context_traj 是否存在、窗口字段是否存在。
+- inspect 阶段会检查 processed/raw scenario overlap、`start/window_len/target_agent_id` 字段可用性。
 - 仅当 inspect 建议可运行时再执行 debug build。
+- map ODD 轨迹默认来源是 `--path_source raw_track`（Waymo 原始 scenario tracks 全局坐标），**不再默认使用 context_traj**。
+- `--path_source context` 仅用于排障回归，会打印强 warning（context 可能是 ego-centric/feature-space，和 map 全局坐标不对齐）。
+- 输出 `map_odd_debug_samples.csv` 用于人工检查坐标范围、最近车道距离、邻近地图要素计数。
+- map_odd manifest 分片输出目录使用全局唯一命名，避免不同 part 的同名 shard 覆盖。
 - map ODD 分箱仅使用 `map_match_valid=1` 行计算分位点，`map_match_valid=0` 行统一标记 `unknown`。
+- odd bins 构建前会强校验：feature/meta 路径唯一、每 shard 行数一致、总行数与 manifest 一致；不一致直接失败。
+- 当 `odd_map_complexity_bin` 或 `odd_lane_count_bin` 全部是 `unknown` 时默认失败（除非显式 `--allow_degenerate_bins`）。
 - behavior-event bins 保持独立报告层，不与 map ODD bins 混用。
 - 旧版 flat-npy Stage6 命令视为 **LEGACY/DEPRECATED**，不建议继续作为主流程。
 
@@ -2563,6 +2563,8 @@ python tools/stage6b_build_odd_bins.py \
 
 - `py_compile` 全部通过。
 - inspect 输出包含 overlap 与 context 检查，recommendation 为可执行状态。
-- map_odd 输出包含 `map_odd_warnings.json` 且 `map_match_valid_rate` 不低于阈值（或显式允许低匹配率）。
-- odd_bin_report 同时给出 valid/invalid 统计与 valid/overall 分布。
+- map_odd 输出包含 `map_odd_warnings.json`，且 `map_match_valid_rate` 高、`local_lane_match_valid_rate` 不接近 0。
+- `no_near_lane_rows` 不应接近总行数；`nearest_lane_distance` p50/p90/p95 有合理数值。
+- `odd_map_complexity_bin` 与 `odd_lane_count_bin` 不能全部为 `unknown`。
+- odd_bins 行数必须严格等于 map_odd_manifest `total_rows`。
 - behavior_event_bin_report 明确声明 `event_lateral_activity_bin` 是 behavior-contaminated。
