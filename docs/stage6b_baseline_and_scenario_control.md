@@ -80,3 +80,79 @@ In contrast, pseudo_agg_vs_cons remains strongly separated after all three stati
 - They do not directly control traffic density, cut-in exposure, front vehicle behavior, or other dynamic agent interactions.
 - Dynamic interaction-exposure matching should be added in a later Stage 6C/6D.
 - odd_intersection_bin currently needs refinement because it marks nearly all rows as intersection_like in the current dataset.
+
+
+## Stage 6B Behavior-event BDD Decomposition
+
+### pseudo_agg_vs_cons
+
+| Behavior-event bin | Bin value | n_A | n_B | BDD_MMD | Interpretation |
+|---|---:|---:|---:|---:|---|
+| event_following_bin | following_proxy | 4917 | 4917 | 0.1661 | following style drift remains strong |
+| event_cut_in_bin | cut_in_proxy | 2908 | 429 | 0.1538 | cut-in proxy drift exists but A/B count is imbalanced |
+| event_cut_in_bin | no_cut_in_proxy | 2009 | 4488 | 0.1350 | drift also exists outside cut-in proxy |
+| event_lane_change_bin | lane_change | 675 | 2756 | 0.2314 | strongest lane-change-related drift |
+| event_lane_change_bin | no_lane_change | 4242 | 2161 | 0.1331 | lower drift without lane-change |
+| event_yielding_bin | non_yielding_like | 1931 | 4454 | 0.1460 | yielding-related proxy shift |
+| event_yielding_bin | yielding_like | 2986 | 463 | 0.1398 | yielding proxy drift but imbalanced |
+| event_lateral_activity_bin | high | 487 | 2827 | 0.2403 | strongest high-lateral-activity drift |
+| event_lateral_activity_bin | mid | 1393 | 1693 | 0.1860 | medium lateral activity drift |
+| event_lateral_activity_bin | low | 3037 | 397 | 0.1277 | lowest lateral activity drift |
+
+### scene_confounding
+
+| Behavior-event bin | Bin value | n_A | n_B | BDD_MMD | Interpretation |
+|---|---:|---:|---:|---:|---|
+| event_following_bin | following_proxy | 4917 | 4917 | 0.1246 | following drift close to overall scene_confounding BDD |
+| event_cut_in_bin | cut_in_proxy | 278 | 2576 | 0.1475 | cut-in proxy exposure is strongly imbalanced |
+| event_cut_in_bin | no_cut_in_proxy | 4639 | 2341 | 0.2240 | strong drift outside cut-in proxy |
+| event_lane_change_bin | lane_change | 602 | 2575 | 0.1936 | lane-change-related drift |
+| event_lane_change_bin | no_lane_change | 4315 | 2342 | 0.1858 | drift also persists without lane-change |
+| event_yielding_bin | non_yielding_like | 4524 | 2415 | 0.2169 | strong non-yielding-like drift |
+| event_yielding_bin | yielding_like | 393 | 2502 | 0.1837 | yielding proxy exposure is imbalanced |
+| event_lateral_activity_bin | high | 430 | 2621 | 0.1881 | high lateral activity drift |
+| event_lateral_activity_bin | mid | 1375 | 1333 | 0.1399 | moderate drift |
+| event_lateral_activity_bin | low | 3112 | 963 | 0.2931 | strongest drift in low lateral activity bin |
+
+Notes:
+- `event_low_speed_bin` and `event_high_speed_bin` are currently unknown/unavailable in both experiments.
+- All reported p-values are significant at approximately `0.0099` in the current run.
+- Behavior-event bins are diagnostic/reporting bins, not primary fairness-control bins.
+
+## Main interpretation update
+
+Behavior-event decomposition confirms that pseudo_agg_vs_cons drift is behaviorally interpretable. Its largest BDD values occur in high-lateral-activity and lane-change bins, where BDD reaches approximately 0.2403 and 0.2314. This is consistent with the pseudo aggressive-vs-conservative construction and shows that the behavior-event report layer can localize where style drift is expressed.
+
+For scene_confounding, behavior-event decomposition shows a different pattern. The drift is not explained by static map ODD balancing, and the largest behavior-event BDD values appear in low lateral activity, no-cut-in proxy, non-yielding-like, and lane-change/no-lane-change bins. This suggests that the scene_confounding split captures dynamic interaction-exposure and behavior-proxy differences rather than pure static map ODD mismatch.
+
+## Conceptual clarification
+
+Stage 6 now distinguishes three layers:
+
+1. Static Map ODD control
+   - map complexity
+   - lane-count context
+   - curvature
+   - used for fairness control
+
+2. Dynamic interaction / behavior-exposure diagnostics
+   - following
+   - cut-in proxy
+   - yielding proxy
+   - lane-change
+   - lateral activity
+   - used for drift localization
+
+3. Overall behavior distribution drift
+   - raw BDD
+   - ODD-balanced BDD
+   - behavior-event BDD
+
+Map ODD bins and behavior-event bins should not be confused. Static ODD bins test whether A/B faced similar road geometry. Behavior-event bins explain which driving tasks or interaction modes contain the drift.
+
+## Added limitations
+
+- low/high speed bins are unavailable in the current feature schema.
+- cut-in and yielding bins are proxy definitions, not ground-truth event annotations.
+- several behavior-event bins are highly A/B imbalanced, so they should be interpreted as localization signals rather than causal proof.
+- dynamic interaction exposure matching should be developed in a later Stage 6C/6D.
