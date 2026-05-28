@@ -30,8 +30,12 @@ def main(a):
         odd = pd.read_csv(a.odd_bins_path)
         if 'global_row' not in odd.columns:
             raise ValueError('odd_bins.csv must include global_row')
-        if 'map_match_valid' in odd.columns and not a.allow_invalid_map:
+        if 'map_match_valid' not in odd.columns:
+            raise ValueError('odd_bins.csv 缺少 map_match_valid 列，ODD bins 无法验证有效性。')
+        if not a.allow_invalid_map:
             odd = odd[odd['map_match_valid'] == 1]
+        if len(odd) == 0:
+            raise ValueError('ODD bins are invalid; run stage6b_build_map_odd_features with real map parsing.')
         keys = [k.strip() for k in a.balance_keys.split(',') if k.strip()]
         missing = [k for k in keys if k not in odd.columns]
         if missing:

@@ -19,6 +19,7 @@ def qbin(vals, labels):
     return out, {'collapsed': False, 'quantiles': qs.tolist()}
 
 def main(a):
+
     out=Path(a.output_dir)
     if out.exists() and not a.overwrite: raise FileExistsError('output_dir exists')
     if out.exists() and a.overwrite: shutil.rmtree(out)
@@ -26,11 +27,19 @@ def main(a):
     mm = json.loads(Path(a.map_odd_manifest).read_text(encoding='utf-8'))
     root = Path(a.map_odd_manifest).parent
     rows=[]; feats=[]
+    match_rates = []
+
     for s in mm['shards']:
         feat=np.load(root/s['feature_path'])
         meta=pd.read_csv(root/s['meta_path'])
         feats.append(feat); rows.append(meta[['global_row','shard_id','local_row']])
+        if feat.shape[1] <= 15:
+            raise ValueError('map_odd_feat.npy 缺少 map_match_valid 列(索引15)')
+        match_rates.append(float((feat[:,15] > 0.5).mean()))
     X=np.concatenate(feats,0); M=pd.concat(rows, ignore_index=True)
+    global_match_rate = float((X[:,15] > 0.5).mean())
+    if global_match_rate < a.min_map_match_rate and not a.allow_low_match_rate:
+        raise RuntimeError(f'map_match_valid 比例过低: {global_match_rate:.4f} < {a.min_map_match_rate}，拒绝构建 ODD bins。')
     cross=np.where(X[:,1]>0.5,'crosswalk_near','no_crosswalk_near')
     stop=np.where(X[:,3]>0.5,'stop_sign_near','no_stop_sign_near')
     curv,w1=qbin(X[:,5], ['straight','mild_curve','sharp_curve'])
@@ -49,4 +58,4 @@ def main(a):
     (out/'odd_bin_report.md').write_text('# Stage6B ODD bins\n\n'+json.dumps(counts,ensure_ascii=False,indent=2), encoding='utf-8')
 
 if __name__=='__main__':
- p=argparse.ArgumentParser(); p.add_argument('--map_odd_manifest',required=True); p.add_argument('--shard_manifest',required=True); p.add_argument('--output_dir',required=True); p.add_argument('--overwrite',action='store_true'); main(p.parse_args())
+ p=argparse.ArgumentParser(); p.add_argument('--map_odd_manifest',required=True); p.add_argument('--shard_manifest',required=True); p.add_argument('--output_dir',required=True); p.add_argument('--min_map_match_rate', type=float, default=0.1); p.add_argument('--allow_low_match_rate', action='store_true'); p.add_argument('--overwrite',action='store_true'); main(p.parse_args())
