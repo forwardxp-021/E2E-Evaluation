@@ -24,6 +24,16 @@ def iter_progress(iterable, enabled=True, **kwargs):
         return iterable
     return get_tqdm()(iterable, **kwargs)
 
+def _normalize_group_key(k):
+    if isinstance(k, tuple):
+        return tuple(str(x) for x in k)
+    return (str(k),)
+
+def _format_group_key(k):
+    if len(k) == 1:
+        return k[0]
+    return "|".join(k)
+
 
 def main(a):
     t0=time.time()
@@ -46,12 +56,14 @@ def main(a):
 
     if a.odd_bins_path:
         odd = pd.read_csv(a.odd_bins_path)
+        odd_bins_total_rows = int(len(odd))
         if 'global_row' not in odd.columns:
             raise ValueError('odd_bins.csv must include global_row')
         if 'map_match_valid' not in odd.columns:
             raise ValueError('odd_bins.csv 缺少 map_match_valid 列，ODD bins 无法验证有效性。')
         if not a.allow_invalid_map:
             odd = odd[odd['map_match_valid'] == 1]
+        odd_bins_valid_rows = int(len(odd))
         if len(odd) == 0:
             raise ValueError('ODD bins are invalid; run stage6b_build_map_odd_features with real map parsing.')
         keys = [k.strip() for k in a.balance_keys.split(',') if k.strip()]
@@ -60,20 +72,32 @@ def main(a):
             raise ValueError(f'balance keys missing in odd bins: {missing}')
         ta = odd[odd.global_row.isin(a_idx)]
         tb = odd[odd.global_row.isin(b_idx)]
+        n_a_odd_matched = int(len(ta))
+        n_b_odd_matched = int(len(tb))
         ba, bb, rows = [], [], []
-        gb = tb.groupby(keys)
-        for kval, ga in iter_progress(list(ta.groupby(keys)), enabled=progress_enabled, desc="balance ODD bins", unit="bin"):
-
-            if kval not in gb.groups:
-                rows.append({'bin': str(kval), 'n_A_before': len(ga), 'n_B_before': 0, 'n_used': 0, 'used': False})
+        b_groups = {
+            _normalize_group_key(k): g
+            for k, g in tb.groupby(keys, dropna=False)
+        }
+        for kval, ga in iter_progress(list(ta.groupby(keys, dropna=False)), enabled=progress_enabled, desc="balance ODD bins", unit="bin"):
+            nk = _normalize_group_key(kval)
+            if nk not in b_groups:
+                rows.append({'bin': _format_group_key(nk), 'n_A_before': len(ga), 'n_B_before': 0, 'n_used': 0, 'used': False, 'skip_reason': 'missing_in_B'})
                 continue
-            g2 = gb.get_group(kval)
+            g2 = b_groups[nk]
             n = min(len(ga), len(g2))
             used = n >= a.min_bin_size
             if used:
                 ba.append(rng.choice(ga.global_row.values, n, replace=False))
                 bb.append(rng.choice(g2.global_row.values, n, replace=False))
-            rows.append({'bin': str(kval), 'n_A_before': len(ga), 'n_B_before': len(g2), 'n_used': int(n if used else 0), 'used': used})
+            rows.append({
+                'bin': _format_group_key(nk),
+                'n_A_before': len(ga),
+                'n_B_before': len(g2),
+                'n_used': int(n if used else 0),
+                'used': used,
+                'skip_reason': '' if used else f'below_min_bin_size<{a.min_bin_size}',
+            })
         key = a.balance_keys
         fname = 'odd_bins'
     else:
@@ -101,17 +125,45 @@ def main(a):
             if used:
                 ba.append(rng.choice(ai, n, replace=False))
                 bb.append(rng.choice(bi, n, replace=False))
-            rows.append({'bin': label, 'n_A_before': len(ai), 'n_B_before': len(bi), 'n_used': int(n if used else 0), 'used': used})
+            rows.append({
+                'bin': label,
+                'n_A_before': len(ai),
+                'n_B_before': len(bi),
+                'n_used': int(n if used else 0),
+                'used': used,
+                'skip_reason': '' if used else f'below_min_bin_size<{a.min_bin_size}',
+            })
 
     bal_a = np.concatenate(ba) if ba else np.array([], dtype=int)
     bal_b = np.concatenate(bb) if bb else np.array([], dtype=int)
+    table = pd.DataFrame(rows)
+    table.to_csv(out / 'bin_balance_table.csv', index=False)
     if len(bal_a) == 0 or len(bal_b) == 0:
-        raise ValueError('平衡后样本为空，请降低 --min_bin_size')
+        diagnostics = {
+            'n_A_raw': int(len(a_idx)),
+            'n_B_raw': int(len(b_idx)),
+            'n_A_after_odd_join': int(n_a_odd_matched) if a.odd_bins_path else int(len(a_idx)),
+            'n_B_after_odd_join': int(n_b_odd_matched) if a.odd_bins_path else int(len(b_idx)),
+            'balance_keys': [k.strip() for k in a.balance_keys.split(',') if k.strip()],
+            'A_group_counts': table[['bin', 'n_A_before']].to_dict(orient='records'),
+            'B_group_counts': table[['bin', 'n_B_before']].to_dict(orient='records'),
+            'group_keys_in_A': sorted(table[table['n_A_before'] > 0]['bin'].tolist()),
+            'group_keys_in_B': sorted(table[table['n_B_before'] > 0]['bin'].tolist()),
+            'min_bin_size': int(a.min_bin_size),
+            'odd_bins_total_rows': int(odd_bins_total_rows) if a.odd_bins_path else None,
+            'odd_bins_valid_rows': int(odd_bins_valid_rows) if a.odd_bins_path else None,
+        }
+        (out / 'balanced_diagnostics.json').write_text(
+            json.dumps(diagnostics, indent=2, ensure_ascii=False),
+            encoding='utf-8'
+        )
+        raise ValueError(
+            'Balanced samples are empty. This is likely due to group-key mismatch or all bins below min_bin_size. '
+            'See bin_balance_table.csv / diagnostics.'
+        )
 
     balanced = mmd_with_stats(emb[bal_a], emb[bal_b], rng, a.num_bootstrap, a.num_permutation, a.max_mmd_samples)
     reduction = (raw['mmd2'] - balanced['mmd2']) / raw['mmd2'] * 100.0 if raw['mmd2'] > 0 else 0.0
-    table = pd.DataFrame(rows)
-    table.to_csv(out / 'bin_balance_table.csv', index=False)
     np.save(out / 'balanced_indices_A.npy', bal_a)
     np.save(out / 'balanced_indices_B.npy', bal_b)
 
@@ -123,6 +175,12 @@ def main(a):
         'reduction_percent': float(reduction),
         'n_A_raw': int(len(a_idx)),
         'n_B_raw': int(len(b_idx)),
+        'n_A_odd_matched': int(n_a_odd_matched) if a.odd_bins_path else None,
+        'n_B_odd_matched': int(n_b_odd_matched) if a.odd_bins_path else None,
+        'odd_bins_total_rows': int(odd_bins_total_rows) if a.odd_bins_path else None,
+        'odd_bins_valid_rows': int(odd_bins_valid_rows) if a.odd_bins_path else None,
+        'balance_keys': [k.strip() for k in a.balance_keys.split(',') if k.strip()],
+        'min_bin_size': int(a.min_bin_size),
         'n_A_balanced': int(len(bal_a)),
         'n_B_balanced': int(len(bal_b)),
         'bins_used': table[table['used']]['bin'].tolist(),
