@@ -61,7 +61,12 @@ def main(a):
     np.save(out/'behavior_event_bins.npy', df.to_records(index=False))
     (out/'behavior_event_bin_schema.json').write_text(json.dumps({'columns':df.columns.tolist()},indent=2,ensure_ascii=False), encoding='utf-8')
     (out/'behavior_event_bin_warnings.json').write_text(json.dumps(warn,indent=2,ensure_ascii=False), encoding='utf-8')
-    (out/'behavior_event_bin_report.md').write_text('# Stage6B behavior-event bins\n', encoding='utf-8')
+    count_cols=['event_following_bin','event_cut_in_bin','event_lane_change_bin','event_low_speed_bin','event_high_speed_bin','event_yielding_bin','event_lateral_activity_bin']
+    counts={c: df[c].value_counts(dropna=False).to_dict() for c in count_cols}
+    report='# Stage6B behavior-event bins\n\n'
+    report += '## 事件分箱计数\n\n' + json.dumps(counts, ensure_ascii=False, indent=2)
+    report += '\n\n> 说明: event_lateral_activity_bin 含行为污染（behavior-contaminated），仅用于行为报告，不得作为 map ODD。\n'
+    (out/'behavior_event_bin_report.md').write_text(report, encoding='utf-8')
 
 if __name__=='__main__':
  p=argparse.ArgumentParser(); p.add_argument('--shard_manifest',required=True); p.add_argument('--feature_schema_path',required=True); p.add_argument('--output_dir',required=True); p.add_argument('--overwrite',action='store_true'); main(p.parse_args())
