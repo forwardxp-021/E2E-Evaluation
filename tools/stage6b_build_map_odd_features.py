@@ -69,8 +69,10 @@ def pick_col(cols, aliases):
 def build_rows(df, shard_id, g0):
     cols = set(df.columns)
     scenario_col = pick_col(cols, ['scenario_id', 'scenarioId', 'scenario'])
-    start_col = pick_col(cols, ['window_start', 'start_frame', 'start_idx'])
+    start_col = pick_col(cols, ['start', 'window_start', 'start_frame', 'start_idx'])
+    window_len_col = pick_col(cols, ['window_len', 'window_length', 'seq_len'])
     end_col = pick_col(cols, ['window_end', 'end_frame', 'end_idx'])
+    target_col = pick_col(cols, ['target_agent_id', 'target_id', 'ego_id', 'agent_id'])
     if scenario_col is None:
         raise ValueError(f'元数据缺少 scenario_id 字段，现有字段: {sorted(cols)}')
     n = len(df)
@@ -79,8 +81,9 @@ def build_rows(df, shard_id, g0):
         'shard_id': shard_id,
         'local_row': np.arange(n),
         'scenario_id': df[scenario_col].astype(str),
-        'window_start': df[start_col].values if start_col else -1,
-        'window_end': df[end_col].values if end_col else -1,
+        'target_agent_id': df[target_col].astype(str).values if target_col else '',
+        'start': df[start_col].values if start_col else -1,
+        'window_len': df[window_len_col].values if window_len_col else ((df[end_col] - df[start_col]).values if (end_col and start_col) else -1),
     })
 
 def load_waymo_parser():
@@ -136,7 +139,12 @@ def parse_scenario_maps(raw_dir: Path, needed_scenario_ids: Optional[set] = None
                     d['stop_sign'].append(np.array([[mf.stop_sign.position.x, mf.stop_sign.position.y]], dtype=np.float32))
                 elif which == 'speed_bump':
                     d['speed_bump'].append(_polyline_points(mf.speed_bump.polygon))
-            out[sid] = d
+            tracks = {}
+            for tr in sc.tracks:
+                xy = np.array([[st.center_x, st.center_y] for st in tr.states], dtype=np.float32)
+                valid = np.array([bool(st.valid) for st in tr.states], dtype=bool)
+                tracks[str(tr.id)] = {'xy': xy, 'valid': valid}
+            out[sid] = {'map': d, 'tracks': tracks}
             if progress_enabled and scanned % 200 == 0:
                 if needed_scenario_ids is not None:
                     scenario_iter.set_postfix(scanned=scanned, kept=len(out), needed=len(needed_scenario_ids), remaining=max(0, len(needed_scenario_ids)-len(out)))
@@ -222,16 +230,17 @@ def extract_ego_path_from_context(ctx_row: np.ndarray) -> Tuple[np.ndarray, str,
             return _finite_xy(arr[:, 0, :2]), 'TAF_agent0', '多agent上下文，默认agent0作为ego，存在不确定性'
     return np.zeros((0, 2), dtype=np.float32), 'unknown', f'不支持的 context row shape: {arr.shape}'
 
-def compute_features(path_xy, md, warnings):
+def compute_features(path_xy, map_data, warnings):
     x = np.zeros((len(FEATURES),), dtype=np.float32)
-    near_lanes = filter_shapes_near_path(path_xy, md['lane'], 30.0)
-    near_road_lines = filter_shapes_near_path(path_xy, md['road_line'], 30.0)
-    near_road_edges = filter_shapes_near_path(path_xy, md['road_edge'], 30.0)
-    near_crosswalks = filter_shapes_near_path(path_xy, md['crosswalk'], 30.0)
-    near_stop_signs = filter_shapes_near_path(path_xy, md['stop_sign'], 40.0)
-    near_speed_bumps = filter_shapes_near_path(path_xy, md['speed_bump'], 30.0)
-    d_cross = min_dist_to_shapes(path_xy, md['crosswalk'])
-    d_stop = min_dist_to_shapes(path_xy, md['stop_sign'])
+    near_lanes = filter_shapes_near_path(path_xy, map_data['lane'], 30.0)
+    near_road_lines = filter_shapes_near_path(path_xy, map_data['road_line'], 30.0)
+    near_road_edges = filter_shapes_near_path(path_xy, map_data['road_edge'], 30.0)
+    near_crosswalks = filter_shapes_near_path(path_xy, map_data['crosswalk'], 30.0)
+    near_stop_signs = filter_shapes_near_path(path_xy, map_data['stop_sign'], 40.0)
+    near_speed_bumps = filter_shapes_near_path(path_xy, map_data['speed_bump'], 30.0)
+    d_cross = min_dist_to_shapes(path_xy, map_data['crosswalk'])
+    d_stop = min_dist_to_shapes(path_xy, map_data['stop_sign'])
+    nearest_lane_distance = min_dist_to_shapes(path_xy, map_data['lane'])
     lmean, lmax, lchg = lane_curvature_stats(near_lanes)
     if len(near_lanes) == 0:
         warnings['no_near_lane_rows'] += 1
@@ -252,11 +261,23 @@ def compute_features(path_xy, md, warnings):
     x[14] = 1.0 if (x[1] > 0.5 or x[3] > 0.5 or x[7] >= 6 or x[8] >= 8 or x[13] >= 15) else 0.0
     x[15] = 1.0
     x[16] = 0.0
-    return x
+    aux = {
+        'nearest_lane_distance': float(nearest_lane_distance) if np.isfinite(nearest_lane_distance) else float('inf'),
+        'lane_count_near_30m': int(x[7]),
+        'road_line_count_near_30m': int(x[8]),
+        'road_edge_count_near_30m': int(x[9]),
+        'crosswalk_count_near_30m': int(x[10]),
+        'stop_sign_count_near_40m': int(x[11]),
+        'local_lane_match_valid': 1 if x[7] > 0 else 0,
+        'map_complexity_score': float(x[13]),
+    }
+    return x, aux
 
 def main(a):
     t0 = time.time()
     progress_enabled = not a.no_progress
+    if a.path_source == 'context':
+        print('[warning] context path may be ego-centric and not map-coordinate aligned; not recommended for ODD')
     sm = load_json(a.shard_manifest)
     base = Path(a.shard_manifest).parent
     shards = sm.get('shards', sm.get('shard_infos', []))
@@ -303,8 +324,8 @@ def main(a):
         'metadata_diagnostics': md_diag,
         'context_traj_presence': context_presence,
         'sample_context_traj_shape': sample_ctx_shape,
-        'window_start_exists': bool((rows_df['window_start'] != -1).any()),
-        'window_end_exists': bool((rows_df['window_end'] != -1).any()),
+        'start_exists': bool((rows_df['start'] != -1).any()),
+        'window_len_exists': bool((rows_df['window_len'] != -1).any()),
         'recommendation': recommendation,
     }
     if a.inspect_metadata:
@@ -319,15 +340,14 @@ def main(a):
     warnings = defaultdict(int)
     per_shard_valid = {}
     manifest_rows, reports, g0, valid_rows = [], [], 0, 0
+    debug_samples = []
     for i, sp in enumerate(iter_progress(shard_paths, enabled=progress_enabled, desc='build map ODD shards', unit='shard')):
         sd = base / sp
         feat = np.load(sd / 'interaction_feat_style.npy', mmap_mode='r')
         meta_df, _ = extract_meta(sd)
         row_df = build_rows(meta_df, i, g0)
         ctx_path = sd / 'context_traj.npy'
-        if not ctx_path.exists():
-            raise FileNotFoundError(f'{sp} 缺少 context_traj.npy，无法计算 ego-local ODD。')
-        ctx = np.load(ctx_path, mmap_mode='r')
+        ctx = np.load(ctx_path, mmap_mode='r') if ctx_path.exists() else None
         vals = np.zeros((feat.shape[0], len(FEATURES)), dtype=np.float32)
         shard_valid = 0
         row_iter = iter_progress(range(feat.shape[0]), enabled=progress_enabled, desc=f'compute ODD {Path(sp).name}', unit='row', leave=False)
@@ -336,25 +356,62 @@ def main(a):
             if sid not in raw_maps:
                 warnings['missing_scenario_rows'] += 1
                 continue
-            md = raw_maps[sid]
+            raw = raw_maps[sid]
+            md = raw['map']
             if sum(len(md[k]) for k in md) == 0:
                 warnings['no_map_feature_rows'] += 1
                 continue
-            path_xy, mode, w = extract_ego_path_from_context(ctx[r])
-            if w:
-                warnings['invalid_context_rows'] += 1
-                continue
+            invalid_reason = ''
+            start = int(row_df.iloc[r]['start'])
+            window_len = int(row_df.iloc[r]['window_len'])
+            target_id = str(row_df.iloc[r]['target_agent_id'])
+            if a.path_source == 'context':
+                path_xy, _, w = extract_ego_path_from_context(ctx[r])
+                if w:
+                    invalid_reason = 'invalid_context'
+            else:
+                if start < 0 or window_len <= 0:
+                    warnings['invalid_start_window_rows'] += 1
+                    invalid_reason = 'invalid_start_window'
+                    path_xy = np.zeros((0, 2), dtype=np.float32)
+                elif target_id not in raw['tracks']:
+                    warnings['target_track_missing_rows'] += 1
+                    invalid_reason = 'target_track_missing'
+                    path_xy = np.zeros((0, 2), dtype=np.float32)
+                else:
+                    tr = raw['tracks'][target_id]
+                    pxy = tr['xy'][start:start + window_len]
+                    pvalid = tr['valid'][start:start + window_len]
+                    path_xy = _finite_xy(pxy[pvalid])
             if path_xy.shape[0] < 2:
-                warnings['empty_path_rows'] += 1
+                warnings['invalid_path_rows'] += 1
+                if not invalid_reason:
+                    invalid_reason = 'invalid_path'
                 continue
-            vals[r] = compute_features(path_xy, md, warnings)
+            vals[r], aux = compute_features(path_xy, md, warnings)
+            warnings['local_lane_match_valid_rows'] += aux['local_lane_match_valid']
+            if np.isfinite(aux['nearest_lane_distance']):
+                warnings.setdefault('_nearest_lane_distances', []).append(aux['nearest_lane_distance'])
+            warnings.setdefault('_lane_nonzero', []).append(1 if aux['lane_count_near_30m'] > 0 else 0)
+            warnings.setdefault('_complexity_nonzero', []).append(1 if aux['map_complexity_score'] > 0 else 0)
+            if len(debug_samples) < a.debug_sample_rows:
+                debug_samples.append({
+                    'global_row': int(row_df.iloc[r]['global_row']), 'shard_id': i, 'local_row': r, 'scenario_id': sid,
+                    'target_agent_id': target_id, 'start': start, 'window_len': window_len, 'path_source': a.path_source,
+                    'path_valid_points': int(path_xy.shape[0]), 'path_x_min': float(path_xy[:, 0].min()), 'path_x_max': float(path_xy[:, 0].max()),
+                    'path_y_min': float(path_xy[:, 1].min()), 'path_y_max': float(path_xy[:, 1].max()),
+                    'nearest_lane_distance': aux['nearest_lane_distance'], 'lane_count_near_30m': aux['lane_count_near_30m'],
+                    'road_line_count_near_30m': aux['road_line_count_near_30m'], 'road_edge_count_near_30m': aux['road_edge_count_near_30m'],
+                    'crosswalk_count_near_30m': aux['crosswalk_count_near_30m'], 'stop_sign_count_near_40m': aux['stop_sign_count_near_40m'],
+                    'map_match_valid': 1, 'invalid_reason': invalid_reason
+                })
             if progress_enabled and r % 1000 == 0:
                 row_iter.set_postfix(valid_rows=valid_rows, missing_scenario_rows=warnings['missing_scenario_rows'], invalid_context_rows=warnings['invalid_context_rows'], no_near_lane_rows=warnings['no_near_lane_rows'], match_rate_so_far=f'{(valid_rows/max(1,g0+r+1)):.4f}')
             vals[r, 15] = 1.0
             shard_valid += 1
             valid_rows += 1
         per_shard_valid[sp] = {'valid_rows': int(shard_valid), 'total_rows': int(feat.shape[0])}
-        shard_out = out / Path(sp).name
+        shard_out = out / f'shard_global_{i:06d}'
         shard_out.mkdir(parents=True, exist_ok=True)
         np.save(shard_out / 'map_odd_feat.npy', vals)
         row_df.to_csv(shard_out / 'map_odd_meta.csv', index=False)
@@ -362,9 +419,27 @@ def main(a):
         reports.append(f'- {sp}: rows={feat.shape[0]}, map_match_valid={shard_valid}')
         g0 += feat.shape[0]
     match_rate = valid_rows / max(1, g0)
+    feature_paths = [m['feature_path'] for m in manifest_rows]
+    meta_paths = [m['meta_path'] for m in manifest_rows]
+    if len(set(feature_paths)) != len(feature_paths):
+        raise RuntimeError('Duplicate map_odd feature_path detected')
+    if len(set(meta_paths)) != len(meta_paths):
+        raise RuntimeError('Duplicate map_odd meta_path detected')
+    local_lane_match_valid_rate = float(warnings['local_lane_match_valid_rows'] / max(1, valid_rows))
+    if local_lane_match_valid_rate < a.min_lane_match_rate and not a.allow_low_lane_match_rate:
+        raise RuntimeError(f'local_lane_match_valid_rate 过低: {local_lane_match_valid_rate:.4f} < {a.min_lane_match_rate}')
     if match_rate < a.min_match_rate and not a.allow_low_match_rate:
         raise RuntimeError(f'map_match_valid 比例过低: {match_rate:.4f} < {a.min_match_rate}')
+    nd = np.array(warnings.pop('_nearest_lane_distances', []), dtype=np.float32)
+    lane_nonzero = np.array(warnings.pop('_lane_nonzero', []), dtype=np.float32)
+    comp_nonzero = np.array(warnings.pop('_complexity_nonzero', []), dtype=np.float32)
     warnings['match_rate'] = match_rate
+    warnings['local_lane_match_valid_rate'] = local_lane_match_valid_rate
+    warnings['nearest_lane_distance_p50'] = float(np.quantile(nd, 0.5)) if nd.size else None
+    warnings['nearest_lane_distance_p90'] = float(np.quantile(nd, 0.9)) if nd.size else None
+    warnings['nearest_lane_distance_p95'] = float(np.quantile(nd, 0.95)) if nd.size else None
+    warnings['lane_count_near_30m_nonzero_rate'] = float(lane_nonzero.mean()) if lane_nonzero.size else 0.0
+    warnings['map_complexity_nonzero_rate'] = float(comp_nonzero.mean()) if comp_nonzero.size else 0.0
     warnings['per_shard_valid_counts'] = per_shard_valid
     warnings['total_runtime_seconds'] = float(time.time() - t0)
     warnings['raw_scenarios_scanned'] = int(raw_scanned)
@@ -375,15 +450,15 @@ def main(a):
     warnings['average_rows_per_sec'] = float(g0 / max(1e-6, time.time() - t0))
     (out / 'map_odd_warnings.json').write_text(json.dumps(warnings, indent=2, ensure_ascii=False), encoding='utf-8')
     (out / 'map_odd_schema.json').write_text(json.dumps({'feature_names': FEATURES}, indent=2, ensure_ascii=False), encoding='utf-8')
-    (out / 'map_odd_manifest.json').write_text(json.dumps({'total_rows': g0, 'shards': manifest_rows, 'map_match_valid_rate': match_rate}, indent=2, ensure_ascii=False), encoding='utf-8')
+    pd.DataFrame(debug_samples).to_csv(out / 'map_odd_debug_samples.csv', index=False)
+    (out / 'map_odd_manifest.json').write_text(json.dumps({'total_rows': g0, 'shards': manifest_rows, 'map_match_valid_rate': match_rate, 'local_lane_match_valid_rate': local_lane_match_valid_rate, 'path_source': a.path_source}, indent=2, ensure_ascii=False), encoding='utf-8')
     (out / 'map_odd_diagnostic.json').write_text(json.dumps(diag, indent=2, ensure_ascii=False), encoding='utf-8')
     report = '# Stage6B map ODD features build report\n\n' + '\n'.join(reports)
-    report += f'\n\nmatch_rate={match_rate:.6f}\n'
+    report += f'\n\npath_source={a.path_source}\nmatch_rate={match_rate:.6f}\nlocal_lane_match_valid_rate={local_lane_match_valid_rate:.6f}\n'
     report += f"total_runtime_seconds={warnings['total_runtime_seconds']:.3f}\n"
     report += f'raw_scenarios_scanned={raw_scanned}\nraw_scenarios_kept={len(raw_sids)}\n'
     report += f'raw_tfrecord_file_count={raw_file_count}\ntotal_processed_rows={g0}\nvalid_rows={valid_rows}\n'
-    report += f"missing_scenario_rows={warnings['missing_scenario_rows']}\ninvalid_context_rows={warnings['invalid_context_rows']}\n"
-    report += f"empty_path_rows={warnings['empty_path_rows']}\nno_near_lane_rows={warnings['no_near_lane_rows']}\n"
+    report += f"missing_scenario_rows={warnings['missing_scenario_rows']}\ntarget_track_missing_rows={warnings['target_track_missing_rows']}\ninvalid_start_window_rows={warnings['invalid_start_window_rows']}\ninvalid_path_rows={warnings['invalid_path_rows']}\nno_near_lane_rows={warnings['no_near_lane_rows']}\n"
     report += f"no_map_feature_rows={warnings['no_map_feature_rows']}\navg_rows_per_sec={warnings['average_rows_per_sec']:.3f}\n"
     (out / 'map_odd_build_report.md').write_text(report, encoding='utf-8')
 
@@ -395,8 +470,12 @@ if __name__ == '__main__':
     p.add_argument('--output_dir', required=True)
     p.add_argument('--max_scenarios', type=int, default=0)
     p.add_argument('--inspect_metadata', action='store_true')
+    p.add_argument('--path_source', choices=['raw_track', 'context'], default='raw_track')
+    p.add_argument('--debug_sample_rows', type=int, default=200)
     p.add_argument('--min_match_rate', type=float, default=0.1)
     p.add_argument('--allow_low_match_rate', action='store_true')
+    p.add_argument('--min_lane_match_rate', type=float, default=0.5)
+    p.add_argument('--allow_low_lane_match_rate', action='store_true')
     p.add_argument('--overwrite', action='store_true')
     p.add_argument('--no_progress', action='store_true')
     main(p.parse_args())
