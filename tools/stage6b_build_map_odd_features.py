@@ -6,6 +6,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import argparse
 import json
 import shutil
+import time
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -17,6 +18,23 @@ try:
     from scipy.spatial import cKDTree  # type: ignore
 except Exception:
     cKDTree = None
+
+
+def get_tqdm():
+    try:
+        from tqdm import tqdm
+        return tqdm
+    except Exception:
+        def tqdm(x, **kwargs):
+            return x
+        return tqdm
+
+
+def iter_progress(iterable, enabled=True, **kwargs):
+    if not enabled:
+        return iterable
+    tqdm = get_tqdm()
+    return tqdm(iterable, **kwargs)
 
 FEATURES = [
     'distance_to_crosswalk_min', 'has_crosswalk_near_30m', 'distance_to_stop_sign_min', 'has_stop_sign_near_40m',
@@ -82,21 +100,24 @@ def _finite_xy(arr: np.ndarray) -> np.ndarray:
     xy = np.asarray(arr[:, :2], dtype=np.float32)
     return xy[np.isfinite(xy).all(axis=1)]
 
-def parse_scenario_maps(raw_dir: Path, needed_scenario_ids: Optional[set] = None, max_scenarios_scanned: int = 0):
+def parse_scenario_maps(raw_dir: Path, needed_scenario_ids: Optional[set] = None, max_scenarios_scanned: int = 0, progress_enabled: bool = True):
     tf, scenario_pb2 = load_waymo_parser()
     tfrecs = sorted(raw_dir.glob('*.tfrecord*'))
     if not tfrecs:
         raise FileNotFoundError(f'raw_scenario_dir 下未找到 tfrecord: {raw_dir}')
     out = {}
     scanned = 0
-    for tfr in tfrecs:
+    for tfr in iter_progress(tfrecs, enabled=progress_enabled, desc='scan raw tfrecords', unit='file'):
         ds = tf.data.TFRecordDataset([str(tfr)], compression_type='')
-        for rec in ds:
+        scenario_iter = iter_progress(ds, enabled=progress_enabled, desc=f'parse scenarios {tfr.name}', unit='scenario', leave=False)
+        for rec in scenario_iter:
             scanned += 1
             sc = scenario_pb2.Scenario()
             sc.ParseFromString(bytes(rec.numpy()))
             sid = str(sc.scenario_id)
             if needed_scenario_ids is not None and sid not in needed_scenario_ids:
+                if progress_enabled and scanned % 1000 == 0:
+                    scenario_iter.set_postfix(scanned=scanned, kept=len(out), needed=len(needed_scenario_ids), remaining=max(0, len(needed_scenario_ids)-len(out)))
                 if max_scenarios_scanned > 0 and scanned >= max_scenarios_scanned:
                     return out, scanned, len(tfrecs)
                 continue
@@ -116,6 +137,11 @@ def parse_scenario_maps(raw_dir: Path, needed_scenario_ids: Optional[set] = None
                 elif which == 'speed_bump':
                     d['speed_bump'].append(_polyline_points(mf.speed_bump.polygon))
             out[sid] = d
+            if progress_enabled and scanned % 200 == 0:
+                if needed_scenario_ids is not None:
+                    scenario_iter.set_postfix(scanned=scanned, kept=len(out), needed=len(needed_scenario_ids), remaining=max(0, len(needed_scenario_ids)-len(out)))
+                else:
+                    scenario_iter.set_postfix(scanned=scanned, kept=len(out))
             if needed_scenario_ids is not None and len(out) >= len(needed_scenario_ids):
                 return out, scanned, len(tfrecs)
             if max_scenarios_scanned > 0 and scanned >= max_scenarios_scanned:
@@ -229,6 +255,8 @@ def compute_features(path_xy, md, warnings):
     return x
 
 def main(a):
+    t0 = time.time()
+    progress_enabled = not a.no_progress
     sm = load_json(a.shard_manifest)
     base = Path(a.shard_manifest).parent
     shards = sm.get('shards', sm.get('shard_infos', []))
@@ -236,7 +264,7 @@ def main(a):
     all_rows, md_diag, g = [], [], 0
     context_presence = []
     sample_ctx_shape = None
-    for i, sp in enumerate(shard_paths):
+    for i, sp in enumerate(iter_progress(shard_paths, enabled=progress_enabled, desc='scan processed shards', unit='shard')):
         sd = base / sp
         feat = np.load(sd / 'interaction_feat_style.npy', mmap_mode='r')
         meta_df, found = extract_meta(sd)
@@ -246,12 +274,13 @@ def main(a):
         if has_ctx and sample_ctx_shape is None:
             sample_ctx_shape = tuple(np.load(ctx_path, mmap_mode='r').shape)
         context_presence.append({'shard_path': sp, 'context_traj_exists': has_ctx})
+        print(f'[scan processed shards] shard={i+1}/{len(shard_paths)} path={sp} rows={feat.shape[0]} context_traj={has_ctx}')
         md_diag.append({'shard_path': sp, 'metadata_files': found, 'metadata_columns': list(meta_df.columns), 'rows': int(len(row_df))})
         all_rows.append(row_df)
         g += feat.shape[0]
     rows_df = pd.concat(all_rows, ignore_index=True)
     proc_sids = set(rows_df['scenario_id'].astype(str).tolist())
-    raw_maps, raw_scanned, raw_file_count = parse_scenario_maps(Path(a.raw_scenario_dir), proc_sids, a.max_scenarios)
+    raw_maps, raw_scanned, raw_file_count = parse_scenario_maps(Path(a.raw_scenario_dir), proc_sids, a.max_scenarios, progress_enabled=progress_enabled)
     raw_sids = set(raw_maps.keys())
     overlap = raw_sids & proc_sids
     missing = sorted(list(proc_sids - raw_sids))
@@ -290,7 +319,7 @@ def main(a):
     warnings = defaultdict(int)
     per_shard_valid = {}
     manifest_rows, reports, g0, valid_rows = [], [], 0, 0
-    for i, sp in enumerate(shard_paths):
+    for i, sp in enumerate(iter_progress(shard_paths, enabled=progress_enabled, desc='build map ODD shards', unit='shard')):
         sd = base / sp
         feat = np.load(sd / 'interaction_feat_style.npy', mmap_mode='r')
         meta_df, _ = extract_meta(sd)
@@ -301,7 +330,8 @@ def main(a):
         ctx = np.load(ctx_path, mmap_mode='r')
         vals = np.zeros((feat.shape[0], len(FEATURES)), dtype=np.float32)
         shard_valid = 0
-        for r in range(feat.shape[0]):
+        row_iter = iter_progress(range(feat.shape[0]), enabled=progress_enabled, desc=f'compute ODD {Path(sp).name}', unit='row', leave=False)
+        for r in row_iter:
             sid = str(row_df.iloc[r]['scenario_id'])
             if sid not in raw_maps:
                 warnings['missing_scenario_rows'] += 1
@@ -318,6 +348,8 @@ def main(a):
                 warnings['empty_path_rows'] += 1
                 continue
             vals[r] = compute_features(path_xy, md, warnings)
+            if progress_enabled and r % 1000 == 0:
+                row_iter.set_postfix(valid_rows=valid_rows, missing_scenario_rows=warnings['missing_scenario_rows'], invalid_context_rows=warnings['invalid_context_rows'], no_near_lane_rows=warnings['no_near_lane_rows'], match_rate_so_far=f'{(valid_rows/max(1,g0+r+1)):.4f}')
             vals[r, 15] = 1.0
             shard_valid += 1
             valid_rows += 1
@@ -334,11 +366,26 @@ def main(a):
         raise RuntimeError(f'map_match_valid 比例过低: {match_rate:.4f} < {a.min_match_rate}')
     warnings['match_rate'] = match_rate
     warnings['per_shard_valid_counts'] = per_shard_valid
+    warnings['total_runtime_seconds'] = float(time.time() - t0)
+    warnings['raw_scenarios_scanned'] = int(raw_scanned)
+    warnings['raw_scenarios_kept'] = int(len(raw_sids))
+    warnings['raw_tfrecord_file_count'] = int(raw_file_count)
+    warnings['total_processed_rows'] = int(g0)
+    warnings['valid_rows'] = int(valid_rows)
+    warnings['average_rows_per_sec'] = float(g0 / max(1e-6, time.time() - t0))
     (out / 'map_odd_warnings.json').write_text(json.dumps(warnings, indent=2, ensure_ascii=False), encoding='utf-8')
     (out / 'map_odd_schema.json').write_text(json.dumps({'feature_names': FEATURES}, indent=2, ensure_ascii=False), encoding='utf-8')
     (out / 'map_odd_manifest.json').write_text(json.dumps({'total_rows': g0, 'shards': manifest_rows, 'map_match_valid_rate': match_rate}, indent=2, ensure_ascii=False), encoding='utf-8')
     (out / 'map_odd_diagnostic.json').write_text(json.dumps(diag, indent=2, ensure_ascii=False), encoding='utf-8')
-    (out / 'map_odd_build_report.md').write_text('# Stage6B map ODD features build report\n\n' + '\n'.join(reports) + f'\n\nmatch_rate={match_rate:.6f}\n', encoding='utf-8')
+    report = '# Stage6B map ODD features build report\n\n' + '\n'.join(reports)
+    report += f'\n\nmatch_rate={match_rate:.6f}\n'
+    report += f"total_runtime_seconds={warnings['total_runtime_seconds']:.3f}\n"
+    report += f'raw_scenarios_scanned={raw_scanned}\nraw_scenarios_kept={len(raw_sids)}\n'
+    report += f'raw_tfrecord_file_count={raw_file_count}\ntotal_processed_rows={g0}\nvalid_rows={valid_rows}\n'
+    report += f"missing_scenario_rows={warnings['missing_scenario_rows']}\ninvalid_context_rows={warnings['invalid_context_rows']}\n"
+    report += f"empty_path_rows={warnings['empty_path_rows']}\nno_near_lane_rows={warnings['no_near_lane_rows']}\n"
+    report += f"no_map_feature_rows={warnings['no_map_feature_rows']}\navg_rows_per_sec={warnings['average_rows_per_sec']:.3f}\n"
+    (out / 'map_odd_build_report.md').write_text(report, encoding='utf-8')
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
@@ -351,4 +398,5 @@ if __name__ == '__main__':
     p.add_argument('--min_match_rate', type=float, default=0.1)
     p.add_argument('--allow_low_match_rate', action='store_true')
     p.add_argument('--overwrite', action='store_true')
+    p.add_argument('--no_progress', action='store_true')
     main(p.parse_args())
