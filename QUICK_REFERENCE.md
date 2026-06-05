@@ -2758,11 +2758,11 @@ python tools/stage6c_event_style_report.py \
 
 ### 2. 期望行为
 
-- `stage6c_build_dynamic_event_bins.py` 会读取 `shard_manifest.json` 指向的每个 shard 下 `interaction_feat_style.npy`，并用 `feature_schema.json` 做 alias resolution；输出 row-aligned 的 `dynamic_event_bins.csv/.npy`、schema、report、warnings；同时会尝试从 `metadata.csv`、`meta.csv`、`meta.npy` 透传安全 metadata 字段。
+- `stage6c_build_dynamic_event_bins.py` 会读取 `shard_manifest.json` 指向的每个 shard 下 `interaction_feat_style.npy`，并用 `feature_schema.json` 做 alias resolution；输出 row-aligned 的 `dynamic_event_bins.csv/.npy`、schema、report、warnings；同时会尝试从 `metadata.csv`、`meta.csv`、`meta.npy` 透传安全 metadata 字段。关键 exposure 条件缺失时会 fail-closed 输出 `unknown`，不会因为 `combine_and` 忽略 None 而放宽分箱。
 - dynamic event bins 至少包含 `global_row`、`shard_id`、`local_row`、9 个 `exposure_*` bins、8 个 `outcome_*` bins、`event_quality_flag`、`available_feature_count`、`missing_feature_count`。
 - `stage6c_build_event_style_metrics.py` 会读取同一批 shard 和 `dynamic_event_bins.csv`，输出 row-aligned 的 `event_style_metrics.csv/.npy`、schema、report、warnings。
-- 如果某个代理特征缺失，bin 会写成 `unknown`，metric 会写成 `NaN`，并在 warnings JSON 中记录缺失 alias；脚本不会把缺失值静默填成 0。分箱正类过少、比例过低/过高、全 unknown 会写入 `dynamic_event_bin_warnings.json`；metric 的 `valid_rate < 0.01` 会写入 `event_style_metric_warnings.json`。
-- `stage6c_event_style_report.py` 会读取 embedding manifest、Stage 6A A/B indices、dynamic bins 和 event style metrics，按 event bin 计算 event-level BDD、metric delta、top drift cases，并生成 markdown report card。
+- 如果某个代理特征缺失，bin 会写成 `unknown`，metric 会写成 `NaN`，并在 warnings JSON 中记录缺失 alias；脚本不会把缺失值静默填成 0。分箱正类过少、比例低于 0.05 / 高于 0.95、全 unknown 会写入 `dynamic_event_bin_warnings.json` 并在 schema/warnings 中标记 `event_validity=degenerate`；metric 的 `valid_rate < 0.01` 会写入 `event_style_metric_warnings.json`。
+- `stage6c_event_style_report.py` 会读取 embedding manifest、Stage 6A A/B indices、dynamic bins 和 event style metrics，按 event bin 计算 event-level BDD、metric delta、top drift cases，并生成 markdown report card。默认跳过 `event_validity=degenerate` 的分箱；只有显式传入 `--include_degenerate_bins` 才会计算这些分箱，且报告不会为退化分箱生成自然语言结论。
 - 该流程不会重新训练 Stage 5 embedding，不会重建 Stage 6A split，不会删除 Stage 6B 既有输出。
 
 ### 3. 通过标准
@@ -2774,6 +2774,14 @@ python tools/stage6c_event_style_report.py \
 - `event_style_delta.csv` 必须包含 `event_key,event_value,metric_name,n_A_valid,n_B_valid,mean_A,mean_B,delta_B_minus_A,relative_delta_percent,direction_label,interpretation`。
 - `top_event_drift_cases.csv` 必须包含 `global_row,source_group,event_key,event_value,embedding_distance_to_opposite_centroid,dominant_style_metrics,shard_id,local_row`，如果可用则包含 `scenario_id,target_agent_id,start,window_len,split`。
 - `event_report_card.md` 必须说明 embedding BDD 是统一行为分布测量层，event-specific features 是语义解释层，二者互补而不是互相替代。
+- `event_report_card.md` 必须分开展示 valid exposure bins、skipped small bins、skipped degenerate bins、outcome bins；如果请求的 bin 退化，顶部必须出现退化告警。
+### Debug validation checklist
+
+1. 检查 `dynamic_event_bin_warnings.json` / `dynamic_event_bin_schema.json`：除非实验设计明确预期，否则不应出现 all-positive 的 `exposure_*` bin；如果 `positive_ratio > 0.95` 或 `< 0.05`，必须标记为 `event_validity=degenerate`。
+2. 检查 `event_style_metric_warnings.json` 的 `metric_valid_stats` 和 `score_scale_warnings`：任一 composite score 的 `abs(p99)>100` 或 `abs(p01)>100` 都必须触发 `score_scale_exploded`，正常 debug run 不应再出现 1e11 量级指标。
+3. `outcome_stop_go` 在缺少 `stop_count` / `speed_oscillation` 等代理特征时可以保持 unavailable / all unknown；不要用 0 填充伪造 stop-go。
+4. `event_report_card.md` 必须列出 skipped degenerate bins；退化 bin 不应出现在自然语言结论中。
+
 - 最低语法检查需通过：
 
 ```bash

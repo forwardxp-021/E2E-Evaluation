@@ -13,6 +13,7 @@ import pandas as pd
 
 from tools.stage6c_common import (
     FeatureResolver,
+    finite_quantile,
     combine_and,
     combine_or,
     high_mask,
@@ -77,63 +78,102 @@ def gt_zero(x):
     return np.isfinite(x) & (x > 0)
 
 
+def require_all(masks, n):
+    if any(m is None for m in masks):
+        return None
+    return combine_and(masks, n)
+
+
+def require_any(masks, n):
+    valid = [m for m in masks if m is not None]
+    if not valid:
+        return None
+    return combine_or(valid, n)
+
+
+def non_degenerate(mask):
+    if mask is None:
+        return False
+    ratio = float(np.mean(np.asarray(mask, dtype=bool))) if len(mask) else 0.0
+    return 0.05 <= ratio <= 0.95
+
+
+def weak_warning(event_key, reason):
+    return {"event_key": event_key, "warning": reason}
+
+
 def build_bins(X, meta, resolver, progress_enabled=True):
     n = len(meta)
     f = get_features(X, resolver)
     df = meta.copy()
 
-    front_present = combine_or([
-        present_mask(f["min_thw"], 0.67, True),
-        present_mask(f["mean_thw"], 0.67, True),
-        present_mask(f["min_front_distance"], 0.67, True),
-        present_mask(f["mean_front_distance"], 0.67, True),
-        high_mask(f["front_pressure_score"], 0.67),
-    ], n)
-    following = front_present
+    build_warnings = []
 
-    cut_in = combine_or([
-        gt_zero(f["cutin_count_proxy"]),
-        combine_and([high_mask(f["front_pressure_score"], 0.67), present_mask(f["min_front_distance"], 0.67, True)], n),
-        combine_and([present_mask(f["left_front_min_gap"], 0.67, True), present_mask(f["right_front_min_gap"], 0.67, True)], n),
-        high_mask(f["yielding_score_proxy"], 0.67),
+    close_front_gap = present_mask(f["min_front_distance"], 0.85, True)
+    close_front_thw = present_mask(f["min_thw"], 0.85, True)
+    high_front_score = high_mask(f["front_pressure_score"], 0.85)
+    front_present = require_any([close_front_gap, close_front_thw, high_front_score], n)
+    following = require_any([
+        require_all([close_front_gap, close_front_thw], n),
+        require_all([high_front_score, require_any([close_front_gap, close_front_thw], n)], n),
     ], n)
 
-    ego_speed_ok = high_mask(f["ego_speed"], 0.33)
+    if f["cutin_count_proxy"] is not None:
+        cut_in = gt_zero(f["cutin_count_proxy"])
+    else:
+        cut_in = require_any([
+            require_all([high_mask(f["front_pressure_score"], 0.90), present_mask(f["min_front_distance"], 0.90, True)], n),
+            require_all([present_mask(f["left_front_min_gap"], 0.90, True), present_mask(f["right_front_min_gap"], 0.90, True), high_mask(f["yielding_score_proxy"], 0.90)], n),
+        ], n)
+        build_warnings.append(weak_warning("exposure_cut_in", "cutin_count_proxy_missing_using_conservative_weak_proxy"))
+
+    ego_speed_ok = high_mask(f["ego_speed"], 0.50)
     slower_front = None
     if f["front_rel_speed"] is not None:
-        slower_front = np.isfinite(f["front_rel_speed"]) & (f["front_rel_speed"] < np.nanmedian(f["front_rel_speed"]))
-    lateral_context = combine_or([gt_zero(f["lane_change_count_proxy"]), high_mask(f["rms_yaw_rate"], 0.67)], n)
-    # First-pass proxy: an overtake opportunity requires a front vehicle and enough ego speed;
-    # lateral context is only supporting evidence together with slower-front/front-pressure cues.
-    overtake_support = combine_or([slower_front, high_mask(f["front_pressure_score"], 0.67), lateral_context], n)
-    overtake_opp = combine_and([front_present, ego_speed_ok, overtake_support], n)
+        rel = np.asarray(f["front_rel_speed"], dtype=float)
+        thr = finite_quantile(rel, 0.33)
+        slower_front = np.isfinite(rel) & (rel <= thr) if np.isfinite(thr) else np.zeros(n, dtype=bool)
+    lateral_context = require_any([gt_zero(f["lane_change_count_proxy"]), high_mask(f["rms_yaw_rate"], 0.85)], n)
+    overtake_support = require_any([slower_front, high_mask(f["front_pressure_score"], 0.85), lateral_context], n)
+    overtake_opp = require_all([front_present, ego_speed_ok, overtake_support], n)
+    if f["ego_speed"] is None:
+        build_warnings.append(weak_warning("exposure_overtake_opportunity", "ego_speed_missing_marked_unknown"))
 
-    dense = combine_or([
-        high_mask(f["neighbor_count"], 0.67),
-        high_mask(f["interaction_density"], 0.67),
-        combine_and([present_mask(f["min_front_distance"], 0.67, True), present_mask(f["left_front_min_gap"], 0.67, True)], n),
-        combine_and([present_mask(f["right_front_min_gap"], 0.67, True), present_mask(f["rear_min_gap"], 0.67, True)], n),
+    dense = require_any([
+        high_mask(f["neighbor_count"], 0.75),
+        high_mask(f["interaction_density"], 0.75),
+        require_all([present_mask(f["min_front_distance"], 0.75, True), present_mask(f["left_front_min_gap"], 0.75, True)], n),
+        require_all([present_mask(f["right_front_min_gap"], 0.75, True), present_mask(f["rear_min_gap"], 0.75, True)], n),
     ], n)
 
-    front_pressure = combine_or([high_mask(f["front_pressure_score"], 0.67), present_mask(f["min_front_distance"], 0.67, True), present_mask(f["min_thw"], 0.67, True)], n)
-    side_pressure = combine_or([
-        present_mask(f["left_front_min_gap"], 0.67, True),
-        present_mask(f["right_front_min_gap"], 0.67, True),
-        present_mask(f["left_rear_min_gap"], 0.67, True),
-        present_mask(f["right_rear_min_gap"], 0.67, True),
+    front_pressure = require_any([
+        high_mask(f["front_pressure_score"], 0.85),
+        require_all([present_mask(f["min_front_distance"], 0.85, True), present_mask(f["min_thw"], 0.85, True)], n),
     ], n)
-    gap_pressure = combine_or([front_pressure, side_pressure, present_mask(f["rear_min_gap"], 0.67, True)], n)
-    yield_conflict = combine_or([high_mask(f["yielding_score_proxy"], 0.67), combine_and([front_pressure, side_pressure], n), cut_in], n)
-
-    lane_change = combine_or([gt_zero(f["lane_change_count_proxy"]), gt_zero(f["lane_change_left_count_proxy"]), gt_zero(f["lane_change_right_count_proxy"]), high_mask(f["lane_change_rate_proxy"], 0.67), high_mask(f["rms_yaw_rate"], 0.90), high_mask(f["heading_change_total"], 0.90)], n)
-
-    free_cruising = combine_and([
-        None if following is None else ~following,
-        None if cut_in is None else ~cut_in,
-        None if front_pressure is None else ~front_pressure,
-        None if side_pressure is None else ~side_pressure,
-        None if lane_change is None else ~lane_change,
+    side_pressure = require_any([
+        require_all([present_mask(f["left_front_min_gap"], 0.85, True), present_mask(f["left_rear_min_gap"], 0.85, True)], n),
+        require_all([present_mask(f["right_front_min_gap"], 0.85, True), present_mask(f["right_rear_min_gap"], 0.85, True)], n),
     ], n)
+    gap_pressure = require_any([
+        require_all([front_pressure, present_mask(f["rear_min_gap"], 0.85, True)], n),
+        require_all([front_pressure, side_pressure], n),
+        require_all([side_pressure, present_mask(f["rear_min_gap"], 0.85, True)], n),
+    ], n)
+    yield_conflict_parts = [high_mask(f["yielding_score_proxy"], 0.85), require_all([front_pressure, side_pressure], n)]
+    if non_degenerate(cut_in):
+        yield_conflict_parts.append(cut_in)
+    else:
+        build_warnings.append(weak_warning("exposure_yield_conflict", "cut_in_degenerate_or_unknown_excluded_from_yield_conflict"))
+    yield_conflict = require_any(yield_conflict_parts, n)
+
+    lane_change = require_any([gt_zero(f["lane_change_count_proxy"]), gt_zero(f["lane_change_left_count_proxy"]), gt_zero(f["lane_change_right_count_proxy"]), high_mask(f["lane_change_rate_proxy"], 0.67), high_mask(f["rms_yaw_rate"], 0.90), high_mask(f["heading_change_total"], 0.90)], n)
+
+    high_interaction = [m for m in [following, cut_in, front_pressure, side_pressure, gap_pressure, yield_conflict, lane_change] if non_degenerate(m)]
+    if high_interaction:
+        free_cruising = ~combine_or(high_interaction, n)
+    else:
+        free_cruising = None
+        build_warnings.append(weak_warning("exposure_free_cruising", "no_non_degenerate_high_interaction_bins_available"))
 
     hard_brake = combine_or([
         low_mask(f["min_acc"], 0.10),
@@ -191,7 +231,7 @@ def build_bins(X, meta, resolver, progress_enabled=True):
     df["missing_feature_count"] = missing
     unknown_counts = df[[s[0] for s in specs]].eq("unknown").sum(axis=1)
     df["event_quality_flag"] = np.where(unknown_counts >= len(specs) // 2, "low_feature_coverage", "ok")
-    return df, specs
+    return df, specs, build_warnings
 
 
 def main(args):
@@ -209,24 +249,17 @@ def main(args):
     if X.shape[1] != len(names):
         raise ValueError(f"feature shape/schema mismatch: interaction_feat_style dim={X.shape[1]}, schema names={len(names)}")
     resolver = FeatureResolver(names)
-    df, specs = build_bins(X, meta, resolver, progress_enabled=progress_enabled)
+    df, specs, build_warnings = build_bins(X, meta, resolver, progress_enabled=progress_enabled)
 
     df.to_csv(out / "dynamic_event_bins.csv", index=False)
     np.save(out / "dynamic_event_bins.npy", df.to_records(index=False))
     metadata_info = meta.attrs.get("shard_metadata", {})
     metadata_columns = [c for c in metadata_info.get("safe_metadata_columns", []) if c in df.columns]
-    schema = {
-        "description": "Stage 6C row-aligned dynamic interaction exposure bins and behavior outcome bins.",
-        "row_alignment": "global_row is zero-based across shard_manifest order; local_row is zero-based within shard_id.",
-        "exposure_columns": [s[0] for s in specs if s[0].startswith("exposure_")],
-        "outcome_columns": [s[0] for s in specs if s[0].startswith("outcome_")],
-        "metadata_columns": metadata_columns,
-        "columns": df.columns.tolist(),
-    }
-    write_json(out / "dynamic_event_bin_schema.json", schema)
     count_cols = [s[0] for s in specs]
     counts = {c: df[c].value_counts(dropna=False).to_dict() for c in count_cols}
-    distribution_warnings = []
+    distribution_warnings = list(build_warnings)
+    event_validity = {}
+    event_distribution = {}
     for c in count_cols:
         series = df[c].fillna("unknown")
         value_counts = series.value_counts(dropna=False).to_dict()
@@ -234,12 +267,34 @@ def main(args):
         positive_label = next((spec[2] for spec in specs if spec[0] == c), None)
         positive_count = int((series == positive_label).sum()) if positive_label is not None else 0
         positive_ratio = float(positive_count / len(series)) if len(series) else 0.0
+        event_distribution[c] = {
+            "positive_label": positive_label,
+            "positive_count": positive_count,
+            "positive_ratio": positive_ratio,
+            "unknown_count": unknown_count,
+            "value_counts": value_counts,
+        }
+        validity = "valid"
         if len(series) and unknown_count == len(series):
-            distribution_warnings.append({"event_key": c, "warning": "all_rows_unknown", "value_counts": value_counts})
+            validity = "degenerate"
+            distribution_warnings.append({"event_key": c, "warning": "all_rows_unknown", "event_validity": validity, "value_counts": value_counts})
         if positive_count < 100:
             distribution_warnings.append({"event_key": c, "warning": "positive_label_count_below_100", "positive_count": positive_count, "positive_ratio": positive_ratio, "value_counts": value_counts})
-        if positive_ratio > 0.95 or positive_ratio < 0.01:
-            distribution_warnings.append({"event_key": c, "warning": "positive_label_ratio_degenerate", "positive_count": positive_count, "positive_ratio": positive_ratio, "value_counts": value_counts})
+        if positive_ratio > 0.95 or positive_ratio < 0.05:
+            validity = "degenerate"
+            distribution_warnings.append({"event_key": c, "warning": "positive_label_ratio_degenerate", "event_validity": validity, "positive_count": positive_count, "positive_ratio": positive_ratio, "value_counts": value_counts})
+        event_validity[c] = validity
+    schema = {
+        "description": "Stage 6C row-aligned dynamic interaction exposure bins and behavior outcome bins.",
+        "row_alignment": "global_row is zero-based across shard_manifest order; local_row is zero-based within shard_id.",
+        "exposure_columns": [s[0] for s in specs if s[0].startswith("exposure_")],
+        "outcome_columns": [s[0] for s in specs if s[0].startswith("outcome_")],
+        "event_validity": event_validity,
+        "event_distribution": event_distribution,
+        "metadata_columns": metadata_columns,
+        "columns": df.columns.tolist(),
+    }
+    write_json(out / "dynamic_event_bin_schema.json", schema)
     warnings = {
         "resolved_features": resolver.resolved,
         "missing_feature_aliases": resolver.missing,
@@ -247,6 +302,8 @@ def main(args):
         "metadata_missing_shards": metadata_info.get("metadata_missing_shards", []),
         "metadata_warnings": metadata_info.get("metadata_warnings", []),
         "distribution_warnings": distribution_warnings,
+        "event_validity": event_validity,
+        "event_distribution": event_distribution,
         "optional_inputs": {
             "odd_bins_path": args.odd_bins_path,
             "behavior_bins_path": args.behavior_bins_path,
@@ -256,8 +313,16 @@ def main(args):
     write_json(out / "dynamic_event_bin_warnings.json", warnings)
     report = "# Stage 6C dynamic event bins\n\n"
     report += f"- total shards: {total_shards}\n- total rows: {len(df)}\n- feature dim: {X.shape[1]}\n- runtime seconds: {time.time() - t0:.3f}\n\n"
-    report += "## 设计边界\n\n- exposure_* 表示动态交互暴露，可用于后续 matching/control 的候选变量。\n- outcome_* 表示行为结果/风格，主要用于报告和定位，不应被当作纯场景控制变量。\n- overtake opportunity 是代理分箱：必须有前车与足够自车速度，slower_front / high_front_pressure / lateral_context 任一作为支持证据；lateral_context 不单独决定机会。\n- 缺失代理特征时输出 `unknown`，不伪造分箱。\n\n"
+    report += (
+        "## 设计边界\n\n"
+        "- exposure_* 表示动态交互暴露，可用于后续 matching/control 的候选变量。\n"
+        "- outcome_* 表示行为结果/风格，主要用于报告和定位，不应被当作纯场景控制变量。\n"
+        "- overtake opportunity 是代理分箱：必须有前车与足够自车速度，slower_front / high_front_pressure / lateral_context 任一作为支持证据；lateral_context 不单独决定机会。\n"
+        "- 缺失关键代理特征时 fail-closed 输出 `unknown`，不因为 `combine_and` 忽略 None 而放宽条件。\n"
+        "- exposure 分箱 positive_ratio <0.05 或 >0.95 会标记为 `event_validity=degenerate`，下游报告默认跳过。\n\n"
+    )
     report += "## 分箱计数\n\n```json\n" + __import__("json").dumps(counts, ensure_ascii=False, indent=2) + "\n```\n"
+    report += "\n## 分箱有效性\n\n```json\n" + __import__("json").dumps(event_validity, ensure_ascii=False, indent=2) + "\n```\n"
     report += "\n## 分箱退化告警\n\n```json\n" + __import__("json").dumps(distribution_warnings, ensure_ascii=False, indent=2) + "\n```\n"
     report += "\n## metadata 透传摘要\n\n```json\n" + __import__("json").dumps({"metadata_columns": metadata_columns, "metadata_loaded_shards": metadata_info.get("metadata_loaded_shards", []), "metadata_missing_shards": metadata_info.get("metadata_missing_shards", [])}, ensure_ascii=False, indent=2) + "\n```\n"
     report += "\n## 缺失特征摘要\n\n```json\n" + __import__("json").dumps(resolver.missing, ensure_ascii=False, indent=2) + "\n```\n"

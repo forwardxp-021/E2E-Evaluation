@@ -348,16 +348,23 @@ def mean_available(arrays: Sequence[Optional[np.ndarray]], n: int):
     return np.nanmean(np.vstack(vals), axis=0)
 
 
-def robust_score(x, higher_is_more=True):
+def robust_score(x, higher_is_more=True, scale_floor: float = 1e-3, clip: float = 10.0):
     if x is None:
         return None
     arr = np.asarray(x, dtype=float)
+    out = np.full(arr.shape, np.nan, dtype=float)
+    ok = np.isfinite(arr)
+    if ok.sum() == 0:
+        return out
     med = finite_quantile(arr, 0.5, 0.0)
     q25 = finite_quantile(arr, 0.25, med)
     q75 = finite_quantile(arr, 0.75, med)
-    scale = max(q75 - q25, 1e-6)
+    scale = max(q75 - q25, float(scale_floor))
     z = (arr - med) / scale
-    return z if higher_is_more else -z
+    if not higher_is_more:
+        z = -z
+    out[ok] = np.clip(z[ok], -float(clip), float(clip))
+    return out
 
 
 def score_from_parts(parts: Sequence[Optional[np.ndarray]], n: int):
