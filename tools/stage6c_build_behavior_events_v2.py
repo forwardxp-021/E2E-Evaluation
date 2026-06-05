@@ -92,6 +92,34 @@ def count_sign_changes(x, eps: float = 1e-3) -> float:
     return float(np.sum(s[1:] != s[:-1]))
 
 
+
+def smooth_signal(x, window: int, enabled: bool = True) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    if not enabled or window <= 1 or arr.size == 0:
+        return arr.copy()
+    window = int(max(1, window))
+    kernel = np.ones(window, dtype=float)
+    valid = np.isfinite(arr)
+    filled = np.where(valid, arr, 0.0)
+    sums = np.convolve(filled, kernel, mode="same")
+    counts = np.convolve(valid.astype(float), kernel, mode="same")
+    out = np.full(arr.shape, np.nan, dtype=float)
+    ok = counts > 0
+    out[ok] = sums[ok] / counts[ok]
+    return out
+
+
+def clip_abs(x, cap: float) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    if not np.isfinite(cap) or cap <= 0:
+        return arr.copy()
+    return np.clip(arr, -float(cap), float(cap))
+
+
+def has_sustained_true(mask, min_frames: int) -> bool:
+    return bool(contiguous_true_lengths(np.asarray(mask, dtype=bool)) and max(contiguous_true_lengths(mask)) >= int(max(1, min_frames)))
+
+
 def contiguous_true_lengths(mask) -> List[int]:
     lengths = []
     cur = 0
@@ -206,25 +234,58 @@ def load_meta_frame(shard_dir: Path, rows: int, shard_id: int, warnings: List[Di
     return frame[META_COLUMNS]
 
 
-def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_available: bool, args) -> Tuple[Dict[str, str], Dict[str, float], Dict[str, str]]:
+def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_available: bool, args) -> Tuple[Dict[str, str], Dict[str, float], Dict[str, str], Dict[str, float]]:
     strengths = {task: "strong" for task in TASK_SPECS}
     if ego.ndim != 2 or ego.shape[0] < 2 or ego.shape[1] <= max(EGO.values()):
-        return ({task: "unknown" for task in TASK_SPECS}, {}, {task: "weak_proxy" for task in TASK_SPECS})
+        return ({task: "unknown" for task in TASK_SPECS}, {}, {task: "weak_proxy" for task in TASK_SPECS}, {})
 
     dt = max(float(args.dt), 1e-6)
     x = np.asarray(ego[:, EGO["x"]], dtype=float)
     y = np.asarray(ego[:, EGO["y"]], dtype=float)
     vy = np.asarray(ego[:, EGO["vy"]], dtype=float)
     heading = np.asarray(ego[:, EGO["heading"]], dtype=float)
-    speed = np.asarray(ego[:, EGO["speed"]], dtype=float)
-    accel = np.asarray(ego[:, EGO["accel"]], dtype=float)
-    yaw_rate = np.asarray(ego[:, EGO["yaw_rate"]], dtype=float)
-    jerk = np.diff(accel, prepend=accel[0]) / dt
-    curvature = yaw_rate / np.maximum(np.abs(speed), 1e-3)
-    lateral_accel = np.diff(vy, prepend=vy[0]) / dt
+    speed_raw = np.asarray(ego[:, EGO["speed"]], dtype=float)
+    accel_raw = np.asarray(ego[:, EGO["accel"]], dtype=float)
+    yaw_rate_raw = np.asarray(ego[:, EGO["yaw_rate"]], dtype=float)
+
+    speed = smooth_signal(speed_raw, args.smoothing_window, args.enable_signal_smoothing)
+    accel_smoothed = smooth_signal(accel_raw, args.smoothing_window, args.enable_signal_smoothing)
+    yaw_rate_smoothed = smooth_signal(yaw_rate_raw, args.smoothing_window, args.enable_signal_smoothing)
+    vy_smoothed = smooth_signal(vy, args.smoothing_window, args.enable_signal_smoothing)
+
+    raw_jerk = np.diff(accel_raw, prepend=accel_raw[0]) / dt
+    raw_lateral_accel = np.diff(vy, prepend=vy[0]) / dt
+    raw_curvature = yaw_rate_raw / np.maximum(np.abs(speed_raw), 1e-3)
+
+    accel = np.clip(accel_smoothed, args.accel_min_cap, args.accel_max_cap)
+    yaw_rate = clip_abs(yaw_rate_smoothed, args.yaw_rate_abs_cap)
+    jerk = clip_abs(np.diff(accel, prepend=accel[0]) / dt, args.jerk_abs_cap)
+    lateral_accel = clip_abs(np.diff(vy_smoothed, prepend=vy_smoothed[0]) / dt, args.lateral_accel_abs_cap)
+    curvature = clip_abs(yaw_rate / np.maximum(np.abs(speed), 1e-3), args.curvature_abs_cap)
     speed_delta = speed[-1] - speed[0] if np.isfinite(speed[[0, -1]]).all() else np.nan
-    peak_decel = max(0.0, -safe_min(accel)) if np.isfinite(safe_min(accel)) else np.nan
+    peak_decel = min(args.accel_max_cap + abs(args.accel_min_cap), max(0.0, -safe_min(accel))) if np.isfinite(safe_min(accel)) else np.nan
+    peak_decel = min(float(args.decel_metric_cap), peak_decel) if np.isfinite(peak_decel) else np.nan
     peak_accel = safe_max(accel)
+    raw_diagnostics = {
+        "raw_peak_decel": max(0.0, -safe_min(accel_raw)) if np.isfinite(safe_min(accel_raw)) else np.nan,
+        "raw_rms_jerk": rms(raw_jerk),
+        "raw_max_abs_jerk": safe_max(np.abs(raw_jerk)),
+        "raw_rms_yaw_rate": rms(yaw_rate_raw),
+        "raw_max_abs_yaw_rate": safe_max(np.abs(yaw_rate_raw)),
+        "raw_rms_lateral_accel": rms(raw_lateral_accel),
+        "raw_max_abs_lateral_accel": safe_max(np.abs(raw_lateral_accel)),
+        "raw_rms_curvature": rms(raw_curvature),
+        "raw_max_abs_curvature": safe_max(np.abs(raw_curvature)),
+        "clipped_peak_decel": peak_decel,
+        "clipped_rms_jerk": rms(jerk),
+        "clipped_max_abs_jerk": safe_max(np.abs(jerk)),
+        "clipped_rms_yaw_rate": rms(yaw_rate),
+        "clipped_max_abs_yaw_rate": safe_max(np.abs(yaw_rate)),
+        "clipped_rms_lateral_accel": rms(lateral_accel),
+        "clipped_max_abs_lateral_accel": safe_max(np.abs(lateral_accel)),
+        "clipped_rms_curvature": rms(curvature),
+        "clipped_max_abs_curvature": safe_max(np.abs(curvature)),
+    }
 
     front = slot_array(neighbor, 0)
     lf = slot_array(neighbor, 1)
@@ -236,6 +297,8 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     front_thw = neighbor_values(front, NEI["thw"])
     front_closing = neighbor_values(front, NEI["closing_rate"])
     front_speed = neighbor_values(front, NEI["speed"])
+    front_closing = smooth_signal(front_closing, args.smoothing_window, args.enable_signal_smoothing)
+    front_speed = smooth_signal(front_speed, args.smoothing_window, args.enable_signal_smoothing)
     front_ttc_available = bool(front_ttc.size)
     front_speed_available = bool(front_speed.size)
     front_valid = valid_ratio(front)
@@ -264,13 +327,13 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     lc_duration = float(max(lc_lengths) * dt) if lc_lengths else np.nan
     heading_change_total = float(np.nansum(np.abs(wrap_angle(np.diff(heading))))) if heading.size > 1 else np.nan
     yaw_sign_changes = count_sign_changes(yaw_rate, args.sign_change_eps)
-    lat_sign_changes = count_sign_changes(vy, args.sign_change_eps)
+    lat_sign_changes = count_sign_changes(vy_smoothed, args.sign_change_eps)
     lc_oscillation = nanmean_list([yaw_sign_changes, lat_sign_changes])
     lane_change_positive = bool(
         (np.isfinite(lateral_range) and lateral_range >= args.lateral_displacement_m)
         or (np.isfinite(heading_change_total) and heading_change_total >= args.heading_change_rad)
         or (np.isfinite(rms(yaw_rate)) and rms(yaw_rate) >= args.yaw_rate_rms_threshold)
-        or (np.isfinite(safe_max(np.abs(vy))) and safe_max(np.abs(vy)) >= args.lateral_speed_threshold)
+        or (np.isfinite(safe_max(np.abs(vy_smoothed))) and safe_max(np.abs(vy_smoothed)) >= args.lateral_speed_threshold)
     )
 
     following_positive = None
@@ -282,15 +345,40 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
             and (not np.isfinite(mean_speed) or mean_speed >= args.low_speed_threshold)
         )
 
+    front_speed_accel = np.diff(front_speed, prepend=front_speed[0]) / dt if front_speed.size else np.asarray([], dtype=float)
+    front_speed_decel_mask = np.isfinite(front_speed_accel) & (front_speed_accel <= args.lead_decel_threshold)
     front_closing_derivative_proxy = np.diff(front_closing, prepend=front_closing[0]) / dt if front_closing.size else np.asarray([], dtype=float)
-    lead_decel_mask = np.isfinite(front_closing_derivative_proxy) & (front_closing_derivative_proxy <= args.lead_decel_threshold)
-    lead_idx = first_index(lead_decel_mask)
+    closing_surge_mask = np.isfinite(front_closing_derivative_proxy) & (front_closing_derivative_proxy >= abs(args.lead_decel_threshold))
+    gap_ok = np.isfinite(front_dist) & (front_dist <= args.lead_brake_front_gap_max_m)
+    ttc_drop = np.diff(front_ttc, prepend=front_ttc[0]) < 0 if front_ttc.size else np.asarray([], dtype=bool)
+    thw_drop = np.diff(front_thw, prepend=front_thw[0]) < 0 if front_thw.size else np.asarray([], dtype=bool)
+    ttc_or_thw_drop_ok = True
+    if args.lead_brake_require_ttc_or_thw_drop:
+        ttc_or_thw_drop_ok = bool((ttc_drop.size and has_sustained_true(ttc_drop, args.lead_brake_min_consecutive_frames)) or (thw_drop.size and has_sustained_true(thw_drop, args.lead_brake_min_consecutive_frames)))
+    strong_mask = (front_speed_decel_mask & gap_ok) if front_speed_decel_mask.size == gap_ok.size else np.asarray([], dtype=bool)
+    proxy_mask = (closing_surge_mask & gap_ok) if closing_surge_mask.size == gap_ok.size else np.asarray([], dtype=bool)
+    strong_lead = bool(
+        front_speed_available
+        and front_valid >= args.min_valid_front_ratio
+        and front_dist_valid >= args.min_valid_front_ratio
+        and has_sustained_true(strong_mask, args.lead_brake_min_consecutive_frames)
+        and ttc_or_thw_drop_ok
+    )
+    proxy_lead = bool(
+        not strong_lead
+        and front_valid >= args.min_valid_front_ratio
+        and front_dist_valid >= args.min_valid_front_ratio
+        and has_sustained_true(proxy_mask, args.lead_brake_min_consecutive_frames)
+        and ttc_or_thw_drop_ok
+    )
+    lead_mask = strong_mask if strong_lead else proxy_mask
+    lead_idx = first_index(lead_mask)
     ego_brake_mask = np.isfinite(accel) & (accel <= args.ego_brake_threshold)
     ego_brake_idx = first_index(ego_brake_mask)
     lead_response_positive = None
     if front_known:
-        strengths["task_lead_brake_response"] = "proxy"
-        lead_response_positive = bool(front_valid >= args.min_valid_front_ratio and front_dist_valid >= args.min_valid_front_ratio and lead_idx is not None)
+        strengths["task_lead_brake_response"] = "strong" if strong_lead else "proxy"
+        lead_response_positive = bool(strong_lead or proxy_lead)
     reaction_delay = np.nan
     if lead_idx is not None and ego_brake_idx is not None and ego_brake_idx >= lead_idx:
         reaction_delay = float((ego_brake_idx - lead_idx) * dt)
@@ -343,12 +431,21 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     strengths["task_overtake_executed"] = "proxy"
     overtake_start = first_index(lc_mask | (accel > max(0.2, args.ego_brake_threshold * -0.2)))
 
-    hesitation_positive = bool(
+    maneuver_context = bool(
+        lane_change_positive
+        or (np.isfinite(lateral_range) and lateral_range >= args.hesitation_min_lateral_range_m)
+        or (np.isfinite(heading_change_total) and heading_change_total >= args.hesitation_min_heading_change_rad)
+    )
+    abort_like_partial = bool(lane_change_positive and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m)
+    speed_drop_during_maneuver = bool(np.isfinite(speed_delta) and -speed_delta >= args.hesitation_min_speed_drop)
+    hesitation_evidence = bool(
         (np.isfinite(yaw_sign_changes) and yaw_sign_changes >= args.hesitation_sign_changes)
         or (np.isfinite(lat_sign_changes) and lat_sign_changes >= args.hesitation_sign_changes)
         or (np.isfinite(lc_duration) and lc_duration >= args.long_lane_change_s)
-        or (lane_change_positive and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m)
+        or abort_like_partial
+        or speed_drop_during_maneuver
     )
+    hesitation_positive = bool((maneuver_context or not args.hesitation_require_maneuver_context) and hesitation_evidence)
 
     side_closing_p95 = safe_percentile(side_closing_values, 95)
     conflict_positive = None
@@ -405,7 +502,7 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "rms_yaw_rate": rms(yaw_rate),
         "rms_curvature": rms(curvature),
         "heading_change_total": heading_change_total,
-        "max_lateral_speed": safe_max(np.abs(vy)),
+        "max_lateral_speed": safe_max(np.abs(vy_smoothed)),
         "rms_lateral_accel": rms(lateral_accel),
         "duration": lc_duration,
         "oscillation_score": lc_oscillation,
@@ -444,7 +541,7 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "yaw_sign_change_count": yaw_sign_changes,
         "lateral_velocity_sign_change_count": lat_sign_changes,
         "lc_oscillation_score": lc_oscillation,
-        "abort_like_score": float(lane_change_positive and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m),
+        "abort_like_score": float(abort_like_partial),
         "speed_drop": max(0.0, -speed_delta) if np.isfinite(speed_delta) else np.nan,
     }))
     metrics.update({
@@ -470,7 +567,7 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "task_yield_conflict": conflict_positive,
     }
     events = {task: label(task_values[task], *TASK_SPECS[task]) for task in TASK_SPECS}
-    return events, metrics, strengths
+    return events, metrics, strengths, raw_diagnostics
 
 
 def event_diagnostics(events_df: pd.DataFrame, min_ratio: float, max_ratio: float) -> List[Dict]:
@@ -524,6 +621,62 @@ def metric_diagnostics(metrics_df: pd.DataFrame, meta_cols: Sequence[str]) -> Li
     return rows
 
 
+
+def physical_expected_ranges(args) -> Dict[str, Tuple[float, float]]:
+    return {
+        "decel": (0.0, float(args.decel_metric_cap)),
+        "jerk": (-float(args.jerk_abs_cap), float(args.jerk_abs_cap)),
+        "yaw_rate": (-float(args.yaw_rate_abs_cap), float(args.yaw_rate_abs_cap)),
+        "lateral_accel": (-float(args.lateral_accel_abs_cap), float(args.lateral_accel_abs_cap)),
+        "curvature": (-float(args.curvature_abs_cap), float(args.curvature_abs_cap)),
+    }
+
+
+def metric_physical_kind(metric_name: str) -> Optional[str]:
+    name = metric_name.lower()
+    if "decel" in name:
+        return "decel"
+    if "jerk" in name:
+        return "jerk"
+    if "yaw_rate" in name:
+        return "yaw_rate"
+    if "lateral_accel" in name:
+        return "lateral_accel"
+    if "curvature" in name:
+        return "curvature"
+    return None
+
+
+def metric_quality_warnings(raw_diag: List[Dict], final_diag: List[Dict], args) -> List[Dict]:
+    ranges = physical_expected_ranges(args)
+    out: List[Dict] = []
+    for source, rows in [("raw", raw_diag), ("final", final_diag)]:
+        for row in rows:
+            kind = metric_physical_kind(str(row.get("metric", "")))
+            if not kind:
+                continue
+            lo, hi = ranges[kind]
+            p99 = float(row.get("p99", np.nan))
+            max_v = float(row.get("max", np.nan))
+            min_v = float(row.get("min", np.nan))
+            exceeds = False
+            if kind == "decel":
+                exceeds = (np.isfinite(p99) and p99 > hi) or (np.isfinite(max_v) and max_v > hi)
+            else:
+                exceeds = (np.isfinite(max_v) and max_v > hi) or (np.isfinite(min_v) and min_v < lo) or (np.isfinite(p99) and p99 > hi)
+            if exceeds:
+                out.append({
+                    "warning": "metric_physical_range_warning",
+                    "source": source,
+                    "metric_name": row.get("metric"),
+                    "p99": p99,
+                    "max": max_v,
+                    "min": min_v,
+                    "expected_range": [lo, hi],
+                })
+    return out
+
+
 def write_report(path: Path, total_rows: int, shard_count: int, event_diag: List[Dict], metric_diag: List[Dict], warnings: List[Dict]):
     lines = [
         "# Stage 6C v2 behavior-event build report",
@@ -544,6 +697,9 @@ def write_report(path: Path, total_rows: int, shard_count: int, event_diag: List
     lines.extend(["", "## Metric diagnostics", "", "| metric | valid_count | valid_rate | min | p01 | p50 | p99 | max |", "|---|---:|---:|---:|---:|---:|---:|---:|"])
     for row in metric_diag:
         lines.append(f"| {row['metric']} | {row['valid_count']} | {row['valid_rate']:.6g} | {row['min']:.6g} | {row['p01']:.6g} | {row['p50']:.6g} | {row['p99']:.6g} | {row['max']:.6g} |")
+    metric_quality = [w for w in warnings if w.get("warning") in {"metric_physical_range_warning", "raw_metric_physically_implausible", "physical_metric_clipping_applied"}]
+    lines.extend(["", "## Metric quality warnings", ""])
+    lines.extend(["- None"] if not metric_quality else [f"- {w.get('warning')}: {w}" for w in metric_quality[:120]])
     deg = [r for r in event_diag if r["event_validity"] != "valid"]
     lines.extend(["", "## Degenerate/all_unknown tasks", ""])
     lines.extend(["- None"] if not deg else [f"- `{r['task_key']}`: {r['event_validity']}, positive_ratio={r['positive_ratio']:.6g}, unknown_ratio={r['unknown_ratio']:.6g}" for r in deg])
@@ -578,6 +734,7 @@ def build(args):
     warnings: List[Dict] = []
     event_rows: List[Dict] = []
     metric_rows: List[Dict] = []
+    raw_metric_rows: List[Dict] = []
     strength_counts: Dict[str, Dict[str, int]] = {task: {} for task in TASK_SPECS}
     emitted_warning_names = set()
     global_row = 0
@@ -599,9 +756,9 @@ def build(args):
             warnings.append({"warning": "raw_neighbor_missing_detectors_unknown_or_weak_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
         if slot_ids_arr is None:
             warnings.append({"warning": "neighbor_slot_ids_missing_cutin_uses_conservative_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
-        if "lead_brake_uses_front_closing_derivative_proxy" not in emitted_warning_names:
-            warnings.append({"warning": "lead_brake_uses_front_closing_derivative_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
-            emitted_warning_names.add("lead_brake_uses_front_closing_derivative_proxy")
+        if "lead_brake_selective_detector_enabled" not in emitted_warning_names:
+            warnings.append({"warning": "lead_brake_selective_detector_enabled", "shard_id": int(shard_id), "shard_path": str(shard_path), "front_speed_preferred_with_closing_derivative_fallback": True})
+            emitted_warning_names.add("lead_brake_selective_detector_enabled")
         if "cutin_true_slot_transition_not_implemented_using_gap_drop_proxy" not in emitted_warning_names:
             warnings.append({"warning": "cutin_true_slot_transition_not_implemented_using_gap_drop_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path), "slot_ids_available": bool(slot_ids_arr is not None)})
             emitted_warning_names.add("cutin_true_slot_transition_not_implemented_using_gap_drop_proxy")
@@ -612,19 +769,21 @@ def build(args):
         meta = load_meta_frame(shard_dir, rows, shard_id, warnings)
         for local_row in range(rows):
             neighbor_row = np.asarray(neighbor_arr[local_row]) if neighbor_arr is not None else None
-            events, metrics, strengths = derive_row(np.asarray(ego_arr[local_row]), neighbor_row, slot_ids_arr is not None, args)
+            events, metrics, strengths, raw_diagnostics = derive_row(np.asarray(ego_arr[local_row]), neighbor_row, slot_ids_arr is not None, args)
             base = {"global_row": int(global_row), "shard_id": int(shard_id), "local_row": int(local_row)}
             for col in META_COLUMNS:
                 base[col] = meta.iloc[local_row][col]
             strength_cols = {f"{task}_strength": strengths.get(task, "unknown") for task in TASK_SPECS}
             event_rows.append({**base, **events, **strength_cols})
             metric_rows.append({**base, **metrics})
+            raw_metric_rows.append({**base, **raw_diagnostics})
             for task, strength in strengths.items():
                 strength_counts[task][strength] = strength_counts[task].get(strength, 0) + 1
             global_row += 1
 
     event_df = pd.DataFrame(event_rows)
     metric_df = pd.DataFrame(metric_rows)
+    raw_metric_df = pd.DataFrame(raw_metric_rows)
     meta_cols = ["global_row", "shard_id", "local_row"] + META_COLUMNS
     event_diag = event_diagnostics(event_df, args.min_event_positive_ratio, args.max_event_positive_ratio)
     for row in event_diag:
@@ -636,6 +795,14 @@ def build(args):
         if dominant != "strong":
             warnings.append({"warning": "detector_strength_not_strong", "task_key": task, "detector_strength": dominant, "counts": counts, "rows": int(total)})
     metric_diag = metric_diagnostics(metric_df, meta_cols)
+    raw_metric_diag = metric_diagnostics(raw_metric_df, meta_cols)
+    clipped_metric_diag = metric_diagnostics(raw_metric_df[[c for c in raw_metric_df.columns if c in meta_cols or c.startswith("clipped_")]], meta_cols) if len(raw_metric_df.columns) else []
+    quality_warnings = metric_quality_warnings(raw_metric_diag, metric_diag, args)
+    warnings.extend(quality_warnings)
+    if any(w.get("source") == "raw" for w in quality_warnings):
+        warnings.append({"warning": "raw_metric_physically_implausible"})
+    if any(w.get("source") == "final" for w in quality_warnings) or args.enable_signal_smoothing:
+        warnings.append({"warning": "physical_metric_clipping_applied", "smoothing_window": int(args.smoothing_window)})
     warnings.append({"warning": "completed", "total_rows": int(len(event_df)), "elapsed_sec": float(time.time() - t0)})
 
     event_df.to_csv(out / "behavior_event_bins_v2.csv", index=False)
@@ -645,13 +812,16 @@ def build(args):
         "task_specs": {k: {"positive_label": v[0], "negative_label": v[1]} for k, v in TASK_SPECS.items()},
         "event_diagnostics": event_diag,
         "metric_diagnostics": metric_diag,
+        "raw_metric_diagnostics": raw_metric_diag,
+        "clipped_metric_diagnostics": clipped_metric_diag,
+        "metric_quality_warnings": quality_warnings,
         "detector_strength_counts": strength_counts,
         "detector_strength_columns": [f"{task}_strength" for task in TASK_SPECS],
         "detector_strength_values": ["strong", "proxy", "weak_proxy", "unknown"],
         "schema_notes": {
             "neighbor_slot_ids_loaded_with_pickle": True,
             "ttc_metrics_use_true_neighbor_seq_ttc_column_only": True,
-            "lead_brake_current_detector": "proxy_from_front_closing_derivative",
+            "lead_brake_current_detector": "front_speed_deceleration_strong_with_sustained_closing_derivative_proxy_fallback",
             "cutin_current_detector": "front_gap_appearance_or_drop_proxy_no_slot_id_transition",
             "queue_approach_uses_front_speed_when_available_else_gap_thw_closing_proxy": True,
         },
@@ -670,12 +840,24 @@ def parse_args():
     p.add_argument("--overwrite", action="store_true", help="Overwrite output_dir if it already exists.")
     p.add_argument("--no_progress", action="store_true", help="Disable progress bars.")
     p.add_argument("--dt", type=float, default=0.1, help="Frame duration in seconds.")
+    p.add_argument("--smoothing_window", type=int, default=5, help="Rolling moving-average window for derivative-sensitive signals.")
+    p.add_argument("--enable_signal_smoothing", action=argparse.BooleanOptionalAction, default=True, help="Enable smoothing before derivative-based metrics and detectors.")
+    p.add_argument("--accel_min_cap", type=float, default=-12.0, help="Physical lower cap for smoothed ego acceleration in m/s^2.")
+    p.add_argument("--accel_max_cap", type=float, default=8.0, help="Physical upper cap for smoothed ego acceleration in m/s^2.")
+    p.add_argument("--decel_metric_cap", type=float, default=12.0, help="Physical cap for reported deceleration metrics in m/s^2.")
+    p.add_argument("--jerk_abs_cap", type=float, default=80.0, help="Absolute cap for jerk metrics in m/s^3.")
+    p.add_argument("--yaw_rate_abs_cap", type=float, default=2.0, help="Absolute cap for yaw-rate metrics in rad/s.")
+    p.add_argument("--lateral_accel_abs_cap", type=float, default=8.0, help="Absolute cap for lateral acceleration metrics in m/s^2.")
+    p.add_argument("--curvature_abs_cap", type=float, default=1.0, help="Absolute cap for curvature metrics.")
     p.add_argument("--min_valid_front_ratio", type=float, default=0.3, help="Minimum valid front frames for front-conditioned tasks.")
     p.add_argument("--min_event_positive_ratio", type=float, default=0.01, help="Below this positive ratio a task is degenerate.")
     p.add_argument("--max_event_positive_ratio", type=float, default=0.95, help="Above this positive ratio a task is degenerate.")
     p.add_argument("--low_speed_threshold", type=float, default=1.0, help="Low ego speed threshold in m/s.")
     p.add_argument("--front_speed_low_threshold", type=float, default=1.0, help="Low/stop speed threshold in m/s for queue metrics.")
-    p.add_argument("--lead_decel_threshold", type=float, default=-1.0, help="Proxy lead-deceleration threshold from front closing-rate derivative.")
+    p.add_argument("--lead_decel_threshold", type=float, default=-1.0, help="Lead front-speed deceleration threshold in m/s^2; fallback proxy uses matching closing-rate surge.")
+    p.add_argument("--lead_brake_min_consecutive_frames", type=int, default=3, help="Minimum sustained frames for lead-brake detection.")
+    p.add_argument("--lead_brake_front_gap_max_m", type=float, default=50.0, help="Maximum front gap for lead-brake response detection.")
+    p.add_argument("--lead_brake_require_ttc_or_thw_drop", action=argparse.BooleanOptionalAction, default=True, help="Require sustained TTC or THW decrease for lead-brake response detection.")
     p.add_argument("--ego_brake_threshold", type=float, default=-0.5, help="Ego brake onset threshold in m/s^2.")
     p.add_argument("--hard_brake_threshold", type=float, default=-2.0, help="Hard-brake reference threshold in m/s^2.")
     p.add_argument("--slower_front_closing_rate", type=float, default=0.5, help="Closing-rate threshold for slower lead vehicle proxy.")
@@ -689,7 +871,11 @@ def parse_args():
     p.add_argument("--yaw_rate_rms_threshold", type=float, default=0.10, help="Yaw-rate RMS threshold for lane-change proxy.")
     p.add_argument("--lateral_speed_threshold", type=float, default=0.5, help="Lateral-speed threshold for lane-change proxy.")
     p.add_argument("--sign_change_eps", type=float, default=1e-3, help="Epsilon for sign-change metrics.")
-    p.add_argument("--hesitation_sign_changes", type=float, default=3.0, help="Sign-change count threshold for hesitation.")
+    p.add_argument("--hesitation_min_lateral_range_m", type=float, default=1.0, help="Minimum lateral range for hesitation maneuver context.")
+    p.add_argument("--hesitation_min_heading_change_rad", type=float, default=0.15, help="Minimum heading-change total for hesitation maneuver context.")
+    p.add_argument("--hesitation_sign_changes", type=float, default=5.0, help="Smoothed sign-change count threshold for hesitation.")
+    p.add_argument("--hesitation_min_speed_drop", type=float, default=1.0, help="Minimum smoothed speed drop during maneuver for hesitation.")
+    p.add_argument("--hesitation_require_maneuver_context", action=argparse.BooleanOptionalAction, default=True, help="Require lane-change/lateral/heading maneuver context for hesitation.")
     p.add_argument("--long_lane_change_s", type=float, default=4.0, help="Long lane-change duration threshold for hesitation.")
     p.add_argument("--cutin_gap_drop_m", type=float, default=8.0, help="Front-gap sudden drop threshold for cut-in proxy.")
     p.add_argument("--cutin_max_gap_m", type=float, default=25.0, help="Max front gap after cut-in proxy.")

@@ -171,3 +171,16 @@ v2 primary task slices：
 - yield conflict / interaction assertiveness。
 
 后续 `negative_control_random`、`pseudo_agg_vs_cons`、`scene_confounding_control` 的 Stage 6C 报告应优先写 task-conditioned BDD 结论；THW、gap、decel、jerk、sharpness、yielding/assertiveness 等 handcrafted metrics 只作为漂移方向解释层。
+
+## 17. Stage 6C v2 smoke 修正：物理信号质检与 strength-filtered BDD
+
+Stage 6C v2 保持 task-conditioned behavior-event BDD 架构不变。本轮只修正 smoke test 暴露的具体工程问题：derivative finite-difference 噪声、过宽松 hesitation detector、过宽松 lead-brake proxy、queue strong/proxy 敏感性分析，以及 observed BDD 与 bootstrap CI 的估计器配置记录。
+
+- `tools/stage6c_build_behavior_events_v2.py` 默认对 speed、accel、yaw_rate、lateral velocity 做 5 帧平滑，并对 accel/decel/jerk/yaw_rate/lateral_accel/curvature 使用物理裁剪；正式 `behavior_event_metrics_v2.csv` 使用 smoothed/clipped metrics。
+- raw finite-difference 诊断不会被隐藏：`behavior_event_schema_v2.json` 记录 `raw_metric_diagnostics`、`clipped_metric_diagnostics`、`metric_quality_warnings`，并在 raw/final 指标超出物理范围时写 warning。
+- hesitation 必须有 lane-change/lateral/heading maneuver context，并使用平滑后的 yaw/lateral velocity sign changes；目标是避免 positive_ratio 接近 1 的退化 detector。
+- lead-brake response 优先使用 front_speed 的持续减速度作为 strong detector；fallback 才使用 sustained closing-rate derivative proxy，并继续通过 detector strength column 记录。
+- `tools/stage6c_task_conditioned_bdd_report.py` 增加 `--detector_strength_filter {all,strong,strong_or_proxy}`，可对 queue 等 proxy 占比较高的 task 做 strong-only sensitivity check。
+- `task_bdd_summary.csv` 增加 `bootstrap_mean`、`bootstrap_std`、`observed_in_bootstrap_ci`、`mmd_estimator_config`，用于确认 observed BDD 和 bootstrap CI 使用一致的 max-sample policy。
+
+正式分析前必须先检查 QUICK_REFERENCE.md 中的 Stage 6C v2 smoothing / clipping validation checklist。
