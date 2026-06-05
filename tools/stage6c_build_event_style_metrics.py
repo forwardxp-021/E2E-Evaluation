@@ -186,16 +186,27 @@ def main(args):
         "metric_columns": metric_cols,
         "columns": df.columns.tolist(),
     })
+    metric_valid_stats = {}
+    low_valid_rate_warnings = []
+    for c in metric_cols:
+        valid_count = int(np.isfinite(df[c].to_numpy(dtype=float)).sum())
+        valid_rate = float(valid_count / len(df)) if len(df) else 0.0
+        metric_valid_stats[c] = {"valid_count": valid_count, "valid_rate": valid_rate}
+        if valid_rate < 0.01:
+            low_valid_rate_warnings.append({"metric_name": c, "warning": "low_valid_rate", "valid_count": valid_count, "valid_rate": valid_rate})
+    valid_counts = {c: stats["valid_count"] for c, stats in metric_valid_stats.items()}
     write_json(out / "event_style_metric_warnings.json", {
         "resolved_features": resolver.resolved,
         "missing_feature_aliases": resolver.missing,
         "unavailable_metrics": unavailable,
+        "metric_valid_stats": metric_valid_stats,
+        "low_valid_rate_warnings": low_valid_rate_warnings,
     })
-    valid_counts = {c: int(np.isfinite(df[c].to_numpy(dtype=float)).sum()) for c in metric_cols}
     report = "# Stage 6C event style metrics\n\n"
     report += f"- total shards: {total_shards}\n- total rows: {len(df)}\n- feature dim: {X.shape[1]}\n- runtime seconds: {time.time() - t0:.3f}\n\n"
     report += "## 解释原则\n\nEmbedding/BDD 是统一的行为分布测量层；event-specific metrics 是语义解释层。缺失代理特征时指标保持 NaN，不填 0。\n\n"
     report += "## 有效样本数\n\n```json\n" + __import__("json").dumps(valid_counts, ensure_ascii=False, indent=2) + "\n```\n"
+    report += "\n## 有效率与低有效率告警\n\n- valid_rate < 0.01 会写入 `low_valid_rate` 告警，但默认不失败。\n\n```json\n" + __import__("json").dumps({"metric_valid_stats": metric_valid_stats, "low_valid_rate_warnings": low_valid_rate_warnings}, ensure_ascii=False, indent=2) + "\n```\n"
     report += "\n## 不可计算指标\n\n```json\n" + __import__("json").dumps(unavailable, ensure_ascii=False, indent=2) + "\n```\n"
     (out / "event_style_metric_report.md").write_text(report, encoding="utf-8")
 

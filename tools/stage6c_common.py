@@ -83,6 +83,72 @@ class FeatureResolver:
         return np.asarray(X[:, self.feature_map[name]], dtype=float)
 
 
+SHARD_METADATA_COLUMNS = [
+    "scenario_id",
+    "target_agent_id",
+    "start",
+    "window_len",
+    "split",
+    "assignment_mode",
+    "lane_assignment_success",
+    "fallback_used",
+    "lane_context_quality",
+]
+
+
+def _metadata_frame_from_npy(path: Path) -> pd.DataFrame:
+    arr = np.load(path, allow_pickle=True)
+    if isinstance(arr, np.lib.npyio.NpzFile):
+        return pd.DataFrame({k: arr[k] for k in arr.files})
+    if isinstance(arr, np.ndarray) and arr.dtype.names:
+        return pd.DataFrame(arr)
+    if isinstance(arr, np.ndarray) and arr.shape == ():
+        obj = arr.item()
+        if isinstance(obj, dict):
+            return pd.DataFrame(obj)
+    if isinstance(arr, np.ndarray) and arr.dtype == object:
+        vals = arr.tolist()
+        if isinstance(vals, list) and (not vals or isinstance(vals[0], dict)):
+            return pd.DataFrame(vals)
+    return pd.DataFrame(arr)
+
+
+def _load_optional_shard_metadata(shard_dir: Path, rows: int, shard_id: int, shard_path: str):
+    for name in ["metadata.csv", "meta.csv", "meta.npy"]:
+        path = shard_dir / name
+        if not path.exists():
+            continue
+        if path.suffix == ".csv":
+            raw = pd.read_csv(path)
+        else:
+            raw = _metadata_frame_from_npy(path)
+        if len(raw) != rows:
+            return None, {
+                "shard_id": int(shard_id),
+                "shard_path": str(shard_path),
+                "metadata_path": str(path),
+                "reason": "row_count_mismatch",
+                "feature_rows": int(rows),
+                "metadata_rows": int(len(raw)),
+            }
+        safe_cols = [c for c in SHARD_METADATA_COLUMNS if c in raw.columns]
+        if not safe_cols:
+            return None, {
+                "shard_id": int(shard_id),
+                "shard_path": str(shard_path),
+                "metadata_path": str(path),
+                "reason": "no_safe_metadata_columns",
+                "available_columns": [str(c) for c in raw.columns],
+            }
+        return raw[safe_cols].reset_index(drop=True), None
+    return None, {
+        "shard_id": int(shard_id),
+        "shard_path": str(shard_path),
+        "reason": "metadata_missing",
+        "searched_files": ["metadata.csv", "meta.csv", "meta.npy"],
+    }
+
+
 def load_shard_paths(shard_manifest: str) -> Tuple[Path, List[str]]:
     manifest = read_json(shard_manifest)
     base = Path(shard_manifest).parent
@@ -101,10 +167,13 @@ def resolve_path(base: Path, p: str) -> Path:
     return pp if pp.is_absolute() else base / pp
 
 
-def load_feature_rows(shard_manifest: str, progress_enabled: bool = True):
+def load_feature_rows(shard_manifest: str, progress_enabled: bool = True, include_shard_metadata: bool = False):
     base, shard_paths = load_shard_paths(shard_manifest)
     feats = []
     meta = []
+    metadata_warnings = []
+    metadata_loaded_shards = []
+    metadata_missing_shards = []
     global_offset = 0
     for shard_id, sp in enumerate(iter_progress(shard_paths, enabled=progress_enabled, desc="loading shards", unit="shard")):
         shard_dir = resolve_path(base, sp)
@@ -114,15 +183,40 @@ def load_feature_rows(shard_manifest: str, progress_enabled: bool = True):
         arr = np.load(feat_path, mmap_mode="r")
         feats.append(np.asarray(arr))
         rows = arr.shape[0]
-        meta.append(pd.DataFrame({
+        frame = pd.DataFrame({
             "global_row": np.arange(global_offset, global_offset + rows, dtype=np.int64),
             "shard_id": shard_id,
             "local_row": np.arange(rows, dtype=np.int64),
-        }))
+        })
+        if include_shard_metadata:
+            shard_meta, warning = _load_optional_shard_metadata(shard_dir, rows, shard_id, sp)
+            if shard_meta is not None:
+                frame = pd.concat([frame.reset_index(drop=True), shard_meta.reset_index(drop=True)], axis=1)
+                metadata_loaded_shards.append({
+                    "shard_id": int(shard_id),
+                    "shard_path": str(sp),
+                    "columns": [str(c) for c in shard_meta.columns],
+                })
+            else:
+                metadata_warnings.append(warning)
+                metadata_missing_shards.append({
+                    "shard_id": int(shard_id),
+                    "shard_path": str(sp),
+                    "reason": warning.get("reason") if warning else "metadata_unavailable",
+                })
+        meta.append(frame)
         global_offset += rows
     if not feats:
         raise ValueError("No feature shards loaded")
-    return np.concatenate(feats, axis=0), pd.concat(meta, ignore_index=True), len(shard_paths)
+    meta_df = pd.concat(meta, ignore_index=True)
+    meta_df.attrs["shard_metadata"] = {
+        "include_shard_metadata": bool(include_shard_metadata),
+        "metadata_loaded_shards": metadata_loaded_shards,
+        "metadata_missing_shards": metadata_missing_shards,
+        "metadata_warnings": metadata_warnings,
+        "safe_metadata_columns": SHARD_METADATA_COLUMNS,
+    }
+    return np.concatenate(feats, axis=0), meta_df, len(shard_paths)
 
 
 def load_embeddings(shard_manifest: str, embedding_manifest: str, progress_enabled: bool = True):

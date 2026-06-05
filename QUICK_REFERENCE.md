@@ -2681,7 +2681,7 @@ python tools/stage6c_build_event_style_metrics.py \
   --overwrite
 ```
 
-C. 对 `scene_confounding` 生成 event style report：
+C. 对 `scene_confounding` 生成 event style report（默认 `--event_scope all`，同时报告 exposure 与 outcome）：
 
 ```bash
 python tools/stage6c_event_style_report.py \
@@ -2693,6 +2693,7 @@ python tools/stage6c_event_style_report.py \
   --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
   --event_style_metrics_path $DATA_ROOT/event_style_metrics_v1/event_style_metrics.csv \
   --output_dir outputs/stage6C_event_style/scene_confounding \
+  --event_scope all \
   --num_bootstrap 50 \
   --num_permutation 100 \
   --max_mmd_samples 2000 \
@@ -2702,7 +2703,7 @@ python tools/stage6c_event_style_report.py \
   --overwrite
 ```
 
-D. 对 `pseudo_agg_vs_cons` 生成 event style report：
+D. 对 `pseudo_agg_vs_cons` 生成 event style report（exposure-only）：
 
 ```bash
 python tools/stage6c_event_style_report.py \
@@ -2713,7 +2714,8 @@ python tools/stage6c_event_style_report.py \
   --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
   --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
   --event_style_metrics_path $DATA_ROOT/event_style_metrics_v1/event_style_metrics.csv \
-  --output_dir outputs/stage6C_event_style/pseudo_agg_vs_cons \
+  --output_dir outputs/stage6C_event_style/pseudo_agg_vs_cons_exposure_only \
+  --event_scope exposure \
   --num_bootstrap 50 \
   --num_permutation 100 \
   --max_mmd_samples 2000 \
@@ -2723,6 +2725,31 @@ python tools/stage6c_event_style_report.py \
   --overwrite
 ```
 
+
+E. 对 `pseudo_agg_vs_cons` 只报告 outcome bins，用于定位 lane-change / overtake / brake / hesitation / assertive / stop-go / lateral-unstable 等行为结果：
+
+```bash
+python tools/stage6c_event_style_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
+  --event_style_metrics_path $DATA_ROOT/event_style_metrics_v1/event_style_metrics.csv \
+  --output_dir outputs/stage6C_event_style/pseudo_agg_vs_cons_outcome_only \
+  --event_scope outcome \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+说明：`--event_scope` 的默认值是 `all`。如果传入 `--event_keys exposure_following,outcome_hard_brake` 这类显式列表，则 `--event_keys` 会覆盖 `--event_scope`。
+
 如只想做无进度条的日志运行，可在三个命令后追加：
 
 ```bash
@@ -2731,10 +2758,10 @@ python tools/stage6c_event_style_report.py \
 
 ### 2. 期望行为
 
-- `stage6c_build_dynamic_event_bins.py` 会读取 `shard_manifest.json` 指向的每个 shard 下 `interaction_feat_style.npy`，并用 `feature_schema.json` 做 alias resolution；输出 row-aligned 的 `dynamic_event_bins.csv/.npy`、schema、report、warnings。
+- `stage6c_build_dynamic_event_bins.py` 会读取 `shard_manifest.json` 指向的每个 shard 下 `interaction_feat_style.npy`，并用 `feature_schema.json` 做 alias resolution；输出 row-aligned 的 `dynamic_event_bins.csv/.npy`、schema、report、warnings；同时会尝试从 `metadata.csv`、`meta.csv`、`meta.npy` 透传安全 metadata 字段。
 - dynamic event bins 至少包含 `global_row`、`shard_id`、`local_row`、9 个 `exposure_*` bins、8 个 `outcome_*` bins、`event_quality_flag`、`available_feature_count`、`missing_feature_count`。
 - `stage6c_build_event_style_metrics.py` 会读取同一批 shard 和 `dynamic_event_bins.csv`，输出 row-aligned 的 `event_style_metrics.csv/.npy`、schema、report、warnings。
-- 如果某个代理特征缺失，bin 会写成 `unknown`，metric 会写成 `NaN`，并在 warnings JSON 中记录缺失 alias；脚本不会把缺失值静默填成 0。
+- 如果某个代理特征缺失，bin 会写成 `unknown`，metric 会写成 `NaN`，并在 warnings JSON 中记录缺失 alias；脚本不会把缺失值静默填成 0。分箱正类过少、比例过低/过高、全 unknown 会写入 `dynamic_event_bin_warnings.json`；metric 的 `valid_rate < 0.01` 会写入 `event_style_metric_warnings.json`。
 - `stage6c_event_style_report.py` 会读取 embedding manifest、Stage 6A A/B indices、dynamic bins 和 event style metrics，按 event bin 计算 event-level BDD、metric delta、top drift cases，并生成 markdown report card。
 - 该流程不会重新训练 Stage 5 embedding，不会重建 Stage 6A split，不会删除 Stage 6B 既有输出。
 
@@ -2745,12 +2772,13 @@ python tools/stage6c_event_style_report.py \
 - `exposure_*` 与 `outcome_*` 必须分开解释：exposure 可作为动态 matching/control 候选，outcome 只用于 report/localization。
 - `event_bdd_summary.csv` 必须包含 `event_key,event_value,n_A,n_B,bdd_mmd,ci95_low,ci95_high,p_value,effect_size,interpretation,warnings`。
 - `event_style_delta.csv` 必须包含 `event_key,event_value,metric_name,n_A_valid,n_B_valid,mean_A,mean_B,delta_B_minus_A,relative_delta_percent,direction_label,interpretation`。
-- `top_event_drift_cases.csv` 必须包含 `global_row,source_group,event_key,event_value,embedding_distance_to_opposite_centroid,dominant_style_metrics,shard_id,local_row`，如果可用则包含 `scenario_id`。
+- `top_event_drift_cases.csv` 必须包含 `global_row,source_group,event_key,event_value,embedding_distance_to_opposite_centroid,dominant_style_metrics,shard_id,local_row`，如果可用则包含 `scenario_id,target_agent_id,start,window_len,split`。
 - `event_report_card.md` 必须说明 embedding BDD 是统一行为分布测量层，event-specific features 是语义解释层，二者互补而不是互相替代。
 - 最低语法检查需通过：
 
 ```bash
 python -m py_compile \
+  tools/stage6c_common.py \
   tools/stage6c_build_dynamic_event_bins.py \
   tools/stage6c_build_event_style_metrics.py \
   tools/stage6c_event_style_report.py
