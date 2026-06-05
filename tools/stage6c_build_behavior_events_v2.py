@@ -12,79 +12,91 @@ from typing import Dict, List, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
-from tools.stage6c_common import iter_progress, read_json, resolve_path, robust_score, score_from_parts, write_json
+from tools.stage6c_common import iter_progress, read_json, resolve_path, write_json
 
 EGO = {"x": 0, "y": 1, "vx": 2, "vy": 3, "heading": 4, "speed": 5, "accel": 6, "yaw_rate": 7}
 NEI = {"valid": 0, "distance": 5, "closing_rate": 8, "thw": 10}
-PRIMARY_EVENTS = [
-    "following",
-    "lane_change",
-    "overtake",
-    "cutin_response",
-    "hesitation",
-    "yield_conflict",
-]
-SECONDARY_EVENTS = [
-    "free_cruising_stability",
-    "stop_and_go_low_speed_creep",
-    "risk_proximity",
-    "interaction_comfort",
-]
-ALL_EVENTS = PRIMARY_EVENTS + SECONDARY_EVENTS
+SLOTS = {0: "front", 1: "left_front", 2: "left_rear", 3: "right_front", 4: "right_rear"}
 META_COLUMNS = ["scenario_id", "target_agent_id", "start", "window_len", "split"]
+TASK_SPECS = {
+    "task_following": ("following", "not_following"),
+    "task_lead_brake_response": ("lead_brake_response", "no_lead_brake_response"),
+    "task_queue_approach": ("queue_approach", "no_queue_approach"),
+    "task_lane_change": ("lane_change", "no_lane_change"),
+    "task_cutin_response": ("cutin_response", "no_cutin_response"),
+    "task_overtake_opportunity": ("overtake_opportunity", "no_overtake_opportunity"),
+    "task_overtake_executed": ("overtake_executed", "no_overtake_executed"),
+    "task_hesitation": ("hesitation", "no_hesitation"),
+    "task_yield_conflict": ("yield_conflict", "no_yield_conflict"),
+}
 
 
-def finite(arr):
-    return np.asarray(arr, dtype=float)[np.isfinite(arr)]
+def finite_values(x) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    return arr[np.isfinite(arr)]
 
 
-def safe_mean(arr):
-    x = finite(arr)
-    return float(np.mean(x)) if x.size else np.nan
+def safe_mean(x) -> float:
+    v = finite_values(x)
+    return float(np.mean(v)) if v.size else np.nan
 
 
-def safe_min(arr):
-    x = finite(arr)
-    return float(np.min(x)) if x.size else np.nan
+def safe_min(x) -> float:
+    v = finite_values(x)
+    return float(np.min(v)) if v.size else np.nan
 
 
-def safe_max(arr):
-    x = finite(arr)
-    return float(np.max(x)) if x.size else np.nan
+def safe_max(x) -> float:
+    v = finite_values(x)
+    return float(np.max(v)) if v.size else np.nan
 
 
-def safe_p(arr, q):
-    x = finite(arr)
-    return float(np.percentile(x, q)) if x.size else np.nan
+def safe_percentile(x, q: float) -> float:
+    v = finite_values(x)
+    return float(np.percentile(v, q)) if v.size else np.nan
 
 
-def rms(arr):
-    x = finite(arr)
-    return float(np.sqrt(np.mean(np.square(x)))) if x.size else np.nan
+def rms(x) -> float:
+    v = finite_values(x)
+    return float(np.sqrt(np.mean(v * v))) if v.size else np.nan
+
+
+def safe_ratio(mask) -> float:
+    arr = np.asarray(mask)
+    return float(np.mean(arr)) if arr.size else np.nan
+
+
+def safe_div(num: float, den: float) -> float:
+    if not np.isfinite(num) or not np.isfinite(den) or abs(den) < 1e-9:
+        return np.nan
+    return float(num / den)
+
+
+def nanmean_list(values: Sequence[float]) -> float:
+    v = np.asarray(values, dtype=float)
+    return float(np.nanmean(v)) if np.isfinite(v).any() else np.nan
 
 
 def wrap_angle(a):
-    return (a + np.pi) % (2 * np.pi) - np.pi
+    return (np.asarray(a, dtype=float) + np.pi) % (2 * np.pi) - np.pi
 
 
-def count_sign_changes(arr, eps=1e-3):
-    x = np.asarray(arr, dtype=float)
-    x = x[np.isfinite(x)]
-    if x.size < 2:
+def count_sign_changes(x, eps: float = 1e-3) -> float:
+    v = finite_values(x)
+    if v.size < 2:
         return np.nan
-    signs = np.sign(np.where(np.abs(x) < eps, 0.0, x))
-    signs = signs[signs != 0]
-    if signs.size < 2:
+    s = np.sign(np.where(np.abs(v) < eps, 0.0, v))
+    s = s[s != 0]
+    if s.size < 2:
         return 0.0
-    return float(np.sum(signs[1:] != signs[:-1]))
+    return float(np.sum(s[1:] != s[:-1]))
 
 
-def contiguous_true_lengths(mask):
-    mask = np.asarray(mask, dtype=bool)
+def contiguous_true_lengths(mask) -> List[int]:
     lengths = []
     cur = 0
-    for v in mask:
-        if v:
+    for val in np.asarray(mask, dtype=bool):
+        if val:
             cur += 1
         elif cur:
             lengths.append(cur)
@@ -94,331 +106,371 @@ def contiguous_true_lengths(mask):
     return lengths
 
 
-def required_cols_ok(arr: np.ndarray, cols: Sequence[int]) -> bool:
-    return arr.ndim >= 2 and arr.shape[-1] > max(cols)
+def has_cols(arr: Optional[np.ndarray], cols: Sequence[int]) -> bool:
+    return arr is not None and arr.ndim >= 2 and arr.shape[-1] > max(cols)
 
 
-def neighbor_slot(neighbor_seq: Optional[np.ndarray], slot: int) -> Optional[np.ndarray]:
+def slot_array(neighbor_seq: Optional[np.ndarray], slot: int) -> Optional[np.ndarray]:
     if neighbor_seq is None or neighbor_seq.ndim != 3 or neighbor_seq.shape[0] <= slot:
         return None
     return np.asarray(neighbor_seq[slot], dtype=float)
 
 
-def valid_neighbor_values(slot_arr: Optional[np.ndarray], col: int) -> np.ndarray:
-    if slot_arr is None or not required_cols_ok(slot_arr, [NEI["valid"], col]):
+def neighbor_values(slot: Optional[np.ndarray], col: int) -> np.ndarray:
+    if not has_cols(slot, [NEI["valid"], col]):
         return np.asarray([], dtype=float)
-    valid = slot_arr[:, NEI["valid"]] > 0.5
-    vals = np.asarray(slot_arr[:, col], dtype=float)
-    return np.where(valid, vals, np.nan)
+    valid = np.asarray(slot[:, NEI["valid"]], dtype=float) > 0.5
+    values = np.asarray(slot[:, col], dtype=float)
+    return np.where(valid, values, np.nan)
 
 
-def valid_ratio(slot_arr: Optional[np.ndarray]) -> float:
-    if slot_arr is None or not required_cols_ok(slot_arr, [NEI["valid"]]):
+def valid_ratio(slot: Optional[np.ndarray]) -> float:
+    if not has_cols(slot, [NEI["valid"]]):
         return np.nan
-    return float(np.mean(slot_arr[:, NEI["valid"]] > 0.5))
+    return safe_ratio(np.asarray(slot[:, NEI["valid"]], dtype=float) > 0.5)
 
 
-def first_finite_index(arr):
-    ok = np.isfinite(arr)
-    idx = np.flatnonzero(ok)
+def first_index(mask) -> Optional[int]:
+    idx = np.flatnonzero(np.asarray(mask, dtype=bool))
     return int(idx[0]) if idx.size else None
 
 
-def status(value: Optional[bool]) -> str:
+def first_finite_index(x) -> Optional[int]:
+    return first_index(np.isfinite(np.asarray(x, dtype=float)))
+
+
+def label(value: Optional[bool], positive_label: str, negative_label: str) -> str:
     if value is None:
         return "unknown"
-    return "positive" if bool(value) else "negative"
+    return positive_label if bool(value) else negative_label
 
 
-def load_meta_frame(shard_dir: Path, rows: int, shard_id: int, warnings: List[Dict]) -> pd.DataFrame:
-    frame = pd.DataFrame(index=np.arange(rows))
-    meta_path = shard_dir / "meta.npy"
-    if meta_path.exists():
-        try:
-            arr = np.load(meta_path, allow_pickle=True)
-            if isinstance(arr, np.ndarray) and arr.dtype.names:
-                raw = pd.DataFrame(arr)
-            elif isinstance(arr, np.ndarray) and arr.shape == () and isinstance(arr.item(), dict):
-                raw = pd.DataFrame(arr.item())
-            elif isinstance(arr, np.ndarray) and arr.dtype == object:
-                vals = arr.tolist()
-                raw = pd.DataFrame(vals if isinstance(vals, list) else arr)
-            else:
-                raw = pd.DataFrame(arr)
-            if len(raw) == rows:
-                for c in META_COLUMNS:
-                    if c in raw.columns:
-                        frame[c] = raw[c].values
-            else:
-                warnings.append({"shard_id": shard_id, "path": str(meta_path), "warning": "meta_row_count_mismatch", "rows": rows, "meta_rows": int(len(raw))})
-        except Exception as exc:
-            warnings.append({"shard_id": shard_id, "path": str(meta_path), "warning": "meta_load_failed", "detail": str(exc)})
-    split_path = shard_dir / "split.npy"
-    if "split" not in frame.columns and split_path.exists():
-        split = np.load(split_path, allow_pickle=True)
-        if len(split) == rows:
-            frame["split"] = split.astype(str)
-        else:
-            warnings.append({"shard_id": shard_id, "path": str(split_path), "warning": "split_row_count_mismatch", "rows": rows, "split_rows": int(len(split))})
-    for c in META_COLUMNS:
-        if c not in frame.columns:
-            frame[c] = np.nan
-    return frame[META_COLUMNS]
+def prefixed(prefix: str, values: Dict[str, float]) -> Dict[str, float]:
+    return {f"{prefix}_{k}": v for k, v in values.items()}
 
 
-def load_optional_array(shard_dir: Path, name: str, rows: int, shard_id: int, warnings: List[Dict], mmap_mode="r"):
+def load_optional_array(shard_dir: Path, name: str, rows: int, shard_id: int, warnings: List[Dict]):
     path = shard_dir / name
     if not path.exists():
-        warnings.append({"shard_id": shard_id, "path": str(path), "warning": "optional_array_missing"})
+        warnings.append({"warning": "optional_array_missing", "shard_id": int(shard_id), "path": str(path)})
         return None
-    arr = np.load(path, mmap_mode=mmap_mode, allow_pickle=False)
+    arr = np.load(path, mmap_mode="r", allow_pickle=False)
     if arr.shape[0] != rows:
         raise ValueError(f"Row count mismatch in {path}: expected {rows}, got {arr.shape[0]}")
     return arr
 
 
-def derive_row_metrics(ego: np.ndarray, neighbor: Optional[np.ndarray], dt: float, args) -> Tuple[Dict[str, float], Dict[str, str]]:
-    if ego.ndim != 2 or ego.shape[0] < 2 or ego.shape[1] <= max(EGO.values()):
-        return {}, {event: "unknown" for event in ALL_EVENTS}
+def metadata_from_npy(path: Path) -> pd.DataFrame:
+    arr = np.load(path, allow_pickle=True)
+    if isinstance(arr, np.ndarray) and arr.dtype.names:
+        return pd.DataFrame(arr)
+    if isinstance(arr, np.ndarray) and arr.shape == () and isinstance(arr.item(), dict):
+        return pd.DataFrame(arr.item())
+    if isinstance(arr, np.ndarray) and arr.dtype == object:
+        vals = arr.tolist()
+        if isinstance(vals, list) and (not vals or isinstance(vals[0], dict)):
+            return pd.DataFrame(vals)
+    return pd.DataFrame(arr)
 
+
+def load_meta_frame(shard_dir: Path, rows: int, shard_id: int, warnings: List[Dict]) -> pd.DataFrame:
+    frame = pd.DataFrame(index=np.arange(rows))
+    for name in ["metadata.csv", "meta.csv", "meta.npy"]:
+        path = shard_dir / name
+        if not path.exists():
+            continue
+        try:
+            raw = pd.read_csv(path) if path.suffix == ".csv" else metadata_from_npy(path)
+        except Exception as exc:
+            warnings.append({"warning": "metadata_load_failed", "shard_id": int(shard_id), "path": str(path), "detail": str(exc)})
+            continue
+        if len(raw) != rows:
+            warnings.append({"warning": "metadata_row_count_mismatch", "shard_id": int(shard_id), "path": str(path), "rows": int(rows), "metadata_rows": int(len(raw))})
+            continue
+        for col in META_COLUMNS:
+            if col in raw.columns:
+                frame[col] = raw[col].values
+        break
+    for col in META_COLUMNS:
+        if col not in frame.columns:
+            frame[col] = np.nan
+    return frame[META_COLUMNS]
+
+
+def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_available: bool, args) -> Tuple[Dict[str, str], Dict[str, float], Dict[str, str]]:
+    strengths = {task: "strong" for task in TASK_SPECS}
+    if ego.ndim != 2 or ego.shape[0] < 2 or ego.shape[1] <= max(EGO.values()):
+        return ({task: "unknown" for task in TASK_SPECS}, {}, {task: "weak_proxy" for task in TASK_SPECS})
+
+    dt = max(float(args.dt), 1e-6)
+    x = np.asarray(ego[:, EGO["x"]], dtype=float)
+    y = np.asarray(ego[:, EGO["y"]], dtype=float)
+    vy = np.asarray(ego[:, EGO["vy"]], dtype=float)
+    heading = np.asarray(ego[:, EGO["heading"]], dtype=float)
     speed = np.asarray(ego[:, EGO["speed"]], dtype=float)
     accel = np.asarray(ego[:, EGO["accel"]], dtype=float)
     yaw_rate = np.asarray(ego[:, EGO["yaw_rate"]], dtype=float)
-    heading = np.asarray(ego[:, EGO["heading"]], dtype=float)
-    lateral_pos = np.asarray(ego[:, EGO["y"]], dtype=float)
-    lateral_speed = np.asarray(ego[:, EGO["vy"]], dtype=float)
-    jerk = np.diff(accel, prepend=accel[0]) / max(dt, 1e-6)
+    jerk = np.diff(accel, prepend=accel[0]) / dt
     curvature = yaw_rate / np.maximum(np.abs(speed), 1e-3)
-    lateral_accel = np.diff(lateral_speed, prepend=lateral_speed[0]) / max(dt, 1e-6)
-    speed_delta = speed[-1] - speed[0] if np.all(np.isfinite([speed[0], speed[-1]])) else np.nan
-
-    front = neighbor_slot(neighbor, 0)
-    lf = neighbor_slot(neighbor, 1)
-    lr = neighbor_slot(neighbor, 2)
-    rf = neighbor_slot(neighbor, 3)
-    rr = neighbor_slot(neighbor, 4)
-    front_dist = valid_neighbor_values(front, NEI["distance"])
-    front_thw = valid_neighbor_values(front, NEI["thw"])
-    front_closing = valid_neighbor_values(front, NEI["closing_rate"])
-    side_dists = [valid_neighbor_values(s, NEI["distance"]) for s in [lf, lr, rf, rr]]
-    rear_dists = [valid_neighbor_values(s, NEI["distance"]) for s in [lr, rr]]
-    side_closing = [valid_neighbor_values(s, NEI["closing_rate"]) for s in [lf, lr, rf, rr]]
-
-    front_valid_ratio = valid_ratio(front)
-    front_dist_valid_ratio = float(np.mean(np.isfinite(front_dist))) if front_dist.size else np.nan
-    thw_valid_ratio = float(np.mean(np.isfinite(front_thw))) if front_thw.size else np.nan
-    mean_speed = safe_mean(speed)
-    low_speed_ratio = float(np.mean(speed < args.low_speed_mps)) if np.all(np.isfinite(speed)) else np.nan
-    stopped_ratio = float(np.mean(speed < args.stop_speed_mps)) if np.all(np.isfinite(speed)) else np.nan
-
-    lane_change_mask = np.abs(lateral_pos - np.nanmedian(lateral_pos)) > args.lateral_displacement_m
-    lc_lengths = contiguous_true_lengths(lane_change_mask)
-    lane_change_duration = float(max(lc_lengths) * dt) if lc_lengths else np.nan
-    lane_change_count_proxy = float(np.sum(lane_change_mask[1:] & (~lane_change_mask[:-1]))) if lane_change_mask.size > 1 else 0.0
-    heading_change_total = float(np.nansum(np.abs(wrap_angle(np.diff(heading)))))
-    yaw_sign_change_count = count_sign_changes(yaw_rate, args.sign_change_eps)
-    lat_sign_change_count = count_sign_changes(lateral_speed, args.sign_change_eps)
-    lane_change_oscillation = np.nanmean([yaw_sign_change_count, lat_sign_change_count])
-
-    left_front_min_gap = safe_min(valid_neighbor_values(lf, NEI["distance"]))
-    left_rear_min_gap = safe_min(valid_neighbor_values(lr, NEI["distance"]))
-    right_front_min_gap = safe_min(valid_neighbor_values(rf, NEI["distance"]))
-    right_rear_min_gap = safe_min(valid_neighbor_values(rr, NEI["distance"]))
-    target_front_gap = safe_min([left_front_min_gap, right_front_min_gap])
-    target_rear_gap = safe_min([left_rear_min_gap, right_rear_min_gap])
-    side_min_gap = safe_min(np.concatenate([x[np.isfinite(x)] for x in side_dists]) if any(np.isfinite(x).any() for x in side_dists) else [])
-    rear_min_gap = safe_min(np.concatenate([x[np.isfinite(x)] for x in rear_dists]) if any(np.isfinite(x).any() for x in rear_dists) else [])
-    min_any_gap = safe_min([safe_min(front_dist), side_min_gap, rear_min_gap])
-    side_closing_p95 = safe_p(np.concatenate([x[np.isfinite(x)] for x in side_closing]) if any(np.isfinite(x).any() for x in side_closing) else [], 95)
-    front_gap_drop = np.nan
-    if np.isfinite(front_dist).sum() >= 2:
-        valid_fd = front_dist[np.isfinite(front_dist)]
-        front_gap_drop = float(valid_fd[0] - np.nanmin(valid_fd))
-
-    brake_idx = first_finite_index(np.where(accel < -args.brake_threshold_mps2, accel, np.nan))
-    front_first_idx = first_finite_index(front_dist)
-    reaction_delay = np.nan if brake_idx is None or front_first_idx is None or brake_idx < front_first_idx else float((brake_idx - front_first_idx) * dt)
-
-    lane_change_positive = (
-        lane_change_count_proxy > 0
-        or heading_change_total >= args.heading_change_rad
-        or safe_max(np.abs(lateral_pos - lateral_pos[0])) >= args.lateral_displacement_m
-        or rms(yaw_rate) >= args.yaw_rate_rms_threshold
-    )
-    front_present_known = np.isfinite(front_valid_ratio)
-    following_positive = None if not front_present_known else (
-        front_valid_ratio >= args.min_front_valid_ratio
-        and front_dist_valid_ratio >= args.min_front_valid_ratio
-        and thw_valid_ratio >= args.min_front_valid_ratio
-        and (not np.isfinite(mean_speed) or mean_speed >= args.low_speed_mps)
-    )
-    overtake_positive = None if not front_present_known else (
-        front_valid_ratio >= args.min_front_valid_ratio
-        and safe_mean(front_closing) > args.slower_front_closing_rate
-        and safe_min(front_dist) <= args.overtake_front_gap_m
-        and (np.isfinite(side_min_gap) and side_min_gap >= args.adjacent_available_gap_m)
-    )
-    cutin_positive = None if not front_present_known else (
-        (front_valid_ratio > 0 and front_valid_ratio < args.min_front_valid_ratio and np.isfinite(safe_min(front_dist)))
-        or (np.isfinite(front_gap_drop) and front_gap_drop >= args.cutin_gap_drop_m and safe_min(front_dist) <= args.cutin_max_gap_m)
-    )
-    hesitation_positive = (
-        yaw_sign_change_count >= args.hesitation_sign_changes
-        or lat_sign_change_count >= args.hesitation_sign_changes
-        or (np.isfinite(lane_change_duration) and lane_change_duration >= args.long_lane_change_s)
-        or (lane_change_positive and safe_max(np.abs(lateral_pos - lateral_pos[0])) < args.lane_change_completion_m)
-    )
-    conflict_positive = (
-        (np.isfinite(min_any_gap) and min_any_gap <= args.conflict_gap_m)
-        or (np.isfinite(side_closing_p95) and side_closing_p95 >= args.side_closing_threshold)
-    )
-    free_cruise_positive = None if not front_present_known else (front_valid_ratio < 0.2 and not lane_change_positive and mean_speed >= args.low_speed_mps)
-    stop_go_positive = np.isfinite(low_speed_ratio) and low_speed_ratio >= args.low_speed_ratio
-    risk_positive = np.isfinite(min_any_gap) and min_any_gap <= args.risk_gap_m
-    comfort_positive = (rms(jerk) <= args.comfort_rms_jerk and rms(yaw_rate) <= args.comfort_rms_yaw_rate)
-
-    peak_decel = -safe_min(accel) if np.isfinite(safe_min(accel)) else np.nan
+    lateral_accel = np.diff(vy, prepend=vy[0]) / dt
+    speed_delta = speed[-1] - speed[0] if np.isfinite(speed[[0, -1]]).all() else np.nan
+    peak_decel = max(0.0, -safe_min(accel)) if np.isfinite(safe_min(accel)) else np.nan
     peak_accel = safe_max(accel)
-    late_brake_score = peak_decel / max(safe_min(front_thw), 1e-3) if np.isfinite(peak_decel) and np.isfinite(safe_min(front_thw)) else np.nan
-    gap_pressure = np.nanmean([
-        1.0 / max(safe_min(front_dist), 1e-3) if np.isfinite(safe_min(front_dist)) else np.nan,
-        1.0 / max(side_min_gap, 1e-3) if np.isfinite(side_min_gap) else np.nan,
-        1.0 / max(rear_min_gap, 1e-3) if np.isfinite(rear_min_gap) else np.nan,
-    ])
 
-    metrics = {
+    front = slot_array(neighbor, 0)
+    lf = slot_array(neighbor, 1)
+    lr = slot_array(neighbor, 2)
+    rf = slot_array(neighbor, 3)
+    rr = slot_array(neighbor, 4)
+    front_dist = neighbor_values(front, NEI["distance"])
+    front_thw = neighbor_values(front, NEI["thw"])
+    front_closing = neighbor_values(front, NEI["closing_rate"])
+    front_valid = valid_ratio(front)
+    front_dist_valid = safe_ratio(np.isfinite(front_dist)) if front_dist.size else np.nan
+    front_thw_valid = safe_ratio(np.isfinite(front_thw)) if front_thw.size else np.nan
+    front_known = np.isfinite(front_valid)
+
+    side_slots = [lf, lr, rf, rr]
+    side_dist_arrays = [neighbor_values(s, NEI["distance"]) for s in side_slots]
+    side_closing_arrays = [neighbor_values(s, NEI["closing_rate"]) for s in side_slots]
+    side_dist_values = np.concatenate([finite_values(v) for v in side_dist_arrays]) if any(finite_values(v).size for v in side_dist_arrays) else np.asarray([], dtype=float)
+    side_closing_values = np.concatenate([finite_values(v) for v in side_closing_arrays]) if any(finite_values(v).size for v in side_closing_arrays) else np.asarray([], dtype=float)
+    target_front_gap = safe_min([safe_min(neighbor_values(lf, NEI["distance"])), safe_min(neighbor_values(rf, NEI["distance"]))])
+    target_rear_gap = safe_min([safe_min(neighbor_values(lr, NEI["distance"])), safe_min(neighbor_values(rr, NEI["distance"]))])
+    side_min_gap = safe_min(side_dist_values)
+    rear_min_gap = safe_min(np.concatenate([finite_values(neighbor_values(lr, NEI["distance"])), finite_values(neighbor_values(rr, NEI["distance"]))]))
+    any_min_gap = safe_min([safe_min(front_dist), side_min_gap, rear_min_gap])
+    gap_pressure = safe_div(1.0, any_min_gap)
+    mean_speed = safe_mean(speed)
+
+    # Lateral / maneuver proxies from raw ego sequence.
+    lateral_range = safe_max(y) - safe_min(y) if np.isfinite([safe_max(y), safe_min(y)]).all() else np.nan
+    lateral_from_start = np.abs(y - y[0]) if np.isfinite(y[0]) else np.full_like(y, np.nan)
+    lc_mask = lateral_from_start >= args.lateral_displacement_m
+    lc_lengths = contiguous_true_lengths(lc_mask)
+    lc_duration = float(max(lc_lengths) * dt) if lc_lengths else np.nan
+    heading_change_total = float(np.nansum(np.abs(wrap_angle(np.diff(heading))))) if heading.size > 1 else np.nan
+    yaw_sign_changes = count_sign_changes(yaw_rate, args.sign_change_eps)
+    lat_sign_changes = count_sign_changes(vy, args.sign_change_eps)
+    lc_oscillation = nanmean_list([yaw_sign_changes, lat_sign_changes])
+    lane_change_positive = bool(
+        (np.isfinite(lateral_range) and lateral_range >= args.lateral_displacement_m)
+        or (np.isfinite(heading_change_total) and heading_change_total >= args.heading_change_rad)
+        or (np.isfinite(rms(yaw_rate)) and rms(yaw_rate) >= args.yaw_rate_rms_threshold)
+        or (np.isfinite(safe_max(np.abs(vy))) and safe_max(np.abs(vy)) >= args.lateral_speed_threshold)
+    )
+
+    following_positive = None
+    if front_known:
+        following_positive = bool(
+            front_valid >= args.min_valid_front_ratio
+            and front_dist_valid >= args.min_valid_front_ratio
+            and front_thw_valid >= args.min_valid_front_ratio
+            and (not np.isfinite(mean_speed) or mean_speed >= args.low_speed_threshold)
+        )
+
+    lead_decel_proxy = np.diff(front_closing, prepend=front_closing[0]) / dt if front_closing.size else np.asarray([], dtype=float)
+    lead_decel_mask = np.isfinite(lead_decel_proxy) & (lead_decel_proxy <= args.lead_decel_threshold)
+    lead_idx = first_index(lead_decel_mask)
+    ego_brake_mask = np.isfinite(accel) & (accel <= args.ego_brake_threshold)
+    ego_brake_idx = first_index(ego_brake_mask)
+    lead_response_positive = None
+    if front_known:
+        strengths["task_lead_brake_response"] = "proxy"
+        lead_response_positive = bool(front_valid >= args.min_valid_front_ratio and front_dist_valid >= args.min_valid_front_ratio and lead_idx is not None)
+    reaction_delay = np.nan
+    if lead_idx is not None and ego_brake_idx is not None and ego_brake_idx >= lead_idx:
+        reaction_delay = float((ego_brake_idx - lead_idx) * dt)
+
+    low_front = np.isfinite(front_closing) & (front_closing > args.slower_front_closing_rate)
+    queue_positive = None
+    if front_known:
+        strengths["task_queue_approach"] = "proxy"
+        queue_positive = bool(
+            front_valid >= args.min_valid_front_ratio
+            and safe_min(front_dist) <= args.queue_front_gap_m
+            and safe_mean(speed) >= args.low_speed_threshold
+            and (safe_percentile(front_thw, 25) <= args.queue_thw_threshold or safe_ratio(low_front) >= 0.2)
+        )
+
+    front_valid_bool = np.isfinite(front_dist)
+    gap_drop = np.nan
+    if np.sum(front_valid_bool) >= 2:
+        vals = front_dist[front_valid_bool]
+        gap_drop = float(vals[0] - np.nanmin(vals))
+    front_appears_late = bool(front_valid_bool.any() and not front_valid_bool[0] and np.nanmin(front_dist) <= args.cutin_max_gap_m)
+    if not slot_ids_available:
+        strengths["task_cutin_response"] = "weak_proxy"
+    cutin_positive = None
+    if front_known:
+        cutin_positive = bool(front_appears_late or (np.isfinite(gap_drop) and gap_drop >= args.cutin_gap_drop_m and safe_min(front_dist) <= args.cutin_max_gap_m))
+    cutin_idx = first_finite_index(front_dist) if front_appears_late else (int(np.nanargmin(front_dist)) if np.isfinite(front_dist).any() and np.isfinite(gap_drop) and gap_drop >= args.cutin_gap_drop_m else None)
+    cutin_delay = np.nan
+    if cutin_idx is not None and ego_brake_idx is not None and ego_brake_idx >= cutin_idx:
+        cutin_delay = float((ego_brake_idx - cutin_idx) * dt)
+
+    adjacent_available = np.isfinite(side_min_gap) and side_min_gap >= args.adjacent_available_gap_m
+    overtake_opp = None
+    if front_known:
+        strengths["task_overtake_opportunity"] = "proxy"
+        overtake_opp = bool(
+            front_valid >= args.min_valid_front_ratio
+            and safe_min(front_dist) <= args.overtake_front_gap_m
+            and safe_mean(front_closing) > args.slower_front_closing_rate
+            and adjacent_available
+        )
+    overtake_exec = None if overtake_opp is None else bool(overtake_opp and lane_change_positive and (np.isfinite(speed_delta) and speed_delta > 0 or np.isfinite(peak_accel) and peak_accel > 0))
+    strengths["task_overtake_executed"] = "proxy"
+    overtake_start = first_index(lc_mask | (accel > max(0.2, args.ego_brake_threshold * -0.2)))
+
+    hesitation_positive = bool(
+        (np.isfinite(yaw_sign_changes) and yaw_sign_changes >= args.hesitation_sign_changes)
+        or (np.isfinite(lat_sign_changes) and lat_sign_changes >= args.hesitation_sign_changes)
+        or (np.isfinite(lc_duration) and lc_duration >= args.long_lane_change_s)
+        or (lane_change_positive and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m)
+    )
+
+    side_closing_p95 = safe_percentile(side_closing_values, 95)
+    conflict_positive = None
+    if neighbor is not None:
+        conflict_positive = bool(
+            (np.isfinite(any_min_gap) and any_min_gap <= args.conflict_gap_m)
+            or (np.isfinite(side_closing_p95) and side_closing_p95 >= args.side_closing_threshold and np.isfinite(side_min_gap) and side_min_gap <= args.conflict_side_gap_m)
+        )
+    else:
+        strengths["task_yield_conflict"] = "weak_proxy"
+
+    def after(mask_start: Optional[int], values) -> np.ndarray:
+        arr = np.asarray(values, dtype=float)
+        return arr[mask_start:] if mask_start is not None else np.asarray([], dtype=float)
+
+    metrics: Dict[str, float] = {}
+    metrics.update(prefixed("following", {
         "mean_thw": safe_mean(front_thw),
         "min_thw": safe_min(front_thw),
         "mean_front_distance": safe_mean(front_dist),
         "min_front_distance": safe_min(front_dist),
         "front_closing_rate_mean": safe_mean(front_closing),
-        "front_closing_rate_p95": safe_p(front_closing, 95),
+        "front_closing_rate_p95": safe_percentile(front_closing, 95),
         "peak_decel": peak_decel,
         "rms_jerk": rms(jerk),
         "max_abs_jerk": safe_max(np.abs(jerk)),
-        "late_brake_score": late_brake_score,
-        "following_aggressiveness_score": np.nanmean([1.0 / max(safe_mean(front_thw), 1e-3) if np.isfinite(safe_mean(front_thw)) else np.nan, peak_decel, rms(jerk)]),
+        "late_brake_score": nanmean_list([safe_div(peak_decel, safe_min(front_thw)), reaction_delay]),
+        "aggressiveness_score": nanmean_list([safe_div(1.0, safe_mean(front_thw)), safe_div(1.0, safe_mean(front_dist)), peak_decel, rms(jerk)]),
+    }))
+    metrics.update(prefixed("lead_brake", {
+        "front_decel_start_time": float(lead_idx * dt) if lead_idx is not None else np.nan,
+        "ego_brake_start_time": float(ego_brake_idx * dt) if ego_brake_idx is not None else np.nan,
+        "reaction_delay": reaction_delay,
+        "min_ttc_after_lead_brake": safe_min(after(lead_idx, front_thw)),
+        "min_thw_after_lead_brake": safe_min(after(lead_idx, front_thw)),
+        "peak_decel_after_lead_brake": max(0.0, -safe_min(after(lead_idx, accel))) if lead_idx is not None else np.nan,
+        "max_jerk_after_lead_brake": safe_max(np.abs(after(lead_idx, jerk))),
+        "speed_drop_after_lead_brake": max(0.0, speed[lead_idx] - speed[-1]) if lead_idx is not None and np.isfinite(speed[[lead_idx, -1]]).all() else np.nan,
+        "late_response_score": nanmean_list([reaction_delay, safe_div(1.0, safe_min(after(lead_idx, front_thw)))]),
+    }))
+    metrics.update(prefixed("queue", {
+        "distance_when_start_decel": front_dist[ego_brake_idx] if ego_brake_idx is not None and ego_brake_idx < len(front_dist) else np.nan,
+        "time_to_stop": float(first_index(speed <= args.front_speed_low_threshold) * dt) if first_index(speed <= args.front_speed_low_threshold) is not None else np.nan,
+        "final_front_gap": front_dist[np.flatnonzero(np.isfinite(front_dist))[-1]] if np.isfinite(front_dist).any() else np.nan,
+        "peak_decel": peak_decel,
+        "rms_jerk": rms(jerk),
+        "stop_smoothness_score": nanmean_list([-peak_decel if np.isfinite(peak_decel) else np.nan, -rms(jerk) if np.isfinite(rms(jerk)) else np.nan]),
+        "creep_after_stop_score": safe_mean(speed[speed <= args.front_speed_low_threshold]) if np.isfinite(speed).any() else np.nan,
+    }))
+    metrics.update(prefixed("lc", {
         "rms_yaw_rate": rms(yaw_rate),
         "rms_curvature": rms(curvature),
         "heading_change_total": heading_change_total,
-        "max_lateral_speed": safe_max(np.abs(lateral_speed)),
+        "max_lateral_speed": safe_max(np.abs(vy)),
         "rms_lateral_accel": rms(lateral_accel),
-        "lane_change_duration": lane_change_duration,
-        "lane_change_oscillation_score": lane_change_oscillation,
-        "target_front_min_gap_during_lane_change": target_front_gap,
-        "target_rear_min_gap_during_lane_change": target_rear_gap,
-        "lane_change_sharpness_score": np.nanmean([rms(yaw_rate), rms(curvature), rms(lateral_accel)]),
-        "gap_acceptance_score": np.nanmean([1.0 / max(target_front_gap, 1e-3) if np.isfinite(target_front_gap) else np.nan, 1.0 / max(target_rear_gap, 1e-3) if np.isfinite(target_rear_gap) else np.nan]),
-        "overtake_opportunity_score": np.nanmean([safe_mean(front_closing), 1.0 / max(safe_min(front_dist), 1e-3) if np.isfinite(safe_min(front_dist)) else np.nan, mean_speed]),
-        "overtake_execution_score": np.nanmean([float(lane_change_positive), max(speed_delta, 0.0) if np.isfinite(speed_delta) else np.nan, max(peak_accel, 0.0) if np.isfinite(peak_accel) else np.nan]),
-        "time_to_initiate_overtake": lane_change_duration if overtake_positive and lane_change_positive else np.nan,
-        "peak_accel_during_overtake": peak_accel if overtake_positive else np.nan,
-        "peak_decel_during_overtake": peak_decel if overtake_positive else np.nan,
-        "jerk_during_overtake": rms(jerk) if overtake_positive else np.nan,
-        "min_front_gap_before_overtake": safe_min(front_dist) if overtake_positive else np.nan,
+        "duration": lc_duration,
+        "oscillation_score": lc_oscillation,
+        "target_front_gap_min": target_front_gap,
+        "target_rear_gap_min": target_rear_gap,
+        "gap_acceptance_score": nanmean_list([safe_div(1.0, target_front_gap), safe_div(1.0, target_rear_gap)]),
+        "sharpness_score": nanmean_list([rms(yaw_rate), rms(curvature), rms(lateral_accel)]),
+    }))
+    metrics.update(prefixed("cutin", {
+        "gap_initial": front_dist[cutin_idx] if cutin_idx is not None and cutin_idx < len(front_dist) else np.nan,
+        "gap_min": safe_min(front_dist) if cutin_positive else np.nan,
+        "min_ttc": safe_min(front_thw) if cutin_positive else np.nan,
+        "reaction_delay_to_brake": cutin_delay,
+        "peak_decel_after_cutin": max(0.0, -safe_min(after(cutin_idx, accel))) if cutin_idx is not None else np.nan,
+        "jerk_after_cutin": rms(after(cutin_idx, jerk)),
+        "speed_drop_after_cutin": max(0.0, speed[cutin_idx] - speed[-1]) if cutin_idx is not None and np.isfinite(speed[[cutin_idx, -1]]).all() else np.nan,
+        "yielding_response_score": nanmean_list([max(0.0, -safe_min(after(cutin_idx, accel))) if cutin_idx is not None else np.nan, max(0.0, -speed_delta) if np.isfinite(speed_delta) else np.nan]),
+        "late_response_score": cutin_delay,
+    }))
+    metrics.update(prefixed("overtake", {
+        "opportunity_score": nanmean_list([safe_mean(front_closing), safe_div(1.0, safe_min(front_dist)), float(adjacent_available) if np.isfinite(side_min_gap) else np.nan]),
+        "execution_score": nanmean_list([float(lane_change_positive), max(0.0, speed_delta) if np.isfinite(speed_delta) else np.nan, max(0.0, peak_accel) if np.isfinite(peak_accel) else np.nan]),
+        "execution_rate_proxy": float(overtake_exec) if overtake_exec is not None else np.nan,
+        "time_to_initiate": float(overtake_start * dt) if overtake_opp and overtake_start is not None else np.nan,
+        "peak_accel": peak_accel if overtake_opp else np.nan,
+        "peak_decel": peak_decel if overtake_opp else np.nan,
+        "max_abs_jerk": safe_max(np.abs(jerk)) if overtake_opp else np.nan,
+        "min_front_gap_before": safe_min(front_dist) if overtake_opp else np.nan,
         "target_lane_front_gap": target_front_gap,
         "target_lane_rear_gap": target_rear_gap,
-        "cutin_gap_initial": front_dist[front_first_idx] if front_first_idx is not None else np.nan,
-        "cutin_gap_min": safe_min(front_dist) if cutin_positive else np.nan,
-        "cutin_min_ttc": safe_min(front_thw) if cutin_positive else np.nan,
-        "reaction_delay_to_brake": reaction_delay if cutin_positive else np.nan,
-        "peak_decel_after_cutin": peak_decel if cutin_positive else np.nan,
-        "jerk_after_cutin": rms(jerk) if cutin_positive else np.nan,
-        "speed_drop_after_cutin": -min(speed_delta, 0.0) if cutin_positive and np.isfinite(speed_delta) else np.nan,
-        "yielding_response_score": np.nanmean([peak_decel, -speed_delta if np.isfinite(speed_delta) else np.nan]) if cutin_positive else np.nan,
-        "late_response_score": reaction_delay if cutin_positive else np.nan,
-        "hesitation_score": np.nanmean([yaw_sign_change_count, lat_sign_change_count, lane_change_duration]),
-        "yaw_sign_change_count": yaw_sign_change_count,
-        "lateral_velocity_sign_change_count": lat_sign_change_count,
-        "abort_like_score": float(lane_change_positive and safe_max(np.abs(lateral_pos - lateral_pos[0])) < args.lane_change_completion_m),
-        "speed_drop_during_hesitation": -min(speed_delta, 0.0) if hesitation_positive and np.isfinite(speed_delta) else np.nan,
-        "yielding_score": np.nanmean([peak_decel, -speed_delta if np.isfinite(speed_delta) else np.nan]),
-        "assertiveness_score": np.nanmean([max(speed_delta, 0.0) if np.isfinite(speed_delta) else np.nan, max(peak_accel, 0.0) if np.isfinite(peak_accel) else np.nan, -gap_pressure if np.isfinite(gap_pressure) else np.nan]),
+    }))
+    metrics.update(prefixed("hesitation", {
+        "score": nanmean_list([yaw_sign_changes, lat_sign_changes, lc_oscillation, lc_duration]),
+        "lc_duration": lc_duration,
+        "yaw_sign_change_count": yaw_sign_changes,
+        "lateral_velocity_sign_change_count": lat_sign_changes,
+        "lc_oscillation_score": lc_oscillation,
+        "abort_like_score": float(lane_change_positive and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m),
+        "speed_drop": max(0.0, -speed_delta) if np.isfinite(speed_delta) else np.nan,
+    }))
+    metrics.update({
+        "yield_conflict_score": nanmean_list([gap_pressure, side_closing_p95, peak_accel if np.isfinite(peak_accel) else np.nan]),
+        "yielding_score": nanmean_list([peak_decel, max(0.0, -speed_delta) if np.isfinite(speed_delta) else np.nan]),
+        "assertiveness_score": nanmean_list([max(0.0, speed_delta) if np.isfinite(speed_delta) else np.nan, max(0.0, peak_accel) if np.isfinite(peak_accel) else np.nan, safe_div(1.0, any_min_gap)]),
         "gap_pressure_score": gap_pressure,
         "conflict_accel_score": peak_accel if conflict_positive else np.nan,
-        "small_gap_speed_maintain_score": mean_speed if conflict_positive and np.isfinite(mean_speed) else np.nan,
-        "rear_pressure_response": np.nanmean([safe_p(valid_neighbor_values(lr, NEI["closing_rate"]), 95), safe_p(valid_neighbor_values(rr, NEI["closing_rate"]), 95)]),
-        "courtesy_score": np.nanmean([peak_decel, -speed_delta if np.isfinite(speed_delta) else np.nan, -gap_pressure if np.isfinite(gap_pressure) else np.nan]),
-        "cruise_speed_std": float(np.nanstd(speed)),
-        "cruise_yaw_rate_rms": rms(yaw_rate),
-        "cruise_rms_jerk": rms(jerk),
-        "stop_go_low_speed_ratio": low_speed_ratio,
-        "stop_go_stopped_ratio": stopped_ratio,
-        "risk_min_any_gap": min_any_gap,
-        "risk_min_ttc": safe_min(front_thw),
-        "interaction_comfort_rms_jerk": rms(jerk),
-        "interaction_comfort_rms_yaw_rate": rms(yaw_rate),
+        "small_gap_speed_maintain_score": mean_speed if conflict_positive else np.nan,
+        "rear_pressure_response_score": safe_percentile(np.concatenate([finite_values(neighbor_values(lr, NEI["closing_rate"])), finite_values(neighbor_values(rr, NEI["closing_rate"]))]) if (finite_values(neighbor_values(lr, NEI["closing_rate"])).size or finite_values(neighbor_values(rr, NEI["closing_rate"])).size) else [], 95),
+        "courtesy_score": nanmean_list([peak_decel, max(0.0, -speed_delta) if np.isfinite(speed_delta) else np.nan, -gap_pressure if np.isfinite(gap_pressure) else np.nan]),
+    })
+
+    task_values = {
+        "task_following": following_positive,
+        "task_lead_brake_response": lead_response_positive,
+        "task_queue_approach": queue_positive,
+        "task_lane_change": lane_change_positive,
+        "task_cutin_response": cutin_positive,
+        "task_overtake_opportunity": overtake_opp,
+        "task_overtake_executed": overtake_exec,
+        "task_hesitation": hesitation_positive,
+        "task_yield_conflict": conflict_positive,
     }
-    events = {
-        "following": status(following_positive),
-        "lane_change": status(lane_change_positive),
-        "overtake": status(overtake_positive),
-        "cutin_response": status(cutin_positive),
-        "hesitation": status(hesitation_positive),
-        "yield_conflict": status(conflict_positive),
-        "free_cruising_stability": status(free_cruise_positive),
-        "stop_and_go_low_speed_creep": status(stop_go_positive),
-        "risk_proximity": status(risk_positive),
-        "interaction_comfort": status(comfort_positive),
-    }
-    return metrics, events
+    events = {task: label(task_values[task], *TASK_SPECS[task]) for task in TASK_SPECS}
+    return events, metrics, strengths
 
 
-def finalize_scores(metrics_df: pd.DataFrame) -> pd.DataFrame:
-    n = len(metrics_df)
-    derived = {
-        "following_aggressiveness_score": score_from_parts([
-            robust_score(metrics_df.get("mean_thw"), False),
-            robust_score(metrics_df.get("mean_front_distance"), False),
-            robust_score(metrics_df.get("peak_decel"), True),
-            robust_score(metrics_df.get("rms_jerk"), True),
-        ], n),
-        "lane_change_sharpness_score": score_from_parts([
-            robust_score(metrics_df.get("rms_yaw_rate"), True),
-            robust_score(metrics_df.get("rms_curvature"), True),
-            robust_score(metrics_df.get("rms_lateral_accel"), True),
-        ], n),
-        "gap_acceptance_score": score_from_parts([
-            robust_score(metrics_df.get("target_front_min_gap_during_lane_change"), False),
-            robust_score(metrics_df.get("target_rear_min_gap_during_lane_change"), False),
-        ], n),
-        "hesitation_score": score_from_parts([
-            robust_score(metrics_df.get("lane_change_duration"), True),
-            robust_score(metrics_df.get("yaw_sign_change_count"), True),
-            robust_score(metrics_df.get("lateral_velocity_sign_change_count"), True),
-        ], n),
-        "gap_pressure_score": score_from_parts([
-            robust_score(metrics_df.get("min_front_distance"), False),
-            robust_score(metrics_df.get("target_front_min_gap_during_lane_change"), False),
-            robust_score(metrics_df.get("target_rear_min_gap_during_lane_change"), False),
-            robust_score(metrics_df.get("risk_min_any_gap"), False),
-        ], n),
-    }
-    for name, values in derived.items():
-        if values is not None:
-            metrics_df[name] = values
-    return metrics_df
-
-
-def event_diagnostics(events_df: pd.DataFrame) -> List[Dict]:
+def event_diagnostics(events_df: pd.DataFrame, min_ratio: float, max_ratio: float) -> List[Dict]:
     rows = []
-    for event in ALL_EVENTS:
-        vals = events_df[event].astype(str)
-        n = len(vals)
-        pos = int((vals == "positive").sum())
-        neg = int((vals == "negative").sum())
+    n = len(events_df)
+    for task, (pos_label, neg_label) in TASK_SPECS.items():
+        vals = events_df[task].astype(str) if task in events_df else pd.Series(["unknown"] * n)
+        pos = int((vals == pos_label).sum())
+        neg = int((vals == neg_label).sum())
         unk = int((vals == "unknown").sum())
-        known = pos + neg
-        positive_ratio = float(pos / known) if known else np.nan
-        unknown_ratio = float(unk / n) if n else np.nan
+        denom = max(pos + neg, 1)
+        pos_ratio = float(pos / denom) if (pos + neg) else 0.0
+        unknown_ratio = float(unk / max(n, 1))
+        validity = "all_unknown" if unk == n else ("degenerate" if pos_ratio < min_ratio or pos_ratio > max_ratio else "valid")
         rows.append({
-            "event": event,
-            "n_positive": pos,
-            "n_negative": neg,
-            "n_unknown": unk,
-            "positive_ratio": positive_ratio,
+            "task_key": task,
+            "positive_label": pos_label,
+            "negative_label": neg_label,
+            "positive_count": pos,
+            "negative_count": neg,
+            "unknown_count": unk,
+            "positive_ratio": pos_ratio,
             "unknown_ratio": unknown_ratio,
-            "degenerate": bool(np.isfinite(positive_ratio) and (positive_ratio < 0.01 or positive_ratio > 0.95)),
+            "event_validity": validity,
         })
     return rows
 
@@ -429,63 +481,61 @@ def metric_diagnostics(metrics_df: pd.DataFrame, meta_cols: Sequence[str]) -> Li
     for col in metrics_df.columns:
         if col in meta_cols:
             continue
-        arr = pd.to_numeric(metrics_df[col], errors="coerce").to_numpy(dtype=float)
-        ok = np.isfinite(arr)
-        vals = arr[ok]
-        rec = {"metric": col, "valid_count": int(ok.sum()), "valid_rate": float(ok.sum() / n) if n else np.nan}
-        if vals.size:
-            rec.update({
-                "p01": float(np.percentile(vals, 1)),
-                "p50": float(np.percentile(vals, 50)),
-                "p99": float(np.percentile(vals, 99)),
-                "min": float(np.min(vals)),
-                "max": float(np.max(vals)),
+        vals = pd.to_numeric(metrics_df[col], errors="coerce").to_numpy(dtype=float)
+        ok = np.isfinite(vals)
+        if ok.any():
+            finite = vals[ok]
+            rows.append({
+                "metric": col,
+                "valid_count": int(ok.sum()),
+                "valid_rate": float(ok.mean()),
+                "min": float(np.min(finite)),
+                "p01": float(np.percentile(finite, 1)),
+                "p50": float(np.percentile(finite, 50)),
+                "p99": float(np.percentile(finite, 99)),
+                "max": float(np.max(finite)),
             })
         else:
-            rec.update({"p01": np.nan, "p50": np.nan, "p99": np.nan, "min": np.nan, "max": np.nan})
-        rows.append(rec)
+            rows.append({"metric": col, "valid_count": 0, "valid_rate": 0.0, "min": np.nan, "p01": np.nan, "p50": np.nan, "p99": np.nan, "max": np.nan})
     return rows
 
 
-def schema_obj(args, event_diag, metric_diag, warnings):
-    return {
-        "version": "stage6c_behavior_event_taxonomy_v2",
-        "principle": "Event bin is a task slice/comparable driving context; BDD is computed within each task; style metrics explain drift direction.",
-        "event_status_values": ["positive", "negative", "unknown"],
-        "primary_events": PRIMARY_EVENTS,
-        "secondary_events": SECONDARY_EVENTS,
-        "event_diagnostics": event_diag,
-        "metric_diagnostics": metric_diag,
-        "thresholds": vars(args),
-        "raw_array_layout_assumptions": {"ego_seq": EGO, "neighbor_seq_slots": {"0": "front", "1": "left_front", "2": "left_rear", "3": "right_front", "4": "right_rear"}, "neighbor_seq": NEI},
-        "warnings_count": len(warnings),
-    }
-
-
-def write_report(path: Path, total_rows: int, total_shards: int, event_diag, metric_diag, warnings):
-    deg = [d for d in event_diag if d["degenerate"]]
+def write_report(path: Path, total_rows: int, shard_count: int, event_diag: List[Dict], metric_diag: List[Dict], warnings: List[Dict]):
     lines = [
-        "# Stage 6C Behavior-Event Taxonomy v2 Report",
+        "# Stage 6C v2 behavior-event build report",
         "",
-        "本报告强调 task-conditioned BDD：event bin 是可比较驾驶任务切片，BDD 在任务内部计算，手工指标只用于解释 drift 方向，不作为主要评价对象。",
+        "Stage 6C v2 is **Task-conditioned behavior-event BDD**. This builder creates task slices and task-specific style metrics; BDD is computed by `stage6c_task_conditioned_bdd_report.py`.",
         "",
         f"- total_rows: {total_rows}",
-        f"- total_shards: {total_shards}",
-        f"- warnings: {len(warnings)}",
+        f"- shard_count: {shard_count}",
+        "- missing metrics are stored as NaN, never as silent zero fills.",
         "",
-        "## Event validity diagnostics",
+        "## Task diagnostics",
         "",
-        "| event | n_positive | n_negative | n_unknown | positive_ratio | unknown_ratio | degenerate |",
-        "|---|---:|---:|---:|---:|---:|---|",
+        "| task_key | positive_label | negative_label | positive_count | negative_count | unknown_count | positive_ratio | unknown_ratio | event_validity |",
+        "|---|---|---|---:|---:|---:|---:|---:|---|",
     ]
-    for d in event_diag:
-        lines.append(f"| {d['event']} | {d['n_positive']} | {d['n_negative']} | {d['n_unknown']} | {d['positive_ratio']:.6g} | {d['unknown_ratio']:.6g} | {d['degenerate']} |")
-    lines.extend(["", "## Metric diagnostics", "", "| metric | valid_count | valid_rate | p01 | p50 | p99 | min | max |", "|---|---:|---:|---:|---:|---:|---:|---:|"])
-    for d in metric_diag:
-        lines.append(f"| {d['metric']} | {d['valid_count']} | {d['valid_rate']:.6g} | {d['p01']:.6g} | {d['p50']:.6g} | {d['p99']:.6g} | {d['min']:.6g} | {d['max']:.6g} |")
-    lines.extend(["", "## Degenerate events", ""])
-    lines.append("- None" if not deg else "\n".join(f"- {d['event']}: positive_ratio={d['positive_ratio']:.6g}" for d in deg))
+    for row in event_diag:
+        lines.append(f"| {row['task_key']} | {row['positive_label']} | {row['negative_label']} | {row['positive_count']} | {row['negative_count']} | {row['unknown_count']} | {row['positive_ratio']:.6g} | {row['unknown_ratio']:.6g} | {row['event_validity']} |")
+    lines.extend(["", "## Metric diagnostics", "", "| metric | valid_count | valid_rate | min | p01 | p50 | p99 | max |", "|---|---:|---:|---:|---:|---:|---:|---:|"])
+    for row in metric_diag:
+        lines.append(f"| {row['metric']} | {row['valid_count']} | {row['valid_rate']:.6g} | {row['min']:.6g} | {row['p01']:.6g} | {row['p50']:.6g} | {row['p99']:.6g} | {row['max']:.6g} |")
+    deg = [r for r in event_diag if r["event_validity"] != "valid"]
+    lines.extend(["", "## Degenerate/all_unknown tasks", ""])
+    lines.extend(["- None"] if not deg else [f"- `{r['task_key']}`: {r['event_validity']}, positive_ratio={r['positive_ratio']:.6g}, unknown_ratio={r['unknown_ratio']:.6g}" for r in deg])
+    lines.extend(["", "## Warnings", ""])
+    lines.extend(["- None"] if not warnings else [f"- {w.get('warning')}: {w}" for w in warnings[:200]])
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def parse_shards(manifest_path: Path) -> List[Dict]:
+    manifest = read_json(manifest_path)
+    entries = manifest.get("shards", manifest.get("shard_infos", []))
+    if entries:
+        return entries
+    if "shard_paths" in manifest:
+        return [{"shard_path": p} for p in manifest["shard_paths"]]
+    raise ValueError(f"No shard entries found in shard manifest: {manifest_path}")
 
 
 def build(args):
@@ -498,83 +548,109 @@ def build(args):
     out.mkdir(parents=True, exist_ok=True)
 
     manifest_path = Path(args.shard_manifest)
-    manifest = read_json(manifest_path)
-    shard_entries = manifest.get("shards", manifest.get("shard_infos", []))
-    if not shard_entries and "shard_paths" in manifest:
-        shard_entries = [{"shard_path": sp} for sp in manifest["shard_paths"]]
-    if not shard_entries:
-        raise ValueError(f"No shard entries in shard_manifest: {manifest_path}")
-
-    event_rows = []
-    metric_rows = []
-    warnings = []
+    if args.feature_schema_path and not Path(args.feature_schema_path).exists():
+        raise FileNotFoundError(f"feature_schema_path does not exist: {args.feature_schema_path}")
+    shard_entries = parse_shards(manifest_path)
+    warnings: List[Dict] = []
+    event_rows: List[Dict] = []
+    metric_rows: List[Dict] = []
+    strength_counts: Dict[str, Dict[str, int]] = {task: {} for task in TASK_SPECS}
     global_row = 0
-    for shard_id, shard_info in enumerate(iter_progress(shard_entries, enabled=not args.no_progress, desc="building behavior events v2", unit="shard")):
-        shard_dir = resolve_path(manifest_path.parent, shard_info["shard_path"])
+
+    for shard_id, shard_info in enumerate(iter_progress(shard_entries, enabled=not args.no_progress, desc="building Stage 6C v2 events", unit="shard")):
+        shard_path = shard_info.get("shard_path") or shard_info.get("path")
+        if not shard_path:
+            raise ValueError(f"Shard entry {shard_id} has no shard_path/path field: {shard_info}")
+        shard_dir = resolve_path(manifest_path.parent, shard_path)
         ego_path = shard_dir / "ego_seq.npy"
         if not ego_path.exists():
-            raise FileNotFoundError(f"Missing required raw ego sequence file: {ego_path}")
+            raise FileNotFoundError(f"Missing required raw sequence file for Stage 6C v2: {ego_path}")
         ego_arr = np.load(ego_path, mmap_mode="r", allow_pickle=False)
-        rows = ego_arr.shape[0]
+        rows = int(ego_arr.shape[0])
         neighbor_arr = load_optional_array(shard_dir, "neighbor_seq.npy", rows, shard_id, warnings)
-        _ = load_optional_array(shard_dir, "neighbor_slot_ids.npy", rows, shard_id, warnings)
+        slot_ids_arr = load_optional_array(shard_dir, "neighbor_slot_ids.npy", rows, shard_id, warnings)
         _ = load_optional_array(shard_dir, "interaction_feat_style.npy", rows, shard_id, warnings)
+        if neighbor_arr is None:
+            warnings.append({"warning": "raw_neighbor_missing_detectors_unknown_or_weak_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
+        if slot_ids_arr is None:
+            warnings.append({"warning": "neighbor_slot_ids_missing_cutin_uses_conservative_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
         meta = load_meta_frame(shard_dir, rows, shard_id, warnings)
         for local_row in range(rows):
-            metrics, events = derive_row_metrics(np.asarray(ego_arr[local_row]), np.asarray(neighbor_arr[local_row]) if neighbor_arr is not None else None, args.dt, args)
-            base = {"global_row": global_row, "shard_id": shard_id, "local_row": local_row}
-            for c in META_COLUMNS:
-                base[c] = meta.iloc[local_row][c]
+            neighbor_row = np.asarray(neighbor_arr[local_row]) if neighbor_arr is not None else None
+            events, metrics, strengths = derive_row(np.asarray(ego_arr[local_row]), neighbor_row, slot_ids_arr is not None, args)
+            base = {"global_row": int(global_row), "shard_id": int(shard_id), "local_row": int(local_row)}
+            for col in META_COLUMNS:
+                base[col] = meta.iloc[local_row][col]
             event_rows.append({**base, **events})
             metric_rows.append({**base, **metrics})
+            for task, strength in strengths.items():
+                strength_counts[task][strength] = strength_counts[task].get(strength, 0) + 1
             global_row += 1
 
-    events_df = pd.DataFrame(event_rows)
-    metrics_df = finalize_scores(pd.DataFrame(metric_rows))
+    event_df = pd.DataFrame(event_rows)
+    metric_df = pd.DataFrame(metric_rows)
     meta_cols = ["global_row", "shard_id", "local_row"] + META_COLUMNS
-    event_diag = event_diagnostics(events_df)
-    for diag in event_diag:
-        if diag["degenerate"]:
-            warnings.append({"warning": "degenerate_event", **diag})
-    metric_diag = metric_diagnostics(metrics_df, meta_cols)
-    warnings.append({"warning": "completed", "total_rows": int(len(events_df)), "elapsed_sec": float(time.time() - t0)})
+    event_diag = event_diagnostics(event_df, args.min_event_positive_ratio, args.max_event_positive_ratio)
+    for row in event_diag:
+        if row["event_validity"] != "valid":
+            warnings.append({"warning": "degenerate_or_all_unknown_task", **row})
+    for task, counts in strength_counts.items():
+        total = sum(counts.values())
+        dominant = max(counts, key=counts.get) if counts else "unknown"
+        if dominant != "strong":
+            warnings.append({"warning": "detector_strength_not_strong", "task_key": task, "detector_strength": dominant, "counts": counts, "rows": int(total)})
+    metric_diag = metric_diagnostics(metric_df, meta_cols)
+    warnings.append({"warning": "completed", "total_rows": int(len(event_df)), "elapsed_sec": float(time.time() - t0)})
 
-    events_df.to_csv(out / "behavior_event_bins_v2.csv", index=False)
-    metrics_df.to_csv(out / "behavior_event_metrics_v2.csv", index=False)
-    write_json(out / "behavior_event_schema_v2.json", schema_obj(args, event_diag, metric_diag, warnings))
+    event_df.to_csv(out / "behavior_event_bins_v2.csv", index=False)
+    metric_df.to_csv(out / "behavior_event_metrics_v2.csv", index=False)
+    write_json(out / "behavior_event_schema_v2.json", {
+        "stage": "Stage 6C v2 — Task-conditioned behavior-event BDD",
+        "task_specs": {k: {"positive_label": v[0], "negative_label": v[1]} for k, v in TASK_SPECS.items()},
+        "event_diagnostics": event_diag,
+        "metric_diagnostics": metric_diag,
+        "detector_strength_counts": strength_counts,
+        "raw_array_layout_assumptions": {"ego_seq": EGO, "neighbor_seq_slots": SLOTS, "neighbor_seq": NEI},
+        "thresholds": vars(args),
+    })
     write_json(out / "behavior_event_warnings_v2.json", warnings)
-    write_report(out / "behavior_event_report_v2.md", len(events_df), len(shard_entries), event_diag, metric_diag, warnings)
+    write_report(out / "behavior_event_report_v2.md", len(event_df), len(shard_entries), event_diag, metric_diag, warnings)
 
 
 def parse_args():
-    p = argparse.ArgumentParser(description="Build Stage 6C v2 behavior-event bins and style metrics from raw sharded arrays.")
+    p = argparse.ArgumentParser(description="Build Stage 6C v2 task-conditioned behavior-event bins and task-specific style metrics.")
     p.add_argument("--shard_manifest", required=True, help="Path to sharded dataset manifest JSON.")
-    p.add_argument("--output_dir", required=True, help="Output directory for v2 behavior-event artifacts.")
+    p.add_argument("--feature_schema_path", required=True, help="Path to feature_schema.json; used for provenance and validation.")
+    p.add_argument("--output_dir", required=True, help="Output directory for behavior_event_*_v2 artifacts.")
     p.add_argument("--overwrite", action="store_true", help="Overwrite output_dir if it already exists.")
-    p.add_argument("--no_progress", action="store_true", help="Disable tqdm progress bars.")
-    p.add_argument("--dt", type=float, default=0.1, help="Frame time step in seconds.")
-    p.add_argument("--min_front_valid_ratio", type=float, default=0.5)
-    p.add_argument("--low_speed_mps", type=float, default=2.0)
-    p.add_argument("--stop_speed_mps", type=float, default=0.5)
-    p.add_argument("--brake_threshold_mps2", type=float, default=1.0)
-    p.add_argument("--slower_front_closing_rate", type=float, default=0.5)
-    p.add_argument("--overtake_front_gap_m", type=float, default=35.0)
-    p.add_argument("--adjacent_available_gap_m", type=float, default=8.0)
-    p.add_argument("--lateral_displacement_m", type=float, default=2.0)
-    p.add_argument("--lane_change_completion_m", type=float, default=3.0)
-    p.add_argument("--heading_change_rad", type=float, default=0.25)
-    p.add_argument("--yaw_rate_rms_threshold", type=float, default=0.10)
-    p.add_argument("--sign_change_eps", type=float, default=1e-3)
-    p.add_argument("--hesitation_sign_changes", type=float, default=3.0)
-    p.add_argument("--long_lane_change_s", type=float, default=4.0)
-    p.add_argument("--cutin_gap_drop_m", type=float, default=8.0)
-    p.add_argument("--cutin_max_gap_m", type=float, default=25.0)
-    p.add_argument("--conflict_gap_m", type=float, default=8.0)
-    p.add_argument("--side_closing_threshold", type=float, default=1.0)
-    p.add_argument("--low_speed_ratio", type=float, default=0.5)
-    p.add_argument("--risk_gap_m", type=float, default=5.0)
-    p.add_argument("--comfort_rms_jerk", type=float, default=2.0)
-    p.add_argument("--comfort_rms_yaw_rate", type=float, default=0.10)
+    p.add_argument("--no_progress", action="store_true", help="Disable progress bars.")
+    p.add_argument("--dt", type=float, default=0.1, help="Frame duration in seconds.")
+    p.add_argument("--min_valid_front_ratio", type=float, default=0.3, help="Minimum valid front frames for front-conditioned tasks.")
+    p.add_argument("--min_event_positive_ratio", type=float, default=0.01, help="Below this positive ratio a task is degenerate.")
+    p.add_argument("--max_event_positive_ratio", type=float, default=0.95, help="Above this positive ratio a task is degenerate.")
+    p.add_argument("--low_speed_threshold", type=float, default=1.0, help="Low ego speed threshold in m/s.")
+    p.add_argument("--front_speed_low_threshold", type=float, default=1.0, help="Low/stop speed threshold in m/s for queue metrics.")
+    p.add_argument("--lead_decel_threshold", type=float, default=-1.0, help="Proxy lead-deceleration threshold from front closing-rate derivative.")
+    p.add_argument("--ego_brake_threshold", type=float, default=-0.5, help="Ego brake onset threshold in m/s^2.")
+    p.add_argument("--hard_brake_threshold", type=float, default=-2.0, help="Hard-brake reference threshold in m/s^2.")
+    p.add_argument("--slower_front_closing_rate", type=float, default=0.5, help="Closing-rate threshold for slower lead vehicle proxy.")
+    p.add_argument("--queue_front_gap_m", type=float, default=30.0, help="Max front gap for queue approach proxy.")
+    p.add_argument("--queue_thw_threshold", type=float, default=2.5, help="THW threshold for queue approach proxy.")
+    p.add_argument("--overtake_front_gap_m", type=float, default=35.0, help="Max front gap for overtake opportunity proxy.")
+    p.add_argument("--adjacent_available_gap_m", type=float, default=8.0, help="Min adjacent gap for overtake opportunity proxy.")
+    p.add_argument("--lateral_displacement_m", type=float, default=2.0, help="Lateral displacement threshold for lane-change proxy.")
+    p.add_argument("--lane_change_completion_m", type=float, default=3.0, help="Lateral completion threshold for abort-like proxy.")
+    p.add_argument("--heading_change_rad", type=float, default=0.25, help="Heading-change threshold for lane-change proxy.")
+    p.add_argument("--yaw_rate_rms_threshold", type=float, default=0.10, help="Yaw-rate RMS threshold for lane-change proxy.")
+    p.add_argument("--lateral_speed_threshold", type=float, default=0.5, help="Lateral-speed threshold for lane-change proxy.")
+    p.add_argument("--sign_change_eps", type=float, default=1e-3, help="Epsilon for sign-change metrics.")
+    p.add_argument("--hesitation_sign_changes", type=float, default=3.0, help="Sign-change count threshold for hesitation.")
+    p.add_argument("--long_lane_change_s", type=float, default=4.0, help="Long lane-change duration threshold for hesitation.")
+    p.add_argument("--cutin_gap_drop_m", type=float, default=8.0, help="Front-gap sudden drop threshold for cut-in proxy.")
+    p.add_argument("--cutin_max_gap_m", type=float, default=25.0, help="Max front gap after cut-in proxy.")
+    p.add_argument("--conflict_gap_m", type=float, default=8.0, help="Small-gap threshold for yield conflict.")
+    p.add_argument("--conflict_side_gap_m", type=float, default=12.0, help="Side-gap threshold under closing pressure.")
+    p.add_argument("--side_closing_threshold", type=float, default=1.0, help="Side closing-rate threshold for interaction pressure.")
     return p.parse_args()
 
 
