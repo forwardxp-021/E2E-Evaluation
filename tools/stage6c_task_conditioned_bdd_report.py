@@ -86,11 +86,11 @@ def cohens_d(a, b) -> float:
 
 
 
-def detector_strength_summary(events_df: pd.DataFrame, task_key: str, pos_label: str) -> Dict[str, str]:
+def detector_strength_summary(events_df: pd.DataFrame, task_key: str, pos_label: str, pos_mask: pd.Series = None) -> Dict[str, str]:
     strength_col = f"{task_key}_strength"
     if strength_col not in events_df.columns:
         return {"dominant_detector_strength": "unknown", "detector_strength_counts": "unavailable", "proxy_fraction": np.nan}
-    pos_rows = events_df[events_df[task_key].astype(str) == pos_label]
+    pos_rows = events_df[pos_mask] if pos_mask is not None else events_df[events_df[task_key].astype(str) == pos_label]
     if len(pos_rows) == 0:
         return {"dominant_detector_strength": "unknown", "detector_strength_counts": "{}", "proxy_fraction": np.nan}
     counts = pos_rows[strength_col].fillna("unknown").astype(str).value_counts().to_dict()
@@ -202,9 +202,9 @@ def write_report(out: Path, bdd_df: pd.DataFrame, delta_df: pd.DataFrame, skippe
         "",
     ]
     if len(bdd_df):
-        lines.extend(["| task_key | task_value | detector_strength | detector_strength_counts | n_A | n_B | BDD_MMD | CI95 | p_value | interpretation |", "|---|---|---|---|---:|---:|---:|---|---:|---|"])
+        lines.extend(["| task_key | task_value | strength_filter | detector_strength | detector_strength_counts | n_A(before) | n_B(before) | n_A(after) | n_B(after) | BDD_MMD | bootstrap_mean | bootstrap_std | in_CI | CI95 | p_value | interpretation |", "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|---|---:|---|"])
         for row in bdd_df.sort_values("bdd_mmd", ascending=False).itertuples():
-            lines.append(f"| {row.task_key} | {row.task_value} | {row.dominant_detector_strength} | {row.detector_strength_counts} | {row.n_A} | {row.n_B} | {row.bdd_mmd:.6g} | [{row.ci95_low:.6g}, {row.ci95_high:.6g}] | {row.p_value:.6g} | {row.interpretation} |")
+            lines.append(f"| {row.task_key} | {row.task_value} | {row.detector_strength_filter} | {row.dominant_detector_strength} | {row.detector_strength_counts} | {row.n_A_before_strength_filter} | {row.n_B_before_strength_filter} | {row.n_A} | {row.n_B} | {row.bdd_mmd:.6g} | {row.bootstrap_mean:.6g} | {row.bootstrap_std:.6g} | {row.observed_in_bootstrap_ci} | [{row.ci95_low:.6g}, {row.ci95_high:.6g}] | {row.p_value:.6g} | {row.interpretation} |")
     else:
         lines.append("- No task passed the min_bin_size / validity filters.")
     lines.extend(["", "## Style metric explanation layer", ""])
@@ -214,6 +214,9 @@ def write_report(out: Path, bdd_df: pd.DataFrame, delta_df: pd.DataFrame, skippe
             lines.append(f"| {row.task_key} | {row.metric} | {row.n_A_valid} | {row.n_B_valid} | {row.mean_A:.6g} | {row.mean_B:.6g} | {row.delta_B_minus_A:.6g} | {row.effect_size:.6g} |")
     else:
         lines.append("- No valid task-specific metric deltas were available.")
+    metric_quality = [w for w in warnings if w.get("warning") in {"metric_physical_range_warning", "raw_metric_physically_implausible", "physical_metric_clipping_applied"}]
+    lines.extend(["", "## Metric quality warnings", ""])
+    lines.extend(["- None"] if not metric_quality else [f"- {w.get('warning')}: {w}" for w in metric_quality[:80]])
     lines.extend(["", "## Skipped tasks", ""])
     lines.extend(["- None"] if not skipped else [f"- `{s['task_key']}`: {s['reason']} (n_A={s.get('n_A')}, n_B={s.get('n_B')}, validity={s.get('event_validity')})" for s in skipped])
     lines.extend(["", "## Interpretation guide", "", "- `negative_control_random`: sanity check; task BDD should be low and not systematic.", "- `pseudo_agg_vs_cons`: positive control; style drift should localize to relevant behavior tasks.", "- `scene_confounding_control`: confounding diagnosis; drift may concentrate where task exposure or dynamic interaction pressure differs.", "", "## Warnings", ""])
@@ -234,6 +237,14 @@ def run(args):
     emb, emb_meta = load_embeddings(args.shard_manifest, args.embedding_manifest, progress_enabled=not args.no_progress)
     events_df = pd.read_csv(args.behavior_event_bins_path)
     metrics_df = pd.read_csv(args.behavior_event_metrics_path)
+    behavior_schema_path = Path(args.behavior_event_bins_path).parent / "behavior_event_schema_v2.json"
+    if behavior_schema_path.exists():
+        try:
+            behavior_schema = json.loads(behavior_schema_path.read_text(encoding="utf-8"))
+            for warning in behavior_schema.get("metric_quality_warnings", []):
+                warnings.append(warning)
+        except Exception as exc:
+            warnings.append({"warning": "behavior_event_schema_metric_quality_load_failed", "path": str(behavior_schema_path), "detail": str(exc)})
     ensure_global_alignment(events_df, metrics_df, len(emb))
     if args.feature_schema_path and not Path(args.feature_schema_path).exists():
         raise FileNotFoundError(f"feature_schema_path does not exist: {args.feature_schema_path}")
@@ -265,20 +276,37 @@ def run(args):
             continue
         pos_label, _ = TASK_SPECS[task_key]
         validity = task_validity(events_df, task_key)
-        task_global_rows = events_df.loc[events_df[task_key].astype(str) == pos_label, "global_row"].astype(np.int64).to_numpy()
+        pos_mask = events_df[task_key].astype(str) == pos_label
+        n_positive_before_strength_filter = int(pos_mask.sum())
+        strength_col = f"{task_key}_strength"
+        if args.detector_strength_filter == "strong":
+            if strength_col not in events_df.columns:
+                warnings.append({"warning": "detector_strength_filter_column_missing", "task_key": task_key, "filter": args.detector_strength_filter})
+                pos_mask = pd.Series(False, index=events_df.index)
+            else:
+                pos_mask = pos_mask & (events_df[strength_col].fillna("unknown").astype(str) == "strong")
+        elif args.detector_strength_filter == "strong_or_proxy":
+            if strength_col not in events_df.columns:
+                warnings.append({"warning": "detector_strength_filter_column_missing", "task_key": task_key, "filter": args.detector_strength_filter})
+                pos_mask = pd.Series(False, index=events_df.index)
+            else:
+                pos_mask = pos_mask & events_df[strength_col].fillna("unknown").astype(str).isin(["strong", "proxy"])
+        task_global_rows = events_df.loc[pos_mask, "global_row"].astype(np.int64).to_numpy()
         task_set = set(int(x) for x in task_global_rows.tolist())
         ai = np.asarray(sorted(task_set & a_set), dtype=np.int64)
         bi = np.asarray(sorted(task_set & b_set), dtype=np.int64)
+        n_A_before_strength_filter = int(len(np.asarray(sorted(set(int(x) for x in events_df.loc[events_df[task_key].astype(str) == pos_label, "global_row"].astype(np.int64).tolist()) & a_set), dtype=np.int64)))
+        n_B_before_strength_filter = int(len(np.asarray(sorted(set(int(x) for x in events_df.loc[events_df[task_key].astype(str) == pos_label, "global_row"].astype(np.int64).tolist()) & b_set), dtype=np.int64)))
         if validity["event_validity"] != "valid" and not args.include_degenerate_tasks:
             skipped.append({"task_key": task_key, "reason": "degenerate_or_all_unknown_skipped", "n_A": int(len(ai)), "n_B": int(len(bi)), **validity})
             warnings.append({"warning": "task_skipped_degenerate_or_all_unknown", "task_key": task_key, **validity})
             continue
         if len(ai) < args.min_bin_size or len(bi) < args.min_bin_size:
-            skipped.append({"task_key": task_key, "reason": "below_min_bin_size", "n_A": int(len(ai)), "n_B": int(len(bi)), **validity})
+            skipped.append({"task_key": task_key, "reason": "below_min_bin_size", "n_A": int(len(ai)), "n_B": int(len(bi)), "n_A_before_strength_filter": n_A_before_strength_filter, "n_B_before_strength_filter": n_B_before_strength_filter, "detector_strength_filter": args.detector_strength_filter, **validity})
             continue
         stats = mmd_with_stats(emb[ai], emb[bi], rng, args.num_bootstrap, args.num_permutation, args.max_mmd_samples)
         interp = "Task-conditioned BDD is computed within the same behavior-event slice; inspect task-specific metrics below for semantic drift direction."
-        strength_summary = detector_strength_summary(events_df, task_key, pos_label)
+        strength_summary = detector_strength_summary(events_df, task_key, pos_label, pos_mask)
         if strength_summary["dominant_detector_strength"] in {"proxy", "weak_proxy"} or (np.isfinite(strength_summary["proxy_fraction"]) and strength_summary["proxy_fraction"] > 0.5):
             warnings.append({
                 "warning": "task_bdd_uses_proxy_detector",
@@ -292,9 +320,18 @@ def run(args):
             "task_value": pos_label,
             "n_A": int(len(ai)),
             "n_B": int(len(bi)),
+            "n_A_before_strength_filter": n_A_before_strength_filter,
+            "n_B_before_strength_filter": n_B_before_strength_filter,
+            "n_positive_before_strength_filter": n_positive_before_strength_filter,
+            "n_positive_after_strength_filter": int(len(task_global_rows)),
+            "detector_strength_filter": args.detector_strength_filter,
             "bdd_mmd": stats["mmd2"],
             "ci95_low": stats["ci95_low"],
             "ci95_high": stats["ci95_high"],
+            "bootstrap_mean": stats.get("bootstrap_mean", np.nan),
+            "bootstrap_std": stats.get("bootstrap_std", np.nan),
+            "observed_in_bootstrap_ci": stats.get("observed_in_bootstrap_ci", False),
+            "mmd_estimator_config": json.dumps(stats.get("mmd_estimator_config", {}), sort_keys=True),
             "p_value": stats["p_value"],
             "positive_count_total": validity["positive_count"],
             "positive_ratio_total": validity["positive_ratio"],
@@ -304,6 +341,8 @@ def run(args):
             "interpretation": interp,
         })
 
+        if not stats.get("observed_in_bootstrap_ci", False):
+            warnings.append({"warning": "observed_bdd_outside_bootstrap_ci", "task_key": task_key, "bdd_mmd": stats["mmd2"], "ci95_low": stats["ci95_low"], "ci95_high": stats["ci95_high"], "mmd_estimator_config": stats.get("mmd_estimator_config", {})})
         metric_cols = relevant_metrics(task_key, metrics_df.columns)
         dominant_parts = []
         for metric in metric_cols:
@@ -371,6 +410,7 @@ def parse_args():
     p.add_argument("--overwrite", action="store_true", help="Overwrite output_dir if it exists.")
     p.add_argument("--no_progress", action="store_true", help="Disable progress bars.")
     p.add_argument("--include_degenerate_tasks", action="store_true", help="Include degenerate/all_unknown tasks instead of skipping them by default.")
+    p.add_argument("--detector_strength_filter", choices=["all", "strong", "strong_or_proxy"], default="all", help="Filter positive task rows by detector strength before BDD; all keeps existing behavior.")
     return p.parse_args()
 
 

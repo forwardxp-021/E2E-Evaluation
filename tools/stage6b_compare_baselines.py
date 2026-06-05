@@ -49,25 +49,49 @@ def robust_norm(x):
     return (x - med) / iqr, med, iqr
 
 
+def _subsample_for_mmd(x, rng, max_samples):
+    if max_samples and max_samples > 0 and len(x) > max_samples:
+        return x[np.sort(rng.choice(len(x), max_samples, replace=False))]
+    return x
+
+
 def mmd_with_stats(xa, xb, rng, n_boot, n_perm, max_samples):
-    obs = compute_mmd2(xa, xb, rng, max_samples, 1024)
+    # Use one deterministic max-sample slice per call so observed and bootstrap CIs
+    # estimate the same MMD target instead of mixing independently resampled targets.
+    xa_eval = _subsample_for_mmd(np.asarray(xa), rng, max_samples)
+    xb_eval = _subsample_for_mmd(np.asarray(xb), rng, max_samples)
+    effective_max = max(len(xa_eval), len(xb_eval), 1)
+    obs = compute_mmd2(xa_eval, xb_eval, rng, effective_max, 1024)
     boots = []
     for _ in range(n_boot):
-        ia = rng.choice(len(xa), len(xa), replace=True)
-        ib = rng.choice(len(xb), len(xb), replace=True)
-        boots.append(compute_mmd2(xa[ia], xb[ib], rng, max_samples, 1024))
+        ia = rng.choice(len(xa_eval), len(xa_eval), replace=True)
+        ib = rng.choice(len(xb_eval), len(xb_eval), replace=True)
+        boots.append(compute_mmd2(xa_eval[ia], xb_eval[ib], rng, effective_max, 1024))
     perms = []
-    z = np.vstack([xa, xb])
-    na = len(xa)
+    z = np.vstack([xa_eval, xb_eval])
+    na = len(xa_eval)
     for _ in range(n_perm):
-        p = rng.permutation(len(z))
-        perms.append(compute_mmd2(z[p[:na]], z[p[na:]], rng, max_samples, 1024))
+        perm = rng.permutation(len(z))
+        perms.append(compute_mmd2(z[perm[:na]], z[perm[na:]], rng, effective_max, 1024))
+    boots_arr = np.asarray(boots, dtype=float)
+    ci_low = float(np.quantile(boots_arr, 0.025)) if boots else float('nan')
+    ci_high = float(np.quantile(boots_arr, 0.975)) if boots else float('nan')
     p = float((np.sum(np.asarray(perms) >= obs) + 1) / (n_perm + 1)) if n_perm > 0 else 1.0
     return {
         'mmd2': float(obs),
-        'ci95_low': float(np.quantile(boots, 0.025)) if boots else float('nan'),
-        'ci95_high': float(np.quantile(boots, 0.975)) if boots else float('nan'),
+        'ci95_low': ci_low,
+        'ci95_high': ci_high,
         'p_value': p,
+        'bootstrap_mean': float(np.nanmean(boots_arr)) if boots else float('nan'),
+        'bootstrap_std': float(np.nanstd(boots_arr, ddof=1)) if len(boots_arr) > 1 else float('nan'),
+        'observed_in_bootstrap_ci': bool(np.isfinite(obs) and np.isfinite(ci_low) and np.isfinite(ci_high) and ci_low <= obs <= ci_high),
+        'mmd_estimator_config': {
+            'max_mmd_samples_requested': int(max_samples),
+            'effective_n_A': int(len(xa_eval)),
+            'effective_n_B': int(len(xb_eval)),
+            'kernel_block_size': 1024,
+            'observed_and_bootstrap_share_initial_subsample': True,
+        },
     }
 
 
