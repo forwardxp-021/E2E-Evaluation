@@ -2871,3 +2871,139 @@ v2 的解释逻辑是：event bin 是可比较驾驶任务切片，BDD 在 task 
 - `behavior_event_metrics_v2.csv` 不得用 0 伪造缺失指标；无法计算的 metric 应为 `NaN`。
 - `behavior_event_schema_v2.json` 必须包含 metric diagnostics：`valid_count`、`valid_rate`、`p01`、`p50`、`p99`、`min`、`max`。
 - 主报告应强调 exposure/task-conditioned BDD，而不是 outcome bins；handcrafted metrics 只解释 drift 方向。
+
+# Stage 6C v2 — Task-conditioned behavior-event BDD
+
+Stage 6C v2 的主目标是：在相同 driving task / behavior-event slice 内，用 learned behavior embedding 的 BDD 检测 A/B policy 或 model version 的 style distribution drift，再用 task-specific metrics 解释 drift 方向。旧版 Stage 6C 的 outcome bins（例如 hard_brake、late_brake）保留为 legacy / post-hoc diagnostic，不作为 v2 主报告对象。
+
+## 1. 命令
+
+### 1.1 编译检查
+
+```bash
+python -m py_compile \
+  tools/stage6c_build_behavior_events_v2.py \
+  tools/stage6c_task_conditioned_bdd_report.py
+```
+
+### 1.2 设置数据路径
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+```
+
+### 1.3 构建 Stage 6C v2 task-conditioned behavior events
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --output_dir $DATA_ROOT/behavior_events_v2 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.4 negative_control_random
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/negative_control_random_v2 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.5 pseudo_agg_vs_cons
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.6 scene_confounding_control
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/scene_confounding_v2 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+## 2. 期望行为
+
+- `stage6c_build_behavior_events_v2.py` 读取每个 shard 下可用的 `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`metadata.csv` / `meta.csv` / `meta.npy`、`interaction_feat_style.npy`，优先使用 raw sequences 构建 task-conditioned behavior events。
+- 构建脚本输出：
+  - `behavior_event_bins_v2.csv`
+  - `behavior_event_metrics_v2.csv`
+  - `behavior_event_schema_v2.json`
+  - `behavior_event_report_v2.md`
+  - `behavior_event_warnings_v2.json`
+- `behavior_event_bins_v2.csv` 与 `behavior_event_metrics_v2.csv` 通过 `global_row` 逐行对齐，并尽量保留 `shard_id`、`local_row`、`scenario_id`、`target_agent_id`、`start`、`window_len`、`split`。
+- 每个 task detector 输出 positive label / negative label / `unknown`，不会把缺失 raw signal 静默填成 negative。
+- 不可用的 style metric 写为 `NaN`，不会静默填 0。
+- 如果 `neighbor_seq.npy` 或 `neighbor_slot_ids.npy` 缺失，cut-in、yield conflict、lead brake、queue、overtake 等 detector 会记录 warning，并在必要时使用 conservative proxy 或输出 `unknown`。
+- `stage6c_task_conditioned_bdd_report.py` 只在 positive task label 内计算 A/B embedding BDD，并输出：
+  - `task_bdd_summary.csv`
+  - `task_style_delta.csv`
+  - `task_report_card.md`
+  - `top_task_drift_cases.csv`
+  - `warnings.json`
+  - `plots/task_bdd_bar.png`
+  - `plots/task_style_delta_bar.png`
+- BDD 报告默认跳过 degenerate / all_unknown tasks；如需调试可加 `--include_degenerate_tasks`。
+
+## 3. 通过标准
+
+1. `py_compile` passes。
+2. `behavior_event_bins_v2.csv` 行数等于 dataset row count。
+3. `behavior_event_metrics_v2.csv` 行数等于 dataset row count。
+4. `global_row` 唯一且 bins / metrics 逐行对齐。
+5. metadata 在 shard 中存在时被保留到 v2 输出。
+6. 除非 raw signals 不可用，否则重要 task 不应全部为 `unknown`。
+7. degenerate tasks 被写入 `behavior_event_warnings_v2.json` / `warnings.json`，且 BDD report 默认跳过。
+8. `negative_control_random` 不应出现系统性高 task BDD。
+9. `pseudo_agg_vs_cons` 应在 style-relevant tasks 中出现有意义的 task-conditioned BDD。
+10. `scene_confounding_control` 应揭示 dynamic task / exposure confounding patterns。

@@ -1,288 +1,196 @@
-# Stage 6C Behavior-Event Taxonomy v2：Task-conditioned Style Drift
+# Stage 6C v2 — Task-conditioned behavior-event BDD taxonomy
 
-## 0. 设计动机
-
-当前 Stage 6C 的 exposure/outcome bins 过粗，容易把“任务切片”和“行为结果”混在一起。Stage 6 的研究目标是：
-
-> 在相同 driving task / event 下，学习到的 behavior embedding 是否能区分 A/B driving policies 或 model versions 的行为风格差异？
-
-因此 v2 不再把 outcome bins 作为主要评价对象，而是将 **behavior-event bin 定义为 task slice / comparable driving context**，在每个 task 内计算 embedding distribution difference（BDD），再用 handcrafted style metrics 解释 drift 方向。
+Stage 6C v2 的名称是 **Task-conditioned behavior-event BDD**。它用于诊断：在相同 driving task / behavior-event context 下，A/B driving policies 或 model versions 的 learned behavior embedding distribution 是否发生 style drift，并用 task-specific handcrafted metrics 解释 drift 方向。
 
 核心原则：
 
-- **Event bin = task slice / comparable driving context**；
-- **BDD = embedding distribution difference within this task**；
-- **Style metrics = semantic explanation of the detected drift**。
-
-推荐主报告表述：
-
-> The main Stage 6C report emphasizes exposure/task-conditioned BDD. Outcome-like handcrafted metrics are used as semantic explanations, not as the primary evaluation object.
-
-## 1. 输出与行对齐约束
-
-新增脚本：`tools/stage6c_build_behavior_events_v2.py`。
-
-输入：
-
-- `--shard_manifest` 指向 sharded dataset manifest；
-- 每个 shard 优先读取 raw arrays：
-  - `ego_seq.npy`；
-  - `neighbor_seq.npy`；
-  - `neighbor_slot_ids.npy`（如果存在，用于记录/诊断 neighbor slot 语义）；
-  - `meta.npy`；
-  - `interaction_feat_style.npy`（只作为可选辅助/一致性检查，不只依赖 33 aggregate features）。
-
-输出目录内生成：
-
-1. `behavior_event_bins_v2.csv`：每个 event detector 的 `positive` / `negative` / `unknown` 标签；
-2. `behavior_event_metrics_v2.csv`：每个 task 的 style explanation metrics；
-3. `behavior_event_schema_v2.json`：taxonomy、阈值、array layout 假设、event/metric diagnostics；
-4. `behavior_event_report_v2.md`：中文/英文混合的可读诊断报告；
-5. `behavior_event_warnings_v2.json`：缺失 array、metadata mismatch、退化 event 等 warning。
-
-行对齐要求：
-
-- 必须保留 `global_row`，按 `shard_manifest` 的 shard 顺序从 0 递增；
-- 必须保留 `shard_id` 与 `local_row`；
-- 必须尽量透传 metadata：`scenario_id`、`target_agent_id`、`start`、`window_len`、`split`；
-- 不得默认合并 `ego_seq.npy` / `neighbor_seq.npy` 等大数组；
-- 缺失 metric 必须写 `NaN`，不得用 0 填充。
-
-## 2. Detector 与 diagnostics 统一规则
-
-每个 event detector 必须输出三值状态：
-
-- `positive`：该 window 属于该 task slice；
-- `negative`：raw signals 可用，但该 window 不属于该 task slice；
-- `unknown`：缺少必要 raw signal、shape 不满足要求、或 detector 无法判断。
-
-每个 event 必须报告 validity diagnostics：
-
-- `positive_ratio`；
-- `unknown_ratio`；
-- `n_positive`；
-- `n_negative`；
-- `degenerate`：当 `positive_ratio < 0.01` 或 `positive_ratio > 0.95` 时标记为 true。
-
-每个 metric 必须报告 metric diagnostics：
-
-- `valid_count`；
-- `valid_rate`；
-- `p01` / `p50` / `p99` / `min` / `max`。
-
-BDD 报告中应跳过或单独标注 unknown-heavy / degenerate event，避免将无效切片写成研究结论。
-
-## 3. Primary behavior-event taxonomy
-
-### 3.1 Following / car-following
-
-**Goal**：在 following task 下，比较 A/B 是否在 following distance、THW、braking intensity、comfort 方面存在风格差异。
-
-**Detector**：
-
-- front vehicle valid for sufficient frames；
-- valid front distance and THW；
-- 可选：ego speed above low-speed threshold，避免把停车/低速蠕行误判为 following。
-
-**Metrics**：
-
-- `mean_thw`, `min_thw`；
-- `mean_front_distance`, `min_front_distance`；
-- `front_closing_rate_mean`, `front_closing_rate_p95`；
-- `peak_decel`, `rms_jerk`, `max_abs_jerk`；
-- `late_brake_score`；
-- `following_aggressiveness_score`。
-
-**BDD interpretation**：
-
-- BDD 升高说明同为 following 的 embedding 分布发生漂移；
-- 若 `mean_thw` / `mean_front_distance` 下降且 `peak_decel` / `rms_jerk` 上升，可解释为更贴近、更晚刹或更激进；
-- 若 THW 上升且 jerk 降低，可解释为更保守/更舒适。
-
-### 3.2 Lane change
-
-**Goal**：在 lane-change events 下，比较 steering sharpness 与 gap acceptance。
-
-**Detector**：
-
-- `lane_change_count_proxy > 0`；或
-- high yaw / curvature / heading change / lateral displacement。
-
-**Metrics**：
-
-- `rms_yaw_rate`, `rms_curvature`, `heading_change_total`；
-- `max_lateral_speed`, `rms_lateral_accel`；
-- `lane_change_duration`；
-- `lane_change_oscillation_score`；
-- `target_front_min_gap_during_lane_change`, `target_rear_min_gap_during_lane_change`；
-- `lane_change_sharpness_score`；
-- `gap_acceptance_score`。
-
-**BDD interpretation**：
-
-- BDD 升高说明同为 lane-change 的行为 embedding 分布不同；
-- sharpness 指标升高表示更急转向/更激烈 lateral control；
-- target lane gaps 降低或 `gap_acceptance_score` 升高表示更小 gap acceptance。
-
-### 3.3 Overtake / passing
-
-**Goal**：在 overtake opportunity 下，比较 willingness to pass 以及 acceleration/braking aggressiveness。
-
-**Detector**：
-
-- front vehicle present and slower；
-- front gap not too far；
-- adjacent lane/context available。
-
-**Metrics**：
-
-- `overtake_opportunity_score`；
-- `overtake_execution_score`；
-- `time_to_initiate_overtake`；
-- `peak_accel_during_overtake`；
-- `peak_decel_during_overtake`；
-- `jerk_during_overtake`；
-- `min_front_gap_before_overtake`；
-- `target_lane_front_gap`；
-- `target_lane_rear_gap`。
-
-**BDD interpretation**：
-
-- BDD 衡量同等 overtake opportunity 下 embedding 是否漂移；
-- execution score / acceleration 上升表示更愿意通过或更积极超车；
-- delay 变长、execution score 降低表示更保守或更迟疑。
-
-### 3.4 Cut-in response
-
-**Goal**：当其他车辆 cut in 时，比较 response delay、braking timing 与 comfort。
-
-**Detector**：
-
-- neighbor transitions from side/front-side context into front position；或
-- front gap suddenly decreases with a newly appearing front vehicle。
-
-**Metrics**：
-
-- `cutin_gap_initial`；
-- `cutin_gap_min`；
-- `cutin_min_ttc`；
-- `reaction_delay_to_brake`；
-- `peak_decel_after_cutin`；
-- `jerk_after_cutin`；
-- `speed_drop_after_cutin`；
-- `yielding_response_score`；
-- `late_response_score`。
-
-**BDD interpretation**：
-
-- BDD 升高表示同等 cut-in exposure 下 response style 发生变化；
-- reaction delay / late response 上升表示响应更晚；
-- peak decel / jerk 上升表示制动更急、舒适性下降；
-- yielding response 上升表示更让行。
-
-### 3.5 Hesitation / aborted maneuver
-
-**Goal**：比较 driver/model 在 maneuvering 过程中是否更容易犹豫或 abort。
-
-**Detector**：
-
-- high yaw / lateral velocity sign changes；
-- long lane-change duration；
-- lane-change attempt without completion；
-- oscillatory speed / yaw / lateral motion。
-
-**Metrics**：
-
-- `hesitation_score`；
-- `lane_change_duration`；
-- `yaw_sign_change_count`；
-- `lateral_velocity_sign_change_count`；
-- `lane_change_oscillation_score`；
-- `abort_like_score`；
-- `speed_drop_during_hesitation`。
-
-**BDD interpretation**：
-
-- BDD 升高说明 maneuvering task 内的 embedding 分布变化；
-- hesitation/oscillation/abort-like 指标上升表示更犹豫或横向控制更反复。
-
-### 3.6 Yield conflict / interaction assertiveness
-
-**Goal**：比较 driver/model 在 conflict 下更倾向 yield 还是 compete。
-
-**Detector**：
-
-- small front / side / rear gaps；
-- interaction pressure；
-- side/front vehicle closing；
-- ego maintains speed or accelerates under conflict。
-
-**Metrics**：
-
-- `yielding_score`；
-- `assertiveness_score`；
-- `gap_pressure_score`；
-- `conflict_accel_score`；
-- `small_gap_speed_maintain_score`；
-- `rear_pressure_response`；
-- `courtesy_score`。
-
-**BDD interpretation**：
-
-- BDD 升高说明相似 conflict exposure 下 interaction style 变化；
-- assertiveness / conflict accel 上升表示更竞争；
-- yielding / courtesy 上升表示更让行；
-- gap pressure 必须作为 context 强度解释，不应单独当作安全结论。
-
-## 4. Second-priority events
-
-### 4.1 Free cruising stability
-
-**Goal**：在无明显 front pressure 与 lane-change 的自由巡航中，比较 speed / yaw / jerk 稳定性。
-
-**Detector**：front vehicle absent or far、非 lane-change、ego speed above low-speed threshold。
-
-**Metrics**：`cruise_speed_std`、`cruise_yaw_rate_rms`、`cruise_rms_jerk`。
-
-### 4.2 Stop-and-go / low-speed creep
-
-**Goal**：在低速/拥堵蠕行中比较 creep smoothness 与停车-起步风格。
-
-**Detector**：low-speed frames 占比高，或 stop frames 占比高。
-
-**Metrics**：`stop_go_low_speed_ratio`、`stop_go_stopped_ratio`、`rms_jerk`、`peak_decel`。
-
-### 4.3 Risk proximity
-
-**Goal**：定位小 gap / 小 TTC 的 proximity slice，但不直接作为 outcome 主评价。
-
-**Detector**：front / side / rear minimum gap 小，或 TTC 小。
-
-**Metrics**：`risk_min_any_gap`、`risk_min_ttc`、`peak_decel`、`max_abs_jerk`。
-
-### 4.4 Interaction comfort
-
-**Goal**：在存在 interaction 的窗口中解释 comfort drift。
-
-**Detector**：任意 neighbor valid 或 interaction pressure 可用。
-
-**Metrics**：`interaction_comfort_rms_jerk`、`interaction_comfort_rms_yaw_rate`、`rms_lateral_accel`。
-
-## 5. 后续 task-conditioned BDD 使用方式
-
-v2 artifacts 生成后，Stage 6C 的 BDD 应优先在 primary task slice 内运行：
-
-- `following == positive`；
-- `lane_change == positive`；
-- `overtake == positive`；
-- `cutin_response == positive`；
-- `hesitation == positive`；
-- `yield_conflict == positive`。
-
-计划用于三类 split：
-
-- `negative_control_random`：同分布随机拆分；期望 task-conditioned BDD 低且无系统性方向；
-- `pseudo_agg_vs_cons`：伪 aggressive vs conservative；期望 following / lane-change / conflict 等 task 内 BDD 明显升高，并由 style metrics 解释方向；
-- `scene_confounding_control`：场景混杂控制；检查 task-conditioned BDD 是否仍被 scene confounding 推高。
-
-主报告必须优先强调 exposure/task-conditioned BDD，而不是 outcome bins。Outcome-like metrics 只能写成 drift explanation，例如“在 following task 内，A/B 的 BDD 升高，同时 B 的 THW 更低、peak decel 更高，因此解释为更激进 following style”。
+```text
+Event bin = task slice / comparable driving context
+BDD = embedding distribution difference within this task
+Style metrics = semantic explanation of the detected drift
+```
+
+因此 v2 不再把 hard_brake、late_brake 等 outcome bins 作为主要评价对象。这些 outcome-style bins 只保留为可选 post-hoc diagnostics；主报告必须以 task-conditioned BDD 为主。
+
+## 1. 研究定位
+
+1. **Stage 6C v2 是 task-conditioned behavior style drift diagnosis**：先定义可比较的驾驶任务切片，再在每个任务内比较 A/B embedding distribution。
+2. **主指标是 embedding-based BDD**：BDD 衡量同一 task slice 内 learned behavior embedding 的 distribution difference。
+3. **Task-specific handcrafted metrics 是解释层**：它们帮助说明 BDD 的方向，例如更小 THW、更大 jerk、更高 yaw rate；它们不是 BDD 的替代品。
+4. **旧 outcome bins 降级为 post-hoc diagnostics**：hard_brake / late_brake 等只能用于解释行为表现，不应主导 Stage 6C v2 结论。
+5. **推荐完整实验集**：
+   - `negative_control_random`
+   - `pseudo_agg_vs_cons`
+   - `scene_confounding_control`
+6. **报告解释方式**：
+   - `negative_control_random`：sanity check，BDD 应低且不呈系统性漂移。
+   - `pseudo_agg_vs_cons`：positive control，style drift 应定位到 following、lane-change、overtake、yield conflict 等相关 tasks。
+   - `scene_confounding_control`：confounding diagnosis，drift 可能集中在 task exposure imbalance 或 dynamic interaction pressure 中。
+
+## 2. 输出与诊断约定
+
+`tools/stage6c_build_behavior_events_v2.py` 输出：
+
+- `behavior_event_bins_v2.csv`：每行一个 window，包含 `global_row` 与 task label。
+- `behavior_event_metrics_v2.csv`：每行一个 window，包含 `global_row` 与 task-specific style metrics。
+- `behavior_event_schema_v2.json`：task labels、detector strength、diagnostics 与阈值。
+- `behavior_event_report_v2.md`：构建报告。
+- `behavior_event_warnings_v2.json`：缺失 raw arrays、proxy detector、degenerate task 等 warning。
+
+所有 task detector 输出三值标签：positive label / negative label / `unknown`。缺失 metric 必须写 `NaN`，不得用 0 静默填充。
+
+## 3. First-priority task-conditioned behavior events
+
+Stage 6C v2 首批只定义以下 8 类优先事件；其中 overtake 拆为 opportunity 与 execution 两个 task columns，因为 task exposure 与 behavior response 需要分开解释。
+
+### E1. Following / Car-following
+
+- **Task column**：`task_following`
+- **Positive / negative label**：`following` / `not_following`
+- **Goal**：在 following 场景下比较 A/B 的 following distance、THW、braking intensity 与 comfort。
+- **Detector**：front vehicle 有足够有效帧；front distance 与 THW 有效；可选要求 ego speed 高于 low-speed threshold。
+- **Metrics**：
+  - `following_mean_thw`
+  - `following_min_thw`
+  - `following_mean_front_distance`
+  - `following_min_front_distance`
+  - `following_front_closing_rate_mean`
+  - `following_front_closing_rate_p95`
+  - `following_peak_decel`
+  - `following_rms_jerk`
+  - `following_max_abs_jerk`
+  - `following_late_brake_score`
+  - `following_aggressiveness_score`
+- **Interpretation**：如果 BDD 高且 B 的 THW/front gap 更低、decel/jerk 更高，则 B 呈现更贴近跟车与更急制动风格。
+
+### E2. Lead Vehicle Braking Response
+
+- **Task column**：`task_lead_brake_response`
+- **Positive / negative label**：`lead_brake_response` / `no_lead_brake_response`
+- **Goal**：当前车刹车时比较 reaction delay、safety margin、braking intensity 与 comfort。
+- **Detector**：front vehicle 有效；front vehicle 出现显著减速；front gap / THW 有效。若 raw lead acceleration 不可用，可用 front closing-rate derivative 作 proxy，并记录 warning / detector strength。
+- **Metrics**：
+  - `lead_brake_front_decel_start_time`
+  - `lead_brake_ego_brake_start_time`
+  - `lead_brake_reaction_delay`
+  - `lead_brake_min_ttc_after_lead_brake`
+  - `lead_brake_min_thw_after_lead_brake`
+  - `lead_brake_peak_decel_after_lead_brake`
+  - `lead_brake_max_jerk_after_lead_brake`
+  - `lead_brake_speed_drop_after_lead_brake`
+  - `lead_brake_late_response_score`
+- **Interpretation**：若 B 反应更晚、TTC/THW 更低且 decel/jerk 更强，则 B 在 lead-braking response 中更不提前预判且舒适性更差。
+
+### E3. Queue Approach / Stopped-traffic Approach
+
+- **Task column**：`task_queue_approach`
+- **Positive / negative label**：`queue_approach` / `no_queue_approach`
+- **Goal**：接近慢行/停车队列时比较 early-vs-late braking、final gap 与 smoothness。
+- **Detector**：front vehicle 存在；front vehicle speed 低或接近 0；ego 从较高速度接近。若 front speed 不可用，可用 front gap、THW 与 closing-rate 作 conservative proxy。
+- **Metrics**：
+  - `queue_distance_when_start_decel`
+  - `queue_time_to_stop`
+  - `queue_final_front_gap`
+  - `queue_peak_decel`
+  - `queue_rms_jerk`
+  - `queue_stop_smoothness_score`
+  - `queue_creep_after_stop_score`
+- **Interpretation**：若 B 开始减速更晚、final gap 更短、peak decel 与 jerk 更高，则 B 的 queue approach 更晚且更急。
+
+### E4. Lane Change
+
+- **Task column**：`task_lane_change`
+- **Positive / negative label**：`lane_change` / `no_lane_change`
+- **Goal**：在 lane-change events 下比较 steering sharpness、lateral smoothness 与 gap acceptance。
+- **Detector**：lateral displacement / lane-change count proxy 为正，或 yaw / curvature / heading change / lateral speed 较高。
+- **Metrics**：
+  - `lc_rms_yaw_rate`
+  - `lc_rms_curvature`
+  - `lc_heading_change_total`
+  - `lc_max_lateral_speed`
+  - `lc_rms_lateral_accel`
+  - `lc_duration`
+  - `lc_oscillation_score`
+  - `lc_target_front_gap_min`
+  - `lc_target_rear_gap_min`
+  - `lc_gap_acceptance_score`
+  - `lc_sharpness_score`
+- **Interpretation**：如果 BDD 高且 B 的 yaw/curvature/lateral accel 更高、target-lane gap 更小，则 B 的变道更 sharp 且更 assertive。
+
+### E5. Cut-in Response
+
+- **Task column**：`task_cutin_response`
+- **Positive / negative label**：`cutin_response` / `no_cutin_response`
+- **Goal**：其他车辆 cut in 时比较 response delay、braking timing、safety margin 与 comfort。
+- **Detector**：neighbor 从 side/front-side 转入 front；或 front gap 突然下降且出现新 front vehicle。优先使用 `neighbor_seq.npy` 与 `neighbor_slot_ids.npy`；如果 slot IDs 不可用，使用 conservative proxy 并写 warning。
+- **Metrics**：
+  - `cutin_gap_initial`
+  - `cutin_gap_min`
+  - `cutin_min_ttc`
+  - `cutin_reaction_delay_to_brake`
+  - `cutin_peak_decel_after_cutin`
+  - `cutin_jerk_after_cutin`
+  - `cutin_speed_drop_after_cutin`
+  - `cutin_yielding_response_score`
+  - `cutin_late_response_score`
+- **Interpretation**：若 B reaction delay 更长、min TTC 更低、peak decel/jerk 更高，则 B 对 cut-in 响应更晚且更突兀。
+
+### E6. Overtake / Passing Opportunity and Execution
+
+- **Task columns**：`task_overtake_opportunity` 与 `task_overtake_executed`
+- **Positive / negative labels**：
+  - `overtake_opportunity` / `no_overtake_opportunity`
+  - `overtake_executed` / `no_overtake_executed`
+- **Goal**：在 overtake opportunity 下比较 passing willingness 与 acceleration/braking aggressiveness。
+- **Detector**：opportunity positive 要求 front vehicle present 且更慢、front gap 不太远、adjacent lane/context 可用；execution positive 要求 opportunity 存在且 ego 有 lane-change-like / passing-like maneuver，或加速并绕过慢车。
+- **Metrics**：
+  - `overtake_opportunity_score`
+  - `overtake_execution_score`
+  - `overtake_execution_rate_proxy`
+  - `overtake_time_to_initiate`
+  - `overtake_peak_accel`
+  - `overtake_peak_decel`
+  - `overtake_max_abs_jerk`
+  - `overtake_min_front_gap_before`
+  - `overtake_target_lane_front_gap`
+  - `overtake_target_lane_rear_gap`
+- **Interpretation**：若 B execution score 更高、time to initiate 更短、accel 更高且 accepted gap 更小，则 B 更愿意超车且更激进。
+
+### E7. Hesitation / Aborted Maneuver
+
+- **Task column**：`task_hesitation`
+- **Positive / negative label**：`hesitation` / `no_hesitation`
+- **Goal**：比较 driver/model 在 maneuvering 中是否犹豫或出现 abort-like 行为。
+- **Detector**：高 yaw / lateral velocity sign changes；lane-change duration 长；lane-change attempt without completion；speed/yaw/lateral motion oscillatory。
+- **Metrics**：
+  - `hesitation_score`
+  - `hesitation_lc_duration`
+  - `hesitation_yaw_sign_change_count`
+  - `hesitation_lateral_velocity_sign_change_count`
+  - `hesitation_lc_oscillation_score`
+  - `hesitation_abort_like_score`
+  - `hesitation_speed_drop`
+- **Interpretation**：若 BDD 高且 B oscillation 更高、duration 更长、abort-like score 更高，则 B 更犹豫/更不果断。
+
+### E8. Yield Conflict / Interaction Assertiveness
+
+- **Task column**：`task_yield_conflict`
+- **Positive / negative label**：`yield_conflict` / `no_yield_conflict`
+- **Goal**：比较 driver/model 在 interaction pressure 下更倾向 yield 还是 compete。
+- **Detector**：small front/side/rear gaps；存在 interaction pressure；side/front vehicle closing；ego 在 conflict 下保持速度或加速。
+- **Metrics**：
+  - `yield_conflict_score`
+  - `yielding_score`
+  - `assertiveness_score`
+  - `gap_pressure_score`
+  - `conflict_accel_score`
+  - `small_gap_speed_maintain_score`
+  - `rear_pressure_response_score`
+  - `courtesy_score`
+- **Interpretation**：若 B assertiveness 与 conflict accel 更高、yielding/courtesy 更低，并在小 gap 下保持速度，则 B 更 competitive / less yielding。
+
+## 4. 使用建议
+
+1. 先运行 `tools/stage6c_build_behavior_events_v2.py` 构建 task bins 与 metrics。
+2. 再运行 `tools/stage6c_task_conditioned_bdd_report.py` 分别分析 `negative_control_random`、`pseudo_agg_vs_cons` 与 `scene_confounding_control`。
+3. 解释结论时先读 task-level BDD，再读该 task 对应 metrics 的 B-A delta；不要把 outcome-style hard_brake / late_brake 当成主结论。
