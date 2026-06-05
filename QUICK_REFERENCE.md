@@ -2795,3 +2795,79 @@ python -m py_compile \
   tools/stage6b_build_behavior_event_bins.py \
   tools/stage6b_bin_bdd_report.py
 ```
+
+---
+
+# Stage 6C v2：Behavior-event task slices
+
+## 1. 命令
+
+生成 v2 behavior-event bins 与 task 内解释指标：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage5_context/shard_manifest.json \
+  --output_dir outputs/stage6c_behavior_events_v2 \
+  --overwrite
+```
+
+如果只想做无进度条的批处理运行：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage5_context/shard_manifest.json \
+  --output_dir outputs/stage6c_behavior_events_v2 \
+  --overwrite \
+  --no_progress
+```
+
+生成后，后续 task-conditioned BDD 应优先使用 `behavior_event_bins_v2.csv` 中的 primary task 正类切片，例如：
+
+```text
+following == positive
+lane_change == positive
+overtake == positive
+cutin_response == positive
+hesitation == positive
+yield_conflict == positive
+```
+
+建议在以下三类 split 上分别运行 task-conditioned BDD：
+
+```text
+negative_control_random
+pseudo_agg_vs_cons
+scene_confounding_control
+```
+
+## 2. 期望行为
+
+该命令会读取 `shard_manifest` 指向的 sharded dataset，并按 shard 顺序逐行处理 raw arrays。脚本优先使用每个 shard 内的：
+
+- `ego_seq.npy`；
+- `neighbor_seq.npy`；
+- `neighbor_slot_ids.npy`（存在时用于一致性/诊断）；
+- `meta.npy`；
+- `interaction_feat_style.npy`（存在时用于一致性检查；v2 不只依赖 33 个 aggregate features）。
+
+脚本会在输出目录生成：
+
+- `behavior_event_bins_v2.csv`：每个 event detector 的 `positive` / `negative` / `unknown` 标签；
+- `behavior_event_metrics_v2.csv`：每个 task 的 handcrafted style explanation metrics；
+- `behavior_event_schema_v2.json`：taxonomy、阈值、array layout 假设、event diagnostics、metric diagnostics；
+- `behavior_event_report_v2.md`：可读诊断报告；
+- `behavior_event_warnings_v2.json`：缺失文件、metadata mismatch、完成状态等 warning。
+
+脚本会保留行对齐字段：`global_row`、`shard_id`、`local_row`，并尽量透传 `scenario_id`、`target_agent_id`、`start`、`window_len`、`split`。脚本不会默认合并 `ego_seq.npy` / `neighbor_seq.npy` 等大数组；缺失或不可计算的 metric 会保留为 `NaN`，不会填 0。
+
+v2 的解释逻辑是：event bin 是可比较驾驶任务切片，BDD 在 task 内计算；`behavior_event_metrics_v2.csv` 中的 THW、gap、decel、jerk、sharpness、yielding/assertiveness 等指标只用于解释 drift 方向，不作为主评价对象。
+
+## 3. 通过标准
+
+- `behavior_event_bins_v2.csv` 行数必须等于所有 shard 的 window 总数，且 `global_row` 从 0 连续递增。
+- 每个 primary event 都必须只包含三种状态：`positive`、`negative`、`unknown`。
+- `behavior_event_schema_v2.json` 必须包含每个 event 的 `positive_ratio`、`unknown_ratio`、`n_positive`、`n_negative` 与 `degenerate` 标记。
+- 当某个 event 的 `positive_ratio < 0.01` 或 `positive_ratio > 0.95` 时，必须被标记为 `degenerate=true`，后续 BDD 报告不得把它当成稳定结论。
+- `behavior_event_metrics_v2.csv` 不得用 0 伪造缺失指标；无法计算的 metric 应为 `NaN`。
+- `behavior_event_schema_v2.json` 必须包含 metric diagnostics：`valid_count`、`valid_rate`、`p01`、`p50`、`p99`、`min`、`max`。
+- 主报告应强调 exposure/task-conditioned BDD，而不是 outcome bins；handcrafted metrics 只解释 drift 方向。

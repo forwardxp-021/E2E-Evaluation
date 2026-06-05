@@ -152,3 +152,22 @@ Stage 6C adds a new diagnosis layer after Stage 6A/6B. It does not rewrite the S
 `exposure_*` bins can be considered for future dynamic matching/control. `outcome_*` bins should primarily be used for reporting and localization because they may directly encode behavior style. Embedding-based BDD remains the unified behavior distribution measurement layer, while event-specific handcrafted metrics provide semantic diagnosis of the detected drift.
 
 Implementation details and commands are documented in `docs/stage6c_dynamic_interaction_event_design.md` and `QUICK_REFERENCE.md`.
+
+## 16. Stage 6C behavior-event taxonomy v2 更新
+
+Stage 6C v2 将 behavior-event bin 明确定义为 **task slice / comparable driving context**，用于在相同驾驶任务内计算 task-conditioned BDD。主评价对象是 embedding distribution difference within task，而不是 outcome bins。
+
+新增设计文档：`docs/stage6c_behavior_event_taxonomy_v2.md`。
+
+新增构建脚本：`tools/stage6c_build_behavior_events_v2.py`。
+
+v2 primary task slices：
+
+- following / car-following；
+- lane change；
+- overtake / passing；
+- cut-in response；
+- hesitation / aborted maneuver；
+- yield conflict / interaction assertiveness。
+
+后续 `negative_control_random`、`pseudo_agg_vs_cons`、`scene_confounding_control` 的 Stage 6C 报告应优先写 task-conditioned BDD 结论；THW、gap、decel、jerk、sharpness、yielding/assertiveness 等 handcrafted metrics 只作为漂移方向解释层。
