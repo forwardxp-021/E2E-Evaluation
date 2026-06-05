@@ -103,9 +103,10 @@ def build_bins(X, meta, resolver, progress_enabled=True):
     if f["front_rel_speed"] is not None:
         slower_front = np.isfinite(f["front_rel_speed"]) & (f["front_rel_speed"] < np.nanmedian(f["front_rel_speed"]))
     lateral_context = combine_or([gt_zero(f["lane_change_count_proxy"]), high_mask(f["rms_yaw_rate"], 0.67)], n)
-    overtake_opp = combine_and([front_present, combine_or([slower_front, high_mask(f["front_pressure_score"], 0.67)], n), ego_speed_ok], n)
-    if lateral_context is not None and overtake_opp is not None:
-        overtake_opp = overtake_opp | (overtake_opp & lateral_context)
+    # First-pass proxy: an overtake opportunity requires a front vehicle and enough ego speed;
+    # lateral context is only supporting evidence together with slower-front/front-pressure cues.
+    overtake_support = combine_or([slower_front, high_mask(f["front_pressure_score"], 0.67), lateral_context], n)
+    overtake_opp = combine_and([front_present, ego_speed_ok, overtake_support], n)
 
     dense = combine_or([
         high_mask(f["neighbor_count"], 0.67),
@@ -203,7 +204,7 @@ def main(args):
     out.mkdir(parents=True, exist_ok=True)
 
     progress_enabled = not args.no_progress
-    X, meta, total_shards = load_feature_rows(args.shard_manifest, progress_enabled=progress_enabled)
+    X, meta, total_shards = load_feature_rows(args.shard_manifest, progress_enabled=progress_enabled, include_shard_metadata=True)
     names = load_schema_names(args.feature_schema_path)
     if X.shape[1] != len(names):
         raise ValueError(f"feature shape/schema mismatch: interaction_feat_style dim={X.shape[1]}, schema names={len(names)}")
@@ -212,17 +213,40 @@ def main(args):
 
     df.to_csv(out / "dynamic_event_bins.csv", index=False)
     np.save(out / "dynamic_event_bins.npy", df.to_records(index=False))
+    metadata_info = meta.attrs.get("shard_metadata", {})
+    metadata_columns = [c for c in metadata_info.get("safe_metadata_columns", []) if c in df.columns]
     schema = {
         "description": "Stage 6C row-aligned dynamic interaction exposure bins and behavior outcome bins.",
         "row_alignment": "global_row is zero-based across shard_manifest order; local_row is zero-based within shard_id.",
         "exposure_columns": [s[0] for s in specs if s[0].startswith("exposure_")],
         "outcome_columns": [s[0] for s in specs if s[0].startswith("outcome_")],
+        "metadata_columns": metadata_columns,
         "columns": df.columns.tolist(),
     }
     write_json(out / "dynamic_event_bin_schema.json", schema)
+    count_cols = [s[0] for s in specs]
+    counts = {c: df[c].value_counts(dropna=False).to_dict() for c in count_cols}
+    distribution_warnings = []
+    for c in count_cols:
+        series = df[c].fillna("unknown")
+        value_counts = series.value_counts(dropna=False).to_dict()
+        unknown_count = int((series == "unknown").sum())
+        positive_label = next((spec[2] for spec in specs if spec[0] == c), None)
+        positive_count = int((series == positive_label).sum()) if positive_label is not None else 0
+        positive_ratio = float(positive_count / len(series)) if len(series) else 0.0
+        if len(series) and unknown_count == len(series):
+            distribution_warnings.append({"event_key": c, "warning": "all_rows_unknown", "value_counts": value_counts})
+        if positive_count < 100:
+            distribution_warnings.append({"event_key": c, "warning": "positive_label_count_below_100", "positive_count": positive_count, "positive_ratio": positive_ratio, "value_counts": value_counts})
+        if positive_ratio > 0.95 or positive_ratio < 0.01:
+            distribution_warnings.append({"event_key": c, "warning": "positive_label_ratio_degenerate", "positive_count": positive_count, "positive_ratio": positive_ratio, "value_counts": value_counts})
     warnings = {
         "resolved_features": resolver.resolved,
         "missing_feature_aliases": resolver.missing,
+        "metadata_loaded_shards": metadata_info.get("metadata_loaded_shards", []),
+        "metadata_missing_shards": metadata_info.get("metadata_missing_shards", []),
+        "metadata_warnings": metadata_info.get("metadata_warnings", []),
+        "distribution_warnings": distribution_warnings,
         "optional_inputs": {
             "odd_bins_path": args.odd_bins_path,
             "behavior_bins_path": args.behavior_bins_path,
@@ -230,12 +254,12 @@ def main(args):
         },
     }
     write_json(out / "dynamic_event_bin_warnings.json", warnings)
-    count_cols = [s[0] for s in specs]
-    counts = {c: df[c].value_counts(dropna=False).to_dict() for c in count_cols}
     report = "# Stage 6C dynamic event bins\n\n"
     report += f"- total shards: {total_shards}\n- total rows: {len(df)}\n- feature dim: {X.shape[1]}\n- runtime seconds: {time.time() - t0:.3f}\n\n"
-    report += "## 设计边界\n\n- exposure_* 表示动态交互暴露，可用于后续 matching/control 的候选变量。\n- outcome_* 表示行为结果/风格，主要用于报告和定位，不应被当作纯场景控制变量。\n- 缺失代理特征时输出 `unknown`，不伪造分箱。\n\n"
+    report += "## 设计边界\n\n- exposure_* 表示动态交互暴露，可用于后续 matching/control 的候选变量。\n- outcome_* 表示行为结果/风格，主要用于报告和定位，不应被当作纯场景控制变量。\n- overtake opportunity 是代理分箱：必须有前车与足够自车速度，slower_front / high_front_pressure / lateral_context 任一作为支持证据；lateral_context 不单独决定机会。\n- 缺失代理特征时输出 `unknown`，不伪造分箱。\n\n"
     report += "## 分箱计数\n\n```json\n" + __import__("json").dumps(counts, ensure_ascii=False, indent=2) + "\n```\n"
+    report += "\n## 分箱退化告警\n\n```json\n" + __import__("json").dumps(distribution_warnings, ensure_ascii=False, indent=2) + "\n```\n"
+    report += "\n## metadata 透传摘要\n\n```json\n" + __import__("json").dumps({"metadata_columns": metadata_columns, "metadata_loaded_shards": metadata_info.get("metadata_loaded_shards", []), "metadata_missing_shards": metadata_info.get("metadata_missing_shards", [])}, ensure_ascii=False, indent=2) + "\n```\n"
     report += "\n## 缺失特征摘要\n\n```json\n" + __import__("json").dumps(resolver.missing, ensure_ascii=False, indent=2) + "\n```\n"
     (out / "dynamic_event_bin_report.md").write_text(report, encoding="utf-8")
 

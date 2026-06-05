@@ -15,7 +15,7 @@ import pandas as pd
 from tools.stage6b_compare_baselines import mmd_with_stats
 from tools.stage6c_common import iter_progress, load_embeddings, load_schema_names, write_json
 
-DEFAULT_EVENT_KEYS = [
+EXPOSURE_EVENT_KEYS = [
     "exposure_following",
     "exposure_cut_in",
     "exposure_overtake_opportunity",
@@ -25,6 +25,17 @@ DEFAULT_EVENT_KEYS = [
     "exposure_gap_pressure",
     "exposure_yield_conflict",
     "exposure_free_cruising",
+]
+
+OUTCOME_EVENT_KEYS = [
+    "outcome_ego_lane_change",
+    "outcome_overtake_executed",
+    "outcome_hard_brake",
+    "outcome_late_brake",
+    "outcome_hesitation",
+    "outcome_assertive_interaction",
+    "outcome_stop_go",
+    "outcome_lateral_unstable",
 ]
 
 EVENT_METRIC_PREFIXES = {
@@ -37,7 +48,25 @@ EVENT_METRIC_PREFIXES = {
     "exposure_gap_pressure": ["gap_pressure_score", "assertiveness_score", "small_gap_speed_maintain_score", "hard_brake_score"],
     "exposure_yield_conflict": ["yielding_score", "assertiveness_score", "conflict_accel_score", "gap_pressure_score"],
     "exposure_free_cruising": ["cruise_"],
+    "outcome_ego_lane_change": ["lc_", "gap_pressure_score", "assertiveness_score"],
+    "outcome_overtake_executed": ["overtake_", "lc_", "assertiveness_score", "gap_pressure_score"],
+    "outcome_hard_brake": ["hard_brake_score", "peak_decel", "jerk_p95", "max_abs_jerk", "brake_comfort_score", "following_", "gap_pressure_score"],
+    "outcome_late_brake": ["hard_brake_score", "peak_decel", "jerk_p95", "max_abs_jerk", "cutin_", "following_min_thw", "following_min_front_distance", "gap_pressure_score"],
+    "outcome_hesitation": ["hesitation_score", "lc_duration_proxy", "yaw_oscillation_proxy", "speed_oscillation_proxy", "abort_like_proxy", "lc_"],
+    "outcome_assertive_interaction": ["assertiveness_score", "conflict_accel_score", "small_gap_speed_maintain_score", "gap_pressure_score", "yielding_score"],
+    "outcome_stop_go": ["hard_brake_score", "peak_decel", "jerk_p95", "speed_oscillation_proxy", "cruise_speed_std", "brake_comfort_score"],
+    "outcome_lateral_unstable": ["lc_", "cruise_yaw_rate", "lc_lateral_sharpness_score", "yaw_oscillation_proxy"],
 }
+
+
+def event_keys_from_scope(event_scope):
+    if event_scope == "exposure":
+        return list(EXPOSURE_EVENT_KEYS)
+    if event_scope == "outcome":
+        return list(OUTCOME_EVENT_KEYS)
+    if event_scope == "all":
+        return list(EXPOSURE_EVENT_KEYS) + list(OUTCOME_EVENT_KEYS)
+    raise ValueError(f"Unsupported event_scope: {event_scope}")
 
 
 def metric_columns_for(event_key, metrics_df):
@@ -78,6 +107,30 @@ def interpretation_for_delta(event_key, summary, deltas):
             text.append("Model B is more assertive under interaction pressure.")
     if event_key == "exposure_free_cruising" and float(summary.get("bdd_mmd", np.nan)) < 0.01:
         text.append("Basic cruising behavior remains stable; drift is concentrated in interaction events.")
+    if event_key == "outcome_ego_lane_change":
+        if (delta("lc_rms_yaw_rate") > 0 or delta("lc_lateral_sharpness_score") > 0) and (delta("lc_duration_proxy") < 0 or delta("lc_min_rear_gap") < 0 or delta("lc_min_front_gap") < 0):
+            text.append("Model B performs sharper and more assertive lane changes with smaller accepted gaps.")
+    elif event_key == "outcome_overtake_executed":
+        if delta("overtake_execution_score") > 0 and delta("overtake_peak_accel") > 0 and delta("overtake_jerk") > 0:
+            text.append("Model B is more willing to overtake and accelerates more strongly during overtaking.")
+    elif event_key == "outcome_hard_brake":
+        if delta("peak_decel") > 0 and (delta("jerk_p95") > 0 or delta("max_abs_jerk") > 0):
+            text.append("Model B shows stronger or less comfortable braking events.")
+    elif event_key == "outcome_late_brake":
+        if delta("peak_decel") > 0 and (delta("following_min_thw") < 0 or delta("following_min_front_distance") < 0 or delta("cutin_min_ttc_proxy") < 0):
+            text.append("Model B tends to brake later under smaller margins, resulting in stronger braking.")
+    elif event_key == "outcome_hesitation":
+        if delta("hesitation_score") > 0 and delta("lc_duration_proxy") > 0 and delta("yaw_oscillation_proxy") > 0 and delta("speed_oscillation_proxy") > 0:
+            text.append("Model B shows more hesitation or unstable decision-making.")
+    elif event_key == "outcome_assertive_interaction":
+        if delta("assertiveness_score") > 0 and delta("conflict_accel_score") > 0 and delta("yielding_score") < 0 and delta("gap_pressure_score") > 0:
+            text.append("Model B is more assertive under interaction pressure.")
+    elif event_key == "outcome_stop_go":
+        if delta("jerk_p95") > 0 and delta("speed_oscillation_proxy") > 0 and delta("peak_decel") > 0:
+            text.append("Model B is less smooth in stop-and-go behavior.")
+    elif event_key == "outcome_lateral_unstable":
+        if delta("lc_lateral_sharpness_score") > 0 and delta("cruise_yaw_rate") > 0 and delta("yaw_oscillation_proxy") > 0:
+            text.append("Model B has less stable lateral motion.")
     if not text:
         bdd = summary.get("bdd_mmd", np.nan)
         if np.isfinite(bdd):
@@ -135,8 +188,10 @@ def top_cases_for_event(event_key, event_value, ai, bi, emb, metrics, bins, top_
                 "shard_id": int(m.get("shard_id", -1)) if hasattr(m, "get") else -1,
                 "local_row": int(m.get("local_row", -1)) if hasattr(m, "get") else -1,
             }
-            if hasattr(m, "get") and "scenario_id" in m:
-                row["scenario_id"] = m.get("scenario_id")
+            if hasattr(m, "get"):
+                for meta_col in ["scenario_id", "target_agent_id", "start", "window_len", "split"]:
+                    if meta_col in m:
+                        row[meta_col] = m.get(meta_col)
             rows.append(row)
     return rows
 
@@ -196,12 +251,21 @@ def main(args):
     if not np.array_equal(metrics["global_row"].to_numpy(), emb_meta["global_row"].to_numpy()):
         raise ValueError("event_style_metrics_path is not row-aligned with embedding global_row order")
 
-    event_keys = [x.strip() for x in args.event_keys.split(",") if x.strip()] if args.event_keys else DEFAULT_EVENT_KEYS
+    event_keys = [x.strip() for x in args.event_keys.split(",") if x.strip()] if args.event_keys else event_keys_from_scope(args.event_scope)
     missing_keys = [k for k in event_keys if k not in bins.columns]
     if missing_keys:
         raise ValueError(f"Requested event_keys missing from dynamic_event_bins_path: {missing_keys}")
 
-    warnings = {"skipped_bins": [], "plot_warning": None}
+    warnings = {
+        "event_scope": args.event_scope,
+        "event_keys_used": event_keys,
+        "n_A_total": int(len(a_idx)),
+        "n_B_total": int(len(b_idx)),
+        "total_event_bins_evaluated": 0,
+        "total_event_bins_skipped": 0,
+        "skipped_bins": [],
+        "plot_warning": None,
+    }
     bdd_rows = []
     delta_rows = []
     top_rows = []
@@ -210,11 +274,13 @@ def main(args):
     for key in iter_progress(event_keys, enabled=progress_enabled, desc="computing event BDD", unit="event"):
         values = [v for v in bins[key].dropna().unique().tolist() if v != "unknown"]
         for val in iter_progress(values, enabled=progress_enabled, desc=f"{key} values", unit="value", leave=False):
+            warnings["total_event_bins_evaluated"] += 1
             event_rows = bins.loc[bins[key] == val, "global_row"].to_numpy(dtype=int)
             ai = np.intersect1d(a_idx, event_rows, assume_unique=False)
             bi = np.intersect1d(b_idx, event_rows, assume_unique=False)
             if len(ai) < args.min_bin_size or len(bi) < args.min_bin_size:
                 warnings["skipped_bins"].append({"event_key": key, "event_value": val, "n_A": int(len(ai)), "n_B": int(len(bi)), "reason": "below_min_bin_size"})
+                warnings["total_event_bins_skipped"] += 1
                 continue
             st = mmd_with_stats(emb[ai], emb[bi], rng, args.num_bootstrap, args.num_permutation, args.max_mmd_samples)
             bdd_row = {
@@ -266,21 +332,43 @@ def main(args):
 
     bdd_df = pd.DataFrame(bdd_rows, columns=["event_key", "event_value", "n_A", "n_B", "bdd_mmd", "ci95_low", "ci95_high", "p_value", "effect_size", "interpretation", "warnings"])
     delta_df = pd.DataFrame(delta_rows, columns=["event_key", "event_value", "metric_name", "n_A_valid", "n_B_valid", "mean_A", "mean_B", "delta_B_minus_A", "relative_delta_percent", "direction_label", "interpretation"])
-    top_df = pd.DataFrame(top_rows)
+    top_case_columns = [
+        "global_row",
+        "source_group",
+        "event_key",
+        "event_value",
+        "embedding_distance_to_opposite_centroid",
+        "dominant_style_metrics",
+        "shard_id",
+        "local_row",
+    ] + [c for c in ["scenario_id", "target_agent_id", "start", "window_len", "split"] if c in bins.columns]
+    top_df = pd.DataFrame(top_rows, columns=top_case_columns)
     bdd_df.to_csv(out / "event_bdd_summary.csv", index=False)
     delta_df.to_csv(out / "event_style_delta.csv", index=False)
     top_df.to_csv(out / "top_event_drift_cases.csv", index=False)
     warnings["plot_warning"] = maybe_plot(out, bdd_df, delta_df)
     write_json(out / "warnings.json", warnings)
 
-    lines = ["# Stage 6C event style report", "", f"- n_A total: {len(a_idx)}", f"- n_B total: {len(b_idx)}", f"- events requested: {', '.join(event_keys)}", f"- runtime seconds: {time.time() - t0:.3f}", ""]
-    lines += ["## Human-readable conclusions", ""]
+    lines = ["# Stage 6C event style report", "", f"- event_scope: {args.event_scope}", f"- n_A total: {len(a_idx)}", f"- n_B total: {len(b_idx)}", f"- events requested: {', '.join(event_keys)}", f"- evaluated bins: {warnings['total_event_bins_evaluated']}", f"- skipped bins: {warnings['total_event_bins_skipped']}", f"- runtime seconds: {time.time() - t0:.3f}", ""]
+    lines += ["## Top BDD events", ""]
     if bdd_df.empty:
         lines.append("No event bin satisfied the min_bin_size requirement; inspect warnings.json for skipped bins.")
     else:
         for r in bdd_df.sort_values("bdd_mmd", ascending=False).head(20).itertuples():
             lines.append(f"- `{r.event_key}={r.event_value}`: BDD={r.bdd_mmd:.6g}, n_A={r.n_A}, n_B={r.n_B}, p={r.p_value:.4g}. {r.interpretation}")
-    lines += ["", "## Interpretation rule", "", "Embedding-based BDD provides a unified behavior distribution metric across heterogeneous driving events, while event-specific features provide semantic diagnosis of the detected drift.", "", "Exposure bins are candidates for dynamic matching/control. Outcome bins should mainly be used for reporting/localization rather than pure scenario control."]
+    lines += ["", "## Top style delta metrics", ""]
+    if delta_df.empty:
+        lines.append("No metric deltas were computed.")
+    else:
+        for r in delta_df.reindex(delta_df["delta_B_minus_A"].abs().sort_values(ascending=False).index).head(20).itertuples():
+            lines.append(f"- `{r.event_key}={r.event_value}` / `{r.metric_name}`: mean_A={r.mean_A:.6g}, mean_B={r.mean_B:.6g}, delta={r.delta_B_minus_A:.6g} ({r.direction_label}).")
+    lines += ["", "## Skipped bin summary", ""]
+    if warnings["skipped_bins"]:
+        for item in warnings["skipped_bins"][:50]:
+            lines.append(f"- `{item['event_key']}={item['event_value']}` skipped: n_A={item['n_A']}, n_B={item['n_B']}, reason={item['reason']}.")
+    else:
+        lines.append("No bins were skipped by min_bin_size.")
+    lines += ["", "## Interpretation rule", "", "Embedding-based BDD provides a unified behavior distribution metric across heterogeneous driving events, while event-specific features provide semantic diagnosis of the detected drift.", "", "Exposure bins can be used for dynamic matching/control because they describe interaction conditions. Outcome bins are for localization/reporting because they describe behavior results and should not be used as pure scenario controls."]
     (out / "event_report_card.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -294,7 +382,8 @@ if __name__ == "__main__":
     p.add_argument("--dynamic_event_bins_path", required=True)
     p.add_argument("--event_style_metrics_path", required=True)
     p.add_argument("--output_dir", required=True)
-    p.add_argument("--event_keys")
+    p.add_argument("--event_keys", help="Comma-separated explicit event columns. Overrides --event_scope when provided.")
+    p.add_argument("--event_scope", choices=["exposure", "outcome", "all"], default="all", help="Default event set to report when --event_keys is not provided.")
     p.add_argument("--num_bootstrap", type=int, default=50)
     p.add_argument("--num_permutation", type=int, default=100)
     p.add_argument("--max_mmd_samples", type=int, default=2000)

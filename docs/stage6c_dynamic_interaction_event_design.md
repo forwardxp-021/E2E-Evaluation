@@ -98,7 +98,7 @@ Event-specific features then explain the BDD direction.
 - `dynamic_event_bin_report.md`
 - `dynamic_event_bin_warnings.json`
 
-行对齐规则：`global_row` 按 `shard_manifest.json` 的 shard 顺序从 0 开始递增，`local_row` 是 shard 内行号。
+行对齐规则：`global_row` 按 `shard_manifest.json` 的 shard 顺序从 0 开始递增，`local_row` 是 shard 内行号。构建脚本会尝试从每个 shard 目录按 `metadata.csv`、`meta.csv`、`meta.npy` 的顺序透传安全 metadata 字段；如果行数匹配，`dynamic_event_bins.csv` 可额外包含 `scenario_id`、`target_agent_id`、`start`、`window_len`、`split`、`assignment_mode`、`lane_assignment_success`、`fallback_used`、`lane_context_quality`。metadata 缺失或行数不匹配不会导致默认失败，但会写入 `dynamic_event_bin_warnings.json`。
 
 ### 4.2 Event style metrics
 
@@ -112,7 +112,7 @@ Event-specific features then explain the BDD direction.
 - `event_style_metric_report.md`
 - `event_style_metric_warnings.json`
 
-缺失代理特征时对应 metric 为 `NaN`，不会静默填 0。
+缺失代理特征时对应 metric 为 `NaN`，不会静默填 0。脚本会为每个 metric 写出 `valid_count` 与 `valid_rate`；当 `valid_rate < 0.01` 时写入 `low_valid_rate` 告警，便于在本地调试前发现几乎不可用的解释指标。
 
 ### 4.3 Event style report
 
@@ -133,7 +133,7 @@ Event-specific features then explain the BDD direction.
 |---|---|---|---|
 | `exposure_following` | `following` | `not_following` | THW、front distance、front pressure、front relative speed |
 | `exposure_cut_in` | `cut_in_exposure` | `no_cut_in_exposure` | cut-in count proxy、front pressure、front/side gap、yielding proxy |
-| `exposure_overtake_opportunity` | `overtake_opportunity` | `no_overtake_opportunity` | front vehicle present、front relative speed、ego speed、front pressure |
+| `exposure_overtake_opportunity` | `overtake_opportunity` | `no_overtake_opportunity` | front vehicle present、ego speed、slower front / high front pressure / lateral context 支持证据 |
 | `exposure_dense_traffic` | `dense_traffic` | `normal_traffic` | neighbor count、interaction density、front/side/rear gaps |
 | `exposure_front_pressure` | `high_front_pressure` | `low_front_pressure` | front pressure、front distance、THW、relative speed |
 | `exposure_side_pressure` | `high_side_pressure` | `low_side_pressure` | left/right front/rear min gap |
@@ -171,7 +171,17 @@ Stage 6C 第一版计算以下 metric group：
 - Hard braking / comfort：hard-brake score、peak decel、jerk、brake comfort；
 - Free cruising：speed/acc/jerk/yaw-rate proxy、stability score。
 
-## 8. 报告解释逻辑
+## 8. event_scope 与报告解释逻辑
+
+`tools/stage6c_event_style_report.py` 支持 `--event_scope {exposure,outcome,all}`：
+
+- `exposure`：只报告 9 个 `exposure_*` 动态交互暴露 bins，可用于分析 dynamic matching/control 候选变量；
+- `outcome`：只报告 8 个 `outcome_*` 行为结果 bins，用于定位 lane-change、overtake、hard/late brake、hesitation、assertive interaction、stop-go、lateral instability 等风格差异；
+- `all`：同时报告 exposure 与 outcome，是默认模式。
+
+如果显式传入 `--event_keys`，则以用户指定的逗号分隔事件列为准，并覆盖 `--event_scope`。`top_event_drift_cases.csv` 会从 `dynamic_event_bins.csv` 继承可用 metadata，至少保留 `global_row/shard_id/local_row`，如果可用会包含 `scenario_id`、`target_agent_id`、`start`、`window_len`、`split`，用于回查真实 shard case。
+
+### 8.1 报告解释逻辑
 
 `event_report_card.md` 会把 event-level BDD 与 metric delta 结合成自然语言结论。例如：
 
@@ -179,7 +189,19 @@ Stage 6C 第一版计算以下 metric group：
 - cut-in exposure 中，如果 B 的 min TTC 更低、peak decel 更高，则解释为 later reaction and harder braking；
 - lane-change / side-pressure 中，如果 yaw rate 更高、duration 更短、accepted gap 更小，则解释为 sharper and more assertive lane changes；
 - overtake opportunity 中，如果 execution score、peak accel、jerk 更高，则解释为更愿意 overtake 且加速更强；
-- free cruising 中如果 BDD 很低，则解释为基础巡航稳定，drift 集中在交互事件。
+- free cruising 中如果 BDD 很低，则解释为基础巡航稳定，drift 集中在交互事件；
+- outcome lane-change / overtake / hard-brake / late-brake / hesitation / assertive / stop-go / lateral-unstable 会使用对应 metric 前缀映射，只报告相关指标，避免 outcome 报告退化为所有 metrics 的噪声表。
+
+### 8.2 代理分箱与有效率告警
+
+Stage 6C event bins 是 proxy-based，不是人工标注。为了避免本地调试时误读退化分箱，`dynamic_event_bin_warnings.json` 与 `dynamic_event_bin_report.md` 会记录：
+
+- all rows unknown；
+- positive label count < 100；
+- positive label ratio > 0.95 或 < 0.01；
+- metadata_loaded_shards / metadata_missing_shards。
+
+`event_style_metric_warnings.json` 与 `event_style_metric_report.md` 会记录每个 metric 的 `valid_count`、`valid_rate`，并对 `valid_rate < 0.01` 标记 `low_valid_rate`。这些告警默认不失败，但必须在解释报告前检查。
 
 ## 9. 限制
 
