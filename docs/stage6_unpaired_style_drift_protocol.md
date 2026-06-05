@@ -140,3 +140,15 @@ category/feature 的职责是“在检测到漂移后解释方向”，而非替
 - scenario slicing 改为鲁棒三分位切片：
   - 代理特征支持 alias 扩展（含 `min_thw/thw_min/neighbor_valid_count`）；
   - 分位退化、单箱塌缩、样本不足会 warning 并跳过，不再伪造“全样本单切片”。
+
+## Stage 6C pointer: dynamic interaction exposure and event-specific style diagnosis
+
+Stage 6C adds a new diagnosis layer after Stage 6A/6B. It does not rewrite the Stage 6A unpaired BDD protocol and does not remove Stage 6B static ODD or coarse behavior-event outputs. The new layer separates:
+
+1. **Static Map ODD**: road geometry / HD-map context such as map complexity, lane count, curvature, crosswalk, and stop sign;
+2. **Dynamic Interaction Exposure**: traffic interaction conditions such as following pressure, cut-in exposure, overtake opportunity, dense traffic, front/side/gap pressure, and yielding conflict;
+3. **Behavior Outcome / Style**: what the driver or model did, such as ego lane change, hard braking, late braking, hesitation, assertive interaction, stop-go, and lateral instability.
+
+`exposure_*` bins can be considered for future dynamic matching/control. `outcome_*` bins should primarily be used for reporting and localization because they may directly encode behavior style. Embedding-based BDD remains the unified behavior distribution measurement layer, while event-specific handcrafted metrics provide semantic diagnosis of the detected drift.
+
+Implementation details and commands are documented in `docs/stage6c_dynamic_interaction_event_design.md` and `QUICK_REFERENCE.md`.

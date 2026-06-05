@@ -156,3 +156,7 @@ Map ODD bins and behavior-event bins should not be confused. Static ODD bins tes
 - cut-in and yielding bins are proxy definitions, not ground-truth event annotations.
 - several behavior-event bins are highly A/B imbalanced, so they should be interpreted as localization signals rather than causal proof.
 - dynamic interaction exposure matching should be developed in a later Stage 6C/6D.
+
+## Stage 6C pointer
+
+Static ODD control does not remove all dynamic interaction exposure confounding. Stage 6C introduces dynamic event diagnosis by separating static map ODD, dynamic interaction exposure, and behavior outcome/style, then reporting event-level BDD with event-specific style metric deltas.
