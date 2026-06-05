@@ -15,7 +15,7 @@ import pandas as pd
 from tools.stage6c_common import iter_progress, read_json, resolve_path, write_json
 
 EGO = {"x": 0, "y": 1, "vx": 2, "vy": 3, "heading": 4, "speed": 5, "accel": 6, "yaw_rate": 7}
-NEI = {"valid": 0, "distance": 5, "closing_rate": 8, "thw": 10}
+NEI = {"valid": 0, "distance": 5, "closing_rate": 8, "ttc": 9, "thw": 10, "speed": 11}
 SLOTS = {0: "front", 1: "left_front", 2: "left_rear", 3: "right_front", 4: "right_rear"}
 META_COLUMNS = ["scenario_id", "target_agent_id", "start", "window_len", "split"]
 TASK_SPECS = {
@@ -154,7 +154,16 @@ def load_optional_array(shard_dir: Path, name: str, rows: int, shard_id: int, wa
     if not path.exists():
         warnings.append({"warning": "optional_array_missing", "shard_id": int(shard_id), "path": str(path)})
         return None
-    arr = np.load(path, mmap_mode="r", allow_pickle=False)
+    if name == "neighbor_slot_ids.npy":
+        arr = np.load(path, allow_pickle=True)
+        warnings.append({
+            "warning": "neighbor_slot_ids_loaded_with_pickle",
+            "neighbor_slot_ids_loaded_with_pickle": True,
+            "shard_id": int(shard_id),
+            "path": str(path),
+        })
+    else:
+        arr = np.load(path, mmap_mode="r", allow_pickle=False)
     if arr.shape[0] != rows:
         raise ValueError(f"Row count mismatch in {path}: expected {rows}, got {arr.shape[0]}")
     return arr
@@ -223,8 +232,12 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     rf = slot_array(neighbor, 3)
     rr = slot_array(neighbor, 4)
     front_dist = neighbor_values(front, NEI["distance"])
+    front_ttc = neighbor_values(front, NEI["ttc"])
     front_thw = neighbor_values(front, NEI["thw"])
     front_closing = neighbor_values(front, NEI["closing_rate"])
+    front_speed = neighbor_values(front, NEI["speed"])
+    front_ttc_available = bool(front_ttc.size)
+    front_speed_available = bool(front_speed.size)
     front_valid = valid_ratio(front)
     front_dist_valid = safe_ratio(np.isfinite(front_dist)) if front_dist.size else np.nan
     front_thw_valid = safe_ratio(np.isfinite(front_thw)) if front_thw.size else np.nan
@@ -269,8 +282,8 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
             and (not np.isfinite(mean_speed) or mean_speed >= args.low_speed_threshold)
         )
 
-    lead_decel_proxy = np.diff(front_closing, prepend=front_closing[0]) / dt if front_closing.size else np.asarray([], dtype=float)
-    lead_decel_mask = np.isfinite(lead_decel_proxy) & (lead_decel_proxy <= args.lead_decel_threshold)
+    front_closing_derivative_proxy = np.diff(front_closing, prepend=front_closing[0]) / dt if front_closing.size else np.asarray([], dtype=float)
+    lead_decel_mask = np.isfinite(front_closing_derivative_proxy) & (front_closing_derivative_proxy <= args.lead_decel_threshold)
     lead_idx = first_index(lead_decel_mask)
     ego_brake_mask = np.isfinite(accel) & (accel <= args.ego_brake_threshold)
     ego_brake_idx = first_index(ego_brake_mask)
@@ -283,15 +296,21 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         reaction_delay = float((ego_brake_idx - lead_idx) * dt)
 
     low_front = np.isfinite(front_closing) & (front_closing > args.slower_front_closing_rate)
+    front_stopped = np.isfinite(front_speed) & (front_speed <= args.front_speed_low_threshold)
+    front_stopped_ratio = safe_ratio(front_stopped) if front_speed_available else np.nan
+    queue_strong_stopped_condition = bool(front_speed_available and front_stopped_ratio >= 0.2)
+    queue_proxy_condition = bool(safe_percentile(front_thw, 25) <= args.queue_thw_threshold or safe_ratio(low_front) >= 0.2)
     queue_positive = None
     if front_known:
-        strengths["task_queue_approach"] = "proxy"
+        strengths["task_queue_approach"] = "strong" if front_speed_available else "proxy"
         queue_positive = bool(
             front_valid >= args.min_valid_front_ratio
             and safe_min(front_dist) <= args.queue_front_gap_m
             and safe_mean(speed) >= args.low_speed_threshold
-            and (safe_percentile(front_thw, 25) <= args.queue_thw_threshold or safe_ratio(low_front) >= 0.2)
+            and (queue_strong_stopped_condition or queue_proxy_condition)
         )
+        if queue_positive and not queue_strong_stopped_condition:
+            strengths["task_queue_approach"] = "proxy"
 
     front_valid_bool = np.isfinite(front_dist)
     gap_drop = np.nan
@@ -299,8 +318,9 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         vals = front_dist[front_valid_bool]
         gap_drop = float(vals[0] - np.nanmin(vals))
     front_appears_late = bool(front_valid_bool.any() and not front_valid_bool[0] and np.nanmin(front_dist) <= args.cutin_max_gap_m)
-    if not slot_ids_available:
-        strengths["task_cutin_response"] = "weak_proxy"
+    # Current v2 cut-in response is a conservative front-gap appearance/drop proxy.
+    # Do not mark it strong unless a true side-to-front stable slot-ID transition detector is implemented.
+    strengths["task_cutin_response"] = "weak_proxy" if not slot_ids_available else "proxy"
     cutin_positive = None
     if front_known:
         cutin_positive = bool(front_appears_late or (np.isfinite(gap_drop) and gap_drop >= args.cutin_gap_drop_m and safe_min(front_dist) <= args.cutin_max_gap_m))
@@ -362,7 +382,7 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "front_decel_start_time": float(lead_idx * dt) if lead_idx is not None else np.nan,
         "ego_brake_start_time": float(ego_brake_idx * dt) if ego_brake_idx is not None else np.nan,
         "reaction_delay": reaction_delay,
-        "min_ttc_after_lead_brake": safe_min(after(lead_idx, front_thw)),
+        "min_ttc_after_lead_brake": safe_min(after(lead_idx, front_ttc)) if front_ttc_available else np.nan,
         "min_thw_after_lead_brake": safe_min(after(lead_idx, front_thw)),
         "peak_decel_after_lead_brake": max(0.0, -safe_min(after(lead_idx, accel))) if lead_idx is not None else np.nan,
         "max_jerk_after_lead_brake": safe_max(np.abs(after(lead_idx, jerk))),
@@ -377,6 +397,9 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "rms_jerk": rms(jerk),
         "stop_smoothness_score": nanmean_list([-peak_decel if np.isfinite(peak_decel) else np.nan, -rms(jerk) if np.isfinite(rms(jerk)) else np.nan]),
         "creep_after_stop_score": safe_mean(speed[speed <= args.front_speed_low_threshold]) if np.isfinite(speed).any() else np.nan,
+        "front_speed_min": safe_min(front_speed) if front_speed_available else np.nan,
+        "front_speed_mean": safe_mean(front_speed) if front_speed_available else np.nan,
+        "front_stopped_ratio": front_stopped_ratio,
     }))
     metrics.update(prefixed("lc", {
         "rms_yaw_rate": rms(yaw_rate),
@@ -394,7 +417,8 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     metrics.update(prefixed("cutin", {
         "gap_initial": front_dist[cutin_idx] if cutin_idx is not None and cutin_idx < len(front_dist) else np.nan,
         "gap_min": safe_min(front_dist) if cutin_positive else np.nan,
-        "min_ttc": safe_min(front_thw) if cutin_positive else np.nan,
+        "min_ttc": safe_min(front_ttc) if cutin_positive and front_ttc_available else np.nan,
+        "min_thw": safe_min(front_thw) if cutin_positive else np.nan,
         "reaction_delay_to_brake": cutin_delay,
         "peak_decel_after_cutin": max(0.0, -safe_min(after(cutin_idx, accel))) if cutin_idx is not None else np.nan,
         "jerk_after_cutin": rms(after(cutin_idx, jerk)),
@@ -555,6 +579,7 @@ def build(args):
     event_rows: List[Dict] = []
     metric_rows: List[Dict] = []
     strength_counts: Dict[str, Dict[str, int]] = {task: {} for task in TASK_SPECS}
+    emitted_warning_names = set()
     global_row = 0
 
     for shard_id, shard_info in enumerate(iter_progress(shard_entries, enabled=not args.no_progress, desc="building Stage 6C v2 events", unit="shard")):
@@ -574,6 +599,16 @@ def build(args):
             warnings.append({"warning": "raw_neighbor_missing_detectors_unknown_or_weak_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
         if slot_ids_arr is None:
             warnings.append({"warning": "neighbor_slot_ids_missing_cutin_uses_conservative_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
+        if "lead_brake_uses_front_closing_derivative_proxy" not in emitted_warning_names:
+            warnings.append({"warning": "lead_brake_uses_front_closing_derivative_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
+            emitted_warning_names.add("lead_brake_uses_front_closing_derivative_proxy")
+        if "cutin_true_slot_transition_not_implemented_using_gap_drop_proxy" not in emitted_warning_names:
+            warnings.append({"warning": "cutin_true_slot_transition_not_implemented_using_gap_drop_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path), "slot_ids_available": bool(slot_ids_arr is not None)})
+            emitted_warning_names.add("cutin_true_slot_transition_not_implemented_using_gap_drop_proxy")
+        if neighbor_arr is not None and (neighbor_arr.ndim < 4 or neighbor_arr.shape[-1] <= NEI["ttc"]):
+            warnings.append({"warning": "ttc_column_unavailable_metric_set_nan", "shard_id": int(shard_id), "shard_path": str(shard_path), "neighbor_seq_shape": list(neighbor_arr.shape)})
+        if neighbor_arr is None or neighbor_arr.ndim < 4 or neighbor_arr.shape[-1] <= NEI["speed"]:
+            warnings.append({"warning": "queue_approach_uses_gap_thw_closing_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path), "neighbor_seq_shape": list(neighbor_arr.shape) if neighbor_arr is not None else None})
         meta = load_meta_frame(shard_dir, rows, shard_id, warnings)
         for local_row in range(rows):
             neighbor_row = np.asarray(neighbor_arr[local_row]) if neighbor_arr is not None else None
@@ -581,7 +616,8 @@ def build(args):
             base = {"global_row": int(global_row), "shard_id": int(shard_id), "local_row": int(local_row)}
             for col in META_COLUMNS:
                 base[col] = meta.iloc[local_row][col]
-            event_rows.append({**base, **events})
+            strength_cols = {f"{task}_strength": strengths.get(task, "unknown") for task in TASK_SPECS}
+            event_rows.append({**base, **events, **strength_cols})
             metric_rows.append({**base, **metrics})
             for task, strength in strengths.items():
                 strength_counts[task][strength] = strength_counts[task].get(strength, 0) + 1
@@ -610,6 +646,15 @@ def build(args):
         "event_diagnostics": event_diag,
         "metric_diagnostics": metric_diag,
         "detector_strength_counts": strength_counts,
+        "detector_strength_columns": [f"{task}_strength" for task in TASK_SPECS],
+        "detector_strength_values": ["strong", "proxy", "weak_proxy", "unknown"],
+        "schema_notes": {
+            "neighbor_slot_ids_loaded_with_pickle": True,
+            "ttc_metrics_use_true_neighbor_seq_ttc_column_only": True,
+            "lead_brake_current_detector": "proxy_from_front_closing_derivative",
+            "cutin_current_detector": "front_gap_appearance_or_drop_proxy_no_slot_id_transition",
+            "queue_approach_uses_front_speed_when_available_else_gap_thw_closing_proxy": True,
+        },
         "raw_array_layout_assumptions": {"ego_seq": EGO, "neighbor_seq_slots": SLOTS, "neighbor_seq": NEI},
         "thresholds": vars(args),
     })

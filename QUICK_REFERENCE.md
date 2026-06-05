@@ -3007,3 +3007,11 @@ python tools/stage6c_task_conditioned_bdd_report.py \
 8. `negative_control_random` 不应出现系统性高 task BDD。
 9. `pseudo_agg_vs_cons` 应在 style-relevant tasks 中出现有意义的 task-conditioned BDD。
 10. `scene_confounding_control` 应揭示 dynamic task / exposure confounding patterns。
+
+## 4. Stage 6C v2 调试前 validation checklist
+
+1. `neighbor_slot_ids.npy` 可以成功加载；若该数组为 object dtype，构建脚本应在 `behavior_event_warnings_v2.json` / schema notes 中记录 `neighbor_slot_ids_loaded_with_pickle=true`。
+2. TTC metrics 只使用 `neighbor_seq.npy` 的真实 TTC column；如果 shard 缺少 TTC column，则 `lead_brake_min_ttc_after_lead_brake`、`cutin_min_ttc` 等写为 `NaN`，并记录 `ttc_column_unavailable_metric_set_nan`，绝不能把 THW 误标为 TTC。
+3. `behavior_event_bins_v2.csv` 必须包含每个 task 的 detector strength 列，例如 `task_following_strength`、`task_lead_brake_response_strength`、`task_queue_approach_strength`、`task_cutin_response_strength` 等。
+4. 解释 cut-in / lead-brake / queue BDD 前，必须先检查 `behavior_event_warnings_v2.json` 中的 `cutin_true_slot_transition_not_implemented_using_gap_drop_proxy`、`lead_brake_uses_front_closing_derivative_proxy`、`queue_approach_uses_gap_thw_closing_proxy` 等 warning。
+5. `task_bdd_summary.csv` 与 `task_report_card.md` 必须展示 `dominant_detector_strength` 和 `detector_strength_counts`；如果 dominant strength 是 `proxy` 或 `weak_proxy`，只能解释为 proxy detector 下的 task-conditioned BDD。
