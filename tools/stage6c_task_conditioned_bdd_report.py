@@ -85,6 +85,23 @@ def cohens_d(a, b) -> float:
     return float((np.mean(xb) - np.mean(xa)) / pooled)
 
 
+
+def detector_strength_summary(events_df: pd.DataFrame, task_key: str, pos_label: str) -> Dict[str, str]:
+    strength_col = f"{task_key}_strength"
+    if strength_col not in events_df.columns:
+        return {"dominant_detector_strength": "unknown", "detector_strength_counts": "unavailable", "proxy_fraction": np.nan}
+    pos_rows = events_df[events_df[task_key].astype(str) == pos_label]
+    if len(pos_rows) == 0:
+        return {"dominant_detector_strength": "unknown", "detector_strength_counts": "{}", "proxy_fraction": np.nan}
+    counts = pos_rows[strength_col].fillna("unknown").astype(str).value_counts().to_dict()
+    dominant = max(counts, key=counts.get) if counts else "unknown"
+    proxy_count = int(counts.get("proxy", 0) + counts.get("weak_proxy", 0))
+    return {
+        "dominant_detector_strength": dominant,
+        "detector_strength_counts": json.dumps({str(k): int(v) for k, v in counts.items()}, sort_keys=True),
+        "proxy_fraction": float(proxy_count / max(len(pos_rows), 1)),
+    }
+
 def task_validity(events_df: pd.DataFrame, task_key: str) -> Dict:
     pos, neg = TASK_SPECS[task_key]
     vals = events_df[task_key].astype(str)
@@ -185,9 +202,9 @@ def write_report(out: Path, bdd_df: pd.DataFrame, delta_df: pd.DataFrame, skippe
         "",
     ]
     if len(bdd_df):
-        lines.extend(["| task_key | task_value | n_A | n_B | BDD_MMD | CI95 | p_value | interpretation |", "|---|---|---:|---:|---:|---|---:|---|"])
+        lines.extend(["| task_key | task_value | detector_strength | detector_strength_counts | n_A | n_B | BDD_MMD | CI95 | p_value | interpretation |", "|---|---|---|---|---:|---:|---:|---|---:|---|"])
         for row in bdd_df.sort_values("bdd_mmd", ascending=False).itertuples():
-            lines.append(f"| {row.task_key} | {row.task_value} | {row.n_A} | {row.n_B} | {row.bdd_mmd:.6g} | [{row.ci95_low:.6g}, {row.ci95_high:.6g}] | {row.p_value:.6g} | {row.interpretation} |")
+            lines.append(f"| {row.task_key} | {row.task_value} | {row.dominant_detector_strength} | {row.detector_strength_counts} | {row.n_A} | {row.n_B} | {row.bdd_mmd:.6g} | [{row.ci95_low:.6g}, {row.ci95_high:.6g}] | {row.p_value:.6g} | {row.interpretation} |")
     else:
         lines.append("- No task passed the min_bin_size / validity filters.")
     lines.extend(["", "## Style metric explanation layer", ""])
@@ -261,6 +278,15 @@ def run(args):
             continue
         stats = mmd_with_stats(emb[ai], emb[bi], rng, args.num_bootstrap, args.num_permutation, args.max_mmd_samples)
         interp = "Task-conditioned BDD is computed within the same behavior-event slice; inspect task-specific metrics below for semantic drift direction."
+        strength_summary = detector_strength_summary(events_df, task_key, pos_label)
+        if strength_summary["dominant_detector_strength"] in {"proxy", "weak_proxy"} or (np.isfinite(strength_summary["proxy_fraction"]) and strength_summary["proxy_fraction"] > 0.5):
+            warnings.append({
+                "warning": "task_bdd_uses_proxy_detector",
+                "task_key": task_key,
+                "dominant_detector_strength": strength_summary["dominant_detector_strength"],
+                "detector_strength_counts": strength_summary["detector_strength_counts"],
+                "proxy_fraction": strength_summary["proxy_fraction"],
+            })
         bdd_rows.append({
             "task_key": task_key,
             "task_value": pos_label,
@@ -273,6 +299,8 @@ def run(args):
             "positive_count_total": validity["positive_count"],
             "positive_ratio_total": validity["positive_ratio"],
             "event_validity": validity["event_validity"],
+            "dominant_detector_strength": strength_summary["dominant_detector_strength"],
+            "detector_strength_counts": strength_summary["detector_strength_counts"],
             "interpretation": interp,
         })
 
