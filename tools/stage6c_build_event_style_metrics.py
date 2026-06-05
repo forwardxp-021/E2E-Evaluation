@@ -83,7 +83,7 @@ def build_metrics(X, dynamic_bins, meta, resolver, progress_enabled=True):
         robust_score(peak_accel, True),
     ], n)
     assertiveness_score = score_from_parts([
-        robust_score(gap_pressure_score, True),
+        gap_pressure_score,
         robust_score(f["ego_accel"], True),
         robust_score(f["speed_gain"], True),
         robust_score(f["yielding_score_proxy"], False),
@@ -135,8 +135,8 @@ def build_metrics(X, dynamic_bins, meta, resolver, progress_enabled=True):
         "yielding_score": f["yielding_score_proxy"],
         "gap_pressure_score": gap_pressure_score,
         "assertiveness_score": assertiveness_score,
-        "conflict_accel_score": score_from_parts([robust_score(gap_pressure_score, True), robust_score(f["ego_accel"], True)], n),
-        "small_gap_speed_maintain_score": score_from_parts([robust_score(gap_pressure_score, True), robust_score(f["ego_speed"], True)], n),
+        "conflict_accel_score": score_from_parts([gap_pressure_score, robust_score(f["ego_accel"], True)], n),
+        "small_gap_speed_maintain_score": score_from_parts([gap_pressure_score, robust_score(f["ego_speed"], True)], n),
         "hesitation_score": hesitation_score,
         "yaw_oscillation_proxy": f["yaw_rate_sign_changes"],
         "speed_oscillation_proxy": f["speed_oscillation"],
@@ -187,20 +187,39 @@ def main(args):
         "columns": df.columns.tolist(),
     })
     metric_valid_stats = {}
+    score_scale_warnings = []
     low_valid_rate_warnings = []
     for c in metric_cols:
-        valid_count = int(np.isfinite(df[c].to_numpy(dtype=float)).sum())
+        arr = df[c].to_numpy(dtype=float)
+        finite = arr[np.isfinite(arr)]
+        valid_count = int(len(finite))
         valid_rate = float(valid_count / len(df)) if len(df) else 0.0
-        metric_valid_stats[c] = {"valid_count": valid_count, "valid_rate": valid_rate}
+        if valid_count:
+            stats = {
+                "valid_count": valid_count,
+                "valid_rate": valid_rate,
+                "min": float(np.min(finite)),
+                "p01": float(np.quantile(finite, 0.01)),
+                "p50": float(np.quantile(finite, 0.50)),
+                "p99": float(np.quantile(finite, 0.99)),
+                "max": float(np.max(finite)),
+            }
+        else:
+            stats = {"valid_count": 0, "valid_rate": valid_rate, "min": float("nan"), "p01": float("nan"), "p50": float("nan"), "p99": float("nan"), "max": float("nan")}
+        metric_valid_stats[c] = stats
         if valid_rate < 0.01:
             low_valid_rate_warnings.append({"metric_name": c, "warning": "low_valid_rate", "valid_count": valid_count, "valid_rate": valid_rate})
+        if (np.isfinite(stats["p99"]) and abs(stats["p99"]) > 100) or (np.isfinite(stats["p01"]) and abs(stats["p01"]) > 100):
+            score_scale_warnings.append({"metric_name": c, "warning": "score_scale_exploded", "p01": stats["p01"], "p99": stats["p99"]})
     valid_counts = {c: stats["valid_count"] for c, stats in metric_valid_stats.items()}
     write_json(out / "event_style_metric_warnings.json", {
         "resolved_features": resolver.resolved,
         "missing_feature_aliases": resolver.missing,
         "unavailable_metrics": unavailable,
         "metric_valid_stats": metric_valid_stats,
+        "score_distribution_diagnostics": metric_valid_stats,
         "low_valid_rate_warnings": low_valid_rate_warnings,
+        "score_scale_warnings": score_scale_warnings,
     })
     report = "# Stage 6C event style metrics\n\n"
     report += f"- total shards: {total_shards}\n- total rows: {len(df)}\n- feature dim: {X.shape[1]}\n- runtime seconds: {time.time() - t0:.3f}\n\n"

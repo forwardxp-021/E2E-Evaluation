@@ -59,6 +59,23 @@ EVENT_METRIC_PREFIXES = {
 }
 
 
+def load_event_validity(dynamic_event_bins_path):
+    bins_path = Path(dynamic_event_bins_path)
+    schema_path = bins_path.with_name("dynamic_event_bin_schema.json")
+    warnings_path = bins_path.with_name("dynamic_event_bin_warnings.json")
+    event_validity = {}
+    event_distribution = {}
+    if schema_path.exists():
+        obj = json.loads(schema_path.read_text(encoding="utf-8"))
+        event_validity.update(obj.get("event_validity", {}))
+        event_distribution.update(obj.get("event_distribution", {}))
+    if warnings_path.exists():
+        obj = json.loads(warnings_path.read_text(encoding="utf-8"))
+        event_validity.update(obj.get("event_validity", {}))
+        event_distribution.update(obj.get("event_distribution", {}))
+    return event_validity, event_distribution
+
+
 def event_keys_from_scope(event_scope):
     if event_scope == "exposure":
         return list(EXPOSURE_EVENT_KEYS)
@@ -252,6 +269,8 @@ def main(args):
         raise ValueError("event_style_metrics_path is not row-aligned with embedding global_row order")
 
     event_keys = [x.strip() for x in args.event_keys.split(",") if x.strip()] if args.event_keys else event_keys_from_scope(args.event_scope)
+    event_validity, event_distribution = load_event_validity(args.dynamic_event_bins_path)
+    degenerate_requested = [k for k in event_keys if event_validity.get(k) == "degenerate"]
     missing_keys = [k for k in event_keys if k not in bins.columns]
     if missing_keys:
         raise ValueError(f"Requested event_keys missing from dynamic_event_bins_path: {missing_keys}")
@@ -264,6 +283,13 @@ def main(args):
         "total_event_bins_evaluated": 0,
         "total_event_bins_skipped": 0,
         "skipped_bins": [],
+        "skipped_small_bins": [],
+        "skipped_degenerate_bins": [],
+        "degenerate_requested_bins": degenerate_requested,
+        "event_validity": event_validity,
+        "event_distribution": event_distribution,
+        "valid_exposure_bins": [],
+        "outcome_bins": [],
         "plot_warning": None,
     }
     bdd_rows = []
@@ -272,6 +298,23 @@ def main(args):
     bin_index = bins.set_index("global_row")
 
     for key in iter_progress(event_keys, enabled=progress_enabled, desc="computing event BDD", unit="event"):
+        if event_validity.get(key) == "degenerate" and not args.include_degenerate_bins:
+            values_for_warning = [v for v in bins[key].dropna().unique().tolist() if v != "unknown"]
+            if not values_for_warning:
+                values_for_warning = ["<no_non_unknown_values>"]
+            for val in values_for_warning:
+                if val == "<no_non_unknown_values>":
+                    ai_count = 0
+                    bi_count = 0
+                else:
+                    event_rows = bins.loc[bins[key] == val, "global_row"].to_numpy(dtype=int)
+                    ai_count = int(len(np.intersect1d(a_idx, event_rows, assume_unique=False)))
+                    bi_count = int(len(np.intersect1d(b_idx, event_rows, assume_unique=False)))
+                item = {"event_key": key, "event_value": val, "n_A": ai_count, "n_B": bi_count, "reason": "degenerate_event_bin"}
+                warnings["skipped_bins"].append(item)
+                warnings["skipped_degenerate_bins"].append(item)
+                warnings["total_event_bins_skipped"] += 1
+            continue
         values = [v for v in bins[key].dropna().unique().tolist() if v != "unknown"]
         for val in iter_progress(values, enabled=progress_enabled, desc=f"{key} values", unit="value", leave=False):
             warnings["total_event_bins_evaluated"] += 1
@@ -279,7 +322,9 @@ def main(args):
             ai = np.intersect1d(a_idx, event_rows, assume_unique=False)
             bi = np.intersect1d(b_idx, event_rows, assume_unique=False)
             if len(ai) < args.min_bin_size or len(bi) < args.min_bin_size:
-                warnings["skipped_bins"].append({"event_key": key, "event_value": val, "n_A": int(len(ai)), "n_B": int(len(bi)), "reason": "below_min_bin_size"})
+                item = {"event_key": key, "event_value": val, "n_A": int(len(ai)), "n_B": int(len(bi)), "reason": "below_min_bin_size"}
+                warnings["skipped_bins"].append(item)
+                warnings["skipped_small_bins"].append(item)
                 warnings["total_event_bins_skipped"] += 1
                 continue
             st = mmd_with_stats(emb[ai], emb[bi], rng, args.num_bootstrap, args.num_permutation, args.max_mmd_samples)
@@ -324,7 +369,15 @@ def main(args):
                 }
                 delta_rows.append(row)
                 event_delta_rows.append(row)
-            interp = interpretation_for_delta(key, bdd_row, pd.DataFrame(event_delta_rows))
+            if event_validity.get(key) == "degenerate":
+                interp = "Degenerate bin: natural-language conclusion suppressed; inspect counts and warnings before use."
+                bdd_rows[-1]["warnings"] = "degenerate_event_bin"
+            else:
+                interp = interpretation_for_delta(key, bdd_row, pd.DataFrame(event_delta_rows))
+                if key.startswith("exposure_"):
+                    warnings["valid_exposure_bins"].append({"event_key": key, "event_value": val, "n_A": int(len(ai)), "n_B": int(len(bi))})
+                elif key.startswith("outcome_"):
+                    warnings["outcome_bins"].append({"event_key": key, "event_value": val, "n_A": int(len(ai)), "n_B": int(len(bi)), "event_validity": event_validity.get(key, "unknown")})
             bdd_rows[-1]["interpretation"] = interp
 
             for _ in iter_progress([0], enabled=progress_enabled, desc="top-case retrieval", unit="event", leave=False):
@@ -350,6 +403,12 @@ def main(args):
     write_json(out / "warnings.json", warnings)
 
     lines = ["# Stage 6C event style report", "", f"- event_scope: {args.event_scope}", f"- n_A total: {len(a_idx)}", f"- n_B total: {len(b_idx)}", f"- events requested: {', '.join(event_keys)}", f"- evaluated bins: {warnings['total_event_bins_evaluated']}", f"- skipped bins: {warnings['total_event_bins_skipped']}", f"- runtime seconds: {time.time() - t0:.3f}", ""]
+    if degenerate_requested:
+        lines += ["## Degenerate bin warning", "", "The following requested bins are marked `degenerate`; they are skipped by default and must not be used for natural-language conclusions unless regenerated with healthier distributions:"]
+        for key in degenerate_requested:
+            dist = event_distribution.get(key, {})
+            lines.append(f"- `{key}`: positive_ratio={dist.get('positive_ratio', 'unknown')}, value_counts={dist.get('value_counts', {})}")
+        lines.append("")
     lines += ["## Top BDD events", ""]
     if bdd_df.empty:
         lines.append("No event bin satisfied the min_bin_size requirement; inspect warnings.json for skipped bins.")
@@ -362,12 +421,30 @@ def main(args):
     else:
         for r in delta_df.reindex(delta_df["delta_B_minus_A"].abs().sort_values(ascending=False).index).head(20).itertuples():
             lines.append(f"- `{r.event_key}={r.event_value}` / `{r.metric_name}`: mean_A={r.mean_A:.6g}, mean_B={r.mean_B:.6g}, delta={r.delta_B_minus_A:.6g} ({r.direction_label}).")
-    lines += ["", "## Skipped bin summary", ""]
-    if warnings["skipped_bins"]:
-        for item in warnings["skipped_bins"][:50]:
+    lines += ["", "## Valid exposure bins", ""]
+    if warnings["valid_exposure_bins"]:
+        for item in warnings["valid_exposure_bins"][:50]:
+            lines.append(f"- `{item['event_key']}={item['event_value']}`: n_A={item['n_A']}, n_B={item['n_B']}.")
+    else:
+        lines.append("No valid exposure bins were evaluated.")
+    lines += ["", "## Skipped small bins", ""]
+    if warnings["skipped_small_bins"]:
+        for item in warnings["skipped_small_bins"][:50]:
             lines.append(f"- `{item['event_key']}={item['event_value']}` skipped: n_A={item['n_A']}, n_B={item['n_B']}, reason={item['reason']}.")
     else:
         lines.append("No bins were skipped by min_bin_size.")
+    lines += ["", "## Skipped degenerate bins", ""]
+    if warnings["skipped_degenerate_bins"]:
+        for item in warnings["skipped_degenerate_bins"][:50]:
+            lines.append(f"- `{item['event_key']}={item['event_value']}` skipped: reason={item['reason']}.")
+    else:
+        lines.append("No degenerate bins were skipped.")
+    lines += ["", "## Outcome bins", ""]
+    if warnings["outcome_bins"]:
+        for item in warnings["outcome_bins"][:50]:
+            lines.append(f"- `{item['event_key']}={item['event_value']}`: n_A={item['n_A']}, n_B={item['n_B']}, validity={item['event_validity']}.")
+    else:
+        lines.append("No outcome bins were evaluated.")
     lines += ["", "## Interpretation rule", "", "Embedding-based BDD provides a unified behavior distribution metric across heterogeneous driving events, while event-specific features provide semantic diagnosis of the detected drift.", "", "Exposure bins can be used for dynamic matching/control because they describe interaction conditions. Outcome bins are for localization/reporting because they describe behavior results and should not be used as pure scenario controls."]
     (out / "event_report_card.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -391,5 +468,6 @@ if __name__ == "__main__":
     p.add_argument("--top_k", type=int, default=20)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--overwrite", action="store_true")
+    p.add_argument("--include_degenerate_bins", action="store_true", help="Evaluate bins marked event_validity=degenerate. Natural-language conclusions remain suppressed for those bins.")
     p.add_argument("--no_progress", action="store_true")
     main(p.parse_args())
