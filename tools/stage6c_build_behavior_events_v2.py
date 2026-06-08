@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import argparse
+import re
 import shutil
 import time
 from pathlib import Path
@@ -152,6 +153,17 @@ def neighbor_values(slot: Optional[np.ndarray], col: int) -> np.ndarray:
     return np.where(valid, values, np.nan)
 
 
+def clean_time_gap_values(values: np.ndarray, max_seconds: float, name: str) -> np.ndarray:
+    arr = np.asarray(values, dtype=float).copy()
+    if arr.size == 0:
+        return arr
+    if not np.isfinite(max_seconds) or max_seconds <= 0:
+        raise ValueError(f"{name} valid max must be positive and finite, got {max_seconds}")
+    invalid = (~np.isfinite(arr)) | (arr >= 999.0) | (arr <= 0.0) | (arr > float(max_seconds))
+    arr[invalid] = np.nan
+    return arr
+
+
 def valid_ratio(slot: Optional[np.ndarray]) -> float:
     if not has_cols(slot, [NEI["valid"]]):
         return np.nan
@@ -293,8 +305,8 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     rf = slot_array(neighbor, 3)
     rr = slot_array(neighbor, 4)
     front_dist = neighbor_values(front, NEI["distance"])
-    front_ttc = neighbor_values(front, NEI["ttc"])
-    front_thw = neighbor_values(front, NEI["thw"])
+    front_ttc = clean_time_gap_values(neighbor_values(front, NEI["ttc"]), args.ttc_valid_max_s, "ttc")
+    front_thw = clean_time_gap_values(neighbor_values(front, NEI["thw"]), args.thw_valid_max_s, "thw")
     front_closing = neighbor_values(front, NEI["closing_rate"])
     front_speed = neighbor_values(front, NEI["speed"])
     front_closing = smooth_signal(front_closing, args.smoothing_window, args.enable_signal_smoothing)
@@ -325,16 +337,32 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
     lc_mask = lateral_from_start >= args.lateral_displacement_m
     lc_lengths = contiguous_true_lengths(lc_mask)
     lc_duration = float(max(lc_lengths) * dt) if lc_lengths else np.nan
-    heading_change_total = float(np.nansum(np.abs(wrap_angle(np.diff(heading))))) if heading.size > 1 else np.nan
+    raw_heading_change_total = float(np.nansum(np.abs(wrap_angle(np.diff(heading))))) if heading.size > 1 else np.nan
+    heading_change_total = min(raw_heading_change_total, float(args.heading_change_total_cap)) if np.isfinite(raw_heading_change_total) else np.nan
+    raw_max_lateral_speed = safe_max(np.abs(vy_smoothed))
+    vy_for_lc = clip_abs(vy_smoothed, args.lateral_speed_abs_cap)
+    clipped_max_lateral_speed = safe_max(np.abs(vy_for_lc))
     yaw_sign_changes = count_sign_changes(yaw_rate, args.sign_change_eps)
-    lat_sign_changes = count_sign_changes(vy_smoothed, args.sign_change_eps)
+    lat_sign_changes = count_sign_changes(vy_for_lc, args.sign_change_eps)
     lc_oscillation = nanmean_list([yaw_sign_changes, lat_sign_changes])
-    lane_change_positive = bool(
-        (np.isfinite(lateral_range) and lateral_range >= args.lateral_displacement_m)
-        or (np.isfinite(heading_change_total) and heading_change_total >= args.heading_change_rad)
+    lc_duration_exists = bool(np.isfinite(lc_duration) and lc_duration > 0.0)
+    lane_change_strong_displacement = bool(np.isfinite(lateral_range) and lateral_range >= args.lane_change_lateral_range_m)
+    lane_change_min_displacement = bool(np.isfinite(lateral_range) and lateral_range >= args.lane_change_min_lateral_range_m)
+    lane_change_heading_yaw_evidence = bool(
+        (np.isfinite(heading_change_total) and heading_change_total >= args.heading_change_rad)
         or (np.isfinite(rms(yaw_rate)) and rms(yaw_rate) >= args.yaw_rate_rms_threshold)
-        or (np.isfinite(safe_max(np.abs(vy_smoothed))) and safe_max(np.abs(vy_smoothed)) >= args.lateral_speed_threshold)
     )
+    lane_change_positive = bool(
+        lane_change_strong_displacement
+        or (lc_duration_exists and lane_change_min_displacement)
+        or (lane_change_heading_yaw_evidence and lane_change_min_displacement)
+    )
+    raw_diagnostics.update({
+        "raw_max_lateral_speed": raw_max_lateral_speed,
+        "clipped_max_lateral_speed": clipped_max_lateral_speed,
+        "raw_heading_change_total": raw_heading_change_total,
+        "clipped_heading_change_total": heading_change_total,
+    })
 
     following_positive = None
     if front_known:
@@ -436,16 +464,17 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         or (np.isfinite(lateral_range) and lateral_range >= args.hesitation_min_lateral_range_m)
         or (np.isfinite(heading_change_total) and heading_change_total >= args.hesitation_min_heading_change_rad)
     )
-    abort_like_partial = bool(lane_change_positive and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m)
-    speed_drop_during_maneuver = bool(np.isfinite(speed_delta) and -speed_delta >= args.hesitation_min_speed_drop)
-    hesitation_evidence = bool(
-        (np.isfinite(yaw_sign_changes) and yaw_sign_changes >= args.hesitation_sign_changes)
-        or (np.isfinite(lat_sign_changes) and lat_sign_changes >= args.hesitation_sign_changes)
-        or (np.isfinite(lc_duration) and lc_duration >= args.long_lane_change_s)
-        or abort_like_partial
-        or speed_drop_during_maneuver
-    )
-    hesitation_positive = bool((maneuver_context or not args.hesitation_require_maneuver_context) and hesitation_evidence)
+    abort_like_partial = bool(lane_change_min_displacement and np.isfinite(lateral_range) and lateral_range < args.lane_change_completion_m)
+    speed_drop_during_maneuver = bool(maneuver_context and np.isfinite(speed_delta) and -speed_delta >= args.hesitation_min_speed_drop)
+    hesitation_components = [
+        bool(np.isfinite(yaw_sign_changes) and yaw_sign_changes >= args.hesitation_sign_changes),
+        bool(np.isfinite(lat_sign_changes) and lat_sign_changes >= args.hesitation_sign_changes),
+        bool(np.isfinite(lc_duration) and lc_duration >= args.long_lane_change_s),
+        abort_like_partial,
+        speed_drop_during_maneuver,
+    ]
+    hesitation_evidence_count = int(sum(hesitation_components))
+    hesitation_positive = bool(maneuver_context and hesitation_evidence_count >= int(args.hesitation_min_evidence_count))
 
     side_closing_p95 = safe_percentile(side_closing_values, 95)
     conflict_positive = None
@@ -502,7 +531,7 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "rms_yaw_rate": rms(yaw_rate),
         "rms_curvature": rms(curvature),
         "heading_change_total": heading_change_total,
-        "max_lateral_speed": safe_max(np.abs(vy_smoothed)),
+        "max_lateral_speed": clipped_max_lateral_speed,
         "rms_lateral_accel": rms(lateral_accel),
         "duration": lc_duration,
         "oscillation_score": lc_oscillation,
@@ -543,6 +572,7 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
         "lc_oscillation_score": lc_oscillation,
         "abort_like_score": float(abort_like_partial),
         "speed_drop": max(0.0, -speed_delta) if np.isfinite(speed_delta) else np.nan,
+        "evidence_count": float(hesitation_evidence_count),
     }))
     metrics.update({
         "yield_conflict_score": nanmean_list([gap_pressure, side_closing_p95, peak_accel if np.isfinite(peak_accel) else np.nan]),
@@ -634,7 +664,7 @@ def physical_expected_ranges(args) -> Dict[str, Tuple[float, float]]:
 
 def metric_physical_kind(metric_name: str) -> Optional[str]:
     name = metric_name.lower()
-    if "decel" in name:
+    if re.search(r"(^|_)peak_decel($|_)", name) or re.search(r"_decel_after_", name):
         return "decel"
     if "jerk" in name:
         return "jerk"
@@ -682,6 +712,13 @@ def write_report(path: Path, total_rows: int, shard_count: int, event_diag: List
         "# Stage 6C v2 behavior-event build report",
         "",
         "Stage 6C v2 is **Task-conditioned behavior-event BDD**. This builder creates task slices and task-specific style metrics; BDD is computed by `stage6c_task_conditioned_bdd_report.py`.",
+        "",
+        "## Reliability notes",
+        "",
+        "- following and yield_conflict are currently the most reliable strong detectors.",
+        "- cutin, overtake, and much of lead/queue remain proxy-based.",
+        "- lane_change and hesitation are usable only if positive_ratio is not broad after tightening; this report emits `lane_change_detector_broad` or `hesitation_detector_broad` when positive_ratio > 0.40.",
+        "- TTC/THW sentinels and invalid time gaps are reported as NaN, not as 999-style diagnostic scores.",
         "",
         f"- total_rows: {total_rows}",
         f"- shard_count: {shard_count}",
@@ -789,6 +826,10 @@ def build(args):
     for row in event_diag:
         if row["event_validity"] != "valid":
             warnings.append({"warning": "degenerate_or_all_unknown_task", **row})
+        if row["task_key"] == "task_lane_change" and row["positive_ratio"] > 0.40:
+            warnings.append({"warning": "lane_change_detector_broad", **row})
+        if row["task_key"] == "task_hesitation" and row["positive_ratio"] > 0.40:
+            warnings.append({"warning": "hesitation_detector_broad", **row})
     for task, counts in strength_counts.items():
         total = sum(counts.values())
         dominant = max(counts, key=counts.get) if counts else "unknown"
@@ -820,10 +861,14 @@ def build(args):
         "detector_strength_values": ["strong", "proxy", "weak_proxy", "unknown"],
         "schema_notes": {
             "neighbor_slot_ids_loaded_with_pickle": True,
+            "ttc_thw_sentinel_and_out_of_range_values_are_nan": True,
             "ttc_metrics_use_true_neighbor_seq_ttc_column_only": True,
+            "detector_reliability_note": "following and yield_conflict are currently the most reliable strong detectors; cutin, overtake, and much of lead/queue remain proxy-based; lane_change and hesitation are usable only if positive_ratio is not broad after tightening.",
             "lead_brake_current_detector": "front_speed_deceleration_strong_with_sustained_closing_derivative_proxy_fallback",
             "cutin_current_detector": "front_gap_appearance_or_drop_proxy_no_slot_id_transition",
             "queue_approach_uses_front_speed_when_available_else_gap_thw_closing_proxy": True,
+            "lane_change_current_detector": "requires lateral displacement; yaw/heading alone cannot trigger lane_change",
+            "hesitation_current_detector": "requires maneuver context and minimum evidence count",
         },
         "raw_array_layout_assumptions": {"ego_seq": EGO, "neighbor_seq_slots": SLOTS, "neighbor_seq": NEI},
         "thresholds": vars(args),
@@ -849,6 +894,10 @@ def parse_args():
     p.add_argument("--yaw_rate_abs_cap", type=float, default=2.0, help="Absolute cap for yaw-rate metrics in rad/s.")
     p.add_argument("--lateral_accel_abs_cap", type=float, default=8.0, help="Absolute cap for lateral acceleration metrics in m/s^2.")
     p.add_argument("--curvature_abs_cap", type=float, default=1.0, help="Absolute cap for curvature metrics.")
+    p.add_argument("--lateral_speed_abs_cap", type=float, default=5.0, help="Absolute cap for lane-change lateral-speed metrics in m/s.")
+    p.add_argument("--heading_change_total_cap", type=float, default=8.0, help="Upper cap for total heading-change metrics in radians.")
+    p.add_argument("--ttc_valid_max_s", type=float, default=30.0, help="Maximum valid TTC in seconds; <=0, >=999, and larger values are set to NaN.")
+    p.add_argument("--thw_valid_max_s", type=float, default=30.0, help="Maximum valid THW in seconds; <=0, >=999, and larger values are set to NaN.")
     p.add_argument("--min_valid_front_ratio", type=float, default=0.3, help="Minimum valid front frames for front-conditioned tasks.")
     p.add_argument("--min_event_positive_ratio", type=float, default=0.01, help="Below this positive ratio a task is degenerate.")
     p.add_argument("--max_event_positive_ratio", type=float, default=0.95, help="Above this positive ratio a task is degenerate.")
@@ -865,7 +914,9 @@ def parse_args():
     p.add_argument("--queue_thw_threshold", type=float, default=2.5, help="THW threshold for queue approach proxy.")
     p.add_argument("--overtake_front_gap_m", type=float, default=35.0, help="Max front gap for overtake opportunity proxy.")
     p.add_argument("--adjacent_available_gap_m", type=float, default=8.0, help="Min adjacent gap for overtake opportunity proxy.")
-    p.add_argument("--lateral_displacement_m", type=float, default=2.0, help="Lateral displacement threshold for lane-change proxy.")
+    p.add_argument("--lateral_displacement_m", type=float, default=2.0, help="Legacy lateral displacement threshold used for lane-change duration measurement.")
+    p.add_argument("--lane_change_lateral_range_m", type=float, default=2.5, help="Strong lateral range threshold for conservative lane-change positive detection.")
+    p.add_argument("--lane_change_min_lateral_range_m", type=float, default=1.5, help="Minimum lateral range required before duration or heading/yaw evidence can trigger lane-change.")
     p.add_argument("--lane_change_completion_m", type=float, default=3.0, help="Lateral completion threshold for abort-like proxy.")
     p.add_argument("--heading_change_rad", type=float, default=0.25, help="Heading-change threshold for lane-change proxy.")
     p.add_argument("--yaw_rate_rms_threshold", type=float, default=0.10, help="Yaw-rate RMS threshold for lane-change proxy.")
@@ -873,7 +924,8 @@ def parse_args():
     p.add_argument("--sign_change_eps", type=float, default=1e-3, help="Epsilon for sign-change metrics.")
     p.add_argument("--hesitation_min_lateral_range_m", type=float, default=1.0, help="Minimum lateral range for hesitation maneuver context.")
     p.add_argument("--hesitation_min_heading_change_rad", type=float, default=0.15, help="Minimum heading-change total for hesitation maneuver context.")
-    p.add_argument("--hesitation_sign_changes", type=float, default=5.0, help="Smoothed sign-change count threshold for hesitation.")
+    p.add_argument("--hesitation_sign_changes", type=float, default=8.0, help="Smoothed sign-change count threshold for hesitation.")
+    p.add_argument("--hesitation_min_evidence_count", type=int, default=2, help="Minimum number of hesitation evidence components required with maneuver context.")
     p.add_argument("--hesitation_min_speed_drop", type=float, default=1.0, help="Minimum smoothed speed drop during maneuver for hesitation.")
     p.add_argument("--hesitation_require_maneuver_context", action=argparse.BooleanOptionalAction, default=True, help="Require lane-change/lateral/heading maneuver context for hesitation.")
     p.add_argument("--long_lane_change_s", type=float, default=4.0, help="Long lane-change duration threshold for hesitation.")

@@ -184,3 +184,14 @@ Stage 6C v2 保持 task-conditioned behavior-event BDD 架构不变。本轮只�
 - `task_bdd_summary.csv` 增加 `bootstrap_mean`、`bootstrap_std`、`observed_in_bootstrap_ci`、`mmd_estimator_config`，用于确认 observed BDD 和 bootstrap CI 使用一致的 max-sample policy。
 
 正式分析前必须先检查 QUICK_REFERENCE.md 中的 Stage 6C v2 smoothing / clipping validation checklist。
+
+## Stage 6C v2 quality tightening note (2026-06-08)
+
+本轮不改变 Stage 6C v2 的 task-conditioned BDD 设计，也不移除 task-conditioned BDD；只收紧 behavior-event 构建质量控制：
+
+- TTC/THW 在进入 metrics 前清理 `>=999`、`<=0` 和超过有效上限（默认 30s）的值，避免 999 sentinel 进入报告或 diagnostic scores。
+- `queue_distance_when_start_decel` 明确视为距离 metric，不再被 physical warning 误判为 deceleration metric。
+- lane-change lateral speed 默认按 5.0m/s 裁剪，heading-change total 默认按 8.0rad 封顶；schema 会同时记录 raw vs clipped diagnostics。
+- `task_lane_change` 必须有足够 lateral displacement；yaw-rate / heading-change 不可单独触发。若 positive_ratio 仍大于 0.40，输出 `lane_change_detector_broad`。
+- `task_hesitation` 必须满足 maneuver context 且至少两个 evidence components，默认 sign-change 阈值提高到 8；若 positive_ratio 仍大于 0.40，输出 `hesitation_detector_broad`。
+- 当前解释优先级：`following` 与 `yield_conflict` 是最可靠 strong detectors；`cutin`、`overtake` 以及相当一部分 `lead_brake` / `queue` 仍是 proxy-based；`lane_change` 与 `hesitation` 只有在收紧后 positive_ratio 不 broad 时才建议作为稳定结论。
