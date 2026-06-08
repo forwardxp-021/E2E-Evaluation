@@ -2807,6 +2807,7 @@ python -m py_compile \
 ```bash
 python tools/stage6c_build_behavior_events_v2.py \
   --shard_manifest outputs/stage5_context/shard_manifest.json \
+  --feature_schema_path outputs/stage5_context/feature_schema.json \
   --output_dir outputs/stage6c_behavior_events_v2 \
   --overwrite
 ```
@@ -2816,6 +2817,7 @@ python tools/stage6c_build_behavior_events_v2.py \
 ```bash
 python tools/stage6c_build_behavior_events_v2.py \
   --shard_manifest outputs/stage5_context/shard_manifest.json \
+  --feature_schema_path outputs/stage5_context/feature_schema.json \
   --output_dir outputs/stage6c_behavior_events_v2 \
   --overwrite \
   --no_progress
@@ -3035,6 +3037,14 @@ python tools/stage6c_build_behavior_events_v2.py \
   --yaw_rate_abs_cap 2 \
   --lateral_accel_abs_cap 8 \
   --curvature_abs_cap 1 \
+  --lateral_speed_abs_cap 5 \
+  --heading_change_total_cap 8 \
+  --ttc_valid_max_s 30 \
+  --thw_valid_max_s 30 \
+  --lane_change_lateral_range_m 2.5 \
+  --lane_change_min_lateral_range_m 1.5 \
+  --hesitation_sign_changes 8 \
+  --hesitation_min_evidence_count 2 \
   --overwrite
 ```
 
@@ -3065,8 +3075,12 @@ python tools/stage6c_task_conditioned_bdd_report.py \
 - 构建脚本会先对 speed、accel、yaw_rate、lateral velocity 做平滑，再计算 jerk、lateral_accel、curvature 等 derivative-sensitive metrics。
 - `behavior_event_metrics_v2.csv` 写入的是用于正式 Stage 6C v2 分析的 smoothed/clipped metrics；raw diagnostic 不进入下游 metric delta 主表。
 - `behavior_event_schema_v2.json` 会记录 `raw_metric_diagnostics`、`clipped_metric_diagnostics`、`metric_quality_warnings`，用于检查原始 finite-difference 噪声是否超过物理范围。
+- TTC/THW 会在加载后清理：`>=999`、`<=0`、超过 `--ttc_valid_max_s` / `--thw_valid_max_s` 的值写为 `NaN`，正式 metrics 和 diagnostic scores 不应再出现 999 哨兵值。
+- `lc_max_lateral_speed` 使用裁剪后的 lateral speed；`lc_heading_change_total`、lane-change detector、hesitation detector 使用封顶后的 heading-change total，并在 raw/clipped diagnostics 中保留 `raw_max_lateral_speed`、`clipped_max_lateral_speed`、`raw_heading_change_total`、`clipped_heading_change_total`。
+- lane-change detector 需要足够 lateral displacement；yaw_rate 或 heading_change 不能单独触发。若 `task_lane_change` 的 `positive_ratio > 0.40`，`behavior_event_warnings_v2.json` 和报告中会出现 `lane_change_detector_broad`。
+- hesitation detector 需要 maneuver context 且至少两个 evidence components；默认 `--hesitation_sign_changes 8`、`--hesitation_min_evidence_count 2`。若 `task_hesitation` 的 `positive_ratio > 0.40`，会出现 `hesitation_detector_broad`。
 - lead-brake detector 优先使用 front_speed 的持续减速度；front_speed 不可靠时才使用 closing-rate derivative proxy，并继续在 strength column 中区分 `strong` / `proxy`。
-- hesitation detector 需要 maneuver context，不再仅凭微小 raw sign changes 触发。
+- following 与 yield_conflict 目前是最可靠的 strong detectors；cutin、overtake 以及相当一部分 lead/queue 仍是 proxy-based；lane_change 与 hesitation 只有在收紧后 positive_ratio 不 broad 时才建议作为稳定结论。
 - `--detector_strength_filter strong` 会在 BDD 前只保留 positive rows 中 detector strength 为 `strong` 的样本，并在 `task_bdd_summary.csv` 中同时报告过滤前后的 `n_A/n_B`。
 
 ## 3. 通过标准
@@ -3074,8 +3088,11 @@ python tools/stage6c_task_conditioned_bdd_report.py \
 1. `behavior_event_bins_v2.csv` 仍包含全部 `task_*` 列和对应 `task_*_strength` 列。
 2. `behavior_event_metrics_v2.csv` 仍通过 `global_row` 与 bins 文件逐行对齐。
 3. `behavior_event_schema_v2.json` 中 final metric diagnostics 的 decel p99/max 不应超过约 12 m/s²，jerk 不应超过约 80 m/s³，yaw_rate 不应超过约 2 rad/s，lateral_accel 不应超过约 8 m/s²，curvature 不应超过约 1。
-4. 如果 raw diagnostics 超出物理范围，应出现 `raw_metric_physically_implausible` / `metric_physical_range_warning`；如果 final diagnostics 仍超范围，应先停止正式分析并检查数据或阈值。
-5. `task_hesitation` 的 `positive_ratio` 不应继续大于 0.95；若仍退化，应在 BDD report 中被 skip 或 warning。
-6. `task_lead_brake_response` 的 positive rows 不应几乎等同于 `task_following`，并应检查 `task_lead_brake_response_strength` 的 strong/proxy 分布。
-7. `task_bdd_summary.csv` 应包含 `bootstrap_mean`、`bootstrap_std`、`observed_in_bootstrap_ci`、`mmd_estimator_config`。
-8. `task_report_card.md` 应展示 detector strength、过滤前后样本数、bootstrap CI 一致性，以及 metric quality warnings。
+4. TTC/THW 相关 final metrics（如 `lead_brake_min_ttc_after_lead_brake`、`lead_brake_min_thw_after_lead_brake`、`cutin_min_ttc`、`following_mean_thw`）的 `max` 不应等于 999，也不应超过配置的有效上限。
+5. `queue_distance_when_start_decel` 不应出现 final `metric_physical_range_warning`，因为它是距离指标，不是减速度指标。
+6. 如果 raw diagnostics 超出物理范围，应出现 `raw_metric_physically_implausible` / `metric_physical_range_warning`；如果 final diagnostics 仍超范围，应先停止正式分析并检查数据或阈值。
+7. `task_lane_change` 的 `positive_ratio` 理想上应降到 0.40 以下；若仍大于 0.40，必须在 `behavior_event_report_v2.md` / `behavior_event_warnings_v2.json` 中出现 `lane_change_detector_broad`。
+8. `task_hesitation` 的 `positive_ratio` 理想上应降到 0.40 以下；若仍大于 0.40，必须在 `behavior_event_report_v2.md` / `behavior_event_warnings_v2.json` 中出现 `hesitation_detector_broad`。
+9. `task_lead_brake_response` 的 positive rows 不应几乎等同于 `task_following`，并应检查 `task_lead_brake_response_strength` 的 strong/proxy 分布。
+10. `task_bdd_summary.csv` 应包含 `bootstrap_mean`、`bootstrap_std`、`observed_in_bootstrap_ci`、`mmd_estimator_config`。
+11. `task_report_card.md` 应展示 detector strength、过滤前后样本数、bootstrap CI 一致性，以及 metric quality warnings。

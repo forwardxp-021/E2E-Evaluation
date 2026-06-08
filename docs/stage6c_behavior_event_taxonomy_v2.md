@@ -12,6 +12,8 @@ Style metrics = semantic explanation of the detected drift
 
 因此 v2 不再把 hard_brake、late_brake 等 outcome bins 作为主要评价对象。这些 outcome-style bins 只保留为可选 post-hoc diagnostics；主报告必须以 task-conditioned BDD 为主。
 
+**当前可靠性结论（Stage 6C v2 quality pass）**：`following` 与 `yield_conflict` 目前是最可靠的 strong detectors；`cutin`、`overtake` 以及相当一部分 `lead_brake` / `queue` 仍然是 proxy-based；`lane_change` 与 `hesitation` 已收紧，但只有在 `positive_ratio <= 0.40`、且没有 `lane_change_detector_broad` / `hesitation_detector_broad` warning 时，才适合作为稳定 task-conditioned BDD 结论。
+
 ## 1. 研究定位
 
 1. **Stage 6C v2 是 task-conditioned behavior style drift diagnosis**：先定义可比较的驾驶任务切片，再在每个任务内比较 A/B embedding distribution。
@@ -105,12 +107,12 @@ Stage 6C v2 首批只定义以下 8 类优先事件；其中 overtake 拆为 opp
 - **Task column**：`task_lane_change`
 - **Positive / negative label**：`lane_change` / `no_lane_change`
 - **Goal**：在 lane-change events 下比较 steering sharpness、lateral smoothness 与 gap acceptance。
-- **Detector**：lateral displacement / lane-change count proxy 为正，或 yaw / curvature / heading change / lateral speed 较高。
+- **Detector**：保守 lane-change detector 必须有足够横向位移；yaw-rate 或 heading-change 不能单独触发。Positive 条件为：`lateral_range >= --lane_change_lateral_range_m`（默认 2.5m），或存在 `lc_duration` 且 `lateral_range >= --lane_change_min_lateral_range_m`（默认 1.5m），或 heading/yaw evidence 高且横向位移至少达到该最小阈值。若 `positive_ratio > 0.40`，构建报告与 warnings 会写入 `lane_change_detector_broad`，此时只可作为 broad lateral-maneuver proxy 解释。
 - **Metrics**：
   - `lc_rms_yaw_rate`
   - `lc_rms_curvature`
   - `lc_heading_change_total`
-  - `lc_max_lateral_speed`
+  - `lc_max_lateral_speed`（使用 `--lateral_speed_abs_cap` 默认 5.0m/s 裁剪后的值）
   - `lc_rms_lateral_accel`
   - `lc_duration`
   - `lc_oscillation_score`
@@ -165,7 +167,7 @@ Stage 6C v2 首批只定义以下 8 类优先事件；其中 overtake 拆为 opp
 - **Task column**：`task_hesitation`
 - **Positive / negative label**：`hesitation` / `no_hesitation`
 - **Goal**：比较 driver/model 在 maneuvering 中是否犹豫或出现 abort-like 行为。
-- **Detector**：高 yaw / lateral velocity sign changes；lane-change duration 长；lane-change attempt without completion；speed/yaw/lateral motion oscillatory。
+- **Detector**：必须先满足 maneuver context，并且至少满足 `--hesitation_min_evidence_count`（默认 2）个 evidence components：yaw sign changes 达阈值、lateral velocity sign changes 达阈值、`lc_duration >= --long_lane_change_s`、abort-like partial maneuver、maneuver 中明显 speed drop。`--hesitation_sign_changes` 默认 8。若 `positive_ratio > 0.40`，构建报告与 warnings 会写入 `hesitation_detector_broad`，此时不应作为稳定 hesitation 结论。
 - **Metrics**：
   - `hesitation_score`
   - `hesitation_lc_duration`
@@ -174,6 +176,7 @@ Stage 6C v2 首批只定义以下 8 类优先事件；其中 overtake 拆为 opp
   - `hesitation_lc_oscillation_score`
   - `hesitation_abort_like_score`
   - `hesitation_speed_drop`
+  - `hesitation_evidence_count`
 - **Interpretation**：若 BDD 高且 B oscillation 更高、duration 更长、abort-like score 更高，则 B 更犹豫/更不果断。
 
 ### E8. Yield Conflict / Interaction Assertiveness
@@ -216,6 +219,7 @@ Style metrics = semantic explanation of the detected drift
 - `TTC` 只表示 `neighbor_seq.npy` 中真实 TTC column（当前 Waymo 5-neighbor builder layout 为 column 9）。
 - `THW` 只表示 time headway（当前 layout 为 column 10）。
 - 当前 v2 不允许把 THW 当作 TTC 输出；如果某个 shard 缺少 TTC column，则 `lead_brake_min_ttc_after_lead_brake`、`cutin_min_ttc` 等 TTC metrics 写为 `NaN`，并记录 `ttc_column_unavailable_metric_set_nan`。
+- TTC/THW 加载后会清理哨兵和不合理值：`>=999`、`<=0`、TTC 大于 `--ttc_valid_max_s`（默认 30s）、THW 大于 `--thw_valid_max_s`（默认 30s）均写为 `NaN`；正式 metrics 与 diagnostic scores 不得出现 999 哨兵值。
 - THW proxy 必须命名为 THW，例如 `lead_brake_min_thw_after_lead_brake`、`following_min_thw`、`cutin_min_thw`。
 
 ### 5.2 Cut-in response：true transition detector vs proxy fallback
@@ -235,3 +239,10 @@ Style metrics = semantic explanation of the detected drift
 - 如果 `neighbor_seq.npy` 提供 front neighbor speed column（当前 Waymo 5-neighbor builder layout 为 column 11），queue detector 会输出 `queue_front_speed_min`、`queue_front_speed_mean`、`queue_front_stopped_ratio` 诊断，并优先使用 stopped-front condition。
 - 如果 front speed 不可用，则只使用 front gap、THW、closing-rate 与 ego speed 的 conservative proxy，并记录 `queue_approach_uses_gap_thw_closing_proxy`。
 - 只有确认 front speed diagnostics 有效时，才把 queue approach 解释为 stopped-traffic approach；否则应解释为 queue-approach proxy。
+
+### 5.5 Lateral / heading quality control
+
+- `lc_max_lateral_speed` 使用 smoothed lateral velocity 后再按 `--lateral_speed_abs_cap`（默认 5.0m/s）裁剪，避免把瞬时噪声当作可解释 lane-change style。
+- `lc_heading_change_total` 使用 wrap_angle 归一化后的 heading increment 总和，并按 `--heading_change_total_cap`（默认 8.0rad）封顶；lane-change 与 hesitation detector 也使用封顶后的 heading total。
+- `behavior_event_schema_v2.json` 的 raw/clipped diagnostics 会记录 `raw_max_lateral_speed`、`clipped_max_lateral_speed`、`raw_heading_change_total`、`clipped_heading_change_total`，用于区分原始噪声与正式下游指标。
+- `queue_distance_when_start_decel` 是距离指标，不属于 deceleration metric；physical warning 只应匹配 `peak_decel`、`*_decel_after_*`、`*_peak_decel` 等真实减速度指标。
