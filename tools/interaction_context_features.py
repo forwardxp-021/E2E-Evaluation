@@ -56,8 +56,8 @@ def aggregate_interaction_features(ego_seq: np.ndarray, neighbor_seq: np.ndarray
         float(np.mean(speed > np.nanmean(speed)))
     ]
     names = [
-        "rms_accel", "rms_jerk", "max_abs_accel", "max_abs_jerk", "mean_thw", "min_thw", "front_mean_distance", "front_min_distance",
-        "front_closing_rate_mean", "front_closing_rate_p95", "rms_yaw_rate", "rms_curvature", "heading_change_total",
+        "rms_accel", "rms_jerk", "max_abs_accel", "max_abs_jerk", "mean_thw", "min_thw", "mean_front_distance", "min_front_distance",
+        "mean_rel_speed", "p95_rel_speed", "rms_yaw_rate", "rms_curvature", "heading_change_total",
         "lane_change_count_proxy", "lane_change_rate_proxy", "lane_change_left_count_proxy", "lane_change_right_count_proxy",
         "lane_change_duration_mean_proxy", "max_lateral_speed", "rms_lateral_accel", "lane_change_oscillation_score_proxy",
         "front_pressure_score", "left_front_min_gap", "left_rear_min_gap", "right_front_min_gap", "right_rear_min_gap", "left_gap_min", "right_gap_min",

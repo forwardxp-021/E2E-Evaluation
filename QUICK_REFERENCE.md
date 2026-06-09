@@ -3096,3 +3096,172 @@ python tools/stage6c_task_conditioned_bdd_report.py \
 9. `task_lead_brake_response` 的 positive rows 不应几乎等同于 `task_following`，并应检查 `task_lead_brake_response_strength` 的 strong/proxy 分布。
 10. `task_bdd_summary.csv` 应包含 `bootstrap_mean`、`bootstrap_std`、`observed_in_bootstrap_ci`、`mmd_estimator_config`。
 11. `task_report_card.md` 应展示 detector strength、过滤前后样本数、bootstrap CI 一致性，以及 metric quality warnings。
+Stage5A summary by 刘庆
+4 路并行命令
+0-13
+13-26
+26-39
+39-51
+
+每个开一个终端：
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+  --file_start 0 \
+  --file_end 13 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --drop_if_lane_context_ambiguous \
+  --streaming \
+  --output_shard_size 5000 \
+  --overwrite
+  然后把 --file_start / --file_end / --out_dir 分别改成：
+
+13 / 26 / outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26
+26 / 39 / outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39
+39 / 51 / outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51
+
+****然后就是Merge这4个shards到一起
+python tools/merge_waymo_5neighbor_context_shards.py \
+ --input_roots \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26 \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39 \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51 \
+ --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+ --recompute_global_standardization \
+ --overwrite
+
+****然后训练
+Stage 5D-balanced-v2
+
+balanced-v2 相比 v1：
+
+降低 following 权重
+提高 lateral dynamics 权重
+保留 following 强化，同时恢复 lateral
+
+训练命令：
+
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 64 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.2 \
+  --aux_lateral_dynamics_weight 1.5 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 1.5 \
+  --metric_lateral_dynamics_weight 1.5 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+注意：
+
+Stage 5D 不再使用 --metric_alignment
+而是使用 group-specific metric weights
+
+balanced-v2 结果：
+
+hit@1 = 0.213092
+hit@5 = 0.526232
+mean_same_label_fraction_at_5 = 0.189776
+longitudinal_comfort = 0.171751
+following_interaction = 0.501998
+lateral_lane_dynamics = 0.245608
+behavior_proxy = 0.322344
+
+结论：
+
+Stage 5D-balanced-v2 是当前 Stage 5 推荐模型；
+它是目前最好的 learned trade-off 表示；
+global retrieval 仍未超过 raw/pca feature，但在 following_interaction 和 behavior_proxy 上胜过 raw/pca，在 longitudinal 和 lateral 上接近 raw/pca。
+
+## Stage 5D-balanced-v2 Commands
+
+训练命令（Stage 5D 不使用 `--metric_alignment`）：
+
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 64 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.2 \
+  --aux_lateral_dynamics_weight 1.5 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 1.5 \
+  --metric_lateral_dynamics_weight 1.5 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+导出命令：
+
+```bash
+python tools/export_context_row_embeddings.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings \
+  --split all
+```
+
+评估命令：
+
+```bash
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```
