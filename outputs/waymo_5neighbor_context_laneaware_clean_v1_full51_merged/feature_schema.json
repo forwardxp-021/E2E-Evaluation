@@ -1,0 +1,203 @@
+{
+  "feature_dim": 33,
+  "features": [
+    {
+      "index": 0,
+      "name": "rms_accel",
+      "description": "Root mean square of ego longitudinal speed derivative.",
+      "source": "aggregate_interaction_features: accel"
+    },
+    {
+      "index": 1,
+      "name": "rms_jerk",
+      "description": "Root mean square of ego acceleration derivative.",
+      "source": "aggregate_interaction_features: jerk"
+    },
+    {
+      "index": 2,
+      "name": "max_abs_accel",
+      "description": "Maximum absolute ego acceleration.",
+      "source": "aggregate_interaction_features: accel"
+    },
+    {
+      "index": 3,
+      "name": "max_abs_jerk",
+      "description": "Maximum absolute ego jerk.",
+      "source": "aggregate_interaction_features: jerk"
+    },
+    {
+      "index": 4,
+      "name": "mean_thw",
+      "description": "Mean front time-headway for valid front-neighbor frames.",
+      "source": "aggregate_interaction_features: front[:,10]"
+    },
+    {
+      "index": 5,
+      "name": "min_thw",
+      "description": "Minimum front time-headway for valid front-neighbor frames.",
+      "source": "aggregate_interaction_features: front[:,10]"
+    },
+    {
+      "index": 6,
+      "name": "mean_front_distance",
+      "description": "Mean front distance for valid front-neighbor frames.",
+      "source": "aggregate_interaction_features: front[:,5]"
+    },
+    {
+      "index": 7,
+      "name": "min_front_distance",
+      "description": "Minimum front distance for valid front-neighbor frames.",
+      "source": "aggregate_interaction_features: front[:,5]"
+    },
+    {
+      "index": 8,
+      "name": "mean_rel_speed",
+      "description": "Mean front closing rate for valid front-neighbor frames.",
+      "source": "aggregate_interaction_features: front[:,8]"
+    },
+    {
+      "index": 9,
+      "name": "p95_rel_speed",
+      "description": "95th percentile front closing rate for valid front-neighbor frames.",
+      "source": "aggregate_interaction_features: front[:,8]"
+    },
+    {
+      "index": 10,
+      "name": "rms_yaw_rate",
+      "description": "Root mean square of ego yaw-rate proxy.",
+      "source": "aggregate_interaction_features: yaw_rate"
+    },
+    {
+      "index": 11,
+      "name": "rms_curvature",
+      "description": "Root mean square of curvature proxy (yaw_rate/speed).",
+      "source": "aggregate_interaction_features: curvature"
+    },
+    {
+      "index": 12,
+      "name": "heading_change_total",
+      "description": "Total absolute heading change across the window.",
+      "source": "aggregate_interaction_features: heading"
+    },
+    {
+      "index": 13,
+      "name": "lane_change_count_proxy",
+      "description": "Count of lane-change transitions from lateral-offset proxy.",
+      "source": "aggregate_interaction_features: lane_change_proxy"
+    },
+    {
+      "index": 14,
+      "name": "lane_change_rate_proxy",
+      "description": "Lane-change transition count normalized by window duration.",
+      "source": "aggregate_interaction_features: lane_change_proxy"
+    },
+    {
+      "index": 15,
+      "name": "lane_change_left_count_proxy",
+      "description": "Proxy split of lane-change count attributed to left.",
+      "source": "aggregate_interaction_features: lc_count // 2"
+    },
+    {
+      "index": 16,
+      "name": "lane_change_right_count_proxy",
+      "description": "Proxy split of lane-change count attributed to right.",
+      "source": "aggregate_interaction_features: lc_count - lc_count // 2"
+    },
+    {
+      "index": 17,
+      "name": "lane_change_duration_mean_proxy",
+      "description": "Mean transition indicator from lane-change proxy.",
+      "source": "aggregate_interaction_features: lane_change_proxy"
+    },
+    {
+      "index": 18,
+      "name": "max_lateral_speed",
+      "description": "Maximum absolute local lateral speed.",
+      "source": "aggregate_interaction_features: ego_seq[:,3]"
+    },
+    {
+      "index": 19,
+      "name": "rms_lateral_accel",
+      "description": "Root mean square of lateral acceleration proxy.",
+      "source": "aggregate_interaction_features: diff(ego_seq[:,3])"
+    },
+    {
+      "index": 20,
+      "name": "lane_change_oscillation_score_proxy",
+      "description": "Mean absolute change in lane-change proxy signal.",
+      "source": "aggregate_interaction_features: lane_change_proxy"
+    },
+    {
+      "index": 21,
+      "name": "front_pressure_score",
+      "description": "Mean clipped front-pressure proxy max(0,30-front_distance).",
+      "source": "aggregate_interaction_features: front[:,5]"
+    },
+    {
+      "index": 22,
+      "name": "left_front_min_gap",
+      "description": "Minimum left-front gap.",
+      "source": "aggregate_interaction_features: left_front[:,5]"
+    },
+    {
+      "index": 23,
+      "name": "left_rear_min_gap",
+      "description": "Minimum left-rear gap.",
+      "source": "aggregate_interaction_features: left_rear[:,5]"
+    },
+    {
+      "index": 24,
+      "name": "right_front_min_gap",
+      "description": "Minimum right-front gap.",
+      "source": "aggregate_interaction_features: right_front[:,5]"
+    },
+    {
+      "index": 25,
+      "name": "right_rear_min_gap",
+      "description": "Minimum right-rear gap.",
+      "source": "aggregate_interaction_features: right_rear[:,5]"
+    },
+    {
+      "index": 26,
+      "name": "left_gap_min",
+      "description": "Minimum of left-front and left-rear minimum gaps.",
+      "source": "aggregate_interaction_features: min(left_front_min_gap,left_rear_min_gap)"
+    },
+    {
+      "index": 27,
+      "name": "right_gap_min",
+      "description": "Minimum of right-front and right-rear minimum gaps.",
+      "source": "aggregate_interaction_features: min(right_front_min_gap,right_rear_min_gap)"
+    },
+    {
+      "index": 28,
+      "name": "left_gap_acceptance_proxy",
+      "description": "Fraction of frames with positive left-front closing rate.",
+      "source": "aggregate_interaction_features: left_front[:,8]"
+    },
+    {
+      "index": 29,
+      "name": "right_gap_acceptance_proxy",
+      "description": "Fraction of frames with positive right-front closing rate.",
+      "source": "aggregate_interaction_features: right_front[:,8]"
+    },
+    {
+      "index": 30,
+      "name": "rear_vehicle_pressure_proxy",
+      "description": "Mean rear closing-rate pressure proxy from left/right rear.",
+      "source": "aggregate_interaction_features: max(left_rear[:,8],right_rear[:,8])"
+    },
+    {
+      "index": 31,
+      "name": "yielding_score_proxy",
+      "description": "Mean clipped ratio closing_rate/front_distance in [-5,5].",
+      "source": "aggregate_interaction_features: front[:,8]/front[:,5]"
+    },
+    {
+      "index": 32,
+      "name": "assertiveness_score_proxy",
+      "description": "Fraction of frames with speed above sequence mean.",
+      "source": "aggregate_interaction_features: speed > mean(speed)"
+    }
+  ]
+}

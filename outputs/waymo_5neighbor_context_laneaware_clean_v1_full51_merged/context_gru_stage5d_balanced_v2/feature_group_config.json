@@ -1,0 +1,124 @@
+{
+  "feature_schema": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json",
+  "feature_names": [
+    "rms_accel",
+    "rms_jerk",
+    "max_abs_accel",
+    "max_abs_jerk",
+    "mean_thw",
+    "min_thw",
+    "mean_front_distance",
+    "min_front_distance",
+    "mean_rel_speed",
+    "p95_rel_speed",
+    "rms_yaw_rate",
+    "rms_curvature",
+    "heading_change_total",
+    "lane_change_count_proxy",
+    "lane_change_rate_proxy",
+    "lane_change_left_count_proxy",
+    "lane_change_right_count_proxy",
+    "lane_change_duration_mean_proxy",
+    "max_lateral_speed",
+    "rms_lateral_accel",
+    "lane_change_oscillation_score_proxy",
+    "front_pressure_score",
+    "left_front_min_gap",
+    "left_rear_min_gap",
+    "right_front_min_gap",
+    "right_rear_min_gap",
+    "left_gap_min",
+    "right_gap_min",
+    "left_gap_acceptance_proxy",
+    "right_gap_acceptance_proxy",
+    "rear_vehicle_pressure_proxy",
+    "yielding_score_proxy",
+    "assertiveness_score_proxy"
+  ],
+  "feature_groups": {
+    "longitudinal_comfort": [
+      "rms_accel",
+      "rms_jerk",
+      "max_abs_accel",
+      "max_abs_jerk"
+    ],
+    "following_interaction": [
+      "mean_thw",
+      "min_thw",
+      "mean_front_distance",
+      "min_front_distance",
+      "mean_rel_speed",
+      "p95_rel_speed",
+      "front_pressure_score",
+      "rear_vehicle_pressure_proxy"
+    ],
+    "lateral_dynamics": [
+      "rms_yaw_rate",
+      "rms_curvature",
+      "heading_change_total",
+      "lane_change_count_proxy",
+      "lane_change_rate_proxy",
+      "max_lateral_speed",
+      "rms_lateral_accel",
+      "lane_change_oscillation_score_proxy"
+    ],
+    "lateral_gap_interaction": [
+      "left_front_min_gap",
+      "left_rear_min_gap",
+      "right_front_min_gap",
+      "right_rear_min_gap",
+      "left_gap_min",
+      "right_gap_min",
+      "left_gap_acceptance_proxy",
+      "right_gap_acceptance_proxy"
+    ],
+    "behavior_proxy": [
+      "yielding_score_proxy",
+      "assertiveness_score_proxy"
+    ]
+  },
+  "group_indices": {
+    "longitudinal_comfort": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "following_interaction": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      21,
+      30
+    ],
+    "lateral_dynamics": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      18,
+      19,
+      20
+    ],
+    "lateral_gap_interaction": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ],
+    "behavior_proxy": [
+      31,
+      32
+    ]
+  },
+  "aux_loss": "SmoothL1Loss",
+  "metric_loss_type": "huber"
+}
