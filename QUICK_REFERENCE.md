@@ -1934,6 +1934,233 @@ Reliability tier：
 5. 主要结论优先使用 primary strong-detector tasks。
 6. proxy-heavy / sample-limited tasks 必须标记为 auxiliary，不能当作主结论。
 
+# Stage 7 — Empirical Same-Scenario Style Separability
+
+## 1. 命令
+
+Stage 7 的目标是从 pseudo split 走向 empirical validation：
+
+- Stage 6D matched-task pseudo split 仍然是 pseudo-label based。
+- 下一步目标应是同一 scenario set、同一 driving task 下，不同 policy / model / driver 的真实 behavior embedding distribution 是否可分。
+- Stage 6C `scene_confounding` 应视为 confounding-awareness diagnostic，不是主要 empirical proof。
+
+推荐数据优先级：
+
+1. company E2E A/B data
+2. nuPlan closed-loop planner rollout
+3. CARLA same-scenario rollout
+4. human-driver public datasets as auxiliary validation
+
+如果没有 company E2E A/B 数据，优先从 nuPlan 开始；它是自动驾驶 planning benchmark，支持 closed-loop planner rollout，使用真实场景，并允许 same-scenario policy comparison。
+
+Stage 7 common rollout schema 必需字段：
+
+```text
+scenario_id
+policy_id or driver_id
+timestamp
+ego_x
+ego_y
+ego_vx
+ego_vy
+ego_speed
+ego_accel
+ego_heading
+ego_yaw_rate
+```
+
+可选 neighbor 字段：
+
+```text
+neighbor_id
+neighbor_x
+neighbor_y
+neighbor_vx
+neighbor_vy
+neighbor_speed
+neighbor_heading
+neighbor_type
+```
+
+占位命令：构建 Stage 7 common rollout dataset。
+
+```bash
+python tools/stage7_convert_rollouts_to_context_dataset.py \
+  --source_type nuplan \
+  --input_rollout_dir <path> \
+  --output_dir outputs/stage7/<experiment_name>/context_dataset \
+  --overwrite
+```
+
+占位命令：构建 behavior events。
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage7/<experiment_name>/context_dataset/shard_manifest.json \
+  --feature_schema_path outputs/stage7/<experiment_name>/context_dataset/feature_schema.json \
+  --output_dir outputs/stage7/<experiment_name>/behavior_events_v2 \
+  --overwrite
+```
+
+占位命令：计算 task-conditioned BDD。
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest outputs/stage7/<experiment_name>/embeddings/embedding_manifest.json \
+  --shard_manifest outputs/stage7/<experiment_name>/context_dataset/shard_manifest.json \
+  --feature_schema_path outputs/stage7/<experiment_name>/context_dataset/feature_schema.json \
+  --a_indices_path outputs/stage7/<experiment_name>/splits/policy_A_indices.npy \
+  --b_indices_path outputs/stage7/<experiment_name>/splits/policy_B_indices.npy \
+  --behavior_event_bins_path outputs/stage7/<experiment_name>/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path outputs/stage7/<experiment_name>/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage7/<experiment_name>/task_bdd_report \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --overwrite
+```
+
+说明：以上 Stage 7 命令是 placeholder，需先实现 source-specific converter，例如 `tools/stage7_convert_rollouts_to_context_dataset.py`。
+
+## 2. 期望行为
+
+- 输入同一 scenario set 下 policy / driver A 和 B 的 rollout。
+- 转换为统一 sharded context dataset：
+  - `ego_seq.npy`
+  - `neighbor_seq.npy`
+  - `metadata.csv` 或 `metadata.npy`
+  - `shard_manifest.json`
+  - `feature_schema.json`
+- 复用 Stage 6C v2 的 behavior-event builder 和 task-conditioned BDD report。
+- 在同一 driving task 内比较 A/B behavior embedding distribution。
+
+## 3. 通过标准
+
+1. A/B rollout 必须来自同一 scenario set 或严格 matched scenario family。
+2. A/B 必须保留 `policy_id` 或 `driver_id`，并可追溯到 `scenario_id`。
+3. Primary tasks 优先解释 `following`、`lane_change`、`yield_conflict`、`hesitation-like`。
+4. `cutin`、`lead_brake`、`queue` 仍按 auxiliary / proxy-heavy 解释。
+5. nuPlan 是无 company data 时的推荐 open-source next step。
+6. Stage 7 结论应区别于 Stage 6C pseudo validation：Stage 7 目标是真实 policy / model / driver 的 empirical same-scenario style separability。
+
+# Stage 7A — nuPlan same-scenario policy validation
+
+## 1. 命令
+
+Stage 7A 是 Stage 7 的轻量化第一步：用 nuPlan mini，在同一批真实规划场景上运行 conservative / aggressive 两个 planner variant，再复用现有 behavior embedding + Stage 6C BDD pipeline。
+
+为什么继续往前走：
+
+- Stage 6 pseudo splits 有用，但仍然是 pseudo。
+- Stage 7A 使用 same-scenario rollout，是 empirical policy A/B validation。
+- 这还不是完整 E2E model A/B，但比 pseudo split 更接近真实模型/策略差异验证。
+
+硬件建议：
+
+- MacBook Air M5 16GB：文档、轻量分析、代码编辑。
+- Intel Ultra5 + 8GB GPU：nuPlan runtime 主机器。
+- 推荐 Ubuntu 或 WSL2 Ubuntu。
+- 推荐 Python 3.9，因为 nuPlan devkit 主要在 Ubuntu + Python 3.9 上测试。
+- 使用 nuPlan mini，不跑 full dataset。
+- 不训练大模型，不做 sensor-based E2E training。
+
+导出 conservative planner rollouts：
+
+```bash
+python tools/stage7a_export_nuplan_rollouts.py \
+  --nuplan_data_root ~/nuplan/dataset \
+  --nuplan_maps_root ~/nuplan/dataset/maps \
+  --nuplan_exp_root ~/nuplan/exp \
+  --scenario_filter mini \
+  --planner_variant conservative \
+  --max_scenarios 20 \
+  --output_dir outputs/stage7A_nuplan/conservative_rollouts \
+  --overwrite
+```
+
+导出 aggressive planner rollouts：
+
+```bash
+python tools/stage7a_export_nuplan_rollouts.py \
+  --nuplan_data_root ~/nuplan/dataset \
+  --nuplan_maps_root ~/nuplan/dataset/maps \
+  --nuplan_exp_root ~/nuplan/exp \
+  --scenario_filter mini \
+  --planner_variant aggressive \
+  --max_scenarios 20 \
+  --output_dir outputs/stage7A_nuplan/aggressive_rollouts \
+  --overwrite
+```
+
+转换 rollouts 到 context dataset：
+
+```bash
+python tools/stage7a_convert_rollouts_to_context_dataset.py \
+  --rollout_dir outputs/stage7A_nuplan \
+  --output_dir outputs/stage7A_nuplan/context_dataset \
+  --overwrite
+```
+
+后续复用 Stage 6C behavior events：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage7A_nuplan/context_dataset/shard_manifest.json \
+  --feature_schema_path outputs/stage7A_nuplan/context_dataset/feature_schema.json \
+  --output_dir outputs/stage7A_nuplan/behavior_events_v2 \
+  --overwrite
+```
+
+后续复用 Stage 6C task-conditioned BDD：
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest outputs/stage7A_nuplan/embeddings/embedding_manifest.json \
+  --shard_manifest outputs/stage7A_nuplan/context_dataset/shard_manifest.json \
+  --feature_schema_path outputs/stage7A_nuplan/context_dataset/feature_schema.json \
+  --a_indices_path outputs/stage7A_nuplan/splits/policy_A_indices.npy \
+  --b_indices_path outputs/stage7A_nuplan/splits/policy_B_indices.npy \
+  --behavior_event_bins_path outputs/stage7A_nuplan/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path outputs/stage7A_nuplan/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage7A_nuplan/task_bdd_report \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --overwrite
+```
+
+注意：当前 `stage7a_export_nuplan_rollouts.py` 和 `stage7a_convert_rollouts_to_context_dataset.py` 是 skeleton tools。它们会写 manifest / schema validation 信息，但不会伪造 rollout 或 context dataset。
+
+## 2. 期望行为
+
+- exporter 检查 `nuplan_data_root`、`nuplan_maps_root`、`nuplan_exp_root` 是否存在。
+- exporter 如果当前 Python 环境没有 nuPlan devkit，会清楚提示需要在 Ubuntu / WSL2 + Python 3.9 中安装 nuPlan devkit。
+- exporter 写出 `rollout_export_manifest.json` 和 `README.md`，说明 requested rollout export 和 TODO。
+- converter 检查未来 rollout CSV / parquet 是否包含必需字段：
+  - `scenario_id`
+  - `policy_id`
+  - `timestamp`
+  - `ego_x`
+  - `ego_y`
+  - `ego_vx`
+  - `ego_vy`
+  - `ego_speed`
+  - `ego_accel`
+  - `ego_heading`
+  - `ego_yaw_rate`
+- converter 写出 `feature_schema.json`、`conversion_manifest.json` 和 `README.md`。
+- converter 不会静默创建假的 `ego_seq.npy` / `neighbor_seq.npy`。
+
+## 3. 通过标准
+
+1. `python -m py_compile tools/stage7a_export_nuplan_rollouts.py tools/stage7a_convert_rollouts_to_context_dataset.py` passes。
+2. exporter 在缺少 nuPlan devkit 时给出清晰错误信息，而不是 traceback。
+3. converter 对 CSV / parquet schema 做显式检查，缺字段时写入 manifest 并返回错误状态。
+4. 不修改 Stage 6C final result files。
+5. Stage 7A 只使用 nuPlan mini 和 rule-based / configurable planner variants 起步，不进行大规模训练。
+
 ## Expected outputs
 Training output dir:
 - `model.pt`
