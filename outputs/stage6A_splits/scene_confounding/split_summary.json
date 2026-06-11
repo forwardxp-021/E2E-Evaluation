@@ -1,0 +1,86 @@
+{
+  "mode": "scene_confounding_control",
+  "eval_split": "test",
+  "n_A": 4917,
+  "n_B": 4917,
+  "global_row_indices": true,
+  "shard_manifest": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json",
+  "feature_schema_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json",
+  "seed": 42,
+  "n_shards": 0,
+  "total_rows": 164871,
+  "split_counts": {
+    "test": 16392,
+    "train": 131998,
+    "val": 16481
+  },
+  "resolved_features": {
+    "lateral_activity": [
+      "lc_rms_yaw_rate",
+      "lc_rms_curvature",
+      "lc_heading_change_total",
+      "lc_max_lateral_speed",
+      "lc_rms_lateral_accel",
+      "lc_sharpness_score"
+    ],
+    "interaction_pressure": [
+      "following_aggressiveness_score",
+      "following_front_closing_rate_mean",
+      "yield_conflict_score",
+      "assertiveness_score",
+      "gap_pressure_score",
+      "conflict_accel_score",
+      "small_gap_speed_maintain_score",
+      "rear_pressure_response_score"
+    ],
+    "gap_size": [
+      "following_mean_front_distance",
+      "following_min_front_distance",
+      "queue_final_front_gap",
+      "lc_target_front_gap_min",
+      "lc_target_rear_gap_min",
+      "cutin_gap_initial",
+      "cutin_gap_min",
+      "overtake_min_front_gap_before",
+      "overtake_target_lane_front_gap",
+      "overtake_target_lane_rear_gap"
+    ]
+  },
+  "missing_features": {
+    "speed": [
+      "speed_mean",
+      "ego_speed_mean",
+      "speed_norm_mean",
+      "speed_std",
+      "speed_norm_std"
+    ]
+  },
+  "criteria": [
+    "quantile based score split, q_low=0.3, q_high=0.7, min_group_size=500",
+    "A=easy_scene_like, B=complex_scene_like"
+  ],
+  "score_definition": {
+    "group_signs": {
+      "speed": -0.3,
+      "lateral_activity": -1.0,
+      "interaction_pressure": -1.0,
+      "gap_size": 1.0
+    },
+    "normalization": "robust_z = (x - median) / IQR on eval_split rows",
+    "group_meaning": {
+      "A": "easy_scene_like",
+      "B": "complex_scene_like"
+    }
+  },
+  "quantiles": {
+    "q_low": 0.3,
+    "q_high": 0.7
+  },
+  "overlap_removed": 0,
+  "warnings": [
+    {
+      "warning": "feature_shards_missing_used_behavior_event_metrics_for_scene_confounding",
+      "reason": "[Errno 2] No such file or directory: '/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000/interaction_feat_style.npy'"
+    }
+  ]
+}

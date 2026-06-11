@@ -2976,6 +2976,95 @@ python tools/stage6c_task_conditioned_bdd_report.py \
   --no_progress
 ```
 
+### 1.7 生成 remaining Stage 6A final splits
+
+negative control random split：
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random \
+  --seed 42 \
+  --overwrite
+```
+
+scene confounding split：
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode scene_confounding_control \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name scene_confounding \
+  --seed 42 \
+  --overwrite
+```
+
+说明：
+
+- `negative_control_random` 只需要 eval split row 集合；如果本机没有原始 `interaction_feat_style.npy` shard，脚本会从 `$DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv` 的 `global_row/split` 字段生成 random split。
+- `scene_confounding_control` 优先使用 feature shard 构造 scene complexity score；如果本机没有原始 `interaction_feat_style.npy` shard，脚本会 fallback 到 `$DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv` 的 lateral / interaction pressure / gap 类数值指标，并在 `split_summary.json` 写 warning。
+
+### 1.8 negative_control_random_v2_final
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/negative_control_random_v2_final \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.9 scene_confounding_v2_final
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/scene_confounding_v2_final \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.10 汇总三路 final experiment
+
+```bash
+python tools/stage6c_summarize_task_bdd_experiments.py \
+  --experiment_dirs outputs/stage6C_task_bdd/negative_control_random_v2_final,outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2_final,outputs/stage6C_task_bdd/scene_confounding_v2_final \
+  --experiment_names negative,pseudo,scene \
+  --output_dir outputs/stage6C_task_bdd/stage6c_v2_cross_experiment_summary \
+  --overwrite
+```
+
 ## 2. 期望行为
 
 - `stage6c_build_behavior_events_v2.py` 读取每个 shard 下可用的 `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`metadata.csv` / `meta.csv` / `meta.npy`、`interaction_feat_style.npy`，优先使用 raw sequences 构建 task-conditioned behavior events。
@@ -3012,7 +3101,16 @@ python tools/stage6c_task_conditioned_bdd_report.py \
 9. `pseudo_agg_vs_cons` 应在 style-relevant tasks 中出现有意义的 task-conditioned BDD。
 10. `scene_confounding_control` 应揭示 dynamic task / exposure confounding patterns。
 
-## 4. Stage 6C v2 调试前 validation checklist
+## 4. 三路 final experiment 解释 checklist
+
+1. `negative_control_random` 应低且非系统性；如果它在多个 primary task 上也很高，需要先怀疑 split / confounding / metric leakage。
+2. `pseudo_agg_vs_cons` 应在 behavior-style tasks 上出现稳定 BDD；它是 positive control，不是真实 model A/B 结论。
+3. `scene_confounding` 可以出现 BDD，但 pattern 应与 pseudo 不同，用于诊断 scene / exposure confounding。
+4. Primary conclusions 优先使用 strong detector tasks：`task_following`、`task_lane_change`、`task_yield_conflict`、`task_hesitation`。
+5. Proxy-heavy tasks 标记为 auxiliary：`task_cutin_response`、`task_queue_approach`、`task_lead_brake_response`、`task_overtake_opportunity`、`task_overtake_executed`。
+6. 如果 `task_overtake_executed` 因 sample size 被 skipped，不要解释为 no drift。
+
+## 5. Stage 6C v2 调试前 validation checklist
 
 1. `neighbor_slot_ids.npy` 可以成功加载；若该数组为 object dtype，构建脚本应在 `behavior_event_warnings_v2.json` / schema notes 中记录 `neighbor_slot_ids_loaded_with_pickle=true`。
 2. TTC metrics 只使用 `neighbor_seq.npy` 的真实 TTC column；如果 shard 缺少 TTC column，则 `lead_brake_min_ttc_after_lead_brake`、`cutin_min_ttc` 等写为 `NaN`，并记录 `ttc_column_unavailable_metric_set_nan`，绝不能把 THW 误标为 TTC。

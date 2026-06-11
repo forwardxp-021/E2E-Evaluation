@@ -1,0 +1,170 @@
+{
+  "warnings": [
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_peak_decel",
+      "p99": 88.18155059814399,
+      "max": 973.9443969726562,
+      "min": 0.0,
+      "expected_range": [
+        0.0,
+        12.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_rms_jerk",
+      "p99": 346.9703537791367,
+      "max": 5425.427204522052,
+      "min": 0.31034740834822716,
+      "expected_range": [
+        -80.0,
+        80.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_max_abs_jerk",
+      "p99": 1736.2067031860295,
+      "max": 19413.407592773438,
+      "min": 0.8535861968994141,
+      "expected_range": [
+        -80.0,
+        80.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_rms_yaw_rate",
+      "p99": 3.1423631071896705,
+      "max": 16.370475958360878,
+      "min": 0.0006558123303606169,
+      "expected_range": [
+        -2.0,
+        2.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_max_abs_yaw_rate",
+      "p99": 12.593758583068844,
+      "max": 31.415817260742188,
+      "min": 0.0017428398132324219,
+      "expected_range": [
+        -2.0,
+        2.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_rms_lateral_accel",
+      "p99": 6.118913210639888,
+      "max": 194.0924073832214,
+      "min": 0.015322627441702343,
+      "expected_range": [
+        -8.0,
+        8.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_max_abs_lateral_accel",
+      "p99": 31.955756664275825,
+      "max": 771.9446516036987,
+      "min": 0.03143956098938361,
+      "expected_range": [
+        -8.0,
+        8.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_rms_curvature",
+      "p99": 1.8439568756130393,
+      "max": 1312.4450825882468,
+      "min": 8.30845516729268e-05,
+      "expected_range": [
+        -1.0,
+        1.0
+      ]
+    },
+    {
+      "warning": "metric_physical_range_warning",
+      "source": "raw",
+      "metric_name": "raw_max_abs_curvature",
+      "p99": 12.766613260247453,
+      "max": 11738.86489868164,
+      "min": 0.0001924390472764212,
+      "expected_range": [
+        -1.0,
+        1.0
+      ]
+    },
+    {
+      "warning": "task_bdd_uses_proxy_detector",
+      "task_key": "task_lead_brake_response",
+      "dominant_detector_strength": "proxy",
+      "detector_strength_counts": "{\"proxy\": 21350, \"strong\": 13481}",
+      "proxy_fraction": 0.6129597197898424
+    },
+    {
+      "warning": "task_bdd_uses_proxy_detector",
+      "task_key": "task_queue_approach",
+      "dominant_detector_strength": "proxy",
+      "detector_strength_counts": "{\"proxy\": 26636, \"strong\": 13211}",
+      "proxy_fraction": 0.6684568474414636
+    },
+    {
+      "warning": "task_bdd_uses_proxy_detector",
+      "task_key": "task_cutin_response",
+      "dominant_detector_strength": "proxy",
+      "detector_strength_counts": "{\"proxy\": 10948}",
+      "proxy_fraction": 1.0
+    },
+    {
+      "warning": "completed",
+      "valid_task_count": 7,
+      "skipped_task_count": 2,
+      "embedding_rows": 164871,
+      "event_rows": 164871
+    }
+  ],
+  "skipped_tasks": [
+    {
+      "task_key": "task_overtake_opportunity",
+      "reason": "below_min_bin_size",
+      "n_A": 497,
+      "n_B": 76,
+      "n_A_before_strength_filter": 497,
+      "n_B_before_strength_filter": 76,
+      "detector_strength_filter": "all",
+      "positive_count": 8202,
+      "negative_count": 156669,
+      "unknown_count": 0,
+      "positive_ratio": 0.04974798478810707,
+      "event_validity": "valid"
+    },
+    {
+      "task_key": "task_overtake_executed",
+      "reason": "below_min_bin_size",
+      "n_A": 65,
+      "n_B": 63,
+      "n_A_before_strength_filter": 65,
+      "n_B_before_strength_filter": 63,
+      "detector_strength_filter": "all",
+      "positive_count": 2011,
+      "negative_count": 162860,
+      "unknown_count": 0,
+      "positive_ratio": 0.012197414948656829,
+      "event_validity": "valid"
+    }
+  ]
+}

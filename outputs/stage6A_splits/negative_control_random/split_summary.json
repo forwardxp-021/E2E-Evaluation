@@ -1,0 +1,34 @@
+{
+  "mode": "negative_control_random",
+  "eval_split": "test",
+  "n_A": 8196,
+  "n_B": 8196,
+  "global_row_indices": true,
+  "shard_manifest": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json",
+  "feature_schema_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json",
+  "seed": 42,
+  "n_shards": 0,
+  "total_rows": 164871,
+  "split_counts": {
+    "test": 16392,
+    "train": 131998,
+    "val": 16481
+  },
+  "resolved_features": {},
+  "missing_features": {},
+  "criteria": [
+    "random split on eval_split rows"
+  ],
+  "score_definition": {},
+  "quantiles": {
+    "q_low": 0.3,
+    "q_high": 0.7
+  },
+  "overlap_removed": 0,
+  "warnings": [
+    {
+      "warning": "feature_shards_missing_used_behavior_event_bins_for_negative_control",
+      "reason": "[Errno 2] No such file or directory: '/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000/interaction_feat_style.npy'"
+    }
+  ]
+}

@@ -49,6 +49,44 @@ def _load_manifest_feature_split(shard_manifest):
     return np.concatenate(all_feat, 0), np.concatenate(all_split, 0), pd.DataFrame(rows), shard_paths
 
 
+def _load_event_bins_split(shard_manifest):
+    bins_path = Path(shard_manifest).parent / 'behavior_events_v2' / 'behavior_event_bins_v2.csv'
+    if not bins_path.exists():
+        raise FileNotFoundError(
+            f'negative_control_random fallback requires behavior-event bins with global_row/split columns: {bins_path}'
+        )
+    row_df = pd.read_csv(bins_path, usecols=lambda c: c in {'global_row', 'shard_id', 'local_row', 'split'})
+    required = {'global_row', 'split'}
+    missing = sorted(required - set(row_df.columns))
+    if missing:
+        raise ValueError(f'behavior-event bins 缺少必要字段: {bins_path}, missing={missing}')
+    row_df = row_df.sort_values('global_row').reset_index(drop=True)
+    split = _normalize_split(row_df['split'].to_numpy())
+    return None, split, row_df, []
+
+
+def _load_event_metrics_feature_split(shard_manifest):
+    metrics_path = Path(shard_manifest).parent / 'behavior_events_v2' / 'behavior_event_metrics_v2.csv'
+    if not metrics_path.exists():
+        raise FileNotFoundError(
+            f'scene_confounding_control fallback requires behavior-event metrics: {metrics_path}'
+        )
+    df = pd.read_csv(metrics_path)
+    required = {'global_row', 'split'}
+    missing = sorted(required - set(df.columns))
+    if missing:
+        raise ValueError(f'behavior-event metrics 缺少必要字段: {metrics_path}, missing={missing}')
+    df = df.sort_values('global_row').reset_index(drop=True)
+    meta_cols = {'global_row', 'shard_id', 'local_row', 'scenario_id', 'target_agent_id', 'start', 'window_len', 'split'}
+    feature_names = [c for c in df.columns if c not in meta_cols and pd.api.types.is_numeric_dtype(df[c])]
+    if not feature_names:
+        raise ValueError(f'behavior-event metrics 中没有可用于 scene split 的数值特征: {metrics_path}')
+    feat = df[feature_names].to_numpy(dtype=float)
+    split = _normalize_split(df['split'].to_numpy())
+    row_cols = [c for c in ['global_row', 'shard_id', 'local_row', 'split'] if c in df.columns]
+    return feat, split, df[row_cols].copy(), [], feature_names
+
+
 def load_schema(path):
     obj = json.loads(Path(path).read_text(encoding='utf-8'))
     feats = obj.get('features', [])
@@ -105,21 +143,38 @@ def main(a):
     out.mkdir(parents=True, exist_ok=True)
 
     warnings = []
+    feature_names_override = None
     if a.shard_manifest:
-        feat, split, row_df, shard_paths = _load_manifest_feature_split(a.shard_manifest)
+        try:
+            feat, split, row_df, shard_paths = _load_manifest_feature_split(a.shard_manifest)
+        except FileNotFoundError as exc:
+            if a.mode == 'negative_control_random':
+                feat, split, row_df, shard_paths = _load_event_bins_split(a.shard_manifest)
+                warnings.append({
+                    'warning': 'feature_shards_missing_used_behavior_event_bins_for_negative_control',
+                    'reason': str(exc),
+                })
+            elif a.mode == 'scene_confounding_control':
+                feat, split, row_df, shard_paths, feature_names_override = _load_event_metrics_feature_split(a.shard_manifest)
+                warnings.append({
+                    'warning': 'feature_shards_missing_used_behavior_event_metrics_for_scene_confounding',
+                    'reason': str(exc),
+                })
+            else:
+                raise
     else:
         feat = np.load(a.feature_path, mmap_mode='r')
         split = _normalize_split(np.load(a.split_path, allow_pickle=True))
         row_df = pd.DataFrame({'global_row': np.arange(len(split)), 'shard_id': -1, 'shard_path': 'legacy_flat', 'local_row': np.arange(len(split)), 'split': split.astype(str)})
         shard_paths = []
 
-    feat_names = load_schema(a.feature_schema_path)
-    if feat.shape[1] != len(feat_names):
+    feat_names = feature_names_override if feature_names_override is not None else load_schema(a.feature_schema_path)
+    if feat is not None and feat.shape[1] != len(feat_names):
         raise ValueError(f'特征维度与 schema 不一致: feat_dim={feat.shape[1]}, schema_dim={len(feat_names)}')
     name_to_idx = {n: i for i, n in enumerate(feat_names)}
 
     eval_idx = np.flatnonzero(split == a.eval_split)
-    feat_eval = np.asarray(feat[eval_idx], dtype=float)
+    feat_eval = np.asarray(feat[eval_idx], dtype=float) if feat is not None else None
     rng = np.random.default_rng(a.seed)
     criteria = []
     resolved_features = {}
@@ -146,9 +201,26 @@ def main(a):
         elif a.mode == 'scene_confounding_control':
             alias_groups = {
                 'speed': ['speed_mean', 'ego_speed_mean', 'speed_norm_mean', 'speed_std', 'speed_norm_std'],
-                'lateral_activity': ['lane_change_count_proxy', 'lane_change_left_count_proxy', 'lane_change_right_count_proxy', 'rms_yaw_rate', 'rms_curvature', 'heading_change_total'],
-                'interaction_pressure': ['front_pressure_score', 'neighbor_count', 'neighbor_valid_count', 'front_valid_ratio', 'yielding_score_proxy'],
-                'gap_size': ['left_front_min_gap', 'right_front_min_gap', 'left_rear_min_gap', 'right_rear_min_gap'],
+                'lateral_activity': [
+                    'lane_change_count_proxy', 'lane_change_left_count_proxy', 'lane_change_right_count_proxy',
+                    'rms_yaw_rate', 'rms_curvature', 'heading_change_total',
+                    'lc_rms_yaw_rate', 'lc_rms_curvature', 'lc_heading_change_total',
+                    'lc_max_lateral_speed', 'lc_rms_lateral_accel', 'lc_sharpness_score',
+                ],
+                'interaction_pressure': [
+                    'front_pressure_score', 'neighbor_count', 'neighbor_valid_count', 'front_valid_ratio', 'yielding_score_proxy',
+                    'following_aggressiveness_score', 'following_front_closing_rate_mean',
+                    'yield_conflict_score', 'assertiveness_score', 'gap_pressure_score',
+                    'conflict_accel_score', 'small_gap_speed_maintain_score',
+                    'rear_pressure_response_score',
+                ],
+                'gap_size': [
+                    'left_front_min_gap', 'right_front_min_gap', 'left_rear_min_gap', 'right_rear_min_gap',
+                    'following_mean_front_distance', 'following_min_front_distance',
+                    'queue_final_front_gap', 'lc_target_front_gap_min', 'lc_target_rear_gap_min',
+                    'cutin_gap_initial', 'cutin_gap_min', 'overtake_min_front_gap_before',
+                    'overtake_target_lane_front_gap', 'overtake_target_lane_rear_gap',
+                ],
             }
             signs_cons = {'speed': -0.3, 'lateral_activity': -1.0, 'interaction_pressure': -1.0, 'gap_size': +1.0}
             group_meaning = {'A': 'easy_scene_like', 'B': 'complex_scene_like'}
