@@ -2894,7 +2894,8 @@ python -m py_compile \
 DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
 SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
 FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
-EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+TRAIN_OUT=$DATA_ROOT/context_gru_stage5d_balanced_v2
+EMBEDDING_MANIFEST=$TRAIN_OUT/embeddings/embedding_manifest.json
 
 ```
 

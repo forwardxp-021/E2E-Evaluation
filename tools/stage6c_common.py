@@ -167,6 +167,16 @@ def resolve_path(base: Path, p: str) -> Path:
     return pp if pp.is_absolute() else base / pp
 
 
+def resolve_existing_path(candidates: Sequence[Path], raw_path: str, purpose: str) -> Path:
+    tried = []
+    for candidate in candidates:
+        tried.append(candidate)
+        if candidate.exists():
+            return candidate
+    tried_text = "\n".join(f"  - {p}" for p in tried)
+    raise FileNotFoundError(f"Missing {purpose}: {raw_path}\nTried:\n{tried_text}")
+
+
 def load_feature_rows(shard_manifest: str, progress_enabled: bool = True, include_shard_metadata: bool = False):
     base, shard_paths = load_shard_paths(shard_manifest)
     feats = []
@@ -234,11 +244,13 @@ def load_embeddings(shard_manifest: str, embedding_manifest: str, progress_enabl
     for shard_id, (sp, ep) in enumerate(iter_progress(list(zip(shard_paths, emb_paths)), enabled=progress_enabled, desc="loading embedding shards", unit="shard")):
         shard_dir = resolve_path(base, sp)
         feat_path = shard_dir / "interaction_feat_style.npy"
-        emb_path = resolve_path(emb_base, ep)
-        if not emb_path.exists():
-            emb_path = resolve_path(base, ep)
-        if not emb_path.exists():
-            raise FileNotFoundError(f"Missing embedding shard file: {ep}")
+        raw_emb_path = Path(ep)
+        emb_candidates = [raw_emb_path] if raw_emb_path.is_absolute() else [
+            raw_emb_path,
+            resolve_path(emb_base, ep),
+            resolve_path(base, ep),
+        ]
+        emb_path = resolve_existing_path(emb_candidates, ep, "embedding shard file")
         z = np.load(emb_path, mmap_mode="r")
         if feat_path.exists():
             f = np.load(feat_path, mmap_mode="r")
