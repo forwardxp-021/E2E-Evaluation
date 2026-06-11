@@ -1,0 +1,381 @@
+[
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 0,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "lead_brake_selective_detector_enabled",
+    "shard_id": 0,
+    "shard_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000",
+    "front_speed_preferred_with_closing_derivative_fallback": true
+  },
+  {
+    "warning": "cutin_true_slot_transition_not_implemented_using_gap_drop_proxy",
+    "shard_id": 0,
+    "shard_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000",
+    "slot_ids_available": true
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 1,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000001/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 2,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000002/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 3,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000003/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 4,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000004/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 5,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000005/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 6,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000006/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 7,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000007/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 8,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000008/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 9,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000000/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 10,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000001/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 11,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000002/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 12,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000003/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 13,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000004/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 14,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000005/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 15,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000006/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 16,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000007/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 17,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000008/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 18,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000000/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 19,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000001/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 20,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000002/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 21,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000003/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 22,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000004/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 23,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000005/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 24,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000006/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 25,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000007/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 26,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000008/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 27,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000000/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 28,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000001/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 29,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000002/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 30,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000003/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 31,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000004/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 32,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000005/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 33,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000006/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "neighbor_slot_ids_loaded_with_pickle",
+    "neighbor_slot_ids_loaded_with_pickle": true,
+    "shard_id": 34,
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000007/neighbor_slot_ids.npy"
+  },
+  {
+    "warning": "detector_strength_not_strong",
+    "task_key": "task_lead_brake_response",
+    "detector_strength": "proxy",
+    "counts": {
+      "proxy": 151390,
+      "strong": 13481
+    },
+    "rows": 164871
+  },
+  {
+    "warning": "detector_strength_not_strong",
+    "task_key": "task_cutin_response",
+    "detector_strength": "proxy",
+    "counts": {
+      "proxy": 164871
+    },
+    "rows": 164871
+  },
+  {
+    "warning": "detector_strength_not_strong",
+    "task_key": "task_overtake_opportunity",
+    "detector_strength": "proxy",
+    "counts": {
+      "proxy": 164871
+    },
+    "rows": 164871
+  },
+  {
+    "warning": "detector_strength_not_strong",
+    "task_key": "task_overtake_executed",
+    "detector_strength": "proxy",
+    "counts": {
+      "proxy": 164871
+    },
+    "rows": 164871
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_peak_decel",
+    "p99": 88.18155059814399,
+    "max": 973.9443969726562,
+    "min": 0.0,
+    "expected_range": [
+      0.0,
+      12.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_rms_jerk",
+    "p99": 346.9703537791367,
+    "max": 5425.427204522052,
+    "min": 0.31034740834822716,
+    "expected_range": [
+      -80.0,
+      80.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_max_abs_jerk",
+    "p99": 1736.2067031860295,
+    "max": 19413.407592773438,
+    "min": 0.8535861968994141,
+    "expected_range": [
+      -80.0,
+      80.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_rms_yaw_rate",
+    "p99": 3.1423631071896705,
+    "max": 16.370475958360878,
+    "min": 0.0006558123303606169,
+    "expected_range": [
+      -2.0,
+      2.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_max_abs_yaw_rate",
+    "p99": 12.593758583068844,
+    "max": 31.415817260742188,
+    "min": 0.0017428398132324219,
+    "expected_range": [
+      -2.0,
+      2.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_rms_lateral_accel",
+    "p99": 6.118913210639888,
+    "max": 194.0924073832214,
+    "min": 0.015322627441702343,
+    "expected_range": [
+      -8.0,
+      8.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_max_abs_lateral_accel",
+    "p99": 31.955756664275825,
+    "max": 771.9446516036987,
+    "min": 0.03143956098938361,
+    "expected_range": [
+      -8.0,
+      8.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_rms_curvature",
+    "p99": 1.8439568756130393,
+    "max": 1312.4450825882468,
+    "min": 8.30845516729268e-05,
+    "expected_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  {
+    "warning": "metric_physical_range_warning",
+    "source": "raw",
+    "metric_name": "raw_max_abs_curvature",
+    "p99": 12.766613260247453,
+    "max": 11738.86489868164,
+    "min": 0.0001924390472764212,
+    "expected_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  {
+    "warning": "raw_metric_physically_implausible"
+  },
+  {
+    "warning": "physical_metric_clipping_applied",
+    "smoothing_window": 5
+  },
+  {
+    "warning": "completed",
+    "total_rows": 164871,
+    "elapsed_sec": 99.69483280181885
+  }
+]

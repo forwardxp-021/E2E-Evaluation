@@ -1,0 +1,13 @@
+{
+  "manifest_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json",
+  "total_train_samples": 131998,
+  "total_val_samples": 16481,
+  "context_dim": 83,
+  "feature_dim": 33,
+  "embedding_dim": 64,
+  "best_val_loss": 6.063181922936438,
+  "best_epoch": 20,
+  "final_train_loss": 6.0495708649349105,
+  "final_val_loss": 6.063181922936438,
+  "device": "cpu"
+}

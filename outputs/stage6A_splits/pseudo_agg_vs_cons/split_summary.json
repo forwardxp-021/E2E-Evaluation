@@ -1,0 +1,68 @@
+{
+  "mode": "pseudo_style_aggressive_vs_conservative",
+  "eval_split": "test",
+  "n_A": 4917,
+  "n_B": 4917,
+  "global_row_indices": true,
+  "shard_manifest": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json",
+  "feature_schema_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json",
+  "seed": 42,
+  "n_shards": 35,
+  "total_rows": 164871,
+  "split_counts": {
+    "test": 16392,
+    "train": 131998,
+    "val": 16481
+  },
+  "resolved_features": {
+    "thw": [
+      "mean_thw",
+      "min_thw"
+    ],
+    "jerk": [
+      "rms_jerk",
+      "max_abs_jerk"
+    ],
+    "accel": [
+      "rms_accel",
+      "max_abs_accel"
+    ],
+    "assertiveness": [
+      "lane_change_count_proxy",
+      "lane_change_left_count_proxy",
+      "lane_change_right_count_proxy",
+      "front_pressure_score",
+      "yielding_score_proxy"
+    ],
+    "lateral_activity": [
+      "rms_yaw_rate",
+      "rms_curvature",
+      "heading_change_total"
+    ]
+  },
+  "missing_features": {},
+  "criteria": [
+    "quantile based score split, q_low=0.3, q_high=0.7, min_group_size=500",
+    "A=conservative_like, B=aggressive_like"
+  ],
+  "score_definition": {
+    "group_signs": {
+      "thw": 1.0,
+      "jerk": -1.0,
+      "accel": -1.0,
+      "assertiveness": -1.0,
+      "lateral_activity": -1.0
+    },
+    "normalization": "robust_z = (x - median) / IQR on eval_split rows",
+    "group_meaning": {
+      "A": "conservative_like",
+      "B": "aggressive_like"
+    }
+  },
+  "quantiles": {
+    "q_low": 0.3,
+    "q_high": 0.7
+  },
+  "overlap_removed": 0,
+  "warnings": []
+}

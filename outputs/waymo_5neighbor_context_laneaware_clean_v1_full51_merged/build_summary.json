@@ -1,0 +1,189 @@
+{
+  "dataset_type": "waymo_5neighbor_context_laneaware",
+  "merged_dataset_type": "waymo_5neighbor_context",
+  "output_format": "sharded",
+  "input_roots": [
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51"
+  ],
+  "shard_paths": [
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000001",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000002",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000003",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000004",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000005",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000006",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000007",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000008",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000000",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000001",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000002",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000003",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000004",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000005",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000006",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000007",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000008",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000000",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000001",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000002",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000003",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000004",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000005",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000006",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000007",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000008",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000000",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000001",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000002",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000003",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000004",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000005",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000006",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000007"
+  ],
+  "n_shards": 35,
+  "total_shards": 35,
+  "total_windows": 164871,
+  "n_windows_kept": 164871,
+  "split_counts": {
+    "test": 16392,
+    "train": 131998,
+    "val": 16481
+  },
+  "slot_occupied_window_count_by_slot": {
+    "front": 44036,
+    "left_front": 23290,
+    "left_rear": 24964,
+    "right_front": 26049,
+    "right_rear": 26209
+  },
+  "slot_occupied_window_ratio": {
+    "front": 0.26709366717009053,
+    "left_front": 0.14126195631736327,
+    "left_rear": 0.15141534896980063,
+    "right_front": 0.1579962516148989,
+    "right_rear": 0.15896670730449866
+  },
+  "empty_slot_count_by_slot": {
+    "front": 120835,
+    "left_front": 141581,
+    "left_rear": 139907,
+    "right_front": 138822,
+    "right_rear": 138662
+  },
+  "empty_slot_ratio_by_slot": {
+    "front": 0.7329063328299095,
+    "left_front": 0.8587380436826367,
+    "left_rear": 0.8485846510301994,
+    "right_front": 0.8420037483851011,
+    "right_rear": 0.8410332926955013
+  },
+  "nonfinite_output_detected": 0,
+  "slot_valid_frame_count_by_slot": {
+    "front": 3482954,
+    "left_front": 1842015,
+    "left_rear": 1980408,
+    "right_front": 2061287,
+    "right_rear": 2080333
+  },
+  "slot_valid_frame_ratio": {
+    "front": 0.26406660358704687,
+    "left_front": 0.13965577633422493,
+    "left_rear": 0.15014829776006697,
+    "right_front": 0.15628028883187461,
+    "right_rear": 0.15772429657125875
+  },
+  "slot_valid_ratio": {
+    "front": 0.26406660358704687,
+    "left_front": 0.13965577633422493,
+    "left_rear": 0.15014829776006697,
+    "right_front": 0.15628028883187461,
+    "right_rear": 0.15772429657125875
+  },
+  "lane_context_quality_counts": {
+    "good": 163220,
+    "ambiguous_intersection": 1651
+  },
+  "good_lane_context_rate": 0.9899861103529426,
+  "ambiguous_intersection_rate": 0.010013889647057397,
+  "bad_lane_context_rate": 0.0,
+  "fallback_lane_context_rate": 0.0,
+  "lane_assignment_success_count_kept": 164871,
+  "fallback_assignment_count_kept": 0,
+  "lane_assignment_success_rate": 1.0,
+  "fallback_assignment_rate": 0.0,
+  "assignment_method_counts_by_slot": {
+    "front": {
+      "lane_aware": 44036,
+      "geometric_fallback": 0,
+      "empty": 120835,
+      "sanitize_failed": 0
+    },
+    "left_front": {
+      "lane_aware": 23290,
+      "geometric_fallback": 0,
+      "empty": 141581,
+      "sanitize_failed": 0
+    },
+    "left_rear": {
+      "lane_aware": 24964,
+      "geometric_fallback": 0,
+      "empty": 139907,
+      "sanitize_failed": 0
+    },
+    "right_front": {
+      "lane_aware": 26049,
+      "geometric_fallback": 0,
+      "empty": 138822,
+      "sanitize_failed": 0
+    },
+    "right_rear": {
+      "lane_aware": 26209,
+      "geometric_fallback": 0,
+      "empty": 138662,
+      "sanitize_failed": 0
+    }
+  },
+  "interaction_feature_standardization": "interaction_feature_standardization.json",
+  "warnings": [
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000000: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000001: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000002: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000003: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000004: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000005: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000006: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000007: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13/shards/shard_000008: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000000: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000001: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000002: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000003: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000004: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000005: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000006: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000007: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26/shards/shard_000008: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000000: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000001: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000002: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000003: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000004: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000005: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000006: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000007: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39/shards/shard_000008: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000000: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000001: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000002: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000003: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000004: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000005: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000006: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51/shards/shard_000007: lane_assignment_debug.csv 缺少 assignment_method 列，回退到 context_mask_window"
+  ]
+}

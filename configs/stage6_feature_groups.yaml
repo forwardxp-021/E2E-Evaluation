@@ -1,0 +1,29 @@
+feature_aliases:
+  mean_front_distance: [front_distance_mean]
+  mean_rel_speed: [front_rel_speed_mean]
+  lane_change_count_proxy: [lane_change_count]
+  rms_lateral_accel: [lateral_accel_std]
+  assertiveness_score_proxy: [assertiveness_proxy]
+  ego_speed_mean: [speed_mean]
+
+category_groups:
+  longitudinal_comfort:
+    positive_direction: higher_is_more_comfortable
+    features: [rms_accel, rms_jerk, max_abs_accel, max_abs_jerk]
+    lower_is_better: [rms_accel, rms_jerk, max_abs_accel, max_abs_jerk]
+  following_interaction:
+    positive_direction: higher_is_more_conservative
+    features: [mean_thw, min_thw, mean_front_distance, mean_rel_speed]
+    lower_is_better: [mean_rel_speed]
+  lateral_lane_dynamics:
+    positive_direction: higher_is_more_stable
+    features: [rms_yaw_rate, lane_change_count_proxy, rms_lateral_accel]
+    lower_is_better: [rms_yaw_rate, lane_change_count_proxy, rms_lateral_accel]
+  lateral_gap_interaction:
+    positive_direction: higher_is_more_courteous
+    features: [left_gap_min, right_gap_min]
+    lower_is_better: []
+  behavior_proxy:
+    positive_direction: higher_is_more_assertive
+    features: [speed_mean, assertiveness_score_proxy, lane_change_count_proxy]
+    lower_is_better: []

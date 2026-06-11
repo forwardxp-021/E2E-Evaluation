@@ -1855,7 +1855,7 @@ python tools/export_context_row_embeddings.py \
 # Exact Stage 5C evaluator command
 ```bash
 python tools/evaluate_context_embedding.py \
-  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
   --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
   --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
@@ -1864,6 +1864,75 @@ python tools/evaluate_context_embedding.py \
   --seed 42 \
   --overwrite
 ```
+
+# Stage 6C v2 three-split validation complete
+
+## 1. 命令
+
+三个 final experiment 已完成，结果目录：
+
+```text
+outputs/stage6C_task_bdd/negative_control_random_v2_final
+outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2_final
+outputs/stage6C_task_bdd/scene_confounding_v2_final
+```
+
+三路汇总输出目录：
+
+```text
+outputs/stage6C_task_bdd/stage6c_v2_three_split_summary
+```
+
+重新生成三路汇总表：
+
+```bash
+python tools/stage6c_summarize_task_bdd_experiments.py \
+  --experiment_dirs outputs/stage6C_task_bdd/negative_control_random_v2_final,outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2_final,outputs/stage6C_task_bdd/scene_confounding_v2_final \
+  --experiment_names negative,pseudo,scene \
+  --output_dir outputs/stage6C_task_bdd/stage6c_v2_three_split_summary \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 读取三个 final 目录下的 `task_bdd_summary.csv`、`task_style_delta.csv`、`warnings.json`。
+- 生成：
+  - `task_bdd_cross_experiment.csv`
+  - `task_bdd_pivot.csv`
+  - `task_bdd_delta_vs_negative.csv`
+  - `top_style_delta_by_experiment.csv`
+  - `stage6c_v2_cross_experiment_summary.md`
+  - `summarizer_warnings.json`
+- 不修改三个 final experiment 原始结果目录。
+
+三路解释：
+
+- `negative_control_random_v2_final`：BDD near zero，sanity check passed。
+- `pseudo_agg_vs_cons_v2_final`：BDD significant，positive control passed。
+- `scene_confounding_v2_final`：BDD significant，confounding diagnosis passed。
+
+Reliability tier：
+
+| tier | task_key | interpretation |
+|---|---|---|
+| primary | `task_following` | strong detector，优先用于主要结论 |
+| primary | `task_lane_change` | strong detector，优先用于主要结论 |
+| primary | `task_yield_conflict` | strong detector，优先用于主要结论 |
+| primary | `task_hesitation` | strong detector，但语义解释为 hesitation-like / prolonged maneuver |
+| auxiliary_proxy | `task_cutin_response` | proxy-only，辅助诊断 |
+| auxiliary_proxy | `task_queue_approach` | proxy-dominant，辅助诊断 |
+| auxiliary_proxy | `task_lead_brake_response` | proxy-dominant，辅助诊断 |
+| auxiliary_proxy | `task_overtake_opportunity` | proxy / sample-limited，辅助诊断 |
+| auxiliary_proxy | `task_overtake_executed` | sample-limited，skipped 不等于 no drift |
+
+## 3. 通过标准
+
+1. `outputs/stage6C_task_bdd/stage6c_v2_three_split_summary/task_bdd_pivot.csv` 包含 `negative`、`pseudo`、`scene` 三列。
+2. negative-control BDD 应接近 0 且 non-significant。
+3. pseudo positive-control BDD 应在 behavior-style tasks 上显著。
+4. scene-confounding BDD 可显著，但 pattern 应与 pseudo 区分，用于 confounding diagnosis。
+5. 主要结论优先使用 primary strong-detector tasks。
+6. proxy-heavy / sample-limited tasks 必须标记为 auxiliary，不能当作主结论。
 
 ## Expected outputs
 Training output dir:
@@ -1926,12 +1995,12 @@ python tools/train_context_behavior_embedding.py \
 python tools/export_context_row_embeddings.py \
   --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1/best_model.pt \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings \
   --split all \
   --merge_embeddings
 
 python tools/evaluate_context_embedding.py \
-  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_embeddings/embedding_manifest.json \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
   --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
   --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
   --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_group_weighted_v1_eval \
@@ -1952,3 +2021,1424 @@ python tools/evaluate_context_embedding.py \
 - `feature_group_config.json` 中可看到按 feature name 解析出的 group indices。
 - 导出命令产出 `embedding_manifest.json`，且 `nonfinite_embedding_detected=0`。
 - 评估命令产出 `evaluation_summary.json` 与 `category_correlation_summary.csv`，可用于验证 following 是否提升且 lateral 优势是否保持。
+
+## Stage 6A：非配对风格漂移评估
+
+## 1. 命令
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --feature_path <interaction_feat_style.npy> \
+  --feature_schema_path <feature_schema.json> \
+  --split_path <split.npy> \
+  --experiment_name neg_ctrl
+
+python tools/stage6_compare_unpaired_style.py \
+  --context_traj_path <context_traj.npy> \
+  --feature_path <interaction_feat_style.npy> \
+  --feature_schema_path <feature_schema.json> \
+  --encoder_ckpt <stage5d_balanced_v2.pt> \
+  --a_indices_path outputs/stage6A_splits/neg_ctrl/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/neg_ctrl/b_indices.npy \
+  --output_dir outputs/stage6A_compare/neg_ctrl
+```
+
+## 2. 期望行为
+
+读取 Stage 5 处理产物与 Stage 5D 编码器，输出 BDD、类别/特征/slice 漂移、top drift case、markdown report 与最小图表；不会触发新训练或下载新数据。
+
+## 3. 通过标准
+
+输出目录包含 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`scenario_slice_delta.csv`、`top_drift_cases.csv`、`style_report_card.md` 与 `plots/*.png`。
+
+## Stage 6A 非配对风格漂移（Issue #114）
+
+
+### Stage 6A（Issue #116）推荐：full51 分片清单模式
+
+
+#### Stage 6A-1：Negative control
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+随机同分布拆分 A/B，作为“无真实风格漂移”的负对照，BDD 与 permutation p-value 不应提示显著漂移。
+
+## 3. 通过标准
+
+- 结果目录包含 split 与 compare 全套产物。
+- BDD 接近 0 且 p-value 不显著（与历史负对照量级一致）。
+
+#### Stage 6A-2：Pseudo style positive control
+
+## 1. 命令
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode pseudo_style_aggressive_vs_conservative \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name pseudo_agg_vs_cons \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/pseudo_agg_vs_cons \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+A（conservative_like）与 B（aggressive_like）应产生更明显风格差异；BDD 应高于 negative control，类别/特征变化应可解释 B 更激进、舒适性更弱。
+
+## 3. 通过标准
+
+- BDD 明显高于负对照。
+- `category_delta.csv` 与 `feature_delta.csv` 支撑“更激进/更不舒适”解释。
+
+#### Stage 6A-3：Scene confounding control
+
+## 1. 命令
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode scene_confounding_control \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name scene_confounding \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/scene_confounding \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+A（easy_scene_like）与 B（complex_scene_like）场景代理分布不同，BDD 可能抬升，报告应提示潜在 scenario/ODD confounding。
+
+## 3. 通过标准
+
+- `scenario_slice_delta.csv` 存在且可解释哪些场景代理切片驱动差异。
+- warning 与 report card 提示“可能由场景分布差异驱动”。
+
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+EMB_ROOT=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings
+
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $DATA_ROOT/shard_manifest.json \
+  --feature_schema_path $DATA_ROOT/feature_schema.json \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random
+
+python tools/stage6_compare_unpaired_style.py \
+  --source_shard_manifest $DATA_ROOT/shard_manifest.json \
+  --embedding_manifest $EMB_ROOT/embedding_manifest.json \
+  --feature_schema_path $DATA_ROOT/feature_schema.json \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --indices_are_test_relative \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random
+```
+
+## 2. 期望行为
+
+- 默认按 Stage 5 full51 的 `shard_manifest.json` 读取分片特征与 split，不依赖根目录扁平 `.npy`。
+- compare 默认按 Stage 5D-balanced-v2 的 `embedding_manifest.json` 读取分片 embedding。
+- `--feature_path/--split_path` 与 `--embedding_path` 仅保留为 legacy fallback。
+
+## 3. 通过标准
+
+- split 目录产出 `a_indices.npy`、`b_indices.npy`、`split_summary.json`。
+- compare 目录产出 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`stage6_warnings.json` 与图表。
+- 日志包含“使用 shard_manifest + embedding_manifest 模式（Stage5 full51 推荐路径）”提示。
+
+### 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+FEATURE_PATH=$DATA_ROOT/interaction_feat_style.npy
+SCHEMA_PATH=$DATA_ROOT/feature_schema.json
+SPLIT_PATH=$DATA_ROOT/split.npy
+CONTEXT_PATH=$DATA_ROOT/context_traj.npy
+EMBEDDING_PATH=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embeddings.npy
+CKPT=$DATA_ROOT/context_gru_stage5d_group_weighted_v1/best_model.pt
+
+ls -lh \
+  $FEATURE_PATH \
+  $SCHEMA_PATH \
+  $SPLIT_PATH \
+  $CONTEXT_PATH \
+  $EMBEDDING_PATH \
+  $CKPT
+```
+
+> 重要警告：如果 `context_traj.npy`、`interaction_feat_style.npy` 或 `split.npy` 在 full51 merged 目录下缺失，单体数组命令不可用。若已有与 feature 行对齐的 embedding，请优先使用 `--embedding_path` 模式。
+
+```bash
+# 1) negative_control_random
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --split_path $SPLIT_PATH \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random
+
+# 2) pseudo_style_aggressive_vs_conservative
+python tools/stage6_build_ab_splits.py \
+  --mode pseudo_style_aggressive_vs_conservative \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --split_path $SPLIT_PATH \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name pseudo_style_aggressive_vs_conservative
+
+# 3) scene_confounding_control
+python tools/stage6_build_ab_splits.py \
+  --mode scene_confounding_control \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --split_path $SPLIT_PATH \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name scene_confounding_control
+```
+
+```bash
+# A. embedding_path 模式（推荐）
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_path $EMBEDDING_PATH \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --top_k 20
+
+# B. context/encoder 模式（回退）
+python tools/stage6_compare_unpaired_style.py \
+  --context_traj_path $CONTEXT_PATH \
+  --feature_path $FEATURE_PATH \
+  --feature_schema_path $SCHEMA_PATH \
+  --encoder_ckpt $CKPT \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare_ctx/negative_control_random \
+  --device cuda \
+  --batch_size 256 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --top_k 20
+```
+
+### 2. 期望行为
+- split 脚本读取 `feature/split/schema`，生成 A/B 索引与 split summary。
+- compare 脚本读取 A/B、embedding（或 context+ckpt）与 feature，输出 BDD、category/feature/slice/case 与报告卡。
+- compare 脚本会写 `stage6_warnings.json`，提醒缺失特征、未标定 BDD、元数据缺失等风险。
+
+### 3. 通过标准
+- 三个 split 实验都能生成 `a_indices.npy`、`b_indices.npy`。
+- compare 产物包含：
+  - `bdd_summary.json`
+  - `bdd_bootstrap_samples.csv`
+  - `bdd_permutation_samples.csv`
+  - `category_delta.csv`
+  - `feature_delta.csv`
+  - `scenario_slice_delta.csv`
+  - `top_drift_cases.csv`
+  - `stage6_warnings.json`
+  - `style_report_card.md`
+- `feature_delta.csv` 的 `permutation_p_value` 不应全是 1.0（除非数据本身极端巧合）。
+
+## Stage 6A（推荐流程，Manifest 模式，仅此为当前建议）
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python -m py_compile \
+  tools/stage6_build_ab_splits.py \
+  tools/stage6_compare_unpaired_style.py \
+  tools/stage6_generate_report_card.py
+
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random \
+  --seed 42 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6A_compare/negative_control_random \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --max_top_case_candidates 5000 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 使用 `shard_manifest.json` + `embedding_manifest.json`，按分片顺序对齐读取特征和 embedding。
+- A/B 索引为全局行号；top drift 不再构建完整 A×B 距离矩阵，避免 OOM。
+- 即使无可用切片，也会输出仅含表头的 `scenario_slice_delta.csv`，并继续生成报告卡。
+
+## 3. 通过标准
+
+- 无需 `--embedding_path __unused_manifest_mode_guard_workaround__` 之类临时参数。
+- 输出目录包含 `bdd_summary.json`、`category_delta.csv`、`feature_delta.csv`、`scenario_slice_delta.csv`、`top_drift_cases.csv`、`stage6_warnings.json`、`style_report_card.md` 和核心图表。
+- 上述命令可直接复制执行且不依赖根目录扁平 `interaction_feat_style.npy/split.npy/context_traj.npy`。
+
+> LEGACY/DEPRECATED：任何依赖 `$DATA_ROOT/interaction_feat_style.npy`、`$DATA_ROOT/split.npy`、`$DATA_ROOT/context_traj.npy`、`context_gru_stage5d_group_weighted_v1*` 的 Stage 6A 命令都不是当前推荐流程。
+
+
+## Stage 6A — Full Negative Control（Manifest 模式，当前标准流程）
+
+## 1. 命令
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python -m py_compile   tools/stage6_build_ab_splits.py   tools/stage6_compare_unpaired_style.py   tools/stage6_generate_report_card.py
+
+python tools/stage6_build_ab_splits.py   --mode negative_control_random   --shard_manifest $SHARD_MANIFEST   --feature_schema_path $FEATURE_SCHEMA   --eval_split test   --output_dir outputs/stage6A_splits   --experiment_name negative_control_random   --seed 42   --overwrite
+
+python tools/stage6_compare_unpaired_style.py   --embedding_manifest $EMBEDDING_MANIFEST   --shard_manifest $SHARD_MANIFEST   --feature_schema_path $FEATURE_SCHEMA   --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy   --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy   --feature_groups_config configs/stage6_feature_groups.yaml   --output_dir outputs/stage6A_compare/negative_control_random   --num_bootstrap 50   --num_permutation 100   --max_mmd_samples 2000   --max_top_case_candidates 5000   --top_k 20   --seed 42   --overwrite
+```
+
+## 2. 期望行为
+
+- `negative_control_random` 是在 `test` 集内做同分布随机切分（A/B）。
+- 期望结果：BDD 很小、`p-value` 不显著、category/feature effect size 整体较小。
+- 该实验用于验证 Stage 6A 不会把同分布样本误报为 style drift。
+- 输出目录：`outputs/stage6A_compare/negative_control_random/`，包含：
+  - `bdd_summary.json`
+  - `category_delta.csv`
+  - `feature_delta.csv`
+  - `scenario_slice_delta.csv`
+  - `top_drift_cases.csv`
+  - `stage6_warnings.json`
+  - `style_report_card.md`
+  - `plots/`
+
+## 3. 通过标准
+
+- `BDD_MMD` 约 `0.0004`、`p-value` 约 `0.396`（数量级接近即可），表示整体分布漂移不显著。
+- category/feature 的 effect size 应整体较小；若个别特征 p-value 显著但 effect size 很小，不应过度解读。
+- `scenario_slice_delta.csv` 存在（即使仅表头也要有明确 warning）。
+
+> 重要说明：
+> - Stage 6A 当前推荐路径是 manifest 模式，不推荐根目录扁平 npy 作为主流程。
+> - 不推荐命令中使用：`$DATA_ROOT/interaction_feat_style.npy`、`$DATA_ROOT/split.npy`、`$DATA_ROOT/context_traj.npy`、`context_gru_stage5d_group_weighted_v1`。
+> - 以上仅作为 legacy/fallback。
+> - 当前推荐 embedding 模型：`context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json`。
+>
+> 已知限制：scenario slicing 依赖 `feature_schema.json` 可用代理特征；若 speed/density proxy 缺失会产生 warnings。Stage 6B 需要更丰富 scene metadata/scene descriptor matching。
+
+## Stage 6B — Baseline Comparison and Scenario-Controlled BDD
+
+### 1. 命令
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python tools/stage6b_compare_baselines.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6B_baselines/negative_control_random \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --pca_dim 16 --seed 42 --overwrite
+
+python tools/stage6b_compare_baselines.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6B_baselines/pseudo_agg_vs_cons \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --pca_dim 16 --seed 42 --overwrite
+
+python tools/stage6b_compare_baselines.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --feature_groups_config configs/stage6_feature_groups.yaml \
+  --output_dir outputs/stage6B_baselines/scene_confounding \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --pca_dim 16 --seed 42 --overwrite
+
+python tools/stage6b_scenario_balanced_bdd.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --output_dir outputs/stage6B_balanced/scene_confounding \
+  --balance_keys lateral_activity_bin \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --min_bin_size 100 --seed 42 --overwrite
+
+python tools/stage6b_scenario_balanced_bdd.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --output_dir outputs/stage6B_balanced/pseudo_agg_vs_cons \
+  --balance_keys lateral_activity_bin \
+  --num_bootstrap 50 --num_permutation 100 --max_mmd_samples 2000 --min_bin_size 100 --seed 42 --overwrite
+
+python tools/stage6b_summarize_experiments.py \
+  --experiment_roots \
+  outputs/stage6A_compare/negative_control_random \
+  outputs/stage6A_compare/pseudo_agg_vs_cons \
+  outputs/stage6A_compare/scene_confounding \
+  outputs/stage6B_baselines/negative_control_random \
+  outputs/stage6B_baselines/pseudo_agg_vs_cons \
+  outputs/stage6B_baselines/scene_confounding \
+  outputs/stage6B_balanced/scene_confounding \
+  outputs/stage6B_balanced/pseudo_agg_vs_cons \
+  --output_dir outputs/stage6B_summary \
+  --overwrite
+```
+
+### 2. 期望行为
+- baseline 脚本读取 manifest 模式特征与 embedding，输出 embedding/feature/PCA-feature 三套 MMD 统计与特征效应量。
+- balanced 脚本按 `lateral_activity_bin` 做 A/B bin 内配平，再对比 raw 与 balanced BDD。
+- summarize 脚本汇总 Stage6A/6B 输出，生成统一校准表与图。
+
+### 3. 通过标准
+- 三个 baseline 实验均生成 `baseline_summary.json`、`baseline_mmd.csv`、`top_feature_effects.csv` 和图。
+- 两个 balanced 实验均生成 `balanced_bdd_summary.json`，且 `bins_used` 非空。
+- summary 生成 `stage6b_calibration_table.csv` 与三张汇总图。
+
+## Stage 6B — ODD bins and Behavior-event BDD
+
+### 1. 命令
+```bash
+# 推荐 Stage6A/6B 工作流（manifest 模式）
+# 1) shard_manifest.json
+# 2) feature_schema.json
+# 3) context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --inspect_metadata
+
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+RAW_SCENARIO_DIR=<path_to_original_waymo_scenario_tfrecords>
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1 \
+  --overwrite
+
+python tools/stage6b_build_odd_bins.py \
+  --map_odd_manifest $DATA_ROOT/map_odd_features_v1/map_odd_manifest.json \
+  --shard_manifest $SHARD_MANIFEST \
+  --output_dir $DATA_ROOT/map_odd_bins_v1 \
+  --overwrite
+
+python tools/stage6b_build_behavior_event_bins.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --output_dir $DATA_ROOT/behavior_event_bins_v1 \
+  --overwrite
+```
+
+### 2. 期望行为
+- ODD bins 用于外部场景公平性控制（map/static context）。
+- 若 `map_match_valid` 低于阈值，构建脚本会失败；不会再输出默认全零伪特征。
+- Behavior-event bins 用于定位漂移发生在哪些驾驶任务。
+- `event_lateral_activity_bin` 仅用于行为报告，不作为主 ODD 控制变量。
+
+### 3. 通过标准
+- `map_odd_feat.npy` 与分片 `interaction_feat_style.npy` 行对齐。
+- `stage6b_build_map_odd_features.py` 必须报告 metadata/raw scenario overlap，且 `map_match_valid` 非零。
+- `odd_bins.csv` / `behavior_event_bins.csv` 必须包含 `global_row, shard_id, local_row`。
+- ODD 平衡后可输出 `BDD_odd_balanced`，并与 `BDD_overall` 对比解释。
+
+
+## Legacy 说明
+
+旧的 root-level flat npy 命令仅保留兼容，不再作为 Stage6A/6B 主流程推荐。
+
+## Stage 6B（map-derived ODD）安全流程（2026-05 更新）
+
+### 1. 命令
+
+```bash
+python -m py_compile \
+  tools/stage6b_build_map_odd_features.py \
+  tools/stage6b_build_odd_bins.py \
+  tools/stage6b_build_behavior_event_bins.py \
+  tools/stage6b_bin_bdd_report.py \
+  tools/stage6b_scenario_balanced_bdd.py
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1_debug \
+  --max_scenarios 1000 \
+  --inspect_metadata
+
+python tools/stage6b_build_map_odd_features.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --raw_scenario_dir $RAW_SCENARIO_DIR \
+  --output_dir $DATA_ROOT/map_odd_features_v1_debug \
+  --max_scenarios 1000 \
+  --path_source raw_track \
+  --min_match_rate 0.01 \
+  --min_lane_match_rate 0.5 \
+  --overwrite
+
+python tools/stage6b_build_odd_bins.py \
+  --map_odd_manifest $DATA_ROOT/map_odd_features_v1_debug/map_odd_manifest.json \
+  --shard_manifest $SHARD_MANIFEST \
+  --output_dir $DATA_ROOT/map_odd_bins_v1_debug \
+  --min_map_match_rate 0.01 \
+  --overwrite
+
+head $DATA_ROOT/map_odd_features_v1_debug/map_odd_debug_samples.csv
+```
+
+### 2. 期望行为
+
+- 先做语法检查，再做 metadata inspect。
+- Stage6B 重计算脚本默认开启进度条；非交互式 CI/日志环境可加 `--no_progress` 关闭。
+- 完整 map ODD 抽取会显示三个关键进度：`scan processed shards`、`scan raw tfrecords`、`compute ODD per shard/row`。
+- inspect 阶段会检查 processed/raw scenario overlap、`start/window_len/target_agent_id` 字段可用性。
+- 仅当 inspect 建议可运行时再执行 debug build。
+- map ODD 轨迹默认来源是 `--path_source raw_track`（Waymo 原始 scenario tracks 全局坐标），**不再默认使用 context_traj**。
+- `--path_source context` 仅用于排障回归，会打印强 warning（context 可能是 ego-centric/feature-space，和 map 全局坐标不对齐）。
+- 输出 `map_odd_debug_samples.csv` 用于人工检查坐标范围、最近车道距离、邻近地图要素计数。
+- map_odd manifest 分片输出目录使用全局唯一命名，避免不同 part 的同名 shard 覆盖。
+- map ODD 分箱仅使用 `map_match_valid=1` 行计算分位点，`map_match_valid=0` 行统一标记 `unknown`。
+- odd bins 构建前会强校验：feature/meta 路径唯一、每 shard 行数一致、总行数与 manifest 一致；不一致直接失败。
+- 当 `odd_map_complexity_bin` 或 `odd_lane_count_bin` 全部是 `unknown` 时默认失败（除非显式 `--allow_degenerate_bins`）。
+- behavior-event bins 保持独立报告层，不与 map ODD bins 混用。
+- 旧版 flat-npy Stage6 命令视为 **LEGACY/DEPRECATED**，不建议继续作为主流程。
+
+### 3. 通过标准
+
+- `py_compile` 全部通过。
+- inspect 输出包含 overlap 与 context 检查，recommendation 为可执行状态。
+- map_odd 输出包含 `map_odd_warnings.json`，且 `map_match_valid_rate` 高、`local_lane_match_valid_rate` 不接近 0。
+- `no_near_lane_rows` 不应接近总行数；`nearest_lane_distance` p50/p90/p95 有合理数值。
+- `odd_map_complexity_bin` 与 `odd_lane_count_bin` 不能全部为 `unknown`。
+- odd_bins 行数必须严格等于 map_odd_manifest `total_rows`。
+- behavior_event_bin_report 明确声明 `event_lateral_activity_bin` 是 behavior-contaminated。
+
+
+## Stage 6B Behavior-event BDD Decomposition
+
+### pseudo_agg_vs_cons
+
+| Behavior-event bin | Bin value | n_A | n_B | BDD_MMD | Interpretation |
+|---|---:|---:|---:|---:|---|
+| event_following_bin | following_proxy | 4917 | 4917 | 0.1661 | following style drift remains strong |
+| event_cut_in_bin | cut_in_proxy | 2908 | 429 | 0.1538 | cut-in proxy drift exists but A/B count is imbalanced |
+| event_cut_in_bin | no_cut_in_proxy | 2009 | 4488 | 0.1350 | drift also exists outside cut-in proxy |
+| event_lane_change_bin | lane_change | 675 | 2756 | 0.2314 | strongest lane-change-related drift |
+| event_lane_change_bin | no_lane_change | 4242 | 2161 | 0.1331 | lower drift without lane-change |
+| event_yielding_bin | non_yielding_like | 1931 | 4454 | 0.1460 | yielding-related proxy shift |
+| event_yielding_bin | yielding_like | 2986 | 463 | 0.1398 | yielding proxy drift but imbalanced |
+| event_lateral_activity_bin | high | 487 | 2827 | 0.2403 | strongest high-lateral-activity drift |
+| event_lateral_activity_bin | mid | 1393 | 1693 | 0.1860 | medium lateral activity drift |
+| event_lateral_activity_bin | low | 3037 | 397 | 0.1277 | lowest lateral activity drift |
+
+### scene_confounding
+
+| Behavior-event bin | Bin value | n_A | n_B | BDD_MMD | Interpretation |
+|---|---:|---:|---:|---:|---|
+| event_following_bin | following_proxy | 4917 | 4917 | 0.1246 | following drift close to overall scene_confounding BDD |
+| event_cut_in_bin | cut_in_proxy | 278 | 2576 | 0.1475 | cut-in proxy exposure is strongly imbalanced |
+| event_cut_in_bin | no_cut_in_proxy | 4639 | 2341 | 0.2240 | strong drift outside cut-in proxy |
+| event_lane_change_bin | lane_change | 602 | 2575 | 0.1936 | lane-change-related drift |
+| event_lane_change_bin | no_lane_change | 4315 | 2342 | 0.1858 | drift also persists without lane-change |
+| event_yielding_bin | non_yielding_like | 4524 | 2415 | 0.2169 | strong non-yielding-like drift |
+| event_yielding_bin | yielding_like | 393 | 2502 | 0.1837 | yielding proxy exposure is imbalanced |
+| event_lateral_activity_bin | high | 430 | 2621 | 0.1881 | high lateral activity drift |
+| event_lateral_activity_bin | mid | 1375 | 1333 | 0.1399 | moderate drift |
+| event_lateral_activity_bin | low | 3112 | 963 | 0.2931 | strongest drift in low lateral activity bin |
+
+Notes:
+- `event_low_speed_bin` and `event_high_speed_bin` are currently unknown/unavailable in both experiments.
+- All reported p-values are significant at approximately `0.0099` in the current run.
+- Behavior-event bins are diagnostic/reporting bins, not primary fairness-control bins.
+
+## Main interpretation update
+
+Behavior-event decomposition confirms that pseudo_agg_vs_cons drift is behaviorally interpretable. Its largest BDD values occur in high-lateral-activity and lane-change bins, where BDD reaches approximately 0.2403 and 0.2314. This is consistent with the pseudo aggressive-vs-conservative construction and shows that the behavior-event report layer can localize where style drift is expressed.
+
+For scene_confounding, behavior-event decomposition shows a different pattern. The drift is not explained by static map ODD balancing, and the largest behavior-event BDD values appear in low lateral activity, no-cut-in proxy, non-yielding-like, and lane-change/no-lane-change bins. This suggests that the scene_confounding split captures dynamic interaction-exposure and behavior-proxy differences rather than pure static map ODD mismatch.
+
+## Conceptual clarification
+
+Stage 6 now distinguishes three layers:
+
+1. Static Map ODD control
+   - map complexity
+   - lane-count context
+   - curvature
+   - used for fairness control
+
+2. Dynamic interaction / behavior-exposure diagnostics
+   - following
+   - cut-in proxy
+   - yielding proxy
+   - lane-change
+   - lateral activity
+   - used for drift localization
+
+3. Overall behavior distribution drift
+   - raw BDD
+   - ODD-balanced BDD
+   - behavior-event BDD
+
+Map ODD bins and behavior-event bins should not be confused. Static ODD bins test whether A/B faced similar road geometry. Behavior-event bins explain which driving tasks or interaction modes contain the drift.
+
+## Added limitations
+
+- low/high speed bins are unavailable in the current feature schema.
+- cut-in and yielding bins are proxy definitions, not ground-truth event annotations.
+- several behavior-event bins are highly A/B imbalanced, so they should be interpreted as localization signals rather than causal proof.
+- dynamic interaction exposure matching should be developed in a later Stage 6C/6D.
+
+## Stage 6C：Dynamic Interaction Exposure 与 Event-specific Style Diagnosis
+
+Stage 6C 是 Stage 6A/6B 之后新增的动态交互诊断层。它不重写 Stage 6A，也不删除 Stage 6B 的 ODD / behavior-event 命令。核心区别是：`exposure_*` 表示动态交互暴露，可作为后续 matching/control 候选；`outcome_*` 表示行为结果/风格，主要用于报告和定位。
+
+### 1. 命令
+
+先设置当前 full51 数据路径：
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+```
+
+A. 构建动态交互暴露与行为结果 bins：
+
+```bash
+python tools/stage6c_build_dynamic_event_bins.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --output_dir $DATA_ROOT/dynamic_event_bins_v1 \
+  --overwrite
+```
+
+B. 构建事件内 style metrics：
+
+```bash
+python tools/stage6c_build_event_style_metrics.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
+  --output_dir $DATA_ROOT/event_style_metrics_v1 \
+  --overwrite
+```
+
+C. 对 `scene_confounding` 生成 event style report（默认 `--event_scope all`，同时报告 exposure 与 outcome）：
+
+```bash
+python tools/stage6c_event_style_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
+  --event_style_metrics_path $DATA_ROOT/event_style_metrics_v1/event_style_metrics.csv \
+  --output_dir outputs/stage6C_event_style/scene_confounding \
+  --event_scope all \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+D. 对 `pseudo_agg_vs_cons` 生成 event style report（exposure-only）：
+
+```bash
+python tools/stage6c_event_style_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
+  --event_style_metrics_path $DATA_ROOT/event_style_metrics_v1/event_style_metrics.csv \
+  --output_dir outputs/stage6C_event_style/pseudo_agg_vs_cons_exposure_only \
+  --event_scope exposure \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+
+E. 对 `pseudo_agg_vs_cons` 只报告 outcome bins，用于定位 lane-change / overtake / brake / hesitation / assertive / stop-go / lateral-unstable 等行为结果：
+
+```bash
+python tools/stage6c_event_style_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --dynamic_event_bins_path $DATA_ROOT/dynamic_event_bins_v1/dynamic_event_bins.csv \
+  --event_style_metrics_path $DATA_ROOT/event_style_metrics_v1/event_style_metrics.csv \
+  --output_dir outputs/stage6C_event_style/pseudo_agg_vs_cons_outcome_only \
+  --event_scope outcome \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite
+```
+
+说明：`--event_scope` 的默认值是 `all`。如果传入 `--event_keys exposure_following,outcome_hard_brake` 这类显式列表，则 `--event_keys` 会覆盖 `--event_scope`。
+
+如只想做无进度条的日志运行，可在三个命令后追加：
+
+```bash
+--no_progress
+```
+
+### 2. 期望行为
+
+- `stage6c_build_dynamic_event_bins.py` 会读取 `shard_manifest.json` 指向的每个 shard 下 `interaction_feat_style.npy`，并用 `feature_schema.json` 做 alias resolution；输出 row-aligned 的 `dynamic_event_bins.csv/.npy`、schema、report、warnings；同时会尝试从 `metadata.csv`、`meta.csv`、`meta.npy` 透传安全 metadata 字段。关键 exposure 条件缺失时会 fail-closed 输出 `unknown`，不会因为 `combine_and` 忽略 None 而放宽分箱。
+- dynamic event bins 至少包含 `global_row`、`shard_id`、`local_row`、9 个 `exposure_*` bins、8 个 `outcome_*` bins、`event_quality_flag`、`available_feature_count`、`missing_feature_count`。
+- `stage6c_build_event_style_metrics.py` 会读取同一批 shard 和 `dynamic_event_bins.csv`，输出 row-aligned 的 `event_style_metrics.csv/.npy`、schema、report、warnings。
+- 如果某个代理特征缺失，bin 会写成 `unknown`，metric 会写成 `NaN`，并在 warnings JSON 中记录缺失 alias；脚本不会把缺失值静默填成 0。分箱正类过少、比例低于 0.05 / 高于 0.95、全 unknown 会写入 `dynamic_event_bin_warnings.json` 并在 schema/warnings 中标记 `event_validity=degenerate`；metric 的 `valid_rate < 0.01` 会写入 `event_style_metric_warnings.json`。
+- `stage6c_event_style_report.py` 会读取 embedding manifest、Stage 6A A/B indices、dynamic bins 和 event style metrics，按 event bin 计算 event-level BDD、metric delta、top drift cases，并生成 markdown report card。默认跳过 `event_validity=degenerate` 的分箱；只有显式传入 `--include_degenerate_bins` 才会计算这些分箱，且报告不会为退化分箱生成自然语言结论。
+- 该流程不会重新训练 Stage 5 embedding，不会重建 Stage 6A split，不会删除 Stage 6B 既有输出。
+
+### 3. 通过标准
+
+- `dynamic_event_bins.csv`、`event_style_metrics.csv` 的 `global_row` 必须从 0 开始并与 shard 顺序严格对齐。
+- `dynamic_event_bin_warnings.json` 和 `event_style_metric_warnings.json` 必须清楚列出 resolved features 与 missing feature aliases。
+- `exposure_*` 与 `outcome_*` 必须分开解释：exposure 可作为动态 matching/control 候选，outcome 只用于 report/localization。
+- `event_bdd_summary.csv` 必须包含 `event_key,event_value,n_A,n_B,bdd_mmd,ci95_low,ci95_high,p_value,effect_size,interpretation,warnings`。
+- `event_style_delta.csv` 必须包含 `event_key,event_value,metric_name,n_A_valid,n_B_valid,mean_A,mean_B,delta_B_minus_A,relative_delta_percent,direction_label,interpretation`。
+- `top_event_drift_cases.csv` 必须包含 `global_row,source_group,event_key,event_value,embedding_distance_to_opposite_centroid,dominant_style_metrics,shard_id,local_row`，如果可用则包含 `scenario_id,target_agent_id,start,window_len,split`。
+- `event_report_card.md` 必须说明 embedding BDD 是统一行为分布测量层，event-specific features 是语义解释层，二者互补而不是互相替代。
+- `event_report_card.md` 必须分开展示 valid exposure bins、skipped small bins、skipped degenerate bins、outcome bins；如果请求的 bin 退化，顶部必须出现退化告警。
+### Debug validation checklist
+
+1. 检查 `dynamic_event_bin_warnings.json` / `dynamic_event_bin_schema.json`：除非实验设计明确预期，否则不应出现 all-positive 的 `exposure_*` bin；如果 `positive_ratio > 0.95` 或 `< 0.05`，必须标记为 `event_validity=degenerate`。
+2. 检查 `event_style_metric_warnings.json` 的 `metric_valid_stats` 和 `score_scale_warnings`：任一 composite score 的 `abs(p99)>100` 或 `abs(p01)>100` 都必须触发 `score_scale_exploded`，正常 debug run 不应再出现 1e11 量级指标。
+3. `outcome_stop_go` 在缺少 `stop_count` / `speed_oscillation` 等代理特征时可以保持 unavailable / all unknown；不要用 0 填充伪造 stop-go。
+4. `event_report_card.md` 必须列出 skipped degenerate bins；退化 bin 不应出现在自然语言结论中。
+
+- 最低语法检查需通过：
+
+```bash
+python -m py_compile \
+  tools/stage6c_common.py \
+  tools/stage6c_build_dynamic_event_bins.py \
+  tools/stage6c_build_event_style_metrics.py \
+  tools/stage6c_event_style_report.py
+
+python -m py_compile \
+  tools/stage6b_build_behavior_event_bins.py \
+  tools/stage6b_bin_bdd_report.py
+```
+
+---
+
+# Stage 6C v2：Behavior-event task slices
+
+## 1. 命令
+
+生成 v2 behavior-event bins 与 task 内解释指标：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage5_context/shard_manifest.json \
+  --feature_schema_path outputs/stage5_context/feature_schema.json \
+  --output_dir outputs/stage6c_behavior_events_v2 \
+  --overwrite
+```
+
+如果只想做无进度条的批处理运行：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage5_context/shard_manifest.json \
+  --feature_schema_path outputs/stage5_context/feature_schema.json \
+  --output_dir outputs/stage6c_behavior_events_v2 \
+  --overwrite \
+  --no_progress
+```
+
+生成后，后续 task-conditioned BDD 应优先使用 `behavior_event_bins_v2.csv` 中的 primary task 正类切片，例如：
+
+```text
+following == positive
+lane_change == positive
+overtake == positive
+cutin_response == positive
+hesitation == positive
+yield_conflict == positive
+```
+
+建议在以下三类 split 上分别运行 task-conditioned BDD：
+
+```text
+negative_control_random
+pseudo_agg_vs_cons
+scene_confounding_control
+```
+
+## 2. 期望行为
+
+该命令会读取 `shard_manifest` 指向的 sharded dataset，并按 shard 顺序逐行处理 raw arrays。脚本优先使用每个 shard 内的：
+
+- `ego_seq.npy`；
+- `neighbor_seq.npy`；
+- `neighbor_slot_ids.npy`（存在时用于一致性/诊断）；
+- `meta.npy`；
+- `interaction_feat_style.npy`（存在时用于一致性检查；v2 不只依赖 33 个 aggregate features）。
+
+脚本会在输出目录生成：
+
+- `behavior_event_bins_v2.csv`：每个 event detector 的 `positive` / `negative` / `unknown` 标签；
+- `behavior_event_metrics_v2.csv`：每个 task 的 handcrafted style explanation metrics；
+- `behavior_event_schema_v2.json`：taxonomy、阈值、array layout 假设、event diagnostics、metric diagnostics；
+- `behavior_event_report_v2.md`：可读诊断报告；
+- `behavior_event_warnings_v2.json`：缺失文件、metadata mismatch、完成状态等 warning。
+
+脚本会保留行对齐字段：`global_row`、`shard_id`、`local_row`，并尽量透传 `scenario_id`、`target_agent_id`、`start`、`window_len`、`split`。脚本不会默认合并 `ego_seq.npy` / `neighbor_seq.npy` 等大数组；缺失或不可计算的 metric 会保留为 `NaN`，不会填 0。
+
+v2 的解释逻辑是：event bin 是可比较驾驶任务切片，BDD 在 task 内计算；`behavior_event_metrics_v2.csv` 中的 THW、gap、decel、jerk、sharpness、yielding/assertiveness 等指标只用于解释 drift 方向，不作为主评价对象。
+
+## 3. 通过标准
+
+- `behavior_event_bins_v2.csv` 行数必须等于所有 shard 的 window 总数，且 `global_row` 从 0 连续递增。
+- 每个 primary event 都必须只包含三种状态：`positive`、`negative`、`unknown`。
+- `behavior_event_schema_v2.json` 必须包含每个 event 的 `positive_ratio`、`unknown_ratio`、`n_positive`、`n_negative` 与 `degenerate` 标记。
+- 当某个 event 的 `positive_ratio < 0.01` 或 `positive_ratio > 0.95` 时，必须被标记为 `degenerate=true`，后续 BDD 报告不得把它当成稳定结论。
+- `behavior_event_metrics_v2.csv` 不得用 0 伪造缺失指标；无法计算的 metric 应为 `NaN`。
+- `behavior_event_schema_v2.json` 必须包含 metric diagnostics：`valid_count`、`valid_rate`、`p01`、`p50`、`p99`、`min`、`max`。
+- 主报告应强调 exposure/task-conditioned BDD，而不是 outcome bins；handcrafted metrics 只解释 drift 方向。
+
+# Stage 6C v2 — Task-conditioned behavior-event BDD
+
+Stage 6C v2 的主目标是：在相同 driving task / behavior-event slice 内，用 learned behavior embedding 的 BDD 检测 A/B policy 或 model version 的 style distribution drift，再用 task-specific metrics 解释 drift 方向。旧版 Stage 6C 的 outcome bins（例如 hard_brake、late_brake）保留为 legacy / post-hoc diagnostic，不作为 v2 主报告对象。
+
+## 1. 命令
+
+### 1.1 编译检查
+
+```bash
+python -m py_compile \
+  tools/stage6c_build_behavior_events_v2.py \
+  tools/stage6c_task_conditioned_bdd_report.py
+```
+
+### 1.2 设置数据路径
+
+```bash
+DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
+TRAIN_OUT=$DATA_ROOT/context_gru_stage5d_balanced_v2
+EMBEDDING_MANIFEST=$TRAIN_OUT/embeddings/embedding_manifest.json
+
+```
+
+### 1.3 构建 Stage 6C v2 task-conditioned behavior events
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --output_dir $DATA_ROOT/behavior_events_v2 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.4 negative_control_random
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/negative_control_random_v2 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.5 pseudo_agg_vs_cons
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.6 scene_confounding_control
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/scene_confounding_v2 \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.7 生成 remaining Stage 6A final splits
+
+negative control random split：
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode negative_control_random \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name negative_control_random \
+  --seed 42 \
+  --overwrite
+```
+
+scene confounding split：
+
+```bash
+python tools/stage6_build_ab_splits.py \
+  --mode scene_confounding_control \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --eval_split test \
+  --output_dir outputs/stage6A_splits \
+  --experiment_name scene_confounding \
+  --seed 42 \
+  --overwrite
+```
+
+说明：
+
+- `negative_control_random` 只需要 eval split row 集合；如果本机没有原始 `interaction_feat_style.npy` shard，脚本会从 `$DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv` 的 `global_row/split` 字段生成 random split。
+- `scene_confounding_control` 优先使用 feature shard 构造 scene complexity score；如果本机没有原始 `interaction_feat_style.npy` shard，脚本会 fallback 到 `$DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv` 的 lateral / interaction pressure / gap 类数值指标，并在 `split_summary.json` 写 warning。
+
+### 1.8 negative_control_random_v2_final
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/negative_control_random/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/negative_control_random/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/negative_control_random_v2_final \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.9 scene_confounding_v2_final
+
+```bash
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/scene_confounding/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/scene_confounding/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/scene_confounding_v2_final \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --top_k 20 \
+  --seed 42 \
+  --overwrite \
+  --no_progress
+```
+
+### 1.10 汇总三路 final experiment
+
+```bash
+python tools/stage6c_summarize_task_bdd_experiments.py \
+  --experiment_dirs outputs/stage6C_task_bdd/negative_control_random_v2_final,outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2_final,outputs/stage6C_task_bdd/scene_confounding_v2_final \
+  --experiment_names negative,pseudo,scene \
+  --output_dir outputs/stage6C_task_bdd/stage6c_v2_cross_experiment_summary \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- `stage6c_build_behavior_events_v2.py` 读取每个 shard 下可用的 `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`metadata.csv` / `meta.csv` / `meta.npy`、`interaction_feat_style.npy`，优先使用 raw sequences 构建 task-conditioned behavior events。
+- 构建脚本输出：
+  - `behavior_event_bins_v2.csv`
+  - `behavior_event_metrics_v2.csv`
+  - `behavior_event_schema_v2.json`
+  - `behavior_event_report_v2.md`
+  - `behavior_event_warnings_v2.json`
+- `behavior_event_bins_v2.csv` 与 `behavior_event_metrics_v2.csv` 通过 `global_row` 逐行对齐，并尽量保留 `shard_id`、`local_row`、`scenario_id`、`target_agent_id`、`start`、`window_len`、`split`。
+- 每个 task detector 输出 positive label / negative label / `unknown`，不会把缺失 raw signal 静默填成 negative。
+- 不可用的 style metric 写为 `NaN`，不会静默填 0。
+- 如果 `neighbor_seq.npy` 或 `neighbor_slot_ids.npy` 缺失，cut-in、yield conflict、lead brake、queue、overtake 等 detector 会记录 warning，并在必要时使用 conservative proxy 或输出 `unknown`。
+- `stage6c_task_conditioned_bdd_report.py` 只在 positive task label 内计算 A/B embedding BDD，并输出：
+  - `task_bdd_summary.csv`
+  - `task_style_delta.csv`
+  - `task_report_card.md`
+  - `top_task_drift_cases.csv`
+  - `warnings.json`
+  - `plots/task_bdd_bar.png`
+  - `plots/task_style_delta_bar.png`
+- BDD 报告默认跳过 degenerate / all_unknown tasks；如需调试可加 `--include_degenerate_tasks`。
+
+## 3. 通过标准
+
+1. `py_compile` passes。
+2. `behavior_event_bins_v2.csv` 行数等于 dataset row count。
+3. `behavior_event_metrics_v2.csv` 行数等于 dataset row count。
+4. `global_row` 唯一且 bins / metrics 逐行对齐。
+5. metadata 在 shard 中存在时被保留到 v2 输出。
+6. 除非 raw signals 不可用，否则重要 task 不应全部为 `unknown`。
+7. degenerate tasks 被写入 `behavior_event_warnings_v2.json` / `warnings.json`，且 BDD report 默认跳过。
+8. `negative_control_random` 不应出现系统性高 task BDD。
+9. `pseudo_agg_vs_cons` 应在 style-relevant tasks 中出现有意义的 task-conditioned BDD。
+10. `scene_confounding_control` 应揭示 dynamic task / exposure confounding patterns。
+
+## 4. 三路 final experiment 解释 checklist
+
+1. `negative_control_random` 应低且非系统性；如果它在多个 primary task 上也很高，需要先怀疑 split / confounding / metric leakage。
+2. `pseudo_agg_vs_cons` 应在 behavior-style tasks 上出现稳定 BDD；它是 positive control，不是真实 model A/B 结论。
+3. `scene_confounding` 可以出现 BDD，但 pattern 应与 pseudo 不同，用于诊断 scene / exposure confounding。
+4. Primary conclusions 优先使用 strong detector tasks：`task_following`、`task_lane_change`、`task_yield_conflict`、`task_hesitation`。
+5. Proxy-heavy tasks 标记为 auxiliary：`task_cutin_response`、`task_queue_approach`、`task_lead_brake_response`、`task_overtake_opportunity`、`task_overtake_executed`。
+6. 如果 `task_overtake_executed` 因 sample size 被 skipped，不要解释为 no drift。
+
+## 5. Stage 6C v2 调试前 validation checklist
+
+1. `neighbor_slot_ids.npy` 可以成功加载；若该数组为 object dtype，构建脚本应在 `behavior_event_warnings_v2.json` / schema notes 中记录 `neighbor_slot_ids_loaded_with_pickle=true`。
+2. TTC metrics 只使用 `neighbor_seq.npy` 的真实 TTC column；如果 shard 缺少 TTC column，则 `lead_brake_min_ttc_after_lead_brake`、`cutin_min_ttc` 等写为 `NaN`，并记录 `ttc_column_unavailable_metric_set_nan`，绝不能把 THW 误标为 TTC。
+3. `behavior_event_bins_v2.csv` 必须包含每个 task 的 detector strength 列，例如 `task_following_strength`、`task_lead_brake_response_strength`、`task_queue_approach_strength`、`task_cutin_response_strength` 等。
+4. 解释 cut-in / lead-brake / queue BDD 前，必须先检查 `behavior_event_warnings_v2.json` 中的 `cutin_true_slot_transition_not_implemented_using_gap_drop_proxy`、`lead_brake_selective_detector_enabled`、`queue_approach_uses_gap_thw_closing_proxy` 等 warning。
+5. `task_bdd_summary.csv` 与 `task_report_card.md` 必须展示 `dominant_detector_strength` 和 `detector_strength_counts`；如果 dominant strength 是 `proxy` 或 `weak_proxy`，只能解释为 proxy detector 下的 task-conditioned BDD。
+
+## Stage 6C v2 smoothing / clipping 与 detector strength 复核
+
+## 1. 命令
+
+重新构建 behavior-event v2（默认启用 5 帧平滑与物理裁剪）：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --output_dir $DATA_ROOT/behavior_events_v2 \
+  --smoothing_window 5 \
+  --enable_signal_smoothing \
+  --accel_min_cap -12 \
+  --accel_max_cap 8 \
+  --jerk_abs_cap 80 \
+  --yaw_rate_abs_cap 2 \
+  --lateral_accel_abs_cap 8 \
+  --curvature_abs_cap 1 \
+  --lateral_speed_abs_cap 5 \
+  --heading_change_total_cap 8 \
+  --ttc_valid_max_s 30 \
+  --thw_valid_max_s 30 \
+  --lane_change_lateral_range_m 2.5 \
+  --lane_change_min_lateral_range_m 1.5 \
+  --hesitation_sign_changes 8 \
+  --hesitation_min_evidence_count 2 \
+  --overwrite
+```
+
+运行 queue strong-only sensitivity check：
+
+```bash
+export EMBEDDING_MANIFEST=$TRAIN_OUT/embeddings/embedding_manifest.json
+python tools/stage6c_task_conditioned_bdd_report.py \
+  --embedding_manifest $EMBEDDING_MANIFEST \
+  --shard_manifest $SHARD_MANIFEST \
+  --feature_schema_path $FEATURE_SCHEMA \
+  --a_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/a_indices.npy \
+  --b_indices_path outputs/stage6A_splits/pseudo_agg_vs_cons/b_indices.npy \
+  --behavior_event_bins_path $DATA_ROOT/behavior_events_v2/behavior_event_bins_v2.csv \
+  --behavior_event_metrics_path $DATA_ROOT/behavior_events_v2/behavior_event_metrics_v2.csv \
+  --output_dir outputs/stage6C_task_bdd/pseudo_agg_vs_cons_queue_strong_only_v2 \
+  --task_keys task_queue_approach \
+  --detector_strength_filter strong \
+  --num_bootstrap 50 \
+  --num_permutation 100 \
+  --max_mmd_samples 2000 \
+  --min_bin_size 100 \
+  --seed 42 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 构建脚本会先对 speed、accel、yaw_rate、lateral velocity 做平滑，再计算 jerk、lateral_accel、curvature 等 derivative-sensitive metrics。
+- `behavior_event_metrics_v2.csv` 写入的是用于正式 Stage 6C v2 分析的 smoothed/clipped metrics；raw diagnostic 不进入下游 metric delta 主表。
+- `behavior_event_schema_v2.json` 会记录 `raw_metric_diagnostics`、`clipped_metric_diagnostics`、`metric_quality_warnings`，用于检查原始 finite-difference 噪声是否超过物理范围。
+- TTC/THW 会在加载后清理：`>=999`、`<=0`、超过 `--ttc_valid_max_s` / `--thw_valid_max_s` 的值写为 `NaN`，正式 metrics 和 diagnostic scores 不应再出现 999 哨兵值。
+- `lc_max_lateral_speed` 使用裁剪后的 lateral speed；`lc_heading_change_total`、lane-change detector、hesitation detector 使用封顶后的 heading-change total，并在 raw/clipped diagnostics 中保留 `raw_max_lateral_speed`、`clipped_max_lateral_speed`、`raw_heading_change_total`、`clipped_heading_change_total`。
+- lane-change detector 需要足够 lateral displacement；yaw_rate 或 heading_change 不能单独触发。若 `task_lane_change` 的 `positive_ratio > 0.40`，`behavior_event_warnings_v2.json` 和报告中会出现 `lane_change_detector_broad`。
+- hesitation detector 需要 maneuver context 且至少两个 evidence components；默认 `--hesitation_sign_changes 8`、`--hesitation_min_evidence_count 2`。若 `task_hesitation` 的 `positive_ratio > 0.40`，会出现 `hesitation_detector_broad`。
+- lead-brake detector 优先使用 front_speed 的持续减速度；front_speed 不可靠时才使用 closing-rate derivative proxy，并继续在 strength column 中区分 `strong` / `proxy`。
+- following 与 yield_conflict 目前是最可靠的 strong detectors；cutin、overtake 以及相当一部分 lead/queue 仍是 proxy-based；lane_change 与 hesitation 只有在收紧后 positive_ratio 不 broad 时才建议作为稳定结论。
+- `--detector_strength_filter strong` 会在 BDD 前只保留 positive rows 中 detector strength 为 `strong` 的样本，并在 `task_bdd_summary.csv` 中同时报告过滤前后的 `n_A/n_B`。
+
+## 3. 通过标准
+
+1. `behavior_event_bins_v2.csv` 仍包含全部 `task_*` 列和对应 `task_*_strength` 列。
+2. `behavior_event_metrics_v2.csv` 仍通过 `global_row` 与 bins 文件逐行对齐。
+3. `behavior_event_schema_v2.json` 中 final metric diagnostics 的 decel p99/max 不应超过约 12 m/s²，jerk 不应超过约 80 m/s³，yaw_rate 不应超过约 2 rad/s，lateral_accel 不应超过约 8 m/s²，curvature 不应超过约 1。
+4. TTC/THW 相关 final metrics（如 `lead_brake_min_ttc_after_lead_brake`、`lead_brake_min_thw_after_lead_brake`、`cutin_min_ttc`、`following_mean_thw`）的 `max` 不应等于 999，也不应超过配置的有效上限。
+5. `queue_distance_when_start_decel` 不应出现 final `metric_physical_range_warning`，因为它是距离指标，不是减速度指标。
+6. 如果 raw diagnostics 超出物理范围，应出现 `raw_metric_physically_implausible` / `metric_physical_range_warning`；如果 final diagnostics 仍超范围，应先停止正式分析并检查数据或阈值。
+7. `task_lane_change` 的 `positive_ratio` 理想上应降到 0.40 以下；若仍大于 0.40，必须在 `behavior_event_report_v2.md` / `behavior_event_warnings_v2.json` 中出现 `lane_change_detector_broad`。
+8. `task_hesitation` 的 `positive_ratio` 理想上应降到 0.40 以下；若仍大于 0.40，必须在 `behavior_event_report_v2.md` / `behavior_event_warnings_v2.json` 中出现 `hesitation_detector_broad`。
+9. `task_lead_brake_response` 的 positive rows 不应几乎等同于 `task_following`，并应检查 `task_lead_brake_response_strength` 的 strong/proxy 分布。
+10. `task_bdd_summary.csv` 应包含 `bootstrap_mean`、`bootstrap_std`、`observed_in_bootstrap_ci`、`mmd_estimator_config`。
+11. `task_report_card.md` 应展示 detector strength、过滤前后样本数、bootstrap CI 一致性，以及 metric quality warnings。
+Stage5A summary by 刘庆
+4 路并行命令
+0-13
+13-26
+26-39
+39-51
+
+每个开一个终端：
+
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir /mnt/d/WMdata \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+  --file_start 0 \
+  --file_end 13 \
+  --max_agents_per_scenario 64 \
+  --window_len 80 \
+  --stride 20 \
+  --dt 0.1 \
+  --min_valid_ratio 0.8 \
+  --min_speed 1.0 \
+  --agent_types vehicle \
+  --assignment_mode lane_aware_only \
+  --front_max_distance 120 \
+  --side_front_max_distance 80 \
+  --side_rear_max_distance 120 \
+  --lane_lateral_tolerance 2.0 \
+  --slot_heading_diff_deg 45 \
+  --static_speed_threshold 0.5 \
+  --drop_if_no_lane_map \
+  --drop_if_ego_lane_missing \
+  --drop_if_lane_context_bad \
+  --drop_if_lane_context_ambiguous \
+  --streaming \
+  --output_shard_size 5000 \
+  --overwrite
+  然后把 --file_start / --file_end / --out_dir 分别改成：
+
+13 / 26 / outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26
+26 / 39 / outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39
+39 / 51 / outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51
+
+****然后就是Merge这4个shards到一起
+python tools/merge_waymo_5neighbor_context_shards.py \
+ --input_roots \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_00_13 \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_13_26 \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_26_39 \
+ outputs/waymo_5neighbor_context_laneaware_clean_v1_part_39_51 \
+ --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+ --recompute_global_standardization \
+ --overwrite
+
+****然后训练
+Stage 5D-balanced-v2
+
+balanced-v2 相比 v1：
+
+降低 following 权重
+提高 lateral dynamics 权重
+保留 following 强化，同时恢复 lateral
+
+训练命令：
+
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 64 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.2 \
+  --aux_lateral_dynamics_weight 1.5 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 1.5 \
+  --metric_lateral_dynamics_weight 1.5 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+
+注意：
+
+Stage 5D 不再使用 --metric_alignment
+而是使用 group-specific metric weights
+
+balanced-v2 结果：
+
+hit@1 = 0.213092
+hit@5 = 0.526232
+mean_same_label_fraction_at_5 = 0.189776
+longitudinal_comfort = 0.171751
+following_interaction = 0.501998
+lateral_lane_dynamics = 0.245608
+behavior_proxy = 0.322344
+
+结论：
+
+Stage 5D-balanced-v2 是当前 Stage 5 推荐模型；
+它是目前最好的 learned trade-off 表示；
+global retrieval 仍未超过 raw/pca feature，但在 following_interaction 和 behavior_proxy 上胜过 raw/pca，在 longitudinal 和 lateral 上接近 raw/pca。
+
+## Stage 5D-balanced-v2 Commands
+
+训练命令（Stage 5D 不使用 `--metric_alignment`）：
+
+```bash
+python tools/train_context_behavior_embedding.py \
+  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2 \
+  --embedding_dim 64 \
+  --hidden_dim 128 \
+  --num_layers 1 \
+  --batch_size 64 \
+  --epochs 20 \
+  --lr 1e-3 \
+  --temperature 0.1 \
+  --feature_temperature 1.0 \
+  --metric_loss_type huber \
+  --style_loss_weight 1.0 \
+  --aux_longitudinal_weight 0.5 \
+  --aux_following_weight 1.2 \
+  --aux_lateral_dynamics_weight 1.5 \
+  --aux_lateral_gap_weight 1.0 \
+  --aux_behavior_proxy_weight 0.5 \
+  --metric_longitudinal_weight 0.5 \
+  --metric_following_weight 1.5 \
+  --metric_lateral_dynamics_weight 1.5 \
+  --metric_lateral_gap_weight 1.0 \
+  --metric_behavior_proxy_weight 0.5 \
+  --device cuda \
+  --seed 42 \
+  --overwrite
+```
+
+导出命令：
+
+```bash
+export DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+export SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+export TRAIN_OUT=$DATA_ROOT/context_gru_stage5d_balanced_v2
+
+python tools/export_context_row_embeddings.py \
+  --shard_manifest $SHARD_MANIFEST \
+  --checkpoint $TRAIN_OUT/model.pt \
+  --out_dir $TRAIN_OUT/embeddings \
+  --batch_size 512 \
+  --split all \
+  --device cpu \
+  --overwrite
+```
+
+评估命令：
+
+```bash
+python tools/evaluate_context_embedding.py \
+  --embedding_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json \
+  --source_shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --feature_schema outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval \
+  --max_eval_samples 20000 \
+  --eval_split test \
+  --seed 42 \
+  --overwrite
+```

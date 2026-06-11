@@ -1,0 +1,28 @@
+experiment,task_key,bdd_mmd,p_value,ci95_low,ci95_high,observed_in_bootstrap_ci,dominant_detector_strength,detector_strength_counts,n_A,n_B,event_validity
+negative,task_following,0.0003066249999998,0.7722772277227723,0.0004244484374999,0.00135044921875,0.0,strong,"{""strong"": 43939}",2125,2149,valid
+negative,task_lead_brake_response,0.000394265304664,0.5742574257425742,0.0005761797642849,0.0014691726678752,0.0,proxy,"{""proxy"": 21350, ""strong"": 13481}",1677,1710,valid
+negative,task_queue_approach,0.0003046382289071,0.7920792079207921,0.0004400577559033,0.0009923333674777,0.0,proxy,"{""proxy"": 26636, ""strong"": 13211}",1920,1968,valid
+negative,task_lane_change,0.0002862812499999,0.8712871287128713,0.0004109718749998,0.00123034765625,0.0,strong,"{""strong"": 61236}",3050,3080,valid
+negative,task_cutin_response,0.0009656507880644,0.9306930693069309,0.001543247988584,0.003823209338022,0.0,proxy,"{""proxy"": 10948}",509,555,valid
+negative,task_overtake_opportunity,0.0026821377798387,0.1683168316831683,0.0027422163340029,0.0069398093527988,0.0,proxy,"{""proxy"": 8202}",383,405,valid
+negative,task_hesitation,0.0004623125,0.396039603960396,0.0005875015625,0.0014744304687499,0.0,strong,"{""strong"": 52549}",2629,2566,valid
+negative,task_yield_conflict,0.0004122187499999,0.4356435643564356,0.0004761632812499,0.0013917273437501,0.0,strong,"{""strong"": 52543}",2623,2572,valid
+negative,task_overtake_executed,,,,,,skipped,"{""reason"": ""below_min_bin_size"", ""positive_count"": 2011, ""negative_count"": 162860, ""unknown_count"": 0}",103,91,valid
+pseudo,task_following,0.1363251687060112,0.0099009900990099,0.130217930705302,0.1444214695882559,1.0,strong,"{""strong"": 43939}",3184,472,valid
+pseudo,task_lead_brake_response,0.1353185325815542,0.0099009900990099,0.1268585857263805,0.1453641365511671,1.0,proxy,"{""proxy"": 21350, ""strong"": 13481}",2439,432,valid
+pseudo,task_queue_approach,0.1462511575980023,0.0099009900990099,0.1389080298248908,0.159969336653461,1.0,proxy,"{""proxy"": 26636, ""strong"": 13211}",2863,431,valid
+pseudo,task_lane_change,0.2241732280120623,0.0099009900990099,0.2127724507883981,0.2444273084392806,1.0,strong,"{""strong"": 61236}",719,2847,valid
+pseudo,task_cutin_response,0.2108897139347606,0.0099009900990099,0.1949738858069679,0.2364184337238609,1.0,proxy,"{""proxy"": 10948}",824,114,valid
+pseudo,task_overtake_opportunity,0.1345269470179251,0.0099009900990099,0.1206712687458616,0.1721687586120194,1.0,proxy,"{""proxy"": 8202}",547,107,valid
+pseudo,task_hesitation,0.1762132275199099,0.0099009900990099,0.1640117219612819,0.1922970079381141,1.0,strong,"{""strong"": 52549}",1112,1966,valid
+pseudo,task_yield_conflict,0.1382068066836814,0.0099009900990099,0.1313571886128671,0.1487252232406903,1.0,strong,"{""strong"": 52543}",2365,1084,valid
+pseudo,task_overtake_executed,,,,,,skipped,"{""reason"": ""below_min_bin_size"", ""positive_count"": 2011, ""negative_count"": 162860, ""unknown_count"": 0}",80,47,valid
+scene,task_following,0.1652892121274223,0.0099009900990099,0.157983226974122,0.1793744345305364,1.0,strong,"{""strong"": 43939}",2150,621,valid
+scene,task_lead_brake_response,0.1657980448729801,0.0099009900990099,0.149550847772563,0.1796772462978711,1.0,proxy,"{""proxy"": 21350, ""strong"": 13481}",1548,559,valid
+scene,task_queue_approach,0.1770139337198735,0.0099009900990099,0.1644925267783022,0.1928469139275051,1.0,proxy,"{""proxy"": 26636, ""strong"": 13211}",1840,606,valid
+scene,task_lane_change,0.1781293436179647,0.0099009900990099,0.1645113701475804,0.1928903270058145,1.0,strong,"{""strong"": 61236}",448,4068,valid
+scene,task_cutin_response,0.2195245581039945,0.0099009900990099,0.1865950906553547,0.2575221895238273,1.0,proxy,"{""proxy"": 10948}",564,117,valid
+scene,task_hesitation,0.1008047275032382,0.0099009900990099,0.0936500667575484,0.1144645187408327,1.0,strong,"{""strong"": 52549}",965,1461,valid
+scene,task_yield_conflict,0.1451844997219822,0.0099009900990099,0.1377696925080177,0.1551545602232366,1.0,strong,"{""strong"": 52543}",1514,1144,valid
+scene,task_overtake_opportunity,,,,,,skipped,"{""reason"": ""below_min_bin_size"", ""positive_count"": 8202, ""negative_count"": 156669, ""unknown_count"": 0}",497,76,valid
+scene,task_overtake_executed,,,,,,skipped,"{""reason"": ""below_min_bin_size"", ""positive_count"": 2011, ""negative_count"": 162860, ""unknown_count"": 0}",65,63,valid

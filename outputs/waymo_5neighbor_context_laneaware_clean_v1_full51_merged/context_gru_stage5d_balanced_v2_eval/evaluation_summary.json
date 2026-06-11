@@ -1,0 +1,133 @@
+{
+  "input_paths": {
+    "embedding_manifest": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json",
+    "source_shard_manifest": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json"
+  },
+  "feature_schema_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json",
+  "feature_schema_loaded": true,
+  "strict_feature_schema": true,
+  "feature_dim": 33,
+  "feature_index_mapping": {
+    "rms_accel": 0,
+    "rms_jerk": 1,
+    "max_abs_accel": 2,
+    "max_abs_jerk": 3,
+    "mean_thw": 4,
+    "min_thw": 5,
+    "mean_front_distance": 6,
+    "min_front_distance": 7,
+    "mean_rel_speed": 8,
+    "p95_rel_speed": 9,
+    "rms_yaw_rate": 10,
+    "rms_curvature": 11,
+    "heading_change_total": 12,
+    "lane_change_count_proxy": 13,
+    "lane_change_rate_proxy": 14,
+    "lane_change_left_count_proxy": 15,
+    "lane_change_right_count_proxy": 16,
+    "lane_change_duration_mean_proxy": 17,
+    "max_lateral_speed": 18,
+    "rms_lateral_accel": 19,
+    "lane_change_oscillation_score_proxy": 20,
+    "front_pressure_score": 21,
+    "left_front_min_gap": 22,
+    "left_rear_min_gap": 23,
+    "right_front_min_gap": 24,
+    "right_rear_min_gap": 25,
+    "left_gap_min": 26,
+    "right_gap_min": 27,
+    "left_gap_acceptance_proxy": 28,
+    "right_gap_acceptance_proxy": 29,
+    "rear_vehicle_pressure_proxy": 30,
+    "yielding_score_proxy": 31,
+    "assertiveness_score_proxy": 32
+  },
+  "core_required_features": [
+    "rms_accel",
+    "rms_jerk",
+    "max_abs_accel",
+    "max_abs_jerk",
+    "mean_thw",
+    "min_thw",
+    "mean_front_distance",
+    "min_front_distance",
+    "mean_rel_speed",
+    "p95_rel_speed",
+    "rms_yaw_rate",
+    "rms_curvature",
+    "heading_change_total",
+    "lane_change_count_proxy",
+    "lane_change_rate_proxy",
+    "max_lateral_speed",
+    "rms_lateral_accel",
+    "front_pressure_score",
+    "left_front_min_gap",
+    "left_rear_min_gap",
+    "right_front_min_gap",
+    "right_rear_min_gap",
+    "left_gap_min",
+    "right_gap_min",
+    "rear_vehicle_pressure_proxy",
+    "yielding_score_proxy",
+    "assertiveness_score_proxy"
+  ],
+  "missing_required_features": [],
+  "optional_features": [
+    "lane_change_oscillation_score_proxy",
+    "left_gap_acceptance_proxy",
+    "right_gap_acceptance_proxy"
+  ],
+  "missing_optional_features": [],
+  "skipped_style_delta_features": [],
+  "warnings": [],
+  "paper_grade_valid": true,
+  "eval_split": "test",
+  "max_eval_samples": 20000,
+  "actual_eval_samples": 16392,
+  "representation_list": [
+    "learned_context_embedding",
+    "raw_feature",
+    "pca_feature",
+    "context_l2",
+    "random"
+  ],
+  "finite_checks": {
+    "embedding_nonfinite": 0,
+    "feature_nonfinite": 0,
+    "context_nonfinite": 0
+  },
+  "row_alignment_checks": {
+    "aligned": true,
+    "embedding_shards_used": 35,
+    "total_eval_rows_before_subsample": 16392
+  },
+  "dynamic_conclusion": "Global retrieval (hit@5): learned_context_embedding is lose vs best feature baseline. longitudinal comfort: learned_context_embedding is lose vs best feature baseline. following interaction: learned_context_embedding is win vs best feature baseline. lateral lane dynamics: learned_context_embedding is win vs best feature baseline. behavior proxy: learned_context_embedding is win vs best feature baseline. Feature-level learned wins observed on 16 targets (see learned_win_features.csv). Overall: learned_context_embedding is the best current trade-off learned representation, but not a full global retrieval win over handcrafted baselines.",
+  "global_retrieval_verdict": "lose",
+  "category_verdicts": {
+    "longitudinal_comfort": {
+      "verdict": "lose",
+      "learned_mean_spearman_corr": 0.1554217991361369,
+      "best_feature_baseline_mean_spearman_corr": 0.17416784723658474,
+      "delta_vs_best_feature_baseline": -0.018746048100447832
+    },
+    "following_interaction": {
+      "verdict": "win",
+      "learned_mean_spearman_corr": 0.4963128526012862,
+      "best_feature_baseline_mean_spearman_corr": 0.4698085346951684,
+      "delta_vs_best_feature_baseline": 0.02650431790611779
+    },
+    "lateral_lane_dynamics": {
+      "verdict": "win",
+      "learned_mean_spearman_corr": 0.25660176109888927,
+      "best_feature_baseline_mean_spearman_corr": 0.2518470138380469,
+      "delta_vs_best_feature_baseline": 0.004754747260842351
+    },
+    "behavior_proxy": {
+      "verdict": "win",
+      "learned_mean_spearman_corr": 0.316848870624853,
+      "best_feature_baseline_mean_spearman_corr": 0.29895476172134566,
+      "delta_vs_best_feature_baseline": 0.017894108903507344
+    }
+  },
+  "recommended_model_candidate": "learned_context_embedding_best_tradeoff_so_far"
+}
