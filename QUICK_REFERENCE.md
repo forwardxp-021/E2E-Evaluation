@@ -2895,6 +2895,7 @@ DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
 SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
 FEATURE_SCHEMA=$DATA_ROOT/feature_schema.json
 EMBEDDING_MANIFEST=$DATA_ROOT/context_gru_stage5d_balanced_v2_embeddings/embedding_manifest.json
+
 ```
 
 ### 1.3 构建 Stage 6C v2 task-conditioned behavior events
@@ -3051,6 +3052,7 @@ python tools/stage6c_build_behavior_events_v2.py \
 运行 queue strong-only sensitivity check：
 
 ```bash
+export EMBEDDING_MANIFEST=$TRAIN_OUT/embeddings/embedding_manifest.json
 python tools/stage6c_task_conditioned_bdd_report.py \
   --embedding_manifest $EMBEDDING_MANIFEST \
   --shard_manifest $SHARD_MANIFEST \
@@ -3245,11 +3247,18 @@ python tools/train_context_behavior_embedding.py \
 导出命令：
 
 ```bash
+export DATA_ROOT=outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged
+export SHARD_MANIFEST=$DATA_ROOT/shard_manifest.json
+export TRAIN_OUT=$DATA_ROOT/context_gru_stage5d_balanced_v2
+
 python tools/export_context_row_embeddings.py \
-  --shard_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
-  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
-  --out_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_embeddings \
-  --split all
+  --shard_manifest $SHARD_MANIFEST \
+  --checkpoint $TRAIN_OUT/model.pt \
+  --out_dir $TRAIN_OUT/embeddings \
+  --batch_size 512 \
+  --split all \
+  --device cpu \
+  --overwrite
 ```
 
 评估命令：

@@ -52,7 +52,7 @@ def run(args):
         shard_dir.mkdir(parents=True, exist_ok=True)
         p = shard_dir / 'embeddings.npy'
         np.save(p, arr)
-        paths.append(str(p))
+        paths.append(str(p.relative_to(out)))
         total += arr.shape[0]
         if args.merge_embeddings:
             merged.append(arr)
