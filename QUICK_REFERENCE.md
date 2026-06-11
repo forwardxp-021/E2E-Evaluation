@@ -1865,6 +1865,75 @@ python tools/evaluate_context_embedding.py \
   --overwrite
 ```
 
+# Stage 6C v2 three-split validation complete
+
+## 1. 命令
+
+三个 final experiment 已完成，结果目录：
+
+```text
+outputs/stage6C_task_bdd/negative_control_random_v2_final
+outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2_final
+outputs/stage6C_task_bdd/scene_confounding_v2_final
+```
+
+三路汇总输出目录：
+
+```text
+outputs/stage6C_task_bdd/stage6c_v2_three_split_summary
+```
+
+重新生成三路汇总表：
+
+```bash
+python tools/stage6c_summarize_task_bdd_experiments.py \
+  --experiment_dirs outputs/stage6C_task_bdd/negative_control_random_v2_final,outputs/stage6C_task_bdd/pseudo_agg_vs_cons_v2_final,outputs/stage6C_task_bdd/scene_confounding_v2_final \
+  --experiment_names negative,pseudo,scene \
+  --output_dir outputs/stage6C_task_bdd/stage6c_v2_three_split_summary \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 读取三个 final 目录下的 `task_bdd_summary.csv`、`task_style_delta.csv`、`warnings.json`。
+- 生成：
+  - `task_bdd_cross_experiment.csv`
+  - `task_bdd_pivot.csv`
+  - `task_bdd_delta_vs_negative.csv`
+  - `top_style_delta_by_experiment.csv`
+  - `stage6c_v2_cross_experiment_summary.md`
+  - `summarizer_warnings.json`
+- 不修改三个 final experiment 原始结果目录。
+
+三路解释：
+
+- `negative_control_random_v2_final`：BDD near zero，sanity check passed。
+- `pseudo_agg_vs_cons_v2_final`：BDD significant，positive control passed。
+- `scene_confounding_v2_final`：BDD significant，confounding diagnosis passed。
+
+Reliability tier：
+
+| tier | task_key | interpretation |
+|---|---|---|
+| primary | `task_following` | strong detector，优先用于主要结论 |
+| primary | `task_lane_change` | strong detector，优先用于主要结论 |
+| primary | `task_yield_conflict` | strong detector，优先用于主要结论 |
+| primary | `task_hesitation` | strong detector，但语义解释为 hesitation-like / prolonged maneuver |
+| auxiliary_proxy | `task_cutin_response` | proxy-only，辅助诊断 |
+| auxiliary_proxy | `task_queue_approach` | proxy-dominant，辅助诊断 |
+| auxiliary_proxy | `task_lead_brake_response` | proxy-dominant，辅助诊断 |
+| auxiliary_proxy | `task_overtake_opportunity` | proxy / sample-limited，辅助诊断 |
+| auxiliary_proxy | `task_overtake_executed` | sample-limited，skipped 不等于 no drift |
+
+## 3. 通过标准
+
+1. `outputs/stage6C_task_bdd/stage6c_v2_three_split_summary/task_bdd_pivot.csv` 包含 `negative`、`pseudo`、`scene` 三列。
+2. negative-control BDD 应接近 0 且 non-significant。
+3. pseudo positive-control BDD 应在 behavior-style tasks 上显著。
+4. scene-confounding BDD 可显著，但 pattern 应与 pseudo 区分，用于 confounding diagnosis。
+5. 主要结论优先使用 primary strong-detector tasks。
+6. proxy-heavy / sample-limited tasks 必须标记为 auxiliary，不能当作主结论。
+
 ## Expected outputs
 Training output dir:
 - `model.pt`
