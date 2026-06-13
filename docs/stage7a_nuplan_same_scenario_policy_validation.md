@@ -1,5 +1,11 @@
 # Stage 7A — nuPlan Same-Scenario Policy Validation
 
+## 0. Scope Clarification
+
+Stage 7A.0 / Stage 7A.1 expert-data inspection is only an infrastructure step. The final Stage 7 objective is same-scenario policy A/B rollout and task-conditioned BDD. Expert trajectory export is not the main validation result.
+
+For the full Stage 7 A-E structure, see [Stage 7 Master Plan — Same-Scenario Policy / E2E BDD Validation](stage7_master_plan_same_scenario_policy_bdd.md).
+
 ## 1. Motivation
 
 Stage 6 pseudo splits are useful for validating the behavior embedding and task-conditioned BDD protocol, but they are still pseudo-label based. They show that the representation can separate constructed style groups, not that real policies or drivers produce separable behavior distributions under matched scenarios.
