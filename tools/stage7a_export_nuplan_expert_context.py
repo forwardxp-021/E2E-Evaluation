@@ -8,7 +8,7 @@ import shutil
 import sqlite3
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -98,7 +98,7 @@ class SchemaInfo:
     def has_column(self, table: str, column: str) -> bool:
         return column in self.columns(table)
 
-    def first_column(self, table: str, candidates: Sequence[str]) -> Optional[str]:
+    def first_column(self, table: str, candidates: List[str]) -> Optional[str]:
         cols = set(self.columns(table))
         for candidate in candidates:
             if candidate in cols:
@@ -109,7 +109,7 @@ class SchemaInfo:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Stage 7A.1 exporter for nuPlan mini expert ego trajectories and nearby object context. "
+            "Stage 7B.1 exporter for nuPlan mini expert ego trajectories and nearby object context. "
             "This script reads SQLite DBs directly, does not run planner simulation, and does not generate rollouts."
         )
     )
@@ -252,9 +252,9 @@ def inspect_schema(conn: sqlite3.Connection) -> SchemaInfo:
 def select_rows(
     conn: sqlite3.Connection,
     table: str,
-    columns: Sequence[str],
+    columns: List[str],
     where: str = "",
-    params: Sequence[Any] = (),
+    params: Tuple[Any, ...] = (),
     order_by: Optional[str] = None,
     limit: Optional[int] = None,
 ) -> List[sqlite3.Row]:
@@ -837,7 +837,7 @@ def write_report(
         code = str(warning.get("code", "unknown"))
         warning_counts[code] = warning_counts.get(code, 0) + 1
     lines = [
-        "# Stage 7A.1 Expert Context Export Report",
+        "# Stage 7B.1 Expert Context Export Report",
         "",
         "## Paths",
         "",
@@ -951,7 +951,7 @@ def run(args: argparse.Namespace) -> int:
         join_strategies,
         example_rows,
     )
-    print(f"Wrote Stage 7A.1 expert context export to {output_dir}")
+    print(f"Wrote Stage 7B.1 expert context export to {output_dir}")
     print(f"selected DBs={len(db_files)} scenes={selected_scene_count} ego_rows={ego_count} object_rows={object_count}")
     return 0
 
