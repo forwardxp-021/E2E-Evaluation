@@ -3674,7 +3674,7 @@ python tools/evaluate_context_embedding.py \
 
 ### 1. 命令
 
-在已经设置好 nuPlan 环境变量的 WSL 环境中运行：
+在 nuPlan Python 3.9 环境中运行轻量 readiness checker：
 
 ```bash
 python tools/stage7a_check_nuplan_mini.py \
@@ -3682,31 +3682,28 @@ python tools/stage7a_check_nuplan_mini.py \
   --overwrite
 ```
 
-如需显式指定路径，可使用：
+如需显式指定数据路径，可补充 `--nuplan_data_root`、`--nuplan_maps_root` 或 `--mini_db_dir`。未显式提供 `--mini_db_dir` 时，脚本会依次查找：
 
-```bash
-python tools/stage7a_check_nuplan_mini.py \
-  --nuplan_data_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset \
-  --nuplan_maps_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
-  --mini_db_dir /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
-  --output_dir outputs/stage7A_nuplan/mini_check \
-  --overwrite
-```
+1. `$NUPLAN_DATA_ROOT/nuplan-v1.1/splits/mini`
+2. `$NUPLAN_DATA_ROOT/data/cache/mini`
 
 ### 2. 期望行为
 
 该命令只做 Stage 7A.0 的轻量数据就绪检查：
 
-- 读取 `NUPLAN_DATA_ROOT`、`NUPLAN_MAPS_ROOT`，并自动寻找 mini DB 目录：
-  1. `$NUPLAN_DATA_ROOT/nuplan-v1.1/splits/mini`
-  2. `$NUPLAN_DATA_ROOT/data/cache/mini`
-- 用 Python 标准库 `sqlite3` 打开 mini SQLite DB，统计关键表是否存在、行数、schema，并抽样少量表行。
-- 扫描 maps 目录下的 `map.gpkg` 文件数量。
+- 扫描 nuPlan mini SQLite DB 和 maps root 下的 `map.gpkg` 文件。
+- 统计 mini DB 数量、DB 打开状态、关键表是否存在以及关键表行数。
+- 对 `scenario_tag`、`ego_pose`、`lidar_pc`、`lidar_box`、`track` 抽样导出 CSV。
+- 写出 inventory CSV、sample CSVs、schema JSON、warnings JSON 和 Markdown report。
+- BLOB / bytes 字段会转换为 hex 字符串后写入 CSV / JSON。
+- 单个 DB 打开失败时记录 warning 并继续扫描其他 DB。
+- maps root 中没有 `map.gpkg` 时写入 warning，但不崩溃。
+- 输出目录已存在且未传 `--overwrite` 时抛出 `FileExistsError`，避免覆盖旧结果。
 - 不调用 nuPlan planner / simulation API。
 - 不生成 fake rollout data。
 - 不修改 Stage 6C 结果文件，也不修改既有 BDD 逻辑。
 
-输出目录默认或指定为 `outputs/stage7A_nuplan/mini_check`，应生成：
+期望生成：
 
 - `mini_db_inventory.csv`
 - `mini_scenario_tags_sample.csv`
@@ -3720,14 +3717,12 @@ python tools/stage7a_check_nuplan_mini.py \
 
 ### 3. 通过标准
 
-Stage 7A.0 通过标准：
+Stage 7A.0 passes if：
 
-- `mini_schema_report.json` 中 `db_count > 0`。
-- `mini_schema_report.json` 中 `map_gpkg_count = 4`。
-- `log`、`scene`、`scenario_tag`、`ego_pose`、`lidar_pc`、`lidar_box`、`track`、`category`、`traffic_light_status` 等关键表在 mini DB 中存在。
-- `mini_check_report.md` 中 DB open failure count 为 `0`。
-- `warnings.json` 中没有 DB 打不开、mini DB 缺失、map.gpkg 缺失、关键表全缺失等 warning。
+- `mini DB count > 0`。
+- `map.gpkg count = 4`。
+- `DB open failure count = 0`。
+- key tables exist：`log`、`scene`、`scenario_tag`、`ego_pose`、`lidar_pc`、`lidar_box`、`track`、`category`、`traffic_light_status`。
+- `mini_check_report.md`、`warnings.json`、`mini_db_inventory.csv` 均成功生成。
 
-如果满足 `mini_db_count > 0`、`map_gpkg_count = 4`、关键表存在且 DB open failures = 0，则 Stage 7A.0 passes。
-
-Stage 7A.0 之后的下一步：实现 expert trajectory + neighbor context exporter，从选定的 mini scenarios 导出 expert ego trajectory 和 nearby object context。
+Next step：implement expert ego trajectory + nearby object context exporter。
