@@ -3838,3 +3838,78 @@ Stage 7B.1 passes if：
 Interpretation：Stage 7B.1 用于验证在实现 policy A/B rollouts 之前，我们可以先从 nuPlan mini 导出 expert ego trajectory 和 surrounding object context；它本身不证明最终的 same-scenario policy-style separability。
 
 Next step：Convert `expert_ego_trajectory.csv` and `expert_nearby_objects.csv` into our context dataset format：`ego_seq.npy`、`neighbor_seq.npy`、`metadata`、`shard_manifest.json`、`feature_schema.json`。
+
+# Stage 7B.2 — nuPlan expert dynamic context dataset converter
+
+## 1. 命令
+
+把 Stage 7B.1 导出的 expert ego trajectory / nearby objects 转换成 Stage 6-style dynamic context dataset：
+
+```bash
+python tools/stage7b_convert_expert_context_to_dataset.py \
+  --expert_ego_csv outputs/stage7A_nuplan/expert_context_export/expert_ego_trajectory.csv \
+  --expert_objects_csv outputs/stage7A_nuplan/expert_context_export/expert_nearby_objects.csv \
+  --selected_scenes_csv outputs/stage7A_nuplan/expert_context_export/selected_scenes.csv \
+  --output_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --target_hz 10 \
+  --window_sec 8 \
+  --stride_sec 4 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 读取 `expert_ego_trajectory.csv`、`expert_nearby_objects.csv`，可选读取 `selected_scenes.csv`。
+- 按 `db_name` + `scene_token` 分组，按 `frame_index_in_scene` + `lidar_pc_timestamp` 排序。
+- 根据时间戳估计 source dt / source_hz，并按 `target_hz` 做稳健下采样；默认把约 20Hz expert export 转为 10Hz。
+- 生成固定窗口 dynamic context：默认 `window_sec=8`、`target_hz=10`，所以每个窗口 80 帧；默认 `stride_sec=4`，所以滑窗步长 40 帧。
+- 写出：
+  - `ego_seq.npy`
+  - `neighbor_seq.npy`
+  - `metadata.csv`
+  - `shard_manifest.json`
+  - `feature_schema.json`
+  - `conversion_report.md`
+  - `warnings.json`
+- `ego_seq.npy` 特征顺序为 `ego_x, ego_y, ego_speed, ego_accel, ego_heading, ego_yaw_rate, valid`。
+- `neighbor_seq.npy` 特征顺序为 `relative_x, relative_y, relative_distance, object_heading, object_length, object_width, object_height, category_id, valid`。
+- 本阶段只转换 dynamic context，不解析 map，不运行 planner simulation，不生成 fake rollout，不修改 Stage 6C result files，不修改 BDD 逻辑。
+- `shard_manifest.json` 会保留 map/ODD 接口：`map_odd_feat_path: null`、`map_odd_meta_path: null`、`map_feature_status: not_built`、`next_map_stage: Stage 7B.3 map/ODD feature builder`。
+- `feature_schema.json` 会保留 Stage 6-style `map_odd_features_reserved`，供 Stage 7B.3 对齐。
+
+## 3. 通过标准
+
+1. `python -m py_compile tools/stage7b_convert_expert_context_to_dataset.py` passes。
+2. 上述转换命令可以成功运行，并生成 `ego_seq.npy`、`neighbor_seq.npy`、`metadata.csv`、`shard_manifest.json`、`feature_schema.json`、`conversion_report.md`、`warnings.json`。
+3. `ego_seq.npy` shape 为 `[N, 80, 7]`，且 `N > 0`。
+4. `neighbor_seq.npy` shape 为 `[N, 80, 10, 9]`，且 `N > 0`。
+5. `metadata.csv` 行数等于 `N`，且 `source=nuplan_expert`、`policy_id=expert`、`map_odd_status=not_built`。
+6. `shard_manifest.json` 包含 `map_odd_feat_path: null`、`map_feature_status: not_built`、`next_map_stage: Stage 7B.3 map/ODD feature builder`。
+7. `feature_schema.json` 包含 `map_odd_features_reserved`。
+8. `conversion_report.md` 明确说明：`Map/ODD context is not built in Stage 7B.2. It is reserved for Stage 7B.3.`
+9. 不生成 fake data，不修改 Stage 6C result files，不修改 BDD 逻辑。
+
+# Stage 7B.3 — nuPlan map/ODD feature builder placeholder
+
+## 1. 命令
+
+Stage 7B.3 尚未实现；当前只有接口占位。未来命令将以 Stage 7B.2 的 `shard_manifest.json` / `metadata.csv` / ego path 为输入，构建每个窗口的 map/ODD 特征。
+
+## 2. 期望行为
+
+- 构建 Stage 6-style map/ODD features for each generated window。
+- 使用 nuPlan maps / `map.gpkg` 或 nuPlan map API。
+- 根据 ego path 和 scene/map location 对齐 map features。
+- 计划输出：
+  - `map_odd_feat.npy`
+  - `map_odd_meta.csv`
+  - `map_odd_feature_schema.json`
+  - `map_odd_report.md`
+  - `warnings.json`
+
+## 3. 通过标准
+
+1. Stage 7B.2 的 manifest/schema 已经保留 Stage 7B.3 接口。
+2. Stage 7B.3 实现前，不应伪造 `map_odd_feat.npy` 或 map/ODD 数值。
+3. 后续实现必须复用 Stage 6-style map/ODD feature names，并与每个 dynamic context window 对齐。

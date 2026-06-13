@@ -219,3 +219,53 @@ These commands are placeholders until the nuPlan rollout exporter and converter 
 - Full E2E A/B trajectories can replace conservative / aggressive planner variants later.
 - nuPlan mini is small; a final dissertation experiment may need more scenarios if hardware and time allow.
 - Sensor-based E2E model training is intentionally out of scope for Stage 7A.
+
+## Stage 7B.2 — expert dynamic context converter
+
+Stage 7B.2 converts the Stage 7B.1 expert export CSV files into a Stage 6-style **dynamic-only** context dataset.  It reads expert ego trajectory rows, nearby dynamic object rows, and optional selected-scene metadata, then writes fixed-length `ego_seq.npy` / `neighbor_seq.npy` windows plus metadata and schema files.
+
+This step is infrastructure validation only.  It does not run planner simulation, does not generate fake rollout data, does not modify Stage 6C result files, and does not change BDD logic.
+
+### 命令
+
+```bash
+python tools/stage7b_convert_expert_context_to_dataset.py \
+  --expert_ego_csv outputs/stage7A_nuplan/expert_context_export/expert_ego_trajectory.csv \
+  --expert_objects_csv outputs/stage7A_nuplan/expert_context_export/expert_nearby_objects.csv \
+  --selected_scenes_csv outputs/stage7A_nuplan/expert_context_export/selected_scenes.csv \
+  --output_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --target_hz 10 \
+  --window_sec 8 \
+  --stride_sec 4 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+### 输出
+
+- `ego_seq.npy`: `[N, 80, 7]` dynamic ego windows.
+- `neighbor_seq.npy`: `[N, 80, 10, 9]` nearby-object windows.
+- `metadata.csv`: one row per generated window, with `source=nuplan_expert`, `policy_id=expert`, and `map_odd_status=not_built`.
+- `shard_manifest.json`: dynamic dataset manifest with `map_odd_feat_path=null`, `map_feature_status=not_built`, and `next_map_stage=Stage 7B.3 map/ODD feature builder`.
+- `feature_schema.json`: dynamic feature order and reserved Stage 6-style map/ODD feature names.
+- `conversion_report.md` and `warnings.json`: conversion summary and structured warnings.
+
+## Stage 7B.3 — nuPlan map/ODD feature builder placeholder
+
+Stage 7B.3 is reserved for building Stage 6-style map/ODD context for each Stage 7B.2 generated window.  It is not implemented yet.
+
+Planned purpose:
+
+- Build Stage 6-style map/ODD features for each generated window.
+- Use nuPlan maps / `map.gpkg` or the nuPlan map API.
+- Align map features by ego path and scene/map location.
+
+Planned outputs:
+
+- `map_odd_feat.npy`
+- `map_odd_meta.csv`
+- `map_odd_feature_schema.json`
+- `map_odd_report.md`
+- `warnings.json`
+
+Stage 7B.2 reserves this interface in `shard_manifest.json` and `feature_schema.json`; it deliberately does not parse maps or fabricate map/ODD values.
