@@ -3669,3 +3669,65 @@ python tools/evaluate_context_embedding.py \
   --seed 42 \
   --overwrite
 ```
+
+## Stage 7A.0 — nuPlan mini readiness check
+
+### 1. 命令
+
+在已经设置好 nuPlan 环境变量的 WSL 环境中运行：
+
+```bash
+python tools/stage7a_check_nuplan_mini.py \
+  --output_dir outputs/stage7A_nuplan/mini_check \
+  --overwrite
+```
+
+如需显式指定路径，可使用：
+
+```bash
+python tools/stage7a_check_nuplan_mini.py \
+  --nuplan_data_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset \
+  --nuplan_maps_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --mini_db_dir /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --output_dir outputs/stage7A_nuplan/mini_check \
+  --overwrite
+```
+
+### 2. 期望行为
+
+该命令只做 Stage 7A.0 的轻量数据就绪检查：
+
+- 读取 `NUPLAN_DATA_ROOT`、`NUPLAN_MAPS_ROOT`，并自动寻找 mini DB 目录：
+  1. `$NUPLAN_DATA_ROOT/nuplan-v1.1/splits/mini`
+  2. `$NUPLAN_DATA_ROOT/data/cache/mini`
+- 用 Python 标准库 `sqlite3` 打开 mini SQLite DB，统计关键表是否存在、行数、schema，并抽样少量表行。
+- 扫描 maps 目录下的 `map.gpkg` 文件数量。
+- 不调用 nuPlan planner / simulation API。
+- 不生成 fake rollout data。
+- 不修改 Stage 6C 结果文件，也不修改既有 BDD 逻辑。
+
+输出目录默认或指定为 `outputs/stage7A_nuplan/mini_check`，应生成：
+
+- `mini_db_inventory.csv`
+- `mini_scenario_tags_sample.csv`
+- `sample_ego_pose_rows.csv`
+- `sample_lidar_pc_rows.csv`
+- `sample_lidar_box_rows.csv`
+- `sample_track_rows.csv`
+- `mini_schema_report.json`
+- `warnings.json`
+- `mini_check_report.md`
+
+### 3. 通过标准
+
+Stage 7A.0 通过标准：
+
+- `mini_schema_report.json` 中 `db_count > 0`。
+- `mini_schema_report.json` 中 `map_gpkg_count = 4`。
+- `log`、`scene`、`scenario_tag`、`ego_pose`、`lidar_pc`、`lidar_box`、`track`、`category`、`traffic_light_status` 等关键表在 mini DB 中存在。
+- `mini_check_report.md` 中 DB open failure count 为 `0`。
+- `warnings.json` 中没有 DB 打不开、mini DB 缺失、map.gpkg 缺失、关键表全缺失等 warning。
+
+如果满足 `mini_db_count > 0`、`map_gpkg_count = 4`、关键表存在且 DB open failures = 0，则 Stage 7A.0 passes。
+
+Stage 7A.0 之后的下一步：实现 expert trajectory + neighbor context exporter，从选定的 mini scenarios 导出 expert ego trajectory 和 nearby object context。
