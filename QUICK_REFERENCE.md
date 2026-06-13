@@ -3726,3 +3726,77 @@ Stage 7A.0 passes if：
 - `mini_check_report.md`、`warnings.json`、`mini_db_inventory.csv` 均成功生成。
 
 Next step：implement expert ego trajectory + nearby object context exporter。
+
+## Stage 7A.1 — Export nuPlan expert ego trajectory and nearby object context
+
+### 1. 命令
+
+在已配置 `NUPLAN_DATA_ROOT` 的 nuPlan mini 环境中运行：
+
+```bash
+python tools/stage7a_export_nuplan_expert_context.py \
+  --output_dir outputs/stage7A_nuplan/expert_context_export \
+  --max_dbs 5 \
+  --max_scenes_per_db 5 \
+  --max_lidar_pcs_per_scene 200 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+如需显式指定 mini DB 目录，可补充：
+
+```bash
+python tools/stage7a_export_nuplan_expert_context.py \
+  --nuplan_data_root /path/to/nuplan \
+  --mini_db_dir /path/to/nuplan/nuplan-v1.1/splits/mini \
+  --output_dir outputs/stage7A_nuplan/expert_context_export \
+  --max_dbs 5 \
+  --max_scenes_per_db 5 \
+  --max_lidar_pcs_per_scene 200 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+未显式提供 `--mini_db_dir` 时，脚本会依次查找：
+
+1. `$NUPLAN_DATA_ROOT/nuplan-v1.1/splits/mini`
+2. `$NUPLAN_DATA_ROOT/data/cache/mini`
+
+### 2. 期望行为
+
+该命令只做 Stage 7A.1 的 expert / historical nuPlan 中间格式导出：
+
+- 直接读取选中的 nuPlan mini SQLite DB，不调用 nuPlan planner / simulation API。
+- 从 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category` 等表中发现 schema，并尽量解析 token / timestamp / pose / object 关联列。
+- 对每个已导出的 `lidar_pc` frame 写出 expert ego trajectory，并在可计算时补充 `ego_speed`、`ego_accel`、`ego_yaw_rate`。
+- 对每个 frame 仅保留距离 ego 最近的 `--num_neighbors` 个 object context，并写出相对位置和距离排序。
+- 如果缺少列、scene 无法关联到 lidar sequence、frame 缺少 ego pose、没有 object、timestamp 缺失或无法计算速度 / 加速度 / yaw rate，会写入 `warnings.json`，不会伪造数据。
+- 输出目录已存在且未传 `--overwrite` 时抛出 `FileExistsError`，避免覆盖旧结果。
+- 不运行 planner simulation。
+- 不生成 fake rollout data。
+- 不修改 Stage 6C result files，也不修改 BDD 逻辑。
+
+期望生成：
+
+- `expert_ego_trajectory.csv`
+- `expert_nearby_objects.csv`
+- `selected_scenes.csv`
+- `warnings.json`
+- `expert_context_export_report.md`
+
+### 3. 通过标准
+
+Stage 7A.1 passes if：
+
+- `python -m py_compile tools/stage7a_export_nuplan_expert_context.py` 通过。
+- 上面的导出命令成功结束并生成 5 个输出文件。
+- `expert_ego_trajectory.csv` 至少包含 1 行数据（不含 header）。
+- `expert_nearby_objects.csv` 至少包含 1 行数据（不含 header）。
+- `selected_scenes.csv` 记录了实际导出的 DB / scene 和 row count。
+- `warnings.json` 中没有会阻断 expert context inspection 的严重 schema / join 问题。
+- 没有生成 planner rollout CSV / JSON，也没有生成 fake rollout data。
+- Stage 6C 结果目录保持不变。
+
+Interpretation：Stage 7A.1 用于验证在实现 planner A/B rollouts 之前，我们可以先从 nuPlan mini 导出 expert ego trajectory 和 surrounding object context。
+
+Next step：Convert `expert_ego_trajectory.csv` and `expert_nearby_objects.csv` into our context dataset format：`ego_seq.npy`、`neighbor_seq.npy`、`metadata`、`shard_manifest.json`、`feature_schema.json`。
