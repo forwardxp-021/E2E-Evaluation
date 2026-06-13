@@ -67,7 +67,7 @@ python evaluate_embedding.py \
 - Stage 7B.1 expert ego/object export: PASS
 - Stage 7B.2 Stage6C-compatible dynamic converter: PASS
 - Stage 6C smoke on nuPlan expert context: PASS
-- Stage 7B.3 map/ODD feature builder: NEXT
+- Stage 7B.3 map/ODD feature builder: implemented
 - Stage 7C policy rollout: pending
 - Stage 7D policy BDD: pending
 
@@ -112,12 +112,42 @@ python tools/stage6c_build_behavior_events_v2.py \
   --no_progress
 ```
 
+
+Stage 7B.3 生成与 Stage 7B.2 window 对齐的 nuPlan map/ODD-lite features：
+
+```bash
+python tools/build_nuplan_map_odd_features.py \
+  --nuplan_db_root /path/to/nuplan/db \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --input_dynamic_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --output_dir outputs/stage7b3_nuplan_map_odd \
+  --split mini \
+  --max_scenarios 50 \
+  --radius_m 50.0 \
+  --sample_stride 5 \
+  --overwrite
+```
+
+Stage 7B.3 小样本 smoke test 命令：
+
+```bash
+python tools/build_nuplan_map_odd_features.py \
+  --nuplan_db_root /path/to/nuplan/db \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --input_dynamic_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --output_dir outputs/stage7b3_nuplan_map_odd_smoke \
+  --split mini \
+  --max_scenarios 5 \
+  --overwrite
+```
+
 ### 3. 期望行为
 
 - Stage 7B.1 从 nuPlan mini SQLite DB 中读取 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category`，生成 `expert_ego_trajectory.csv`、`expert_nearby_objects.csv`、`selected_scenes.csv`、`warnings.json` 和导出报告。
 - Stage 7B.2 读取 Stage 7B.1 的 CSV，生成 Stage 6C 可消费的 sharded dynamic context dataset，不会运行 planner simulation，也不会生成 policy rollout。
 - Stage 6C smoke 读取 Stage 7B.2 的 `shard_manifest.json` 和 `feature_schema.json`，生成 behavior-event metrics / bins / report / schema / warnings，用于验证接口兼容性。
-- Stage 7B.1/B.2 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
+- Stage 7B.3 读取 Stage 7B.2 的 `shard_manifest.json` / shard `metadata.csv`，按原有 window 顺序生成 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`、`map_odd_report.md`、`warnings.json`；它只生成 map-lite / ODD proxy，不做 full vector map serialization、不渲染、不训练、不合并 Stage 7B.4 特征。
+- Stage 7B.1/B.2/B.3 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
 
 ### 4. 通过标准
 
@@ -134,7 +164,7 @@ python tools/stage6c_build_behavior_events_v2.py \
 - Stage 7B.1：5 DB × 5 scenes 导出成功，25 scenes，4797 ego rows，47970 nearby object rows，warnings none。
 - Stage 7B.2：生成 23 个窗口，`ego_seq [23,80,8]`，`neighbor_seq [23,5,80,15]`，`context_traj [23,80,83]`，metadata rows 23，interaction features [23,33]。
 - Stage 6C smoke：`total_rows=23`，`shard_count=1`，无 array shape / manifest / metadata 错误。
-- Stage 7B.3 是下一步，需要补充 map/ODD features 后再进入 Stage 7C/D 主实验。
+- Stage 7B.3 输出 `map_odd_feat.npy` 必须是二维 `[N, F_map]`，`map_odd_meta.csv` 行数必须等于处理的 Stage 7B.2 metadata 行数，`map_odd_report.md` 必须包含 alignment check，`warnings.json` 必须是结构化 JSON。
 
 ## 关键参数
 
