@@ -58,6 +58,84 @@ python evaluate_embedding.py \
 ```
 **输出**: UMAP 散点图、线性探针 R²/Spearman、邻域一致性分析
 
+
+## Stage 7 — nuPlan same-scenario policy validation
+
+### 1. 当前状态
+
+- Stage 7A.0 nuPlan mini readiness: PASS
+- Stage 7B.1 expert ego/object export: PASS
+- Stage 7B.2 Stage6C-compatible dynamic converter: PASS
+- Stage 6C smoke on nuPlan expert context: PASS
+- Stage 7B.3 map/ODD feature builder: NEXT
+- Stage 7C policy rollout: pending
+- Stage 7D policy BDD: pending
+
+### 2. 命令
+
+Stage 7B.1 导出 nuPlan expert ego/object 中间 CSV：
+
+```bash
+python tools/stage7a_export_nuplan_expert_context.py \
+  --output_dir outputs/stage7A_nuplan/expert_context_export \
+  --max_dbs 5 \
+  --max_scenes_per_db 5 \
+  --max_lidar_pcs_per_scene 200 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+Stage 7B.2 转换为 Stage 6C 兼容的动态 context dataset：
+
+```bash
+python tools/stage7b_convert_expert_context_to_dataset.py \
+  --expert_ego_csv outputs/stage7A_nuplan/expert_context_export/expert_ego_trajectory.csv \
+  --expert_objects_csv outputs/stage7A_nuplan/expert_context_export/expert_nearby_objects.csv \
+  --selected_scenes_csv outputs/stage7A_nuplan/expert_context_export/selected_scenes.csv \
+  --output_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --target_hz 10 \
+  --window_sec 8 \
+  --stride_sec 4 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+Stage 6C 在 nuPlan expert dynamic context 上做接口冒烟测试：
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage7A_nuplan/expert_context_dataset/shard_manifest.json \
+  --feature_schema_path outputs/stage7A_nuplan/expert_context_dataset/feature_schema.json \
+  --output_dir outputs/stage7A_nuplan/expert_behavior_events_smoke \
+  --dt 0.1 \
+  --overwrite \
+  --no_progress
+```
+
+### 3. 期望行为
+
+- Stage 7B.1 从 nuPlan mini SQLite DB 中读取 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category`，生成 `expert_ego_trajectory.csv`、`expert_nearby_objects.csv`、`selected_scenes.csv`、`warnings.json` 和导出报告。
+- Stage 7B.2 读取 Stage 7B.1 的 CSV，生成 Stage 6C 可消费的 sharded dynamic context dataset，不会运行 planner simulation，也不会生成 policy rollout。
+- Stage 6C smoke 读取 Stage 7B.2 的 `shard_manifest.json` 和 `feature_schema.json`，生成 behavior-event metrics / bins / report / schema / warnings，用于验证接口兼容性。
+- Stage 7B.1/B.2 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
+
+### 4. 通过标准
+
+预期 shape 检查：
+
+- `ego_seq.npy`: [N, 80, 8]
+- `neighbor_seq.npy`: [N, 5, 80, 15]
+- `context_traj.npy`: [N, 80, 83]
+- `context_mask.npy`: [N, 80, 5]
+- `interaction_feat_style.npy`: [N, 33]
+
+当前小样本通过记录：
+
+- Stage 7B.1：5 DB × 5 scenes 导出成功，25 scenes，4797 ego rows，47970 nearby object rows，warnings none。
+- Stage 7B.2：生成 23 个窗口，`ego_seq [23,80,8]`，`neighbor_seq [23,5,80,15]`，`context_traj [23,80,83]`，metadata rows 23，interaction features [23,33]。
+- Stage 6C smoke：`total_rows=23`，`shard_count=1`，无 array shape / manifest / metadata 错误。
+- Stage 7B.3 是下一步，需要补充 map/ODD features 后再进入 Stage 7C/D 主实验。
+
 ## 关键参数
 
 ### Stage 5B 训练性能/内存排查（GPU 利用率低）
