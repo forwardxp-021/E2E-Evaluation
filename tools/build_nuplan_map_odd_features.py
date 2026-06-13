@@ -646,7 +646,7 @@ def feature_for_row(row: Dict[str, str], poses: List[Tuple[float, float, float]]
         lane_geom_objs.extend(lane_objs[:5])
         inter_n = conn_n + rb_n
         lane_counts.append(lane_n); conn_counts.append(conn_n); xwalk_counts.append(xw_n); stop_counts.append(st_n); edge_counts.append(edge_n); inter_counts.append(inter_n)
-        obj_counts.append(lane_n + conn_n + xw_n + stop_n + edge_n + rb_n)
+        obj_counts.append(lane_n + conn_n + xw_n + st_n + edge_n + rb_n)
         d_inter.append(min([d for d in [dist_to_objs(x, y, conn_objs, query_counts), dist_to_objs(x, y, rb_objs, query_counts)] if d >= 0], default=SENTINEL))
         d_xwalk.append(dist_to_objs(x, y, xw_objs, query_counts)); d_stop.append(dist_to_objs(x, y, st_objs, query_counts)); d_edge.append(dist_to_objs(x, y, edge_objs, query_counts))
     def fill(prefix: str, arr: List[float]) -> None:
