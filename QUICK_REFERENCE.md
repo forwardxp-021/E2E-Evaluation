@@ -164,7 +164,9 @@ python tools/build_nuplan_map_odd_features.py \
 - Stage 7B.1：5 DB × 5 scenes 导出成功，25 scenes，4797 ego rows，47970 nearby object rows，warnings none。
 - Stage 7B.2：生成 23 个窗口，`ego_seq [23,80,8]`，`neighbor_seq [23,5,80,15]`，`context_traj [23,80,83]`，metadata rows 23，interaction features [23,33]。
 - Stage 6C smoke：`total_rows=23`，`shard_count=1`，无 array shape / manifest / metadata 错误。
-- Stage 7B.3 输出 `map_odd_feat.npy` 必须是二维 `[N, F_map]`，`map_odd_meta.csv` 行数必须等于处理的 Stage 7B.2 metadata 行数，`map_odd_report.md` 必须包含 alignment check，`warnings.json` 必须是结构化 JSON。
+- Stage 7B.3 结构性 PASS：`map_odd_feat.npy` 必须是二维 `[N, F_map]`，`map_odd_meta.csv` 行数必须等于处理的 Stage 7B.2 metadata 行数，全部 feature 无 NaN/inf，`map_odd_report.md` 必须包含 alignment check，`warnings.json` 必须是结构化 JSON。
+- Stage 7B.3 语义性 PASS：`map_odd_meta.csv` 中 `map_name` 需要能从 Stage 7B.2 metadata 或 nuPlan SQLite（优先 `scene/log/lidar_pc` 关联中的 `map_name/location/map_version`）解析；在正确安装 nuPlan mini DB + maps 的环境中，`map_available_mean > 0`，并且至少部分 lane/object map features 不是 sentinel/全 0。
+- Stage 7B.3 报告需要检查 map_name resolution success ratio、unique resolved map names、query_success_ratio、per-layer query success/failure/empty counts，以及 semantic warnings（例如 map 不可用、对象计数全 0、lane curvature 全 sentinel）。
 
 ## 关键参数
 
