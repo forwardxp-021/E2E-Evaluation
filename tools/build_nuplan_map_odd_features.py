@@ -160,6 +160,48 @@ def bytes_or_text(v: Any) -> str:
     return str(v)
 
 
+def row_get(row: Optional[sqlite3.Row], col: Optional[str]) -> Any:
+    if row is None or not col:
+        return None
+    try:
+        return row[col]
+    except Exception:
+        return None
+
+
+def to_float(v: Any) -> Optional[float]:
+    if v is None or v == "":
+        return None
+    try:
+        out = float(v)
+    except Exception:
+        return None
+    return out if math.isfinite(out) else None
+
+
+def first_existing(cols: Sequence[str], names: Sequence[str]) -> str:
+    return next((n for n in names if n in cols), "")
+
+
+def select_rows(con: sqlite3.Connection, table: str, cols: Sequence[str], where: str = "", params: Sequence[Any] = (), order_by: str = "", limit: int = 0) -> List[sqlite3.Row]:
+    sql = f"SELECT {', '.join(q(c) for c in cols)} FROM {q(table)}"
+    if where:
+        sql += f" WHERE {where}"
+    if order_by:
+        sql += f" ORDER BY {order_by}"
+    if limit > 0:
+        sql += f" LIMIT {int(limit)}"
+    return list(con.execute(sql, params).fetchall())
+
+
+def fetch_one_by_value(con: sqlite3.Connection, table: str, cols: Sequence[str], key_col: str, value: Any) -> Optional[sqlite3.Row]:
+    for candidate in ([value] if not isinstance(value, str) else sqlite_token_candidates(value)):
+        rows = select_rows(con, table, cols, where=f"{q(key_col)}=?", params=(candidate,), limit=1)
+        if rows:
+            return rows[0]
+    return None
+
+
 
 def warn_counter_key(prefix: str, layer: str, message: str) -> str:
     msg = (message or "").split("\n", 1)[0][:160]
@@ -198,105 +240,179 @@ def first_row_value(con: sqlite3.Connection, table: str, columns: Sequence[str],
     return ""
 
 
-def valid_row_map_name(row: Dict[str, str]) -> str:
-    for k in ("map_name", "location", "map_version"):
+def map_name_candidates_from_row(row: Dict[str, str]) -> Tuple[List[str], List[str]]:
+    strong: List[str] = []
+    weak: List[str] = []
+    for k in ("map_name", "location"):
         v = str(row.get(k, "") or "").strip()
-        if v:
-            return v
-    return ""
+        if v and v not in strong:
+            strong.append(v)
+    for k in ("map_version", "log_name"):
+        v = str(row.get(k, "") or "").strip()
+        if v and v not in strong and v not in weak:
+            weak.append(v)
+    return strong, weak
 
 
-def resolve_map_name_from_db(db_path: Optional[Path], scene_token: str, warnings: List[dict], row: Optional[Dict[str, str]] = None) -> str:
-    """Resolve nuPlan map/location key from metadata and SQLite relations without using DB stem fallback."""
-    row_name = valid_row_map_name(row or {})
-    if row_name:
-        return row_name
+def add_candidate(target: List[str], value: str) -> None:
+    value = str(value or "").strip()
+    if value and value not in target:
+        target.append(value)
+
+
+def resolve_map_name_candidates_from_db(db_path: Optional[Path], scene_token: str, warnings: List[dict], row: Optional[Dict[str, str]] = None) -> Tuple[List[str], List[str]]:
+    """Return strong and weak map-name candidates; final acceptance happens after Map API load."""
+    strong, weak = map_name_candidates_from_row(row or {})
     if db_path is None:
         warnings.append({"type": "map_name_resolution_failed", "reason": "db_path_missing", "scene_token": scene_token})
-        return ""
+        return strong, weak
     try:
-        con = sqlite3.connect(str(db_path))
+        con = sqlite3.connect(str(db_path)); con.row_factory = sqlite3.Row
         tables = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
-        map_cols = ("map_name", "location", "map_version")
-        if "scene" in tables and scene_token:
+        strong_cols = ("map_name", "location")
+        weak_cols = ("map_version", "log_name")
+        if "scene" in tables:
             scene_cols = table_columns(con, "scene")
-            scene_key = "token" if "token" in scene_cols else ("id" if "id" in scene_cols else "")
-            if scene_key:
-                for tok in sqlite_token_candidates(scene_token):
-                    val = first_row_value(con, "scene", map_cols, f"WHERE {q(scene_key)}=?", (tok,))
-                    if val:
-                        con.close(); return val
-            log_ref = next((c for c in ("log_token", "log_id") if c in scene_cols), "")
-            if log_ref and "log" in tables and scene_key:
-                log_cols = table_columns(con, "log")
-                log_key = "token" if "token" in log_cols else ("id" if "id" in log_cols else "")
-                if log_key:
-                    for tok in sqlite_token_candidates(scene_token):
-                        rows = con.execute(f"SELECT {q(log_ref)} FROM scene WHERE {q(scene_key)}=? LIMIT 2", (tok,)).fetchall()
-                        for r in rows:
-                            val = first_row_value(con, "log", map_cols + ("log_name",), f"WHERE {q(log_key)}=?", (r[0],))
-                            if val:
-                                con.close(); return val
-        if "lidar_pc" in tables and "log" in tables:
-            lidar_cols = table_columns(con, "lidar_pc"); log_cols = table_columns(con, "log")
-            log_key = "token" if "token" in log_cols else ("id" if "id" in log_cols else "")
-            log_ref = next((c for c in ("log_token", "log_id") if c in lidar_cols), "")
-            if log_key and log_ref:
-                rows = con.execute(f"SELECT DISTINCT {q(log_ref)} FROM lidar_pc LIMIT 2").fetchall()
-                if len(rows) == 1:
-                    val = first_row_value(con, "log", map_cols + ("log_name",), f"WHERE {q(log_key)}=?", (rows[0][0],))
-                    if val:
-                        con.close(); return val
+            scene_key = first_existing(scene_cols, ["token", "scene_token", "id"])
+            scene_row = fetch_one_by_value(con, "scene", scene_cols, scene_key, scene_token) if scene_key and scene_token else None
+            if scene_row is None and scene_cols:
+                scene_row = select_rows(con, "scene", scene_cols, limit=1)[0]
+            if scene_row is not None:
+                for col in strong_cols:
+                    add_candidate(strong, bytes_or_text(row_get(scene_row, col) if col in scene_cols else None))
+                for col in weak_cols:
+                    add_candidate(weak, bytes_or_text(row_get(scene_row, col) if col in scene_cols else None))
+                log_ref = first_existing(scene_cols, ["log_token", "log_id", "log"])
+                if log_ref and "log" in tables:
+                    log_cols = table_columns(con, "log")
+                    log_key = first_existing(log_cols, ["token", "log_token", "id"])
+                    log_row = fetch_one_by_value(con, "log", log_cols, log_key, row_get(scene_row, log_ref)) if log_key else None
+                    if log_row is not None:
+                        for col in strong_cols:
+                            add_candidate(strong, bytes_or_text(row_get(log_row, col) if col in log_cols else None))
+                        for col in weak_cols:
+                            add_candidate(weak, bytes_or_text(row_get(log_row, col) if col in log_cols else None))
         if "log" in tables:
-            for col in map_cols + ("log_name",):
-                if col in table_columns(con, "log"):
+            log_cols = table_columns(con, "log")
+            for col in strong_cols:
+                if col in log_cols:
                     vals = [bytes_or_text(r[0]) for r in con.execute(f"SELECT DISTINCT {q(col)} FROM log WHERE {q(col)} IS NOT NULL LIMIT 2").fetchall() if bytes_or_text(r[0])]
-                    if len(vals) == 1:
-                        con.close(); return vals[0]
+                    if len(vals) == 1: add_candidate(strong, vals[0])
+            for col in weak_cols:
+                if col in log_cols:
+                    vals = [bytes_or_text(r[0]) for r in con.execute(f"SELECT DISTINCT {q(col)} FROM log WHERE {q(col)} IS NOT NULL LIMIT 2").fetchall() if bytes_or_text(r[0])]
+                    if len(vals) == 1: add_candidate(weak, vals[0])
         con.close()
-        warnings.append({"type": "map_name_resolution_failed", "reason": "no_unambiguous_sqlite_map_field", "db_path": str(db_path), "scene_token": scene_token})
-        return ""
+        if not strong and not weak:
+            warnings.append({"type": "map_name_resolution_failed", "reason": "no_sqlite_map_candidates", "db_path": str(db_path), "scene_token": scene_token})
+        return strong, [v for v in weak if v not in strong]
     except Exception as exc:
         warnings.append({"type": "map_name_resolution_failed", "reason": "sqlite_error", "db_path": str(db_path), "scene_token": scene_token, "message": str(exc)})
-        return ""
+        return strong, weak
 
 def yaw_from_quat(qw: float, qx: float, qy: float, qz: float) -> float:
     return math.atan2(2.0 * (qw * qz + qx * qy), 1.0 - 2.0 * (qy * qy + qz * qz))
 
 
+def extract_pose_fields_from_row(row: Optional[sqlite3.Row], ego_cols: Sequence[str]) -> Optional[Tuple[float, float, float]]:
+    x_col = first_existing(ego_cols, ["x", "translation_x", "ego_x", "center_x"])
+    y_col = first_existing(ego_cols, ["y", "translation_y", "ego_y", "center_y"])
+    heading_col = first_existing(ego_cols, ["heading", "yaw", "ego_heading"])
+    qw_col = first_existing(ego_cols, ["qw", "rotation_w", "orientation_w"])
+    qx_col = first_existing(ego_cols, ["qx", "rotation_x", "orientation_x"])
+    qy_col = first_existing(ego_cols, ["qy", "rotation_y", "orientation_y"])
+    qz_col = first_existing(ego_cols, ["qz", "rotation_z", "orientation_z"])
+    x = to_float(row_get(row, x_col)); y = to_float(row_get(row, y_col))
+    if x is None or y is None:
+        return None
+    heading = to_float(row_get(row, heading_col))
+    if heading is None:
+        qw = to_float(row_get(row, qw_col)); qx = to_float(row_get(row, qx_col)); qy = to_float(row_get(row, qy_col)); qz = to_float(row_get(row, qz_col))
+        if None not in (qw, qx, qy, qz):
+            heading = yaw_from_quat(float(qw), float(qx), float(qy), float(qz))
+    if heading is None:
+        heading = 0.0
+    return float(x), float(y), float(heading)
+
+
+def resolve_lidar_rows_for_scene(con: sqlite3.Connection, scene: sqlite3.Row, scene_cols: Sequence[str], lidar_cols: Sequence[str], warnings: List[dict], db_path: Path, scene_token: str) -> List[sqlite3.Row]:
+    max_frames = 20000
+    scene_token_col = first_existing(scene_cols, ["token", "scene_token", "id"])
+    scene_token_value = row_get(scene, scene_token_col)
+    lidar_scene_col = first_existing(lidar_cols, ["scene_token", "scene", "scene_id"])
+    order_col = first_existing(lidar_cols, ["frame_index", "lidar_pc_index", "timestamp", "time_us", "utime", "id", "token"])
+    order_by = q(order_col) if order_col else ""
+    if lidar_scene_col and scene_token_value is not None:
+        rows = select_rows(con, "lidar_pc", lidar_cols, where=f"{q(lidar_scene_col)}=?", params=(scene_token_value,), order_by=order_by, limit=max_frames)
+        if rows:
+            return rows
+    start_col = first_existing(scene_cols, ["start_lidar_pc_token", "first_lidar_pc_token", "initial_lidar_pc_token", "lidar_pc_token"])
+    end_col = first_existing(scene_cols, ["end_lidar_pc_token", "last_lidar_pc_token", "final_lidar_pc_token"])
+    lidar_token_col = first_existing(lidar_cols, ["token", "lidar_pc_token", "id"])
+    next_col = first_existing(lidar_cols, ["next_token", "next_lidar_pc_token"])
+    if start_col and lidar_token_col:
+        token_index = {r[lidar_token_col]: r for r in select_rows(con, "lidar_pc", lidar_cols)}
+        current = row_get(scene, start_col); end_token = row_get(scene, end_col)
+        sequence: List[sqlite3.Row] = []; seen = set()
+        while current is not None and current not in seen and len(sequence) < max_frames:
+            seen.add(current); lidar = token_index.get(current)
+            if lidar is None:
+                warnings.append({"type": "lidar_pc_chain_token_missing", "db_path": str(db_path), "scene_token": scene_token})
+                break
+            sequence.append(lidar)
+            if end_token is not None and current == end_token:
+                break
+            if not next_col:
+                warnings.append({"type": "lidar_pc_chain_without_next_token", "db_path": str(db_path), "scene_token": scene_token})
+                break
+            current = row_get(lidar, next_col)
+        if sequence:
+            return sequence
+    lidar_ts_col = first_existing(lidar_cols, ["timestamp", "time_us", "utime", "time_stamp"])
+    start_time_col = first_existing(scene_cols, ["start_time", "start_timestamp", "start_time_us", "first_timestamp"])
+    end_time_col = first_existing(scene_cols, ["end_time", "end_timestamp", "end_time_us", "last_timestamp"])
+    if lidar_ts_col and start_time_col and end_time_col:
+        start_time = row_get(scene, start_time_col); end_time = row_get(scene, end_time_col)
+        if start_time is not None and end_time is not None:
+            rows = select_rows(con, "lidar_pc", lidar_cols, where=f"{q(lidar_ts_col)} >= ? AND {q(lidar_ts_col)} <= ?", params=(start_time, end_time), order_by=q(lidar_ts_col), limit=max_frames)
+            if rows:
+                return rows
+    warnings.append({"type": "uncertain_scene_lidar_join", "db_path": str(db_path), "scene_token": scene_token, "scene_columns": list(scene_cols)})
+    return []
+
+
 def load_scene_poses(db_path: Path, scene_token: str, warnings: List[dict]) -> Dict[int, Tuple[float, float, float]]:
     try:
-        con = sqlite3.connect(str(db_path))
+        con = sqlite3.connect(str(db_path)); con.row_factory = sqlite3.Row
+        tables = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        missing = [t for t in ("scene", "lidar_pc", "ego_pose") if t not in tables]
+        if missing:
+            warnings.append({"type": "ego_pose_sqlite_load_failed", "db_path": str(db_path), "scene_token": scene_token, "message": f"Missing required tables: {missing}"})
+            con.close(); return {}
         scene_cols = table_columns(con, "scene"); lidar_cols = table_columns(con, "lidar_pc"); ego_cols = table_columns(con, "ego_pose")
-        if not {"scene", "lidar_pc", "ego_pose"}:
-            pass
-        scene_token_col = "token" if "token" in scene_cols else "id"
-        lidar_scene_col = "scene_token" if "scene_token" in lidar_cols else "scene_id"
-        lidar_ego_col = "ego_pose_token" if "ego_pose_token" in lidar_cols else "ego_pose_id"
-        ego_token_col = "token" if "token" in ego_cols else "id"
-        frame_col = "frame_index" if "frame_index" in lidar_cols else ("lidar_pc_index" if "lidar_pc_index" in lidar_cols else "timestamp")
-        cols = [f"l.{q(frame_col)}", "e.x", "e.y"]
-        if "heading" in ego_cols:
-            cols.append("e.heading")
-            quat = False
-        else:
-            cols += ["e.qw", "e.qx", "e.qy", "e.qz"]
-            quat = True
-        sql = f"SELECT {', '.join(cols)} FROM lidar_pc l JOIN ego_pose e ON l.{q(lidar_ego_col)}=e.{q(ego_token_col)} WHERE l.{q(lidar_scene_col)}=? ORDER BY l.{q(frame_col)}"
+        scene_key = first_existing(scene_cols, ["token", "scene_token", "id"])
+        scene = fetch_one_by_value(con, "scene", scene_cols, scene_key, scene_token) if scene_key and scene_token else None
+        if scene is None:
+            warnings.append({"type": "scene_token_not_found", "db_path": str(db_path), "scene_token": scene_token})
+            con.close(); return {}
+        lidar_rows = resolve_lidar_rows_for_scene(con, scene, scene_cols, lidar_cols, warnings, db_path, scene_token)
+        lidar_ego_col = first_existing(lidar_cols, ["ego_pose_token", "ego_pose_id", "ego_pose"])
+        ego_token_col = first_existing(ego_cols, ["token", "ego_pose_token", "id"])
+        if not lidar_ego_col or not ego_token_col:
+            warnings.append({"type": "ego_pose_sqlite_load_failed", "db_path": str(db_path), "scene_token": scene_token, "message": f"Missing lidar->ego join columns lidar={lidar_ego_col}, ego={ego_token_col}"})
+            con.close(); return {}
         poses: Dict[int, Tuple[float, float, float]] = {}
-        for row in con.execute(sql, (bytes.fromhex(scene_token) if all(c in '0123456789abcdefABCDEF' for c in scene_token) and len(scene_token) % 2 == 0 else scene_token,)):
-            frame = int(float(row[0])); x = float(row[1]); y = float(row[2]); hdg = float(row[3]) if not quat else yaw_from_quat(float(row[3]), float(row[4]), float(row[5]), float(row[6]))
-            poses[frame] = (x, y, hdg)
+        for frame_index, lidar in enumerate(lidar_rows):
+            ego = fetch_one_by_value(con, "ego_pose", ego_cols, ego_token_col, row_get(lidar, lidar_ego_col))
+            pose = extract_pose_fields_from_row(ego, ego_cols)
+            if pose is not None:
+                poses[frame_index] = pose
         if not poses:
-            # retry text token; schemas differ in byte/text storage
-            for row in con.execute(sql, (scene_token,)):
-                frame = int(float(row[0])); x = float(row[1]); y = float(row[2]); hdg = float(row[3]) if not quat else yaw_from_quat(float(row[3]), float(row[4]), float(row[5]), float(row[6]))
-                poses[frame] = (x, y, hdg)
+            warnings.append({"type": "scene_has_no_ego_poses", "db_path": str(db_path), "scene_token": scene_token})
         con.close(); return poses
     except Exception as exc:
         warnings.append({"type": "ego_pose_sqlite_load_failed", "db_path": str(db_path), "scene_token": scene_token, "message": str(exc)})
         return {}
-
 
 def ego_curvature(poses: Sequence[Tuple[float, float, float]]) -> Tuple[float, float]:
     if len(poses) < 3:
@@ -324,6 +440,27 @@ def load_map_api(map_root: Path, map_name: str, warnings: List[dict]) -> Any:
     except Exception as exc:
         warnings.append({"type": "nuplan_map_api_unavailable", "map_name": map_name, "nuplan_map_root": str(map_root), "message": str(exc)})
         return None
+
+
+def resolve_loadable_map_api(map_root: Path, strong_candidates: Sequence[str], weak_candidates: Sequence[str], api_cache: Dict[str, Any], warnings: List[dict], context: Dict[str, str]) -> Tuple[str, Any]:
+    """Try candidates with get_maps_api; return only a map_name that actually loads."""
+    tried: List[Dict[str, str]] = []
+    for strength, candidates in (("strong", strong_candidates), ("weak", weak_candidates)):
+        for candidate in candidates:
+            if not candidate:
+                continue
+            if candidate not in api_cache:
+                api_cache[candidate] = load_map_api(map_root, candidate, warnings) if map_root.exists() else None
+            if api_cache.get(candidate) is not None:
+                if strength == "weak":
+                    warnings.append({"type": "weak_map_name_candidate_accepted_after_api_load", "map_name": candidate, **context})
+                return candidate, api_cache[candidate]
+            tried.append({"map_name": candidate, "strength": strength})
+    if tried:
+        warnings.append({"type": "map_name_candidates_not_loadable", "candidates": tried, **context})
+    else:
+        warnings.append({"type": "map_name_resolution_failed", "reason": "no_map_name_candidates", **context})
+    return "", None
 
 
 def enum_layers() -> Dict[str, Any]:
@@ -539,10 +676,6 @@ def feature_for_row(row: Dict[str, str], poses: List[Tuple[float, float, float]]
     meta.update({"map_name": resolved_map_name, "num_ego_poses_used": len(sampled), "map_available": int(vals["map_available"]), "warning_count": 0})
     return arr, meta
 
-def infer_map_name(row: Dict[str, str]) -> str:
-    return valid_row_map_name(row)
-
-
 def write_meta_csv(path: Path, rows: List[Dict[str, Any]]) -> None:
     base = KEY_COLUMNS + ["map_name", "num_ego_poses_used", "map_available", "warning_count", "shard_id", "local_row"]
     cols = [c for c in base if any(c in r for r in rows)]
@@ -603,6 +736,21 @@ def write_report(path: Path, args: argparse.Namespace, rows: List[dict], meta_ro
         s = stats[name]; table += f"| {name} | {s['mean']:.4g} | {s['std']:.4g} | {s['min']:.4g} | {s['p50']:.4g} | {s['p95']:.4g} | {s['max']:.4g} |\n"
     avail = feat[:, FEATURE_NAMES.index("map_available")] if feat.size else np.asarray([])
     ratio = feat[:, FEATURE_NAMES.index("valid_ego_map_query_ratio")] if feat.size else np.asarray([])
+    ego_pose_counts = np.asarray([int(r.get("num_ego_poses_used", 0) or 0) for r in meta_rows], dtype=np.int64) if meta_rows else np.asarray([], dtype=np.int64)
+    windows_with_ego_poses_ratio = float(np.mean(ego_pose_counts > 0)) if ego_pose_counts.size else 0.0
+    map_name_loaded_success_ratio = float(len(resolved_nonempty) / max(len(meta_rows), 1))
+    lane_feature_names = ["nearby_lane_count_mean", "nearby_lane_count_max", "nearby_lane_connector_count_mean", "nearby_lane_connector_count_max", "ego_on_lane_ratio", "ego_on_lane_connector_ratio"]
+    object_feature_names = ["crosswalk_count_mean", "stop_line_count_mean", "intersection_proxy_count_mean", "map_object_count_mean", "road_edge_count_mean"]
+    def non_sentinel_nonzero_ratio(names: Sequence[str]) -> float:
+        if not feat.size:
+            return 0.0
+        cols = np.vstack([feature_col(feat, n) for n in names if n in FEATURE_NAMES]).T
+        if cols.size == 0:
+            return 0.0
+        valid = np.isfinite(cols) & (cols != SENTINEL) & (cols != 0)
+        return float(np.mean(np.any(valid, axis=1)))
+    lane_feature_non_sentinel_ratio = non_sentinel_nonzero_ratio(lane_feature_names)
+    object_feature_non_sentinel_ratio = non_sentinel_nonzero_ratio(object_feature_names)
     text = f"""# Stage 7B.3 nuPlan Map/ODD-lite Feature Report
 
 ## Purpose
@@ -634,12 +782,22 @@ Build lightweight, row-aligned map/ODD proxy features for Stage 7B.2 dynamic con
 ## Map name resolution statistics
 - unique resolved map names: {len(unique_maps)}
 - resolved map names: `{unique_maps[:20]}`
-- map_name resolution success ratio: {float(len(resolved_nonempty) / max(len(meta_rows), 1)):.4f}
+- map_name_loaded_success_ratio: {map_name_loaded_success_ratio:.4f}
+- map_name resolution success ratio: {map_name_loaded_success_ratio:.4f}
 - resolution failure reasons: `{dict(resolution_failures)}`
 
 ## Map availability statistics
 - map_available_mean: {float(np.mean(avail)) if avail.size else 0.0:.4f}
 - map_available_rows: {int(np.sum(avail > 0.5)) if avail.size else 0} / {len(rows)}
+
+## Ego pose coverage statistics
+- windows_with_ego_poses_ratio: {windows_with_ego_poses_ratio:.4f}
+- windows_with_ego_poses: {int(np.sum(ego_pose_counts > 0)) if ego_pose_counts.size else 0} / {len(rows)}
+
+## Lane/object non-sentinel statistics
+- lane_feature_non_sentinel_ratio: {lane_feature_non_sentinel_ratio:.4f}
+- object_feature_non_sentinel_ratio: {object_feature_non_sentinel_ratio:.4f}
+- lane/object feature non-sentinel ratio: lane={lane_feature_non_sentinel_ratio:.4f}, object={object_feature_non_sentinel_ratio:.4f}
 
 ## Map API query statistics
 - query_success_ratio: {query_success_ratio:.4f}
@@ -682,7 +840,7 @@ def main() -> int:
     db_root = Path(args.nuplan_db_root).expanduser(); map_root = Path(args.nuplan_map_root).expanduser()
     if not db_root.exists(): warnings.append({"type": "nuplan_db_root_missing", "path": str(db_root)})
     if not map_root.exists(): warnings.append({"type": "nuplan_map_root_missing", "path": str(map_root)})
-    layer_map = enum_layers(); api_cache: Dict[str, Any] = {}; pose_cache: Dict[Tuple[str, str], Dict[int, Tuple[float, float, float]]] = {}; map_name_cache: Dict[Tuple[str, str], str] = {}; query_counts: Counter = Counter()
+    layer_map = enum_layers(); api_cache: Dict[str, Any] = {}; pose_cache: Dict[Tuple[str, str], Dict[int, Tuple[float, float, float]]] = {}; map_candidate_cache: Dict[Tuple[str, str], Tuple[List[str], List[str]]] = {}; query_counts: Counter = Counter()
     feat_rows: List[np.ndarray] = []; meta_rows: List[Dict[str, Any]] = []
     for row in dynamic_rows:
         before = len(warnings)
@@ -695,17 +853,20 @@ def main() -> int:
                 pose_cache[key] = {}
             else:
                 pose_cache[key] = load_scene_poses(db_path, scene_token, warnings)
-        if key not in map_name_cache:
-            map_name_cache[key] = resolve_map_name_from_db(db_path, scene_token, warnings, row)
+        if key not in map_candidate_cache:
+            map_candidate_cache[key] = resolve_map_name_candidates_from_db(db_path, scene_token, warnings, row)
         start = int(float(row.get("start_frame_index", row.get("start", 0)) or 0)); end = int(float(row.get("end_frame_index", start) or start))
         scene_poses = pose_cache[key]
         poses = [scene_poses[i] for i in range(start, end + 1) if i in scene_poses]
-        map_name = map_name_cache[key]
-        if map_name and map_name not in api_cache:
-            api_cache[map_name] = load_map_api(map_root, map_name, warnings) if map_root.exists() else None
-            if api_cache[map_name] is None:
-                warnings.append({"type": "map_api_or_map_name_unavailable", "map_name": map_name, "message": "Map API unavailable or resolved map_name could not be loaded."})
-        api = api_cache.get(map_name) if map_name else None
+        strong_candidates, weak_candidates = map_candidate_cache[key]
+        map_name, api = resolve_loadable_map_api(
+            map_root,
+            strong_candidates,
+            weak_candidates,
+            api_cache,
+            warnings,
+            {"db_name": db_name, "scene_token": scene_token, "scenario_id": row.get("scenario_id", "")},
+        )
         feat, meta = feature_for_row(row, poses, api, layer_map, args.radius_m, args.sample_stride, warnings, query_counts, map_name)
         meta.update({"shard_id": row.get("shard_id", ""), "local_row": row.get("local_row", ""), "warning_count": len(warnings) - before})
         feat_rows.append(feat); meta_rows.append(meta)
