@@ -141,13 +141,24 @@ python tools/build_nuplan_map_odd_features.py \
   --overwrite
 ```
 
+Stage 7B.4 合并 Stage 7B.2 dynamic context 与 Stage 7B.3 map/ODD-lite features：
+
+```bash
+python tools/stage7b4_merge_dynamic_map_context.py \
+  --dynamic_context_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --map_odd_dir outputs/stage7b3_nuplan_map_odd \
+  --output_dir outputs/stage7b4_nuplan_context_merged \
+  --overwrite
+```
+
 ### 3. 期望行为
 
 - Stage 7B.1 从 nuPlan mini SQLite DB 中读取 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category`，生成 `expert_ego_trajectory.csv`、`expert_nearby_objects.csv`、`selected_scenes.csv`、`warnings.json` 和导出报告。
 - Stage 7B.2 读取 Stage 7B.1 的 CSV，生成 Stage 6C 可消费的 sharded dynamic context dataset，不会运行 planner simulation，也不会生成 policy rollout。
 - Stage 6C smoke 读取 Stage 7B.2 的 `shard_manifest.json` 和 `feature_schema.json`，生成 behavior-event metrics / bins / report / schema / warnings，用于验证接口兼容性。
 - Stage 7B.3 读取 Stage 7B.2 的 `shard_manifest.json` / shard `metadata.csv`，按原有 window 顺序生成 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`、`map_odd_report.md`、`warnings.json`；它只生成 map-lite / ODD proxy，不做 full vector map serialization、不渲染、不训练、不合并 Stage 7B.4 特征。`map_odd_meta.csv` 只写入已经通过 nuPlan `get_maps_api()` 初始化且通过真实 lane / lane_connector 半径查询验证的 `map_name`；`map_version` / `log_name` 只能作为弱候选，不能直接当最终 map name。若强候选（例如 `las_vegas`）在真实 layer 查询时失败，而弱候选（例如 `us-nv-las-vegas-strip`）查询成功，则使用通过查询验证的弱候选。
-- Stage 7B.1/B.2/B.3 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
+- Stage 7B.4 读取 Stage 7B.2 的 shard manifest / shard arrays / `metadata.csv`，读取 Stage 7B.3 的 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`，用两边 metadata 共有 key 逐行校验对齐；若原始行序不一致但 key 唯一且可安全匹配，会把 map/ODD rows 重排到 dynamic row order 并在 `alignment_report.md` 与 `warnings.json` 中显式记录；若没有共同 key、行数不一致、key 重复或缺失、merged feature 有 NaN/Inf，则失败，不会静默合并。输出目录是独立的 `outputs/stage7b4_nuplan_context_merged`，不会修改 Stage 7B.1/7B.2/7B.3 既有输出。
+- Stage 7B.1/B.2/B.3/B.4 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
 
 ### 4. 通过标准
 
@@ -158,6 +169,8 @@ python tools/build_nuplan_map_odd_features.py \
 - `context_traj.npy`: [N, 80, 83]
 - `context_mask.npy`: [N, 80, 5]
 - `interaction_feat_style.npy`: [N, 33]
+- `map_odd_feat.npy`: [N, 37]
+- `merged_context_feat.npy`: [N, 70]
 
 当前小样本通过记录：
 
@@ -167,6 +180,7 @@ python tools/build_nuplan_map_odd_features.py \
 - Stage 7B.3 结构性 PASS：`map_odd_feat.npy` 必须是二维 `[N, F_map]`，`map_odd_meta.csv` 行数必须等于处理的 Stage 7B.2 metadata 行数，全部 feature 无 NaN/inf，`map_odd_report.md` 必须包含 alignment check，`warnings.json` 必须是结构化 JSON。
 - Stage 7B.3 语义性 PASS：`map_odd_meta.csv` 中 `map_name` 必须是真正能被 nuPlan map API 初始化并完成一次真实 lane 或 lane_connector 查询的 map name；空查询结果可以接受，但查询抛异常必须拒绝该候选并继续尝试弱候选。如果候选 map name 无法通过查询验证则该行留空并在 `warnings.json` 中记录 warning。在正确安装 nuPlan mini DB + maps 的环境中，`windows_with_ego_poses_ratio > 0`、`map_available_mean > 0`、`query_success_ratio > 0`、`lane_feature_non_sentinel_ratio > 0`，并且 `nearby_lane_count_mean` 不应因为所有 layer 查询失败而全 0。
 - Stage 7B.3 报告必须显式检查 `map_name_loaded_success_ratio`、`map_available_mean`、`windows_with_ego_poses_ratio`、lane/object feature non-sentinel ratio、unique resolved map names、query_success_ratio、per-layer query success/failure/empty counts、`map_candidate_validation_success_count`、`accepted_map_name_after_query_validation`、`rejected_map_candidates_with_reason`、per-layer first exception message，以及 semantic warnings（例如 map 不可用、对象计数全 0、lane curvature 全 sentinel）。
+- Stage 7B.4 PASS：`merged_context_feat.npy` 存在且列数等于 dynamic 33 + map/ODD 37；当前 mini smoke 预期 shape 为 `[23, 70]`；`merged_metadata.csv` 行数等于 dynamic rows；`alignment_report.md` 显示 `status: PASS`、alignment keys、row order 是否 already aligned、是否 reindexing；`merged_context_feat.npy`、`dynamic_feat_style.npy`、`map_odd_feat.npy` 均无 NaN/Inf；Stage 7B.1/7B.2/7B.3 输出目录不被改写。
 
 ## 关键参数
 
