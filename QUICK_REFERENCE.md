@@ -3905,10 +3905,14 @@ python tools/stage6c_build_behavior_events_v2.py \
   - `shards/shard_000000/shard_summary.json`
 - `ego_seq.npy` shape 为 `[N, 80, 8]`；特征顺序为 `x, y, vx, vy, heading, speed, accel, yaw_rate`。位置和速度使用窗口 reference frame 下的 local coordinates。
 - `neighbor_seq.npy` shape 为 `[N, 5, 80, 15]`；slot 顺序为 `front, left_front, left_rear, right_front, right_rear`；特征顺序为 `valid, dx, dy, rvx, rvy, distance, local_x, local_y, closing_rate, ttc, thw, neighbor_speed, neighbor_accel, relative_heading, neighbor_yaw_rate`。
+- `context_traj.npy` shape 为 `[N, 80, 83]`，按 Waymo 5-neighbor context builder 对齐：每帧拼接 `ego_seq[i]` 的 8 维特征和 `neighbor_seq[i]` 按时间展开后的 `5*15=75` 维邻车特征。
+- `context_mask.npy` shape 为 `[N, 80, 5]`，由 `neighbor_seq[..., 0] > 0.5` 的 valid 标志转置到时间维在前得到。
+- `context_mask_window.npy` shape 为 `[N, 5]`，表示每个窗口内每个 neighbor slot 是否至少出现过一次有效目标。
 - `metadata.csv` 至少包含 Stage 6C 必需列：`scenario_id, target_agent_id, start, window_len, split`，并保留 expert/source、scene、frame、timestamp、map/ODD status、slot assignment mode 等列。
 - `split` 根据 `scenario_id=db_name|scene_token` 做 deterministic hash split：train 80%、val 10%、test 10%。
 - `shard_manifest.json` 必须包含 `dataset_type=nuplan_expert_context_stage6c_compatible` 和 `shard_paths=["shards/shard_000000"]`。
 - Stage 7B.2 只使用 geometric slot assignment；`warnings.json` 和 `conversion_report.md` 会说明 map/lane-aware assignment 将在 Stage 7B.3/7B.4 改进。
+- `conversion_report.md` 会显式记录 `context_traj`、`context_mask`、`context_mask_window` 的 shape，并说明：Stage 7B.2 dynamic outputs are aligned with the Waymo 5-neighbor context dataset layout except map/ODD features, which are reserved for Stage 7B.3.
 - 本阶段只转换 dynamic context，不解析 map，不运行 planner simulation，不生成 fake rollout，不修改 Stage 6C result files，不修改 BDD 逻辑。
 - `feature_schema.json` 会保留 Stage 6-style `map_odd_features_reserved`，供 Stage 7B.3 对齐，并记录 interaction feature schema note。
 
@@ -3918,12 +3922,14 @@ python tools/stage6c_build_behavior_events_v2.py \
 2. 上述转换命令可以成功运行，并生成 root-level `shard_manifest.json`、`feature_schema.json`、`conversion_report.md`、`warnings.json`。
 3. `shards/shard_000000/ego_seq.npy` 存在，shape 为 `[N, 80, 8]`，且 `N > 0`。
 4. `shards/shard_000000/neighbor_seq.npy` 存在，shape 为 `[N, 5, 80, 15]`，且第一维与 ego window 数一致。
-5. `shards/shard_000000/metadata.csv` 行数等于 `N`，且包含 `scenario_id, target_agent_id, start, window_len, split`。
-6. `shards/shard_000000/split.npy` 存在，长度等于 `N`。
-7. `shard_manifest.json` 包含 `shard_paths`、`map_odd_feat_path: null`、`map_feature_status: not_built`、`next_map_stage: Stage 7B.3 map/ODD feature builder`。
-8. `feature_schema.json` 包含 canonical ego / neighbor / slot schema 以及 `map_odd_features_reserved`。
-9. Stage 6C smoke 命令不会因为 array shape、missing shard paths、missing metadata 而失败；允许部分 detector 因 geometric slots 输出 proxy / weak_proxy warning。
-10. 不生成 fake data，不修改 Stage 6C result files，不修改 BDD 逻辑。
+5. `shards/shard_000000/context_traj.npy` 存在，shape 为 `[N, 80, 83]`，且第一维与 ego window 数一致。
+6. `shards/shard_000000/context_mask.npy` 存在，shape 为 `[N, 80, 5]`；`context_mask_window.npy` 存在，shape 为 `[N, 5]`。
+7. `shards/shard_000000/metadata.csv` 行数等于 `N`，且包含 `scenario_id, target_agent_id, start, window_len, split`。
+8. `shards/shard_000000/split.npy` 存在，长度等于 `N`。
+9. `shard_manifest.json` 包含 `shard_paths`、`map_odd_feat_path: null`、`map_feature_status: not_built`、`next_map_stage: Stage 7B.3 map/ODD feature builder`。
+10. `feature_schema.json` 包含 canonical ego / neighbor / slot schema 以及 `map_odd_features_reserved`。
+11. Stage 6C smoke 命令不会因为 array shape、missing shard paths、missing metadata 而失败；允许部分 detector 因 geometric slots 输出 proxy / weak_proxy warning。
+12. 不生成 fake data，不修改 Stage 6C result files，不修改 BDD 逻辑。
 
 # Stage 7B.3 — nuPlan map/ODD feature builder placeholder
 

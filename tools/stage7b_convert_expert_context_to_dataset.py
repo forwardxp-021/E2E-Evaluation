@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """Convert Stage 7B.1 nuPlan expert context CSVs to Stage 6C layout.
 
 Stage 7B.2 converts expert ego/object dynamics only.  It writes the sharded
@@ -377,9 +379,12 @@ def main() -> int:
         warnings.append({"type": "no_windows_generated", "message": "No scene produced a full fixed-length window."})
         ego_seq = np.zeros((0, window_frames, len(EGO_FEATURES)), dtype=np.float32); neighbor_seq = np.zeros((0, len(NEIGHBOR_SLOTS), window_frames, len(NEIGHBOR_FEATURES)), dtype=np.float32); neighbor_slot_ids = np.empty((0, len(NEIGHBOR_SLOTS), window_frames), dtype="U128")
 
-    context_traj = np.zeros((ego_seq.shape[0], len(NEIGHBOR_SLOTS), window_frames, 2), dtype=np.float32)
-    context_traj[..., 0] = neighbor_seq[..., 6]; context_traj[..., 1] = neighbor_seq[..., 7]
-    context_mask = (neighbor_seq[..., 0] > 0.5); context_mask_window = context_mask.any(axis=2)
+    n_windows, n_slots, n_frames, n_neighbor_features = neighbor_seq.shape
+    neighbor_flat = neighbor_seq.transpose(0, 2, 1, 3).reshape(n_windows, n_frames, n_slots * n_neighbor_features)
+    context_traj = np.concatenate([ego_seq, neighbor_flat], axis=2).astype(np.float32)
+    neighbor_valid = neighbor_seq[..., 0] > 0.5
+    context_mask = neighbor_valid.transpose(0, 2, 1).astype(np.float32)
+    context_mask_window = neighbor_valid.any(axis=2).astype(np.float32)
     split_arr = np.asarray([m["split"] for m in metadata], dtype="U16")
     meta_arr = np.asarray(metadata, dtype=object)
     interaction_raw, interaction_names = build_interaction_features(ego_seq, neighbor_seq, 1.0 / args.target_hz, warnings)
@@ -394,7 +399,7 @@ def main() -> int:
     schema = {"ego_features": EGO_FEATURES, "neighbor_features": NEIGHBOR_FEATURES, "neighbor_slots": NEIGHBOR_SLOTS, "map_odd_features_reserved": MAP_ODD_FEATURES_RESERVED, "interaction_features": interaction_names, "interaction_feature_note": "Canonical 33 features from tools.interaction_context_features.aggregate_interaction_features when generation succeeds."}
     write_json(out_dir / "feature_schema.json", schema)
     write_json(out_dir / "warnings.json", {"warnings": warnings})
-    write_json(shard_dir / "shard_summary.json", {"num_windows": int(ego_seq.shape[0]), "ego_seq_shape": list(ego_seq.shape), "neighbor_seq_shape": list(neighbor_seq.shape), "slot_assignment_mode": "geometric_v1"})
+    write_json(shard_dir / "shard_summary.json", {"num_windows": int(ego_seq.shape[0]), "ego_seq_shape": list(ego_seq.shape), "neighbor_seq_shape": list(neighbor_seq.shape), "context_traj_shape": list(context_traj.shape), "context_mask_shape": list(context_mask.shape), "context_mask_window_shape": list(context_mask_window.shape), "slot_assignment_mode": "geometric_v1"})
 
     def summary(values: List[float]) -> dict:
         if not values: return {"count": 0}
@@ -421,8 +426,13 @@ def main() -> int:
 - number of generated windows: {int(ego_seq.shape[0])}
 - ego_seq shape: {list(ego_seq.shape)}
 - neighbor_seq shape: {list(neighbor_seq.shape)}
+- context_traj shape: {list(context_traj.shape)}
+- context_mask shape: {list(context_mask.shape)}
+- context_mask_window shape: {list(context_mask_window.shape)}
 - metadata rows: {len(metadata)}
 - interaction feature shape: {list(interaction_raw.shape)}
+
+Stage 7B.2 dynamic outputs are aligned with the Waymo 5-neighbor context dataset layout except map/ODD features, which are reserved for Stage 7B.3.
 
 ## Slot assignment note
 Stage 7B.2 uses geometric slot assignment only. Map/lane-aware assignment will be improved in Stage 7B.3/7B.4.
