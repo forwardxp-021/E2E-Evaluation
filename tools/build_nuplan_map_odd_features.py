@@ -442,8 +442,45 @@ def load_map_api(map_root: Path, map_name: str, warnings: List[dict]) -> Any:
         return None
 
 
-def resolve_loadable_map_api(map_root: Path, strong_candidates: Sequence[str], weak_candidates: Sequence[str], api_cache: Dict[str, Any], warnings: List[dict], context: Dict[str, str]) -> Tuple[str, Any]:
-    """Try candidates with get_maps_api; return only a map_name that actually loads."""
+def _candidate_validation_key(map_name: str, pose: Tuple[float, float, float], radius: float) -> Tuple[str, int, int, int]:
+    """Cache validation by map, rounded pose, and rounded radius."""
+    return (map_name, int(round(pose[0] * 10.0)), int(round(pose[1] * 10.0)), int(round(radius * 10.0)))
+
+
+def validate_map_candidate_by_query(api: Any, pose: Tuple[float, float, float], layer_map: Dict[str, Any], radius: float) -> Tuple[bool, str]:
+    """Validate a candidate with a real cheap map query.
+
+    nuPlan map APIs can lazily fail only when a layer is queried. Empty results
+    are acceptable; any exception means this map_name/API pair is invalid.
+    """
+    x, y, _ = pose
+    checks = [("lane", layer_value(layer_map, "lane")), ("lane_connector", layer_value(layer_map, "lane_connector"))]
+    checks = [(name, layer) for name, layer in checks if layer is not None]
+    if not checks:
+        return False, "lane_and_lane_connector_layers_unavailable"
+    messages: List[str] = []
+    for lname, layer in checks:
+        _, _, ok, msg = safe_count_near(api, layer, x, y, radius)
+        if ok:
+            return True, ""
+        messages.append(f"{lname}: {msg}")
+    return False, "; ".join(messages)[:500]
+
+
+def resolve_validated_map_api(
+    map_root: Path,
+    strong_candidates: Sequence[str],
+    weak_candidates: Sequence[str],
+    api_cache: Dict[str, Any],
+    validation_cache: Dict[Tuple[str, int, int, int], Tuple[bool, str]],
+    layer_map: Dict[str, Any],
+    validation_pose: Optional[Tuple[float, float, float]],
+    radius: float,
+    warnings: List[dict],
+    query_counts: Counter,
+    context: Dict[str, str],
+) -> Tuple[str, Any]:
+    """Try candidates; accept only after get_maps_api plus a real layer query."""
     tried: List[Dict[str, str]] = []
     for strength, candidates in (("strong", strong_candidates), ("weak", weak_candidates)):
         for candidate in candidates:
@@ -451,13 +488,29 @@ def resolve_loadable_map_api(map_root: Path, strong_candidates: Sequence[str], w
                 continue
             if candidate not in api_cache:
                 api_cache[candidate] = load_map_api(map_root, candidate, warnings) if map_root.exists() else None
-            if api_cache.get(candidate) is not None:
-                if strength == "weak":
-                    warnings.append({"type": "weak_map_name_candidate_accepted_after_api_load", "map_name": candidate, **context})
-                return candidate, api_cache[candidate]
-            tried.append({"map_name": candidate, "strength": strength})
+            api = api_cache.get(candidate)
+            if api is not None and validation_pose is not None:
+                cache_key = _candidate_validation_key(candidate, validation_pose, radius)
+                if cache_key not in validation_cache:
+                    validation_cache[cache_key] = validate_map_candidate_by_query(api, validation_pose, layer_map, radius)
+                ok, reason = validation_cache[cache_key]
+                if ok:
+                    query_counts["map_candidate_validation_success"] += 1
+                    if strength == "weak":
+                        warnings.append({"type": "weak_map_name_candidate_accepted_after_query_validation", "map_name": candidate, **context})
+                    return candidate, api
+                query_counts["map_candidate_validation_failure"] += 1
+                tried.append({"map_name": candidate, "strength": strength, "reason": reason})
+                warnings.append({"type": "map_candidate_query_validation_failed", "map_name": candidate, "strength": strength, "reason": reason, **context})
+                continue
+            if api is not None:
+                reason = "no_ego_pose_available_for_query_validation"
+                tried.append({"map_name": candidate, "strength": strength, "reason": reason})
+                warnings.append({"type": "map_candidate_query_validation_failed", "map_name": candidate, "strength": strength, "reason": reason, **context})
+                continue
+            tried.append({"map_name": candidate, "strength": strength, "reason": "get_maps_api_returned_none_or_failed"})
     if tried:
-        warnings.append({"type": "map_name_candidates_not_loadable", "candidates": tried, **context})
+        warnings.append({"type": "map_name_candidates_not_query_validated", "candidates": tried, **context})
     else:
         warnings.append({"type": "map_name_resolution_failed", "reason": "no_map_name_candidates", **context})
     return "", None
@@ -465,11 +518,11 @@ def resolve_loadable_map_api(map_root: Path, strong_candidates: Sequence[str], w
 
 def enum_layers() -> Dict[str, Any]:
     if importlib.util.find_spec("nuplan.common.maps.maps_datatypes") is None:
-        return {}
+        return {alias: alias for aliases in LAYER_ALIASES.values() for alias in aliases}
     maps_datatypes = importlib.import_module("nuplan.common.maps.maps_datatypes")
     semantic_map_layer = getattr(maps_datatypes, "SemanticMapLayer", None)
     if semantic_map_layer is None:
-        return {}
+        return {alias: alias for aliases in LAYER_ALIASES.values() for alias in aliases}
     return {name: getattr(semantic_map_layer, name) for aliases in LAYER_ALIASES.values() for name in aliases if hasattr(semantic_map_layer, name)}
 
 
@@ -488,6 +541,26 @@ def layer_value(layer_map: Dict[str, Any], key: str) -> Optional[Any]:
     return None
 
 
+def _result_objects_for_layer(res: Any, layer: Any) -> List[Any]:
+    if not isinstance(res, dict):
+        return []
+    candidates = [layer]
+    name = getattr(layer, "name", None)
+    value = getattr(layer, "value", None)
+    if name is not None:
+        candidates.extend([name, str(name), str(name).lower()])
+    if value is not None:
+        candidates.extend([value, str(value), str(value).lower()])
+    candidates.extend([str(layer), str(layer).lower()])
+    for key in candidates:
+        try:
+            if key in res:
+                return list(res.get(key) or [])
+        except TypeError:
+            continue
+    return []
+
+
 def safe_count_near(api: Any, layer: Any, x: float, y: float, radius: float) -> Tuple[int, List[Any], bool, str]:
     if api is None:
         return 0, [], False, "api_missing"
@@ -495,8 +568,8 @@ def safe_count_near(api: Any, layer: Any, x: float, y: float, radius: float) -> 
         return 0, [], False, "layer_missing"
     try:
         res = api.get_proximal_map_objects(point_obj(x, y), radius, [layer])
-        objs = res.get(layer, []) if isinstance(res, dict) else []
-        return len(objs), list(objs), True, ""
+        objs = _result_objects_for_layer(res, layer)
+        return len(objs), objs, True, ""
     except Exception as exc:
         return 0, [], False, str(exc)
 
@@ -730,6 +803,24 @@ def write_report(path: Path, args: argparse.Namespace, rows: List[dict], meta_ro
     query_empty = {k: v for k, v in query_counts.items() if k.startswith("layer:") and k.endswith(":empty")}
     total_success = sum(query_success.values()); total_failure = sum(query_failure.values())
     query_success_ratio = float(total_success / max(total_success + total_failure, 1))
+    first_layer_exceptions: Dict[str, str] = {}
+    for key_name in query_counts:
+        if key_name.startswith("map_query_failed|"):
+            _, layer, message = key_name.split("|", 2)
+            first_layer_exceptions.setdefault(layer, message)
+    rejected_candidates = [
+        {
+            "map_name": w.get("map_name", ""),
+            "strength": w.get("strength", ""),
+            "reason": w.get("reason", ""),
+            "db_name": w.get("db_name", ""),
+            "scene_token": w.get("scene_token", ""),
+            "scenario_id": w.get("scenario_id", ""),
+        }
+        for w in warnings
+        if w.get("type") == "map_candidate_query_validation_failed"
+    ]
+    map_candidate_validation_success_count = int(query_counts.get("map_candidate_validation_success", 0))
     resolution_failures = Counter(w.get("reason", "unknown") for w in warnings if w.get("type") == "map_name_resolution_failed")
     table = "| feature | mean | std | min | p50 | p95 | max |\n|---|---:|---:|---:|---:|---:|---:|\n"
     for name in FEATURE_NAMES:
@@ -784,6 +875,9 @@ Build lightweight, row-aligned map/ODD proxy features for Stage 7B.2 dynamic con
 - resolved map names: `{unique_maps[:20]}`
 - map_name_loaded_success_ratio: {map_name_loaded_success_ratio:.4f}
 - map_name resolution success ratio: {map_name_loaded_success_ratio:.4f}
+- map_candidate_validation_success_count: {map_candidate_validation_success_count}
+- accepted_map_name_after_query_validation: `{unique_maps[:20]}`
+- rejected_map_candidates_with_reason: `{rejected_candidates[:20]}`
 - resolution failure reasons: `{dict(resolution_failures)}`
 
 ## Map availability statistics
@@ -804,6 +898,7 @@ Build lightweight, row-aligned map/ODD proxy features for Stage 7B.2 dynamic con
 - per-layer success counts: `{dict(query_success)}`
 - per-layer failure counts: `{dict(query_failure)}`
 - per-layer empty result counts: `{dict(query_empty)}`
+- per-layer first exception message: `{first_layer_exceptions}`
 
 ## Valid query ratio statistics
 - mean: {float(np.mean(ratio[ratio >= 0])) if np.any(ratio >= 0) else SENTINEL:.4f}
@@ -840,7 +935,7 @@ def main() -> int:
     db_root = Path(args.nuplan_db_root).expanduser(); map_root = Path(args.nuplan_map_root).expanduser()
     if not db_root.exists(): warnings.append({"type": "nuplan_db_root_missing", "path": str(db_root)})
     if not map_root.exists(): warnings.append({"type": "nuplan_map_root_missing", "path": str(map_root)})
-    layer_map = enum_layers(); api_cache: Dict[str, Any] = {}; pose_cache: Dict[Tuple[str, str], Dict[int, Tuple[float, float, float]]] = {}; map_candidate_cache: Dict[Tuple[str, str], Tuple[List[str], List[str]]] = {}; query_counts: Counter = Counter()
+    layer_map = enum_layers(); api_cache: Dict[str, Any] = {}; validation_cache: Dict[Tuple[str, int, int, int], Tuple[bool, str]] = {}; pose_cache: Dict[Tuple[str, str], Dict[int, Tuple[float, float, float]]] = {}; map_candidate_cache: Dict[Tuple[str, str], Tuple[List[str], List[str]]] = {}; query_counts: Counter = Counter()
     feat_rows: List[np.ndarray] = []; meta_rows: List[Dict[str, Any]] = []
     for row in dynamic_rows:
         before = len(warnings)
@@ -859,12 +954,18 @@ def main() -> int:
         scene_poses = pose_cache[key]
         poses = [scene_poses[i] for i in range(start, end + 1) if i in scene_poses]
         strong_candidates, weak_candidates = map_candidate_cache[key]
-        map_name, api = resolve_loadable_map_api(
+        validation_pose = poses[0] if poses else (next(iter(scene_poses.values())) if scene_poses else None)
+        map_name, api = resolve_validated_map_api(
             map_root,
             strong_candidates,
             weak_candidates,
             api_cache,
+            validation_cache,
+            layer_map,
+            validation_pose,
+            args.radius_m,
             warnings,
+            query_counts,
             {"db_name": db_name, "scene_token": scene_token, "scenario_id": row.get("scenario_id", "")},
         )
         feat, meta = feature_for_row(row, poses, api, layer_map, args.radius_m, args.sample_stride, warnings, query_counts, map_name)
