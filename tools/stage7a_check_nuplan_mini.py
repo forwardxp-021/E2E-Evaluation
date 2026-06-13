@@ -7,6 +7,7 @@ import shutil
 import sqlite3
 import sys
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -120,14 +121,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def add_warning(warnings: list, code: str, message: str, path: Path | None = None) -> None:
+def add_warning(warnings: List[Dict[str, Any]], code: str, message: str, path: Optional[Path] = None) -> None:
     item = {"code": code, "message": message}
     if path is not None:
         item["path"] = str(path)
     warnings.append(item)
 
 
-def resolve_mini_db_dir(data_root: Path | None, explicit_dir: str | None, warnings: list) -> Path | None:
+def resolve_mini_db_dir(data_root: Optional[Path], explicit_dir: Optional[str], warnings: List[Dict[str, Any]]) -> Optional[Path]:
     if explicit_dir:
         return Path(explicit_dir).expanduser()
     if data_root is None:
@@ -153,7 +154,7 @@ def resolve_mini_db_dir(data_root: Path | None, explicit_dir: str | None, warnin
     return candidates[0]
 
 
-def find_db_files(mini_db_dir: Path | None, max_dbs: int, warnings: list) -> list[Path]:
+def find_db_files(mini_db_dir: Optional[Path], max_dbs: int, warnings: List[Dict[str, Any]]) -> List[Path]:
     if mini_db_dir is None:
         add_warning(warnings, "mini_db_dir_missing", "Mini DB directory is not configured.")
         return []
@@ -177,7 +178,7 @@ def find_db_files(mini_db_dir: Path | None, max_dbs: int, warnings: list) -> lis
     return db_files
 
 
-def count_map_files(maps_root: Path | None, warnings: list) -> int:
+def count_map_files(maps_root: Optional[Path], warnings: List[Dict[str, Any]]) -> int:
     if maps_root is None:
         add_warning(
             warnings,
@@ -201,27 +202,27 @@ def quote_identifier(name: str) -> str:
     return '"' + name.replace('"', '""') + '"'
 
 
-def to_jsonable(value):
+def to_jsonable(value: Any) -> Any:
     if isinstance(value, bytes):
         return value.hex()
     return value
 
 
-def normalize_csv_value(value):
+def normalize_csv_value(value: Any) -> Any:
     value = to_jsonable(value)
     if value is None:
         return ""
     return value
 
 
-def fetch_table_names(conn: sqlite3.Connection) -> list[str]:
+def fetch_table_names(conn: sqlite3.Connection) -> List[str]:
     rows = conn.execute(
         "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
     ).fetchall()
     return [str(row[0]) for row in rows]
 
 
-def fetch_schema(conn: sqlite3.Connection, table_name: str) -> list[dict]:
+def fetch_schema(conn: sqlite3.Connection, table_name: str) -> List[Dict[str, Any]]:
     rows = conn.execute(f"PRAGMA table_info({quote_identifier(table_name)})").fetchall()
     fields = ["cid", "name", "type", "notnull", "dflt_value", "pk"]
     return [dict(zip(fields, [to_jsonable(value) for value in row])) for row in rows]
@@ -232,7 +233,7 @@ def fetch_count(conn: sqlite3.Connection, table_name: str) -> int:
     return int(row[0])
 
 
-def sample_rows(conn: sqlite3.Connection, table_name: str, limit: int, db_name: str) -> list[dict]:
+def sample_rows(conn: sqlite3.Connection, table_name: str, limit: int, db_name: str) -> List[Dict[str, Any]]:
     if limit <= 0:
         return []
     cursor = conn.execute(f"SELECT * FROM {quote_identifier(table_name)} LIMIT ?", (limit,))
@@ -246,7 +247,9 @@ def sample_rows(conn: sqlite3.Connection, table_name: str, limit: int, db_name: 
     return output
 
 
-def scan_db(db_path: Path, sample_rows_per_table: int) -> tuple[dict, dict, dict[str, list[dict]], dict | None]:
+def scan_db(
+    db_path: Path, sample_rows_per_table: int
+) -> Tuple[Dict[str, Any], Dict[str, Any], Dict[str, List[Dict[str, Any]]], Optional[Dict[str, Any]]]:
     inventory = {
         "db_name": db_path.name,
         "db_path": str(db_path),
@@ -320,7 +323,7 @@ def scan_db(db_path: Path, sample_rows_per_table: int) -> tuple[dict, dict, dict
     return inventory, schema_entry, samples, failure_warning
 
 
-def write_csv(path: Path, rows: list[dict], preferred_columns: list[str] | None = None) -> None:
+def write_csv(path: Path, rows: List[Dict[str, Any]], preferred_columns: Optional[List[str]] = None) -> None:
     if preferred_columns is None:
         columns = []
         seen = set()
@@ -341,13 +344,13 @@ def write_csv(path: Path, rows: list[dict], preferred_columns: list[str] | None 
             writer.writerow(row)
 
 
-def write_json(path: Path, payload) -> None:
+def write_json(path: Path, payload: Any) -> None:
     with path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
 
 
-def key_table_coverage(inventory_rows: list[dict]) -> dict[str, dict]:
+def key_table_coverage(inventory_rows: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     coverage = {}
     total = len(inventory_rows)
     for table_name in KEY_TABLES:
@@ -366,15 +369,15 @@ def key_table_coverage(inventory_rows: list[dict]) -> dict[str, dict]:
 
 
 def render_report(
-    data_root: Path | None,
-    maps_root: Path | None,
-    mini_db_dir: Path | None,
+    data_root: Optional[Path],
+    maps_root: Optional[Path],
+    mini_db_dir: Optional[Path],
     found_db_count: int,
     scanned_db_count: int,
     map_gpkg_count: int,
-    inventory_rows: list[dict],
-    coverage: dict[str, dict],
-    warnings: list[dict],
+    inventory_rows: List[Dict[str, Any]],
+    coverage: Dict[str, Dict[str, Any]],
+    warnings: List[Dict[str, Any]],
 ) -> str:
     open_success_count = sum(1 for row in inventory_rows if row.get("open_ok") is True)
     lines = [
