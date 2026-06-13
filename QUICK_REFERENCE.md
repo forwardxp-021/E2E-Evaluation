@@ -1936,6 +1936,44 @@ Reliability tier：
 
 # Stage 7 — Empirical Same-Scenario Style Separability
 
+> **Stage 7 总体目标澄清**：Stage 7 的核心不是把 Waymo 风格流程简单重跑到 nuPlan expert data 上，而是在 nuPlan simulation / rollout 中使用同一批 scenario，比较不同 policy / E2E model 版本的驾驶风格，并用 behavior embedding + task-conditioned BDD 验证其分布是否可分。
+>
+> **明确警告**：不要把 expert nuPlan data export 解读为 Stage 7 最终实验。expert export 只用于 schema discovery 和 converter validation；Stage 7C / 7D 才是核心 proof，Stage 7D 是主 empirical policy-style BDD validation。详见 `docs/stage7_master_plan_same_scenario_policy_bdd.md`。
+
+## Stage 7 A-E 子阶段检查表
+
+### 1. 命令
+
+当前 master plan 文档：
+
+```bash
+cat docs/stage7_master_plan_same_scenario_policy_bdd.md
+```
+
+子阶段清单：
+
+- 7A：mini readiness check，确认 nuPlan mini DB / map / SQLite schema 可读。
+- 7B：expert export and converter validation，只用于导出 expert ego trajectory / nearby object context 并验证 context dataset 转换接口。
+- 7C：conservative / aggressive rollout generation，在同一 scenario set `S` 上运行保守 / 激进 planner。
+- 7D：policy A/B BDD report，将 A/B rollout 转为 context dataset，构建 behavior events，运行 task-conditioned BDD。
+- 7E：scaling and real E2E replacement，扩大 scenario 数量，并在可用时替换为 learning-based planner checkpoints 或 company E2E model A/B rollout。
+
+### 2. 期望行为
+
+- Stage 7A / 7B 只产出基础设施证据：数据就绪、schema 理解、converter 接口可用。
+- Stage 7C 产出同场景 policy A/B rollout：`scenario_list.csv`、conservative rollout、aggressive rollout、`rollout_manifest.json`。
+- Stage 7D 产出真正的 empirical validation：同一 policy 内 random A/B negative control 应低 BDD；conservative vs aggressive 应在 primary tasks 上有更高 BDD。
+- Stage 7E 保持相同 context dataset 和 BDD pipeline，只替换 rollout 来源或扩大 scenario 数量。
+
+### 3. 通过标准
+
+1. 文档和报告必须明确写清：Stage 7 是 same-scenario different-policy / E2E rollout BDD validation。
+2. 不得把 expert trajectory export 写成 Stage 7 主结果；它只能作为 Stage 7B converter debug data。
+3. Stage 7D 必须包含同 policy random split negative control 和 conservative vs aggressive policy-style comparison。
+4. primary tasks 至少关注 `task_following`、`task_lane_change`、`task_yield_conflict`、`task_hesitation`。
+5. `task_cutin_response`、`task_lead_brake_response`、`task_queue_approach`、`task_overtake_opportunity` 作为 auxiliary tasks 解释。
+6. Stage 7C / 7D 是核心 proof；Stage 7A / 7B 是基础设施，不证明 policy style separability。
+
 ## 1. 命令
 
 Stage 7 的目标是从 pseudo split 走向 empirical validation：
