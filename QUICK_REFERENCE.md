@@ -3765,7 +3765,7 @@ Stage 7A.0 passes if：
 
 Next step：implement expert ego trajectory + nearby object context exporter。
 
-## Stage 7A.1 — Export nuPlan expert ego trajectory and nearby object context
+## Stage 7B.1 — Export nuPlan expert ego trajectory and nearby object context
 
 ### 1. 命令
 
@@ -3802,7 +3802,7 @@ python tools/stage7a_export_nuplan_expert_context.py \
 
 ### 2. 期望行为
 
-该命令只做 Stage 7A.1 的 expert / historical nuPlan 中间格式导出：
+该命令只做 Stage 7B.1 的 expert / historical nuPlan 中间格式导出；它不是最终 Stage 7 policy-style validation，只是在 policy A/B rollout 之前验证 nuPlan SQLite → trajectory/context export：
 
 - 直接读取选中的 nuPlan mini SQLite DB，不调用 nuPlan planner / simulation API。
 - 从 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category` 等表中发现 schema，并尽量解析 token / timestamp / pose / object 关联列。
@@ -3824,7 +3824,7 @@ python tools/stage7a_export_nuplan_expert_context.py \
 
 ### 3. 通过标准
 
-Stage 7A.1 passes if：
+Stage 7B.1 passes if：
 
 - `python -m py_compile tools/stage7a_export_nuplan_expert_context.py` 通过。
 - 上面的导出命令成功结束并生成 5 个输出文件。
@@ -3835,6 +3835,6 @@ Stage 7A.1 passes if：
 - 没有生成 planner rollout CSV / JSON，也没有生成 fake rollout data。
 - Stage 6C 结果目录保持不变。
 
-Interpretation：Stage 7A.1 用于验证在实现 planner A/B rollouts 之前，我们可以先从 nuPlan mini 导出 expert ego trajectory 和 surrounding object context。
+Interpretation：Stage 7B.1 用于验证在实现 policy A/B rollouts 之前，我们可以先从 nuPlan mini 导出 expert ego trajectory 和 surrounding object context；它本身不证明最终的 same-scenario policy-style separability。
 
 Next step：Convert `expert_ego_trajectory.csv` and `expert_nearby_objects.csv` into our context dataset format：`ego_seq.npy`、`neighbor_seq.npy`、`metadata`、`shard_manifest.json`、`feature_schema.json`。
