@@ -195,6 +195,50 @@ def normalize_target_scenario(scenario: Dict[str, Any]) -> Dict[str, str]:
     }
 
 
+
+def build_scenario_sampling_summary(original_metadata: List[Dict[str, str]], selected_metadata: List[Dict[str, str]], sample_distinct_log_names: bool) -> Dict[str, Any]:
+    original_log_names = [normalize_target_scenario(row)["target_log_name"] for row in original_metadata]
+    unique_log_names = list(dict.fromkeys(original_log_names))
+    return {
+        "original_metadata_rows": len(original_metadata),
+        "unique_log_names": len(unique_log_names),
+        "sample_distinct_log_names": bool(sample_distinct_log_names),
+        "selected_metadata_rows": len(selected_metadata),
+        "selected_sample_ids": [str(row.get("sample_id", "")) for row in selected_metadata],
+        "selected_log_names": [normalize_target_scenario(row)["target_log_name"] for row in selected_metadata],
+    }
+
+
+def sample_metadata_rows(metadata: List[Dict[str, str]], max_scenarios: int, sample_distinct_log_names: bool) -> Tuple[List[Dict[str, str]], Dict[str, Any]]:
+    original_metadata = list(metadata)
+    candidates = list(metadata)
+    if sample_distinct_log_names:
+        seen = set()
+        distinct_rows: List[Dict[str, str]] = []
+        for row in candidates:
+            log_name = normalize_target_scenario(row)["target_log_name"]
+            if log_name in seen:
+                continue
+            seen.add(log_name)
+            distinct_rows.append(row)
+        candidates = distinct_rows
+    if max_scenarios > 0:
+        candidates = candidates[:max_scenarios]
+    return candidates, build_scenario_sampling_summary(original_metadata, candidates, sample_distinct_log_names)
+
+
+def format_scenario_sampling_report(scenario_sampling: Dict[str, Any]) -> str:
+    selected_log_names = scenario_sampling.get("selected_log_names", [])
+    selected_log_lines = "\n".join(f"  - `{name}`" for name in selected_log_names) if selected_log_names else "  - none"
+    return f"""## Scenario sampling
+- original metadata rows: `{scenario_sampling.get('original_metadata_rows', 0)}`
+- unique log names: `{scenario_sampling.get('unique_log_names', 0)}`
+- sample_distinct_log_names: `{scenario_sampling.get('sample_distinct_log_names', False)}`
+- selected metadata rows: `{scenario_sampling.get('selected_metadata_rows', 0)}`
+- selected log names:
+{selected_log_lines}
+"""
+
 def _extract_identity_from_msgpack_path(path: Path) -> Dict[str, str]:
     parts = path.parts
     if "simulation_log" not in parts:
@@ -890,7 +934,7 @@ def finalize_parser_validation(total: Dict[str, Any], rows: List[Dict[str, Any]]
     out["num_trajectories_with_too_few_steps"] = sum(n < min_timesteps for n in lengths)
     return out
 
-def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[str, str]], planners: List[str], discovery: Dict[str, Any], warnings: List[Dict[str, str]], planner_rows: List[Dict[str, Any]], parser_validation: Optional[Dict[str, Any]] = None, official_success_count: int = 0, alignment_records: Optional[List[Dict[str, Any]]] = None) -> int:
+def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[str, str]], planners: List[str], discovery: Dict[str, Any], warnings: List[Dict[str, str]], planner_rows: List[Dict[str, Any]], parser_validation: Optional[Dict[str, Any]] = None, official_success_count: int = 0, alignment_records: Optional[List[Dict[str, Any]]] = None, scenario_sampling: Optional[Dict[str, Any]] = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     write_csv(out_dir / "simulated_ego_trajectory.csv", [], CSV_COLUMNS)
     write_empty_float32_npy(out_dir / "simulated_ego_seq.npy", (0, 0, 0, len(EGO_STATE_CHANNELS)))
@@ -901,6 +945,8 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
     if not scenario_index_path.is_file():
         write_csv(scenario_index_path, [], ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
     write_csv(out_dir / "simulation_summary.csv", [], ["planner_name", "num_scenarios_attempted", "num_scenarios_succeeded", "success_ratio", "mean_num_timesteps", "mean_final_displacement", "mean_speed", "mean_acceleration", "mean_abs_acceleration"])
+    parser_validation = parser_validation or _empty_parser_validation()
+    scenario_sampling = scenario_sampling or build_scenario_sampling_summary(metadata, metadata, bool(getattr(args, "sample_distinct_log_names", False)))
     schema = {
         "stage": "7C.1",
         "feature_type": "nuplan_closed_loop_simulated_ego_trajectory",
@@ -909,6 +955,8 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
         "pseudo_rollout": False,
         "num_input_scenarios": len(metadata),
         "num_simulated_scenarios": 0,
+        "sample_distinct_log_names": scenario_sampling["sample_distinct_log_names"],
+        "selected_log_names": scenario_sampling["selected_log_names"],
         "num_planners": len(planners),
         "planner_names": planners,
         "ego_state_channels": EGO_STATE_CHANNELS,
@@ -928,7 +976,6 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
         "planner_axis_names": [],
         "notes": ["This stage refuses pseudo rollout.", "No fake simulated trajectory was generated.", "Resolve warnings and rerun with official nuPlan simulation available."],
     }
-    parser_validation = parser_validation or _empty_parser_validation()
     if alignment_records is None:
         alignment_records = []
         for scenario in metadata:
@@ -948,7 +995,7 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
         "same_scenario_alignment_report": "scenario_alignment_report.md",
     })
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_selection": {"metadata_rows": len(metadata), "max_scenarios": args.max_scenarios}, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": False, "reason": "no official nuPlan closed-loop simulation output was produced", "official_success_count": official_success_count, "pseudo_rollout": False, "uses_official_nuplan_simulation": official_success_count > 0, "tensor_validation": {"shape": [0, 0, 0, len(EGO_STATE_CHANNELS)], "mask_shape": [0, 0, 0], "valid_timestep_count": 0, "missing_pair_count": 0, "passed": False}}, "trajectory_parser_validation": parser_validation or _empty_parser_validation()})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_selection": {"metadata_rows": len(metadata), "max_scenarios": args.max_scenarios}, "scenario_sampling": scenario_sampling, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": False, "reason": "no official nuPlan closed-loop simulation output was produced", "official_success_count": official_success_count, "pseudo_rollout": False, "uses_official_nuplan_simulation": official_success_count > 0, "tensor_validation": {"shape": [0, 0, 0, len(EGO_STATE_CHANNELS)], "mask_shape": [0, 0, 0], "valid_timestep_count": 0, "missing_pair_count": 0, "passed": False}}, "trajectory_parser_validation": parser_validation or _empty_parser_validation()})
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
 ## Purpose
@@ -977,6 +1024,7 @@ Rows are read from `merged_metadata.csv` and order is preserved. Keys: {', '.joi
 ## Number of attempted scenarios
 0
 
+{format_scenario_sampling_report(scenario_sampling)}
 ## Number of successful official commands
 {official_success_count}
 
@@ -1022,9 +1070,8 @@ def run(args: argparse.Namespace) -> int:
     map_root = Path(args.nuplan_map_root).expanduser()
     planners = list(args.planners)
     warnings = validate_inputs(context_dir, db_root, map_root)
-    metadata = read_csv(metadata_path) if metadata_path.is_file() else []
-    if args.max_scenarios > 0:
-        metadata = metadata[: args.max_scenarios]
+    original_metadata = read_csv(metadata_path) if metadata_path.is_file() else []
+    metadata, scenario_sampling = sample_metadata_rows(original_metadata, args.max_scenarios, args.sample_distinct_log_names)
     for i, row in enumerate(metadata):
         row["scenario_index"] = str(i)
 
@@ -1052,13 +1099,13 @@ def run(args: argparse.Namespace) -> int:
     if warnings or not metadata or not (run_sim_available or runner_available):
         if not (run_sim_available or runner_available):
             warnings.append({"type": "nuplan_simulation_api_unavailable", "scenario_id": "", "planner_name": "", "message": "Official nuPlan simulation entry points are unavailable in this Python environment."})
-        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows)
+        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, scenario_sampling=scenario_sampling)
 
     # The safe default is to require an explicit official nuPlan command template because Hydra configs differ by devkit version.
     # This prevents accidental pseudo rollouts or brittle hard-coded config assumptions.
     if not args.nuplan_simulation_command_template:
         warnings.append({"type": "missing_official_simulation_command", "scenario_id": "", "planner_name": "", "message": "Provide --nuplan_simulation_command_template to call the installed official nuPlan run_simulation configuration. No pseudo fallback is allowed."})
-        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows)
+        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, scenario_sampling=scenario_sampling)
 
     index_rows: List[Dict[str, Any]] = []
     trajectory_rows: List[Dict[str, Any]] = []
@@ -1094,13 +1141,13 @@ def run(args: argparse.Namespace) -> int:
     if not trajectory_rows:
         write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
         trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
-        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count, alignment_records)
+        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count, alignment_records, scenario_sampling)
 
     if importlib.util.find_spec("numpy") is None:
         warnings.append({"type": "missing_numpy", "scenario_id": "", "planner_name": "", "message": "Parsed official trajectories, but NumPy is required to write non-empty simulated_ego_seq.npy."})
         write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
         trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
-        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count, alignment_records)
+        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count, alignment_records, scenario_sampling)
 
     trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
     write_csv(out_dir / "simulated_ego_trajectory.csv", trajectory_rows, CSV_COLUMNS)
@@ -1164,6 +1211,8 @@ def run(args: argparse.Namespace) -> int:
         "min_timesteps": args.min_timesteps,
         "num_input_scenarios": len(metadata),
         "num_simulated_scenarios": len(tensor_info["scenario_axis"]),
+        "sample_distinct_log_names": scenario_sampling["sample_distinct_log_names"],
+        "selected_log_names": scenario_sampling["selected_log_names"],
         "num_planners": len(planners),
         "planner_names": planners,
         "ego_state_channels": EGO_STATE_CHANNELS,
@@ -1185,7 +1234,7 @@ def run(args: argparse.Namespace) -> int:
         "same_scenario_alignment_report": "scenario_alignment_report.md",
     }
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "pseudo_rollout": False, "uses_official_nuplan_simulation": True, "same_scenario_alignment_required": bool(args.require_same_scenario_alignment), "strict_nuplan_token_alignment_required": bool(args.require_strict_nuplan_token_alignment), "smoke_pass": smoke_pass_ok, "tensor_validation": {"shape": list(shape), "mask_shape": list(mask_shape), "valid_timestep_count": tensor_info["valid_timestep_count"], "missing_pair_count": tensor_info["missing_pair_count"], "passed": smoke_pass_ok}}, "trajectory_parser_validation": trajectory_parser_validation})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_sampling": scenario_sampling, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "pseudo_rollout": False, "uses_official_nuplan_simulation": True, "same_scenario_alignment_required": bool(args.require_same_scenario_alignment), "strict_nuplan_token_alignment_required": bool(args.require_strict_nuplan_token_alignment), "smoke_pass": smoke_pass_ok, "tensor_validation": {"shape": list(shape), "mask_shape": list(mask_shape), "valid_timestep_count": tensor_info["valid_timestep_count"], "missing_pair_count": tensor_info["missing_pair_count"], "passed": smoke_pass_ok}}, "trajectory_parser_validation": trajectory_parser_validation})
     report_status = "PASS" if pass_ok else "FAIL"
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
@@ -1202,6 +1251,7 @@ def run(args: argparse.Namespace) -> int:
 - mask valid timestep count: `{tensor_info["valid_timestep_count"]}`
 - missing scenario-planner pair count: `{tensor_info["missing_pair_count"]}`
 
+{format_scenario_sampling_report(scenario_sampling)}
 ## Parsed trajectories
 - official command successes: {official_success_count}
 - parsed trajectory rows: {len(trajectory_rows)}
@@ -1241,6 +1291,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--output_dir", default="outputs/stage7c1_nuplan_simulation")
     p.add_argument("--planners", nargs="+", default=["expert_or_log_replay", "idm_conservative", "idm_aggressive", "idm_comfort"])
     p.add_argument("--max_scenarios", type=int, default=5, help="0 means all Stage 7B.4 metadata rows.")
+    p.add_argument("--sample_distinct_log_names", action="store_true", help="Before applying --max_scenarios, keep only the first metadata row for each normalized log name (db_name without .db), preserving metadata order.")
     p.add_argument("--overwrite", action="store_true")
     p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}, plus target placeholders {target_log_name}, {target_scene_token}, {target_db_name}. Prefer shell/path-safe variants such as {target_log_name_safe}, {target_scene_token_safe}, {target_db_name_safe}; exact same-scenario nuPlan commands should use target placeholders, not raw {scenario_id}, because Hydra filter keys may need log/token values separately.")
     p.add_argument("--nuplan_simulation_command_use_shell", action="store_true", help="Run the formatted official nuPlan command through the shell. Default is false: shlex.split(command) and subprocess.run(argv, shell=False) to avoid shell metacharacter interpretation.")
