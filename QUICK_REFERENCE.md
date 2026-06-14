@@ -97,9 +97,9 @@ outputs/stage7b4_nuplan_context_merged
 - Stage 7B.4 dynamic + map/ODD merge/alignment: PASS；当前验证目录 `outputs/stage7b4_nuplan_context_merged/`
 - Stage 7C.1 official nuPlan simulation smoke: PASS
 - Stage 7C.1C exact scenario alignment / exact-token smoke: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
-- Stage 7C.2A simple_planner × 3 distinct logs: 准备/命令已定义；运行时必须使用 `--sample_distinct_log_names`
-- Stage 7C.2B simple_planner × 5 or 10 distinct logs: TODO
-- Stage 7C.2C multi-planner rollout: TODO
+- Stage 7C.2A simple_planner × 3 distinct logs: PASS；运行时必须使用 `--sample_distinct_log_names`
+- Stage 7C.2B simple_planner × 5 distinct logs: PASS；输出 shape `[5, 1, 149, 8]`
+- Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS；Stage 7C.2C-1 wrapper multi-planner smoke: READY / TODO
 - Stage 7D BDD validation on official planner trajectories: TODO；不要在本阶段实现
 
 ---
@@ -665,59 +665,343 @@ find outputs/stage7c2a_simple_planner_3logs/official_nuplan_runs \
 
 ---
 
-### Stage 7C.2B — simple_planner × 5 or 10 distinct logs
+### Stage 7C.2B — simple_planner × 5 distinct logs（PASS）
 
 #### Purpose
 
-TODO：在 Stage 7C.2A 稳定后扩展到 5 或 10 个 distinct logs。
+在 Stage 7C.2A 的 3 个 distinct logs 通过后，扩展到 Stage 7B.4 mini context 中全部 5 个 distinct logs，验证 official nuPlan simulation → msgpack parser → `[N, P, T, C]` tensor export 在多 log 条件下稳定工作。该阶段仍然只使用 `simple_planner`，不引入 Stage 7D BDD，也不允许 pseudo rollout。
 
 #### Command
 
-TODO。不要在没有运行验证前发明 PASS 结果。
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c2b_simple_planner_5logs \
+  --planners simple_planner \
+  --sample_distinct_log_names \
+  --max_scenarios 5 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents planner=simple_planner scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.log_names=["{target_log_name}"] scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7c2b_simple_planner job_name=stage7c2b_simple_planner output_dir={output_dir}' \
+  --overwrite
+```
 
 #### Expected output files
 
-TODO；预计沿用 Stage 7C.2A output schema。
+```text
+outputs/stage7c2b_simple_planner_5logs/
+├── simulated_ego_trajectory.csv
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
+├── simulated_planner_metadata.csv
+├── scenario_planner_index.csv
+├── scenario_alignment_report.md
+├── scenario_alignment.json
+├── scenario_alignment.csv
+├── simulation_summary.csv
+├── simulation_schema.json
+├── simulation_report.md
+├── warnings.json
+└── official_nuplan_runs/
+```
 
 #### Expected shape / key metrics
 
-TODO；预计为 `[N, 1, T, 8]`，其中 `N` 为成功 distinct logs 数。
+Latest verified Stage 7C.2B PASS metrics:
+
+```text
+warnings: []
+original_metadata_rows: 23
+unique_log_names: 5
+sample_distinct_log_names: true
+selected_metadata_rows: 5
+selected_sample_ids: sample_000000, sample_000005, sample_000010, sample_000015, sample_000019
+validation.pass: true
+official_success_count: 5
+trajectory_rows: 745
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+same_scenario_alignment_required: true
+strict_nuplan_token_alignment_required: false
+simulated_ego_seq.npy shape: [5, 1, 149, 8]
+simulated_ego_seq_mask.npy shape: [5, 1, 149]
+valid_timestep_count: 745
+missing_pair_count: 0
+msgpack_simulation_log_files_found: 5
+msgpack_simulation_log_files_parsed: 5
+msgpack_trajectory_rows_extracted: 745
+required_pose_valid_ratio: 1.0
+x/y/yaw non-sentinel ratios: 1.0 / 1.0 / 1.0
+min_timesteps_per_trajectory: 149
+mean_timesteps_per_trajectory: 149.0
+num_trajectories_with_too_few_steps: 0
+num_trajectories_with_zero_motion: 0
+```
+
+Parsed official nuPlan artifacts:
+
+```text
+scenario_0/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.22.00.38_veh-35_01008_01518/000e00790bc45da7/000e00790bc45da7.msgpack.xz
+scenario_1/simple_planner/simulation_log/SimplePlanner/stationary_in_traffic/2021.05.12.22.28.35_veh-35_00620_01164/001f3d5282985bbb/001f3d5282985bbb.msgpack.xz
+scenario_2/simple_planner/simulation_log/SimplePlanner/traversing_traffic_light_intersection/2021.05.12.23.36.44_veh-35_00152_00504/00015fc2840d5313/00015fc2840d5313.msgpack.xz
+scenario_3/simple_planner/simulation_log/SimplePlanner/traversing_intersection/2021.05.12.23.36.44_veh-35_01133_01535/0004544fe3715b27/0004544fe3715b27.msgpack.xz
+scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.23.36.44_veh-35_02035_02387/0004bf5585cf5f26/0004bf5585cf5f26.msgpack.xz
+```
 
 #### PASS criteria
 
-TODO；至少应满足 official simulation、msgpack parser、`pseudo_rollout=false`、same-log alignment。
+- `warnings == []` 或没有 fatal warning。
+- `validation.pass == true`。
+- `official_success_count == 5`。
+- `uses_official_nuplan_simulation == true`。
+- `pseudo_rollout == false`。
+- `sample_distinct_log_names == true`，并且 selected log names 覆盖 5 个 distinct logs。
+- `same_scenario_alignment_required == true`，每条成功记录至少满足 same-log alignment。
+- `strict_nuplan_token_alignment_required == false`；不要要求 Stage 7B.4 `scene_token` 等于 nuPlan `scenario_filter.scenario_tokens`。
+- `msgpack_simulation_log_files_found == 5` 且 `msgpack_simulation_log_files_parsed == 5`。
+- `simulated_ego_seq.npy` shape 为 `[5, 1, 149, 8]`。
+- `simulated_ego_seq_mask.npy` shape 为 `[5, 1, 149]`。
+- `required_pose_valid_ratio == 1.0`，`x/y/yaw` 非 sentinel 比例均为 `1.0`。
 
 #### Common failure modes
 
-TODO；预计与 Stage 7C.2A 相同，并增加长运行时间/部分 log failure 的诊断。
+- 忘记 `--sample_distinct_log_names`：会重复抽到同一个 log 的多行，不能作为 5 distinct logs PASS。
+- 把 Stage 7B.4 `scene_token` 当成 nuPlan `scenario_filter.scenario_tokens`：这是错误假设。Stage 7B.4 `scene_token != nuPlan scenario_filter.scenario_tokens` 是已验证 caveat；exact rerun 必须先从 `runner_report.parquet` 或 `simulation_log` 路径发现 actual nuPlan token。
+- `No scenarios found to simulate`：通常是 log name / token filter 不匹配；先回到 Stage 7C.1C 的 log-only discovery。
+- `msgpack.xz` 找不到或解析不到 trajectory：不能引入 pseudo rollout，应修复 official output path 或 parser。
+- 部分 log 失败：只能记录 partial smoke，不能宣称 Stage 7C.2B PASS。
 
 ---
 
-### Stage 7C.2C — multi-planner rollout
+### Stage 7C.2C — multi-planner rollout（STARTING / TODO）
 
 #### Purpose
 
-TODO：在多 distinct logs 上运行多个 planner，形成 `[N, P, T, C]` official trajectory tensor。
+从 `simple_planner × 5 distinct logs` 扩展到 multi-planner official rollout，形成 `[N, P, T, 8]` official trajectory tensor。Stage 7C.2C 仍然只准备和运行 planner simulation；不要实现 Stage 7D BDD validation。
 
-#### Command
+IDM planner 的研究解释必须保守：IDM conservative/comfort/aggressive profiles are longitudinal-only rule-based profiles. They are intended as controlled positive controls for longitudinal BDD validation, not as complete driving-style models。推荐使用 `idm_longitudinal_conservative`、`idm_longitudinal_comfort`、`idm_longitudinal_aggressive`；旧别名 `idm_conservative`、`idm_comfort`、`idm_aggressive` 仅用于兼容，不能解释为完整 driving style。
 
-TODO。不要在没有验证前发明 planner set 或 PASS 结果。
+
+#### Longitudinal-only vs full driving style
+
+Stage 6C v2 behavior-event taxonomy 见 `docs/stage6c_behavior_event_taxonomy_v2.md`。该 taxonomy 将 driving style 解释为 task-conditioned 行为维度，包括 following、lead_brake_response、queue_approach、lane_change、cutin_response、overtake_opportunity、overtake_executed、hesitation、yield_conflict 等。
+
+IDM longitudinal profiles 适合验证：
+
+- following；
+- lead_brake_response；
+- queue_approach；
+- cutin_response 的纵向分量；
+- yield_conflict 的部分纵向分量。
+
+IDM longitudinal profiles 不适合验证：
+
+- lane_change sharpness；
+- lane_change willingness；
+- overtake execution；
+- hesitation / abort-like maneuver；
+- target-lane rear-gap pressure；
+- full courtesy/yielding behavior。
+
+lane_change、overtake、hesitation、yield_conflict 需要 task-conditioned interpretation，不能只靠 IDM longitudinal parameters 完整验证。研究解释应写为：We first validate whether BDD can detect controlled longitudinal behavior drift using parameterized IDM profiles. Lateral and interaction style dimensions should be evaluated separately through lane-change / overtaking / yield-conflict task-conditioned BDD once a lane-change-capable planner or E2E policy is available.
+
+#### Planner config discovery
+
+已发现的 nuPlan official planner config 文件名：
+
+```text
+nuplan/planning/script/config/simulation/planner/idm_planner.yaml
+nuplan/planning/script/config/simulation/planner/log_future_planner.yaml
+nuplan/planning/script/config/simulation/planner/ml_planner.yaml
+nuplan/planning/script/config/simulation/planner/remote_planner.yaml
+nuplan/planning/script/config/simulation/planner/simple_planner.yaml
+```
+
+Stage 7C.2C-0 已在目标机器上完成 native official IDM smoke 验证，default / conservative / comfort / aggressive 四组参数均在同一个 exact scenario 成功运行：
+
+```text
+log_name = 2021.05.12.22.00.38_veh-35_01008_01518
+nuPlan scenario_token = 000e00790bc45da7
+planner_name = IDMPlanner
+```
+
+已确认 wrapper 应使用以下 Hydra override key：
+
+```text
+planner=idm_planner
+planner.idm_planner.target_velocity
+planner.idm_planner.min_gap_to_lead_agent
+planner.idm_planner.headway_time
+planner.idm_planner.accel_max
+planner.idm_planner.decel_max
+```
+
+#### IDM profile definitions（已写入 wrapper）
+
+```text
+simple_planner:
+  planner_type: simple_baseline
+  policy_style: simple_baseline
+  hydra_overrides: planner=simple_planner
+
+idm_longitudinal_conservative:
+  planner_type: idm_rule_based
+  style_scope: longitudinal_only
+  policy_style: longitudinal_conservative
+  hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=8.0 planner.idm_planner.min_gap_to_lead_agent=2.0 planner.idm_planner.headway_time=2.0 planner.idm_planner.accel_max=0.8 planner.idm_planner.decel_max=2.5
+
+idm_longitudinal_comfort:
+  planner_type: idm_rule_based
+  style_scope: longitudinal_only
+  policy_style: longitudinal_comfort
+  hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=10.0 planner.idm_planner.min_gap_to_lead_agent=1.5 planner.idm_planner.headway_time=1.5 planner.idm_planner.accel_max=1.0 planner.idm_planner.decel_max=3.0
+
+idm_longitudinal_aggressive:
+  planner_type: idm_rule_based
+  style_scope: longitudinal_only
+  policy_style: longitudinal_aggressive
+  hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=12.0 planner.idm_planner.min_gap_to_lead_agent=0.5 planner.idm_planner.headway_time=1.0 planner.idm_planner.accel_max=1.5 planner.idm_planner.decel_max=4.0
+```
+
+这些 profiles 是 controlled rule-based planner profiles，不是真实人类风格标签。wrapper command template 支持 `{planner_hydra_overrides}` placeholder；每个 planner 运行时自动展开为对应 Hydra override fragment，不再需要在模板里硬编码 `planner=simple_planner`。
+
+#### Stage 7C.2C-1 wrapper smoke command（1 log × 4 planners）
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c2c1_multi_planner_1log \
+  --planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive \
+  --sample_distinct_log_names \
+  --max_scenarios 1 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.log_names=["{target_log_name}"] scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7c2c_multi_planner job_name=stage7c2c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+期望输出：
+
+```text
+simulated_ego_seq.npy shape: [1, 4, T, 8]
+simulated_ego_seq_mask.npy shape: [1, 4, T]
+5-log rollout simulated_ego_seq.npy shape: [5, 4, T, 8]
+official_success_count: 4
+msgpack_simulation_log_files_parsed: 4
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+planner_axis_names: ["simple_planner", "idm_longitudinal_conservative", "idm_longitudinal_comfort", "idm_longitudinal_aggressive"]
+```
+
+#### Planned smoke sequence
+
+```text
+Stage 7C.2C-0: idm_planner native smoke on 1 log
+Stage 7C.2C-1: wrapper smoke with simple_planner + idm_longitudinal_comfort on 1 log
+Stage 7C.2C-2: wrapper smoke with simple_planner + idm_longitudinal_conservative + idm_longitudinal_comfort + idm_longitudinal_aggressive on 1 log
+Stage 7C.2C-3: wrapper rollout on 5 logs × selected planner profiles
+```
+
+#### Recommended next command: Stage 7C.2C-0 native IDM smoke on 1 log
+
+先在目标机器确认 `idm_planner.yaml` 存在并包含上述 key：
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+python - <<'CHECK_IDM'
+from pathlib import Path
+p = Path('/home/forwardxp/00_nuplan_E2E_eva/nuplan-devkit/nuplan/planning/script/config/simulation/planner/idm_planner.yaml')
+print(p)
+print('exists:', p.exists())
+if p.exists():
+    print(p.read_text())
+CHECK_IDM
+```
+
+然后运行 native IDM smoke（参数 override 值先保持默认，仅验证 planner config 能跑通）：
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
+python -m nuplan.planning.script.run_simulation \
+  +simulation=closed_loop_nonreactive_agents \
+  planner=idm_planner \
+  scenario_builder=nuplan_mini \
+  scenario_filter=all_scenarios \
+  'scenario_filter.log_names=["2021.05.12.22.00.38_veh-35_01008_01518"]' \
+  scenario_filter.scenario_tokens=null \
+  scenario_filter.limit_total_scenarios=1 \
+  worker=single_machine_thread_pool \
+  experiment_name=stage7c2c0_idm_native_smoke \
+  job_name=stage7c2c0_idm_native_smoke \
+  output_dir=$NUPLAN_EXP_ROOT/stage7c2c0_idm_native_smoke
+```
 
 #### Expected output files
 
-TODO；预计沿用 Stage 7C.1/7C.2A output schema。
+Stage 7C.2C wrapper outputs should keep the same schema as Stage 7C.2B, with planner metadata columns `planner_name`, `planner_id`, `planner_class`, `planner_type`, `policy_style`, `style_scope`, `nuplan_planner_config`, `hydra_overrides`, `supported_behavior_tasks`, `unsupported_behavior_tasks`, and `parameters_json`:
+
+```text
+outputs/stage7c2c_*/
+├── simulated_ego_trajectory.csv
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
+├── simulated_planner_metadata.csv
+├── scenario_planner_index.csv
+├── scenario_alignment_report.md
+├── scenario_alignment.json
+├── scenario_alignment.csv
+├── simulation_summary.csv
+├── simulation_schema.json
+├── simulation_report.md
+├── warnings.json
+└── official_nuplan_runs/
+```
 
 #### Expected shape / key metrics
 
-TODO；预计为 `[N, P, T, 8]`，其中 `P` 为成功 planner 数。
+- Stage 7C.2C-0 native IDM smoke：至少应生成 1 个 official `simulation_log/**/*.msgpack.xz`。
+- Stage 7C.2C-1 wrapper smoke：期望 `simulated_ego_seq.npy` shape 为 `[1, 2, T, 8]`，其中 planner 维度对应 `simple_planner + idm_longitudinal_comfort`。
+- Stage 7C.2C-2 wrapper smoke：期望 shape 为 `[1, 4, T, 8]`，其中 planner 维度对应 `simple_planner + idm_longitudinal_conservative + idm_longitudinal_comfort + idm_longitudinal_aggressive`。
+- Stage 7C.2C-3 5-log rollout：期望 shape 为 `[5, P, T, 8]`，`P` 为成功 planner profiles 数。
 
 #### PASS criteria
 
-TODO；必须保持 official nuPlan simulation，不能退化为 pseudo rollout。
+- 所有成功记录均来自 official nuPlan simulation log，不允许 pseudo rollout。
+- `uses_official_nuplan_simulation == true`。
+- `pseudo_rollout == false`。
+- same-log alignment 通过；strict Stage 7B token alignment 不作为必需条件。
+- 每个 successful scenario-planner pair 至少有 `min_timesteps` 个有效 timestep。
+- wrapper 输出的 `missing_pair_count == 0` 才能宣称 full multi-planner PASS；否则只能记录 partial smoke。
 
 #### Common failure modes
 
-TODO；预计包括 planner config 不存在、planner 参数不兼容、部分 scenario-planner pair 缺失。
+- `planner=idm_planner` 找不到：检查 nuPlan devkit 安装、Hydra config search path、`nuplan-devkit` 是否在当前 Python 环境。
+- IDM override key 写错：必须读取本机 `idm_planner.yaml`，不要猜参数名。
+- wrapper profile 名称和 Hydra planner 名称混淆：`idm_longitudinal_conservative` 等是本项目 profile ID，nuPlan 原生 planner config 仍是 `planner=idm_planner`；`idm_conservative` 等旧名称仅是兼容 alias。
+- 非 full pair 输出：如果 `[N, P]` 中有 scenario-planner pair 缺失，不能宣称 Stage 7C.2C full PASS。
+- 不要为了补齐 planner 维度而生成 offline pseudo trajectory。
 
 ---
 

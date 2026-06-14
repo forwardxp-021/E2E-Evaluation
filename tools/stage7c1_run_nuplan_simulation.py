@@ -67,8 +67,15 @@ def _template_uses_placeholder(template: str, placeholder: str) -> bool:
     return "{" + placeholder + "}" in template
 
 
+def format_planner_hydra_overrides(planner_name: str) -> str:
+    """Return the official nuPlan Hydra override fragment for a configured planner profile."""
+    profile = PLANNER_PROFILES.get(planner_name, {})
+    overrides = profile.get("hydra_overrides") or [f"planner={planner_name}"]
+    return " ".join(str(item) for item in overrides)
+
+
 def build_command_replacements(planner_name: str, scenario: Dict[str, str], out_dir: Path) -> Dict[str, str]:
-    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir)}
+    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir), "planner_hydra_overrides": format_planner_hydra_overrides(planner_name)}
     for key, value in scenario.items():
         replacements[key] = str(value)
     target = normalize_target_scenario(scenario)
@@ -105,10 +112,62 @@ CSV_COLUMNS = [
     "scenario_id", "sample_id",
 ]
 
+LONGITUDINAL_SUPPORTED_BEHAVIOR_TASKS = [
+    "following",
+    "lead_brake_response",
+    "queue_approach",
+    "cutin_response_partial",
+    "yield_conflict_partial",
+]
+LONGITUDINAL_UNSUPPORTED_BEHAVIOR_TASKS = [
+    "lane_change",
+    "overtake_execution",
+    "hesitation",
+    "target_lane_gap_acceptance",
+    "rear_pressure_lane_change",
+]
+PLANNER_METADATA_COLUMNS = [
+    "planner_name",
+    "planner_id",
+    "planner_class",
+    "planner_type",
+    "policy_style",
+    "style_scope",
+    "nuplan_planner_config",
+    "hydra_overrides",
+    "supported_behavior_tasks",
+    "unsupported_behavior_tasks",
+    "parameters_json",
+]
+
+
+def idm_longitudinal_profile(policy_style: str, parameters: Dict[str, float], alias_of: str = "") -> Dict[str, Any]:
+    return {
+        "planner_type": "idm_rule_based",
+        "policy_style": policy_style,
+        "style_scope": "longitudinal_only",
+        "nuplan_planner_config": "idm_planner",
+        "hydra_overrides": [
+            "planner=idm_planner",
+            f"planner.idm_planner.target_velocity={parameters['target_velocity']}",
+            f"planner.idm_planner.min_gap_to_lead_agent={parameters['min_gap_to_lead_agent']}",
+            f"planner.idm_planner.headway_time={parameters['headway_time']}",
+            f"planner.idm_planner.accel_max={parameters['accel_max']}",
+            f"planner.idm_planner.decel_max={parameters['decel_max']}",
+        ],
+        "preferred_classes": ["IDMPlanner"],
+        "supported_behavior_tasks": LONGITUDINAL_SUPPORTED_BEHAVIOR_TASKS,
+        "unsupported_behavior_tasks": LONGITUDINAL_UNSUPPORTED_BEHAVIOR_TASKS,
+        "parameters": {**parameters, "alias_of": alias_of} if alias_of else parameters,
+    }
+
+
 PLANNER_PROFILES = {
     "simple_planner": {
         "planner_type": "simple_baseline",
         "policy_style": "simple_baseline",
+        "nuplan_planner_config": "simple_planner",
+        "hydra_overrides": ["planner=simple_planner"],
         "preferred_classes": ["SimplePlanner"],
         "parameters": {
             "purpose": "nuPlan built-in simple planner baseline"
@@ -117,27 +176,38 @@ PLANNER_PROFILES = {
     "expert_or_log_replay": {
         "planner_type": "expert_replay",
         "policy_style": "reference",
+        "nuplan_planner_config": "log_future_planner",
+        "hydra_overrides": ["planner=log_future_planner"],
         "preferred_classes": ["LogFuturePlanner", "LogPlaybackPlanner", "SimplePlanner"],
         "parameters": {"purpose": "expert/log replay baseline when available"},
     },
-    "idm_conservative": {
-        "planner_type": "idm",
-        "policy_style": "conservative",
-        "preferred_classes": ["IDMPlanner", "SimplePlanner"],
-        "parameters": {"target_velocity_mps": 7.0, "headway_time_s": 2.0, "accel_max_mps2": 1.0, "decel_max_mps2": 3.5},
-    },
-    "idm_aggressive": {
-        "planner_type": "idm",
-        "policy_style": "aggressive",
-        "preferred_classes": ["IDMPlanner", "SimplePlanner"],
-        "parameters": {"target_velocity_mps": 13.5, "headway_time_s": 0.8, "accel_max_mps2": 2.8, "decel_max_mps2": 5.0},
-    },
-    "idm_comfort": {
-        "planner_type": "idm",
-        "policy_style": "comfort",
-        "preferred_classes": ["IDMPlanner", "SimplePlanner"],
-        "parameters": {"target_velocity_mps": 9.5, "headway_time_s": 1.4, "accel_max_mps2": 1.2, "decel_max_mps2": 2.5},
-    },
+    "idm_longitudinal_conservative": idm_longitudinal_profile(
+        "longitudinal_conservative",
+        {"target_velocity": 8.0, "min_gap_to_lead_agent": 2.0, "headway_time": 2.0, "accel_max": 0.8, "decel_max": 2.5},
+    ),
+    "idm_longitudinal_comfort": idm_longitudinal_profile(
+        "longitudinal_comfort",
+        {"target_velocity": 10.0, "min_gap_to_lead_agent": 1.5, "headway_time": 1.5, "accel_max": 1.0, "decel_max": 3.0},
+    ),
+    "idm_longitudinal_aggressive": idm_longitudinal_profile(
+        "longitudinal_aggressive",
+        {"target_velocity": 12.0, "min_gap_to_lead_agent": 0.5, "headway_time": 1.0, "accel_max": 1.5, "decel_max": 4.0},
+    ),
+    "idm_conservative": idm_longitudinal_profile(
+        "longitudinal_conservative",
+        {"target_velocity": 8.0, "min_gap_to_lead_agent": 2.0, "headway_time": 2.0, "accel_max": 0.8, "decel_max": 2.5},
+        alias_of="idm_longitudinal_conservative",
+    ),
+    "idm_comfort": idm_longitudinal_profile(
+        "longitudinal_comfort",
+        {"target_velocity": 10.0, "min_gap_to_lead_agent": 1.5, "headway_time": 1.5, "accel_max": 1.0, "decel_max": 3.0},
+        alias_of="idm_longitudinal_comfort",
+    ),
+    "idm_aggressive": idm_longitudinal_profile(
+        "longitudinal_aggressive",
+        {"target_velocity": 12.0, "min_gap_to_lead_agent": 0.5, "headway_time": 1.0, "accel_max": 1.5, "decel_max": 4.0},
+        alias_of="idm_longitudinal_aggressive",
+    ),
 }
 
 
@@ -940,7 +1010,7 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
     write_empty_float32_npy(out_dir / "simulated_ego_seq.npy", (0, 0, 0, len(EGO_STATE_CHANNELS)))
     write_empty_float32_npy(out_dir / "simulated_ego_seq_mask.npy", (0, 0, 0))
     write_json(out_dir / "simulated_ego_seq_index.json", {"scenario_axis": [], "planner_axis": [], "planner_axis_names": [], "ego_state_channels": EGO_STATE_CHANNELS, "sentinel_value": SENTINEL, "shape": [0, 0, 0, len(EGO_STATE_CHANNELS)]})
-    write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, ["planner_id", "planner_name", "planner_class", "planner_type", "policy_style", "parameters_json", "nuplan_api_used"])
+    write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, PLANNER_METADATA_COLUMNS)
     scenario_index_path = out_dir / "scenario_planner_index.csv"
     if not scenario_index_path.is_file():
         write_csv(scenario_index_path, [], ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
@@ -974,6 +1044,8 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
         "scenario_axis_key": "scenario_index",
         "planner_axis_key": "planner_id",
         "planner_axis_names": [],
+        "planner_profile_styles": {name: PLANNER_PROFILES.get(name, {}).get("policy_style", "") for name in planners},
+        "planner_profiles": planner_rows,
         "notes": ["This stage refuses pseudo rollout.", "No fake simulated trajectory was generated.", "Resolve warnings and rerun with official nuPlan simulation available."],
     }
     if alignment_records is None:
@@ -1090,6 +1162,11 @@ def run(args: argparse.Namespace) -> int:
             "planner_class": klass,
             "planner_type": PLANNER_PROFILES[planner_name]["planner_type"],
             "policy_style": PLANNER_PROFILES[planner_name]["policy_style"],
+            "style_scope": PLANNER_PROFILES[planner_name].get("style_scope", "full_or_unspecified"),
+            "nuplan_planner_config": PLANNER_PROFILES[planner_name].get("nuplan_planner_config", ""),
+            "hydra_overrides": format_planner_hydra_overrides(planner_name),
+            "supported_behavior_tasks": json.dumps(PLANNER_PROFILES[planner_name].get("supported_behavior_tasks", []), ensure_ascii=False),
+            "unsupported_behavior_tasks": json.dumps(PLANNER_PROFILES[planner_name].get("unsupported_behavior_tasks", []), ensure_ascii=False),
             "parameters_json": json.dumps(PLANNER_PROFILES[planner_name]["parameters"], ensure_ascii=False),
             "nuplan_api_used": module,
         })
@@ -1154,7 +1231,7 @@ def run(args: argparse.Namespace) -> int:
     tensor_info = build_simulated_seq(trajectory_rows, out_dir / "simulated_ego_seq.npy")
     shape = tensor_info["shape"]
     mask_shape = tensor_info["mask_shape"]
-    write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, ["planner_id", "planner_name", "planner_class", "planner_type", "policy_style", "parameters_json", "nuplan_api_used"])
+    write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, PLANNER_METADATA_COLUMNS)
     write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
 
     summary_rows: List[Dict[str, Any]] = []
@@ -1224,6 +1301,8 @@ def run(args: argparse.Namespace) -> int:
         "scenario_axis_key": "scenario_index",
         "planner_axis_key": "planner_id",
         "planner_axis_names": tensor_info["planner_axis_names"],
+        "planner_profile_styles": {name: PLANNER_PROFILES.get(name, {}).get("policy_style", "") for name in tensor_info["planner_axis_names"]},
+        "planner_profiles": planner_rows,
         "same_scenario_alignment_checked": True,
         "same_scenario_alignment_passed": alignment_passed,
         "same_log_alignment_passed": alignment_passed,
@@ -1289,11 +1368,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--nuplan_db_root", required=True)
     p.add_argument("--nuplan_map_root", required=True)
     p.add_argument("--output_dir", default="outputs/stage7c1_nuplan_simulation")
-    p.add_argument("--planners", nargs="+", default=["expert_or_log_replay", "idm_conservative", "idm_aggressive", "idm_comfort"])
+    p.add_argument("--planners", nargs="+", default=["expert_or_log_replay", "idm_longitudinal_conservative", "idm_longitudinal_aggressive", "idm_longitudinal_comfort"])
     p.add_argument("--max_scenarios", type=int, default=5, help="0 means all Stage 7B.4 metadata rows.")
     p.add_argument("--sample_distinct_log_names", action="store_true", help="Before applying --max_scenarios, keep only the first metadata row for each normalized log name (db_name without .db), preserving metadata order.")
     p.add_argument("--overwrite", action="store_true")
-    p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}, plus target placeholders {target_log_name}, {target_scene_token}, {target_db_name}. Prefer shell/path-safe variants such as {target_log_name_safe}, {target_scene_token_safe}, {target_db_name_safe}; exact same-scenario nuPlan commands should use target placeholders, not raw {scenario_id}, because Hydra filter keys may need log/token values separately.")
+    p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {planner_name_safe}, {planner_hydra_overrides}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}, plus target placeholders {target_log_name}, {target_scene_token}, {target_db_name}. Prefer shell/path-safe variants such as {target_log_name_safe}, {target_scene_token_safe}, {target_db_name_safe}; exact same-scenario nuPlan commands should use target placeholders, not raw {scenario_id}, because Hydra filter keys may need log/token values separately.")
     p.add_argument("--nuplan_simulation_command_use_shell", action="store_true", help="Run the formatted official nuPlan command through the shell. Default is false: shlex.split(command) and subprocess.run(argv, shell=False) to avoid shell metacharacter interpretation.")
     p.add_argument("--require_same_scenario_alignment", action="store_true", help="Require Stage 7C.1C same-log alignment PASS for the final Stage 7C.1 PASS. Default preserves smoke behavior and allows alignment FAIL.")
     p.add_argument("--require_strict_nuplan_token_alignment", action="store_true", help="Require Stage 7B.4 scene_token to match the actual nuPlan scenario token. Default false because Stage 7B.4 scene_token may differ from nuPlan scenario_filter.scenario_tokens.")
