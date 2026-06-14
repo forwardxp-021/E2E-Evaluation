@@ -17,7 +17,7 @@ The key dataset distinction is:
 |---|---|---|---|---|
 | 7A | nuPlan readiness | nuPlan DB/map/devkit | readiness evidence | PASS |
 | 7B | context construction | nuPlan logs/maps | `merged_context_feat` | PASS |
-| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | TODO |
+| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1 smoke + exact-token wrapper validation PASS; 7C.2 multi-planner/multi-scenario rollout TODO |
 | 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | TODO |
 | 7E | planner-only consolidation | Stage 7D | planner report cards | TODO |
 | 7F | E2E model simulation | E2E planner + nuPlan sim | E2E simulated trajectories | TODO |
@@ -174,7 +174,8 @@ Latest Stage 7C.1 smoke status:
 
 - Stage 7C.1A — official simulation smoke: **PASS**.
 - Stage 7C.1B — official msgpack trajectory export: **PASS**.
-- Stage 7C.1C — same-scenario alignment: **TODO**.
+- Stage 7C.1C — exact log + actual nuPlan scenario token wrapper smoke: **PASS**.
+- Stage 7C.1C — strict Stage7B scene_token == nuPlan scenario_token: **NOT REQUIRED / mismatch observed**.
 - Stage 7C.2 — multi-planner/multi-scenario rollout: **TODO**.
 - Stage 7D — BDD validation on planner-generated trajectories: **TODO**.
 
@@ -184,21 +185,53 @@ Recorded smoke metrics:
 |---|---|
 | Planner | `simple_planner` |
 | Official nuPlan simulation command succeeded | `1` |
+| `validation.pass` | `true` |
+| `official_success_count` | `1` |
 | Pseudo rollout | `false` |
 | Official simulation log parsed | `simulation_log/**/*.msgpack.xz` |
-| Parsed official artifact | `official_nuplan_runs/scenario_0/simple_planner/simulation_log/SimplePlanner/near_multiple_vehicles/2021.06.08.14.35.24_veh-26_02555_03004/1f151e15c9cf5c81/1f151e15c9cf5c81.msgpack.xz` |
-| Parsed trajectory rows | `150` |
-| `simulated_ego_seq.npy` shape | `[1, 1, 150, 8]` |
-| `simulated_ego_seq_mask.npy` shape | `[1, 1, 150]` |
+| Parsed official artifact | `official_nuplan_runs/scenario_0/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.22.00.38_veh-35_01008_01518/000e00790bc45da7/000e00790bc45da7.msgpack.xz` |
+| Parsed trajectory rows | `149` |
+| `smoke_pass` | `true` |
+| `uses_official_nuplan_simulation` | `true` |
+| `same_scenario_alignment_required` | `false` |
+| `simulated_ego_seq.npy` shape | `[1, 1, 149, 8]` |
+| `simulated_ego_seq_mask.npy` shape | `[1, 1, 149]` |
 | `required_pose_valid_ratio` | `1.0` |
 | x/y/yaw non-sentinel ratios | `1.0 / 1.0 / 1.0` |
+| valid timestep count | `149` |
+| msgpack simulation log files found / parsed | `1 / 1` |
+| msgpack trajectory rows extracted | `149` |
 | warnings | `[]` |
 
 This smoke proves the official nuPlan simulation → `msgpack.xz` simulation log → trajectory parser → `[N, P, T, C]` tensor export path is working.
 
-It does **not** yet prove full Stage 7C. Same-scenario alignment with Stage 7B.4 and multi-planner/multi-scenario validation remain TODO.
+It does **not** yet prove full Stage 7C. Multi-planner/multi-scenario validation remains TODO.
 
-Stage 7C.1C should align Stage 7B.4 metadata with the actual simulated nuPlan scenario. The smoke used `scenario_filter=one_of_each_scenario_type` and `scenario_filter.limit_total_scenarios=1`, so it proves the simulation/export pipeline but does not yet prove that the simulated scenario is exactly the same as the Stage 7B.4 metadata row.
+Stage 7C.1C now separates same-log alignment from strict nuPlan token alignment. The exact-token wrapper smoke has **PASS** evidence from an official `simple_planner` run that parsed the official `.msgpack.xz` simulation artifact. New exact-filter local evidence shows that Stage 7B.4 `scene_token` should be preserved as source metadata, but it must not be assumed to equal the value accepted by nuPlan `scenario_filter.scenario_tokens`: target log `2021.05.12.22.00.38_veh-35_01008_01518` matched successfully, while Stage 7B.4 `scene_token=165060762e765a5a` differed from actual nuPlan scenario token `000e00790bc45da7`.
+
+For nuPlan exact reruns, the verified key is:
+
+```text
+log_name + actual_nuPlan_scenario_token
+```
+
+For the validated smoke, use:
+
+```text
+log_name = 2021.05.12.22.00.38_veh-35_01008_01518
+actual_nuPlan_scenario_token = 000e00790bc45da7
+```
+
+The resulting alignment conclusion is:
+
+```text
+same_log_alignment_passed: true
+strict_stage7b_scene_token_match: false
+exact_nuplan_token_rerun_supported: true
+alignment_status: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
+```
+
+Therefore log match plus an available actual nuPlan token is `PASS_LOG_AND_NUPLAN_TOKEN_RERUN`; strict token match is only `PASS_STRICT` when Stage 7B.4 `scene_token` also equals actual nuPlan scenario token. This does not overclaim full Stage 7C completion, because Stage 7C.2 multi-planner/multi-scenario rollout remains TODO.
 
 **Environment / interaction limitation:** the behavior of other traffic agents depends on the selected nuPlan simulation configuration. If the current simulation uses log-replay or non-reactive observations, it must be documented as a limitation. If reactive agents / IDM agents are enabled later, that configuration must be documented separately. Do not overclaim interaction realism unless the simulation configuration actually supports it.
 
@@ -208,8 +241,13 @@ Stage 7C.1C should align Stage 7B.4 metadata with the actual simulated nuPlan sc
 outputs/stage7c1_nuplan_simulation/
 ├── simulated_ego_trajectory.csv
 ├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
 ├── simulated_planner_metadata.csv
 ├── scenario_planner_index.csv
+├── scenario_alignment_report.md
+├── scenario_alignment.json
+├── scenario_alignment.csv
 ├── simulation_summary.csv
 ├── simulation_schema.json
 ├── simulation_report.md
@@ -217,6 +255,15 @@ outputs/stage7c1_nuplan_simulation/
 ```
 
 **Purpose:** Generate real nuPlan simulation behavior data for baseline / rule-based / traditional planners.
+
+**Remaining Stage 7C TODOs:**
+
+- Stage 7C.2A: `simple_planner`, 3 scenarios.
+- Stage 7C.2B: `simple_planner`, 10 scenarios.
+- Stage 7C.2C: add multi-planner variants if official-compatible planner configs are available.
+- Stage 7C.2D: produce planner behavior report card.
+
+Stage 7D is still not started; BDD validation on planner-generated trajectories remains TODO until Stage 7C.2 outputs exist.
 
 ## 6. Stage 7D — BDD Validation on Planner Simulation Data
 
