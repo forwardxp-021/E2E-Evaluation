@@ -97,13 +97,77 @@ Stage 7B is not itself simulation. It is the context and alignment foundation us
 - Stage 7C must not be pseudo rollout-lite.
 - Stage 7C must not simply rewrite logged ego trajectories with numpy interpolation.
 
-**Planner candidates:**
+### Stage 7C Planner Strategy
+
+The first success criterion of Stage 7C is not planner sophistication. The first success criterion is that official nuPlan simulation runs and exports non-empty `simulated_ego_trajectory.csv` and `simulated_ego_seq.npy`. Stage 7C should therefore first use existing nuPlan devkit / official-compatible planners, because they reduce engineering risk and prove the official simulation/export pipeline before adding planner implementation complexity.
+
+Stage 7C should use planners in this priority order:
+
+1. expert / log replay planner if available;
+2. simple planner if available;
+3. IDM planner if available;
+4. configurable IDM-style planner variants;
+5. minimal custom `AbstractPlanner`-compatible wrapper only if needed.
+
+Recommended Stage 7C planner variants:
+
+| ID | planner variant | intended role |
+|---|---|---|
+| P0 | `expert_or_log_replay` | official replay / expert reference and pipeline sanity check |
+| P1 | `simple_planner` | minimal official-compatible baseline |
+| P2 | `idm_conservative` | cautious longitudinal behavior variant |
+| P3 | `idm_aggressive` | assertive longitudinal behavior variant |
+| P4 | `idm_comfort` | comfort-oriented behavior variant |
+
+For smoke testing, it is acceptable to start with fewer planners:
 
 - `expert_or_log_replay`
 - `simple_planner`
+
+For full Stage 7C validation, the goal is to include behaviorally distinct variants, preferably:
+
 - `idm_conservative`
 - `idm_aggressive`
 - `idm_comfort`
+
+If `IDMPlanner` or another configurable official-compatible planner is available, Stage 7C should define planner styles by planner parameters, not by fake trajectory rewriting. Exact parameter names depend on the installed nuPlan planner API, but the conceptual differences are:
+
+- `idm_conservative`: lower target speed, larger headway, gentler acceleration, earlier braking.
+- `idm_aggressive`: higher target speed, smaller headway, stronger acceleration, later braking.
+- `idm_comfort`: moderate target speed, lower acceleration, smoother longitudinal response, lower jerk / comfort-oriented behavior.
+
+Custom planners are allowed only if existing nuPlan planners are unavailable or insufficient. If a custom planner is implemented later, it must satisfy all requirements below:
+
+1. It must be compatible with nuPlan `AbstractPlanner` or the installed equivalent planner interface.
+2. It must run inside the official nuPlan simulation framework.
+3. It must output trajectories through the nuPlan simulation loop.
+4. It must not bypass nuPlan simulation.
+5. It must not generate offline pseudo trajectories.
+6. It must not use numpy interpolation to rewrite logged expert trajectories and call that simulation.
+
+Allowed: writing a planner that runs inside official nuPlan simulation. Not allowed: writing our own offline simulator or rewriting logged ego trajectories. E2E model planner integration remains Stage 7F, not Stage 7C.
+
+Starting with custom planners would make failure diagnosis ambiguous. If results are poor, we would not know whether the problem is BDD, nuPlan simulation connectivity, trajectory export, a bad custom planner implementation, or planner behavior differences that are too weak. The correct order is therefore:
+
+1. Run official nuPlan simulation with existing planner(s).
+2. Export simulated ego trajectories.
+3. Verify simulation output is non-empty and finite.
+4. Add parameterized planner variants.
+5. Only then add minimal custom planner wrappers if needed.
+6. Keep E2E planner integration in Stage 7F.
+
+Stage 7C smoke PASS requires:
+
+- official nuPlan simulation API or official nuPlan CLI is used;
+- `pseudo_rollout` is false;
+- at least one planner runs successfully;
+- at least one scenario runs successfully;
+- `simulated_ego_trajectory.csv` is non-empty;
+- `simulated_ego_seq.npy` is non-empty;
+- numeric outputs are finite;
+- `simulation_report.md` says PASS.
+
+**Environment / interaction limitation:** the behavior of other traffic agents depends on the selected nuPlan simulation configuration. If the current simulation uses log-replay or non-reactive observations, it must be documented as a limitation. If reactive agents / IDM agents are enabled later, that configuration must be documented separately. Do not overclaim interaction realism unless the simulation configuration actually supports it.
 
 **Expected output:**
 
@@ -247,12 +311,16 @@ Stage 7G is the final thesis-facing synthesis. It should be written only after S
 ## 10. Direction Guardrails
 
 1. Stage 7C and 7F must use official nuPlan simulation.
-2. Pseudo trajectory rewriting is not acceptable as Stage 7C/7F evidence.
-3. Same-scenario alignment must be preserved.
-4. Paired BDD and unpaired BDD are both required.
-5. ODD-conditioned BDD must use Stage 7B.4 context features.
-6. E2E model integration belongs to Stage 7F, not Stage 7C.
-7. Final thesis-facing conclusion belongs to Stage 7G, not Stage 7E.
+2. Stage 7C should prefer existing nuPlan/devkit planners before custom planners.
+3. Custom planners are allowed only as nuPlan simulation-compatible planners.
+4. Custom planners must not bypass official nuPlan simulation.
+5. Offline pseudo rollout and pseudo trajectory rewriting are not acceptable as Stage 7C/7F evidence.
+6. Stage 7C validates the simulation/export pipeline and planner-induced behavior drift before E2E integration.
+7. Same-scenario alignment must be preserved.
+8. Paired BDD and unpaired BDD are both required.
+9. ODD-conditioned BDD must use Stage 7B.4 context features.
+10. E2E model integration belongs to Stage 7F, not Stage 7C.
+11. Final thesis-facing conclusion belongs to Stage 7G, not Stage 7E.
 
 ## 11. Documentation Relationship
 

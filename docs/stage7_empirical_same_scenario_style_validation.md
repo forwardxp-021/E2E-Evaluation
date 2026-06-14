@@ -414,7 +414,11 @@ Stage 7B.3 should align map features by `sample_id` / `scenario_id` / `scene_tok
 
 ### Stage 7C — Same-Scenario Conservative/Aggressive Policy Rollout
 
-Stage 7C is a future main experiment. It should run conservative and aggressive policies on the same fixed nuPlan scenario set, preserve `scenario_id` and `policy_id`, convert rollouts using the same Stage 7B context interface, and ensure same-scenario pairing.
+Stage 7C is a future main experiment. The current authoritative Stage 7C planner strategy is documented in [`stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md#stage-7c-planner-strategy). Stage 7C should first use existing nuPlan devkit / official-compatible planners, not custom planners, to run official nuPlan simulation on the same fixed scenario set, preserve `scenario_id` and `policy_id`, convert rollouts using the same Stage 7B context interface, and ensure same-scenario pairing.
+
+The Stage 7C planner priority order is: expert / log replay planner if available, simple planner if available, IDM planner if available, configurable IDM-style planner variants, and only then a minimal custom `AbstractPlanner`-compatible wrapper if needed. The intended planner set is `expert_or_log_replay`, `simple_planner`, `idm_conservative`, `idm_aggressive`, and `idm_comfort`; smoke testing may start with `expert_or_log_replay` and `simple_planner`.
+
+Custom planners are allowed only if existing nuPlan planners are unavailable or insufficient, and they must run inside the official nuPlan simulation framework. Offline pseudo rollout, numpy interpolation of logged expert trajectories, or a repo-local simulator must not be used as Stage 7C evidence. The first Stage 7C success criterion is official simulation plus non-empty finite exports: `simulated_ego_trajectory.csv`, `simulated_ego_seq.npy`, and a PASS `simulation_report.md`. E2E model planner integration remains Stage 7F, not Stage 7C.
 
 ### Stage 7D — Policy-Style Task-Conditioned BDD Validation
 
