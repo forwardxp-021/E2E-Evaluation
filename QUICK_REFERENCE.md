@@ -789,7 +789,31 @@ scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021
 
 从 `simple_planner × 5 distinct logs` 扩展到 multi-planner official rollout，形成 `[N, P, T, 8]` official trajectory tensor。Stage 7C.2C 仍然只准备和运行 planner simulation；不要实现 Stage 7D BDD validation。
 
-IDM planner 的研究解释必须保守：IDM planner 不是天然内置三种“人类驾驶风格”的 planner；它是 parameterized rule-based planner。`idm_conservative`、`idm_comfort`、`idm_aggressive` 只能解释为通过可解释 IDM 参数构造的受控 rule-based planner profiles，用于验证 behavior embedding / BDD 是否能区分 planner-induced behavior differences。
+IDM planner 的研究解释必须保守：IDM conservative/comfort/aggressive profiles are longitudinal-only rule-based profiles. They are intended as controlled positive controls for longitudinal BDD validation, not as complete driving-style models。推荐使用 `idm_longitudinal_conservative`、`idm_longitudinal_comfort`、`idm_longitudinal_aggressive`；旧别名 `idm_conservative`、`idm_comfort`、`idm_aggressive` 仅用于兼容，不能解释为完整 driving style。
+
+
+#### Longitudinal-only vs full driving style
+
+Stage 6C v2 behavior-event taxonomy 见 `docs/stage6c_behavior_event_taxonomy_v2.md`。该 taxonomy 将 driving style 解释为 task-conditioned 行为维度，包括 following、lead_brake_response、queue_approach、lane_change、cutin_response、overtake_opportunity、overtake_executed、hesitation、yield_conflict 等。
+
+IDM longitudinal profiles 适合验证：
+
+- following；
+- lead_brake_response；
+- queue_approach；
+- cutin_response 的纵向分量；
+- yield_conflict 的部分纵向分量。
+
+IDM longitudinal profiles 不适合验证：
+
+- lane_change sharpness；
+- lane_change willingness；
+- overtake execution；
+- hesitation / abort-like maneuver；
+- target-lane rear-gap pressure；
+- full courtesy/yielding behavior。
+
+lane_change、overtake、hesitation、yield_conflict 需要 task-conditioned interpretation，不能只靠 IDM longitudinal parameters 完整验证。研究解释应写为：We first validate whether BDD can detect controlled longitudinal behavior drift using parameterized IDM profiles. Lateral and interaction style dimensions should be evaluated separately through lane-change / overtaking / yield-conflict task-conditioned BDD once a lane-change-capable planner or E2E policy is available.
 
 #### Planner config discovery
 
@@ -830,19 +854,22 @@ simple_planner:
   policy_style: simple_baseline
   hydra_overrides: planner=simple_planner
 
-idm_conservative:
+idm_longitudinal_conservative:
   planner_type: idm_rule_based
-  policy_style: conservative
+  style_scope: longitudinal_only
+  policy_style: longitudinal_conservative
   hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=8.0 planner.idm_planner.min_gap_to_lead_agent=2.0 planner.idm_planner.headway_time=2.0 planner.idm_planner.accel_max=0.8 planner.idm_planner.decel_max=2.5
 
-idm_comfort:
+idm_longitudinal_comfort:
   planner_type: idm_rule_based
-  policy_style: comfort
+  style_scope: longitudinal_only
+  policy_style: longitudinal_comfort
   hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=10.0 planner.idm_planner.min_gap_to_lead_agent=1.5 planner.idm_planner.headway_time=1.5 planner.idm_planner.accel_max=1.0 planner.idm_planner.decel_max=3.0
 
-idm_aggressive:
+idm_longitudinal_aggressive:
   planner_type: idm_rule_based
-  policy_style: aggressive
+  style_scope: longitudinal_only
+  policy_style: longitudinal_aggressive
   hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=12.0 planner.idm_planner.min_gap_to_lead_agent=0.5 planner.idm_planner.headway_time=1.0 planner.idm_planner.accel_max=1.5 planner.idm_planner.decel_max=4.0
 ```
 
@@ -858,7 +885,7 @@ python tools/stage7c1_run_nuplan_simulation.py \
   --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
   --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
   --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c2c1_multi_planner_1log \
-  --planners simple_planner idm_conservative idm_comfort idm_aggressive \
+  --planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive \
   --sample_distinct_log_names \
   --max_scenarios 1 \
   --min_timesteps 2 \
@@ -872,19 +899,20 @@ python tools/stage7c1_run_nuplan_simulation.py \
 ```text
 simulated_ego_seq.npy shape: [1, 4, T, 8]
 simulated_ego_seq_mask.npy shape: [1, 4, T]
+5-log rollout simulated_ego_seq.npy shape: [5, 4, T, 8]
 official_success_count: 4
 msgpack_simulation_log_files_parsed: 4
 pseudo_rollout: false
 uses_official_nuplan_simulation: true
-planner_axis_names: ["simple_planner", "idm_conservative", "idm_comfort", "idm_aggressive"]
+planner_axis_names: ["simple_planner", "idm_longitudinal_conservative", "idm_longitudinal_comfort", "idm_longitudinal_aggressive"]
 ```
 
 #### Planned smoke sequence
 
 ```text
 Stage 7C.2C-0: idm_planner native smoke on 1 log
-Stage 7C.2C-1: wrapper smoke with simple_planner + idm_comfort on 1 log
-Stage 7C.2C-2: wrapper smoke with simple_planner + idm_conservative + idm_comfort + idm_aggressive on 1 log
+Stage 7C.2C-1: wrapper smoke with simple_planner + idm_longitudinal_comfort on 1 log
+Stage 7C.2C-2: wrapper smoke with simple_planner + idm_longitudinal_conservative + idm_longitudinal_comfort + idm_longitudinal_aggressive on 1 log
 Stage 7C.2C-3: wrapper rollout on 5 logs × selected planner profiles
 ```
 
@@ -931,7 +959,7 @@ python -m nuplan.planning.script.run_simulation \
 
 #### Expected output files
 
-Stage 7C.2C wrapper outputs should keep the same schema as Stage 7C.2B:
+Stage 7C.2C wrapper outputs should keep the same schema as Stage 7C.2B, with planner metadata columns `planner_name`, `planner_id`, `planner_class`, `planner_type`, `policy_style`, `style_scope`, `nuplan_planner_config`, `hydra_overrides`, `supported_behavior_tasks`, `unsupported_behavior_tasks`, and `parameters_json`:
 
 ```text
 outputs/stage7c2c_*/
@@ -954,8 +982,8 @@ outputs/stage7c2c_*/
 #### Expected shape / key metrics
 
 - Stage 7C.2C-0 native IDM smoke：至少应生成 1 个 official `simulation_log/**/*.msgpack.xz`。
-- Stage 7C.2C-1 wrapper smoke：期望 `simulated_ego_seq.npy` shape 为 `[1, 2, T, 8]`，其中 planner 维度对应 `simple_planner + idm_comfort`。
-- Stage 7C.2C-2 wrapper smoke：期望 shape 为 `[1, 4, T, 8]`，其中 planner 维度对应 `simple_planner + idm_conservative + idm_comfort + idm_aggressive`。
+- Stage 7C.2C-1 wrapper smoke：期望 `simulated_ego_seq.npy` shape 为 `[1, 2, T, 8]`，其中 planner 维度对应 `simple_planner + idm_longitudinal_comfort`。
+- Stage 7C.2C-2 wrapper smoke：期望 shape 为 `[1, 4, T, 8]`，其中 planner 维度对应 `simple_planner + idm_longitudinal_conservative + idm_longitudinal_comfort + idm_longitudinal_aggressive`。
 - Stage 7C.2C-3 5-log rollout：期望 shape 为 `[5, P, T, 8]`，`P` 为成功 planner profiles 数。
 
 #### PASS criteria
@@ -971,7 +999,7 @@ outputs/stage7c2c_*/
 
 - `planner=idm_planner` 找不到：检查 nuPlan devkit 安装、Hydra config search path、`nuplan-devkit` 是否在当前 Python 环境。
 - IDM override key 写错：必须读取本机 `idm_planner.yaml`，不要猜参数名。
-- wrapper profile 名称和 Hydra planner 名称混淆：`idm_conservative` 等是本项目 profile ID，nuPlan 原生 planner config 仍是 `planner=idm_planner`。
+- wrapper profile 名称和 Hydra planner 名称混淆：`idm_longitudinal_conservative` 等是本项目 profile ID，nuPlan 原生 planner config 仍是 `planner=idm_planner`；`idm_conservative` 等旧名称仅是兼容 alias。
 - 非 full pair 输出：如果 `[N, P]` 中有 scenario-planner pair 缺失，不能宣称 Stage 7C.2C full PASS。
 - 不要为了补齐 planner 维度而生成 offline pseudo trajectory。
 
