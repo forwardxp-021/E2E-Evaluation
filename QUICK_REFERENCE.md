@@ -77,6 +77,24 @@ python evaluate_embedding.py \
 - Stage 7F E2E model simulation in nuPlan: TODO; do not implement as offline trajectory rewriting
 - Stage 7G final thesis-facing Stage 7 summary: TODO
 
+### 1.1 Stage 7C planner strategy 摘要
+
+Stage 7C 的首要目标不是构造复杂 planner，而是先证明官方 nuPlan simulation / export pipeline 可以跑通：官方 simulation 成功运行，导出非空且 finite 的 `simulated_ego_trajectory.csv` 和 `simulated_ego_seq.npy`，并让这些 simulation-generated trajectories 进入 BDD / behavior embedding pipeline。
+
+Stage 7C planner 优先级：
+
+1. expert / log replay planner if available；
+2. simple planner if available；
+3. IDM planner if available；
+4. configurable IDM-style planner variants；
+5. 只有在官方/现有 planner 不可用或不足时，才允许最小 custom `AbstractPlanner`-compatible wrapper。
+
+推荐 planner set：`expert_or_log_replay`、`simple_planner`、`idm_conservative`、`idm_aggressive`、`idm_comfort`。Smoke test 可以先只跑 `expert_or_log_replay` 和 `simple_planner`；完整 Stage 7C validation 应加入行为差异明确的 `idm_conservative`、`idm_aggressive`、`idm_comfort`。IDM-style variants 应通过 planner 参数区分行为风格，例如 conservative 使用较低 target speed、较大 headway、较温和 acceleration、较早 braking；aggressive 使用较高 target speed、较小 headway、较强 acceleration、较晚 braking；comfort 使用适中 target speed、较低 acceleration、较平滑 longitudinal response 和较低 jerk。具体参数名取决于安装的 nuPlan planner API。
+
+Custom planner 只能作为后备或第二层，并且必须运行在官方 nuPlan simulation framework 内，兼容 nuPlan `AbstractPlanner` 或当前安装版本的等价 planner interface，通过 nuPlan simulation loop 输出轨迹。严禁绕过官方 simulation，严禁生成 offline pseudo trajectories，严禁用 numpy interpolation 改写 logged expert trajectories 后称为 simulation。E2E model planner integration 属于 Stage 7F，不属于 Stage 7C。
+
+Stage 7C smoke PASS 必须满足：使用官方 nuPlan simulation API 或官方 CLI；`pseudo_rollout=false`；至少一个 planner 和至少一个 scenario 成功；`simulated_ego_trajectory.csv` 非空；`simulated_ego_seq.npy` 非空；numeric outputs finite；`simulation_report.md` 写明 PASS。其他交通参与者行为取决于 nuPlan simulation configuration；如果使用 log-replay 或 non-reactive observations，必须作为 interaction realism limitation 记录，不能过度声称交互真实性。
+
 ### 2. 命令
 
 Stage 7B.1 导出 nuPlan expert ego/object 中间 CSV：
@@ -165,7 +183,7 @@ python tools/stage7c1_run_nuplan_simulation.py \
   --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
   --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
   --output_dir outputs/stage7c1_nuplan_simulation \
-  --planners expert_or_log_replay idm_conservative idm_aggressive idm_comfort \
+  --planners expert_or_log_replay simple_planner idm_conservative idm_aggressive idm_comfort \
   --max_scenarios 5 \
   --overwrite
 ```
