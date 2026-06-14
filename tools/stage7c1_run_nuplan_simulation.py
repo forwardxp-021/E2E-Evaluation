@@ -45,9 +45,10 @@ ALIGNMENT_FIELDS = [
     "target_scenario_id", "actual_planner_class", "actual_scenario_type", "actual_log_name",
     "actual_scene_token", "actual_nuplan_scenario_token", "actual_msgpack_path", "runner_report_log_name", "runner_report_scenario_name",
     "runner_report_planner_name", "runner_report_succeeded", "runner_report_error_message",
-    "db_name_match", "target_log_name_match", "scene_token_match", "stage7b_scene_token_match",
-    "scenario_id_match", "aligned", "same_log_alignment_passed", "strict_nuplan_token_alignment_passed",
-    "alignment_status",
+    "db_name_match", "target_log_name_match", "stage7b_scene_token_match",
+    "strict_stage7b_scene_token_match", "scenario_id_match", "aligned", "same_log_alignment_passed",
+    "strict_nuplan_token_alignment_passed", "actual_nuplan_scenario_token_available",
+    "exact_nuplan_token_rerun_supported", "alignment_level", "alignment_status",
 ]
 
 SHELL_UNSAFE_RE = re.compile(r"[|/\\:;&()\[\]{}<> \t\n'\"`$]")
@@ -234,7 +235,9 @@ def build_alignment_record(scenario: Dict[str, str], planner_name: str, run_dir:
     target_log_name_match = bool(target["target_log_name"] and actual_log_name and target["target_log_name"] == actual_log_name)
     db_name_match = target_log_name_match
     stage7b_scene_token_match = bool(target["target_scene_token"] and actual_nuplan_scenario_token and target["target_scene_token"] == actual_nuplan_scenario_token)
-    scene_token_match = stage7b_scene_token_match
+    strict_stage7b_scene_token_match = stage7b_scene_token_match
+    actual_nuplan_scenario_token_available = bool(actual_nuplan_scenario_token)
+    exact_nuplan_token_rerun_supported = bool(target_log_name_match and actual_nuplan_scenario_token_available)
     scenario_id_log_match = bool(target["scenario_id_log_part"] and actual_log_name and target["scenario_id_log_part"] == actual_log_name)
     scenario_id_token_match = bool(target["scenario_id_token_part"] and actual_nuplan_scenario_token and target["scenario_id_token_part"] == actual_nuplan_scenario_token)
     scenario_id_match = scenario_id_log_match and scenario_id_token_match if (target["scenario_id_log_part"] or target["scenario_id_token_part"]) else False
@@ -247,10 +250,15 @@ def build_alignment_record(scenario: Dict[str, str], planner_name: str, run_dir:
         status = "UNKNOWN"
     elif strict_nuplan_token_alignment_passed:
         status = "PASS_STRICT"
+    elif exact_nuplan_token_rerun_supported:
+        status = "PASS_LOG_AND_NUPLAN_TOKEN_RERUN"
     elif same_log_alignment_passed:
         status = "PASS_LOG_ONLY"
     else:
         status = "FAIL"
+    alignment_level = "log_name_plus_actual_nuplan_token" if exact_nuplan_token_rerun_supported else ("log_name" if same_log_alignment_passed else "none")
+    if command_succeeded and actual_log_name and target["target_log_name"] and not target_log_name_match:
+        warnings.append({"type": "scenario_log_alignment_mismatch", "scenario_id": target["target_scenario_id"], "planner_name": planner_name, "message": f"Stage 7B.4 target_log_name {target['target_log_name']} does not match actual nuPlan log_name {actual_log_name}.", "target_log_name": target["target_log_name"], "actual_log_name": actual_log_name})
     return {
         "scenario_index": target["scenario_index"],
         "planner_name": planner_name,
@@ -271,12 +279,15 @@ def build_alignment_record(scenario: Dict[str, str], planner_name: str, run_dir:
         "runner_report_error_message": runner.get("error_message", ""),
         "db_name_match": db_name_match,
         "target_log_name_match": target_log_name_match,
-        "scene_token_match": scene_token_match,
         "stage7b_scene_token_match": stage7b_scene_token_match,
+        "strict_stage7b_scene_token_match": strict_stage7b_scene_token_match,
         "scenario_id_match": scenario_id_match,
         "aligned": aligned,
         "same_log_alignment_passed": same_log_alignment_passed,
         "strict_nuplan_token_alignment_passed": strict_nuplan_token_alignment_passed,
+        "actual_nuplan_scenario_token_available": actual_nuplan_scenario_token_available,
+        "exact_nuplan_token_rerun_supported": exact_nuplan_token_rerun_supported,
+        "alignment_level": alignment_level,
         "alignment_status": status,
     }
 
@@ -302,8 +313,8 @@ def write_alignment_outputs(out_dir: Path, metadata: List[Dict[str, str]], recor
     first = records[0] if records else {}
     if records and all(r.get("alignment_status") == "PASS_STRICT" for r in records):
         status = "PASS_STRICT"
-    elif records and all(r.get("alignment_status") in {"PASS_STRICT", "PASS_LOG_ONLY"} for r in records):
-        status = "PASS_LOG_ONLY"
+    elif records and all(r.get("alignment_status") in {"PASS_STRICT", "PASS_LOG_AND_NUPLAN_TOKEN_RERUN", "PASS_LOG_ONLY"} for r in records):
+        status = "PASS_LOG_AND_NUPLAN_TOKEN_RERUN"
     elif not records or all(r.get("alignment_status") == "NOT_RUN" for r in records):
         status = "NOT_RUN"
     elif any(r.get("alignment_status") == "FAIL" for r in records):
@@ -314,8 +325,8 @@ def write_alignment_outputs(out_dir: Path, metadata: List[Dict[str, str]], recor
         "official simulation/export pipeline works and strict Stage 7B.4 scene_token to nuPlan scenario token alignment passed."
         if status == "PASS_STRICT"
         else (
-            "official simulation/export pipeline works and the target log matched; Stage 7B.4 scene_token differs from the actual nuPlan scenario token, so use actual_nuplan_scenario_token for exact future reruns."
-            if status == "PASS_LOG_ONLY"
+            "official simulation/export pipeline works, the target log matched, and an actual nuPlan scenario token is available for exact future reruns; Stage 7B.4 scene_token differs from that nuPlan scenario token."
+            if status == "PASS_LOG_AND_NUPLAN_TOKEN_RERUN"
             else ("official simulation/export pipeline works, but same-log alignment failed." if status == "FAIL" else "actual scenario identity was not fully available; same-log alignment is not proven.")
         )
     )
@@ -346,8 +357,9 @@ def write_alignment_outputs(out_dir: Path, metadata: List[Dict[str, str]], recor
 
 ## interpretation
 - {interpretation}
-- Stage 7B.4 `scene_token` is not necessarily equal to nuPlan `scenario_filter.scenario_tokens`.
-- Do not fail Stage 7C.1 smoke only because strict Stage 7B.4 scene-token matching failed when same-log alignment passed.
+- Stage 7B.4 `scene_token` is not necessarily equal to nuPlan `scenario_filter.scenario_tokens`; these values can be different token namespaces.
+- The verified exact rerun key is `log_name={first.get('actual_log_name', '')}` plus `nuPlan scenario_token={first.get('actual_nuplan_scenario_token', '')}`.
+- Do not fail Stage 7C.1 smoke only because strict Stage 7B.4 scene-token matching failed when same-log alignment passed and an actual nuPlan scenario token is available.
 
 ## aggregate counts
 - num_target_scenarios: `{summary['num_target_scenarios']}`
@@ -360,6 +372,25 @@ def write_alignment_outputs(out_dir: Path, metadata: List[Dict[str, str]], recor
 """
     (out_dir / "scenario_alignment_report.md").write_text(report, encoding="utf-8")
     return summary
+
+
+def build_alignment_diagnostics(alignment_summary: Dict[str, Any], alignment_passed: bool, strict_alignment_passed: bool) -> Dict[str, Any]:
+    records = alignment_summary.get("records", [])
+    same_log_alignment_passed = bool(records) and all(r.get("same_log_alignment_passed") is True for r in records)
+    strict_stage7b_scene_token_match = bool(records) and all(r.get("stage7b_scene_token_match") is True for r in records)
+    actual_token_available = bool(records) and all(r.get("actual_nuplan_scenario_token_available") is True for r in records)
+    alignment_level = "log_name_plus_actual_nuplan_token" if same_log_alignment_passed and actual_token_available else ("log_name" if same_log_alignment_passed else "none")
+    return {
+        "num_target_scenarios": alignment_summary["num_target_scenarios"],
+        "num_actual_scenarios_extracted": alignment_summary["num_actual_scenarios_extracted"],
+        "num_aligned": alignment_summary["num_aligned"],
+        "alignment_pass_ratio": alignment_summary["alignment_pass_ratio"],
+        "same_log_alignment_passed": same_log_alignment_passed,
+        "strict_stage7b_scene_token_match": strict_stage7b_scene_token_match,
+        "passed": alignment_passed,
+        "alignment_level": alignment_level,
+        "strict_nuplan_token_alignment_passed": strict_alignment_passed,
+    }
 
 
 def discover_modules() -> Dict[str, Dict[str, Any]]:
@@ -909,11 +940,15 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
     schema.update({
         "same_scenario_alignment_checked": True,
         "same_scenario_alignment_passed": alignment_passed,
+        "same_log_alignment_passed": alignment_passed,
+        "strict_stage7b_scene_token_match": strict_alignment_passed,
+        "actual_nuplan_scenario_token_available": bool(alignment_records) and all(r.get("actual_nuplan_scenario_token_available") is True for r in alignment_records),
+        "alignment_level": "log_name_plus_actual_nuplan_token" if (alignment_passed and bool(alignment_records) and all(r.get("actual_nuplan_scenario_token_available") is True for r in alignment_records)) else ("log_name" if alignment_passed else "none"),
         "strict_nuplan_token_alignment_passed": strict_alignment_passed,
         "same_scenario_alignment_report": "scenario_alignment_report.md",
     })
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_selection": {"metadata_rows": len(metadata), "max_scenarios": args.max_scenarios}, "scenario_alignment": {"num_target_scenarios": alignment_summary["num_target_scenarios"], "num_actual_scenarios_extracted": alignment_summary["num_actual_scenarios_extracted"], "num_aligned": alignment_summary["num_aligned"], "alignment_pass_ratio": alignment_summary["alignment_pass_ratio"], "passed": alignment_passed, "strict_nuplan_token_alignment_passed": strict_alignment_passed}, "validation": {"pass": False, "reason": "no official nuPlan closed-loop simulation output was produced", "official_success_count": official_success_count, "pseudo_rollout": False, "uses_official_nuplan_simulation": official_success_count > 0, "tensor_validation": {"shape": [0, 0, 0, len(EGO_STATE_CHANNELS)], "mask_shape": [0, 0, 0], "valid_timestep_count": 0, "missing_pair_count": 0, "passed": False}}, "trajectory_parser_validation": parser_validation or _empty_parser_validation()})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_selection": {"metadata_rows": len(metadata), "max_scenarios": args.max_scenarios}, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": False, "reason": "no official nuPlan closed-loop simulation output was produced", "official_success_count": official_success_count, "pseudo_rollout": False, "uses_official_nuplan_simulation": official_success_count > 0, "tensor_validation": {"shape": [0, 0, 0, len(EGO_STATE_CHANNELS)], "mask_shape": [0, 0, 0], "valid_timestep_count": 0, "missing_pair_count": 0, "passed": False}}, "trajectory_parser_validation": parser_validation or _empty_parser_validation()})
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
 ## Purpose
@@ -1142,11 +1177,15 @@ def run(args: argparse.Namespace) -> int:
         "planner_axis_names": tensor_info["planner_axis_names"],
         "same_scenario_alignment_checked": True,
         "same_scenario_alignment_passed": alignment_passed,
+        "same_log_alignment_passed": alignment_passed,
+        "strict_stage7b_scene_token_match": strict_alignment_passed,
+        "actual_nuplan_scenario_token_available": bool(alignment_records) and all(r.get("actual_nuplan_scenario_token_available") is True for r in alignment_records),
+        "alignment_level": "log_name_plus_actual_nuplan_token" if (alignment_passed and bool(alignment_records) and all(r.get("actual_nuplan_scenario_token_available") is True for r in alignment_records)) else ("log_name" if alignment_passed else "none"),
         "strict_nuplan_token_alignment_passed": strict_alignment_passed,
         "same_scenario_alignment_report": "scenario_alignment_report.md",
     }
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_alignment": {"num_target_scenarios": alignment_summary["num_target_scenarios"], "num_actual_scenarios_extracted": alignment_summary["num_actual_scenarios_extracted"], "num_aligned": alignment_summary["num_aligned"], "alignment_pass_ratio": alignment_summary["alignment_pass_ratio"], "passed": alignment_passed, "strict_nuplan_token_alignment_passed": strict_alignment_passed}, "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "pseudo_rollout": False, "uses_official_nuplan_simulation": True, "same_scenario_alignment_required": bool(args.require_same_scenario_alignment), "strict_nuplan_token_alignment_required": bool(args.require_strict_nuplan_token_alignment), "smoke_pass": smoke_pass_ok, "tensor_validation": {"shape": list(shape), "mask_shape": list(mask_shape), "valid_timestep_count": tensor_info["valid_timestep_count"], "missing_pair_count": tensor_info["missing_pair_count"], "passed": smoke_pass_ok}}, "trajectory_parser_validation": trajectory_parser_validation})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "pseudo_rollout": False, "uses_official_nuplan_simulation": True, "same_scenario_alignment_required": bool(args.require_same_scenario_alignment), "strict_nuplan_token_alignment_required": bool(args.require_strict_nuplan_token_alignment), "smoke_pass": smoke_pass_ok, "tensor_validation": {"shape": list(shape), "mask_shape": list(mask_shape), "valid_timestep_count": tensor_info["valid_timestep_count"], "missing_pair_count": tensor_info["missing_pair_count"], "passed": smoke_pass_ok}}, "trajectory_parser_validation": trajectory_parser_validation})
     report_status = "PASS" if pass_ok else "FAIL"
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
