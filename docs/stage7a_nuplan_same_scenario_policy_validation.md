@@ -48,7 +48,9 @@ This is not yet E2E model A/B validation, but it is empirical same-scenario poli
 
 ## 4. Initial Policy Definitions
 
-Start with configurable planner variants.
+> **Current Stage 7C planner-strategy note:** Stage 7C should first use existing nuPlan devkit / official-compatible planners before any custom planner. Preferred order is expert / log replay, simple planner, IDM planner, configurable IDM-style variants, and only then a minimal nuPlan `AbstractPlanner`-compatible wrapper if needed. Offline pseudo rollout and numpy rewriting of logged trajectories are not acceptable Stage 7C evidence. See the current roadmap section [`Stage 7C Planner Strategy`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md#stage-7c-planner-strategy).
+
+Start with configurable planner variants when official nuPlan/devkit support is available.
 
 Conservative planner:
 
