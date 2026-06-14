@@ -59,9 +59,33 @@ python evaluate_embedding.py \
 **输出**: UMAP 散点图、线性探针 R²/Spearman、邻域一致性分析
 
 
-## Stage 7 — nuPlan official simulation and E2E validation roadmap
+## Stage 7 — nuPlan official simulation and E2E validation command reference
 
-详见主路线图：[`docs/stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](docs/stage7_nuplan_simulation_and_e2e_validation_roadmap.md)。Stage 7 的当前定义是：使用 nuPlan 官方 simulation 环境生成同场景 planner / policy / E2E 行为数据，再验证 behavior embedding 和 BDD 是否能检测 policy-induced 与 E2E-induced driving style differences。Stage 7C 及之后不能被写成 offline pseudo rollout 或 numpy trajectory rewriting。
+详见主路线图：[`docs/stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](docs/stage7_nuplan_simulation_and_e2e_validation_roadmap.md)。Stage 7 的原则是：Stage 7C 及之后必须使用 nuPlan 官方 simulation 输出，不允许写成 offline pseudo rollout 或 numpy trajectory rewriting。
+
+### 0. 通用本地环境
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+```
+
+常用 nuPlan root 参数：
+
+```text
+--nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini
+--nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+```
+
+Stage 7B.4 当前主 context 目录：
+
+```text
+outputs/stage7b4_nuplan_context_merged
+```
 
 ### 1. 当前状态
 
@@ -69,93 +93,33 @@ python evaluate_embedding.py \
 - Stage 7B.1 expert ego/object export: PASS
 - Stage 7B.2 Stage6C-compatible dynamic converter: PASS
 - Stage 6C smoke on nuPlan expert context: PASS
-- Stage 7B.3 map/ODD feature builder: PASS
-- Stage 7B.4 dynamic + map/ODD merge/alignment: PASS; validated final directory `outputs/stage7b4_nuplan_context_merged/`
-- Stage 7C.1A official simulation smoke: PASS
-- Stage 7C.1B official msgpack trajectory export: PASS
-- Stage 7C.1C same-log alignment: PASS_LOG_AND_NUPLAN_TOKEN_RERUN evidence available; strict Stage 7B.4 scene_token ↔ nuPlan scenario token alignment is optional and may fail
-- Stage 7C.2 multi-planner/multi-scenario rollout: TODO
-- Stage 7C full official nuPlan simulation with rule/traditional planners: TODO
-- Stage 7D BDD validation on planner simulation data: TODO
-- Stage 7E planner-only consolidation: TODO
-- Stage 7F E2E model simulation in nuPlan: TODO; do not implement as offline trajectory rewriting
-- Stage 7G final thesis-facing Stage 7 summary: TODO
+- Stage 7B.3 map/ODD feature extraction: PASS
+- Stage 7B.4 dynamic + map/ODD merge/alignment: PASS；当前验证目录 `outputs/stage7b4_nuplan_context_merged/`
+- Stage 7C.1 official nuPlan simulation smoke: PASS
+- Stage 7C.1C exact scenario alignment / exact-token smoke: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
+- Stage 7C.2A simple_planner × 3 distinct logs: 准备/命令已定义；运行时必须使用 `--sample_distinct_log_names`
+- Stage 7C.2B simple_planner × 5 or 10 distinct logs: TODO
+- Stage 7C.2C multi-planner rollout: TODO
+- Stage 7D BDD validation on official planner trajectories: TODO；不要在本阶段实现
 
-### 1.1 Stage 7C planner strategy 摘要
+---
 
-Stage 7C 的首要目标不是构造复杂 planner，而是先证明官方 nuPlan simulation / export pipeline 可以跑通：官方 simulation 成功运行，导出非空且 finite 的 `simulated_ego_trajectory.csv` 和 `simulated_ego_seq.npy`，并让这些 simulation-generated trajectories 进入 BDD / behavior embedding pipeline。
+### Stage 7B.3 — Map/ODD feature extraction
 
-Stage 7C planner 优先级：
+#### Purpose
 
-1. expert / log replay planner if available；
-2. simple planner if available；
-3. IDM planner if available；
-4. configurable IDM-style planner variants；
-5. 只有在官方/现有 planner 不可用或不足时，才允许最小 custom `AbstractPlanner`-compatible wrapper。
+读取 Stage 7B.2 dynamic context dataset，并基于 nuPlan map API 生成与 dynamic window 行对齐的 map/ODD-lite features。该步骤只提取 map/ODD context，不训练、不 rollout、不合并 Stage 7B.4 特征。
 
-推荐 planner set：`expert_or_log_replay`、`simple_planner`、`idm_conservative`、`idm_aggressive`、`idm_comfort`。Smoke test 可以先只跑 `expert_or_log_replay` 和 `simple_planner`；完整 Stage 7C validation 应加入行为差异明确的 `idm_conservative`、`idm_aggressive`、`idm_comfort`。IDM-style variants 应通过 planner 参数区分行为风格，例如 conservative 使用较低 target speed、较大 headway、较温和 acceleration、较早 braking；aggressive 使用较高 target speed、较小 headway、较强 acceleration、较晚 braking；comfort 使用适中 target speed、较低 acceleration、较平滑 longitudinal response 和较低 jerk。具体参数名取决于安装的 nuPlan planner API。
+#### Command
 
-Custom planner 只能作为后备或第二层，并且必须运行在官方 nuPlan simulation framework 内，兼容 nuPlan `AbstractPlanner` 或当前安装版本的等价 planner interface，通过 nuPlan simulation loop 输出轨迹。严禁绕过官方 simulation，严禁生成 offline pseudo trajectories，严禁用 numpy interpolation 改写 logged expert trajectories 后称为 simulation。E2E model planner integration 属于 Stage 7F，不属于 Stage 7C。
-
-Stage 7C smoke PASS 必须满足：使用官方 nuPlan simulation API 或官方 CLI；`pseudo_rollout=false`；至少一个 planner 和至少一个 scenario 成功；`simulated_ego_trajectory.csv` 非空；`simulated_ego_seq.npy` 非空；numeric outputs finite；`simulation_report.md` 写明 PASS。其他交通参与者行为取决于 nuPlan simulation configuration；如果使用 log-replay 或 non-reactive observations，必须作为 interaction realism limitation 记录，不能过度声称交互真实性。
-
-Stage 7C.1 latest official smoke result: `simple_planner` PASS; official command success count `1`; `pseudo_rollout=false`; official simulation log parser read `simulation_log/**/*.msgpack.xz`; parsed trajectory rows `149`; `simulated_ego_seq.npy` shape `[1, 1, 149, 8]`; `simulated_ego_seq_mask.npy` shape `[1, 1, 149]`; `required_pose_valid_ratio=1.0`; x/y/yaw non-sentinel ratios `1.0 / 1.0 / 1.0`; warnings `[]`. This only proves official nuPlan simulation → `msgpack.xz` simulation log → trajectory parser → `[N, P, T, C]` tensor export. It is smoke PASS, not full Stage 7C PASS. New exact-filter evidence shows log-only filtering can select the target Stage 7B.4 log while nuPlan emits a different actual scenario token. For target log `2021.05.12.22.00.38_veh-35_01008_01518`, Stage 7B.4 `scene_token=165060762e765a5a`, but actual nuPlan scenario token is `000e00790bc45da7`; future exact reruns should use `scenario_filter.scenario_tokens=["000e00790bc45da7"]`.
-
-Stage 7C.1C exact-token alignment semantics: Stage 7B.4 `scene_token` 与 nuPlan `scenario_filter.scenario_tokens` 不保证属于同一 token namespace。最新 exact-token wrapper smoke 已验证：`target_log_name=2021.05.12.22.00.38_veh-35_01008_01518` 匹配，`stage7b_scene_token=165060762e765a5a` 不匹配，但 actual nuPlan scenario token `000e00790bc45da7` 可用于精确 rerun，因此应报告 `same_log_alignment_passed=true`、`strict_stage7b_scene_token_match=false`、`alignment_status=PASS_LOG_AND_NUPLAN_TOKEN_RERUN`、`alignment_level=log_name_plus_actual_nuplan_token`，不要把它写成 total same-scenario failure。
-
-Stage 7C.1 command-template safety: `tools/stage7c1_run_nuplan_simulation.py` supports safe placeholders `{scenario_id_safe}`, `{db_name_safe}`, `{scene_token_safe}`, `{sample_id_safe}`, `{planner_name_safe}`. Prefer these over raw metadata placeholders in shell/path command fields. By default the formatted command is executed with `subprocess.run(argv, shell=False)` after `shlex.split`; use `--nuplan_simulation_command_use_shell` only when shell semantics are explicitly required.
-
-Stage 7C.2A multi-scenario sampling: `tools/stage7c1_run_nuplan_simulation.py` supports `--sample_distinct_log_names`. 默认 false，保持旧行为：`--max_scenarios N` 直接取前 N 行 metadata。启用后，脚本会先按 `db_name` 去掉 `.db` 后的 normalized log name 保留每个 log 的第一行，保持原始 metadata 顺序，然后再应用 `--max_scenarios`；例如 23 行 metadata 但 5 个 unique log 时，`--sample_distinct_log_names --max_scenarios 3` 会选择来自 3 个不同 log 的前三个代表行。采样摘要会写入 `warnings.json.scenario_sampling`、`simulation_schema.json.sample_distinct_log_names` / `selected_log_names`，并显示在 `simulation_report.md` 的 `Scenario sampling` 段落中。
-
-
-### 2. 命令
-
-Stage 7B.1 导出 nuPlan expert ego/object 中间 CSV：
+当前 repo 中实际脚本名为 `tools/build_nuplan_map_odd_features.py`：
 
 ```bash
-python tools/stage7a_export_nuplan_expert_context.py \
-  --output_dir outputs/stage7A_nuplan/expert_context_export \
-  --max_dbs 5 \
-  --max_scenes_per_db 5 \
-  --max_lidar_pcs_per_scene 200 \
-  --num_neighbors 10 \
-  --overwrite
-```
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
 
-Stage 7B.2 转换为 Stage 6C 兼容的动态 context dataset：
-
-```bash
-python tools/stage7b_convert_expert_context_to_dataset.py \
-  --expert_ego_csv outputs/stage7A_nuplan/expert_context_export/expert_ego_trajectory.csv \
-  --expert_objects_csv outputs/stage7A_nuplan/expert_context_export/expert_nearby_objects.csv \
-  --selected_scenes_csv outputs/stage7A_nuplan/expert_context_export/selected_scenes.csv \
-  --output_dir outputs/stage7A_nuplan/expert_context_dataset \
-  --target_hz 10 \
-  --window_sec 8 \
-  --stride_sec 4 \
-  --num_neighbors 10 \
-  --overwrite
-```
-
-Stage 6C 在 nuPlan expert dynamic context 上做接口冒烟测试：
-
-```bash
-python tools/stage6c_build_behavior_events_v2.py \
-  --shard_manifest outputs/stage7A_nuplan/expert_context_dataset/shard_manifest.json \
-  --feature_schema_path outputs/stage7A_nuplan/expert_context_dataset/feature_schema.json \
-  --output_dir outputs/stage7A_nuplan/expert_behavior_events_smoke \
-  --dt 0.1 \
-  --overwrite \
-  --no_progress
-```
-
-
-Stage 7B.3 生成与 Stage 7B.2 window 对齐的 nuPlan map/ODD-lite features：
-
-```bash
 python tools/build_nuplan_map_odd_features.py \
-  --nuplan_db_root /path/to/nuplan/db \
-  --nuplan_map_root /path/to/nuplan/maps \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
   --input_dynamic_dir outputs/stage7A_nuplan/expert_context_dataset \
   --output_dir outputs/stage7b3_nuplan_map_odd \
   --split mini \
@@ -165,12 +129,14 @@ python tools/build_nuplan_map_odd_features.py \
   --overwrite
 ```
 
-Stage 7B.3 小样本 smoke test 命令：
+小样本 smoke：
 
 ```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
 python tools/build_nuplan_map_odd_features.py \
-  --nuplan_db_root /path/to/nuplan/db \
-  --nuplan_map_root /path/to/nuplan/maps \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
   --input_dynamic_dir outputs/stage7A_nuplan/expert_context_dataset \
   --output_dir outputs/stage7b3_nuplan_map_odd_smoke \
   --split mini \
@@ -178,9 +144,56 @@ python tools/build_nuplan_map_odd_features.py \
   --overwrite
 ```
 
-Stage 7B.4 合并 Stage 7B.2 dynamic context 与 Stage 7B.3 map/ODD-lite features：
+#### Expected output files
+
+```text
+outputs/stage7b3_nuplan_map_odd/
+├── map_odd_feat.npy
+├── map_odd_meta.csv
+├── map_odd_feature_schema.json
+├── map_odd_report.md
+└── warnings.json
+```
+
+#### Expected shape / key metrics
+
+```text
+map_odd_feat.npy: [23, 37] in latest verified mini run
+map_odd_meta.csv rows: 23 in latest verified mini run
+warnings: []
+map_odd_status: PASS
+map_odd_feat rows align with dynamic context rows
+```
+
+#### PASS criteria
+
+- `map_odd_feat.npy` 是二维 `[N, F_map]`，并且所有值 finite。
+- `map_odd_meta.csv` 行数等于处理的 Stage 7B.2 metadata 行数。
+- `map_odd_feature_schema.json.feature_names` 长度等于 `map_odd_feat.npy.shape[1]`。
+- `map_odd_report.md` 报告 alignment check 和 map candidate validation。
+- `warnings.json` 是结构化 JSON；最新验证期望 `warnings: []`、`map_odd_status: PASS`。
+- `map_name` 必须来自能被 nuPlan map API 初始化并完成真实 lane / lane_connector 查询验证的候选；弱候选只有通过真实查询后才可接受。
+
+#### Common failure modes
+
+- map root 路径错误：检查 `--nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps`。
+- DB root 路径错误或 split 不匹配：检查 `--nuplan_db_root .../nuplan-v1.1/splits/mini` 与 `--split mini`。
+- map candidate 无法通过真实查询验证：不要 silent fallback；应在 `warnings.json` 中记录候选失败原因。
+- 行数不一致：先检查 Stage 7B.2 `metadata.csv` / shard manifest 是否与当前输入目录一致。
+
+---
+
+### Stage 7B.4 — Merge dynamic context and map/ODD
+
+#### Purpose
+
+合并 Stage 7B.2 dynamic context features 与 Stage 7B.3 map/ODD features，输出 Stage 7C simulation wrapper 使用的 merged context 目录。该步骤不运行 planner simulation、不运行 BDD、不训练。
+
+#### Command
 
 ```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
 python tools/stage7b4_merge_dynamic_map_context.py \
   --dynamic_context_dir outputs/stage7A_nuplan/expert_context_dataset \
   --map_odd_dir outputs/stage7b3_nuplan_map_odd \
@@ -188,88 +201,580 @@ python tools/stage7b4_merge_dynamic_map_context.py \
   --overwrite
 ```
 
-Stage 7C.1 使用官方 nuPlan closed-loop simulation 运行同场景 planner variants，并导出 simulated ego trajectory（smoke 先跑 5 个 scenario）：
+#### Expected output files
+
+```text
+outputs/stage7b4_nuplan_context_merged/
+├── merged_context_feat.npy
+├── merged_metadata.csv
+├── merged_feature_schema.json
+├── alignment_report.md
+├── warnings.json
+├── ego_seq.npy
+├── neighbor_seq.npy
+├── context_traj.npy
+├── context_mask.npy
+├── dynamic_feat_style.npy
+└── map_odd_feat.npy
+```
+
+#### Expected shape / key metrics
+
+Latest verified Stage 7B.4 result:
+
+```text
+merged_context_feat shape: [23, 70]
+alignment_keys:
+  - db_name
+  - scene_token
+  - sample_id
+  - start_frame_index
+  - end_frame_index
+row_order_already_aligned: true
+warnings: 0
+status: PASS
+```
+
+Related context shapes:
+
+```text
+ego_seq.npy: [23, 80, 8]
+neighbor_seq.npy: [23, 5, 80, 15]
+context_traj.npy: [23, 80, 83]
+context_mask.npy: [23, 80, 5]
+dynamic_feat_style.npy: [23, 33]
+map_odd_feat.npy: [23, 37]
+merged_context_feat.npy: [23, 70]
+```
+
+#### PASS criteria
+
+- `merged_context_feat.npy` 存在，shape 为 `[23, 70]`（当前 mini smoke），列数等于 dynamic 33 + map/ODD 37。
+- `merged_metadata.csv` 行数等于 dynamic rows。
+- `alignment_report.md` 显示 `status: PASS`，并列出所选强 alignment keys、候选 key sets、row order / reindexing 结果。
+- `warnings.json` 中 warnings 数为 0，且包含 alignment / feature-name / finite validation。
+- `merged_feature_schema.json` 包含真实 feature names，以及 `dynamic::` / `map_odd::` 前缀的 merged names 和 feature slices。
+- 所有导出数组 `ego_seq.npy`、`neighbor_seq.npy`、`context_traj.npy`、`context_mask.npy`、`dynamic_feat_style.npy`、`map_odd_feat.npy`、`merged_context_feat.npy` 均无 NaN/Inf。
+
+#### Common failure modes
+
+- dynamic 与 map/ODD 行数不一致：重跑 Stage 7B.3，确认使用同一个 Stage 7B.2 dynamic context 输入。
+- 强 key 不唯一或字段缺失：检查 `merged_metadata.csv` / `map_odd_meta.csv` 中 `db_name`、`scene_token`、`sample_id`、`start_frame_index`、`end_frame_index`。
+- feature schema 长度不等于数组列数：不要生成 fallback feature names，应修复上游 schema。
+- Stage 7B.4 `scene_token` 仅是 Stage 7B metadata token；它不保证等于 nuPlan `scenario_filter.scenario_tokens`。exact rerun 见 Stage 7C.1C。
+
+---
+
+### Stage 7C.1 — Official nuPlan simulation smoke
+
+#### Purpose
+
+验证官方 nuPlan simulation → `simulation_log/*.msgpack.xz` → parser → `simulated_ego_seq.npy` export 全链路。No pseudo rollout is allowed。
+
+#### Command
 
 ```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
 python tools/stage7c1_run_nuplan_simulation.py \
-  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
   --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
   --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
-  --output_dir outputs/stage7c1_nuplan_simulation \
-  --planners expert_or_log_replay simple_planner idm_conservative idm_aggressive idm_comfort \
-  --max_scenarios 5 \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c1_nuplan_simulation_smoke \
+  --planners simple_planner \
+  --max_scenarios 1 \
   --min_timesteps 2 \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents planner=simple_planner scenario_builder=nuplan_mini scenario_filter=one_of_each_scenario_type scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7c1_smoke job_name=stage7c1_simple_planner output_dir={output_dir}' \
   --overwrite
 ```
 
-Stage 7C.2A 使用 `simple_planner × 3 distinct logs` 运行多 log smoke（需要补充本地可用的官方 nuPlan command template）：
+#### Expected output files
+
+```text
+outputs/stage7c1_nuplan_simulation_smoke/
+├── simulated_ego_trajectory.csv
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
+├── simulated_planner_metadata.csv
+├── scenario_planner_index.csv
+├── scenario_alignment_report.md
+├── scenario_alignment.json
+├── scenario_alignment.csv
+├── simulation_summary.csv
+├── simulation_schema.json
+├── simulation_report.md
+├── warnings.json
+└── official_nuplan_runs/
+```
+
+#### Expected shape / key metrics
+
+Latest smoke PASS metrics:
+
+```text
+warnings: []
+validation.pass: true
+official_success_count: 1
+trajectory_rows: 150
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+simulated_ego_seq.npy shape: [1, 1, 150, 8]
+simulated_ego_seq_mask.npy shape: [1, 1, 150]
+valid_timestep_count: 150
+msgpack_simulation_log_files_found: 1
+msgpack_simulation_log_files_parsed: 1
+msgpack_trajectory_rows_extracted: 150
+required_pose_valid_ratio: 1.0
+x/y/yaw non-sentinel ratios: 1.0 / 1.0 / 1.0
+```
+
+#### PASS criteria
+
+- `warnings.json` has no fatal warnings。
+- `validation.pass == true`。
+- `official_success_count >= 1`。
+- `uses_official_nuplan_simulation == true`。
+- `pseudo_rollout == false`。
+- `msgpack_simulation_log_files_parsed >= 1`。
+- `trajectory_rows > 0`。
+- `simulated_ego_seq.npy` 是四维 `[N, P, T, 8]`。
+- `simulated_ego_seq_mask.npy` shape 等于 `[N, P, T]`。
+- `required_pose_valid_ratio == 1.0`。
+
+#### Common failure modes
+
+- 不要在 `experiment_name` / `job_name` 中使用 raw `{scenario_id}`；raw scenario id 可能包含 `|`，shell mode 下会破坏命令。优先使用固定名称或 `{scenario_id_safe}`。
+- nuPlan CLI 失败：检查环境变量、DB root、map root、planner 名称和 Hydra config。
+- `msgpack.xz` 找不到或解析不到 trajectory：不能改用 pseudo rollout；应修复 official output 路径或 parser。
+- required pose field 缺失：`x`、`y`、`yaw` 不允许 silent sentinel fallback。
+
+---
+
+### Stage 7C.1C — Exact scenario alignment / exact-token smoke
+
+#### Purpose
+
+验证 nuPlan 可以通过 exact `log_name + actual nuPlan scenario token` 重新运行目标 scenario。同时明确：Stage 7B.4 `scene_token` 不一定等于 nuPlan `scenario_filter.scenario_tokens`。
+
+#### Important verified evidence
+
+```text
+Stage 7B.4 target_log_name:
+2021.05.12.22.00.38_veh-35_01008_01518
+
+Stage 7B.4 scene_token:
+165060762e765a5a
+
+Actual nuPlan scenario token discovered from runner_report/msgpack path:
+000e00790bc45da7
+```
+
+#### Command
+
+先用 native log-only command 发现 actual nuPlan token：
 
 ```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
+python -m nuplan.planning.script.run_simulation \
+  +simulation=closed_loop_nonreactive_agents \
+  planner=simple_planner \
+  scenario_builder=nuplan_mini \
+  scenario_filter=all_scenarios \
+  'scenario_filter.log_names=["2021.05.12.22.00.38_veh-35_01008_01518"]' \
+  scenario_filter.scenario_tokens=null \
+  scenario_filter.limit_total_scenarios=1 \
+  worker=single_machine_thread_pool \
+  experiment_name=stage7c1_exact_log_only_native \
+  job_name=stage7c1_exact_log_only_simple_planner \
+  output_dir=$NUPLAN_EXP_ROOT/stage7c1_exact_log_only_native
+```
+
+Expected discovery:
+
+```text
+runner_report.parquet:
+  succeeded: True
+  scenario_name: 000e00790bc45da7
+  log_name: 2021.05.12.22.00.38_veh-35_01008_01518
+
+simulation_log path:
+  simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.22.00.38_veh-35_01008_01518/000e00790bc45da7/000e00790bc45da7.msgpack.xz
+```
+
+Wrapper exact-token smoke：
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
 python tools/stage7c1_run_nuplan_simulation.py \
-  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
   --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
   --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
-  --output_dir outputs/stage7c2a_simple_planner_3logs \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c1_nuplan_simulation_exact_token_smoke \
+  --planners simple_planner \
+  --max_scenarios 1 \
+  --min_timesteps 2 \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents planner=simple_planner scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.log_names=["2021.05.12.22.00.38_veh-35_01008_01518"] scenario_filter.scenario_tokens=["000e00790bc45da7"] scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7c1_exact_token_smoke job_name=stage7c1_exact_token_simple_planner output_dir={output_dir}' \
+  --overwrite
+```
+
+#### Expected output files
+
+与 Stage 7C.1 smoke 相同，输出到：
+
+```text
+outputs/stage7c1_nuplan_simulation_exact_token_smoke/
+├── simulated_ego_trajectory.csv
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
+├── simulated_planner_metadata.csv
+├── scenario_planner_index.csv
+├── scenario_alignment_report.md
+├── scenario_alignment.json
+├── scenario_alignment.csv
+├── simulation_summary.csv
+├── simulation_schema.json
+├── simulation_report.md
+├── warnings.json
+└── official_nuplan_runs/
+```
+
+#### Expected shape / key metrics
+
+Latest exact-token wrapper PASS metrics:
+
+```text
+warnings: []
+validation.pass: true
+official_success_count: 1
+trajectory_rows: 149
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+same_scenario_alignment_required: false
+smoke_pass: true
+simulated_ego_seq.npy shape: [1, 1, 149, 8]
+simulated_ego_seq_mask.npy shape: [1, 1, 149]
+valid_timestep_count: 149
+msgpack_simulation_log_files_found: 1
+msgpack_simulation_log_files_parsed: 1
+msgpack_trajectory_rows_extracted: 149
+required_pose_valid_ratio: 1.0
+x/y/yaw non-sentinel ratios: 1.0 / 1.0 / 1.0
+```
+
+Alignment semantics:
+
+```text
+same_log_alignment_passed: true
+stage7b_scene_token_match: false
+actual_nuplan_scenario_token_available: true
+exact_nuplan_token_rerun_supported: true
+alignment_status: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
+```
+
+#### PASS criteria
+
+- official command succeeds。
+- `msgpack.xz` is parsed。
+- target `log_name` equals actual `log_name`。
+- actual nuPlan scenario token is available。
+- exact rerun with `log_name + actual_nuPlan_scenario_token` succeeds。
+- `pseudo_rollout == false`。
+
+#### Common failure modes
+
+- `No scenarios found to simulate`：通常是 `scenario_filter.log_names` 或 `scenario_filter.scenario_tokens` 不匹配；先用 log-only filtering 发现 actual token。
+- 不要假设 Stage 7B.4 `scene_token == nuPlan scenario_filter.scenario_tokens`。exact rerun 必须使用从 `runner_report.parquet` 或 `simulation_log` path 提取的 `actual_nuPlan_scenario_token`。
+- exact token command 中 quote/escape 错误：保持上面 bash block 的单引号/双引号格式。
+
+---
+
+### Stage 7C.2A — simple_planner × 3 distinct logs
+
+#### Purpose
+
+从 1 scenario × 1 planner 扩展到多个 distinct logs 的 official nuPlan simulation，并验证 multi-scenario tensor output `[N, P, T, C]`。
+
+#### Important metadata fact
+
+```text
+Stage 7B.4 merged_metadata.csv:
+rows: 23
+unique db_name: 5
+
+db_name distribution:
+2021.05.12.22.00.38_veh-35_01008_01518.db    5
+2021.05.12.22.28.35_veh-35_00620_01164.db    5
+2021.05.12.23.36.44_veh-35_00152_00504.db    5
+2021.05.12.23.36.44_veh-35_01133_01535.db    4
+2021.05.12.23.36.44_veh-35_02035_02387.db    4
+```
+
+使用 `--max_scenarios 3` alone 会选择前 3 行，但它们都属于同一个 `db_name`。Stage 7C.2A 必须使用 `--sample_distinct_log_names`，先按 normalized log name（`db_name` 去掉 `.db`）去重，再选择每个 log 的第一行。
+
+#### Command
+
+下面命令已经修正 output_dir 路径，使用 `/home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/...`，不要使用误写的 `/home/forwardxp/00_nuplan_E2E_evaluation/...`。
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c2a_simple_planner_3logs \
   --planners simple_planner \
   --sample_distinct_log_names \
   --max_scenarios 3 \
   --min_timesteps 2 \
-  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation scenario_filter.log_names=["{target_log_name}"] scenario_filter.scenario_tokens=null output_dir="{output_dir}"' \
+  --require_same_scenario_alignment \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents planner=simple_planner scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.log_names=["{target_log_name}"] scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7c2a_simple_planner job_name=stage7c2a_simple_planner output_dir={output_dir}' \
   --overwrite
 ```
 
-如需运行全部 Stage 7B.4 metadata rows，将 `--max_scenarios 0`。Stage 7C.1 必须通过 `--nuplan_simulation_command_template` 调用官方 `nuplan.planning.script.run_simulation` / nuPlan simulation runner；模板可使用 `{planner_name}`、`{scenario_id}`、`{db_name}`、`{scene_token}`、`{sample_id}`、`{output_dir}` 等占位符，且不能调用离线 numpy 轨迹改写脚本。Stage 7C.1C same-scenario alignment 还提供更安全的 exact scenario 过滤占位符：`{target_log_name}`、`{target_log_name_safe}`、`{target_scene_token}`、`{target_scene_token_safe}`、`{target_db_name}`、`{target_db_name_safe}`；未来如果本地 nuPlan Hydra config 支持 `scenario_filter.log_names` / `scenario_filter.scenario_tokens` 等 key，应优先使用这些 target 占位符，而不是把 raw `{scenario_id}` 直接塞进过滤命令。官方命令成功后，脚本会递归扫描该 scenario/planner 的输出目录，解析常见官方 artifact（parquet、csv、json/jsonl；pickle/msgpack 只在显式 `--allow_unsafe_pickle_artifacts` 且信任输出来源时启用），并导出真实 simulation ego trajectory。`--min_timesteps` 默认值为 2；每条成功 scenario-planner trajectory 必须至少包含该数量的有效 timestep。默认情况下，Stage 7C.1 smoke PASS 不会因为 alignment FAIL 而失败；如果要强制 paired same-log 验证通过，添加 `--require_same_scenario_alignment`，此时只要求 `same_log_alignment_passed=true`。如果还要强制 Stage 7B.4 `scene_token` 等于 actual nuPlan scenario token，额外添加 `--require_strict_nuplan_token_alignment`，默认 false。
+#### Expected output files
 
-### 3. 期望行为
+```text
+outputs/stage7c2a_simple_planner_3logs/
+├── simulated_ego_trajectory.csv
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
+├── simulated_planner_metadata.csv
+├── scenario_planner_index.csv
+├── scenario_alignment_report.md
+├── scenario_alignment.json
+├── scenario_alignment.csv
+├── simulation_summary.csv
+├── simulation_schema.json
+├── simulation_report.md
+├── warnings.json
+└── official_nuplan_runs/
+```
 
-- Stage 7B.1 从 nuPlan mini SQLite DB 中读取 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category`，生成 `expert_ego_trajectory.csv`、`expert_nearby_objects.csv`、`selected_scenes.csv`、`warnings.json` 和导出报告。
-- Stage 7B.2 读取 Stage 7B.1 的 CSV，生成 Stage 6C 可消费的 sharded dynamic context dataset，不会运行 planner simulation，也不会生成 policy rollout。
-- Stage 6C smoke 读取 Stage 7B.2 的 `shard_manifest.json` 和 `feature_schema.json`，生成 behavior-event metrics / bins / report / schema / warnings，用于验证接口兼容性。
-- Stage 7B.3 读取 Stage 7B.2 的 `shard_manifest.json` / shard `metadata.csv`，按原有 window 顺序生成 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`、`map_odd_report.md`、`warnings.json`；它只生成 map-lite / ODD proxy，不做 full vector map serialization、不渲染、不训练、不合并 Stage 7B.4 特征。`map_odd_meta.csv` 只写入已经通过 nuPlan `get_maps_api()` 初始化且通过真实 lane / lane_connector 半径查询验证的 `map_name`；`map_version` / `log_name` 只能作为弱候选，不能直接当最终 map name。若强候选（例如 `las_vegas`）在真实 layer 查询时失败，而弱候选（例如 `us-nv-las-vegas-strip`）查询成功，则使用通过查询验证的弱候选。
-- Stage 7B.4 读取 Stage 7B.2 的 shard manifest / shard arrays / `metadata.csv` / `feature_schema.json`，读取 Stage 7B.3 的 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`，只合并 dynamic context 与 map/ODD features，不执行 Stage 7C/7D、rollout、training、BDD 或 policy simulation。对齐只允许按优先级尝试强 key 组合（`db_name+scene_token+sample_id+start_frame_index+end_frame_index`，再到 `scenario_id+sample_id+start_frame_index+end_frame_index`、`scenario_id+sample_id`、`db_name+scene_token+start_frame_index+end_frame_index`），每个候选都必须两边字段存在、非空、两边唯一、dynamic key 全部存在于 map/ODD、且行数一致；不会使用任意共有字段静默对齐。若原始行序不一致但所选强 key 可安全匹配，会把 map/ODD rows 重排到 dynamic row order，并在 `alignment_report.md` 与 `warnings.json` 中显式记录。dynamic feature names 必须来自 `feature_schema.json` 的 `interaction_features`，map/ODD feature names 必须来自 `map_odd_feature_schema.json` 的 `feature_names`，数量必须分别等于数组列数；不会生成 `dynamic_feat_000` 或 `map_odd_feat_000` fallback。所有输出数组（`ego_seq`、`neighbor_seq`、`context_traj`、`context_mask`、`dynamic_feat_style`、`map_odd_feat`、`merged_context_feat`）必须全部 finite；否则失败且拒绝写出有效结果。输出目录是独立的 `outputs/stage7b4_nuplan_context_merged`，不会修改 Stage 7B.1/7B.2/7B.3 既有输出。
-- Stage 7B.1/B.2/B.3/B.4 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
-- Stage 7C.1 读取 Stage 7B.4 的 `merged_metadata.csv`，保留 metadata 行顺序，并用 `db_name`、`scene_token`、`scenario_id`、`sample_id`、`start_frame_index`、`end_frame_index` 作为 scenario selection / diagnostic keys。默认 `--max_scenarios` 仍按 metadata 原始行序截断；若启用 `--sample_distinct_log_names`，则先按 `db_name` 去掉 `.db` 后的 normalized log name 去重，每个 log 只保留第一行，再应用 `--max_scenarios`，用于 Stage 7C.2A 的 multi-log rollout。脚本会先 discovery 当前 Python 环境中的官方 nuPlan simulation/planner modules（例如 `nuplan.planning.script.run_simulation`、`nuplan.planning.simulation.runner`、`simple_planner`、`log_future_planner`、`idm_planner`），并记录到 `warnings.json`。它只允许官方 nuPlan closed-loop simulation；官方命令成功后必须从 official output artifact 中解析到 ego trajectory，且每行必须严格解析出 required pose 字段 `x`、`y`、`yaw` 以及 `time_s` 或 `timestep_index`，无效 required pose 行会被拒绝，不会被 sentinel 替代。每条成功 trajectory 还必须满足 `--min_timesteps`，并且不能全部依赖 sentinel pose 或零运动/零时间变化，才会写出非空 `simulated_ego_trajectory.csv`、四维 `simulated_ego_seq.npy`、`simulated_ego_seq_mask.npy`、`simulated_ego_seq_index.json` 和 PASS report。Stage 7C.1C 每次运行都会额外写出 `scenario_alignment_report.md`、`scenario_alignment.json`、`scenario_alignment.csv`，把 Stage 7B.4 target `db_name` 去掉 `.db` 后得到的 `target_log_name`、`scene_token` / `scenario_id` token fallback，与 official `simulation_log/<PlannerClass>/<scenario_type>/<log_name>/<scenario_token>/<scenario_token>.msgpack.xz` 路径及可选 `runner_report.parquet` 中的 actual log/token 进行比较；`target_log_name == actual_log_name` 记为 `same_log_alignment_passed`，Stage 7B.4 `scene_token == actual_nuplan_scenario_token` 另记为 `strict_nuplan_token_alignment_passed`；如果 log 匹配但 token 不匹配，整体 alignment status 是 `PASS_LOG_ONLY`，不是 `FAIL`。`simulated_ego_seq.npy` 固定保持 `[N_valid_scenarios, P_valid_planners, T_sim, C]`，scenario/planner 轴由成功 trajectory rows 的 `scenario_index` / `planner_id` 去重后按数值优先排序；缺失的 scenario-planner pair 保留 sentinel，并由 mask 中的 0 标识，不能把 `[num_pairs, 1, T, C]` 当作 PASS。若 nuPlan 不可用、planner class 不可用、缺少可运行的官方 simulation entry point、官方命令失败，或官方输出无法解析出有效 required-pose trajectory，它会写出 FAIL diagnostic report，不会伪造成功数据，不会做 pseudo rollout-lite，不会用 numpy interpolation 改写 expert 轨迹。
+#### Expected shape / key metrics
 
+Expected sampling diagnostics:
 
-### 4. 通过标准
+```json
+{
+  "scenario_sampling": {
+    "original_metadata_rows": 23,
+    "unique_log_names": 5,
+    "sample_distinct_log_names": true,
+    "selected_metadata_rows": 3,
+    "selected_sample_ids": ["sample_000000", "sample_000005", "sample_000010"],
+    "selected_log_names": [
+      "2021.05.12.22.00.38_veh-35_01008_01518",
+      "2021.05.12.22.28.35_veh-35_00620_01164",
+      "2021.05.12.23.36.44_veh-35_00152_00504"
+    ]
+  }
+}
+```
 
-预期 shape 检查：
+Expected tensor shape:
 
-- `ego_seq.npy`: [N, 80, 8]
-- `neighbor_seq.npy`: [N, 5, 80, 15]
-- `context_traj.npy`: [N, 80, 83]
-- `context_mask.npy`: [N, 80, 5]
-- `interaction_feat_style.npy`: [N, 33]
-- `map_odd_feat.npy`: [N, 37]
-- `merged_context_feat.npy`: [N, 70]
+```text
+simulated_ego_seq.npy shape: [3, 1, T, 8] or [N_success, 1, T, 8] with N_success >= 1
+simulated_ego_seq_mask.npy shape: [3, 1, T] or [N_success, 1, T]
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+```
 
+#### PASS criteria
 
-Stage 7C.1 smoke PASS 标准：
+- warnings has no `nuplan_cli_failed`。
+- `official_success_count >= 3` for the intended full 3-log pass。
+- `msgpack_simulation_log_files_found >= 3`。
+- `msgpack_simulation_log_files_parsed >= 3`。
+- `simulated_ego_seq.npy` shape 为 `[3, 1, T, 8]`；若部分 log 因环境问题失败，最低 smoke 记录可为 `[N_success, 1, T, 8]` 且 `N_success >= 1`，但不能宣称 full 3-log PASS。
+- `simulated_ego_seq_mask.npy` shape 为 `[3, 1, T]` 或 `[N_success, 1, T]`。
+- `pseudo_rollout == false`。
+- `uses_official_nuplan_simulation == true`。
+- 每个 successful record 的 `same_log_alignment_passed == true`。
 
-1. `simulation_schema.json` 中 `uses_official_nuplan_simulation=true` 且 `pseudo_rollout=false`。
-2. 至少一个 planner variant 在至少一个 Stage 7B.4 scenario 上通过官方 nuPlan closed-loop simulation 成功运行。
-3. `simulated_ego_trajectory.csv` 存在且非空，列包含 `scenario_index`、`planner_id`、`planner_name`、`timestep_index`、`time_s`、`x`、`y`、`yaw`、`speed`、`acceleration`、`db_name`、`scene_token`、`scenario_id`、`sample_id`。
-4. `simulated_ego_seq.npy` 存在，shape 必须是四维 `[N_valid_scenarios, P_valid_planners, T_sim, C]`；`shape[0]` 等于 `scenario_axis` 长度，`shape[1]` 等于 `planner_axis` 长度，`shape[3]` 等于 `ego_state_channels` 长度，禁止 `[num_pairs, 1, T, C]` 折叠形状通过。
-5. `simulated_ego_seq_mask.npy` 必须存在，shape 等于 `simulated_ego_seq.npy.shape[:3]`，且至少有一个 valid timestep；`simulated_ego_seq_index.json` 和 `simulation_schema.json` 必须记录 `scenario_axis`、`planner_axis`、`planner_axis_names`、`scenario_axis_key=scenario_index`、`planner_axis_key=planner_id`、`ego_state_channels` 与 sentinel。
-6. `warnings.json.validation.tensor_validation` 必须记录 tensor shape、mask shape、valid timestep count、missing scenario-planner pair count 和 passed 状态；`simulation_report.md` 必须报告 scenario axis size、planner axis size、`T_sim`、`C`、mask valid timestep count、missing scenario-planner pair count。
-7. 所有导出的 numeric arrays 必须 finite；如果 optional channel（`speed`、`acceleration`、`steering_angle_or_curvature_if_available`）不可用，只能使用 schema 中记录的 sentinel，并在 `warnings.json` 中说明；required pose fields（`x`、`y`、`yaw`）禁止用 sentinel 静默替代。
-8. `warnings.json` 必须包含 `trajectory_parser_validation`，至少报告 `num_candidate_artifact_rows`、`num_valid_trajectory_rows`、`num_rejected_rows_invalid_required_pose`、`required_pose_valid_ratio`、`x_non_sentinel_ratio`、`y_non_sentinel_ratio`、`yaw_non_sentinel_ratio`、`min_timesteps_per_trajectory`、`mean_timesteps_per_trajectory`、`num_trajectories_with_too_few_steps`、`num_trajectories_with_zero_motion`。
-9. PASS 必须满足 `required_pose_valid_ratio > 0`，`x_non_sentinel_ratio > 0`，`y_non_sentinel_ratio > 0`，`yaw_non_sentinel_ratio > 0`，且 successful trajectory 中不存在少于 `--min_timesteps` 的轨迹。
-10. `simulation_schema.json` 必须记录 `trajectory_parser`、`required_pose_fields`、`optional_sentinel_fields`、`min_timesteps`，并显示 `uses_official_nuplan_simulation=true`、`pseudo_rollout=false`。
-11. `simulation_report.md` 必须明确写 PASS；若官方 nuPlan 环境/config 不可运行，或官方命令成功但无法解析有效 required-pose trajectory，必须明确 FAIL 并给出 diagnostics，不能写 fake success。
-12. 每次 Stage 7C.1 运行都必须写出 `scenario_alignment_report.md`、`scenario_alignment.json`、`scenario_alignment.csv`；`warnings.json.scenario_alignment` 必须记录 `num_target_scenarios`、`num_actual_scenarios_extracted`、`num_aligned`、`alignment_pass_ratio`、`same_log_alignment_passed`、`strict_stage7b_scene_token_match`、`passed`、`alignment_level` 和 `strict_nuplan_token_alignment_passed`，`simulation_schema.json` 必须记录 `same_scenario_alignment_checked=true`、`same_log_alignment_passed`、`strict_stage7b_scene_token_match`、`actual_nuplan_scenario_token_available`、`alignment_level`、`strict_nuplan_token_alignment_passed`、`same_scenario_alignment_report="scenario_alignment_report.md"`。
-13. 默认 smoke PASS 只证明 official simulation/export/parser/tensor pipeline，不等于 strict token PASS；只有显式使用 `--require_same_scenario_alignment` 时，最终 PASS 才要求 same-log alignment PASS；只有额外使用 `--require_strict_nuplan_token_alignment` 时，最终 PASS 才要求 strict nuPlan token alignment PASS。
-14. Stage 7C.2A 使用 `--sample_distinct_log_names --max_scenarios 3` 时，`warnings.json.scenario_sampling.selected_log_names` 必须包含 3 个不同的 normalized log name，`simulation_report.md` 必须包含 `Scenario sampling` 段落，`simulation_schema.json` 必须记录 `sample_distinct_log_names=true` 和 `selected_log_names`。
+#### Diagnostic commands after run
 
-当前小样本通过记录：
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
 
-- Stage 7B.1：5 DB × 5 scenes 导出成功，25 scenes，4797 ego rows，47970 nearby object rows，warnings none。
-- Stage 7B.2：生成 23 个窗口，`ego_seq [23,80,8]`，`neighbor_seq [23,5,80,15]`，`context_traj [23,80,83]`，metadata rows 23，interaction features [23,33]。
-- Stage 6C smoke：`total_rows=23`，`shard_count=1`，无 array shape / manifest / metadata 错误。
-- Stage 7B.3 结构性 PASS：`map_odd_feat.npy` 必须是二维 `[N, F_map]`，`map_odd_meta.csv` 行数必须等于处理的 Stage 7B.2 metadata 行数，全部 feature 无 NaN/inf，`map_odd_report.md` 必须包含 alignment check，`warnings.json` 必须是结构化 JSON。
-- Stage 7B.3 语义性 PASS：`map_odd_meta.csv` 中 `map_name` 必须是真正能被 nuPlan map API 初始化并完成一次真实 lane 或 lane_connector 查询的 map name；空查询结果可以接受，但查询抛异常必须拒绝该候选并继续尝试弱候选。如果候选 map name 无法通过查询验证则该行留空并在 `warnings.json` 中记录 warning。在正确安装 nuPlan mini DB + maps 的环境中，`windows_with_ego_poses_ratio > 0`、`map_available_mean > 0`、`query_success_ratio > 0`、`lane_feature_non_sentinel_ratio > 0`，并且 `nearby_lane_count_mean` 不应因为所有 layer 查询失败而全 0。
-- Stage 7B.3 报告必须显式检查 `map_name_loaded_success_ratio`、`map_available_mean`、`windows_with_ego_poses_ratio`、lane/object feature non-sentinel ratio、unique resolved map names、query_success_ratio、per-layer query success/failure/empty counts、`map_candidate_validation_success_count`、`accepted_map_name_after_query_validation`、`rejected_map_candidates_with_reason`、per-layer first exception message，以及 semantic warnings（例如 map 不可用、对象计数全 0、lane curvature 全 sentinel）。
-- Stage 7B.4 PASS：`merged_context_feat.npy` 存在且列数等于 dynamic 33 + map/ODD 37；当前 mini smoke 预期 shape 为 `[23, 70]`；`merged_metadata.csv` 行数等于 dynamic rows；`alignment_report.md` 显示 `status: PASS`、显式列出所选强 alignment keys、候选 key sets 与失败原因、两边 unique/duplicate/missing key count、row order 是否 already aligned、是否 reindexing、feature name validation summary、所有数组 finite checks；`merged_feature_schema.json` 必须包含真实 `dynamic_feature_names`、`map_odd_feature_names`、带 `dynamic::` / `map_odd::` 前缀的 `merged_feature_names`、`feature_slices`，且 `merged_feature_names` 长度等于 `merged_context_feat.shape[1]`；`warnings.json` 必须包含 `warnings`、`alignment_validation`、`feature_name_validation`、`finite_validation`；`ego_seq.npy`、`neighbor_seq.npy`、`context_traj.npy`、`context_mask.npy`、`dynamic_feat_style.npy`、`map_odd_feat.npy`、`merged_context_feat.npy` 均无 NaN/Inf；Stage 7B.1/7B.2/7B.3 输出目录不被改写。
+cat outputs/stage7c2a_simple_planner_3logs/simulation_report.md
+cat outputs/stage7c2a_simple_planner_3logs/warnings.json
+cat outputs/stage7c2a_simple_planner_3logs/scenario_alignment_report.md
+
+python - <<'PY'
+import json
+import numpy as np
+from pathlib import Path
+
+base = Path("outputs/stage7c2a_simple_planner_3logs")
+seq = np.load(base / "simulated_ego_seq.npy")
+mask = np.load(base / "simulated_ego_seq_mask.npy")
+print("seq shape:", seq.shape)
+print("mask shape:", mask.shape)
+print("valid timesteps:", int(mask.sum()))
+print("finite:", bool(np.isfinite(seq).all()))
+
+schema = json.loads((base / "simulation_schema.json").read_text())
+print("uses_official_nuplan_simulation:", schema.get("uses_official_nuplan_simulation"))
+print("pseudo_rollout:", schema.get("pseudo_rollout"))
+print("sample_distinct_log_names:", schema.get("sample_distinct_log_names"))
+print("selected_log_names:", schema.get("selected_log_names"))
+
+align = json.loads((base / "scenario_alignment.json").read_text())
+for r in align.get("records", []):
+    print(r.get("scenario_index"), r.get("planner_name"), r.get("target_log_name"), "->", r.get("actual_log_name"), r.get("actual_nuplan_scenario_token"), r.get("alignment_status"))
+PY
+
+find outputs/stage7c2a_simple_planner_3logs/official_nuplan_runs \
+  -maxdepth 8 -type f | sort | grep -E "msgpack|runner_report|nuplan_cli|log.txt"
+```
+
+#### Common failure modes
+
+- repeated same log in multi-scenario run：确认命令包含 `--sample_distinct_log_names`。
+- `No scenarios found to simulate`：先用 Stage 7C.1C log-only filtering 发现 actual token；不要直接用 Stage 7B.4 `scene_token` 当 nuPlan token。
+- output path 拼写错误：正确路径是 `/home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c2a_simple_planner_3logs`。
+- 部分 log 成功、部分 log 失败：可以记录 smoke evidence，但不要写成 full 3-log PASS，除非 `official_success_count >= 3`。
+- pseudo rollout accidentally introduced：Stage 7C.2A 必须保持 `pseudo_rollout=false`。
+
+---
+
+### Stage 7C.2B — simple_planner × 5 or 10 distinct logs
+
+#### Purpose
+
+TODO：在 Stage 7C.2A 稳定后扩展到 5 或 10 个 distinct logs。
+
+#### Command
+
+TODO。不要在没有运行验证前发明 PASS 结果。
+
+#### Expected output files
+
+TODO；预计沿用 Stage 7C.2A output schema。
+
+#### Expected shape / key metrics
+
+TODO；预计为 `[N, 1, T, 8]`，其中 `N` 为成功 distinct logs 数。
+
+#### PASS criteria
+
+TODO；至少应满足 official simulation、msgpack parser、`pseudo_rollout=false`、same-log alignment。
+
+#### Common failure modes
+
+TODO；预计与 Stage 7C.2A 相同，并增加长运行时间/部分 log failure 的诊断。
+
+---
+
+### Stage 7C.2C — multi-planner rollout
+
+#### Purpose
+
+TODO：在多 distinct logs 上运行多个 planner，形成 `[N, P, T, C]` official trajectory tensor。
+
+#### Command
+
+TODO。不要在没有验证前发明 planner set 或 PASS 结果。
+
+#### Expected output files
+
+TODO；预计沿用 Stage 7C.1/7C.2A output schema。
+
+#### Expected shape / key metrics
+
+TODO；预计为 `[N, P, T, 8]`，其中 `P` 为成功 planner 数。
+
+#### PASS criteria
+
+TODO；必须保持 official nuPlan simulation，不能退化为 pseudo rollout。
+
+#### Common failure modes
+
+TODO；预计包括 planner config 不存在、planner 参数不兼容、部分 scenario-planner pair 缺失。
+
+---
+
+### Stage 7D — BDD validation on official planner trajectories
+
+#### Purpose
+
+TODO：在 Stage 7C official planner trajectories 上运行 BDD / behavior embedding validation。当前任务不实现 Stage 7D。
+
+#### Command
+
+TODO。
+
+#### Expected output files
+
+TODO。
+
+#### Expected shape / key metrics
+
+TODO。
+
+#### PASS criteria
+
+TODO。
+
+#### Common failure modes
+
+TODO；不要使用 offline numpy trajectory rewriting 伪造 Stage 7D 输入。
+
+---
+
+### Stage 7 common failure modes
+
+1. `No scenarios found to simulate`
+   - 通常是 `scenario_filter.log_names` 或 `scenario_filter.scenario_tokens` 不匹配。
+   - 先运行 log-only filtering。
+   - 从 `runner_report.parquet` 或 `simulation_log/<Planner>/<type>/<log_name>/<scenario_token>/<scenario_token>.msgpack.xz` 路径发现 actual nuPlan token。
+
+2. `Stage7B scene_token mismatch`
+   - 不一定是失败。
+   - Stage 7B.4 `scene_token` may not equal nuPlan `scenario_filter.scenario_tokens`。
+   - exact rerun 使用 `log_name + actual_nuPlan_scenario_token`。
+
+3. `raw scenario_id breaks shell`
+   - raw `scenario_id` 可能包含 `|`。
+   - 使用 `{scenario_id_safe}` 或避免在 shell/path command fields 中使用 raw scenario id。
+   - 默认优先让 wrapper 使用 `subprocess.run(argv, shell=False)`；只有确实需要 shell 语义时才使用 shell mode。
+
+4. `Repeated same log in multi-scenario run`
+   - `--max_scenarios 3` 默认只取 metadata 前 3 行，可能全部来自同一 log。
+   - Stage 7C.2A 使用 `--sample_distinct_log_names`。
+
+5. `Pseudo rollout accidentally introduced`
+   - Stage 7C 必须只使用 official nuPlan simulation。
+   - `simulation_schema.json` 必须记录 `uses_official_nuplan_simulation=true` 和 `pseudo_rollout=false`。
+   - 如果 official CLI 或 parser 失败，应报告 FAIL diagnostics，不允许用 numpy interpolation 或 expert trajectory rewriting 伪造成功。
+
 
 ## 关键参数
 
@@ -4144,26 +4649,35 @@ python tools/stage6c_build_behavior_events_v2.py \
 11. Stage 6C smoke 命令不会因为 array shape、missing shard paths、missing metadata 而失败；允许部分 detector 因 geometric slots 输出 proxy / weak_proxy warning。
 12. 不生成 fake data，不修改 Stage 6C result files，不修改 BDD 逻辑。
 
-# Stage 7B.3 — nuPlan map/ODD feature builder placeholder
+# Stage 7B.3 — nuPlan map/ODD feature builder（历史小节，已更新）
+
+> 当前 Stage 7B.3 已实现；最新 copy-paste 命令、输出文件、shape、PASS criteria 和 failure modes 以本文档上方 `Stage 7B.3 — Map/ODD feature extraction` 小节为准。保留本历史小节仅用于说明 Stage 7B.2 最初预留的接口已经落地。
 
 ## 1. 命令
 
-Stage 7B.3 尚未实现；当前只有接口占位。未来命令将以 Stage 7B.2 的 `shard_manifest.json` / `metadata.csv` / ego path 为输入，构建每个窗口的 map/ODD 特征。
+```bash
+python tools/build_nuplan_map_odd_features.py \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --input_dynamic_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --output_dir outputs/stage7b3_nuplan_map_odd \
+  --split mini \
+  --max_scenarios 50 \
+  --radius_m 50.0 \
+  --sample_stride 5 \
+  --overwrite
+```
 
 ## 2. 期望行为
 
-- 构建 Stage 6-style map/ODD features for each generated window。
-- 使用 nuPlan maps / `map.gpkg` 或 nuPlan map API。
-- 根据 ego path 和 scene/map location 对齐 map features。
-- 计划输出：
-  - `map_odd_feat.npy`
-  - `map_odd_meta.csv`
-  - `map_odd_feature_schema.json`
-  - `map_odd_report.md`
-  - `warnings.json`
+- 读取 Stage 7B.2 dynamic context dataset。
+- 使用 nuPlan map API 构建与 dynamic window 行对齐的 map/ODD-lite features。
+- 输出 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`、`map_odd_report.md`、`warnings.json`。
+- 不运行 planner simulation，不生成 pseudo rollout，不修改 Stage 7B.2 输出。
 
 ## 3. 通过标准
 
-1. Stage 7B.2 的 manifest/schema 已经保留 Stage 7B.3 接口。
-2. Stage 7B.3 实现前，不应伪造 `map_odd_feat.npy` 或 map/ODD 数值。
-3. 后续实现必须复用 Stage 6-style map/ODD feature names，并与每个 dynamic context window 对齐。
+1. `map_odd_feat.npy` 是二维 `[N, F_map]`，latest verified mini run 为 `[23, 37]`。
+2. `map_odd_meta.csv` 行数与 dynamic context rows 对齐，latest verified mini run 为 23 行。
+3. `warnings.json` 为结构化 JSON，latest verified result 为 `warnings: []`、`map_odd_status: PASS`。
+4. 所有 map/ODD features finite，且 feature schema 长度等于数组列数。
