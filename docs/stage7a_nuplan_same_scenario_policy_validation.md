@@ -1,5 +1,8 @@
 # Stage 7A — nuPlan Same-Scenario Policy Validation
 
+> **Current roadmap note:** This document is retained as Stage 7A / early nuPlan-readiness notes. The current Stage 7 A–G roadmap is [`stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md). In the current roadmap, E2E model integration belongs to Stage 7F, and final thesis-facing synthesis belongs to Stage 7G.
+
+
 ## 0. Scope Clarification
 
 Stage 7A.0 / Stage 7A.1 expert-data inspection is only an infrastructure step. The final Stage 7 objective is same-scenario policy A/B rollout and task-conditioned BDD. Expert trajectory export is not the main validation result.
