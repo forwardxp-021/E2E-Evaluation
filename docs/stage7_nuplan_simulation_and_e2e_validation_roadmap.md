@@ -17,7 +17,7 @@ The key dataset distinction is:
 |---|---|---|---|---|
 | 7A | nuPlan readiness | nuPlan DB/map/devkit | readiness evidence | PASS |
 | 7B | context construction | nuPlan logs/maps | `merged_context_feat` | PASS |
-| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1 smoke + exact-token wrapper validation PASS; 7C.2A/7C.2B simple_planner distinct-log rollout PASS; 7C.2C multi-planner rollout STARTING / TODO |
+| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1 smoke + exact-token wrapper validation PASS; 7C.2A/7C.2B simple_planner distinct-log rollout PASS; 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke PASS; 7C.2C-1 wrapper multi-planner smoke READY / TODO |
 | 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | TODO |
 | 7E | planner-only consolidation | Stage 7D | planner report cards | TODO |
 | 7F | E2E model simulation | E2E planner + nuPlan sim | E2E simulated trajectories | TODO |
@@ -178,7 +178,8 @@ Latest Stage 7C.1 smoke status:
 - Stage 7C.1C — strict Stage7B scene_token == nuPlan scenario_token: **NOT REQUIRED / mismatch observed**.
 - Stage 7C.2A — `simple_planner × 3 distinct logs`: **PASS**.
 - Stage 7C.2B — `simple_planner × 5 distinct logs`: **PASS**.
-- Stage 7C.2C — multi-planner rollout: **STARTING / TODO**.
+- Stage 7C.2C-0 — native IDM default/conservative/comfort/aggressive smoke: **PASS**.
+- Stage 7C.2C-1 — wrapper multi-planner rollout: **READY / TODO**.
 - Stage 7D — BDD validation on planner-generated trajectories: **TODO**.
 
 Recorded smoke metrics:
@@ -266,9 +267,13 @@ Stage 7C.1B official msgpack trajectory export: PASS
 Stage 7C.1C exact-token wrapper smoke: PASS
 Stage 7C.2A simple_planner × 3 distinct logs: PASS
 Stage 7C.2B simple_planner × 5 distinct logs: PASS
-Stage 7C.2C multi-planner rollout: STARTING / TODO
+Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS
+Stage 7C.2C-1 wrapper multi-planner smoke: READY / TODO
 Stage 7D BDD validation: TODO
 ```
+
+
+Stage 7C.2C-0 native IDM smoke validated all four official nuPlan IDM runs on the same exact scenario: `log_name=2021.05.12.22.00.38_veh-35_01008_01518`, `nuPlan scenario_token=000e00790bc45da7`, `planner_name=IDMPlanner`. The verified wrapper profiles for Stage 7C.2C-1 are `simple_planner`, `idm_conservative`, `idm_comfort`, and `idm_aggressive`; the IDM profiles use official `planner=idm_planner` with Hydra overrides on `planner.idm_planner.target_velocity`, `planner.idm_planner.min_gap_to_lead_agent`, `planner.idm_planner.headway_time`, `planner.idm_planner.accel_max`, and `planner.idm_planner.decel_max`. The wrapper command template now uses `{planner_hydra_overrides}` so Stage 7C.2C-1 can produce `[1, 4, T, 8]` when all four planners succeed.
 
 Stage 7C.2B validated `simple_planner` on five distinct logs with official nuPlan simulation outputs, no pseudo rollout, same-log alignment required, and tensor shape `[5, 1, 149, 8]`. The selected Stage 7B sample IDs were `sample_000000`, `sample_000005`, `sample_000010`, `sample_000015`, and `sample_000019`; the selected log names were the five distinct mini logs in Stage 7B.4 metadata. Validation passed with `official_success_count=5`, `trajectory_rows=745`, `msgpack_simulation_log_files_found=5`, `msgpack_simulation_log_files_parsed=5`, `required_pose_valid_ratio=1.0`, and `pseudo_rollout=false`.
 
@@ -284,7 +289,7 @@ scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021
 
 **Remaining Stage 7C TODOs:**
 
-- Stage 7C.2C: add multi-planner variants if official-compatible planner configs are available. Prioritize IDM profiles for controlled rule-based baselines.
+- Stage 7C.2C-1: run wrapper smoke with `--planners simple_planner idm_conservative idm_comfort idm_aggressive` and require official nuPlan outputs only; expected tensor shape is `[1, 4, T, 8]` for one log when all four planners succeed.
 - Stage 7C.2D: produce planner behavior report card after multi-planner rollout data exist.
 
 Stage 7D is still not started; BDD validation on planner-generated trajectories remains TODO until Stage 7C.2C outputs exist.
