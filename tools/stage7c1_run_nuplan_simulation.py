@@ -10,6 +10,8 @@ import importlib.util
 import json
 import lzma
 import math
+import re
+import shlex
 import shutil
 import subprocess
 from pathlib import Path
@@ -38,6 +40,46 @@ DISCOVERY_MODULES = [
     "nuplan.planning.simulation.simulation",
 ]
 SCENARIO_KEYS = ["db_name", "scene_token", "scenario_id", "sample_id", "start_frame_index", "end_frame_index"]
+
+SHELL_UNSAFE_RE = re.compile(r"[|/\\:;&()\[\]{}<> \t\n'\"`$]")
+RAW_COMMAND_PLACEHOLDERS = ["scenario_id", "db_name", "scene_token", "sample_id", "planner_name"]
+
+
+def shell_safe_slug(value: Any) -> str:
+    """Return a shell/path-safe slug for command-template placeholder substitution."""
+    text = str(value)
+    safe = SHELL_UNSAFE_RE.sub("_", text)
+    safe = re.sub(r"_+", "_", safe).strip("_")
+    return safe or "empty"
+
+
+def _template_uses_placeholder(template: str, placeholder: str) -> bool:
+    return "{" + placeholder + "}" in template
+
+
+def build_command_replacements(planner_name: str, scenario: Dict[str, str], out_dir: Path) -> Dict[str, str]:
+    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir)}
+    for key, value in scenario.items():
+        replacements[key] = str(value)
+    for key in ["scenario_id", "db_name", "scene_token", "sample_id"]:
+        replacements[f"{key}_safe"] = shell_safe_slug(scenario.get(key, ""))
+    return replacements
+
+
+def add_unsafe_placeholder_warnings(command_template: str, replacements: Dict[str, str], warnings: List[Dict[str, str]]) -> None:
+    for placeholder in RAW_COMMAND_PLACEHOLDERS:
+        if not _template_uses_placeholder(command_template, placeholder):
+            continue
+        raw_value = replacements.get(placeholder, "")
+        if SHELL_UNSAFE_RE.search(raw_value):
+            warnings.append({
+                "type": "unsafe_command_placeholder",
+                "placeholder": placeholder,
+                "raw_value": raw_value,
+                "recommended_placeholder": f"{placeholder}_safe",
+                "message": f"Command template uses raw {{{placeholder}}} with shell/path-unsafe characters; use {{{placeholder}_safe}} instead.",
+            })
+
 CSV_COLUMNS = [
     "scenario_index", "planner_id", "planner_name", "timestep_index", "time_s", "x", "y", "yaw",
     "speed", "acceleration", "steering_angle_or_curvature_if_available", "db_name", "scene_token",
@@ -153,14 +195,14 @@ def validate_inputs(context_dir: Path, db_root: Path, map_root: Path) -> List[Di
     return warnings
 
 
-def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int) -> Tuple[bool, str]:
-    replacements = {"planner_name": planner_name, "output_dir": str(out_dir)}
-    for key, value in scenario.items():
-        replacements[key] = value
+def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False) -> Tuple[bool, str]:
+    replacements = build_command_replacements(planner_name, scenario, out_dir)
+    add_unsafe_placeholder_warnings(command_template, replacements, warnings)
     command = command_template.format(**replacements)
-    proc = subprocess.run(command, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s)
-    log_path = out_dir / f"nuplan_cli_{planner_name}_{scenario.get('scenario_index', '')}.log"
-    log_path.write_text("$ " + command + "\n\nSTDOUT:\n" + proc.stdout + "\nSTDERR:\n" + proc.stderr, encoding="utf-8")
+    argv = shlex.split(command)
+    proc = subprocess.run(command if use_shell else argv, shell=use_shell, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s)
+    log_path = out_dir / f"nuplan_cli_{shell_safe_slug(planner_name)}_{scenario.get('scenario_index', '')}.log"
+    log_path.write_text("$ " + command + "\nargv: " + json.dumps(argv, ensure_ascii=False) + "\nshell: " + str(use_shell) + "\n\nSTDOUT:\n" + proc.stdout + "\nSTDERR:\n" + proc.stderr, encoding="utf-8")
     return proc.returncode == 0, str(log_path)
 
 
@@ -768,7 +810,7 @@ def run(args: argparse.Namespace) -> int:
             before_warning_count = len(warnings)
             run_dir = out_dir / "official_nuplan_runs" / f"scenario_{scenario.get('scenario_index', '')}" / str(prow["planner_name"])
             run_dir.mkdir(parents=True, exist_ok=True)
-            ok, log_path = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s)
+            ok, log_path = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell)
             if not ok:
                 warnings.append({"type": "nuplan_cli_failed", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": f"official nuPlan command failed; log: {log_path}"})
                 status = "failed"
@@ -926,7 +968,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--planners", nargs="+", default=["expert_or_log_replay", "idm_conservative", "idm_aggressive", "idm_comfort"])
     p.add_argument("--max_scenarios", type=int, default=5, help="0 means all Stage 7B.4 metadata rows.")
     p.add_argument("--overwrite", action="store_true")
-    p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}.")
+    p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}; prefer shell/path-safe variants {planner_name_safe}, {scenario_id_safe}, {db_name_safe}, {scene_token_safe}, {sample_id_safe} in shell command fields.")
+    p.add_argument("--nuplan_simulation_command_use_shell", action="store_true", help="Run the formatted official nuPlan command through the shell. Default is false: shlex.split(command) and subprocess.run(argv, shell=False) to avoid shell metacharacter interpretation.")
     p.add_argument("--command_timeout_s", type=int, default=3600)
     p.add_argument("--min_timesteps", type=int, default=2, help="Minimum parsed timesteps required for each successful scenario-planner trajectory.")
     p.add_argument("--allow_unsafe_pickle_artifacts", action="store_true", help="Parse trusted pickle/msgpack nuPlan artifacts. Pickle is unsafe and remains disabled by default.")
