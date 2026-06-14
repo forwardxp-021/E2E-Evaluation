@@ -99,7 +99,7 @@ outputs/stage7b4_nuplan_context_merged
 - Stage 7C.1C exact scenario alignment / exact-token smoke: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
 - Stage 7C.2A simple_planner × 3 distinct logs: PASS；运行时必须使用 `--sample_distinct_log_names`
 - Stage 7C.2B simple_planner × 5 distinct logs: PASS；输出 shape `[5, 1, 149, 8]`
-- Stage 7C.2C multi-planner rollout: STARTING / TODO；优先准备 IDM 参数化 rule-based profiles
+- Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS；Stage 7C.2C-1 wrapper multi-planner smoke: READY / TODO
 - Stage 7D BDD validation on official planner trajectories: TODO；不要在本阶段实现
 
 ---
@@ -803,48 +803,81 @@ nuplan/planning/script/config/simulation/planner/remote_planner.yaml
 nuplan/planning/script/config/simulation/planner/simple_planner.yaml
 ```
 
-本次任务尝试读取本地 devkit 路径：
+Stage 7C.2C-0 已在目标机器上完成 native official IDM smoke 验证，default / conservative / comfort / aggressive 四组参数均在同一个 exact scenario 成功运行：
 
 ```text
-/home/forwardxp/00_nuplan_E2E_eva/nuplan-devkit/nuplan/planning/script/config/simulation/planner/idm_planner.yaml
+log_name = 2021.05.12.22.00.38_veh-35_01008_01518
+nuPlan scenario_token = 000e00790bc45da7
+planner_name = IDMPlanner
 ```
 
-当前执行环境中该路径不存在，因此未修改代码中的 IDM profile override 逻辑，避免猜测本机不可验证的配置。根据 nuPlan official `idm_planner.yaml`，需要在目标机器上再次确认以下 Hydra override keys：
+已确认 wrapper 应使用以下 Hydra override key：
 
 ```text
-idm_planner.target_velocity
-idm_planner.min_gap_to_lead_agent
-idm_planner.headway_time
-idm_planner.accel_max
-idm_planner.decel_max
-idm_planner.planned_trajectory_samples
-idm_planner.planned_trajectory_sample_interval
-idm_planner.occupancy_map_radius
+planner=idm_planner
+planner.idm_planner.target_velocity
+planner.idm_planner.min_gap_to_lead_agent
+planner.idm_planner.headway_time
+planner.idm_planner.accel_max
+planner.idm_planner.decel_max
 ```
 
-#### Intended IDM profile logic（TODO，需本地 config 确认后再写入运行命令）
+#### IDM profile definitions（已写入 wrapper）
 
 ```text
+simple_planner:
+  planner_type: simple_baseline
+  policy_style: simple_baseline
+  hydra_overrides: planner=simple_planner
+
 idm_conservative:
-  lower target_velocity
-  larger headway_time
-  larger min_gap_to_lead_agent
-  lower accel_max
+  planner_type: idm_rule_based
+  policy_style: conservative
+  hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=8.0 planner.idm_planner.min_gap_to_lead_agent=2.0 planner.idm_planner.headway_time=2.0 planner.idm_planner.accel_max=0.8 planner.idm_planner.decel_max=2.5
 
 idm_comfort:
-  medium target_velocity
-  medium headway_time
-  medium min_gap_to_lead_agent
-  smoother accel_max / decel_max
+  planner_type: idm_rule_based
+  policy_style: comfort
+  hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=10.0 planner.idm_planner.min_gap_to_lead_agent=1.5 planner.idm_planner.headway_time=1.5 planner.idm_planner.accel_max=1.0 planner.idm_planner.decel_max=3.0
 
 idm_aggressive:
-  higher target_velocity
-  smaller headway_time
-  smaller min_gap_to_lead_agent
-  higher accel_max
+  planner_type: idm_rule_based
+  policy_style: aggressive
+  hydra_overrides: planner=idm_planner planner.idm_planner.target_velocity=12.0 planner.idm_planner.min_gap_to_lead_agent=0.5 planner.idm_planner.headway_time=1.0 planner.idm_planner.accel_max=1.5 planner.idm_planner.decel_max=4.0
 ```
 
-不要把这些 profiles 写成真实人类风格标签；它们只是 controlled rule-based planner profiles。
+这些 profiles 是 controlled rule-based planner profiles，不是真实人类风格标签。wrapper command template 支持 `{planner_hydra_overrides}` placeholder；每个 planner 运行时自动展开为对应 Hydra override fragment，不再需要在模板里硬编码 `planner=simple_planner`。
+
+#### Stage 7C.2C-1 wrapper smoke command（1 log × 4 planners）
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7c2c1_multi_planner_1log \
+  --planners simple_planner idm_conservative idm_comfort idm_aggressive \
+  --sample_distinct_log_names \
+  --max_scenarios 1 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.log_names=["{target_log_name}"] scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7c2c_multi_planner job_name=stage7c2c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+期望输出：
+
+```text
+simulated_ego_seq.npy shape: [1, 4, T, 8]
+simulated_ego_seq_mask.npy shape: [1, 4, T]
+official_success_count: 4
+msgpack_simulation_log_files_parsed: 4
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+planner_axis_names: ["simple_planner", "idm_conservative", "idm_comfort", "idm_aggressive"]
+```
 
 #### Planned smoke sequence
 
