@@ -1,5 +1,8 @@
 # Stage 7 — Empirical Same-Scenario Style Separability Validation
 
+> **Current roadmap note:** This document is retained as earlier empirical same-scenario planning context. The current Stage 7 A–G roadmap is [`stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md), which supersedes the older A–E framing and explicitly adds Stage 7F E2E nuPlan simulation and Stage 7G final synthesis.
+
+
 ## 1. Why Stage 6D Matched Pseudo Is Not Enough
 
 Stage 6C v2 three-split validation is complete, but the next main contribution should move beyond pseudo splits.

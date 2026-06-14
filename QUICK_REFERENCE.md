@@ -59,18 +59,23 @@ python evaluate_embedding.py \
 **输出**: UMAP 散点图、线性探针 R²/Spearman、邻域一致性分析
 
 
-## Stage 7 — nuPlan same-scenario policy validation
+## Stage 7 — nuPlan official simulation and E2E validation roadmap
+
+详见主路线图：[`docs/stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](docs/stage7_nuplan_simulation_and_e2e_validation_roadmap.md)。Stage 7 的当前定义是：使用 nuPlan 官方 simulation 环境生成同场景 planner / policy / E2E 行为数据，再验证 behavior embedding 和 BDD 是否能检测 policy-induced 与 E2E-induced driving style differences。Stage 7C 及之后不能被写成 offline pseudo rollout 或 numpy trajectory rewriting。
 
 ### 1. 当前状态
 
-- Stage 7A.0 nuPlan mini readiness: PASS
+- Stage 7A nuPlan readiness: PASS
 - Stage 7B.1 expert ego/object export: PASS
 - Stage 7B.2 Stage6C-compatible dynamic converter: PASS
 - Stage 6C smoke on nuPlan expert context: PASS
-- Stage 7B.3 map/ODD feature builder: implemented
-- Stage 7C.1 official nuPlan closed-loop simulation runner: implemented; real PASS requires installed/configured nuPlan simulation environment
-- Stage 7C policy rollout: pending
-- Stage 7D policy BDD: pending
+- Stage 7B.3 map/ODD feature builder: PASS
+- Stage 7B.4 dynamic + map/ODD merge/alignment: PASS; validated final directory `outputs/stage7b4_nuplan_context_merged/`
+- Stage 7C official nuPlan simulation with rule/traditional planners: TODO
+- Stage 7D BDD validation on planner simulation data: TODO
+- Stage 7E planner-only consolidation: TODO
+- Stage 7F E2E model simulation in nuPlan: TODO; do not implement as offline trajectory rewriting
+- Stage 7G final thesis-facing Stage 7 summary: TODO
 
 ### 2. 命令
 
