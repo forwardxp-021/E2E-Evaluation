@@ -8,11 +8,12 @@ import csv
 import importlib
 import importlib.util
 import json
+import lzma
 import math
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
 SENTINEL = -9999.0
@@ -44,6 +45,14 @@ CSV_COLUMNS = [
 ]
 
 PLANNER_PROFILES = {
+    "simple_planner": {
+        "planner_type": "simple_baseline",
+        "policy_style": "simple_baseline",
+        "preferred_classes": ["SimplePlanner"],
+        "parameters": {
+            "purpose": "nuPlan built-in simple planner baseline"
+        },
+    },
     "expert_or_log_replay": {
         "planner_type": "expert_replay",
         "policy_style": "reference",
@@ -127,10 +136,16 @@ def choose_planner_class(planner_name: str, discovery: Dict[str, Dict[str, Any]]
 
 def validate_inputs(context_dir: Path, db_root: Path, map_root: Path) -> List[Dict[str, str]]:
     warnings: List[Dict[str, str]] = []
+    context_dir_resolved = context_dir.expanduser().resolve()
+    metadata_resolved = (context_dir / "merged_metadata.csv").expanduser().resolve()
     if not context_dir.is_dir():
-        warnings.append({"type": "missing_context_dir", "scenario_id": "", "planner_name": "", "message": f"context_dir does not exist: {context_dir}"})
+        message = f"context_dir does not exist: input={context_dir}, resolved={context_dir_resolved}"
+        print(f"ERROR: {message}", file=sys.stderr)
+        warnings.append({"type": "missing_context_dir", "scenario_id": "", "planner_name": "", "message": message, "context_dir_input": str(context_dir), "context_dir_resolved": str(context_dir_resolved), "merged_metadata_resolved": str(metadata_resolved)})
     if not (context_dir / "merged_metadata.csv").is_file():
-        warnings.append({"type": "missing_metadata", "scenario_id": "", "planner_name": "", "message": f"missing Stage 7B.4 metadata: {context_dir / 'merged_metadata.csv'}"})
+        message = f"missing Stage 7B.4 metadata: input={context_dir / 'merged_metadata.csv'}, resolved={metadata_resolved}"
+        print(f"ERROR: {message}", file=sys.stderr)
+        warnings.append({"type": "missing_metadata", "scenario_id": "", "planner_name": "", "message": message, "context_dir_input": str(context_dir), "context_dir_resolved": str(context_dir_resolved), "merged_metadata_resolved": str(metadata_resolved)})
     if not db_root.is_dir():
         warnings.append({"type": "missing_nuplan_db_root", "scenario_id": "", "planner_name": "", "message": f"nuplan_db_root does not exist: {db_root}"})
     if not map_root.is_dir():
@@ -273,6 +288,10 @@ def _empty_parser_validation() -> Dict[str, Any]:
         "num_candidate_artifact_rows": 0,
         "num_valid_trajectory_rows": 0,
         "num_rejected_rows_invalid_required_pose": 0,
+        "msgpack_simulation_log_files_found": 0,
+        "msgpack_simulation_log_files_parsed": 0,
+        "msgpack_trajectory_rows_extracted": 0,
+        "msgpack_parse_errors": [],
         "required_pose_valid_ratio": 0.0,
         "x_non_sentinel_ratio": 0.0,
         "y_non_sentinel_ratio": 0.0,
@@ -284,11 +303,143 @@ def _empty_parser_validation() -> Dict[str, Any]:
     }
 
 
+def _obj_value(obj: Any, names: Iterable[str], default: Any = None) -> Any:
+    for name in names:
+        if isinstance(obj, dict) and name in obj:
+            return obj[name]
+        if hasattr(obj, name):
+            return getattr(obj, name)
+    return default
+
+
+def _obj_path(obj: Any, paths: Iterable[str], default: Any = None) -> Any:
+    for path in paths:
+        cur = obj
+        ok = True
+        for part in path.split("."):
+            cur = _obj_value(cur, [part], None)
+            if cur is None:
+                ok = False
+                break
+        if ok:
+            return cur
+    return default
+
+
+def _time_seconds(ego_state: Any, timestep_index: int) -> float:
+    time_point = _obj_path(ego_state, ["time_point", "car_footprint.time_point"], None)
+    if time_point is not None:
+        seconds = _obj_value(time_point, ["time_s", "seconds"], None)
+        if seconds is not None:
+            return _finite_float(seconds, float(timestep_index))
+        us = _obj_value(time_point, ["time_us", "microseconds"], None)
+        if us is not None:
+            return _finite_float(us, float(timestep_index) * 1e6) / 1e6
+    return float(timestep_index)
+
+
+def _ego_state_to_row(ego_state: Any, timestep_index: int, scenario: Dict[str, str], planner_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    x = _required_float({"x": _obj_path(ego_state, ["rear_axle.x", "center.x", "car_footprint.rear_axle.x", "car_footprint.center.x"], None)}, ["x"], "x")
+    y = _required_float({"y": _obj_path(ego_state, ["rear_axle.y", "center.y", "car_footprint.rear_axle.y", "car_footprint.center.y"], None)}, ["y"], "y")
+    yaw = _required_float({"yaw": _obj_path(ego_state, ["rear_axle.heading", "center.heading", "car_footprint.rear_axle.heading", "car_footprint.center.heading"], None)}, ["yaw"], "yaw")
+    if x is None or y is None or yaw is None:
+        return None
+    dynamic = _obj_value(ego_state, ["dynamic_car_state"], None)
+    speed = _finite_float(_obj_path(dynamic, ["speed", "rear_axle_velocity_2d.x", "center_velocity_2d.x"], None))
+    accel = _finite_float(_obj_path(dynamic, ["acceleration", "rear_axle_acceleration_2d.x", "center_acceleration_2d.x"], None))
+    return {
+        "scenario_index": scenario.get("scenario_index", ""),
+        "planner_id": planner_row.get("planner_id", ""),
+        "planner_name": planner_row.get("planner_name", ""),
+        "timestep_index": timestep_index,
+        "time_s": _time_seconds(ego_state, timestep_index),
+        "x": x,
+        "y": y,
+        "yaw": yaw,
+        "speed": speed,
+        "acceleration": accel,
+        "steering_angle_or_curvature_if_available": _finite_float(_obj_path(ego_state, ["tire_steering_angle", "car_footprint.vehicle_parameters"], SENTINEL)),
+        "db_name": scenario.get("db_name", ""),
+        "scene_token": scenario.get("scene_token", ""),
+        "scenario_id": scenario.get("scenario_id", ""),
+        "sample_id": scenario.get("sample_id", ""),
+    }
+
+
+def _load_nuplan_simulation_log(path: Path) -> Any:
+    sim_log_mod = importlib.import_module("nuplan.planning.simulation.simulation_log")
+    simulation_log_cls = getattr(sim_log_mod, "SimulationLog")
+    for method in ["load_data", "deserialize", "load"]:
+        if hasattr(simulation_log_cls, method):
+            loader = getattr(simulation_log_cls, method)
+            try:
+                return loader(path)
+            except Exception:
+                try:
+                    return loader(str(path))
+                except Exception:
+                    pass
+    for kwargs in [{"file_path": path}, {"file_path": str(path)}, {"log_file": path}, {"log_file": str(path)}]:
+        try:
+            obj = simulation_log_cls(**kwargs)
+        except Exception:
+            continue
+        if hasattr(obj, "load_data"):
+            return obj.load_data()
+        return obj
+    raise AttributeError("SimulationLog has no supported load_data/deserialize/load method")
+
+
+def _parse_msgpack_simulation_log(path: Path, scenario: Dict[str, str], planner_row: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], int]:
+    try:
+        sim_log = _load_nuplan_simulation_log(path)
+    except Exception:
+        msgpack = importlib.import_module("msgpack")
+        sim_log = msgpack.unpackb(lzma.open(path, "rb").read(), raw=False, strict_map_key=False)
+    history = _obj_value(sim_log, ["simulation_history"], sim_log)
+    data = _obj_value(history, ["data"], history if isinstance(history, list) else [])
+    rows: List[Dict[str, Any]] = []
+    rejected = 0
+    for i, sample in enumerate(data):
+        ego_state = _obj_value(sample, ["ego_state"], None)
+        if ego_state is None:
+            ego_state = _obj_path(sample, ["ego_state", "sample.ego_state"], None)
+        if ego_state is None:
+            rejected += 1
+            continue
+        row = _ego_state_to_row(ego_state, i, scenario, planner_row)
+        if row is not None:
+            rows.append(row)
+        else:
+            rejected += 1
+    return rows, rejected
+
+
+def discover_msgpack_simulation_logs(root: Path) -> List[Path]:
+    return sorted(path for path in root.rglob("simulation_log/**/*.msgpack.xz") if path.is_file())
+
+
 def parse_official_trajectory_outputs(search_dir: Path, scenario: Dict[str, str], planner_row: Dict[str, Any], warnings: List[Dict[str, str]], min_timesteps: int, allow_unsafe_pickle: bool = False) -> Tuple[List[Dict[str, Any]], str, Dict[str, Any]]:
     artifacts = discover_simulation_artifacts(search_dir, allow_unsafe_pickle=allow_unsafe_pickle)
     parsed_rows: List[Dict[str, Any]] = []
     used: List[str] = []
     validation = _empty_parser_validation()
+    msgpack_logs = discover_msgpack_simulation_logs(search_dir)
+    validation["msgpack_simulation_log_files_found"] = len(msgpack_logs)
+    for artifact in msgpack_logs:
+        try:
+            rows, rejected = _parse_msgpack_simulation_log(artifact, scenario, planner_row)
+            validation["msgpack_simulation_log_files_parsed"] += 1
+            validation["msgpack_trajectory_rows_extracted"] += len(rows)
+            validation["num_candidate_artifact_rows"] += len(rows) + rejected
+            validation["num_rejected_rows_invalid_required_pose"] += rejected
+            parsed_rows.extend(rows)
+            if rows:
+                used.append(str(artifact))
+        except Exception as exc:
+            message = f"{artifact}: {type(exc).__name__}: {exc}"
+            validation["msgpack_parse_errors"].append(message)
+            warnings.append({"type": "msgpack_simulation_log_parse_error", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(planner_row.get("planner_name", "")), "message": message})
     for artifact in artifacts:
         for rec in _records_from_artifact(artifact, warnings):
             if not _row_has_trajectory(rec):
@@ -427,8 +578,9 @@ def build_simulated_seq(rows: List[Dict[str, Any]], out_path: Path) -> Dict[str,
 
 
 def merge_parser_validation(total: Dict[str, Any], item: Dict[str, Any]) -> None:
-    for key in ["num_candidate_artifact_rows", "num_valid_trajectory_rows", "num_rejected_rows_invalid_required_pose", "num_trajectories_with_too_few_steps", "num_trajectories_with_zero_motion"]:
+    for key in ["num_candidate_artifact_rows", "num_valid_trajectory_rows", "num_rejected_rows_invalid_required_pose", "num_trajectories_with_too_few_steps", "num_trajectories_with_zero_motion", "msgpack_simulation_log_files_found", "msgpack_simulation_log_files_parsed", "msgpack_trajectory_rows_extracted"]:
         total[key] = int(total.get(key, 0)) + int(item.get(key, 0))
+    total.setdefault("msgpack_parse_errors", []).extend(item.get("msgpack_parse_errors", []))
     mins = total.setdefault("_trajectory_mins", [])
     means = total.setdefault("_trajectory_means", [])
     if int(item.get("min_timesteps_per_trajectory", 0)) > 0:
@@ -534,6 +686,10 @@ Rows are read from `merged_metadata.csv` and order is preserved. Keys: {', '.joi
 - num_candidate_artifact_rows: `{parser_validation['num_candidate_artifact_rows']}`
 - num_valid_trajectory_rows: `{parser_validation['num_valid_trajectory_rows']}`
 - num_rejected_rows_invalid_required_pose: `{parser_validation['num_rejected_rows_invalid_required_pose']}`
+- msgpack_simulation_log_files_found: `{parser_validation['msgpack_simulation_log_files_found']}`
+- msgpack_simulation_log_files_parsed: `{parser_validation['msgpack_simulation_log_files_parsed']}`
+- msgpack_trajectory_rows_extracted: `{parser_validation['msgpack_trajectory_rows_extracted']}`
+- msgpack_parse_errors: `{len(parser_validation.get('msgpack_parse_errors', []))}`
 - required_pose_valid_ratio: `{parser_validation['required_pose_valid_ratio']}`
 - x_non_sentinel_ratio: `{parser_validation['x_non_sentinel_ratio']}`
 - y_non_sentinel_ratio: `{parser_validation['y_non_sentinel_ratio']}`
@@ -738,6 +894,10 @@ def run(args: argparse.Namespace) -> int:
 - num_candidate_artifact_rows: `{trajectory_parser_validation['num_candidate_artifact_rows']}`
 - num_valid_trajectory_rows: `{trajectory_parser_validation['num_valid_trajectory_rows']}`
 - num_rejected_rows_invalid_required_pose: `{trajectory_parser_validation['num_rejected_rows_invalid_required_pose']}`
+- msgpack_simulation_log_files_found: `{trajectory_parser_validation['msgpack_simulation_log_files_found']}`
+- msgpack_simulation_log_files_parsed: `{trajectory_parser_validation['msgpack_simulation_log_files_parsed']}`
+- msgpack_trajectory_rows_extracted: `{trajectory_parser_validation['msgpack_trajectory_rows_extracted']}`
+- msgpack_parse_errors: `{len(trajectory_parser_validation.get('msgpack_parse_errors', []))}`
 - required_pose_valid_ratio: `{trajectory_parser_validation['required_pose_valid_ratio']}`
 - x_non_sentinel_ratio: `{trajectory_parser_validation['x_non_sentinel_ratio']}`
 - y_non_sentinel_ratio: `{trajectory_parser_validation['y_non_sentinel_ratio']}`
