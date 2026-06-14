@@ -68,6 +68,7 @@ python evaluate_embedding.py \
 - Stage 7B.2 Stage6C-compatible dynamic converter: PASS
 - Stage 6C smoke on nuPlan expert context: PASS
 - Stage 7B.3 map/ODD feature builder: implemented
+- Stage 7C.1 official nuPlan closed-loop simulation runner: implemented; real PASS requires installed/configured nuPlan simulation environment
 - Stage 7C policy rollout: pending
 - Stage 7D policy BDD: pending
 
@@ -151,6 +152,21 @@ python tools/stage7b4_merge_dynamic_map_context.py \
   --overwrite
 ```
 
+Stage 7C.1 使用官方 nuPlan closed-loop simulation 运行同场景 planner variants，并导出 simulated ego trajectory（smoke 先跑 5 个 scenario）：
+
+```bash
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir outputs/stage7c1_nuplan_simulation \
+  --planners expert_or_log_replay idm_conservative idm_aggressive idm_comfort \
+  --max_scenarios 5 \
+  --overwrite
+```
+
+如需运行全部 Stage 7B.4 metadata rows，将 `--max_scenarios 0`。如果本机 nuPlan devkit/Hydra 配置版本需要显式官方入口命令，可补充 `--nuplan_simulation_command_template`；该模板只能调用官方 `nuplan.planning.script.run_simulation` / nuPlan simulation runner，不能调用离线 numpy 轨迹改写脚本。
+
 ### 3. 期望行为
 
 - Stage 7B.1 从 nuPlan mini SQLite DB 中读取 `scene`、`lidar_pc`、`ego_pose`、`lidar_box`、`track`、`category`，生成 `expert_ego_trajectory.csv`、`expert_nearby_objects.csv`、`selected_scenes.csv`、`warnings.json` 和导出报告。
@@ -159,6 +175,8 @@ python tools/stage7b4_merge_dynamic_map_context.py \
 - Stage 7B.3 读取 Stage 7B.2 的 `shard_manifest.json` / shard `metadata.csv`，按原有 window 顺序生成 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`、`map_odd_report.md`、`warnings.json`；它只生成 map-lite / ODD proxy，不做 full vector map serialization、不渲染、不训练、不合并 Stage 7B.4 特征。`map_odd_meta.csv` 只写入已经通过 nuPlan `get_maps_api()` 初始化且通过真实 lane / lane_connector 半径查询验证的 `map_name`；`map_version` / `log_name` 只能作为弱候选，不能直接当最终 map name。若强候选（例如 `las_vegas`）在真实 layer 查询时失败，而弱候选（例如 `us-nv-las-vegas-strip`）查询成功，则使用通过查询验证的弱候选。
 - Stage 7B.4 读取 Stage 7B.2 的 shard manifest / shard arrays / `metadata.csv` / `feature_schema.json`，读取 Stage 7B.3 的 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`，只合并 dynamic context 与 map/ODD features，不执行 Stage 7C/7D、rollout、training、BDD 或 policy simulation。对齐只允许按优先级尝试强 key 组合（`db_name+scene_token+sample_id+start_frame_index+end_frame_index`，再到 `scenario_id+sample_id+start_frame_index+end_frame_index`、`scenario_id+sample_id`、`db_name+scene_token+start_frame_index+end_frame_index`），每个候选都必须两边字段存在、非空、两边唯一、dynamic key 全部存在于 map/ODD、且行数一致；不会使用任意共有字段静默对齐。若原始行序不一致但所选强 key 可安全匹配，会把 map/ODD rows 重排到 dynamic row order，并在 `alignment_report.md` 与 `warnings.json` 中显式记录。dynamic feature names 必须来自 `feature_schema.json` 的 `interaction_features`，map/ODD feature names 必须来自 `map_odd_feature_schema.json` 的 `feature_names`，数量必须分别等于数组列数；不会生成 `dynamic_feat_000` 或 `map_odd_feat_000` fallback。所有输出数组（`ego_seq`、`neighbor_seq`、`context_traj`、`context_mask`、`dynamic_feat_style`、`map_odd_feat`、`merged_context_feat`）必须全部 finite；否则失败且拒绝写出有效结果。输出目录是独立的 `outputs/stage7b4_nuplan_context_merged`，不会修改 Stage 7B.1/7B.2/7B.3 既有输出。
 - Stage 7B.1/B.2/B.3/B.4 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
+- Stage 7C.1 读取 Stage 7B.4 的 `merged_metadata.csv`，保留 metadata 行顺序，并用 `db_name`、`scene_token`、`scenario_id`、`sample_id`、`start_frame_index`、`end_frame_index` 作为 scenario selection / diagnostic keys。脚本会先 discovery 当前 Python 环境中的官方 nuPlan simulation/planner modules（例如 `nuplan.planning.script.run_simulation`、`nuplan.planning.simulation.runner`、`simple_planner`、`log_future_planner`、`idm_planner`），并记录到 `warnings.json`。它只允许官方 nuPlan closed-loop simulation；如果 nuPlan 不可用、planner class 不可用、缺少可运行的官方 simulation entry point，或尚未配置可解析的官方 simulation 输出，它会写出 FAIL diagnostic report，不会伪造 `simulated_ego_trajectory.csv` 成功数据，不会做 pseudo rollout-lite，不会用 numpy interpolation 改写 expert 轨迹。
+
 
 ### 4. 通过标准
 
@@ -171,6 +189,16 @@ python tools/stage7b4_merge_dynamic_map_context.py \
 - `interaction_feat_style.npy`: [N, 33]
 - `map_odd_feat.npy`: [N, 37]
 - `merged_context_feat.npy`: [N, 70]
+
+
+Stage 7C.1 smoke PASS 标准：
+
+1. `simulation_schema.json` 中 `uses_official_nuplan_simulation=true` 且 `pseudo_rollout=false`。
+2. 至少一个 planner variant 在至少一个 Stage 7B.4 scenario 上通过官方 nuPlan closed-loop simulation 成功运行。
+3. `simulated_ego_trajectory.csv` 存在且非空，列包含 `scenario_index`、`planner_id`、`planner_name`、`timestep_index`、`time_s`、`x`、`y`、`yaw`、`speed`、`acceleration`、`db_name`、`scene_token`、`scenario_id`、`sample_id`。
+4. `simulated_ego_seq.npy` 存在，shape 为 `[N_valid, P_valid, T_sim, C]`，其中 channel 顺序写入 `simulation_schema.json`。
+5. 所有导出的 numeric arrays 必须 finite；如果 channel 不可用，只能使用 schema 中记录的 sentinel，并在 `warnings.json` 中说明。
+6. `simulation_report.md` 必须明确写 PASS；若官方 nuPlan 环境/config 不可运行，必须明确 FAIL 并给出 diagnostics，不能写 fake success。
 
 当前小样本通过记录：
 
