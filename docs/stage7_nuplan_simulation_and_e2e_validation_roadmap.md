@@ -17,7 +17,7 @@ The key dataset distinction is:
 |---|---|---|---|---|
 | 7A | nuPlan readiness | nuPlan DB/map/devkit | readiness evidence | PASS |
 | 7B | context construction | nuPlan logs/maps | `merged_context_feat` | PASS |
-| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1 smoke + exact-token wrapper validation PASS; 7C.2 multi-planner/multi-scenario rollout TODO |
+| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1 smoke + exact-token wrapper validation PASS; 7C.2A/7C.2B simple_planner distinct-log rollout PASS; 7C.2C multi-planner rollout STARTING / TODO |
 | 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | TODO |
 | 7E | planner-only consolidation | Stage 7D | planner report cards | TODO |
 | 7F | E2E model simulation | E2E planner + nuPlan sim | E2E simulated trajectories | TODO |
@@ -176,7 +176,9 @@ Latest Stage 7C.1 smoke status:
 - Stage 7C.1B — official msgpack trajectory export: **PASS**.
 - Stage 7C.1C — exact log + actual nuPlan scenario token wrapper smoke: **PASS**.
 - Stage 7C.1C — strict Stage7B scene_token == nuPlan scenario_token: **NOT REQUIRED / mismatch observed**.
-- Stage 7C.2 — multi-planner/multi-scenario rollout: **TODO**.
+- Stage 7C.2A — `simple_planner × 3 distinct logs`: **PASS**.
+- Stage 7C.2B — `simple_planner × 5 distinct logs`: **PASS**.
+- Stage 7C.2C — multi-planner rollout: **STARTING / TODO**.
 - Stage 7D — BDD validation on planner-generated trajectories: **TODO**.
 
 Recorded smoke metrics:
@@ -256,14 +258,36 @@ outputs/stage7c1_nuplan_simulation/
 
 **Purpose:** Generate real nuPlan simulation behavior data for baseline / rule-based / traditional planners.
 
+**Latest Stage 7C status after Stage 7C.2B:**
+
+```text
+Stage 7C.1A official simulation smoke: PASS
+Stage 7C.1B official msgpack trajectory export: PASS
+Stage 7C.1C exact-token wrapper smoke: PASS
+Stage 7C.2A simple_planner × 3 distinct logs: PASS
+Stage 7C.2B simple_planner × 5 distinct logs: PASS
+Stage 7C.2C multi-planner rollout: STARTING / TODO
+Stage 7D BDD validation: TODO
+```
+
+Stage 7C.2B validated `simple_planner` on five distinct logs with official nuPlan simulation outputs, no pseudo rollout, same-log alignment required, and tensor shape `[5, 1, 149, 8]`. The selected Stage 7B sample IDs were `sample_000000`, `sample_000005`, `sample_000010`, `sample_000015`, and `sample_000019`; the selected log names were the five distinct mini logs in Stage 7B.4 metadata. Validation passed with `official_success_count=5`, `trajectory_rows=745`, `msgpack_simulation_log_files_found=5`, `msgpack_simulation_log_files_parsed=5`, `required_pose_valid_ratio=1.0`, and `pseudo_rollout=false`.
+
+The five parsed official Stage 7C.2B artifacts were:
+
+```text
+scenario_0/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.22.00.38_veh-35_01008_01518/000e00790bc45da7/000e00790bc45da7.msgpack.xz
+scenario_1/simple_planner/simulation_log/SimplePlanner/stationary_in_traffic/2021.05.12.22.28.35_veh-35_00620_01164/001f3d5282985bbb/001f3d5282985bbb.msgpack.xz
+scenario_2/simple_planner/simulation_log/SimplePlanner/traversing_traffic_light_intersection/2021.05.12.23.36.44_veh-35_00152_00504/00015fc2840d5313/00015fc2840d5313.msgpack.xz
+scenario_3/simple_planner/simulation_log/SimplePlanner/traversing_intersection/2021.05.12.23.36.44_veh-35_01133_01535/0004544fe3715b27/0004544fe3715b27.msgpack.xz
+scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.23.36.44_veh-35_02035_02387/0004bf5585cf5f26/0004bf5585cf5f26.msgpack.xz
+```
+
 **Remaining Stage 7C TODOs:**
 
-- Stage 7C.2A: `simple_planner`, 3 scenarios.
-- Stage 7C.2B: `simple_planner`, 10 scenarios.
-- Stage 7C.2C: add multi-planner variants if official-compatible planner configs are available.
-- Stage 7C.2D: produce planner behavior report card.
+- Stage 7C.2C: add multi-planner variants if official-compatible planner configs are available. Prioritize IDM profiles for controlled rule-based baselines.
+- Stage 7C.2D: produce planner behavior report card after multi-planner rollout data exist.
 
-Stage 7D is still not started; BDD validation on planner-generated trajectories remains TODO until Stage 7C.2 outputs exist.
+Stage 7D is still not started; BDD validation on planner-generated trajectories remains TODO until Stage 7C.2C outputs exist.
 
 ## 6. Stage 7D — BDD Validation on Planner Simulation Data
 
