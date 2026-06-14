@@ -160,6 +160,17 @@ def _finite_float(value: Any, default: float = SENTINEL) -> float:
     return out if math.isfinite(out) else default
 
 
+def _required_float(record: Dict[str, Any], candidate_names: List[str], field_name: str) -> Optional[float]:
+    value = _first_value(record, candidate_names, None)
+    if value is None or value == "":
+        return None
+    try:
+        out = float(value)
+    except (TypeError, ValueError):
+        return None
+    return out if math.isfinite(out) else None
+
+
 def _first_value(record: Dict[str, Any], names: List[str], default: Any = "") -> Any:
     lower = {str(k).lower(): v for k, v in record.items()}
     for name in names:
@@ -257,24 +268,56 @@ def _row_has_trajectory(record: Dict[str, Any]) -> bool:
     return has_x and has_y and has_yaw
 
 
-def parse_official_trajectory_outputs(search_dir: Path, scenario: Dict[str, str], planner_row: Dict[str, Any], warnings: List[Dict[str, str]], allow_unsafe_pickle: bool = False) -> Tuple[List[Dict[str, Any]], str]:
+def _empty_parser_validation() -> Dict[str, Any]:
+    return {
+        "num_candidate_artifact_rows": 0,
+        "num_valid_trajectory_rows": 0,
+        "num_rejected_rows_invalid_required_pose": 0,
+        "required_pose_valid_ratio": 0.0,
+        "x_non_sentinel_ratio": 0.0,
+        "y_non_sentinel_ratio": 0.0,
+        "yaw_non_sentinel_ratio": 0.0,
+        "min_timesteps_per_trajectory": 0,
+        "mean_timesteps_per_trajectory": 0.0,
+        "num_trajectories_with_too_few_steps": 0,
+        "num_trajectories_with_zero_motion": 0,
+    }
+
+
+def parse_official_trajectory_outputs(search_dir: Path, scenario: Dict[str, str], planner_row: Dict[str, Any], warnings: List[Dict[str, str]], min_timesteps: int, allow_unsafe_pickle: bool = False) -> Tuple[List[Dict[str, Any]], str, Dict[str, Any]]:
     artifacts = discover_simulation_artifacts(search_dir, allow_unsafe_pickle=allow_unsafe_pickle)
     parsed_rows: List[Dict[str, Any]] = []
     used: List[str] = []
+    validation = _empty_parser_validation()
     for artifact in artifacts:
         for rec in _records_from_artifact(artifact, warnings):
             if not _row_has_trajectory(rec):
                 continue
-            t = _finite_float(_first_value(rec, ["time_s", "time", "timestamp_s", "relative_time_s", "ego_state.time_s"], len(parsed_rows)))
+            validation["num_candidate_artifact_rows"] += 1
+            x = _required_float(rec, ["x", "ego_x", "pose_x", "ego_state.x", "center.x", "rear_axle.x"], "x")
+            y = _required_float(rec, ["y", "ego_y", "pose_y", "ego_state.y", "center.y", "rear_axle.y"], "y")
+            yaw = _required_float(rec, ["yaw", "heading", "ego_yaw", "ego_state.heading", "center.heading", "rear_axle.heading"], "yaw")
+            time_value = _required_float(rec, ["time_s", "time", "timestamp_s", "relative_time_s", "ego_state.time_s"], "time_s")
+            timestep_value = _required_float(rec, ["timestep_index", "iteration", "step", "index"], "timestep_index")
+            if time_value is None and timestep_value is None:
+                validation["num_rejected_rows_invalid_required_pose"] += 1
+                continue
+            if x is None or y is None or yaw is None:
+                validation["num_rejected_rows_invalid_required_pose"] += 1
+                continue
+            if time_value is None:
+                time_value = float(timestep_value)
+            if timestep_value is None:
+                timestep_value = float(len(parsed_rows))
             row = {
                 "scenario_index": scenario.get("scenario_index", _first_value(rec, ["scenario_index"], "")),
                 "planner_id": planner_row.get("planner_id", _first_value(rec, ["planner_id"], "")),
                 "planner_name": planner_row.get("planner_name", _first_value(rec, ["planner_name", "planner"], "")),
-                "timestep_index": int(_finite_float(_first_value(rec, ["timestep_index", "iteration", "step", "index"], len(parsed_rows)), len(parsed_rows))),
-                "time_s": t,
-                "x": _finite_float(_first_value(rec, ["x", "ego_x", "pose_x", "ego_state.x", "center.x", "rear_axle.x"])),
-                "y": _finite_float(_first_value(rec, ["y", "ego_y", "pose_y", "ego_state.y", "center.y", "rear_axle.y"])),
-                "yaw": _finite_float(_first_value(rec, ["yaw", "heading", "ego_yaw", "ego_state.heading", "center.heading", "rear_axle.heading"])),
+                "timestep_index": int(timestep_value),
+                "time_s": time_value,
+                "x": x,
+                "y": y,
+                "yaw": yaw,
                 "speed": _finite_float(_first_value(rec, ["speed", "velocity", "v", "ego_speed", "dynamic_car_state.speed", "velocity_x"])),
                 "acceleration": _finite_float(_first_value(rec, ["acceleration", "accel", "a", "ego_acceleration", "dynamic_car_state.acceleration", "acceleration_x"])),
                 "steering_angle_or_curvature_if_available": _finite_float(_first_value(rec, ["steering_angle", "curvature", "tire_steering_angle"], SENTINEL)),
@@ -287,10 +330,34 @@ def parse_official_trajectory_outputs(search_dir: Path, scenario: Dict[str, str]
                 parsed_rows.append(row)
                 used.append(str(artifact))
     parsed_rows.sort(key=lambda r: (int(r["timestep_index"]), float(r["time_s"])))
+    validation["num_valid_trajectory_rows"] = len(parsed_rows)
+    candidates = validation["num_candidate_artifact_rows"]
+    validation["required_pose_valid_ratio"] = len(parsed_rows) / candidates if candidates else 0.0
+    for field in ["x", "y", "yaw"]:
+        validation[f"{field}_non_sentinel_ratio"] = sum(float(r[field]) != SENTINEL for r in parsed_rows) / len(parsed_rows) if parsed_rows else 0.0
+    groups: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
+    for row in parsed_rows:
+        groups.setdefault((str(row["scenario_index"]), str(row["planner_id"])), []).append(row)
+    lengths = [len(v) for v in groups.values()]
+    validation["min_timesteps_per_trajectory"] = min(lengths) if lengths else 0
+    validation["mean_timesteps_per_trajectory"] = sum(lengths) / len(lengths) if lengths else 0.0
+    validation["num_trajectories_with_too_few_steps"] = sum(n < min_timesteps for n in lengths)
+    zero_motion = 0
+    valid_keys = set()
+    for key, grows in groups.items():
+        ordered = sorted(grows, key=lambda r: (int(r["timestep_index"]), float(r["time_s"])))
+        has_motion = any(math.hypot(float(r["x"]) - float(ordered[0]["x"]), float(r["y"]) - float(ordered[0]["y"])) > 1e-6 or abs(float(r["yaw"]) - float(ordered[0]["yaw"])) > 1e-6 for r in ordered[1:])
+        has_distinct_timestamps = len({float(r["time_s"]) for r in ordered}) > 1 or len({int(r["timestep_index"]) for r in ordered}) > 1
+        if not has_motion and not has_distinct_timestamps:
+            zero_motion += 1
+        if len(ordered) >= min_timesteps and (has_motion or has_distinct_timestamps):
+            valid_keys.add(key)
+    validation["num_trajectories_with_zero_motion"] = zero_motion
+    parsed_rows = [r for r in parsed_rows if (str(r["scenario_index"]), str(r["planner_id"])) in valid_keys]
     if not parsed_rows:
-        return [], ""
+        return [], "", validation
     parser_name = "recursive_official_artifact_parser:" + ";".join(sorted(set(used))[:5])
-    return parsed_rows, parser_name
+    return parsed_rows, parser_name, validation
 
 
 def build_simulated_seq(rows: List[Dict[str, Any]], out_path: Path) -> Tuple[Tuple[int, int, int, int], bool]:
@@ -310,7 +377,36 @@ def build_simulated_seq(rows: List[Dict[str, Any]], out_path: Path) -> Tuple[Tup
     return tuple(arr.shape), finite
 
 
-def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[str, str]], planners: List[str], discovery: Dict[str, Any], warnings: List[Dict[str, str]], planner_rows: List[Dict[str, Any]]) -> int:
+
+def merge_parser_validation(total: Dict[str, Any], item: Dict[str, Any]) -> None:
+    for key in ["num_candidate_artifact_rows", "num_valid_trajectory_rows", "num_rejected_rows_invalid_required_pose", "num_trajectories_with_too_few_steps", "num_trajectories_with_zero_motion"]:
+        total[key] = int(total.get(key, 0)) + int(item.get(key, 0))
+    mins = total.setdefault("_trajectory_mins", [])
+    means = total.setdefault("_trajectory_means", [])
+    if int(item.get("min_timesteps_per_trajectory", 0)) > 0:
+        mins.append(int(item["min_timesteps_per_trajectory"]))
+    if float(item.get("mean_timesteps_per_trajectory", 0.0)) > 0:
+        means.append(float(item["mean_timesteps_per_trajectory"]))
+
+
+def finalize_parser_validation(total: Dict[str, Any], rows: List[Dict[str, Any]], min_timesteps: int) -> Dict[str, Any]:
+    out = _empty_parser_validation()
+    out.update({k: total.get(k, out[k]) for k in out})
+    candidates = int(out["num_candidate_artifact_rows"])
+    valid = int(out["num_valid_trajectory_rows"])
+    out["required_pose_valid_ratio"] = valid / candidates if candidates else 0.0
+    for field in ["x", "y", "yaw"]:
+        out[f"{field}_non_sentinel_ratio"] = sum(float(r[field]) != SENTINEL for r in rows) / len(rows) if rows else 0.0
+    groups: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
+    for row in rows:
+        groups.setdefault((str(row["scenario_index"]), str(row["planner_id"])), []).append(row)
+    lengths = [len(v) for v in groups.values()]
+    out["min_timesteps_per_trajectory"] = min(lengths) if lengths else 0
+    out["mean_timesteps_per_trajectory"] = sum(lengths) / len(lengths) if lengths else 0.0
+    out["num_trajectories_with_too_few_steps"] = sum(n < min_timesteps for n in lengths)
+    return out
+
+def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[str, str]], planners: List[str], discovery: Dict[str, Any], warnings: List[Dict[str, str]], planner_rows: List[Dict[str, Any]], parser_validation: Optional[Dict[str, Any]] = None, official_success_count: int = 0) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     write_csv(out_dir / "simulated_ego_trajectory.csv", [], CSV_COLUMNS)
     write_empty_float32_npy(out_dir / "simulated_ego_seq.npy", (0, 0, 0, len(EGO_STATE_CHANNELS)))
@@ -323,7 +419,7 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
         "stage": "7C.1",
         "feature_type": "nuplan_closed_loop_simulated_ego_trajectory",
         "input_stage": "7B.4",
-        "uses_official_nuplan_simulation": False,
+        "uses_official_nuplan_simulation": official_success_count > 0,
         "pseudo_rollout": False,
         "num_input_scenarios": len(metadata),
         "num_simulated_scenarios": 0,
@@ -331,23 +427,28 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
         "planner_names": planners,
         "ego_state_channels": EGO_STATE_CHANNELS,
         "sentinel_value": SENTINEL,
-        "simulation_api": "official nuPlan API discovery only; no simulation succeeded",
+        "trajectory_parser": [],
+        "required_pose_fields": ["x", "y", "yaw"],
+        "optional_sentinel_fields": ["speed", "acceleration", "steering_angle_or_curvature_if_available"],
+        "min_timesteps": args.min_timesteps,
+        "simulation_api": "official nuPlan command template executed" if official_success_count > 0 else "official nuPlan API discovery only; no simulation succeeded",
         "planner_api": "nuPlan planner discovery; unavailable planners are reported in warnings.json",
         "scenario_selection_keys": SCENARIO_KEYS,
         "notes": ["This stage refuses pseudo rollout.", "No fake simulated trajectory was generated.", "Resolve warnings and rerun with official nuPlan simulation available."],
     }
+    parser_validation = parser_validation or _empty_parser_validation()
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_selection": {"metadata_rows": len(metadata), "max_scenarios": args.max_scenarios}, "validation": {"pass": False, "reason": "no official nuPlan closed-loop simulation output was produced"}})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_selection": {"metadata_rows": len(metadata), "max_scenarios": args.max_scenarios}, "validation": {"pass": False, "reason": "no official nuPlan closed-loop simulation output was produced", "official_success_count": official_success_count}, "trajectory_parser_validation": parser_validation or _empty_parser_validation()})
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
 ## Purpose
 Run official nuPlan closed-loop simulation for the Stage 7B.4 selected scenarios and export simulated ego trajectories.
 
 ## PASS/FAIL summary
-FAIL — no official nuPlan closed-loop simulation completed. This script did not create pseudo rollout data.
+FAIL — no valid official nuPlan closed-loop trajectory was parsed. This script did not create pseudo rollout data.
 
 ## nuPlan simulation API used
-Discovery result only. Official modules may be available, but no completed closed-loop trajectory export was produced in this run.
+Official command successes: `{official_success_count}`. Official modules may be available, but no valid required-pose closed-loop trajectory export was produced in this run.
 
 ## Input dirs
 - context_dir: `{args.context_dir}`
@@ -366,11 +467,25 @@ Rows are read from `merged_metadata.csv` and order is preserved. Keys: {', '.joi
 ## Number of attempted scenarios
 0
 
-## Number of successful simulations
-0
+## Number of successful official commands
+{official_success_count}
 
 ## Output shapes
 - simulated_ego_seq.npy: `(0, 0, 0, {len(EGO_STATE_CHANNELS)})`
+
+## Trajectory parser validation
+- min_timesteps requirement: `{args.min_timesteps}`
+- num_candidate_artifact_rows: `{parser_validation['num_candidate_artifact_rows']}`
+- num_valid_trajectory_rows: `{parser_validation['num_valid_trajectory_rows']}`
+- num_rejected_rows_invalid_required_pose: `{parser_validation['num_rejected_rows_invalid_required_pose']}`
+- required_pose_valid_ratio: `{parser_validation['required_pose_valid_ratio']}`
+- x_non_sentinel_ratio: `{parser_validation['x_non_sentinel_ratio']}`
+- y_non_sentinel_ratio: `{parser_validation['y_non_sentinel_ratio']}`
+- yaw_non_sentinel_ratio: `{parser_validation['yaw_non_sentinel_ratio']}`
+- min_timesteps_per_trajectory: `{parser_validation['min_timesteps_per_trajectory']}`
+- mean_timesteps_per_trajectory: `{parser_validation['mean_timesteps_per_trajectory']}`
+- num_trajectories_with_too_few_steps: `{parser_validation['num_trajectories_with_too_few_steps']}`
+- num_trajectories_with_zero_motion: `{parser_validation['num_trajectories_with_zero_motion']}`
 
 ## Warning summary
 See `warnings.json` for structured diagnostics.
@@ -435,6 +550,7 @@ def run(args: argparse.Namespace) -> int:
     trajectory_rows: List[Dict[str, Any]] = []
     parser_names: List[str] = []
     official_success_count = 0
+    parser_validation_total = _empty_parser_validation()
     for scenario in metadata:
         for prow in planner_rows:
             before_warning_count = len(warnings)
@@ -447,7 +563,8 @@ def run(args: argparse.Namespace) -> int:
                 parsed: List[Dict[str, Any]] = []
             else:
                 official_success_count += 1
-                parsed, parser_name = parse_official_trajectory_outputs(run_dir, scenario, prow, warnings, allow_unsafe_pickle=args.allow_unsafe_pickle_artifacts)
+                parsed, parser_name, parser_validation = parse_official_trajectory_outputs(run_dir, scenario, prow, warnings, args.min_timesteps, allow_unsafe_pickle=args.allow_unsafe_pickle_artifacts)
+                merge_parser_validation(parser_validation_total, parser_validation)
                 if parsed:
                     status = "succeeded"
                     trajectory_rows.extend(parsed)
@@ -460,13 +577,16 @@ def run(args: argparse.Namespace) -> int:
 
     if not trajectory_rows:
         write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
-        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows)
+        trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
+        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count)
 
     if importlib.util.find_spec("numpy") is None:
         warnings.append({"type": "missing_numpy", "scenario_id": "", "planner_name": "", "message": "Parsed official trajectories, but NumPy is required to write non-empty simulated_ego_seq.npy."})
         write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
-        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows)
+        trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
+        return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count)
 
+    trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
     write_csv(out_dir / "simulated_ego_trajectory.csv", trajectory_rows, CSV_COLUMNS)
     shape, arrays_finite = build_simulated_seq(trajectory_rows, out_dir / "simulated_ego_seq.npy")
     write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, ["planner_id", "planner_name", "planner_class", "planner_type", "policy_style", "parameters_json", "nuplan_api_used"])
@@ -494,10 +614,19 @@ def run(args: argparse.Namespace) -> int:
         summary_rows.append({"planner_name": pname, "num_scenarios_attempted": len(attempted), "num_scenarios_succeeded": len(succeeded), "success_ratio": len(succeeded) / len(attempted) if attempted else 0.0, "mean_num_timesteps": mean([float(r["num_timesteps"]) for r in succeeded]), "mean_final_displacement": mean(final_displacements), "mean_speed": mean(speeds), "mean_acceleration": mean(accels), "mean_abs_acceleration": mean([abs(x) for x in accels])})
     write_csv(out_dir / "simulation_summary.csv", summary_rows, ["planner_name", "num_scenarios_attempted", "num_scenarios_succeeded", "success_ratio", "mean_num_timesteps", "mean_final_displacement", "mean_speed", "mean_acceleration", "mean_abs_acceleration"])
 
-    pass_ok = official_success_count > 0 and bool(trajectory_rows) and arrays_finite
-    schema = {"stage": "7C.1", "feature_type": "nuplan_closed_loop_simulated_ego_trajectory", "input_stage": "7B.4", "uses_official_nuplan_simulation": True, "pseudo_rollout": False, "trajectory_parser": sorted(set(parser_names)), "num_input_scenarios": len(metadata), "num_simulated_scenarios": len({r["scenario_index"] for r in trajectory_rows}), "num_planners": len(planners), "planner_names": planners, "ego_state_channels": EGO_STATE_CHANNELS, "sentinel_value": SENTINEL, "scenario_selection_keys": SCENARIO_KEYS, "simulated_ego_seq_shape": list(shape)}
+    pass_ok = (
+        official_success_count > 0
+        and bool(trajectory_rows)
+        and arrays_finite
+        and trajectory_parser_validation["required_pose_valid_ratio"] > 0
+        and trajectory_parser_validation["x_non_sentinel_ratio"] > 0
+        and trajectory_parser_validation["y_non_sentinel_ratio"] > 0
+        and trajectory_parser_validation["yaw_non_sentinel_ratio"] > 0
+        and trajectory_parser_validation["num_trajectories_with_too_few_steps"] == 0
+    )
+    schema = {"stage": "7C.1", "feature_type": "nuplan_closed_loop_simulated_ego_trajectory", "input_stage": "7B.4", "uses_official_nuplan_simulation": True, "pseudo_rollout": False, "trajectory_parser": sorted(set(parser_names)), "required_pose_fields": ["x", "y", "yaw"], "optional_sentinel_fields": ["speed", "acceleration", "steering_angle_or_curvature_if_available"], "min_timesteps": args.min_timesteps, "num_input_scenarios": len(metadata), "num_simulated_scenarios": len({r["scenario_index"] for r in trajectory_rows}), "num_planners": len(planners), "planner_names": planners, "ego_state_channels": EGO_STATE_CHANNELS, "sentinel_value": SENTINEL, "scenario_selection_keys": SCENARIO_KEYS, "simulated_ego_seq_shape": list(shape)}
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "arrays_finite": arrays_finite}})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "arrays_finite": arrays_finite}, "trajectory_parser_validation": trajectory_parser_validation})
     report_status = "PASS" if pass_ok else "FAIL"
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
@@ -511,6 +640,18 @@ def run(args: argparse.Namespace) -> int:
 - official command successes: {official_success_count}
 - parsed trajectory rows: {len(trajectory_rows)}
 - parser: `{'; '.join(sorted(set(parser_names)))}`
+- min_timesteps requirement: `{args.min_timesteps}`
+- num_candidate_artifact_rows: `{trajectory_parser_validation['num_candidate_artifact_rows']}`
+- num_valid_trajectory_rows: `{trajectory_parser_validation['num_valid_trajectory_rows']}`
+- num_rejected_rows_invalid_required_pose: `{trajectory_parser_validation['num_rejected_rows_invalid_required_pose']}`
+- required_pose_valid_ratio: `{trajectory_parser_validation['required_pose_valid_ratio']}`
+- x_non_sentinel_ratio: `{trajectory_parser_validation['x_non_sentinel_ratio']}`
+- y_non_sentinel_ratio: `{trajectory_parser_validation['y_non_sentinel_ratio']}`
+- yaw_non_sentinel_ratio: `{trajectory_parser_validation['yaw_non_sentinel_ratio']}`
+- min_timesteps_per_trajectory: `{trajectory_parser_validation['min_timesteps_per_trajectory']}`
+- mean_timesteps_per_trajectory: `{trajectory_parser_validation['mean_timesteps_per_trajectory']}`
+- num_trajectories_with_too_few_steps: `{trajectory_parser_validation['num_trajectories_with_too_few_steps']}`
+- num_trajectories_with_zero_motion: `{trajectory_parser_validation['num_trajectories_with_zero_motion']}`
 
 ## Output dir
 `{args.output_dir}`
@@ -533,6 +674,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--overwrite", action="store_true")
     p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}.")
     p.add_argument("--command_timeout_s", type=int, default=3600)
+    p.add_argument("--min_timesteps", type=int, default=2, help="Minimum parsed timesteps required for each successful scenario-planner trajectory.")
     p.add_argument("--allow_unsafe_pickle_artifacts", action="store_true", help="Parse trusted pickle/msgpack nuPlan artifacts. Pickle is unsafe and remains disabled by default.")
     return p.parse_args()
 
