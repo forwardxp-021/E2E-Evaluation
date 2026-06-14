@@ -1,5 +1,8 @@
 # Stage 7 Master Plan — Same-Scenario Policy / E2E BDD Validation
 
+> **Current roadmap note:** This older master plan is retained for historical A–E policy-BDD context. The current primary roadmap is [`stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md), with corrected official-nuPlan-simulation guardrails plus Stage 7F and Stage 7G.
+
+
 ## 1. Research Goal
 
 Stage 7 is the empirical bridge from Stage 6 pseudo-label validation to real policy / model style validation.
