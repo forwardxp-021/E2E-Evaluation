@@ -71,7 +71,11 @@ python evaluate_embedding.py \
 - Stage 6C smoke on nuPlan expert context: PASS
 - Stage 7B.3 map/ODD feature builder: PASS
 - Stage 7B.4 dynamic + map/ODD merge/alignment: PASS; validated final directory `outputs/stage7b4_nuplan_context_merged/`
-- Stage 7C official nuPlan simulation with rule/traditional planners: TODO
+- Stage 7C.1A official simulation smoke: PASS
+- Stage 7C.1B official msgpack trajectory export: PASS
+- Stage 7C.1C same-scenario alignment: TODO
+- Stage 7C.2 multi-planner/multi-scenario rollout: TODO
+- Stage 7C full official nuPlan simulation with rule/traditional planners: TODO
 - Stage 7D BDD validation on planner simulation data: TODO
 - Stage 7E planner-only consolidation: TODO
 - Stage 7F E2E model simulation in nuPlan: TODO; do not implement as offline trajectory rewriting
@@ -94,6 +98,11 @@ Stage 7C planner 优先级：
 Custom planner 只能作为后备或第二层，并且必须运行在官方 nuPlan simulation framework 内，兼容 nuPlan `AbstractPlanner` 或当前安装版本的等价 planner interface，通过 nuPlan simulation loop 输出轨迹。严禁绕过官方 simulation，严禁生成 offline pseudo trajectories，严禁用 numpy interpolation 改写 logged expert trajectories 后称为 simulation。E2E model planner integration 属于 Stage 7F，不属于 Stage 7C。
 
 Stage 7C smoke PASS 必须满足：使用官方 nuPlan simulation API 或官方 CLI；`pseudo_rollout=false`；至少一个 planner 和至少一个 scenario 成功；`simulated_ego_trajectory.csv` 非空；`simulated_ego_seq.npy` 非空；numeric outputs finite；`simulation_report.md` 写明 PASS。其他交通参与者行为取决于 nuPlan simulation configuration；如果使用 log-replay 或 non-reactive observations，必须作为 interaction realism limitation 记录，不能过度声称交互真实性。
+
+Stage 7C.1 latest official smoke result: `simple_planner` PASS; official command success count `1`; `pseudo_rollout=false`; official simulation log parser read `simulation_log/**/*.msgpack.xz`; parsed trajectory rows `150`; `simulated_ego_seq.npy` shape `[1, 1, 150, 8]`; `simulated_ego_seq_mask.npy` shape `[1, 1, 150]`; `required_pose_valid_ratio=1.0`; x/y/yaw non-sentinel ratios `1.0 / 1.0 / 1.0`; warnings `[]`. This only proves official nuPlan simulation → `msgpack.xz` simulation log → trajectory parser → `[N, P, T, C]` tensor export. It is smoke PASS, not full Stage 7C PASS. Because the smoke used `scenario_filter=one_of_each_scenario_type` and `scenario_filter.limit_total_scenarios=1`, Stage 7C.1C same-scenario alignment with Stage 7B.4 metadata remains TODO.
+
+Stage 7C.1 command-template safety: `tools/stage7c1_run_nuplan_simulation.py` supports safe placeholders `{scenario_id_safe}`, `{db_name_safe}`, `{scene_token_safe}`, `{sample_id_safe}`, `{planner_name_safe}`. Prefer these over raw metadata placeholders in shell/path command fields. By default the formatted command is executed with `subprocess.run(argv, shell=False)` after `shlex.split`; use `--nuplan_simulation_command_use_shell` only when shell semantics are explicitly required.
+
 
 ### 2. 命令
 

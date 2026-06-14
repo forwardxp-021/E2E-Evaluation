@@ -167,6 +167,39 @@ Stage 7C smoke PASS requires:
 - numeric outputs are finite;
 - `simulation_report.md` says PASS.
 
+
+### Stage 7C.1 Official nuPlan Simulation Smoke Result
+
+Latest Stage 7C.1 smoke status:
+
+- Stage 7C.1A — official simulation smoke: **PASS**.
+- Stage 7C.1B — official msgpack trajectory export: **PASS**.
+- Stage 7C.1C — same-scenario alignment: **TODO**.
+- Stage 7C.2 — multi-planner/multi-scenario rollout: **TODO**.
+- Stage 7D — BDD validation on planner-generated trajectories: **TODO**.
+
+Recorded smoke metrics:
+
+| item | value |
+|---|---|
+| Planner | `simple_planner` |
+| Official nuPlan simulation command succeeded | `1` |
+| Pseudo rollout | `false` |
+| Official simulation log parsed | `simulation_log/**/*.msgpack.xz` |
+| Parsed official artifact | `official_nuplan_runs/scenario_0/simple_planner/simulation_log/SimplePlanner/near_multiple_vehicles/2021.06.08.14.35.24_veh-26_02555_03004/1f151e15c9cf5c81/1f151e15c9cf5c81.msgpack.xz` |
+| Parsed trajectory rows | `150` |
+| `simulated_ego_seq.npy` shape | `[1, 1, 150, 8]` |
+| `simulated_ego_seq_mask.npy` shape | `[1, 1, 150]` |
+| `required_pose_valid_ratio` | `1.0` |
+| x/y/yaw non-sentinel ratios | `1.0 / 1.0 / 1.0` |
+| warnings | `[]` |
+
+This smoke proves the official nuPlan simulation → `msgpack.xz` simulation log → trajectory parser → `[N, P, T, C]` tensor export path is working.
+
+It does **not** yet prove full Stage 7C. Same-scenario alignment with Stage 7B.4 and multi-planner/multi-scenario validation remain TODO.
+
+Stage 7C.1C should align Stage 7B.4 metadata with the actual simulated nuPlan scenario. The smoke used `scenario_filter=one_of_each_scenario_type` and `scenario_filter.limit_total_scenarios=1`, so it proves the simulation/export pipeline but does not yet prove that the simulated scenario is exactly the same as the Stage 7B.4 metadata row.
+
 **Environment / interaction limitation:** the behavior of other traffic agents depends on the selected nuPlan simulation configuration. If the current simulation uses log-replay or non-reactive observations, it must be documented as a limitation. If reactive agents / IDM agents are enabled later, that configuration must be documented separately. Do not overclaim interaction realism unless the simulation configuration actually supports it.
 
 **Expected output:**

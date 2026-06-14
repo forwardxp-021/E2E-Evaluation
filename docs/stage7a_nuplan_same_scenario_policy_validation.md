@@ -3,6 +3,8 @@
 > **Current roadmap note:** This document is retained as Stage 7A / early nuPlan-readiness notes. The current Stage 7 A–G roadmap is [`stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md). In the current roadmap, E2E model integration belongs to Stage 7F, and final thesis-facing synthesis belongs to Stage 7G.
 
 
+> **Stage 7C.1 smoke update:** official nuPlan `simple_planner` smoke is PASS for pipeline connectivity: official command success `1`, `pseudo_rollout=false`, parsed `simulation_log/**/*.msgpack.xz`, 150 trajectory rows, `simulated_ego_seq.npy` shape `[1, 1, 150, 8]`, mask shape `[1, 1, 150]`, pose and x/y/yaw non-sentinel ratios all `1.0`, warnings `[]`. This is not full Stage 7C PASS; Stage 7C.1C same-scenario alignment with Stage 7B.4 metadata, Stage 7C.2 multi-planner/multi-scenario rollout, and Stage 7D BDD validation remain TODO.
+
 ## 0. Scope Clarification
 
 Stage 7A.0 / Stage 7A.1 expert-data inspection is only an infrastructure step. The final Stage 7 objective is same-scenario policy A/B rollout and task-conditioned BDD. Expert trajectory export is not the main validation result.
