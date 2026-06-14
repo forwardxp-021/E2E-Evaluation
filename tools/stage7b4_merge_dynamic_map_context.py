@@ -12,13 +12,13 @@ from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 
-ALIGNMENT_KEY_CANDIDATES = [
-    "scenario_id", "scene_token", "db_name", "sample_id", "window_id",
-    "start_frame", "end_frame", "start_time_us", "end_time_us",
-    # Stage 7B.2/7B.3 current names.
-    "start_frame_index", "end_frame_index",
-    "start_lidar_pc_timestamp", "end_lidar_pc_timestamp",
+ALIGNMENT_KEY_CANDIDATE_SETS = [
+    ["db_name", "scene_token", "sample_id", "start_frame_index", "end_frame_index"],
+    ["scenario_id", "sample_id", "start_frame_index", "end_frame_index"],
+    ["scenario_id", "sample_id"],
+    ["db_name", "scene_token", "start_frame_index", "end_frame_index"],
 ]
+INVALID_KEY_STRINGS = {"", "nan", "NaN", "None", "null"}
 DYNAMIC_ARRAYS = ["ego_seq.npy", "neighbor_seq.npy", "context_traj.npy", "context_mask.npy", "interaction_feat_style.npy"]
 
 
@@ -99,76 +99,220 @@ def load_dynamic(dynamic_dir: Path) -> Tuple[Dict[str, np.ndarray], List[Dict[st
     return arrays, meta_rows, meta_fields, dynamic_dir / "feature_schema.json"
 
 
+def is_empty_key_value(value) -> bool:
+    if value is None:
+        return True
+    if isinstance(value, float) and np.isnan(value):
+        return True
+    return str(value).strip() in INVALID_KEY_STRINGS
+
+
 def key_tuple(row: Dict[str, str], keys: Sequence[str]) -> Tuple[str, ...]:
-    return tuple(str(row.get(k, "")) for k in keys)
+    return tuple(str(row.get(k, "")).strip() for k in keys)
+
+
+def duplicate_key_count(rows: List[Dict[str, str]], keys: Sequence[str]) -> int:
+    seen = set()
+    duplicates = set()
+    for row in rows:
+        key = key_tuple(row, keys)
+        if key in seen:
+            duplicates.add(key)
+        seen.add(key)
+    return len(duplicates)
+
+
+def validate_alignment_candidate(dynamic_rows: List[Dict[str, str]], map_rows: List[Dict[str, str]], dyn_fields: Sequence[str], map_fields: Sequence[str], keys: List[str]) -> Tuple[bool, dict]:
+    result = {
+        "keys": keys,
+        "passed": False,
+        "reason": "",
+        "dynamic_unique_key_count": 0,
+        "map_odd_unique_key_count": 0,
+        "missing_key_count": 0,
+        "duplicate_dynamic_key_count": 0,
+        "duplicate_map_odd_key_count": 0,
+    }
+    missing_dyn = [k for k in keys if k not in dyn_fields]
+    missing_map = [k for k in keys if k not in map_fields]
+    if missing_dyn or missing_map:
+        result["reason"] = f"missing fields: dynamic={missing_dyn}, map_odd={missing_map}"
+        return False, result
+    if len(dynamic_rows) != len(map_rows):
+        result["reason"] = f"row count mismatch: dynamic={len(dynamic_rows)}, map_odd={len(map_rows)}"
+        return False, result
+    for side, rows in (("dynamic", dynamic_rows), ("map_odd", map_rows)):
+        bad = []
+        for i, row in enumerate(rows):
+            invalid_fields = [k for k in keys if is_empty_key_value(row.get(k))]
+            if invalid_fields:
+                bad.append({"row_index": i, "fields": invalid_fields})
+                if len(bad) >= 5:
+                    break
+        if bad:
+            result["reason"] = f"{side} has empty/null alignment key values; examples={bad}"
+            return False, result
+    dyn_keys = [key_tuple(r, keys) for r in dynamic_rows]
+    map_keys = [key_tuple(r, keys) for r in map_rows]
+    result["dynamic_unique_key_count"] = len(set(dyn_keys))
+    result["map_odd_unique_key_count"] = len(set(map_keys))
+    result["duplicate_dynamic_key_count"] = duplicate_key_count(dynamic_rows, keys)
+    result["duplicate_map_odd_key_count"] = duplicate_key_count(map_rows, keys)
+    missing_keys = sorted(set(dyn_keys) - set(map_keys))
+    result["missing_key_count"] = len(missing_keys)
+    if result["duplicate_dynamic_key_count"]:
+        result["reason"] = f"duplicate dynamic keys: duplicate_count={result['duplicate_dynamic_key_count']}"
+        return False, result
+    if result["duplicate_map_odd_key_count"]:
+        result["reason"] = f"duplicate map/ODD keys: duplicate_count={result['duplicate_map_odd_key_count']}"
+        return False, result
+    if missing_keys:
+        result["reason"] = f"dynamic keys absent from map/ODD metadata: missing_count={len(missing_keys)}, examples={missing_keys[:5]}"
+        return False, result
+    result["passed"] = True
+    result["reason"] = "passed"
+    return True, result
+
+
+def select_alignment_keys(dynamic_rows: List[Dict[str, str]], map_rows: List[Dict[str, str]], dyn_fields: Sequence[str], map_fields: Sequence[str]) -> Tuple[List[str], dict]:
+    attempts = []
+    for keys in ALIGNMENT_KEY_CANDIDATE_SETS:
+        ok, detail = validate_alignment_candidate(dynamic_rows, map_rows, dyn_fields, map_fields, keys)
+        attempts.append(detail)
+        if ok:
+            dyn_keys = [key_tuple(r, keys) for r in dynamic_rows]
+            map_keys = [key_tuple(r, keys) for r in map_rows]
+            selected = dict(detail)
+            selected.update({
+                "selected_alignment_keys": keys,
+                "alignment_key_candidates_tried": attempts,
+                "row_order_already_aligned": dyn_keys == map_keys,
+                "reindexing_needed": dyn_keys != map_keys,
+            })
+            return keys, selected
+    raise ValueError(
+        "No strict Stage 7B.4 alignment key candidate passed. "
+        f"dynamic_columns={list(dyn_fields)}; map_odd_columns={list(map_fields)}; "
+        f"candidate_key_sets_tried={attempts}"
+    )
 
 
 def align_indices(dynamic_rows: List[Dict[str, str]], map_rows: List[Dict[str, str]], keys: List[str]) -> Tuple[np.ndarray, bool]:
     dynamic_keys = [key_tuple(r, keys) for r in dynamic_rows]
     map_keys = [key_tuple(r, keys) for r in map_rows]
+    dup_dyn = duplicate_key_count(dynamic_rows, keys)
+    dup_map = duplicate_key_count(map_rows, keys)
+    if dup_dyn:
+        raise ValueError(f"Cannot safely align rows: duplicate dynamic keys for columns {keys}; duplicate_count={dup_dyn}")
+    if dup_map:
+        raise ValueError(f"Cannot safely align rows: duplicate map/ODD keys for columns {keys}; duplicate_count={dup_map}")
     if dynamic_keys == map_keys:
         return np.arange(len(dynamic_rows)), True
-    lookup: Dict[Tuple[str, ...], int] = {}
-    duplicates = set()
-    for i, k in enumerate(map_keys):
-        if k in lookup:
-            duplicates.add(k)
-        lookup[k] = i
-    if duplicates:
-        raise ValueError(f"Cannot safely align rows: duplicate map/ODD keys for columns {keys}; duplicate_count={len(duplicates)}")
+    lookup = {k: i for i, k in enumerate(map_keys)}
     missing = [k for k in dynamic_keys if k not in lookup]
     if missing:
         raise ValueError(f"Cannot safely align rows: {len(missing)} dynamic keys are absent from map/ODD metadata using columns {keys}")
     return np.asarray([lookup[k] for k in dynamic_keys], dtype=np.int64), False
 
 
-def schema_feature_names(schema: dict, feature_dim: int, source: str) -> List[str]:
-    for key in ("interaction_features", "feature_names", "merged_feature_names"):
-        names = schema.get(key)
-        if isinstance(names, list) and len(names) == feature_dim:
-            return [str(n) for n in names]
-    prefix = "dynamic_feat" if source == "dynamic" else "map_odd_feat"
-    return [f"{prefix}_{i:03d}" for i in range(feature_dim)]
+def schema_feature_names(schema: dict, feature_dim: int, source: str, schema_path: Path) -> Tuple[List[str], dict]:
+    required_key = "interaction_features" if source == "dynamic" else "feature_names"
+    names = schema.get(required_key)
+    validation = {
+        f"{source}_names_source": required_key,
+        f"{source}_name_count": len(names) if isinstance(names, list) else None,
+        "expected_count": int(feature_dim),
+        "passed": False,
+    }
+    if not isinstance(names, list):
+        raise ValueError(f"Required feature names key '{required_key}' missing or not a list in {schema_path}")
+    if len(names) != feature_dim:
+        raise ValueError(f"Feature name count mismatch in {schema_path}: key='{required_key}' has {len(names)} names, expected feature_dim={feature_dim}")
+    validation["passed"] = True
+    return [str(n) for n in names], validation
 
 
 def finite_summary(arrays: Dict[str, np.ndarray]) -> Dict[str, bool]:
     return {name: bool(np.isfinite(arr).all()) for name, arr in arrays.items()}
 
 
-def make_report(args, n_dyn, n_map, keys, already_aligned, reindexed, shapes, finite, warnings, passed):
+def make_report(args, n_dyn, n_map, alignment_validation, feature_name_validation, shapes, finite_validation, warnings, passed):
+    keys = alignment_validation.get("selected_alignment_keys", [])
     lines = [
         "# Stage 7B.4 Dynamic Context + Map/ODD Merge Alignment Report",
         "",
-        "## Purpose",
-        "Merge Stage 7B.2 dynamic context arrays with Stage 7B.3 map/ODD-lite features into one row-aligned nuPlan context dataset. No training or rollout is performed.",
+        "## 1. Stage and purpose",
+        "- stage: 7B.4",
+        "- purpose: strictly merge Stage 7B.2 dynamic context with Stage 7B.3 map/ODD features. No Stage 7C/7D, rollout, training, BDD, or policy simulation is performed.",
         "",
-        "## Inputs",
+        "## 2. Input dirs",
         f"- dynamic_context_dir: `{args.dynamic_context_dir}`",
         f"- map_odd_dir: `{args.map_odd_dir}`",
         "",
-        "## Output",
+        "## 3. Output dir",
         f"- output_dir: `{args.output_dir}`",
         "",
-        "## Row counts",
+        "## 4. Dynamic rows",
         f"- dynamic rows: {n_dyn}",
+        "",
+        "## 5. Map/ODD rows",
         f"- map/ODD rows: {n_map}",
         "",
-        "## Alignment",
-        f"- alignment keys used: {', '.join(keys)}",
-        f"- row order already aligned: {str(already_aligned).lower()}",
-        f"- reindexing needed: {str(reindexed).lower()}",
+        "## 6. Selected alignment keys",
+        f"- selected alignment keys: {', '.join(keys)}",
         "",
-        "## Output shapes",
+        "## 7. Candidate key sets tried and failure reasons",
+    ]
+    for candidate in alignment_validation.get("alignment_key_candidates_tried", []):
+        lines.append(f"- {candidate.get('keys')}: passed={candidate.get('passed')}, reason={candidate.get('reason')}")
+    lines += [
+        "",
+        "## 8. Dynamic unique key count",
+        f"- dynamic unique key count: {alignment_validation.get('dynamic_unique_key_count')}",
+        f"- duplicate dynamic key count: {alignment_validation.get('duplicate_dynamic_key_count')}",
+        "",
+        "## 9. Map/ODD unique key count",
+        f"- map/ODD unique key count: {alignment_validation.get('map_odd_unique_key_count')}",
+        f"- duplicate map/ODD key count: {alignment_validation.get('duplicate_map_odd_key_count')}",
+        f"- missing key count: {alignment_validation.get('missing_key_count')}",
+        "",
+        "## 10. Row order already aligned",
+        f"- row order already aligned: {str(alignment_validation.get('row_order_already_aligned')).lower()}",
+        "",
+        "## 11. Reindexing needed",
+        f"- reindexing needed: {str(alignment_validation.get('reindexing_needed')).lower()}",
+        "",
+        "## 12. Output shapes",
     ]
     for name, shape in shapes.items():
         lines.append(f"- {name}: {shape}")
-    lines += ["", "## Finite checks"]
-    for name, ok in finite.items():
-        lines.append(f"- {name}: {str(ok).lower()}")
-    lines += ["", "## Warning summary", f"- warning_count: {len(warnings)}"]
+    lines += [
+        "",
+        "## 13. Feature name validation summary",
+        f"- dynamic names source: {feature_name_validation.get('dynamic_names_source')}",
+        f"- map/ODD names source: {feature_name_validation.get('map_odd_names_source')}",
+        f"- dynamic name count: {feature_name_validation.get('dynamic_name_count')}",
+        f"- map/ODD name count: {feature_name_validation.get('map_odd_name_count')}",
+        f"- merged name count: {feature_name_validation.get('merged_name_count')}",
+        f"- passed: {str(feature_name_validation.get('passed')).lower()}",
+        "",
+        "## 14. Finite checks for all arrays",
+    ]
+    for name, detail in finite_validation.get("arrays", {}).items():
+        lines.append(f"- {name}: finite={str(detail.get('finite')).lower()}, shape={detail.get('shape')}")
+    lines += [
+        "",
+        "## 15. Warning summary",
+        f"- warning_count: {len(warnings)}",
+    ]
     for w in warnings:
         lines.append(f"- {w}")
-    lines += ["", "## PASS/FAIL summary", f"- status: {'PASS' if passed else 'FAIL'}", ""]
+    lines += [
+        "",
+        "## 16. PASS/FAIL summary",
+        f"- status: {'PASS' if passed else 'FAIL'}",
+        "",
+    ]
     return "\n".join(lines)
 
 
@@ -206,11 +350,11 @@ def main() -> int:
         raise ValueError(f"map_odd_meta.csv rows ({len(map_rows)}) do not match map_odd_feat rows ({n_map})")
     if n_dyn != n_map:
         raise ValueError(f"Row count mismatch: dynamic rows={n_dyn}, map/ODD rows={n_map}; safe Stage 7B.4 merge requires equal row counts")
-    common_keys = [k for k in ALIGNMENT_KEY_CANDIDATES if k in dyn_fields and k in map_fields]
-    if not common_keys:
-        raise ValueError(f"No common metadata key fields found. dynamic_columns={dyn_fields}; map_odd_columns={map_fields}")
+    common_keys, alignment_validation = select_alignment_keys(dyn_rows, map_rows, dyn_fields, map_fields)
     map_indices, already_aligned = align_indices(dyn_rows, map_rows, common_keys)
     reindexed = not already_aligned
+    alignment_validation["row_order_already_aligned"] = bool(already_aligned)
+    alignment_validation["reindexing_needed"] = bool(reindexed)
     if reindexed:
         warnings.append({"type": "map_odd_rows_reindexed", "message": "map_odd_feat/map_odd_meta row order was reindexed to match dynamic metadata order.", "alignment_keys": common_keys})
     map_feat_aligned = np.asarray(map_feat)[map_indices]
@@ -230,8 +374,41 @@ def main() -> int:
         "merged_context_feat": merged,
     }
     finite = finite_summary(output_arrays)
-    if not finite["merged_context_feat"]:
-        raise ValueError("merged_context_feat contains NaN or inf; refusing to write invalid Stage 7B.4 output")
+    finite_validation = {"arrays": {name: {"finite": ok, "shape": list(output_arrays[name].shape)} for name, ok in finite.items()}, "passed": bool(all(finite.values()))}
+    non_finite = [name for name, ok in finite.items() if not ok]
+    if non_finite:
+        raise ValueError(f"Non-finite values found in Stage 7B.4 output arrays {non_finite}; refusing to write invalid outputs")
+
+    dyn_names, dyn_name_validation = schema_feature_names(dyn_schema, dynamic_feat.shape[1], "dynamic", dyn_schema_path)
+    map_names, map_name_validation = schema_feature_names(map_schema, map_feat_aligned.shape[1], "map_odd", map_schema_path)
+    merged_names = [f"dynamic::{n}" for n in dyn_names] + [f"map_odd::{n}" for n in map_names]
+    feature_name_validation = {
+        "dynamic_names_source": dyn_name_validation["dynamic_names_source"],
+        "map_odd_names_source": map_name_validation["map_odd_names_source"],
+        "dynamic_name_count": len(dyn_names),
+        "map_odd_name_count": len(map_names),
+        "merged_name_count": len(merged_names),
+        "passed": bool(len(dyn_names) == dynamic_feat.shape[1] and len(map_names) == map_feat_aligned.shape[1] and len(merged_names) == merged.shape[1]),
+    }
+    merged_schema = {
+        "stage": "7B.4",
+        "feature_type": "nuplan_dynamic_plus_map_odd_context",
+        "num_dynamic_features": int(dynamic_feat.shape[1]),
+        "num_map_odd_features": int(map_feat_aligned.shape[1]),
+        "num_merged_features": int(merged.shape[1]),
+        "dynamic_feature_schema_source": str(dyn_schema_path),
+        "map_odd_feature_schema_source": str(map_schema_path),
+        "dynamic_feature_names": dyn_names,
+        "map_odd_feature_names": map_names,
+        "merged_feature_names": merged_names,
+        "feature_slices": {"dynamic": [0, int(dynamic_feat.shape[1])], "map_odd": [int(dynamic_feat.shape[1]), int(merged.shape[1])]},
+        "alignment_keys_used": common_keys,
+        "row_order_already_aligned": bool(already_aligned),
+        "reindexing_needed": bool(reindexed),
+        "feature_name_validation": feature_name_validation,
+        "notes": [],
+    }
+    write_json(out / "merged_feature_schema.json", merged_schema)
 
     for name, arr in output_arrays.items():
         np.save(out / f"{name}.npy", arr)
@@ -248,28 +425,17 @@ def main() -> int:
             row[f"map_odd::{f}"] = mr.get(f, "")
         merged_rows.append(row)
     write_csv(out / "merged_metadata.csv", merged_rows, fieldnames)
-
-    dyn_names = schema_feature_names(dyn_schema, dynamic_feat.shape[1], "dynamic")
-    map_names = schema_feature_names(map_schema, map_feat_aligned.shape[1], "map")
-    merged_schema = {
-        "stage": "7B.4",
-        "feature_type": "nuplan_dynamic_plus_map_odd_context",
-        "num_dynamic_features": int(dynamic_feat.shape[1]),
-        "num_map_odd_features": int(map_feat_aligned.shape[1]),
-        "num_merged_features": int(merged.shape[1]),
-        "dynamic_feature_schema_source": str(dyn_schema_path),
-        "map_odd_feature_schema_source": str(map_schema_path),
-        "merged_feature_names": [f"dynamic::{n}" for n in dyn_names] + [f"map_odd::{n}" for n in map_names],
-        "alignment_keys_used": common_keys,
-        "row_order_already_aligned": bool(already_aligned),
-        "reindexing_needed": bool(reindexed),
-        "notes": [],
-    }
-    write_json(out / "merged_feature_schema.json", merged_schema)
-    write_json(out / "warnings.json", {"warnings": warnings})
     shapes = {name: list(arr.shape) for name, arr in output_arrays.items()}
-    passed = bool(n_dyn == n_map and all(finite.values()))
-    (out / "alignment_report.md").write_text(make_report(args, n_dyn, n_map, common_keys, already_aligned, reindexed, shapes, finite, warnings, passed), encoding="utf-8")
+    passed = bool(
+        n_dyn == n_map
+        and alignment_validation.get("passed")
+        and feature_name_validation.get("passed")
+        and finite_validation.get("passed")
+        and merged.shape[1] == dynamic_feat.shape[1] + map_feat_aligned.shape[1]
+        and len(merged_names) == merged.shape[1]
+    )
+    write_json(out / "warnings.json", {"warnings": warnings, "alignment_validation": alignment_validation, "feature_name_validation": feature_name_validation, "finite_validation": finite_validation})
+    (out / "alignment_report.md").write_text(make_report(args, n_dyn, n_map, alignment_validation, feature_name_validation, shapes, finite_validation, warnings, passed), encoding="utf-8")
     print(f"Wrote Stage 7B.4 merged context to {out}: merged_context_feat shape={list(merged.shape)}, alignment_keys={common_keys}, row_order_already_aligned={already_aligned}, warnings={len(warnings)}")
     return 0
 
