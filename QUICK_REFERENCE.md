@@ -185,10 +185,11 @@ python tools/stage7c1_run_nuplan_simulation.py \
   --output_dir outputs/stage7c1_nuplan_simulation \
   --planners expert_or_log_replay simple_planner idm_conservative idm_aggressive idm_comfort \
   --max_scenarios 5 \
+  --min_timesteps 2 \
   --overwrite
 ```
 
-如需运行全部 Stage 7B.4 metadata rows，将 `--max_scenarios 0`。Stage 7C.1 必须通过 `--nuplan_simulation_command_template` 调用官方 `nuplan.planning.script.run_simulation` / nuPlan simulation runner；模板可使用 `{planner_name}`、`{scenario_id}`、`{db_name}`、`{scene_token}`、`{sample_id}`、`{output_dir}` 等占位符，且不能调用离线 numpy 轨迹改写脚本。官方命令成功后，脚本会递归扫描该 scenario/planner 的输出目录，解析常见官方 artifact（parquet、csv、json/jsonl；pickle/msgpack 只在显式 `--allow_unsafe_pickle_artifacts` 且信任输出来源时启用），并导出真实 simulation ego trajectory。
+如需运行全部 Stage 7B.4 metadata rows，将 `--max_scenarios 0`。Stage 7C.1 必须通过 `--nuplan_simulation_command_template` 调用官方 `nuplan.planning.script.run_simulation` / nuPlan simulation runner；模板可使用 `{planner_name}`、`{scenario_id}`、`{db_name}`、`{scene_token}`、`{sample_id}`、`{output_dir}` 等占位符，且不能调用离线 numpy 轨迹改写脚本。官方命令成功后，脚本会递归扫描该 scenario/planner 的输出目录，解析常见官方 artifact（parquet、csv、json/jsonl；pickle/msgpack 只在显式 `--allow_unsafe_pickle_artifacts` 且信任输出来源时启用），并导出真实 simulation ego trajectory。`--min_timesteps` 默认值为 2；每条成功 scenario-planner trajectory 必须至少包含该数量的有效 timestep。
 
 ### 3. 期望行为
 
@@ -198,7 +199,7 @@ python tools/stage7c1_run_nuplan_simulation.py \
 - Stage 7B.3 读取 Stage 7B.2 的 `shard_manifest.json` / shard `metadata.csv`，按原有 window 顺序生成 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`、`map_odd_report.md`、`warnings.json`；它只生成 map-lite / ODD proxy，不做 full vector map serialization、不渲染、不训练、不合并 Stage 7B.4 特征。`map_odd_meta.csv` 只写入已经通过 nuPlan `get_maps_api()` 初始化且通过真实 lane / lane_connector 半径查询验证的 `map_name`；`map_version` / `log_name` 只能作为弱候选，不能直接当最终 map name。若强候选（例如 `las_vegas`）在真实 layer 查询时失败，而弱候选（例如 `us-nv-las-vegas-strip`）查询成功，则使用通过查询验证的弱候选。
 - Stage 7B.4 读取 Stage 7B.2 的 shard manifest / shard arrays / `metadata.csv` / `feature_schema.json`，读取 Stage 7B.3 的 `map_odd_feat.npy`、`map_odd_meta.csv`、`map_odd_feature_schema.json`，只合并 dynamic context 与 map/ODD features，不执行 Stage 7C/7D、rollout、training、BDD 或 policy simulation。对齐只允许按优先级尝试强 key 组合（`db_name+scene_token+sample_id+start_frame_index+end_frame_index`，再到 `scenario_id+sample_id+start_frame_index+end_frame_index`、`scenario_id+sample_id`、`db_name+scene_token+start_frame_index+end_frame_index`），每个候选都必须两边字段存在、非空、两边唯一、dynamic key 全部存在于 map/ODD、且行数一致；不会使用任意共有字段静默对齐。若原始行序不一致但所选强 key 可安全匹配，会把 map/ODD rows 重排到 dynamic row order，并在 `alignment_report.md` 与 `warnings.json` 中显式记录。dynamic feature names 必须来自 `feature_schema.json` 的 `interaction_features`，map/ODD feature names 必须来自 `map_odd_feature_schema.json` 的 `feature_names`，数量必须分别等于数组列数；不会生成 `dynamic_feat_000` 或 `map_odd_feat_000` fallback。所有输出数组（`ego_seq`、`neighbor_seq`、`context_traj`、`context_mask`、`dynamic_feat_style`、`map_odd_feat`、`merged_context_feat`）必须全部 finite；否则失败且拒绝写出有效结果。输出目录是独立的 `outputs/stage7b4_nuplan_context_merged`，不会修改 Stage 7B.1/7B.2/7B.3 既有输出。
 - Stage 7B.1/B.2/B.3/B.4 只使用 nuPlan expert 历史轨迹做基础设施验证；论文主证据仍需要 Stage 7C/D 的 same-scenario policy A/B rollout。
-- Stage 7C.1 读取 Stage 7B.4 的 `merged_metadata.csv`，保留 metadata 行顺序，并用 `db_name`、`scene_token`、`scenario_id`、`sample_id`、`start_frame_index`、`end_frame_index` 作为 scenario selection / diagnostic keys。脚本会先 discovery 当前 Python 环境中的官方 nuPlan simulation/planner modules（例如 `nuplan.planning.script.run_simulation`、`nuplan.planning.simulation.runner`、`simple_planner`、`log_future_planner`、`idm_planner`），并记录到 `warnings.json`。它只允许官方 nuPlan closed-loop simulation；官方命令成功后必须从 official output artifact 中解析到 ego trajectory，才会写出非空 `simulated_ego_trajectory.csv`、`simulated_ego_seq.npy` 和 PASS report。若 nuPlan 不可用、planner class 不可用、缺少可运行的官方 simulation entry point、官方命令失败，或官方输出无法解析 trajectory，它会写出 FAIL diagnostic report，不会伪造成功数据，不会做 pseudo rollout-lite，不会用 numpy interpolation 改写 expert 轨迹。
+- Stage 7C.1 读取 Stage 7B.4 的 `merged_metadata.csv`，保留 metadata 行顺序，并用 `db_name`、`scene_token`、`scenario_id`、`sample_id`、`start_frame_index`、`end_frame_index` 作为 scenario selection / diagnostic keys。脚本会先 discovery 当前 Python 环境中的官方 nuPlan simulation/planner modules（例如 `nuplan.planning.script.run_simulation`、`nuplan.planning.simulation.runner`、`simple_planner`、`log_future_planner`、`idm_planner`），并记录到 `warnings.json`。它只允许官方 nuPlan closed-loop simulation；官方命令成功后必须从 official output artifact 中解析到 ego trajectory，且每行必须严格解析出 required pose 字段 `x`、`y`、`yaw` 以及 `time_s` 或 `timestep_index`，无效 required pose 行会被拒绝，不会被 sentinel 替代。每条成功 trajectory 还必须满足 `--min_timesteps`，并且不能全部依赖 sentinel pose 或零运动/零时间变化，才会写出非空 `simulated_ego_trajectory.csv`、`simulated_ego_seq.npy` 和 PASS report。若 nuPlan 不可用、planner class 不可用、缺少可运行的官方 simulation entry point、官方命令失败，或官方输出无法解析出有效 required-pose trajectory，它会写出 FAIL diagnostic report，不会伪造成功数据，不会做 pseudo rollout-lite，不会用 numpy interpolation 改写 expert 轨迹。
 
 
 ### 4. 通过标准
@@ -220,8 +221,11 @@ Stage 7C.1 smoke PASS 标准：
 2. 至少一个 planner variant 在至少一个 Stage 7B.4 scenario 上通过官方 nuPlan closed-loop simulation 成功运行。
 3. `simulated_ego_trajectory.csv` 存在且非空，列包含 `scenario_index`、`planner_id`、`planner_name`、`timestep_index`、`time_s`、`x`、`y`、`yaw`、`speed`、`acceleration`、`db_name`、`scene_token`、`scenario_id`、`sample_id`。
 4. `simulated_ego_seq.npy` 存在，shape 为 `[N_valid, P_valid, T_sim, C]`，其中 channel 顺序写入 `simulation_schema.json`。
-5. 所有导出的 numeric arrays 必须 finite；如果 channel 不可用，只能使用 schema 中记录的 sentinel，并在 `warnings.json` 中说明。
-6. `simulation_report.md` 必须明确写 PASS；若官方 nuPlan 环境/config 不可运行，必须明确 FAIL 并给出 diagnostics，不能写 fake success。
+5. 所有导出的 numeric arrays 必须 finite；如果 optional channel（`speed`、`acceleration`、`steering_angle_or_curvature_if_available`）不可用，只能使用 schema 中记录的 sentinel，并在 `warnings.json` 中说明；required pose fields（`x`、`y`、`yaw`）禁止用 sentinel 静默替代。
+6. `warnings.json` 必须包含 `trajectory_parser_validation`，至少报告 `num_candidate_artifact_rows`、`num_valid_trajectory_rows`、`num_rejected_rows_invalid_required_pose`、`required_pose_valid_ratio`、`x_non_sentinel_ratio`、`y_non_sentinel_ratio`、`yaw_non_sentinel_ratio`、`min_timesteps_per_trajectory`、`mean_timesteps_per_trajectory`、`num_trajectories_with_too_few_steps`、`num_trajectories_with_zero_motion`。
+7. PASS 必须满足 `required_pose_valid_ratio > 0`，`x_non_sentinel_ratio > 0`，`y_non_sentinel_ratio > 0`，`yaw_non_sentinel_ratio > 0`，且 successful trajectory 中不存在少于 `--min_timesteps` 的轨迹。
+8. `simulation_schema.json` 必须记录 `trajectory_parser`、`required_pose_fields`、`optional_sentinel_fields`、`min_timesteps`，并显示 `uses_official_nuplan_simulation=true`、`pseudo_rollout=false`。
+9. `simulation_report.md` 必须明确写 PASS；若官方 nuPlan 环境/config 不可运行，或官方命令成功但无法解析有效 required-pose trajectory，必须明确 FAIL 并给出 diagnostics，不能写 fake success。
 
 当前小样本通过记录：
 
