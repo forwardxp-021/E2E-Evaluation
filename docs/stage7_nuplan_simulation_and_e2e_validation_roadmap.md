@@ -174,7 +174,7 @@ Latest Stage 7C.1 smoke status:
 
 - Stage 7C.1A — official simulation smoke: **PASS**.
 - Stage 7C.1B — official msgpack trajectory export: **PASS**.
-- Stage 7C.1C — same-scenario alignment: **TODO**.
+- Stage 7C.1C — same-log alignment: **PASS_LOG_ONLY evidence available**; strict Stage 7B.4 scene-token to nuPlan scenario-token alignment remains optional.
 - Stage 7C.2 — multi-planner/multi-scenario rollout: **TODO**.
 - Stage 7D — BDD validation on planner-generated trajectories: **TODO**.
 
@@ -196,9 +196,9 @@ Recorded smoke metrics:
 
 This smoke proves the official nuPlan simulation → `msgpack.xz` simulation log → trajectory parser → `[N, P, T, C]` tensor export path is working.
 
-It does **not** yet prove full Stage 7C. Same-scenario alignment with Stage 7B.4 and multi-planner/multi-scenario validation remain TODO.
+It does **not** yet prove full Stage 7C. Multi-planner/multi-scenario validation remains TODO.
 
-Stage 7C.1C should align Stage 7B.4 metadata with the actual simulated nuPlan scenario. The smoke used `scenario_filter=one_of_each_scenario_type` and `scenario_filter.limit_total_scenarios=1`, so it proves the simulation/export pipeline but does not yet prove that the simulated scenario is exactly the same as the Stage 7B.4 metadata row.
+Stage 7C.1C now separates same-log alignment from strict nuPlan token alignment. New exact-filter local evidence shows that Stage 7B.4 `scene_token` is not necessarily the value accepted by nuPlan `scenario_filter.scenario_tokens`: target log `2021.05.12.22.00.38_veh-35_01008_01518` matched successfully, while Stage 7B.4 `scene_token=165060762e765a5a` differed from actual nuPlan scenario token `000e00790bc45da7`. Therefore log match is `PASS_LOG_ONLY`; strict token match is only `PASS_STRICT` when Stage 7B.4 `scene_token` also equals actual nuPlan scenario token. Future exact reruns for this evidence should use `actual_nuplan_scenario_token=000e00790bc45da7`.
 
 **Environment / interaction limitation:** the behavior of other traffic agents depends on the selected nuPlan simulation configuration. If the current simulation uses log-replay or non-reactive observations, it must be documented as a limitation. If reactive agents / IDM agents are enabled later, that configuration must be documented separately. Do not overclaim interaction realism unless the simulation configuration actually supports it.
 
