@@ -17,7 +17,7 @@ The key dataset distinction is:
 |---|---|---|---|---|
 | 7A | nuPlan readiness | nuPlan DB/map/devkit | readiness evidence | PASS |
 | 7B | context construction | nuPlan logs/maps | `merged_context_feat` | PASS |
-| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1 smoke + exact-token wrapper validation PASS; 7C.2A/7C.2B simple_planner distinct-log rollout PASS; 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke PASS; 7C.2C-1 wrapper multi-planner smoke READY / TODO |
+| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1A/7C.1B/7C.1C PASS; 7C.2A/7C.2B PASS; 7C.2C IDM longitudinal-only multi-planner rollout IN PROGRESS; 7C.3 PDM / lateral-interaction planner extension TODO |
 | 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | TODO |
 | 7E | planner-only consolidation | Stage 7D | planner report cards | TODO |
 | 7F | E2E model simulation | E2E planner + nuPlan sim | E2E simulated trajectories | TODO |
@@ -285,18 +285,25 @@ outputs/stage7c1_nuplan_simulation/
 
 **Purpose:** Generate real nuPlan simulation behavior data for baseline / rule-based / traditional planners.
 
-**Latest Stage 7C status after Stage 7C.2B:**
+**Latest Stage 7 status after Stage 7C.2B and Stage 7C.2C-0:**
 
 ```text
+Stage 7A: PASS
+Stage 7B: PASS
+Stage 7B.4: PASS
 Stage 7C.1A official simulation smoke: PASS
 Stage 7C.1B official msgpack trajectory export: PASS
 Stage 7C.1C exact-token wrapper smoke: PASS
 Stage 7C.2A simple_planner × 3 distinct logs: PASS
 Stage 7C.2B simple_planner × 5 distinct logs: PASS
-Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS
-Stage 7C.2C-1 wrapper multi-planner smoke: READY / TODO
+Stage 7C.2C IDM longitudinal-only multi-planner rollout: IN PROGRESS
+Stage 7C.3 PDM / lateral-interaction planner extension: TODO
 Stage 7D BDD validation: TODO
 ```
+
+**Interpretation note:** IDM profiles are longitudinal-only rule-based positive controls. They should not be described as complete conservative / comfort / aggressive driving styles. They cover following, lead-brake response, queue approach, and partial longitudinal components of cut-in/yield conflicts. They do not cover lane-change willingness, lane-change sharpness, overtaking execution, hesitation, target-lane rear-gap pressure, or full courtesy/yield behavior.
+
+**Research statement:** We first validate whether BDD can detect controlled longitudinal behavior drift using parameterized IDM profiles in official nuPlan simulation. Lateral and interaction style dimensions will be evaluated later through PDM or another lane-change-capable planner/E2E policy.
 
 
 Stage 7C.2C-0 native IDM smoke validated all four official nuPlan IDM runs on the same exact scenario: `log_name=2021.05.12.22.00.38_veh-35_01008_01518`, `nuPlan scenario_token=000e00790bc45da7`, `planner_name=IDMPlanner`. The verified wrapper profiles for Stage 7C.2C-1 are `simple_planner`, `idm_longitudinal_conservative`, `idm_longitudinal_comfort`, and `idm_longitudinal_aggressive`; the IDM profiles use official `planner=idm_planner` with Hydra overrides on `planner.idm_planner.target_velocity`, `planner.idm_planner.min_gap_to_lead_agent`, `planner.idm_planner.headway_time`, `planner.idm_planner.accel_max`, and `planner.idm_planner.decel_max`. The wrapper command template now uses `{planner_hydra_overrides}` so Stage 7C.2C-1 can produce `[1, 4, T, 8]` when all four planners succeed.
@@ -316,6 +323,8 @@ scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021
 **Remaining Stage 7C TODOs:**
 
 - Stage 7C.2C-1: run wrapper smoke with `--planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive` and require official nuPlan outputs only; expected tensor shape is `[1, 4, T, 8]` for one log when all four planners succeed, and `[5, 4, T, 8]` for five logs when every scenario-planner pair succeeds. Metadata must expose `planner_name`, `planner_id`, `planner_class`, `planner_type`, `policy_style`, `style_scope`, `nuplan_planner_config`, `hydra_overrides`, `supported_behavior_tasks`, `unsupported_behavior_tasks`, and `parameters_json`.
+- Stage 7C.2C-2: run the wrapper rollout on five distinct logs × four planners after the one-log wrapper smoke passes.
+- Stage 7C.3: add a PDM / lateral-interaction-capable planner extension later to cover lateral, lane-change, overtaking, hesitation, rear-gap pressure, and interaction/yielding style.
 - Stage 7C.2D: produce planner behavior report card after multi-planner rollout data exist.
 
 Stage 7D is still not started; BDD validation on planner-generated trajectories remains TODO until Stage 7C.2C outputs exist.
