@@ -166,9 +166,12 @@ PLANNER_PROFILES = {
     "simple_planner": {
         "planner_type": "simple_baseline",
         "policy_style": "simple_baseline",
+        "style_scope": "baseline_unspecified",
         "nuplan_planner_config": "simple_planner",
         "hydra_overrides": ["planner=simple_planner"],
         "preferred_classes": ["SimplePlanner"],
+        "supported_behavior_tasks": [],
+        "unsupported_behavior_tasks": [],
         "parameters": {
             "purpose": "nuPlan built-in simple planner baseline"
         },
@@ -176,9 +179,12 @@ PLANNER_PROFILES = {
     "expert_or_log_replay": {
         "planner_type": "expert_replay",
         "policy_style": "reference",
+        "style_scope": "reference_replay",
         "nuplan_planner_config": "log_future_planner",
         "hydra_overrides": ["planner=log_future_planner"],
         "preferred_classes": ["LogFuturePlanner", "LogPlaybackPlanner", "SimplePlanner"],
+        "supported_behavior_tasks": [],
+        "unsupported_behavior_tasks": [],
         "parameters": {"purpose": "expert/log replay baseline when available"},
     },
     "idm_longitudinal_conservative": idm_longitudinal_profile(
