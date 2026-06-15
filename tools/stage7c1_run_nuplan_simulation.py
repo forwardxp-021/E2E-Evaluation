@@ -1265,13 +1265,30 @@ def run(args: argparse.Namespace) -> int:
     alignment_passed = bool(alignment_records) and all(r.get("same_log_alignment_passed") is True for r in alignment_records)
     strict_alignment_passed = bool(alignment_records) and all(r.get("strict_nuplan_token_alignment_passed") is True for r in alignment_records)
 
-    smoke_pass_ok = (
-        official_success_count > 0
-        and bool(trajectory_rows)
-        and len(shape) == 4
-        and shape[0] == len(tensor_info["scenario_axis"])
-        and shape[1] == len(tensor_info["planner_axis"])
+    expected_pair_count = len(metadata) * len(planner_rows)
+    observed_pair_keys = {
+        (str(row["scenario_index"]), str(row["planner_id"]))
+        for row in trajectory_rows
+    }
+    observed_pair_count = len(observed_pair_keys)
+    all_commands_succeeded = official_success_count == expected_pair_count
+    all_pairs_parsed = observed_pair_count == expected_pair_count
+    all_index_rows_succeeded = bool(index_rows) and all(row["status"] == "succeeded" for row in index_rows)
+    no_missing_pairs = tensor_info["missing_pair_count"] == 0
+    shape_matches_requested_axes = (
+        len(shape) == 4
+        and shape[0] == len(metadata)
+        and shape[1] == len(planner_rows)
         and shape[3] == len(EGO_STATE_CHANNELS)
+    )
+
+    smoke_pass_ok = (
+        all_commands_succeeded
+        and all_pairs_parsed
+        and all_index_rows_succeeded
+        and no_missing_pairs
+        and shape_matches_requested_axes
+        and bool(trajectory_rows)
         and (out_dir / "simulated_ego_seq_mask.npy").is_file()
         and mask_shape == shape[:3]
         and tensor_info["valid_timestep_count"] > 0
@@ -1319,7 +1336,7 @@ def run(args: argparse.Namespace) -> int:
         "same_scenario_alignment_report": "scenario_alignment_report.md",
     }
     write_json(out_dir / "simulation_schema.json", schema)
-    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_sampling": scenario_sampling, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "pseudo_rollout": False, "uses_official_nuplan_simulation": True, "same_scenario_alignment_required": bool(args.require_same_scenario_alignment), "strict_nuplan_token_alignment_required": bool(args.require_strict_nuplan_token_alignment), "smoke_pass": smoke_pass_ok, "tensor_validation": {"shape": list(shape), "mask_shape": list(mask_shape), "valid_timestep_count": tensor_info["valid_timestep_count"], "missing_pair_count": tensor_info["missing_pair_count"], "passed": smoke_pass_ok}}, "trajectory_parser_validation": trajectory_parser_validation})
+    write_json(out_dir / "warnings.json", {"warnings": warnings, "simulation_api_discovery": discovery, "planner_api_discovery": planner_rows, "scenario_sampling": scenario_sampling, "scenario_alignment": build_alignment_diagnostics(alignment_summary, alignment_passed, strict_alignment_passed), "validation": {"pass": pass_ok, "official_success_count": official_success_count, "trajectory_rows": len(trajectory_rows), "pseudo_rollout": False, "uses_official_nuplan_simulation": True, "same_scenario_alignment_required": bool(args.require_same_scenario_alignment), "strict_nuplan_token_alignment_required": bool(args.require_strict_nuplan_token_alignment), "smoke_pass": smoke_pass_ok, "tensor_validation": {"shape": list(shape), "mask_shape": list(mask_shape), "valid_timestep_count": tensor_info["valid_timestep_count"], "expected_pair_count": expected_pair_count, "observed_pair_count": observed_pair_count, "all_commands_succeeded": all_commands_succeeded, "all_pairs_parsed": all_pairs_parsed, "all_index_rows_succeeded": all_index_rows_succeeded, "no_missing_pairs": no_missing_pairs, "shape_matches_requested_axes": shape_matches_requested_axes, "missing_pair_count": tensor_info["missing_pair_count"], "passed": smoke_pass_ok}}, "trajectory_parser_validation": trajectory_parser_validation})
     report_status = "PASS" if pass_ok else "FAIL"
     report = f"""# Stage 7C.1 nuPlan Closed-loop Simulation Report
 
@@ -1334,6 +1351,8 @@ def run(args: argparse.Namespace) -> int:
 - T_sim: `{shape[2] if len(shape) == 4 else 0}`
 - C: `{shape[3] if len(shape) == 4 else 0}`
 - mask valid timestep count: `{tensor_info["valid_timestep_count"]}`
+- expected scenario-planner pair count: `{expected_pair_count}`
+- observed scenario-planner pair count: `{observed_pair_count}`
 - missing scenario-planner pair count: `{tensor_info["missing_pair_count"]}`
 
 {format_scenario_sampling_report(scenario_sampling)}
