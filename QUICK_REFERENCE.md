@@ -99,12 +99,12 @@ outputs/stage7b4_nuplan_context_merged
 - Stage 7C.1C exact scenario alignment / exact-token smoke: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
 - Stage 7C.2A simple_planner × 3 distinct logs: PASS；运行时必须使用 `--sample_distinct_log_names`
 - Stage 7C.2B simple_planner × 5 distinct logs: PASS；输出 shape `[5, 1, 149, 8]`
-- Stage 7C.2C IDM longitudinal-only multi-planner rollout: IN PROGRESS
+- Stage 7C.2C IDM longitudinal-only multi-planner rollout: PASS
 - Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS
-- Stage 7C.2C-1 wrapper smoke: 1 log × 4 planners: NEXT
-- Stage 7C.2C-2 wrapper rollout: 5 logs × 4 planners: TODO
+- Stage 7C.2C-1 wrapper smoke: 1 log × 4 planners: PASS
+- Stage 7C.2C-2 wrapper rollout: 5 logs × 4 planners: PASS；输出目录 `outputs/stage7c2c2_idm_longitudinal_5logs`
 - Stage 7C.3 PDM lateral/interaction planner extension: TODO
-- Stage 7D BDD validation on official planner trajectories: TODO；不要在本阶段实现
+- Stage 7D BDD validation on official planner trajectories: NEXT；先在官方 `[5,4,149,8]` tensor 上做 longitudinal-only controlled validation
 
 ---
 
@@ -789,7 +789,7 @@ scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021
 
 ---
 
-### Stage 7C.2C — IDM longitudinal-only multi-planner rollout（IN PROGRESS）
+### Stage 7C.2C — IDM longitudinal-only multi-planner rollout（PASS）
 
 #### Purpose
 
@@ -806,8 +806,8 @@ We first validate whether BDD can detect controlled longitudinal behavior drift 
 ```text
 Stage 7C.2B — simple_planner × 5 distinct logs: PASS
 Stage 7C.2C-0 — native IDM default/conservative/comfort/aggressive smoke: PASS
-Stage 7C.2C-1 — wrapper smoke: 1 log × 4 planners: NEXT
-Stage 7C.2C-2 — wrapper rollout: 5 logs × 4 planners: TODO
+Stage 7C.2C-1 — wrapper smoke: 1 log × 4 planners: PASS
+Stage 7C.2C-2 — wrapper rollout: 5 logs × 4 planners: PASS
 Stage 7C.3 — PDM lateral/interaction planner extension: TODO
 ```
 
@@ -903,7 +903,7 @@ idm_longitudinal_conservative:
 planner=idm_planner planner.idm_planner.target_velocity=8.0 planner.idm_planner.min_gap_to_lead_agent=2.0 planner.idm_planner.headway_time=2.0 planner.idm_planner.accel_max=0.8 planner.idm_planner.decel_max=2.5
 ```
 
-#### Stage 7C.2C-1 next command（wrapper smoke: 1 log × 4 planners）
+#### Stage 7C.2C-1 command（wrapper smoke: 1 log × 4 planners，已 PASS）
 
 ```bash
 cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
@@ -937,6 +937,46 @@ msgpack_simulation_log_files_parsed: 4
 pseudo_rollout: false
 uses_official_nuplan_simulation: true
 ```
+
+#### Stage 7C.2C-2 result（wrapper rollout: 5 logs × 4 planners，PASS）
+
+输出目录：
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs
+```
+
+Planner axis：
+
+```text
+0 simple_planner
+1 idm_longitudinal_conservative
+2 idm_longitudinal_comfort
+3 idm_longitudinal_aggressive
+```
+
+最新 PASS metrics：
+
+```text
+warnings: []
+official_success_count: 20
+trajectory_rows: 2980
+msgpack_simulation_log_files_found: 20
+msgpack_simulation_log_files_parsed: 20
+msgpack_trajectory_rows_extracted: 2980
+simulated_ego_seq.npy shape: [5, 4, 149, 8]
+simulated_ego_seq_mask.npy shape: [5, 4, 149]
+valid_timestep_count: 2980
+missing_pair_count: 0
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+alignment_pass_ratio: 1.0
+same_log_alignment_passed: true
+strict_stage7b_scene_token_match: false
+alignment_level: log_name_plus_actual_nuplan_token
+```
+
+通过含义：Stage 7C.2C-2 已经形成 official nuPlan simulation 生成的 `[5, 4, 149, 8]` multi-planner tensor，可作为 Stage 7D 的输入。IDM profiles 是 longitudinal-only rule-based positive controls for BDD validation，不是完整 conservative / comfort / aggressive driving-style models。
 
 #### Expected output files and metadata
 
@@ -1006,23 +1046,31 @@ Stage 7C.3 暂不实现。后续通过 PDM 或其他 lane-change-capable planner
 
 #### Purpose
 
-TODO：在 Stage 7C official planner trajectories 上运行 BDD / behavior embedding validation。当前任务不实现 Stage 7D。
+NEXT：在 Stage 7C.2C-2 official `[5, 4, 149, 8]` planner tensor 上运行 BDD / embedding-distance / kinematic-feature delta validation。第一步只作为 longitudinal-only controlled validation，不把 IDM profiles 解释为完整驾驶风格。
 
 #### Command
 
-TODO。
+TODO：后续 Stage 7D issue 中补充具体脚本命令。
 
 #### Expected output files
 
-TODO。
+TODO：应输出 BDD matrix、embedding-distance summary、kinematic-feature delta summary 和中文/英文报告。
 
 #### Expected shape / key metrics
 
-TODO。
+输入 tensor 使用：
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq.npy: [5, 4, 149, 8]
+outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq_mask.npy: [5, 4, 149]
+```
 
 #### PASS criteria
 
-TODO。
+- 只读取 official nuPlan simulation outputs，不读取 pseudo rollout。
+- planner axis 与 Stage 7C.2C-2 记录一致。
+- 输出 BDD / embedding-distance / kinematic-feature deltas。
+- 结论限定为 longitudinal-only controlled validation。
 
 #### Common failure modes
 

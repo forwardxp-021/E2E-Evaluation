@@ -17,8 +17,8 @@ The key dataset distinction is:
 |---|---|---|---|---|
 | 7A | nuPlan readiness | nuPlan DB/map/devkit | readiness evidence | PASS |
 | 7B | context construction | nuPlan logs/maps | `merged_context_feat` | PASS |
-| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1A/7C.1B/7C.1C PASS; 7C.2A/7C.2B PASS; 7C.2C IDM longitudinal-only multi-planner rollout IN PROGRESS; 7C.3 PDM / lateral-interaction planner extension TODO |
-| 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | TODO |
+| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1A/7C.1B/7C.1C PASS; 7C.2A/7C.2B PASS; 7C.2C IDM longitudinal-only multi-planner rollout PASS; 7C.3 PDM / lateral-interaction planner extension TODO |
+| 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | NEXT |
 | 7E | planner-only consolidation | Stage 7D | planner report cards | TODO |
 | 7F | E2E model simulation | E2E planner + nuPlan sim | E2E simulated trajectories | TODO |
 | 7G | final Stage 7 summary | 7C/7D/7F | final thesis evidence | TODO |
@@ -205,8 +205,9 @@ Latest Stage 7C.1 smoke status:
 - Stage 7C.2A — `simple_planner × 3 distinct logs`: **PASS**.
 - Stage 7C.2B — `simple_planner × 5 distinct logs`: **PASS**.
 - Stage 7C.2C-0 — native IDM default/conservative/comfort/aggressive smoke: **PASS**.
-- Stage 7C.2C-1 — wrapper multi-planner rollout: **READY / TODO**.
-- Stage 7D — BDD validation on planner-generated trajectories: **TODO**.
+- Stage 7C.2C-1 — wrapper smoke: **PASS**.
+- Stage 7C.2C-2 — wrapper rollout on 5 logs × 4 planners: **PASS**.
+- Stage 7D — BDD validation on planner-generated trajectories: **NEXT**.
 
 Recorded smoke metrics:
 
@@ -285,7 +286,7 @@ outputs/stage7c1_nuplan_simulation/
 
 **Purpose:** Generate real nuPlan simulation behavior data for baseline / rule-based / traditional planners.
 
-**Latest Stage 7 status after Stage 7C.2B and Stage 7C.2C-0:**
+**Latest Stage 7 status after Stage 7C.2C-2:**
 
 ```text
 Stage 7A: PASS
@@ -296,9 +297,10 @@ Stage 7C.1B official msgpack trajectory export: PASS
 Stage 7C.1C exact-token wrapper smoke: PASS
 Stage 7C.2A simple_planner × 3 distinct logs: PASS
 Stage 7C.2B simple_planner × 5 distinct logs: PASS
-Stage 7C.2C IDM longitudinal-only multi-planner rollout: IN PROGRESS
+Stage 7C.2C IDM longitudinal-only multi-planner rollout: PASS
+Stage 7C.2C-2 wrapper rollout, 5 logs × 4 planners: PASS
 Stage 7C.3 PDM / lateral-interaction planner extension: TODO
-Stage 7D BDD validation: TODO
+Stage 7D BDD validation: NEXT
 ```
 
 **Interpretation note:** IDM profiles are longitudinal-only rule-based positive controls. They should not be described as complete conservative / comfort / aggressive driving styles. They cover following, lead-brake response, queue approach, and partial longitudinal components of cut-in/yield conflicts. They do not cover lane-change willingness, lane-change sharpness, overtaking execution, hesitation, target-lane rear-gap pressure, or full courtesy/yield behavior.
@@ -320,14 +322,54 @@ scenario_3/simple_planner/simulation_log/SimplePlanner/traversing_intersection/2
 scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.23.36.44_veh-35_02035_02387/0004bf5585cf5f26/0004bf5585cf5f26.msgpack.xz
 ```
 
+**Stage 7C.2C-2 PASS evidence:**
+
+Stage 7C.2C-2 completed the wrapper rollout on five distinct logs × four planners and produced official nuPlan simulation outputs in:
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs
+```
+
+Validated metrics:
+
+| item | value |
+|---|---|
+| Stage result | `PASS` |
+| warnings | `[]` |
+| official_success_count | `20` |
+| trajectory_rows | `2980` |
+| msgpack_simulation_log_files_found / parsed | `20 / 20` |
+| msgpack_trajectory_rows_extracted | `2980` |
+| `simulated_ego_seq.npy` shape | `[5, 4, 149, 8]` |
+| `simulated_ego_seq_mask.npy` shape | `[5, 4, 149]` |
+| valid_timestep_count | `2980` |
+| missing_pair_count | `0` |
+| pseudo_rollout | `false` |
+| uses_official_nuplan_simulation | `true` |
+| alignment_pass_ratio | `1.0` |
+| same_log_alignment_passed | `true` |
+| strict_stage7b_scene_token_match | `false` |
+| alignment_level | `log_name_plus_actual_nuplan_token` |
+
+Planner axis for `simulated_ego_seq.npy`:
+
+```text
+0 simple_planner
+1 idm_longitudinal_conservative
+2 idm_longitudinal_comfort
+3 idm_longitudinal_aggressive
+```
+
+This is the current Stage 7C official multi-planner tensor for downstream Stage 7D. IDM profiles are longitudinal-only rule-based positive controls for BDD validation. They are not complete driving-style models and should not be described as full conservative / comfort / aggressive driving styles.
+
 **Remaining Stage 7C TODOs:**
 
-- Stage 7C.2C-1: run wrapper smoke with `--planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive` and require official nuPlan outputs only; expected tensor shape is `[1, 4, T, 8]` for one log when all four planners succeed, and `[5, 4, T, 8]` for five logs when every scenario-planner pair succeeds. Metadata must expose `planner_name`, `planner_id`, `planner_class`, `planner_type`, `policy_style`, `style_scope`, `nuplan_planner_config`, `hydra_overrides`, `supported_behavior_tasks`, `unsupported_behavior_tasks`, and `parameters_json`.
-- Stage 7C.2C-2: run the wrapper rollout on five distinct logs × four planners after the one-log wrapper smoke passes.
 - Stage 7C.3: add a PDM / lateral-interaction-capable planner extension later to cover lateral, lane-change, overtaking, hesitation, rear-gap pressure, and interaction/yielding style.
-- Stage 7C.2D: produce planner behavior report card after multi-planner rollout data exist.
+- Stage 7C.2D / Stage 7E: produce planner behavior report cards after Stage 7D validation metrics exist.
 
-Stage 7D is still not started; BDD validation on planner-generated trajectories remains TODO until Stage 7C.2C outputs exist.
+**NEXT — Stage 7D:**
+
+Stage 7D should compute BDD / embedding-distance / kinematic-feature deltas on the official `[5, 4, 149, 8]` tensor from `outputs/stage7c2c2_idm_longitudinal_5logs`, first as longitudinal-only controlled validation.
 
 ## 6. Stage 7D — BDD Validation on Planner Simulation Data
 
