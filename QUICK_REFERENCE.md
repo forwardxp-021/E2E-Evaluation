@@ -1054,6 +1054,7 @@ Stage 7D 的方向已修正：Stage 7D 不再是单独的最终 BDD pipeline，�
 python tools/stage7d_export_stage6_compatible_dataset.py \
   --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
   --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
+  --required_planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive \
   --overwrite
 ```
 
@@ -5052,6 +5053,7 @@ python tools/build_nuplan_map_odd_features.py \
 python tools/stage7d_export_stage6_compatible_dataset.py \
   --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
   --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
+  --required_planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive \
   --overwrite
 ```
 
@@ -5062,7 +5064,7 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 输出必须包含：
 
 - `shards/shard_000/ego_seq.npy`：Stage 6-compatible ego layout `[x, y, vx, vy, heading, speed, accel, yaw_rate]`；
-- `shards/shard_000/neighbor_seq.npy`：mandatory surrounding-agent context；
+- `shards/shard_000/neighbor_seq.npy`：mandatory surrounding-agent context，严格 layout 为 `[rows, K, T, 9]`，9 个 channel 依次是 `rel_x, rel_y, rel_vx, rel_vy, distance, bearing, heading_rel, speed, valid`；
 - `shards/shard_000/neighbor_slot_ids.npy`：mandatory neighbor slot id；
 - `shards/shard_000/interaction_feat_style.npy`：longitudinal comfort + interaction/style features；
 - `shards/shard_000/metadata.csv`：one row = one scenario × one planner-controlled nuPlan ego rollout；
@@ -5082,6 +5084,9 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 - `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv` 行对齐；
 - `stage7d_export_schema.json` 明确记录 Stage 7 row semantics、nuPlan planner-controlled ego-only 定义、background agents as context、`multi_agent_ego_expansion=false`、`total_rows_expected=num_scenarios*num_planners`；
 - `warnings.json.validation` 明确记录 `total_rows == num_scenarios * num_planners`、`no_multi_agent_ego_expansion == true`、`neighbor_agents_used_as_context_only == true`；
-- `neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 缺失必须 fail，不能作为 non-fatal warning；
+- `neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 缺失必须 fail，不能作为 non-fatal warning；当前 Stage 7D exporter 明确要求上游先从 official msgpack observations 或 nuPlan scenario DB 提取 `stage7d_neighbor_seq.npy` / `stage7d_neighbor_slot_ids.npy`，并且 neighbor 必须相对每一条 planner-controlled ego rollout 重新计算；
+- `feature_schema.json` / `stage7d_export_schema.json` 必须记录 `neighbor_layout=ego_centric_relative` 和上述 neighbor channels；`interaction_feat_style.npy` 对缺失 neighbor-derived TTC/THW/distance 使用 NaN，不写入 `inf`；
+- `metadata.csv` 必须保留 `simulated_planner_metadata.csv` 中的 planner profile 字段（例如 IDM 的 `style_scope=longitudinal_only`、`policy_style=longitudinal_conservative/comfort/aggressive`、`nuplan_planner_config=idm_planner`），不能覆盖为 generic planner；
+- `metadata.csv` 必须从 `scenario_planner_index.csv` 映射 `db_name -> log_name`（去掉 `.db`）、`scenario_id -> actual_nuplan_scenario_token`、`scene_token -> stage7b_scene_token`、`sample_id`、`scenario_type`；
 - 四个 planner index 文件均存在：`simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`；
 - Stage 7D 不重新实现最终 BDD，后续 Stage 7E/F 使用 Stage 6 BDD/report-card/task-conditioned BDD。

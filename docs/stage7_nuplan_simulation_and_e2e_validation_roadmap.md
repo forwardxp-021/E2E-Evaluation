@@ -573,7 +573,7 @@ For an input tensor `simulated_ego_seq.npy` with shape `[5, 4, 149, 8]`, the Sta
 
 ```text
 ego_seq.npy:                    [20, T, ego_dim]
-neighbor_seq.npy:               [20, K, T, neighbor_dim]
+neighbor_seq.npy:               [20, K, T, 9]
 neighbor_slot_ids.npy:          [20, K]
 interaction_feat_style.npy:     [20, F]
 metadata.csv rows:              20
@@ -642,6 +642,11 @@ warnings.json validation.total_rows == num_scenarios * num_planners
 warnings.json validation.no_multi_agent_ego_expansion == true
 warnings.json validation.neighbor_agents_used_as_context_only == true
 all planner profiles have non-empty index arrays
+neighbor_layout == ego_centric_relative
+neighbor_channels == [rel_x, rel_y, rel_vx, rel_vy, distance, bearing, heading_rel, speed, valid]
+metadata.csv preserves planner profile fields from simulated_planner_metadata.csv
+metadata.csv maps db_name/scenario_id/scene_token/sample_id/scenario_type from scenario_planner_index.csv
+interaction_feat_style.npy contains no +/-inf; undefined neighbor-derived values use NaN
 warnings.json records validation.pass == true
 ```
 
@@ -649,7 +654,7 @@ warnings.json records validation.pass == true
 
 If the nuPlan simulation uses nonreactive / log-replay background traffic, world-coordinate neighbor trajectories may be identical across planner variants in the same scenario.
 
-However, `neighbor_seq.npy` must still be recomputed relative to each planner’s simulated ego trajectory.
+However, `neighbor_seq.npy` must still be recomputed relative to each planner’s simulated ego trajectory. Stage 7D export requires this as an upstream extraction contract: materialize `stage7d_neighbor_seq.npy` and `stage7d_neighbor_slot_ids.npy` from official Stage 7C msgpack observations or by reloading nuPlan scenarios with `log_name + actual_nuPlan_scenario_token` before running the exporter. The exporter may accept explicit `--neighbor_seq_path` / `--neighbor_slot_ids_path`, but it must fail rather than fabricate neighbors when these audited tensors are absent.
 
 Therefore:
 
@@ -659,7 +664,7 @@ different simulated ego trajectories
 different ego-centric relative neighbor_seq
 ```
 
-This is required for Stage 6C task-conditioned BDD.
+This is required for Stage 6C task-conditioned BDD. Required planners are configurable via `--required_planners`, so IDM is the default positive-control set but future PDM / ML families can use their own planner axis without code changes.
 
 ### Non-Canonical Stage 7D Diagnostic
 
