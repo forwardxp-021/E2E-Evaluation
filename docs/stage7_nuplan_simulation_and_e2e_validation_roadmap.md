@@ -919,3 +919,34 @@ official nuPlan simulation → Stage 6-compatible data → embedding → BDD/rep
 ```
 
 该 smoke 不替代后续 PDM 或 ML Planner 实验，不重新定义 row 语义，不训练 Stage 7 专用 embedding，也不在 Stage 7 中重新实现 BDD。5-log 输出只能作为 exploratory positive-control evidence；不要过度声称统计显著性。
+
+### Stage 7E Stage 5D-compatible embedding input contract
+
+Stage 7D is a data export stage: it exports a Stage 6-compatible evaluation dataset with one row per `scenario × planner-controlled ego rollout`; background agents remain context only and must not be expanded into ego rows.  Stage 6 BDD/report-card modules consume embedding vectors plus aligned feature/metadata artifacts; they do not consume raw `ego_seq.npy` / `neighbor_seq.npy` tensors directly as the final BDD representation.
+
+The current recommended Stage 5 model is Stage 5D-balanced-v2 (`ContextFlattenGRUEncoder`).  Its training input was `context_traj.npy` built by `tools/build_waymo_5neighbor_context_dataset.py`, where each frame is:
+
+```text
+ego_seq[8] + 5 neighbor slots × 15 neighbor channels = 83 channels
+```
+
+The 83-D `context_traj.npy` does **not** include map/lane/ODD channels.  Lane-aware assignment affected which five neighbors were selected, but map/lane/ODD features are not appended to the encoder tensor.  `interaction_feat_style.npy` is used by Stage 5/6 evaluation and report-card metrics; it is not an input channel to `ContextFlattenGRUEncoder`.
+
+Stage 7E must therefore build a Stage 5D checkpoint-compatible `[rows, T, 83]` `context_traj.npy` before embedding inference.  The thesis path is:
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --context_layout stage5d83 \
+  --overwrite
+```
+
+`--context_layout pad_to_checkpoint_dim` is allowed only for smoke/interface validation.  It must not be used as final thesis evidence, because zero-padding an `ego_neighbor9` tensor does not recreate the Stage 5D 83-channel schema.  A valid Stage 7E thesis run writes `stage7e_context_schema.json` and `warnings.json` with:
+
+```text
+context_layout_used = stage5d83
+context_padded_to_checkpoint_dim = false
+stage5d_schema_matched = true
+```

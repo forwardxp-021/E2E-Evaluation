@@ -21,6 +21,13 @@ def run(args):
     ds = ContextShardDataset(args.shard_manifest, split=args.split)
     sample = ds[0]
     context_dim = int(sample['context'].shape[-1])
+    ckpt_context_dim = ckpt.get('context_dim')
+    if ckpt_context_dim is None:
+        raise ValueError("Checkpoint is missing required context_dim.")
+    if int(ckpt_context_dim) != context_dim:
+        raise ValueError(
+            f"checkpoint['context_dim']={ckpt_context_dim} does not match input context_traj last dimension={context_dim}."
+        )
     emb_dim = int(ckpt.get('embedding_dim', 64))
 
     model = ContextFlattenGRUEncoder(context_dim, embedding_dim=emb_dim)
@@ -64,6 +71,8 @@ def run(args):
         'source_shard_manifest': args.shard_manifest,
         'checkpoint': args.checkpoint,
         'embedding_dim': emb_dim,
+        'checkpoint_context_dim': int(ckpt_context_dim),
+        'input_context_dim': int(context_dim),
         'total_rows': total,
         'split': args.split,
         'embedding_shard_paths': paths,
