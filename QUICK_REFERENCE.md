@@ -99,12 +99,12 @@ outputs/stage7b4_nuplan_context_merged
 - Stage 7C.1C exact scenario alignment / exact-token smoke: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
 - Stage 7C.2A simple_planner × 3 distinct logs: PASS；运行时必须使用 `--sample_distinct_log_names`
 - Stage 7C.2B simple_planner × 5 distinct logs: PASS；输出 shape `[5, 1, 149, 8]`
-- Stage 7C.2C IDM longitudinal-only multi-planner rollout: IN PROGRESS
+- Stage 7C.2C IDM longitudinal-only multi-planner rollout: PASS
 - Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS
-- Stage 7C.2C-1 wrapper smoke: 1 log × 4 planners: NEXT
-- Stage 7C.2C-2 wrapper rollout: 5 logs × 4 planners: TODO
+- Stage 7C.2C-1 wrapper smoke: 1 log × 4 planners: PASS
+- Stage 7C.2C-2 wrapper rollout: 5 logs × 4 planners: PASS；输出目录 `outputs/stage7c2c2_idm_longitudinal_5logs`
 - Stage 7C.3 PDM lateral/interaction planner extension: TODO
-- Stage 7D BDD validation on official planner trajectories: TODO；不要在本阶段实现
+- Stage 7D BDD validation on official planner trajectories: NEXT；先在官方 `[5,4,149,8]` tensor 上做 longitudinal-only controlled validation
 
 ---
 
@@ -789,7 +789,7 @@ scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021
 
 ---
 
-### Stage 7C.2C — IDM longitudinal-only multi-planner rollout（IN PROGRESS）
+### Stage 7C.2C — IDM longitudinal-only multi-planner rollout（PASS）
 
 #### Purpose
 
@@ -806,8 +806,8 @@ We first validate whether BDD can detect controlled longitudinal behavior drift 
 ```text
 Stage 7C.2B — simple_planner × 5 distinct logs: PASS
 Stage 7C.2C-0 — native IDM default/conservative/comfort/aggressive smoke: PASS
-Stage 7C.2C-1 — wrapper smoke: 1 log × 4 planners: NEXT
-Stage 7C.2C-2 — wrapper rollout: 5 logs × 4 planners: TODO
+Stage 7C.2C-1 — wrapper smoke: 1 log × 4 planners: PASS
+Stage 7C.2C-2 — wrapper rollout: 5 logs × 4 planners: PASS
 Stage 7C.3 — PDM lateral/interaction planner extension: TODO
 ```
 
@@ -903,7 +903,7 @@ idm_longitudinal_conservative:
 planner=idm_planner planner.idm_planner.target_velocity=8.0 planner.idm_planner.min_gap_to_lead_agent=2.0 planner.idm_planner.headway_time=2.0 planner.idm_planner.accel_max=0.8 planner.idm_planner.decel_max=2.5
 ```
 
-#### Stage 7C.2C-1 next command（wrapper smoke: 1 log × 4 planners）
+#### Stage 7C.2C-1 command（wrapper smoke: 1 log × 4 planners，已 PASS）
 
 ```bash
 cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
@@ -937,6 +937,46 @@ msgpack_simulation_log_files_parsed: 4
 pseudo_rollout: false
 uses_official_nuplan_simulation: true
 ```
+
+#### Stage 7C.2C-2 result（wrapper rollout: 5 logs × 4 planners，PASS）
+
+输出目录：
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs
+```
+
+Planner axis：
+
+```text
+0 simple_planner
+1 idm_longitudinal_conservative
+2 idm_longitudinal_comfort
+3 idm_longitudinal_aggressive
+```
+
+最新 PASS metrics：
+
+```text
+warnings: []
+official_success_count: 20
+trajectory_rows: 2980
+msgpack_simulation_log_files_found: 20
+msgpack_simulation_log_files_parsed: 20
+msgpack_trajectory_rows_extracted: 2980
+simulated_ego_seq.npy shape: [5, 4, 149, 8]
+simulated_ego_seq_mask.npy shape: [5, 4, 149]
+valid_timestep_count: 2980
+missing_pair_count: 0
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+alignment_pass_ratio: 1.0
+same_log_alignment_passed: true
+strict_stage7b_scene_token_match: false
+alignment_level: log_name_plus_actual_nuplan_token
+```
+
+通过含义：Stage 7C.2C-2 已经形成 official nuPlan simulation 生成的 `[5, 4, 149, 8]` multi-planner tensor，可作为 Stage 7D 的输入。IDM profiles 是 longitudinal-only rule-based positive controls for BDD validation，不是完整 conservative / comfort / aggressive driving-style models。
 
 #### Expected output files and metadata
 
@@ -1002,31 +1042,72 @@ Stage 7C.3 暂不实现。后续通过 PDM 或其他 lane-change-capable planner
 
 ---
 
-### Stage 7D — BDD validation on official planner trajectories
+### Stage 7D — 完整 Stage 6-compatible 数据导出
 
 #### Purpose
 
-TODO：在 Stage 7C official planner trajectories 上运行 BDD / behavior embedding validation。当前任务不实现 Stage 7D。
+Stage 7D 的方向已修正：Stage 7D 不再是单独的最终 BDD pipeline，而是把 Stage 7C official nuPlan planner rollout 导出为完整 Stage 6-compatible sharded dataset。Stage 6 仍然是 canonical BDD / report-card / task-conditioned BDD 引擎；Stage 7E/F 后续复用 Stage 6 模块。`tools/stage7d_validate_official_planner_bdd.py` 只作为 smoke diagnostic，不是 canonical final BDD path。
 
 #### Command
 
-TODO。
+```bash
+python tools/stage7d_export_stage6_compatible_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
+  --overwrite
+```
 
 #### Expected output files
 
-TODO。
+```text
+outputs/stage7d_stage6_dataset_official_planner_5logs/
+  shard_manifest.json
+  feature_schema.json
+  planner_policy_indices/
+    simple_planner.npy
+    idm_longitudinal_conservative.npy
+    idm_longitudinal_comfort.npy
+    idm_longitudinal_aggressive.npy
+  shards/
+    shard_000/
+      ego_seq.npy
+      neighbor_seq.npy
+      neighbor_slot_ids.npy
+      interaction_feat_style.npy
+      metadata.csv
+  stage7d_export_schema.json
+  warnings.json
+  export_report.md
+```
 
 #### Expected shape / key metrics
 
-TODO。
+输入 tensor 使用：
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq.npy: [5, 4, 149, 8]
+outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq_mask.npy: [5, 4, 149]
+```
+
+输出行语义为 one row = one scenario × one planner-controlled nuPlan ego rollout；当前 5 logs × 4 planners 必须导出 20 行，不能导出 5 logs × 4 planners × num_agents。Stage 5 / Stage 6 Waymo 预处理可以为了数据量把多个 road participants 展开为 ego-like samples，但 Stage 7 official nuPlan planner 数据不能这样做：IDM / PDM / ML Planner 只控制 nuPlan ego vehicle，background agents 必须保留为 neighbor context。`ego_seq.npy` channel 必须为 `[x, y, vx, vy, heading, speed, accel, yaw_rate]`。`neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 是 mandatory，不允许作为 optional。
 
 #### PASS criteria
 
-TODO。
+- 只读取 official nuPlan simulation outputs，不运行 nuPlan simulation，不读取 pseudo rollout。
+- `pseudo_rollout == false` 且 `uses_official_nuplan_simulation == true`。
+- `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv`、`feature_schema.json`、`shard_manifest.json` 全部存在。
+- `planner_policy_indices` 下四个 planner `.npy` 全部存在。
+- `neighbor_seq.npy` 或 `neighbor_slot_ids.npy` 缺失时必须 fail，不能写成 `neighbor_seq_missing` non-fatal warning。
+- `ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、`metadata.csv` 行数一致且等于 `N * P`，不得按 neighbor/background agent 数量扩行。
+- `stage7d_export_schema.json` 记录 `row_semantics = "scenario_planner_controlled_ego_rollout"`、`ego_definition = "nuPlan planner-controlled ego vehicle only"`、`neighbor_definition = "background road participants used only as context"`、`multi_agent_ego_expansion = false`、`total_rows_expected = num_scenarios * num_planners`。
+- `warnings.json.validation.total_rows == num_scenarios * num_planners`，且 `no_multi_agent_ego_expansion == true`、`neighbor_agents_used_as_context_only == true`。
+- `feature_schema.json` 明确列出 interaction/style feature names and indices。
 
 #### Common failure modes
 
-TODO；不要使用 offline numpy trajectory rewriting 伪造 Stage 7D 输入。
+- 只有 ego trajectory，没有 surrounding-agent neighbor context：Stage 7D 必须 fail。
+- 把 `tools/stage7d_validate_official_planner_bdd.py` 的 smoke diagnostic 当成 final BDD：不允许。
+- 重新实现 Stage 7 final BDD pipeline：不允许；后续 Stage 7E/F 必须复用 Stage 6 BDD/report-card/task-conditioned BDD 模块。
 
 ---
 
@@ -4962,3 +5043,45 @@ python tools/build_nuplan_map_odd_features.py \
 2. `map_odd_meta.csv` 行数与 dynamic context rows 对齐，latest verified mini run 为 23 行。
 3. `warnings.json` 为结构化 JSON，latest verified result 为 `warnings: []`、`map_odd_status: PASS`。
 4. 所有 map/ODD features finite，且 feature schema 长度等于数组列数。
+
+## Stage 7D：完整 Stage 6-compatible planner 数据导出
+
+## 1. 命令
+
+```bash
+python tools/stage7d_export_stage6_compatible_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
+  --overwrite
+```
+
+## 2. 期望行为
+
+该命令只读取 Stage 7C.2C-2 已生成的官方 nuPlan simulation 输出，不运行 nuPlan simulation，不做 pseudo rollout，也不计算最终 BDD。它的唯一目标是导出完整 Stage 6-compatible sharded dataset，让 Stage 7E/F 后续复用 Stage 6 的 BDD、report-card、task-conditioned BDD 模块。注意：Stage 5 / Stage 6 Waymo 预处理可为数据量使用 multi-agent ego expansion；Stage 7 nuPlan planner 数据禁止这样做，因为 official planner 只控制 nuPlan ego，其他 road participants 只能作为 mandatory neighbor context。
+
+输出必须包含：
+
+- `shards/shard_000/ego_seq.npy`：Stage 6-compatible ego layout `[x, y, vx, vy, heading, speed, accel, yaw_rate]`；
+- `shards/shard_000/neighbor_seq.npy`：mandatory surrounding-agent context；
+- `shards/shard_000/neighbor_slot_ids.npy`：mandatory neighbor slot id；
+- `shards/shard_000/interaction_feat_style.npy`：longitudinal comfort + interaction/style features；
+- `shards/shard_000/metadata.csv`：one row = one scenario × one planner-controlled nuPlan ego rollout；
+- `feature_schema.json`：feature names and indices；
+- `shard_manifest.json`：Stage 6-compatible shard manifest；
+- `planner_policy_indices/*.npy`：每个 planner 的 global row index。
+
+`tools/stage7d_validate_official_planner_bdd.py` 仅是 smoke diagnostic，不是 canonical final BDD path。
+
+## 3. 通过标准
+
+命令通过时必须满足：
+
+- `simulation_schema.json` 中 `pseudo_rollout == false`；
+- `simulation_schema.json` 中 `uses_official_nuplan_simulation == true`；
+- 输出总行数等于 `N * P`，当前 5 logs × 4 planners 应为 20，不能按 num_agents / num_neighbors 扩展为更多 ego rows；
+- `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv` 行对齐；
+- `stage7d_export_schema.json` 明确记录 Stage 7 row semantics、nuPlan planner-controlled ego-only 定义、background agents as context、`multi_agent_ego_expansion=false`、`total_rows_expected=num_scenarios*num_planners`；
+- `warnings.json.validation` 明确记录 `total_rows == num_scenarios * num_planners`、`no_multi_agent_ego_expansion == true`、`neighbor_agents_used_as_context_only == true`；
+- `neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 缺失必须 fail，不能作为 non-fatal warning；
+- 四个 planner index 文件均存在：`simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`；
+- Stage 7D 不重新实现最终 BDD，后续 Stage 7E/F 使用 Stage 6 BDD/report-card/task-conditioned BDD。
