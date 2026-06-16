@@ -397,6 +397,63 @@ Stage 7D should compute BDD / embedding-distance / kinematic-feature deltas on t
 - Unpaired distribution BDD corresponds to real-world company model-version comparison.
 - ODD-conditioned BDD explains where the style drift occurs.
 
+### Stage 7D.1 / 7D.2 — First-pass BDD Validation on Official Planner Rollouts
+
+**Definition:** Stage 7D.1 / 7D.2 reads official Stage 7C.2C-2 nuPlan planner rollout tensors and computes longitudinal-only controlled BDD / feature-distance validation metrics. It must not run pseudo rollout, must not run a new nuPlan simulation, and must not rewrite logged trajectories.
+
+### Command
+
+```bash
+python tools/stage7d_validate_official_planner_bdd.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7d1_bdd_official_planner_5logs \
+  --overwrite
+```
+
+### Required inputs
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs/
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
+├── simulated_planner_metadata.csv
+├── scenario_planner_index.csv
+├── simulation_schema.json
+└── warnings.json
+```
+
+### Expected outputs
+
+```text
+outputs/stage7d1_bdd_official_planner_5logs/
+├── planner_kinematic_features.csv
+├── planner_feature_summary.csv
+├── paired_planner_delta.csv
+├── bdd_distance_matrix.csv
+├── paired_distance_matrix.csv
+├── stage7d_validation_report.md
+├── warnings.json
+└── stage7d_schema.json
+```
+
+### PASS criteria
+
+Stage 7D.1 / 7D.2 passes only if all of the following are true:
+
+- `simulation_schema.json` has `pseudo_rollout == false`.
+- `simulation_schema.json` has `uses_official_nuplan_simulation == true`.
+- `simulated_ego_seq.npy` has shape `[N, P, T, 8]`.
+- `simulated_ego_seq_mask.npy` has shape `[N, P, T]` and at least one valid timestep.
+- The planner axis contains `simple_planner`, `idm_longitudinal_conservative`, `idm_longitudinal_comfort`, and `idm_longitudinal_aggressive`.
+- `missing_pair_count == 0` when that diagnostic is available.
+- `warnings.json` in the Stage 7D output records `validation.pass == true`.
+
+### Interpretation guardrails
+
+Stage 7D first-pass validates whether BDD / feature-distance can detect controlled longitudinal behavior differences among official nuPlan planner rollouts. It does **not** validate full driving style. The IDM profiles are longitudinal-only positive controls and should not be described as complete conservative / comfort / aggressive human driving styles. This 5-log run is a mini smoke validation, not a full benchmark.
+
+
 ## 7. Stage 7E — Rule-Based / Traditional Planner Experiment Consolidation
 
 **Definition:** Stage 7E = summarize Stage 7C/7D results before E2E integration.
