@@ -1089,7 +1089,7 @@ outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq.npy: [5, 4, 149, 8]
 outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq_mask.npy: [5, 4, 149]
 ```
 
-输出行语义为 one row = one scenario-planner rollout；当前 5 logs × 4 planners 必须导出 20 行。`ego_seq.npy` channel 必须为 `[x, y, vx, vy, heading, speed, accel, yaw_rate]`。`neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 是 mandatory，不允许作为 optional。
+输出行语义为 one row = one scenario × one planner-controlled nuPlan ego rollout；当前 5 logs × 4 planners 必须导出 20 行，不能导出 5 logs × 4 planners × num_agents。Stage 5 / Stage 6 Waymo 预处理可以为了数据量把多个 road participants 展开为 ego-like samples，但 Stage 7 official nuPlan planner 数据不能这样做：IDM / PDM / ML Planner 只控制 nuPlan ego vehicle，background agents 必须保留为 neighbor context。`ego_seq.npy` channel 必须为 `[x, y, vx, vy, heading, speed, accel, yaw_rate]`。`neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 是 mandatory，不允许作为 optional。
 
 #### PASS criteria
 
@@ -1098,7 +1098,9 @@ outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq_mask.npy: [5, 4, 149
 - `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv`、`feature_schema.json`、`shard_manifest.json` 全部存在。
 - `planner_policy_indices` 下四个 planner `.npy` 全部存在。
 - `neighbor_seq.npy` 或 `neighbor_slot_ids.npy` 缺失时必须 fail，不能写成 `neighbor_seq_missing` non-fatal warning。
-- `ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、`metadata.csv` 行数一致且等于 `N * P`。
+- `ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、`metadata.csv` 行数一致且等于 `N * P`，不得按 neighbor/background agent 数量扩行。
+- `stage7d_export_schema.json` 记录 `row_semantics = "scenario_planner_controlled_ego_rollout"`、`ego_definition = "nuPlan planner-controlled ego vehicle only"`、`neighbor_definition = "background road participants used only as context"`、`multi_agent_ego_expansion = false`、`total_rows_expected = num_scenarios * num_planners`。
+- `warnings.json.validation.total_rows == num_scenarios * num_planners`，且 `no_multi_agent_ego_expansion == true`、`neighbor_agents_used_as_context_only == true`。
 - `feature_schema.json` 明确列出 interaction/style feature names and indices。
 
 #### Common failure modes
@@ -5055,7 +5057,7 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 
 ## 2. 期望行为
 
-该命令只读取 Stage 7C.2C-2 已生成的官方 nuPlan simulation 输出，不运行 nuPlan simulation，不做 pseudo rollout，也不计算最终 BDD。它的唯一目标是导出完整 Stage 6-compatible sharded dataset，让 Stage 7E/F 后续复用 Stage 6 的 BDD、report-card、task-conditioned BDD 模块。
+该命令只读取 Stage 7C.2C-2 已生成的官方 nuPlan simulation 输出，不运行 nuPlan simulation，不做 pseudo rollout，也不计算最终 BDD。它的唯一目标是导出完整 Stage 6-compatible sharded dataset，让 Stage 7E/F 后续复用 Stage 6 的 BDD、report-card、task-conditioned BDD 模块。注意：Stage 5 / Stage 6 Waymo 预处理可为数据量使用 multi-agent ego expansion；Stage 7 nuPlan planner 数据禁止这样做，因为 official planner 只控制 nuPlan ego，其他 road participants 只能作为 mandatory neighbor context。
 
 输出必须包含：
 
@@ -5063,7 +5065,7 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 - `shards/shard_000/neighbor_seq.npy`：mandatory surrounding-agent context；
 - `shards/shard_000/neighbor_slot_ids.npy`：mandatory neighbor slot id；
 - `shards/shard_000/interaction_feat_style.npy`：longitudinal comfort + interaction/style features；
-- `shards/shard_000/metadata.csv`：one row = one scenario-planner rollout；
+- `shards/shard_000/metadata.csv`：one row = one scenario × one planner-controlled nuPlan ego rollout；
 - `feature_schema.json`：feature names and indices；
 - `shard_manifest.json`：Stage 6-compatible shard manifest；
 - `planner_policy_indices/*.npy`：每个 planner 的 global row index。
@@ -5076,8 +5078,10 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 
 - `simulation_schema.json` 中 `pseudo_rollout == false`；
 - `simulation_schema.json` 中 `uses_official_nuplan_simulation == true`；
-- 输出总行数等于 `N * P`，当前 5 logs × 4 planners 应为 20；
+- 输出总行数等于 `N * P`，当前 5 logs × 4 planners 应为 20，不能按 num_agents / num_neighbors 扩展为更多 ego rows；
 - `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv` 行对齐；
+- `stage7d_export_schema.json` 明确记录 Stage 7 row semantics、nuPlan planner-controlled ego-only 定义、background agents as context、`multi_agent_ego_expansion=false`、`total_rows_expected=num_scenarios*num_planners`；
+- `warnings.json.validation` 明确记录 `total_rows == num_scenarios * num_planners`、`no_multi_agent_ego_expansion == true`、`neighbor_agents_used_as_context_only == true`；
 - `neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 缺失必须 fail，不能作为 non-fatal warning；
 - 四个 planner index 文件均存在：`simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`；
 - Stage 7D 不重新实现最终 BDD，后续 Stage 7E/F 使用 Stage 6 BDD/report-card/task-conditioned BDD。

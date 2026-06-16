@@ -557,13 +557,26 @@ These files are mandatory. `neighbor_seq.npy` and `neighbor_slot_ids.npy` must n
 Each row corresponds to:
 
 ```text
-one scenario × one planner/policy rollout
+one scenario × one planner-controlled nuPlan ego rollout
 ```
 
 For current IDM output:
 
 ```text
 5 logs × 4 planners = 20 rows
+NOT 5 logs × 4 planners × num_agents
+```
+
+Stage 5 / Stage 6 Waymo preprocessing may expand many road participants into ego-like samples to increase behavior-embedding training data. Stage 7 must not use that expansion because official nuPlan IDM / PDM / ML planners control only the nuPlan ego vehicle. Background road participants remain neighbor context only.
+
+For an input tensor `simulated_ego_seq.npy` with shape `[5, 4, 149, 8]`, the Stage 7D export must therefore produce:
+
+```text
+ego_seq.npy:                    [20, T, ego_dim]
+neighbor_seq.npy:               [20, K, T, neighbor_dim]
+neighbor_slot_ids.npy:          [20, K]
+interaction_feat_style.npy:     [20, F]
+metadata.csv rows:              20
 ```
 
 ### Required Alignment
@@ -618,7 +631,16 @@ feature_schema.json exists
 shard_manifest.json exists
 planner_policy_indices exist for all planner profiles
 total rows == N × P
+no multi-agent ego expansion: background/neighbor agents do not create rows
 all arrays and metadata have consistent row counts
+stage7d_export_schema.json records row_semantics == "scenario_planner_controlled_ego_rollout"
+stage7d_export_schema.json records ego_definition == "nuPlan planner-controlled ego vehicle only"
+stage7d_export_schema.json records neighbor_definition == "background road participants used only as context"
+stage7d_export_schema.json records multi_agent_ego_expansion == false
+stage7d_export_schema.json records total_rows_expected == num_scenarios * num_planners
+warnings.json validation.total_rows == num_scenarios * num_planners
+warnings.json validation.no_multi_agent_ego_expansion == true
+warnings.json validation.neighbor_agents_used_as_context_only == true
 all planner profiles have non-empty index arrays
 warnings.json records validation.pass == true
 ```
