@@ -5045,6 +5045,46 @@ python tools/build_nuplan_map_odd_features.py \
 3. `warnings.json` 为结构化 JSON，latest verified result 为 `warnings: []`、`map_odd_status: PASS`。
 4. 所有 map/ODD features finite，且 feature schema 长度等于数组列数。
 
+## Stage 7D：从 official nuPlan msgpack 提取 mandatory neighbor tensors
+
+## 1. 命令
+
+```bash
+python tools/stage7d_extract_neighbors_from_nuplan.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --max_neighbors 16 \
+  --overwrite
+```
+
+提取完成后，再运行 Stage 6-compatible exporter。
+
+## 2. 期望行为
+
+该命令读取 Stage 7C.2C-2 official nuPlan simulation 输出目录中的 `simulated_ego_seq.npy`、`simulated_ego_seq_mask.npy`、`scenario_planner_index.csv`、`simulated_planner_metadata.csv`、`simulation_schema.json`、`warnings.json`，并优先解析 `official_nuplan_runs/**/*.msgpack.xz` 中的 observations / tracked objects。脚本不会运行 nuPlan simulation，不会生成 pseudo rollout，不会把 background agents 展开成 ego rows。
+
+输出写回同一个 `--sim_dir`：
+
+- `stage7d_neighbor_seq.npy`：mandatory neighbor tensor，layout 为 `[rows, K, T, 9]`；
+- `stage7d_neighbor_slot_ids.npy`：与 neighbor slot 对齐的 `[rows, K]` ID；
+- `stage7d_neighbor_schema.json`：记录 row semantics、neighbor channels、official simulation 标记；
+- `stage7d_neighbor_report.md`：中文/英文可读的提取报告；
+- `stage7d_neighbor_warnings.json`：低覆盖率等 warning，不伪造 neighbor。
+
+neighbor channel 顺序固定为：`rel_x, rel_y, rel_vx, rel_vy, distance, bearing, heading_rel, speed, valid`。其中 `rel_*` 必须相对每一条 planner-controlled simulated ego trajectory 重新计算；即使 closed-loop nonreactive agents 在同一 scenario 的不同 planner 下 world-coordinate background trajectories 相同，也必须针对不同 planner ego rollout 重新投影为 ego-centric neighbor features。
+
+## 3. 通过标准
+
+命令通过时必须满足：
+
+- `simulation_schema.json` 中 `pseudo_rollout == false`，且 `uses_official_nuplan_simulation == true`；
+- 输出行数等于 `num_scenarios * num_planners`，当前 5 logs × 4 planners 应为 20；
+- `stage7d_neighbor_seq.npy` shape 为 `[20, K, T, 9]`，其中 `T` 与 `simulated_ego_seq.npy` 一致，最后一维必须等于 9；
+- `stage7d_neighbor_slot_ids.npy` shape 为 `[20, K]`；
+- valid flag 不能全为 0；
+- `stage7d_neighbor_seq.npy` 不能包含 NaN 或 `+/-inf`；
+- 低 neighbor coverage 只写入 warning，不能凭空 fabricate neighbors；
+- row semantics 保持 one row = one scenario × one planner-controlled nuPlan ego rollout，不允许 multi-agent ego expansion。
+
 ## Stage 7D：完整 Stage 6-compatible planner 数据导出
 
 ## 1. 命令
