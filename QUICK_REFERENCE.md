@@ -5010,3 +5010,50 @@ python tools/build_nuplan_map_odd_features.py \
 2. `map_odd_meta.csv` 行数与 dynamic context rows 对齐，latest verified mini run 为 23 行。
 3. `warnings.json` 为结构化 JSON，latest verified result 为 `warnings: []`、`map_odd_status: PASS`。
 4. 所有 map/ODD features finite，且 feature schema 长度等于数组列数。
+
+## Stage 7D.1 / 7D.2：官方 planner 轨迹 BDD 一阶验证
+
+## 1. 命令
+
+```bash
+python tools/stage7d_validate_official_planner_bdd.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7d1_bdd_official_planner_5logs \
+  --overwrite
+```
+
+## 2. 期望行为
+
+该命令只读取 Stage 7C.2C-2 已生成的官方 nuPlan simulation 输出：
+
+- `simulated_ego_seq.npy`
+- `simulated_ego_seq_mask.npy`
+- `simulated_ego_seq_index.json`
+- `simulated_planner_metadata.csv`
+- `scenario_planner_index.csv`
+- `simulation_schema.json`
+- `warnings.json`
+
+脚本不会运行 nuPlan simulation，不会执行 pseudo rollout，也不会重写 logged ego 轨迹。它会从 `[N, P, T, 8]` 官方 planner 轨迹张量中提取纵向运动学特征，并输出：
+
+- `planner_kinematic_features.csv`：每个 scenario-planner pair 一行；
+- `planner_feature_summary.csv`：按 planner 汇总特征均值和标准差；
+- `paired_planner_delta.csv`：同一 scenario 内不同 planner 的成对特征差；
+- `bdd_distance_matrix.csv`：planner 间 Euclidean / RBF-MMD / 平均一维距离；
+- `paired_distance_matrix.csv`：同一 scenario 内 planner pair 的平均特征距离；
+- `stage7d_validation_report.md`：PASS/FAIL、输入 shape、planner axis、特征列表、距离矩阵入口、观察和限制；
+- `warnings.json`：结构化诊断和 `validation.pass`；
+- `stage7d_schema.json`：Stage 7D schema 和解释边界。
+
+## 3. 通过标准
+
+命令通过时必须满足：
+
+- `simulation_schema.json` 中 `pseudo_rollout == false`；
+- `simulation_schema.json` 中 `uses_official_nuplan_simulation == true`；
+- `simulated_ego_seq.npy` shape 是 `[N, P, T, 8]`；
+- `simulated_ego_seq_mask.npy` shape 是 `[N, P, T]` 且至少有一个有效 timestep；
+- planner axis 包含 `simple_planner`、`idm_longitudinal_conservative`、`idm_longitudinal_comfort`、`idm_longitudinal_aggressive`；
+- 如果输入诊断中存在 `missing_pair_count`，其值必须为 `0`；
+- 输出 `warnings.json` 中 `validation.pass == true`；
+- 报告只能解释为：Stage 7D first-pass 验证 BDD / feature-distance 是否能检测官方 nuPlan planner rollout 中受控纵向行为差异；不能声称完成 full driving-style validation。
