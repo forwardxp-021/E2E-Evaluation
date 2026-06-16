@@ -5130,3 +5130,42 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 - `metadata.csv` 必须从 `scenario_planner_index.csv` 映射 `db_name -> log_name`（去掉 `.db`）、`scenario_id -> actual_nuplan_scenario_token`、`scene_token -> stage7b_scene_token`、`sample_id`、`scenario_type`；
 - 四个 planner index 文件均存在：`simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`；
 - Stage 7D 不重新实现最终 BDD，后续 Stage 7E/F 使用 Stage 6 BDD/report-card/task-conditioned BDD。
+
+## Stage 7E/7F-IDM smoke：复用 Stage 6 BDD/report-card 验证 IDM 导出接口
+
+## 1. 命令
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_embedding_model/model.pt \
+  --max_neighbors 5 \
+  --overwrite
+
+python tools/stage7f_run_idm_stage6_bdd_report.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --embedding_dir outputs/stage7e_idm_embeddings_5logs \
+  --output_dir outputs/stage7f_idm_bdd_report_5logs \
+  --overwrite
+```
+
+如本地 Stage 5/6 encoder checkpoint 路径不同，请只替换 `--checkpoint`，不要重新训练 Stage 7 专用 embedding，除非实验设计明确要求。
+
+## 2. 期望行为
+
+- Stage 7E 读取 `outputs/stage7d_stage6_dataset_idm_5logs/shards/shard_000/ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、`metadata.csv` 和 `planner_policy_indices/*.npy`。
+- Stage 7E 将 Stage 7D 的 planner-controlled ego rollout 按原 row order 输入既有 Stage 5/6 context encoder，输出 `embedding.npy`、`embedding_manifest.json`、`metadata.csv`、`planner_policy_indices/`、`warnings.json` 和 `embedding_report.md`。
+- Stage 7E 默认使用前 5 个邻车构造 encoder context（`--max_neighbors 5`），用于匹配既有 5-neighbor context encoder；不会把 neighbor agent 展开成新的 ego row。
+- Stage 7F 读取 Stage 7E 的 `embedding.npy` 和 Stage 7D 的 `interaction_feat_style.npy` / `feature_schema.json` / planner A/B index，调用既有 `tools/stage6_compare_unpaired_style.py` 与 `tools/stage6_generate_report_card.py`。
+- Stage 7F 固定运行三组 IDM 对比：conservative vs comfort、conservative vs aggressive、comfort vs aggressive，并在每个子目录中生成 Stage 6 BDD/report-card 输出。
+- 该 smoke 只验证接口链路：official nuPlan simulation → Stage 6-compatible data → embedding → BDD/report card；5-log 结果只能作为 exploratory positive-control evidence，不能声称统计显著。
+
+## 3. 通过标准
+
+- `outputs/stage7e_idm_embeddings_5logs/embedding.npy` 行数等于 Stage 7D metadata 行数，5-log smoke 应为 20。
+- `outputs/stage7e_idm_embeddings_5logs/warnings.json` 中 `validation.pass == true`。
+- Stage 7E 保留 `planner_policy_indices/simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`。
+- Stage 7F 三个 comparison 子目录都存在，并且每组 A/B index 非空；5-log smoke 下每侧应为 5 行。
+- 每个 Stage 7F 子目录至少生成 `bdd_summary.json` 和 `style_report_card.md`；若 Stage 6 输出可用，还应包含 `feature_delta.csv` 和 `category_delta.csv`。
+- `outputs/stage7f_idm_bdd_report_5logs/warnings.json` 中 `validation.pass == true`。
