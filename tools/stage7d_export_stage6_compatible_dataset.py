@@ -250,7 +250,7 @@ def metadata_rows(index_rows: List[Dict[str, str]], planners: List[str], n_scena
     return rows
 
 
-def validate_outputs(out_dir: Path, planners: List[str], expected_rows: int) -> None:
+def validate_outputs(out_dir: Path, planners: List[str], expected_rows: int, n_scenarios: int, n_planners: int) -> None:
     shard = out_dir / "shards" / "shard_000"
     req = [shard / n for n in ["ego_seq.npy", "neighbor_seq.npy", "neighbor_slot_ids.npy", "interaction_feat_style.npy", "metadata.csv"]]
     req += [out_dir / "feature_schema.json", out_dir / "shard_manifest.json"]
@@ -262,8 +262,17 @@ def validate_outputs(out_dir: Path, planners: List[str], expected_rows: int) -> 
     neigh = np.load(shard / "neighbor_seq.npy", mmap_mode="r")
     feat = np.load(shard / "interaction_feat_style.npy", mmap_mode="r")
     meta_count = len(read_csv_rows(shard / "metadata.csv"))
+    if expected_rows != n_scenarios * n_planners:
+        raise ValueError(
+            f"Stage 7D row semantics violation: expected_rows={expected_rows} must equal "
+            f"num_scenarios * num_planners = {n_scenarios} * {n_planners}."
+        )
     if not (ego.shape[0] == neigh.shape[0] == feat.shape[0] == meta_count == expected_rows):
-        raise ValueError(f"Row alignment failed: ego={ego.shape[0]} neighbor={neigh.shape[0]} features={feat.shape[0]} metadata={meta_count} expected={expected_rows}")
+        raise ValueError(
+            f"Row alignment failed: ego={ego.shape[0]} neighbor={neigh.shape[0]} "
+            f"features={feat.shape[0]} metadata={meta_count} expected={expected_rows}. "
+            "Stage 7D must not expand background/neighbor agents into additional ego rows."
+        )
 
 
 def main() -> None:
@@ -286,7 +295,9 @@ def main() -> None:
     if seq.ndim != 4 or seq.shape[-1] != 8 or mask.shape != seq.shape[:3]:
         raise ValueError(f"Invalid Stage 7C tensor shapes: seq={list(seq.shape)} mask={list(mask.shape)}")
     planners = planner_axis(paths["simulated_planner_metadata.csv"], paths["scenario_planner_index.csv"], seq.shape[1])
-    expected_rows = int(seq.shape[0] * seq.shape[1])
+    n_scenarios = int(seq.shape[0])
+    n_planners = int(seq.shape[1])
+    expected_rows = int(n_scenarios * n_planners)
     ego = convert_ego(np.asarray(seq), np.asarray(mask))
     neighbor, slot_raw, neighbor_source = load_neighbor_source(args.sim_dir, expected_rows, seq.shape[2])
     slot_ids = normalize_slot_ids(slot_raw)
@@ -306,10 +317,43 @@ def main() -> None:
         np.save(idx_dir / f"{planner}.npy", np.asarray([r for r in range(expected_rows) if r % len(planners) == pid], dtype=np.int64))
     write_json(args.output_dir / "shard_manifest.json", {"shards": [{"shard_path": "shards/shard_000"}]})
     write_json(args.output_dir / "feature_schema.json", {"feature_names": FEATURES, "features": [{"index": i, "name": n} for i, n in enumerate(FEATURES)], "ego_channels": EGO_CHANNELS, "neighbor_channels": NEIGHBOR_CHANNELS})
-    write_json(args.output_dir / "stage7d_export_schema.json", {"stage": "7D", "purpose": "full_stage6_compatible_dataset_export", "input_channels": INPUT_CHANNELS, "ego_channels": EGO_CHANNELS, "planner_axis": planners, "rows": expected_rows, "neighbor_source": neighbor_source, "pseudo_rollout": False, "uses_official_nuplan_simulation": True})
-    write_json(args.output_dir / "warnings.json", {"warnings": [], "fatal_if_missing": ["neighbor_seq.npy", "neighbor_slot_ids.npy"], "input_warnings": warnings_in})
-    validate_outputs(args.output_dir, planners, expected_rows)
-    report = ["# Stage 7D Full Stage 6-Compatible Export Report", "", "- validation.pass: **PASS**", "- Stage 7D exports data only; it does not run nuPlan simulation and does not compute final BDD.", f"- rows: `{expected_rows}`", f"- ego_seq.npy shape: `{list(ego.shape)}`", f"- neighbor_seq.npy shape: `{list(neighbor.shape)}`", f"- interaction_feat_style.npy shape: `{list(feat.shape)}`", "", "## Planner Axis", *[f"- {i}: `{p}`" for i, p in enumerate(planners)], "", "## Mandatory Outputs", "- `ego_seq.npy`", "- `neighbor_seq.npy`", "- `neighbor_slot_ids.npy`", "- `interaction_feat_style.npy`", "- `metadata.csv`", "- `feature_schema.json`", "- `shard_manifest.json`", "- `planner_policy_indices/*.npy`"]
+    export_schema = {
+        "stage": "7D",
+        "purpose": "full_stage6_compatible_dataset_export",
+        "row_semantics": "scenario_planner_controlled_ego_rollout",
+        "ego_definition": "nuPlan planner-controlled ego vehicle only",
+        "neighbor_definition": "background road participants used only as context",
+        "multi_agent_ego_expansion": False,
+        "num_scenarios": n_scenarios,
+        "num_planners": n_planners,
+        "total_rows_expected": expected_rows,
+        "rows": expected_rows,
+        "input_channels": INPUT_CHANNELS,
+        "ego_channels": EGO_CHANNELS,
+        "neighbor_channels": NEIGHBOR_CHANNELS,
+        "planner_axis": planners,
+        "neighbor_source": neighbor_source,
+        "pseudo_rollout": False,
+        "uses_official_nuplan_simulation": True,
+    }
+    write_json(args.output_dir / "stage7d_export_schema.json", export_schema)
+    write_json(args.output_dir / "warnings.json", {
+        "warnings": [],
+        "fatal_if_missing": ["neighbor_seq.npy", "neighbor_slot_ids.npy"],
+        "validation": {
+            "pass": True,
+            "total_rows": expected_rows,
+            "total_rows_expected": expected_rows,
+            "num_scenarios": n_scenarios,
+            "num_planners": n_planners,
+            "row_semantics": "scenario_planner_controlled_ego_rollout",
+            "no_multi_agent_ego_expansion": True,
+            "neighbor_agents_used_as_context_only": True,
+        },
+        "input_warnings": warnings_in,
+    })
+    validate_outputs(args.output_dir, planners, expected_rows, n_scenarios, n_planners)
+    report = ["# Stage 7D Full Stage 6-Compatible Export Report", "", "- validation.pass: **PASS**", "- Stage 7D exports data only; it does not run nuPlan simulation and does not compute final BDD.", f"- rows: `{expected_rows}` (= `{n_scenarios} scenarios × {n_planners} planners`)", "- row semantics: `one row = one scenario × one planner-controlled nuPlan ego rollout`", "- multi-agent ego expansion: `false`", f"- ego_seq.npy shape: `{list(ego.shape)}`", f"- neighbor_seq.npy shape: `{list(neighbor.shape)}`", f"- interaction_feat_style.npy shape: `{list(feat.shape)}`", "", "## Planner Axis", *[f"- {i}: `{p}`" for i, p in enumerate(planners)], "", "## Mandatory Outputs", "- `ego_seq.npy`", "- `neighbor_seq.npy`", "- `neighbor_slot_ids.npy`", "- `interaction_feat_style.npy`", "- `metadata.csv`", "- `feature_schema.json`", "- `shard_manifest.json`", "- `planner_policy_indices/*.npy`"]
     (args.output_dir / "export_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(f"Stage 7D full Stage 6-compatible export PASS: {args.output_dir}")
 
