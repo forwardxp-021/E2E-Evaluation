@@ -1,27 +1,60 @@
-# Stage 7 — nuPlan Simulation and E2E Validation Roadmap
+# Stage 7 — nuPlan Official Simulation Data Generation and Stage 6 Reuse Roadmap
 
 ## 1. Top-Level Purpose
 
-Stage 7 uses the nuPlan official simulation environment to generate same-scenario planner / policy / E2E behavior data, then validates whether behavior embedding and Behavioral Distribution Distance (BDD) can detect policy-induced and E2E-induced driving style differences.
+Stage 7 的核心目的不是重新实现 BDD，也不是重新实现 report card。
 
-The key dataset distinction is:
+Stage 7 的核心目的，是使用 **nuPlan official simulation** 生成可控的自动驾驶 planner / policy 行为数据，并将这些数据转换成 **Stage 6-compatible dataset**，然后复用 Stage 6 已经完成的：
 
-- **Waymo / earlier stages:** offline logged data and pseudo/synthetic validation.
-- **nuPlan / Stage 7:** official simulation-generated behavior data under the same scenarios.
+- BDD / MMD 分布漂移计算；
+- scenario-balanced BDD；
+- task-conditioned behavior-event BDD；
+- category / feature / slice explanation；
+- report card；
+- top drift cases；
+- case-level interpretability。
 
-> **Strong warning:** Stage 7C and later must not be described as offline pseudo rollout or numpy trajectory rewriting. Stage 7C, Stage 7F, and all downstream conclusions must be based on official nuPlan simulation outputs.
+因此，Stage 7 的定位是：
 
-## 2. Compact A–G Roadmap
+```text
+Stage 6 = canonical BDD / report-card evaluation engine
+Stage 7 = controllable nuPlan planner-generated data source
+```
 
-| Stage | Purpose | Main data source | Main output | Current status |
+Stage 7 要解决的是 Stage 6 的核心数据限制：
+
+```text
+Stage 6 Waymo 数据：
+  来自真实道路 logged trajectories；
+  驾驶员未知；
+  无法区分同一驾驶员 / 不同驾驶员；
+  无法控制同一场景下的不同驾驶风格。
+
+Stage 7 nuPlan 数据：
+  来自 official nuPlan closed-loop simulation；
+  可以在同一 scenario 下运行不同 planner / policy；
+  可以构造可控的 conservative / comfort / aggressive planner profiles；
+  可以生成替代 Waymo 的可控自动驾驶行为数据；
+  然后喂给 Stage 6 做 BDD 和 report card。
+```
+
+Stage 7 所有 planner 数据都必须来自 official nuPlan simulation。禁止使用 pseudo rollout、numpy trajectory rewriting、offline trajectory interpolation 来冒充 closed-loop simulation。
+
+---
+
+## 2. Updated Compact Roadmap
+
+| Stage | Purpose | Main data source | Main output | Status |
 |---|---|---|---|---|
-| 7A | nuPlan readiness | nuPlan DB/map/devkit | readiness evidence | PASS |
-| 7B | context construction | nuPlan logs/maps | `merged_context_feat` | PASS |
-| 7C | official simulation with rule/traditional planners | nuPlan simulation | simulated planner trajectories | 7C.1A/7C.1B/7C.1C PASS; 7C.2A/7C.2B PASS; 7C.2C IDM longitudinal-only multi-planner rollout PASS; 7C.3 PDM / lateral-interaction planner extension TODO |
-| 7D | BDD validation on planner sim data | Stage 7C | paired/unpaired/ODD BDD | NEXT |
-| 7E | planner-only consolidation | Stage 7D | planner report cards | TODO |
-| 7F | E2E model simulation | E2E planner + nuPlan sim | E2E simulated trajectories | TODO |
-| 7G | final Stage 7 summary | 7C/7D/7F | final thesis evidence | TODO |
+| 7A | nuPlan readiness | nuPlan DB / map / devkit | readiness evidence | PASS |
+| 7B | nuPlan context construction | nuPlan logs / maps | ego + neighbor + context features | PASS |
+| 7C | official planner data generation | nuPlan official simulation | planner rollout tensors + official logs | IN PROGRESS |
+| 7D | Stage 6-compatible dataset export | Stage 7C official simulation outputs | full Stage 6-compatible shards | NEXT |
+| 7E | embedding export / manifest construction | Stage 7D dataset + Stage 5 encoder | embedding manifest + policy indices | TODO |
+| 7F | reuse Stage 6 BDD / report-card engine | Stage 7E embeddings + Stage 7D metadata | BDD, task-BDD, report cards | TODO |
+| 7G | final Stage 7 thesis evidence | 7C / 7D / 7E / 7F | final planner-style validation evidence | TODO |
+
+---
 
 ## 3. Stage 7A — nuPlan Readiness
 
@@ -37,19 +70,13 @@ The key dataset distinction is:
 
 **Current status:** PASS.
 
-**Expected outputs / evidence:**
-
-- nuPlan DB readable.
-- Map readable.
-- Selected scenarios readable.
-- Ego/object extraction works.
-- Simulation APIs can be discovered.
-
 Stage 7A is an infrastructure-readiness stage. It does not by itself prove planner-induced or E2E-induced behavior drift.
+
+---
 
 ## 4. Stage 7B — nuPlan Context Dataset Construction
 
-**Definition:** Stage 7B = build a strict, row-aligned, auditable scenario context dataset for downstream nuPlan simulation and BDD analysis.
+**Definition:** Stage 7B = build a strict, row-aligned, auditable scenario context dataset for downstream nuPlan simulation and Stage 6-compatible dataset export.
 
 **Sub-stages:**
 
@@ -58,22 +85,15 @@ Stage 7A is an infrastructure-readiness stage. It does not by itself prove plann
 - 7B.3 map/ODD-lite feature builder.
 - 7B.4 dynamic + map/ODD merge/alignment.
 
-**Current status:**
+**Current status:** PASS.
 
-- Stage 7B.1: PASS.
-- Stage 7B.2: PASS.
-- Stage 6C smoke on nuPlan expert context: PASS.
-- Stage 7B.3: PASS.
-- Stage 7B.4: PASS.
-- Stage 7B overall: PASS.
-
-**Validated final directory:**
+Validated final directory:
 
 ```text
 outputs/stage7b4_nuplan_context_merged/
 ```
 
-**Validated shapes:**
+Validated shapes:
 
 ```text
 ego_seq.npy:                  [23, 80, 8]
@@ -85,159 +105,84 @@ map_odd_feat.npy:             [23, 37]
 merged_context_feat.npy:      [23, 70]
 ```
 
-Stage 7B is not itself simulation. It is the context and alignment foundation used to select, align, condition, and diagnose later nuPlan simulation and BDD experiments.
+Stage 7B is not itself simulation. It is the context and alignment foundation used to select, align, condition, and diagnose later nuPlan simulation and Stage 6-compatible dataset export.
 
-## 5. Stage 7C — Official nuPlan Simulation with Rule-Based / Traditional Planners
+---
 
-**Definition:** Stage 7C = run multiple non-E2E planner / policy variants in the official nuPlan closed-loop simulation environment on the same selected scenarios, then export simulated ego trajectories.
+## 5. Stage 7C — Official nuPlan Planner Data Generation
 
-**Important correction:**
+Stage 7C is the data-generation stage.
 
-- Stage 7C must use official nuPlan simulation.
-- Stage 7C must not be pseudo rollout-lite.
-- Stage 7C must not simply rewrite logged ego trajectories with numpy interpolation.
+It should run multiple planner / policy variants in official nuPlan simulation on the same selected scenarios, then export official simulation trajectories and logs.
 
-### Stage 7C Planner Strategy
+Stage 7C is divided into three planner families:
 
-The first success criterion of Stage 7C is not planner sophistication. The first success criterion is that official nuPlan simulation runs and exports non-empty `simulated_ego_trajectory.csv` and `simulated_ego_seq.npy`. Stage 7C should therefore first use existing nuPlan devkit / official-compatible planners, because they reduce engineering risk and prove the official simulation/export pipeline before adding planner implementation complexity.
+```text
+Stage 7C.2 — IDM longitudinal-only planner profiles
+Stage 7C.3 — PDM longitudinal + lateral planner profiles
+Stage 7C.4 — ML planner longitudinal + lateral planner profiles
+```
 
-Stage 7C should use planners in this priority order:
+The common output of each planner family should be:
 
-1. expert / log replay planner if available;
-2. simple planner if available;
-3. IDM planner if available;
-4. configurable IDM-style planner variants;
-5. minimal custom `AbstractPlanner`-compatible wrapper only if needed.
+```text
+simulated_ego_seq.npy
+simulated_ego_seq_mask.npy
+simulated_ego_seq_index.json
+simulated_planner_metadata.csv
+scenario_planner_index.csv
+simulation_schema.json
+warnings.json
+official_nuplan_runs/**/*.msgpack.xz
+```
 
-Recommended Stage 7C planner variants:
+The official simulation output tensor should follow:
 
-| ID | planner variant | intended role |
-|---|---|---|
-| P0 | `expert_or_log_replay` | official replay / expert reference and pipeline sanity check |
-| P1 | `simple_planner` | minimal official-compatible baseline |
-| P2 | `idm_longitudinal_conservative` | longitudinal-only cautious car-following / interaction positive control |
-| P3 | `idm_longitudinal_aggressive` | longitudinal-only assertive car-following / interaction positive control |
-| P4 | `idm_longitudinal_comfort` | longitudinal-only comfort-oriented car-following / interaction positive control |
+```text
+simulated_ego_seq.npy:       [N, P, T, C]
+simulated_ego_seq_mask.npy:  [N, P, T]
+```
 
-For smoke testing, it is acceptable to start with fewer planners:
+where:
 
-- `expert_or_log_replay`
-- `simple_planner`
+```text
+N = number of scenarios
+P = number of planner / policy variants
+T = simulation timesteps
+C = ego state channels
+```
 
-For full Stage 7C validation, the goal is to include behaviorally distinct variants, preferably:
+All Stage 7C planner data must satisfy:
 
-- `idm_longitudinal_conservative`
-- `idm_longitudinal_aggressive`
-- `idm_longitudinal_comfort`
+```text
+pseudo_rollout == false
+uses_official_nuplan_simulation == true
+official_success_count == N × P
+missing_pair_count == 0
+msgpack_simulation_log_files_parsed == N × P
+```
 
-If `IDMPlanner` or another configurable official-compatible planner is available, Stage 7C should define planner styles by planner parameters, not by fake trajectory rewriting. Exact parameter names depend on the installed nuPlan planner API, but the conceptual differences are:
+---
 
-- `idm_longitudinal_conservative`: lower target speed, larger headway, gentler acceleration, earlier braking.
-- `idm_longitudinal_aggressive`: higher target speed, smaller headway, stronger acceleration, later braking.
-- `idm_longitudinal_comfort`: moderate target speed, lower acceleration, smoother longitudinal response, lower jerk / comfort-oriented behavior.
+## 6. Stage 7C.1 — Official Simulation Smoke and Alignment Foundation
 
+**Current status:** PASS.
 
-#### Longitudinal-only vs full driving style
+Validated facts:
 
-IDM conservative/comfort/aggressive profiles are **longitudinal-only rule-based profiles**. They are intended as controlled positive controls for longitudinal BDD validation, not as complete driving-style models. This interpretation follows the Stage 6C v2 behavior-event taxonomy in [`docs/stage6c_behavior_event_taxonomy_v2.md`](stage6c_behavior_event_taxonomy_v2.md), where driving style is task-conditioned across following, lead-brake response, queue approach, lane change, cut-in response, overtake opportunity/execution, hesitation, and yield-conflict tasks.
+- Stage 7C.1A official simulation smoke: PASS.
+- Stage 7C.1B official msgpack trajectory export: PASS.
+- Stage 7C.1C exact log + actual nuPlan scenario token wrapper smoke: PASS.
+- Stage 7C.1C strict Stage7B scene_token == nuPlan scenario_token: NOT REQUIRED / mismatch observed.
+- Stage 7C.2A simple_planner × 3 distinct logs: PASS.
+- Stage 7C.2B simple_planner × 5 distinct logs: PASS.
 
-IDM profiles are suitable for:
+Important alignment rule:
 
-- following;
-- lead_brake_response;
-- queue_approach;
-- cutin_response longitudinal component;
-- yield_conflict partial longitudinal component.
-
-IDM profiles are not suitable for:
-
-- lane_change sharpness;
-- lane_change willingness;
-- overtake execution;
-- hesitation / abort-like maneuver;
-- target-lane rear-gap pressure;
-- full courtesy/yielding behavior.
-
-Lane_change, overtake, hesitation, and yield_conflict require task-conditioned interpretation and cannot be fully validated by IDM longitudinal parameters alone. We first validate whether BDD can detect controlled longitudinal behavior drift using parameterized IDM profiles. Lateral and interaction style dimensions should be evaluated separately through lane-change / overtaking / yield-conflict task-conditioned BDD once a lane-change-capable planner or E2E policy is available.
-
-Backward-compatible aliases `idm_conservative`, `idm_comfort`, and `idm_aggressive` may remain in code metadata, but documentation should prefer `idm_longitudinal_conservative`, `idm_longitudinal_comfort`, and `idm_longitudinal_aggressive` so they are not confused with complete driving-style profiles.
-
-Custom planners are allowed only if existing nuPlan planners are unavailable or insufficient. If a custom planner is implemented later, it must satisfy all requirements below:
-
-1. It must be compatible with nuPlan `AbstractPlanner` or the installed equivalent planner interface.
-2. It must run inside the official nuPlan simulation framework.
-3. It must output trajectories through the nuPlan simulation loop.
-4. It must not bypass nuPlan simulation.
-5. It must not generate offline pseudo trajectories.
-6. It must not use numpy interpolation to rewrite logged expert trajectories and call that simulation.
-
-Allowed: writing a planner that runs inside official nuPlan simulation. Not allowed: writing our own offline simulator or rewriting logged ego trajectories. E2E model planner integration remains Stage 7F, not Stage 7C.
-
-Starting with custom planners would make failure diagnosis ambiguous. If results are poor, we would not know whether the problem is BDD, nuPlan simulation connectivity, trajectory export, a bad custom planner implementation, or planner behavior differences that are too weak. The correct order is therefore:
-
-1. Run official nuPlan simulation with existing planner(s).
-2. Export simulated ego trajectories.
-3. Verify simulation output is non-empty and finite.
-4. Add parameterized planner variants.
-5. Only then add minimal custom planner wrappers if needed.
-6. Keep E2E planner integration in Stage 7F.
-
-Stage 7C smoke PASS requires:
-
-- official nuPlan simulation API or official nuPlan CLI is used;
-- `pseudo_rollout` is false;
-- at least one planner runs successfully;
-- at least one scenario runs successfully;
-- `simulated_ego_trajectory.csv` is non-empty;
-- `simulated_ego_seq.npy` is non-empty;
-- numeric outputs are finite;
-- `simulation_report.md` says PASS.
-
-
-### Stage 7C.1 Official nuPlan Simulation Smoke Result
-
-Latest Stage 7C.1 smoke status:
-
-- Stage 7C.1A — official simulation smoke: **PASS**.
-- Stage 7C.1B — official msgpack trajectory export: **PASS**.
-- Stage 7C.1C — exact log + actual nuPlan scenario token wrapper smoke: **PASS**.
-- Stage 7C.1C — strict Stage7B scene_token == nuPlan scenario_token: **NOT REQUIRED / mismatch observed**.
-- Stage 7C.2A — `simple_planner × 3 distinct logs`: **PASS**.
-- Stage 7C.2B — `simple_planner × 5 distinct logs`: **PASS**.
-- Stage 7C.2C-0 — native IDM default/conservative/comfort/aggressive smoke: **PASS**.
-- Stage 7C.2C-1 — wrapper smoke: **PASS**.
-- Stage 7C.2C-2 — wrapper rollout on 5 logs × 4 planners: **PASS**.
-- Stage 7D — BDD validation on planner-generated trajectories: **NEXT**.
-
-Recorded smoke metrics:
-
-| item | value |
-|---|---|
-| Planner | `simple_planner` |
-| Official nuPlan simulation command succeeded | `1` |
-| `validation.pass` | `true` |
-| `official_success_count` | `1` |
-| Pseudo rollout | `false` |
-| Official simulation log parsed | `simulation_log/**/*.msgpack.xz` |
-| Parsed official artifact | `official_nuplan_runs/scenario_0/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.22.00.38_veh-35_01008_01518/000e00790bc45da7/000e00790bc45da7.msgpack.xz` |
-| Parsed trajectory rows | `149` |
-| `smoke_pass` | `true` |
-| `uses_official_nuplan_simulation` | `true` |
-| `same_scenario_alignment_required` | `false` |
-| `simulated_ego_seq.npy` shape | `[1, 1, 149, 8]` |
-| `simulated_ego_seq_mask.npy` shape | `[1, 1, 149]` |
-| `required_pose_valid_ratio` | `1.0` |
-| x/y/yaw non-sentinel ratios | `1.0 / 1.0 / 1.0` |
-| valid timestep count | `149` |
-| msgpack simulation log files found / parsed | `1 / 1` |
-| msgpack trajectory rows extracted | `149` |
-| warnings | `[]` |
-
-This smoke proves the official nuPlan simulation → `msgpack.xz` simulation log → trajectory parser → `[N, P, T, C]` tensor export path is working.
-
-It does **not** yet prove full Stage 7C. Multi-planner/multi-scenario validation remains TODO.
-
-Stage 7C.1C now separates same-log alignment from strict nuPlan token alignment. The exact-token wrapper smoke has **PASS** evidence from an official `simple_planner` run that parsed the official `.msgpack.xz` simulation artifact. New exact-filter local evidence shows that Stage 7B.4 `scene_token` should be preserved as source metadata, but it must not be assumed to equal the value accepted by nuPlan `scenario_filter.scenario_tokens`: target log `2021.05.12.22.00.38_veh-35_01008_01518` matched successfully, while Stage 7B.4 `scene_token=165060762e765a5a` differed from actual nuPlan scenario token `000e00790bc45da7`.
+```text
+Stage 7B.4 scene_token should be preserved as source metadata,
+but it must not be assumed to equal nuPlan scenario_filter.scenario_tokens.
+```
 
 For nuPlan exact reruns, the verified key is:
 
@@ -245,186 +190,406 @@ For nuPlan exact reruns, the verified key is:
 log_name + actual_nuPlan_scenario_token
 ```
 
-For the validated smoke, use:
+Validated exact key:
 
 ```text
 log_name = 2021.05.12.22.00.38_veh-35_01008_01518
+Stage 7B.4 scene_token = 165060762e765a5a
 actual_nuPlan_scenario_token = 000e00790bc45da7
 ```
 
-The resulting alignment conclusion is:
+Correct alignment interpretation:
 
 ```text
 same_log_alignment_passed: true
 strict_stage7b_scene_token_match: false
-exact_nuplan_token_rerun_supported: true
+alignment_level: log_name_plus_actual_nuplan_token
 alignment_status: PASS_LOG_AND_NUPLAN_TOKEN_RERUN
 ```
 
-Therefore log match plus an available actual nuPlan token is `PASS_LOG_AND_NUPLAN_TOKEN_RERUN`; strict token match is only `PASS_STRICT` when Stage 7B.4 `scene_token` also equals actual nuPlan scenario token. This does not overclaim full Stage 7C completion, because Stage 7C.2 multi-planner/multi-scenario rollout remains TODO.
+---
 
-**Environment / interaction limitation:** the behavior of other traffic agents depends on the selected nuPlan simulation configuration. If the current simulation uses log-replay or non-reactive observations, it must be documented as a limitation. If reactive agents / IDM agents are enabled later, that configuration must be documented separately. Do not overclaim interaction realism unless the simulation configuration actually supports it.
+## 7. Stage 7C.2 — IDM Longitudinal-Only Planner Profiles
 
-**Expected output:**
+### Purpose
+
+Use IDM Planner to generate three controlled **longitudinal-only** behavior profiles:
 
 ```text
-outputs/stage7c1_nuplan_simulation/
-├── simulated_ego_trajectory.csv
+idm_longitudinal_conservative
+idm_longitudinal_comfort
+idm_longitudinal_aggressive
+```
+
+These are rule-based positive controls for validating whether Stage 6 BDD/report card can detect controlled longitudinal behavior differences.
+
+### Current Status
+
+```text
+Stage 7C.2C-0 native IDM default/conservative/comfort/aggressive smoke: PASS
+Stage 7C.2C-1 wrapper smoke, 1 log × 4 planners: PASS
+Stage 7C.2C-2 wrapper rollout, 5 logs × 4 planners: PASS
+Stage 7C.2 IDM longitudinal-only multi-planner rollout: PASS
+```
+
+Validated output:
+
+```text
+outputs/stage7c2c2_idm_longitudinal_5logs/
+```
+
+Validated shape:
+
+```text
+simulated_ego_seq.npy:       [5, 4, 149, 8]
+simulated_ego_seq_mask.npy:  [5, 4, 149]
+```
+
+Planner axis:
+
+```text
+0 simple_planner
+1 idm_longitudinal_conservative
+2 idm_longitudinal_comfort
+3 idm_longitudinal_aggressive
+```
+
+Validated metrics:
+
+```text
+warnings: []
+official_success_count: 20
+trajectory_rows: 2980
+msgpack_simulation_log_files_found: 20
+msgpack_simulation_log_files_parsed: 20
+msgpack_trajectory_rows_extracted: 2980
+valid_timestep_count: 2980
+missing_pair_count: 0
+pseudo_rollout: false
+uses_official_nuplan_simulation: true
+alignment_pass_ratio: 1.0
+same_log_alignment_passed: true
+strict_stage7b_scene_token_match: false
+alignment_level: log_name_plus_actual_nuplan_token
+```
+
+### Interpretation Guardrail
+
+IDM profiles are **not full driving styles**.
+
+They are only longitudinal rule-based positive controls. They are suitable for:
+
+```text
+following
+lead_brake_response
+queue_approach
+cutin_response_partial_longitudinal
+yield_conflict_partial_longitudinal
+```
+
+They are not sufficient for:
+
+```text
+lane_change willingness
+lane_change sharpness
+overtake execution
+hesitation
+target-lane rear-gap pressure
+full courtesy / yielding behavior
+```
+
+Therefore Stage 7C.2 only validates whether Stage 6 can detect controlled longitudinal behavior differences from official nuPlan planner rollouts.
+
+Backward-compatible aliases `idm_conservative`, `idm_comfort`, and `idm_aggressive` may remain in code metadata, but documentation should prefer `idm_longitudinal_conservative`, `idm_longitudinal_comfort`, and `idm_longitudinal_aggressive` so they are not confused with complete driving-style profiles.
+
+---
+
+## 8. Stage 7C.3 — PDM Longitudinal + Lateral Planner Profiles
+
+### Purpose
+
+Use PDM Planner or a PDM-compatible planner configuration to generate three **longitudinal + lateral** behavior profiles:
+
+```text
+pdm_conservative
+pdm_comfort
+pdm_aggressive
+```
+
+Unlike IDM, PDM should be used to cover behavior dimensions involving both longitudinal and lateral decisions.
+
+### Required Style Coverage
+
+PDM profiles should attempt to cover:
+
+```text
+longitudinal comfort
+following distance
+speed assertiveness
+braking response
+lane-change willingness
+lane-change sharpness
+overtake opportunity / execution
+lateral stability
+gap acceptance
+interaction with adjacent-lane traffic
+yield / courtesy proxy behavior where supported
+```
+
+### Expected Planner Profiles
+
+The exact PDM parameters depend on the available PDM implementation, but the intended behavior profiles are:
+
+```text
+pdm_conservative:
+  lower speed target
+  larger following buffer
+  larger lane-change gap requirement
+  smoother acceleration / braking
+  lower lane-change willingness
+  stronger courtesy / yielding tendency if configurable
+
+pdm_comfort:
+  moderate speed target
+  moderate following buffer
+  smooth longitudinal response
+  smooth lateral response
+  balanced lane-change decision
+
+pdm_aggressive:
+  higher speed target
+  smaller following buffer
+  smaller lane-change gap requirement
+  stronger acceleration allowance
+  higher lane-change willingness
+  more assertive overtaking / merging behavior if configurable
+```
+
+### Required Output
+
+PDM should produce the same official simulation output structure as IDM:
+
+```text
+outputs/stage7c3_pdm_full_style_5logs/
 ├── simulated_ego_seq.npy
 ├── simulated_ego_seq_mask.npy
 ├── simulated_ego_seq_index.json
 ├── simulated_planner_metadata.csv
 ├── scenario_planner_index.csv
-├── scenario_alignment_report.md
-├── scenario_alignment.json
-├── scenario_alignment.csv
-├── simulation_summary.csv
 ├── simulation_schema.json
 ├── simulation_report.md
-└── warnings.json
+├── warnings.json
+└── official_nuplan_runs/**/*.msgpack.xz
 ```
 
-**Purpose:** Generate real nuPlan simulation behavior data for baseline / rule-based / traditional planners.
-
-**Latest Stage 7 status after Stage 7C.2C-2:**
+Expected planner axis:
 
 ```text
-Stage 7A: PASS
-Stage 7B: PASS
-Stage 7B.4: PASS
-Stage 7C.1A official simulation smoke: PASS
-Stage 7C.1B official msgpack trajectory export: PASS
-Stage 7C.1C exact-token wrapper smoke: PASS
-Stage 7C.2A simple_planner × 3 distinct logs: PASS
-Stage 7C.2B simple_planner × 5 distinct logs: PASS
-Stage 7C.2C IDM longitudinal-only multi-planner rollout: PASS
-Stage 7C.2C-2 wrapper rollout, 5 logs × 4 planners: PASS
-Stage 7C.3 PDM / lateral-interaction planner extension: TODO
-Stage 7D BDD validation: NEXT
+simple_planner or expert reference
+pdm_conservative
+pdm_comfort
+pdm_aggressive
 ```
 
-**Interpretation note:** IDM profiles are longitudinal-only rule-based positive controls. They should not be described as complete conservative / comfort / aggressive driving styles. They cover following, lead-brake response, queue approach, and partial longitudinal components of cut-in/yield conflicts. They do not cover lane-change willingness, lane-change sharpness, overtaking execution, hesitation, target-lane rear-gap pressure, or full courtesy/yield behavior.
+### PASS Criteria
 
-**Research statement:** We first validate whether BDD can detect controlled longitudinal behavior drift using parameterized IDM profiles in official nuPlan simulation. Lateral and interaction style dimensions will be evaluated later through PDM or another lane-change-capable planner/E2E policy.
-
-
-Stage 7C.2C-0 native IDM smoke validated all four official nuPlan IDM runs on the same exact scenario: `log_name=2021.05.12.22.00.38_veh-35_01008_01518`, `nuPlan scenario_token=000e00790bc45da7`, `planner_name=IDMPlanner`. The verified wrapper profiles for Stage 7C.2C-1 are `simple_planner`, `idm_longitudinal_conservative`, `idm_longitudinal_comfort`, and `idm_longitudinal_aggressive`; the IDM profiles use official `planner=idm_planner` with Hydra overrides on `planner.idm_planner.target_velocity`, `planner.idm_planner.min_gap_to_lead_agent`, `planner.idm_planner.headway_time`, `planner.idm_planner.accel_max`, and `planner.idm_planner.decel_max`. The wrapper command template now uses `{planner_hydra_overrides}` so Stage 7C.2C-1 can produce `[1, 4, T, 8]` when all four planners succeed.
-
-Stage 7C.2B validated `simple_planner` on five distinct logs with official nuPlan simulation outputs, no pseudo rollout, same-log alignment required, and tensor shape `[5, 1, 149, 8]`. The selected Stage 7B sample IDs were `sample_000000`, `sample_000005`, `sample_000010`, `sample_000015`, and `sample_000019`; the selected log names were the five distinct mini logs in Stage 7B.4 metadata. Validation passed with `official_success_count=5`, `trajectory_rows=745`, `msgpack_simulation_log_files_found=5`, `msgpack_simulation_log_files_parsed=5`, `required_pose_valid_ratio=1.0`, and `pseudo_rollout=false`.
-
-The five parsed official Stage 7C.2B artifacts were:
+PDM Stage 7C.3 passes only if:
 
 ```text
-scenario_0/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.22.00.38_veh-35_01008_01518/000e00790bc45da7/000e00790bc45da7.msgpack.xz
-scenario_1/simple_planner/simulation_log/SimplePlanner/stationary_in_traffic/2021.05.12.22.28.35_veh-35_00620_01164/001f3d5282985bbb/001f3d5282985bbb.msgpack.xz
-scenario_2/simple_planner/simulation_log/SimplePlanner/traversing_traffic_light_intersection/2021.05.12.23.36.44_veh-35_00152_00504/00015fc2840d5313/00015fc2840d5313.msgpack.xz
-scenario_3/simple_planner/simulation_log/SimplePlanner/traversing_intersection/2021.05.12.23.36.44_veh-35_01133_01535/0004544fe3715b27/0004544fe3715b27.msgpack.xz
-scenario_4/simple_planner/simulation_log/SimplePlanner/high_magnitude_speed/2021.05.12.23.36.44_veh-35_02035_02387/0004bf5585cf5f26/0004bf5585cf5f26.msgpack.xz
+pseudo_rollout == false
+uses_official_nuplan_simulation == true
+official_success_count == N × P
+missing_pair_count == 0
+msgpack_simulation_log_files_parsed == N × P
+simulated_ego_seq.npy has shape [N, P, T, C]
+planner metadata clearly records PDM profile parameters
 ```
 
-**Stage 7C.2C-2 PASS evidence:**
+### Interpretation
 
-Stage 7C.2C-2 completed the wrapper rollout on five distinct logs × four planners and produced official nuPlan simulation outputs in:
+PDM is the first Stage 7 planner family intended to support fuller behavior-style coverage than IDM because it can include lateral and interaction-related decisions.
+
+However, PDM results should still be described as planner-profile validation, not human-driver validation.
+
+---
+
+## 9. Stage 7C.4 — ML Planner Longitudinal + Lateral Profiles
+
+### Purpose
+
+Use nuPlan ML Planner, or a nuPlan-compatible learned planner, to generate three learned planner behavior profiles:
 
 ```text
-outputs/stage7c2c2_idm_longitudinal_5logs
+ml_planner_conservative
+ml_planner_comfort
+ml_planner_aggressive
 ```
 
-Validated metrics:
+This stage is the bridge from rule-based planner validation to E2E / learned-policy validation.
 
-| item | value |
-|---|---|
-| Stage result | `PASS` |
-| warnings | `[]` |
-| official_success_count | `20` |
-| trajectory_rows | `2980` |
-| msgpack_simulation_log_files_found / parsed | `20 / 20` |
-| msgpack_trajectory_rows_extracted | `2980` |
-| `simulated_ego_seq.npy` shape | `[5, 4, 149, 8]` |
-| `simulated_ego_seq_mask.npy` shape | `[5, 4, 149]` |
-| valid_timestep_count | `2980` |
-| missing_pair_count | `0` |
-| pseudo_rollout | `false` |
-| uses_official_nuplan_simulation | `true` |
-| alignment_pass_ratio | `1.0` |
-| same_log_alignment_passed | `true` |
-| strict_stage7b_scene_token_match | `false` |
-| alignment_level | `log_name_plus_actual_nuplan_token` |
+### Possible ML Planner Sources
 
-Planner axis for `simulated_ego_seq.npy`:
+Possible sources include:
 
 ```text
-0 simple_planner
-1 idm_longitudinal_conservative
-2 idm_longitudinal_comfort
-3 idm_longitudinal_aggressive
+nuPlan official ml_planner
+a trained lightweight local neural planner
+a checkpointed planner wrapped as nuPlan AbstractPlanner
+a cloned ML planner with different checkpoints / cost weights / policy heads
 ```
 
-This is the current Stage 7C official multi-planner tensor for downstream Stage 7D. IDM profiles are longitudinal-only rule-based positive controls for BDD validation. They are not complete driving-style models and should not be described as full conservative / comfort / aggressive driving styles.
+### Required Style Coverage
 
-**Remaining Stage 7C TODOs:**
-
-- Stage 7C.3: add a PDM / lateral-interaction-capable planner extension later to cover lateral, lane-change, overtaking, hesitation, rear-gap pressure, and interaction/yielding style.
-- Stage 7C.2D / Stage 7E: produce planner behavior report cards after Stage 7D validation metrics exist.
-
-**NEXT — Stage 7D:**
-
-Stage 7D 的方向已修正：它不是新的最终 BDD 实现，而是把 Stage 7C official nuPlan planner rollout 导出为 **完整 Stage 6-compatible sharded dataset**，从而用 controllable nuPlan 官方 planner-generated data 替换 Stage 6 的 Waymo 输入数据。
-
-## 6. Stage 7D — Full Stage 6-Compatible Dataset Export
-
-**Definition:** Stage 7D = read Stage 7C official planner simulation outputs and export a full Stage 6-compatible sharded dataset. Stage 6 remains the canonical BDD / report-card / task-conditioned evaluation engine. Stage 7D must not run nuPlan simulation, must not use pseudo rollout, and must not compute final BDD.
-
-**Architecture guardrail:**
-
-- Stage 6 是 canonical BDD/report-card/task-conditioned evaluation engine。
-- Stage 7 负责生成 controllable nuPlan planner / policy data，并导出为 Stage 6-compatible format。
-- Stage 7 不重新实现一套 final BDD pipeline。
-- Stage 7E/F 后续必须复用 Stage 6 BDD、report-card、task-conditioned BDD 模块。
-- `tools/stage7d_validate_official_planner_bdd.py` 仅保留为 smoke diagnostic，不是 canonical final BDD path。
-
-### Command
-
-```bash
-python tools/stage7d_export_stage6_compatible_dataset.py \
-  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
-  --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
-  --overwrite
-```
-
-### Required Stage 7C input
+ML planner profiles should include both longitudinal and lateral behavior:
 
 ```text
-outputs/stage7c2c2_idm_longitudinal_5logs/
-├── simulated_ego_seq.npy              # [5, 4, 149, 8]
-├── simulated_ego_seq_mask.npy         # [5, 4, 149]
+speed profile
+following behavior
+braking response
+comfort / jerk
+lane-change willingness
+lateral smoothness
+gap acceptance
+overtake behavior
+hesitation / assertiveness
+yield / courtesy proxy behavior
+```
+
+### Expected ML Planner Profiles
+
+The exact implementation depends on available model control knobs. Acceptable ways to create profiles include:
+
+```text
+different trained checkpoints
+different planner heads
+different cost weights
+different sampling / scoring preferences
+different target-speed / comfort / lateral-cost parameters
+```
+
+But the resulting profiles must be documented as planner/model variants, not as human personality labels.
+
+### Required Output
+
+```text
+outputs/stage7c4_ml_planner_full_style_5logs/
+├── simulated_ego_seq.npy
+├── simulated_ego_seq_mask.npy
+├── simulated_ego_seq_index.json
 ├── simulated_planner_metadata.csv
 ├── scenario_planner_index.csv
 ├── simulation_schema.json
+├── simulation_report.md
 ├── warnings.json
-└── official_nuplan_runs/.../*.msgpack.xz
+└── official_nuplan_runs/**/*.msgpack.xz
 ```
 
-Planner axis is mandatory and ordered as:
+Expected planner axis:
 
 ```text
-0 simple_planner
-1 idm_longitudinal_conservative
-2 idm_longitudinal_comfort
-3 idm_longitudinal_aggressive
+simple_planner or expert reference
+ml_planner_conservative
+ml_planner_comfort
+ml_planner_aggressive
 ```
 
-### Required Stage 7D output
+### PASS Criteria
+
+ML Planner Stage 7C.4 passes only if:
 
 ```text
-outputs/stage7d_stage6_dataset_official_planner_5logs/
+official nuPlan simulation is used
+pseudo_rollout == false
+all scenario-planner pairs succeed
+all msgpack logs are parsed
+trajectory tensor has [N, P, T, C]
+planner metadata records model/checkpoint/profile configuration
+```
+
+### Interpretation
+
+ML planner profiles provide stronger evidence than IDM/PDM because they are closer to learned E2E-style behavior. However, final E2E conclusions require careful documentation of model source, input adapter, checkpoint identity, and simulation configuration.
+
+---
+
+## 10. Stage 7D — Export Full Stage 6-Compatible Dataset
+
+### Definition
+
+Stage 7D is not a new BDD implementation.
+
+Stage 7D converts official Stage 7C planner rollout outputs into a full Stage 6-compatible sharded dataset.
+
+### Purpose
+
+Stage 7D exists so that Stage 6 can be reused without rewriting BDD/report-card logic.
+
+For each Stage 7C planner family, Stage 7D should export:
+
+```text
+Stage 7C.2 IDM outputs     -> Stage 6-compatible IDM dataset
+Stage 7C.3 PDM outputs     -> Stage 6-compatible PDM dataset
+Stage 7C.4 ML outputs      -> Stage 6-compatible ML dataset
+```
+
+### Mandatory Outputs
+
+Each Stage 7D export must include:
+
+```text
+shard_manifest.json
+feature_schema.json
+planner_policy_indices/*.npy
+shards/shard_000/ego_seq.npy
+shards/shard_000/neighbor_seq.npy
+shards/shard_000/neighbor_slot_ids.npy
+shards/shard_000/interaction_feat_style.npy
+shards/shard_000/metadata.csv
+stage7d_export_schema.json
+warnings.json
+export_report.md
+```
+
+These files are mandatory. `neighbor_seq.npy` and `neighbor_slot_ids.npy` must not be treated as optional for the thesis pipeline.
+
+### Row Semantics
+
+Each row corresponds to:
+
+```text
+one scenario × one planner/policy rollout
+```
+
+For current IDM output:
+
+```text
+5 logs × 4 planners = 20 rows
+```
+
+### Required Alignment
+
+All of the following must align row-by-row:
+
+```text
+ego_seq.npy
+neighbor_seq.npy
+neighbor_slot_ids.npy
+interaction_feat_style.npy
+metadata.csv
+planner_policy_indices/*.npy
+```
+
+### Required Stage 6-Compatible Structure
+
+```text
+outputs/stage7d_stage6_dataset_<planner_family>/
 ├── shard_manifest.json
 ├── feature_schema.json
 ├── planner_policy_indices/
-│   ├── simple_planner.npy
-│   ├── idm_longitudinal_conservative.npy
-│   ├── idm_longitudinal_comfort.npy
-│   └── idm_longitudinal_aggressive.npy
+│   ├── reference_or_simple.npy
+│   ├── conservative.npy
+│   ├── comfort.npy
+│   └── aggressive.npy
 ├── shards/
 │   └── shard_000/
 │       ├── ego_seq.npy
@@ -437,158 +602,215 @@ outputs/stage7d_stage6_dataset_official_planner_5logs/
 └── export_report.md
 ```
 
-`ego_seq.npy`, `neighbor_seq.npy`, `neighbor_slot_ids.npy`, `interaction_feat_style.npy`, `metadata.csv`, `feature_schema.json`, `shard_manifest.json`, and every `planner_policy_indices/*.npy` file are mandatory. In particular, `neighbor_seq.npy` and `neighbor_slot_ids.npy` are not optional. Missing neighbor data is fatal because Stage 6C task-conditioned BDD cannot be considered fully reusable without neighbor context.
+### PASS Criteria
 
-### Row semantics and feature contract
-
-Each row is one scenario-planner rollout. For the current 5 logs × 4 planners export, total rows must be 20.
-
-`ego_seq.npy` must use the Stage 6-compatible channel order:
+Stage 7D passes only if:
 
 ```text
-[x, y, vx, vy, heading, speed, accel, yaw_rate]
+pseudo_rollout == false
+uses_official_nuplan_simulation == true
+ego_seq.npy exists
+neighbor_seq.npy exists
+neighbor_slot_ids.npy exists
+interaction_feat_style.npy exists
+metadata.csv exists
+feature_schema.json exists
+shard_manifest.json exists
+planner_policy_indices exist for all planner profiles
+total rows == N × P
+all arrays and metadata have consistent row counts
+all planner profiles have non-empty index arrays
+warnings.json records validation.pass == true
 ```
 
-Stage 7C input channels are:
+### Important Note on Neighbor Tracks
+
+If the nuPlan simulation uses nonreactive / log-replay background traffic, world-coordinate neighbor trajectories may be identical across planner variants in the same scenario.
+
+However, `neighbor_seq.npy` must still be recomputed relative to each planner’s simulated ego trajectory.
+
+Therefore:
 
 ```text
-x, y, yaw, speed, velocity_y, acceleration, acceleration_y, time_s
+same world neighbor tracks
+different simulated ego trajectories
+different ego-centric relative neighbor_seq
 ```
 
-The exporter derives `vx = speed * cos(yaw)`, `vy = speed * sin(yaw)`, `heading = yaw`, `accel = acceleration`, and `yaw_rate = finite difference of unwrapped yaw / dt`.
+This is required for Stage 6C task-conditioned BDD.
 
-`neighbor_seq.npy` is mandatory with shape `[num_rows, max_neighbors, T, neighbor_dim]`. It must be extracted from official nuPlan simulation msgpack observations when possible, or by reloading the same nuPlan scenario using `log_name` and `actual_nuPlan_scenario_token`. Even when nonreactive background agents are identical across planners in world coordinates, `neighbor_seq` must be recomputed relative to each planner's simulated ego trajectory. `neighbor_slot_ids.npy` must identify the selected slots with stable agent tokens/track ids or stable integer ids.
+### Non-Canonical Stage 7D Diagnostic
 
-`interaction_feat_style.npy` is mandatory and must include longitudinal comfort plus interaction features, including speed, acceleration, jerk, yaw-rate, neighbor-distance, TTC/THW proxy, following-ratio, cut-in proxy, and yield-conflict proxy metrics. `feature_schema.json` must list exact feature names and indices.
+`tools/stage7d_validate_official_planner_bdd.py` may remain as a smoke diagnostic for official planner tensor sanity checking, but it is not the canonical final BDD path.
 
-### PASS criteria
+Canonical BDD/report-card evaluation must happen through Stage 6 reuse in Stage 7F.
 
-Stage 7D export passes only if all of the following are true:
+---
 
-- `pseudo_rollout` is false.
-- official nuPlan simulation output is confirmed.
-- all mandatory output files exist.
-- `neighbor_seq.npy` and `neighbor_slot_ids.npy` exist; missing neighbor data is fatal, not a warning.
-- every required planner index exists.
-- total rows equal `N * P`.
-- row alignment between `ego_seq.npy`, `neighbor_seq.npy`, `interaction_feat_style.npy`, and `metadata.csv` is consistent.
-- `metadata.csv` includes `global_row`, `scenario_index`, `planner_id`, `planner_name`, `log_name`, `scenario_token`, `scenario_type`, `source_stage`, `uses_official_nuplan_simulation`, `pseudo_rollout`, `style_scope`, `policy_style`, `nuplan_planner_config`, `supported_behavior_tasks`, and `unsupported_behavior_tasks`.
+## 11. Stage 7E — Embedding Export / Manifest Construction
 
-Warnings must not include `neighbor_seq_missing` as a non-fatal warning; missing neighbor data must fail the export.
+### Definition
 
-## 7. Stage 7E — Rule-Based / Traditional Planner Experiment Consolidation
+Stage 7E applies the existing Stage 5 / Stage 6 embedding pipeline to Stage 7D exported datasets.
 
-**Definition:** Stage 7E = summarize Stage 7C/7D results before E2E integration.
+Stage 7E should not define a new embedding model unless explicitly needed. The default should be to reuse the existing trained behavior embedding encoder.
 
-**Purpose:**
-
-- Prove the pipeline works on official nuPlan simulation data.
-- Prove BDD detects planner-induced behavior drift.
-- Establish baseline planner behavior report cards.
-- Prepare the baseline for Stage 7F E2E comparison.
-
-**Expected outputs:**
+### Inputs
 
 ```text
-outputs/stage7e_planner_summary/
-├── planner_behavior_summary.csv
-├── planner_bdd_matrix.csv
-├── planner_report_card.md
-├── planner_ablation_report.md
-├── planner_robustness_report.md
-└── figures/
+Stage 7D Stage 6-compatible dataset
+trained Stage 5 behavior encoder
+feature_schema.json
+shard_manifest.json
+planner_policy_indices/*.npy
 ```
 
-Stage 7E must not claim final E2E conclusions. It is planner-only consolidation.
-
-## 8. Stage 7F — E2E Model Simulation in nuPlan
-
-**Definition:** Stage 7F = integrate an E2E driving model into the official nuPlan simulation environment as a planner, run closed-loop simulation on the same scenario set, and export E2E simulated behavior data.
-
-**Important requirements:**
-
-- Stage 7F must use the official nuPlan simulation environment.
-- The E2E model should be wrapped as a nuPlan `AbstractPlanner`-compatible planner or equivalent.
-- Do not evaluate E2E by offline trajectory rewriting.
-
-**Sub-stages:**
-
-- 7F.1 E2E planner interface / wrapper.
-- 7F.2 E2E model input adapter.
-- 7F.3 E2E closed-loop simulation smoke.
-- 7F.4 E2E full mini simulation.
-- 7F.5 E2E simulation output export.
-- 7F.6 E2E behavior / BDD comparison.
-
-**Possible E2E sources:**
-
-- Lightweight trained neural planner.
-- nuPlan-compatible ML planner baseline.
-- Repo-local model wrapped as planner.
-- Minimal neural planner baseline if no pretrained E2E model is available.
-
-**Expected output:**
+### Outputs
 
 ```text
-outputs/stage7f_e2e_nuplan_simulation/
-├── e2e_simulated_ego_trajectory.csv
-├── e2e_simulated_ego_seq.npy
-├── e2e_model_metadata.csv
-├── e2e_scenario_index.csv
-├── e2e_simulation_summary.csv
-├── e2e_simulation_schema.json
-├── e2e_simulation_report.md
-└── warnings.json
+embedding_manifest.json
+embedding.npy or embedding shards
+stage7e_embedding_report.md
+stage7e_schema.json
+warnings.json
 ```
 
-**Purpose:** Move from planner-style validation to actual E2E autonomous driving system behavior evaluation.
+### Purpose
 
-Stage 7F is intentionally not implemented by this documentation update.
+Stage 7E makes planner-generated nuPlan data available to Stage 6 BDD scripts.
 
-## 9. Stage 7G — Final Stage 7 Summary After E2E Simulation
+---
 
-**Definition:** Stage 7G = combine rule-based planner simulation, traditional planner simulation, and E2E model simulation results into the final Stage 7 experimental evidence package.
+## 12. Stage 7F — Reuse Stage 6 BDD / Report Card Engine
 
-**Main questions:**
+### Definition
 
-1. Can BDD distinguish different planners under the same scenarios?
-2. Can BDD distinguish E2E model behavior from rule-based / traditional planners?
-3. Is the E2E model closer to expert, conservative, aggressive, or comfort behavior?
-4. Under which ODD/task conditions does E2E behavior drift most?
-5. Do paired same-scenario BDD and unpaired distribution BDD tell a consistent story?
-6. Does this support the thesis claim: behavior embedding + BDD can evaluate E2E autonomous driving style drift?
+Stage 7F reuses Stage 6 modules directly.
 
-**Expected outputs:**
+It should not reimplement BDD, MMD, task-conditioned BDD, scenario-balanced BDD, or report card logic.
+
+### Reused Stage 6 Modules
+
+Stage 7F should reuse:
 
 ```text
-outputs/stage7g_final_summary/
-├── stage7_final_bdd_matrix.csv
-├── stage7_policy_e2e_report_card.csv
-├── stage7_odd_conditioned_summary.csv
-├── stage7_ablation_summary.csv
-├── stage7_robustness_summary.csv
-├── stage7_final_report.md
-└── figures/
+tools/stage6_compare_unpaired_style.py
+tools/stage6_generate_report_card.py
+tools/stage6b_compare_baselines.py
+tools/stage6b_scenario_balanced_bdd.py
+tools/stage6c_build_behavior_events_v2.py
+tools/stage6c_task_conditioned_bdd_report.py
 ```
 
-Stage 7G is the final thesis-facing synthesis. It should be written only after Stage 7F E2E simulation data has been added.
+### Comparisons
 
-## 10. Direction Guardrails
+For each planner family, Stage 7F should run Stage 6 comparisons such as:
 
-1. Stage 7C and 7F must use official nuPlan simulation.
-2. Stage 7C should prefer existing nuPlan/devkit planners before custom planners.
-3. Custom planners are allowed only as nuPlan simulation-compatible planners.
-4. Custom planners must not bypass official nuPlan simulation.
-5. Offline pseudo rollout and pseudo trajectory rewriting are not acceptable as Stage 7C/7F evidence.
-6. Stage 7C validates the simulation/export pipeline and planner-induced behavior drift before E2E integration.
-7. Same-scenario alignment must be preserved.
-8. Paired BDD and unpaired BDD are both required.
-9. ODD-conditioned BDD must use Stage 7B.4 context features.
-10. E2E model integration belongs to Stage 7F, not Stage 7C.
-11. Final thesis-facing conclusion belongs to Stage 7G, not Stage 7E.
+```text
+IDM:
+  idm_longitudinal_conservative vs idm_longitudinal_comfort
+  idm_longitudinal_conservative vs idm_longitudinal_aggressive
+  idm_longitudinal_comfort vs idm_longitudinal_aggressive
 
-## 11. Documentation Relationship
+PDM:
+  pdm_conservative vs pdm_comfort
+  pdm_conservative vs pdm_aggressive
+  pdm_comfort vs pdm_aggressive
 
-- `docs/stage7_empirical_same_scenario_style_validation.md` is retained as earlier empirical same-scenario notes and historical Stage 7 planning context.
-- `docs/stage7a_nuplan_same_scenario_policy_validation.md` is retained as a Stage 7A / early nuPlan-readiness and same-scenario-policy validation note.
-- This file is the current Stage 7 A–G roadmap and should be used as the primary reference for future Stage 7C–7G implementation issues.
+ML Planner:
+  ml_planner_conservative vs ml_planner_comfort
+  ml_planner_conservative vs ml_planner_aggressive
+  ml_planner_comfort vs ml_planner_aggressive
+```
+
+### Required Outputs
+
+Each comparison should reuse Stage 6 output style:
+
+```text
+bdd_summary.json
+category_delta.csv
+feature_delta.csv
+scenario_slice_delta.csv
+task_conditioned_bdd.csv
+top_drift_cases.csv
+style_report_card.md
+warnings.json
+```
+
+### Interpretation
+
+Stage 7F is where BDD/report card conclusions are made.
+
+Stage 7D only exports data. Stage 7E exports embeddings. Stage 7F runs the canonical Stage 6 evaluation engine.
+
+---
+
+## 13. Stage 7G — Final Stage 7 Thesis Evidence
+
+Stage 7G consolidates all planner families into thesis-ready evidence.
+
+### Final Evidence Structure
+
+```text
+1. IDM longitudinal-only validation
+   Shows Stage 6 BDD/report card detects controlled longitudinal planner differences.
+
+2. PDM longitudinal + lateral validation
+   Shows Stage 6 task-conditioned BDD detects richer full-style planner differences.
+
+3. ML Planner longitudinal + lateral validation
+   Shows the method extends from rule-based planners to learned planner outputs.
+
+4. Cross-planner-family analysis
+   Compares whether BDD/report card behaves consistently across IDM, PDM, and ML planner data.
+
+5. Limitations
+   Documents nuPlan mini scale, nonreactive/reactive agent configuration, planner parameterization limits, and difference between planner profile labels and human driving styles.
+```
+
+### Final Claim Boundary
+
+Stage 7 may claim:
+
+```text
+Using official nuPlan simulation, we generated controllable same-scenario planner behavior data and showed that the existing Stage 6 BDD/report-card engine can detect planner-induced behavior/style differences across longitudinal-only IDM, richer PDM, and learned ML planner profiles.
+```
+
+Stage 7 must not overclaim:
+
+```text
+IDM proves full driving style.
+Planner labels equal human driver personality.
+5-log mini results are a full benchmark.
+Feature-only smoke metrics are equivalent to final BDD.
+Pseudo rollout is acceptable.
+```
+
+---
+
+## 14. Immediate Next Actions
+
+### Next Engineering Step
+
+Implement Stage 7D full Stage 6-compatible dataset export for the validated IDM output:
+
+```text
+Input:
+outputs/stage7c2c2_idm_longitudinal_5logs/
+
+Output:
+outputs/stage7d_stage6_dataset_idm_longitudinal_5logs/
+```
+
+The Stage 7D export must include ego, neighbor, neighbor slot IDs, interaction features, metadata, feature schema, shard manifest, and planner policy indices.
+
+### Next Documentation Step
+
+`QUICK_REFERENCE.md` should be updated after the Stage 7D adapter implementation is finalized, with exact commands and PASS criteria for:
+
+```text
+Stage 7D: export Stage 6-compatible dataset
+Stage 7E: build embeddings / manifest
+Stage 7F: reuse Stage 6 BDD/report card scripts
+```
