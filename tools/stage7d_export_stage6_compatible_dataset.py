@@ -37,7 +37,8 @@ META_COLUMNS = [
     "global_row", "scenario_index", "planner_id", "planner_name", "log_name", "scenario_token",
     "scenario_type", "source_stage", "uses_official_nuplan_simulation", "pseudo_rollout",
     "style_scope", "policy_style", "nuplan_planner_config", "supported_behavior_tasks",
-    "unsupported_behavior_tasks",
+    "unsupported_behavior_tasks", "hydra_overrides", "planner_class", "planner_type",
+    "actual_nuplan_scenario_token", "stage7b_scene_token", "sample_id",
 ]
 
 
@@ -84,7 +85,7 @@ def validate_official(schema: Dict[str, Any], warnings_in: Any) -> None:
         raise ValueError("Stage 7D export is fatal: warnings.json indicates pseudo_rollout=true.")
 
 
-def planner_axis(metadata_path: Path, index_path: Path, p_count: int) -> List[str]:
+def planner_axis(metadata_path: Path, index_path: Path, p_count: int, required_planners: Sequence[str]) -> List[str]:
     seen: Dict[int, str] = {}
     for path in (metadata_path, index_path):
         for row in read_csv_rows(path):
@@ -93,9 +94,9 @@ def planner_axis(metadata_path: Path, index_path: Path, p_count: int) -> List[st
     planners = [seen[i] for i in sorted(seen)]
     if len(planners) != p_count:
         raise ValueError(f"Planner axis length mismatch: tensor P={p_count}, metadata planners={planners}")
-    missing = [p for p in REQUIRED_PLANNERS if p not in planners]
+    missing = [p for p in required_planners if p not in planners]
     if missing:
-        raise ValueError(f"Planner axis missing mandatory planners: {missing}; observed={planners}")
+        raise ValueError(f"Planner axis missing required planners: {missing}; observed={planners}; configure with --required_planners")
     return planners
 
 
@@ -135,13 +136,18 @@ def convert_ego(seq4: np.ndarray, mask: np.ndarray) -> np.ndarray:
     return ego
 
 
-def load_neighbor_source(sim_dir: Path, expected_rows: int, timesteps: int) -> tuple[np.ndarray, np.ndarray, str]:
+def load_neighbor_source(sim_dir: Path, expected_rows: int, timesteps: int, neighbor_seq_path: Path | None = None, neighbor_slot_ids_path: Path | None = None) -> tuple[np.ndarray, np.ndarray, str]:
     """Load already extracted Stage 7D neighbor tensors.
 
     The exporter refuses to fabricate neighbor_seq. Upstream extraction may come from
     nuPlan msgpack/scenario DB, but it must materialize one of these audited files.
     """
-    candidates = [
+    candidates = []
+    if neighbor_seq_path or neighbor_slot_ids_path:
+        if not (neighbor_seq_path and neighbor_slot_ids_path):
+            raise ValueError("--neighbor_seq_path and --neighbor_slot_ids_path must be provided together.")
+        candidates.append((neighbor_seq_path, neighbor_slot_ids_path))
+    candidates += [
         (sim_dir / "stage7d_neighbor_seq.npy", sim_dir / "stage7d_neighbor_slot_ids.npy"),
         (sim_dir / "neighbor_seq.npy", sim_dir / "neighbor_slot_ids.npy"),
         (sim_dir / "extracted_neighbor_seq.npy", sim_dir / "extracted_neighbor_slot_ids.npy"),
@@ -151,9 +157,13 @@ def load_neighbor_source(sim_dir: Path, expected_rows: int, timesteps: int) -> t
             neigh = np.load(seq_path, allow_pickle=False)
             slot = np.load(ids_path, allow_pickle=True)
             if neigh.ndim != 4:
-                raise ValueError(f"{seq_path} must have shape [rows,K,T,D], got {list(neigh.shape)}")
-            if neigh.shape[0] != expected_rows or neigh.shape[2] != timesteps:
-                raise ValueError(f"{seq_path} row/T mismatch: expected [{expected_rows},K,{timesteps},D], got {list(neigh.shape)}")
+                raise ValueError(f"{seq_path} must have shape [rows,K,T,9], got ndim={neigh.ndim}, shape={list(neigh.shape)}")
+            if neigh.shape[0] != expected_rows:
+                raise ValueError(f"{seq_path} row mismatch: expected rows={expected_rows}, got shape={list(neigh.shape)}")
+            if neigh.shape[2] != timesteps:
+                raise ValueError(f"{seq_path} timestep mismatch: expected T={timesteps}, got shape={list(neigh.shape)}")
+            if neigh.shape[3] != 9:
+                raise ValueError(f"{seq_path} channel mismatch: expected D=9 with channels {NEIGHBOR_CHANNELS}, got shape={list(neigh.shape)}")
             if slot.shape[:2] != neigh.shape[:2]:
                 raise ValueError(f"{ids_path} shape must start with {list(neigh.shape[:2])}, got {list(slot.shape)}")
             return neigh.astype(np.float32), slot, seq_path.name
@@ -164,7 +174,7 @@ def load_neighbor_source(sim_dir: Path, expected_rows: int, timesteps: int) -> t
         "stage7d_neighbor_seq.npy + stage7d_neighbor_slot_ids.npy, neighbor_seq.npy + neighbor_slot_ids.npy, "
         "or extracted_neighbor_seq.npy + extracted_neighbor_slot_ids.npy. "
         f"Discovered official msgpack files={len(msgpacks)}, but this exporter does not fabricate neighbors; "
-        "extract/reload surrounding agents from nuPlan first and rerun."
+        "run the required upstream neighbor extractor first (official msgpack observations or nuPlan scenario DB using log_name + actual_nuPlan_scenario_token), materialize stage7d_neighbor_seq.npy and stage7d_neighbor_slot_ids.npy, then rerun. Neighbors must be recomputed relative to each planner-controlled ego row."
     )
 
 
@@ -210,11 +220,11 @@ def interaction_features(ego: np.ndarray, neigh: np.ndarray) -> np.ndarray:
             float(np.percentile(np.abs(jerk), 95)), float(np.mean(speed < 0.5)),
             float(np.sqrt(np.mean(yaw_rate * yaw_rate))), float(np.mean(np.abs(yaw_rate))),
             float(np.sum(np.abs(np.diff(np.unwrap(e[:, 4]))))) if e.shape[0] > 1 else 0.0,
-            float(np.min(dist_valid)) if dist_valid.size else math.inf,
-            float(np.mean(dist_valid)) if dist_valid.size else math.inf,
-            float(np.min(ttc)) if ttc.size else math.inf,
-            float(np.mean(thw)) if thw.size else math.inf,
-            float(np.min(thw)) if thw.size else math.inf,
+            float(np.min(dist_valid)) if dist_valid.size else math.nan,
+            float(np.mean(dist_valid)) if dist_valid.size else math.nan,
+            float(np.min(ttc)) if ttc.size else math.nan,
+            float(np.mean(thw)) if thw.size else math.nan,
+            float(np.min(thw)) if thw.size else math.nan,
             float(np.mean(following)) if following.size else 0.0,
             float(np.mean((valid_n) & (np.abs(neigh[r, :, :, 1]) < 2.0) & (np.abs(rel_x) < 15.0))),
             float(np.mean((following) & (rel_x < 10.0))),
@@ -222,7 +232,13 @@ def interaction_features(ego: np.ndarray, neigh: np.ndarray) -> np.ndarray:
     return np.asarray(rows, dtype=np.float32)
 
 
-def metadata_rows(index_rows: List[Dict[str, str]], planners: List[str], n_scenarios: int) -> List[Dict[str, Any]]:
+def metadata_rows(index_rows: List[Dict[str, str]], planner_meta_rows: List[Dict[str, str]], planners: List[str], n_scenarios: int) -> List[Dict[str, Any]]:
+    planner_profiles: Dict[int, Dict[str, str]] = {}
+    for row in planner_meta_rows:
+        try:
+            planner_profiles[int(row.get("planner_id", -1))] = row
+        except ValueError:
+            continue
     by_pair = {}
     for row in index_rows:
         try:
@@ -236,15 +252,22 @@ def metadata_rows(index_rows: List[Dict[str, str]], planners: List[str], n_scena
             src = by_pair.get((i, pid), {})
             rows.append({
                 "global_row": g, "scenario_index": i, "planner_id": pid, "planner_name": planner,
-                "log_name": src.get("log_name", ""),
-                "scenario_token": src.get("actual_nuplan_scenario_token", src.get("scenario_token", "")),
+                "log_name": (src.get("log_name") or src.get("db_name", "")).removesuffix(".db"),
+                "scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
+                "actual_nuplan_scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
+                "stage7b_scene_token": src.get("stage7b_scene_token") or src.get("scene_token", ""),
+                "sample_id": src.get("sample_id", ""),
                 "scenario_type": src.get("scenario_type", ""),
                 "source_stage": "stage7c_official_nuplan_simulation",
                 "uses_official_nuplan_simulation": True, "pseudo_rollout": False,
-                "style_scope": "planner_policy", "policy_style": planner,
-                "nuplan_planner_config": planner,
-                "supported_behavior_tasks": "stage6_bdd,stage6_report_card,stage6c_task_conditioned_bdd",
-                "unsupported_behavior_tasks": "none_export_is_full_stage6_compatible",
+                "style_scope": planner_profiles.get(pid, {}).get("style_scope", ""),
+                "policy_style": planner_profiles.get(pid, {}).get("policy_style", ""),
+                "nuplan_planner_config": planner_profiles.get(pid, {}).get("nuplan_planner_config", ""),
+                "hydra_overrides": planner_profiles.get(pid, {}).get("hydra_overrides", ""),
+                "supported_behavior_tasks": planner_profiles.get(pid, {}).get("supported_behavior_tasks", ""),
+                "unsupported_behavior_tasks": planner_profiles.get(pid, {}).get("unsupported_behavior_tasks", ""),
+                "planner_class": planner_profiles.get(pid, {}).get("planner_class", ""),
+                "planner_type": planner_profiles.get(pid, {}).get("planner_type", ""),
             })
             g += 1
     return rows
@@ -273,6 +296,10 @@ def validate_outputs(out_dir: Path, planners: List[str], expected_rows: int, n_s
             f"features={feat.shape[0]} metadata={meta_count} expected={expected_rows}. "
             "Stage 7D must not expand background/neighbor agents into additional ego rows."
         )
+    if neigh.ndim != 4 or neigh.shape[2] != ego.shape[1] or neigh.shape[3] != 9:
+        raise ValueError(f"neighbor_seq.npy must have shape [rows,K,T,9] aligned to ego T={ego.shape[1]}, got {list(neigh.shape)}")
+    if np.isinf(feat).any():
+        raise ValueError("interaction_feat_style.npy must not contain +/-inf; use NaN for undefined neighbor-derived features.")
 
 
 def main() -> None:
@@ -280,6 +307,9 @@ def main() -> None:
     ap.add_argument("--sim_dir", required=True, type=Path)
     ap.add_argument("--output_dir", required=True, type=Path)
     ap.add_argument("--overwrite", action="store_true")
+    ap.add_argument("--required_planners", nargs="+", default=REQUIRED_PLANNERS, help="Planner names that must exist on the Stage 7C planner axis.")
+    ap.add_argument("--neighbor_seq_path", type=Path, default=None, help="Optional explicit upstream-extracted [rows,K,T,9] neighbor tensor path.")
+    ap.add_argument("--neighbor_slot_ids_path", type=Path, default=None, help="Optional explicit upstream-extracted [rows,K] neighbor slot id path.")
     args = ap.parse_args()
     if args.output_dir.exists():
         if not args.overwrite:
@@ -294,12 +324,12 @@ def main() -> None:
     mask = np.load(paths["simulated_ego_seq_mask.npy"], mmap_mode="r")
     if seq.ndim != 4 or seq.shape[-1] != 8 or mask.shape != seq.shape[:3]:
         raise ValueError(f"Invalid Stage 7C tensor shapes: seq={list(seq.shape)} mask={list(mask.shape)}")
-    planners = planner_axis(paths["simulated_planner_metadata.csv"], paths["scenario_planner_index.csv"], seq.shape[1])
+    planners = planner_axis(paths["simulated_planner_metadata.csv"], paths["scenario_planner_index.csv"], seq.shape[1], args.required_planners)
     n_scenarios = int(seq.shape[0])
     n_planners = int(seq.shape[1])
     expected_rows = int(n_scenarios * n_planners)
     ego = convert_ego(np.asarray(seq), np.asarray(mask))
-    neighbor, slot_raw, neighbor_source = load_neighbor_source(args.sim_dir, expected_rows, seq.shape[2])
+    neighbor, slot_raw, neighbor_source = load_neighbor_source(args.sim_dir, expected_rows, seq.shape[2], args.neighbor_seq_path, args.neighbor_slot_ids_path)
     slot_ids = normalize_slot_ids(slot_raw)
     feat = interaction_features(ego, neighbor)
 
@@ -311,12 +341,18 @@ def main() -> None:
     np.save(shard / "neighbor_seq.npy", neighbor)
     np.save(shard / "neighbor_slot_ids.npy", slot_ids)
     np.save(shard / "interaction_feat_style.npy", feat)
-    rows = metadata_rows(read_csv_rows(paths["scenario_planner_index.csv"]), planners, seq.shape[0])
+    rows = metadata_rows(read_csv_rows(paths["scenario_planner_index.csv"]), read_csv_rows(paths["simulated_planner_metadata.csv"]), planners, seq.shape[0])
+    metadata_planner_profile_preserved = all(bool(row.get("style_scope")) and bool(row.get("policy_style")) and bool(row.get("nuplan_planner_config")) for row in rows)
+    scenario_metadata_non_empty = all(bool(row.get("log_name")) and bool(row.get("actual_nuplan_scenario_token")) for row in rows)
+    if not metadata_planner_profile_preserved:
+        raise ValueError("simulated_planner_metadata.csv did not provide non-empty style_scope, policy_style, and nuplan_planner_config for every exported row; refusing generic planner fallback.")
+    if not scenario_metadata_non_empty:
+        raise ValueError("scenario_planner_index.csv did not provide non-empty log_name/db_name and actual_nuplan_scenario_token/scenario_id for every exported row.")
     write_csv(shard / "metadata.csv", rows, META_COLUMNS)
     for pid, planner in enumerate(planners):
         np.save(idx_dir / f"{planner}.npy", np.asarray([r for r in range(expected_rows) if r % len(planners) == pid], dtype=np.int64))
     write_json(args.output_dir / "shard_manifest.json", {"shards": [{"shard_path": "shards/shard_000"}]})
-    write_json(args.output_dir / "feature_schema.json", {"feature_names": FEATURES, "features": [{"index": i, "name": n} for i, n in enumerate(FEATURES)], "ego_channels": EGO_CHANNELS, "neighbor_channels": NEIGHBOR_CHANNELS})
+    write_json(args.output_dir / "feature_schema.json", {"feature_names": FEATURES, "features": [{"index": i, "name": n} for i, n in enumerate(FEATURES)], "ego_channels": EGO_CHANNELS, "neighbor_layout": "ego_centric_relative", "neighbor_channels": NEIGHBOR_CHANNELS, "missing_value_policy": "Interaction features use NaN for undefined neighbor-derived distances/TTC/THW; no +/-inf values are written."})
     export_schema = {
         "stage": "7D",
         "purpose": "full_stage6_compatible_dataset_export",
@@ -330,6 +366,7 @@ def main() -> None:
         "rows": expected_rows,
         "input_channels": INPUT_CHANNELS,
         "ego_channels": EGO_CHANNELS,
+        "neighbor_layout": "ego_centric_relative",
         "neighbor_channels": NEIGHBOR_CHANNELS,
         "planner_axis": planners,
         "neighbor_source": neighbor_source,
@@ -349,6 +386,14 @@ def main() -> None:
             "row_semantics": "scenario_planner_controlled_ego_rollout",
             "no_multi_agent_ego_expansion": True,
             "neighbor_agents_used_as_context_only": True,
+            "required_outputs_present": True,
+            "row_alignment_passed": True,
+            "planner_indices_non_empty": all((np.load(idx_dir / f"{p}.npy").size > 0) for p in planners),
+            "neighbor_seq_present": True,
+            "neighbor_slot_ids_present": True,
+            "neighbor_layout_valid": True,
+            "metadata_planner_profile_preserved": metadata_planner_profile_preserved,
+            "scenario_metadata_non_empty": scenario_metadata_non_empty,
         },
         "input_warnings": warnings_in,
     })
