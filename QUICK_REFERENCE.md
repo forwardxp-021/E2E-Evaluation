@@ -5157,8 +5157,8 @@ python tools/stage7f_run_idm_stage6_bdd_report.py \
 
 - Stage 7E 读取 `outputs/stage7d_stage6_dataset_idm_5logs/shards/shard_000/ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、`metadata.csv` 和 `planner_policy_indices/*.npy`。
 - Stage 7E 将 Stage 7D 的 planner-controlled ego rollout 按原 row order 输入既有 Stage 5/6 context encoder，输出 `embedding.npy`、`embedding_manifest.json`、`metadata.csv`、`planner_policy_indices/`、`warnings.json` 和 `embedding_report.md`。
-- Stage 7E 默认使用前 5 个邻车构造 `ego_neighbor9` context（ego 8 维 + K 个 neighbor 9 维），并在 `--context_layout auto` 下对比 checkpoint `context_dim`：维度相同则直接使用；base dim 小于 checkpoint dim 时右侧补零到 checkpoint dim 并写入 `warnings.json`；base dim 大于 checkpoint dim 时失败，禁止静默截断；不会把 neighbor agent 展开成新的 ego row。
-- 可选 `--context_layout` 包括 `auto`、`ego_neighbor9`、`pad_to_checkpoint_dim`、`stage7b83`。`pad_to_checkpoint_dim` / `stage7b83` 的补零只允许作为 exploratory bridge smoke/interface validation，不能作为最终论文证据；长期应实现真实 Stage 7B/Stage 5 compatible context layout。
+- Stage 7E 默认使用 `--context_layout stage5d83` 构造 Stage 5D checkpoint-compatible 的 `context_traj.npy`（ego 8 维 + 5 个 neighbor slot × 15 维 = 83 维），并检查 checkpoint `context_dim` 必须为 83；不会把 neighbor agent 展开成新的 ego row。
+- 可选 `--context_layout` 包括 `stage5d83`、`ego_neighbor9`、`pad_to_checkpoint_dim`、`auto`。`pad_to_checkpoint_dim` 只允许作为 exploratory bridge smoke/interface validation，不能作为最终论文证据；`auto` 不再默认补零，正式路径应使用 `stage5d83`。
 - Stage 7F 读取 Stage 7E 的 `embedding.npy` 和 Stage 7D 的 `interaction_feat_style.npy` / `feature_schema.json` / planner A/B index，调用既有 `tools/stage6_compare_unpaired_style.py` 与 `tools/stage6_generate_report_card.py`。
 - Stage 7F 固定运行三组 IDM 对比：conservative vs comfort、conservative vs aggressive、comfort vs aggressive，并在每个子目录中生成 Stage 6 BDD/report-card 输出。
 - 该 smoke 只验证接口链路：official nuPlan simulation → Stage 6-compatible data → embedding → BDD/report card；5-log 结果只能作为 exploratory positive-control evidence，不能声称统计显著。
@@ -5166,8 +5166,49 @@ python tools/stage7f_run_idm_stage6_bdd_report.py \
 ## 3. 通过标准
 
 - `outputs/stage7e_idm_embeddings_5logs/embedding.npy` 行数等于 Stage 7D metadata 行数，5-log smoke 应为 20。
-- `outputs/stage7e_idm_embeddings_5logs/warnings.json` 中 `validation.pass == true`，且 `validation.checkpoint_context_dim_matches_final_context_dim == true`。如果发生补零，`context_padded_to_checkpoint_dim == true`、`base_context_dim`、`checkpoint_context_dim` 和 `padding_dim` 必须清楚记录。
+- `outputs/stage7e_idm_embeddings_5logs/warnings.json` 中 `validation.pass == true`，`validation.checkpoint_context_dim_matches_final_context_dim == true`，`context_layout_used == "stage5d83"`，`context_padded_to_checkpoint_dim == false`，`stage5d_schema_matched == true`。如果显式使用 smoke 补零路径，`context_padded_to_checkpoint_dim == true`、`base_context_dim`、`checkpoint_context_dim` 和 `padding_dim` 必须清楚记录，并且不能作为最终论文证据。
 - Stage 7E 保留 `planner_policy_indices/simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`。
 - Stage 7F 三个 comparison 子目录都存在，并且每组 A/B index 非空；5-log smoke 下每侧应为 5 行。
 - 每个 Stage 7F 子目录至少生成 `bdd_summary.json` 和 `style_report_card.md`；若 Stage 6 输出可用，还应包含 `feature_delta.csv` 和 `category_delta.csv`。
 - `outputs/stage7f_idm_bdd_report_5logs/warnings.json` 中 `validation.pass == true`。
+
+## Stage 7E：Stage 5D 83维 context embedding 合同
+
+### 1. 命令
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --context_layout stage5d83 \
+  --overwrite
+```
+
+如只做接口 smoke，可显式使用：
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_smoke \
+  --context_layout pad_to_checkpoint_dim \
+  --overwrite
+```
+
+### 2. 期望行为
+
+Stage 7D 只负责导出 Stage 6-compatible evaluation dataset：`ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、metadata、planner indices 等，并保持“一行 = 一个 scenario × 一个 planner-controlled ego rollout”。Stage 7D 不运行最终 BDD/report-card。
+
+Stage 7E 默认使用 `--context_layout stage5d83`，从 Stage 7D 的真实 ego/neighbor 张量构造 Stage 5D checkpoint-compatible 的 `context_traj.npy`，shape 为 `[rows, T, 83]`。该 83 维 schema 来自 `tools/build_waymo_5neighbor_context_dataset.py`：每帧 `ego_seq` 8 维 + 5 个邻车 slot × 15 维邻车通道。83 维 encoder 输入不包含 map/lane/ODD 特征；lane-aware 逻辑只影响 Stage 5D 中邻车 slot 的选择。`interaction_feat_style.npy` 用于 Stage 5/6 评估、BDD/report-card 和报告，不作为 `ContextFlattenGRUEncoder` 的输入通道。
+
+Stage 6 BDD/report-card 消费 Stage 7E 导出的 `embedding.npy` / `embeddings/shard_000000/embeddings.npy` 及对齐 metadata/feature artifacts，而不是把原始 `ego_seq.npy` / `neighbor_seq.npy` 当作最终 embedding 表示。`--context_layout pad_to_checkpoint_dim` 只允许用于 smoke/interface validation；补零不是最终论文证据。
+
+### 3. 通过标准
+
+- `outputs/stage7e_idm_embeddings_5logs/context_traj.npy` 存在，shape 为 `[rows, T, 83]`。
+- `outputs/stage7e_idm_embeddings_5logs/stage7e_context_schema.json` 存在，并列出 83 个 channel 的名称、来源、是否 proxy。
+- `warnings.json` 中 `context_layout_used == "stage5d83"`。
+- `warnings.json` 中 `context_padded_to_checkpoint_dim == false`。
+- `warnings.json` 中 `stage5d_schema_matched == true`。
+- `embedding.npy` 行数等于 Stage 7D metadata 行数，且不改变 Stage 7D row semantics、不扩展 background agents 为 ego rows。
