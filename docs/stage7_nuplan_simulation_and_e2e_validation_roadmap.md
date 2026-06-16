@@ -369,90 +369,112 @@ This is the current Stage 7C official multi-planner tensor for downstream Stage 
 
 **NEXT — Stage 7D:**
 
-Stage 7D should compute BDD / embedding-distance / kinematic-feature deltas on the official `[5, 4, 149, 8]` tensor from `outputs/stage7c2c2_idm_longitudinal_5logs`, first as longitudinal-only controlled validation.
+Stage 7D 的方向已修正：它不是新的最终 BDD 实现，而是把 Stage 7C official nuPlan planner rollout 导出为 **完整 Stage 6-compatible sharded dataset**，从而用 controllable nuPlan 官方 planner-generated data 替换 Stage 6 的 Waymo 输入数据。
 
-## 6. Stage 7D — BDD Validation on Planner Simulation Data
+## 6. Stage 7D — Full Stage 6-Compatible Dataset Export
 
-**Definition:** Stage 7D = convert Stage 7C simulated planner trajectories into behavior datasets, then validate behavior embedding / BDD on same-scenario and distribution-level planner differences.
+**Definition:** Stage 7D = read Stage 7C official planner simulation outputs and export a full Stage 6-compatible sharded dataset. Stage 6 remains the canonical BDD / report-card / task-conditioned evaluation engine. Stage 7D must not run nuPlan simulation, must not use pseudo rollout, and must not compute final BDD.
 
-**Sub-stages:**
+**Architecture guardrail:**
 
-- 7D.1 simulation trajectory → behavior dataset.
-- 7D.2 planner behavior sanity check.
-- 7D.3 paired same-scenario BDD.
-- 7D.4 unpaired distribution BDD.
-- 7D.5 ODD-conditioned / task-conditioned BDD.
-
-**Expected results:**
-
-- expert/replay vs expert/replay: very small.
-- expert/replay vs comfort: small-medium.
-- expert/replay vs conservative: medium.
-- expert/replay vs aggressive: medium-large.
-- conservative vs aggressive: largest.
-
-**Interpretation:**
-
-- Paired same-scenario BDD is the academic validation core.
-- Unpaired distribution BDD corresponds to real-world company model-version comparison.
-- ODD-conditioned BDD explains where the style drift occurs.
-
-### Stage 7D.1 / 7D.2 — First-pass BDD Validation on Official Planner Rollouts
-
-**Definition:** Stage 7D.1 / 7D.2 reads official Stage 7C.2C-2 nuPlan planner rollout tensors and computes longitudinal-only controlled BDD / feature-distance validation metrics. It must not run pseudo rollout, must not run a new nuPlan simulation, and must not rewrite logged trajectories.
+- Stage 6 是 canonical BDD/report-card/task-conditioned evaluation engine。
+- Stage 7 负责生成 controllable nuPlan planner / policy data，并导出为 Stage 6-compatible format。
+- Stage 7 不重新实现一套 final BDD pipeline。
+- Stage 7E/F 后续必须复用 Stage 6 BDD、report-card、task-conditioned BDD 模块。
+- `tools/stage7d_validate_official_planner_bdd.py` 仅保留为 smoke diagnostic，不是 canonical final BDD path。
 
 ### Command
 
 ```bash
-python tools/stage7d_validate_official_planner_bdd.py \
+python tools/stage7d_export_stage6_compatible_dataset.py \
   --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
-  --output_dir outputs/stage7d1_bdd_official_planner_5logs \
+  --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
   --overwrite
 ```
 
-### Required inputs
+### Required Stage 7C input
 
 ```text
 outputs/stage7c2c2_idm_longitudinal_5logs/
-├── simulated_ego_seq.npy
-├── simulated_ego_seq_mask.npy
-├── simulated_ego_seq_index.json
+├── simulated_ego_seq.npy              # [5, 4, 149, 8]
+├── simulated_ego_seq_mask.npy         # [5, 4, 149]
 ├── simulated_planner_metadata.csv
 ├── scenario_planner_index.csv
 ├── simulation_schema.json
-└── warnings.json
+├── warnings.json
+└── official_nuplan_runs/.../*.msgpack.xz
 ```
 
-### Expected outputs
+Planner axis is mandatory and ordered as:
 
 ```text
-outputs/stage7d1_bdd_official_planner_5logs/
-├── planner_kinematic_features.csv
-├── planner_feature_summary.csv
-├── paired_planner_delta.csv
-├── bdd_distance_matrix.csv
-├── paired_distance_matrix.csv
-├── stage7d_validation_report.md
-├── warnings.json
-└── stage7d_schema.json
+0 simple_planner
+1 idm_longitudinal_conservative
+2 idm_longitudinal_comfort
+3 idm_longitudinal_aggressive
 ```
+
+### Required Stage 7D output
+
+```text
+outputs/stage7d_stage6_dataset_official_planner_5logs/
+├── shard_manifest.json
+├── feature_schema.json
+├── planner_policy_indices/
+│   ├── simple_planner.npy
+│   ├── idm_longitudinal_conservative.npy
+│   ├── idm_longitudinal_comfort.npy
+│   └── idm_longitudinal_aggressive.npy
+├── shards/
+│   └── shard_000/
+│       ├── ego_seq.npy
+│       ├── neighbor_seq.npy
+│       ├── neighbor_slot_ids.npy
+│       ├── interaction_feat_style.npy
+│       └── metadata.csv
+├── stage7d_export_schema.json
+├── warnings.json
+└── export_report.md
+```
+
+`ego_seq.npy`, `neighbor_seq.npy`, `neighbor_slot_ids.npy`, `interaction_feat_style.npy`, `metadata.csv`, `feature_schema.json`, `shard_manifest.json`, and every `planner_policy_indices/*.npy` file are mandatory. In particular, `neighbor_seq.npy` and `neighbor_slot_ids.npy` are not optional. Missing neighbor data is fatal because Stage 6C task-conditioned BDD cannot be considered fully reusable without neighbor context.
+
+### Row semantics and feature contract
+
+Each row is one scenario-planner rollout. For the current 5 logs × 4 planners export, total rows must be 20.
+
+`ego_seq.npy` must use the Stage 6-compatible channel order:
+
+```text
+[x, y, vx, vy, heading, speed, accel, yaw_rate]
+```
+
+Stage 7C input channels are:
+
+```text
+x, y, yaw, speed, velocity_y, acceleration, acceleration_y, time_s
+```
+
+The exporter derives `vx = speed * cos(yaw)`, `vy = speed * sin(yaw)`, `heading = yaw`, `accel = acceleration`, and `yaw_rate = finite difference of unwrapped yaw / dt`.
+
+`neighbor_seq.npy` is mandatory with shape `[num_rows, max_neighbors, T, neighbor_dim]`. It must be extracted from official nuPlan simulation msgpack observations when possible, or by reloading the same nuPlan scenario using `log_name` and `actual_nuPlan_scenario_token`. Even when nonreactive background agents are identical across planners in world coordinates, `neighbor_seq` must be recomputed relative to each planner's simulated ego trajectory. `neighbor_slot_ids.npy` must identify the selected slots with stable agent tokens/track ids or stable integer ids.
+
+`interaction_feat_style.npy` is mandatory and must include longitudinal comfort plus interaction features, including speed, acceleration, jerk, yaw-rate, neighbor-distance, TTC/THW proxy, following-ratio, cut-in proxy, and yield-conflict proxy metrics. `feature_schema.json` must list exact feature names and indices.
 
 ### PASS criteria
 
-Stage 7D.1 / 7D.2 passes only if all of the following are true:
+Stage 7D export passes only if all of the following are true:
 
-- `simulation_schema.json` has `pseudo_rollout == false`.
-- `simulation_schema.json` has `uses_official_nuplan_simulation == true`.
-- `simulated_ego_seq.npy` has shape `[N, P, T, 8]`.
-- `simulated_ego_seq_mask.npy` has shape `[N, P, T]` and at least one valid timestep.
-- The planner axis contains `simple_planner`, `idm_longitudinal_conservative`, `idm_longitudinal_comfort`, and `idm_longitudinal_aggressive`.
-- `missing_pair_count == 0` when that diagnostic is available.
-- `warnings.json` in the Stage 7D output records `validation.pass == true`.
+- `pseudo_rollout` is false.
+- official nuPlan simulation output is confirmed.
+- all mandatory output files exist.
+- `neighbor_seq.npy` and `neighbor_slot_ids.npy` exist; missing neighbor data is fatal, not a warning.
+- every required planner index exists.
+- total rows equal `N * P`.
+- row alignment between `ego_seq.npy`, `neighbor_seq.npy`, `interaction_feat_style.npy`, and `metadata.csv` is consistent.
+- `metadata.csv` includes `global_row`, `scenario_index`, `planner_id`, `planner_name`, `log_name`, `scenario_token`, `scenario_type`, `source_stage`, `uses_official_nuplan_simulation`, `pseudo_rollout`, `style_scope`, `policy_style`, `nuplan_planner_config`, `supported_behavior_tasks`, and `unsupported_behavior_tasks`.
 
-### Interpretation guardrails
-
-Stage 7D first-pass validates whether BDD / feature-distance can detect controlled longitudinal behavior differences among official nuPlan planner rollouts. It does **not** validate full driving style. The IDM profiles are longitudinal-only positive controls and should not be described as complete conservative / comfort / aggressive human driving styles. This 5-log run is a mini smoke validation, not a full benchmark.
-
+Warnings must not include `neighbor_seq_missing` as a non-fatal warning; missing neighbor data must fail the export.
 
 ## 7. Stage 7E — Rule-Based / Traditional Planner Experiment Consolidation
 

@@ -1042,19 +1042,43 @@ Stage 7C.3 暂不实现。后续通过 PDM 或其他 lane-change-capable planner
 
 ---
 
-### Stage 7D — BDD validation on official planner trajectories
+### Stage 7D — 完整 Stage 6-compatible 数据导出
 
 #### Purpose
 
-NEXT：在 Stage 7C.2C-2 official `[5, 4, 149, 8]` planner tensor 上运行 BDD / embedding-distance / kinematic-feature delta validation。第一步只作为 longitudinal-only controlled validation，不把 IDM profiles 解释为完整驾驶风格。
+Stage 7D 的方向已修正：Stage 7D 不再是单独的最终 BDD pipeline，而是把 Stage 7C official nuPlan planner rollout 导出为完整 Stage 6-compatible sharded dataset。Stage 6 仍然是 canonical BDD / report-card / task-conditioned BDD 引擎；Stage 7E/F 后续复用 Stage 6 模块。`tools/stage7d_validate_official_planner_bdd.py` 只作为 smoke diagnostic，不是 canonical final BDD path。
 
 #### Command
 
-TODO：后续 Stage 7D issue 中补充具体脚本命令。
+```bash
+python tools/stage7d_export_stage6_compatible_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
+  --overwrite
+```
 
 #### Expected output files
 
-TODO：应输出 BDD matrix、embedding-distance summary、kinematic-feature delta summary 和中文/英文报告。
+```text
+outputs/stage7d_stage6_dataset_official_planner_5logs/
+  shard_manifest.json
+  feature_schema.json
+  planner_policy_indices/
+    simple_planner.npy
+    idm_longitudinal_conservative.npy
+    idm_longitudinal_comfort.npy
+    idm_longitudinal_aggressive.npy
+  shards/
+    shard_000/
+      ego_seq.npy
+      neighbor_seq.npy
+      neighbor_slot_ids.npy
+      interaction_feat_style.npy
+      metadata.csv
+  stage7d_export_schema.json
+  warnings.json
+  export_report.md
+```
 
 #### Expected shape / key metrics
 
@@ -1065,16 +1089,23 @@ outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq.npy: [5, 4, 149, 8]
 outputs/stage7c2c2_idm_longitudinal_5logs/simulated_ego_seq_mask.npy: [5, 4, 149]
 ```
 
+输出行语义为 one row = one scenario-planner rollout；当前 5 logs × 4 planners 必须导出 20 行。`ego_seq.npy` channel 必须为 `[x, y, vx, vy, heading, speed, accel, yaw_rate]`。`neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 是 mandatory，不允许作为 optional。
+
 #### PASS criteria
 
-- 只读取 official nuPlan simulation outputs，不读取 pseudo rollout。
-- planner axis 与 Stage 7C.2C-2 记录一致。
-- 输出 BDD / embedding-distance / kinematic-feature deltas。
-- 结论限定为 longitudinal-only controlled validation。
+- 只读取 official nuPlan simulation outputs，不运行 nuPlan simulation，不读取 pseudo rollout。
+- `pseudo_rollout == false` 且 `uses_official_nuplan_simulation == true`。
+- `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv`、`feature_schema.json`、`shard_manifest.json` 全部存在。
+- `planner_policy_indices` 下四个 planner `.npy` 全部存在。
+- `neighbor_seq.npy` 或 `neighbor_slot_ids.npy` 缺失时必须 fail，不能写成 `neighbor_seq_missing` non-fatal warning。
+- `ego_seq.npy`、`neighbor_seq.npy`、`interaction_feat_style.npy`、`metadata.csv` 行数一致且等于 `N * P`。
+- `feature_schema.json` 明确列出 interaction/style feature names and indices。
 
 #### Common failure modes
 
-TODO；不要使用 offline numpy trajectory rewriting 伪造 Stage 7D 输入。
+- 只有 ego trajectory，没有 surrounding-agent neighbor context：Stage 7D 必须 fail。
+- 把 `tools/stage7d_validate_official_planner_bdd.py` 的 smoke diagnostic 当成 final BDD：不允许。
+- 重新实现 Stage 7 final BDD pipeline：不允许；后续 Stage 7E/F 必须复用 Stage 6 BDD/report-card/task-conditioned BDD 模块。
 
 ---
 
@@ -5011,39 +5042,33 @@ python tools/build_nuplan_map_odd_features.py \
 3. `warnings.json` 为结构化 JSON，latest verified result 为 `warnings: []`、`map_odd_status: PASS`。
 4. 所有 map/ODD features finite，且 feature schema 长度等于数组列数。
 
-## Stage 7D.1 / 7D.2：官方 planner 轨迹 BDD 一阶验证
+## Stage 7D：完整 Stage 6-compatible planner 数据导出
 
 ## 1. 命令
 
 ```bash
-python tools/stage7d_validate_official_planner_bdd.py \
+python tools/stage7d_export_stage6_compatible_dataset.py \
   --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
-  --output_dir outputs/stage7d1_bdd_official_planner_5logs \
+  --output_dir outputs/stage7d_stage6_dataset_official_planner_5logs \
   --overwrite
 ```
 
 ## 2. 期望行为
 
-该命令只读取 Stage 7C.2C-2 已生成的官方 nuPlan simulation 输出：
+该命令只读取 Stage 7C.2C-2 已生成的官方 nuPlan simulation 输出，不运行 nuPlan simulation，不做 pseudo rollout，也不计算最终 BDD。它的唯一目标是导出完整 Stage 6-compatible sharded dataset，让 Stage 7E/F 后续复用 Stage 6 的 BDD、report-card、task-conditioned BDD 模块。
 
-- `simulated_ego_seq.npy`
-- `simulated_ego_seq_mask.npy`
-- `simulated_ego_seq_index.json`
-- `simulated_planner_metadata.csv`
-- `scenario_planner_index.csv`
-- `simulation_schema.json`
-- `warnings.json`
+输出必须包含：
 
-脚本不会运行 nuPlan simulation，不会执行 pseudo rollout，也不会重写 logged ego 轨迹。它会从 `[N, P, T, 8]` 官方 planner 轨迹张量中提取纵向运动学特征，并输出：
+- `shards/shard_000/ego_seq.npy`：Stage 6-compatible ego layout `[x, y, vx, vy, heading, speed, accel, yaw_rate]`；
+- `shards/shard_000/neighbor_seq.npy`：mandatory surrounding-agent context；
+- `shards/shard_000/neighbor_slot_ids.npy`：mandatory neighbor slot id；
+- `shards/shard_000/interaction_feat_style.npy`：longitudinal comfort + interaction/style features；
+- `shards/shard_000/metadata.csv`：one row = one scenario-planner rollout；
+- `feature_schema.json`：feature names and indices；
+- `shard_manifest.json`：Stage 6-compatible shard manifest；
+- `planner_policy_indices/*.npy`：每个 planner 的 global row index。
 
-- `planner_kinematic_features.csv`：每个 scenario-planner pair 一行；
-- `planner_feature_summary.csv`：按 planner 汇总特征均值和标准差；
-- `paired_planner_delta.csv`：同一 scenario 内不同 planner 的成对特征差；
-- `bdd_distance_matrix.csv`：planner 间 Euclidean / RBF-MMD / 平均一维距离；
-- `paired_distance_matrix.csv`：同一 scenario 内 planner pair 的平均特征距离；
-- `stage7d_validation_report.md`：PASS/FAIL、输入 shape、planner axis、特征列表、距离矩阵入口、观察和限制；
-- `warnings.json`：结构化诊断和 `validation.pass`；
-- `stage7d_schema.json`：Stage 7D schema 和解释边界。
+`tools/stage7d_validate_official_planner_bdd.py` 仅是 smoke diagnostic，不是 canonical final BDD path。
 
 ## 3. 通过标准
 
@@ -5051,9 +5076,8 @@ python tools/stage7d_validate_official_planner_bdd.py \
 
 - `simulation_schema.json` 中 `pseudo_rollout == false`；
 - `simulation_schema.json` 中 `uses_official_nuplan_simulation == true`；
-- `simulated_ego_seq.npy` shape 是 `[N, P, T, 8]`；
-- `simulated_ego_seq_mask.npy` shape 是 `[N, P, T]` 且至少有一个有效 timestep；
-- planner axis 包含 `simple_planner`、`idm_longitudinal_conservative`、`idm_longitudinal_comfort`、`idm_longitudinal_aggressive`；
-- 如果输入诊断中存在 `missing_pair_count`，其值必须为 `0`；
-- 输出 `warnings.json` 中 `validation.pass == true`；
-- 报告只能解释为：Stage 7D first-pass 验证 BDD / feature-distance 是否能检测官方 nuPlan planner rollout 中受控纵向行为差异；不能声称完成 full driving-style validation。
+- 输出总行数等于 `N * P`，当前 5 logs × 4 planners 应为 20；
+- `ego_seq.npy`、`neighbor_seq.npy`、`neighbor_slot_ids.npy`、`interaction_feat_style.npy`、`metadata.csv` 行对齐；
+- `neighbor_seq.npy` 和 `neighbor_slot_ids.npy` 缺失必须 fail，不能作为 non-fatal warning；
+- 四个 planner index 文件均存在：`simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`；
+- Stage 7D 不重新实现最终 BDD，后续 Stage 7E/F 使用 Stage 6 BDD/report-card/task-conditioned BDD。
