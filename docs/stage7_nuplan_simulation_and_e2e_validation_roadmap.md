@@ -841,3 +841,81 @@ Stage 7D: export Stage 6-compatible dataset
 Stage 7E: build embeddings / manifest
 Stage 7F: reuse Stage 6 BDD/report card scripts
 ```
+
+## Stage 7E/7F-IDM smoke：Stage 6 BDD/report-card bridge validation
+
+Stage 7E/7F-IDM smoke 复用既有 Stage 5 / Stage 6 embedding、BDD 和 report-card 逻辑，目标是验证 Stage 7D 导出的 IDM official nuPlan simulation 数据能够被 Stage 6 评估引擎直接消费。
+
+### Stage 7E：embedding export
+
+Stage 7E 输入 Stage 7D 的 Stage 6-compatible dataset：
+
+```text
+outputs/stage7d_stage6_dataset_idm_5logs/
+```
+
+运行命令示例：
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_embedding_model/model.pt \
+  --max_neighbors 5 \
+  --overwrite
+```
+
+输出：
+
+```text
+outputs/stage7e_idm_embeddings_5logs/
+embedding.npy
+embedding_manifest.json
+metadata.csv
+planner_policy_indices/
+warnings.json
+embedding_report.md
+```
+
+Stage 7E 不改变 Stage 7D row semantics：one row = one scenario × one planner-controlled nuPlan ego rollout。neighbor 只作为 context 输入既有 encoder，不做 multi-agent ego expansion。
+
+### Stage 7F：reuse Stage 6 BDD/report-card
+
+Stage 7F 使用 Stage 7E embedding 和 Stage 7D planner_policy_indices，调用既有 Stage 6 BDD/report-card 工具，不在 Stage 7 中重新实现 BDD。
+
+运行命令示例：
+
+```bash
+python tools/stage7f_run_idm_stage6_bdd_report.py \
+  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
+  --embedding_dir outputs/stage7e_idm_embeddings_5logs \
+  --output_dir outputs/stage7f_idm_bdd_report_5logs \
+  --overwrite
+```
+
+必跑对比：
+
+1. `idm_longitudinal_conservative` vs `idm_longitudinal_comfort`
+2. `idm_longitudinal_conservative` vs `idm_longitudinal_aggressive`
+3. `idm_longitudinal_comfort` vs `idm_longitudinal_aggressive`
+
+每个 comparison 子目录应至少生成：
+
+```text
+bdd_summary.json
+style_report_card.md
+feature_delta.csv
+category_delta.csv
+```
+
+若后续 Stage 6C event/task-conditioned 输入也存在，可继续扩展为 task-conditioned report；当前 5-log smoke 的最低目标是 BDD/report-card 接口验证。
+
+### Interpretation boundary
+
+Stage 7E/7F-IDM smoke 验证端到端桥接：
+
+```text
+official nuPlan simulation → Stage 6-compatible data → embedding → BDD/report card
+```
+
+该 smoke 不替代后续 PDM 或 ML Planner 实验，不重新定义 row 语义，不训练 Stage 7 专用 embedding，也不在 Stage 7 中重新实现 BDD。5-log 输出只能作为 exploratory positive-control evidence；不要过度声称统计显著性。
