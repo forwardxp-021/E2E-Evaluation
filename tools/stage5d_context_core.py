@@ -85,12 +85,12 @@ def validate_stage5d_context(context_traj: np.ndarray, ego_seq: Optional[np.ndar
 def make_stage5d_context_schema(*, schema_name: str = "stage5d83_context", accel_yaw_rate_matched: bool = True) -> Dict[str, Any]:
     channels = []
     for i, ch in enumerate(EGO_CHANNELS):
-        channels.append({"index": i, "name": ch, "source_kind": "ego_state", "matched_waymo_stage5_formula": True})
+        channels.append({"index": i, "name": ch, "source_kind": "direct_from_state", "matched_waymo_stage5_formula": True})
     idx = len(EGO_CHANNELS)
     for slot in SLOT_NAMES:
         for ch in NEIGHBOR_CHANNELS:
             matched = bool(accel_yaw_rate_matched) if ch in {"accel", "yaw_rate"} else True
-            channels.append({"index": idx, "name": f"{slot}_{ch}", "slot": slot, "channel": ch, "matched_waymo_stage5_formula": matched, "parity_status": "matched" if matched else "approximated_or_not_stage5_matched"})
+            channels.append({"index": idx, "name": f"{slot}_{ch}", "slot": slot, "channel": ch, "source_kind": "derived_same_as_stage5" if matched else "approximated_or_not_stage5_matched", "matched_waymo_stage5_formula": matched, "parity_status": "matched" if matched else "approximated_or_not_stage5_matched"})
             idx += 1
     return {"schema_name": schema_name, "shape": f"[N,T,{CONTEXT_DIM}]", "context_dim": CONTEXT_DIM, "ego_channels": EGO_CHANNELS, "neighbor_slots": SLOT_NAMES, "neighbor_channels_per_slot": NEIGHBOR_CHANNELS, "dim_formula": f"{CONTEXT_DIM} = ego {len(EGO_CHANNELS)} + {len(SLOT_NAMES)} semantic neighbor slots × {len(NEIGHBOR_CHANNELS)} channels", "slot_assignment_method": "tools.stage5d_context_core.assign_stage5d_slots -> tools.lane_aware_assignment.assign_neighbors_lane_aware", "stage5d_slot_schema_matched": True, "stage5d_slot_order_matched": True, "stage5d_derived_formula_matched": True, "channels": channels}
 

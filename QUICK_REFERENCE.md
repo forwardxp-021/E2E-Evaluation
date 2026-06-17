@@ -5213,7 +5213,7 @@ Stage 5D-compatible `context_traj.npy [N,T,83]` 必须由 `tools/build_nuplan_5n
 
 ### 3. 通过标准
 
-- `--dataset_dir --context_layout stage5d83` 抛出清晰错误：`stage5d83 thesis context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir; Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
+- `--dataset_dir --context_layout stage5d83` 抛出清晰错误：`Final Stage7E Stage5D context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir. Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
 - `--context_dataset_dir` 模式下 `embedding_manifest.json` 记录 `does_not_rebuild_context_from_stage7d_neighbor_seq == true`。
 - `warnings.json` 中 `context_layout_used == "stage5d_context_dataset_direct"` 且 `context_padded_to_checkpoint_dim == false`。
 
