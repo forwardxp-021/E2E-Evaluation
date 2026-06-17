@@ -104,7 +104,10 @@ outputs/stage7b4_nuplan_context_merged
 - Stage 7C.2C-1 wrapper smoke: 1 log × 4 planners: PASS
 - Stage 7C.2C-2 wrapper rollout: 5 logs × 4 planners: PASS；输出目录 `outputs/stage7c2c2_idm_longitudinal_5logs`
 - Stage 7C.3 PDM lateral/interaction planner extension: TODO
-- Stage 7D BDD validation on official planner trajectories: NEXT；先在官方 `[5,4,149,8]` tensor 上做 longitudinal-only controlled validation
+- Stage 7D Stage6-compatible export: PASS
+- Stage 7E Stage5D common-core context builder: implemented，requires lane-aware runtime validation
+- Stage 7E direct context-dataset embedding: PASS for previous smoke，cleanup 后需要 rerun
+- Stage 7F: NEXT
 
 ---
 
@@ -5138,28 +5141,18 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 ```bash
 python tools/build_nuplan_5neighbor_context_dataset.py \
   --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
-  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
-  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
   --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
   --overwrite
 
 python tools/stage7e_embed_stage6_dataset.py \
-  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
   --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
-  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --output_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
   --overwrite
 ```
 
-如只做接口 smoke/debug，才允许显式使用 Stage 7D sharded dataset 的补零路径：
-
-```bash
-python tools/stage7e_embed_stage6_dataset.py \
-  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
-  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
-  --output_dir outputs/stage7e_idm_embeddings_smoke \
-  --context_layout pad_to_checkpoint_dim \
-  --overwrite
-```
 
 ## 2. 期望行为
 
@@ -5167,8 +5160,7 @@ python tools/stage7e_embed_stage6_dataset.py \
 - `build_nuplan_5neighbor_context_dataset.py` 从 Stage 7C official nuPlan simulation 与 official msgpack tracked objects 构造 Stage 5D-compatible `context_traj.npy [N,T,83]`，其中 `83 = ego 8 + 5 semantic neighbor slots × 15 channels`。
 - 行语义固定为 `row = scenario × planner × planner-controlled nuPlan ego rollout`；background agents 只作为 context，不扩展为 ego rows。
 - Stage 7E embedding 直接读取 `context_traj.npy`，检查 checkpoint 的 `context_dim == 83`，导出 `embedding.npy` / `embeddings/shard_000000/embeddings.npy`，并复制 `metadata.csv` 与 `planner_policy_indices/*.npy`。
-- 旧的 Stage 7D `neighbor_seq[:, :5]` top-K reconstruction 路径已经废弃，不能作为 thesis evidence；`--dataset_dir --context_layout stage5d83` 会直接报错，提示必须用 `--context_dataset_dir`。
-- `--context_layout pad_to_checkpoint_dim` 只允许 smoke/interface validation；补零或从 Stage 7D distance-topK `neighbor_seq` 重建语义 slot 都不是最终论文证据。
+- 旧的 Stage 7D top-K `neighbor_seq` reconstruction 路径已经从最终 Stage 7E 脚本移除，不能作为 thesis evidence；最终脚本只接受 `--context_dataset_dir`。
 
 ## 3. 通过标准
 
@@ -5194,27 +5186,18 @@ python tools/stage7e_embed_stage6_dataset.py \
   --overwrite
 ```
 
-以下命令应当失败，用于确认旧路径已被 hard-deprecated：
-
-```bash
-python tools/stage7e_embed_stage6_dataset.py \
-  --dataset_dir outputs/stage7d_stage6_dataset_idm_5logs \
-  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
-  --output_dir outputs/stage7e_idm_embeddings_deprecated_check \
-  --context_layout stage5d83 \
-  --overwrite
-```
+最终 Stage 7E 脚本已经移除旧 debug bridge；不再提供 `--dataset_dir` / `--context_layout` 参数。
 
 ### 2. 期望行为
 
-Stage 7D 只负责导出 Stage 6-compatible evaluation dataset。最终 Stage 7E 不再从 Stage 7D 的 distance top-K `neighbor_seq[:, :5]` 推断 `front/left_front/left_rear/right_front/right_rear` 语义 slot，也不再用旧 proxy 公式把 top-K 邻车重标为 Stage 5D 83 维 context。
+Stage 7D 只负责导出 Stage 6-compatible evaluation dataset。最终 Stage 7E 不再从 Stage 7D 的 top-K neighbor tensor 推断 `front/left_front/left_rear/right_front/right_rear` 语义 slot，也不再用旧 proxy 公式把 top-K 邻车重标为 Stage 5D 83 维 context。
 
 Stage 5D-compatible `context_traj.npy [N,T,83]` 必须由 `tools/build_nuplan_5neighbor_context_dataset.py` 构建，并通过 `--context_dataset_dir` 传给 embedding 脚本。
 
 ### 3. 通过标准
 
-- `--dataset_dir --context_layout stage5d83` 抛出清晰错误：`Final Stage7E Stage5D context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir. Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
-- `--context_dataset_dir` 模式下 `embedding_manifest.json` 记录 `does_not_rebuild_context_from_stage7d_neighbor_seq == true`。
+- 最终 Stage 7E parser 要求 `--context_dataset_dir`，不再提供 `--dataset_dir` / `--context_layout` debug bridge。
+- `embedding_manifest.json` 记录 `does_not_rebuild_context_from_stage7d_neighbor_seq == true`。
 - `warnings.json` 中 `context_layout_used == "stage5d_context_dataset_direct"` 且 `context_padded_to_checkpoint_dim == false`。
 
 ## Stage 7E：nuPlan Stage 5D-compatible 5-neighbor context dataset（推荐架构）

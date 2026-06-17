@@ -269,7 +269,7 @@ If slot ID switching causes finite differences to be computed across different a
 | 7B | pre-simulation nuPlan context / map foundation | nuPlan logs / maps | ego + neighbor + context features | PASS |
 | 7C | official planner data generation | nuPlan official simulation | planner rollout tensors + official logs | PASS for IDM 5-log smoke |
 | 7D | Stage 6-compatible evaluation dataset export | Stage 7C official simulation outputs | ego / neighbor / interaction / metadata / indices | PASS for IDM 5-log smoke |
-| 7E-core | nuPlan adapter to Stage 5D context contract | Stage 7C official simulation + nuPlan map | context_traj.npy [N,T,83] | PASS for geometric smoke; needs Stage5-core/lane-aware refactor before final evidence |
+| 7E-core | nuPlan adapter to Stage 5D context contract | Stage 7C official simulation + nuPlan map | context_traj.npy [N,T,83] | Stage5D common-core refactor implemented; lane-aware assignment path implemented; requires runtime validation with real --nuplan_map_root and fallback-rate diagnostics before final thesis evidence. |
 | 7E-embed | embedding export | Stage 7E-core context + Stage 5D best model | embedding.npy + manifest | PASS for direct context-dataset smoke |
 | 7F | reuse Stage 6 BDD / report-card engine | Stage 7E embeddings + Stage 7D metadata/features | BDD, task-BDD, report cards | NEXT |
 | 7G | final Stage 7 thesis evidence | 7C / 7D / 7E / 7F | final planner-style validation evidence | TODO |
@@ -691,13 +691,7 @@ tools/build_nuplan_5neighbor_context_dataset.py
   -> embedding.npy / embeddings/shard_000000/embeddings.npy
 ```
 
-Deprecated path:
-
-```text
-tools/stage7e_embed_stage6_dataset.py --dataset_dir ... --context_layout stage5d83
-```
-
-This old path tried to relabel Stage 7D distance top-K `neighbor_seq[:, :5]` as Stage 5D semantic slots and is not valid thesis evidence. It must raise a clear error; only `--dataset_dir --context_layout pad_to_checkpoint_dim` remains available as explicit smoke/debug.
+Removed legacy ambiguity: the final Stage 7E embedding script no longer exposes a `--dataset_dir` / layout debug bridge and cannot construct encoder context from Stage 7D top-K neighbor tensors.
 
 ---
 
@@ -739,7 +733,7 @@ nonfinite_context_values_replaced_with_zero = 0
 nonfinite_embedding_values = 0
 ```
 
-`pad_to_checkpoint_dim` or zero-padding is smoke-only and must not be used as final thesis evidence. The deprecated `--dataset_dir --context_layout stage5d83` reconstruction path must fail with: `Final Stage7E Stage5D context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir. Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
+The final script does not expose zero-padding or Stage 7D neighbor reconstruction modes; all embedding evidence must flow through `--context_dataset_dir`.
 
 ---
 
@@ -878,68 +872,72 @@ Stage 7 has its own independent embedding or BDD implementation.
 
 ## 13. Immediate Next Actions
 
-### P0 — Stage 5D Common-Core Refactor
+### P0 — Stage 7E Final Thesis Path Cleanup and Runtime Validation
 
-Refactor so Stage 5D schema, slot names, channel order, formulas, and assignment logic have one source of truth.
-
-Required invariant:
+Implemented architectural baseline:
 
 ```text
-Stage 7 nuPlan builder imports Stage 5D core constants / functions.
-It must not define its own SLOT_NAMES or neighbor channel order.
+Stage5D common context core = single source of truth.
+Waymo and nuPlan are adapters.
 ```
 
-Validation fields:
+Current implementation status:
+
+- Stage5D common-core refactor: implemented.
+- nuPlan builder imports Stage5D core constants/functions rather than defining a local Stage5D schema.
+- Lane-aware assignment path is implemented through the nuPlan lane adapter and `lane_aware_with_geometric_fallback` mode.
+- Derived-formula parity is implemented in the common core, but still requires output-level validation on generated nuPlan context artifacts before final thesis evidence.
+
+Current P0 actions:
+
+A. Clean Stage7E final embedding path by removing the legacy debug bridge.
+
+- `tools/stage7e_embed_stage6_dataset.py` should only accept `--context_dataset_dir` as the final thesis input.
+- The final script must not construct encoder context from Stage7D top-K `neighbor_seq`.
+- The final script should record:
 
 ```text
-stage5d_core_reused = true
-stage5d_slot_names_source = tools.lane_aware_assignment.SLOT_NAMES or tools.stage5d_context_core.SLOT_NAMES
-stage5d_feature_formula_source = tools.stage5d_context_core
-stage5d_slot_schema_matched = true
-stage5d_slot_order_matched = true
-stage5d_derived_formula_matched = true
+does_not_rebuild_context_from_stage7d_neighbor_seq = true
 ```
 
-### P0 — Derived-Formula Parity
+B. Run nuPlan lane-aware context build with real map root:
 
-Align nuPlan builder with Stage 5 Waymo formulas for:
-
-```text
-delta_x / delta_y
-closing
-TTC
-THW
-accel
-yaw_rate
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --overwrite
 ```
 
-Do not overuse the word proxy. Use:
+C. Verify `warnings.json` includes and validates these fields:
 
 ```text
-direct_from_state
-derived_same_as_stage5
-approximated_or_not_stage5_matched
-```
-
-### P1 — nuPlan Lane-Aware Slot Assignment
-
-Add:
-
-```text
---assignment_mode lane_aware_with_geometric_fallback
-```
-
-Use nuPlan map/lane objects through a LaneInfo adapter, then call Stage 5 `assign_neighbors_lane_aware`.
-
-Record:
-
-```text
+map_query_success
+lane_info_count
+lane_assignment_available
+fallback_assignment_used_rate
 ego_lane_projection_success_rate
 candidate_lane_projection_success_rate
-fallback_assignment_used_rate
-lane_context_quality counts
-slot coverage and sanity by slot
+stage5d_core_reused
+stage5d_slot_schema_matched
+stage5d_slot_order_matched
+stage5d_derived_formula_matched
+stage5d_accel_yaw_rate_formula_matched
 ```
+
+D. Run Stage7E embedding using `--context_dataset_dir`:
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --overwrite
+```
+
+E. Then run Stage7F.
 
 ### P1 — Stage 7F IDM Smoke
 
