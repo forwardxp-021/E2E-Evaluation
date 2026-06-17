@@ -597,6 +597,11 @@ outputs/stage7e_nuplan_5neighbor_context_idm_5logs/
 
 ### 8.2 Correct Implementation Boundary
 
+**Status (2026-06-17): Stage 7E final embedding cleanup is DONE.** The final embedding path is the clean `context_traj.npy -> --context_dataset_dir` path; legacy `--dataset_dir` / `context_layout` / top-K neighbor reconstruction remains retired.
+
+**P0 architecture item:** nuPlan ego 8D must be built through `tools.stage5d_context_core.build_ego_features_8d(...)` from a standard `[x, y, vx, vy, heading, valid]` track window. Stage 7E-core must not import Stage 7D `convert_ego`, because Stage 7D emits world-frame ego channels while Stage 5D CORE defines the local-window ego frame used by the Waymo builder.
+
+
 `tools/build_nuplan_5neighbor_context_dataset.py` should not own Stage 5D schema constants or formulas.
 
 It should only adapt nuPlan data into standardized structures:
@@ -618,6 +623,9 @@ schema / validation
 ```
 
 ### 8.3 Lane-Aware Slot Assignment
+
+Local-frame contract: ego 8D uses one deterministic local window frame (`origin = first valid ego xy`, `base_heading = first valid ego heading`, `dt = median valid simulated time_s delta or 0.1`). Neighbor `rel_x/rel_y/rel_vx/rel_vy` stay per-timestep ego-centric using the current ego world pose and current ego heading, matching the original Waymo Stage 5D builder behavior.
+
 
 Preferred assignment mode:
 

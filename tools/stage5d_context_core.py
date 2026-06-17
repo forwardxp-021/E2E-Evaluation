@@ -30,7 +30,14 @@ def wrap_angle(a):
 
 
 def build_ego_features_8d(track_window: np.ndarray, origin: np.ndarray, base_heading: float, dt: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Build Stage 5D ego 8 channels from a sanitized world-frame track window."""
+    """Build Stage 5D ego 8 channels from a sanitized world-frame track window.
+
+    Contract: track_window columns are [x, y, vx, vy, heading, valid]. x/y and
+    vx/vy are rotated into one deterministic local window frame defined by
+    origin and base_heading; heading is stored relative to base_heading. Neighbor
+    builders may still use per-timestep ego-centric relative coordinates, as the
+    original Waymo Stage 5D builder does for neighbor rel_x/rel_y/rel_vx/rel_vy.
+    """
     heading = np.where(np.isfinite(track_window[:, 4]), track_window[:, 4], np.arctan2(track_window[:, 3], track_window[:, 2]))
     xy_local = localize(track_window[:, :2], origin, base_heading)
     v_local = localize(track_window[:, 2:4], np.array([0.0, 0.0], np.float32), base_heading)

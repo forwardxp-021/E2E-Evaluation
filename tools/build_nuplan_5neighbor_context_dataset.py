@@ -10,22 +10,131 @@ import csv
 import json
 import shutil
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Sequence, Tuple
 
 import numpy as np
 from tqdm import tqdm
 
 from tools.interaction_context_features import aggregate_interaction_features, write_feature_schema_json
-from tools.stage7d_export_stage6_compatible_dataset import convert_ego, metadata_rows, planner_axis, REQUIRED_PLANNERS
 from tools.stage7d_extract_neighbors_from_nuplan import find_msgpack, parse_neighbor_world_tracks, validate_official
 from tools.stage5d_context_core import (
     SLOT_NAMES, EGO_CHANNELS, NEIGHBOR_CHANNELS, CONTEXT_DIM,
-    build_neighbor_features_15d, build_context_traj_from_standard_tracks,
+    build_ego_features_8d, build_neighbor_features_15d, build_context_traj_from_standard_tracks,
     assign_stage5d_slots, validate_stage5d_context, write_stage5d_context_schema,
     make_stage5d_context_schema,
 )
 from tools.nuplan_lane_utils import extract_nuplan_lane_infos
 
+
+
+def planner_axis(metadata_path: Path, index_path: Path, p_count: int, required_planners: Sequence[str] | None = None) -> List[str]:
+    """Discover the Stage 7C planner axis without coupling Stage 7E to Stage 7D planner policy names."""
+    seen: Dict[int, str] = {}
+    for path in (metadata_path, index_path):
+        for row in read_csv_rows(path):
+            pid_text = row.get("planner_id", "").strip()
+            if not pid_text:
+                continue
+            try:
+                pid = int(pid_text)
+            except ValueError as exc:
+                raise ValueError(f"Invalid planner_id={pid_text!r} in {path}") from exc
+            name = (row.get("planner_name") or row.get("planner") or f"planner_{pid}").strip()
+            seen[pid] = name or f"planner_{pid}"
+    missing_ids = [pid for pid in range(p_count) if pid not in seen]
+    if missing_ids:
+        raise ValueError(f"Planner axis length mismatch: tensor P={p_count}, missing planner ids={missing_ids}; observed={seen}")
+    extra_ids = [pid for pid in seen if pid < 0 or pid >= p_count]
+    if extra_ids:
+        raise ValueError(f"Planner metadata contains planner ids outside tensor axis P={p_count}: {extra_ids}")
+    planners = [seen[i] for i in range(p_count)]
+    required = list(required_planners or [])
+    missing_required = [p for p in required if p not in planners]
+    if missing_required:
+        raise ValueError(f"Planner axis missing required planners: {missing_required}; observed={planners}; configure --required_planners or omit it for expansion planners")
+    return planners
+
+
+def metadata_rows(index_rows: List[Dict[str, str]], planner_meta_rows: List[Dict[str, str]], planners: List[str], n_scenarios: int) -> List[Dict[str, Any]]:
+    planner_profiles: Dict[int, Dict[str, str]] = {}
+    for row in planner_meta_rows:
+        try:
+            planner_profiles[int(row.get("planner_id", -1))] = row
+        except ValueError:
+            continue
+    by_pair = {}
+    for row in index_rows:
+        try:
+            by_pair[(int(row.get("scenario_index", row.get("scenario_id", -1))), int(row.get("planner_id", -1)))] = row
+        except ValueError:
+            continue
+    rows = []
+    g = 0
+    for i in range(n_scenarios):
+        for pid, planner in enumerate(planners):
+            src = by_pair.get((i, pid), {})
+            rows.append({
+                "global_row": g, "scenario_index": i, "planner_id": pid, "planner_name": planner,
+                "log_name": (src.get("log_name") or src.get("db_name", "")).removesuffix(".db"),
+                "scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
+                "actual_nuplan_scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
+                "stage7b_scene_token": src.get("stage7b_scene_token") or src.get("scene_token", ""),
+                "sample_id": src.get("sample_id", ""),
+                "scenario_type": src.get("scenario_type", ""),
+                "source_stage": "stage7c_official_nuplan_simulation",
+                "uses_official_nuplan_simulation": True, "pseudo_rollout": False,
+                "style_scope": planner_profiles.get(pid, {}).get("style_scope", ""),
+                "policy_style": planner_profiles.get(pid, {}).get("policy_style", ""),
+                "nuplan_planner_config": planner_profiles.get(pid, {}).get("nuplan_planner_config", ""),
+                "hydra_overrides": planner_profiles.get(pid, {}).get("hydra_overrides", ""),
+                "supported_behavior_tasks": planner_profiles.get(pid, {}).get("supported_behavior_tasks", ""),
+                "unsupported_behavior_tasks": planner_profiles.get(pid, {}).get("unsupported_behavior_tasks", ""),
+                "planner_class": planner_profiles.get(pid, {}).get("planner_class", ""),
+                "planner_type": planner_profiles.get(pid, {}).get("planner_type", ""),
+            })
+            g += 1
+    return rows
+
+
+def estimate_dt(stage7c_seq: np.ndarray, mask: np.ndarray, default_dt: float = 0.1) -> float:
+    if stage7c_seq.ndim != 2 or stage7c_seq.shape[1] < 8:
+        return float(default_dt)
+    time_s = np.asarray(stage7c_seq[:, 7], dtype=np.float64)
+    valid = np.asarray(mask, dtype=bool) & np.isfinite(time_s)
+    diffs = np.diff(time_s[valid])
+    good = diffs[np.isfinite(diffs) & (diffs > 1e-6)]
+    return float(np.median(good)) if good.size else float(default_dt)
+
+
+def build_nuplan_ego_features_8d(stage7c_seq: np.ndarray, mask: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, float]:
+    """Adapt a nuPlan simulated_ego_seq row to Stage5D CORE ego 8D in a local window frame.
+
+    The standard track window is [x, y, vx, vy, heading, valid] in world coordinates.
+    The local frame uses the first valid ego pose as origin and base heading, matching the
+    deterministic Stage5D adapter contract while leaving neighbor features per-timestep
+    ego-centric as in the Waymo Stage5D builder.
+    """
+    s = np.asarray(stage7c_seq, dtype=np.float32)
+    valid = np.asarray(mask, dtype=bool)
+    if s.ndim != 2 or s.shape[1] < 4:
+        raise ValueError(f"stage7c_seq row must have shape [T,>=4] with x,y,yaw,speed..., got {list(s.shape)}")
+    yaw = s[:, 2]
+    speed = s[:, 3]
+    track = np.zeros((s.shape[0], 6), dtype=np.float32)
+    track[:, 0] = s[:, 0]
+    track[:, 1] = s[:, 1]
+    track[:, 2] = speed * np.cos(yaw)
+    track[:, 3] = speed * np.sin(yaw)
+    track[:, 4] = yaw
+    track[:, 5] = valid.astype(np.float32)
+    valid_idx = np.flatnonzero(valid & np.isfinite(track[:, :2]).all(axis=1) & np.isfinite(track[:, 4]))
+    ref = int(valid_idx[0]) if valid_idx.size else 0
+    origin = track[ref, :2].copy()
+    base_heading = float(track[ref, 4]) if np.isfinite(track[ref, 4]) else 0.0
+    dt = estimate_dt(s, valid, 0.1)
+    ego, heading, ego_speed = build_ego_features_8d(track, origin, base_heading, dt)
+    ego[~valid, :] = 0.0
+    return ego.astype(np.float32), heading.astype(np.float32), ego_speed.astype(np.float32), dt
 
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -57,7 +166,7 @@ def ego_world(stage7c_seq: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarr
 
 
 def build_row_context(stage7c_seq: np.ndarray, mask: np.ndarray, tracks: Dict[str, Dict[int, Tuple[float, float, float, float, float, float]]], args: argparse.Namespace, lane_infos: Dict[str, Any] | None = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray, List[List[str]], List[dict]]:
-    ego = convert_ego(stage7c_seq[None, None], mask[None, None])[0]
+    ego, ego_heading, ego_speed, dt = build_nuplan_ego_features_8d(stage7c_seq, mask)
     timesteps = ego.shape[0]
     ex, ey, eyaw, evx, evy = ego_world(stage7c_seq)
     nbr = np.zeros((len(SLOT_NAMES), timesteps, len(NEIGHBOR_CHANNELS)), dtype=np.float32)
@@ -65,7 +174,6 @@ def build_row_context(stage7c_seq: np.ndarray, mask: np.ndarray, tracks: Dict[st
     previous_speed: List[float | None] = [None] * len(SLOT_NAMES)
     previous_heading_rel: List[float | None] = [None] * len(SLOT_NAMES)
     previous_token: List[str | None] = [None] * len(SLOT_NAMES)
-    dt = 0.1
     assign_debug: List[dict] = []
     cfg = {k: getattr(args, k) for k in ["lane_max_lateral_distance", "lane_max_heading_diff_deg", "adjacent_lane_min_offset", "adjacent_lane_max_offset", "adjacent_lane_max_heading_diff_deg", "lane_search_radius", "lane_topk_candidates", "front_max_distance", "side_front_max_distance", "side_rear_max_distance", "lane_lateral_tolerance", "slot_heading_diff_deg", "static_speed_threshold"]}
     for t in range(timesteps):
@@ -105,7 +213,7 @@ def build_row_context(stage7c_seq: np.ndarray, mask: np.ndarray, tracks: Dict[st
             rel_vy = -s * dvx + c * dvy
             heading_rel = float(wrap(st[4] - float(eyaw[t])))
             same_track = previous_token[si] == tok
-            nbr[si, t, :] = build_neighbor_features_15d(rel_x=rel_x, rel_y=rel_y, rel_vx=rel_vx, rel_vy=rel_vy, ego_forward_speed=float(stage7c_seq[t, 3]), neighbor_speed=st[5], neighbor_accel=((float(st[5]) - float(previous_speed[si])) / max(dt, 1e-6)) if same_track and previous_speed[si] is not None else 0.0, heading_rel=heading_rel, neighbor_yaw_rate=(float(wrap(heading_rel - float(previous_heading_rel[si]))) / max(dt, 1e-6)) if same_track and previous_heading_rel[si] is not None else 0.0)
+            nbr[si, t, :] = build_neighbor_features_15d(rel_x=rel_x, rel_y=rel_y, rel_vx=rel_vx, rel_vy=rel_vy, ego_forward_speed=float(ego[t, 2]), neighbor_speed=st[5], neighbor_accel=((float(st[5]) - float(previous_speed[si])) / max(dt, 1e-6)) if same_track and previous_speed[si] is not None else 0.0, heading_rel=heading_rel, neighbor_yaw_rate=(float(wrap(heading_rel - float(previous_heading_rel[si]))) / max(dt, 1e-6)) if same_track and previous_heading_rel[si] is not None else 0.0)
             slot_ids[si][t] = tok
             previous_speed[si] = float(st[5])
             previous_heading_rel[si] = heading_rel
@@ -177,6 +285,7 @@ def main() -> None:
     ap.add_argument("--lane_lateral_tolerance", type=float, default=2.0)
     ap.add_argument("--slot_heading_diff_deg", type=float, default=45.0)
     ap.add_argument("--static_speed_threshold", type=float, default=0.5)
+    ap.add_argument("--required_planners", nargs="*", default=[], help="Optional planner names that must exist on the discovered Stage 7C planner axis. Default empty supports PDM/ML expansion planners.")
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args()
     if args.assignment_mode == "geometric_proxy":
@@ -195,7 +304,7 @@ def main() -> None:
     validate_official(read_json(args.sim_dir / "simulation_schema.json"), read_json(args.sim_dir / "warnings.json"))
     seq = np.load(args.sim_dir / "simulated_ego_seq.npy", mmap_mode="r")
     mask = np.load(args.sim_dir / "simulated_ego_seq_mask.npy", mmap_mode="r")
-    planners = planner_axis(args.sim_dir / "simulated_planner_metadata.csv", args.sim_dir / "scenario_planner_index.csv", seq.shape[1], REQUIRED_PLANNERS)
+    planners = planner_axis(args.sim_dir / "simulated_planner_metadata.csv", args.sim_dir / "scenario_planner_index.csv", seq.shape[1], args.required_planners)
     n_scenarios, n_planners, timesteps, _ = seq.shape
     expected_rows = n_scenarios * n_planners
     index_rows = read_csv_rows(args.sim_dir / "scenario_planner_index.csv")
@@ -271,10 +380,10 @@ def main() -> None:
         warnings.append({"type": "high_geometric_fallback_rate", "severity": "warning", "fallback_assignment_used_rate": fallback_assignment_used_rate, "message": "More than half of lane-aware assignments used geometric fallback. This is not strong lane-aware thesis evidence; verify --nuplan_map_root, map_name resolution, and projection diagnostics."})
     validation={"pass": bool(slot_pass and planner_non_empty and lane_runtime_ok), "row_semantics_correct": True, "no_multi_agent_ego_expansion": True, "background_agents_context_only": True, "stage5d_dim_matched": ctx_arr.shape[-1]==CONTEXT_DIM, "stage5d_channel_schema_matched": True, "stage5d_slot_schema_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_order_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_semantics_verified": bool(slot_pass), "assignment_mode": args.assignment_mode, "lane_assignment_available": lane_assignment_available, "map_query_success": map_query_success, "lane_info_count": lane_info_count, "fallback_assignment_used_rate": fallback_assignment_used_rate, "ego_lane_projection_success_rate": ego_lane_projection_success_rate, "candidate_lane_projection_success_rate": candidate_lane_projection_success_rate, "adjacency_source_counts": map_counts, "slot_sanity_passed": bool(slot_pass), "slot_coverage_by_slot": {k:v["coverage_ratio"] for k,v in slot_stats.items()}, "context_traj_no_nonfinite": bool(np.isfinite(ctx_arr).all()), "planner_indices_non_empty": bool(planner_non_empty), "rows_equal_num_scenarios_times_num_planners": row == expected_rows, "metadata_row_count_matches": len(rows)==row, "ego_seq_row_count_matches": ego_arr.shape[0]==row, "interaction_feat_style_row_count_matches": feat_arr.shape[0]==row, "stage5d_derived_formula_matched": True, "stage5d_closing_formula_matched": True, "stage5d_ttc_formula_matched": True, "stage5d_delta_xy_formula_matched": True, "stage5d_accel_yaw_rate_formula_matched": bool(accel_yaw_rate_matched), "slot_id_switch_rate_by_slot": slot_switch_rate_by_slot}
     write_stage5d_context_schema(args.output_dir/"stage5d_context_schema.json", schema_name="stage5d83_nuplan_laneaware_stage5_formula_parity", accel_yaw_rate_matched=accel_yaw_rate_matched)
-    write_json(args.output_dir/"warnings.json", {"warnings": warnings, "assignment_mode": args.assignment_mode, "slot_assignment_method":"stage5_assign_neighbors_lane_aware", "stage5d_slot_schema_matched": True, "stage5d_slot_order_matched": True, "stage5d_slot_assignment_exact_waymo_lane_aware": args.assignment_mode != "geometric_only", "stage5d_formula_parity_schema_recorded": True, "map_query_success": bool(map_counts.get("map_query_success", 0) > 0), "lane_info_count": lane_info_count, "adjacency_source_counts": map_counts, "stage5d_core_reused": True, "stage5d_slot_names_source": "tools.stage5d_context_core.SLOT_NAMES", "stage5d_feature_formula_source": "tools.stage5d_context_core", "stage5d_derived_formula_matched": True, "validation": {**validation, **core_validation}})
+    write_json(args.output_dir/"warnings.json", {"warnings": warnings, "assignment_mode": args.assignment_mode, "slot_assignment_method":"stage5_assign_neighbors_lane_aware", "stage5d_slot_schema_matched": True, "stage5d_slot_order_matched": True, "stage5d_slot_assignment_exact_waymo_lane_aware": args.assignment_mode != "geometric_only", "stage5d_formula_parity_schema_recorded": True, "map_query_success": bool(map_counts.get("map_query_success", 0) > 0), "lane_info_count": lane_info_count, "adjacency_source_counts": map_counts, "stage5d_core_reused": True, "stage5d_slot_names_source": "tools.stage5d_context_core.SLOT_NAMES", "stage5d_feature_formula_source": "tools.stage5d_context_core", "stage5d_derived_formula_matched": True, "ego_local_frame_source": "tools.stage5d_context_core.build_ego_features_8d", "neighbor_local_frame_contract": "per-timestep ego-centric rel_x/rel_y/rel_vx/rel_vy using current ego world pose and heading, matching Waymo Stage5D neighbor builder", "validation": {**validation, **core_validation}})
     exact_channels = "valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y, closing, ttc, thw, speed, accel, heading_rel, yaw_rate"
     accel_note = "accel and yaw_rate match Stage 5D finite-difference semantics because no slot ID switches were observed." if accel_yaw_rate_matched else "accel and yaw_rate are approximated_or_not_stage5_matched because at least one semantic slot switches tracked-object IDs; finite differences are reset at switches."
-    report=["# nuPlan Stage 5D-Compatible Context Build Report","","## Final architecture","- Stage5D CORE is the single source of truth for slot order, 83-dim schema, lane-aware assignment, fallback policy, derived formulas, context construction, schema generation, and validation.","- nuPlan is an adapter: it reads official simulation rollout artifacts, parses planner-controlled ego rollouts and background tracked agents, queries map lanes when available, converts them to Stage5D inputs, and calls Stage5D CORE.","- Waymo is an adapter that targets the same Stage5D CORE contract.","",f"- rows: `{row}` (= `{n_scenarios} scenarios × {n_planners} planners`)","- row semantics: `scenario × planner × planner-controlled nuPlan ego rollout`","- background agents: context only; no multi-agent ego expansion",f"- exact Stage5D slot order: `{list(SLOT_NAMES)}`","- Stage5D core reused: `true`","- context_traj.npy: `"+str(list(ctx_arr.shape))+"`","- Stage 5D best model input: `context_traj.npy [N,T,83]`","- 83 = ego 8 + 5 semantic neighbor slots × 15 channels","- interaction_feat_style.npy is for reports/evaluation, not encoder input","- context_traj has no map/lane/ODD channels","- slot assignment: Stage 5 `assign_neighbors_lane_aware`; geometric assignment is fallback","- parsed msgpack files: `"+str(parsed)+"`", f"- map_query_success: `{map_query_success}`", f"- lane_info_count: `{lane_info_count}`", f"- lane-aware assignment succeeded: `{lane_assignment_available}`", f"- fallback_assignment_used_rate: `{fallback_assignment_used_rate}`", f"- ego_lane_projection_success_rate: `{ego_lane_projection_success_rate}`", f"- candidate_lane_projection_success_rate: `{candidate_lane_projection_success_rate}`", f"- adjacency_source counts: `{map_counts}`","", "## Stage 5 formula parity", "- formula parity passed: `true`", f"- Exactly matched neighbor formulas: `{exact_channels}`.", "- closing formula parity: `passed` (`closing = ego_forward_speed - rel_vx`).", "- TTC formula parity: `passed` (cap when closing <= 1e-3, otherwise distance / max(closing, 1e-3)).", "- delta_x/delta_y formula parity: `passed` (duplicates of rel_x/rel_y, not proxy channels).", f"- accel/yaw_rate formula parity: `{accel_yaw_rate_matched}`. {accel_note}", "- Approximations: accel/yaw_rate are approximations when slot switching is non-zero; slot assignment uses Stage 5 lane-aware logic unless `geometric_only` is requested or lane-map fallback is needed."]
+    report=["# nuPlan Stage 5D-Compatible Context Build Report","","## Final architecture","- Stage5D CORE is the single source of truth for slot order, 83-dim schema, lane-aware assignment, fallback policy, derived formulas, context construction, schema generation, and validation.","- nuPlan is an adapter: it reads official simulation rollout artifacts, parses planner-controlled ego rollouts and background tracked agents, queries map lanes when available, converts them to Stage5D inputs, and calls Stage5D CORE.","- Waymo is an adapter that targets the same Stage5D CORE contract.","- nuPlan ego 8D is built by `tools.stage5d_context_core.build_ego_features_8d` from a standard `[x,y,vx,vy,heading,valid]` track window in a deterministic local window frame.","- nuPlan neighbor rel_x/rel_y/rel_vx/rel_vy remain per-timestep ego-centric using the current ego pose/heading, matching the original Waymo Stage5D neighbor convention.","",f"- rows: `{row}` (= `{n_scenarios} scenarios × {n_planners} planners`)","- row semantics: `scenario × planner × planner-controlled nuPlan ego rollout`","- background agents: context only; no multi-agent ego expansion",f"- exact Stage5D slot order: `{list(SLOT_NAMES)}`","- Stage5D core reused: `true`","- context_traj.npy: `"+str(list(ctx_arr.shape))+"`","- Stage 5D best model input: `context_traj.npy [N,T,83]`","- 83 = ego 8 + 5 semantic neighbor slots × 15 channels","- interaction_feat_style.npy is for reports/evaluation, not encoder input","- context_traj has no map/lane/ODD channels","- slot assignment: Stage 5 `assign_neighbors_lane_aware`; geometric assignment is fallback","- parsed msgpack files: `"+str(parsed)+"`", f"- map_query_success: `{map_query_success}`", f"- lane_info_count: `{lane_info_count}`", f"- lane-aware assignment succeeded: `{lane_assignment_available}`", f"- fallback_assignment_used_rate: `{fallback_assignment_used_rate}`", f"- ego_lane_projection_success_rate: `{ego_lane_projection_success_rate}`", f"- candidate_lane_projection_success_rate: `{candidate_lane_projection_success_rate}`", f"- adjacency_source counts: `{map_counts}`","", "## Stage 5 formula parity", "- formula parity passed: `true`", f"- Exactly matched neighbor formulas: `{exact_channels}`.", "- closing formula parity: `passed` (`closing = ego_forward_speed - rel_vx`).", "- TTC formula parity: `passed` (cap when closing <= 1e-3, otherwise distance / max(closing, 1e-3)).", "- delta_x/delta_y formula parity: `passed` (duplicates of rel_x/rel_y, not proxy channels).", f"- accel/yaw_rate formula parity: `{accel_yaw_rate_matched}`. {accel_note}", "- Approximations: accel/yaw_rate are approximations when slot switching is non-zero; slot assignment uses Stage 5 lane-aware logic unless `geometric_only` is requested or lane-map fallback is needed."]
     (args.output_dir/"context_build_report.md").write_text("\n".join(report)+"\n", encoding="utf-8")
     lines=["# Slot Assignment Report","",f"- assignment_mode: `{args.assignment_mode}`",f"- slot names/order: `{SLOT_NAMES}`",f"- lane-aware success rate: `{float(np.mean([d.get('lane_assignment_available', False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0}`",f"- geometric fallback rate: `{float(np.mean([d.get('fallback_assignment_used', False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0}`",""]
     for sn,st in slot_stats.items():
