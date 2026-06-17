@@ -1,5 +1,6 @@
 from pathlib import Path
 import ast
+import pytest
 import numpy as np
 
 from tools import stage5d_context_core as core
@@ -62,18 +63,43 @@ def test_no_duplicate_schema_constants():
     assert "STAGE5D_NEIGHBOR_CHANNELS" not in source
 
 
-def test_stage7e_no_topk_relabeling():
+def test_stage7e_final_script_has_no_legacy_debug_bridge():
     source = Path("tools/stage7e_embed_stage6_dataset.py").read_text(encoding="utf-8")
-    assert "neighbor[:, :5]" not in source
-    assert "STAGE5D_NEIGHBOR_SLOT_NAMES" not in source
+    forbidden = [
+        "neighbor[:, :5]",
+        "neighbor_arr[:, :k]",
+        "build_ego_neighbor9_context",
+        "build_checkpoint_compatible_context",
+        "pad_to_checkpoint_dim",
+        "ego_neighbor9",
+        "STAGE5D_NEIGHBOR_SLOT_NAMES",
+    ]
+    for token in forbidden:
+        assert token not in source
+    assert "context_traj.npy" in source
+    assert "does_not_rebuild_context_from_stage7d_neighbor_seq" in source
+
+
+def test_stage7e_parser_requires_context_dataset_dir(monkeypatch):
     import tools.stage7e_embed_stage6_dataset as stage7e
-    assert "Final Stage7E Stage5D context must be built" in stage7e.STAGE5D83_DEPRECATION_ERROR
-    import pytest
-    with pytest.raises(ValueError, match="Final Stage7E Stage5D context must be built"):
-        stage7e.build_checkpoint_compatible_context(
-            np.zeros((1, 2, 4), dtype=np.float32),
-            np.zeros((1, 5, 2, 9), dtype=np.float32),
-            5,
-            83,
-            "stage5d83",
-        )
+
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "stage7e_embed_stage6_dataset.py",
+            "--checkpoint",
+            "model.pt",
+            "--output_dir",
+            "out",
+        ],
+    )
+    with pytest.raises(SystemExit):
+        stage7e.parse_args()
+
+
+def test_nuplan_builder_imports_full_stage5d_core_schema():
+    source = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    imports = [n for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.module == "tools.stage5d_context_core"]
+    imported = {alias.name for node in imports for alias in node.names}
+    assert {"SLOT_NAMES", "EGO_CHANNELS", "NEIGHBOR_CHANNELS", "CONTEXT_DIM"}.issubset(imported)
