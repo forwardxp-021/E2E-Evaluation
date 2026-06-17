@@ -5318,3 +5318,39 @@ python tools/stage7e_embed_stage6_dataset.py \
 - `warnings.json.validation.row_semantics_correct == true`、`no_multi_agent_ego_expansion == true`、`background_agents_context_only == true`。
 - `warnings.json.validation.context_traj_no_nonfinite == true`，且 `context_traj.npy` 最后一维为 83。
 - `slot_assignment_report.md` 必须报告 assignment mode、lane-aware success rate、geometric fallback rate、各 slot coverage/empty ratio、lane context quality 和 rejection reason counts。
+
+## Stage 5D / Stage 7E：共享 83 维 context core
+
+### 1. 命令
+
+```bash
+python tools/build_waymo_5neighbor_context_dataset.py \
+  --waymo_dir data/waymo \
+  --out_dir outputs/waymo_5neighbor_context_laneaware_smoke \
+  --max_files 1 \
+  --max_scenarios 2 \
+  --overwrite
+```
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c_official_nuplan_sim \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context \
+  --overwrite
+```
+
+```bash
+python -m pytest tests/test_stage5d_context_core.py -q
+```
+
+### 2. 期望行为
+
+Waymo builder 和 nuPlan builder 都复用 `tools/stage5d_context_core.py` 中的 Stage 5D context 定义：`SLOT_NAMES`、ego 8 维通道、neighbor 15 维通道、`context_dim=83`、lane-aware slot assignment 入口、derived channel 公式、`context_traj` 拼接、schema 生成与 validation。nuPlan builder 只负责把 official nuPlan simulation / msgpack tracked objects 适配为标准 ego、candidate、lane 输入；不会把 background agents 扩展成新的 ego rows。
+
+### 3. 通过标准
+
+- `context_traj.npy` shape 为 `[N,T,83]`。
+- 83 维顺序固定为 ego 8 维 + 5 个 semantic neighbor slots × 15 维。
+- slot 顺序固定为 `front, left_front, left_rear, right_front, right_rear`。
+- `warnings.json` 包含 `stage5d_core_reused=true`、`stage5d_slot_names_source`、`stage5d_feature_formula_source`、`stage5d_slot_schema_matched=true`、`stage5d_slot_order_matched=true`、`stage5d_derived_formula_matched=true`。
+- `build_nuplan_5neighbor_context_dataset.py` 不再定义自己的 `SLOT_NAMES` 或 neighbor channel order。

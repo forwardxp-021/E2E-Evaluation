@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 from tqdm import tqdm
 from tools.interaction_context_features import aggregate_interaction_features, get_feature_schema, write_feature_schema_json
-from tools.lane_aware_assignment import SLOT_NAMES, assign_neighbors_lane_aware
+from tools.stage5d_context_core import SLOT_NAMES, build_ego_features_8d, build_neighbor_features_15d, build_context_traj_from_standard_tracks, assign_stage5d_slots
 from tools.waymo_lane_utils import extract_lane_polylines, find_best_lane_for_agent
 from tools.trajectory_context_utils import sanitize_track_window, localize, LANE_DEBUG_FIELDS, normalize_debug_row
 
@@ -71,15 +71,14 @@ def process_one_scenario(sid,tracks,lane_infos,args,cnt,timing,global_row_start)
         speed=np.hypot(ew[:,2],ew[:,3]);
         if np.nanmean(speed)<args.min_speed: cnt['f_static']+=1; continue
         ref=int(np.flatnonzero((ego_valid>0.5)&(speed>1e-3))[0]) if np.any((ego_valid>0.5)&(speed>1e-3)) else 0; origin=ew[ref,:2]; base_h=float(ew[ref,4]) if np.isfinite(ew[ref,4]) else float(np.arctan2(ew[ref,3],ew[ref,2]))
-        xy_local=localize(ew[:,:2],origin,base_h); v_local=localize(ew[:,2:4],np.array([0.0,0.0],np.float32),base_h); heading=np.where(np.isfinite(ew[:,4]),ew[:,4],np.arctan2(ew[:,3],ew[:,2]))
-        yaw=wrap(np.diff(heading,prepend=heading[0]))/max(args.dt,1e-6); accel=np.diff(speed,prepend=speed[0])/max(args.dt,1e-6)
-        ego=np.stack([xy_local[:,0],xy_local[:,1],v_local[:,0],v_local[:,1],wrap(heading-base_h),speed,accel,yaw],1).astype(np.float32)
+        ego, heading, speed = build_ego_features_8d(ew, origin, base_h, args.dt)
+        v_local = ego[:,2:4]
         candidates={nid:ntr[st:st+args.window_len] for nid,ntr in tracks.items() if nid!=aid and len(ntr)>=st+args.window_len}
         ego_state={'x':float(origin[0]),'y':float(origin[1]),'heading':float(base_h),'velocity_x':float(ew[ref,2]),'velocity_y':float(ew[ref,3])}
         cand_states={k:{'x':float(v[0,0]),'y':float(v[0,1]),'heading':float(v[0,4]) if np.isfinite(v[0,4]) else np.nan,'velocity_x':float(v[0,2]) if np.isfinite(v[0,2]) else 0.0,'velocity_y':float(v[0,3]) if np.isfinite(v[0,3]) else 0.0,'speed':float(np.hypot(v[0,2],v[0,3])) if np.isfinite(v[0,2:4]).all() else 0.0,'valid':bool(v[0,5]>0.5)} for k,v in candidates.items() if np.isfinite(v[0,:2]).all()}
-        assign=assign_neighbors_lane_aware(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=args.assignment_mode,config={'lane_max_lateral_distance':args.lane_max_lateral_distance,'lane_max_heading_diff_deg':args.lane_max_heading_diff_deg,'adjacent_lane_min_offset':args.adjacent_lane_min_offset,'adjacent_lane_max_offset':args.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':args.adjacent_lane_max_heading_diff_deg,'lane_search_radius':args.lane_search_radius,'lane_topk_candidates':args.lane_topk_candidates,'disable_lane_spatial_index':args.disable_lane_spatial_index,'front_max_distance':args.front_max_distance,'side_front_max_distance':args.side_front_max_distance,'side_rear_max_distance':args.side_rear_max_distance,'lane_lateral_tolerance':args.lane_lateral_tolerance,'slot_heading_diff_deg':args.slot_heading_diff_deg,'static_speed_threshold':args.static_speed_threshold})
+        assign=assign_stage5d_slots(ego_state,cand_states,lane_infos=lane_infos,assignment_mode=args.assignment_mode,config={'lane_max_lateral_distance':args.lane_max_lateral_distance,'lane_max_heading_diff_deg':args.lane_max_heading_diff_deg,'adjacent_lane_min_offset':args.adjacent_lane_min_offset,'adjacent_lane_max_offset':args.adjacent_lane_max_offset,'adjacent_lane_max_heading_diff_deg':args.adjacent_lane_max_heading_diff_deg,'lane_search_radius':args.lane_search_radius,'lane_topk_candidates':args.lane_topk_candidates,'disable_lane_spatial_index':args.disable_lane_spatial_index,'front_max_distance':args.front_max_distance,'side_front_max_distance':args.side_front_max_distance,'side_rear_max_distance':args.side_rear_max_distance,'lane_lateral_tolerance':args.lane_lateral_tolerance,'slot_heading_diff_deg':args.slot_heading_diff_deg,'static_speed_threshold':args.static_speed_threshold})
         if args.drop_if_ego_lane_missing and not assign.current_lane_id: cnt['n_windows_dropped_ego_lane_missing']+=1; cnt['n_windows_dropped_clean_filter_total']+=1; continue
-        nbr=np.zeros((5,args.window_len,15),np.float32); sidrow=[]
+        nbr=np.zeros((len(SLOT_NAMES),args.window_len,15),np.float32); sidrow=[]
         for si,sn in enumerate(SLOT_NAMES):
           nid=assign.slot_to_agent.get(sn,''); sidrow.append(nid if nid else '-1')
           method=get_slot_method(assign,sn)
@@ -90,10 +89,10 @@ def process_one_scenario(sid,tracks,lane_infos,args,cnt,timing,global_row_start)
           n_speed=np.hypot(nw[:,2],nw[:,3]); n_acc=np.diff(n_speed,prepend=n_speed[0])/max(args.dt,1e-6); n_heading=np.where(np.isfinite(nw[:,4]),nw[:,4],np.arctan2(nw[:,3],nw[:,2])); n_yaw=wrap(np.diff(n_heading,prepend=n_heading[0]))/max(args.dt,1e-6)
           for t in range(args.window_len):
             if n_valid[t]<=0.5: continue
-            dxy=localize(nw[t:t+1,:2],ew[t,:2],float(heading[t]))[0]; rv=localize((nw[t:t+1,2:4]-ew[t:t+1,2:4]),np.array([0.0,0.0]),float(heading[t]))[0]; dist=float(np.hypot(*dxy)); closing=float(v_local[t,0]-rv[0]); ttc=min((dist/max(closing,1e-3)) if closing>1e-3 else args.ttc_cap,args.ttc_cap); thw=min(dist/max(float(speed[t]),1e-3),args.thw_cap)
-            nbr[si,t]=[1,dxy[0],dxy[1],rv[0],rv[1],dist,dxy[0],dxy[1],closing,ttc,thw,n_speed[t],n_acc[t],wrap(n_heading[t]-heading[t]),n_yaw[t]]
+            dxy=localize(nw[t:t+1,:2],ew[t,:2],float(heading[t]))[0]; rv=localize((nw[t:t+1,2:4]-ew[t:t+1,2:4]),np.array([0.0,0.0]),float(heading[t]))[0]
+            nbr[si,t]=build_neighbor_features_15d(rel_x=dxy[0], rel_y=dxy[1], rel_vx=rv[0], rel_vy=rv[1], ego_forward_speed=v_local[t,0], neighbor_speed=n_speed[t], neighbor_accel=n_acc[t], heading_rel=wrap(n_heading[t]-heading[t]), neighbor_yaw_rate=n_yaw[t], ttc_cap=args.ttc_cap, thw_cap=args.thw_cap)
           slot_valid_counts[sn]+=int(np.sum(nbr[si,:,0]>0.5))
-        context=np.concatenate([ego,nbr.reshape(args.window_len,-1)],1); inter_feat, inter_names = aggregate_interaction_features(ego,nbr,args.dt)
+        context=build_context_traj_from_standard_tracks(ego,nbr); inter_feat, inter_names = aggregate_interaction_features(ego,nbr,args.dt)
         idx=global_row_start+len(b.ego_seq)
         b.ego_seq.append(ego); b.neighbor_seq.append(nbr); b.context_traj.append(context); b.context_mask.append((nbr[:,:,0]>0.5).T); b.context_mask_window.append(np.max(nbr[:,:,0],axis=1)>0.5); b.neighbor_slot_ids.append(sidrow); b.splits.append(sp); b.interaction_raw.append(np.nan_to_num(inter_feat,nan=0.0,posinf=1e6,neginf=-1e6))
         b.meta_rows.append((idx,str(sid),str(aid),int(st),int(args.window_len),sp,args.assignment_mode,assign.lane_assignment_available,assign.fallback_assignment_used,assign.lane_context_quality))
