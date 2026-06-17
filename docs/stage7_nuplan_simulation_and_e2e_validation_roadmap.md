@@ -1008,3 +1008,19 @@ Interpretation of comparison verdicts:
 - `generic_stage5_lane_aware_limitation_or_dataset_common_issue`: both datasets show similarly low projection success or high fallback, so the limitation may be in shared Stage5D assumptions or common dataset/map conditions.
 - `inconclusive_missing_comparable_metrics`: Waymo / nuPlan comparable metrics are missing, so the comparison must not claim a nuPlan-specific issue.
 - `no_clear_nuplan_adapter_issue`: metrics are comparable and nuPlan is not clearly worse.
+
+## Stage7E threshold sweep before topology changes
+
+Before changing nuPlan topology or adjacency adapter logic, reduce the Stage7E high-fallback question to a Stage5-style threshold-sensitivity test. Use `tools/sweep_nuplan_laneaware_thresholds.py` to run `build_nuplan_5neighbor_context_dataset.py` under four predefined threshold configs: `default`, `loose_projection`, `loose_adjacency_v1`, and `loose_adjacency_v2`.
+
+Constraints:
+
+- Do not change `tools/lane_aware_assignment.py` for this test.
+- Do not add a Stage7-specific assignment algorithm.
+- Only tune existing CLI parameters exposed by the nuPlan context builder.
+
+Decision rule:
+
+- If fallback drops substantially while slot sanity remains true, treat this as Stage5-style threshold tuning and document the selected thresholds.
+- If fallback remains high under valid loose thresholds, proceed to nuPlan topology / adjacency adapter investigation.
+- If fallback drops but slot sanity fails, or slot directions become invalid, mark that config invalid and do not use it as evidence for a safe threshold update.

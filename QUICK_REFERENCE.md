@@ -5547,3 +5547,46 @@ python tools/compare_lane_aware_diagnostics.py \
 - 如果 Waymo 指标存在且 nuPlan projection success 明显更低或 fallback 明显更高，verdict 可为 `nuplan_adapter_or_map_projection_issue`。
 - 如果两侧都低 projection / 高 fallback，verdict 可为 `generic_stage5_lane_aware_limitation_or_dataset_common_issue`。
 - 如果 nuPlan 不明显更差且指标可比，verdict 可为 `no_clear_nuplan_adapter_issue`。
+
+## Stage7E nuPlan lane-aware threshold sweep（仅调参，不改拓扑算法）
+
+## 1. 命令
+
+```bash
+python tools/sweep_nuplan_laneaware_thresholds.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_laneaware_threshold_sweep \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --map_name us-nv-las-vegas-strip \
+  --overwrite
+```
+
+如需把额外参数继续传给 `build_nuplan_5neighbor_context_dataset.py`，放在 `--` 之后：
+
+```bash
+python tools/sweep_nuplan_laneaware_thresholds.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_laneaware_threshold_sweep \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --overwrite \
+  -- --required_planners idm
+```
+
+## 2. 期望行为
+
+- 脚本依次运行 4 组已有 CLI 阈值配置：`default`、`loose_projection`、`loose_adjacency_v1`、`loose_adjacency_v2`。
+- 每组配置都会调用现有 `tools/build_nuplan_5neighbor_context_dataset.py`，输出到 `--output_dir/<config_name>/`。
+- 脚本只通过已有参数调整 `lane_search_radius`、`lane_topk_candidates`、projection / adjacency / slot heading 阈值；不会修改 `tools/lane_aware_assignment.py`，不会实现 Stage7 专属 assignment 算法。
+- 汇总文件写入：
+  - `laneaware_threshold_sweep_summary.csv`
+  - `laneaware_threshold_sweep_summary.json`
+  - `laneaware_threshold_sweep_report.md`
+- 汇总指标包括 fallback rate、lane assignment available rate、ego / candidate projection success rate、lane relation counts、rejection reason counts、slot coverage、slot sanity checks、slot switch rate。
+
+## 3. 通过标准
+
+- 3 个汇总文件均生成在 sweep 输出目录下。
+- 如果 fallback 明显下降且 `slot_sanity_passed=true`，报告结论应为 Stage5-style threshold tuning，优先采用 tuned thresholds。
+- 如果 fallback 仍然高，报告结论应指向 nuPlan topology / adjacency adapter investigation。
+- 如果 fallback 下降但 slot sanity 失败或构建命令失败，该配置必须标记为 invalid，不能作为可采用阈值。
