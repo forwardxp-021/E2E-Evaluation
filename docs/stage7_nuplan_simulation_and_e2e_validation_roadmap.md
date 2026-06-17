@@ -955,3 +955,24 @@ run PDM planner profiles
 run ML planner profiles
 compare cross-planner-family behavior drift
 ```
+
+## Stage7E lane-aware failure diagnosis protocol
+
+Stage7 must not implement a separate lane-aware assignment algorithm. The only lane-aware assignment implementation is Stage5D CORE, `tools.lane_aware_assignment.assign_neighbors_lane_aware`. Stage7 nuPlan code is an adapter: it converts nuPlan map objects and tracked objects into Stage5-compatible `LaneInfo` and candidate-state inputs.
+
+When nuPlan shows high geometric fallback or low candidate lane projection success, run:
+
+```bash
+python tools/compare_lane_aware_diagnostics.py \
+  --waymo_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --nuplan_dir outputs/<stage7e_nuplan_context_output> \
+  --out_dir outputs/lane_aware_diagnostic_comparison \
+  --max_rows 2000
+```
+
+The comparison report must include `lane_assignment_available`, `fallback_assignment_used_rate`, `candidate_projection_success_rate`, `adjacency_source_counts`, `lane_context_quality` counts, rejection reason counts, slot coverage by slot, and slot switch rate by slot for both Waymo Stage5 and nuPlan Stage7E outputs.
+
+Interpretation rule:
+
+- If both datasets show similar weakness, treat it as a generic Stage5D lane-aware assignment limitation and improve only `tools/lane_aware_assignment.py` / Stage5D CORE so both Waymo and nuPlan benefit.
+- If nuPlan is much worse than Waymo under the same Stage5D assignment call, treat it as a nuPlan LaneInfo adapter / map topology / adjacency / projection quality issue and improve only `tools/nuplan_lane_utils.py` or the nuPlan adapter path.
