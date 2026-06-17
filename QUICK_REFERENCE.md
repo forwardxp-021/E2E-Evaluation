@@ -5134,6 +5134,49 @@ python tools/stage7d_export_stage6_compatible_dataset.py \
 - 四个 planner index 文件均存在：`simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy`；
 - Stage 7D 不重新实现最终 BDD，后续 Stage 7E/F 使用 Stage 6 BDD/report-card/task-conditioned BDD。
 
+
+
+## Stage 7E final lane-aware context build and embedding rerun（Stage5D CORE ego local-frame）
+
+## 1. 命令
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --overwrite
+
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --overwrite
+```
+
+如果需要强制检查某些 planner 必须存在，可以给 context build 增加可选参数，例如：
+
+```bash
+  --required_planners simple_planner idm_longitudinal_conservative idm_longitudinal_comfort idm_longitudinal_aggressive
+```
+
+默认不要求固定 IDM planner 名称，以支持后续 PDM / ML planner 扩展。
+
+## 2. 期望行为
+
+- `build_nuplan_5neighbor_context_dataset.py` 发现 `simulated_planner_metadata.csv` / `scenario_planner_index.csv` 中的 planner axis，不再依赖 Stage 7D 的 IDM-only `REQUIRED_PLANNERS`。
+- nuPlan ego 8D 通过 `tools.stage5d_context_core.build_ego_features_8d(...)` 生成：先把 `simulated_ego_seq` 行适配为 `[x, y, vx, vy, heading, valid]`，再用第一帧有效 ego 位置和 heading 构造 deterministic local window frame。
+- neighbor `rel_x/rel_y/rel_vx/rel_vy` 仍按每个 timestep 的 ego 当前 pose/heading 计算，这与原 Waymo Stage 5D builder 的 neighbor convention 一致。
+- Stage 7E embedding 只读取 `context_traj.npy [N,T,83]`；不得重新引入 `--dataset_dir`、`context_layout` 或 Stage 7D top-K neighbor bridge。
+
+## 3. 通过标准
+
+- `warnings.json` 记录 `ego_local_frame_source == "tools.stage5d_context_core.build_ego_features_8d"`。
+- `warnings.json` 记录 neighbor local-frame contract，说明 neighbor 相对量是 per-timestep ego-centric。
+- `planner_policy_indices/*.npy` 对所有 observed planners 非空；只有传入 `--required_planners` 时才强制检查指定 planner 名称。
+- embedding 输出的 `warnings.json.validation.context_layout_used == "stage5d_context_dataset_direct"`，且 `context_padded_to_checkpoint_dim == false`。
+
 ## Stage 7E/7F-IDM final thesis path：先构建 common-core context，再导出 embedding
 
 ## 1. 命令

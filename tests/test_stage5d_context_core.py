@@ -103,3 +103,61 @@ def test_nuplan_builder_imports_full_stage5d_core_schema():
     imports = [n for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.module == "tools.stage5d_context_core"]
     imported = {alias.name for node in imports for alias in node.names}
     assert {"SLOT_NAMES", "EGO_CHANNELS", "NEIGHBOR_CHANNELS", "CONTEXT_DIM"}.issubset(imported)
+
+
+def test_nuplan_builder_does_not_import_stage7d_convert_ego():
+    source = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == "tools.stage7d_export_stage6_compatible_dataset":
+            imported = {alias.name for alias in node.names}
+            assert "convert_ego" not in imported
+    assert "convert_ego(" not in source
+
+
+def test_nuplan_builder_does_not_import_REQUIRED_PLANNERS():
+    source = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == "tools.stage7d_export_stage6_compatible_dataset":
+            imported = {alias.name for alias in node.names}
+            assert "REQUIRED_PLANNERS" not in imported
+    assert "REQUIRED_PLANNERS" not in source
+    assert "--required_planners" in source
+    assert "default=[]" in source
+
+
+def test_nuplan_ego_features_use_stage5d_core():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    seq = np.asarray([
+        [10.0, 20.0, np.pi / 2.0, 2.0, 0.0, 0.0, 0.0, 0.0],
+        [10.0, 20.2, np.pi / 2.0, 2.0, 0.0, 0.0, 0.0, 0.1],
+        [10.0, 20.4, np.pi / 2.0, 2.0, 0.0, 0.0, 0.0, 0.2],
+    ], dtype=np.float32)
+    mask = np.asarray([True, True, True])
+    ego, heading, speed, dt = builder.build_nuplan_ego_features_8d(seq, mask)
+    expected_track = np.asarray([
+        [10.0, 20.0, 0.0, 2.0, np.pi / 2.0, 1.0],
+        [10.0, 20.2, 0.0, 2.0, np.pi / 2.0, 1.0],
+        [10.0, 20.4, 0.0, 2.0, np.pi / 2.0, 1.0],
+    ], dtype=np.float32)
+    expected_ego, expected_heading, expected_speed = core.build_ego_features_8d(expected_track, expected_track[0, :2], float(expected_track[0, 4]), 0.1)
+    np.testing.assert_allclose(ego, expected_ego, atol=1e-6)
+    np.testing.assert_allclose(heading, expected_heading, atol=1e-6)
+    np.testing.assert_allclose(speed, expected_speed, atol=1e-6)
+    assert dt == pytest.approx(0.1)
+
+
+def test_stage5d_context_core_local_frame_contract():
+    track = np.asarray([
+        [5.0, 7.0, 0.0, 2.0, np.pi / 2.0, 1.0],
+        [5.0, 8.0, 0.0, 2.0, np.pi / 2.0, 1.0],
+    ], dtype=np.float32)
+    ego, heading, speed = core.build_ego_features_8d(track, track[0, :2], float(track[0, 4]), 0.5)
+    # With base heading pi/2, the world +y displacement is local +x; lateral remains zero.
+    np.testing.assert_allclose(ego[:, :2], [[0.0, 0.0], [1.0, 0.0]], atol=1e-6)
+    np.testing.assert_allclose(ego[:, 2:4], [[2.0, 0.0], [2.0, 0.0]], atol=1e-6)
+    np.testing.assert_allclose(ego[:, 4], [0.0, 0.0], atol=1e-6)
+    np.testing.assert_allclose(speed, [2.0, 2.0], atol=1e-6)
+    assert np.all(np.isfinite(heading))
