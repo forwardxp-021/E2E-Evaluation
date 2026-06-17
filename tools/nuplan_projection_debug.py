@@ -107,6 +107,31 @@ def collect_nuplan_projection_debug_rows(
             accepted = str(track_id) in slot_by_agent
             reason, detail = _candidate_rejection_reason(type("R", (), dbg) if False else _DebugObj(dbg), str(track_id), cand_lane)
             left = str(dbg.get("left_lane_id", "")); right = str(dbg.get("right_lane_id", ""))
+            ego_info = lane_infos.get(ego_lane) if ego_lane else None
+            cand_info = lane_infos.get(cand_lane) if cand_lane else None
+            cand_in_left = bool(ego_info and cand_lane in set(ego_info.left_neighbor_lane_ids))
+            cand_in_right = bool(ego_info and cand_lane in set(ego_info.right_neighbor_lane_ids))
+            shares_topology = bool(ego_info and cand_info and (set(ego_info.entry_lane_ids) & set(cand_info.entry_lane_ids) or set(ego_info.exit_lane_ids) & set(cand_info.exit_lane_ids) or cand_lane in set(ego_info.entry_lane_ids + ego_info.exit_lane_ids) or ego_lane in set(cand_info.entry_lane_ids + cand_info.exit_lane_ids)))
+            s_diff = None
+            if cand_proj and ego_proj and cand_lane == ego_lane and cand_proj.get("s") is not None and ego_proj.get("s") is not None:
+                s_diff = _finite_float(float(cand_proj["s"]) - float(ego_proj["s"]))
+            relation = "same_lane" if cand_lane == ego_lane and cand_lane else ("left_adjacent" if cand_in_left or (cand_lane and cand_lane == left) else ("right_adjacent" if cand_in_right or (cand_lane and cand_lane == right) else "unknown"))
+            if not ego_proj:
+                relation_failure = "ego_projection_failed"
+            elif not cand_proj:
+                relation_failure = "candidate_projection_failed"
+            elif cand_info and "connector" in str(cand_info.lane_type).lower() and not (cand_info.left_neighbor_lane_ids or cand_info.right_neighbor_lane_ids):
+                relation_failure = "lane_connector_unhandled"
+            elif relation != "unknown":
+                relation_failure = "none"
+            elif ego_info and not (ego_info.left_neighbor_lane_ids or ego_info.right_neighbor_lane_ids):
+                relation_failure = "missing_adjacency"
+            elif cand_proj and ego_proj and abs(wrap_to_pi(float(cand_proj.get("heading", heading)) - float(ego_proj.get("heading", eh)))) > math.radians(45.0):
+                relation_failure = "direction_mismatch"
+            elif not shares_topology:
+                relation_failure = "topology_disconnected"
+            else:
+                relation_failure = "other"
             rows.append({
                 "global_row": global_row, "scenario_index": scenario_index, "planner_id": planner_id, "planner_name": planner_name,
                 "timestep": t, "candidate_index": ci, "track_id": track_id, "object_type": "", "map_name": map_name, "assignment_mode": assignment_mode,
@@ -118,9 +143,13 @@ def collect_nuplan_projection_debug_rows(
                 "candidate_best_lane_id": cand_lane, "candidate_projection_success": bool(cand_proj),
                 "candidate_lane_lateral_offset": _finite_float((cand_proj or {}).get("l")), "candidate_lane_heading_diff_deg": float(math.degrees(abs(wrap_to_pi(heading - float((cand_proj or {}).get("heading", heading)))))) if cand_proj else None,
                 "candidate_lane_s": _finite_float((cand_proj or {}).get("s")), "candidate_lane_distance_to_ego_lane": None,
-                "is_same_lane": bool(cand_lane and cand_lane == ego_lane), "is_left_adjacent": bool(cand_lane and cand_lane == left), "is_right_adjacent": bool(cand_lane and cand_lane == right),
-                "is_successor_or_predecessor": None, "adjacency_source": dbg.get("adjacency_source", "none"), "adjacency_confidence": "high" if dbg.get("adjacency_source") == "proto_topology" else ("medium" if dbg.get("adjacency_source") == "geometric" else "low"),
-                "lane_relation_used_by_assignment": "same_lane" if cand_lane == ego_lane else ("left_adjacent" if cand_lane == left else ("right_adjacent" if cand_lane == right else "unknown")),
+                "candidate_lane_type": getattr(cand_info, "lane_type", ""), "ego_lane_type": getattr(ego_info, "lane_type", ""),
+                "candidate_in_ego_left_adjacency": cand_in_left, "candidate_in_ego_right_adjacency": cand_in_right,
+                "shares_predecessor_or_successor_with_ego": shares_topology, "s_difference": s_diff,
+                "relation_failure_category": relation_failure,
+                "is_same_lane": bool(cand_lane and cand_lane == ego_lane), "is_left_adjacent": bool(cand_in_left or (cand_lane and cand_lane == left)), "is_right_adjacent": bool(cand_in_right or (cand_lane and cand_lane == right)),
+                "is_successor_or_predecessor": shares_topology, "adjacency_source": getattr(ego_info, "topology_source", dbg.get("adjacency_source", "none")), "adjacency_confidence": "high" if getattr(ego_info, "topology_source", "") == "nuplan_topology" else ("medium" if getattr(ego_info, "topology_source", "") == "geometric_lane_adjacency" else "low"),
+                "lane_relation_used_by_assignment": relation,
                 "accepted_by_lane_aware": accepted, "assigned_slot": slot_by_agent.get(str(track_id), ""), "rejection_reason": "" if accepted else reason, "rejection_reason_detail": "" if accepted else detail,
             })
     return rows
@@ -152,6 +181,12 @@ def summarize_projection_debug(rows: List[Dict[str, Any]], assignment_debug_rows
             reason = str(r.get("rejection_reason") or "unknown"); rej[reason] += 1; rej_by_slot[str(r.get("assigned_slot") or "unassigned")][reason] += 1
     fallback_no_ego = sum(1 for d in assignment_debug_rows if d.get("fallback_assignment_used") and str(d.get("fallback_reason", "")).startswith("ego"))
     fallback_projection = sum(1 for d in assignment_debug_rows if d.get("fallback_assignment_used") and d.get("fallback_reason") not in {"lane_map_unavailable", "no_candidate_for_slot", ""})
+    unknown_categories = ["missing_adjacency", "topology_disconnected", "direction_mismatch", "candidate_projection_failed", "ego_projection_failed", "lane_connector_unhandled", "other"]
+    unknown_breakdown_counter = Counter(str(r.get("relation_failure_category") or "other") for r in rows if r.get("lane_relation_used_by_assignment") == "unknown")
+    unknown_breakdown = {k: int(unknown_breakdown_counter.get(k, 0)) for k in unknown_categories}
+    for k, v in unknown_breakdown_counter.items():
+        if k not in unknown_breakdown:
+            unknown_breakdown[k] = int(v)
     return {
         "sampled_candidate_rows": cand_total,
         "ego_projection_success_rate": ego_success / ego_total if ego_total else None,
@@ -166,6 +201,7 @@ def summarize_projection_debug(rows: List[Dict[str, Any]], assignment_debug_rows
         "left_adjacent_count": sum(1 for r in rows if r.get("is_left_adjacent")),
         "right_adjacent_count": sum(1 for r in rows if r.get("is_right_adjacent")),
         "lane_relation_unknown_count": sum(1 for r in rows if r.get("lane_relation_used_by_assignment") == "unknown"),
+        "lane_relation_unknown_breakdown": unknown_breakdown,
         "fallback_frames_due_to_no_ego_lane": fallback_no_ego,
         "fallback_frames_due_to_no_candidates": sum(1 for d in assignment_debug_rows if d.get("fallback_reason") == "no_candidate_for_slot"),
         "fallback_frames_due_to_projection_failure": fallback_projection,
@@ -194,9 +230,16 @@ def write_projection_debug_artifacts(out_dir: Path, rows: List[Dict[str, Any]], 
     summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     artifacts["summary_json"] = str(summary_path)
     report_path = out_dir / "nuplan_lane_projection_debug_report.md"
-    lines = ["# nuPlan Lane Projection Debug", "", f"- sampled_candidate_rows: `{summary.get('sampled_candidate_rows')}`", f"- ego_projection_success_rate: `{summary.get('ego_projection_success_rate')}`", f"- candidate_projection_success_rate: `{summary.get('candidate_projection_success_rate')}`", f"- rejection_reason_counts: `{summary.get('rejection_reason_counts')}`", f"- candidate_projection_success_rate_by_distance_bucket: `{summary.get('candidate_projection_success_rate_by_distance_bucket')}`"]
+    lines = ["# nuPlan Lane Projection Debug", "", f"- sampled_candidate_rows: `{summary.get('sampled_candidate_rows')}`", f"- ego_projection_success_rate: `{summary.get('ego_projection_success_rate')}`", f"- candidate_projection_success_rate: `{summary.get('candidate_projection_success_rate')}`", f"- rejection_reason_counts: `{summary.get('rejection_reason_counts')}`", f"- lane_relation_unknown_breakdown: `{summary.get('lane_relation_unknown_breakdown')}`", f"- candidate_projection_success_rate_by_distance_bucket: `{summary.get('candidate_projection_success_rate_by_distance_bucket')}`"]
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     artifacts["report_md"] = str(report_path)
+    unknown_rows = [r for r in rows if r.get("lane_relation_used_by_assignment") == "unknown" or r.get("rejection_reason") == "wrong_lane"]
+    if unknown_rows:
+        unk_path = out_dir / "nuplan_lane_relation_unknown_debug.csv"
+        fields = list(unknown_rows[0].keys())
+        with unk_path.open("w", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(unknown_rows)
+        artifacts["relation_unknown_csv"] = str(unk_path)
     if write_csv_flag:
         csv_path = out_dir / "nuplan_lane_projection_debug.csv"
         fields = list(rows[0].keys()) if rows else ["global_row", "timestep", "candidate_index"]
