@@ -257,3 +257,65 @@ def test_stage7c_metadata_contains_map_name_when_scenario_metadata_is_available(
     assert row["log_name"] == "log"
     assert row["scenario_type"] == "following"
     assert "map_name" in stage7c.SCENARIO_INDEX_COLUMNS
+
+
+def test_compare_lane_aware_diagnostics_has_no_local_slot_names_fallback():
+    source = Path("tools/compare_lane_aware_diagnostics.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    imports = [n for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)]
+    assert any(
+        node.module in {"tools.lane_aware_assignment", "tools.stage5d_context_core"}
+        and any(alias.name == "SLOT_NAMES" for alias in node.names)
+        for node in imports
+    )
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Assign, ast.AnnAssign)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            for target in targets:
+                if isinstance(target, ast.Name):
+                    assert target.id != "SLOT_NAMES"
+    assert '["front", "left_front", "left_rear", "right_front", "right_rear"]' not in source
+
+
+def test_compare_lane_aware_diagnose_missing_waymo_metrics_is_inconclusive():
+    from tools.compare_lane_aware_diagnostics import diagnose
+
+    result = diagnose({}, {"fallback_assignment_used_rate": 0.9, "candidate_projection_success_rate": 0.1}, 0.2)
+    assert result["verdict"] == "inconclusive_missing_waymo_metrics"
+    assert result["fallback_rate_comparable"] is False
+    assert result["candidate_projection_success_comparable"] is False
+    assert result["missing_waymo_metrics"] == {
+        "fallback_assignment_used_rate": True,
+        "candidate_projection_success_rate": True,
+    }
+
+
+def test_compare_lane_aware_diagnose_flags_nuplan_only_when_comparable_and_worse():
+    from tools.compare_lane_aware_diagnostics import diagnose
+
+    by_fallback = diagnose(
+        {"fallback_assignment_used_rate": 0.1, "candidate_projection_success_rate": 0.9},
+        {"fallback_assignment_used_rate": 0.5, "candidate_projection_success_rate": 0.85},
+        0.2,
+    )
+    assert by_fallback["verdict"] == "nuplan_adapter_or_map_projection_issue"
+    assert by_fallback["fallback_rate_comparable"] is True
+
+    by_projection = diagnose(
+        {"fallback_assignment_used_rate": 0.1, "candidate_projection_success_rate": 0.9},
+        {"fallback_assignment_used_rate": 0.15, "candidate_projection_success_rate": 0.6},
+        0.2,
+    )
+    assert by_projection["verdict"] == "nuplan_adapter_or_map_projection_issue"
+    assert by_projection["candidate_projection_success_comparable"] is True
+
+
+def test_compare_lane_aware_diagnose_generic_when_nuplan_not_clearly_worse():
+    from tools.compare_lane_aware_diagnostics import diagnose
+
+    result = diagnose(
+        {"fallback_assignment_used_rate": 0.2, "candidate_projection_success_rate": 0.8},
+        {"fallback_assignment_used_rate": 0.3, "candidate_projection_success_rate": 0.72},
+        0.2,
+    )
+    assert result["verdict"] == "generic_stage5_lane_aware_limitation_or_inconclusive"

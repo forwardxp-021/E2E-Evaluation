@@ -599,7 +599,7 @@ outputs/stage7e_nuplan_5neighbor_context_idm_5logs/
 
 **Status (2026-06-17): Stage 7E final embedding cleanup is DONE.** The final embedding path is the clean `context_traj.npy -> --context_dataset_dir` path; legacy `--dataset_dir` / `context_layout` / top-K neighbor reconstruction remains retired.
 
-**P0 architecture item:** nuPlan ego 8D must be built through `tools.stage5d_context_core.build_ego_features_8d(...)` from a standard `[x, y, vx, vy, heading, valid]` track window. Stage 7E-core must not import Stage 7D `convert_ego`, because Stage 7D emits world-frame ego channels while Stage 5D CORE defines the local-window ego frame used by the Waymo builder.
+**DONE architecture item:** nuPlan ego 8D is built through `tools.stage5d_context_core.build_ego_features_8d(...)` from a standard `[x, y, vx, vy, heading, valid]` track window. Stage 7E-core must not import Stage 7D `convert_ego`, because Stage 7D emits world-frame ego channels while Stage 5D CORE defines the local-window ego frame used by the Waymo builder.
 
 
 `tools/build_nuplan_5neighbor_context_dataset.py` should not own Stage 5D schema constants or formulas.
@@ -684,11 +684,18 @@ stage5d_dim_matched == true
 stage5d_channel_schema_matched == true
 stage5d_slot_schema_matched == true
 stage5d_slot_order_matched == true
-stage5d_derived_formula_matched == true
+stage5d_static_derived_formula_matched == true
+stage5d_closing_formula_matched == true
+stage5d_ttc_formula_matched == true
+stage5d_delta_xy_formula_matched == true
+stage5d_temporal_derived_formula_matched is reported conservatively
+slot_id_switch_rate_by_slot is reported
 context_traj_no_nonfinite == true
 planner_indices_non_empty == true
 stage5d_core_reused == true
 ```
+
+Stage 7E no longer requires `stage5d_derived_formula_matched == true` globally as a PASS criterion. Static derived channels (`closing`, `ttc`, `delta_x`, `delta_y`) must match Stage5D CORE formulas exactly, while temporal accel/yaw-rate parity must be reported conservatively. When semantic slot IDs switch within a slot, accel/yaw_rate can be an approximation because the finite difference may span different physical agents; `slot_id_switch_rate_by_slot` must therefore be reported alongside temporal parity.
 
 Current final Stage 7E thesis path:
 
@@ -924,7 +931,11 @@ candidate_lane_projection_success_rate
 stage5d_core_reused
 stage5d_slot_schema_matched
 stage5d_slot_order_matched
-stage5d_derived_formula_matched
+stage5d_static_derived_formula_matched
+stage5d_closing_formula_matched
+stage5d_ttc_formula_matched
+stage5d_delta_xy_formula_matched
+stage5d_temporal_derived_formula_matched
 stage5d_accel_yaw_rate_formula_matched
 slot_id_switch_rate_by_slot
 ```
@@ -974,5 +985,8 @@ The comparison report must include `lane_assignment_available`, `fallback_assign
 
 Interpretation rule:
 
+- If Waymo `fallback_assignment_used_rate` and `candidate_projection_success_rate` are both unavailable, the comparison is `inconclusive_missing_waymo_metrics`; collect/export comparable Waymo metrics before blaming the nuPlan adapter.
+- Compare fallback rates only when both Waymo and nuPlan fallback rates are available.
+- Compare candidate projection success only when both Waymo and nuPlan candidate projection success rates are available.
 - If both datasets show similar weakness, treat it as a generic Stage5D lane-aware assignment limitation and improve only `tools/lane_aware_assignment.py` / Stage5D CORE so both Waymo and nuPlan benefit.
 - If nuPlan is much worse than Waymo under the same Stage5D assignment call, treat it as a nuPlan LaneInfo adapter / map topology / adjacency / projection quality issue and improve only `tools/nuplan_lane_utils.py` or the nuPlan adapter path.

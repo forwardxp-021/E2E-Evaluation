@@ -10,12 +10,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
-try:
-    from tools.lane_aware_assignment import SLOT_NAMES
-except ModuleNotFoundError as exc:
-    if exc.name != "numpy":
-        raise
-    SLOT_NAMES = ["front", "left_front", "left_rear", "right_front", "right_rear"]
+from tools.lane_aware_assignment import SLOT_NAMES
 
 
 
@@ -140,7 +135,7 @@ def summarize_waymo(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, Any
         "n_rows": n,
         "lane_assignment_available": bool(summary.get("lane_assignment_success_rate", 0.0) > 0 or summary.get("lane_assignment_success_count_kept", 0) > 0),
         "lane_assignment_available_rate": as_float(summary.get("lane_assignment_success_rate"), 0.0),
-        "fallback_assignment_used_rate": as_float(summary.get("fallback_assignment_rate"), as_float(summary.get("fallback_assignment_used_rate"), 0.0)),
+        "fallback_assignment_used_rate": as_float(summary.get("fallback_assignment_rate"), as_float(summary.get("fallback_assignment_used_rate"), None)),
         "candidate_projection_success_rate": as_float(summary.get("lane_projection_success_rate"), None),
         "adjacency_source_counts": summary.get("adjacency_source_counts", {}),
         "lane_context_quality_counts": summary.get("lane_context_quality_counts", {}),
@@ -196,24 +191,62 @@ def summarize_nuplan(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, An
 
 
 def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_threshold: float) -> Dict[str, Any]:
-    wf = as_float(waymo.get("fallback_assignment_used_rate"), 0.0) or 0.0
-    nf = as_float(nuplan.get("fallback_assignment_used_rate"), 0.0) or 0.0
+    wf = as_float(waymo.get("fallback_assignment_used_rate"), None)
+    nf = as_float(nuplan.get("fallback_assignment_used_rate"), None)
     wc = as_float(waymo.get("candidate_projection_success_rate"), None)
     nc = as_float(nuplan.get("candidate_projection_success_rate"), None)
-    if wc is not None and nc is not None and nc + 0.20 < wc:
+    fallback_comparable = wf is not None and nf is not None
+    projection_comparable = wc is not None and nc is not None
+    missing_waymo_metrics = {
+        "fallback_assignment_used_rate": wf is None,
+        "candidate_projection_success_rate": wc is None,
+    }
+
+    if wf is None and wc is None:
+        verdict = "inconclusive_missing_waymo_metrics"
+        reason = "Waymo fallback/projection metrics are unavailable, so nuPlan cannot be compared conservatively under the shared Stage5D assignment interface."
+    elif projection_comparable and nc + 0.20 < wc:
         verdict = "nuplan_adapter_or_map_projection_issue"
         reason = "nuPlan candidate projection success is substantially lower than Waymo under the shared Stage5D assignment interface."
-    elif nf > wf + fallback_gap_threshold:
+    elif fallback_comparable and nf > wf + fallback_gap_threshold:
         verdict = "nuplan_adapter_or_map_projection_issue"
         reason = "nuPlan geometric fallback rate is substantially higher than Waymo under the same Stage5D assignment interface."
     else:
         verdict = "generic_stage5_lane_aware_limitation_or_inconclusive"
-        reason = "nuPlan is not clearly worse than Waymo on comparable fallback/projection metrics, or Waymo metrics are unavailable."
-    return {"verdict": verdict, "reason": reason, "waymo_fallback_rate": wf, "nuplan_fallback_rate": nf, "waymo_candidate_projection_success_rate": wc, "nuplan_candidate_projection_success_rate": nc}
+        reason = "nuPlan is not clearly worse than Waymo on comparable fallback/projection metrics, or comparable metrics are incomplete."
+    return {
+        "verdict": verdict,
+        "reason": reason,
+        "waymo_fallback_rate": wf,
+        "nuplan_fallback_rate": nf,
+        "waymo_candidate_projection_success_rate": wc,
+        "nuplan_candidate_projection_success_rate": nc,
+        "fallback_rate_comparable": fallback_comparable,
+        "candidate_projection_success_comparable": projection_comparable,
+        "missing_waymo_metrics": missing_waymo_metrics,
+    }
 
 
 def render_markdown(payload: Dict[str, Any]) -> str:
-    lines = ["# Stage5D Lane-Aware Assignment Cross-Dataset Diagnostics", "", "## Architecture constraint", "", "- Stage5D CORE / `tools.lane_aware_assignment.py` remains the only lane-aware assignment implementation.", "- Stage7 nuPlan is treated only as an adapter that emits Stage5-compatible `LaneInfo` and candidate states.", "", "## Diagnosis", "", f"- verdict: `{payload['diagnosis']['verdict']}`", f"- reason: {payload['diagnosis']['reason']}", "", "## Comparable metrics"]
+    diagnosis = payload["diagnosis"]
+    lines = [
+        "# Stage5D Lane-Aware Assignment Cross-Dataset Diagnostics",
+        "",
+        "## Architecture constraint",
+        "",
+        "- Stage5D CORE / `tools.lane_aware_assignment.py` remains the only lane-aware assignment implementation.",
+        "- Stage7 nuPlan is treated only as an adapter that emits Stage5-compatible `LaneInfo` and candidate states.",
+        "",
+        "## Diagnosis",
+        "",
+        f"- verdict: `{diagnosis['verdict']}`",
+        f"- reason: {diagnosis['reason']}",
+        f"- fallback_rate_comparable: `{diagnosis.get('fallback_rate_comparable')}`",
+        f"- candidate_projection_success_comparable: `{diagnosis.get('candidate_projection_success_comparable')}`",
+        f"- missing_waymo_metrics: `{diagnosis.get('missing_waymo_metrics')}`",
+        "",
+        "## Comparable metrics",
+    ]
     for name in ("waymo", "nuplan"):
         m = payload[name]
         lines += ["", f"### {name}", "", f"- path: `{m.get('path')}`", f"- lane_assignment_available: `{m.get('lane_assignment_available')}`", f"- lane_assignment_available_rate: `{m.get('lane_assignment_available_rate')}`", f"- fallback_assignment_used_rate: `{m.get('fallback_assignment_used_rate')}`", f"- candidate_projection_success_rate: `{m.get('candidate_projection_success_rate')}`", f"- adjacency_source_counts: `{m.get('adjacency_source_counts')}`", f"- lane_context_quality counts: `{m.get('lane_context_quality_counts')}`", f"- rejection reason counts: `{m.get('rejection_reason_counts')}`", f"- slot coverage by slot: `{m.get('slot_coverage_by_slot')}`", f"- slot switch rate by slot: `{m.get('slot_switch_rate_by_slot')}`"]
