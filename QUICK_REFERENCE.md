@@ -5253,3 +5253,30 @@ python tools/stage7e_embed_stage6_dataset.py \
 - `planner_policy_indices/simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy` 均存在且非空，并与 row order 匹配。
 - `slot_assignment_report.md` 记录 coverage / empty ratio / median rel_x / median rel_y / median distance，并给出 front/rear/left/right sanity checks；若使用 `geometric_proxy`，报告必须说明它不是 Waymo lane-aware slot assignment 的精确复刻。
 - Stage 6 BDD/report-card 输入为 Stage 7E 导出的 `embedding.npy`、`interaction_feat_style.npy`、`metadata.csv` 与 A/B indices；Stage 6 不把 raw Stage 7D `ego_seq.npy` / `neighbor_seq.npy` 直接送入 BDD。
+
+## Stage 7E：nuPlan Stage5D derived-channel parity 修正
+
+## 1. 命令
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c_official_sim \
+  --output_dir outputs/stage7e_nuplan_stage5d_context \
+  --overwrite
+```
+
+## 2. 期望行为
+
+该命令读取 Stage 7C official nuPlan simulation 输出与 official nuPlan msgpack tracked objects，构造 Stage 5D checkpoint-compatible 的 `context_traj.npy [N,T,83]`。邻车 15 维通道顺序保持为：`valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y, closing, ttc, thw, speed, accel, heading_rel, yaw_rate`。
+
+本版本明确区分 `direct_from_state`、`derived_same_as_stage5` 与 `approximated`：`delta_x/delta_y` 是 `rel_x/rel_y` 的 Stage 5 同公式派生通道，不再标记为 proxy；`closing` 使用 Stage 5 公式 `ego_forward_speed - rel_vx`；`ttc/thw` 使用 Stage 5 cap 公式。脚本会输出 `slot_assignment_report.md`，报告每个 slot 的 ID switch count、switch rate 与平均连续片段长度；如果 slot ID 发生切换，`accel/yaw_rate` 不会跨不同 agent 做有限差分，并会在 schema / warnings 中标记为未完全 Stage5D-equivalent。
+
+该命令不会改变 row 语义：row 仍然是 `scenario × planner × planner-controlled nuPlan ego rollout`；background agents 只作为 context，不做 multi-agent ego expansion；也不会修改 Stage 6 逻辑。
+
+## 3. 通过标准
+
+- `context_traj.npy` shape 为 `[num_scenarios × num_planners, T, 83]`，且不包含 NaN/Inf。
+- `warnings.json.validation.stage5d_closing_formula_matched`、`stage5d_ttc_formula_matched`、`stage5d_delta_xy_formula_matched` 为 `true`。
+- `warnings.json.validation.slot_id_switch_rate_by_slot` 存在，并且 `slot_assignment_report.md` 包含每个 slot 的 `slot_id_switch_count`、`slot_id_switch_rate`、`mean_continuous_segment_length`。
+- `stage5d_context_schema.json` 对每个通道包含 `source_kind`、`formula`、`matched_waymo_stage5_formula`；`delta_x/delta_y` 为 `derived_same_as_stage5`，不是 proxy。
+- 若 slot switch rate 非零，`accel/yaw_rate` 在 schema 中标记为 `approximated` / `approximated_or_not_stage5_matched`，且报告不声称完全等价。
