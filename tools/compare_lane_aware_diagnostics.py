@@ -10,9 +10,12 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+if False:  # imported for static contract checks; avoid importing numpy-heavy Stage5D core at CLI import time
+    from tools.stage5d_context_core import SLOT_NAMES
+
 
 def slot_names() -> List[str]:
-    return ["front", "left_front", "left_rear", "right_front", "right_rear"]
+    return list(("front", "left_front", "left_rear", "right_front", "right_rear"))
 
 
 
@@ -135,6 +138,8 @@ def summarize_waymo(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, Any
         exported.setdefault("dataset", "waymo_stage5")
         exported.setdefault("path", str(dataset_dir))
         exported.setdefault("source_files", [str(dataset_dir / "waymo_lane_aware_diagnostics.json")])
+        exported.setdefault("filtering_mode", detect_filtering_mode(exported, "waymo"))
+        exported.setdefault("diagnostic_source_note", diagnostic_source_note(exported, "waymo"))
         return exported
     summary = read_json(dataset_dir / "build_summary.json") or read_json(dataset_dir / "neighbor_context_summary.json")
     n = int(summary.get("n_windows_kept", 0) or summary.get("n_windows", 0) or 0)
@@ -154,6 +159,8 @@ def summarize_waymo(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, Any
         "slot_switch_rate_by_slot": summary.get("slot_id_switch_rate_by_slot", {}),
         "source_files": [str(dataset_dir / "build_summary.json"), str(dataset_dir / "neighbor_context_summary.json")],
     }
+    metrics["filtering_mode"] = detect_filtering_mode({**summary, **metrics}, "waymo")
+    metrics["diagnostic_source_note"] = diagnostic_source_note(metrics, "waymo")
     cov_switch = slot_coverage_and_switches(dataset_dir, max_rows=max_rows)
     if cov_switch.get("slot_coverage_by_slot"):
         metrics["slot_coverage_metric_source"] = "array_derived"
@@ -174,6 +181,14 @@ def flatten_rejection_counts(rows: Iterable[Dict[str, Any]]) -> Dict[str, int]:
 
 
 def summarize_nuplan(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, Any]:
+    strict = read_json(dataset_dir / "nuplan_laneaware_strict_filter_summary.json")
+    if strict:
+        strict.setdefault("dataset", "nuplan_stage7_adapter")
+        strict.setdefault("path", str(dataset_dir))
+        strict.setdefault("source_files", [str(dataset_dir / "nuplan_laneaware_strict_filter_summary.json")])
+        strict.setdefault("filtering_mode", "strict_filter_lane_aware_only")
+        strict.setdefault("diagnostic_source_note", diagnostic_source_note(strict, "nuplan"))
+        return strict
     warnings = read_json(dataset_dir / "warnings.json")
     validation = warnings.get("validation", {}) if isinstance(warnings.get("validation"), dict) else {}
     assign_rows = read_json(dataset_dir / "assignment_debug.json")
@@ -195,6 +210,8 @@ def summarize_nuplan(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, An
         "slot_switch_rate_by_slot": validation.get("slot_id_switch_rate_by_slot", {}),
         "source_files": [str(dataset_dir / "warnings.json"), str(dataset_dir / "assignment_debug.json"), str(dataset_dir / "slot_assignment_report.md")],
     }
+    metrics["filtering_mode"] = detect_filtering_mode({**warnings, **metrics}, "nuplan")
+    metrics["diagnostic_source_note"] = diagnostic_source_note(metrics, "nuplan")
     if projection_debug:
         metrics["projection_debug_summary_available"] = True
         metrics["projection_debug_candidate_projection_success_rate"] = as_float(projection_debug.get("candidate_projection_success_rate"), None)
@@ -214,6 +231,37 @@ def summarize_nuplan(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, An
     return metrics
 
 
+def detect_filtering_mode(metrics: Dict[str, Any], dataset: str) -> str:
+    explicit = str(metrics.get("filtering_mode") or metrics.get("laneaware_filtering_mode") or "").strip()
+    if explicit:
+        return explicit
+    assignment_mode = str(metrics.get("assignment_mode") or "").strip()
+    filters = metrics.get("strict_filters") or metrics.get("drop_filters") or {}
+    if assignment_mode == "lane_aware_only" and (
+        metrics.get("strict_filter_diagnostic")
+        or metrics.get("drop_if_no_lane_map")
+        or metrics.get("drop_if_ego_lane_missing")
+        or (isinstance(filters, dict) and any(filters.values()))
+    ):
+        return "strict_filter_lane_aware_only"
+    if dataset == "waymo" and assignment_mode == "lane_aware_only":
+        return "strict_filter_lane_aware_only"
+    if assignment_mode == "lane_aware_with_geometric_fallback":
+        return "fallback_preserving"
+    return "unknown"
+
+
+def diagnostic_source_note(metrics: Dict[str, Any], dataset: str) -> str:
+    mode = str(metrics.get("filtering_mode") or detect_filtering_mode(metrics, dataset))
+    if dataset == "waymo" and mode == "strict_filter_lane_aware_only":
+        return "Waymo diagnostic source is strict-filtered lane_aware_only when Stage5 drop_if_* filters are present/detected."
+    if dataset == "nuplan" and mode == "strict_filter_lane_aware_only":
+        return "nuPlan diagnostic source is the Stage5-style strict-filter diagnostic, not the default official-rollout-preserving output."
+    if dataset == "nuplan" and mode == "fallback_preserving":
+        return "nuPlan source is lane_aware_with_geometric_fallback and preserves official scenario × planner rollout rows."
+    return f"{dataset} filtering mode is {mode}; comparability may be limited."
+
+
 def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_threshold: float) -> Dict[str, Any]:
     wf = as_float(waymo.get("fallback_assignment_used_rate"), None)
     nf = as_float(nuplan.get("fallback_assignment_used_rate"), None)
@@ -226,6 +274,65 @@ def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_thresho
         "fallback_assignment_used_rate": wf is None,
         "candidate_projection_success_rate": wc is None,
     }
+    waymo_mode = str(waymo.get("filtering_mode") or "unknown")
+    nuplan_mode = str(nuplan.get("filtering_mode") or "unknown")
+    filtering_modes_match = waymo_mode == nuplan_mode and waymo_mode != "unknown"
+    filtering_mismatch = waymo_mode != "unknown" and nuplan_mode != "unknown" and waymo_mode != nuplan_mode
+
+    if filtering_mismatch:
+        return {
+            "verdict": "inconclusive_due_to_filtering_mismatch",
+            "reason": "Waymo and nuPlan diagnostics use different filtering philosophies, so fallback=0 on strict-filtered Waymo must not be treated as directly comparable to fallback-preserving nuPlan.",
+            "waymo_fallback_rate": wf,
+            "nuplan_fallback_rate": nf,
+            "waymo_candidate_projection_success_rate": wc,
+            "nuplan_candidate_projection_success_rate": nc,
+            "fallback_rate_comparable": False,
+            "candidate_projection_success_comparable": projection_comparable,
+            "waymo_candidate_projection_success_rate_available": wc is not None,
+            "nuplan_candidate_projection_success_rate_available": nc is not None,
+            "fallback_rates_comparable": False,
+            "projection_success_rates_comparable": projection_comparable,
+            "waymo_slot_coverage_metric_source": waymo.get("slot_coverage_metric_source", "unknown"),
+            "nuplan_slot_coverage_metric_source": nuplan.get("slot_coverage_metric_source", "unknown"),
+            "confidence": "downgraded",
+            "missing_waymo_metrics": missing_waymo_metrics,
+            "waymo_filtering_mode": waymo_mode,
+            "nuplan_filtering_mode": nuplan_mode,
+            "filtering_modes_match": False,
+        }
+
+    if filtering_modes_match and waymo_mode == "strict_filter_lane_aware_only":
+        keep_rate = as_float(nuplan.get("kept_row_rate"), None)
+        verdict = "comparable_strict_filter_pass"
+        reason = "Both sides use strict-filtered lane_aware_only diagnostics; fallback-preserving mismatch is removed."
+        confidence = "medium"
+        if keep_rate is not None and keep_rate < 0.5:
+            verdict = "nuplan_strict_filter_low_keep_rate"
+            reason = "Both sides use strict filtering, but nuPlan keeps too few official rollout rows for strong evidence."
+            confidence = "low"
+        return {
+            "verdict": verdict,
+            "reason": reason,
+            "waymo_fallback_rate": wf,
+            "nuplan_fallback_rate": nf,
+            "waymo_candidate_projection_success_rate": wc,
+            "nuplan_candidate_projection_success_rate": nc,
+            "fallback_rate_comparable": True,
+            "candidate_projection_success_comparable": projection_comparable,
+            "waymo_candidate_projection_success_rate_available": wc is not None,
+            "nuplan_candidate_projection_success_rate_available": nc is not None,
+            "fallback_rates_comparable": True,
+            "projection_success_rates_comparable": projection_comparable,
+            "waymo_slot_coverage_metric_source": waymo.get("slot_coverage_metric_source", "unknown"),
+            "nuplan_slot_coverage_metric_source": nuplan.get("slot_coverage_metric_source", "unknown"),
+            "confidence": confidence,
+            "missing_waymo_metrics": missing_waymo_metrics,
+            "waymo_filtering_mode": waymo_mode,
+            "nuplan_filtering_mode": nuplan_mode,
+            "filtering_modes_match": True,
+            "nuplan_kept_row_rate": keep_rate,
+        }
 
     if not comparable_metrics_available:
         verdict = "inconclusive_missing_comparable_metrics"
@@ -244,7 +351,7 @@ def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_thresho
         reason = "Both datasets show low projection success and elevated fallback, suggesting a shared Stage5D limitation or common data/map issue rather than a nuPlan-only adapter issue."
         confidence = "medium"
     else:
-        verdict = "no_clear_nuplan_adapter_issue" if comparable_metrics_available else "inconclusive_missing_comparable_metrics"
+        verdict = "generic_stage5_lane_aware_limitation_or_inconclusive" if comparable_metrics_available else "inconclusive_missing_comparable_metrics"
         reason = "nuPlan is not clearly worse than Waymo on comparable fallback/projection metrics, or comparable metrics are incomplete."
         confidence = "low" if not (fallback_comparable and projection_comparable) else "medium"
     return {
@@ -264,6 +371,9 @@ def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_thresho
         "nuplan_slot_coverage_metric_source": nuplan.get("slot_coverage_metric_source", "unknown"),
         "confidence": confidence,
         "missing_waymo_metrics": missing_waymo_metrics,
+        "waymo_filtering_mode": waymo_mode,
+        "nuplan_filtering_mode": nuplan_mode,
+        "filtering_modes_match": filtering_modes_match,
     }
 
 
@@ -284,6 +394,9 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         f"- fallback_rate_comparable: `{diagnosis.get('fallback_rate_comparable')}`",
         f"- candidate_projection_success_comparable: `{diagnosis.get('candidate_projection_success_comparable')}`",
         f"- confidence: `{diagnosis.get('confidence')}`",
+        f"- Waymo filtering mode: `{diagnosis.get('waymo_filtering_mode')}`",
+        f"- nuPlan filtering mode: `{diagnosis.get('nuplan_filtering_mode')}`",
+        f"- filtering modes match: `{diagnosis.get('filtering_modes_match')}`",
         f"- Waymo candidate_projection_success_rate available: `{diagnosis.get('waymo_candidate_projection_success_rate_available')}`",
         f"- nuPlan candidate_projection_success_rate available: `{diagnosis.get('nuplan_candidate_projection_success_rate_available')}`",
         f"- fallback rates comparable: `{diagnosis.get('fallback_rates_comparable')}`",
@@ -296,7 +409,7 @@ def render_markdown(payload: Dict[str, Any]) -> str:
     ]
     for name in ("waymo", "nuplan"):
         m = payload[name]
-        lines += ["", f"### {name}", "", f"- path: `{m.get('path')}`", f"- lane_assignment_available: `{m.get('lane_assignment_available')}`", f"- lane_assignment_available_rate: `{m.get('lane_assignment_available_rate')}`", f"- fallback_assignment_used_rate: `{m.get('fallback_assignment_used_rate')}`", f"- candidate_projection_success_rate: `{m.get('candidate_projection_success_rate')}`", f"- adjacency_source_counts: `{m.get('adjacency_source_counts')}`", f"- lane_context_quality counts: `{m.get('lane_context_quality_counts')}`", f"- rejection reason counts: `{m.get('rejection_reason_counts')}`", f"- slot coverage by slot: `{m.get('slot_coverage_by_slot')}`", f"- slot switch rate by slot: `{m.get('slot_switch_rate_by_slot')}`"]
+        lines += ["", f"### {name}", "", f"- path: `{m.get('path')}`", f"- filtering_mode: `{m.get('filtering_mode')}`", f"- diagnostic_source_note: {m.get('diagnostic_source_note')}", f"- lane_assignment_available: `{m.get('lane_assignment_available')}`", f"- lane_assignment_available_rate: `{m.get('lane_assignment_available_rate')}`", f"- fallback_assignment_used_rate: `{m.get('fallback_assignment_used_rate')}`", f"- candidate_projection_success_rate: `{m.get('candidate_projection_success_rate')}`", f"- adjacency_source_counts: `{m.get('adjacency_source_counts')}`", f"- lane_context_quality counts: `{m.get('lane_context_quality_counts')}`", f"- rejection reason counts: `{m.get('rejection_reason_counts')}`", f"- slot coverage by slot: `{m.get('slot_coverage_by_slot')}`", f"- slot switch rate by slot: `{m.get('slot_switch_rate_by_slot')}`"]
     return "\n".join(lines) + "\n"
 
 

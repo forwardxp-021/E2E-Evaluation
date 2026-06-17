@@ -1008,3 +1008,17 @@ Interpretation of comparison verdicts:
 - `generic_stage5_lane_aware_limitation_or_dataset_common_issue`: both datasets show similarly low projection success or high fallback, so the limitation may be in shared Stage5D assumptions or common dataset/map conditions.
 - `inconclusive_missing_comparable_metrics`: Waymo / nuPlan comparable metrics are missing, so the comparison must not claim a nuPlan-specific issue.
 - `no_clear_nuplan_adapter_issue`: metrics are comparable and nuPlan is not clearly worse.
+
+## Stage7E / Stage5 Waymo lane-aware filtering mismatch diagnosis update
+
+Waymo Stage5 clean lane-aware output was built with a strict filtering philosophy: `--assignment_mode lane_aware_only` plus `--drop_if_no_lane_map`, `--drop_if_ego_lane_missing`, `--drop_if_lane_context_bad`, and `--drop_if_lane_context_ambiguous`. Therefore Waymo `fallback=0` means the dataset was filtered to lane-aware-only rows; it is not directly comparable to a nuPlan Stage7E output that preserves all official planner rollout rows and uses `lane_aware_with_geometric_fallback`.
+
+Stage7E nuPlan main output must continue to preserve official row semantics: one row is one `scenario × planner-controlled rollout`. Strict filtering is diagnostic-only unless explicitly written to a named diagnostic output with `--write_strict_filtered_dataset`.
+
+The diagnosis plan is updated as follows:
+
+1. First reproduce the Stage5 filtering philosophy as a nuPlan diagnostic, writing `nuplan_laneaware_strict_filter_summary.json` and `nuplan_laneaware_strict_filter_report.md`.
+2. Compare Waymo strict-filtered Stage5 output against nuPlan fallback-preserving output only with a filtering-mismatch warning and downgraded confidence.
+3. Use fair strict-filter comparison only when the nuPlan strict-filter diagnostic is provided. Verdicts distinguish `comparable_strict_filter_pass`, `nuplan_strict_filter_low_keep_rate`, and `inconclusive_due_to_filtering_mismatch`.
+4. Do not implement Stage7-specific assignment. Stage5D CORE / `tools.lane_aware_assignment.py` remains the only lane-aware assignment implementation.
+5. Threshold sweep is a later second step after reproducing strict Stage5 filtering logic.

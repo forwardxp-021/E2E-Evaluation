@@ -101,3 +101,46 @@ def test_no_stage7_specific_assignment_function_introduced():
         assert "def assign_neighbors_lane_aware" not in text
         assert "def assign_stage7" not in text
     assert Path("tools/lane_aware_assignment.py").read_text(encoding="utf-8").count("def assign_neighbors_lane_aware") == 1
+
+
+def test_filtering_mismatch_downgrades_confidence():
+    out = diagnose(
+        {"filtering_mode": "strict_filter_lane_aware_only", "fallback_assignment_used_rate": 0.0, "candidate_projection_success_rate": 0.9},
+        {"filtering_mode": "fallback_preserving", "fallback_assignment_used_rate": 0.419, "candidate_projection_success_rate": 0.7},
+        0.2,
+    )
+    assert out["verdict"] == "inconclusive_due_to_filtering_mismatch"
+    assert out["confidence"] == "downgraded"
+    assert out["fallback_rate_comparable"] is False
+
+
+def test_strict_filter_diagnostic_is_loaded_for_fair_comparison(tmp_path: Path):
+    waymo = tmp_path / "waymo"; waymo.mkdir()
+    nuplan = tmp_path / "nuplan"; nuplan.mkdir()
+    (waymo / "waymo_lane_aware_diagnostics.json").write_text(json.dumps({
+        "filtering_mode": "strict_filter_lane_aware_only",
+        "fallback_assignment_used_rate": 0.0,
+        "candidate_projection_success_rate": 0.95,
+    }), encoding="utf-8")
+    (nuplan / "nuplan_laneaware_strict_filter_summary.json").write_text(json.dumps({
+        "original_rows": 10,
+        "rows_kept": 8,
+        "rows_dropped": 2,
+        "kept_row_rate": 0.8,
+        "fallback_assignment_used_rate": 0.0,
+        "candidate_projection_success_rate": 0.9,
+    }), encoding="utf-8")
+    w = summarize_waymo(waymo, max_rows=None)
+    n = summarize_nuplan(nuplan, max_rows=None)
+    assert n["rows_kept"] == 8
+    out = diagnose(w, n, 0.2)
+    assert out["verdict"] == "comparable_strict_filter_pass"
+
+
+def test_nuplan_strict_filter_low_keep_rate_verdict():
+    out = diagnose(
+        {"filtering_mode": "strict_filter_lane_aware_only", "fallback_assignment_used_rate": 0.0},
+        {"filtering_mode": "strict_filter_lane_aware_only", "fallback_assignment_used_rate": 0.0, "kept_row_rate": 0.2},
+        0.2,
+    )
+    assert out["verdict"] == "nuplan_strict_filter_low_keep_rate"
