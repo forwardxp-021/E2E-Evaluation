@@ -1011,3 +1011,11 @@ python tools/stage7e_embed_stage6_dataset.py \
 ```
 
 In `--context_dataset_dir` mode, Stage 7E loads `context_traj.npy` directly, checks `checkpoint["context_dim"] == context_traj.shape[-1]`, exports `embedding.npy`, and copies `metadata.csv` plus `planner_policy_indices/*.npy`.  It does not rebuild context from Stage 7D `neighbor_seq`.
+
+## Stage 7E lane-aware Stage 5D context correction
+
+Stage 5 的原始 5-neighbor slot schema 固定为 `front, left_front, left_rear, right_front, right_rear`。早期 nuPlan 说明中出现的 `front, rear, left_front, left_rear, right_front` 是旧 geometric proxy schema，不可作为最终 Stage 5D 输入契约。
+
+Stage 7E nuPlan context builder 现在复用 Stage 5 的 `tools.lane_aware_assignment.assign_neighbors_lane_aware`：nuPlan builder 将 nuPlan lane / lane connector map objects 转换为 `tools.waymo_lane_utils.LaneInfo` 兼容结构，然后调用同一套 Stage 5 lane-aware slot assignment。默认模式是 `lane_aware_with_geometric_fallback`；geometric assignment 仅作为 fallback 或显式 `geometric_only` 调试模式使用，不再作为首选最终语义。
+
+nuPlan 仅改变数据来源和 row 语义，不改变 Stage 5D 输入 contract：输出仍为 `context_traj.npy [N,T,83]`，其中 `83 = ego 8 + 5 slots × 15 channels`。row 语义保持 `scenario × planner × planner-controlled nuPlan ego rollout`，background agents 只进入 context slots，不展开成额外 ego rows。Stage 7E embedding 直接读取该 `context_traj.npy` 并校验 checkpoint `context_dim == 83`，不会从 Stage 7D distance-topK `neighbor_seq` 重建 context。

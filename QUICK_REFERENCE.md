@@ -5280,3 +5280,41 @@ python tools/build_nuplan_5neighbor_context_dataset.py \
 - `warnings.json.validation.slot_id_switch_rate_by_slot` 存在，并且 `slot_assignment_report.md` 包含每个 slot 的 `slot_id_switch_count`、`slot_id_switch_rate`、`mean_continuous_segment_length`。
 - `stage5d_context_schema.json` 对每个通道包含 `source_kind`、`formula`、`matched_waymo_stage5_formula`；`delta_x/delta_y` 为 `derived_same_as_stage5`，不是 proxy。
 - 若 slot switch rate 非零，`accel/yaw_rate` 在 schema 中标记为 `approximated` / `approximated_or_not_stage5_matched`，且报告不声称完全等价。
+
+## Stage 7E nuPlan lane-aware Stage 5D context
+
+### 1. 命令
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c_nuplan_idm_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+```
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs/embeddings \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- Stage 5 原始 5-neighbor slot schema 是 `front, left_front, left_rear, right_front, right_rear`，不是带 `rear` 的旧 nuPlan proxy 顺序。
+- nuPlan Stage 7E context builder 复用 Stage 5 的 `tools.lane_aware_assignment.assign_neighbors_lane_aware`；nuPlan 只改变数据来源和 row 语义，不改变 Stage 5D 输入契约。
+- 输出 `context_traj.npy [N,T,83]`，其中 `83 = ego 8 + 5 semantic neighbor slots × 15 channels`。
+- row 语义保持 `scenario × planner × planner-controlled nuPlan ego rollout`；background agents 只作为 context，不展开成 ego rows。
+- 默认 `--assignment_mode lane_aware_with_geometric_fallback`：优先 lane-aware assignment，地图或投影不可用时才走 Stage 5 geometric fallback。
+- Stage 7E embedding 直接读取 `context_traj.npy`，检查 checkpoint 的 `context_dim == 83`，不会从 Stage 7D distance-topK `neighbor_seq` 重建 context。
+
+### 3. 通过标准
+
+- `stage5d_context_schema.json` 中 `neighbor_slots` 必须精确为 `front, left_front, left_rear, right_front, right_rear`。
+- `warnings.json.validation.stage5d_slot_schema_matched == true` 且 `stage5d_slot_order_matched == true`。
+- `warnings.json.validation.row_semantics_correct == true`、`no_multi_agent_ego_expansion == true`、`background_agents_context_only == true`。
+- `warnings.json.validation.context_traj_no_nonfinite == true`，且 `context_traj.npy` 最后一维为 83。
+- `slot_assignment_report.md` 必须报告 assignment mode、lane-aware success rate、geometric fallback rate、各 slot coverage/empty ratio、lane context quality 和 rejection reason counts。

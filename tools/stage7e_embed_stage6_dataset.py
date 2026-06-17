@@ -61,7 +61,7 @@ def load_context_dataset_paths(context_dataset_dir: Path):
 
 
 STAGE5D_EGO_CHANNELS = ["ego_x", "ego_y", "ego_vx", "ego_vy", "ego_heading", "ego_speed", "ego_accel", "ego_yaw_rate"]
-STAGE5D_NEIGHBOR_SLOT_NAMES = ["front", "rear", "left_front", "left_rear", "right_front"]
+STAGE5D_NEIGHBOR_SLOT_NAMES = ["front", "left_front", "left_rear", "right_front", "right_rear"]
 STAGE5D_NEIGHBOR_CHANNELS = [
     "valid", "rel_x", "rel_y", "rel_vx", "rel_vy", "distance", "delta_x", "delta_y",
     "closing", "ttc", "thw", "speed", "accel", "heading_rel", "yaw_rate",
