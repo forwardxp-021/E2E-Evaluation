@@ -39,7 +39,8 @@ DISCOVERY_MODULES = [
     "nuplan.planning.simulation.runner",
     "nuplan.planning.simulation.simulation",
 ]
-SCENARIO_KEYS = ["db_name", "scene_token", "scenario_id", "sample_id", "start_frame_index", "end_frame_index"]
+SCENARIO_KEYS = ["db_name", "scene_token", "scenario_id", "sample_id", "start_frame_index", "end_frame_index", "map_name", "location", "log_name", "scenario_token", "scenario_type"]
+SCENARIO_INDEX_COLUMNS = ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "log_name", "scene_token", "scenario_id", "scenario_token", "sample_id", "map_name", "location", "scenario_type"]
 ALIGNMENT_FIELDS = [
     "scenario_index", "planner_name", "target_db_name", "target_log_name", "target_scene_token",
     "target_scenario_id", "actual_planner_class", "actual_scenario_type", "actual_log_name",
@@ -268,6 +269,28 @@ def normalize_target_scenario(scenario: Dict[str, Any]) -> Dict[str, str]:
         "scenario_id_db_part": scenario_id_db_part,
         "scenario_id_log_part": _strip_db_suffix(scenario_id_db_part),
         "scenario_id_token_part": scenario_id_token_part,
+    }
+
+
+def scenario_index_row(scenario: Dict[str, Any], prow: Dict[str, Any], status: str, num_timesteps: int, warning_count: int) -> Dict[str, Any]:
+    target = normalize_target_scenario(scenario)
+    scenario_token = scenario.get("scenario_token") or scenario.get("actual_nuplan_scenario_token") or scenario.get("scenario_id", "")
+    return {
+        "scenario_index": scenario.get("scenario_index", ""),
+        "planner_id": prow["planner_id"],
+        "planner_name": prow["planner_name"],
+        "status": status,
+        "num_timesteps": num_timesteps,
+        "warning_count": warning_count,
+        "db_name": scenario.get("db_name", ""),
+        "log_name": scenario.get("log_name") or target["target_log_name"],
+        "scene_token": scenario.get("scene_token", ""),
+        "scenario_id": scenario.get("scenario_id", ""),
+        "scenario_token": scenario_token,
+        "sample_id": scenario.get("sample_id", ""),
+        "map_name": scenario.get("map_name", ""),
+        "location": scenario.get("location", ""),
+        "scenario_type": scenario.get("scenario_type") or scenario.get("actual_scenario_type", ""),
     }
 
 
@@ -1019,7 +1042,7 @@ def fail_outputs(out_dir: Path, args: argparse.Namespace, metadata: List[Dict[st
     write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, PLANNER_METADATA_COLUMNS)
     scenario_index_path = out_dir / "scenario_planner_index.csv"
     if not scenario_index_path.is_file():
-        write_csv(scenario_index_path, [], ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
+        write_csv(scenario_index_path, [], SCENARIO_INDEX_COLUMNS)
     write_csv(out_dir / "simulation_summary.csv", [], ["planner_name", "num_scenarios_attempted", "num_scenarios_succeeded", "success_ratio", "mean_num_timesteps", "mean_final_displacement", "mean_speed", "mean_acceleration", "mean_abs_acceleration"])
     parser_validation = parser_validation or _empty_parser_validation()
     scenario_sampling = scenario_sampling or build_scenario_sampling_summary(metadata, metadata, bool(getattr(args, "sample_distinct_log_names", False)))
@@ -1219,16 +1242,16 @@ def run(args: argparse.Namespace) -> int:
                     status = "parser_failed" if "artifact_parse_error" in new_warning_types else "no_trajectory_found"
                     warnings.append({"type": "no_trajectory_found", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": f"official nuPlan command succeeded but no supported trajectory artifact was parsed under {run_dir}; log: {log_path}"})
             alignment_records.append(build_alignment_record(scenario, str(prow["planner_name"]), run_dir, ok, warnings))
-            index_rows.append({"scenario_index": scenario.get("scenario_index", ""), "planner_id": prow["planner_id"], "planner_name": prow["planner_name"], "status": status, "num_timesteps": len(parsed), "warning_count": len(warnings) - before_warning_count, "db_name": scenario.get("db_name", ""), "scene_token": scenario.get("scene_token", ""), "scenario_id": scenario.get("scenario_id", ""), "sample_id": scenario.get("sample_id", "")})
+            index_rows.append(scenario_index_row(scenario, prow, status, len(parsed), len(warnings) - before_warning_count))
 
     if not trajectory_rows:
-        write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
+        write_csv(out_dir / "scenario_planner_index.csv", index_rows, SCENARIO_INDEX_COLUMNS)
         trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
         return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count, alignment_records, scenario_sampling)
 
     if importlib.util.find_spec("numpy") is None:
         warnings.append({"type": "missing_numpy", "scenario_id": "", "planner_name": "", "message": "Parsed official trajectories, but NumPy is required to write non-empty simulated_ego_seq.npy."})
-        write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
+        write_csv(out_dir / "scenario_planner_index.csv", index_rows, SCENARIO_INDEX_COLUMNS)
         trajectory_parser_validation = finalize_parser_validation(parser_validation_total, trajectory_rows, args.min_timesteps)
         return fail_outputs(out_dir, args, metadata, planners, discovery, warnings, planner_rows, trajectory_parser_validation, official_success_count, alignment_records, scenario_sampling)
 
@@ -1238,7 +1261,7 @@ def run(args: argparse.Namespace) -> int:
     shape = tensor_info["shape"]
     mask_shape = tensor_info["mask_shape"]
     write_csv(out_dir / "simulated_planner_metadata.csv", planner_rows, PLANNER_METADATA_COLUMNS)
-    write_csv(out_dir / "scenario_planner_index.csv", index_rows, ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "scene_token", "scenario_id", "sample_id"])
+    write_csv(out_dir / "scenario_planner_index.csv", index_rows, SCENARIO_INDEX_COLUMNS)
 
     summary_rows: List[Dict[str, Any]] = []
     for prow in planner_rows:

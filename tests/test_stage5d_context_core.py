@@ -208,3 +208,52 @@ def test_nuplan_warnings_validation_does_not_let_core_override_conservative_pari
     source = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
     assert '"validation": {**core_validation, **validation}' in source
     assert '"stage5d_derived_formula_matched": True, "stage5d_closing_formula_matched"' not in source
+
+def test_stage7e_context_builder_fails_lane_aware_only_without_map_name():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+    map_name, source = builder.resolve_map_name({}, explicit_map_name="", scenario_map_metadata={})
+    assert map_name == ""
+    assert source == "unresolved"
+    source_text = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
+    assert 'args.assignment_mode == "lane_aware_only" and (map_name_resolved_rate < 1.0' in source_text
+    assert '"severity": "error" if args.assignment_mode == "lane_aware_only" else "warning"' in source_text
+
+
+def test_stage7e_context_builder_warns_fallback_without_map_name():
+    source_text = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
+    assert "lane_aware_with_geometric_fallback" in source_text
+    assert "No map_name could be resolved" in source_text
+    assert '"lane_assignment_available": lane_assignment_available' in source_text
+    assert '"map_query_success": map_query_success' in source_text
+
+
+def test_stage7e_context_builder_accepts_explicit_map_name():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+    map_name, source = builder.resolve_map_name({}, explicit_map_name="us-nv-las-vegas-strip", scenario_map_metadata={})
+    assert map_name == "us-nv-las-vegas-strip"
+    assert source == "cli.--map_name"
+
+
+def test_stage7c_metadata_contains_map_name_when_scenario_metadata_is_available():
+    import tools.stage7c1_run_nuplan_simulation as stage7c
+    row = stage7c.scenario_index_row(
+        {
+            "scenario_index": "0",
+            "db_name": "log.db",
+            "scene_token": "scene",
+            "scenario_id": "scenario",
+            "sample_id": "sample",
+            "map_name": "us-nv-las-vegas-strip",
+            "location": "las_vegas",
+            "scenario_type": "following",
+        },
+        {"planner_id": 2, "planner_name": "idm"},
+        "succeeded",
+        80,
+        0,
+    )
+    assert row["map_name"] == "us-nv-las-vegas-strip"
+    assert row["location"] == "las_vegas"
+    assert row["log_name"] == "log"
+    assert row["scenario_type"] == "following"
+    assert "map_name" in stage7c.SCENARIO_INDEX_COLUMNS

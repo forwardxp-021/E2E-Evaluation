@@ -255,6 +255,8 @@ def metadata_rows(index_rows: List[Dict[str, str]], planner_meta_rows: List[Dict
             rows.append({
                 "global_row": g, "scenario_index": i, "planner_id": pid, "planner_name": planner,
                 "log_name": (src.get("log_name") or src.get("db_name", "")).removesuffix(".db"),
+                "map_name": src.get("map_name", ""),
+                "location": src.get("location", ""),
                 "scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
                 "actual_nuplan_scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
                 "stage7b_scene_token": src.get("stage7b_scene_token") or src.get("scene_token", ""),
