@@ -2,6 +2,8 @@ import csv
 import json
 from pathlib import Path
 
+import pytest
+
 from tools.compare_lane_aware_diagnostics import diagnose, summarize_nuplan, summarize_waymo
 from tools.nuplan_projection_debug import write_projection_debug_artifacts
 
@@ -52,3 +54,50 @@ def test_stage5d_assignment_only_implementation_unchanged():
     text = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
     assert "assign_stage5d_slots(" in text
     assert "def assign_neighbors_lane_aware" not in text
+
+
+
+def test_nuplan_lane_info_topology_and_geometric_enrichment():
+    pytest.importorskip("numpy")
+    from tools.nuplan_lane_utils import lane_info_from_nuplan_object, enrich_geometric_adjacency, build_lane_topology_debug_summary
+
+    class PathObj:
+        def __init__(self, pts):
+            self.discrete_path = [type("P", (), {"x": float(x), "y": float(y)})() for x, y in pts]
+
+    class Obj:
+        def __init__(self, oid, y, left=None, right=None, incoming=None, outgoing=None):
+            self.id = oid
+            self.baseline_path = PathObj([(0, y), (10, y)])
+            self.left_neighbors = left or []
+            self.right_neighbors = right or []
+            self.incoming_edges = incoming or []
+            self.outgoing_edges = outgoing or []
+
+    lane0 = Obj("lane0", 0.0, incoming=[Obj("in0", -1.0)], outgoing=[Obj("out0", 1.0)])
+    lane1 = Obj("lane1", 3.5)
+    lanes = {"lane0": lane_info_from_nuplan_object(lane0, "lane"), "lane1": lane_info_from_nuplan_object(lane1, "lane")}
+    assert lanes["lane0"].entry_lane_ids == ["in0"]
+    assert lanes["lane0"].exit_lane_ids == ["out0"]
+    counts = enrich_geometric_adjacency(lanes)
+    summary = build_lane_topology_debug_summary(lanes, counts)
+    assert summary["lane_info_count"] == 2
+    assert summary["left_adjacency_non_empty_count"] >= 1
+    assert counts["geometric_left_added"] >= 1
+
+
+def test_projection_debug_reports_relation_unknown_breakdown(tmp_path: Path):
+    rows = [{"lane_relation_used_by_assignment": "unknown", "relation_failure_category": "missing_adjacency", "candidate_projection_success": True, "ego_lane_projection_success": True, "candidate_distance_to_ego": 5.0, "accepted_by_lane_aware": False, "rejection_reason": "wrong_lane"}]
+    from tools.nuplan_projection_debug import summarize_projection_debug, write_projection_debug_artifacts
+    summary = summarize_projection_debug(rows, [])
+    assert summary["lane_relation_unknown_breakdown"]["missing_adjacency"] == 1
+    artifacts = write_projection_debug_artifacts(tmp_path, rows, summary, False)
+    assert "relation_unknown_csv" in artifacts
+
+
+def test_no_stage7_specific_assignment_function_introduced():
+    for path in Path("tools").glob("stage7*.py"):
+        text = path.read_text(encoding="utf-8")
+        assert "def assign_neighbors_lane_aware" not in text
+        assert "def assign_stage7" not in text
+    assert Path("tools/lane_aware_assignment.py").read_text(encoding="utf-8").count("def assign_neighbors_lane_aware") == 1

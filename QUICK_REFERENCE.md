@@ -5547,3 +5547,42 @@ python tools/compare_lane_aware_diagnostics.py \
 - 如果 Waymo 指标存在且 nuPlan projection success 明显更低或 fallback 明显更高，verdict 可为 `nuplan_adapter_or_map_projection_issue`。
 - 如果两侧都低 projection / 高 fallback，verdict 可为 `generic_stage5_lane_aware_limitation_or_dataset_common_issue`。
 - 如果 nuPlan 不明显更差且指标可比，verdict 可为 `no_clear_nuplan_adapter_issue`。
+
+## Stage7E nuPlan LaneInfo topology 调试
+
+## 1. 命令
+
+在构建 nuPlan 5-neighbor Stage5D context 时开启投影调试：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_topology_debug \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --debug_projection_sample_rows 20 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 脚本仍然复用 Stage5D 的 `tools.lane_aware_assignment.assign_neighbors_lane_aware`，不会新增 Stage7 专用 assignment 算法。
+- `tools/nuplan_lane_utils.py` 会把 nuPlan lane / lane_connector map object 转换为 Stage5D `LaneInfo`，优先读取 nuPlan map object 直接提供的 left/right adjacency 与 incoming/outgoing topology。
+- 如果 map object 没有直接提供 left/right adjacency，adapter 只在 `LaneInfo` 层做几何邻接补全，使补全结果继续进入既有 Stage5D assignment；这不是新的 slot assignment 逻辑。
+- lane_connector 不会被强行补全左右邻接；如果可用，只记录 predecessor/successor 到 `entry_lane_ids` / `exit_lane_ids`，并在 topology 报告中说明 Stage5D 当前只把这些字段用于诊断。
+- 输出目录会生成：
+  - `nuplan_lane_topology_debug_summary.json`
+  - `nuplan_lane_topology_debug_report.md`
+  - `nuplan_lane_projection_debug_summary.json`
+  - `nuplan_lane_projection_debug_report.md`
+  - 有 unknown/wrong_lane 样本时生成 `nuplan_lane_relation_unknown_debug.csv`
+  - 加 `--write_projection_debug` 时生成 `nuplan_lane_projection_debug.csv`
+
+## 3. 通过标准
+
+- topology summary 中 `lane_info_count` 大于 0，且分别报告 `lane_count`、`lane_connector_count`、左右邻接非空比例、predecessor/successor 非空比例、centerline 点数分布、lane length 分布。
+- `lane_relation_unknown_breakdown` 至少按 `missing_adjacency`、`topology_disconnected`、`direction_mismatch`、`candidate_projection_failed`、`ego_projection_failed`、`lane_connector_unhandled`、`other` 这些类别解释 unknown relation。
+- `nuplan_lane_relation_unknown_debug.csv` 中包含 ego lane / candidate lane 类型、是否在左右邻接、是否共享 predecessor/successor、lateral offset、heading diff、s difference 等字段，便于定位是 topology 缺失还是方向/连接关系问题。
+- `tools/lane_aware_assignment.py` 不应出现本次改动；Stage5D core formulas、Stage7E embedding、Stage6 不应被修改。
