@@ -244,8 +244,8 @@ def detect_filtering_mode(metrics: Dict[str, Any], dataset: str) -> str:
         or (isinstance(filters, dict) and any(filters.values()))
     ):
         return "strict_filter_lane_aware_only"
-    if dataset == "waymo" and assignment_mode == "lane_aware_only":
-        return "strict_filter_lane_aware_only"
+    # Do not infer Waymo strict filtering from assignment_mode alone; historical exports
+    # need explicit metadata or concrete drop-filter fields for fair comparability.
     if assignment_mode == "lane_aware_with_geometric_fallback":
         return "fallback_preserving"
     return "unknown"
@@ -338,6 +338,10 @@ def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_thresho
         verdict = "inconclusive_missing_comparable_metrics"
         reason = "Waymo fallback/projection metrics are unavailable, so nuPlan cannot be compared conservatively under the shared Stage5D assignment interface."
         confidence = "inconclusive"
+    elif waymo_mode == "unknown":
+        verdict = "inconclusive_unknown_waymo_filtering_mode"
+        reason = "Waymo filtering_mode is unknown, so fallback/projection metrics have limited comparability with nuPlan diagnostics."
+        confidence = "low"
     elif projection_comparable and nc + 0.20 < wc:
         verdict = "nuplan_adapter_or_map_projection_issue"
         reason = "nuPlan candidate projection success is substantially lower than Waymo under the shared Stage5D assignment interface."

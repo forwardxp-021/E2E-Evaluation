@@ -5456,8 +5456,16 @@ Stage 7C 从 `merged_metadata.csv` 读取场景行时，会把可用的 `map_nam
 ## 1. 命令
 
 ```bash
-python tools/compare_lane_aware_diagnostics.py \
+python tools/export_waymo_lane_aware_diagnostics.py \
   --waymo_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --output_dir outputs/waymo_laneaware_diagnostics_strict_v1 \
+  --max_rows 5000 \
+  --filtering_mode strict_filter_lane_aware_only \
+  --diagnostic_source_note user_confirmed_stage5_command_used_lane_aware_only_plus_drop_if_filters \
+  --overwrite
+
+python tools/compare_lane_aware_diagnostics.py \
+  --waymo_dir outputs/waymo_laneaware_diagnostics_strict_v1 \
   --nuplan_dir outputs/<stage7e_nuplan_context_output> \
   --out_dir outputs/lane_aware_diagnostic_comparison \
   --max_rows 2000
@@ -5600,6 +5608,8 @@ python tools/build_nuplan_5neighbor_context_dataset.py \
   --assignment_mode lane_aware_with_geometric_fallback \
   --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
   --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
   --overwrite
 ```
 
@@ -5630,15 +5640,16 @@ python tools/compare_lane_aware_diagnostics.py \
 
 - Waymo Stage5 clean lane-aware 数据集历史上使用 `--assignment_mode lane_aware_only`，并配合 `--drop_if_no_lane_map`、`--drop_if_ego_lane_missing`、`--drop_if_lane_context_bad`、`--drop_if_lane_context_ambiguous` 过滤。
 - Stage7 nuPlan 主数据集必须保留官方 `scenario × planner rollout` 行语义，因此默认使用 `lane_aware_with_geometric_fallback`，不会静默删除 planner rollout 行。
-- `--write_strict_filter_diagnostic` 只写诊断文件：
+- `--write_strict_filter_diagnostic` 只写诊断文件；`--strict_filter_min_laneaware_ratio 1.0` 保持旧行为，`0.8` 用于模拟 Waymo `--min_valid_ratio 0.8` 的严格过滤思想：
   - `nuplan_laneaware_strict_filter_summary.json`
   - `nuplan_laneaware_strict_filter_report.md`
 - 只有显式传入 `--write_strict_filtered_dataset` 时，才会额外写 `strict_filtered_dataset/` 下的过滤后数组和 metadata。
+- Waymo 诊断导出会把显式传入的 `filtering_mode` 和 `diagnostic_source_note` 写入 json/md；不要在未确认过滤来源时把 Waymo fallback=0 当成 strict-filter 高置信证据。
 - 对比脚本会识别 Waymo strict-filtered 与 nuPlan fallback-preserving 的过滤口径不一致，并把 verdict 降级为 `inconclusive_due_to_filtering_mismatch`；只有 Waymo strict-filtered 与 nuPlan strict-filter diagnostic 对比时，才使用公平严格过滤 verdict。
 
 ## 3. 通过标准
 
 - 默认 Stage7E 输出仍满足一行等于一个 `scenario × planner-controlled rollout`。
-- 严格过滤诊断报告包含 original rows、rows kept、rows dropped、kept_row_rate、dropped_by_reason、kept rows per planner、scenario-planner alignment、每个 scenario 是否仍保留所有 planners、frame/row lane-aware availability、kept rows slot sanity 与 slot coverage。
+- 严格过滤诊断报告包含 strict_filter_min_laneaware_ratio、original rows、rows kept、rows dropped、kept_row_rate、dropped_by_reason、kept rows per planner、scenario-planner alignment、每个 scenario 是否仍保留所有 planners、frame/row lane-aware availability、availability quantiles、kept rows slot sanity 与 slot coverage；如传入 ratio sweep，还会输出多阈值表。
 - Waymo `fallback=0` 与 nuPlan `fallback=41.9%` 不再被直接解释为高置信 nuPlan adapter 问题，除非两侧过滤口径一致。
 - Stage5D CORE / `tools.lane_aware_assignment.py` 仍是唯一 lane-aware assignment 实现；Stage7 不新增专用 assignment 算法。
