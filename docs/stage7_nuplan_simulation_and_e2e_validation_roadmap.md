@@ -1021,4 +1021,6 @@ The diagnosis plan is updated as follows:
 2. Compare Waymo strict-filtered Stage5 output against nuPlan fallback-preserving output only with a filtering-mismatch warning and downgraded confidence.
 3. Use fair strict-filter comparison only when the nuPlan strict-filter diagnostic is provided. Verdicts distinguish `comparable_strict_filter_pass`, `nuplan_strict_filter_low_keep_rate`, and `inconclusive_due_to_filtering_mismatch`.
 4. Do not implement Stage7-specific assignment. Stage5D CORE / `tools.lane_aware_assignment.py` remains the only lane-aware assignment implementation.
-5. Threshold sweep is a later second step after reproducing strict Stage5 filtering logic.
+5. Waymo diagnostic exports must record `filtering_mode`; use `strict_filter_lane_aware_only` only when confirmed by the Stage5 command or a reliable source file. Unknown Waymo filtering mode remains low-confidence / limited-comparability evidence.
+6. nuPlan strict-filter diagnostics support `--strict_filter_min_laneaware_ratio`; `1.0` preserves the all-valid-frames behavior, while `0.8` emulates the Stage5 Waymo `--min_valid_ratio 0.8` filtering philosophy for diagnostic comparison.
+7. Optional `--strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6` reports threshold sensitivity without creating multiple datasets.

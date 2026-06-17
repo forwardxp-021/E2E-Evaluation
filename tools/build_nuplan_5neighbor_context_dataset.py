@@ -315,6 +315,8 @@ def write_strict_filter_diagnostic(
     nbr_arr: np.ndarray,
     slot_stats: Dict[str, Dict[str, Any]],
     sanity: Dict[str, bool],
+    strict_filter_min_laneaware_ratio: float = 1.0,
+    strict_filter_ratio_sweep: Sequence[float] | None = None,
 ) -> Dict[str, Any]:
     """Report the Stage5 Waymo-style strict lane-aware filtering outcome for nuPlan.
 
@@ -322,12 +324,13 @@ def write_strict_filter_diagnostic(
     kept only if all valid frames have lane-aware context available, no geometric fallback was
     used, and no bad/ambiguous lane context quality is reported.
     """
-    dropped_by_reason: Dict[str, int] = {}
-    kept_indices: List[int] = []
+    if not (0.0 <= strict_filter_min_laneaware_ratio <= 1.0):
+        raise ValueError(f"--strict_filter_min_laneaware_ratio must be in [0, 1], got {strict_filter_min_laneaware_ratio}")
     row_availability: List[float] = []
+    base_reasons_by_row: List[List[str]] = []
     laneaware_frames = 0
     valid_frames = 0
-    for idx, debug in enumerate(row_debug_rows):
+    for debug in row_debug_rows:
         reasons: List[str] = []
         if not debug:
             reasons.append("drop_if_no_lane_map")
@@ -348,14 +351,24 @@ def write_strict_filter_diagnostic(
                 reasons.append("drop_if_lane_context_bad")
             if any(str(d.get("lane_context_quality", "")).lower() == "ambiguous" for d in debug):
                 reasons.append("drop_if_lane_context_ambiguous")
-            if not all(frame_ok):
-                reasons.append("lane_aware_only")
         row_availability.append(availability)
-        if reasons:
-            for reason in sorted(set(reasons)):
-                dropped_by_reason[reason] = int(dropped_by_reason.get(reason, 0) + 1)
-        else:
-            kept_indices.append(idx)
+        base_reasons_by_row.append(reasons)
+
+    def indices_and_reasons_for_ratio(ratio: float) -> Tuple[List[int], Dict[str, int]]:
+        dropped: Dict[str, int] = {}
+        kept: List[int] = []
+        for idx, base_reasons in enumerate(base_reasons_by_row):
+            reasons = list(base_reasons)
+            if row_availability[idx] < ratio:
+                reasons.append("lane_aware_only")
+            if reasons:
+                for reason in sorted(set(reasons)):
+                    dropped[reason] = int(dropped.get(reason, 0) + 1)
+            else:
+                kept.append(idx)
+        return kept, dropped
+
+    kept_indices, dropped_by_reason = indices_and_reasons_for_ratio(strict_filter_min_laneaware_ratio)
     kept_rows = [rows[i] for i in kept_indices]
     kept_per_planner = {p: 0 for p in planners}
     scenario_planners: Dict[int, List[str]] = {i: [] for i in range(n_scenarios)}
@@ -374,6 +387,7 @@ def write_strict_filter_diagnostic(
         "strict_filter_diagnostic": True,
         "filtering_mode": "strict_filter_lane_aware_only",
         "assignment_mode": "lane_aware_only",
+        "strict_filter_min_laneaware_ratio": float(strict_filter_min_laneaware_ratio),
         "strict_filters": {
             "drop_if_no_lane_map": True,
             "drop_if_ego_lane_missing": True,
@@ -394,9 +408,10 @@ def write_strict_filter_diagnostic(
         "laneaware_available_frames": int(laneaware_frames),
         "valid_frames": int(valid_frames),
         "frame_level_laneaware_availability_rate": float(laneaware_frames / max(1, valid_frames)),
-        "row_level_all_frames_laneaware_availability_rate": float(len(kept_indices) / max(1, len(rows))),
+        "row_level_all_frames_laneaware_availability_rate": float(sum(1 for v in row_availability if v >= 1.0) / max(1, len(rows))),
         "row_level_min_laneaware_availability": float(min(row_availability) if row_availability else 0.0),
         "row_level_mean_laneaware_availability": float(np.mean(row_availability) if row_availability else 0.0),
+        "row_level_laneaware_availability_quantiles": {str(q): float(np.quantile(row_availability, q)) if row_availability else 0.0 for q in [0.0, 0.25, 0.5, 0.75, 1.0]},
         "slot_sanity_on_kept_rows": sanity,
         "slot_coverage_on_kept_rows": kept_slot_coverage,
         "fallback_assignment_used_rate": 0.0,
@@ -405,12 +420,41 @@ def write_strict_filter_diagnostic(
         "candidate_projection_success_rate": float(laneaware_frames / max(1, valid_frames)),
         "kept_row_indices": kept_indices,
     }
+
+    sweep_rows = []
+    for ratio in (strict_filter_ratio_sweep or []):
+        ratio = float(ratio)
+        sweep_keep, _ = indices_and_reasons_for_ratio(ratio)
+        sweep_kept_rows = [rows[i] for i in sweep_keep]
+        sweep_scenario_planners: Dict[int, List[str]] = {i: [] for i in range(n_scenarios)}
+        for r in sweep_kept_rows:
+            sweep_scenario_planners[int(r.get("scenario_index", -1))].append(str(r.get("planner_name", "")))
+        sweep_with_all = [si for si, ps in sweep_scenario_planners.items() if sorted(ps) == sorted(planners)]
+        sweep_nbr = nbr_arr[sweep_keep] if sweep_keep else nbr_arr[:0]
+        sweep_cov = {}
+        for slot_i, slot_name in enumerate(SLOT_NAMES):
+            valid = sweep_nbr[:, slot_i, :, 0] > 0.5 if sweep_nbr.size else np.zeros((0,), dtype=bool)
+            sweep_cov[slot_name] = float(np.mean(valid)) if valid.size else 0.0
+        sweep_rows.append({
+            "strict_filter_min_laneaware_ratio": ratio,
+            "rows_kept": int(len(sweep_keep)),
+            "kept_row_rate": float(len(sweep_keep) / max(1, len(rows))),
+            "scenarios_with_all_planners": int(len(sweep_with_all)),
+            "scenarios_missing_any_planner": int(n_scenarios - len(sweep_with_all)),
+            "each_scenario_still_has_all_planners": bool(len(sweep_with_all) == n_scenarios),
+            "slot_sanity_on_kept_rows": sanity,
+            "slot_coverage_on_kept_rows": sweep_cov,
+        })
+    if sweep_rows:
+        summary["strict_filter_ratio_sweep"] = sweep_rows
     write_json(output_dir / "nuplan_laneaware_strict_filter_summary.json", summary)
     report = [
         "# nuPlan Stage5-style Strict Lane-Aware Filter Diagnostic",
         "",
-        "- This is diagnostic only; the default Stage7E dataset still preserves one row per scenario × planner rollout.",
+        "- This is diagnostic only; the default Stage7E official rollout output does not drop rows and still preserves one row per scenario × planner rollout.",
         "- Strict filters mirror Waymo Stage5 `lane_aware_only` plus `drop_if_*` philosophy.",
+        "- Relaxed strict-filter ratios are only for comparing with Stage5 Waymo min_valid_ratio-style filtering philosophy.",
+        f"- strict_filter_min_laneaware_ratio: `{summary['strict_filter_min_laneaware_ratio']}`",
         f"- original_rows: `{summary['original_rows']}`",
         f"- rows_kept: `{summary['rows_kept']}`",
         f"- rows_dropped: `{summary['rows_dropped']}`",
@@ -423,7 +467,9 @@ def write_strict_filter_diagnostic(
         f"- row_level_min_laneaware_availability: `{summary['row_level_min_laneaware_availability']}`",
         f"- row_level_mean_laneaware_availability: `{summary['row_level_mean_laneaware_availability']}`",
         f"- slot_sanity_on_kept_rows: `{sanity}`",
+        f"- row_level_laneaware_availability_quantiles: `{summary['row_level_laneaware_availability_quantiles']}`",
         f"- slot_coverage_on_kept_rows: `{kept_slot_coverage}`",
+        f"- strict_filter_ratio_sweep: `{summary.get('strict_filter_ratio_sweep', [])}`",
     ]
     (output_dir / "nuplan_laneaware_strict_filter_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     return summary
@@ -461,6 +507,8 @@ def main() -> None:
     ap.add_argument("--debug_projection_max_candidates_per_frame", type=int, default=32, help="Maximum tracked-object candidates recorded per sampled frame.")
     ap.add_argument("--debug_projection_max_frames_per_row", type=int, default=149, help="Maximum valid timesteps recorded per sampled context row.")
     ap.add_argument("--write_strict_filter_diagnostic", action="store_true", help="Write nuPlan Stage5-style strict lane-aware filtering summary/report without changing the main output rows.")
+    ap.add_argument("--strict_filter_min_laneaware_ratio", type=float, default=1.0, help="Diagnostic row keep threshold: lane-aware available valid frames / valid frames must be at least this value. 1.0 preserves current all-frames behavior; 0.8 approximates Waymo min_valid_ratio philosophy.")
+    ap.add_argument("--strict_filter_ratio_sweep", type=float, nargs="*", default=[], help="Optional diagnostic-only thresholds to summarize without writing multiple datasets, e.g. 1.0 0.9 0.8 0.7 0.6.")
     ap.add_argument("--write_strict_filtered_dataset", action="store_true", help="Also write optional filtered metadata/context arrays under strict_filtered_dataset/ for diagnostics.")
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args()
@@ -561,7 +609,7 @@ def main() -> None:
     slot_pass=all(sanity.values())
     strict_filter_summary = None
     if args.write_strict_filter_diagnostic or args.write_strict_filtered_dataset:
-        strict_filter_summary = write_strict_filter_diagnostic(args.output_dir, metadata_rows(index_rows, read_csv_rows(args.sim_dir / "simulated_planner_metadata.csv"), planners, n_scenarios), planners, n_scenarios, row_debug_rows, nbr_arr, slot_stats, sanity)
+        strict_filter_summary = write_strict_filter_diagnostic(args.output_dir, metadata_rows(index_rows, read_csv_rows(args.sim_dir / "simulated_planner_metadata.csv"), planners, n_scenarios), planners, n_scenarios, row_debug_rows, nbr_arr, slot_stats, sanity, args.strict_filter_min_laneaware_ratio, args.strict_filter_ratio_sweep)
         if args.write_strict_filtered_dataset:
             strict_dir = args.output_dir / "strict_filtered_dataset"
             strict_dir.mkdir(exist_ok=True)

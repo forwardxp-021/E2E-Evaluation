@@ -144,3 +144,78 @@ def test_nuplan_strict_filter_low_keep_rate_verdict():
         0.2,
     )
     assert out["verdict"] == "nuplan_strict_filter_low_keep_rate"
+
+
+def test_export_waymo_records_explicit_filtering_mode(tmp_path: Path):
+    from tools.export_waymo_lane_aware_diagnostics import main
+    src = tmp_path / "src"; out = tmp_path / "out"
+    src.mkdir()
+    (src / "waymo_lane_aware_diagnostics.json").write_text(json.dumps({"fallback_assignment_used_rate": 0.0}), encoding="utf-8")
+    import sys
+    old = sys.argv
+    try:
+        sys.argv = [
+            "export", "--waymo_dir", str(src), "--output_dir", str(out),
+            "--filtering_mode", "strict_filter_lane_aware_only",
+            "--diagnostic_source_note", "user_confirmed_stage5_command_used_lane_aware_only_plus_drop_if_filters",
+        ]
+        main()
+    finally:
+        sys.argv = old
+    payload = json.loads((out / "waymo_lane_aware_diagnostics.json").read_text(encoding="utf-8"))
+    assert payload["filtering_mode"] == "strict_filter_lane_aware_only"
+    assert payload["diagnostic_source_note"] == "user_confirmed_stage5_command_used_lane_aware_only_plus_drop_if_filters"
+    assert "strict_filter_lane_aware_only" in (out / "waymo_lane_aware_diagnostics.md").read_text(encoding="utf-8")
+
+
+def test_compare_marks_strict_filter_modes_match():
+    out = diagnose(
+        {"filtering_mode": "strict_filter_lane_aware_only", "fallback_assignment_used_rate": 0.0, "candidate_projection_success_rate": 0.9},
+        {"filtering_mode": "strict_filter_lane_aware_only", "fallback_assignment_used_rate": 0.0, "candidate_projection_success_rate": 0.8, "kept_row_rate": 0.8},
+        0.2,
+    )
+    assert out["filtering_modes_match"] is True
+    assert out["confidence"] != "downgraded"
+
+
+def test_compare_unknown_waymo_filtering_keeps_low_confidence():
+    out = diagnose(
+        {"filtering_mode": "unknown", "fallback_assignment_used_rate": 0.0, "candidate_projection_success_rate": 0.9},
+        {"filtering_mode": "strict_filter_lane_aware_only", "fallback_assignment_used_rate": 0.0, "candidate_projection_success_rate": 0.8},
+        0.2,
+    )
+    assert out["verdict"] == "inconclusive_unknown_waymo_filtering_mode"
+    assert out["confidence"] == "low"
+    assert out["filtering_modes_match"] is False
+
+
+def test_nuplan_strict_filter_ratio_thresholds_and_main_rows(tmp_path: Path):
+    pytest.importorskip("numpy")
+    import numpy as np
+    from tools.build_nuplan_5neighbor_context_dataset import write_strict_filter_diagnostic
+
+    rows = [{"scenario_index": 0, "planner_name": "p0"}, {"scenario_index": 0, "planner_name": "p1"}]
+    planners = ["p0", "p1"]
+    good = {"lane_assignment_available": True, "fallback_assignment_used": False, "lane_context_quality": "good", "current_lane_id": "lane"}
+    bad = {"lane_assignment_available": False, "fallback_assignment_used": True, "lane_context_quality": "good", "current_lane_id": "lane"}
+    row_debug = [[good] * 10, [good] * 8 + [bad] * 2]
+    nbr = np.ones((2, 5, 10, 15), dtype=np.float32)
+    sanity = {"front_median_rel_x_gt_0": True}
+
+    strict = write_strict_filter_diagnostic(tmp_path / "strict", rows, planners, 1, row_debug, nbr, {}, sanity, 1.0)
+    relaxed = write_strict_filter_diagnostic(tmp_path / "relaxed", rows, planners, 1, row_debug, nbr, {}, sanity, 0.8)
+    assert strict["kept_row_indices"] == [0]
+    assert relaxed["kept_row_indices"] == [0, 1]
+    assert strict["original_rows"] == relaxed["original_rows"] == len(rows)
+    assert strict["row_level_all_frames_laneaware_availability_rate"] == 0.5
+    assert relaxed["strict_filter_min_laneaware_ratio"] == 0.8
+
+
+def test_tools_lane_aware_assignment_remains_only_assignment_implementation():
+    offenders = []
+    for path in Path("tools").glob("*.py"):
+        text = path.read_text(encoding="utf-8")
+        if path.name != "lane_aware_assignment.py" and "def assign_neighbors_lane_aware" in text:
+            offenders.append(str(path))
+    assert offenders == []
+    assert Path("tools/lane_aware_assignment.py").read_text(encoding="utf-8").count("def assign_neighbors_lane_aware") == 1

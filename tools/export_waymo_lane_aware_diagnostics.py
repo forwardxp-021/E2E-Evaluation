@@ -20,6 +20,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--waymo_dir", type=Path, required=True, help="Existing Waymo Stage5D context output directory.")
     p.add_argument("--output_dir", type=Path, required=True, help="Output directory for waymo_lane_aware_diagnostics.json/.md and optional CSV.")
     p.add_argument("--max_rows", type=int, default=5000, help="Maximum rows to scan from arrays for bounded coverage/switch diagnostics.")
+    p.add_argument("--filtering_mode", default="unknown", help="Explicit filtering mode metadata to record; defaults to unknown and is not inferred by this exporter.")
+    p.add_argument("--diagnostic_source_note", default="", help="Optional note describing how the filtering mode was confirmed.")
     p.add_argument("--overwrite", action="store_true")
     return p.parse_args()
 
@@ -31,6 +33,8 @@ def render_report(metrics: Dict[str, Any]) -> str:
         "Stage5D CORE remains the only lane-aware assignment implementation; this script only exports existing Waymo diagnostics.",
         "",
         f"- source path: `{metrics.get('path')}`",
+        f"- filtering_mode: `{metrics.get('filtering_mode')}`",
+        f"- diagnostic_source_note: `{metrics.get('diagnostic_source_note')}`",
         f"- lane_assignment_available_rate: `{metrics.get('lane_assignment_available_rate')}`",
         f"- fallback_assignment_used_rate: `{metrics.get('fallback_assignment_used_rate')}`",
         f"- candidate_projection_success_rate: `{metrics.get('candidate_projection_success_rate')}`",
@@ -69,6 +73,11 @@ def main() -> None:
     metrics = summarize_waymo(args.waymo_dir, max_rows=args.max_rows)
     metrics["diagnostic_export_source_dir"] = str(args.waymo_dir)
     metrics["max_rows"] = args.max_rows
+    metrics["filtering_mode"] = args.filtering_mode
+    if args.diagnostic_source_note:
+        metrics["diagnostic_source_note"] = args.diagnostic_source_note
+    elif args.filtering_mode == "unknown":
+        metrics["diagnostic_source_note"] = "filtering_mode was not provided; comparability is limited."
     write_json(args.output_dir / "waymo_lane_aware_diagnostics.json", metrics)
     (args.output_dir / "waymo_lane_aware_diagnostics.md").write_text(render_report(metrics), encoding="utf-8")
     write_flat_csv(args.output_dir / "waymo_lane_aware_diagnostics.csv", metrics)
