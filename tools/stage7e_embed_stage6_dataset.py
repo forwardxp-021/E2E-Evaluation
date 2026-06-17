@@ -45,6 +45,21 @@ def load_stage7d_paths(dataset_dir: Path):
     return required
 
 
+def load_context_dataset_paths(context_dataset_dir: Path):
+    required = {
+        "context": context_dataset_dir / "context_traj.npy",
+        "features": context_dataset_dir / "interaction_feat_style.npy",
+        "metadata": context_dataset_dir / "metadata.csv",
+        "feature_schema": context_dataset_dir / "feature_schema.json",
+        "shard_manifest": context_dataset_dir / "shard_manifest.json",
+        "planner_indices": context_dataset_dir / "planner_policy_indices",
+    }
+    missing = [str(p) for p in required.values() if not p.exists()]
+    if missing:
+        raise FileNotFoundError("Stage 7E missing context dataset input(s): " + ", ".join(missing))
+    return required
+
+
 STAGE5D_EGO_CHANNELS = ["ego_x", "ego_y", "ego_vx", "ego_vy", "ego_heading", "ego_speed", "ego_accel", "ego_yaw_rate"]
 STAGE5D_NEIGHBOR_SLOT_NAMES = ["front", "rear", "left_front", "left_rear", "right_front"]
 STAGE5D_NEIGHBOR_CHANNELS = [
@@ -291,32 +306,55 @@ def embed_context(context: np.ndarray, ckpt: dict, batch_size: int, device: str)
 
 
 def run(args) -> None:
-    dataset_dir = Path(args.dataset_dir)
+    dataset_dir = Path(args.dataset_dir) if args.dataset_dir else None
+    context_dataset_dir = Path(args.context_dataset_dir) if args.context_dataset_dir else None
     output_dir = Path(args.output_dir)
     reset_dir(output_dir, args.overwrite)
-    paths = load_stage7d_paths(dataset_dir)
-
-    ego = np.load(paths["ego"], mmap_mode="r")
-    neighbor = np.load(paths["neighbor"], mmap_mode="r")
-    features = np.load(paths["features"], mmap_mode="r")
-    metadata = pd.read_csv(paths["metadata"])
     checkpoint_path = Path(args.checkpoint or args.model_path)
     ckpt = load_checkpoint(checkpoint_path)
     if "context_dim" not in ckpt:
         raise ValueError("Existing Stage 5/6 encoder checkpoint must contain checkpoint['context_dim'].")
-    context, context_meta = build_checkpoint_compatible_context(
-        ego,
-        neighbor,
-        args.max_neighbors,
-        int(ckpt["context_dim"]),
-        args.context_layout,
-    )
-    embedding, emb_meta = embed_context(context, ckpt, args.batch_size, args.device)
 
-    if not (embedding.shape[0] == features.shape[0] == len(metadata) == ego.shape[0]):
-        raise ValueError(f"Row count mismatch: embedding={embedding.shape[0]} features={features.shape[0]} metadata={len(metadata)} ego={ego.shape[0]}")
-    if int(context.shape[0]) != int(ego.shape[0]):
-        raise ValueError("Stage 7E row semantics violation: context rows changed relative to Stage 7D ego rows.")
+    if context_dataset_dir is not None:
+        paths = load_context_dataset_paths(context_dataset_dir)
+        context = np.load(paths["context"], mmap_mode="r")
+        features = np.load(paths["features"], mmap_mode="r")
+        metadata = pd.read_csv(paths["metadata"])
+        if int(ckpt["context_dim"]) != int(context.shape[-1]):
+            raise ValueError(f"checkpoint['context_dim']={ckpt['context_dim']} does not match context_traj.npy last dimension={context.shape[-1]}.")
+        context_meta = {
+            "context_layout_requested": "context_dataset_dir",
+            "context_layout_used": "stage5d_context_dataset_direct",
+            "base_context_layout": "context_traj.npy",
+            "base_context_dim": int(context.shape[-1]),
+            "checkpoint_context_dim": int(ckpt["context_dim"]),
+            "final_context_dim": int(context.shape[-1]),
+            "context_padded_to_checkpoint_dim": False,
+            "padding_dim": 0,
+            "stage5d_schema_matched": int(context.shape[-1]) == 83,
+            "does_not_rebuild_context_from_stage7d_neighbor_seq": True,
+        }
+        source_manifest = paths["shard_manifest"]
+        source_dir_for_manifest = context_dataset_dir
+        ego_rows = context.shape[0]
+    else:
+        if dataset_dir is None:
+            raise ValueError("Provide either --context_dataset_dir or --dataset_dir.")
+        paths = load_stage7d_paths(dataset_dir)
+        ego = np.load(paths["ego"], mmap_mode="r")
+        neighbor = np.load(paths["neighbor"], mmap_mode="r")
+        features = np.load(paths["features"], mmap_mode="r")
+        metadata = pd.read_csv(paths["metadata"])
+        context, context_meta = build_checkpoint_compatible_context(ego, neighbor, args.max_neighbors, int(ckpt["context_dim"]), args.context_layout)
+        source_manifest = paths["shard_manifest"]
+        source_dir_for_manifest = dataset_dir
+        ego_rows = ego.shape[0]
+    embedding, emb_meta = embed_context(np.asarray(context), ckpt, args.batch_size, args.device)
+
+    if not (embedding.shape[0] == features.shape[0] == len(metadata) == ego_rows):
+        raise ValueError(f"Row count mismatch: embedding={embedding.shape[0]} features={features.shape[0]} metadata={len(metadata)} ego/context={ego_rows}")
+    if int(context.shape[0]) != int(ego_rows):
+        raise ValueError("Stage 7E row semantics violation: context rows changed relative to source rows.")
 
     np.save(output_dir / "embedding.npy", embedding)
     metadata.to_csv(output_dir / "metadata.csv", index=False)
@@ -328,13 +366,14 @@ def run(args) -> None:
     manifest = {
         "stage": "7E",
         "purpose": "embed_stage7d_stage6_compatible_idm_dataset_with_existing_stage5_stage6_encoder",
-        "dataset_dir": str(dataset_dir),
+        "dataset_dir": str(dataset_dir) if dataset_dir is not None else None,
+        "context_dataset_dir": str(context_dataset_dir) if context_dataset_dir is not None else None,
         "checkpoint": str(checkpoint_path),
         "total_rows": int(embedding.shape[0]),
         "embedding_dim": int(embedding.shape[1]) if embedding.ndim == 2 else 0,
         "embedding_path": "embedding.npy",
         "embedding_shard_paths": ["embeddings/shard_000000/embeddings.npy"],
-        "source_shard_manifest": str(paths["shard_manifest"]),
+        "source_shard_manifest": str(source_manifest),
         "row_semantics": "one row = one scenario × one planner-controlled nuPlan ego rollout",
         "row_order": "unchanged from Stage 7D shard row order",
         "multi_agent_ego_expansion": False,
@@ -343,9 +382,13 @@ def run(args) -> None:
         **emb_meta,
     }
     write_json(output_dir / "embedding_manifest.json", manifest)
-    if context_meta["context_layout_used"] == "stage5d83":
-        np.save(output_dir / "context_traj.npy", context.astype(np.float32))
-        write_json(output_dir / "stage7e_context_schema.json", make_stage5d83_schema())
+    if context_meta["context_layout_used"] in {"stage5d83", "stage5d_context_dataset_direct"}:
+        np.save(output_dir / "context_traj.npy", np.asarray(context, dtype=np.float32))
+        schema_src = (context_dataset_dir / "stage5d_context_schema.json") if context_dataset_dir is not None else None
+        if schema_src is not None and schema_src.exists():
+            shutil.copy2(schema_src, output_dir / "stage7e_context_schema.json")
+        else:
+            write_json(output_dir / "stage7e_context_schema.json", make_stage5d83_schema())
 
     validation = {
         "pass": bool(
@@ -355,7 +398,7 @@ def run(args) -> None:
         ),
         "embedding_rows": int(embedding.shape[0]),
         "metadata_rows": int(len(metadata)),
-        "stage7d_rows": int(ego.shape[0]),
+        "stage7d_rows": int(ego_rows),
         "planner_policy_indices_copied": sorted(p.name for p in (output_dir / "planner_policy_indices").glob("*.npy")),
         "row_order_unchanged_from_stage7d": True,
         "no_multi_agent_ego_expansion": True,
@@ -402,7 +445,8 @@ def run(args) -> None:
 
 def parse_args():
     p = argparse.ArgumentParser(description="Stage 7E smoke: embed Stage 7D Stage 6-compatible IDM data with existing context behavior encoder.")
-    p.add_argument("--dataset_dir", required=True)
+    p.add_argument("--dataset_dir")
+    p.add_argument("--context_dataset_dir", help="Stage 5D-compatible nuPlan context dataset directory containing context_traj.npy; in this mode Stage 7E does not rebuild context from Stage 7D neighbor_seq.")
     p.add_argument("--output_dir", required=True)
     p.add_argument("--checkpoint")
     p.add_argument("--model_path")

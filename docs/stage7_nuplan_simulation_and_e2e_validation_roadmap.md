@@ -950,3 +950,64 @@ context_layout_used = stage5d83
 context_padded_to_checkpoint_dim = false
 stage5d_schema_matched = true
 ```
+
+## Stage 7 corrected data architecture: nuPlan Stage 5D-compatible context builder
+
+The corrected Stage 7 architecture cuts into the pipeline at the Stage 5 sample/context-building level, not after a Stage 7D neighbor export.  Official nuPlan simulation replaces Waymo data for the planner-controlled ego rollout only:
+
+```text
+Stage 7C official nuPlan simulation
+  → Stage 7E nuPlan 5-neighbor context builder
+  → Stage 5D best context encoder
+  → tools/export_context_row_embeddings.py / Stage 7E thin wrapper
+  → Stage 7F existing Stage 6 BDD/report-card scripts
+```
+
+Stage 7D remains a Stage 6-compatible evaluation dataset export.  Stage 7E is now the Stage 5D-compatible nuPlan context dataset plus embedding export.  Stage 7F reuses the existing Stage 6 BDD/report-card scripts.  Stage 7 must not reimplement Stage 6 BDD and must not train a Stage 7-only embedding model.
+
+Row semantics are intentionally different from Waymo Stage 5 multi-agent ego expansion.  Waymo Stage 5 may use `row = scenario × agent × window`.  nuPlan Stage 7 uses:
+
+```text
+row = scenario × planner × planner-controlled nuPlan ego rollout
+```
+
+Background agents are context only and must not be expanded into ego rows.  For the current IDM 5-log smoke this gives `5 scenarios × 4 planners = 20 rows`.
+
+The Stage 5D best model was trained on `context_traj.npy [N,T,83]` from `tools/build_waymo_5neighbor_context_dataset.py`.  The 83-D contract is:
+
+```text
+ego 8 channels + 5 semantic neighbor slots × 15 channels = 83
+```
+
+The ego channels are `ego_x, ego_y, ego_vx, ego_vy, ego_heading, ego_speed, ego_accel, ego_yaw_rate`.  The semantic neighbor slots are `front, rear, left_front, left_rear, right_front`; each uses `valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y, closing, ttc, thw, speed, accel, heading_rel, yaw_rate`.
+
+`context_traj.npy` has no map/lane/ODD channels unless the original Stage 5 builder is changed; in the current Stage 5D contract these features are not appended to the encoder tensor.  `interaction_feat_style.npy` is for reports/evaluation and Stage 6 BDD/report-card metrics, not an encoder input channel.  Stage 6 consumes exported `embedding.npy`, aligned `interaction_feat_style.npy`, `metadata.csv`, and planner/policy A/B indices; it does not feed raw Stage 7D ego/neighbor tensors directly into BDD.
+
+The new builder is:
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --max_neighbors_for_context 5 \
+  --slot_assignment_method geometric_proxy \
+  --same_lane_abs_y 1.8 \
+  --adjacent_lane_min_abs_y 1.5 \
+  --overwrite
+```
+
+It writes `ego_seq.npy`, `context_traj.npy`, `interaction_feat_style.npy`, `metadata.csv`, `feature_schema.json`, `stage5d_context_schema.json`, `shard_manifest.json`, `planner_policy_indices/*.npy`, `warnings.json`, `context_build_report.md`, and `slot_assignment_report.md` directly from official Stage 7C simulation artifacts and `official_nuplan_runs/**/*.msgpack.xz` tracked objects.
+
+The initial slot assignment is `geometric_proxy`: same-lane candidates satisfy `abs(rel_y) <= same_lane_abs_y`; `front` and `rear` use nearest positive/negative `rel_x`; left/right slots use `rel_y` sign and nearest positive/negative `rel_x`.  This directly assigns semantic slots from candidate tracked objects relative to the planner-controlled ego.  It must not take a distance top-K tensor such as `neighbor_seq[:, :5]` and relabel those slots as `front/rear/left_front/left_rear/right_front`.  Because this is a geometric proxy rather than exact Waymo lane-aware assignment, reports and `warnings.json` must say so and only set `stage5d_slot_semantics_verified` when slot sanity checks pass.
+
+Embedding export should use the direct context-dataset mode:
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --overwrite
+```
+
+In `--context_dataset_dir` mode, Stage 7E loads `context_traj.npy` directly, checks `checkpoint["context_dim"] == context_traj.shape[-1]`, exports `embedding.npy`, and copies `metadata.csv` plus `planner_policy_indices/*.npy`.  It does not rebuild context from Stage 7D `neighbor_seq`.
