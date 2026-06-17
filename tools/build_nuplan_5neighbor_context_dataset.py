@@ -76,6 +76,8 @@ def metadata_rows(index_rows: List[Dict[str, str]], planner_meta_rows: List[Dict
             rows.append({
                 "global_row": g, "scenario_index": i, "planner_id": pid, "planner_name": planner,
                 "log_name": (src.get("log_name") or src.get("db_name", "")).removesuffix(".db"),
+                "map_name": src.get("map_name", ""),
+                "location": src.get("location", ""),
                 "scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
                 "actual_nuplan_scenario_token": src.get("actual_nuplan_scenario_token") or src.get("scenario_id") or src.get("scenario_token", ""),
                 "stage7b_scene_token": src.get("stage7b_scene_token") or src.get("scene_token", ""),
@@ -94,6 +96,44 @@ def metadata_rows(index_rows: List[Dict[str, str]], planner_meta_rows: List[Dict
             })
             g += 1
     return rows
+
+
+def load_scenario_map_metadata(path: Path | None) -> Dict[str, Dict[str, str]]:
+    if path is None:
+        return {}
+    rows = read_csv_rows(path)
+    mapping: Dict[str, Dict[str, str]] = {}
+    for row in rows:
+        for key in ("scenario_index", "scenario_id", "scenario_token", "actual_nuplan_scenario_token", "scene_token", "log_name", "db_name"):
+            value = (row.get(key) or "").strip()
+            if value:
+                mapping.setdefault(f"{key}:{value}", row)
+                if key == "db_name":
+                    mapping.setdefault(f"log_name:{value.removesuffix('.db')}", row)
+    return mapping
+
+
+def resolve_map_name(meta: Dict[str, str], explicit_map_name: str = "", scenario_map_metadata: Dict[str, Dict[str, str]] | None = None) -> Tuple[str, str]:
+    for key in ("map_name", "location"):
+        value = (meta.get(key) or "").strip()
+        if value:
+            return value, f"row.{key}"
+    if explicit_map_name:
+        return explicit_map_name, "cli.--map_name"
+    mapping = scenario_map_metadata or {}
+    for key in ("scenario_index", "scenario_id", "scenario_token", "actual_nuplan_scenario_token", "scene_token", "log_name", "db_name"):
+        value = (meta.get(key) or "").strip()
+        candidates = [value]
+        if key == "db_name" and value.endswith(".db"):
+            candidates.append(value.removesuffix(".db"))
+        for candidate in candidates:
+            row = mapping.get(f"{key}:{candidate}")
+            if row:
+                for map_key in ("map_name", "location"):
+                    map_value = (row.get(map_key) or "").strip()
+                    if map_value:
+                        return map_value, f"scenario_map_metadata_csv.{key}.{map_key}"
+    return "", "unresolved"
 
 
 def estimate_dt(stage7c_seq: np.ndarray, mask: np.ndarray, default_dt: float = 0.1) -> float:
@@ -271,6 +311,8 @@ def main() -> None:
     ap.add_argument("--max_neighbors_for_context", type=int, default=5)
     ap.add_argument("--assignment_mode", choices=["lane_aware_only", "lane_aware_with_geometric_fallback", "geometric_only", "geometric_proxy"], default="lane_aware_with_geometric_fallback")
     ap.add_argument("--nuplan_map_root", type=Path, default=None)
+    ap.add_argument("--map_name", default="", help="Explicit map name override used only when row metadata has no map_name/location.")
+    ap.add_argument("--scenario_map_metadata_csv", type=Path, default=None, help="Optional CSV mapping scenario/log identifiers to map_name/location.")
     ap.add_argument("--map_query_radius", type=float, default=120.0)
     ap.add_argument("--lane_max_lateral_distance", type=float, default=3.0)
     ap.add_argument("--lane_max_heading_diff_deg", type=float, default=45.0)
@@ -308,8 +350,9 @@ def main() -> None:
     n_scenarios, n_planners, timesteps, _ = seq.shape
     expected_rows = n_scenarios * n_planners
     index_rows = read_csv_rows(args.sim_dir / "scenario_planner_index.csv")
+    scenario_map_metadata = load_scenario_map_metadata(args.scenario_map_metadata_csv)
     by_pair = {(int(r.get("scenario_index", -1)), int(r.get("planner_id", -1))): r for r in index_rows if r.get("scenario_index", "").strip() and r.get("planner_id", "").strip()}
-    ego_rows=[]; nbr_rows=[]; ctx_rows=[]; inter_rows=[]; slot_id_rows=[]; assignment_debug_rows=[]; warnings=[]; cache={}; map_cache={}; parsed=0
+    ego_rows=[]; nbr_rows=[]; ctx_rows=[]; inter_rows=[]; slot_id_rows=[]; assignment_debug_rows=[]; warnings=[]; cache={}; map_cache={}; parsed=0; resolved_map_names=[]; map_resolution_sources=[]
     if warnings_note:
         warnings.append({"type": "deprecated_assignment_mode", "message": warnings_note})
     if args.assignment_mode in {"lane_aware_only", "lane_aware_with_geometric_fallback"}:
@@ -327,10 +370,13 @@ def main() -> None:
                 tracks, sample_count = parse_neighbor_world_tracks(msg, timesteps); cache[msg]=tracks; parsed += 1
                 if sample_count != timesteps: warnings.append({"type":"msgpack_timestep_mismatch","path":str(msg),"samples":sample_count,"expected_T":timesteps})
             lane_infos = {}
-            map_name = meta.get("map_name") or meta.get("location") or ""
+            map_name, map_name_source = resolve_map_name(meta, args.map_name.strip(), scenario_map_metadata)
+            if map_name:
+                resolved_map_names.append(map_name)
+                map_resolution_sources.append(map_name_source)
             if args.nuplan_map_root and args.nuplan_map_root.exists():
                 if not map_name:
-                    warnings.append({"type": "nuplan_map_name_missing", "scenario_index": si, "planner_id": pi, "message": "Stage 7C metadata has no map_name/location; lane-aware map query cannot run for this row."})
+                    warnings.append({"type": "nuplan_map_name_missing", "severity": "error" if args.assignment_mode == "lane_aware_only" else "warning", "scenario_index": si, "planner_id": pi, "assignment_mode": args.assignment_mode, "message": "No map_name could be resolved from row map_name, row location, --map_name, or --scenario_map_metadata_csv; lane-aware map query cannot run for this row."})
                 elif map_name not in map_cache:
                     try:
                         from tools.build_nuplan_map_odd_features import load_map_api
@@ -371,31 +417,33 @@ def main() -> None:
     stage5d_derived_formula_matched = bool(stage5d_static_derived_formula_matched and stage5d_temporal_derived_formula_matched)
     planner_non_empty=all(np.load(idx_dir/f"{p}.npy").size>0 for p in planners)
     map_query_success = bool(map_counts.get("map_query_success", 0) > 0)
+    map_names_used = sorted(set(resolved_map_names))
+    map_name_resolved_rate = float(len(resolved_map_names) / max(row, 1))
     lane_assignment_available = bool(any(d.get("lane_assignment_available") for d in assignment_debug_rows))
     fallback_assignment_used_rate = float(np.mean([d.get("fallback_assignment_used", False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0
     ego_lane_projection_success_rate = float(np.mean([d.get("lane_assignment_available", False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0
     candidate_lane_projection_success_rate = float(np.mean([any(ps.get("assignment_method") == "lane_aware" for ps in d.get("per_slot_debug", [])) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0
     lane_runtime_ok = True
-    if args.assignment_mode == "lane_aware_only" and (not map_query_success or lane_info_count <= 0 or not lane_assignment_available):
+    if args.assignment_mode == "lane_aware_only" and (map_name_resolved_rate < 1.0 or not map_query_success or lane_info_count <= 0 or not lane_assignment_available):
         lane_runtime_ok = False
-        warnings.append({"type": "lane_aware_only_map_query_failed", "severity": "error", "map_query_success": map_query_success, "lane_info_count": lane_info_count, "lane_assignment_available": lane_assignment_available, "message": "assignment_mode=lane_aware_only requires successful nuPlan map query and lane projection; refusing silent geometric fallback."})
+        warnings.append({"type": "lane_aware_only_map_query_failed", "severity": "error", "map_name_resolved_rate": map_name_resolved_rate, "map_query_success": map_query_success, "lane_info_count": lane_info_count, "lane_assignment_available": lane_assignment_available, "message": "assignment_mode=lane_aware_only requires resolved map_name for every row, successful nuPlan map query, and lane projection; refusing silent geometric fallback."})
     if args.assignment_mode == "lane_aware_with_geometric_fallback" and fallback_assignment_used_rate >= 0.5:
         warnings.append({"type": "high_geometric_fallback_rate", "severity": "warning", "fallback_assignment_used_rate": fallback_assignment_used_rate, "message": "More than half of lane-aware assignments used geometric fallback. This is not strong lane-aware thesis evidence; verify --nuplan_map_root, map_name resolution, and projection diagnostics."})
-    validation={"pass": bool(slot_pass and planner_non_empty and lane_runtime_ok), "row_semantics_correct": True, "no_multi_agent_ego_expansion": True, "background_agents_context_only": True, "stage5d_dim_matched": ctx_arr.shape[-1]==CONTEXT_DIM, "stage5d_channel_schema_matched": True, "stage5d_slot_schema_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_order_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_semantics_verified": bool(slot_pass), "assignment_mode": args.assignment_mode, "lane_assignment_available": lane_assignment_available, "map_query_success": map_query_success, "lane_info_count": lane_info_count, "fallback_assignment_used_rate": fallback_assignment_used_rate, "ego_lane_projection_success_rate": ego_lane_projection_success_rate, "candidate_lane_projection_success_rate": candidate_lane_projection_success_rate, "adjacency_source_counts": map_counts, "slot_sanity_passed": bool(slot_pass), "slot_coverage_by_slot": {k:v["coverage_ratio"] for k,v in slot_stats.items()}, "context_traj_no_nonfinite": bool(np.isfinite(ctx_arr).all()), "planner_indices_non_empty": bool(planner_non_empty), "rows_equal_num_scenarios_times_num_planners": row == expected_rows, "metadata_row_count_matches": len(rows)==row, "ego_seq_row_count_matches": ego_arr.shape[0]==row, "interaction_feat_style_row_count_matches": feat_arr.shape[0]==row, "stage5d_static_derived_formula_matched": bool(stage5d_static_derived_formula_matched), "stage5d_temporal_derived_formula_matched": bool(stage5d_temporal_derived_formula_matched), "stage5d_derived_formula_matched": bool(stage5d_derived_formula_matched), "stage5d_closing_formula_matched": True, "stage5d_ttc_formula_matched": True, "stage5d_delta_xy_formula_matched": True, "stage5d_accel_yaw_rate_formula_matched": bool(accel_yaw_rate_matched), "slot_id_switch_rate_by_slot": slot_switch_rate_by_slot}
+    validation={"pass": bool(slot_pass and planner_non_empty and lane_runtime_ok), "row_semantics_correct": True, "no_multi_agent_ego_expansion": True, "background_agents_context_only": True, "stage5d_dim_matched": ctx_arr.shape[-1]==CONTEXT_DIM, "stage5d_channel_schema_matched": True, "stage5d_slot_schema_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_order_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_semantics_verified": bool(slot_pass), "assignment_mode": args.assignment_mode, "map_name_resolved_rate": map_name_resolved_rate, "map_names_used": map_names_used, "map_name_resolution_sources": dict((src, map_resolution_sources.count(src)) for src in sorted(set(map_resolution_sources))), "lane_assignment_available": lane_assignment_available, "map_query_success": map_query_success, "lane_info_count": lane_info_count, "fallback_assignment_used_rate": fallback_assignment_used_rate, "ego_lane_projection_success_rate": ego_lane_projection_success_rate, "candidate_lane_projection_success_rate": candidate_lane_projection_success_rate, "adjacency_source_counts": map_counts, "slot_sanity_passed": bool(slot_pass), "slot_coverage_by_slot": {k:v["coverage_ratio"] for k,v in slot_stats.items()}, "context_traj_no_nonfinite": bool(np.isfinite(ctx_arr).all()), "planner_indices_non_empty": bool(planner_non_empty), "rows_equal_num_scenarios_times_num_planners": row == expected_rows, "metadata_row_count_matches": len(rows)==row, "ego_seq_row_count_matches": ego_arr.shape[0]==row, "interaction_feat_style_row_count_matches": feat_arr.shape[0]==row, "stage5d_static_derived_formula_matched": bool(stage5d_static_derived_formula_matched), "stage5d_temporal_derived_formula_matched": bool(stage5d_temporal_derived_formula_matched), "stage5d_derived_formula_matched": bool(stage5d_derived_formula_matched), "stage5d_closing_formula_matched": True, "stage5d_ttc_formula_matched": True, "stage5d_delta_xy_formula_matched": True, "stage5d_accel_yaw_rate_formula_matched": bool(accel_yaw_rate_matched), "slot_id_switch_rate_by_slot": slot_switch_rate_by_slot}
     write_stage5d_context_schema(args.output_dir/"stage5d_context_schema.json", schema_name="stage5d83_nuplan_laneaware_stage5_formula_parity", accel_yaw_rate_matched=accel_yaw_rate_matched)
     write_json(args.output_dir/"warnings.json", {"warnings": warnings, "assignment_mode": args.assignment_mode, "slot_assignment_method":"stage5_assign_neighbors_lane_aware", "stage5d_slot_schema_matched": True, "stage5d_slot_order_matched": True, "stage5d_slot_assignment_exact_waymo_lane_aware": args.assignment_mode != "geometric_only", "stage5d_formula_parity_schema_recorded": True, "map_query_success": bool(map_counts.get("map_query_success", 0) > 0), "lane_info_count": lane_info_count, "adjacency_source_counts": map_counts, "stage5d_core_reused": True, "stage5d_slot_names_source": "tools.stage5d_context_core.SLOT_NAMES", "stage5d_feature_formula_source": "tools.stage5d_context_core", "stage5d_static_derived_formula_matched": bool(stage5d_static_derived_formula_matched), "stage5d_temporal_derived_formula_matched": bool(stage5d_temporal_derived_formula_matched), "stage5d_derived_formula_matched": bool(stage5d_derived_formula_matched), "stage5d_accel_yaw_rate_formula_matched": bool(accel_yaw_rate_matched), "ego_local_frame_source": "tools.stage5d_context_core.build_ego_features_8d", "neighbor_local_frame_contract": "per-timestep ego-centric rel_x/rel_y/rel_vx/rel_vy using current ego world pose and heading, matching Waymo Stage5D neighbor builder", "validation": {**core_validation, **validation}})
     exact_channels = "valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y, closing, ttc, thw, speed, heading_rel"
     accel_note = "accel and yaw_rate match Stage 5D finite-difference semantics because no slot ID switches were observed." if accel_yaw_rate_matched else "accel and yaw_rate are approximated_or_not_stage5_matched because at least one semantic slot switches tracked-object IDs; finite differences are reset at switches."
-    report=["# nuPlan Stage 5D-Compatible Context Build Report","","## Final architecture","- Stage5D CORE is the single source of truth for slot order, 83-dim schema, lane-aware assignment, fallback policy, derived formulas, context construction, schema generation, and validation.","- nuPlan is an adapter: it reads official simulation rollout artifacts, parses planner-controlled ego rollouts and background tracked agents, queries map lanes when available, converts them to Stage5D inputs, and calls Stage5D CORE.","- Waymo is an adapter that targets the same Stage5D CORE contract.","- nuPlan ego 8D is built by `tools.stage5d_context_core.build_ego_features_8d` from a standard `[x,y,vx,vy,heading,valid]` track window in a deterministic local window frame.","- nuPlan neighbor rel_x/rel_y/rel_vx/rel_vy remain per-timestep ego-centric using the current ego pose/heading, matching the original Waymo Stage5D neighbor convention.","",f"- rows: `{row}` (= `{n_scenarios} scenarios × {n_planners} planners`)","- row semantics: `scenario × planner × planner-controlled nuPlan ego rollout`","- background agents: context only; no multi-agent ego expansion",f"- exact Stage5D slot order: `{list(SLOT_NAMES)}`","- Stage5D core reused: `true`","- context_traj.npy: `"+str(list(ctx_arr.shape))+"`","- Stage 5D best model input: `context_traj.npy [N,T,83]`","- 83 = ego 8 + 5 semantic neighbor slots × 15 channels","- interaction_feat_style.npy is for reports/evaluation, not encoder input","- context_traj has no map/lane/ODD channels","- slot assignment: Stage 5 `assign_neighbors_lane_aware`; geometric assignment is fallback","- parsed msgpack files: `"+str(parsed)+"`", f"- map_query_success: `{map_query_success}`", f"- lane_info_count: `{lane_info_count}`", f"- lane-aware assignment succeeded: `{lane_assignment_available}`", f"- fallback_assignment_used_rate: `{fallback_assignment_used_rate}`", f"- ego_lane_projection_success_rate: `{ego_lane_projection_success_rate}`", f"- candidate_lane_projection_success_rate: `{candidate_lane_projection_success_rate}`", f"- adjacency_source counts: `{map_counts}`","", "## Stage 5 formula parity", f"- formula parity passed: `{stage5d_derived_formula_matched}`", f"- static derived formula parity passed: `{stage5d_static_derived_formula_matched}`", f"- temporal derived formula parity passed: `{stage5d_temporal_derived_formula_matched}`", f"- Exactly matched neighbor formulas: `{exact_channels}`.", "- closing formula parity: `passed` (`closing = ego_forward_speed - rel_vx`).", "- TTC formula parity: `passed` (cap when closing <= 1e-3, otherwise distance / max(closing, 1e-3)).", "- delta_x/delta_y formula parity: `passed` (duplicates of rel_x/rel_y, not proxy channels).", f"- accel/yaw_rate formula parity: `{accel_yaw_rate_matched}`. {accel_note}", "- Approximations: accel/yaw_rate are approximations when slot switching is non-zero; slot assignment uses Stage 5 lane-aware logic unless `geometric_only` is requested or lane-map fallback is needed."]
+    report=["# nuPlan Stage 5D-Compatible Context Build Report","","## Final architecture","- Stage5D CORE is the single source of truth for slot order, 83-dim schema, lane-aware assignment, fallback policy, derived formulas, context construction, schema generation, and validation.","- nuPlan is an adapter: it reads official simulation rollout artifacts, parses planner-controlled ego rollouts and background tracked agents, queries map lanes when available, converts them to Stage5D inputs, and calls Stage5D CORE.","- Waymo is an adapter that targets the same Stage5D CORE contract.","- nuPlan ego 8D is built by `tools.stage5d_context_core.build_ego_features_8d` from a standard `[x,y,vx,vy,heading,valid]` track window in a deterministic local window frame.","- nuPlan neighbor rel_x/rel_y/rel_vx/rel_vy remain per-timestep ego-centric using the current ego pose/heading, matching the original Waymo Stage5D neighbor convention.","",f"- rows: `{row}` (= `{n_scenarios} scenarios × {n_planners} planners`)","- row semantics: `scenario × planner × planner-controlled nuPlan ego rollout`","- background agents: context only; no multi-agent ego expansion",f"- exact Stage5D slot order: `{list(SLOT_NAMES)}`","- Stage5D core reused: `true`","- context_traj.npy: `"+str(list(ctx_arr.shape))+"`","- Stage 5D best model input: `context_traj.npy [N,T,83]`","- 83 = ego 8 + 5 semantic neighbor slots × 15 channels","- interaction_feat_style.npy is for reports/evaluation, not encoder input","- context_traj has no map/lane/ODD channels","- slot assignment: Stage 5 `assign_neighbors_lane_aware`; geometric assignment is fallback","- parsed msgpack files: `"+str(parsed)+"`", f"- map_name_resolved_rate: `{map_name_resolved_rate}`", f"- map_name values used: `{map_names_used}`", f"- map_name resolution sources: `{validation['map_name_resolution_sources']}`", f"- map_query_success: `{map_query_success}`", f"- lane_info_count: `{lane_info_count}`", f"- lane-aware assignment succeeded: `{lane_assignment_available}`", f"- fallback_assignment_used_rate: `{fallback_assignment_used_rate}`", f"- ego_lane_projection_success_rate: `{ego_lane_projection_success_rate}`", f"- candidate_lane_projection_success_rate: `{candidate_lane_projection_success_rate}`", f"- adjacency_source counts: `{map_counts}`","", "## Stage 5 formula parity", f"- formula parity passed: `{stage5d_derived_formula_matched}`", f"- static derived formula parity passed: `{stage5d_static_derived_formula_matched}`", f"- temporal derived formula parity passed: `{stage5d_temporal_derived_formula_matched}`", f"- Exactly matched neighbor formulas: `{exact_channels}`.", "- closing formula parity: `passed` (`closing = ego_forward_speed - rel_vx`).", "- TTC formula parity: `passed` (cap when closing <= 1e-3, otherwise distance / max(closing, 1e-3)).", "- delta_x/delta_y formula parity: `passed` (duplicates of rel_x/rel_y, not proxy channels).", f"- accel/yaw_rate formula parity: `{accel_yaw_rate_matched}`. {accel_note}", "- Approximations: accel/yaw_rate are approximations when slot switching is non-zero; slot assignment uses Stage 5 lane-aware logic unless `geometric_only` is requested or lane-map fallback is needed."]
     (args.output_dir/"context_build_report.md").write_text("\n".join(report)+"\n", encoding="utf-8")
-    lines=["# Slot Assignment Report","",f"- assignment_mode: `{args.assignment_mode}`",f"- slot names/order: `{SLOT_NAMES}`",f"- lane-aware success rate: `{float(np.mean([d.get('lane_assignment_available', False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0}`",f"- geometric fallback rate: `{float(np.mean([d.get('fallback_assignment_used', False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0}`",""]
+    lines=["# Slot Assignment Report","",f"- assignment_mode: `{args.assignment_mode}`",f"- slot names/order: `{SLOT_NAMES}`",f"- map_name_resolved_rate: `{map_name_resolved_rate}`",f"- map_name values used: `{map_names_used}`",f"- map_query_success: `{map_query_success}`",f"- lane_info_count: `{lane_info_count}`",f"- lane-aware success rate: `{float(np.mean([d.get('lane_assignment_available', False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0}`",f"- geometric fallback rate: `{float(np.mean([d.get('fallback_assignment_used', False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0}`",""]
     for sn,st in slot_stats.items():
         cont = slot_continuity[sn]
         lines.append(f"- {sn}: coverage={st['coverage_ratio']:.6f}, empty={st['empty_slot_ratio']:.6f}, median_rel_x={st['median_rel_x']}, median_rel_y={st['median_rel_y']}, median_distance={st['median_distance']}, slot_id_switch_count={cont['slot_id_switch_count']}, slot_id_switch_rate={cont['slot_id_switch_rate']:.6f}, mean_continuous_segment_length={cont['mean_continuous_segment_length']}")
     lines += ["", "## Lane context diagnostics"]
     lane_success = float(np.mean([d.get("lane_assignment_available", False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0
     fallback_rate = float(np.mean([d.get("fallback_assignment_used", False) for d in assignment_debug_rows])) if assignment_debug_rows else 0.0
-    lines += [f"- lane-aware success rate: `{lane_success}`", f"- geometric fallback rate: `{fallback_rate}`", f"- map_query_success: `{map_query_success}`", f"- lane_info_count: `{lane_info_count}`", f"- ego_lane_projection_success_rate: `{ego_lane_projection_success_rate}`", f"- candidate_lane_projection_success_rate: `{candidate_lane_projection_success_rate}`"]
+    lines += [f"- map_name_resolved_rate: `{map_name_resolved_rate}`", f"- map_name values used: `{map_names_used}`", f"- map_name resolution sources: `{validation['map_name_resolution_sources']}`", f"- lane-aware success rate: `{lane_success}`", f"- geometric fallback rate: `{fallback_rate}`", f"- map_query_success: `{map_query_success}`", f"- lane_info_count: `{lane_info_count}`", f"- ego_lane_projection_success_rate: `{ego_lane_projection_success_rate}`", f"- candidate_lane_projection_success_rate: `{candidate_lane_projection_success_rate}`"]
     from collections import Counter
     lines += [f"- adjacency_source counts: `{dict(Counter(d.get('adjacency_source', 'none') for d in assignment_debug_rows))}`", f"- lane_context_quality counts: `{dict(Counter(d.get('lane_context_quality', 'unknown') for d in assignment_debug_rows))}`"]
     rej = Counter()
