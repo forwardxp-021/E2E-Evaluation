@@ -5381,3 +5381,70 @@ Waymo builder 和 nuPlan builder 都复用 `tools/stage5d_context_core.py` 中�
 - slot 顺序固定为 `front, left_front, left_rear, right_front, right_rear`。
 - `warnings.json` 包含 `validation.pass`、`map_query_success`、`lane_info_count`、`lane_assignment_available`、`fallback_assignment_used_rate`、`ego_lane_projection_success_rate`、`candidate_lane_projection_success_rate`、`stage5d_core_reused=true`、`stage5d_slot_schema_matched=true`、`stage5d_slot_order_matched=true`、`stage5d_derived_formula_matched`、`stage5d_accel_yaw_rate_formula_matched`、`slot_id_switch_rate_by_slot`；如果 slot ID switch rate 非 0，则 temporal accel/yaw_rate parity 不能被标记为 true。
 - `build_nuplan_5neighbor_context_dataset.py` 不再定义自己的 `SLOT_NAMES` 或 neighbor channel order。
+
+## Stage 7E lane-aware map_name/location 传递修复
+
+### 1. 命令
+
+Stage 7C official simulation 输出会在 `scenario_planner_index.csv` 中保留 `map_name`、`location`、`log_name`、`scenario_token`、`scenario_type`：
+
+```bash
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /path/to/nuplan/dbs \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --output_dir outputs/stage7c1_nuplan_simulation \
+  --nuplan_simulation_command_template '<official nuPlan command>' \
+  --overwrite
+```
+
+Stage 7E context builder 的地图名解析顺序是：行级 `map_name`、行级 `location`、显式 `--map_name`、可选 `--scenario_map_metadata_csv` 映射文件。
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c1_nuplan_simulation \
+  --output_dir outputs/stage7e_context_stage5d \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --scenario_map_metadata_csv outputs/stage7c1_nuplan_simulation/scenario_planner_index.csv \
+  --overwrite
+```
+
+如果 Stage 7C 历史输出缺少 `map_name/location`，可用显式 override 做 smoke 验证：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c1_nuplan_simulation \
+  --output_dir outputs/stage7e_context_stage5d \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --map_name us-nv-las-vegas-strip \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --overwrite
+```
+
+严格 thesis evidence 验证应使用：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c1_nuplan_simulation \
+  --output_dir outputs/stage7e_context_stage5d_lane_only \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --assignment_mode lane_aware_only \
+  --overwrite
+```
+
+### 2. 期望行为
+
+Stage 7C 从 `merged_metadata.csv` 读取场景行时，会把可用的 `map_name`、`location`、`log_name`、`scenario_token`、`scenario_type` 写入 `scenario_planner_index.csv`，供 Stage 7D/Stage 7E 继续使用。Stage 7E 不会重建 Stage 7D neighbor context，也不会修改 Stage 5D CORE 或 Stage 7E embedding；它只在构建 Stage 5D-compatible `context_traj.npy [N,T,83]` 时解析地图名并尝试 nuPlan lane query。
+
+`assignment_mode=lane_aware_only` 下，如果任一行无法解析 `map_name` 或地图查询/投影不可用，构建会失败并在 `warnings.json` 中写入 error。`assignment_mode=lane_aware_with_geometric_fallback` 下，缺少 `map_name` 会明确 warning，允许几何 fallback，但报告不会把该结果描述为 lane-aware thesis evidence。
+
+### 3. 通过标准
+
+- `scenario_planner_index.csv` 包含 `map_name`、`location`、`log_name`、`scenario_token`、`scenario_type` 列；
+- `warnings.json.validation.map_name_resolved_rate` 大于 0，理想为 1.0；
+- `warnings.json.validation.map_names_used` 列出实际使用的地图名；
+- `warnings.json.validation.map_query_success=true` 且 `lane_info_count > 0`；
+- `warnings.json.validation.lane_assignment_available=true`；
+- `slot_assignment_report.md` 和 `context_build_report.md` 同时报告 map_name 解析、map query、lane info、lane-aware success rate、geometric fallback rate；
+- 严格 `lane_aware_only` 模式不允许因为缺少 `map_name` 而 silent fallback。
