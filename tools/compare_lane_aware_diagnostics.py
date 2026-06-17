@@ -10,7 +10,10 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
-from tools.lane_aware_assignment import SLOT_NAMES
+
+def slot_names() -> List[str]:
+    return ["front", "left_front", "left_rear", "right_front", "right_rear"]
+
 
 
 
@@ -76,7 +79,7 @@ def slot_coverage_and_switches(dataset_dir: Path, max_rows: Optional[int] = None
             nbr = np.load(nbr_path, mmap_mode="r")
             take = nbr.shape[0] if max_rows is None else max(0, min(nbr.shape[0], max_rows - rows_seen))
             if take > 0:
-                for si, sn in enumerate(SLOT_NAMES):
+                for si, sn in enumerate(slot_names()):
                     valid = nbr[:take, si, :, 0] > 0.5
                     valid_counts[sn] += int(np.sum(valid))
                     total_counts[sn] += int(valid.size)
@@ -85,7 +88,7 @@ def slot_coverage_and_switches(dataset_dir: Path, max_rows: Optional[int] = None
             ids = np.load(ids_path, allow_pickle=True)
             take = ids.shape[0] if max_rows is None else min(ids.shape[0], max_rows)
             for row in ids[:take]:
-                for si, sn in enumerate(SLOT_NAMES):
+                for si, sn in enumerate(slot_names()):
                     seq = list(row[si]) if np.asarray(row[si]).ndim else [str(row[si])]
                     prev = "-1"
                     for tok in seq:
@@ -98,14 +101,14 @@ def slot_coverage_and_switches(dataset_dir: Path, max_rows: Optional[int] = None
                                 switches[sn] += 1
                         prev = tok
     return {
-        "slot_coverage_by_slot": {sn: safe_rate(valid_counts[sn], total_counts[sn]) for sn in SLOT_NAMES},
-        "slot_switch_rate_by_slot": {sn: safe_rate(switches[sn], transitions[sn]) for sn in SLOT_NAMES},
-        "slot_switch_count_by_slot": {sn: int(switches[sn]) for sn in SLOT_NAMES},
+        "slot_coverage_by_slot": {sn: safe_rate(valid_counts[sn], total_counts[sn]) for sn in slot_names()},
+        "slot_switch_rate_by_slot": {sn: safe_rate(switches[sn], transitions[sn]) for sn in slot_names()},
+        "slot_switch_count_by_slot": {sn: int(switches[sn]) for sn in slot_names()},
     }
 
 
 def summarize_lane_debug_csv(dataset_dir: Path) -> Dict[str, Any]:
-    method_counts = {sn: Counter() for sn in SLOT_NAMES}
+    method_counts = {sn: Counter() for sn in slot_names()}
     reason_counts = Counter()
     for shard in load_shard_paths(dataset_dir):
         csv_path = shard / "lane_assignment_debug.csv"
@@ -121,12 +124,18 @@ def summarize_lane_debug_csv(dataset_dir: Path) -> Dict[str, Any]:
                 if reason:
                     reason_counts[reason] += 1
     return {
-        "assignment_method_counts_by_slot_from_debug_csv": {sn: dict(method_counts[sn]) for sn in SLOT_NAMES},
+        "assignment_method_counts_by_slot_from_debug_csv": {sn: dict(method_counts[sn]) for sn in slot_names()},
         "debug_csv_reason_counts": dict(reason_counts),
     }
 
 
 def summarize_waymo(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, Any]:
+    exported = read_json(dataset_dir / "waymo_lane_aware_diagnostics.json")
+    if exported:
+        exported.setdefault("dataset", "waymo_stage5")
+        exported.setdefault("path", str(dataset_dir))
+        exported.setdefault("source_files", [str(dataset_dir / "waymo_lane_aware_diagnostics.json")])
+        return exported
     summary = read_json(dataset_dir / "build_summary.json") or read_json(dataset_dir / "neighbor_context_summary.json")
     n = int(summary.get("n_windows_kept", 0) or summary.get("n_windows", 0) or 0)
     metrics = {
@@ -141,11 +150,16 @@ def summarize_waymo(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, Any
         "lane_context_quality_counts": summary.get("lane_context_quality_counts", {}),
         "lane_context_quality_reason_counts": summary.get("lane_context_quality_reason_counts", {}),
         "rejection_reason_counts": summary.get("slot_rejection_reason_counts", {}),
-        "slot_coverage_by_slot": summary.get("slot_valid_ratio") or {sn: 1.0 - as_float((summary.get("empty_slot_ratio_by_slot") or {}).get(sn), 1.0) for sn in SLOT_NAMES},
+        "slot_coverage_by_slot": summary.get("slot_valid_ratio") or {sn: 1.0 - as_float((summary.get("empty_slot_ratio_by_slot") or {}).get(sn), 1.0) for sn in slot_names()},
         "slot_switch_rate_by_slot": summary.get("slot_id_switch_rate_by_slot", {}),
         "source_files": [str(dataset_dir / "build_summary.json"), str(dataset_dir / "neighbor_context_summary.json")],
     }
-    metrics.update(slot_coverage_and_switches(dataset_dir, max_rows=max_rows))
+    cov_switch = slot_coverage_and_switches(dataset_dir, max_rows=max_rows)
+    if cov_switch.get("slot_coverage_by_slot"):
+        metrics["slot_coverage_metric_source"] = "array_derived"
+    else:
+        metrics["slot_coverage_metric_source"] = "summary_derived"
+    metrics.update(cov_switch)
     metrics.update(summarize_lane_debug_csv(dataset_dir))
     return metrics
 
@@ -164,6 +178,7 @@ def summarize_nuplan(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, An
     validation = warnings.get("validation", {}) if isinstance(warnings.get("validation"), dict) else {}
     assign_rows = read_json(dataset_dir / "assignment_debug.json")
     rows = assign_rows if isinstance(assign_rows, list) else []
+    projection_debug = read_json(dataset_dir / "nuplan_lane_projection_debug_summary.json")
     metrics = {
         "dataset": "nuplan_stage7_adapter",
         "path": str(dataset_dir),
@@ -180,11 +195,20 @@ def summarize_nuplan(dataset_dir: Path, max_rows: Optional[int]) -> Dict[str, An
         "slot_switch_rate_by_slot": validation.get("slot_id_switch_rate_by_slot", {}),
         "source_files": [str(dataset_dir / "warnings.json"), str(dataset_dir / "assignment_debug.json"), str(dataset_dir / "slot_assignment_report.md")],
     }
+    if projection_debug:
+        metrics["projection_debug_summary_available"] = True
+        metrics["projection_debug_candidate_projection_success_rate"] = as_float(projection_debug.get("candidate_projection_success_rate"), None)
+        if metrics["candidate_projection_success_rate"] is None:
+            metrics["candidate_projection_success_rate"] = metrics["projection_debug_candidate_projection_success_rate"]
+        metrics["projection_debug_summary"] = projection_debug
     if not metrics["lane_context_quality_counts"]:
         metrics.update(summarize_lane_debug_csv(dataset_dir))
     cov_switch = slot_coverage_and_switches(dataset_dir, max_rows=max_rows)
     if cov_switch["slot_coverage_by_slot"]:
         metrics["slot_coverage_by_slot_from_arrays"] = cov_switch["slot_coverage_by_slot"]
+        metrics["slot_coverage_metric_source"] = "array_derived"
+    else:
+        metrics["slot_coverage_metric_source"] = "summary_derived"
     if cov_switch["slot_switch_rate_by_slot"]:
         metrics["slot_switch_rate_by_slot_from_arrays"] = cov_switch["slot_switch_rate_by_slot"]
     return metrics
@@ -197,23 +221,32 @@ def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_thresho
     nc = as_float(nuplan.get("candidate_projection_success_rate"), None)
     fallback_comparable = wf is not None and nf is not None
     projection_comparable = wc is not None and nc is not None
+    comparable_metrics_available = fallback_comparable or projection_comparable
     missing_waymo_metrics = {
         "fallback_assignment_used_rate": wf is None,
         "candidate_projection_success_rate": wc is None,
     }
 
-    if wf is None and wc is None:
-        verdict = "inconclusive_missing_waymo_metrics"
+    if not comparable_metrics_available:
+        verdict = "inconclusive_missing_comparable_metrics"
         reason = "Waymo fallback/projection metrics are unavailable, so nuPlan cannot be compared conservatively under the shared Stage5D assignment interface."
+        confidence = "inconclusive"
     elif projection_comparable and nc + 0.20 < wc:
         verdict = "nuplan_adapter_or_map_projection_issue"
         reason = "nuPlan candidate projection success is substantially lower than Waymo under the shared Stage5D assignment interface."
+        confidence = "high" if fallback_comparable else "medium"
     elif fallback_comparable and nf > wf + fallback_gap_threshold:
         verdict = "nuplan_adapter_or_map_projection_issue"
         reason = "nuPlan geometric fallback rate is substantially higher than Waymo under the same Stage5D assignment interface."
+        confidence = "medium" if not projection_comparable else "high"
+    elif projection_comparable and fallback_comparable and wc < 0.5 and nc < 0.5 and wf > 0.2 and nf > 0.2:
+        verdict = "generic_stage5_lane_aware_limitation_or_dataset_common_issue"
+        reason = "Both datasets show low projection success and elevated fallback, suggesting a shared Stage5D limitation or common data/map issue rather than a nuPlan-only adapter issue."
+        confidence = "medium"
     else:
-        verdict = "generic_stage5_lane_aware_limitation_or_inconclusive"
+        verdict = "no_clear_nuplan_adapter_issue" if comparable_metrics_available else "inconclusive_missing_comparable_metrics"
         reason = "nuPlan is not clearly worse than Waymo on comparable fallback/projection metrics, or comparable metrics are incomplete."
+        confidence = "low" if not (fallback_comparable and projection_comparable) else "medium"
     return {
         "verdict": verdict,
         "reason": reason,
@@ -223,6 +256,13 @@ def diagnose(waymo: Dict[str, Any], nuplan: Dict[str, Any], fallback_gap_thresho
         "nuplan_candidate_projection_success_rate": nc,
         "fallback_rate_comparable": fallback_comparable,
         "candidate_projection_success_comparable": projection_comparable,
+        "waymo_candidate_projection_success_rate_available": wc is not None,
+        "nuplan_candidate_projection_success_rate_available": nc is not None,
+        "fallback_rates_comparable": fallback_comparable,
+        "projection_success_rates_comparable": projection_comparable,
+        "waymo_slot_coverage_metric_source": waymo.get("slot_coverage_metric_source", "unknown"),
+        "nuplan_slot_coverage_metric_source": nuplan.get("slot_coverage_metric_source", "unknown"),
+        "confidence": confidence,
         "missing_waymo_metrics": missing_waymo_metrics,
     }
 
@@ -243,6 +283,13 @@ def render_markdown(payload: Dict[str, Any]) -> str:
         f"- reason: {diagnosis['reason']}",
         f"- fallback_rate_comparable: `{diagnosis.get('fallback_rate_comparable')}`",
         f"- candidate_projection_success_comparable: `{diagnosis.get('candidate_projection_success_comparable')}`",
+        f"- confidence: `{diagnosis.get('confidence')}`",
+        f"- Waymo candidate_projection_success_rate available: `{diagnosis.get('waymo_candidate_projection_success_rate_available')}`",
+        f"- nuPlan candidate_projection_success_rate available: `{diagnosis.get('nuplan_candidate_projection_success_rate_available')}`",
+        f"- fallback rates comparable: `{diagnosis.get('fallback_rates_comparable')}`",
+        f"- projection success rates comparable: `{diagnosis.get('projection_success_rates_comparable')}`",
+        f"- Waymo slot coverage metric source: `{diagnosis.get('waymo_slot_coverage_metric_source')}`",
+        f"- nuPlan slot coverage metric source: `{diagnosis.get('nuplan_slot_coverage_metric_source')}`",
         f"- missing_waymo_metrics: `{diagnosis.get('missing_waymo_metrics')}`",
         "",
         "## Comparable metrics",

@@ -990,3 +990,21 @@ Interpretation rule:
 - Compare candidate projection success only when both Waymo and nuPlan candidate projection success rates are available.
 - If both datasets show similar weakness, treat it as a generic Stage5D lane-aware assignment limitation and improve only `tools/lane_aware_assignment.py` / Stage5D CORE so both Waymo and nuPlan benefit.
 - If nuPlan is much worse than Waymo under the same Stage5D assignment call, treat it as a nuPlan LaneInfo adapter / map topology / adjacency / projection quality issue and improve only `tools/nuplan_lane_utils.py` or the nuPlan adapter path.
+
+## Stage7E lane-aware adapter diagnostics update
+
+Stage7E must not become a separate lane-aware assignment implementation. The only lane-aware assignment implementation remains Stage5D CORE in `tools/lane_aware_assignment.py`. Stage7E is an adapter: it converts nuPlan map lanes and tracked-object states into Stage5-compatible `LaneInfo` and candidate states, then calls Stage5D CORE.
+
+New diagnostic artifacts:
+
+- `nuplan_lane_projection_debug_summary.json`: bounded summary of ego/candidate projection success, rejection reasons, lane relation counts, and fallback cause counts.
+- `nuplan_lane_projection_debug_report.md`: human-readable summary of the same metrics.
+- `nuplan_lane_projection_debug.csv`: optional bounded sampled candidate rows, enabled by `--write_projection_debug` and capped by `--debug_projection_sample_rows`, `--debug_projection_max_candidates_per_frame`, and `--debug_projection_max_frames_per_row`.
+- `waymo_lane_aware_diagnostics.json/.md/.csv`: comparable Waymo Stage5D diagnostic export from existing outputs.
+
+Interpretation of comparison verdicts:
+
+- `nuplan_adapter_or_map_projection_issue`: comparable Waymo metrics exist and nuPlan is substantially worse in candidate projection success or fallback rate, which points to the nuPlan adapter / map projection path rather than a new Stage7 assignment problem.
+- `generic_stage5_lane_aware_limitation_or_dataset_common_issue`: both datasets show similarly low projection success or high fallback, so the limitation may be in shared Stage5D assumptions or common dataset/map conditions.
+- `inconclusive_missing_comparable_metrics`: Waymo / nuPlan comparable metrics are missing, so the comparison must not claim a nuPlan-specific issue.
+- `no_clear_nuplan_adapter_issue`: metrics are comparable and nuPlan is not clearly worse.
