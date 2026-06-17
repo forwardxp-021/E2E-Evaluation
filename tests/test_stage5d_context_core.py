@@ -161,3 +161,50 @@ def test_stage5d_context_core_local_frame_contract():
     np.testing.assert_allclose(ego[:, 4], [0.0, 0.0], atol=1e-6)
     np.testing.assert_allclose(speed, [2.0, 2.0], atol=1e-6)
     assert np.all(np.isfinite(heading))
+
+
+def test_slot_switch_makes_temporal_formula_parity_conservative():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    # front slot switches from agent_a to agent_b across a valid transition.
+    row_slots = [["agent_a", "agent_b", "agent_b"]] + [["-1", "-1", "-1"] for _ in core.SLOT_NAMES[1:]]
+    continuity = builder.slot_continuity_stats([row_slots])
+    switch_rates = {k: float(v["slot_id_switch_rate"] or 0.0) for k, v in continuity.items()}
+    accel_yaw_rate_matched = all(rate == 0.0 for rate in switch_rates.values())
+    stage5d_static_derived_formula_matched = True
+    stage5d_temporal_derived_formula_matched = bool(accel_yaw_rate_matched)
+    stage5d_derived_formula_matched = bool(stage5d_static_derived_formula_matched and stage5d_temporal_derived_formula_matched)
+
+    assert switch_rates["front"] > 0.0
+    assert accel_yaw_rate_matched is False
+    assert stage5d_derived_formula_matched is False
+
+    schema = core.make_stage5d_context_schema(accel_yaw_rate_matched=accel_yaw_rate_matched)
+    assert schema["stage5d_accel_yaw_rate_formula_matched"] is False
+    assert schema["stage5d_derived_formula_matched"] is False
+
+
+def test_zero_slot_switch_allows_full_derived_formula_parity():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    row_slots = [["agent_a", "agent_a", "agent_a"]] + [["-1", "-1", "-1"] for _ in core.SLOT_NAMES[1:]]
+    continuity = builder.slot_continuity_stats([row_slots])
+    switch_rates = {k: float(v["slot_id_switch_rate"] or 0.0) for k, v in continuity.items()}
+    accel_yaw_rate_matched = all(rate == 0.0 for rate in switch_rates.values())
+    stage5d_static_derived_formula_matched = True
+    stage5d_temporal_derived_formula_matched = bool(accel_yaw_rate_matched)
+    stage5d_derived_formula_matched = bool(stage5d_static_derived_formula_matched and stage5d_temporal_derived_formula_matched)
+
+    assert all(rate == 0.0 for rate in switch_rates.values())
+    assert accel_yaw_rate_matched is True
+    assert stage5d_derived_formula_matched is True
+
+    schema = core.make_stage5d_context_schema(accel_yaw_rate_matched=accel_yaw_rate_matched)
+    assert schema["stage5d_accel_yaw_rate_formula_matched"] is True
+    assert schema["stage5d_derived_formula_matched"] is True
+
+
+def test_nuplan_warnings_validation_does_not_let_core_override_conservative_parity():
+    source = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
+    assert '"validation": {**core_validation, **validation}' in source
+    assert '"stage5d_derived_formula_matched": True, "stage5d_closing_formula_matched"' not in source

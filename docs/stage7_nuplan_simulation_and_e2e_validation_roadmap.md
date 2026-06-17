@@ -898,17 +898,9 @@ Current implementation status:
 
 Current P0 actions:
 
-A. Clean Stage7E final embedding path by removing the legacy debug bridge.
+Stage7E final embedding cleanup: DONE
 
-- `tools/stage7e_embed_stage6_dataset.py` should only accept `--context_dataset_dir` as the final thesis input.
-- The final script must not construct encoder context from Stage7D top-K `neighbor_seq`.
-- The final script should record:
-
-```text
-does_not_rebuild_context_from_stage7d_neighbor_seq = true
-```
-
-B. Run nuPlan lane-aware context build with real map root:
+A. Run nuPlan lane-aware context build with real `--nuplan_map_root`:
 
 ```bash
 python tools/build_nuplan_5neighbor_context_dataset.py \
@@ -919,9 +911,10 @@ python tools/build_nuplan_5neighbor_context_dataset.py \
   --overwrite
 ```
 
-C. Verify `warnings.json` includes and validates these fields:
+B. Verify `warnings.json` / report fields:
 
 ```text
+validation.pass
 map_query_success
 lane_info_count
 lane_assignment_available
@@ -933,9 +926,10 @@ stage5d_slot_schema_matched
 stage5d_slot_order_matched
 stage5d_derived_formula_matched
 stage5d_accel_yaw_rate_formula_matched
+slot_id_switch_rate_by_slot
 ```
 
-D. Run Stage7E embedding using `--context_dataset_dir`:
+C. Run Stage7E embedding using `--context_dataset_dir`:
 
 ```bash
 python tools/stage7e_embed_stage6_dataset.py \
@@ -945,7 +939,7 @@ python tools/stage7e_embed_stage6_dataset.py \
   --overwrite
 ```
 
-E. Then run Stage7F.
+D. Run Stage7F BDD/report-card smoke.
 
 ### P1 — Stage 7F IDM Smoke
 

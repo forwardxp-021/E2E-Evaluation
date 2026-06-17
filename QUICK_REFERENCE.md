@@ -5351,8 +5351,18 @@ python tools/build_waymo_5neighbor_context_dataset.py \
 
 ```bash
 python tools/build_nuplan_5neighbor_context_dataset.py \
-  --sim_dir outputs/stage7c_official_nuplan_sim \
-  --output_dir outputs/stage7e_nuplan_5neighbor_context \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --overwrite
+```
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
   --overwrite
 ```
 
@@ -5369,5 +5379,5 @@ Waymo builder 和 nuPlan builder 都复用 `tools/stage5d_context_core.py` 中�
 - `context_traj.npy` shape 为 `[N,T,83]`。
 - 83 维顺序固定为 ego 8 维 + 5 个 semantic neighbor slots × 15 维。
 - slot 顺序固定为 `front, left_front, left_rear, right_front, right_rear`。
-- `warnings.json` 包含 `stage5d_core_reused=true`、`stage5d_slot_names_source`、`stage5d_feature_formula_source`、`stage5d_slot_schema_matched=true`、`stage5d_slot_order_matched=true`、`stage5d_derived_formula_matched=true`。
+- `warnings.json` 包含 `validation.pass`、`map_query_success`、`lane_info_count`、`lane_assignment_available`、`fallback_assignment_used_rate`、`ego_lane_projection_success_rate`、`candidate_lane_projection_success_rate`、`stage5d_core_reused=true`、`stage5d_slot_schema_matched=true`、`stage5d_slot_order_matched=true`、`stage5d_derived_formula_matched`、`stage5d_accel_yaw_rate_formula_matched`、`slot_id_switch_rate_by_slot`；如果 slot ID switch rate 非 0，则 temporal accel/yaw_rate parity 不能被标记为 true。
 - `build_nuplan_5neighbor_context_dataset.py` 不再定义自己的 `SLOT_NAMES` 或 neighbor channel order。
