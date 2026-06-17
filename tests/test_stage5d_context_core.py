@@ -60,3 +60,20 @@ def test_no_duplicate_schema_constants():
                     assert target.id not in {"SLOT_NAMES", "NEIGHBOR_CHANNELS", "STAGE5D_NEIGHBOR_SLOT_NAMES", "STAGE5D_NEIGHBOR_CHANNELS"}
     assert "STAGE5D_NEIGHBOR_SLOT_NAMES" not in source
     assert "STAGE5D_NEIGHBOR_CHANNELS" not in source
+
+
+def test_stage7e_no_topk_relabeling():
+    source = Path("tools/stage7e_embed_stage6_dataset.py").read_text(encoding="utf-8")
+    assert "neighbor[:, :5]" not in source
+    assert "STAGE5D_NEIGHBOR_SLOT_NAMES" not in source
+    import tools.stage7e_embed_stage6_dataset as stage7e
+    assert "Final Stage7E Stage5D context must be built" in stage7e.STAGE5D83_DEPRECATION_ERROR
+    import pytest
+    with pytest.raises(ValueError, match="Final Stage7E Stage5D context must be built"):
+        stage7e.build_checkpoint_compatible_context(
+            np.zeros((1, 2, 4), dtype=np.float32),
+            np.zeros((1, 5, 2, 9), dtype=np.float32),
+            5,
+            83,
+            "stage5d83",
+        )

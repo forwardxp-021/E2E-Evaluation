@@ -739,7 +739,7 @@ nonfinite_context_values_replaced_with_zero = 0
 nonfinite_embedding_values = 0
 ```
 
-`pad_to_checkpoint_dim` or zero-padding is smoke-only and must not be used as final thesis evidence. The deprecated `--dataset_dir --context_layout stage5d83` reconstruction path must fail with: `stage5d83 thesis context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir; Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
+`pad_to_checkpoint_dim` or zero-padding is smoke-only and must not be used as final thesis evidence. The deprecated `--dataset_dir --context_layout stage5d83` reconstruction path must fail with: `Final Stage7E Stage5D context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir. Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
 
 ---
 

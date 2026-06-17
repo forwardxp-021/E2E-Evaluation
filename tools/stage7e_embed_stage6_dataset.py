@@ -60,9 +60,8 @@ def load_context_dataset_paths(context_dataset_dir: Path):
     return required
 
 
-STAGE7D_NEIGHBOR_CHANNELS = ["rel_x", "rel_y", "rel_vx", "rel_vy", "distance", "bearing", "heading_rel", "speed", "valid"]
 STAGE5D83_DEPRECATION_ERROR = (
-    "stage5d83 thesis context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir; "
+    "Final Stage7E Stage5D context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir. "
     "Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots."
 )
 
@@ -78,7 +77,6 @@ def make_stage5d83_schema() -> dict:
         "deprecated_stage7d_topk_reconstruction": True,
         "deprecation_message": STAGE5D83_DEPRECATION_ERROR,
         "stage6_input_contract": "Stage 6 BDD/report-card consumes exported embedding vectors; interaction_feat_style.npy is used for reports/evaluation, not as encoder input.",
-        "stage7d_neighbor_source_channels": STAGE7D_NEIGHBOR_CHANNELS,
     })
     return schema
 
@@ -87,6 +85,29 @@ def load_checkpoint(path: Path):
         raise FileNotFoundError(f"checkpoint/model_path does not exist: {path}")
     return torch.load(path, map_location="cpu")
 
+
+
+def build_ego_neighbor9_context(ego: np.ndarray, neighbor: np.ndarray, max_neighbors: int) -> np.ndarray:
+    """Build the legacy Stage 7D smoke-only context without semantic-slot relabeling.
+
+    This path preserves an old interface-validation bridge. It keeps the first K
+    distance/top-K Stage 7D neighbor channels exactly as exported and must not be
+    used as Stage 5D thesis evidence.
+    """
+    ego_arr = np.asarray(ego, dtype=np.float32)
+    neighbor_arr = np.asarray(neighbor, dtype=np.float32)
+    if ego_arr.ndim != 3:
+        raise ValueError(f"ego_seq must have shape [N,T,C], got {list(ego_arr.shape)}")
+    if neighbor_arr.ndim != 4:
+        raise ValueError(f"neighbor_seq must have shape [N,K,T,C], got {list(neighbor_arr.shape)}")
+    if neighbor_arr.shape[0] != ego_arr.shape[0] or neighbor_arr.shape[2] != ego_arr.shape[1]:
+        raise ValueError(
+            f"ego_seq shape {list(ego_arr.shape)} is incompatible with neighbor_seq shape {list(neighbor_arr.shape)}"
+        )
+    k = min(int(max_neighbors), int(neighbor_arr.shape[1]))
+    if k <= 0:
+        raise ValueError(f"--max_neighbors must be positive, got {max_neighbors}")
+    return np.concatenate([ego_arr, neighbor_arr[:, :k].transpose(0, 2, 1, 3).reshape(ego_arr.shape[0], ego_arr.shape[1], -1)], axis=-1).astype(np.float32)
 
 def build_checkpoint_compatible_context(
     ego: np.ndarray,
@@ -338,7 +359,7 @@ def parse_args():
     p.add_argument("--model_path")
     p.add_argument("--batch_size", type=int, default=256)
     p.add_argument("--device", default="cuda")
-    p.add_argument("--max_neighbors", type=int, default=5, help="Use first K Stage 7D neighbors to match the existing Stage 5 context encoder input dimension.")
+    p.add_argument("--max_neighbors", type=int, default=5, help="Smoke/debug only: use first K Stage 7D neighbors for legacy ego_neighbor9/pad_to_checkpoint_dim interface checks. Not thesis evidence.")
     p.add_argument(
         "--context_layout",
         choices=["auto", "ego_neighbor9", "pad_to_checkpoint_dim", "stage5d83"],
@@ -353,6 +374,8 @@ def parse_args():
     args = p.parse_args()
     if not args.checkpoint and not args.model_path:
         raise ValueError("Provide --checkpoint or --model_path for the existing Stage 5/6 encoder.")
+    if args.dataset_dir and args.context_layout == "stage5d83":
+        raise ValueError(STAGE5D83_DEPRECATION_ERROR)
     return args
 
 
