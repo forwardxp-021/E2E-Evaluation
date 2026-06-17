@@ -5448,3 +5448,49 @@ Stage 7C 从 `merged_metadata.csv` 读取场景行时，会把可用的 `map_nam
 - `warnings.json.validation.lane_assignment_available=true`；
 - `slot_assignment_report.md` 和 `context_build_report.md` 同时报告 map_name 解析、map query、lane info、lane-aware success rate、geometric fallback rate；
 - 严格 `lane_aware_only` 模式不允许因为缺少 `map_name` 而 silent fallback。
+
+---
+
+## Stage5D / Stage7E lane-aware assignment 对比诊断
+
+## 1. 命令
+
+```bash
+python tools/compare_lane_aware_diagnostics.py \
+  --waymo_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --nuplan_dir outputs/<stage7e_nuplan_context_output> \
+  --out_dir outputs/lane_aware_diagnostic_comparison \
+  --max_rows 2000
+```
+
+## 2. 期望行为
+
+该命令不会实现新的 Stage7 lane-aware 算法，也不会改写任何已有数据集。它只读取 Waymo Stage5/Stage5D 输出目录中的 `build_summary.json`、`neighbor_context_summary.json`、shard 里的 `neighbor_seq.npy` / `neighbor_slot_ids.npy`，以及 nuPlan Stage7E 输出目录中的 `warnings.json`、`assignment_debug.json`、`neighbor_seq.npy` / `neighbor_slot_ids.npy`，然后用同一组 Stage5D lane-aware assignment 诊断口径生成可比报告。
+
+输出文件：
+
+```text
+outputs/lane_aware_diagnostic_comparison/lane_aware_diagnostic_comparison.json
+outputs/lane_aware_diagnostic_comparison/lane_aware_diagnostic_comparison.md
+```
+
+报告会对比：
+
+- `lane_assignment_available`
+- `fallback_assignment_used_rate`
+- `candidate_projection_success_rate`
+- `adjacency_source_counts`
+- `lane_context_quality` counts
+- rejection reason counts
+- slot coverage by slot
+- slot switch rate by slot
+
+诊断规则是：如果 nuPlan 在复用 `tools.lane_aware_assignment.assign_neighbors_lane_aware` 的前提下，比 Waymo 有明显更高 fallback rate 或明显更低 candidate projection success rate，则优先判定为 nuPlan LaneInfo adapter / map topology / adjacency / projection quality issue；否则判定为 generic Stage5 lane-aware limitation 或证据不足。
+
+## 3. 通过标准
+
+- 命令正常结束并生成 `.json` 与 `.md` 两个报告文件。
+- 报告明确写出 Stage5D CORE / `tools.lane_aware_assignment.py` 是唯一 lane-aware assignment 实现，Stage7 nuPlan 只是 adapter。
+- 报告包含上述 8 类可比指标。
+- 如果结论指向 generic limitation，后续只能改 `tools/lane_aware_assignment.py` 或 Stage5D CORE，使 Waymo 与 nuPlan 同时受益。
+- 如果结论指向 nuPlan-specific issue，后续只能改 `tools/nuplan_lane_utils.py` 或 nuPlan adapter，不允许在 Stage7 复制 lane-aware assignment 逻辑。
