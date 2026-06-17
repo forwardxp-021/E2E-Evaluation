@@ -1211,3 +1211,13 @@ BDD（Behavioral Distribution Distance）定义为：比较 policy/model A 与 B
 - energy distance
 
 关系总结：Stage 5 提供了更强的 interaction-aware encoder；Stage 6 将在此基础上对真实 E2E 模型版本计算 BDD，并形成风格漂移与行为差异报告。
+
+## Stage 5D context core single-source-of-truth
+
+Stage 5D 83 维 context 构造现在由 `tools/stage5d_context_core.py` 统一管理。Waymo builder 与 nuPlan builder 只保留各自的数据源适配逻辑，然后调用同一个 core 完成 slot 顺序、ego/neighbor channel 顺序、derived formulas、`context_traj` 拼接、schema 与 validation。
+
+- slot 顺序：`front, left_front, left_rear, right_front, right_rear`。
+- context 维度：`83 = ego 8 + 5 semantic neighbor slots × 15 channels`。
+- nuPlan row 语义保持不变：`scenario × planner × planner-controlled ego rollout`。
+- nuPlan background agents 只作为 context candidates，不扩展成 ego rows。
+- Stage 6 逻辑不因本次 refactor 改变。
