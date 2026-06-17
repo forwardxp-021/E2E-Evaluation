@@ -5212,3 +5212,44 @@ Stage 6 BDD/report-card 消费 Stage 7E 导出的 `embedding.npy` / `embeddings/
 - `warnings.json` 中 `context_padded_to_checkpoint_dim == false`。
 - `warnings.json` 中 `stage5d_schema_matched == true`。
 - `embedding.npy` 行数等于 Stage 7D metadata 行数，且不改变 Stage 7D row semantics、不扩展 background agents 为 ego rows。
+
+## Stage 7E：nuPlan Stage 5D-compatible 5-neighbor context dataset（推荐架构）
+
+## 1. 命令
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --max_neighbors_for_context 5 \
+  --slot_assignment_method geometric_proxy \
+  --same_lane_abs_y 1.8 \
+  --adjacent_lane_min_abs_y 1.5 \
+  --overwrite
+
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- Stage 7C official nuPlan simulation 替代 Waymo 的 Stage 5 sample/context building 输入；Stage 7E 先构建 Stage 5D-compatible `context_traj.npy [N,T,83]`，再复用 Stage 5D best model 导出 embedding。
+- 行语义固定为 `row = scenario × planner × planner-controlled nuPlan ego rollout`；当前 IDM 5-log smoke 应为 `5 × 4 = 20` 行。nuPlan 不复制 Waymo Stage 5 的 multi-agent ego expansion；background agents 只作为 context，不扩展为 ego rows。
+- 输出目录包含 `ego_seq.npy`、`context_traj.npy`、`interaction_feat_style.npy`、`metadata.csv`、`feature_schema.json`、`stage5d_context_schema.json`、`shard_manifest.json`、`planner_policy_indices/*.npy`、`warnings.json`、`context_build_report.md`、`slot_assignment_report.md`。
+- Stage 5D best model 的训练输入是 `context_traj.npy [N,T,83]`：`83 = ego 8 + 5 semantic neighbor slots × 15 channels`。5 个 slot 为 `front, rear, left_front, left_rear, right_front`。
+- `context_traj.npy` 不包含 map/lane/ODD channels；`interaction_feat_style.npy` 用于报告和 evaluation，不作为 encoder input。
+- 当前 nuPlan builder 使用 `geometric_proxy` 直接从 official msgpack tracked objects 相对 planner-controlled ego 分配语义 slot；不会把 Stage 7D 的 distance top-K `neighbor_seq[:, :5]` 直接重命名为 front/rear/left/right。
+- Stage 7E 的 `--context_dataset_dir` 模式直接读取 `context_traj.npy`，检查 `checkpoint["context_dim"] == context_traj.shape[-1]`，导出 `embedding.npy`，并复制 `metadata.csv` 与 `planner_policy_indices/*.npy`。该模式不从 Stage 7D `neighbor_seq` 重建 context。
+- Stage 7D 仍定义为 Stage 6-compatible evaluation dataset；Stage 7F 复用既有 Stage 6 BDD/report-card scripts，不重新实现 BDD，不训练 Stage 7-only embedding model。
+
+## 3. 通过标准
+
+- `ego_seq.npy` shape 为 `[20,T,8]`，`context_traj.npy` shape 为 `[20,T,83]`，`interaction_feat_style.npy` 第一维为 20，`metadata.csv` 为 20 行。
+- `warnings.json.validation.rows_equal_num_scenarios_times_num_planners == true`、`no_multi_agent_ego_expansion == true`、`background_agents_context_only == true`。
+- `warnings.json.validation.stage5d_dim_matched == true`、`stage5d_channel_schema_matched == true`、`context_traj_no_nonfinite == true`。
+- `planner_policy_indices/simple_planner.npy`、`idm_longitudinal_conservative.npy`、`idm_longitudinal_comfort.npy`、`idm_longitudinal_aggressive.npy` 均存在且非空，并与 row order 匹配。
+- `slot_assignment_report.md` 记录 coverage / empty ratio / median rel_x / median rel_y / median distance，并给出 front/rear/left/right sanity checks；若使用 `geometric_proxy`，报告必须说明它不是 Waymo lane-aware slot assignment 的精确复刻。
+- Stage 6 BDD/report-card 输入为 Stage 7E 导出的 `embedding.npy`、`interaction_feat_style.npy`、`metadata.csv` 与 A/B indices；Stage 6 不把 raw Stage 7D `ego_seq.npy` / `neighbor_seq.npy` 直接送入 BDD。
