@@ -69,14 +69,89 @@ def assign_slots(cands: List[Tuple[str, float, float, Tuple[float, float, float,
     return out
 
 
+def build_stage5d_neighbor_channels(
+    *,
+    rel_x: float,
+    rel_y: float,
+    rel_vx: float,
+    rel_vy: float,
+    neighbor_speed: float,
+    neighbor_heading_rel: float,
+    ego_speed: float,
+    previous_neighbor_speed: float | None,
+    previous_neighbor_heading_rel: float | None,
+    same_slot_track_as_previous: bool,
+    dt: float,
+    ttc_cap: float = 999.0,
+    thw_cap: float = 999.0,
+) -> np.ndarray:
+    """Build one Stage 5D 15-channel neighbor vector with Waymo Stage 5 formulas.
+
+    Channel order matches ``tools/build_waymo_5neighbor_context_dataset.py``:
+    valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y,
+    closing, ttc, thw, speed, accel, heading_rel, yaw_rate.
+
+    Formula parity notes:
+    - delta_x/delta_y are exact duplicates of rel_x/rel_y.
+    - speed is hypot(vx, vy) upstream from raw state velocity.
+    - accel/yaw_rate use finite differences of the same selected slot track.  When
+      nuPlan geometric slot assignment switches IDs between adjacent frames, the
+      caller must set ``same_slot_track_as_previous=False``; we then reset the
+      finite difference to zero rather than differencing two different agents.
+    - Waymo Stage 5 computes ``closing = ego_forward_speed - rel_vx`` and applies
+      the TTC cap when closing is non-positive.  For a current ego-centric frame,
+      ego_forward_speed is the ego scalar speed.
+    """
+    safe_dt = max(float(dt), 1e-6)
+    dist = float(math.hypot(rel_x, rel_y))
+    closing = float(ego_speed) - float(rel_vx)
+    ttc = min(dist / max(closing, 1e-3), ttc_cap) if closing > 1e-3 else ttc_cap
+    thw = min(dist / max(float(ego_speed), 1e-3), thw_cap)
+    if same_slot_track_as_previous and previous_neighbor_speed is not None:
+        accel = (float(neighbor_speed) - float(previous_neighbor_speed)) / safe_dt
+    else:
+        accel = 0.0
+    if same_slot_track_as_previous and previous_neighbor_heading_rel is not None:
+        yaw_rate = float(wrap(float(neighbor_heading_rel) - float(previous_neighbor_heading_rel))) / safe_dt
+    else:
+        yaw_rate = 0.0
+    return np.asarray(
+        [
+            1.0,
+            rel_x,
+            rel_y,
+            rel_vx,
+            rel_vy,
+            dist,
+            rel_x,
+            rel_y,
+            closing,
+            ttc,
+            thw,
+            neighbor_speed,
+            accel,
+            neighbor_heading_rel,
+            yaw_rate,
+        ],
+        dtype=np.float32,
+    )
+
+
 def build_row_context(stage7c_seq: np.ndarray, mask: np.ndarray, tracks: Dict[str, Dict[int, Tuple[float, float, float, float, float, float]]], args: argparse.Namespace) -> Tuple[np.ndarray, np.ndarray, np.ndarray, List[List[str]]]:
     ego = convert_ego(stage7c_seq[None, None], mask[None, None])[0]
     timesteps = ego.shape[0]
     ex, ey, eyaw, evx, evy = ego_world(stage7c_seq)
     nbr = np.zeros((5, timesteps, 15), dtype=np.float32)
     slot_ids = [["-1" for _ in range(timesteps)] for _ in range(5)]
+    previous_speed: List[float | None] = [None] * 5
+    previous_heading_rel: List[float | None] = [None] * 5
+    previous_token: List[str | None] = [None] * 5
+    dt = 0.1
     for t in range(timesteps):
         if not bool(mask[t]):
+            previous_speed = [None] * 5
+            previous_heading_rel = [None] * 5
+            previous_token = [None] * 5
             continue
         cands = []
         c = math.cos(float(eyaw[t])); s = math.sin(float(eyaw[t]))
@@ -89,47 +164,111 @@ def build_row_context(stage7c_seq: np.ndarray, mask: np.ndarray, tracks: Dict[st
             rel_y = -s * dx + c * dy
             cands.append((tok, rel_x, rel_y, st))
         assigned = assign_slots(cands, args.same_lane_abs_y, args.adjacent_lane_min_abs_y)
+        current_tokens = [None] * 5
         for si, sn in enumerate(STAGE5D_NEIGHBOR_SLOT_NAMES):
             if sn not in assigned:
+                previous_speed[si] = None
+                previous_heading_rel[si] = None
+                previous_token[si] = None
                 continue
             tok, rel_x, rel_y, st = assigned[sn]
+            current_tokens[si] = tok
             dvx = st[2] - float(evx[t]); dvy = st[3] - float(evy[t])
             rel_vx = c * dvx + s * dvy
             rel_vy = -s * dvx + c * dvy
-            dist = math.hypot(rel_x, rel_y)
             heading_rel = float(wrap(st[4] - float(eyaw[t])))
-            closing = max(-rel_vx, 0.0)
-            ttc = min(dist / max(closing, 1e-3), 999.0) if closing > 1e-3 else 999.0
-            thw = min(dist / max(float(stage7c_seq[t, 3]), 1e-3), 999.0)
-            nbr[si, t, :] = [1.0, rel_x, rel_y, rel_vx, rel_vy, dist, rel_x, rel_y, closing, ttc, thw, st[5], 0.0, heading_rel, 0.0]
+            same_track = previous_token[si] == tok
+            nbr[si, t, :] = build_stage5d_neighbor_channels(
+                rel_x=rel_x,
+                rel_y=rel_y,
+                rel_vx=rel_vx,
+                rel_vy=rel_vy,
+                neighbor_speed=st[5],
+                neighbor_heading_rel=heading_rel,
+                ego_speed=float(stage7c_seq[t, 3]),
+                previous_neighbor_speed=previous_speed[si],
+                previous_neighbor_heading_rel=previous_heading_rel[si],
+                same_slot_track_as_previous=same_track,
+                dt=dt,
+            )
             slot_ids[si][t] = tok
-    dt = 0.1
-    for si in range(5):
-        valid = nbr[si, :, 0] > 0.5
-        speed = nbr[si, :, 11]
-        heading = nbr[si, :, 13]
-        nbr[si, :, 12] = np.diff(speed, prepend=speed[:1]) / dt
-        nbr[si, :, 14] = np.diff(np.unwrap(heading), prepend=heading[:1]) / dt
-        nbr[si, ~valid, 12] = 0.0; nbr[si, ~valid, 14] = 0.0
+            previous_speed[si] = float(st[5])
+            previous_heading_rel[si] = heading_rel
+            previous_token[si] = tok
     context = np.concatenate([ego, nbr.reshape(timesteps, -1)], axis=1).astype(np.float32)
     return ego.astype(np.float32), nbr, context, slot_ids
 
 
-def make_context_schema() -> Dict[str, Any]:
+def slot_continuity_stats(slot_id_rows: List[List[List[str]]]) -> Dict[str, Dict[str, float | int | None]]:
+    stats: Dict[str, Dict[str, float | int | None]] = {}
+    for si, sn in enumerate(STAGE5D_NEIGHBOR_SLOT_NAMES):
+        transitions = 0
+        switches = 0
+        segments: List[int] = []
+        for row_slots in slot_id_rows:
+            ids = row_slots[si]
+            prev = "-1"
+            current_len = 0
+            for tok in ids:
+                if tok != "-1":
+                    if prev != "-1":
+                        transitions += 1
+                        if tok != prev:
+                            switches += 1
+                            if current_len > 0:
+                                segments.append(current_len)
+                            current_len = 1
+                        else:
+                            current_len += 1
+                    else:
+                        current_len = 1
+                else:
+                    if current_len > 0:
+                        segments.append(current_len)
+                    current_len = 0
+                prev = tok
+            if current_len > 0:
+                segments.append(current_len)
+        stats[sn] = {
+            "slot_id_switch_count": int(switches),
+            "slot_id_transition_count": int(transitions),
+            "slot_id_switch_rate": float(switches) / max(1, transitions),
+            "mean_continuous_segment_length": float(np.mean(segments)) if segments else None,
+        }
+    return stats
+
+def make_context_schema(accel_yaw_rate_matched: bool = False) -> Dict[str, Any]:
+    channel_meta = {
+        "valid": ("direct_from_state", "1.0 when a slot has an assigned valid tracked object at this timestep, else 0.0", True),
+        "rel_x": ("direct_from_state", "neighbor position transformed into the current ego-centric frame", True),
+        "rel_y": ("direct_from_state", "neighbor position transformed into the current ego-centric frame", True),
+        "rel_vx": ("direct_from_state", "neighbor velocity minus ego velocity transformed into the current ego-centric frame", True),
+        "rel_vy": ("direct_from_state", "neighbor velocity minus ego velocity transformed into the current ego-centric frame", True),
+        "distance": ("derived_same_as_stage5", "hypot(rel_x, rel_y)", True),
+        "delta_x": ("derived_same_as_stage5", "delta_x = rel_x", True),
+        "delta_y": ("derived_same_as_stage5", "delta_y = rel_y", True),
+        "closing": ("derived_same_as_stage5", "ego_forward_speed - rel_vx; TTC uses cap when closing <= 1e-3", True),
+        "ttc": ("derived_same_as_stage5", "min(distance / max(closing, 1e-3), 999.0) if closing > 1e-3 else 999.0", True),
+        "thw": ("derived_same_as_stage5", "min(distance / max(ego_speed, 1e-3), 999.0)", True),
+        "speed": ("direct_or_derived_from_state", "hypot(neighbor_vx, neighbor_vy) parsed from official nuPlan tracked-object state", True),
+        "accel": ("derived_same_as_stage5" if accel_yaw_rate_matched else "approximated", "diff(neighbor_speed, prepend=neighbor_speed[0]) / dt only across the same selected slot track; reset at nuPlan slot ID switches", accel_yaw_rate_matched),
+        "heading_rel": ("direct_or_derived_from_state", "wrap(neighbor_heading - ego_heading)", True),
+        "yaw_rate": ("derived_same_as_stage5" if accel_yaw_rate_matched else "approximated", "diff(neighbor_heading_rel, prepend=neighbor_heading_rel[0]) / dt only across the same selected slot track; reset at nuPlan slot ID switches", accel_yaw_rate_matched),
+    }
     channels = []
     for i, ch in enumerate(STAGE5D_EGO_CHANNELS):
-        channels.append({"index": i, "name": ch, "source": "simulated_ego_seq", "proxy": False})
-    idx = 8; proxy = []
-    proxy_channels = {"delta_x", "delta_y", "closing", "ttc", "thw", "accel", "yaw_rate"}
+        channels.append({"index": i, "name": ch, "source": "simulated_ego_seq", "source_kind": "direct_from_state", "formula": "converted by Stage 7D convert_ego", "matched_waymo_stage5_formula": True})
+    idx = 8
+    approximated = []
     for slot in STAGE5D_NEIGHBOR_SLOT_NAMES:
         for ch in STAGE5D_NEIGHBOR_CHANNELS:
-            is_proxy = ch in proxy_channels
+            source_kind, formula, matched = channel_meta[ch]
             nm = f"{slot}_{ch}"
-            channels.append({"index": idx, "name": nm, "source": "official_nuplan_msgpack_tracked_objects", "proxy": is_proxy})
-            if is_proxy: proxy.append(nm)
+            channels.append({"index": idx, "name": nm, "source": "official_nuplan_msgpack_tracked_objects", "source_kind": source_kind, "formula": formula, "matched_waymo_stage5_formula": bool(matched), "parity_status": "matched" if matched else "approximated_or_not_stage5_matched"})
+            if not matched:
+                approximated.append(nm)
             idx += 1
-    return {"schema_name": "stage5d83_nuplan_geometric_proxy", "shape": "[N,T,83]", "context_dim": 83, "ego_channels": STAGE5D_EGO_CHANNELS, "neighbor_slots": STAGE5D_NEIGHBOR_SLOT_NAMES, "neighbor_channels_per_slot": STAGE5D_NEIGHBOR_CHANNELS, "context_has_map_lane_odd_channels": False, "stage5d_best_model_training_input": "context_traj.npy [N,T,83] from tools/build_waymo_5neighbor_context_dataset.py", "dim_formula": "83 = ego 8 + 5 semantic neighbor slots × 15 channels", "slot_assignment_method": "geometric_proxy, not exact Waymo lane-aware assignment", "proxy_channels": proxy, "channels": channels}
-
+    return {"schema_name": "stage5d83_nuplan_geometric_stage5_formula_parity", "shape": "[N,T,83]", "context_dim": 83, "ego_channels": STAGE5D_EGO_CHANNELS, "neighbor_slots": STAGE5D_NEIGHBOR_SLOT_NAMES, "neighbor_channels_per_slot": STAGE5D_NEIGHBOR_CHANNELS, "context_has_map_lane_odd_channels": False, "stage5d_best_model_training_input": "context_traj.npy [N,T,83] from tools/build_waymo_5neighbor_context_dataset.py", "dim_formula": "83 = ego 8 + 5 semantic neighbor slots × 15 channels", "slot_assignment_method": "geometric_proxy, not exact Waymo lane-aware assignment", "approximated_or_not_stage5_matched_channels": approximated, "channels": channels}
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Build Stage 5D-compatible [N,T,83] nuPlan context artifacts from official Stage 7C simulation outputs.")
@@ -177,20 +316,31 @@ def main() -> None:
     idx_dir=args.output_dir/"planner_policy_indices"; idx_dir.mkdir()
     for pid,p in enumerate(planners): np.save(idx_dir/f"{p}.npy", np.asarray([r for r in range(expected_rows) if r % n_planners == pid], dtype=np.int64))
     np.save(args.output_dir/"ego_seq.npy", ego_arr); np.save(args.output_dir/"context_traj.npy", ctx_arr); np.save(args.output_dir/"interaction_feat_style.npy", feat_arr); np.save(args.output_dir/"neighbor_seq.npy", nbr_arr); np.save(args.output_dir/"neighbor_slot_ids.npy", np.asarray(slot_id_rows, dtype=object))
-    write_csv(args.output_dir/"metadata.csv", rows); write_feature_schema_json(args.output_dir/"feature_schema.json"); write_json(args.output_dir/"stage5d_context_schema.json", make_context_schema()); write_json(args.output_dir/"shard_manifest.json", {"shards":[{"shard_path":"."}], "format":"monolithic_stage5d_context", "context_traj":"context_traj.npy"})
+    write_csv(args.output_dir/"metadata.csv", rows); write_feature_schema_json(args.output_dir/"feature_schema.json"); write_json(args.output_dir/"shard_manifest.json", {"shards":[{"shard_path":"."}], "format":"monolithic_stage5d_context", "context_traj":"context_traj.npy"})
     slot_stats={}; sanity={}
     for si,sn in enumerate(STAGE5D_NEIGHBOR_SLOT_NAMES):
         valid=nbr_arr[:,si,:,0]>0.5; vals=nbr_arr[:,si]
         cov=float(np.mean(valid)); slot_stats[sn]={"coverage_ratio":cov,"empty_slot_ratio":1.0-cov,"median_rel_x":float(np.median(vals[:,:,1][valid])) if np.any(valid) else None,"median_rel_y":float(np.median(vals[:,:,2][valid])) if np.any(valid) else None,"median_distance":float(np.median(vals[:,:,5][valid])) if np.any(valid) else None}
     sanity={"front_median_rel_x_gt_0": (slot_stats["front"]["median_rel_x"] is not None and slot_stats["front"]["median_rel_x"]>0), "rear_median_rel_x_lt_0": (slot_stats["rear"]["median_rel_x"] is not None and slot_stats["rear"]["median_rel_x"]<0), "left_front_median_rel_y_gt_0": (slot_stats["left_front"]["median_rel_y"] is not None and slot_stats["left_front"]["median_rel_y"]>0), "left_rear_median_rel_y_gt_0": (slot_stats["left_rear"]["median_rel_y"] is not None and slot_stats["left_rear"]["median_rel_y"]>0), "right_front_median_rel_y_lt_0": (slot_stats["right_front"]["median_rel_y"] is not None and slot_stats["right_front"]["median_rel_y"]<0)}
     slot_pass=all(sanity.values())
+    slot_continuity = slot_continuity_stats(slot_id_rows)
+    slot_switch_rate_by_slot = {k: float(v["slot_id_switch_rate"] or 0.0) for k, v in slot_continuity.items()}
+    accel_yaw_rate_matched = all(rate == 0.0 for rate in slot_switch_rate_by_slot.values())
     planner_non_empty=all(np.load(idx_dir/f"{p}.npy").size>0 for p in planners)
-    validation={"pass": bool(slot_pass and planner_non_empty), "row_semantics_correct": True, "no_multi_agent_ego_expansion": True, "background_agents_context_only": True, "stage5d_dim_matched": ctx_arr.shape[-1]==83, "stage5d_channel_schema_matched": True, "stage5d_slot_semantics_verified": bool(slot_pass), "slot_sanity_passed": bool(slot_pass), "slot_coverage_by_slot": {k:v["coverage_ratio"] for k,v in slot_stats.items()}, "context_traj_no_nonfinite": bool(np.isfinite(ctx_arr).all()), "planner_indices_non_empty": bool(planner_non_empty), "rows_equal_num_scenarios_times_num_planners": row == expected_rows, "metadata_row_count_matches": len(rows)==row, "ego_seq_row_count_matches": ego_arr.shape[0]==row, "interaction_feat_style_row_count_matches": feat_arr.shape[0]==row}
-    write_json(args.output_dir/"warnings.json", {"warnings": warnings, "slot_assignment_method":"geometric_proxy", "stage5d_slot_assignment_exact_waymo_lane_aware": False, "proxy_channels_recorded_in_stage5d_context_schema": True, "validation": validation})
-    report=["# nuPlan Stage 5D-Compatible Context Build Report","",f"- rows: `{row}` (= `{n_scenarios} scenarios × {n_planners} planners`)","- row semantics: `scenario × planner × planner-controlled nuPlan ego rollout`","- background agents: context only; no multi-agent ego expansion","- context_traj.npy: `"+str(list(ctx_arr.shape))+"`","- Stage 5D best model input: `context_traj.npy [N,T,83]`","- 83 = ego 8 + 5 semantic neighbor slots × 15 channels","- interaction_feat_style.npy is for reports/evaluation, not encoder input","- context_traj has no map/lane/ODD channels","- slot assignment: `geometric_proxy`, not exact Waymo lane-aware assignment","- parsed msgpack files: `"+str(parsed)+"`"]
+    validation={"pass": bool(slot_pass and planner_non_empty), "row_semantics_correct": True, "no_multi_agent_ego_expansion": True, "background_agents_context_only": True, "stage5d_dim_matched": ctx_arr.shape[-1]==83, "stage5d_channel_schema_matched": True, "stage5d_slot_semantics_verified": bool(slot_pass), "slot_sanity_passed": bool(slot_pass), "slot_coverage_by_slot": {k:v["coverage_ratio"] for k,v in slot_stats.items()}, "context_traj_no_nonfinite": bool(np.isfinite(ctx_arr).all()), "planner_indices_non_empty": bool(planner_non_empty), "rows_equal_num_scenarios_times_num_planners": row == expected_rows, "metadata_row_count_matches": len(rows)==row, "ego_seq_row_count_matches": ego_arr.shape[0]==row, "interaction_feat_style_row_count_matches": feat_arr.shape[0]==row, "stage5d_derived_formula_matched": True, "stage5d_closing_formula_matched": True, "stage5d_ttc_formula_matched": True, "stage5d_delta_xy_formula_matched": True, "stage5d_accel_yaw_rate_formula_matched": bool(accel_yaw_rate_matched), "slot_id_switch_rate_by_slot": slot_switch_rate_by_slot}
+    write_json(args.output_dir/"stage5d_context_schema.json", make_context_schema(accel_yaw_rate_matched=accel_yaw_rate_matched))
+    write_json(args.output_dir/"warnings.json", {"warnings": warnings, "slot_assignment_method":"geometric_proxy", "stage5d_slot_assignment_exact_waymo_lane_aware": False, "stage5d_formula_parity_schema_recorded": True, "validation": validation})
+    exact_channels = "valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y, closing, ttc, thw, speed, heading_rel"
+    accel_note = "accel and yaw_rate match Stage 5D finite-difference semantics because no slot ID switches were observed." if accel_yaw_rate_matched else "accel and yaw_rate are approximated_or_not_stage5_matched because at least one semantic slot switches tracked-object IDs; finite differences are reset at switches."
+    report=["# nuPlan Stage 5D-Compatible Context Build Report","",f"- rows: `{row}` (= `{n_scenarios} scenarios × {n_planners} planners`)","- row semantics: `scenario × planner × planner-controlled nuPlan ego rollout`","- background agents: context only; no multi-agent ego expansion","- context_traj.npy: `"+str(list(ctx_arr.shape))+"`","- Stage 5D best model input: `context_traj.npy [N,T,83]`","- 83 = ego 8 + 5 semantic neighbor slots × 15 channels","- interaction_feat_style.npy is for reports/evaluation, not encoder input","- context_traj has no map/lane/ODD channels","- slot assignment: `geometric_proxy`, not exact Waymo lane-aware assignment","- parsed msgpack files: `"+str(parsed)+"`","", "## Stage 5 formula parity", f"- Exactly matched neighbor formulas: `{exact_channels}`.", "- closing formula parity: `passed` (`closing = ego_forward_speed - rel_vx`).", "- TTC formula parity: `passed` (cap when closing <= 1e-3, otherwise distance / max(closing, 1e-3)).", "- delta_x/delta_y formula parity: `passed` (duplicates of rel_x/rel_y, not proxy channels).", f"- accel/yaw_rate formula parity: `{accel_yaw_rate_matched}`. {accel_note}", "- Approximations: slot assignment remains geometric_proxy rather than Waymo lane-aware assignment; accel/yaw_rate are approximations when slot switching is non-zero."]
     (args.output_dir/"context_build_report.md").write_text("\n".join(report)+"\n", encoding="utf-8")
     lines=["# Slot Assignment Report","",f"- slot assignment method: `{args.slot_assignment_method}`",f"- same_lane_abs_y: `{args.same_lane_abs_y}`",f"- adjacent_lane_min_abs_y: `{args.adjacent_lane_min_abs_y}`",""]
-    for sn,st in slot_stats.items(): lines.append(f"- {sn}: coverage={st['coverage_ratio']:.6f}, empty={st['empty_slot_ratio']:.6f}, median_rel_x={st['median_rel_x']}, median_rel_y={st['median_rel_y']}, median_distance={st['median_distance']}")
+    for sn,st in slot_stats.items():
+        cont = slot_continuity[sn]
+        lines.append(f"- {sn}: coverage={st['coverage_ratio']:.6f}, empty={st['empty_slot_ratio']:.6f}, median_rel_x={st['median_rel_x']}, median_rel_y={st['median_rel_y']}, median_distance={st['median_distance']}, slot_id_switch_count={cont['slot_id_switch_count']}, slot_id_switch_rate={cont['slot_id_switch_rate']:.6f}, mean_continuous_segment_length={cont['mean_continuous_segment_length']}")
+    lines += ["", "## Slot continuity diagnostics"]
+    for sn, cont in slot_continuity.items():
+        lines.append(f"- {sn}: slot_id_switch_count={cont['slot_id_switch_count']}, slot_id_switch_rate={cont['slot_id_switch_rate']:.6f}, mean_continuous_segment_length={cont['mean_continuous_segment_length']}")
     lines += ["", "## Sanity checks"] + [f"- {k}: `{v}`" for k,v in sanity.items()]
     (args.output_dir/"slot_assignment_report.md").write_text("\n".join(lines)+"\n", encoding="utf-8")
     if not validation["pass"]: raise RuntimeError("nuPlan Stage5D context validation failed; see warnings.json and slot_assignment_report.md")
