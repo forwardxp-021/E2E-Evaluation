@@ -5494,3 +5494,56 @@ outputs/lane_aware_diagnostic_comparison/lane_aware_diagnostic_comparison.md
 - 报告包含上述 8 类可比指标。
 - 如果结论指向 generic limitation，后续只能改 `tools/lane_aware_assignment.py` 或 Stage5D CORE，使 Waymo 与 nuPlan 同时受益。
 - 如果结论指向 nuPlan-specific issue，后续只能改 `tools/nuplan_lane_utils.py` 或 nuPlan adapter，不允许在 Stage7 复制 lane-aware assignment 逻辑。
+
+## Stage7E 车道感知诊断（nuPlan / Waymo 对比）
+
+## 1. 命令
+
+nuPlan 构建并输出投影调试：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c2c2_idm_longitudinal_5logs \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_debug \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --debug_projection_sample_rows 20 \
+  --overwrite
+```
+
+Waymo 侧导出同粒度诊断：
+
+```bash
+python tools/export_waymo_lane_aware_diagnostics.py \
+  --waymo_dir outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --output_dir outputs/waymo_laneaware_diagnostics_v2 \
+  --max_rows 5000 \
+  --overwrite
+```
+
+跨数据集诊断对比：
+
+```bash
+python tools/compare_lane_aware_diagnostics.py \
+  --waymo_dir outputs/waymo_laneaware_diagnostics_v2 \
+  --nuplan_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_debug \
+  --out_dir outputs/stage7e_laneaware_diagnostic_compare_v3 \
+  --max_rows 5000
+```
+
+## 2. 期望行为
+
+- Stage7 不实现新的 lane-aware assignment 算法；Stage7 只把 nuPlan map / tracked objects 转成 Stage5D CORE 可用的 `LaneInfo` 和候选状态。
+- nuPlan 输出 `nuplan_lane_projection_debug_summary.json`、`nuplan_lane_projection_debug_report.md`；加 `--write_projection_debug` 时额外输出有界采样的 `nuplan_lane_projection_debug.csv`。
+- Waymo 诊断脚本只读取已有 Stage5D 输出和数组，不重新分配 slot，不修改 `tools/lane_aware_assignment.py`。
+- 对比脚本会显式报告 Waymo / nuPlan 的 candidate projection 指标是否存在、fallback rate 是否可比、slot coverage 是 array-derived 还是 summary-derived。
+
+## 3. 通过标准
+
+- `warnings.json` / `context_build_report.md` / `slot_assignment_report.md` 能指向 nuPlan projection debug artifact。
+- 如果 Waymo 缺少 fallback 和 candidate projection 可比指标，verdict 必须是 `inconclusive_missing_comparable_metrics`。
+- 如果 Waymo 指标存在且 nuPlan projection success 明显更低或 fallback 明显更高，verdict 可为 `nuplan_adapter_or_map_projection_issue`。
+- 如果两侧都低 projection / 高 fallback，verdict 可为 `generic_stage5_lane_aware_limitation_or_dataset_common_issue`。
+- 如果 nuPlan 不明显更差且指标可比，verdict 可为 `no_clear_nuplan_adapter_issue`。
