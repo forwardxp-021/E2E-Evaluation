@@ -305,6 +305,129 @@ def slot_continuity_stats(slot_id_rows: List[List[List[str]]]) -> Dict[str, Dict
         }
     return stats
 
+
+def write_strict_filter_diagnostic(
+    output_dir: Path,
+    rows: List[Dict[str, Any]],
+    planners: List[str],
+    n_scenarios: int,
+    row_debug_rows: List[List[dict]],
+    nbr_arr: np.ndarray,
+    slot_stats: Dict[str, Dict[str, Any]],
+    sanity: Dict[str, bool],
+) -> Dict[str, Any]:
+    """Report the Stage5 Waymo-style strict lane-aware filtering outcome for nuPlan.
+
+    This diagnostic intentionally does not change the default Stage7E row semantics.  A row is
+    kept only if all valid frames have lane-aware context available, no geometric fallback was
+    used, and no bad/ambiguous lane context quality is reported.
+    """
+    dropped_by_reason: Dict[str, int] = {}
+    kept_indices: List[int] = []
+    row_availability: List[float] = []
+    laneaware_frames = 0
+    valid_frames = 0
+    for idx, debug in enumerate(row_debug_rows):
+        reasons: List[str] = []
+        if not debug:
+            reasons.append("drop_if_no_lane_map")
+            availability = 0.0
+        else:
+            valid_frames += len(debug)
+            frame_ok = [
+                bool(d.get("lane_assignment_available"))
+                and not bool(d.get("fallback_assignment_used"))
+                and str(d.get("lane_context_quality", "")).lower() not in {"bad", "ambiguous"}
+                for d in debug
+            ]
+            laneaware_frames += int(sum(frame_ok))
+            availability = float(np.mean(frame_ok)) if frame_ok else 0.0
+            if not any(d.get("current_lane_id") for d in debug):
+                reasons.append("drop_if_ego_lane_missing")
+            if any(str(d.get("lane_context_quality", "")).lower() == "bad" for d in debug):
+                reasons.append("drop_if_lane_context_bad")
+            if any(str(d.get("lane_context_quality", "")).lower() == "ambiguous" for d in debug):
+                reasons.append("drop_if_lane_context_ambiguous")
+            if not all(frame_ok):
+                reasons.append("lane_aware_only")
+        row_availability.append(availability)
+        if reasons:
+            for reason in sorted(set(reasons)):
+                dropped_by_reason[reason] = int(dropped_by_reason.get(reason, 0) + 1)
+        else:
+            kept_indices.append(idx)
+    kept_rows = [rows[i] for i in kept_indices]
+    kept_per_planner = {p: 0 for p in planners}
+    scenario_planners: Dict[int, List[str]] = {i: [] for i in range(n_scenarios)}
+    for r in kept_rows:
+        planner = str(r.get("planner_name", ""))
+        kept_per_planner[planner] = int(kept_per_planner.get(planner, 0) + 1)
+        scenario_planners[int(r.get("scenario_index", -1))].append(planner)
+    scenarios_with_all = [si for si, ps in scenario_planners.items() if sorted(ps) == sorted(planners)]
+    kept_nbr = nbr_arr[kept_indices] if kept_indices else nbr_arr[:0]
+    kept_slot_coverage = {}
+    for si, sn in enumerate(SLOT_NAMES):
+        valid = kept_nbr[:, si, :, 0] > 0.5 if kept_nbr.size else np.zeros((0,), dtype=bool)
+        kept_slot_coverage[sn] = float(np.mean(valid)) if valid.size else 0.0
+    summary = {
+        "dataset": "nuplan_stage7_adapter",
+        "strict_filter_diagnostic": True,
+        "filtering_mode": "strict_filter_lane_aware_only",
+        "assignment_mode": "lane_aware_only",
+        "strict_filters": {
+            "drop_if_no_lane_map": True,
+            "drop_if_ego_lane_missing": True,
+            "drop_if_lane_context_bad": True,
+            "drop_if_lane_context_ambiguous": True,
+            "lane_aware_only": True,
+        },
+        "original_rows": int(len(rows)),
+        "rows_kept": int(len(kept_indices)),
+        "rows_dropped": int(len(rows) - len(kept_indices)),
+        "kept_row_rate": float(len(kept_indices) / max(1, len(rows))),
+        "dropped_by_reason": dropped_by_reason,
+        "kept_rows_per_planner": kept_per_planner,
+        "scenario_planner_alignment_after_filtering": scenario_planners,
+        "scenarios_with_all_planners": int(len(scenarios_with_all)),
+        "scenarios_missing_any_planner": int(n_scenarios - len(scenarios_with_all)),
+        "each_scenario_still_has_all_planners": bool(len(scenarios_with_all) == n_scenarios),
+        "laneaware_available_frames": int(laneaware_frames),
+        "valid_frames": int(valid_frames),
+        "frame_level_laneaware_availability_rate": float(laneaware_frames / max(1, valid_frames)),
+        "row_level_all_frames_laneaware_availability_rate": float(len(kept_indices) / max(1, len(rows))),
+        "row_level_min_laneaware_availability": float(min(row_availability) if row_availability else 0.0),
+        "row_level_mean_laneaware_availability": float(np.mean(row_availability) if row_availability else 0.0),
+        "slot_sanity_on_kept_rows": sanity,
+        "slot_coverage_on_kept_rows": kept_slot_coverage,
+        "fallback_assignment_used_rate": 0.0,
+        "lane_assignment_available": bool(kept_indices),
+        "lane_assignment_available_rate": float(len(kept_indices) / max(1, len(rows))),
+        "candidate_projection_success_rate": float(laneaware_frames / max(1, valid_frames)),
+        "kept_row_indices": kept_indices,
+    }
+    write_json(output_dir / "nuplan_laneaware_strict_filter_summary.json", summary)
+    report = [
+        "# nuPlan Stage5-style Strict Lane-Aware Filter Diagnostic",
+        "",
+        "- This is diagnostic only; the default Stage7E dataset still preserves one row per scenario × planner rollout.",
+        "- Strict filters mirror Waymo Stage5 `lane_aware_only` plus `drop_if_*` philosophy.",
+        f"- original_rows: `{summary['original_rows']}`",
+        f"- rows_kept: `{summary['rows_kept']}`",
+        f"- rows_dropped: `{summary['rows_dropped']}`",
+        f"- kept_row_rate: `{summary['kept_row_rate']}`",
+        f"- dropped_by_reason: `{dropped_by_reason}`",
+        f"- kept_rows_per_planner: `{kept_per_planner}`",
+        f"- each_scenario_still_has_all_planners: `{summary['each_scenario_still_has_all_planners']}`",
+        f"- frame_level_laneaware_availability_rate: `{summary['frame_level_laneaware_availability_rate']}`",
+        f"- row_level_all_frames_laneaware_availability_rate: `{summary['row_level_all_frames_laneaware_availability_rate']}`",
+        f"- row_level_min_laneaware_availability: `{summary['row_level_min_laneaware_availability']}`",
+        f"- row_level_mean_laneaware_availability: `{summary['row_level_mean_laneaware_availability']}`",
+        f"- slot_sanity_on_kept_rows: `{sanity}`",
+        f"- slot_coverage_on_kept_rows: `{kept_slot_coverage}`",
+    ]
+    (output_dir / "nuplan_laneaware_strict_filter_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
+    return summary
+
 def make_context_schema(accel_yaw_rate_matched: bool = False) -> Dict[str, Any]:
     return make_stage5d_context_schema(schema_name="stage5d83_nuplan_laneaware_stage5_formula_parity", accel_yaw_rate_matched=accel_yaw_rate_matched)
 
@@ -337,6 +460,8 @@ def main() -> None:
     ap.add_argument("--debug_projection_sample_rows", type=int, default=20, help="Maximum context rows sampled for projection debug artifacts.")
     ap.add_argument("--debug_projection_max_candidates_per_frame", type=int, default=32, help="Maximum tracked-object candidates recorded per sampled frame.")
     ap.add_argument("--debug_projection_max_frames_per_row", type=int, default=149, help="Maximum valid timesteps recorded per sampled context row.")
+    ap.add_argument("--write_strict_filter_diagnostic", action="store_true", help="Write nuPlan Stage5-style strict lane-aware filtering summary/report without changing the main output rows.")
+    ap.add_argument("--write_strict_filtered_dataset", action="store_true", help="Also write optional filtered metadata/context arrays under strict_filtered_dataset/ for diagnostics.")
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args()
     if args.assignment_mode == "geometric_proxy":
@@ -361,7 +486,7 @@ def main() -> None:
     index_rows = read_csv_rows(args.sim_dir / "scenario_planner_index.csv")
     scenario_map_metadata = load_scenario_map_metadata(args.scenario_map_metadata_csv)
     by_pair = {(int(r.get("scenario_index", -1)), int(r.get("planner_id", -1))): r for r in index_rows if r.get("scenario_index", "").strip() and r.get("planner_id", "").strip()}
-    ego_rows=[]; nbr_rows=[]; ctx_rows=[]; inter_rows=[]; slot_id_rows=[]; assignment_debug_rows=[]; projection_debug_rows=[]; warnings=[]; cache={}; map_cache={}; parsed=0; resolved_map_names=[]; map_resolution_sources=[]
+    ego_rows=[]; nbr_rows=[]; ctx_rows=[]; inter_rows=[]; slot_id_rows=[]; assignment_debug_rows=[]; row_debug_rows=[]; projection_debug_rows=[]; warnings=[]; cache={}; map_cache={}; parsed=0; resolved_map_names=[]; map_resolution_sources=[]
     if warnings_note:
         warnings.append({"type": "deprecated_assignment_mode", "message": warnings_note})
     if args.assignment_mode in {"lane_aware_only", "lane_aware_with_geometric_fallback"}:
@@ -419,7 +544,7 @@ def main() -> None:
                         max_candidates_per_frame=max(0, int(args.debug_projection_max_candidates_per_frame)),
                     ))
             inter, _ = aggregate_interaction_features(ego, nbr, 0.1)
-            ego_rows.append(ego); nbr_rows.append(nbr); ctx_rows.append(ctx); inter_rows.append(np.nan_to_num(inter, nan=0.0, posinf=1e6, neginf=-1e6)); slot_id_rows.append(slot_ids); assignment_debug_rows.extend(assign_debug); row += 1
+            ego_rows.append(ego); nbr_rows.append(nbr); ctx_rows.append(ctx); inter_rows.append(np.nan_to_num(inter, nan=0.0, posinf=1e6, neginf=-1e6)); slot_id_rows.append(slot_ids); assignment_debug_rows.extend(assign_debug); row_debug_rows.append(assign_debug); row += 1
     ego_arr=np.asarray(ego_rows,np.float32); nbr_arr=np.asarray(nbr_rows,np.float32); ctx_arr=np.asarray(ctx_rows,np.float32); feat_arr=np.asarray(inter_rows,np.float32)
     if row != expected_rows or ctx_arr.shape != (expected_rows, timesteps, CONTEXT_DIM): raise ValueError(f"Invalid shape/rows: rows={row}, context={list(ctx_arr.shape)}, expected rows={expected_rows}, T={timesteps}, D={CONTEXT_DIM}")
     core_validation = validate_stage5d_context(ctx_arr, ego_arr, nbr_arr)
@@ -434,6 +559,20 @@ def main() -> None:
         cov=float(np.mean(valid)); slot_stats[sn]={"coverage_ratio":cov,"empty_slot_ratio":1.0-cov,"median_rel_x":float(np.median(vals[:,:,1][valid])) if np.any(valid) else None,"median_rel_y":float(np.median(vals[:,:,2][valid])) if np.any(valid) else None,"median_distance":float(np.median(vals[:,:,5][valid])) if np.any(valid) else None}
     sanity={"front_median_rel_x_gt_0": (slot_stats["front"]["median_rel_x"] is not None and slot_stats["front"]["median_rel_x"]>0), "left_front_median_rel_y_gt_0": (slot_stats["left_front"]["median_rel_y"] is not None and slot_stats["left_front"]["median_rel_y"]>0), "left_rear_median_rel_y_gt_0": (slot_stats["left_rear"]["median_rel_y"] is not None and slot_stats["left_rear"]["median_rel_y"]>0), "right_front_median_rel_y_lt_0": (slot_stats["right_front"]["median_rel_y"] is not None and slot_stats["right_front"]["median_rel_y"]<0), "right_rear_median_rel_y_lt_0": (slot_stats["right_rear"]["median_rel_y"] is not None and slot_stats["right_rear"]["median_rel_y"]<0)}
     slot_pass=all(sanity.values())
+    strict_filter_summary = None
+    if args.write_strict_filter_diagnostic or args.write_strict_filtered_dataset:
+        strict_filter_summary = write_strict_filter_diagnostic(args.output_dir, metadata_rows(index_rows, read_csv_rows(args.sim_dir / "simulated_planner_metadata.csv"), planners, n_scenarios), planners, n_scenarios, row_debug_rows, nbr_arr, slot_stats, sanity)
+        if args.write_strict_filtered_dataset:
+            strict_dir = args.output_dir / "strict_filtered_dataset"
+            strict_dir.mkdir(exist_ok=True)
+            keep = np.asarray(strict_filter_summary["kept_row_indices"], dtype=np.int64)
+            np.save(strict_dir / "ego_seq.npy", ego_arr[keep])
+            np.save(strict_dir / "context_traj.npy", ctx_arr[keep])
+            np.save(strict_dir / "interaction_feat_style.npy", feat_arr[keep])
+            np.save(strict_dir / "neighbor_seq.npy", nbr_arr[keep])
+            np.save(strict_dir / "neighbor_slot_ids.npy", np.asarray(slot_id_rows, dtype=object)[keep])
+            write_csv(strict_dir / "metadata.csv", [metadata_rows(index_rows, read_csv_rows(args.sim_dir / "simulated_planner_metadata.csv"), planners, n_scenarios)[int(i)] for i in keep])
+            write_json(strict_dir / "shard_manifest.json", {"shards":[{"shard_path":"."}], "format":"diagnostic_strict_filtered_stage5d_context", "context_traj":"context_traj.npy"})
     slot_continuity = slot_continuity_stats(slot_id_rows)
     slot_switch_rate_by_slot = {k: float(v["slot_id_switch_rate"] or 0.0) for k, v in slot_continuity.items()}
     map_counts = {}
