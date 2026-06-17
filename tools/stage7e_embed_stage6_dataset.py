@@ -60,139 +60,27 @@ def load_context_dataset_paths(context_dataset_dir: Path):
     return required
 
 
-STAGE5D_EGO_CHANNELS = ["ego_x", "ego_y", "ego_vx", "ego_vy", "ego_heading", "ego_speed", "ego_accel", "ego_yaw_rate"]
-STAGE5D_NEIGHBOR_SLOT_NAMES = ["front", "left_front", "left_rear", "right_front", "right_rear"]
-STAGE5D_NEIGHBOR_CHANNELS = [
-    "valid", "rel_x", "rel_y", "rel_vx", "rel_vy", "distance", "delta_x", "delta_y",
-    "closing", "ttc", "thw", "speed", "accel", "heading_rel", "yaw_rate",
-]
 STAGE7D_NEIGHBOR_CHANNELS = ["rel_x", "rel_y", "rel_vx", "rel_vy", "distance", "bearing", "heading_rel", "speed", "valid"]
-
-
-def build_ego_neighbor9_context(ego: np.ndarray, neighbor: np.ndarray, max_neighbors: int) -> np.ndarray:
-    if ego.ndim != 3 or ego.shape[-1] != 8:
-        raise ValueError(f"ego_seq.npy must have shape [rows,T,8], got {list(ego.shape)}")
-    if neighbor.ndim != 4 or neighbor.shape[0] != ego.shape[0] or neighbor.shape[2] != ego.shape[1] or neighbor.shape[-1] != 9:
-        raise ValueError(f"neighbor_seq.npy must have shape [rows,K,T,9] aligned to ego, got {list(neighbor.shape)}")
-    k = min(int(max_neighbors), int(neighbor.shape[1]))
-    neigh = np.asarray(neighbor[:, :k], dtype=np.float32).transpose(0, 2, 1, 3).reshape(ego.shape[0], ego.shape[1], k * 9)
-    return np.concatenate([np.asarray(ego, dtype=np.float32), neigh], axis=-1)
-
-
-
-def build_stage5d83_context(ego: np.ndarray, neighbor: np.ndarray, max_neighbors: int) -> tuple[np.ndarray, dict]:
-    """Build the Stage 5D checkpoint-compatible [rows,T,83] tensor.
-
-    Stage 5D was trained on tools/build_waymo_5neighbor_context_dataset.py, where
-    context_traj is concat(ego[8], five neighbor slots * 15 channels).  Stage 7D
-    already preserves the same row semantics and ego channel count, but its audited
-    nuPlan neighbor extraction stores a lean [rel_x, rel_y, rel_vx, rel_vy,
-    distance, bearing, heading_rel, speed, valid] schema.  This function expands
-    those real neighbors into the Stage 5D 15-channel slot layout and records the
-    few channels that are derived proxies rather than copied source channels.
-    """
-    if ego.ndim != 3 or ego.shape[-1] != 8:
-        raise ValueError(f"ego_seq.npy must have shape [rows,T,8], got {list(ego.shape)}")
-    if neighbor.ndim != 4 or neighbor.shape[0] != ego.shape[0] or neighbor.shape[2] != ego.shape[1] or neighbor.shape[-1] != 9:
-        raise ValueError(f"neighbor_seq.npy must have shape [rows,K,T,9] aligned to ego, got {list(neighbor.shape)}")
-    if int(max_neighbors) < 5:
-        raise ValueError("--context_layout stage5d83 requires max_neighbors >= 5 because Stage 5D used exactly five neighbor slots.")
-    if neighbor.shape[1] < 5:
-        raise ValueError(f"--context_layout stage5d83 requires neighbor_seq with at least 5 slots, got K={neighbor.shape[1]}.")
-    e = np.asarray(ego, dtype=np.float32)
-    n = np.asarray(neighbor[:, :5], dtype=np.float32)
-    rows, slots, timesteps, _ = n.shape
-    out = np.zeros((rows, 5, timesteps, 15), dtype=np.float32)
-    rel_x = n[..., 0]
-    rel_y = n[..., 1]
-    rel_vx = n[..., 2]
-    rel_vy = n[..., 3]
-    dist = n[..., 4]
-    heading_rel = n[..., 6]
-    speed = n[..., 7]
-    valid = (n[..., 8] > 0.5).astype(np.float32)
-    ego_speed = e[:, None, :, 5]
-    dt = 0.1
-    accel = np.diff(speed, axis=2, prepend=speed[:, :, :1]) / dt
-    yaw_rate = np.diff(heading_rel, axis=2, prepend=heading_rel[:, :, :1]) / dt
-    closing = np.maximum(-rel_vx, 0.0)
-    ttc = np.where(closing > 1e-3, dist / np.maximum(closing, 1e-3), 999.0)
-    thw = dist / np.maximum(ego_speed, 1e-3)
-    out[..., 0] = valid
-    out[..., 1] = rel_x
-    out[..., 2] = rel_y
-    out[..., 3] = rel_vx
-    out[..., 4] = rel_vy
-    out[..., 5] = dist
-    out[..., 6] = rel_x
-    out[..., 7] = rel_y
-    out[..., 8] = closing
-    out[..., 9] = np.minimum(ttc, 999.0)
-    out[..., 10] = np.minimum(thw, 999.0)
-    out[..., 11] = speed
-    out[..., 12] = accel
-    out[..., 13] = heading_rel
-    out[..., 14] = yaw_rate
-    out *= valid[..., None]
-    context = np.concatenate([e, out.transpose(0, 2, 1, 3).reshape(rows, timesteps, 75)], axis=-1).astype(np.float32)
-    schema = make_stage5d83_schema()
-    meta = {
-        "context_layout_requested": "stage5d83",
-        "context_layout_used": "stage5d83",
-        "base_context_layout": "stage5d_context_traj",
-        "base_context_dim": 83,
-        "checkpoint_context_dim": 83,
-        "final_context_dim": 83,
-        "context_padded_to_checkpoint_dim": False,
-        "padding_dim": 0,
-        "stage5d_schema_matched": True,
-        "stage5d_schema_proxy_channels": schema["proxy_channels"],
-    }
-    return context, meta
+STAGE5D83_DEPRECATION_ERROR = (
+    "stage5d83 thesis context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir; "
+    "Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots."
+)
 
 
 def make_stage5d83_schema() -> dict:
-    channels = []
-    for i, name in enumerate(STAGE5D_EGO_CHANNELS):
-        channels.append({"index": i, "name": name, "source": "ego_seq", "source_channel": i, "proxy": False})
-    idx = 8
-    proxy = []
-    source_map = {
-        "valid": ("neighbor_seq", "valid", False), "rel_x": ("neighbor_seq", "rel_x", False),
-        "rel_y": ("neighbor_seq", "rel_y", False), "rel_vx": ("neighbor_seq", "rel_vx", False),
-        "rel_vy": ("neighbor_seq", "rel_vy", False), "distance": ("neighbor_seq", "distance", False),
-        "delta_x": ("neighbor_seq", "rel_x duplicate", False), "delta_y": ("neighbor_seq", "rel_y duplicate", False),
-        "closing": ("derived_proxy", "max(-rel_vx, 0) because Stage 7D does not store Stage 5D closing channel", True),
-        "ttc": ("derived_proxy", "distance / max(closing, 1e-3), capped at 999", True),
-        "thw": ("derived_proxy", "distance / max(ego_speed, 1e-3), capped at 999", True),
-        "speed": ("neighbor_seq", "speed", False),
-        "accel": ("derived_proxy", "finite difference of neighbor speed with dt=0.1", True),
-        "heading_rel": ("neighbor_seq", "heading_rel", False),
-        "yaw_rate": ("derived_proxy", "finite difference of heading_rel with dt=0.1", True),
-    }
-    for slot in STAGE5D_NEIGHBOR_SLOT_NAMES:
-        for ch in STAGE5D_NEIGHBOR_CHANNELS:
-            src, src_ch, is_proxy = source_map[ch]
-            nm = f"{slot}_{ch}"
-            channels.append({"index": idx, "name": nm, "source": src, "source_channel": src_ch, "proxy": is_proxy})
-            if is_proxy:
-                proxy.append(nm)
-            idx += 1
-    return {
-        "schema_name": "stage5d83",
-        "context_dim": 83,
-        "shape": "[rows, T, 83]",
+    from tools.stage5d_context_core import make_stage5d_context_schema
+
+    schema = make_stage5d_context_schema(schema_name="stage5d83_context_dataset_direct")
+    schema.update({
         "built_by_stage5d_training_script": "tools/build_waymo_5neighbor_context_dataset.py",
-        "stage5d_training_context_definition": "concat ego_seq[8] + 5 neighbor slots * 15 channels; no map/lane/ODD channels in context_traj",
+        "final_stage7e_nuplan_builder": "tools/build_nuplan_5neighbor_context_dataset.py",
+        "stage7e_final_input_mode": "--context_dataset_dir",
+        "deprecated_stage7d_topk_reconstruction": True,
+        "deprecation_message": STAGE5D83_DEPRECATION_ERROR,
         "stage6_input_contract": "Stage 6 BDD/report-card consumes exported embedding vectors; interaction_feat_style.npy is used for reports/evaluation, not as encoder input.",
-        "ego_channels": STAGE5D_EGO_CHANNELS,
-        "neighbor_slot_names": STAGE5D_NEIGHBOR_SLOT_NAMES,
-        "neighbor_channels_per_slot": STAGE5D_NEIGHBOR_CHANNELS,
         "stage7d_neighbor_source_channels": STAGE7D_NEIGHBOR_CHANNELS,
-        "channels": channels,
-        "proxy_channels": proxy,
-        "missing_or_proxy_policy": "No zero-padding is used. Stage 7D real ego/neighbor tensors fill all 83 channels; channels absent from the audited 9D nuPlan neighbor export are reconstructed as documented kinematic proxies.",
-    }
+    })
+    return schema
 
 def load_checkpoint(path: Path):
     if not path.exists():
@@ -224,15 +112,13 @@ def build_checkpoint_compatible_context(
         if base_dim != ckpt_dim:
             raise ValueError(
                 f"--context_layout ego_neighbor9 built context_dim={base_dim}, but checkpoint context_dim={ckpt_dim}. "
-                "Use --context_layout auto or --context_layout pad_to_checkpoint_dim for exploratory bridge smoke only."
+                "Use --context_dataset_dir for the final thesis path, or --context_layout pad_to_checkpoint_dim for exploratory bridge smoke only."
             )
         return base, meta
     if context_layout == "stage5d83":
-        if ckpt_dim != 83:
-            raise ValueError(f"--context_layout stage5d83 requires checkpoint context_dim=83, got {ckpt_dim}.")
-        return build_stage5d83_context(ego, neighbor, max_neighbors)
+        raise ValueError(STAGE5D83_DEPRECATION_ERROR)
     if context_layout == "auto":
-        raise ValueError("--context_layout auto no longer right-pads by default. Use --context_layout stage5d83 for the thesis path, or --context_layout pad_to_checkpoint_dim for smoke/interface validation only.")
+        raise ValueError("--context_layout auto no longer right-pads by default. Use --context_dataset_dir for the final thesis path, or --context_layout pad_to_checkpoint_dim with --dataset_dir for smoke/interface validation only.")
     if context_layout == "pad_to_checkpoint_dim":
         if base_dim == ckpt_dim:
             return base, meta
@@ -271,7 +157,7 @@ def embed_context(context: np.ndarray, ckpt: dict, batch_size: int, device: str)
     if int(ckpt_context_dim) != int(context.shape[-1]):
         raise ValueError(
             f"Checkpoint context_dim={ckpt_context_dim} does not match final Stage 7E context_dim={context.shape[-1]}. "
-            "Use --context_layout auto or --context_layout pad_to_checkpoint_dim for exploratory bridge smoke only."
+            "Use --context_dataset_dir for the final thesis path, or --context_layout pad_to_checkpoint_dim for exploratory bridge smoke only."
         )
     nonfinite_context = int((~np.isfinite(context)).sum())
     if nonfinite_context:
@@ -458,8 +344,9 @@ def parse_args():
         choices=["auto", "ego_neighbor9", "pad_to_checkpoint_dim", "stage5d83"],
         default="stage5d83",
         help=(
-            "How to build checkpoint-compatible context. stage5d83 is the thesis path and reconstructs "
-            "the Stage 5D [ego8 + 5*neighbor15] tensor. pad_to_checkpoint_dim is smoke/interface validation only."
+            "How to build checkpoint-compatible context from --dataset_dir. stage5d83 is hard-deprecated: "
+            "final thesis embedding must use --context_dataset_dir produced by build_nuplan_5neighbor_context_dataset.py. "
+            "pad_to_checkpoint_dim is smoke/interface validation only."
         ),
     )
     p.add_argument("--overwrite", action="store_true")

@@ -639,11 +639,13 @@ Geometric assignment is allowed only as fallback or smoke mode:
 geometric_only / geometric_proxy = smoke or fallback, not final preferred method
 ```
 
-Validation must report:
+Validation must report actual lane-aware runtime availability, not just slot coverage:
 
 ```text
 assignment_mode
 lane_assignment_available
+map_query_success
+lane_info_count
 fallback_assignment_used_rate
 ego_lane_projection_success_rate
 candidate_lane_projection_success_rate
@@ -651,6 +653,16 @@ slot_sanity_passed
 slot_coverage_by_slot
 stage5d_slot_schema_matched
 stage5d_slot_order_matched
+```
+
+Runtime policy:
+
+```text
+assignment_mode == lane_aware_only:
+  fail loudly if --nuplan_map_root is missing, map_name cannot be queried, lane_info_count == 0, or ego lane projection is unavailable.
+
+assignment_mode == lane_aware_with_geometric_fallback:
+  allow geometric fallback for map/projection gaps, but write a loud warning when fallback_assignment_used_rate is high; high fallback is not strong lane-aware thesis evidence.
 ```
 
 ### 8.4 Stage 7E-core PASS Criteria
@@ -670,15 +682,22 @@ planner_indices_non_empty == true
 stage5d_core_reused == true
 ```
 
-Current IDM 5-log status:
+Current final Stage 7E thesis path:
 
 ```text
-geometric context builder smoke: PASS
-context_traj.npy: [20,149,83]
-direct context-dataset embedding: PASS
+tools/build_nuplan_5neighbor_context_dataset.py
+  -> context_traj.npy [N,T,83]
+  -> tools/stage7e_embed_stage6_dataset.py --context_dataset_dir
+  -> embedding.npy / embeddings/shard_000000/embeddings.npy
 ```
 
-But before final thesis evidence, Stage 7E-core should be refactored so Stage 5D common core is reused and lane-aware assignment is preferred.
+Deprecated path:
+
+```text
+tools/stage7e_embed_stage6_dataset.py --dataset_dir ... --context_layout stage5d83
+```
+
+This old path tried to relabel Stage 7D distance top-K `neighbor_seq[:, :5]` as Stage 5D semantic slots and is not valid thesis evidence. It must raise a clear error; only `--dataset_dir --context_layout pad_to_checkpoint_dim` remains available as explicit smoke/debug.
 
 ---
 
@@ -720,7 +739,7 @@ nonfinite_context_values_replaced_with_zero = 0
 nonfinite_embedding_values = 0
 ```
 
-`pad_to_checkpoint_dim` or zero-padding is smoke-only and must not be used as final thesis evidence.
+`pad_to_checkpoint_dim` or zero-padding is smoke-only and must not be used as final thesis evidence. The deprecated `--dataset_dir --context_layout stage5d83` reconstruction path must fail with: `stage5d83 thesis context must be built by build_nuplan_5neighbor_context_dataset.py and loaded via --context_dataset_dir; Stage7D top-K neighbor_seq cannot be relabeled as Stage5D semantic slots.`
 
 ---
 
