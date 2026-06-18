@@ -6088,7 +6088,7 @@ python tools/stage7c1_run_nuplan_simulation.py \
   --require_same_scenario_alignment \
   --allow_external_planner_name \
   --hydra_searchpath '[pkg://tuplan_garage.planning.script.config.common, pkg://tuplan_garage.planning.script.config.simulation, pkg://nuplan.planning.script.config.common, pkg://nuplan.planning.script.experiments]' \
-  --nuplan_simulation_command_template 'python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7p_pdm_closed_smoke_1scene job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --nuplan_simulation_command_template 'python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini {scenario_hydra_overrides} worker=single_machine_thread_pool experiment_name=stage7p_pdm_closed_smoke_1scene job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
   --overwrite
 ```
 
@@ -6124,6 +6124,8 @@ Stage7F pairwise 不需要在单 planner smoke 上运行；等 PDM 与 IDM/simpl
 ## 2. 期望行为
 
 - Stage7C 读取 `outputs/stage7b4_nuplan_context_merged/merged_metadata.csv` 中最多 1 个场景，并调用官方 nuPlan `run_simulation.py`。
+- Stage7C 会在格式化命令后对 `$NUPLAN_DEVKIT_ROOT` 等环境变量执行 `os.path.expandvars()`，因此这里允许在 command template 中使用 `$NUPLAN_DEVKIT_ROOT`。
+- `{scenario_hydra_overrides}` 会由 Stage7C 按目标场景元数据替换：优先 `scenario_filter.scenario_tokens=[token]`，没有 nuPlan scenario token 时使用 `scenario_filter.log_names=[target_log_name] scenario_filter.limit_total_scenarios=1`；不要再用 `scenario_filter=all_scenarios scenario_filter.scenario_tokens=null` 作为最终控制机制。
 - `--allow_external_planner_name` 允许 Stage7C 把 `pdm_closed_planner` 当作外部 Hydra planner adapter 传给 `{planner_hydra_overrides}`，不要求它存在于 Stage7C 内置 IDM/simple profile 中。
 - `--hydra_searchpath` 会追加为 `hydra.searchpath="..."` 形式的 Hydra override，使 Hydra 能找到 tuplan_garage 的 PDM planner config，同时不会强制影响标准 IDM/simple runs。
 - 该命令仍保持 Stage7 row semantics：一行表示一个 `scenario × planner-controlled nuPlan ego rollout`。
@@ -6134,6 +6136,8 @@ Stage7F pairwise 不需要在单 planner smoke 上运行；等 PDM 与 IDM/simpl
 ## 3. 通过标准
 
 - Stage7C PDM closed smoke 中 official command successes = 1。
+- `warnings.json` / 官方命令 log 中 final official command 已展开 `$NUPLAN_DEVKIT_ROOT`，并包含由 `{scenario_hydra_overrides}` 注入的 token 或 log_name 场景约束。
+- `same_scenario_alignment_required = true`，且 `scenario_alignment.passed = true`：actual nuPlan log_name 匹配 target_log_name，或 actual token 匹配 target token。
 - `simulation_report.md` 中 `pseudo_rollout = false`。
 - 至少找到并解析一个官方 nuPlan msgpack trajectory artifact。
 - `simulated_ego_seq.npy` shape 为 `(1, 1, T, 8)`，且 `T >= 2`。
@@ -6142,3 +6146,31 @@ Stage7F pairwise 不需要在单 planner smoke 上运行；等 PDM 与 IDM/simpl
 - `pdm_open_planner` 和 `pdm_hybrid_planner` 因需要 `checkpoint_path` 暂不作为可直接运行 smoke 命令。
 - 首轮使用 `closed_loop_nonreactive_agents`，保持与 IDM Stage7 pipeline 一致。
 - Stage7F pairwise 只在 PDM 与 IDM/simple 已生成 paired planner 输出后运行。
+
+## Stage7P — PDM closed config parameter discovery
+
+## 1. 命令
+
+```bash
+python tools/stage7p_pdm_config_parameter_report.py \
+  --tuplan_garage_root /home/forwardxp/00_nuplan_E2E_eva/tuplan_garage \
+  --planner_config_name pdm_closed_planner \
+  --output_dir outputs/stage7p_pdm_closed_config_params_v1 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- 脚本只读解析 `tuplan_garage/.../config/simulation/planner/pdm_closed_planner.yaml`，并扫描相关 PDM Python class 的 `__init__` 签名。
+- 输出 YAML key/value、`_target_` 路径、数值标量、数值列表、boolean flag、class 参数默认值，并按 route/path、speed/progress、lateral、proposal、scoring、comfort、safety、simulator、unknown 分组。
+- `pdm_closed_variant_blueprint.md` 只提出候选 override group；除非参数能从 YAML key 或 class arg 中验证，否则标记为 `inferred_candidate` / `no safe override yet`，不会生成 PDM open/hybrid 或可运行 variant 命令。
+
+## 3. 通过标准
+
+- 输出目录包含：
+  - `pdm_closed_parameter_report.md`
+  - `pdm_closed_parameter_summary.json`
+  - `pdm_closed_parameter_table.csv`
+  - `pdm_closed_variant_blueprint.md`
+- JSON/CSV 中能看到 `pdm_closed_planner.yaml` 的 numeric / boolean / list-valued 参数。
+- blueprint 不声称 candidate variant 已最终可运行；未验证参数必须报告 `no safe override yet`。

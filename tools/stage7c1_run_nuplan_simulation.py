@@ -79,8 +79,23 @@ def format_planner_hydra_overrides(planner_name: str, hydra_searchpath: str = ""
     return " ".join(str(item) for item in overrides)
 
 
-def build_command_replacements(planner_name: str, scenario: Dict[str, str], out_dir: Path, hydra_searchpath: str = "") -> Dict[str, str]:
-    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir), "planner_hydra_overrides": format_planner_hydra_overrides(planner_name, hydra_searchpath)}
+def scenario_hydra_override_info(scenario: Dict[str, Any], require_same_scenario_alignment: bool = False) -> Dict[str, str]:
+    """Build Hydra scenario-filter overrides for the intended Stage7B target scenario."""
+    target = normalize_target_scenario(scenario)
+    token = str(_first_value(scenario, ["actual_nuplan_token", "actual_nuplan_scenario_token", "scenario_token", "nuplan_scenario_token"], "") or "").strip()
+    if token:
+        return {"control_mode": "token", "scenario_hydra_overrides": f"scenario_filter.scenario_tokens=[{token}]"}
+    log_name = str(scenario.get("log_name") or target["target_log_name"] or "").strip()
+    if log_name:
+        return {"control_mode": "log_name", "scenario_hydra_overrides": f"scenario_filter.log_names=[{log_name}] scenario_filter.limit_total_scenarios=1"}
+    if require_same_scenario_alignment:
+        raise ValueError("same-scenario alignment is required, but Stage7C could not build {scenario_hydra_overrides}: missing nuPlan scenario token and target log_name.")
+    return {"control_mode": "unavailable", "scenario_hydra_overrides": ""}
+
+
+def build_command_replacements(planner_name: str, scenario: Dict[str, str], out_dir: Path, hydra_searchpath: str = "", require_same_scenario_alignment: bool = False) -> Dict[str, str]:
+    scenario_override = scenario_hydra_override_info(scenario, require_same_scenario_alignment)
+    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir), "planner_hydra_overrides": format_planner_hydra_overrides(planner_name, hydra_searchpath), "scenario_hydra_overrides": scenario_override["scenario_hydra_overrides"], "scenario_control_mode": scenario_override["control_mode"]}
     for key, value in scenario.items():
         replacements[key] = str(value)
     target = normalize_target_scenario(scenario)
@@ -673,14 +688,21 @@ def validate_inputs(context_dir: Path, db_root: Path, map_root: Path) -> List[Di
     return warnings
 
 
-def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False, hydra_searchpath: str = "") -> Tuple[bool, str, int]:
-    replacements = build_command_replacements(planner_name, scenario, out_dir, hydra_searchpath)
+def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False, hydra_searchpath: str = "", require_same_scenario_alignment: bool = False) -> Tuple[bool, str, int]:
+    if require_same_scenario_alignment and not _template_uses_placeholder(command_template, "scenario_hydra_overrides"):
+        raise ValueError("Command template must include {scenario_hydra_overrides} when same-scenario alignment is required.")
+    replacements = build_command_replacements(planner_name, scenario, out_dir, hydra_searchpath, require_same_scenario_alignment)
     add_unsafe_placeholder_warnings(command_template, replacements, warnings)
     command = command_template.format(**replacements)
+    if not _template_uses_placeholder(command_template, "scenario_hydra_overrides") and replacements.get("scenario_hydra_overrides"):
+        command = f"{command} {replacements['scenario_hydra_overrides']}"
+        warnings.append({"type": "scenario_hydra_overrides_appended", "scenario_id": scenario.get("scenario_id", ""), "planner_name": planner_name, "scenario_control_mode": replacements.get("scenario_control_mode", ""), "message": "Command template did not include {scenario_hydra_overrides}; Stage7C appended scenario-control overrides automatically."})
+    command = os.path.expandvars(command)
     argv = shlex.split(command)
+    warnings.append({"type": "official_command", "scenario_id": scenario.get("scenario_id", ""), "planner_name": planner_name, "scenario_control_mode": replacements.get("scenario_control_mode", ""), "command": command})
     proc = subprocess.run(command if use_shell else argv, shell=use_shell, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s)
     log_path = out_dir / f"nuplan_cli_{shell_safe_slug(planner_name)}_{scenario.get('scenario_index', '')}.log"
-    log_path.write_text("$ " + command + "\nargv: " + json.dumps(argv, ensure_ascii=False) + "\nshell: " + str(use_shell) + "\n\nSTDOUT:\n" + proc.stdout + "\nSTDERR:\n" + proc.stderr, encoding="utf-8")
+    log_path.write_text("$ " + command + "\nargv: " + json.dumps(argv, ensure_ascii=False) + "\nshell: " + str(use_shell) + "\nscenario_control_mode: " + str(replacements.get("scenario_control_mode", "")) + "\n\nSTDOUT:\n" + proc.stdout + "\nSTDERR:\n" + proc.stderr, encoding="utf-8")
     return proc.returncode == 0, str(log_path), int(proc.returncode)
 
 
@@ -1351,7 +1373,11 @@ def run(args: argparse.Namespace) -> int:
             task_start_time = iso_now_local()
             run_dir = out_dir / "official_nuplan_runs" / f"scenario_{scenario.get('scenario_index', '')}" / str(prow["planner_name"])
             run_dir.mkdir(parents=True, exist_ok=True)
-            ok, log_path, return_code = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell, hydra_searchpath=args.hydra_searchpath)
+            try:
+                ok, log_path, return_code = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell, hydra_searchpath=args.hydra_searchpath, require_same_scenario_alignment=args.require_same_scenario_alignment)
+            except ValueError as exc:
+                ok, log_path, return_code = False, "", 2
+                warnings.append({"type": "scenario_control_error", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": str(exc)})
             if not ok:
                 warnings.append({"type": "nuplan_cli_failed", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": f"official nuPlan command failed; log: {log_path}"})
                 status = "failed"
