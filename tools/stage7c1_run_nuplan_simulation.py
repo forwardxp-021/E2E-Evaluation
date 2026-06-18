@@ -14,6 +14,8 @@ import re
 import shlex
 import shutil
 import subprocess
+import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -218,6 +220,79 @@ PLANNER_PROFILES = {
 }
 
 
+
+
+def format_duration(seconds: Optional[float]) -> str:
+    if seconds is None or not math.isfinite(float(seconds)) or seconds < 0:
+        return "unknown"
+    total = int(round(float(seconds)))
+    h, rem = divmod(total, 3600)
+    m, sec = divmod(rem, 60)
+    return f"{h:02d}:{m:02d}:{sec:02d}"
+
+
+def iso_now_local() -> str:
+    return datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def scenario_progress_id(scenario: Dict[str, Any]) -> str:
+    target = normalize_target_scenario(scenario)
+    for key in ["scenario_token", "log_name", "db_name", "scenario_id", "scene_token"]:
+        value = scenario.get(key, "")
+        if value:
+            return str(value)
+    if target.get("target_log_name") or target.get("target_scene_token"):
+        return f"{target.get('target_log_name', '')}|{target.get('target_scene_token', '')}"
+    return str(scenario.get("scenario_index", ""))
+
+
+def write_progress_json(
+    path: Path,
+    total_scenarios: int,
+    total_planners: int,
+    total_tasks: int,
+    completed_tasks: int,
+    failed_tasks: int,
+    current_scenario_index: int,
+    current_planner: str,
+    start_monotonic: float,
+    task_records: List[Dict[str, Any]],
+) -> None:
+    elapsed = max(0.0, time.monotonic() - start_monotonic)
+    avg = elapsed / completed_tasks if completed_tasks else 0.0
+    remaining = max(0, total_tasks - completed_tasks)
+    eta_seconds = avg * remaining if completed_tasks else 0.0
+    eta_local_time = (datetime.now().astimezone().timestamp() + eta_seconds) if completed_tasks else None
+    obj = {
+        "total_scenarios": int(total_scenarios),
+        "total_planners": int(total_planners),
+        "total_tasks": int(total_tasks),
+        "completed_tasks": int(completed_tasks),
+        "failed_tasks": int(failed_tasks),
+        "current_scenario_index": int(current_scenario_index),
+        "current_planner": current_planner,
+        "elapsed_seconds": float(elapsed),
+        "average_seconds_per_task": float(avg),
+        "estimated_remaining_seconds": float(eta_seconds),
+        "eta_local_time": datetime.fromtimestamp(eta_local_time).astimezone().isoformat(timespec="seconds") if eta_local_time is not None else None,
+        "task_records": task_records,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    write_json(path, obj)
+
+
+def print_progress(prefix: str, scenario_pos: int, total_scenarios: int, planner_pos: int, total_planners: int, task_pos: int, total_tasks: int, planner_name: str, scenario_id: str, start_monotonic: float, completed_tasks: int, success_count: int, failed_tasks: int) -> None:
+    elapsed = max(0.0, time.monotonic() - start_monotonic)
+    avg = elapsed / completed_tasks if completed_tasks else 0.0
+    eta = avg * max(0, total_tasks - completed_tasks) if completed_tasks else 0.0
+    print(
+        f"[Stage7C progress] {prefix} scenario {scenario_pos}/{total_scenarios} | "
+        f"planner {planner_pos}/{total_planners} | task {task_pos}/{total_tasks} | "
+        f"planner={planner_name} | scenario={scenario_id} | elapsed={format_duration(elapsed)} | "
+        f"avg_task={format_duration(avg)} | eta={format_duration(eta)} | "
+        f"success={success_count} failure={failed_tasks}",
+        flush=True,
+    )
 
 def write_empty_float32_npy(path: Path, shape: Tuple[int, ...]) -> None:
     """Write an empty NumPy .npy v1.0 float32 array without requiring numpy at import time."""
@@ -580,7 +655,7 @@ def validate_inputs(context_dir: Path, db_root: Path, map_root: Path) -> List[Di
     return warnings
 
 
-def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False) -> Tuple[bool, str]:
+def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False) -> Tuple[bool, str, int]:
     replacements = build_command_replacements(planner_name, scenario, out_dir)
     add_unsafe_placeholder_warnings(command_template, replacements, warnings)
     command = command_template.format(**replacements)
@@ -588,7 +663,7 @@ def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: 
     proc = subprocess.run(command if use_shell else argv, shell=use_shell, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s)
     log_path = out_dir / f"nuplan_cli_{shell_safe_slug(planner_name)}_{scenario.get('scenario_index', '')}.log"
     log_path.write_text("$ " + command + "\nargv: " + json.dumps(argv, ensure_ascii=False) + "\nshell: " + str(use_shell) + "\n\nSTDOUT:\n" + proc.stdout + "\nSTDERR:\n" + proc.stderr, encoding="utf-8")
-    return proc.returncode == 0, str(log_path)
+    return proc.returncode == 0, str(log_path), int(proc.returncode)
 
 
 
@@ -1217,14 +1292,27 @@ def run(args: argparse.Namespace) -> int:
     trajectory_rows: List[Dict[str, Any]] = []
     parser_names: List[str] = []
     official_success_count = 0
+    failed_task_count = 0
+    completed_task_count = 0
+    progress_records: List[Dict[str, Any]] = []
+    progress_path = Path(args.progress_json) if args.progress_json else out_dir / "stage7c_progress.json"
+    total_tasks = len(metadata) * len(planner_rows)
+    progress_start = time.monotonic()
+    write_progress_json(progress_path, len(metadata), len(planner_rows), total_tasks, 0, 0, 0, "", progress_start, progress_records)
     parser_validation_total = _empty_parser_validation()
     alignment_records: List[Dict[str, Any]] = []
-    for scenario in metadata:
-        for prow in planner_rows:
+    for scenario_pos, scenario in enumerate(metadata, 1):
+        for planner_pos, prow in enumerate(planner_rows, 1):
             before_warning_count = len(warnings)
+            task_index = (scenario_pos - 1) * len(planner_rows) + planner_pos
+            planner_name = str(prow["planner_name"])
+            scenario_id_for_progress = scenario_progress_id(scenario)
+            print_progress("START", scenario_pos, len(metadata), planner_pos, len(planner_rows), task_index, total_tasks, planner_name, scenario_id_for_progress, progress_start, completed_task_count, official_success_count, failed_task_count)
+            task_start_monotonic = time.monotonic()
+            task_start_time = iso_now_local()
             run_dir = out_dir / "official_nuplan_runs" / f"scenario_{scenario.get('scenario_index', '')}" / str(prow["planner_name"])
             run_dir.mkdir(parents=True, exist_ok=True)
-            ok, log_path = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell)
+            ok, log_path, return_code = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell)
             if not ok:
                 warnings.append({"type": "nuplan_cli_failed", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": f"official nuPlan command failed; log: {log_path}"})
                 status = "failed"
@@ -1243,6 +1331,31 @@ def run(args: argparse.Namespace) -> int:
                     warnings.append({"type": "no_trajectory_found", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": f"official nuPlan command succeeded but no supported trajectory artifact was parsed under {run_dir}; log: {log_path}"})
             alignment_records.append(build_alignment_record(scenario, str(prow["planner_name"]), run_dir, ok, warnings))
             index_rows.append(scenario_index_row(scenario, prow, status, len(parsed), len(warnings) - before_warning_count))
+            completed_task_count += 1
+            if status != "succeeded":
+                failed_task_count += 1
+            task_duration = max(0.0, time.monotonic() - task_start_monotonic)
+            task_record = {
+                "planner": planner_name,
+                "scenario_id": scenario_id_for_progress,
+                "log_name": normalize_target_scenario(scenario).get("target_log_name", ""),
+                "scenario_index": int(scenario.get("scenario_index", scenario_pos - 1)),
+                "start_time": task_start_time,
+                "end_time": iso_now_local(),
+                "duration_seconds": float(task_duration),
+                "return_code": int(return_code),
+                "status": status,
+                "log_path": log_path,
+            }
+            progress_records.append(task_record)
+            write_progress_json(progress_path, len(metadata), len(planner_rows), total_tasks, completed_task_count, failed_task_count, scenario_pos, planner_name, progress_start, progress_records)
+            print(
+                f"[Stage7C progress] DONE task {task_index}/{total_tasks} | return_code={return_code} | "
+                f"duration={format_duration(task_duration)} | status={status} | "
+                f"success={official_success_count} failure={failed_task_count}",
+                flush=True,
+            )
+            print_progress("AFTER", scenario_pos, len(metadata), planner_pos, len(planner_rows), task_index, total_tasks, planner_name, scenario_id_for_progress, progress_start, completed_task_count, official_success_count, failed_task_count)
 
     if not trajectory_rows:
         write_csv(out_dir / "scenario_planner_index.csv", index_rows, SCENARIO_INDEX_COLUMNS)
@@ -1427,6 +1540,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--command_timeout_s", type=int, default=3600)
     p.add_argument("--min_timesteps", type=int, default=2, help="Minimum parsed timesteps required for each successful scenario-planner trajectory.")
     p.add_argument("--allow_unsafe_pickle_artifacts", action="store_true", help="Parse trusted pickle/msgpack nuPlan artifacts. Pickle is unsafe and remains disabled by default.")
+    p.add_argument("--progress_json", help="Optional progress artifact path. Defaults to output_dir/stage7c_progress.json and is updated after every completed scenario-planner task.")
     return p.parse_args()
 
 

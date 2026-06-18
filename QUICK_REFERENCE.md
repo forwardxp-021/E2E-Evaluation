@@ -5776,3 +5776,130 @@ outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_pairwise_summary.md
 - `bdd_rank_desc=1` 对应最大的 `bdd_mmd2`。
 - 当前 5-log 结果必须解释为 exploratory：每个 planner pair 的 `n_A=n_B=5` 太小，permutation p-value 低功效，BDD 只表示分布漂移幅度而不表示方向；category/feature delta 只是解释层。
 - full 主结果 fallback rate 约 41.9% 时，结论必须后续配合 strict-filter ratio=0.8 sensitivity 和 Stage5 lane-aware parameter sweep。
+
+## Stage7 official nuPlan A/B pilot: aggressive vs conservative
+
+本节是 **main-path** 的 20-scenario 快速真实实验流程，只比较两个 longitudinal IDM planner：`idm_longitudinal_aggressive` vs `idm_longitudinal_conservative`。它不运行 `simple_planner`，也不运行 `idm_longitudinal_comfort`。实验 id 固定为 `stage7_official_idm_ab_v1_20scenes`。
+
+### 1. 命令
+
+#### A. Stage7C official simulation（main-path，带进度 JSON）
+
+输入路径：
+
+- Stage7B.4 merged context: `/home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged`
+- nuPlan mini DB: `/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini`
+- nuPlan maps: `/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps`
+
+输出路径：
+
+- simulation output: `/home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7_official_idm_ab_v1_20scenes`
+- progress artifact: `/home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7_official_idm_ab_v1_20scenes/stage7c_progress.json`
+
+```bash
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7_official_idm_ab_v1_20scenes \
+  --planners idm_longitudinal_aggressive idm_longitudinal_conservative \
+  --max_scenarios 20 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.log_names=["{target_log_name}"] scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7_official_idm_ab_v1_20scenes job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+如需把进度文件写到自定义位置，可追加：
+
+```bash
+  --progress_json outputs/stage7_official_idm_ab_v1_20scenes/stage7c_progress.json
+```
+
+#### B. Stage7E context（main-path，lane-aware with geometric fallback）
+
+输入路径：
+
+- Stage7C simulation dir: `outputs/stage7_official_idm_ab_v1_20scenes`
+- nuPlan map root: `$NUPLAN_MAPS_ROOT`
+
+输出路径：
+
+- `outputs/stage7e_nuplan_5neighbor_context_idm_ab_20scenes_laneaware_v1`
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7_official_idm_ab_v1_20scenes \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_ab_20scenes_laneaware_v1 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --debug_projection_sample_rows 20 \
+  --overwrite
+```
+
+#### C. Stage7E embedding（main-path，复用 Stage5D checkpoint / Stage6 dataset layout）
+
+输入路径：
+
+- context dataset: `outputs/stage7e_nuplan_5neighbor_context_idm_ab_20scenes_laneaware_v1`
+- checkpoint: `outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt`
+
+输出路径：
+
+- `outputs/stage7e_idm_ab_embeddings_20scenes_laneaware_v1`
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_ab_20scenes_laneaware_v1 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_ab_embeddings_20scenes_laneaware_v1 \
+  --overwrite
+```
+
+#### D. Stage7F full fallback-preserving A/B report（main-path，复用 Stage6 pairwise tools）
+
+输入路径：
+
+- embedding dir: `outputs/stage7e_idm_ab_embeddings_20scenes_laneaware_v1`
+- context dataset: `outputs/stage7e_nuplan_5neighbor_context_idm_ab_20scenes_laneaware_v1`
+
+输出路径：
+
+- `outputs/stage7f_idm_ab_20scenes_full_fallback_preserving_v1`
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_idm_ab_embeddings_20scenes_laneaware_v1 \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_ab_20scenes_laneaware_v1 \
+  --output_dir outputs/stage7f_idm_ab_20scenes_full_fallback_preserving_v1 \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- Stage7C 只运行两个 planner，因此 `20 scenarios × 2 planners = 40` 个 scenario-planner tasks / rows；终端会在每个 task 前后打印 progress、elapsed、avg task time、ETA、成功/失败累计数，`stage7c_progress.json` 会在每个 task 完成后更新。
+- Stage7C 输出保持 `pseudo_rollout=false` 与 `uses_official_nuplan_simulation=true`；一行仍然表示一个 `scenario × planner-controlled nuPlan ego rollout`，background agents 仅作为 context。
+- Stage7E context 读取 Stage7C simulation output，生成 Stage5D-compatible 5-neighbor context；主路径保留 geometric fallback，不把 strict-filter clean subset 当作主结果。
+- Stage7E embedding 直接读取 Stage7E context dataset，使用 `context_layout_used=stage5d_context_dataset_direct`，不会从 Stage7D neighbor sequence 重建 context。
+- Stage7F full mode 验证每个 scenario 都有 aggressive 与 conservative 两个 planner；启用 `--run_stage6_pairwise` 时只生成一个 pairwise 输出：`idm_longitudinal_aggressive_vs_idm_longitudinal_conservative`，继续复用 Stage6 工具，不新增 Stage7 planner-behavior metric。
+
+### 3. 通过标准
+
+- Stage7C PASS 条件：`stage7c_progress.json` 中 `total_scenarios=20`、`total_planners=2`、`total_tasks=40`、`completed_tasks=40`；`simulation_schema.json` 中 `pseudo_rollout=false`、`uses_official_nuplan_simulation=true`；`scenario_planner_index.csv` 有 40 个 scenario-planner rows，且所有 scenario 都有两个 planner。
+- Stage7E context PASS 条件：`context_traj.npy` rows = 40，context dim = 83，Stage5D schema matched，fallback rate 与 strict-filter diagnostics 均有报告。
+- Stage7E embedding PASS 条件：`embedding.npy` shape = `[40, 64]`，manifest 中 `context_layout_used=stage5d_context_dataset_direct`，`does_not_rebuild_context_from_stage7d_neighbor_seq=true`。
+- Stage7F PASS 条件：`stage7f_summary.json` 中 `num_scenarios=20`、`num_planners=2`、`total_rows=40`、`all_scenarios_have_all_planners=true`；`stage7f_pairwise_summary.json` 中 `num_pairs=1`，且唯一 pair 为 `idm_longitudinal_aggressive_vs_idm_longitudinal_conservative`。
+
+### 4. 已知限制
+
+- 该流程是 **20-scenario A/B pilot**，用于快速真实实验，不替代更大规模 statistical evaluation。
+- Stage7C 的 official nuPlan command 依赖本机 nuPlan devkit、Hydra config、DB 和地图路径；如果这些路径不存在，不能声称完成真实数据验证。
+- Stage7F 的 BDD / pairwise report 是 Stage6 metric reuse；它衡量 embedding distribution drift，不表示因果解释、驾驶安全结论或 planner 行为指标。
+- strict-filter ratio sweep 是 **diagnostic / sensitivity**，主报告仍是 full fallback-preserving。
