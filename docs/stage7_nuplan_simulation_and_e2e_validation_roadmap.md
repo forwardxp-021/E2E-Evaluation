@@ -1024,3 +1024,41 @@ The diagnosis plan is updated as follows:
 5. Waymo diagnostic exports must record `filtering_mode`; use `strict_filter_lane_aware_only` only when confirmed by the Stage5 command or a reliable source file. Unknown Waymo filtering mode remains low-confidence / limited-comparability evidence.
 6. nuPlan strict-filter diagnostics support `--strict_filter_min_laneaware_ratio`; `1.0` preserves the all-valid-frames behavior, while `0.8` emulates the Stage5 Waymo `--min_valid_ratio 0.8` filtering philosophy for diagnostic comparison.
 7. Optional `--strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6` reports threshold sensitivity without creating multiple datasets.
+
+## Stage7F execution order: full main chain before strict-filter sensitivity
+
+Current branch order for `20260611_stage7_conclusion`:
+
+1. Run Stage7F full fallback-preserving main report first.
+2. Then run strict-filter ratio=0.8 clean-subset sensitivity if a real filtered context dataset and embedding have been written.
+3. Run Stage5 parameter / lane-aware threshold sweep later, not before the Stage7F main chain.
+
+Stage7F consumes Stage7E embeddings and keeps Stage7E full fallback-preserving output as the primary planner-evaluation dataset. The row semantics remain one row per `scenario × planner-controlled nuPlan ego rollout`. Strict-filter ratio=0.8 is a supplemental clean-subset sensitivity experiment only: it can be useful because the diagnostic may keep fallback-free rows with slot sanity passing, but it drops scenarios and therefore must not replace the primary full official-rollout evaluation.
+
+Main command:
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --output_dir outputs/stage7f_idm_5logs_full_fallback_preserving \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+Strict-filter sensitivity command, only after a real strict-filter embedding exists:
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08/embeddings \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08/strict_filtered_dataset \
+  --output_dir outputs/stage7f_idm_5logs_strict_ratio08_sensitivity \
+  --mode strict_sensitivity \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+If the strict-filter ratio=0.8 output currently exists only as `nuplan_laneaware_strict_filter_summary.json` / report diagnostics, do not fabricate an embedding. First rerun the Stage7E context builder with `--write_strict_filtered_dataset`, then embed that written `strict_filtered_dataset/` with `tools/stage7e_embed_stage6_dataset.py`.
+
+`tools/stage7f_run_report_card.py` is intentionally a thin runner. It validates embedding/metadata row counts, planner axis, complete scenario × planner alignment in full mode, fallback-preserving versus strict-sensitivity mode, and delegates pairwise BDD/report-card work to existing Stage6 tools when feature inputs are available. It does not modify Stage6 metric definitions, Stage5D CORE, or `tools/lane_aware_assignment.py`.
