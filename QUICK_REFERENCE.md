@@ -6061,3 +6061,84 @@ python tools/stage7c1_run_nuplan_simulation.py \
 - 若 `pdm_available=true`，再根据 readiness report 中确认的 planner name / config / module 替换 `<confirmed_pdm_planner_name>` 与 `<confirmed hydra command here>`。
 - 不要在 readiness report 确认前运行 PDM smoke template；不要直接假设 `planner=pdm_planner` 或任意 PDM Hydra override 可用。
 - 不修改 Stage5D CORE、`tools/lane_aware_assignment.py` 或 Stage6 metric definitions。
+
+## Stage7P — PDM closed planner smoke
+
+## 1. 命令
+
+在 readiness check 已经确认 `pdm_available=true`、`required_next_action=ready_for_pdm_smoke`，并且 tuplan_garage 已通过 `pip install -e .` 安装后，先运行 1 个场景的 `pdm_closed_planner` smoke。`pdm_open_planner` 和 `pdm_hybrid_planner` 需要 `checkpoint_path`，这里不要把它们写成可直接运行命令。
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DEVKIT_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan-devkit
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir outputs/stage7p_pdm_closed_smoke_1scene \
+  --planners pdm_closed_planner \
+  --max_scenarios 1 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --allow_external_planner_name \
+  --hydra_searchpath '[pkg://tuplan_garage.planning.script.config.common, pkg://tuplan_garage.planning.script.config.simulation, pkg://nuplan.planning.script.config.common, pkg://nuplan.planning.script.experiments]' \
+  --nuplan_simulation_command_template 'python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios scenario_filter.scenario_tokens=null scenario_filter.limit_total_scenarios=1 worker=single_machine_thread_pool experiment_name=stage7p_pdm_closed_smoke_1scene job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+PDM smoke 成功后，可继续把该 1-scene 输出转成 Stage5D 5-neighbor context：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7p_pdm_closed_smoke_1scene \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_pdm_closed_smoke_1scene \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --debug_projection_sample_rows 20 \
+  --overwrite
+```
+
+再对 PDM smoke context 运行 Stage7E embedding：
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_pdm_closed_smoke_1scene \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_pdm_closed_embeddings_smoke_1scene \
+  --overwrite
+```
+
+Stage7F pairwise 不需要在单 planner smoke 上运行；等 PDM 与 IDM/simple 形成 paired planner 输出后再运行 Stage7F。
+
+## 2. 期望行为
+
+- Stage7C 读取 `outputs/stage7b4_nuplan_context_merged/merged_metadata.csv` 中最多 1 个场景，并调用官方 nuPlan `run_simulation.py`。
+- `--allow_external_planner_name` 允许 Stage7C 把 `pdm_closed_planner` 当作外部 Hydra planner adapter 传给 `{planner_hydra_overrides}`，不要求它存在于 Stage7C 内置 IDM/simple profile 中。
+- `--hydra_searchpath` 会追加为 `hydra.searchpath="..."` 形式的 Hydra override，使 Hydra 能找到 tuplan_garage 的 PDM planner config，同时不会强制影响标准 IDM/simple runs。
+- 该命令仍保持 Stage7 row semantics：一行表示一个 `scenario × planner-controlled nuPlan ego rollout`。
+- 输出目录继续写入 `simulation_report.md`、`warnings.json`、progress JSON、官方命令 log、解析后的 trajectory CSV/NumPy tensor。
+- 后续 Stage5D context 构建命令读取 PDM smoke 的 Stage7C simulation 输出，使用 lane-aware with geometric fallback assignment，不修改 Stage5D CORE 或 `tools/lane_aware_assignment.py`。
+- Stage7E embedding 命令读取 PDM smoke context 和既有 Stage5D checkpoint，只导出 embedding，不修改 Stage6 metric definitions。
+
+## 3. 通过标准
+
+- Stage7C PDM closed smoke 中 official command successes = 1。
+- `simulation_report.md` 中 `pseudo_rollout = false`。
+- 至少找到并解析一个官方 nuPlan msgpack trajectory artifact。
+- `simulated_ego_seq.npy` shape 为 `(1, 1, T, 8)`，且 `T >= 2`。
+- missing scenario-planner pair count = 0。
+- 如果 Hydra 找不到 `pdm_closed_planner`，优先检查 tuplan_garage 是否已经在 `/home/forwardxp/00_nuplan_E2E_eva/tuplan_garage` 执行 `pip install -e .`，以及 `--hydra_searchpath` 是否完整传入。
+- `pdm_open_planner` 和 `pdm_hybrid_planner` 因需要 `checkpoint_path` 暂不作为可直接运行 smoke 命令。
+- 首轮使用 `closed_loop_nonreactive_agents`，保持与 IDM Stage7 pipeline 一致。
+- Stage7F pairwise 只在 PDM 与 IDM/simple 已生成 paired planner 输出后运行。
