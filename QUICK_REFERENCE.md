@@ -5653,3 +5653,78 @@ python tools/compare_lane_aware_diagnostics.py \
 - 严格过滤诊断报告包含 strict_filter_min_laneaware_ratio、original rows、rows kept、rows dropped、kept_row_rate、dropped_by_reason、kept rows per planner、scenario-planner alignment、每个 scenario 是否仍保留所有 planners、frame/row lane-aware availability、availability quantiles、kept rows slot sanity 与 slot coverage；如传入 ratio sweep，还会输出多阈值表。
 - Waymo `fallback=0` 与 nuPlan `fallback=41.9%` 不再被直接解释为高置信 nuPlan adapter 问题，除非两侧过滤口径一致。
 - Stage5D CORE / `tools.lane_aware_assignment.py` 仍是唯一 lane-aware assignment 实现；Stage7 不新增专用 assignment 算法。
+
+## Stage7F full fallback-preserving 主报告与 strict-filter 敏感性
+
+## 1. 命令
+
+A. 先生成或确认 Stage7E fallback-preserving full-row embedding（主路径）：
+
+```bash
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --overwrite
+```
+
+B. 运行 Stage7F full fallback-preserving 主报告：
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --output_dir outputs/stage7f_idm_5logs_full_fallback_preserving \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+C. 只有当 strict-filter ratio=0.8 已经通过 `--write_strict_filtered_dataset` 明确写出 embedding 输入时，才运行 strict-filter 敏感性报告：
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08/embeddings \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08/strict_filtered_dataset \
+  --output_dir outputs/stage7f_idm_5logs_strict_ratio08_sensitivity \
+  --mode strict_sensitivity \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+如果 ratio=0.8 目前只有 `nuplan_laneaware_strict_filter_summary.json` / `.md` 诊断，而没有真实过滤后的 context arrays 和 embedding，则不要伪造 embedding；应先显式写出 strict-filter 数据集并再 embedding：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/<stage7c_sim_output> \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root "$NUPLAN_MAPS_ROOT" \
+  --write_strict_filter_diagnostic \
+  --write_strict_filtered_dataset \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --overwrite
+
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08/strict_filtered_dataset \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2_strictdiag_ratio08/embeddings \
+  --overwrite
+```
+
+推荐执行顺序固定为：A. Stage7F full fallback-preserving 主报告；B. strict-filter ratio=0.8 clean-subset sensitivity；C. 之后才做 Stage5 parameter / lane-aware threshold sweep。
+
+## 2. 期望行为
+
+- `tools/stage7f_run_report_card.py` 是薄封装：验证 Stage7E embedding 输出、metadata、planner axis、scenario × planner 对齐关系，并在可用时调用既有 Stage6 `tools/stage6_compare_unpaired_style.py` 与 `tools/stage6_generate_report_card.py`。
+- full 模式要求所有 scenario 都有完整 planner 组合；不完整时直接报错，避免把 clean-subset 误当主评估数据集。
+- strict_sensitivity 模式允许 scenario 被过滤掉或 planner 组合不完整，但报告会明确写出它不是主 planner-evaluation dataset。
+- 输出目录包含 `stage7f_summary.json`、`stage7f_report.md`、`planner_indices/*.npy`；启用 `--run_stage6_pairwise` 且 context feature 输入存在时，还会生成 `stage6_pairwise/<planner_a>_vs_<planner_b>/` 下的 Stage6 report-card / BDD 输出。
+- Stage7F 不修改 Stage6 metric definitions，不新增 Stage7 专用 BDD metric，不修改 Stage5D CORE / `tools/lane_aware_assignment.py`。
+
+## 3. 通过标准
+
+- full 主报告中 `all_scenarios_have_all_planners=true`，`row_semantics` 为 `scenario × planner-controlled nuPlan ego rollout`，且 embedding rows 与 metadata rows 一致。
+- full 主路径保持 fallback-preserving，Stage7E main path 仍是 primary planner-evaluation dataset。
+- strict-filter 敏感性报告写出 `strict_filter_min_laneaware_ratio=0.8`、`rows_kept`、`kept_row_rate`（如诊断 JSON 提供）、`scenarios_with_all_planners`、`scenarios_missing_any_planner`、fallback rate 与 slot sanity（如诊断 JSON 提供），并包含“不是主评估数据集”的 warning。
+- 若 strict-filter ratio=0.8 没有真实 embedding 输入，只能保留为 diagnostic-only，不能虚构 `embedding.npy`。
