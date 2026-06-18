@@ -9,7 +9,7 @@ import json
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -17,6 +17,28 @@ import pandas as pd
 ROW_SEMANTICS = "scenario × planner-controlled nuPlan ego rollout"
 STAGE6_COMPARE = "tools/stage6_compare_unpaired_style.py"
 STAGE6_REPORT = "tools/stage6_generate_report_card.py"
+
+CONTEXT_DIAGNOSTIC_FILENAMES = [
+    "warnings.json",
+    "assignment_debug.json",
+    "nuplan_laneaware_strict_filter_summary.json",
+]
+
+CONTEXT_DIAGNOSTIC_KEYS = [
+    "fallback_rate",
+    "fallback_assignment_used_rate",
+    "lane_assignment_available_rate",
+    "map_name_resolved_rate",
+    "map_query_success",
+    "lane_info_count",
+    "strict_filter_min_laneaware_ratio",
+    "rows_kept",
+    "kept_row_rate",
+    "scenarios_with_all_planners",
+    "scenarios_missing_any_planner",
+    "slot_sanity_on_kept_rows",
+    "slot_coverage_on_kept_rows",
+]
 
 
 def write_json(path: Path, obj) -> None:
@@ -47,6 +69,40 @@ def resolve_context_dir(embedding_dir: Path, explicit: Optional[str]) -> Optiona
     manifest = read_json_if_exists(embedding_dir / "embedding_manifest.json")
     raw = manifest.get("context_dataset_dir")
     return Path(raw) if raw else None
+
+
+def iter_dicts(obj) -> Iterable[Dict]:
+    if isinstance(obj, dict):
+        yield obj
+        for val in obj.values():
+            yield from iter_dicts(val)
+    elif isinstance(obj, list):
+        for val in obj:
+            yield from iter_dicts(val)
+
+
+def extract_context_diagnostics(raw: Dict) -> Dict:
+    extracted = {}
+    for item in iter_dicts(raw):
+        for key in CONTEXT_DIAGNOSTIC_KEYS:
+            if key in item and key not in extracted:
+                extracted[key] = item[key]
+    if "fallback_rate" not in extracted and "fallback_assignment_used_rate" in extracted:
+        extracted["fallback_rate"] = extracted["fallback_assignment_used_rate"]
+    return extracted
+
+
+def load_context_diagnostics(explicit_json: Optional[str], context_dir: Optional[Path]) -> Tuple[Dict, Optional[str]]:
+    if explicit_json:
+        path = Path(explicit_json)
+        return extract_context_diagnostics(read_json_if_exists(path)), str(path)
+    if context_dir is None:
+        return {}, None
+    for name in CONTEXT_DIAGNOSTIC_FILENAMES:
+        path = context_dir / name
+        if path.exists():
+            return extract_context_diagnostics(read_json_if_exists(path)), str(path)
+    return {}, None
 
 
 def planner_column(meta: pd.DataFrame) -> str:
@@ -102,7 +158,7 @@ def fallback_summary(meta: pd.DataFrame, diagnostics: Dict, mode: str) -> Dict:
         vals = pd.to_numeric(meta["fallback_used"], errors="coerce").fillna(0)
         out["fallback_rows"] = int((vals > 0).sum())
         out["fallback_rate"] = float((vals > 0).mean()) if len(vals) else 0.0
-    for key in ["fallback_rate", "map_name_resolution_status", "slot_sanity", "strict_filter_min_laneaware_ratio", "rows_kept", "kept_row_rate"]:
+    for key in CONTEXT_DIAGNOSTIC_KEYS:
         if key in diagnostics:
             out[key] = diagnostics[key]
     return out
@@ -169,11 +225,21 @@ def write_report(out: Path, summary: Dict) -> None:
         f"- scenarios_missing_any_planner: `{align['scenarios_missing_any_planner']}`",
         f"- fallback-preserving status: `{summary['fallback'].get('fallback_preserving_status')}`",
         f"- fallback rate: `{summary['fallback'].get('fallback_rate', 'unavailable')}`",
-        f"- map_name resolution status: `{summary['fallback'].get('map_name_resolution_status', 'unavailable')}`",
+        f"- context diagnostics source: `{summary.get('context_diagnostics_source')}`",
+        f"- map_name_resolved_rate: `{summary['fallback'].get('map_name_resolved_rate', 'unavailable')}`",
+        f"- map_query_success: `{summary['fallback'].get('map_query_success', 'unavailable')}`",
+        f"- lane_info_count: `{summary['fallback'].get('lane_info_count', 'unavailable')}`",
         f"- embedding shape: `{summary['embedding_shape']}`", "",
+        "## Context diagnostics", "",
+    ]
+    for key in CONTEXT_DIAGNOSTIC_KEYS:
+        if key in summary["fallback"]:
+            lines.append(f"- {key}: `{summary['fallback'][key]}`")
+    lines.extend([
+        "",
         "## Stage6 reuse", "",
         "- This wrapper validates Stage7E row semantics and delegates pairwise report-card computation to existing Stage6 tools when feature inputs are available.",
-    ]
+    ])
     for item in summary.get("stage6_pairwise_outputs", []):
         lines.append(f"- `{item}`")
     (out / "stage7f_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -189,7 +255,7 @@ def run(args) -> None:
     if emb.shape[0] != len(meta):
         raise ValueError(f"embedding.npy rows != metadata.csv rows: {emb.shape[0]} vs {len(meta)}")
     context_dir = resolve_context_dir(embedding_dir, args.context_dataset_dir)
-    diagnostics = read_json_if_exists(Path(args.context_diagnostics_json)) if args.context_diagnostics_json else {}
+    diagnostics, diagnostics_source = load_context_diagnostics(args.context_diagnostics_json, context_dir)
     align = alignment_summary(meta, args.mode)
     fallback = fallback_summary(meta, diagnostics, args.mode)
     idx_paths = write_indices(meta, align["planner_column"], output_dir)
@@ -213,6 +279,7 @@ def run(args) -> None:
         "embedding_manifest": manifest,
         "alignment": align,
         "fallback": fallback,
+        "context_diagnostics_source": diagnostics_source,
         "planner_index_paths": idx_paths,
         "stage6_pairwise_outputs": stage6_outputs,
         "stage6_metric_definitions_modified": False,
