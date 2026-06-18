@@ -319,3 +319,36 @@ def test_compare_lane_aware_diagnose_generic_when_nuplan_not_clearly_worse():
         0.2,
     )
     assert result["verdict"] == "generic_stage5_lane_aware_limitation_or_inconclusive"
+
+
+def test_nuplan_slot_sanity_skips_zero_coverage_and_keeps_schema_order():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    stats = {slot: {"coverage_ratio": 0.0, "median_rel_x": None, "median_rel_y": None} for slot in builder.SLOT_NAMES}
+    sanity, passed, evaluated, skipped, warnings = builder.evaluate_slot_sanity(stats, 0.05)
+    assert passed is True
+    assert evaluated == []
+    assert skipped == list(builder.SLOT_NAMES)
+    assert all(item["passed"] is None and item["status"] == "insufficient_coverage" for item in sanity.values())
+    assert {w["type"] for w in warnings} == {"slot_sanity_insufficient_coverage"}
+    assert list(builder.SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"]
+
+
+def test_nuplan_slot_sanity_fails_covered_wrong_direction():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    stats = {slot: {"coverage_ratio": 0.0, "median_rel_x": None, "median_rel_y": None} for slot in builder.SLOT_NAMES}
+    stats["right_front"] = {"coverage_ratio": 0.5, "median_rel_x": 10.0, "median_rel_y": 2.0}
+    sanity, passed, evaluated, skipped, warnings = builder.evaluate_slot_sanity(stats, 0.05)
+    assert passed is False
+    assert evaluated == ["right_front"]
+    assert "right_front" not in skipped
+    assert sanity["right_front_median_rel_y_lt_0"]["passed"] is False
+
+
+def test_nuplan_slot_sanity_rejects_invalid_coverage_threshold():
+    import pytest
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    with pytest.raises(ValueError):
+        builder.evaluate_slot_sanity({}, 1.5)
