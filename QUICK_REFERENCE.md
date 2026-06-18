@@ -6174,3 +6174,101 @@ python tools/stage7p_pdm_config_parameter_report.py \
   - `pdm_closed_variant_blueprint.md`
 - JSON/CSV 中能看到 `pdm_closed_planner.yaml` 的 numeric / boolean / list-valued 参数。
 - blueprint 不声称 candidate variant 已最终可运行；未验证参数必须报告 `no safe override yet`。
+
+---
+
+# Stage 7C / 7E / 7P 当前修正版命令（2026-06-18）
+
+## Stage 7C PDM closed smoke（scenario_hydra_overrides + expandvars 修正版）
+
+### 1. 命令
+
+```bash
+python tools/stage7c_run_external_planner_simulation.py \
+  --context_dir /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation/outputs/stage7b4_nuplan_context_merged \
+  --output_dir outputs/stage7c_pdm_closed_smoke_v2 \
+  --planner_names pdm_closed \
+  --planner_hydra_overrides '+planner=pdm_closed_planner' \
+  --scenario_hydra_overrides 'scenario_filter.log_names=["{target_log_name}"] scenario_filter.limit_total_scenarios=1' \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios {scenario_hydra_overrides} worker=single_machine_thread_pool experiment_name=stage7c_pdm_closed_smoke job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --nuplan_devkit_root '$NUPLAN_DEVKIT_ROOT' \
+  --nuplan_data_root '$NUPLAN_DATA_ROOT' \
+  --nuplan_map_root '$NUPLAN_MAP_ROOT' \
+  --max_scenarios 1 \
+  --timesteps 149 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- `$NUPLAN_DEVKIT_ROOT` / `$NUPLAN_DATA_ROOT` / `$NUPLAN_MAP_ROOT` 可以保留为环境变量形式，因为 Stage 7C runner 已实现并测试 `os.path.expandvars`。
+- `{scenario_hydra_overrides}` 必须出现在 `--nuplan_simulation_command_template` 中，由 CLI 单独注入 log/scenario 过滤条件。
+- 不要再使用 `scenario_filter.scenario_tokens=null`；当前 smoke 以 log/scenario hydra override 机制对齐官方 nuPlan simulation。
+- 输出 official nuPlan simulation artifacts、`simulated_ego_seq.npy`、mask、metadata、alignment validation；不允许 pseudo rollout。
+
+### 3. 通过标准
+
+- `warnings.json.validation.pass == true`。
+- `pseudo_rollout == false`。
+- official command successes 至少为 1。
+- `simulated_ego_seq.npy` 形状符合当前 smoke 期望，例如 `[1, 1, 149, 8]`。
+- scenario alignment 中 `same_log_alignment_passed == true` 且 `alignment_pass_ratio == 1.0`。
+
+## Stage 7E PDM context build（低覆盖 slot sanity 非致命）
+
+### 1. 命令
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7c_pdm_closed_smoke_v2 \
+  --output_dir outputs/stage7e_pdm_closed_context_v2 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root '$NUPLAN_MAP_ROOT' \
+  --slot_sanity_min_coverage 0.05 \
+  --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 1.0 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 读取 Stage 7C official PDM closed rollout artifacts 和 nuPlan msgpack，构建 Stage5D-compatible `context_traj.npy [N,T,83]`。
+- Stage5D CORE、slot order、83-dim schema、formula parity、row semantics 仍然是硬约束。
+- 单场景 smoke 中某个语义 slot（例如 `right_front`）没有对象或覆盖率低于 `--slot_sanity_min_coverage` 时，会写入 `slot_sanity_insufficient_coverage` warning，并在 report 中标记为 skipped；这只是诊断信息，不会让 context validation 失败。
+- 如果某个 coverage 足够的 slot 方向中位数违反语义预期，仍然会让 validation 失败。
+
+### 3. 通过标准
+
+- `warnings.json.validation.pass == true`。
+- `warnings.json.validation.context_dim == 83` 或 `stage5d_dim_matched == true`。
+- `warnings.json.validation.context_traj_no_nonfinite == true`。
+- `stage5d_core_reused == true`，slot schema/order matched。
+- `stage5d_derived_formula_matched == true`。
+- `context_build_report.md` 包含 slot coverage、evaluated slots、skipped low-coverage slots、failed sufficiently-covered slots。
+- strict filter report 中 `slot_coverage_on_kept_rows` 仍保留，但低覆盖/缺失 slot 不代表 context 无效。
+
+## Stage 7P PDM parameter discovery（YAML inline comment 解析修正版）
+
+### 1. 命令
+
+```bash
+python tools/stage7p_pdm_config_parameter_report.py \
+  --tuplan_garage_root /home/forwardxp/00_nuplan_E2E_eva/tuplan_garage \
+  --planner_config_name pdm_closed_planner \
+  --output_dir outputs/stage7p_pdm_closed_config_params_v1 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 读取 `tuplan_garage/tuplan_garage/planning/script/config/simulation/planner/pdm_closed_planner.yaml`，保留 source line number，并清理 inline comments 后再解析值。
+- `num_poses`、`interval_length`、`speed_limit_fraction`、`fallback_target_velocity`、`min_gap_to_lead_agent`、`headway_time`、`accel_max`、`decel_max`、`lateral_offsets`、`map_radius` 等应分类为 clean numeric scalar/list/bool/string/target_path。
+- 输出 `pdm_closed_parameter_report.md`、`pdm_closed_parameter_summary.json`、`pdm_closed_parameter_table.csv`、`pdm_closed_variant_blueprint.md`。
+- variant blueprint 只对已验证存在于 YAML 的 `verified_config_key` 输出 concrete override candidates；PDM open/hybrid 不标记为 runnable，因为需要 `checkpoint_path`。
+
+### 3. 通过标准
+
+- inline comments 不应进入 parsed value。
+- `lateral_offsets` 和 `speed_limit_fraction` 是 `numeric_list`。
+- numeric scalar 是 `numeric_scalar`。
+- concrete override candidate 行必须标记 `verified_config_key`，未知或未验证项只能标记为 `inferred_candidate` / `unsafe_unknown`，不能作为 runnable command。
