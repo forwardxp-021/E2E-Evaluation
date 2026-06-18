@@ -107,3 +107,82 @@ def test_quick_reference_contains_pdm_closed_smoke_command():
     assert "--planners pdm_closed_planner" in text
     assert "--allow_external_planner_name" in text
     assert "--hydra_searchpath '[pkg://tuplan_garage.planning.script.config.common" in text
+
+
+def test_expandvars_expands_nuplan_devkit_root_in_command_template(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_run(cmd, shell, text, stdout, stderr, timeout):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, stdout="ok", stderr="")
+
+    monkeypatch.setenv("NUPLAN_DEVKIT_ROOT", "/abs/nuplan-devkit")
+    monkeypatch.setattr(stage7c.subprocess, "run", fake_run)
+    warnings = []
+    ok, log_path, _ = stage7c.run_official_nuplan_cli(
+        "python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py {scenario_hydra_overrides}",
+        "simple_planner",
+        {"scenario_index": "0", "scenario_token": "tok"},
+        tmp_path,
+        10,
+        warnings,
+        require_same_scenario_alignment=True,
+    )
+    assert ok is True
+    assert calls[0][1] == "/abs/nuplan-devkit/nuplan/planning/script/run_simulation.py"
+    assert "$NUPLAN_DEVKIT_ROOT" not in Path(log_path).read_text(encoding="utf-8")
+
+
+def test_scenario_hydra_overrides_prefers_token():
+    info = stage7c.scenario_hydra_override_info({"scenario_token": "abc", "db_name": "log.db"}, True)
+    assert info["control_mode"] == "token"
+    assert info["scenario_hydra_overrides"] == "scenario_filter.scenario_tokens=[abc]"
+
+
+def test_scenario_hydra_overrides_falls_back_to_log_name():
+    info = stage7c.scenario_hydra_override_info({"db_name": "2021.01.01_veh-1.db"}, True)
+    assert info["control_mode"] == "log_name"
+    assert "scenario_filter.log_names=[2021.01.01_veh-1]" in info["scenario_hydra_overrides"]
+    assert "scenario_filter.limit_total_scenarios=1" in info["scenario_hydra_overrides"]
+
+
+def test_missing_scenario_hydra_placeholder_with_required_alignment_fails_clearly(tmp_path):
+    with pytest.raises(ValueError, match="Command template must include"):
+        stage7c.run_official_nuplan_cli(
+            "python -m dummy",
+            "simple_planner",
+            {"scenario_token": "abc"},
+            tmp_path,
+            10,
+            [],
+            require_same_scenario_alignment=True,
+        )
+
+
+def test_pdm_external_planner_command_generation_with_required_alignment(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_run(cmd, shell, text, stdout, stderr, timeout):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(stage7c.subprocess, "run", fake_run)
+    ok, _, _ = stage7c.run_official_nuplan_cli(
+        "python -m dummy {planner_hydra_overrides} {scenario_hydra_overrides}",
+        "pdm_closed_planner",
+        {"scenario_index": "0", "scenario_token": "abc"},
+        tmp_path,
+        10,
+        [],
+        require_same_scenario_alignment=True,
+    )
+    assert ok is True
+    joined = " ".join(calls[0])
+    assert "planner=pdm_closed_planner" in joined
+    assert "scenario_filter.scenario_tokens=[abc]" in joined
+
+
+def test_quick_reference_contains_fixed_pdm_commands():
+    text = Path("QUICK_REFERENCE.md").read_text(encoding="utf-8")
+    assert "{scenario_hydra_overrides}" in text
+    assert "stage7p_pdm_config_parameter_report.py" in text
