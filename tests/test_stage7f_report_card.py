@@ -77,3 +77,36 @@ def test_stage7f_wrapper_delegates_stage6_and_does_not_touch_stage5d_core_files(
     assert "def mmd" not in src
     assert "lane_aware_assignment.py" not in src
     assert "stage5d_context_core.py" not in src
+
+
+def test_stage7f_auto_loads_warnings_json_from_context_dataset_dir(tmp_path):
+    emb = make_embedding_dir(tmp_path, [
+        {"scenario_token": "s0", "planner_name": "p0", "fallback_used": 0},
+        {"scenario_token": "s0", "planner_name": "p1", "fallback_used": 0},
+        {"scenario_token": "s1", "planner_name": "p0", "fallback_used": 0},
+        {"scenario_token": "s1", "planner_name": "p1", "fallback_used": 0},
+    ])
+    ctx = tmp_path / "ctx"
+    ctx.mkdir()
+    (ctx / "warnings.json").write_text(json.dumps({
+        "validation": {
+            "fallback_assignment_used_rate": 0.75,
+            "lane_assignment_available_rate": 0.25,
+            "map_name_resolved_rate": 1.0,
+            "map_query_success": True,
+            "lane_info_count": 12,
+        }
+    }), encoding="utf-8")
+
+    proc = run_tool(emb, tmp_path / "out", "full")
+
+    assert proc.returncode == 0, proc.stderr
+    summary = json.loads((tmp_path / "out" / "stage7f_summary.json").read_text(encoding="utf-8"))
+    assert summary["context_diagnostics_source"] == str(ctx / "warnings.json")
+    assert summary["fallback"]["fallback_assignment_used_rate"] == 0.75
+    assert summary["fallback"]["fallback_rate"] == 0.75
+    assert summary["fallback"]["lane_assignment_available_rate"] == 0.25
+    assert summary["fallback"]["map_query_success"] is True
+    report = (tmp_path / "out" / "stage7f_report.md").read_text(encoding="utf-8")
+    assert f"context diagnostics source: `{ctx / 'warnings.json'}`" in report
+    assert "fallback rate: `0.75`" in report

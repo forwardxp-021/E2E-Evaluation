@@ -5716,15 +5716,15 @@ python tools/stage7e_embed_stage6_dataset.py \
 
 ## 2. 期望行为
 
-- `tools/stage7f_run_report_card.py` 是薄封装：验证 Stage7E embedding 输出、metadata、planner axis、scenario × planner 对齐关系，并在可用时调用既有 Stage6 `tools/stage6_compare_unpaired_style.py` 与 `tools/stage6_generate_report_card.py`。
+- `tools/stage7f_run_report_card.py` 是薄封装：验证 Stage7E embedding 输出、metadata、planner axis、scenario × planner 对齐关系，并在可用时调用既有 Stage6 `tools/stage6_compare_unpaired_style.py` 与 `tools/stage6_generate_report_card.py`。如果显式传入 `--context_diagnostics_json`，优先读取该 JSON；否则会从 resolved `context_dataset_dir` 依次自动查找 `warnings.json`、`assignment_debug.json`、`nuplan_laneaware_strict_filter_summary.json`，把 fallback / lane-aware / strict-filter 诊断字段写入 `stage7f_summary.json` 和 `stage7f_report.md`。
 - full 模式要求所有 scenario 都有完整 planner 组合；不完整时直接报错，避免把 clean-subset 误当主评估数据集。
 - strict_sensitivity 模式允许 scenario 被过滤掉或 planner 组合不完整，但报告会明确写出它不是主 planner-evaluation dataset。
-- 输出目录包含 `stage7f_summary.json`、`stage7f_report.md`、`planner_indices/*.npy`；启用 `--run_stage6_pairwise` 且 context feature 输入存在时，还会生成 `stage6_pairwise/<planner_a>_vs_<planner_b>/` 下的 Stage6 report-card / BDD 输出。
+- 输出目录包含 `stage7f_summary.json`、`stage7f_report.md`、`planner_indices/*.npy`；summary/report 中会记录 `context_diagnostics_source`，并在可用时展示 `fallback_rate` / `fallback_assignment_used_rate`、`lane_assignment_available_rate`、`map_name_resolved_rate`、`map_query_success`、`lane_info_count`、`rows_kept`、`kept_row_rate`、slot sanity / coverage 等诊断；启用 `--run_stage6_pairwise` 且 context feature 输入存在时，还会生成 `stage6_pairwise/<planner_a>_vs_<planner_b>/` 下的 Stage6 report-card / BDD 输出。
 - Stage7F 不修改 Stage6 metric definitions，不新增 Stage7 专用 BDD metric，不修改 Stage5D CORE / `tools/lane_aware_assignment.py`。
 
 ## 3. 通过标准
 
 - full 主报告中 `all_scenarios_have_all_planners=true`，`row_semantics` 为 `scenario × planner-controlled nuPlan ego rollout`，且 embedding rows 与 metadata rows 一致。
-- full 主路径保持 fallback-preserving，Stage7E main path 仍是 primary planner-evaluation dataset。
+- full 主路径保持 fallback-preserving，Stage7E main path 仍是 primary planner-evaluation dataset；即使命令没有传 `--context_diagnostics_json`，只要 `context_dataset_dir/warnings.json` 存在，报告中的 fallback rate 不应显示为 unavailable。
 - strict-filter 敏感性报告写出 `strict_filter_min_laneaware_ratio=0.8`、`rows_kept`、`kept_row_rate`（如诊断 JSON 提供）、`scenarios_with_all_planners`、`scenarios_missing_any_planner`、fallback rate 与 slot sanity（如诊断 JSON 提供），并包含“不是主评估数据集”的 warning。
 - 若 strict-filter ratio=0.8 没有真实 embedding 输入，只能保留为 diagnostic-only，不能虚构 `embedding.npy`。
