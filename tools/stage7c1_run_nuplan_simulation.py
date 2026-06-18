@@ -1245,6 +1245,23 @@ def run(args: argparse.Namespace) -> int:
     db_root = Path(args.nuplan_db_root).expanduser()
     map_root = Path(args.nuplan_map_root).expanduser()
     planners = list(args.planners)
+    if args.allow_external_planner_name:
+        for planner_name in planners:
+            if planner_name not in PLANNER_PROFILES:
+                PLANNER_PROFILES[planner_name] = {
+                    "planner_type": "external_hydra_planner",
+                    "policy_style": "external_unverified",
+                    "style_scope": "external_planner_from_command_template",
+                    "nuplan_planner_config": planner_name,
+                    "hydra_overrides": [f"planner={planner_name}"],
+                    "preferred_classes": [],
+                    "supported_behavior_tasks": [],
+                    "unsupported_behavior_tasks": [],
+                    "parameters": {
+                        "source": "--allow_external_planner_name",
+                        "requirement": "Planner name and Hydra command must be confirmed by Stage7P readiness or external install docs.",
+                    },
+                }
     warnings = validate_inputs(context_dir, db_root, map_root)
     original_metadata = read_csv(metadata_path) if metadata_path.is_file() else []
     metadata, scenario_sampling = sample_metadata_rows(original_metadata, args.max_scenarios, args.sample_distinct_log_names)
@@ -1255,11 +1272,13 @@ def run(args: argparse.Namespace) -> int:
     planner_rows: List[Dict[str, Any]] = []
     for planner_id, planner_name in enumerate(planners):
         if planner_name not in PLANNER_PROFILES:
-            warnings.append({"type": "unknown_planner", "scenario_id": "", "planner_name": planner_name, "message": "planner name is not one of the configured Stage 7C.1 planner profiles"})
+            warnings.append({"type": "unknown_planner", "scenario_id": "", "planner_name": planner_name, "message": "planner name is not one of the configured Stage 7C.1 planner profiles; use --allow_external_planner_name only after confirming an external planner config/module."})
             continue
         klass, module = choose_planner_class(planner_name, discovery)
-        if klass == "UNAVAILABLE":
+        if klass == "UNAVAILABLE" and not args.allow_external_planner_name:
             warnings.append({"type": "planner_class_unavailable", "scenario_id": "", "planner_name": planner_name, "message": f"No preferred nuPlan class found among {PLANNER_PROFILES[planner_name]['preferred_classes']}"})
+        elif klass == "UNAVAILABLE" and args.allow_external_planner_name:
+            warnings.append({"type": "external_planner_class_not_discovered", "scenario_id": "", "planner_name": planner_name, "message": "Stage7C did not import a preferred class for this external planner name; the supplied --nuplan_simulation_command_template remains authoritative."})
         planner_rows.append({
             "planner_id": planner_id,
             "planner_name": planner_name,
@@ -1533,8 +1552,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--max_scenarios", type=int, default=5, help="0 means all Stage 7B.4 metadata rows.")
     p.add_argument("--sample_distinct_log_names", action="store_true", help="Before applying --max_scenarios, keep only the first metadata row for each normalized log name (db_name without .db), preserving metadata order.")
     p.add_argument("--overwrite", action="store_true")
-    p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {planner_name_safe}, {planner_hydra_overrides}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}, plus target placeholders {target_log_name}, {target_scene_token}, {target_db_name}. Prefer shell/path-safe variants such as {target_log_name_safe}, {target_scene_token_safe}, {target_db_name_safe}; exact same-scenario nuPlan commands should use target placeholders, not raw {scenario_id}, because Hydra filter keys may need log/token values separately.")
+    p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {planner_name_safe}, {planner_hydra_overrides}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}, plus target placeholders {target_log_name}, {target_scene_token}, {target_db_name}. Prefer shell/path-safe variants such as {target_log_name_safe}, {target_scene_token_safe}, {target_db_name_safe}; exact same-scenario nuPlan commands should use target placeholders, not raw {scenario_id}, because Hydra filter keys may need log/token values separately. For external planners, confirm the Hydra override first, pass the confirmed name with --planners, and add --allow_external_planner_name.")
     p.add_argument("--nuplan_simulation_command_use_shell", action="store_true", help="Run the formatted official nuPlan command through the shell. Default is false: shlex.split(command) and subprocess.run(argv, shell=False) to avoid shell metacharacter interpretation.")
+    p.add_argument("--allow_external_planner_name", action="store_true", help="Allow --planners entries that are not built-in Stage7C profiles. Use only after the planner config/module is confirmed; Stage7C will pass the name through to {planner_name}/{planner_hydra_overrides} without claiming that PDM is installed.")
     p.add_argument("--require_same_scenario_alignment", action="store_true", help="Require Stage 7C.1C same-log alignment PASS for the final Stage 7C.1 PASS. Default preserves smoke behavior and allows alignment FAIL.")
     p.add_argument("--require_strict_nuplan_token_alignment", action="store_true", help="Require Stage 7B.4 scene_token to match the actual nuPlan scenario token. Default false because Stage 7B.4 scene_token may differ from nuPlan scenario_filter.scenario_tokens.")
     p.add_argument("--command_timeout_s", type=int, default=3600)
