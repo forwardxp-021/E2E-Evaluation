@@ -11,6 +11,8 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
+from tools.stage7f_collect_pairwise_summary import collect_pairwise_summary
+
 import numpy as np
 import pandas as pd
 
@@ -242,6 +244,9 @@ def write_report(out: Path, summary: Dict) -> None:
     ])
     for item in summary.get("stage6_pairwise_outputs", []):
         lines.append(f"- `{item}`")
+    pairwise_md = summary.get("stage7f_pairwise_summary_outputs", {}).get("md")
+    if pairwise_md:
+        lines.extend(["", "## Stage7F pairwise aggregation", "", f"- pairwise summary report: `{pairwise_md}`"] )
     (out / "stage7f_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -286,6 +291,9 @@ def run(args) -> None:
         "new_metric_logic_implemented": False,
     }
     write_json(output_dir / "stage7f_summary.json", summary)
+    if args.run_stage6_pairwise and any("output_dir" in item for item in stage6_outputs if isinstance(item, dict)):
+        summary["stage7f_pairwise_summary_outputs"] = collect_pairwise_summary(output_dir, output_dir, overwrite=True)
+        write_json(output_dir / "stage7f_summary.json", summary)
     write_report(output_dir, summary)
 
 
