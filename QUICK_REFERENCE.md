@@ -5728,3 +5728,51 @@ python tools/stage7e_embed_stage6_dataset.py \
 - full 主路径保持 fallback-preserving，Stage7E main path 仍是 primary planner-evaluation dataset；即使命令没有传 `--context_diagnostics_json`，只要 `context_dataset_dir/warnings.json` 存在，报告中的 fallback rate 不应显示为 unavailable。
 - strict-filter 敏感性报告写出 `strict_filter_min_laneaware_ratio=0.8`、`rows_kept`、`kept_row_rate`（如诊断 JSON 提供）、`scenarios_with_all_planners`、`scenarios_missing_any_planner`、fallback rate 与 slot sanity（如诊断 JSON 提供），并包含“不是主评估数据集”的 warning。
 - 若 strict-filter ratio=0.8 没有真实 embedding 输入，只能保留为 diagnostic-only，不能虚构 `embedding.npy`。
+
+## Stage 7F — pairwise aggregation collector（Stage6 输出汇总）
+
+### 1. 命令
+
+推荐先运行 full fallback-preserving Stage7F 主报告，并让 Stage7F runner 自动复用 Stage6 pairwise 工具、随后自动生成 pairwise 汇总：
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2 \
+  --output_dir outputs/stage7f_idm_5logs_full_fallback_preserving \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+如果 Stage6 pairwise 目录已经存在，也可以只运行轻量汇总器：
+
+```bash
+python tools/stage7f_collect_pairwise_summary.py \
+  --stage7f_dir outputs/stage7f_idm_5logs_full_fallback_preserving \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- runner 会读取 Stage7E `embedding.npy` / `metadata.csv` / `embedding_manifest.json`，保持行语义为 `scenario × planner-controlled nuPlan ego rollout`。
+- 加 `--run_stage6_pairwise` 时，runner 继续调用既有 Stage6 pairwise compare/report-card 工具；Stage6 完成后自动写出：
+  - `outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_pairwise_summary.csv`
+  - `outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_pairwise_summary.json`
+  - `outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_pairwise_summary.md`
+- 单独运行 collector 时，只扫描 `stage7f_dir/stage6_pairwise/*/` 下已有的 `bdd_summary.json`、`style_report_card.md`、`stage6_warnings.json` 以及可选 CSV；不会重新计算 BDD/MMD，不会修改 Stage6 metric 定义，不会修改 Stage5D CORE，也不会读取或修改 lane-aware assignment 逻辑。
+- 可选的 `category_delta.csv`、`feature_delta.csv`、`top_drift_cases.csv`、`scenario_slice_delta.csv` 缺失时，汇总器不会报错；对应字段会写为 null / unavailable。
+- 运行后重点查看：
+
+```text
+outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_report.md
+outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_pairwise_summary.md
+```
+
+### 3. 通过标准
+
+- `stage7f_pairwise_summary.csv/json/md` 均存在。
+- Markdown 报告包含 source Stage7F directory、full fallback-preserving mode、row semantics、scenario/planner/row 数、fallback/map/lane diagnostics、按 `bdd_mmd2` 降序排序的 pairwise 表、top/lowest BDD pair、warnings summary 和 limitations。
+- `bdd_rank_desc=1` 对应最大的 `bdd_mmd2`。
+- 当前 5-log 结果必须解释为 exploratory：每个 planner pair 的 `n_A=n_B=5` 太小，permutation p-value 低功效，BDD 只表示分布漂移幅度而不表示方向；category/feature delta 只是解释层。
+- full 主结果 fallback rate 约 41.9% 时，结论必须后续配合 strict-filter ratio=0.8 sensitivity 和 Stage5 lane-aware parameter sweep。

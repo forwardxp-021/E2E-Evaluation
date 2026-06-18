@@ -1062,3 +1062,50 @@ python tools/stage7f_run_report_card.py \
 If the strict-filter ratio=0.8 output currently exists only as `nuplan_laneaware_strict_filter_summary.json` / report diagnostics, do not fabricate an embedding. First rerun the Stage7E context builder with `--write_strict_filtered_dataset`, then embed that written `strict_filtered_dataset/` with `tools/stage7e_embed_stage6_dataset.py`.
 
 `tools/stage7f_run_report_card.py` is intentionally a thin runner. It validates embedding/metadata row counts, planner axis, complete scenario × planner alignment in full mode, fallback-preserving versus strict-sensitivity mode, and delegates pairwise BDD/report-card work to existing Stage6 tools when feature inputs are available. It does not modify Stage6 metric definitions, Stage5D CORE, or `tools/lane_aware_assignment.py`.
+
+## Stage 7F Pairwise Aggregation Utility
+
+Stage7F now includes a lightweight collector over existing Stage6 pairwise outputs. This utility is intentionally a collector only: it does not change Stage6 BDD/MMD definitions, does not implement new report-card metrics, does not change Stage5D CORE, does not change lane-aware assignment, and does not change Stage7E embedding row semantics.
+
+### Recommended sequence
+
+A. Run the Stage7F full fallback-preserving main report and existing Stage6 pairwise tools:
+
+```bash
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_idm_embeddings_5logs_laneaware \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_5logs_laneaware_v2 \
+  --output_dir outputs/stage7f_idm_5logs_full_fallback_preserving \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+```
+
+B. Review:
+
+```text
+outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_report.md
+outputs/stage7f_idm_5logs_full_fallback_preserving/stage7f_pairwise_summary.md
+```
+
+C. Treat pairwise differences as exploratory because each pair currently has `n_A=n_B=5`. BDD measures embedding-space distribution drift magnitude only, not direction; category and feature deltas are interpretation layers.
+
+D. Later run strict-filter ratio=0.8 sensitivity and the Stage5 lane-aware parameter sweep. This is especially important for the full fallback-preserving run because the known fallback rate is about 41.9%.
+
+### Collector-only command
+
+If `stage6_pairwise/*/` already exists, regenerate only the aggregate files with:
+
+```bash
+python tools/stage7f_collect_pairwise_summary.py \
+  --stage7f_dir outputs/stage7f_idm_5logs_full_fallback_preserving \
+  --overwrite
+```
+
+Expected aggregate outputs:
+
+```text
+stage7f_pairwise_summary.csv
+stage7f_pairwise_summary.json
+stage7f_pairwise_summary.md
+```
