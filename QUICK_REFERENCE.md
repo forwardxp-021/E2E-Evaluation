@@ -6001,3 +6001,63 @@ python tools/stage7f_task_overlap_matrix.py \
 - `task_overlap_report.md` 明确报告 following-vs-queue 的 overlap count、Jaccard、row set 是否 identical、paired scenario set 是否 identical。
 - 若 following 和 queue 高度重叠或完全相同，报告中将其解释为一个 combined longitudinal interaction evidence cluster，不能作为彼此独立证据过度声称。
 - 未修改 Stage5D CORE、`tools/lane_aware_assignment.py` 或 Stage6 metric definitions。
+
+## Stage7P — PDM readiness and smoke preparation
+
+## 1. 命令
+
+先运行只读 readiness check，确认当前 `nuplan-devkit`、本仓库和可选额外搜索路径中是否存在 PDM planner / Hydra config / Python class：
+
+```bash
+python tools/stage7p_pdm_readiness_check.py \
+  --repo_root /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation \
+  --nuplan_devkit_root /home/forwardxp/00_nuplan_E2E_eva/nuplan-devkit \
+  --output_dir outputs/stage7p_pdm_readiness_check_v1 \
+  --overwrite
+```
+
+如外部 PDM 实现已经安装在其他目录，可以追加一个或多个搜索根目录：
+
+```bash
+python tools/stage7p_pdm_readiness_check.py \
+  --repo_root /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation \
+  --nuplan_devkit_root /home/forwardxp/00_nuplan_E2E_eva/nuplan-devkit \
+  --extra_search_roots /path/to/external/pdm/repo \
+  --output_dir outputs/stage7p_pdm_readiness_check_v1 \
+  --overwrite
+```
+
+PDM smoke template（**不可直接运行**，仅当 readiness check 明确 `pdm_available=true` 后才可按报告替换占位符）：
+
+```bash
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir ... \
+  --nuplan_db_root ... \
+  --nuplan_map_root ... \
+  --output_dir outputs/stage7p_pdm_smoke_1scene \
+  --planners <confirmed_pdm_planner_name> \
+  --max_scenarios 1 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --nuplan_simulation_command_template '<confirmed hydra command here>' \
+  --allow_external_planner_name \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- readiness check 会只读搜索 `nuplan_devkit_root`、`repo_root` 和 `--extra_search_roots` 中的 `*pdm*` / `*PDM*` 文件、包含 `PDM` 的 Python class、包含 `pdm` 的 Hydra/config 文本，以及 `nuplan/planning/script/config` 下的 planner config。
+- readiness check 会安全尝试 import `nuplan` 和 Stage7C 已使用的 planner/simulation 模块，并仅在 module spec 存在时尝试导入候选 PDM 模块；导入失败会写入 diagnostics，不会让脚本崩溃。
+- 输出目录会生成 `pdm_readiness_summary.json` 和 `pdm_readiness_report.md`；JSON 中必须包含 `pdm_available`、`pdm_config_candidates`、`pdm_module_candidates`、`pdm_class_candidates`、`available_planner_configs` 和 `required_next_action`。
+- 如果当前环境没有 PDM，`required_next_action` 应为 `install_external_pdm_implementation`；如果只发现部分路径/模块，可能提示 `configure_external_planner_path`；只有确认 config/module/class 后才应进入 `ready_for_pdm_smoke`。
+- 该流程不会安装包、不会 clone 外部仓库、不会修改环境，也不会假设 `planner=pdm_planner` 一定可用。
+- Stage7C 仍是 adapter / runner / diagnostic layer；外部 planner 名称必须通过 `--allow_external_planner_name` 显式启用，并且真正的 Hydra planner override 以 `--nuplan_simulation_command_template` 中已确认的命令为准。
+
+## 3. 通过标准
+
+- `outputs/stage7p_pdm_readiness_check_v1/pdm_readiness_summary.json` 成功生成。
+- `outputs/stage7p_pdm_readiness_check_v1/pdm_readiness_report.md` 明确说明 PDM 是否可用。
+- 若 `pdm_available=false`，报告必须提示下一步安装或配置外部 PDM 实现，不能把 PDM smoke template 标记为可运行命令。
+- 若 `pdm_available=true`，再根据 readiness report 中确认的 planner name / config / module 替换 `<confirmed_pdm_planner_name>` 与 `<confirmed hydra command here>`。
+- 不要在 readiness report 确认前运行 PDM smoke template；不要直接假设 `planner=pdm_planner` 或任意 PDM Hydra override 可用。
+- 不修改 Stage5D CORE、`tools/lane_aware_assignment.py` 或 Stage6 metric definitions。
