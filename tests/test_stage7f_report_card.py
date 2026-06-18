@@ -116,7 +116,7 @@ def _make_pair(pair_dir: Path, mmd2: float, with_optional: bool = False):
     pair_dir.mkdir(parents=True)
     (pair_dir / "bdd_summary.json").write_text(json.dumps({
         "mmd2": mmd2, "ci95_low": mmd2 - 0.1, "ci95_high": mmd2 + 0.1,
-        "p_value": 0.2, "n_A": 5, "n_B": 5, "embedding_dim": 64,
+        "p_value": 0.2, "n_A": 20, "n_B": 20, "embedding_dim": 64,
     }), encoding="utf-8")
     (pair_dir / "style_report_card.md").write_text("# Style Report Card\n", encoding="utf-8")
     (pair_dir / "stage6_warnings.json").write_text(json.dumps({"warnings": ["w1"]}), encoding="utf-8")
@@ -139,7 +139,7 @@ def test_stage7f_collect_pairwise_summary_minimal_missing_optional_and_ranking(t
         "mode": "full",
         "row_semantics": "scenario × planner-controlled nuPlan ego rollout",
         "alignment": {"num_scenarios": 5, "num_planners": 3, "total_rows": 15},
-        "fallback": {"fallback_preserving_status": True, "fallback_rate": 0.419},
+        "fallback": {"fallback_preserving_status": True, "fallback_rate": 0.5191275167785235},
     }), encoding="utf-8")
     _make_pair(stage7f / "stage6_pairwise" / "planner_a_vs_planner_b", 0.2, with_optional=False)
     _make_pair(stage7f / "stage6_pairwise" / "planner_a_vs_planner_c", 0.7, with_optional=True)
@@ -152,7 +152,12 @@ def test_stage7f_collect_pairwise_summary_minimal_missing_optional_and_ranking(t
     assert rows[0]["bdd_rank_desc"] == 1
     assert rows[1]["top_category_1"] is None
     assert rows[1]["has_scenario_slice_summary"] is False
-    assert "planner_a_vs_planner_c" in (stage7f / "stage7f_pairwise_summary.md").read_text(encoding="utf-8")
+    md = (stage7f / "stage7f_pairwise_summary.md").read_text(encoding="utf-8")
+    assert "planner_a_vs_planner_c" in md
+    assert "n_A=20, n_B=20" in md
+    assert "0.5191275167785235" in md
+    assert "n_A=n_B=5" not in md
+    assert "41.9%" not in md
 
 
 def test_stage7f_runner_creates_pairwise_summary_after_pairwise(monkeypatch, tmp_path):
