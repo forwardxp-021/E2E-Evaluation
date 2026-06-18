@@ -5963,3 +5963,41 @@ python tools/stage7f_aggressive_conservative_paired_delta.py \
 - task-conditioned BDD 可以生成 summary；如果某些 task 的 `n_A` / `n_B` 低于 `--min_bin_size`，允许被 skip，但必须在 `warnings.json` / skipped tasks 中可见。
 - following 与 yield_conflict 是更可靠的 detectors；lead_brake_response、queue_approach、cutin_response 可能是 proxy-based，需要结合 detector strength 和 low-n 提示解释。
 - 20-scenario 结果只作为 exploratory diagnostic，不替代完整 Stage7F pairwise BDD；该流程的目的只是解释 aggressive/conservative overall BDD 为什么很小。
+
+## Stage7F task overlap matrix diagnostic（aggressive vs conservative）
+
+## 1. 命令
+
+```bash
+python tools/stage7f_task_overlap_matrix.py \
+  --events_dir outputs/stage7f_idm_20scenes_stage6c_behavior_events_v2 \
+  --stage7f_task_bdd_dir outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_bdd_v1 \
+  --embedding_dir outputs/stage7e_idm_embeddings_20scenes_laneaware_v1 \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_20scenes_laneaware_v1 \
+  --stage7f_dir outputs/stage7f_idm_20scenes_full_fallback_preserving_v1 \
+  --planner_a idm_longitudinal_aggressive \
+  --planner_b idm_longitudinal_conservative \
+  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_cutin_response,task_yield_conflict \
+  --output_dir outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+该命令读取 Stage6C v2 的 `behavior_event_metrics_v2.csv` / `behavior_event_bins_v2.csv`、Stage7E 的 `metadata.csv`、Stage7F 的 `planner_indices`，并复用已有 task-conditioned BDD 摘要（如存在）。它只统计不同 task 正类 row set 与 A/B paired scenario set 的 overlap count / Jaccard，不重新实现 BDD/MMD，不修改 task detector 逻辑，不改变 row semantics，也不修改 Stage5D CORE、`tools/lane_aware_assignment.py` 或 Stage6 metric 定义。
+
+预期输出目录为：
+
+- `outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1/task_overlap_report.md`
+- `outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1/task_overlap_summary.json`
+- `outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1/task_overlap_matrix_all.csv`
+- `outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1/task_overlap_matrix_paired_scenarios.csv`
+- 同时还会生成 `task_overlap_matrix_planner_a.csv` 与 `task_overlap_matrix_planner_b.csv`。
+
+## 3. 通过标准
+
+- `task_following` 和 `task_queue_approach` 的 positive counts 非空。
+- overlap matrix 文件成功生成，至少包含 all-row 与 paired-scenario 两类矩阵。
+- `task_overlap_report.md` 明确报告 following-vs-queue 的 overlap count、Jaccard、row set 是否 identical、paired scenario set 是否 identical。
+- 若 following 和 queue 高度重叠或完全相同，报告中将其解释为一个 combined longitudinal interaction evidence cluster，不能作为彼此独立证据过度声称。
+- 未修改 Stage5D CORE、`tools/lane_aware_assignment.py` 或 Stage6 metric definitions。

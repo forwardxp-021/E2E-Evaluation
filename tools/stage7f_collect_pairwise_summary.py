@@ -120,7 +120,7 @@ def add_interpretation(rows: List[Dict]) -> List[Dict]:
         p = row.get("permutation_p_value")
         row["significance_label"] = "nominal_p_lt_0.05_exploratory_only" if p is not None and float(p) < 0.05 else "exploratory_only"
         row["effect_size_label"] = "larger_relative_drift" if row["pair_name"] == top_name else "small_or_uncalibrated"
-        row["interpretation_note"] = "Current n_A=n_B=5 is too small for strong statistical conclusions; BDD measures distribution drift magnitude only, not direction; category/feature deltas are interpretation layers."
+        row["interpretation_note"] = "Sample sizes are reported from the actual pairwise outputs; BDD measures distribution drift magnitude only, not direction; category/feature deltas are interpretation layers."
     return ordered
 
 
@@ -141,6 +141,25 @@ def collect_pairwise_summary(stage7f_dir: Path, output_dir: Optional[Path] = Non
     return {"csv": str(output_dir / OUTPUT_CSV), "json": str(output_dir / OUTPUT_JSON), "md": str(output_dir / OUTPUT_MD), "num_pairs": len(rows)}
 
 
+def format_n_range(rows: List[Dict]) -> str:
+    vals = []
+    for key in ["n_A", "n_B"]:
+        nums = [int(r[key]) for r in rows if r.get(key) is not None]
+        if not nums:
+            vals.append(f"{key}=unavailable")
+        elif min(nums) == max(nums):
+            vals.append(f"{key}={nums[0]}")
+        else:
+            vals.append(f"{key}={min(nums)}-{max(nums)}")
+    return ", ".join(vals)
+
+
+def fallback_rate_text(summary: Dict) -> str:
+    fallback = summary.get("fallback", {}) if isinstance(summary, dict) else {}
+    val = fallback.get("fallback_rate")
+    return "unavailable" if val is None else str(val)
+
+
 def write_markdown(stage7f_dir: Path, out_path: Path, rows: List[Dict]) -> None:
     s = read_json(stage7f_dir / "stage7f_summary.json")
     align, fallback = s.get("alignment", {}), s.get("fallback", {})
@@ -151,6 +170,8 @@ def write_markdown(stage7f_dir: Path, out_path: Path, rows: List[Dict]) -> None:
     low = rows[-1]["pair_name"] if rows else "unavailable"
     warning_total = sum(int(r.get("warning_count") or 0) for r in rows)
     mode_text = s.get("mode", "unavailable")
+    fallback_rate = fallback_rate_text(s)
+    n_range = format_n_range(rows)
     if mode_text == "full" and fallback.get("fallback_preserving_status") is True:
         mode_text = "full fallback-preserving"
     lines = [
@@ -161,7 +182,7 @@ def write_markdown(stage7f_dir: Path, out_path: Path, rows: List[Dict]) -> None:
         f"- number of scenarios: `{align.get('num_scenarios', 'unavailable')}`",
         f"- number of planners: `{align.get('num_planners', 'unavailable')}`",
         f"- total rows: `{align.get('total_rows', 'unavailable')}`",
-        f"- fallback_rate: `{fallback.get('fallback_rate', 'unavailable')}`",
+        f"- fallback_rate: `{fallback_rate}`",
         f"- map_name_resolved_rate: `{fallback.get('map_name_resolved_rate', 'unavailable')}`",
         f"- map_query_success: `{fallback.get('map_query_success', 'unavailable')}`",
         f"- lane_info_count: `{fallback.get('lane_info_count', 'unavailable')}`", "",
@@ -170,10 +191,10 @@ def write_markdown(stage7f_dir: Path, out_path: Path, rows: List[Dict]) -> None:
         f"- lowest pair by BDD: `{low}`", "",
         "## Warnings summary", "", f"- total warning entries across pairs: `{warning_total}`", "",
         "## Limitations", "",
-        "- n_A=n_B=5 per pair in the current Stage7F 5-log run.",
+        f"- actual pairwise sample sizes from pair outputs: `{n_range}`.",
         "- permutation p-values are low power.",
         "- BDD scale is uncalibrated without negative/positive controls.",
-        "- fallback rate is 41.9%, so full main result should be accompanied by strict-filter sensitivity.",
+        f"- mode `{mode_text}` uses actual fallback_rate `{fallback_rate}`; if unavailable, inspect stage7f_summary.json and accompany full main result with strict-filter sensitivity.",
         "- BDD measures distribution drift magnitude only, not direction; category/feature deltas are interpretation layers.",
     ]
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

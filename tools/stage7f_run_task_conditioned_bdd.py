@@ -27,12 +27,25 @@ def build_commands(args, events_dir: Path):
     return build_cmd, report_cmd, {"embedding_manifest": str(emb_manifest), "shard_manifest": str(shard_manifest), "feature_schema": str(schema), "a_indices_path": str(a_idx), "b_indices_path": str(b_idx), "events_dir": str(events_dir)}
 
 
+def find_task_overlap_report(out: Path) -> str:
+    candidates = [
+        out.parent / "stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1" / "task_overlap_report.md",
+        out.parent / "task_overlap_report.md",
+        out / "task_overlap_report.md",
+    ]
+    for path in candidates:
+        if path.exists():
+            return str(path)
+    return ""
+
+
 def write_stage7_summary(out: Path, args, resolved):
     bdd_csv = out / "task_bdd_summary.csv"
     rows = pd.read_csv(bdd_csv).to_dict("records") if bdd_csv.exists() else []
-    summary = {"stage": "7F", "diagnostic": "task_conditioned_bdd_same_scenario_planner_pair", "planner_a": args.planner_a, "planner_b": args.planner_b, "min_bin_size": args.min_bin_size, "task_keys": args.task_keys.split(","), "resolved_inputs": resolved, "valid_task_count": len(rows), "outputs": ["task_report_card.md", "task_bdd_summary.csv", "task_style_delta.csv", "top_task_drift_cases.csv", "warnings.json", "plots/task_bdd_bar.png", "plots/task_style_delta_bar.png"]}
+    overlap_report = find_task_overlap_report(out)
+    summary = {"stage": "7F", "diagnostic": "task_conditioned_bdd_same_scenario_planner_pair", "planner_a": args.planner_a, "planner_b": args.planner_b, "min_bin_size": args.min_bin_size, "task_keys": args.task_keys.split(","), "resolved_inputs": resolved, "valid_task_count": len(rows), "task_overlap_report": overlap_report or "not_found", "interpretation_note": "Task-conditioned BDD task slices may overlap; repeated BDD values should be checked with task_overlap_matrix; following/queue overlap should not be overclaimed as independent evidence.", "outputs": ["task_report_card.md", "task_bdd_summary.csv", "task_style_delta.csv", "top_task_drift_cases.csv", "warnings.json", "plots/task_bdd_bar.png", "plots/task_style_delta_bar.png"]}
     (out / "stage7f_task_bdd_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
-    lines = ["# Stage7F task-conditioned BDD summary", "", "This is task-conditioned BDD for same scenario planner pair A/B.", f"* A = `{args.planner_a}`", f"* B = `{args.planner_b}`", "* Overall Stage7F BDD was small, so this report checks task slices.", "* following and yield_conflict are strongest detectors; cutin/lead/queue may be proxy-based.", "* If task bins have low n_A/n_B, interpret as exploratory only.", "", idm_parameter_markdown(args.planner_a, args.planner_b), "", "## Stage6C task BDD rows", ""]
+    lines = ["# Stage7F task-conditioned BDD summary", "", "This is task-conditioned BDD for same scenario planner pair A/B.", f"* A = `{args.planner_a}`", f"* B = `{args.planner_b}`", "* Overall Stage7F BDD was small, so this report checks task slices.", "* following and yield_conflict are strongest detectors; cutin/lead/queue may be proxy-based.", "* If task bins have low n_A/n_B, interpret as exploratory only.", "* Task-conditioned BDD task slices may overlap; repeated BDD values should be checked with `task_overlap_matrix` before claiming independent evidence.", "* In particular, following/queue overlap should not be overclaimed as independent evidence.", *( [f"* Task overlap report detected: `{overlap_report}`"] if overlap_report else ["* Task overlap report not found yet; run `tools/stage7f_task_overlap_matrix.py` to generate `task_overlap_report.md`."] ), "", idm_parameter_markdown(args.planner_a, args.planner_b), "", "## Stage6C task BDD rows", ""]
     if rows:
         lines += ["| task_key | n_A | n_B | BDD_MMD | p_value |", "|---|---:|---:|---:|---:|"]
         for r in rows:
