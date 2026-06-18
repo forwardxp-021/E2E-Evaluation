@@ -5903,3 +5903,63 @@ python tools/stage7f_run_report_card.py \
 - Stage7C 的 official nuPlan command 依赖本机 nuPlan devkit、Hydra config、DB 和地图路径；如果这些路径不存在，不能声称完成真实数据验证。
 - Stage7F 的 BDD / pairwise report 是 Stage6 metric reuse；它衡量 embedding distribution drift，不表示因果解释、驾驶安全结论或 planner 行为指标。
 - strict-filter ratio sweep 是 **diagnostic / sensitivity**，主报告仍是 full fallback-preserving。
+
+## Stage7F 20-scenario IDM aggressive/conservative 小 BDD 诊断
+
+### 1. 命令
+
+#### A. 在 Stage7E context 上构建 Stage6C behavior events
+
+```bash
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage7e_nuplan_5neighbor_context_idm_20scenes_laneaware_v1/shard_manifest.json \
+  --feature_schema_path outputs/stage7e_nuplan_5neighbor_context_idm_20scenes_laneaware_v1/feature_schema.json \
+  --output_dir outputs/stage7f_idm_20scenes_stage6c_behavior_events_v2 \
+  --overwrite
+```
+
+#### B. 运行 aggressive vs conservative task-conditioned BDD
+
+```bash
+python tools/stage7f_run_task_conditioned_bdd.py \
+  --embedding_dir outputs/stage7e_idm_embeddings_20scenes_laneaware_v1 \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_20scenes_laneaware_v1 \
+  --stage7f_dir outputs/stage7f_idm_20scenes_full_fallback_preserving_v1 \
+  --planner_a idm_longitudinal_aggressive \
+  --planner_b idm_longitudinal_conservative \
+  --output_dir outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_bdd_v1 \
+  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_cutin_response,task_yield_conflict \
+  --min_bin_size 2 \
+  --num_bootstrap 100 \
+  --num_permutation 200 \
+  --overwrite
+```
+
+#### C. 运行 same-scenario paired delta
+
+```bash
+python tools/stage7f_aggressive_conservative_paired_delta.py \
+  --embedding_dir outputs/stage7e_idm_embeddings_20scenes_laneaware_v1 \
+  --context_dataset_dir outputs/stage7e_nuplan_5neighbor_context_idm_20scenes_laneaware_v1 \
+  --stage7f_dir outputs/stage7f_idm_20scenes_full_fallback_preserving_v1 \
+  --planner_a idm_longitudinal_aggressive \
+  --planner_b idm_longitudinal_conservative \
+  --output_dir outputs/stage7f_idm_20scenes_aggressive_vs_conservative_paired_delta_v1 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- behavior events 命令读取 Stage7E context dataset 的 `shard_manifest.json` 与 `feature_schema.json`，输出 `behavior_event_bins_v2.csv`、`behavior_event_metrics_v2.csv` 和 schema/warnings；它复用 Stage6C v2 task detector，不修改 Stage5D CORE、`tools/lane_aware_assignment.py` 或 Stage6 metric 定义。
+- task-conditioned BDD wrapper 会解析 `embedding_manifest.json`、`shard_manifest.json`、`feature_schema.json` 和 `stage7f_dir/planner_indices/*.npy`，必要时调用 `tools/stage6c_build_behavior_events_v2.py`，然后调用 `tools/stage6c_task_conditioned_bdd_report.py`；它不重新实现 BDD/MMD，也不新增替代 Stage6 的 planner-behavior metric。
+- task-conditioned BDD 输出 `task_report_card.md`、`task_bdd_summary.csv`、`task_style_delta.csv`、`top_task_drift_cases.csv`、`warnings.json`、`plots/task_bdd_bar.png`、`plots/task_style_delta_bar.png`、`stage7f_task_bdd_summary.json`、`stage7f_task_bdd_summary.md`。
+- paired delta 命令按同一 `scenario_token` / `scenario_id` 对齐 aggressive 与 conservative，同一 scenario 必须同时存在两个 planner；它不会做 unpaired matching，遇到 duplicate scenario-planner pair 会直接失败。
+- paired delta 输出 `paired_delta_by_scenario.csv`、`paired_delta_summary.json`、`paired_delta_report.md`、`paired_delta_bar.png`、`embedding_pair_distance_hist.png`，用于检查 nominal IDM 参数差异是否产生 realized rollout 差异。
+
+### 3. 通过标准
+
+- A/B planner index 文件存在：`stage7f_dir/planner_indices/idm_longitudinal_aggressive.npy` 与 `stage7f_dir/planner_indices/idm_longitudinal_conservative.npy`。
+- paired scenarios 数量 `> 0`，且没有 duplicate scenario-planner pair。
+- task-conditioned BDD 可以生成 summary；如果某些 task 的 `n_A` / `n_B` 低于 `--min_bin_size`，允许被 skip，但必须在 `warnings.json` / skipped tasks 中可见。
+- following 与 yield_conflict 是更可靠的 detectors；lead_brake_response、queue_approach、cutin_response 可能是 proxy-based，需要结合 detector strength 和 low-n 提示解释。
+- 20-scenario 结果只作为 exploratory diagnostic，不替代完整 Stage7F pairwise BDD；该流程的目的只是解释 aggressive/conservative overall BDD 为什么很小。
