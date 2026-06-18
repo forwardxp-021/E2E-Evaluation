@@ -110,3 +110,8 @@ def test_variant_blueprint_concrete_overrides_are_verified_config_keys(tmp_path)
     concrete_lines = [line for line in blueprint.splitlines() if line.strip().startswith("- `+planner.")]
     assert concrete_lines
     assert all("verified_config_key" in line for line in concrete_lines)
+
+
+def test_pdm_report_source_avoids_pep604_optional_annotations():
+    source = Path(report.__file__).read_text(encoding="utf-8")
+    assert ("|" + " None") not in source

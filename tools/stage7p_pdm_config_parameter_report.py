@@ -10,7 +10,7 @@ import json
 import re
 import shutil
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 NUM_RE = re.compile(r"^-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?$")
 CLASS_NAMES = ["PDMClosedPlanner", "AbstractPDMClosedPlanner", "AbstractPDMPlanner", "PDMGenerator", "PDMProposal", "PDMProposalManager", "PDMSimulator", "PDMScorer"]
@@ -144,7 +144,7 @@ def verified_config_rows(rows: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]
     return {r["name"]: r for r in rows if r.get("source") == "yaml"}
 
 
-def find_key(rows_by_name: Dict[str, Dict[str, Any]], suffix: str) -> str | None:
+def find_key(rows_by_name: Dict[str, Dict[str, Any]], suffix: str) -> Optional[str]:
     if suffix in rows_by_name:
         return suffix
     matches = [name for name in rows_by_name if name.endswith("." + suffix)]
