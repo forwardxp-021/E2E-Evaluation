@@ -70,15 +70,17 @@ def _template_uses_placeholder(template: str, placeholder: str) -> bool:
     return "{" + placeholder + "}" in template
 
 
-def format_planner_hydra_overrides(planner_name: str) -> str:
+def format_planner_hydra_overrides(planner_name: str, hydra_searchpath: str = "") -> str:
     """Return the official nuPlan Hydra override fragment for a configured planner profile."""
     profile = PLANNER_PROFILES.get(planner_name, {})
-    overrides = profile.get("hydra_overrides") or [f"planner={planner_name}"]
+    overrides = list(profile.get("hydra_overrides") or [f"planner={planner_name}"])
+    if hydra_searchpath:
+        overrides.append(f"hydra.searchpath={shlex.quote(hydra_searchpath)}")
     return " ".join(str(item) for item in overrides)
 
 
-def build_command_replacements(planner_name: str, scenario: Dict[str, str], out_dir: Path) -> Dict[str, str]:
-    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir), "planner_hydra_overrides": format_planner_hydra_overrides(planner_name)}
+def build_command_replacements(planner_name: str, scenario: Dict[str, str], out_dir: Path, hydra_searchpath: str = "") -> Dict[str, str]:
+    replacements = {"planner_name": planner_name, "planner_name_safe": shell_safe_slug(planner_name), "output_dir": str(out_dir), "planner_hydra_overrides": format_planner_hydra_overrides(planner_name, hydra_searchpath)}
     for key, value in scenario.items():
         replacements[key] = str(value)
     target = normalize_target_scenario(scenario)
@@ -217,6 +219,22 @@ PLANNER_PROFILES = {
         {"target_velocity": 12.0, "min_gap_to_lead_agent": 0.5, "headway_time": 1.0, "accel_max": 1.5, "decel_max": 4.0},
         alias_of="idm_longitudinal_aggressive",
     ),
+
+    "pdm_closed_planner": {
+        "planner_type": "external_hydra_planner",
+        "policy_style": "pdm_closed_external",
+        "style_scope": "closed_loop_planner",
+        "nuplan_planner_config": "pdm_closed_planner",
+        "hydra_overrides": ["planner=pdm_closed_planner"],
+        "preferred_classes": ["PDMClosedPlanner"],
+        "supported_behavior_tasks": [],
+        "unsupported_behavior_tasks": [],
+        "parameters": {
+            "source": "tuplan_garage",
+            "checkpoint_required": False,
+            "note": "Closed PDM planner config from tuplan_garage; use --hydra_searchpath when config package is external.",
+        },
+    },
 }
 
 
@@ -655,8 +673,8 @@ def validate_inputs(context_dir: Path, db_root: Path, map_root: Path) -> List[Di
     return warnings
 
 
-def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False) -> Tuple[bool, str, int]:
-    replacements = build_command_replacements(planner_name, scenario, out_dir)
+def run_official_nuplan_cli(command_template: str, planner_name: str, scenario: Dict[str, str], out_dir: Path, timeout_s: int, warnings: List[Dict[str, str]], use_shell: bool = False, hydra_searchpath: str = "") -> Tuple[bool, str, int]:
+    replacements = build_command_replacements(planner_name, scenario, out_dir, hydra_searchpath)
     add_unsafe_placeholder_warnings(command_template, replacements, warnings)
     command = command_template.format(**replacements)
     argv = shlex.split(command)
@@ -1272,13 +1290,15 @@ def run(args: argparse.Namespace) -> int:
     planner_rows: List[Dict[str, Any]] = []
     for planner_id, planner_name in enumerate(planners):
         if planner_name not in PLANNER_PROFILES:
-            warnings.append({"type": "unknown_planner", "scenario_id": "", "planner_name": planner_name, "message": "planner name is not one of the configured Stage 7C.1 planner profiles; use --allow_external_planner_name only after confirming an external planner config/module."})
+            warnings.append({"type": "unknown_planner", "scenario_id": "", "planner_name": planner_name, "message": "Unknown planner name. Use --allow_external_planner_name for external Hydra planners."})
             continue
-        klass, module = choose_planner_class(planner_name, discovery)
-        if klass == "UNAVAILABLE" and not args.allow_external_planner_name:
-            warnings.append({"type": "planner_class_unavailable", "scenario_id": "", "planner_name": planner_name, "message": f"No preferred nuPlan class found among {PLANNER_PROFILES[planner_name]['preferred_classes']}"})
-        elif klass == "UNAVAILABLE" and args.allow_external_planner_name:
-            warnings.append({"type": "external_planner_class_not_discovered", "scenario_id": "", "planner_name": planner_name, "message": "Stage7C did not import a preferred class for this external planner name; the supplied --nuplan_simulation_command_template remains authoritative."})
+        is_external_hydra_planner = PLANNER_PROFILES[planner_name].get("planner_type") == "external_hydra_planner"
+        if is_external_hydra_planner and args.allow_external_planner_name:
+            klass, module = "EXTERNAL_HYDRA_PLANNER", ""
+        else:
+            klass, module = choose_planner_class(planner_name, discovery)
+            if klass == "UNAVAILABLE":
+                warnings.append({"type": "planner_class_unavailable", "scenario_id": "", "planner_name": planner_name, "message": f"No preferred nuPlan class found among {PLANNER_PROFILES[planner_name]['preferred_classes']}"})
         planner_rows.append({
             "planner_id": planner_id,
             "planner_name": planner_name,
@@ -1331,7 +1351,7 @@ def run(args: argparse.Namespace) -> int:
             task_start_time = iso_now_local()
             run_dir = out_dir / "official_nuplan_runs" / f"scenario_{scenario.get('scenario_index', '')}" / str(prow["planner_name"])
             run_dir.mkdir(parents=True, exist_ok=True)
-            ok, log_path, return_code = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell)
+            ok, log_path, return_code = run_official_nuplan_cli(args.nuplan_simulation_command_template, str(prow["planner_name"]), scenario, run_dir, args.command_timeout_s, warnings, use_shell=args.nuplan_simulation_command_use_shell, hydra_searchpath=args.hydra_searchpath)
             if not ok:
                 warnings.append({"type": "nuplan_cli_failed", "scenario_id": scenario.get("scenario_id", ""), "planner_name": str(prow["planner_name"]), "message": f"official nuPlan command failed; log: {log_path}"})
                 status = "failed"
@@ -1542,7 +1562,7 @@ See `warnings.json` for structured diagnostics.
     return 0 if pass_ok else 2
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Stage 7C.1 official nuPlan closed-loop simulation runner and trajectory export.")
     p.add_argument("--context_dir", default="outputs/stage7b4_nuplan_context_merged")
     p.add_argument("--nuplan_db_root", required=True)
@@ -1555,13 +1575,14 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--nuplan_simulation_command_template", default="", help="Optional official nuPlan command template. Placeholders include {planner_name}, {planner_name_safe}, {planner_hydra_overrides}, {scenario_id}, {db_name}, {scene_token}, {sample_id}, {output_dir}, plus target placeholders {target_log_name}, {target_scene_token}, {target_db_name}. Prefer shell/path-safe variants such as {target_log_name_safe}, {target_scene_token_safe}, {target_db_name_safe}; exact same-scenario nuPlan commands should use target placeholders, not raw {scenario_id}, because Hydra filter keys may need log/token values separately. For external planners, confirm the Hydra override first, pass the confirmed name with --planners, and add --allow_external_planner_name.")
     p.add_argument("--nuplan_simulation_command_use_shell", action="store_true", help="Run the formatted official nuPlan command through the shell. Default is false: shlex.split(command) and subprocess.run(argv, shell=False) to avoid shell metacharacter interpretation.")
     p.add_argument("--allow_external_planner_name", action="store_true", help="Allow --planners entries that are not built-in Stage7C profiles. Use only after the planner config/module is confirmed; Stage7C will pass the name through to {planner_name}/{planner_hydra_overrides} without claiming that PDM is installed.")
+    p.add_argument("--hydra_searchpath", default="", help="Optional Hydra search path appended to {planner_hydra_overrides} as hydra.searchpath=<quoted value>. Needed for external planner config packages such as tuplan_garage; leave empty for standard IDM/simple runs.")
     p.add_argument("--require_same_scenario_alignment", action="store_true", help="Require Stage 7C.1C same-log alignment PASS for the final Stage 7C.1 PASS. Default preserves smoke behavior and allows alignment FAIL.")
     p.add_argument("--require_strict_nuplan_token_alignment", action="store_true", help="Require Stage 7B.4 scene_token to match the actual nuPlan scenario token. Default false because Stage 7B.4 scene_token may differ from nuPlan scenario_filter.scenario_tokens.")
     p.add_argument("--command_timeout_s", type=int, default=3600)
     p.add_argument("--min_timesteps", type=int, default=2, help="Minimum parsed timesteps required for each successful scenario-planner trajectory.")
     p.add_argument("--allow_unsafe_pickle_artifacts", action="store_true", help="Parse trusted pickle/msgpack nuPlan artifacts. Pickle is unsafe and remains disabled by default.")
     p.add_argument("--progress_json", help="Optional progress artifact path. Defaults to output_dir/stage7c_progress.json and is updated after every completed scenario-planner task.")
-    return p.parse_args()
+    return p.parse_args(argv)
 
 
 if __name__ == "__main__":
