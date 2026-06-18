@@ -6,6 +6,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import argparse
 import itertools
 import json
+import math
 import shutil
 import subprocess
 from pathlib import Path
@@ -286,6 +287,7 @@ def run(args) -> None:
         "fallback": fallback,
         "context_diagnostics_source": diagnostics_source,
         "planner_index_paths": idx_paths,
+        "expected_pairwise_num_pairs": int(math.comb(len(idx_paths), 2)) if len(idx_paths) >= 2 else 0,
         "stage6_pairwise_outputs": stage6_outputs,
         "stage6_metric_definitions_modified": False,
         "new_metric_logic_implemented": False,
