@@ -22,6 +22,7 @@ def _base_args(ctx: Path, out: Path, **kwargs):
         max_candidates_per_type=0,
         max_per_log=2,
         write_stage7c_context_dir=False,
+        prefer_exact_changing_lane=False,
         nuplan_map_root="",
         max_scenarios_scan=50,
         enable_kinematic_scan=False,
@@ -190,6 +191,7 @@ def test_kinematic_scan_arguments_exist():
             "--max_per_log",
             "2",
             "--write_stage7c_context_dir",
+            "--prefer_exact_changing_lane",
             "--nuplan_map_root",
             "maps",
             "--max_scenarios_scan",
@@ -211,6 +213,7 @@ def test_kinematic_scan_arguments_exist():
     assert parsed_args.max_candidates_per_type == 3
     assert parsed_args.max_per_log == 2
     assert parsed_args.write_stage7c_context_dir is True
+    assert parsed_args.prefer_exact_changing_lane is True
     assert parsed_args.nuplan_map_root == "maps"
     assert parsed_args.max_scenarios_scan == 7
     assert parsed_args.enable_kinematic_scan is True
@@ -286,3 +289,45 @@ def test_db_scenario_tag_scan_max_per_log_limits_selected_rows(tmp_path: Path):
     summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
     assert len(rows) == 2
     assert summary["selected_log_counts"] == {"one_log": 2}
+
+
+def test_prefer_exact_changing_lane_prioritizes_strict_then_fallback_and_respects_max_per_log(tmp_path: Path):
+    ctx = tmp_path / "ctx"
+    db_path = tmp_path / "mini.db"
+    out = tmp_path / "out"
+    ctx.mkdir()
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    conn = sqlite3.connect(db_path)
+    with conn:
+        conn.execute("CREATE TABLE scenario_tag(token TEXT, lidar_pc_token TEXT, type TEXT, agent_track_token TEXT)")
+        conn.execute("CREATE TABLE lidar_pc(token TEXT, scene_token TEXT, ego_pose_token TEXT)")
+        conn.execute("CREATE TABLE log(logfile TEXT, token TEXT)")
+        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", ("one_log", "log"))
+        scenario_types = ["high_lateral_acceleration", "cut_in", "merge", "changing_lane", "changing_lane_to_left"]
+        for idx, scenario_type in enumerate(scenario_types):
+            lidar = f"lidar_{idx}"
+            conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES (?, ?, ?)", (lidar, f"scene_{idx}", f"ego_{idx}"))
+            conn.execute("INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)", (f"tag_{idx}", lidar, scenario_type, "agent"))
+
+    rc = finder.run(
+        _base_args(
+            ctx,
+            out,
+            nuplan_db_root=str(db_path),
+            scan_db_scenario_tags=True,
+            write_stage7c_context_dir=True,
+            prefer_exact_changing_lane=True,
+            max_per_log=2,
+            top_k=4,
+        )
+    )
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert [row["scenario_type"] for row in rows] == ["changing_lane_to_left", "changing_lane"]
+    assert all(row["scenario_token"] == row["scene_token"] for row in rows)
+    assert summary["selected_log_counts"] == {"one_log": 2}
+    assert summary["strict_changing_lane_candidate_rows"] == 2
+    assert summary["selected_strict_changing_lane_rows"] == 2
+    assert summary["selected_scenario_type_counts"] == {"changing_lane": 1, "changing_lane_to_left": 1}
