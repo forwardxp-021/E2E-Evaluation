@@ -43,6 +43,20 @@ TEXT_COLUMNS = [
     "db_name",
     "map_name",
 ]
+
+DB_OUTPUT_FIELDS = [
+    "db_file",
+    "log_name",
+    "scenario_type",
+    "scenario_tag_token",
+    "scenario_token",
+    "lidar_pc_token",
+    "scene_token",
+    "ego_pose_token",
+    "source",
+    "candidate_score",
+]
+
 KINEMATIC_OUTPUT_FIELDS = [
     "candidate_rank",
     "metadata_index",
@@ -291,6 +305,106 @@ def _find_col(columns: Sequence[str], names: Sequence[str]) -> Optional[str]:
     return None
 
 
+def token_to_str(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.hex()
+    if isinstance(value, memoryview):
+        return bytes(value).hex()
+    return str(value)
+
+
+def list_db_paths(db_root: Path, max_db_files: Optional[int] = None) -> List[Path]:
+    db_paths = sorted([p for p in db_root.glob("*.db") if p.is_file()]) if db_root.is_dir() else [db_root]
+    if max_db_files is not None and max_db_files > 0:
+        return db_paths[:max_db_files]
+    return db_paths
+
+
+def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    enabled = bool(getattr(args, "scan_db_scenario_tags", False))
+    summary: Dict[str, Any] = {"enabled": enabled, "candidates": 0, "scanned_dbs": 0, "warnings": []}
+    if not enabled:
+        return [], summary
+    db_root_value = getattr(args, "nuplan_db_root", "") or ""
+    if not db_root_value:
+        summary["warnings"].append("--scan_db_scenario_tags was set but --nuplan_db_root is empty; skipped DB scenario_tag scan.")
+        return [], summary
+    db_root = Path(db_root_value)
+    if not db_root.exists():
+        summary["warnings"].append(f"--nuplan_db_root does not exist: {db_root}")
+        return [], summary
+
+    max_db_files = getattr(args, "max_db_files", None)
+    db_paths = list_db_paths(db_root, int(max_db_files) if max_db_files else None)
+    max_per_type = getattr(args, "max_candidates_per_type", None)
+    max_per_type = int(max_per_type) if max_per_type else 0
+    per_type_counts: Dict[str, int] = {}
+    rows: List[Dict[str, Any]] = []
+    terms = [t.lower() for t in PREFERRED_SCENARIO_TYPE_TERMS]
+
+    for db_path in db_paths:
+        summary["scanned_dbs"] += 1
+        try:
+            conn = sqlite3.connect(str(db_path))
+            conn.row_factory = sqlite3.Row
+        except sqlite3.Error as exc:
+            summary["warnings"].append(f"Could not open SQLite DB for scenario_tag scan {db_path}: {exc}")
+            continue
+        with conn:
+            try:
+                log_row = conn.execute("SELECT logfile FROM log LIMIT 1").fetchone()
+                default_log_name = token_to_str(log_row["logfile"]) if log_row and "logfile" in log_row.keys() else db_path.stem
+                query = """
+                    SELECT
+                        st.token AS scenario_tag_token,
+                        st.lidar_pc_token AS st_lidar_pc_token,
+                        st.type AS scenario_type,
+                        lp.token AS lidar_pc_token,
+                        lp.scene_token AS scene_token,
+                        lp.ego_pose_token AS ego_pose_token
+                    FROM scenario_tag AS st
+                    LEFT JOIN lidar_pc AS lp ON lp.token = st.lidar_pc_token
+                """
+                fetched = conn.execute(query).fetchall()
+            except sqlite3.Error as exc:
+                summary["warnings"].append(f"Could not read scenario_tag/lidar_pc/log from {db_path}: {exc}")
+                continue
+        for row in fetched:
+            scenario_type = token_to_str(row["scenario_type"])
+            scenario_type_lower = scenario_type.lower()
+            if not any(term in scenario_type_lower for term in terms):
+                continue
+            if max_per_type > 0 and per_type_counts.get(scenario_type, 0) >= max_per_type:
+                continue
+            per_type_counts[scenario_type] = per_type_counts.get(scenario_type, 0) + 1
+            score = 10.0 + max((len(term) for term in terms if term in scenario_type_lower), default=0) / 10.0
+            lidar_pc_token = token_to_str(row["lidar_pc_token"] if row["lidar_pc_token"] is not None else row["st_lidar_pc_token"])
+            rows.append(
+                {
+                    "db_file": str(db_path),
+                    "log_name": default_log_name,
+                    "scenario_type": scenario_type,
+                    "scenario_tag_token": token_to_str(row["scenario_tag_token"]),
+                    "scenario_token": lidar_pc_token,
+                    "lidar_pc_token": lidar_pc_token,
+                    "scene_token": token_to_str(row["scene_token"]),
+                    "ego_pose_token": token_to_str(row["ego_pose_token"]),
+                    "source": "db_scenario_tag",
+                    "candidate_source": "db_scenario_tag",
+                    "candidate_score": float(score),
+                    "match_score": "",
+                    "metadata_match_score": "",
+                    "event_task_lane_change": 0,
+                    "match_sources": "scenario_tag.type",
+                    "metadata_index": "",
+                }
+            )
+    summary["candidates"] = len(rows)
+    return rows, summary
+
+
 def scan_sqlite_kinematics(db_path: Path, max_scenarios: int, warnings: List[str]) -> List[Dict[str, Any]]:
     schema = discover_sqlite_schema(db_path)
     for warning in schema.get("warnings", []):
@@ -394,6 +508,28 @@ def write_csv(path: Path, rows: List[Dict[str, Any]], fieldnames: List[str]) -> 
         writer.writerows(rows)
 
 
+def count_by_field(rows: Sequence[Dict[str, Any]], field: str) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for row in rows:
+        key = str(row.get(field, "") or "")
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def write_stage7c_context(out: Path, top: List[Dict[str, Any]], original_fieldnames: Sequence[str]) -> str:
+    context_dir = out / "stage7c_candidate_context"
+    context_dir.mkdir(parents=True, exist_ok=True)
+    required = ["log_name", "scenario_token", "scenario_type", "source", "db_file"]
+    fieldnames = list(dict.fromkeys([*required, *original_fieldnames, "lidar_pc_token", "scene_token", "ego_pose_token", "scenario_tag_token"]))
+    rows = []
+    for row in top:
+        stage7c_row = {col: row.get(col, "") for col in fieldnames}
+        stage7c_row["source"] = row.get("source") or row.get("candidate_source", "")
+        rows.append(stage7c_row)
+    write_csv(context_dir / "merged_metadata.csv", rows, fieldnames)
+    return "stage7c_candidate_context/merged_metadata.csv"
+
+
 def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) -> None:
     lines = [
         "# Stage7P Lane-Change Candidate Report",
@@ -404,6 +540,8 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- metadata_rows: `{summary['metadata_rows']}`",
         f"- text_match_candidates: `{summary['text_match_candidates']}`",
         f"- behavior_event_candidates: `{summary['behavior_event_candidates']}`",
+        f"- metadata_text candidates: `{summary['metadata_text_candidate_rows']}`",
+        f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
         f"- candidate_rows: `{summary['candidate_rows']}`",
@@ -415,20 +553,35 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         "- Preserve metadata text matching over `scenario_type` / `scenario_name` / `log_name` / `scenario_id` for lane-change-like terms.",
         "- If Stage7 behavior events are available, rows with `task_lane_change=1` receive an additional score boost.",
         "- Optional kinematic scan computes expert-ego lateral displacement, heading change, yaw-rate proxy, and `candidate_score = 2.0 * abs_lateral_displacement + 5.0 * heading_change_abs + 2.0 * yaw_rate_proxy + text_match_bonus`.",
+        "- Optional DB scenario-tag scan reads nuPlan mini DB `scenario_tag.type` directly and joins `lidar_pc` / `log` for Stage7C-friendly context.",
         "",
         "## Candidate source counts",
         f"- text_match_candidates: `{summary['text_match_candidates']}`",
         f"- behavior_event_candidates: `{summary['behavior_event_candidates']}`",
+        f"- metadata_text candidates: `{summary['metadata_text_candidate_rows']}`",
+        f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
         "",
         "## Warnings",
     ]
-    warnings = list(summary.get("warnings", [])) + list(summary.get("kinematic_scan", {}).get("warnings", []))
+    warnings = (
+        list(summary.get("warnings", []))
+        + list(summary.get("db_scenario_tag_scan", {}).get("warnings", []))
+        + list(summary.get("kinematic_scan", {}).get("warnings", []))
+    )
     if warnings:
         lines.extend([f"- WARNING: {w}" for w in warnings])
     else:
         lines.append("- None.")
+    if summary.get("metadata_text_candidate_rows") == 0 and summary.get("db_scenario_tag_candidate_rows", 0) > 0:
+        lines.extend([
+            "",
+            "## Metadata-vs-DB interpretation",
+            f"- metadata_text candidates: `{summary['metadata_text_candidate_rows']}`",
+            f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
+            "- This means the original Stage7B merged subset is not lane-change-rich, but mini DB contains lane-change/lateral candidate tags.",
+        ])
     lines.extend(["", "## Top candidates"])
     if not top:
         lines.append("No lane-change-like candidates were found. This is a metadata-only / optional-kinematic candidate discovery result: zero candidates means no text/behavior/kinematic scan match was found under the configured thresholds, not that PDM lacks lane-change capability.")
@@ -454,38 +607,51 @@ def run(args: argparse.Namespace) -> int:
     event_path = find_event_bins(context_dir, Path(args.behavior_events_dir) if getattr(args, "behavior_events_dir", "") else None)
     event_map, event_summary = load_lane_change_events(event_path, len(metadata))
     text_event_candidates = build_text_event_candidates(metadata, fieldnames, event_map)
+    db_scenario_tag_candidates, db_scenario_tag_summary = scan_db_scenario_tags(args)
     kinematic_candidates, kinematic_summary = run_kinematic_scan(args)
-    candidates = text_event_candidates + kinematic_candidates
+    candidates = text_event_candidates + db_scenario_tag_candidates + kinematic_candidates
     candidates.sort(key=lambda r: (-float(r.get("candidate_score") or r.get("match_score") or 0), str(r.get("scenario_id", "")), str(r.get("metadata_index", ""))))
     for rank, row in enumerate(candidates, 1):
         row["candidate_rank"] = rank
     top = candidates[: int(args.top_k)]
-    output_fields = list(dict.fromkeys([*KINEMATIC_OUTPUT_FIELDS, *fieldnames]))
+    output_fields = list(dict.fromkeys([*DB_OUTPUT_FIELDS, *KINEMATIC_OUTPUT_FIELDS, *fieldnames]))
     write_csv(out / "lane_change_candidate_metadata.csv", top, output_fields)
     text_match_count = sum(1 for r in text_event_candidates if int(r.get("metadata_match_score") or 0) > 0)
     behavior_count = sum(1 for r in text_event_candidates if int(r.get("event_task_lane_change") or 0) > 0)
+    stage7c_context_path = ""
+    if getattr(args, "write_stage7c_context_dir", False):
+        stage7c_context_path = write_stage7c_context(out, top, fieldnames)
     warnings = []
-    if not text_event_candidates and not kinematic_candidates:
+    if not text_event_candidates and not db_scenario_tag_candidates and not kinematic_candidates:
         warnings.append("candidate_rows=0 because metadata text matching and available behavior/kinematic scans found no lane-change-like rows; this does not diagnose PDM lane-change capability.")
     summary = {
         "context_dir": str(context_dir),
         "metadata_path": str(metadata_path),
         "metadata_rows": int(len(metadata)),
         "candidate_rows": int(len(candidates)),
+        "metadata_text_candidate_rows": int(text_match_count),
+        "behavior_event_candidate_rows": int(behavior_count),
+        "db_scenario_tag_candidate_rows": int(len(db_scenario_tag_candidates)),
+        "final_candidate_rows": int(len(candidates)),
         "text_match_candidates": int(text_match_count),
         "behavior_event_candidates": int(behavior_count),
+        "db_scenario_tag_candidates": int(len(db_scenario_tag_candidates)),
         "kinematic_candidates": int(len(kinematic_candidates)),
         "final_selected_candidates": int(len(candidates)),
+        "scenario_type_counts": count_by_field(candidates, "scenario_type"),
+        "selected_scenario_type_counts": count_by_field(top, "scenario_type"),
         "top_k_requested": int(args.top_k),
         "top_k_written": int(len(top)),
         "preferred_scenario_type_terms": PREFERRED_SCENARIO_TYPE_TERMS,
         "behavior_events": event_summary,
+        "db_scenario_tag_scan": db_scenario_tag_summary,
         "kinematic_scan": kinematic_summary,
         "warnings": warnings,
         "outputs": {
             "report": "lane_change_candidate_report.md",
             "summary": "lane_change_candidate_summary.json",
             "metadata": "lane_change_candidate_metadata.csv",
+            "stage7c_context": stage7c_context_path,
         },
     }
     (out / "lane_change_candidate_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -500,6 +666,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--top_k", type=int, default=20, help="Number of top-ranked candidates to write.")
     parser.add_argument("--behavior_events_dir", default="", help="Optional directory containing behavior_event_bins_v2.csv with task_lane_change.")
     parser.add_argument("--nuplan_db_root", default="", help="nuPlan mini DB root or a single SQLite .db file for optional kinematic scan.")
+    parser.add_argument("--scan_db_scenario_tags", action="store_true", help="Scan nuPlan mini DB scenario_tag.type directly for lane-change/lateral candidate tags.")
+    parser.add_argument("--max_db_files", type=int, default=0, help="Optional cap on the number of nuPlan .db files scanned by --scan_db_scenario_tags.")
+    parser.add_argument("--max_candidates_per_type", type=int, default=0, help="Optional cap on DB scenario-tag candidates retained for each scenario_tag.type.")
+    parser.add_argument("--write_stage7c_context_dir", action="store_true", help="Write output_dir/stage7c_candidate_context/merged_metadata.csv for Stage7C.")
     parser.add_argument("--nuplan_map_root", default="", help="nuPlan map root reserved for scenario-builder based scans; SQLite fallback does not require maps.")
     parser.add_argument("--max_scenarios_scan", type=int, default=50, help="Maximum DB-derived scenarios / pose windows to inspect during kinematic scan.")
     parser.add_argument("--enable_kinematic_scan", action="store_true", help="Enable trajectory-driven high-lateral-motion candidate discovery from nuPlan DB pose-like tables.")
