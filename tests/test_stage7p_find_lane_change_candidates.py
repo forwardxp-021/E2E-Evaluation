@@ -555,3 +555,45 @@ def test_require_actual_type_verified_parser_argument_exists():
         sys.argv = old_argv
     assert parsed_args.verify_actual_scenario_type is True
     assert parsed_args.require_actual_type_verified is True
+
+
+def test_require_actual_type_verified_uses_known_good_actual_type_cache(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"; cache = tmp_path / "actual_type_cache.csv"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_tag_only_db(db, [("lidar_left", "changing_lane_to_left")])
+    cache.write_text("scenario_token,actual_scenario_type,actual_type_verified\nlidar_left,changing_lane_to_left,true\n", encoding="utf-8")
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, require_actual_type_verified=True, actual_type_cache=str(cache), write_stage7c_context_dir=True, max_per_log=0))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in rows] == ["lidar_left"]
+    assert rows[0]["actual_type_verified"] == "true"
+    assert rows[0]["actual_scenario_type"] == "changing_lane_to_left"
+    assert rows[0]["actual_type_verification_method"].startswith("known_good_actual_type_cache:")
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["actual_type_cache"]["usable_rows"] == 1
+    assert summary["final_selected_rows"] == 1
+
+
+def test_stage7c_alignment_feedback_filters_non_lane_change_actual_type(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"; feedback = tmp_path / "scenario_alignment.csv"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_tag_only_db(db, [("lidar_bad", "changing_lane_to_left"), ("lidar_good", "changing_lane")])
+    feedback.write_text(
+        "target_scenario_token,actual_scenario_type,strict_nuplan_token_alignment_passed\n"
+        "lidar_bad,traversing_pickup_dropoff,true\n"
+        "lidar_good,changing_lane,true\n",
+        encoding="utf-8",
+    )
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, require_actual_type_verified=True, stage7c_alignment_feedback=str(feedback), write_stage7c_context_dir=True, max_per_log=0, top_k=2))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in rows] == ["lidar_good"]
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["stage7c_alignment_feedback"]["usable_rows"] == 2
+    assert summary["strict_actual_type_rejected_rows"] == 1

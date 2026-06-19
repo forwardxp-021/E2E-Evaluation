@@ -6523,6 +6523,25 @@ python tools/stage7p_find_lane_change_candidates.py \
   --top_k 20
 ```
 
+如果本地 DB 无法直接解析 actual type，verified-only 模式可以接入已人工/Stage7C 验证的 known-good cache 或 Stage7C alignment feedback：
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --scan_db_scenario_tags \
+  --prefer_exact_changing_lane \
+  --verify_actual_scenario_type \
+  --require_actual_type_verified \
+  --actual_type_cache outputs/stage7p_known_good_actual_type_cache.csv \
+  --stage7c_alignment_feedback outputs/stage7c_pdm_lane_change/scenario_alignment.csv \
+  --actual_type_allowlist changing_lane,changing_lane_to_left,changing_lane_to_right \
+  --max_per_log 2 \
+  --write_stage7c_context_dir \
+  --output_dir outputs/stage7p_lane_change_candidates_strict_verified_cache_v4 \
+  --top_k 20
+```
+
 2 scenes × 2 planners 的 Stage7C smoke 可以直接读取上一步写出的 `stage7c_candidate_context/merged_metadata.csv`：
 
 ```bash
@@ -6544,14 +6563,16 @@ python tools/stage7c_run_external_planner_simulation.py \
 ## 2. 期望行为
 
 - selector 仍先用 Stage7 metadata text / behavior-event / mini DB `scenario_tag.type` 生成候选池，但 DB `scenario_tag.type` 只作为候选标签，不等同于最终 official nuPlan scenario builder 会解析到的 `actual_scenario_type`。
-- 开启 `--verify_actual_scenario_type` 后，verified actual type 属于 `changing_lane,changing_lane_to_left,changing_lane_to_right` 的候选会进入 verified strict lane-change selected set；如果 actual-type lookup 失败或返回空值，但 DB `scenario_tag.type` 是 `changing_lane / changing_lane_to_left / changing_lane_to_right` 且 `--allow_db_tag_when_actual_type_unverified` 为 true（默认 true），则不会直接丢弃该 strict DB-tag 候选，而是写入 selected set 并标记 `actual_type_verified=false`、`selected_by_db_tag_only=true`、`actual_type_verification_error=<reason>`，report 中必须称为 DB-tag-only strict lane-change candidates，不能称为 verified strict。
+- 开启 `--verify_actual_scenario_type` 后，verified actual type 属于 `changing_lane,changing_lane_to_left,changing_lane_to_right` 的候选会进入 verified strict lane-change selected set；验证顺序为输入 metadata、`--actual_type_cache` known-good cache、`--stage7c_alignment_feedback`、SQLite exact-token sidecar lookup。如果 actual-type lookup 失败或返回空值，但 DB `scenario_tag.type` 是 `changing_lane / changing_lane_to_left / changing_lane_to_right` 且 `--allow_db_tag_when_actual_type_unverified` 为 true（默认 true），则不会直接丢弃该 strict DB-tag 候选，而是写入 selected set 并标记 `actual_type_verified=false`、`selected_by_db_tag_only=true`、`actual_type_verification_error=<reason>`，report 中必须称为 DB-tag-only strict lane-change candidates，不能称为 verified strict。
+- `--actual_type_cache` 支持 CSV/JSON，至少提供 `scenario_token`（或 `lidar_pc_token`）与 `actual_scenario_type`；usable cache row 会被视为 verified actual type，因此 `--require_actual_type_verified` 不再因为 SQLite lookup 为空而选不出候选。
+- `--stage7c_alignment_feedback` 支持 Stage7C `scenario_alignment.csv/json`；如果反馈中的 `actual_scenario_type` 是 `traversing_pickup_dropoff` 等非 allowlist 类型，即使 DB tag 是 strict changing-lane，也必须进入 rejected 统计，不能混入 final selected rows。
 - 如果没有开启 `--allow_fallback_lateral_types`，`high_lateral_acceleration` 不会补位；如果开启 fallback，则 fallback rows 会单独标记 `selected_as_fallback_lateral=true`，不会混入 strict lane-change 统计。
 - `lane_change_candidate_metadata.csv` 与 `stage7c_candidate_context/merged_metadata.csv` 的 `scenario_token` 均使用可传给 `scenario_filter.scenario_tokens=[...]` 的 nuPlan token（即 DB `scenario_tag.lidar_pc_token`），`scene_token` 为 Stage7C 兼容字段并写成同一 token，原始 DB scene token 写入 `db_scene_token`。
 - `stage7c_candidate_context/merged_metadata.csv` 只包含 final selected rows，并写入 `actual_scenario_type`、`actual_type_verified`、`selected_by_db_tag_only`、`actual_type_verification_error`。verified non-lane-change actual type（例如 `traversing_pickup_dropoff`）会被剔除；actual-type 未验证但 strict DB tag 命中的行会作为 DB-tag-only strict candidate 保留。若启用 `--require_actual_type_verified`，actual type 为空或未验证的 rows 不能进入 final selected rows。若 `final_selected_rows=0`，不写看似可用的 empty Stage7C context，并在 summary/report 中写明 insufficient candidates。
 
 ## 3. 通过标准
 
-- `lane_change_candidate_summary.json` 包含 `strict_db_tag_candidate_rows`、`strict_actual_type_verified_rows`、`strict_actual_type_unverified_but_db_tag_selected_rows`、`strict_actual_type_rejected_rows`、`selected_db_tag_only_rows`、`selected_actual_type_verified_rows`、`selected_actual_type_empty_rows`、`actual_type_verification_failed_rows`、`final_selected_rows`、`insufficient_strict_changing_lane_warning`、`strict_db_tag_candidates_exist_but_none_selected` 等字段；`selected_actual_scenario_type_counts` 不统计空字符串。
+- `lane_change_candidate_summary.json` 包含 `strict_db_tag_candidate_rows`、`strict_actual_type_verified_rows`、`strict_actual_type_unverified_but_db_tag_selected_rows`、`strict_actual_type_rejected_rows`、`selected_db_tag_only_rows`、`selected_actual_type_verified_rows`、`selected_actual_type_empty_rows`、`actual_type_verification_failed_rows`、`final_selected_rows`、`insufficient_strict_changing_lane_warning`、`strict_db_tag_candidates_exist_but_none_selected`、`actual_type_cache`、`stage7c_alignment_feedback` 等字段；`selected_actual_scenario_type_counts` 不统计空字符串。
 - 未开启 fallback 时，Stage7C context 中所有 selected rows 要么 verified `actual_scenario_type` 属于 `changing_lane / changing_lane_to_left / changing_lane_to_right`，要么 `actual_type_verified=false`、`selected_by_db_tag_only=true` 且 `scenario_type_db_tag` 属于 strict changing-lane 三类；若 verified actual type 明确是非 lane-change（例如 `traversing_pickup_dropoff`），必须被剔除。开启 `--require_actual_type_verified` 后，后一类 DB-tag-only rows 必须被剔除。
 - 如果存在 strict DB-tag candidates 但 `final_selected_rows=0`，`lane_change_candidate_summary.json` 和 report 必须写出 `strict_db_tag_candidates_exist_but_none_selected=true` / insufficient warning，且不应把 empty `stage7c_candidate_context/merged_metadata.csv` 误判为 OK。
 - `log_name` 非空，`scenario_token` 不重复，`scene_token == scenario_token`，`db_scene_token` 保留原始 DB scene token。
