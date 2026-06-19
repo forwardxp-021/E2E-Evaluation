@@ -6366,18 +6366,37 @@ python tools/stage7p_find_lane_change_candidates.py \
   --top_k 20
 ```
 
+如果需要启用轨迹驱动的 high-lateral-motion / lane-change 候选发现，可以扫描 nuPlan mini DB（或单个 `.db` 文件）：
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /path/to/nuplan/mini \
+  --nuplan_map_root /path/to/nuplan/maps \
+  --enable_kinematic_scan \
+  --max_scenarios_scan 50 \
+  --min_lateral_displacement 2.0 \
+  --min_heading_change 0.25 \
+  --min_yaw_rate_proxy 0.05 \
+  --output_dir outputs/stage7p_lane_change_candidates_kinematic \
+  --top_k 20
+```
+
 ## 2. 期望行为
 
 - 脚本读取 `context_dir/merged_metadata.csv`（如不存在则尝试 `context_dir/metadata.csv`），不会读取或合并 `context_traj.npy`、`neighbor_seq.npy`、`ego_seq.npy` 等大数组。
 - 优先搜索 `scenario_type` / `scenario_label` / `type` 中包含 `changing_lane`、`lane_change`、`high_lateral_acceleration`、`near_multiple_vehicles`、`cut_in`、`merge` 的场景。
 - 同时扫描 scenario labels、log names、scenario ids 等文本字段中的 lane-change-like 关键词。
-- 如果能找到 `behavior_event_bins_v2.csv` 且其中存在 `task_lane_change`，则把 `task_lane_change=1` 的 rows 作为额外候选信号。
-- 输出 `lane_change_candidate_report.md`、`lane_change_candidate_summary.json`、`lane_change_candidate_metadata.csv`。
+- 如果能找到 `behavior_event_bins_v2.csv` 且其中存在 `task_lane_change`，则把 `task_lane_change=1` 的 rows 作为额外候选信号；如果该文件不存在，脚本写入 warning 并继续，不会崩溃。
+- 启用 `--enable_kinematic_scan` 时，脚本会在 `--nuplan_db_root` 下查找 SQLite `.db`，进行 schema discovery，并尝试从包含 `x/y/yaw` 或 `x/y/heading` 的 pose-like 表计算 expert ego 横向位移、heading change、yaw-rate proxy、max lateral speed proxy 和 candidate score。当前 fallback 只做候选发现和 schema 诊断，不修改 PDM、不修改 Stage5D、不生成 adjacent-lane proposal。
+- kinematic candidate score 使用 `2.0 * abs_lateral_displacement + 5.0 * heading_change_abs + 2.0 * yaw_rate_proxy + text_match_bonus`；满足 `abs_lateral_displacement >= min_lateral_displacement` 或 `heading_change_abs >= min_heading_change` 或 `yaw_rate_proxy >= min_yaw_rate_proxy` 的场景会进入候选。
+- 输出 `lane_change_candidate_report.md`、`lane_change_candidate_summary.json`、`lane_change_candidate_metadata.csv`。报告和 summary 会区分 `text_match_candidates`、`behavior_event_candidates`、`kinematic_candidates`、`final_selected_candidates`。
 - 该步骤只做候选场景筛选，不修改 Stage5D CORE、`tools/lane_aware_assignment.py`、Stage6 metric definitions，也不改变 PDM planner 配置。
 
 ## 3. 通过标准
 
-- `lane_change_candidate_summary.json` 存在，且记录 `metadata_rows`、`candidate_rows`、`top_k_written` 和 behavior-event detector 是否可用。
-- `lane_change_candidate_metadata.csv` 存在，包含 `candidate_rank`、`metadata_index`、`match_score`、`match_sources`，最多输出 `top_k` 行。
-- `lane_change_candidate_report.md` 存在，并列出匹配规则和 top candidates。
-- 如果本地 metadata 中没有任何 lane-change-like 文本且没有 `task_lane_change=1`，脚本应正常输出空候选报告，而不是崩溃。
+- `lane_change_candidate_summary.json` 存在，且记录 `metadata_rows`、`candidate_rows`、`top_k_written`、`text_match_candidates`、`behavior_event_candidates`、`kinematic_candidates`、`final_selected_candidates` 和 behavior-event detector 是否可用。
+- `lane_change_candidate_metadata.csv` 存在，包含 `candidate_rank`、`metadata_index`、`candidate_source`、`candidate_score`、`match_score`、`match_sources`，最多输出 `top_k` 行；启用 kinematic scan 后还应包含 lateral displacement / heading change / yaw-rate proxy 等字段。
+- `lane_change_candidate_report.md` 存在，并列出匹配规则、source counts、warnings 和 top candidates。
+- 如果本地 metadata 中没有任何 lane-change-like 文本且没有 `task_lane_change=1`，脚本应正常输出空候选报告，而不是崩溃；报告必须说明 `candidate_rows=0` 是 metadata-only / optional-kinematic discovery 没有命中，不代表 PDM 没有 lane-change 能力。
+- 如果 nuPlan DB schema 与 fallback 假设不匹配，脚本应在 summary 的 `kinematic_scan.schema_discovery` / `kinematic_scan.warnings` 中记录可用 tables/columns 和 warning，而不是崩溃。
