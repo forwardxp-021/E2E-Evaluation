@@ -6431,16 +6431,17 @@ python tools/stage7p_find_lane_change_candidates.py \
   --top_k 20
 ```
 
-重新生成 PDM v1 strict lane-change Stage7C 候选 context 时，建议使用：
+重新生成 PDM v2 strict lane-change Stage7C 候选 context 时，建议使用 `--prefer_exact_changing_lane`：
 
 ```bash
 python tools/stage7p_find_lane_change_candidates.py \
   --context_dir outputs/stage7b4_nuplan_context_merged \
   --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
   --scan_db_scenario_tags \
-  --write_stage7c_context_dir \
+  --prefer_exact_changing_lane \
   --max_per_log 2 \
-  --output_dir outputs/stage7p_lane_change_candidates_strict_lane_change_v1 \
+  --write_stage7c_context_dir \
+  --output_dir outputs/stage7p_lane_change_candidates_strict_v2 \
   --top_k 20
 ```
 
@@ -6452,14 +6453,14 @@ python tools/stage7p_find_lane_change_candidates.py \
 - 如果 SQLite token 是 BLOB，会转换为 hex string 写入 CSV/JSON，避免二进制 token 破坏输出格式。
 - 写入 Stage7C context 时，`scenario_token` 来自 `scenario_tag.lidar_pc_token`，可直接作为 `scenario_filter.scenario_tokens=[...]` 使用；DB 原始 `lidar_pc.scene_token` 仅保留为 `db_scene_token`，不会覆盖 nuPlan scenario token。
 - 同一 `scenario_tag.lidar_pc_token` 有多个 `scenario_tag.type` 时按 `scenario_token` 去重，并按 `changing_lane_to_left`、`changing_lane_to_right`、`changing_lane`、`high_lateral_acceleration`、`cut_in`、`merge`、`near_multiple_vehicles` 的优先级保留最严格类型。
-- `--max_per_log` 默认是 `2`，用于避免一个 log 占满 `top_k`；如果 strict changing-lane 候选不足，仍会按优先级补充 high-lateral / cut-in / merge 等候选。
+- `--max_per_log` 默认是 `2`，用于避免一个 log 占满 `top_k`。启用 `--prefer_exact_changing_lane` 时，top_k selection 会优先选择 `changing_lane_to_left`、`changing_lane_to_right`、`changing_lane`；strict changing-lane 候选不足时，再补充 `high_lateral_acceleration`、`cut_in`、`merge`、`near_multiple_vehicles`。
 - 标准输出仍写入 `lane_change_candidate_report.md`、`lane_change_candidate_summary.json`、`lane_change_candidate_metadata.csv`。
-- 启用 `--write_stage7c_context_dir` 时，会额外写出 `stage7c_candidate_context/merged_metadata.csv`，至少包含非空 `log_name`、`scenario_token`、`scene_token`（兼容旧字段，值同 `scenario_token`）、`db_scene_token`、`scenario_type`、`source`、`db_file`，供 Stage7C 读取。
+- 启用 `--write_stage7c_context_dir` 时，会额外写出 `stage7c_candidate_context/merged_metadata.csv`，至少包含非空 `log_name`、`scenario_token`、`scene_token`（兼容旧字段，值同 `scenario_token`）、`db_scene_token`、`scenario_type`、`source`、`db_file`，并按 `scenario_token` 去重，供 Stage7C 读取。
 - 该命令只增强 lane-change candidate discovery；不修改 PDM、不修改 Stage5D、不修改 Stage6、不生成 v2 深层参数，也不做 adjacent-lane proposal。
 
 ## 3. 通过标准
 
-- `lane_change_candidate_summary.json` 中应包含 `metadata_text_candidate_rows`、`behavior_event_candidate_rows`、`db_scenario_tag_candidate_rows`、`final_candidate_rows`、`scenario_type_counts`、`selected_scenario_type_counts`、`raw_db_scenario_tag_rows`、`unique_scenario_token_rows`、`selected_rows`、`selected_log_counts`、`duplicate_scenario_token_count_removed`。
+- `lane_change_candidate_summary.json` 中应包含 `metadata_text_candidate_rows`、`behavior_event_candidate_rows`、`db_scenario_tag_candidate_rows`、`final_candidate_rows`、`scenario_type_counts`、`selected_scenario_type_counts`、`raw_db_scenario_tag_rows`、`unique_scenario_token_rows`、`selected_rows`、`selected_log_counts`、`duplicate_scenario_token_count_removed`、`strict_changing_lane_candidate_rows`、`selected_strict_changing_lane_rows`。
 - 当 23-row Stage7B merged metadata 没有文本候选、但 mini DB 有 lane-change/lateral scenario tag 时，报告应明确写出 `metadata_text candidates: 0`、`db_scenario_tag candidates: N`，并说明原 Stage7B merged subset 不富含 lane-change，但 mini DB 包含候选 tag。
 - `lane_change_candidate_metadata.csv` 的 DB 候选行应包含 `db_file`、`log_name`、`scenario_type`、`scenario_tag_token`、`scenario_token`、`lidar_pc_token`、`scene_token`、`ego_pose_token`、`source=db_scenario_tag`、`candidate_score`。
 - 如果启用 `--write_stage7c_context_dir`，`stage7c_candidate_context/merged_metadata.csv` 必须存在，并包含 Stage7C 所需关键列；`log_name` 不允许为空，`scenario_token` 必须是 nuPlan scenario token namespace（`scenario_tag.lidar_pc_token`）。

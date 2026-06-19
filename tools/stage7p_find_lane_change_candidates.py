@@ -21,6 +21,18 @@ PREFERRED_SCENARIO_TYPE_TERMS = [
     "merge",
     "near_multiple_vehicles",
 ]
+STRICT_CHANGING_LANE_TYPES = {
+    "changing_lane_to_left",
+    "changing_lane_to_right",
+    "changing_lane",
+}
+FALLBACK_EXACT_CHANGING_LANE_TYPES = {
+    "high_lateral_acceleration",
+    "cut_in",
+    "merge",
+    "near_multiple_vehicles",
+}
+
 DB_SCENARIO_TYPE_PRIORITY = {
     "changing_lane_to_left": 0,
     "changing_lane_to_right": 1,
@@ -572,14 +584,72 @@ def count_by_field(rows: Sequence[Dict[str, Any]], field: str) -> Dict[str, int]
     return dict(sorted(counts.items()))
 
 
+def normalize_scenario_type(value: Any) -> str:
+    return str(value or "").strip().lower()
+
+
+def is_strict_changing_lane_row(row: Dict[str, Any]) -> bool:
+    return normalize_scenario_type(row.get("scenario_type")) in STRICT_CHANGING_LANE_TYPES
+
+
+def is_fallback_exact_row(row: Dict[str, Any]) -> bool:
+    return normalize_scenario_type(row.get("scenario_type")) in FALLBACK_EXACT_CHANGING_LANE_TYPES
+
+
+def select_top_candidates(candidates: List[Dict[str, Any]], top_k: int, max_per_log: int, prefer_exact_changing_lane: bool) -> List[Dict[str, Any]]:
+    selected: List[Dict[str, Any]] = []
+    selected_tokens = set()
+    per_log_counts: Dict[str, int] = {}
+
+    def try_add(row: Dict[str, Any]) -> None:
+        if len(selected) >= top_k:
+            return
+        token = str(row.get("scenario_token", "") or "")
+        if token and token in selected_tokens:
+            return
+        log_name = str(row.get("log_name", "") or "")
+        if max_per_log > 0 and log_name and per_log_counts.get(log_name, 0) >= max_per_log:
+            return
+        selected.append(row)
+        if token:
+            selected_tokens.add(token)
+        if log_name:
+            per_log_counts[log_name] = per_log_counts.get(log_name, 0) + 1
+
+    groups = [candidates]
+    if prefer_exact_changing_lane:
+        strict = [r for r in candidates if is_strict_changing_lane_row(r)]
+        fallback = [r for r in candidates if (not is_strict_changing_lane_row(r)) and is_fallback_exact_row(r)]
+        other = [r for r in candidates if (not is_strict_changing_lane_row(r)) and (not is_fallback_exact_row(r))]
+        groups = [strict, fallback, other]
+    for group in groups:
+        for row in group:
+            try_add(row)
+            if len(selected) >= top_k:
+                break
+        if len(selected) >= top_k:
+            break
+    return selected
+
+
 def write_stage7c_context(out: Path, top: List[Dict[str, Any]], original_fieldnames: Sequence[str]) -> str:
     context_dir = out / "stage7c_candidate_context"
     context_dir.mkdir(parents=True, exist_ok=True)
     required = ["log_name", "scenario_token", "scenario_type", "source", "db_file"]
     fieldnames = list(dict.fromkeys([*required, *original_fieldnames, "lidar_pc_token", "scene_token", "db_scene_token", "ego_pose_token", "scenario_tag_token"]))
     rows = []
+    seen_tokens = set()
     for row in top:
+        scenario_token = str(row.get("scenario_token", "") or row.get("lidar_pc_token", "") or "").strip()
+        if not scenario_token or scenario_token in seen_tokens:
+            continue
+        seen_tokens.add(scenario_token)
         stage7c_row = {col: row.get(col, "") for col in fieldnames}
+        stage7c_row["log_name"] = str(row.get("log_name", "") or "").strip()
+        stage7c_row["scenario_token"] = scenario_token
+        stage7c_row["lidar_pc_token"] = str(row.get("lidar_pc_token", "") or scenario_token)
+        stage7c_row["scene_token"] = scenario_token
+        stage7c_row["db_scene_token"] = str(row.get("db_scene_token", "") or "")
         stage7c_row["source"] = row.get("source") or row.get("candidate_source", "")
         rows.append(stage7c_row)
     write_csv(context_dir / "merged_metadata.csv", rows, fieldnames)
@@ -601,7 +671,10 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- raw_db_scenario_tag_rows: `{summary.get('raw_db_scenario_tag_rows', 0)}`",
         f"- unique_scenario_token_rows: `{summary.get('unique_scenario_token_rows', 0)}`",
         f"- duplicate_scenario_token_count_removed: `{summary.get('duplicate_scenario_token_count_removed', 0)}`",
+        f"- selected_scenario_type_counts: `{summary.get('selected_scenario_type_counts', {})}`",
         f"- selected_log_counts: `{summary.get('selected_log_counts', {})}`",
+        f"- strict_changing_lane_candidate_rows: `{summary.get('strict_changing_lane_candidate_rows', 0)}`",
+        f"- selected_strict_changing_lane_rows: `{summary.get('selected_strict_changing_lane_rows', 0)}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
         f"- candidate_rows: `{summary['candidate_rows']}`",
@@ -620,6 +693,8 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- behavior_event_candidates: `{summary['behavior_event_candidates']}`",
         f"- metadata_text candidates: `{summary['metadata_text_candidate_rows']}`",
         f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
+        f"- strict_changing_lane_candidate_rows: `{summary.get('strict_changing_lane_candidate_rows', 0)}`",
+        f"- selected_strict_changing_lane_rows: `{summary.get('selected_strict_changing_lane_rows', 0)}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
         "",
@@ -673,7 +748,8 @@ def run(args: argparse.Namespace) -> int:
     candidates.sort(key=lambda r: (-float(r.get("candidate_score") or r.get("match_score") or 0), str(r.get("scenario_id", "")), str(r.get("metadata_index", ""))))
     for rank, row in enumerate(candidates, 1):
         row["candidate_rank"] = rank
-    top = candidates[: int(args.top_k)]
+    max_per_log = int(getattr(args, "max_per_log", 2) or 0)
+    top = select_top_candidates(candidates, int(args.top_k), max_per_log, bool(getattr(args, "prefer_exact_changing_lane", False)))
     output_fields = list(dict.fromkeys([*DB_OUTPUT_FIELDS, *KINEMATIC_OUTPUT_FIELDS, *fieldnames]))
     write_csv(out / "lane_change_candidate_metadata.csv", top, output_fields)
     text_match_count = sum(1 for r in text_event_candidates if int(r.get("metadata_match_score") or 0) > 0)
@@ -708,7 +784,10 @@ def run(args: argparse.Namespace) -> int:
         "raw_db_scenario_tag_rows": int(db_scenario_tag_summary.get("raw_db_scenario_tag_rows", 0)),
         "unique_scenario_token_rows": int(db_scenario_tag_summary.get("unique_scenario_token_rows", 0)),
         "selected_rows": int(db_scenario_tag_summary.get("selected_rows", 0)),
-        "selected_log_counts": db_scenario_tag_summary.get("selected_log_counts", {}),
+        "selected_log_counts": count_by_field(top, "log_name"),
+        "strict_changing_lane_candidate_rows": int(sum(1 for r in candidates if is_strict_changing_lane_row(r))),
+        "selected_strict_changing_lane_rows": int(sum(1 for r in top if is_strict_changing_lane_row(r))),
+        "prefer_exact_changing_lane": bool(getattr(args, "prefer_exact_changing_lane", False)),
         "duplicate_scenario_token_count_removed": int(db_scenario_tag_summary.get("duplicate_scenario_token_count_removed", 0)),
         "kinematic_scan": kinematic_summary,
         "warnings": warnings,
@@ -734,7 +813,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--scan_db_scenario_tags", action="store_true", help="Scan nuPlan mini DB scenario_tag.type directly for lane-change/lateral candidate tags.")
     parser.add_argument("--max_db_files", type=int, default=0, help="Optional cap on the number of nuPlan .db files scanned by --scan_db_scenario_tags.")
     parser.add_argument("--max_candidates_per_type", type=int, default=0, help="Optional cap on DB scenario-tag candidates retained for each scenario_tag.type.")
-    parser.add_argument("--max_per_log", type=int, default=2, help="Maximum DB scenario-tag candidates selected per log before writing top_k outputs.")
+    parser.add_argument("--max_per_log", type=int, default=2, help="Maximum candidates selected per log before writing top_k outputs; use 0 to disable.")
+    parser.add_argument("--prefer_exact_changing_lane", action="store_true", help="Prioritize exact changing_lane_to_left/right/changing_lane scenario_tag types before fallback lateral/cut-in/merge types during top_k selection.")
     parser.add_argument("--write_stage7c_context_dir", action="store_true", help="Write output_dir/stage7c_candidate_context/merged_metadata.csv for Stage7C.")
     parser.add_argument("--nuplan_map_root", default="", help="nuPlan map root reserved for scenario-builder based scans; SQLite fallback does not require maps.")
     parser.add_argument("--max_scenarios_scan", type=int, default=50, help="Maximum DB-derived scenarios / pose windows to inspect during kinematic scan.")
