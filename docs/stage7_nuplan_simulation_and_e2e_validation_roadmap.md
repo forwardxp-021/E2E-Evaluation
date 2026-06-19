@@ -1109,3 +1109,253 @@ stage7f_pairwise_summary.csv
 stage7f_pairwise_summary.json
 stage7f_pairwise_summary.md
 ```
+## Stage7P / PDM Closed Planner Progress Update
+
+### Motivation
+
+The original Stage7 goal is to validate whether the proposed style-monitoring pipeline can detect realized behavioral differences under same-scenario closed-loop simulation. Earlier Stage7 work focused on rule-based / synthetic-style comparisons. The current extension evaluates whether a real nuPlan-compatible planner, PDM Closed Planner, can be used as a controllable policy source for empirical style validation.
+
+The key question is not whether two YAML profiles are nominally different, but whether those nominal planner differences produce measurable rollout differences after official nuPlan closed-loop simulation, Stage5D-compatible context construction, Stage6 embedding, and Stage7F paired-delta / BDD evaluation.
+
+### Current PDM v1 planner profiles
+
+The current implementation defines two PDM Closed Planner profiles in `tools/stage7c1_run_nuplan_simulation.py`:
+
+#### `pdm_closed_conservative_v1`
+
+```python
+{
+    "idm_policies.speed_limit_fraction": [0.2, 0.4, 0.6, 0.8],
+    "idm_policies.fallback_target_velocity": 10.0,
+    "idm_policies.min_gap_to_lead_agent": 2.0,
+    "idm_policies.headway_time": 2.0,
+    "idm_policies.accel_max": 1.0,
+    "idm_policies.decel_max": 3.0,
+    "lateral_offsets": [-0.5, 0.5],
+}
+```
+
+#### `pdm_closed_assertive_v1`
+
+```python
+{
+    "idm_policies.speed_limit_fraction": [0.4, 0.6, 0.8, 1.0],
+    "idm_policies.fallback_target_velocity": 18.0,
+    "idm_policies.min_gap_to_lead_agent": 0.5,
+    "idm_policies.headway_time": 1.0,
+    "idm_policies.accel_max": 2.0,
+    "idm_policies.decel_max": 3.5,
+    "lateral_offsets": [-1.5, 1.5],
+}
+```
+
+Both profiles are treated as external Hydra PDM planners. The important implementation fix was to make all PDM closed profiles use `planner_type = external_hydra_planner`; otherwise Stage7C tries to discover `PDMClosedPlanner` as a built-in nuPlan planner and fails.
+
+At this stage, these parameters are still defined in Python code rather than injected from command-line JSON. This is acceptable for the current v1 experiment, but future experiments should support a `--planner_profile_json` option so that conservative/assertive parameters can be modified directly from the experiment shell script.
+
+### What PDM v1 can and cannot prove
+
+PDM v1 is useful for testing realized longitudinal and lateral-offset style differences. The current v1 parameters mainly control:
+
+* speed target sampling through `speed_limit_fraction`
+* fallback target velocity
+* minimum lead-agent gap
+* IDM headway time
+* maximum acceleration and deceleration
+* lateral proposal offsets
+
+Therefore, the strongest expected effects are speed, headway, gap, and general interaction behavior. PDM v1 should not be over-claimed as a true lane-change intention planner. A wider `lateral_offsets` range can produce more assertive lateral proposals, but it is not equivalent to an explicit target-lane gap-acceptance or adjacent-lane decision module.
+
+For thesis writing, the correct claim is:
+
+> PDM closed planner variants induce realized closed-loop behavioral differences under identical nuPlan scenarios.
+
+The claim should not be:
+
+> PDM aggressive has stronger lane-change intention.
+
+That stronger claim requires a future explicit adjacent-lane proposal / gap-acceptance extension.
+
+### nuPlan mini scenario tags: what the counts mean
+
+The scenario labels used for candidate selection come from nuPlan's native `scenario_tag` table. They are not manually assigned by this project.
+
+However, `scenario_tag` counts are tag-row counts, not full scenario counts. One `.db` file is a log database, not one scenario. A `scenario_tag` row marks a tagged `lidar_pc_token` anchor. The actual nuPlan simulation scenario is constructed later by the nuPlan scenario builder around that token.
+
+The current mini inventory shows:
+
+```text
+db_files = 64
+total_lidar_pc_rows = 518999
+total_scenario_tag_rows = 892204
+distinct_tagged_scenario_tokens = 390186
+strict_changing_lane_tag_rows = 44
+strict_changing_lane_unique_tokens = 22
+```
+
+Strict lane-change DB tags are:
+
+```text
+changing_lane = 22 tag rows
+changing_lane_to_left = 15 tag rows
+changing_lane_to_right = 7 tag rows
+```
+
+After de-duplicating by scenario token, strict lane-change candidates contain 22 unique tokens.
+
+A previous bug wrote SQLite BLOB tokens into CSV as Python bytes strings such as `b'\xf6\xf9...'`. That made Stage7C attempt zero official simulations. The corrected implementation must convert SQLite BLOB tokens to hex strings, for example:
+
+```text
+f6f9afda75e251ae
+```
+
+not
+
+```text
+b'\xf6\xf9\xaf\xdau\xe2Q\xae'
+```
+
+### Strict lane-change probe result
+
+After fixing BLOB-token conversion and probing strict changing-lane DB-tag candidates through Stage7C, the current known-good actual lane-change candidates are:
+
+| log_name                                 | scenario_token     | actual_scenario_type     |
+| ---------------------------------------- | ------------------ | ------------------------ |
+| `2021.05.25.14.16.10_veh-35_01690_02183` | `f6f9afda75e251ae` | `changing_lane_to_right` |
+| `2021.06.07.18.53.26_veh-26_00005_00427` | `a59a8c3490f154e2` | `changing_lane_to_left`  |
+| `2021.06.08.12.54.54_veh-26_04262_04732` | `9945129405795b72` | `changing_lane_to_right` |
+| `2021.06.09.17.23.18_veh-38_00773_01140` | `e3b38485532e575e` | `changing_lane_to_left`  |
+| `2021.06.23.15.56.12_veh-16_00839_01285` | `6d1811320c635e82` | `changing_lane_to_left`  |
+| `2021.08.17.16.57.11_veh-08_01200_01636` | `9e30155b8bb55fd9` | `changing_lane_to_left`  |
+| `2021.08.30.14.54.34_veh-40_00439_00835` | `05f9092e219d59f2` | `changing_lane_to_right` |
+| `2021.10.05.07.10.04_veh-52_01442_01802` | `713fa73e30435d98` | `changing_lane_to_right` |
+
+The actual-type probe also found non-lane-change realizations among DB-tag strict candidates, including `traversing_pickup_dropoff`, `stationary`, and `medium_magnitude_speed`. This confirms that DB tags are useful candidate signals, but actual simulation output must still be verified.
+
+### Current smoke-test milestone
+
+A 2-scenario × 2-planner smoke test has passed end to end:
+
+```text
+2 known-good lane-change scenarios
+× 2 PDM planners
+= 4 official nuPlan closed-loop rollouts
+```
+
+Stage7C status:
+
+* official nuPlan closed-loop simulation succeeded
+* no pseudo rollout was generated
+* strict same-scenario token alignment passed
+* actual scenario types were `changing_lane_to_left` and `changing_lane_to_right`
+
+Stage7E status:
+
+```text
+context_traj.npy = [4, 149, 83]
+83 = ego 8 + 5 semantic neighbor slots × 15 channels
+row semantics = one row per scenario × planner-controlled nuPlan ego rollout
+```
+
+Stage7E embedding status:
+
+```text
+embedding.npy = [4, 64]
+context_dim = 83
+checkpoint_context_dim = 83
+multi_agent_ego_expansion = false
+```
+
+Stage7F paired-delta status:
+
+```text
+planner A = pdm_closed_assertive_v1
+planner B = pdm_closed_conservative_v1
+delta convention = A - B
+paired_scenarios = 2
+```
+
+Observed pilot results:
+
+```text
+assertive > conservative mean_speed: 2 / 2
+mean delta_mean_speed: +2.416 m/s
+mean delta_max_speed: +1.666 m/s
+mean embedding_l2_distance: 7.576
+mean embedding_cosine_distance: 0.097
+```
+
+The current pilot supports the statement:
+
+> PDM v1 assertive realizes higher speed and non-zero embedding displacement relative to PDM v1 conservative under same-scenario official nuPlan simulation.
+
+It does not support the stronger statement that assertive always has higher acceleration or jerk. In the 2-scenario pilot, assertive showed lower RMS acceleration and jerk. This likely means that the v1 profiles primarily change speed/gap behavior rather than uniformly increasing dynamic aggressiveness.
+
+### Lane-change should not be the only PDM experiment axis
+
+Strict lane-change candidates are valuable for case studies, but they are too few for the main BDD experiment. Even if all 22 strict DB-tag candidates were usable, that is still a small sample for distributional embedding analysis.
+
+The main PDM v1 experiment should therefore use a balanced scenario set that includes lane-change but is not dominated by it. This is more consistent with the PDM v1 parameter changes, which mainly affect speed, headway, gap, acceleration/deceleration, and interaction response.
+
+Recommended 20-scenario mini-pilot design:
+
+| bucket                          | count | purpose                                                          |
+| ------------------------------- | ----: | ---------------------------------------------------------------- |
+| actual verified lane-change     |     8 | keep lateral / lane-change coverage                              |
+| following / lead interaction    |     4 | evaluate headway, gap, front distance                            |
+| stop-go / signal / congestion   |     4 | evaluate speed, braking, acceleration, waiting / launch behavior |
+| interaction-rich / lateral-rich |     4 | evaluate surrounding-vehicle density and lateral dynamics        |
+
+Concrete bucket proposal:
+
+```text
+actual_verified_lane_change: 8
+following_lane_with_slow_lead: 2
+following_lane_with_lead: 1
+stopping_with_lead or stopping_at_traffic_light_with_lead: 1
+stationary_in_traffic: 2
+accelerating_at_traffic_light*: 1
+stopping_at_traffic_light*: 1
+near_multiple_vehicles: 2
+high_lateral_acceleration: 1
+near_high_speed_vehicle: 1
+```
+
+The goal of the 20-scenario run is not to prove a final thesis result, but to decide whether PDM v1 is worth scaling. A useful success criterion is:
+
+```text
+paired_scenarios >= 15
+assertive > conservative mean_speed in most paired scenarios
+embedding distance is consistently non-zero
+BDD bootstrap is directionally stable
+```
+
+### Recommended experiment scale
+
+For Stage7F / BDD interpretation:
+
+| paired scenario count | interpretation                                                          |
+| --------------------: | ----------------------------------------------------------------------- |
+|                     2 | smoke test only; verify pipeline                                        |
+|                     5 | mini-pilot; inspect direction only                                      |
+|                 10–20 | exploratory evidence; decide whether to continue                        |
+|                 30–50 | minimum useful range for thesis-level BDD analysis                      |
+|                  100+ | stronger conference-level evidence, especially for task-conditioned BDD |
+
+For task-conditioned BDD, each task slice should ideally contain at least 10 paired scenarios, preferably 20–30. Otherwise, slice-level BDD is likely dominated by individual scenarios.
+
+### Current decision
+
+Stage7 should proceed with a balanced 20-scenario PDM v1 mini-pilot:
+
+```text
+20 scenarios × 2 planners = 40 official nuPlan rollouts
+```
+
+At the current runtime estimate of about 75 seconds per planner-scenario rollout, this is expected to fit roughly within one hour of simulation time, plus context/embedding/report overhead.
+
+If the balanced 20-scenario pilot shows stable speed and embedding differences, expand to 30–50 paired scenarios. If the difference remains mostly speed-only and weak in BDD, then either:
+
+1. keep PDM v1 as an auxiliary validation experiment, or
+2. move to PDM v2 with deeper scorer / comfort / tracker parameter exposure, or
+3. implement explicit adjacent-lane proposal and target-lane gap acceptance for true lane-change-intention experiments.
