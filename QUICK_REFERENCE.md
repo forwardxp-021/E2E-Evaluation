@@ -5209,6 +5209,7 @@ python tools/stage7e_embed_stage6_dataset.py \
 
 - context build 输出 `ego_seq.npy`、`context_traj.npy`、`interaction_feat_style.npy`、`metadata.csv`、`feature_schema.json`、`stage5d_context_schema.json`、`shard_manifest.json`、`planner_policy_indices/*.npy`、`warnings.json`、`context_build_report.md`、`slot_assignment_report.md`。
 - `warnings.json.validation.stage5d_dim_matched == true`、`stage5d_slot_schema_matched == true`、`stage5d_slot_order_matched == true`、`context_traj_no_nonfinite == true`。
+- nuPlan semantic slots 在多 scenario/planner rollout 中可能发生 tracked-object ID switch；此时 `accel/yaw_rate` finite difference parity 可报告为 `nonfatal_slot_switch_reset`，并在 `warnings.json` 中写入 `temporal_formula_nonfatal_slot_switch_reset`。只要 structural checks 以及 static / closing / TTC / delta_x / delta_y 公式通过，这属于预期诊断，不会使 `context_traj.npy [N,T,83]` 或 Stage 7E embedding 输入失效。
 - lane-aware runtime diagnostics 必须包含 `lane_assignment_available`、`map_query_success`、`lane_info_count`、`fallback_assignment_used_rate`、`ego_lane_projection_success_rate`、`candidate_lane_projection_success_rate`。
 - `assignment_mode == lane_aware_only` 时，如果 map query 失败、`lane_info_count == 0` 或 ego lane projection 不可用，脚本必须 fail loudly；不能 silent fallback。
 - `assignment_mode == lane_aware_with_geometric_fallback` 时，如果 `fallback_assignment_used_rate` 很高，`warnings.json` 必须有 high fallback warning，并需要检查 `--nuplan_map_root`、`map_name` 解析和 projection 诊断。
