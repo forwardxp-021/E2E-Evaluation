@@ -188,6 +188,19 @@ def test_quick_reference_contains_fixed_pdm_commands():
     assert "stage7p_pdm_config_parameter_report.py" in text
 
 
+def test_all_pdm_closed_profiles_are_external_hydra_planners():
+    for planner_name in [
+        "pdm_closed_default",
+        "pdm_closed_conservative_v1",
+        "pdm_closed_assertive_v1",
+    ]:
+        profile = stage7c.PLANNER_PROFILES[planner_name]
+        assert profile["planner_type"] == "external_hydra_planner"
+        assert profile["external_planner_family"] == "pdm_closed"
+        assert profile["nuplan_planner_config"] == "pdm_closed_planner"
+        assert profile["hydra_overrides"][0] == "planner=pdm_closed_planner"
+
+
 def test_pdm_closed_conservative_variant_hydra_overrides_and_metadata():
     overrides = stage7c.format_planner_hydra_overrides("pdm_closed_conservative_v1")
     assert overrides.startswith("planner=pdm_closed_planner ")
@@ -199,7 +212,9 @@ def test_pdm_closed_conservative_variant_hydra_overrides_and_metadata():
     assert "planner.pdm_closed_planner.idm_policies.decel_max=3.0" in overrides
     assert "planner.pdm_closed_planner.lateral_offsets=[-0.5,0.5]" in overrides
     profile = stage7c.PLANNER_PROFILES["pdm_closed_conservative_v1"]
-    assert profile["planner_type"] == "pdm_closed_variant"
+    assert profile["planner_type"] == "external_hydra_planner"
+    assert profile["external_planner_family"] == "pdm_closed"
+    assert profile["variant_kind"] == "pdm_closed_variant"
     assert profile["policy_style"] == "conservative"
     assert profile["style_scope"] == "full_closed_loop_planner"
     assert profile["nuplan_planner_config"] == "pdm_closed_planner"
@@ -218,7 +233,9 @@ def test_pdm_closed_assertive_variant_hydra_overrides_and_metadata():
     assert "planner.pdm_closed_planner.idm_policies.decel_max=3.5" in overrides
     assert "planner.pdm_closed_planner.lateral_offsets=[-1.5,1.5]" in overrides
     profile = stage7c.PLANNER_PROFILES["pdm_closed_assertive_v1"]
-    assert profile["planner_type"] == "pdm_closed_variant"
+    assert profile["planner_type"] == "external_hydra_planner"
+    assert profile["external_planner_family"] == "pdm_closed"
+    assert profile["variant_kind"] == "pdm_closed_variant"
     assert profile["policy_style"] == "assertive"
     assert profile["style_scope"] == "full_closed_loop_planner"
     assert profile["nuplan_planner_config"] == "pdm_closed_planner"

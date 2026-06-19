@@ -191,7 +191,9 @@ def pdm_closed_profile(policy_style: str, style_scope: str, parameters: Dict[str
         encoded = json.dumps(value, ensure_ascii=False, separators=(",", ":")) if isinstance(value, list) else str(value)
         hydra_overrides.append(f"planner.pdm_closed_planner.{key}={encoded}")
     return {
-        "planner_type": "external_hydra_planner" if policy_style == "pdm_closed_default" else "pdm_closed_variant",
+        "planner_type": "external_hydra_planner",
+        "external_planner_family": "pdm_closed",
+        "variant_kind": "pdm_closed_default" if policy_style == "pdm_closed_default" else "pdm_closed_variant",
         "policy_style": policy_style,
         "style_scope": style_scope,
         "nuplan_planner_config": "pdm_closed_planner",
