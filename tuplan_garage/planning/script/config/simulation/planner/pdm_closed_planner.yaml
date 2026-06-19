@@ -1,0 +1,35 @@
+pdm_closed_planner:
+  scorer:
+    progress_weight: 5.0
+    ttc_weight: 5.0
+    comfortable_weight: 2.0
+  comfort:
+    max_abs_mag_jerk: 8.37
+    max_abs_lat_accel: 4.89
+    max_lon_accel: 2.40
+    min_lon_accel: -4.05
+    max_abs_yaw_accel: 1.93
+    max_abs_lon_jerk: 4.13
+    max_abs_yaw_rate: 0.95
+  tracker:
+    q_longitudinal: [10.0]
+    r_longitudinal: [1.0]
+    q_lateral: [1.0, 10.0, 0.0]
+    r_lateral: [1.0]
+    tracking_horizon: 10
+    jerk_penalty: 1.0e-4
+    curvature_rate_penalty: 1.0e-2
+    stopping_proportional_gain: 0.5
+    stopping_velocity: 0.2
+  motion_model:
+    max_steering_angle: 1.0471975512
+    accel_time_constant: 0.2
+    steering_angle_time_constant: 0.05
+  emergency_brake:
+    time_to_infraction_threshold: 2.0
+    max_ego_speed: 5.0
+    max_long_accel: 2.40
+    min_long_accel: -4.05
+    infraction: collision
+  generator:
+    leading_agent_update_rate: 2

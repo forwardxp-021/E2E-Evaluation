@@ -6343,3 +6343,32 @@ python tools/stage7p_pdm_config_parameter_report.py \
 - `lateral_offsets` 和 `speed_limit_fraction` 是 `numeric_list`。
 - numeric scalar 是 `numeric_scalar`。
 - concrete override candidate 行必须标记 `verified_config_key`，未知或未验证项只能标记为 `inferred_candidate` / `unsafe_unknown`，不能作为 runnable command。
+
+## Stage7C PDM-Closed v2 深层风格参数
+
+## 1. 命令
+
+```bash
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage7e_nuplan_5neighbor_context_pdm_closed_smoke_1scene \
+  --output_dir outputs/stage7c_pdm_closed_v2_variant_smoke \
+  --planners pdm_closed_default pdm_closed_conservative_v2 pdm_closed_assertive_v2 \
+  --allow_external_planner_name \
+  --require_same_scenario_alignment \
+  --max_scenarios 1 \
+  --nuplan_simulation_command_template 'python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini {scenario_hydra_overrides} worker=single_machine_thread_pool experiment_name=stage7c_pdm_closed_v2_variant_smoke job_name=stage7c_{planner_name_safe} output_dir={output_dir}'
+```
+
+## 2. 期望行为
+
+- `pdm_closed_default` 继续只展开为 `planner=pdm_closed_planner`，不注入额外深层参数。
+- `pdm_closed_conservative_v2` 和 `pdm_closed_assertive_v2` 使用同一个 Hydra 基础 planner config：`planner=pdm_closed_planner`。
+- v2 label 会额外注入 PDMScorer 权重、comfort 阈值、BatchLQRTracker 横向跟踪参数、motion model 转向时间常数，以及已有 IDM/lateral offset 参数。
+- Stage7C 元数据、`job_name=stage7c_{planner_name_safe}` 和 `official_nuplan_runs/scenario_*/<planner_label>/` 输出目录保留用户请求的 variant label，例如 `pdm_closed_assertive_v2`，不会被基础 config 名 `pdm_closed_planner` 覆盖。
+
+## 3. 通过标准
+
+- `simulated_planner_metadata.csv` 中存在 `pdm_closed_conservative_v2`、`pdm_closed_assertive_v2`，且 `nuplan_planner_config` 为 `pdm_closed_planner`。
+- metadata 的 `hydra_overrides` 包含 `planner.pdm_closed_planner.scorer.*`、`planner.pdm_closed_planner.tracker.*`、`planner.pdm_closed_planner.motion_model.*`、`planner.pdm_closed_planner.comfort.*`。
+- `official_nuplan_runs/scenario_*/pdm_closed_assertive_v2/` 等目录使用 variant label。
+- 默认 `pdm_closed_planner` / `pdm_closed_default` 仍然只使用基础 PDM closed config。
