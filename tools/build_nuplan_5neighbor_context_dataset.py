@@ -156,6 +156,7 @@ def metadata_rows(index_rows: List[Dict[str, str]], planner_meta_rows: List[Dict
                 "unsupported_behavior_tasks": planner_profiles.get(pid, {}).get("unsupported_behavior_tasks", ""),
                 "planner_class": planner_profiles.get(pid, {}).get("planner_class", ""),
                 "planner_type": planner_profiles.get(pid, {}).get("planner_type", ""),
+                "parameters_json": planner_profiles.get(pid, {}).get("parameters_json", ""),
             })
             g += 1
     return rows
