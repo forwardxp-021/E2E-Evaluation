@@ -5929,7 +5929,7 @@ python tools/stage7f_run_task_conditioned_bdd.py \
   --planner_a idm_longitudinal_aggressive \
   --planner_b idm_longitudinal_conservative \
   --output_dir outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_bdd_v1 \
-  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_cutin_response,task_yield_conflict \
+  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_lane_change,task_cutin_response,task_yield_conflict \
   --min_bin_size 2 \
   --num_bootstrap 100 \
   --num_permutation 200 \
@@ -5978,7 +5978,7 @@ python tools/stage7f_task_overlap_matrix.py \
   --stage7f_dir outputs/stage7f_idm_20scenes_full_fallback_preserving_v1 \
   --planner_a idm_longitudinal_aggressive \
   --planner_b idm_longitudinal_conservative \
-  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_cutin_response,task_yield_conflict \
+  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_lane_change,task_cutin_response,task_yield_conflict \
   --output_dir outputs/stage7f_idm_20scenes_aggressive_vs_conservative_task_overlap_v1 \
   --overwrite
 ```
@@ -6343,6 +6343,44 @@ python tools/stage7p_pdm_config_parameter_report.py \
 - `lateral_offsets` 和 `speed_limit_fraction` 是 `numeric_list`。
 - numeric scalar 是 `numeric_scalar`。
 - concrete override candidate 行必须标记 `verified_config_key`，未知或未验证项只能标记为 `inferred_candidate` / `unsafe_unknown`，不能作为 runnable command。
+
+
+## Stage7P lane-change candidate discovery（PDM lateral smoke 场景筛选）
+
+## 1. 命令
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --output_dir outputs/stage7p_lane_change_candidates_v1 \
+  --top_k 20
+```
+
+如果已经有 Stage7 behavior event detector 输出，也可以显式传入：
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --behavior_events_dir outputs/stage7f_idm_20scenes_stage6c_behavior_events_v2 \
+  --output_dir outputs/stage7p_lane_change_candidates_v1 \
+  --top_k 20
+```
+
+## 2. 期望行为
+
+- 脚本读取 `context_dir/merged_metadata.csv`（如不存在则尝试 `context_dir/metadata.csv`），不会读取或合并 `context_traj.npy`、`neighbor_seq.npy`、`ego_seq.npy` 等大数组。
+- 优先搜索 `scenario_type` / `scenario_label` / `type` 中包含 `changing_lane`、`lane_change`、`high_lateral_acceleration`、`near_multiple_vehicles`、`cut_in`、`merge` 的场景。
+- 同时扫描 scenario labels、log names、scenario ids 等文本字段中的 lane-change-like 关键词。
+- 如果能找到 `behavior_event_bins_v2.csv` 且其中存在 `task_lane_change`，则把 `task_lane_change=1` 的 rows 作为额外候选信号。
+- 输出 `lane_change_candidate_report.md`、`lane_change_candidate_summary.json`、`lane_change_candidate_metadata.csv`。
+- 该步骤只做候选场景筛选，不修改 Stage5D CORE、`tools/lane_aware_assignment.py`、Stage6 metric definitions，也不改变 PDM planner 配置。
+
+## 3. 通过标准
+
+- `lane_change_candidate_summary.json` 存在，且记录 `metadata_rows`、`candidate_rows`、`top_k_written` 和 behavior-event detector 是否可用。
+- `lane_change_candidate_metadata.csv` 存在，包含 `candidate_rank`、`metadata_index`、`match_score`、`match_sources`，最多输出 `top_k` 行。
+- `lane_change_candidate_report.md` 存在，并列出匹配规则和 top candidates。
+- 如果本地 metadata 中没有任何 lane-change-like 文本且没有 `task_lane_change=1`，脚本应正常输出空候选报告，而不是崩溃。
 
 ## Stage7C PDM-Closed v2 深层风格参数
 
