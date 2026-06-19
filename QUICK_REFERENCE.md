@@ -6400,3 +6400,48 @@ python tools/stage7p_find_lane_change_candidates.py \
 - `lane_change_candidate_report.md` 存在，并列出匹配规则、source counts、warnings 和 top candidates。
 - 如果本地 metadata 中没有任何 lane-change-like 文本且没有 `task_lane_change=1`，脚本应正常输出空候选报告，而不是崩溃；报告必须说明 `candidate_rows=0` 是 metadata-only / optional-kinematic discovery 没有命中，不代表 PDM 没有 lane-change 能力。
 - 如果 nuPlan DB schema 与 fallback 假设不匹配，脚本应在 summary 的 `kinematic_scan.schema_discovery` / `kinematic_scan.warnings` 中记录可用 tables/columns 和 warning，而不是崩溃。
+
+## Stage7P mini DB scenario_tag lane-change candidate discovery（Stage7C context 输出）
+
+## 1. 命令
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --scan_db_scenario_tags \
+  --write_stage7c_context_dir \
+  --output_dir outputs/stage7p_lane_change_candidates_from_db_v1 \
+  --top_k 20
+```
+
+可选限制扫描量：
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --scan_db_scenario_tags \
+  --max_db_files 2 \
+  --max_candidates_per_type 20 \
+  --write_stage7c_context_dir \
+  --output_dir outputs/stage7p_lane_change_candidates_from_db_v1 \
+  --top_k 20
+```
+
+## 2. 期望行为
+
+- 脚本保留原有 `merged_metadata.csv` 文本匹配逻辑，同时在启用 `--scan_db_scenario_tags` 且提供 `--nuplan_db_root` 时直接扫描 mini DB 的 `scenario_tag.type`。
+- DB 扫描只遍历 `nuplan_db_root/*.db`，读取 `scenario_tag(token, lidar_pc_token, type, agent_track_token)`，并关联 `lidar_pc(token, scene_token, ego_pose_token)` 与 `log(logfile, token)`。
+- 匹配的 scenario tag 类型包括 `changing_lane`、`lane_change`、`high_lateral_acceleration`、`near_multiple_vehicles`、`cut_in`、`merge`。
+- 如果 SQLite token 是 BLOB，会转换为 hex string 写入 CSV/JSON，避免二进制 token 破坏输出格式。
+- 标准输出仍写入 `lane_change_candidate_report.md`、`lane_change_candidate_summary.json`、`lane_change_candidate_metadata.csv`。
+- 启用 `--write_stage7c_context_dir` 时，会额外写出 `stage7c_candidate_context/merged_metadata.csv`，至少包含 `log_name`、`scenario_token`、`scenario_type`、`source`、`db_file`，供 Stage7C 读取。
+- 该命令只增强 lane-change candidate discovery；不修改 PDM、不修改 Stage5D、不修改 Stage6、不生成 v2 深层参数，也不做 adjacent-lane proposal。
+
+## 3. 通过标准
+
+- `lane_change_candidate_summary.json` 中应包含 `metadata_text_candidate_rows`、`behavior_event_candidate_rows`、`db_scenario_tag_candidate_rows`、`final_candidate_rows`、`scenario_type_counts`、`selected_scenario_type_counts`。
+- 当 23-row Stage7B merged metadata 没有文本候选、但 mini DB 有 lane-change/lateral scenario tag 时，报告应明确写出 `metadata_text candidates: 0`、`db_scenario_tag candidates: N`，并说明原 Stage7B merged subset 不富含 lane-change，但 mini DB 包含候选 tag。
+- `lane_change_candidate_metadata.csv` 的 DB 候选行应包含 `db_file`、`log_name`、`scenario_type`、`scenario_tag_token`、`scenario_token`、`lidar_pc_token`、`scene_token`、`ego_pose_token`、`source=db_scenario_tag`、`candidate_score`。
+- 如果启用 `--write_stage7c_context_dir`，`stage7c_candidate_context/merged_metadata.csv` 必须存在，并包含 Stage7C 所需关键列；缺失的非关键列可以为空。

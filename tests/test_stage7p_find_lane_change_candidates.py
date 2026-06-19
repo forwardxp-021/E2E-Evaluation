@@ -1,5 +1,6 @@
 import csv
 import json
+import sqlite3
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -16,6 +17,10 @@ def _base_args(ctx: Path, out: Path, **kwargs):
         top_k=20,
         behavior_events_dir="",
         nuplan_db_root="",
+        scan_db_scenario_tags=False,
+        max_db_files=0,
+        max_candidates_per_type=0,
+        write_stage7c_context_dir=False,
         nuplan_map_root="",
         max_scenarios_scan=50,
         enable_kinematic_scan=False,
@@ -86,6 +91,69 @@ def test_missing_behavior_event_bins_does_not_crash_and_reports_metadata_only_ze
     assert "not that PDM lacks lane-change capability" in report
 
 
+def _make_mock_nuplan_db(path: Path, blob_tokens: bool = False) -> None:
+    conn = sqlite3.connect(path)
+    with conn:
+        conn.execute("CREATE TABLE scenario_tag(token BLOB, lidar_pc_token BLOB, type TEXT, agent_track_token BLOB)")
+        conn.execute("CREATE TABLE lidar_pc(token BLOB, scene_token BLOB, ego_pose_token BLOB)")
+        conn.execute("CREATE TABLE log(logfile TEXT, token BLOB)")
+        st_token = b"\x01\x02tag" if blob_tokens else "tag_text"
+        lidar_token = b"\x03\x04lidar" if blob_tokens else "lidar_text"
+        scene_token = b"\x05scene" if blob_tokens else "scene_text"
+        ego_pose_token = b"\x06ego" if blob_tokens else "ego_text"
+        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", ("mock_log", b"log"))
+        conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES (?, ?, ?)", (lidar_token, scene_token, ego_pose_token))
+        conn.execute(
+            "INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)",
+            (st_token, lidar_token, "changing_lane", b"agent"),
+        )
+        conn.execute(
+            "INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)",
+            ("ignore_text", "missing_lidar", "following_lane", b"agent"),
+        )
+
+
+def test_db_scenario_tag_scan_discovers_changing_lane_blob_and_writes_stage7c_context(tmp_path: Path):
+    ctx = tmp_path / "ctx"
+    db_root = tmp_path / "dbs"
+    out = tmp_path / "out"
+    ctx.mkdir()
+    db_root.mkdir()
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_mock_nuplan_db(db_root / "mini.db", blob_tokens=True)
+
+    rc = finder.run(
+        _base_args(
+            ctx,
+            out,
+            nuplan_db_root=str(db_root),
+            scan_db_scenario_tags=True,
+            write_stage7c_context_dir=True,
+        )
+    )
+
+    assert rc == 0
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["metadata_text_candidate_rows"] == 0
+    assert summary["db_scenario_tag_candidate_rows"] == 1
+    assert summary["final_candidate_rows"] == 1
+    assert summary["scenario_type_counts"] == {"changing_lane": 1}
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert rows[0]["source"] == "db_scenario_tag"
+    assert rows[0]["scenario_tag_token"] == b"\x01\x02tag".hex()
+    assert rows[0]["lidar_pc_token"] == b"\x03\x04lidar".hex()
+    assert rows[0]["log_name"] == "mock_log"
+    stage7c_path = out / "stage7c_candidate_context" / "merged_metadata.csv"
+    assert stage7c_path.is_file()
+    stage7c_rows = list(csv.DictReader(stage7c_path.open(encoding="utf-8")))
+    assert stage7c_rows[0]["scenario_token"] == b"\x03\x04lidar".hex()
+    assert stage7c_rows[0]["source"] == "db_scenario_tag"
+    report = (out / "lane_change_candidate_report.md").read_text(encoding="utf-8")
+    assert "metadata_text candidates: `0`" in report
+    assert "db_scenario_tag candidates: `1`" in report
+    assert "Stage7B merged subset is not lane-change-rich" in report
+
+
 def test_kinematic_scan_arguments_exist():
     # The real parser is exercised by monkeypatching sys.argv rather than duplicating parser internals.
     old_argv = sys.argv
@@ -98,6 +166,12 @@ def test_kinematic_scan_arguments_exist():
             "out",
             "--nuplan_db_root",
             "db",
+            "--scan_db_scenario_tags",
+            "--max_db_files",
+            "2",
+            "--max_candidates_per_type",
+            "3",
+            "--write_stage7c_context_dir",
             "--nuplan_map_root",
             "maps",
             "--max_scenarios_scan",
@@ -114,6 +188,10 @@ def test_kinematic_scan_arguments_exist():
     finally:
         sys.argv = old_argv
     assert parsed_args.nuplan_db_root == "db"
+    assert parsed_args.scan_db_scenario_tags is True
+    assert parsed_args.max_db_files == 2
+    assert parsed_args.max_candidates_per_type == 3
+    assert parsed_args.write_stage7c_context_dir is True
     assert parsed_args.nuplan_map_root == "maps"
     assert parsed_args.max_scenarios_scan == 7
     assert parsed_args.enable_kinematic_scan is True
