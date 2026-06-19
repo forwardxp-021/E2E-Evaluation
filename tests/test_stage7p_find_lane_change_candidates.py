@@ -34,6 +34,7 @@ def _base_args(ctx: Path, out: Path, **kwargs):
         allow_fallback_lateral_types=False,
         fallback_type_allowlist="high_lateral_acceleration",
         verified_top_k=None,
+        require_actual_type_verified=False,
     )
     values.update(kwargs)
     return SimpleNamespace(**values)
@@ -493,3 +494,64 @@ def test_verified_mode_rejects_strict_db_tag_when_actual_type_is_non_lane_change
     report = (out / "lane_change_candidate_report.md").read_text(encoding="utf-8")
     assert "strict_db_tag_candidates_exist_but_none_selected=true" in report
     assert "insufficient candidates" in report
+
+
+def test_verified_mode_empty_actual_type_is_db_tag_only_not_counted_as_verified(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_tag_only_db(db, [("lidar_left", "changing_lane_to_left")])
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, write_stage7c_context_dir=True, max_per_log=0))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert len(rows) == 1
+    assert rows[0]["actual_scenario_type"] == ""
+    assert rows[0]["actual_type_verified"] == "false"
+    assert rows[0]["selected_by_db_tag_only"] == "true"
+    assert rows[0]["actual_type_verification_error"]
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["final_selected_rows"] == 1
+    assert summary["selected_actual_scenario_type_counts"] == {}
+    assert summary["selected_db_tag_only_rows"] == 1
+    assert summary["selected_actual_type_verified_rows"] == 0
+    assert summary["selected_actual_type_empty_rows"] == 1
+    assert summary["actual_type_verification_failed_rows"] == 1
+    stage7c_rows = list(csv.DictReader((out / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    assert stage7c_rows[0]["selected_by_db_tag_only"] == "true"
+    assert stage7c_rows[0]["actual_type_verification_error"]
+    report = (out / "lane_change_candidate_report.md").read_text(encoding="utf-8")
+    assert "verified strict lane-change candidates: `0`" in report
+    assert "DB-tag-only strict lane-change candidates: `1`" in report
+
+
+def test_require_actual_type_verified_drops_empty_actual_type_rows(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_tag_only_db(db, [("lidar_left", "changing_lane_to_left")])
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, require_actual_type_verified=True, write_stage7c_context_dir=True, max_per_log=0))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert rows == []
+    assert not (out / "stage7c_candidate_context" / "merged_metadata.csv").exists()
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["final_selected_rows"] == 0
+    assert summary["require_actual_type_verified"] is True
+    assert summary["selected_actual_scenario_type_counts"] == {}
+    assert summary["selected_db_tag_only_rows"] == 0
+    assert summary["selected_actual_type_empty_rows"] == 0
+
+
+def test_require_actual_type_verified_parser_argument_exists():
+    old_argv = sys.argv
+    try:
+        sys.argv = ["stage7p_find_lane_change_candidates.py", "--context_dir", "ctx", "--output_dir", "out", "--verify_actual_scenario_type", "--require_actual_type_verified"]
+        parsed_args = finder.parse_args()
+    finally:
+        sys.argv = old_argv
+    assert parsed_args.verify_actual_scenario_type is True
+    assert parsed_args.require_actual_type_verified is True
