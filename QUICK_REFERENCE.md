@@ -6482,3 +6482,56 @@ python tools/stage7c1_run_nuplan_simulation.py \
   --max_scenarios 5 \
   --overwrite
 ```
+
+---
+
+# Stage7P — strict verified lane-change candidate selector（2026-06-19）
+
+## 1. 命令
+
+```bash
+python tools/stage7p_find_lane_change_candidates.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --scan_db_scenario_tags \
+  --prefer_exact_changing_lane \
+  --verify_actual_scenario_type \
+  --actual_type_allowlist changing_lane,changing_lane_to_left,changing_lane_to_right \
+  --max_per_log 2 \
+  --write_stage7c_context_dir \
+  --output_dir outputs/stage7p_lane_change_candidates_strict_verified_v1 \
+  --top_k 20
+```
+
+2 scenes × 2 planners 的 Stage7C smoke 可以直接读取上一步写出的 `stage7c_candidate_context/merged_metadata.csv`：
+
+```bash
+python tools/stage7c_run_external_planner_simulation.py \
+  --context_dir outputs/stage7p_lane_change_candidates_strict_verified_v1/stage7c_candidate_context \
+  --output_dir outputs/stage7c_pdm_lane_change_strict_verified_2scenes_2planners_v1 \
+  --planner_names pdm_closed,pdm_closed_conservative_v1 \
+  --planner_hydra_overrides '+planner=pdm_closed_planner' \
+  --scenario_hydra_overrides 'scenario_filter.scenario_tokens=["{target_scenario_token}"] scenario_filter.limit_total_scenarios=1' \
+  --nuplan_simulation_command_template 'python -m nuplan.planning.script.run_simulation +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_filter=all_scenarios {scenario_hydra_overrides} worker=single_machine_thread_pool experiment_name=stage7c_pdm_lane_change_strict_verified_2scenes_2planners job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --nuplan_devkit_root '$NUPLAN_DEVKIT_ROOT' \
+  --nuplan_data_root '$NUPLAN_DATA_ROOT' \
+  --nuplan_map_root '$NUPLAN_MAP_ROOT' \
+  --max_scenarios 2 \
+  --timesteps 149 \
+  --overwrite
+```
+
+## 2. 期望行为
+
+- selector 仍先用 Stage7 metadata text / behavior-event / mini DB `scenario_tag.type` 生成候选池，但 DB `scenario_tag.type` 只作为候选标签，不等同于最终 official nuPlan scenario builder 会解析到的 `actual_scenario_type`。
+- 开启 `--verify_actual_scenario_type` 后，只有 verified actual type 属于 `changing_lane,changing_lane_to_left,changing_lane_to_right` 的候选会进入 strict lane-change selected set。
+- 如果没有开启 `--allow_fallback_lateral_types`，`high_lateral_acceleration` 不会补位；如果开启 fallback，则 fallback rows 会单独标记 `selected_as_fallback_lateral=true`，不会混入 strict lane-change 统计。
+- `lane_change_candidate_metadata.csv` 与 `stage7c_candidate_context/merged_metadata.csv` 的 `scenario_token` 均使用可传给 `scenario_filter.scenario_tokens=[...]` 的 nuPlan token（即 DB `scenario_tag.lidar_pc_token`），`scene_token` 为 Stage7C 兼容字段并写成同一 token，原始 DB scene token 写入 `db_scene_token`。
+- `stage7c_candidate_context/merged_metadata.csv` 只包含 final selected rows，不包含未通过 actual-type verification 的候选池行。
+
+## 3. 通过标准
+
+- `lane_change_candidate_summary.json` 包含 `selected_actual_scenario_type_counts`、`actual_type_verified_rows`、`strict_changing_lane_actual_type_rows`、`selected_strict_changing_lane_rows`、`selected_fallback_lateral_rows`、`insufficient_strict_changing_lane_warning` 等字段。
+- 未开启 fallback 时，Stage7C context 中所有 selected rows 的 `actual_scenario_type` 都必须属于 `changing_lane / changing_lane_to_left / changing_lane_to_right`。
+- `log_name` 非空，`scenario_token` 不重复，`scene_token == scenario_token`，`db_scene_token` 保留原始 DB scene token。
+- Stage7C smoke 的 expected scenario-planner pairs = `2 × 2 = 4`，`warnings.json.validation.pass == true`，`scenario_alignment.passed == true`，且 official command successes 为 4。
