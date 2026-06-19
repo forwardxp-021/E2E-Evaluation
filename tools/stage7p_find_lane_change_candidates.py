@@ -9,7 +9,7 @@ import json
 import math
 import sqlite3
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
 PREFERRED_SCENARIO_TYPE_TERMS = [
     "changing_lane_to_left",
@@ -68,17 +68,26 @@ TEXT_COLUMNS = [
 ]
 
 DB_OUTPUT_FIELDS = [
-    "db_file",
     "log_name",
-    "scenario_type",
-    "scenario_tag_token",
     "scenario_token",
-    "lidar_pc_token",
     "scene_token",
     "db_scene_token",
-    "ego_pose_token",
-    "source",
+    "scenario_type_db_tag",
+    "actual_scenario_type",
+    "actual_type_verified",
+    "actual_type_verification_method",
+    "actual_type_verification_error",
+    "candidate_source",
+    "candidate_rank",
     "candidate_score",
+    "selected_as_strict_changing_lane",
+    "selected_as_fallback_lateral",
+    "db_file",
+    "scenario_tag_token",
+    "lidar_pc_token",
+    "ego_pose_token",
+    "scenario_type",
+    "source",
 ]
 
 KINEMATIC_OUTPUT_FIELDS = [
@@ -431,6 +440,13 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
                     "db_file": str(db_path),
                     "log_name": default_log_name,
                     "scenario_type": scenario_type,
+                    "scenario_type_db_tag": scenario_type,
+                    "actual_scenario_type": "",
+                    "actual_type_verified": "false",
+                    "actual_type_verification_method": "",
+                    "actual_type_verification_error": "",
+                    "selected_as_strict_changing_lane": "false",
+                    "selected_as_fallback_lateral": "false",
                     "scenario_tag_token": token_to_str(row["scenario_tag_token"]),
                     "scenario_token": lidar_pc_token,
                     "lidar_pc_token": lidar_pc_token,
@@ -569,6 +585,75 @@ def run_kinematic_scan(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]], 
     return selected, summary
 
 
+
+def parse_csv_set(value: str) -> Set[str]:
+    return {item.strip().lower() for item in str(value or "").split(",") if item.strip()}
+
+
+def _sqlite_table_columns(conn: sqlite3.Connection, table: str) -> List[str]:
+    try:
+        return [str(r["name"]) for r in conn.execute(f'PRAGMA table_info("{table}")').fetchall()]
+    except sqlite3.Error:
+        return []
+
+
+def lookup_actual_scenario_type_sqlite(row: Dict[str, Any]) -> Tuple[str, bool, str, str]:
+    """Lightweight exact-token actual-type lookup for tests and DB sidecars.
+
+    This does not treat scenario_tag.type as verified actual type.  It only accepts
+    explicit actual-type tables/columns keyed by the Stage7C scenario token
+    (scenario_tag.lidar_pc_token).
+    """
+    db_file = str(row.get("db_file", "") or "")
+    scenario_token = str(row.get("scenario_token", "") or "")
+    if not db_file or not scenario_token:
+        return "", False, "sqlite_exact_token_lookup", "missing db_file or scenario_token"
+    try:
+        conn = sqlite3.connect(db_file)
+        conn.row_factory = sqlite3.Row
+    except sqlite3.Error as exc:
+        return "", False, "sqlite_exact_token_lookup", f"could not open DB: {exc}"
+    candidates = [
+        ("scenario_actual_type", ["scenario_token", "lidar_pc_token", "token"], ["actual_scenario_type", "scenario_type", "type"]),
+        ("scenario", ["scenario_token", "lidar_pc_token", "token"], ["actual_scenario_type", "scenario_type"]),
+    ]
+    with conn:
+        for table, token_cols, type_cols in candidates:
+            cols = _sqlite_table_columns(conn, table)
+            if not cols:
+                continue
+            token_col = _find_col(cols, token_cols)
+            type_col = _find_col(cols, type_cols)
+            if not token_col or not type_col:
+                continue
+            try:
+                found = conn.execute(f'SELECT "{type_col}" AS actual_type FROM "{table}" WHERE "{token_col}" = ? LIMIT 1', (scenario_token,)).fetchone()
+            except sqlite3.Error as exc:
+                return "", False, "sqlite_exact_token_lookup", f"lookup failed in {table}: {exc}"
+            if found:
+                actual = token_to_str(found["actual_type"]).strip()
+                return actual, bool(actual), f"sqlite_exact_token_lookup:{table}.{type_col}", "" if actual else "empty actual scenario type"
+    return "", False, "sqlite_exact_token_lookup", "no explicit actual scenario type table/column found for exact scenario_token"
+
+
+def verify_actual_scenario_types(candidates: List[Dict[str, Any]]) -> None:
+    for row in candidates:
+        actual = str(row.get("actual_scenario_type", "") or "").strip()
+        if actual:
+            row["actual_type_verified"] = "true"
+            row["actual_type_verification_method"] = row.get("actual_type_verification_method") or "input_metadata"
+            row["actual_type_verification_error"] = ""
+            continue
+        actual, verified, method, error = lookup_actual_scenario_type_sqlite(row)
+        row["actual_scenario_type"] = actual
+        row["actual_type_verified"] = "true" if verified else "false"
+        row["actual_type_verification_method"] = method
+        row["actual_type_verification_error"] = error
+
+
+def actual_type_allowed(row: Dict[str, Any], allowlist: Set[str]) -> bool:
+    return str(row.get("actual_type_verified", "") or "").lower() == "true" and normalize_scenario_type(row.get("actual_scenario_type")) in allowlist
+
 def write_csv(path: Path, rows: List[Dict[str, Any]], fieldnames: List[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
@@ -596,12 +681,24 @@ def is_fallback_exact_row(row: Dict[str, Any]) -> bool:
     return normalize_scenario_type(row.get("scenario_type")) in FALLBACK_EXACT_CHANGING_LANE_TYPES
 
 
-def select_top_candidates(candidates: List[Dict[str, Any]], top_k: int, max_per_log: int, prefer_exact_changing_lane: bool) -> List[Dict[str, Any]]:
+def select_top_candidates(
+    candidates: List[Dict[str, Any]],
+    top_k: int,
+    max_per_log: int,
+    prefer_exact_changing_lane: bool,
+    *,
+    verify_actual_scenario_type: bool = False,
+    actual_type_allowlist: Optional[Set[str]] = None,
+    allow_fallback_lateral_types: bool = False,
+    fallback_type_allowlist: Optional[Set[str]] = None,
+) -> List[Dict[str, Any]]:
+    actual_type_allowlist = actual_type_allowlist or STRICT_CHANGING_LANE_TYPES
+    fallback_type_allowlist = fallback_type_allowlist or {"high_lateral_acceleration"}
     selected: List[Dict[str, Any]] = []
     selected_tokens = set()
     per_log_counts: Dict[str, int] = {}
 
-    def try_add(row: Dict[str, Any]) -> None:
+    def try_add(row: Dict[str, Any], *, strict: bool = False, fallback: bool = False) -> None:
         if len(selected) >= top_k:
             return
         token = str(row.get("scenario_token", "") or "")
@@ -610,11 +707,27 @@ def select_top_candidates(candidates: List[Dict[str, Any]], top_k: int, max_per_
         log_name = str(row.get("log_name", "") or "")
         if max_per_log > 0 and log_name and per_log_counts.get(log_name, 0) >= max_per_log:
             return
+        row["selected_as_strict_changing_lane"] = "true" if strict else "false"
+        row["selected_as_fallback_lateral"] = "true" if fallback else "false"
         selected.append(row)
         if token:
             selected_tokens.add(token)
         if log_name:
             per_log_counts[log_name] = per_log_counts.get(log_name, 0) + 1
+
+    if verify_actual_scenario_type:
+        for row in candidates:
+            if actual_type_allowed(row, actual_type_allowlist):
+                try_add(row, strict=True)
+                if len(selected) >= top_k:
+                    break
+        if allow_fallback_lateral_types and len(selected) < top_k:
+            for row in candidates:
+                if actual_type_allowed(row, fallback_type_allowlist):
+                    try_add(row, fallback=True)
+                    if len(selected) >= top_k:
+                        break
+        return selected
 
     groups = [candidates]
     if prefer_exact_changing_lane:
@@ -624,19 +737,24 @@ def select_top_candidates(candidates: List[Dict[str, Any]], top_k: int, max_per_
         groups = [strict, fallback, other]
     for group in groups:
         for row in group:
-            try_add(row)
+            try_add(row, strict=is_strict_changing_lane_row(row), fallback=(not is_strict_changing_lane_row(row) and is_fallback_exact_row(row)))
             if len(selected) >= top_k:
                 break
         if len(selected) >= top_k:
             break
     return selected
 
-
 def write_stage7c_context(out: Path, top: List[Dict[str, Any]], original_fieldnames: Sequence[str]) -> str:
     context_dir = out / "stage7c_candidate_context"
     context_dir.mkdir(parents=True, exist_ok=True)
-    required = ["log_name", "scenario_token", "scenario_type", "source", "db_file"]
-    fieldnames = list(dict.fromkeys([*required, *original_fieldnames, "lidar_pc_token", "scene_token", "db_scene_token", "ego_pose_token", "scenario_tag_token"]))
+    required = [
+        "log_name", "scenario_token", "scene_token", "db_scene_token", "scenario_type_db_tag",
+        "actual_scenario_type", "actual_type_verified", "actual_type_verification_method",
+        "actual_type_verification_error", "candidate_source", "candidate_rank", "candidate_score",
+        "selected_as_strict_changing_lane", "selected_as_fallback_lateral", "db_file",
+        "scenario_tag_token", "lidar_pc_token", "ego_pose_token", "scenario_type", "source",
+    ]
+    fieldnames = list(dict.fromkeys([*required, *original_fieldnames]))
     rows = []
     seen_tokens = set()
     for row in top:
@@ -672,6 +790,9 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- unique_scenario_token_rows: `{summary.get('unique_scenario_token_rows', 0)}`",
         f"- duplicate_scenario_token_count_removed: `{summary.get('duplicate_scenario_token_count_removed', 0)}`",
         f"- selected_scenario_type_counts: `{summary.get('selected_scenario_type_counts', {})}`",
+        f"- selected_actual_scenario_type_counts: `{summary.get('selected_actual_scenario_type_counts', {})}`",
+        f"- selected_fallback_lateral_rows: `{summary.get('selected_fallback_lateral_rows', 0)}`",
+        f"- insufficient_strict_changing_lane_warning: `{summary.get('insufficient_strict_changing_lane_warning', '')}`",
         f"- selected_log_counts: `{summary.get('selected_log_counts', {})}`",
         f"- strict_changing_lane_candidate_rows: `{summary.get('strict_changing_lane_candidate_rows', 0)}`",
         f"- selected_strict_changing_lane_rows: `{summary.get('selected_strict_changing_lane_rows', 0)}`",
@@ -687,6 +808,9 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         "- If Stage7 behavior events are available, rows with `task_lane_change=1` receive an additional score boost.",
         "- Optional kinematic scan computes expert-ego lateral displacement, heading change, yaw-rate proxy, and `candidate_score = 2.0 * abs_lateral_displacement + 5.0 * heading_change_abs + 2.0 * yaw_rate_proxy + text_match_bonus`.",
         "- Optional DB scenario-tag scan reads nuPlan mini DB `scenario_tag.type` directly and joins `lidar_pc` / `log` for Stage7C-friendly context.",
+        "- DB `scenario_tag.type` is only a candidate label; it is not the final `actual_scenario_type` that official nuPlan scenario filtering/building may resolve.",
+        "- With `--verify_actual_scenario_type`, only verified actual types in `changing_lane` / `changing_lane_to_left` / `changing_lane_to_right` enter the strict lane-change set.",
+        "- Verified fallback lateral rows are reported separately with `selected_as_fallback_lateral=true`; they are never counted as strict lane-change rows.",
         "",
         "## Candidate source counts",
         f"- text_match_candidates: `{summary['text_match_candidates']}`",
@@ -744,12 +868,66 @@ def run(args: argparse.Namespace) -> int:
     text_event_candidates = build_text_event_candidates(metadata, fieldnames, event_map)
     db_scenario_tag_candidates, db_scenario_tag_summary = scan_db_scenario_tags(args)
     kinematic_candidates, kinematic_summary = run_kinematic_scan(args)
-    candidates = text_event_candidates + db_scenario_tag_candidates + kinematic_candidates
-    candidates.sort(key=lambda r: (-float(r.get("candidate_score") or r.get("match_score") or 0), str(r.get("scenario_id", "")), str(r.get("metadata_index", ""))))
+    raw_candidates = text_event_candidates + db_scenario_tag_candidates + kinematic_candidates
+    for row in raw_candidates:
+        row.setdefault("scenario_type_db_tag", row.get("scenario_type", ""))
+        row.setdefault("actual_scenario_type", "")
+        row.setdefault("actual_type_verified", "false")
+        row.setdefault("actual_type_verification_method", "")
+        row.setdefault("actual_type_verification_error", "")
+        row.setdefault("selected_as_strict_changing_lane", "false")
+        row.setdefault("selected_as_fallback_lateral", "false")
+        row.setdefault("candidate_source", row.get("source", ""))
+        row.setdefault("source", row.get("candidate_source", ""))
+        if not str(row.get("log_name", "") or "").strip():
+            row["log_name"] = str(row.get("db_file", "") or row.get("scenario_id", "unknown_log")).strip() or "unknown_log"
+    raw_candidate_rows = len(raw_candidates)
+    best_by_token: Dict[str, Dict[str, Any]] = {}
+    duplicate_all = 0
+    for row in raw_candidates:
+        token = str(row.get("scenario_token", "") or row.get("lidar_pc_token", "") or row.get("scenario_id", "") or "")
+        if token:
+            row["scenario_token"] = token
+            row.setdefault("lidar_pc_token", token)
+            current = best_by_token.get(token)
+            row_pri = min((rank for term, rank in DB_SCENARIO_TYPE_PRIORITY.items() if term in normalize_scenario_type(row.get("scenario_type"))), default=99)
+            if current is None:
+                best_by_token[token] = row
+            else:
+                duplicate_all += 1
+                cur_pri = min((rank for term, rank in DB_SCENARIO_TYPE_PRIORITY.items() if term in normalize_scenario_type(current.get("scenario_type"))), default=99)
+                if (row_pri, -float(row.get("candidate_score") or row.get("match_score") or 0)) < (cur_pri, -float(current.get("candidate_score") or current.get("match_score") or 0)):
+                    best_by_token[token] = row
+        else:
+            best_by_token[f"__row_{len(best_by_token)}"] = row
+    candidates = list(best_by_token.values())
+    def candidate_sort_key(r: Dict[str, Any]) -> Tuple[int, float, str, str]:
+        source = str(r.get("candidate_source", "") or r.get("source", ""))
+        if source == "db_scenario_tag" or bool(getattr(args, "prefer_exact_changing_lane", False)) or bool(getattr(args, "verify_actual_scenario_type", False)):
+            priority = min((rank for term, rank in DB_SCENARIO_TYPE_PRIORITY.items() if term in normalize_scenario_type(r.get("scenario_type"))), default=99)
+        else:
+            priority = 99
+        return (priority, -float(r.get("candidate_score") or r.get("match_score") or 0), str(r.get("log_name", "")), str(r.get("scenario_token", "")))
+
+    candidates.sort(key=candidate_sort_key)
+    if bool(getattr(args, "verify_actual_scenario_type", False)):
+        verify_actual_scenario_types(candidates)
     for rank, row in enumerate(candidates, 1):
         row["candidate_rank"] = rank
     max_per_log = int(getattr(args, "max_per_log", 2) or 0)
-    top = select_top_candidates(candidates, int(args.top_k), max_per_log, bool(getattr(args, "prefer_exact_changing_lane", False)))
+    selected_k = int(getattr(args, "verified_top_k", None) or args.top_k)
+    actual_allowlist = parse_csv_set(getattr(args, "actual_type_allowlist", "")) or STRICT_CHANGING_LANE_TYPES
+    fallback_allowlist = parse_csv_set(getattr(args, "fallback_type_allowlist", "")) or {"high_lateral_acceleration"}
+    top = select_top_candidates(
+        candidates,
+        selected_k,
+        max_per_log,
+        bool(getattr(args, "prefer_exact_changing_lane", False)),
+        verify_actual_scenario_type=bool(getattr(args, "verify_actual_scenario_type", False)),
+        actual_type_allowlist=actual_allowlist,
+        allow_fallback_lateral_types=bool(getattr(args, "allow_fallback_lateral_types", False)),
+        fallback_type_allowlist=fallback_allowlist,
+    )
     output_fields = list(dict.fromkeys([*DB_OUTPUT_FIELDS, *KINEMATIC_OUTPUT_FIELDS, *fieldnames]))
     write_csv(out / "lane_change_candidate_metadata.csv", top, output_fields)
     text_match_count = sum(1 for r in text_event_candidates if int(r.get("metadata_match_score") or 0) > 0)
@@ -764,17 +942,27 @@ def run(args: argparse.Namespace) -> int:
         "context_dir": str(context_dir),
         "metadata_path": str(metadata_path),
         "metadata_rows": int(len(metadata)),
+        "raw_candidate_rows": int(raw_candidate_rows),
         "candidate_rows": int(len(candidates)),
         "metadata_text_candidate_rows": int(text_match_count),
         "behavior_event_candidate_rows": int(behavior_count),
         "db_scenario_tag_candidate_rows": int(len(db_scenario_tag_candidates)),
         "final_candidate_rows": int(len(candidates)),
+        "unique_scenario_token_rows": int(len(candidates)),
+        "actual_type_verified_rows": int(sum(1 for r in candidates if str(r.get("actual_type_verified", "")).lower() == "true")),
+        "actual_type_verification_failed_rows": int(sum(1 for r in candidates if bool(getattr(args, "verify_actual_scenario_type", False)) and str(r.get("actual_type_verified", "")).lower() != "true")),
+        "strict_changing_lane_actual_type_rows": int(sum(1 for r in candidates if actual_type_allowed(r, actual_allowlist))),
+        "fallback_lateral_actual_type_rows": int(sum(1 for r in candidates if actual_type_allowed(r, fallback_allowlist))),
+        "final_selected_rows": int(len(top)),
+        "selected_fallback_lateral_rows": int(sum(1 for r in top if str(r.get("selected_as_fallback_lateral", "")).lower() == "true")),
         "text_match_candidates": int(text_match_count),
         "behavior_event_candidates": int(behavior_count),
         "db_scenario_tag_candidates": int(len(db_scenario_tag_candidates)),
         "kinematic_candidates": int(len(kinematic_candidates)),
-        "final_selected_candidates": int(len(candidates)),
+        "final_selected_candidates": int(len(top)),
         "scenario_type_counts": count_by_field(candidates, "scenario_type"),
+        "selected_scenario_type_db_tag_counts": count_by_field(top, "scenario_type_db_tag"),
+        "selected_actual_scenario_type_counts": count_by_field(top, "actual_scenario_type"),
         "selected_scenario_type_counts": count_by_field(top, "scenario_type"),
         "top_k_requested": int(args.top_k),
         "top_k_written": int(len(top)),
@@ -782,13 +970,13 @@ def run(args: argparse.Namespace) -> int:
         "behavior_events": event_summary,
         "db_scenario_tag_scan": db_scenario_tag_summary,
         "raw_db_scenario_tag_rows": int(db_scenario_tag_summary.get("raw_db_scenario_tag_rows", 0)),
-        "unique_scenario_token_rows": int(db_scenario_tag_summary.get("unique_scenario_token_rows", 0)),
         "selected_rows": int(db_scenario_tag_summary.get("selected_rows", 0)),
         "selected_log_counts": count_by_field(top, "log_name"),
         "strict_changing_lane_candidate_rows": int(sum(1 for r in candidates if is_strict_changing_lane_row(r))),
-        "selected_strict_changing_lane_rows": int(sum(1 for r in top if is_strict_changing_lane_row(r))),
+        "selected_strict_changing_lane_rows": int(sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "")).lower() == "true")),
         "prefer_exact_changing_lane": bool(getattr(args, "prefer_exact_changing_lane", False)),
-        "duplicate_scenario_token_count_removed": int(db_scenario_tag_summary.get("duplicate_scenario_token_count_removed", 0)),
+        "duplicate_scenario_token_count_removed": int(duplicate_all + int(db_scenario_tag_summary.get("duplicate_scenario_token_count_removed", 0))),
+        "insufficient_strict_changing_lane_warning": ("" if (not bool(getattr(args, "verify_actual_scenario_type", False)) or sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "")).lower() == "true") >= selected_k) else f"strict changing-lane actual-type rows selected {sum(1 for r in top if str(r.get('selected_as_strict_changing_lane', '')).lower() == 'true')} < requested {selected_k}"),
         "kinematic_scan": kinematic_summary,
         "warnings": warnings,
         "outputs": {
@@ -822,6 +1010,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min_lateral_displacement", type=float, default=2.0, help="Minimum absolute lateral displacement in the start ego frame for kinematic candidate selection.")
     parser.add_argument("--min_heading_change", type=float, default=0.25, help="Minimum absolute heading change in radians for kinematic candidate selection.")
     parser.add_argument("--min_yaw_rate_proxy", type=float, default=0.05, help="Minimum heading-change-over-duration proxy for kinematic candidate selection.")
+    parser.add_argument("--verify_actual_scenario_type", action="store_true", help="Verify exact-token actual scenario_type before selecting strict lane-change rows.")
+    parser.add_argument("--actual_type_allowlist", default="changing_lane,changing_lane_to_left,changing_lane_to_right", help="Comma-separated verified actual scenario types allowed in the strict selected set.")
+    parser.add_argument("--allow_fallback_lateral_types", action="store_true", help="Allow verified fallback lateral actual types to fill remaining slots after strict lane-change rows.")
+    parser.add_argument("--fallback_type_allowlist", default="high_lateral_acceleration", help="Comma-separated verified actual scenario types allowed only as fallback rows.")
+    parser.add_argument("--verified_top_k", type=int, default=None, help="Optional selected-row cap for verified mode; defaults to --top_k.")
     return parser.parse_args()
 
 

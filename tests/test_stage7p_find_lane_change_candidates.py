@@ -29,6 +29,11 @@ def _base_args(ctx: Path, out: Path, **kwargs):
         min_lateral_displacement=2.0,
         min_heading_change=0.25,
         min_yaw_rate_proxy=0.05,
+        verify_actual_scenario_type=False,
+        actual_type_allowlist="changing_lane,changing_lane_to_left,changing_lane_to_right",
+        allow_fallback_lateral_types=False,
+        fallback_type_allowlist="high_lateral_acceleration",
+        verified_top_k=None,
     )
     values.update(kwargs)
     return SimpleNamespace(**values)
@@ -331,3 +336,98 @@ def test_prefer_exact_changing_lane_prioritizes_strict_then_fallback_and_respect
     assert summary["strict_changing_lane_candidate_rows"] == 2
     assert summary["selected_strict_changing_lane_rows"] == 2
     assert summary["selected_scenario_type_counts"] == {"changing_lane": 1, "changing_lane_to_left": 1}
+
+
+def _make_actual_type_db(path: Path, rows):
+    conn = sqlite3.connect(path)
+    with conn:
+        conn.execute("CREATE TABLE scenario_tag(token TEXT, lidar_pc_token TEXT, type TEXT, agent_track_token TEXT)")
+        conn.execute("CREATE TABLE lidar_pc(token TEXT, scene_token TEXT, ego_pose_token TEXT)")
+        conn.execute("CREATE TABLE log(logfile TEXT, token TEXT)")
+        conn.execute("CREATE TABLE scenario_actual_type(scenario_token TEXT, actual_scenario_type TEXT)")
+        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", ("actual_log", "log"))
+        for idx, (lidar, db_type, actual_type) in enumerate(rows):
+            conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES (?, ?, ?)", (lidar, f"scene_{idx}", f"ego_{idx}"))
+            conn.execute("INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)", (f"tag_{idx}", lidar, db_type, "agent"))
+            conn.execute("INSERT INTO scenario_actual_type(scenario_token, actual_scenario_type) VALUES (?, ?)", (lidar, actual_type))
+
+
+def test_verified_actual_type_rejects_db_tag_changing_lane_pickup_and_accepts_left(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    out = tmp_path / "out"; db = tmp_path / "mini.db"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_actual_type_db(db, [("lidar_bad", "changing_lane", "traversing_pickup_dropoff"), ("lidar_good", "changing_lane_to_left", "changing_lane_to_left")])
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, write_stage7c_context_dir=True, top_k=2, max_per_log=0))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in rows] == ["lidar_good"]
+    assert rows[0]["selected_as_strict_changing_lane"] == "true"
+    assert rows[0]["actual_scenario_type"] == "changing_lane_to_left"
+    assert rows[0]["log_name"]
+    stage7c_rows = list(csv.DictReader((out / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in stage7c_rows] == ["lidar_good"]
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["selected_actual_scenario_type_counts"] == {"changing_lane_to_left": 1}
+    assert summary["strict_changing_lane_actual_type_rows"] == 1
+
+
+def test_verified_actual_type_fallback_requires_flag_and_marks_rows(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_actual_type_db(db, [("lidar_strict", "changing_lane", "changing_lane"), ("lidar_fallback", "high_lateral_acceleration", "high_lateral_acceleration")])
+
+    out_no = tmp_path / "out_no"
+    rc = finder.run(_base_args(ctx, out_no, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, top_k=2, max_per_log=0))
+    assert rc == 0
+    rows_no = list(csv.DictReader((out_no / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in rows_no] == ["lidar_strict"]
+
+    out_yes = tmp_path / "out_yes"
+    rc = finder.run(_base_args(ctx, out_yes, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, allow_fallback_lateral_types=True, top_k=2, max_per_log=0, write_stage7c_context_dir=True))
+    assert rc == 0
+    rows_yes = list(csv.DictReader((out_yes / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in rows_yes] == ["lidar_strict", "lidar_fallback"]
+    assert rows_yes[1]["selected_as_fallback_lateral"] == "true"
+    stage7c_rows = list(csv.DictReader((out_yes / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    assert len(stage7c_rows) == 2
+
+
+def test_verified_mode_deduplicates_scenario_token_before_selection(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    conn = sqlite3.connect(db)
+    with conn:
+        conn.execute("CREATE TABLE scenario_tag(token TEXT, lidar_pc_token TEXT, type TEXT, agent_track_token TEXT)")
+        conn.execute("CREATE TABLE lidar_pc(token TEXT, scene_token TEXT, ego_pose_token TEXT)")
+        conn.execute("CREATE TABLE log(logfile TEXT, token TEXT)")
+        conn.execute("CREATE TABLE scenario_actual_type(scenario_token TEXT, actual_scenario_type TEXT)")
+        conn.execute("INSERT INTO log(logfile, token) VALUES ('dedupe_log', 'log')")
+        conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES ('same_lidar', 'scene', 'ego')")
+        conn.execute("INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES ('tag_a', 'same_lidar', 'changing_lane', 'agent')")
+        conn.execute("INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES ('tag_b', 'same_lidar', 'changing_lane_to_right', 'agent')")
+        conn.execute("INSERT INTO scenario_actual_type(scenario_token, actual_scenario_type) VALUES ('same_lidar', 'changing_lane_to_right')")
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, top_k=5, max_per_log=0))
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert len(rows) == 1
+    assert rows[0]["scenario_token"] == "same_lidar"
+    assert rows[0]["scenario_type_db_tag"] == "changing_lane_to_right"
+
+
+def test_actual_type_parser_arguments_exist():
+    old_argv = sys.argv
+    try:
+        sys.argv = ["stage7p_find_lane_change_candidates.py", "--context_dir", "ctx", "--output_dir", "out", "--verify_actual_scenario_type", "--actual_type_allowlist", "changing_lane", "--allow_fallback_lateral_types", "--fallback_type_allowlist", "high_lateral_acceleration", "--verified_top_k", "3"]
+        parsed_args = finder.parse_args()
+    finally:
+        sys.argv = old_argv
+    assert parsed_args.verify_actual_scenario_type is True
+    assert parsed_args.actual_type_allowlist == "changing_lane"
+    assert parsed_args.allow_fallback_lateral_types is True
+    assert parsed_args.fallback_type_allowlist == "high_lateral_acceleration"
+    assert parsed_args.verified_top_k == 3
