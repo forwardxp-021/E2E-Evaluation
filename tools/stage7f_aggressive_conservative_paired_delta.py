@@ -118,7 +118,9 @@ def _candidate_profile_paths(embedding_dir, context_dir, stage7f_dir):
     for raw in [embedding_dir, context_dir, stage7f_dir]:
         if raw:
             p = Path(raw)
-            roots.extend([p, *p.parents[:3]])
+            # Python 3.9 pathlib parents does not support slice access;
+            # materialize before limiting upward profile search roots.
+            roots.extend([p, *list(p.parents)[:3]])
     seen = set()
     for root in roots:
         for name in ["simulation_schema.json", "simulated_planner_metadata.csv"]:
