@@ -45,7 +45,7 @@ SCENARIO_KEYS = ["db_name", "scene_token", "scenario_id", "sample_id", "start_fr
 SCENARIO_INDEX_COLUMNS = ["scenario_index", "planner_id", "planner_name", "status", "num_timesteps", "warning_count", "db_name", "log_name", "scene_token", "scenario_id", "scenario_token", "sample_id", "map_name", "location", "scenario_type"]
 ALIGNMENT_FIELDS = [
     "scenario_index", "planner_name", "target_db_name", "target_log_name", "target_scene_token",
-    "target_scenario_id", "actual_planner_class", "actual_scenario_type", "actual_log_name",
+    "target_nuplan_scenario_token", "target_scenario_id", "actual_planner_class", "actual_scenario_type", "actual_log_name",
     "actual_scene_token", "actual_nuplan_scenario_token", "actual_msgpack_path", "runner_report_log_name", "runner_report_scenario_name",
     "runner_report_planner_name", "runner_report_succeeded", "runner_report_error_message",
     "db_name_match", "target_log_name_match", "stage7b_scene_token_match",
@@ -403,12 +403,15 @@ def normalize_target_scenario(scenario: Dict[str, Any]) -> Dict[str, str]:
     if "|" in scenario_id:
         scenario_id_db_part, scenario_id_token_part = scenario_id.split("|", 1)
     target_db_name = str(scenario.get("db_name", "") or scenario_id_db_part or "").strip()
+    explicit_log_name = str(scenario.get("log_name", "") or "").strip()
     target_scene_token = str(scenario.get("scene_token", "") or scenario_id_token_part or "").strip()
+    target_nuplan_scenario_token = str(_first_value(scenario, ["scenario_token", "nuplan_scenario_token", "actual_nuplan_token", "actual_nuplan_scenario_token"], "") or "").strip()
     return {
         "scenario_index": str(scenario.get("scenario_index", "")),
         "target_db_name": target_db_name,
-        "target_log_name": _strip_db_suffix(target_db_name),
+        "target_log_name": explicit_log_name or _strip_db_suffix(target_db_name),
         "target_scene_token": target_scene_token,
+        "target_nuplan_scenario_token": target_nuplan_scenario_token,
         "target_scenario_id": scenario_id,
         "scenario_id_db_part": scenario_id_db_part,
         "scenario_id_log_part": _strip_db_suffix(scenario_id_db_part),
@@ -523,13 +526,14 @@ def build_alignment_record(scenario: Dict[str, str], planner_name: str, run_dir:
     db_name_match = target_log_name_match
     stage7b_scene_token_match = bool(target["target_scene_token"] and actual_nuplan_scenario_token and target["target_scene_token"] == actual_nuplan_scenario_token)
     strict_stage7b_scene_token_match = stage7b_scene_token_match
+    strict_nuplan_token_match = bool(target["target_nuplan_scenario_token"] and actual_nuplan_scenario_token and target["target_nuplan_scenario_token"] == actual_nuplan_scenario_token)
     actual_nuplan_scenario_token_available = bool(actual_nuplan_scenario_token)
     exact_nuplan_token_rerun_supported = bool(target_log_name_match and actual_nuplan_scenario_token_available)
     scenario_id_log_match = bool(target["scenario_id_log_part"] and actual_log_name and target["scenario_id_log_part"] == actual_log_name)
     scenario_id_token_match = bool(target["scenario_id_token_part"] and actual_nuplan_scenario_token and target["scenario_id_token_part"] == actual_nuplan_scenario_token)
     scenario_id_match = scenario_id_log_match and scenario_id_token_match if (target["scenario_id_log_part"] or target["scenario_id_token_part"]) else False
     same_log_alignment_passed = target_log_name_match
-    strict_nuplan_token_alignment_passed = target_log_name_match and stage7b_scene_token_match
+    strict_nuplan_token_alignment_passed = strict_nuplan_token_match if target["target_nuplan_scenario_token"] else (target_log_name_match and stage7b_scene_token_match)
     aligned = same_log_alignment_passed
     if not command_succeeded:
         status = "NOT_RUN"
@@ -552,6 +556,7 @@ def build_alignment_record(scenario: Dict[str, str], planner_name: str, run_dir:
         "target_db_name": target["target_db_name"],
         "target_log_name": target["target_log_name"],
         "target_scene_token": target["target_scene_token"],
+        "target_nuplan_scenario_token": target["target_nuplan_scenario_token"],
         "target_scenario_id": target["target_scenario_id"],
         "actual_planner_class": actual.get("actual_planner_class", ""),
         "actual_scenario_type": actual.get("actual_scenario_type", ""),
@@ -622,7 +627,8 @@ def write_alignment_outputs(out_dir: Path, metadata: List[Dict[str, str]], recor
 ## target scenario
 - db_name: `{first.get('target_db_name', '')}`
 - target_log_name: `{first.get('target_log_name', '')}`
-- scene_token: `{first.get('target_scene_token', '')}`
+- target_scene_token: `{first.get('target_scene_token', '')}`
+- target_nuplan_scenario_token: `{first.get('target_nuplan_scenario_token', '')}`
 - scenario_id: `{first.get('target_scenario_id', '')}`
 
 ## actual simulated scenario

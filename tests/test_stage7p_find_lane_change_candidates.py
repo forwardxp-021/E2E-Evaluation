@@ -20,6 +20,7 @@ def _base_args(ctx: Path, out: Path, **kwargs):
         scan_db_scenario_tags=False,
         max_db_files=0,
         max_candidates_per_type=0,
+        max_per_log=2,
         write_stage7c_context_dir=False,
         nuplan_map_root="",
         max_scenarios_scan=50,
@@ -91,7 +92,7 @@ def test_missing_behavior_event_bins_does_not_crash_and_reports_metadata_only_ze
     assert "not that PDM lacks lane-change capability" in report
 
 
-def _make_mock_nuplan_db(path: Path, blob_tokens: bool = False) -> None:
+def _make_mock_nuplan_db(path: Path, blob_tokens: bool = False, duplicate_types: bool = False, log_name: str = "mock_log") -> None:
     conn = sqlite3.connect(path)
     with conn:
         conn.execute("CREATE TABLE scenario_tag(token BLOB, lidar_pc_token BLOB, type TEXT, agent_track_token BLOB)")
@@ -101,12 +102,17 @@ def _make_mock_nuplan_db(path: Path, blob_tokens: bool = False) -> None:
         lidar_token = b"\x03\x04lidar" if blob_tokens else "lidar_text"
         scene_token = b"\x05scene" if blob_tokens else "scene_text"
         ego_pose_token = b"\x06ego" if blob_tokens else "ego_text"
-        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", ("mock_log", b"log"))
+        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", (log_name, b"log"))
         conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES (?, ?, ?)", (lidar_token, scene_token, ego_pose_token))
         conn.execute(
             "INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)",
             (st_token, lidar_token, "changing_lane", b"agent"),
         )
+        if duplicate_types:
+            conn.execute(
+                "INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)",
+                ("tag_right", lidar_token, "changing_lane_to_right", b"agent"),
+            )
         conn.execute(
             "INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)",
             ("ignore_text", "missing_lidar", "following_lane", b"agent"),
@@ -142,12 +148,22 @@ def test_db_scenario_tag_scan_discovers_changing_lane_blob_and_writes_stage7c_co
     assert rows[0]["source"] == "db_scenario_tag"
     assert rows[0]["scenario_tag_token"] == b"\x01\x02tag".hex()
     assert rows[0]["lidar_pc_token"] == b"\x03\x04lidar".hex()
+    assert rows[0]["scenario_token"] == b"\x03\x04lidar".hex()
+    assert rows[0]["scene_token"] == b"\x03\x04lidar".hex()
+    assert rows[0]["db_scene_token"] == b"\x05scene".hex()
     assert rows[0]["log_name"] == "mock_log"
     stage7c_path = out / "stage7c_candidate_context" / "merged_metadata.csv"
     assert stage7c_path.is_file()
     stage7c_rows = list(csv.DictReader(stage7c_path.open(encoding="utf-8")))
     assert stage7c_rows[0]["scenario_token"] == b"\x03\x04lidar".hex()
+    assert stage7c_rows[0]["scene_token"] == b"\x03\x04lidar".hex()
+    assert stage7c_rows[0]["db_scene_token"] == b"\x05scene".hex()
+    assert stage7c_rows[0]["log_name"] == "mock_log"
     assert stage7c_rows[0]["source"] == "db_scenario_tag"
+    assert summary["raw_db_scenario_tag_rows"] == 2
+    assert summary["unique_scenario_token_rows"] == 1
+    assert summary["selected_rows"] == 1
+    assert summary["selected_log_counts"] == {"mock_log": 1}
     report = (out / "lane_change_candidate_report.md").read_text(encoding="utf-8")
     assert "metadata_text candidates: `0`" in report
     assert "db_scenario_tag candidates: `1`" in report
@@ -171,6 +187,8 @@ def test_kinematic_scan_arguments_exist():
             "2",
             "--max_candidates_per_type",
             "3",
+            "--max_per_log",
+            "2",
             "--write_stage7c_context_dir",
             "--nuplan_map_root",
             "maps",
@@ -191,6 +209,7 @@ def test_kinematic_scan_arguments_exist():
     assert parsed_args.scan_db_scenario_tags is True
     assert parsed_args.max_db_files == 2
     assert parsed_args.max_candidates_per_type == 3
+    assert parsed_args.max_per_log == 2
     assert parsed_args.write_stage7c_context_dir is True
     assert parsed_args.nuplan_map_root == "maps"
     assert parsed_args.max_scenarios_scan == 7
@@ -218,3 +237,52 @@ def test_compute_kinematic_metrics_mock_trajectory():
     assert metrics["yaw_rate_proxy"] == 0.15
     assert metrics["candidate_score"] == 2.0 * 3.5 + 5.0 * 0.3 + 2.0 * 0.15
     assert metrics["max_lateral_speed_proxy"] == 2.5
+
+
+def test_db_scenario_tag_scan_deduplicates_lidar_pc_token_and_prefers_strict_type(tmp_path: Path):
+    ctx = tmp_path / "ctx"
+    db_root = tmp_path / "dbs"
+    out = tmp_path / "out"
+    ctx.mkdir()
+    db_root.mkdir()
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_mock_nuplan_db(db_root / "mini.db", duplicate_types=True)
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db_root), scan_db_scenario_tags=True, write_stage7c_context_dir=True))
+
+    assert rc == 0
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["raw_db_scenario_tag_rows"] == 3
+    assert summary["unique_scenario_token_rows"] == 1
+    assert summary["duplicate_scenario_token_count_removed"] == 1
+    rows = list(csv.DictReader((out / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    assert len(rows) == 1
+    assert rows[0]["scenario_type"] == "changing_lane_to_right"
+    assert rows[0]["scenario_token"] == rows[0]["scene_token"]
+    assert rows[0]["db_scene_token"] == "scene_text"
+
+
+def test_db_scenario_tag_scan_max_per_log_limits_selected_rows(tmp_path: Path):
+    ctx = tmp_path / "ctx"
+    db_path = tmp_path / "mini.db"
+    out = tmp_path / "out"
+    ctx.mkdir()
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    conn = sqlite3.connect(db_path)
+    with conn:
+        conn.execute("CREATE TABLE scenario_tag(token TEXT, lidar_pc_token TEXT, type TEXT, agent_track_token TEXT)")
+        conn.execute("CREATE TABLE lidar_pc(token TEXT, scene_token TEXT, ego_pose_token TEXT)")
+        conn.execute("CREATE TABLE log(logfile TEXT, token TEXT)")
+        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", ("one_log", "log"))
+        for idx in range(3):
+            lidar = f"lidar_{idx}"
+            conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES (?, ?, ?)", (lidar, f"scene_{idx}", f"ego_{idx}"))
+            conn.execute("INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)", (f"tag_{idx}", lidar, "changing_lane_to_right", "agent"))
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db_path), scan_db_scenario_tags=True, write_stage7c_context_dir=True, max_per_log=2))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert len(rows) == 2
+    assert summary["selected_log_counts"] == {"one_log": 2}

@@ -12,13 +12,24 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 PREFERRED_SCENARIO_TYPE_TERMS = [
+    "changing_lane_to_left",
+    "changing_lane_to_right",
     "changing_lane",
     "lane_change",
     "high_lateral_acceleration",
-    "near_multiple_vehicles",
     "cut_in",
     "merge",
+    "near_multiple_vehicles",
 ]
+DB_SCENARIO_TYPE_PRIORITY = {
+    "changing_lane_to_left": 0,
+    "changing_lane_to_right": 1,
+    "changing_lane": 2,
+    "high_lateral_acceleration": 3,
+    "cut_in": 4,
+    "merge": 5,
+    "near_multiple_vehicles": 6,
+}
 GENERAL_LANE_CHANGE_TERMS = [
     "lanechange",
     "lane change",
@@ -52,6 +63,7 @@ DB_OUTPUT_FIELDS = [
     "scenario_token",
     "lidar_pc_token",
     "scene_token",
+    "db_scene_token",
     "ego_pose_token",
     "source",
     "candidate_score",
@@ -324,7 +336,18 @@ def list_db_paths(db_root: Path, max_db_files: Optional[int] = None) -> List[Pat
 
 def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     enabled = bool(getattr(args, "scan_db_scenario_tags", False))
-    summary: Dict[str, Any] = {"enabled": enabled, "candidates": 0, "scanned_dbs": 0, "warnings": []}
+    summary: Dict[str, Any] = {
+        "enabled": enabled,
+        "candidates": 0,
+        "raw_db_scenario_tag_rows": 0,
+        "unique_scenario_token_rows": 0,
+        "selected_rows": 0,
+        "selected_scenario_type_counts": {},
+        "selected_log_counts": {},
+        "duplicate_scenario_token_count_removed": 0,
+        "scanned_dbs": 0,
+        "warnings": [],
+    }
     if not enabled:
         return [], summary
     db_root_value = getattr(args, "nuplan_db_root", "") or ""
@@ -340,9 +363,10 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
     db_paths = list_db_paths(db_root, int(max_db_files) if max_db_files else None)
     max_per_type = getattr(args, "max_candidates_per_type", None)
     max_per_type = int(max_per_type) if max_per_type else 0
+    max_per_log = int(getattr(args, "max_per_log", 2) or 0)
     per_type_counts: Dict[str, int] = {}
     rows: List[Dict[str, Any]] = []
-    terms = [t.lower() for t in PREFERRED_SCENARIO_TYPE_TERMS]
+    terms = [t.lower() for t in DB_SCENARIO_TYPE_PRIORITY]
 
     for db_path in db_paths:
         summary["scanned_dbs"] += 1
@@ -355,7 +379,10 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
         with conn:
             try:
                 log_row = conn.execute("SELECT logfile FROM log LIMIT 1").fetchone()
-                default_log_name = token_to_str(log_row["logfile"]) if log_row and "logfile" in log_row.keys() else db_path.stem
+                default_log_name = token_to_str(log_row["logfile"]).strip() if log_row and "logfile" in log_row.keys() else ""
+                if not default_log_name:
+                    default_log_name = db_path.stem
+                    summary["warnings"].append(f"log.logfile missing or empty in {db_path}; using db stem as log_name fallback: {default_log_name}")
                 query = """
                     SELECT
                         st.token AS scenario_tag_token,
@@ -372,6 +399,7 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
                 summary["warnings"].append(f"Could not read scenario_tag/lidar_pc/log from {db_path}: {exc}")
                 continue
         for row in fetched:
+            summary["raw_db_scenario_tag_rows"] += 1
             scenario_type = token_to_str(row["scenario_type"])
             scenario_type_lower = scenario_type.lower()
             if not any(term in scenario_type_lower for term in terms):
@@ -379,8 +407,13 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
             if max_per_type > 0 and per_type_counts.get(scenario_type, 0) >= max_per_type:
                 continue
             per_type_counts[scenario_type] = per_type_counts.get(scenario_type, 0) + 1
-            score = 10.0 + max((len(term) for term in terms if term in scenario_type_lower), default=0) / 10.0
+            priority = min((rank for term, rank in DB_SCENARIO_TYPE_PRIORITY.items() if term in scenario_type_lower), default=99)
+            score = 1000.0 - float(priority) * 100.0 + max((len(term) for term in terms if term in scenario_type_lower), default=0) / 10.0
             lidar_pc_token = token_to_str(row["lidar_pc_token"] if row["lidar_pc_token"] is not None else row["st_lidar_pc_token"])
+            if not lidar_pc_token:
+                summary["warnings"].append(f"Skipped scenario_tag row in {db_path} with empty lidar_pc_token; scenario_type={scenario_type}")
+                continue
+            db_scene_token = token_to_str(row["scene_token"])
             rows.append(
                 {
                     "db_file": str(db_path),
@@ -389,7 +422,8 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
                     "scenario_tag_token": token_to_str(row["scenario_tag_token"]),
                     "scenario_token": lidar_pc_token,
                     "lidar_pc_token": lidar_pc_token,
-                    "scene_token": token_to_str(row["scene_token"]),
+                    "scene_token": lidar_pc_token,
+                    "db_scene_token": db_scene_token,
                     "ego_pose_token": token_to_str(row["ego_pose_token"]),
                     "source": "db_scenario_tag",
                     "candidate_source": "db_scenario_tag",
@@ -399,10 +433,32 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
                     "event_task_lane_change": 0,
                     "match_sources": "scenario_tag.type",
                     "metadata_index": "",
+                    "_db_priority": priority,
                 }
             )
-    summary["candidates"] = len(rows)
-    return rows, summary
+    best_by_token: Dict[str, Dict[str, Any]] = {}
+    for row in rows:
+        token = str(row.get("scenario_token", ""))
+        current = best_by_token.get(token)
+        if current is None or (int(row.get("_db_priority", 99)), -float(row.get("candidate_score", 0.0))) < (int(current.get("_db_priority", 99)), -float(current.get("candidate_score", 0.0))):
+            best_by_token[token] = row
+    unique_rows = sorted(best_by_token.values(), key=lambda r: (int(r.get("_db_priority", 99)), str(r.get("log_name", "")), str(r.get("scenario_token", ""))))
+    selected: List[Dict[str, Any]] = []
+    per_log_counts: Dict[str, int] = {}
+    for row in unique_rows:
+        log_name = str(row.get("log_name", "") or "")
+        if max_per_log > 0 and per_log_counts.get(log_name, 0) >= max_per_log:
+            continue
+        per_log_counts[log_name] = per_log_counts.get(log_name, 0) + 1
+        row.pop("_db_priority", None)
+        selected.append(row)
+    summary["unique_scenario_token_rows"] = len(unique_rows)
+    summary["duplicate_scenario_token_count_removed"] = max(0, len(rows) - len(unique_rows))
+    summary["selected_rows"] = len(selected)
+    summary["selected_scenario_type_counts"] = count_by_field(selected, "scenario_type")
+    summary["selected_log_counts"] = count_by_field(selected, "log_name")
+    summary["candidates"] = len(selected)
+    return selected, summary
 
 
 def scan_sqlite_kinematics(db_path: Path, max_scenarios: int, warnings: List[str]) -> List[Dict[str, Any]]:
@@ -520,7 +576,7 @@ def write_stage7c_context(out: Path, top: List[Dict[str, Any]], original_fieldna
     context_dir = out / "stage7c_candidate_context"
     context_dir.mkdir(parents=True, exist_ok=True)
     required = ["log_name", "scenario_token", "scenario_type", "source", "db_file"]
-    fieldnames = list(dict.fromkeys([*required, *original_fieldnames, "lidar_pc_token", "scene_token", "ego_pose_token", "scenario_tag_token"]))
+    fieldnames = list(dict.fromkeys([*required, *original_fieldnames, "lidar_pc_token", "scene_token", "db_scene_token", "ego_pose_token", "scenario_tag_token"]))
     rows = []
     for row in top:
         stage7c_row = {col: row.get(col, "") for col in fieldnames}
@@ -542,6 +598,10 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- behavior_event_candidates: `{summary['behavior_event_candidates']}`",
         f"- metadata_text candidates: `{summary['metadata_text_candidate_rows']}`",
         f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
+        f"- raw_db_scenario_tag_rows: `{summary.get('raw_db_scenario_tag_rows', 0)}`",
+        f"- unique_scenario_token_rows: `{summary.get('unique_scenario_token_rows', 0)}`",
+        f"- duplicate_scenario_token_count_removed: `{summary.get('duplicate_scenario_token_count_removed', 0)}`",
+        f"- selected_log_counts: `{summary.get('selected_log_counts', {})}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
         f"- candidate_rows: `{summary['candidate_rows']}`",
@@ -645,6 +705,11 @@ def run(args: argparse.Namespace) -> int:
         "preferred_scenario_type_terms": PREFERRED_SCENARIO_TYPE_TERMS,
         "behavior_events": event_summary,
         "db_scenario_tag_scan": db_scenario_tag_summary,
+        "raw_db_scenario_tag_rows": int(db_scenario_tag_summary.get("raw_db_scenario_tag_rows", 0)),
+        "unique_scenario_token_rows": int(db_scenario_tag_summary.get("unique_scenario_token_rows", 0)),
+        "selected_rows": int(db_scenario_tag_summary.get("selected_rows", 0)),
+        "selected_log_counts": db_scenario_tag_summary.get("selected_log_counts", {}),
+        "duplicate_scenario_token_count_removed": int(db_scenario_tag_summary.get("duplicate_scenario_token_count_removed", 0)),
         "kinematic_scan": kinematic_summary,
         "warnings": warnings,
         "outputs": {
@@ -669,6 +734,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--scan_db_scenario_tags", action="store_true", help="Scan nuPlan mini DB scenario_tag.type directly for lane-change/lateral candidate tags.")
     parser.add_argument("--max_db_files", type=int, default=0, help="Optional cap on the number of nuPlan .db files scanned by --scan_db_scenario_tags.")
     parser.add_argument("--max_candidates_per_type", type=int, default=0, help="Optional cap on DB scenario-tag candidates retained for each scenario_tag.type.")
+    parser.add_argument("--max_per_log", type=int, default=2, help="Maximum DB scenario-tag candidates selected per log before writing top_k outputs.")
     parser.add_argument("--write_stage7c_context_dir", action="store_true", help="Write output_dir/stage7c_candidate_context/merged_metadata.csv for Stage7C.")
     parser.add_argument("--nuplan_map_root", default="", help="nuPlan map root reserved for scenario-builder based scans; SQLite fallback does not require maps.")
     parser.add_argument("--max_scenarios_scan", type=int, default=50, help="Maximum DB-derived scenarios / pose windows to inspect during kinematic scan.")
