@@ -204,6 +204,82 @@ def test_zero_slot_switch_allows_full_derived_formula_parity():
     assert schema["stage5d_derived_formula_matched"] is True
 
 
+
+def test_stage7e_formula_status_allows_slot_switch_temporal_reset():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    status, warnings, passed = builder.stage5d_formula_validation_status(
+        stage5d_static_derived_formula_matched=True,
+        stage5d_closing_formula_matched=True,
+        stage5d_ttc_formula_matched=True,
+        stage5d_delta_xy_formula_matched=True,
+        accel_yaw_rate_matched=False,
+        slot_switch_rate_by_slot={"front": 0.25, "left_front": 0.0},
+    )
+
+    assert passed is True
+    assert status["stage5d_accel_yaw_rate_formula_nonfatal"] is True
+    assert status["stage5d_temporal_formula_status"] == "nonfatal_slot_switch_reset"
+    assert warnings[0]["type"] == "temporal_formula_nonfatal_slot_switch_reset"
+    assert "slot_id_switch_rate_by_slot" in warnings[0]
+
+
+def test_stage7e_formula_status_fails_temporal_mismatch_without_slot_switch():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    status, warnings, passed = builder.stage5d_formula_validation_status(
+        stage5d_static_derived_formula_matched=True,
+        stage5d_closing_formula_matched=True,
+        stage5d_ttc_formula_matched=True,
+        stage5d_delta_xy_formula_matched=True,
+        accel_yaw_rate_matched=False,
+        slot_switch_rate_by_slot={"front": 0.0, "left_front": 0.0},
+    )
+
+    assert passed is False
+    assert status["stage5d_accel_yaw_rate_formula_nonfatal"] is False
+    assert status["stage5d_temporal_formula_status"] == "failed"
+    assert warnings == []
+
+
+def test_stage7e_formula_status_fails_static_or_safety_formula_failure():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    for failed_field in [
+        "stage5d_static_derived_formula_matched",
+        "stage5d_closing_formula_matched",
+        "stage5d_ttc_formula_matched",
+        "stage5d_delta_xy_formula_matched",
+    ]:
+        kwargs = dict(
+            stage5d_static_derived_formula_matched=True,
+            stage5d_closing_formula_matched=True,
+            stage5d_ttc_formula_matched=True,
+            stage5d_delta_xy_formula_matched=True,
+            accel_yaw_rate_matched=False,
+            slot_switch_rate_by_slot={"front": 0.25},
+        )
+        kwargs[failed_field] = False
+        status, warnings, passed = builder.stage5d_formula_validation_status(**kwargs)
+        assert passed is False
+        assert status[failed_field] is False
+        assert status["stage5d_accel_yaw_rate_formula_nonfatal"] is False
+        assert warnings == []
+
+
+def test_stage7e_slot_sanity_low_coverage_remains_diagnostic_only():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    slot_stats = {slot: {"coverage_ratio": 0.0} for slot in core.SLOT_NAMES}
+    sanity, slot_pass, evaluated, skipped, warnings = builder.evaluate_slot_sanity(slot_stats, min_coverage=0.1)
+
+    assert slot_pass is True
+    assert evaluated == []
+    assert set(skipped) == set(core.SLOT_NAMES)
+    assert warnings
+    assert all(item["severity"] == "warning" for item in warnings)
+
+
 def test_nuplan_warnings_validation_does_not_let_core_override_conservative_parity():
     source = Path("tools/build_nuplan_5neighbor_context_dataset.py").read_text(encoding="utf-8")
     assert '"validation": {**core_validation, **validation}' in source
