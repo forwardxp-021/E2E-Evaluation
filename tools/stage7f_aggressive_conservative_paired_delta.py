@@ -11,7 +11,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from tools.stage7f_idm_diagnostic_common import idm_parameter_markdown, require_file
+from tools.stage7f_idm_diagnostic_common import require_file
 
 EGO = {"x":0,"y":1,"vx":2,"vy":3,"heading":4,"speed":5,"accel":6,"yaw_rate":7}
 FRONT = {"valid":0,"distance":5,"ttc":9,"thw":10}
@@ -51,6 +51,133 @@ def load_context_arrays(context_dir):
             feat = d/"interaction_feat_style.npy"
             return np.load(ego, mmap_mode="r"), (np.load(nei, mmap_mode="r") if nei.exists() else None), (np.load(feat, mmap_mode="r") if feat.exists() else None), d
     raise FileNotFoundError(f"Missing ego_seq.npy under {context_dir}")
+
+
+def _json_loads_maybe(value):
+    if value is None:
+        return None
+    if isinstance(value, float) and np.isnan(value):
+        return None
+    if isinstance(value, dict):
+        return value
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError:
+        return None
+    return parsed if isinstance(parsed, dict) else None
+
+
+def _planner_name_from_profile(profile):
+    for key in ["planner_name", "name", "planner", "policy_style", "planner_id"]:
+        val = profile.get(key)
+        if val is not None and str(val).strip():
+            return str(val).strip()
+    return ""
+
+
+def _parameters_from_profiles_file(path):
+    data = json.loads(path.read_text(encoding="utf-8"))
+    profiles = data if isinstance(data, list) else data.get("planner_profiles", [])
+    out = {}
+    if not isinstance(profiles, list):
+        return out
+    for profile in profiles:
+        if not isinstance(profile, dict):
+            continue
+        name = _planner_name_from_profile(profile)
+        params = profile.get("parameters_json")
+        params = _json_loads_maybe(params) or profile.get("parameters")
+        if name and isinstance(params, dict):
+            out[name] = params
+    return out
+
+
+def _parameters_from_metadata(meta, planner_col):
+    if "parameters_json" not in meta.columns:
+        return {}
+    out = {}
+    for _, row in meta.iterrows():
+        name = str(row.get(planner_col, "")).strip()
+        params = _json_loads_maybe(row.get("parameters_json"))
+        if name and params and name not in out:
+            out[name] = params
+    return out
+
+
+def _parameters_from_csv(path):
+    frame = pd.read_csv(path)
+    pcol = planner_column(frame)
+    return _parameters_from_metadata(frame, pcol)
+
+
+def _candidate_profile_paths(embedding_dir, context_dir, stage7f_dir):
+    roots = []
+    for raw in [embedding_dir, context_dir, stage7f_dir]:
+        if raw:
+            p = Path(raw)
+            roots.extend([p, *p.parents[:3]])
+    seen = set()
+    for root in roots:
+        for name in ["simulation_schema.json", "simulated_planner_metadata.csv"]:
+            path = root / name
+            if path not in seen:
+                seen.add(path)
+                yield path
+
+
+def load_planner_parameters(meta, planner_col, embedding_dir, context_dir, stage7f_dir):
+    sources = []
+    params = _parameters_from_metadata(meta, planner_col)
+    if params:
+        sources.append("metadata.csv:parameters_json")
+    for path in _candidate_profile_paths(embedding_dir, context_dir, stage7f_dir):
+        if not path.exists():
+            continue
+        try:
+            found = _parameters_from_profiles_file(path) if path.suffix == ".json" else _parameters_from_csv(path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            sources.append(f"warning: could not read {path}: {exc}")
+            continue
+        for name, values in found.items():
+            params.setdefault(name, values)
+        if found:
+            sources.append(str(path))
+    return params, sources
+
+
+def planner_parameter_markdown(planner_a, planner_b, planner_parameters, sources):
+    a = planner_parameters.get(planner_a)
+    b = planner_parameters.get(planner_b)
+    if not a and not b:
+        return ""
+    lines = ["## Planner parameter definitions", "", "Parameters are read from `parameters_json` in row metadata or planner profiles; no IDM defaults are hard-coded in this report.", ""]
+    if sources:
+        lines += ["Sources:", ""] + [f"* `{src}`" for src in sources] + [""]
+    for planner, vals in [(planner_a, a), (planner_b, b)]:
+        lines += [f"### {planner}", ""]
+        if not vals:
+            lines += ["* parameters_json unavailable", ""]
+            continue
+        for key in sorted(vals):
+            lines.append(f"* {key} = `{vals[key]}`")
+        lines.append("")
+    if a and b:
+        common = sorted(set(a) & set(b))
+        diffs = []
+        for key in common:
+            try:
+                diffs.append((key, float(a[key]) - float(b[key])))
+            except (TypeError, ValueError):
+                continue
+        if diffs:
+            lines += [f"### {planner_a} - {planner_b} numeric parameter differences", ""]
+            for key, diff in diffs:
+                lines.append(f"* {key}: `{diff:+.6g}`")
+            lines.append("")
+    return "\n".join(lines)
 
 def finite(x):
     a = np.asarray(x, dtype=float); return a[np.isfinite(a)]
@@ -130,6 +257,7 @@ def run(args):
     emb = load_embedding(args.embedding_dir); ego, nei, feat, arr_dir = load_context_arrays(args.context_dataset_dir)
     if len(meta) != emb.shape[0] or ego.shape[0] != emb.shape[0]: raise ValueError(f"row count mismatch: metadata={len(meta)} embeddings={emb.shape[0]} ego={ego.shape[0]}")
     pairs, align = align_pairs(meta, args.planner_a, args.planner_b)
+    planner_params, planner_param_sources = load_planner_parameters(meta, align["planner_column"], args.embedding_dir, args.context_dataset_dir, args.stage7f_dir)
     rows=[]
     for scen, ia, ib in pairs:
         ma=row_metrics(ia, emb, ego, nei, meta.iloc[ia]); mb=row_metrics(ib, emb, ego, nei, meta.iloc[ib])
@@ -143,10 +271,14 @@ def run(args):
         rows.append(r)
     df=pd.DataFrame(rows); df.to_csv(out/"paired_delta_by_scenario.csv", index=False)
     label=conclusion(df)
-    summary={"planner_a":args.planner_a,"planner_b":args.planner_b,"num_paired_scenarios":len(df),"alignment":align,"metadata_path":str(meta_path),"context_array_dir":str(arr_dir),"delta_summary":summarize(df),"aggressive_gt_conservative_speed_count":int((df["delta_mean_speed"]>0).sum()),"aggressive_gt_conservative_speed_fraction":float((df["delta_mean_speed"]>0).mean()),"aggressive_gt_conservative_accel_count":int((df["delta_rms_accel"]>0).sum()),"aggressive_gt_conservative_accel_fraction":float((df["delta_rms_accel"]>0).mean()),"aggressive_smaller_thw_count":int((df["delta_mean_thw"]<0).sum()),"aggressive_smaller_thw_fraction":float((df["delta_mean_thw"]<0).mean()),"aggressive_smaller_front_distance_count":int((df["delta_mean_front_distance"]<0).sum()),"aggressive_smaller_front_distance_fraction":float((df["delta_mean_front_distance"]<0).mean()),"conclusion_label":label}
+    summary={"planner_a":args.planner_a,"planner_b":args.planner_b,"num_paired_scenarios":len(df),"alignment":align,"metadata_path":str(meta_path),"context_array_dir":str(arr_dir),"planner_parameter_sources":planner_param_sources,"planner_parameters_available":[p for p in [args.planner_a,args.planner_b] if p in planner_params],"delta_summary":summarize(df),"aggressive_gt_conservative_speed_count":int((df["delta_mean_speed"]>0).sum()),"aggressive_gt_conservative_speed_fraction":float((df["delta_mean_speed"]>0).mean()),"aggressive_gt_conservative_accel_count":int((df["delta_rms_accel"]>0).sum()),"aggressive_gt_conservative_accel_fraction":float((df["delta_rms_accel"]>0).mean()),"aggressive_smaller_thw_count":int((df["delta_mean_thw"]<0).sum()),"aggressive_smaller_thw_fraction":float((df["delta_mean_thw"]<0).mean()),"aggressive_smaller_front_distance_count":int((df["delta_mean_front_distance"]<0).sum()),"aggressive_smaller_front_distance_fraction":float((df["delta_mean_front_distance"]<0).mean()),"conclusion_label":label}
     (out/"paired_delta_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     plots(out, df)
-    lines=["# Stage7F same-scenario paired delta report","",f"* A = `{args.planner_a}`",f"* B = `{args.planner_b}`","* Delta convention: A - B.",f"* paired scenarios: `{len(df)}`",f"* conclusion_label: `{label}`","",idm_parameter_markdown(args.planner_a,args.planner_b),"","## Summary","",f"* aggressive > conservative speed: {summary['aggressive_gt_conservative_speed_count']} / {len(df)}",f"* aggressive > conservative rms accel: {summary['aggressive_gt_conservative_accel_count']} / {len(df)}",f"* aggressive smaller mean THW: {summary['aggressive_smaller_thw_count']} / {len(df)}",f"* aggressive smaller mean front distance: {summary['aggressive_smaller_front_distance_count']} / {len(df)}"]
+    parameter_section = planner_parameter_markdown(args.planner_a, args.planner_b, planner_params, planner_param_sources)
+    lines=["# Stage7F same-scenario paired delta report","",f"* A = `{args.planner_a}`",f"* B = `{args.planner_b}`","* Delta convention: A - B.",f"* paired scenarios: `{len(df)}`",f"* conclusion_label: `{label}`"]
+    if parameter_section:
+        lines += ["", parameter_section]
+    lines += ["","## Summary","",f"* aggressive > conservative speed: {summary['aggressive_gt_conservative_speed_count']} / {len(df)}",f"* aggressive > conservative rms accel: {summary['aggressive_gt_conservative_accel_count']} / {len(df)}",f"* aggressive smaller mean THW: {summary['aggressive_smaller_thw_count']} / {len(df)}",f"* aggressive smaller mean front distance: {summary['aggressive_smaller_front_distance_count']} / {len(df)}"]
     (out/"paired_delta_report.md").write_text("\n".join(lines)+"\n", encoding="utf-8")
 
 def parse_args():

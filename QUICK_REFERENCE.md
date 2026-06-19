@@ -5955,12 +5955,13 @@ python tools/stage7f_aggressive_conservative_paired_delta.py \
 - task-conditioned BDD wrapper 会解析 `embedding_manifest.json`、`shard_manifest.json`、`feature_schema.json` 和 `stage7f_dir/planner_indices/*.npy`，必要时调用 `tools/stage6c_build_behavior_events_v2.py`，然后调用 `tools/stage6c_task_conditioned_bdd_report.py`；它不重新实现 BDD/MMD，也不新增替代 Stage6 的 planner-behavior metric。
 - task-conditioned BDD 输出 `task_report_card.md`、`task_bdd_summary.csv`、`task_style_delta.csv`、`top_task_drift_cases.csv`、`warnings.json`、`plots/task_bdd_bar.png`、`plots/task_style_delta_bar.png`、`stage7f_task_bdd_summary.json`、`stage7f_task_bdd_summary.md`。
 - paired delta 命令按同一 `scenario_token` / `scenario_id` 对齐 aggressive 与 conservative，同一 scenario 必须同时存在两个 planner；它不会做 unpaired matching，遇到 duplicate scenario-planner pair 会直接失败。
-- paired delta 输出 `paired_delta_by_scenario.csv`、`paired_delta_summary.json`、`paired_delta_report.md`、`paired_delta_bar.png`、`embedding_pair_distance_hist.png`，用于检查 nominal IDM 参数差异是否产生 realized rollout 差异。
+- paired delta 输出 `paired_delta_by_scenario.csv`、`paired_delta_summary.json`、`paired_delta_report.md`、`paired_delta_bar.png`、`embedding_pair_distance_hist.png`，用于检查 nominal planner 参数差异是否产生 realized rollout 差异。`paired_delta_report.md` 不硬编码 IDM 参数定义；它会优先读取 Stage7E `metadata.csv` 的 `parameters_json`，并向上查找 `simulation_schema.json.planner_profiles` / `simulated_planner_metadata.csv`。如果这些真实参数不可用，报告只写 planner names、Delta convention 和 paired delta 摘要，不输出伪造参数定义。
 
 ### 3. 通过标准
 
 - A/B planner index 文件存在：`stage7f_dir/planner_indices/idm_longitudinal_aggressive.npy` 与 `stage7f_dir/planner_indices/idm_longitudinal_conservative.npy`。
 - paired scenarios 数量 `> 0`，且没有 duplicate scenario-planner pair。
+- 如果真实 `parameters_json` 存在，`paired_delta_summary.json` 应记录 `planner_parameter_sources` 与 `planner_parameters_available`，`paired_delta_report.md` 应显示从 metadata / planner profiles 读取的参数；如果不存在，报告不得出现硬编码的 `IDM parameter definitions`。
 - task-conditioned BDD 可以生成 summary；如果某些 task 的 `n_A` / `n_B` 低于 `--min_bin_size`，允许被 skip，但必须在 `warnings.json` / skipped tasks 中可见。
 - following 与 yield_conflict 是更可靠的 detectors；lead_brake_response、queue_approach、cutin_response 可能是 proxy-based，需要结合 detector strength 和 low-n 提示解释。
 - 20-scenario 结果只作为 exploratory diagnostic，不替代完整 Stage7F pairwise BDD；该流程的目的只是解释 aggressive/conservative overall BDD 为什么很小。
