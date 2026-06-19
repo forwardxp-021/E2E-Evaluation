@@ -186,3 +186,57 @@ def test_quick_reference_contains_fixed_pdm_commands():
     text = Path("QUICK_REFERENCE.md").read_text(encoding="utf-8")
     assert "{scenario_hydra_overrides}" in text
     assert "stage7p_pdm_config_parameter_report.py" in text
+
+
+def test_pdm_closed_conservative_variant_hydra_overrides_and_metadata():
+    overrides = stage7c.format_planner_hydra_overrides("pdm_closed_conservative_v1")
+    assert overrides.startswith("planner=pdm_closed_planner ")
+    assert "planner.pdm_closed_planner.idm_policies.speed_limit_fraction=[0.2,0.4,0.6,0.8]" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.fallback_target_velocity=10.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.min_gap_to_lead_agent=2.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.headway_time=2.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.accel_max=1.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.decel_max=3.0" in overrides
+    assert "planner.pdm_closed_planner.lateral_offsets=[-0.5,0.5]" in overrides
+    profile = stage7c.PLANNER_PROFILES["pdm_closed_conservative_v1"]
+    assert profile["planner_type"] == "pdm_closed_variant"
+    assert profile["policy_style"] == "conservative"
+    assert profile["style_scope"] == "full_closed_loop_planner"
+    assert profile["nuplan_planner_config"] == "pdm_closed_planner"
+    assert profile["parameters"]["source"] == "tuplan_garage"
+    assert profile["parameters"]["checkpoint_required"] is False
+
+
+def test_pdm_closed_assertive_variant_hydra_overrides_and_metadata():
+    overrides = stage7c.format_planner_hydra_overrides("pdm_closed_assertive_v1")
+    assert overrides.startswith("planner=pdm_closed_planner ")
+    assert "planner.pdm_closed_planner.idm_policies.speed_limit_fraction=[0.4,0.6,0.8,1.0]" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.fallback_target_velocity=18.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.min_gap_to_lead_agent=0.5" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.headway_time=1.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.accel_max=2.0" in overrides
+    assert "planner.pdm_closed_planner.idm_policies.decel_max=3.5" in overrides
+    assert "planner.pdm_closed_planner.lateral_offsets=[-1.5,1.5]" in overrides
+    profile = stage7c.PLANNER_PROFILES["pdm_closed_assertive_v1"]
+    assert profile["planner_type"] == "pdm_closed_variant"
+    assert profile["policy_style"] == "assertive"
+    assert profile["style_scope"] == "full_closed_loop_planner"
+    assert profile["nuplan_planner_config"] == "pdm_closed_planner"
+
+
+def test_pdm_closed_variant_requested_label_and_safe_slug_are_preserved():
+    replacements = stage7c.build_command_replacements(
+        "pdm_closed_assertive_v1",
+        {"scenario_index": "0", "scenario_token": "abc"},
+        Path("outputs/demo"),
+        require_same_scenario_alignment=True,
+    )
+    assert replacements["planner_name"] == "pdm_closed_assertive_v1"
+    assert replacements["planner_name_safe"] == "pdm_closed_assertive_v1"
+    assert replacements["planner_hydra_overrides"].startswith("planner=pdm_closed_planner ")
+    assert "planner=pdm_closed_assertive_v1" not in replacements["planner_hydra_overrides"]
+
+
+def test_existing_pdm_closed_planner_default_still_uses_base_config_only():
+    assert stage7c.format_planner_hydra_overrides("pdm_closed_planner") == "planner=pdm_closed_planner"
+    assert stage7c.format_planner_hydra_overrides("pdm_closed_default") == "planner=pdm_closed_planner"

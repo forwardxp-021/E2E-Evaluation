@@ -6143,6 +6143,76 @@ Stage7F pairwise 不需要在单 planner smoke 上运行；等 PDM 与 IDM/simpl
 - 至少找到并解析一个官方 nuPlan msgpack trajectory artifact。
 - `simulated_ego_seq.npy` shape 为 `(1, 1, T, 8)`，且 `T >= 2`。
 - missing scenario-planner pair count = 0。
+
+
+## Stage7P — PDM closed variant smoke / pilot
+
+## 1. 命令
+
+### 1-scene variant smoke
+
+该命令一次运行 3 个有标签的 PDM closed profile。注意：Stage7C 的 `--planners` 使用 variant label，但 `{planner_hydra_overrides}` 内部仍展开为 `planner=pdm_closed_planner` 加对应参数 override。
+
+```bash
+cd /home/forwardxp/00_nuplan_E2E_eva/E2E-Evaluation
+
+export NUPLAN_DEVKIT_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan-devkit
+export NUPLAN_DATA_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset
+export NUPLAN_MAPS_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps
+export NUPLAN_EXP_ROOT=/home/forwardxp/00_nuplan_E2E_eva/nuplan/exp
+mkdir -p "$NUPLAN_EXP_ROOT"
+
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir outputs/stage7p_pdm_closed_variant_smoke_1scene \
+  --planners pdm_closed_default pdm_closed_conservative_v1 pdm_closed_assertive_v1 \
+  --max_scenarios 1 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --hydra_searchpath '[pkg://tuplan_garage.planning.script.config.common, pkg://tuplan_garage.planning.script.config.simulation, pkg://nuplan.planning.script.config.common, pkg://nuplan.planning.script.experiments]' \
+  --nuplan_simulation_command_template 'python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini {scenario_hydra_overrides} worker=single_machine_thread_pool experiment_name=stage7p_pdm_closed_variant_smoke_1scene job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+### 5-log variant pilot
+
+该命令抽取最多 5 个 distinct log，并比较 PDM closed variants 与 simple baseline；如需要也可加入 `idm_longitudinal_conservative`。
+
+```bash
+python tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage7b4_nuplan_context_merged \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/nuplan-v1.1/splits/mini \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --output_dir outputs/stage7p_pdm_closed_variant_pilot_5logs \
+  --planners pdm_closed_default pdm_closed_conservative_v1 pdm_closed_assertive_v1 simple_planner idm_longitudinal_conservative \
+  --sample_distinct_log_names \
+  --max_scenarios 5 \
+  --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --hydra_searchpath '[pkg://tuplan_garage.planning.script.config.common, pkg://tuplan_garage.planning.script.config.simulation, pkg://nuplan.planning.script.config.common, pkg://nuplan.planning.script.experiments]' \
+  --nuplan_simulation_command_template 'python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini {scenario_hydra_overrides} worker=single_machine_thread_pool experiment_name=stage7p_pdm_closed_variant_pilot_5logs job_name=stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+如果只想运行 4 个 planner，把上面命令中的 `idm_longitudinal_conservative` 删除即可。
+
+## 2. 期望行为
+
+- `pdm_closed_default`、`pdm_closed_conservative_v1`、`pdm_closed_assertive_v1` 都通过同一个 Hydra config `planner=pdm_closed_planner` 启动；conservative/assertive 额外注入已验证存在的 `planner.pdm_closed_planner.*` 参数。
+- Stage7C 输出中的 `planner_name`、`scenario_planner_index.csv`、`simulated_planner_metadata.csv`、`warnings.json.planner_api_discovery` 和 `job_name=stage7c_{planner_name_safe}` 保留 requested variant label，例如 `pdm_closed_assertive_v1`。
+- `warnings.json.planner_api_discovery` 中应同时能看到 requested `planner_name=pdm_closed_conservative_v1`、`nuplan_planner_config=pdm_closed_planner` 和完整 `hydra_overrides`。
+- `{scenario_hydra_overrides}` 继续负责 same-scenario / same-log 对齐；不要手工把 `scenario_filter=all_scenarios` 和 `scenario_filter.scenario_tokens=null` 混入这些 smoke 命令。
+- 命令只产生 Stage7C simulation 输出，不会修改 Stage5D CORE、lane-aware assignment 或 Stage6 metrics。
+
+## 3. 通过标准
+
+- 1-scene smoke 的 expected scenario-planner pairs = `1 × 3 = 3`，official command successes = 3，`simulated_ego_seq.npy` 第一、二维为 `(1, 3, ...)`。
+- 5-log pilot 使用 5 个 distinct log 时，若运行 5 个 planner，则 expected pairs = `5 × 5 = 25`；若删除 IDM 只运行 4 个 planner，则 expected pairs = `5 × 4 = 20`。
+- `same_scenario_alignment_required = true`，且 `scenario_alignment.passed = true`。
+- PDM variant 的 metadata `parameters_json` 包含对应 speed limit fraction、fallback target velocity、min gap、headway、accel/decel 和 lateral offset 参数。
+- `official_nuplan_runs/scenario_*/pdm_closed_conservative_v1/` 等输出目录使用 variant label，而不是 base `pdm_closed_planner` 覆盖不同 variant。
 - 如果 Hydra 找不到 `pdm_closed_planner`，优先检查 tuplan_garage 是否已经在 `/home/forwardxp/00_nuplan_E2E_eva/tuplan_garage` 执行 `pip install -e .`，以及 `--hydra_searchpath` 是否完整传入。
 - `pdm_open_planner` 和 `pdm_hybrid_planner` 因需要 `checkpoint_path` 暂不作为可直接运行 smoke 命令。
 - 首轮使用 `closed_loop_nonreactive_agents`，保持与 IDM Stage7 pipeline 一致。

@@ -182,6 +182,31 @@ def idm_longitudinal_profile(policy_style: str, parameters: Dict[str, float], al
     }
 
 
+def pdm_closed_profile(policy_style: str, style_scope: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    hydra_overrides = ["planner=pdm_closed_planner"]
+    metadata_only_keys = {"note", "source", "checkpoint_required"}
+    for key, value in parameters.items():
+        if key in metadata_only_keys:
+            continue
+        encoded = json.dumps(value, ensure_ascii=False, separators=(",", ":")) if isinstance(value, list) else str(value)
+        hydra_overrides.append(f"planner.pdm_closed_planner.{key}={encoded}")
+    return {
+        "planner_type": "external_hydra_planner" if policy_style == "pdm_closed_default" else "pdm_closed_variant",
+        "policy_style": policy_style,
+        "style_scope": style_scope,
+        "nuplan_planner_config": "pdm_closed_planner",
+        "hydra_overrides": hydra_overrides,
+        "preferred_classes": ["PDMClosedPlanner"],
+        "supported_behavior_tasks": [],
+        "unsupported_behavior_tasks": [],
+        "parameters": {
+            "source": "tuplan_garage",
+            "checkpoint_required": False,
+            **parameters,
+        },
+    }
+
+
 PLANNER_PROFILES = {
     "simple_planner": {
         "planner_type": "simple_baseline",
@@ -235,21 +260,37 @@ PLANNER_PROFILES = {
         alias_of="idm_longitudinal_aggressive",
     ),
 
-    "pdm_closed_planner": {
-        "planner_type": "external_hydra_planner",
-        "policy_style": "pdm_closed_external",
-        "style_scope": "closed_loop_planner",
-        "nuplan_planner_config": "pdm_closed_planner",
-        "hydra_overrides": ["planner=pdm_closed_planner"],
-        "preferred_classes": ["PDMClosedPlanner"],
-        "supported_behavior_tasks": [],
-        "unsupported_behavior_tasks": [],
-        "parameters": {
-            "source": "tuplan_garage",
-            "checkpoint_required": False,
-            "note": "Closed PDM planner config from tuplan_garage; use --hydra_searchpath when config package is external.",
-        },
-    },
+    "pdm_closed_planner": pdm_closed_profile("pdm_closed_default", "closed_loop_planner", {
+        "note": "Backward-compatible alias for pdm_closed_default; closed PDM planner config from tuplan_garage.",
+    }),
+    "pdm_closed_default": pdm_closed_profile("pdm_closed_default", "closed_loop_planner", {}),
+    "pdm_closed_conservative_v1": pdm_closed_profile("conservative", "full_closed_loop_planner", {
+        "idm_policies.speed_limit_fraction": [0.2, 0.4, 0.6, 0.8],
+        "idm_policies.fallback_target_velocity": 10.0,
+        "idm_policies.min_gap_to_lead_agent": 2.0,
+        "idm_policies.headway_time": 2.0,
+        "idm_policies.accel_max": 1.0,
+        "idm_policies.decel_max": 3.0,
+        "lateral_offsets": [-0.5, 0.5],
+    }),
+    "pdm_closed_assertive_v1": pdm_closed_profile("assertive", "full_closed_loop_planner", {
+        "idm_policies.speed_limit_fraction": [0.4, 0.6, 0.8, 1.0],
+        "idm_policies.fallback_target_velocity": 18.0,
+        "idm_policies.min_gap_to_lead_agent": 0.5,
+        "idm_policies.headway_time": 1.0,
+        "idm_policies.accel_max": 2.0,
+        "idm_policies.decel_max": 3.5,
+        "lateral_offsets": [-1.5, 1.5],
+    }),
+    "pdm_closed_comfort_v1": pdm_closed_profile("comfort", "full_closed_loop_planner", {
+        "idm_policies.speed_limit_fraction": [0.2, 0.4, 0.6, 0.8],
+        "idm_policies.fallback_target_velocity": 12.0,
+        "idm_policies.min_gap_to_lead_agent": 2.0,
+        "idm_policies.headway_time": 2.0,
+        "idm_policies.accel_max": 1.0,
+        "idm_policies.decel_max": 2.0,
+        "lateral_offsets": [-0.5, 0.5],
+    }),
 }
 
 
