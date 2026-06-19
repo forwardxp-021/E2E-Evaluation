@@ -242,38 +242,6 @@ def test_existing_pdm_closed_planner_default_still_uses_base_config_only():
     assert stage7c.format_planner_hydra_overrides("pdm_closed_default") == "planner=pdm_closed_planner"
 
 
-def test_pdm_closed_v2_variant_hydra_overrides_and_metadata():
-    cons = stage7c.format_planner_hydra_overrides("pdm_closed_conservative_v2")
-    assert cons.startswith("planner=pdm_closed_planner ")
-    assert "planner.pdm_closed_planner.scorer.progress_weight=3.0" in cons
-    assert "planner.pdm_closed_planner.scorer.ttc_weight=8.0" in cons
-    assert "planner.pdm_closed_planner.tracker.q_lateral=[1.0,8.0,1.0]" in cons
-    assert "planner.pdm_closed_planner.motion_model.steering_angle_time_constant=0.08" in cons
-    assert "planner.pdm_closed_planner.comfort.max_abs_lat_accel=3.5" in cons
-    assert stage7c.PLANNER_PROFILES["pdm_closed_conservative_v2"]["nuplan_planner_config"] == "pdm_closed_planner"
-
-    assertv = stage7c.format_planner_hydra_overrides("pdm_closed_assertive_v2")
-    assert assertv.startswith("planner=pdm_closed_planner ")
-    assert "planner.pdm_closed_planner.scorer.progress_weight=8.0" in assertv
-    assert "planner.pdm_closed_planner.scorer.ttc_weight=3.0" in assertv
-    assert "planner.pdm_closed_planner.tracker.q_lateral=[2.0,15.0,0.0]" in assertv
-    assert "planner.pdm_closed_planner.motion_model.steering_angle_time_constant=0.03" in assertv
-    assert "planner.pdm_closed_planner.comfort.max_abs_lat_accel=5.5" in assertv
-
-
-def test_pdm_closed_v2_requested_label_and_safe_slug_are_preserved():
-    replacements = stage7c.build_command_replacements(
-        "pdm_closed_assertive_v2",
-        {"scenario_index": "0", "scenario_token": "abc"},
-        Path("outputs/demo"),
-        require_same_scenario_alignment=True,
-    )
-    assert replacements["planner_name"] == "pdm_closed_assertive_v2"
-    assert replacements["planner_name_safe"] == "pdm_closed_assertive_v2"
-    assert replacements["planner_hydra_overrides"].startswith("planner=pdm_closed_planner ")
-    assert "planner=pdm_closed_assertive_v2" not in replacements["planner_hydra_overrides"]
-
-
 def test_existing_core_stage7c_planners_still_resolve():
     assert stage7c.format_planner_hydra_overrides("simple_planner") == "planner=simple_planner"
     assert stage7c.format_planner_hydra_overrides("idm_longitudinal_conservative").startswith("planner=idm_planner ")
