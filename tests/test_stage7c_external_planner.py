@@ -139,6 +139,54 @@ def test_scenario_hydra_overrides_prefers_token():
     assert info["scenario_hydra_overrides"] == "scenario_filter.scenario_tokens=[abc]"
 
 
+def test_normalize_target_scenario_prefers_log_name_and_keeps_nuplan_token_separate():
+    target = stage7c.normalize_target_scenario(
+        {
+            "db_name": "",
+            "log_name": "2021.05.25.14.16.10_veh-35_01690_02183",
+            "scene_token": "legacy_stage7b_scene",
+            "scenario_token": "f6f9afda75e251ae",
+        }
+    )
+    assert target["target_log_name"] == "2021.05.25.14.16.10_veh-35_01690_02183"
+    assert target["target_scene_token"] == "legacy_stage7b_scene"
+    assert target["target_nuplan_scenario_token"] == "f6f9afda75e251ae"
+
+
+def test_stage7c_alignment_prefers_target_scenario_token_over_scene_token(tmp_path):
+    run_dir = (
+        tmp_path
+        / "simulation_log"
+        / "PDMClosedPlanner"
+        / "changing_lane_to_right"
+        / "2021.05.25.14.16.10_veh-35_01690_02183"
+        / "f6f9afda75e251ae"
+    )
+    run_dir.mkdir(parents=True)
+    (run_dir / "log.msgpack.xz").write_bytes(b"")
+
+    record = stage7c.build_alignment_record(
+        {
+            "scenario_index": "0",
+            "log_name": "2021.05.25.14.16.10_veh-35_01690_02183",
+            "scene_token": "legacy_stage7b_scene",
+            "scenario_token": "f6f9afda75e251ae",
+        },
+        "pdm_closed_default",
+        tmp_path,
+        True,
+        [],
+    )
+
+    assert record["target_scene_token"] == "legacy_stage7b_scene"
+    assert record["target_nuplan_scenario_token"] == "f6f9afda75e251ae"
+    assert record["actual_nuplan_scenario_token"] == "f6f9afda75e251ae"
+    assert record["stage7b_scene_token_match"] is False
+    assert record["same_log_alignment_passed"] is True
+    assert record["strict_nuplan_token_alignment_passed"] is True
+    assert record["alignment_status"] == "PASS_STRICT"
+
+
 def test_scenario_hydra_overrides_falls_back_to_log_name():
     info = stage7c.scenario_hydra_override_info({"db_name": "2021.01.01_veh-1.db"}, True)
     assert info["control_mode"] == "log_name"
