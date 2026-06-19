@@ -654,6 +654,20 @@ def verify_actual_scenario_types(candidates: List[Dict[str, Any]]) -> None:
 def actual_type_allowed(row: Dict[str, Any], allowlist: Set[str]) -> bool:
     return str(row.get("actual_type_verified", "") or "").lower() == "true" and normalize_scenario_type(row.get("actual_scenario_type")) in allowlist
 
+
+def actual_type_rejected(row: Dict[str, Any], allowlist: Set[str], fallback_allowlist: Optional[Set[str]] = None) -> bool:
+    if str(row.get("actual_type_verified", "") or "").lower() != "true":
+        return False
+    actual = normalize_scenario_type(row.get("actual_scenario_type"))
+    allowed = set(allowlist)
+    if fallback_allowlist:
+        allowed.update(fallback_allowlist)
+    return bool(actual) and actual not in allowed
+
+
+def db_tag_strict_but_actual_type_unverified(row: Dict[str, Any]) -> bool:
+    return is_strict_changing_lane_row(row) and str(row.get("actual_type_verified", "") or "").lower() != "true"
+
 def write_csv(path: Path, rows: List[Dict[str, Any]], fieldnames: List[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
@@ -674,7 +688,7 @@ def normalize_scenario_type(value: Any) -> str:
 
 
 def is_strict_changing_lane_row(row: Dict[str, Any]) -> bool:
-    return normalize_scenario_type(row.get("scenario_type")) in STRICT_CHANGING_LANE_TYPES
+    return normalize_scenario_type(row.get("scenario_type_db_tag") or row.get("scenario_type")) in STRICT_CHANGING_LANE_TYPES
 
 
 def is_fallback_exact_row(row: Dict[str, Any]) -> bool:
@@ -691,6 +705,7 @@ def select_top_candidates(
     actual_type_allowlist: Optional[Set[str]] = None,
     allow_fallback_lateral_types: bool = False,
     fallback_type_allowlist: Optional[Set[str]] = None,
+    allow_db_tag_when_actual_type_unverified: bool = True,
 ) -> List[Dict[str, Any]]:
     actual_type_allowlist = actual_type_allowlist or STRICT_CHANGING_LANE_TYPES
     fallback_type_allowlist = fallback_type_allowlist or {"high_lateral_acceleration"}
@@ -718,6 +733,14 @@ def select_top_candidates(
     if verify_actual_scenario_type:
         for row in candidates:
             if actual_type_allowed(row, actual_type_allowlist):
+                try_add(row, strict=True)
+                if len(selected) >= top_k:
+                    break
+            elif allow_db_tag_when_actual_type_unverified and db_tag_strict_but_actual_type_unverified(row):
+                row["actual_type_verified"] = "false"
+                row["actual_scenario_type"] = str(row.get("actual_scenario_type", "") or "")
+                if not str(row.get("actual_type_verification_error", "") or ""):
+                    row["actual_type_verification_error"] = "actual scenario type verification did not return a value"
                 try_add(row, strict=True)
                 if len(selected) >= top_k:
                     break
@@ -792,9 +815,18 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- selected_scenario_type_counts: `{summary.get('selected_scenario_type_counts', {})}`",
         f"- selected_actual_scenario_type_counts: `{summary.get('selected_actual_scenario_type_counts', {})}`",
         f"- selected_fallback_lateral_rows: `{summary.get('selected_fallback_lateral_rows', 0)}`",
+        f"- strict_db_tag_candidate_rows: `{summary.get('strict_db_tag_candidate_rows', 0)}`",
+        f"- strict_actual_type_verified_rows: `{summary.get('strict_actual_type_verified_rows', 0)}`",
+        f"- strict_actual_type_unverified_but_db_tag_selected_rows: `{summary.get('strict_actual_type_unverified_but_db_tag_selected_rows', 0)}`",
+        f"- strict_actual_type_rejected_rows: `{summary.get('strict_actual_type_rejected_rows', 0)}`",
+        f"- strict_db_tag_candidates_exist_but_none_selected: `{summary.get('strict_db_tag_candidates_exist_but_none_selected', False)}`",
         f"- insufficient_strict_changing_lane_warning: `{summary.get('insufficient_strict_changing_lane_warning', '')}`",
         f"- selected_log_counts: `{summary.get('selected_log_counts', {})}`",
         f"- strict_changing_lane_candidate_rows: `{summary.get('strict_changing_lane_candidate_rows', 0)}`",
+        f"- strict_db_tag_candidate_rows: `{summary.get('strict_db_tag_candidate_rows', 0)}`",
+        f"- strict_actual_type_verified_rows: `{summary.get('strict_actual_type_verified_rows', 0)}`",
+        f"- strict_actual_type_unverified_but_db_tag_selected_rows: `{summary.get('strict_actual_type_unverified_but_db_tag_selected_rows', 0)}`",
+        f"- strict_actual_type_rejected_rows: `{summary.get('strict_actual_type_rejected_rows', 0)}`",
         f"- selected_strict_changing_lane_rows: `{summary.get('selected_strict_changing_lane_rows', 0)}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
@@ -809,7 +841,9 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         "- Optional kinematic scan computes expert-ego lateral displacement, heading change, yaw-rate proxy, and `candidate_score = 2.0 * abs_lateral_displacement + 5.0 * heading_change_abs + 2.0 * yaw_rate_proxy + text_match_bonus`.",
         "- Optional DB scenario-tag scan reads nuPlan mini DB `scenario_tag.type` directly and joins `lidar_pc` / `log` for Stage7C-friendly context.",
         "- DB `scenario_tag.type` is only a candidate label; it is not the final `actual_scenario_type` that official nuPlan scenario filtering/building may resolve.",
-        "- With `--verify_actual_scenario_type`, only verified actual types in `changing_lane` / `changing_lane_to_left` / `changing_lane_to_right` enter the strict lane-change set.",
+        "- With `--verify_actual_scenario_type`, verified actual types in `changing_lane` / `changing_lane_to_left` / `changing_lane_to_right` enter the strict lane-change set.",
+        "- If actual-type verification fails or returns empty and `--allow_db_tag_when_actual_type_unverified` is true, strict changing-lane DB tags are retained as DB-tag strict but actual-type-unverified rows with `actual_type_verified=false`.",
+        "- If actual-type verification explicitly returns a non-lane-change type, the strict DB-tag row is rejected.",
         "- Verified fallback lateral rows are reported separately with `selected_as_fallback_lateral=true`; they are never counted as strict lane-change rows.",
         "",
         "## Candidate source counts",
@@ -818,6 +852,10 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- metadata_text candidates: `{summary['metadata_text_candidate_rows']}`",
         f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
         f"- strict_changing_lane_candidate_rows: `{summary.get('strict_changing_lane_candidate_rows', 0)}`",
+        f"- strict_db_tag_candidate_rows: `{summary.get('strict_db_tag_candidate_rows', 0)}`",
+        f"- strict_actual_type_verified_rows: `{summary.get('strict_actual_type_verified_rows', 0)}`",
+        f"- strict_actual_type_unverified_but_db_tag_selected_rows: `{summary.get('strict_actual_type_unverified_but_db_tag_selected_rows', 0)}`",
+        f"- strict_actual_type_rejected_rows: `{summary.get('strict_actual_type_rejected_rows', 0)}`",
         f"- selected_strict_changing_lane_rows: `{summary.get('selected_strict_changing_lane_rows', 0)}`",
         f"- kinematic_candidates: `{summary['kinematic_candidates']}`",
         f"- final_selected_candidates: `{summary['final_selected_candidates']}`",
@@ -927,17 +965,27 @@ def run(args: argparse.Namespace) -> int:
         actual_type_allowlist=actual_allowlist,
         allow_fallback_lateral_types=bool(getattr(args, "allow_fallback_lateral_types", False)),
         fallback_type_allowlist=fallback_allowlist,
+        allow_db_tag_when_actual_type_unverified=bool(getattr(args, "allow_db_tag_when_actual_type_unverified", True)),
     )
     output_fields = list(dict.fromkeys([*DB_OUTPUT_FIELDS, *KINEMATIC_OUTPUT_FIELDS, *fieldnames]))
     write_csv(out / "lane_change_candidate_metadata.csv", top, output_fields)
     text_match_count = sum(1 for r in text_event_candidates if int(r.get("metadata_match_score") or 0) > 0)
     behavior_count = sum(1 for r in text_event_candidates if int(r.get("event_task_lane_change") or 0) > 0)
     stage7c_context_path = ""
-    if getattr(args, "write_stage7c_context_dir", False):
+    if getattr(args, "write_stage7c_context_dir", False) and top:
         stage7c_context_path = write_stage7c_context(out, top, fieldnames)
     warnings = []
     if not text_event_candidates and not db_scenario_tag_candidates and not kinematic_candidates:
         warnings.append("candidate_rows=0 because metadata text matching and available behavior/kinematic scans found no lane-change-like rows; this does not diagnose PDM lane-change capability.")
+    strict_db_tag_candidate_rows = sum(1 for r in candidates if is_strict_changing_lane_row(r) and str(r.get("scenario_token", "") or "").strip() and str(r.get("log_name", "") or "").strip())
+    strict_actual_type_verified_rows = sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "") or "").lower() == "true" and str(r.get("actual_type_verified", "") or "").lower() == "true")
+    strict_actual_type_unverified_but_db_tag_selected_rows = sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "") or "").lower() == "true" and str(r.get("actual_type_verified", "") or "").lower() != "true" and is_strict_changing_lane_row(r))
+    strict_actual_type_rejected_rows = sum(1 for r in candidates if is_strict_changing_lane_row(r) and actual_type_rejected(r, actual_allowlist, fallback_allowlist if bool(getattr(args, "allow_fallback_lateral_types", False)) else None))
+    strict_db_tag_candidates_exist_but_none_selected = bool(strict_db_tag_candidate_rows > 0 and len(top) == 0)
+    if strict_db_tag_candidates_exist_but_none_selected:
+        warnings.append("strict_db_tag_candidates_exist_but_none_selected=true; insufficient strict changing-lane candidates selected. Check actual-type verification and allow_db_tag_when_actual_type_unverified.")
+    if getattr(args, "write_stage7c_context_dir", False) and not top:
+        warnings.append("insufficient candidates: stage7c_candidate_context/merged_metadata.csv was not written because final_selected_rows=0.")
     summary = {
         "context_dir": str(context_dir),
         "metadata_path": str(metadata_path),
@@ -952,6 +1000,12 @@ def run(args: argparse.Namespace) -> int:
         "actual_type_verified_rows": int(sum(1 for r in candidates if str(r.get("actual_type_verified", "")).lower() == "true")),
         "actual_type_verification_failed_rows": int(sum(1 for r in candidates if bool(getattr(args, "verify_actual_scenario_type", False)) and str(r.get("actual_type_verified", "")).lower() != "true")),
         "strict_changing_lane_actual_type_rows": int(sum(1 for r in candidates if actual_type_allowed(r, actual_allowlist))),
+        "strict_db_tag_candidate_rows": int(strict_db_tag_candidate_rows),
+        "strict_actual_type_verified_rows": int(strict_actual_type_verified_rows),
+        "strict_actual_type_unverified_but_db_tag_selected_rows": int(strict_actual_type_unverified_but_db_tag_selected_rows),
+        "strict_actual_type_rejected_rows": int(strict_actual_type_rejected_rows),
+        "strict_db_tag_candidates_exist_but_none_selected": bool(strict_db_tag_candidates_exist_but_none_selected),
+        "allow_db_tag_when_actual_type_unverified": bool(getattr(args, "allow_db_tag_when_actual_type_unverified", True)),
         "fallback_lateral_actual_type_rows": int(sum(1 for r in candidates if actual_type_allowed(r, fallback_allowlist))),
         "final_selected_rows": int(len(top)),
         "selected_fallback_lateral_rows": int(sum(1 for r in top if str(r.get("selected_as_fallback_lateral", "")).lower() == "true")),
@@ -976,7 +1030,7 @@ def run(args: argparse.Namespace) -> int:
         "selected_strict_changing_lane_rows": int(sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "")).lower() == "true")),
         "prefer_exact_changing_lane": bool(getattr(args, "prefer_exact_changing_lane", False)),
         "duplicate_scenario_token_count_removed": int(duplicate_all + int(db_scenario_tag_summary.get("duplicate_scenario_token_count_removed", 0))),
-        "insufficient_strict_changing_lane_warning": ("" if (not bool(getattr(args, "verify_actual_scenario_type", False)) or sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "")).lower() == "true") >= selected_k) else f"strict changing-lane actual-type rows selected {sum(1 for r in top if str(r.get('selected_as_strict_changing_lane', '')).lower() == 'true')} < requested {selected_k}"),
+        "insufficient_strict_changing_lane_warning": ("strict_db_tag_candidates_exist_but_none_selected=true" if strict_db_tag_candidates_exist_but_none_selected else ("" if (not bool(getattr(args, "verify_actual_scenario_type", False)) or sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "")).lower() == "true") >= min(selected_k, max(strict_db_tag_candidate_rows, 1))) else f"strict changing-lane rows selected {sum(1 for r in top if str(r.get('selected_as_strict_changing_lane', '')).lower() == 'true')} < requested {selected_k}")),
         "kinematic_scan": kinematic_summary,
         "warnings": warnings,
         "outputs": {
@@ -1013,6 +1067,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--verify_actual_scenario_type", action="store_true", help="Verify exact-token actual scenario_type before selecting strict lane-change rows.")
     parser.add_argument("--actual_type_allowlist", default="changing_lane,changing_lane_to_left,changing_lane_to_right", help="Comma-separated verified actual scenario types allowed in the strict selected set.")
     parser.add_argument("--allow_fallback_lateral_types", action="store_true", help="Allow verified fallback lateral actual types to fill remaining slots after strict lane-change rows.")
+    parser.add_argument("--allow_db_tag_when_actual_type_unverified", action="store_true", default=True, help="When actual-type verification fails or returns empty, keep strict changing_lane DB-tag rows in the strict selected set instead of dropping them.")
     parser.add_argument("--fallback_type_allowlist", default="high_lateral_acceleration", help="Comma-separated verified actual scenario types allowed only as fallback rows.")
     parser.add_argument("--verified_top_k", type=int, default=None, help="Optional selected-row cap for verified mode; defaults to --top_k.")
     return parser.parse_args()

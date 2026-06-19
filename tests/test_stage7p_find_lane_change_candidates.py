@@ -429,5 +429,67 @@ def test_actual_type_parser_arguments_exist():
     assert parsed_args.verify_actual_scenario_type is True
     assert parsed_args.actual_type_allowlist == "changing_lane"
     assert parsed_args.allow_fallback_lateral_types is True
+    assert parsed_args.allow_db_tag_when_actual_type_unverified is True
     assert parsed_args.fallback_type_allowlist == "high_lateral_acceleration"
     assert parsed_args.verified_top_k == 3
+
+
+def _make_tag_only_db(path: Path, rows):
+    conn = sqlite3.connect(path)
+    with conn:
+        conn.execute("CREATE TABLE scenario_tag(token TEXT, lidar_pc_token TEXT, type TEXT, agent_track_token TEXT)")
+        conn.execute("CREATE TABLE lidar_pc(token TEXT, scene_token TEXT, ego_pose_token TEXT)")
+        conn.execute("CREATE TABLE log(logfile TEXT, token TEXT)")
+        conn.execute("INSERT INTO log(logfile, token) VALUES (?, ?)", ("tag_only_log", "log"))
+        for idx, (lidar, db_type) in enumerate(rows):
+            conn.execute("INSERT INTO lidar_pc(token, scene_token, ego_pose_token) VALUES (?, ?, ?)", (lidar, f"scene_{idx}", f"ego_{idx}"))
+            conn.execute("INSERT INTO scenario_tag(token, lidar_pc_token, type, agent_track_token) VALUES (?, ?, ?, ?)", (f"tag_{idx}", lidar, db_type, "agent"))
+
+
+def test_verified_mode_keeps_strict_db_tag_when_actual_type_lookup_fails_by_default(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_tag_only_db(db, [("lidar_left", "changing_lane_to_left")])
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, write_stage7c_context_dir=True, max_per_log=0))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in rows] == ["lidar_left"]
+    assert rows[0]["selected_as_strict_changing_lane"] == "true"
+    assert rows[0]["actual_type_verified"] == "false"
+    assert rows[0]["actual_scenario_type"] == ""
+    assert rows[0]["scenario_type_db_tag"] == "changing_lane_to_left"
+    assert rows[0]["actual_type_verification_error"]
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["final_selected_rows"] == 1
+    assert summary["strict_db_tag_candidate_rows"] == 1
+    assert summary["strict_actual_type_unverified_but_db_tag_selected_rows"] == 1
+    assert summary["strict_actual_type_verified_rows"] == 0
+    stage7c_rows = list(csv.DictReader((out / "stage7c_candidate_context" / "merged_metadata.csv").open(encoding="utf-8")))
+    assert [r["scenario_token"] for r in stage7c_rows] == ["lidar_left"]
+
+
+def test_verified_mode_rejects_strict_db_tag_when_actual_type_is_non_lane_change(tmp_path: Path):
+    ctx = tmp_path / "ctx"; ctx.mkdir()
+    db = tmp_path / "mini.db"; out = tmp_path / "out"
+    (ctx / "merged_metadata.csv").write_text("scenario_id,scenario_type,log_name\ns0,following,log_a\n", encoding="utf-8")
+    _make_actual_type_db(db, [("lidar_bad", "changing_lane_to_left", "traversing_pickup_dropoff")])
+
+    rc = finder.run(_base_args(ctx, out, nuplan_db_root=str(db), scan_db_scenario_tags=True, verify_actual_scenario_type=True, write_stage7c_context_dir=True, max_per_log=0))
+
+    assert rc == 0
+    rows = list(csv.DictReader((out / "lane_change_candidate_metadata.csv").open(encoding="utf-8")))
+    assert rows == []
+    assert not (out / "stage7c_candidate_context" / "merged_metadata.csv").exists()
+    summary = json.loads((out / "lane_change_candidate_summary.json").read_text(encoding="utf-8"))
+    assert summary["final_selected_rows"] == 0
+    assert summary["strict_actual_type_rejected_rows"] == 1
+    assert summary["strict_db_tag_candidates_exist_but_none_selected"] is True
+    assert summary["insufficient_strict_changing_lane_warning"]
+    assert any("strict_db_tag_candidates_exist_but_none_selected=true" in w for w in summary["warnings"])
+    assert any("stage7c_candidate_context/merged_metadata.csv was not written" in w for w in summary["warnings"])
+    report = (out / "lane_change_candidate_report.md").read_text(encoding="utf-8")
+    assert "strict_db_tag_candidates_exist_but_none_selected=true" in report
+    assert "insufficient candidates" in report
