@@ -638,7 +638,97 @@ def lookup_actual_scenario_type_sqlite(row: Dict[str, Any]) -> Tuple[str, bool, 
     return "", False, "sqlite_exact_token_lookup", "no explicit actual scenario type table/column found for exact scenario_token"
 
 
-def verify_actual_scenario_types(candidates: List[Dict[str, Any]]) -> None:
+def _load_rows_from_json_or_csv(path: Path) -> List[Dict[str, Any]]:
+    if not path.is_file():
+        raise FileNotFoundError(f"Missing actual-type cache / Stage7C feedback file: {path}")
+    if path.suffix.lower() == ".json":
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            for key in ("rows", "records", "scenario_alignment", "alignment_records", "cache"):
+                if isinstance(data.get(key), list):
+                    data = data[key]
+                    break
+            else:
+                if all(isinstance(v, (str, dict)) for v in data.values()):
+                    rows = []
+                    for token, value in data.items():
+                        if isinstance(value, dict):
+                            row = dict(value)
+                            row.setdefault("scenario_token", token)
+                            rows.append(row)
+                        else:
+                            rows.append({"scenario_token": token, "actual_scenario_type": value})
+                    return rows
+        if not isinstance(data, list):
+            raise ValueError(f"Unsupported JSON cache/feedback shape in {path}; expected list, dict cache, or dict with rows/records.")
+        return [dict(item) for item in data if isinstance(item, dict)]
+    with path.open("r", encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _first_nonempty(row: Dict[str, Any], names: Sequence[str]) -> str:
+    for name in names:
+        value = str(row.get(name, "") or "").strip()
+        if value:
+            return value
+    return ""
+
+
+def load_actual_type_cache(paths: Sequence[str]) -> Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]:
+    cache: Dict[str, Dict[str, str]] = {}
+    summary = {"enabled": bool(paths), "paths": [str(p) for p in paths if str(p or "").strip()], "rows": 0, "usable_rows": 0, "warnings": []}
+    for raw in paths:
+        if not str(raw or "").strip():
+            continue
+        path = Path(raw)
+        try:
+            rows = _load_rows_from_json_or_csv(path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            summary["warnings"].append(f"Could not load actual type cache {path}: {exc}")
+            continue
+        summary["rows"] += len(rows)
+        for item in rows:
+            token = _first_nonempty(item, ["scenario_token", "lidar_pc_token", "target_scenario_token", "actual_nuplan_scenario_token", "scene_token"])
+            actual = _first_nonempty(item, ["actual_scenario_type", "actual_type", "scenario_type", "type"])
+            verified_raw = _first_nonempty(item, ["actual_type_verified", "verified", "known_good"]).lower()
+            verified = (verified_raw not in {"false", "0", "no"}) if verified_raw else bool(actual)
+            if not token or not actual or not verified:
+                continue
+            cache[token] = {"actual_scenario_type": actual, "method": f"known_good_actual_type_cache:{path}"}
+            summary["usable_rows"] += 1
+    return cache, summary
+
+
+def load_stage7c_alignment_feedback(paths: Sequence[str]) -> Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]:
+    feedback: Dict[str, Dict[str, str]] = {}
+    summary = {"enabled": bool(paths), "paths": [str(p) for p in paths if str(p or "").strip()], "rows": 0, "usable_rows": 0, "warnings": []}
+    for raw in paths:
+        if not str(raw or "").strip():
+            continue
+        path = Path(raw)
+        try:
+            rows = _load_rows_from_json_or_csv(path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            summary["warnings"].append(f"Could not load Stage7C alignment feedback {path}: {exc}")
+            continue
+        summary["rows"] += len(rows)
+        for item in rows:
+            token = _first_nonempty(item, ["target_scenario_token", "scenario_token", "scene_token"])
+            actual_token = _first_nonempty(item, ["actual_nuplan_scenario_token", "actual_scenario_token"])
+            actual_type = _first_nonempty(item, ["actual_scenario_type", "actual_type"])
+            status = _first_nonempty(item, ["alignment_status", "status"]).upper()
+            strict_raw = _first_nonempty(item, ["strict_nuplan_token_alignment_passed", "same_log_alignment_passed", "passed"]).lower()
+            passed = (strict_raw in {"true", "1", "yes"}) or status.startswith("PASS")
+            if not token:
+                continue
+            feedback[token] = {"actual_scenario_type": actual_type, "actual_nuplan_scenario_token": actual_token, "passed": "true" if passed else "false", "method": f"stage7c_alignment_feedback:{path}"}
+            summary["usable_rows"] += 1
+    return feedback, summary
+
+
+def verify_actual_scenario_types(candidates: List[Dict[str, Any]], actual_type_cache: Optional[Dict[str, Dict[str, str]]] = None, alignment_feedback: Optional[Dict[str, Dict[str, str]]] = None) -> None:
+    actual_type_cache = actual_type_cache or {}
+    alignment_feedback = alignment_feedback or {}
     for row in candidates:
         actual = str(row.get("actual_scenario_type", "") or "").strip()
         if actual:
@@ -646,6 +736,28 @@ def verify_actual_scenario_types(candidates: List[Dict[str, Any]]) -> None:
             row["actual_type_verification_method"] = row.get("actual_type_verification_method") or "input_metadata"
             row["actual_type_verification_error"] = ""
             continue
+        token = str(row.get("scenario_token", "") or row.get("lidar_pc_token", "") or "")
+        if token in actual_type_cache:
+            cached = actual_type_cache[token]
+            row["actual_scenario_type"] = cached.get("actual_scenario_type", "")
+            row["actual_type_verified"] = "true"
+            row["actual_type_verification_method"] = cached.get("method", "known_good_actual_type_cache")
+            row["actual_type_verification_error"] = ""
+            continue
+        if token in alignment_feedback:
+            fb = alignment_feedback[token]
+            if fb.get("actual_scenario_type"):
+                row["actual_scenario_type"] = fb.get("actual_scenario_type", "")
+                row["actual_type_verified"] = "true"
+                row["actual_type_verification_method"] = fb.get("method", "stage7c_alignment_feedback")
+                row["actual_type_verification_error"] = "" if fb.get("passed") == "true" else "Stage7C alignment feedback did not pass"
+                continue
+            if fb.get("passed") == "false":
+                row["actual_type_verified"] = "false"
+                row["actual_type_alignment_rejected"] = "true"
+                row["actual_type_verification_method"] = fb.get("method", "stage7c_alignment_feedback")
+                row["actual_type_verification_error"] = "Stage7C alignment feedback rejected this scenario token"
+                continue
         actual, verified, method, error = lookup_actual_scenario_type_sqlite(row)
         row["actual_scenario_type"] = actual
         row["actual_type_verified"] = "true" if verified else "false"
@@ -658,6 +770,8 @@ def actual_type_allowed(row: Dict[str, Any], allowlist: Set[str]) -> bool:
 
 
 def actual_type_rejected(row: Dict[str, Any], allowlist: Set[str], fallback_allowlist: Optional[Set[str]] = None) -> bool:
+    if str(row.get("actual_type_alignment_rejected", "") or "").lower() == "true":
+        return True
     if str(row.get("actual_type_verified", "") or "").lower() != "true":
         return False
     actual = normalize_scenario_type(row.get("actual_scenario_type"))
@@ -668,7 +782,11 @@ def actual_type_rejected(row: Dict[str, Any], allowlist: Set[str], fallback_allo
 
 
 def db_tag_strict_but_actual_type_unverified(row: Dict[str, Any]) -> bool:
-    return is_strict_changing_lane_row(row) and str(row.get("actual_type_verified", "") or "").lower() != "true"
+    return (
+        is_strict_changing_lane_row(row)
+        and str(row.get("actual_type_verified", "") or "").lower() != "true"
+        and str(row.get("actual_type_alignment_rejected", "") or "").lower() != "true"
+    )
 
 def write_csv(path: Path, rows: List[Dict[str, Any]], fieldnames: List[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -979,8 +1097,10 @@ def run(args: argparse.Namespace) -> int:
         return (priority, -float(r.get("candidate_score") or r.get("match_score") or 0), str(r.get("log_name", "")), str(r.get("scenario_token", "")))
 
     candidates.sort(key=candidate_sort_key)
+    actual_type_cache, actual_type_cache_summary = load_actual_type_cache(parse_path_list(getattr(args, "actual_type_cache", "")))
+    alignment_feedback, alignment_feedback_summary = load_stage7c_alignment_feedback(parse_path_list(getattr(args, "stage7c_alignment_feedback", "")))
     if bool(getattr(args, "verify_actual_scenario_type", False)):
-        verify_actual_scenario_types(candidates)
+        verify_actual_scenario_types(candidates, actual_type_cache=actual_type_cache, alignment_feedback=alignment_feedback)
     for rank, row in enumerate(candidates, 1):
         row["candidate_rank"] = rank
     max_per_log = int(getattr(args, "max_per_log", 2) or 0)
@@ -1039,6 +1159,8 @@ def run(args: argparse.Namespace) -> int:
         "strict_db_tag_candidates_exist_but_none_selected": bool(strict_db_tag_candidates_exist_but_none_selected),
         "allow_db_tag_when_actual_type_unverified": bool(getattr(args, "allow_db_tag_when_actual_type_unverified", True)),
         "require_actual_type_verified": bool(getattr(args, "require_actual_type_verified", False)),
+        "actual_type_cache": actual_type_cache_summary,
+        "stage7c_alignment_feedback": alignment_feedback_summary,
         "fallback_lateral_actual_type_rows": int(sum(1 for r in candidates if actual_type_allowed(r, fallback_allowlist))),
         "final_selected_rows": int(len(top)),
         "selected_fallback_lateral_rows": int(sum(1 for r in top if str(r.get("selected_as_fallback_lateral", "")).lower() == "true")),
@@ -1068,7 +1190,7 @@ def run(args: argparse.Namespace) -> int:
         "duplicate_scenario_token_count_removed": int(duplicate_all + int(db_scenario_tag_summary.get("duplicate_scenario_token_count_removed", 0))),
         "insufficient_strict_changing_lane_warning": ("strict_db_tag_candidates_exist_but_none_selected=true" if strict_db_tag_candidates_exist_but_none_selected else ("" if (not bool(getattr(args, "verify_actual_scenario_type", False)) or sum(1 for r in top if str(r.get("selected_as_strict_changing_lane", "")).lower() == "true") >= min(selected_k, max(strict_db_tag_candidate_rows, 1))) else f"strict changing-lane rows selected {sum(1 for r in top if str(r.get('selected_as_strict_changing_lane', '')).lower() == 'true')} < requested {selected_k}")),
         "kinematic_scan": kinematic_summary,
-        "warnings": warnings,
+        "warnings": warnings + list(actual_type_cache_summary.get("warnings", [])) + list(alignment_feedback_summary.get("warnings", [])),
         "outputs": {
             "report": "lane_change_candidate_report.md",
             "summary": "lane_change_candidate_summary.json",
@@ -1079,6 +1201,14 @@ def run(args: argparse.Namespace) -> int:
     (out / "lane_change_candidate_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     write_report(out, summary, top)
     return 0
+
+
+def parse_path_list(value: Any) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple)):
+        return [str(v).strip() for v in value if str(v or "").strip()]
+    return [item.strip() for item in str(value or "").split(",") if item.strip()]
 
 
 def parse_args() -> argparse.Namespace:
@@ -1107,6 +1237,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--fallback_type_allowlist", default="high_lateral_acceleration", help="Comma-separated verified actual scenario types allowed only as fallback rows.")
     parser.add_argument("--verified_top_k", type=int, default=None, help="Optional selected-row cap for verified mode; defaults to --top_k.")
     parser.add_argument("--require_actual_type_verified", action="store_true", help="In verified mode, drop rows whose actual_scenario_type could not be verified instead of selecting DB-tag-only rows.")
+    parser.add_argument("--actual_type_cache", default="", help="Optional comma-separated known-good actual-type cache CSV/JSON paths. Rows may contain scenario_token/lidar_pc_token and actual_scenario_type; cache entries are treated as verified before SQLite lookup.")
+    parser.add_argument("--stage7c_alignment_feedback", default="", help="Optional comma-separated Stage7C scenario_alignment CSV/JSON paths used as feedback. actual_scenario_type values are used for filtering, and failed feedback marks tokens unverified/rejected.")
     return parser.parse_args()
 
 
