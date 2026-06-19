@@ -77,6 +77,7 @@ DB_OUTPUT_FIELDS = [
     "actual_type_verified",
     "actual_type_verification_method",
     "actual_type_verification_error",
+    "selected_by_db_tag_only",
     "candidate_source",
     "candidate_rank",
     "candidate_score",
@@ -445,6 +446,7 @@ def scan_db_scenario_tags(args: argparse.Namespace) -> Tuple[List[Dict[str, Any]
                     "actual_type_verified": "false",
                     "actual_type_verification_method": "",
                     "actual_type_verification_error": "",
+                    "selected_by_db_tag_only": "false",
                     "selected_as_strict_changing_lane": "false",
                     "selected_as_fallback_lateral": "false",
                     "scenario_tag_token": token_to_str(row["scenario_tag_token"]),
@@ -683,6 +685,16 @@ def count_by_field(rows: Sequence[Dict[str, Any]], field: str) -> Dict[str, int]
     return dict(sorted(counts.items()))
 
 
+def count_by_field_nonempty(rows: Sequence[Dict[str, Any]], field: str) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for row in rows:
+        key = str(row.get(field, "") or "").strip()
+        if not key:
+            continue
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items()))
+
+
 def normalize_scenario_type(value: Any) -> str:
     return str(value or "").strip().lower()
 
@@ -706,6 +718,7 @@ def select_top_candidates(
     allow_fallback_lateral_types: bool = False,
     fallback_type_allowlist: Optional[Set[str]] = None,
     allow_db_tag_when_actual_type_unverified: bool = True,
+    require_actual_type_verified: bool = False,
 ) -> List[Dict[str, Any]]:
     actual_type_allowlist = actual_type_allowlist or STRICT_CHANGING_LANE_TYPES
     fallback_type_allowlist = fallback_type_allowlist or {"high_lateral_acceleration"}
@@ -724,6 +737,10 @@ def select_top_candidates(
             return
         row["selected_as_strict_changing_lane"] = "true" if strict else "false"
         row["selected_as_fallback_lateral"] = "true" if fallback else "false"
+        if strict and verify_actual_scenario_type and str(row.get("actual_type_verified", "") or "").lower() != "true":
+            row["selected_by_db_tag_only"] = "true"
+        elif strict or fallback:
+            row["selected_by_db_tag_only"] = "false"
         selected.append(row)
         if token:
             selected_tokens.add(token)
@@ -736,7 +753,7 @@ def select_top_candidates(
                 try_add(row, strict=True)
                 if len(selected) >= top_k:
                     break
-            elif allow_db_tag_when_actual_type_unverified and db_tag_strict_but_actual_type_unverified(row):
+            elif (not require_actual_type_verified) and allow_db_tag_when_actual_type_unverified and db_tag_strict_but_actual_type_unverified(row):
                 row["actual_type_verified"] = "false"
                 row["actual_scenario_type"] = str(row.get("actual_scenario_type", "") or "")
                 if not str(row.get("actual_type_verification_error", "") or ""):
@@ -773,7 +790,7 @@ def write_stage7c_context(out: Path, top: List[Dict[str, Any]], original_fieldna
     required = [
         "log_name", "scenario_token", "scene_token", "db_scene_token", "scenario_type_db_tag",
         "actual_scenario_type", "actual_type_verified", "actual_type_verification_method",
-        "actual_type_verification_error", "candidate_source", "candidate_rank", "candidate_score",
+        "actual_type_verification_error", "selected_by_db_tag_only", "candidate_source", "candidate_rank", "candidate_score",
         "selected_as_strict_changing_lane", "selected_as_fallback_lateral", "db_file",
         "scenario_tag_token", "lidar_pc_token", "ego_pose_token", "scenario_type", "source",
     ]
@@ -814,6 +831,10 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
         f"- duplicate_scenario_token_count_removed: `{summary.get('duplicate_scenario_token_count_removed', 0)}`",
         f"- selected_scenario_type_counts: `{summary.get('selected_scenario_type_counts', {})}`",
         f"- selected_actual_scenario_type_counts: `{summary.get('selected_actual_scenario_type_counts', {})}`",
+        f"- selected_db_tag_only_rows: `{summary.get('selected_db_tag_only_rows', 0)}`",
+        f"- selected_actual_type_verified_rows: `{summary.get('selected_actual_type_verified_rows', 0)}`",
+        f"- selected_actual_type_empty_rows: `{summary.get('selected_actual_type_empty_rows', 0)}`",
+        f"- actual_type_verification_failed_rows: `{summary.get('actual_type_verification_failed_rows', 0)}`",
         f"- selected_fallback_lateral_rows: `{summary.get('selected_fallback_lateral_rows', 0)}`",
         f"- strict_db_tag_candidate_rows: `{summary.get('strict_db_tag_candidate_rows', 0)}`",
         f"- strict_actual_type_verified_rows: `{summary.get('strict_actual_type_verified_rows', 0)}`",
@@ -879,7 +900,16 @@ def write_report(out: Path, summary: Dict[str, Any], top: List[Dict[str, Any]]) 
             f"- db_scenario_tag candidates: `{summary['db_scenario_tag_candidate_rows']}`",
             "- This means the original Stage7B merged subset is not lane-change-rich, but mini DB contains lane-change/lateral candidate tags.",
         ])
-    lines.extend(["", "## Top candidates"])
+    lines.extend([
+        "",
+        "## Strict lane-change selection interpretation",
+        f"- verified strict lane-change candidates: `{summary.get('selected_actual_type_verified_rows', 0)}`",
+        f"- DB-tag-only strict lane-change candidates: `{summary.get('selected_db_tag_only_rows', 0)}`",
+        "- Rows are called verified strict only when `actual_type_verified=true` and `actual_scenario_type` is non-empty.",
+        "- Rows with empty/unavailable `actual_scenario_type` are DB-tag-only strict candidates, not verified strict candidates.",
+        "",
+        "## Top candidates",
+    ])
     if not top:
         lines.append("No lane-change-like candidates were found. This is a metadata-only / optional-kinematic candidate discovery result: zero candidates means no text/behavior/kinematic scan match was found under the configured thresholds, not that PDM lacks lane-change capability.")
     else:
@@ -913,6 +943,7 @@ def run(args: argparse.Namespace) -> int:
         row.setdefault("actual_type_verified", "false")
         row.setdefault("actual_type_verification_method", "")
         row.setdefault("actual_type_verification_error", "")
+        row.setdefault("selected_by_db_tag_only", "false")
         row.setdefault("selected_as_strict_changing_lane", "false")
         row.setdefault("selected_as_fallback_lateral", "false")
         row.setdefault("candidate_source", row.get("source", ""))
@@ -966,6 +997,7 @@ def run(args: argparse.Namespace) -> int:
         allow_fallback_lateral_types=bool(getattr(args, "allow_fallback_lateral_types", False)),
         fallback_type_allowlist=fallback_allowlist,
         allow_db_tag_when_actual_type_unverified=bool(getattr(args, "allow_db_tag_when_actual_type_unverified", True)),
+        require_actual_type_verified=bool(getattr(args, "require_actual_type_verified", False)),
     )
     output_fields = list(dict.fromkeys([*DB_OUTPUT_FIELDS, *KINEMATIC_OUTPUT_FIELDS, *fieldnames]))
     write_csv(out / "lane_change_candidate_metadata.csv", top, output_fields)
@@ -1006,6 +1038,7 @@ def run(args: argparse.Namespace) -> int:
         "strict_actual_type_rejected_rows": int(strict_actual_type_rejected_rows),
         "strict_db_tag_candidates_exist_but_none_selected": bool(strict_db_tag_candidates_exist_but_none_selected),
         "allow_db_tag_when_actual_type_unverified": bool(getattr(args, "allow_db_tag_when_actual_type_unverified", True)),
+        "require_actual_type_verified": bool(getattr(args, "require_actual_type_verified", False)),
         "fallback_lateral_actual_type_rows": int(sum(1 for r in candidates if actual_type_allowed(r, fallback_allowlist))),
         "final_selected_rows": int(len(top)),
         "selected_fallback_lateral_rows": int(sum(1 for r in top if str(r.get("selected_as_fallback_lateral", "")).lower() == "true")),
@@ -1016,7 +1049,10 @@ def run(args: argparse.Namespace) -> int:
         "final_selected_candidates": int(len(top)),
         "scenario_type_counts": count_by_field(candidates, "scenario_type"),
         "selected_scenario_type_db_tag_counts": count_by_field(top, "scenario_type_db_tag"),
-        "selected_actual_scenario_type_counts": count_by_field(top, "actual_scenario_type"),
+        "selected_actual_scenario_type_counts": count_by_field_nonempty(top, "actual_scenario_type"),
+        "selected_db_tag_only_rows": int(sum(1 for r in top if str(r.get("selected_by_db_tag_only", "") or "").lower() == "true")),
+        "selected_actual_type_verified_rows": int(sum(1 for r in top if str(r.get("actual_type_verified", "") or "").lower() == "true")),
+        "selected_actual_type_empty_rows": int(sum(1 for r in top if not str(r.get("actual_scenario_type", "") or "").strip())),
         "selected_scenario_type_counts": count_by_field(top, "scenario_type"),
         "top_k_requested": int(args.top_k),
         "top_k_written": int(len(top)),
@@ -1070,6 +1106,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--allow_db_tag_when_actual_type_unverified", action="store_true", default=True, help="When actual-type verification fails or returns empty, keep strict changing_lane DB-tag rows in the strict selected set instead of dropping them.")
     parser.add_argument("--fallback_type_allowlist", default="high_lateral_acceleration", help="Comma-separated verified actual scenario types allowed only as fallback rows.")
     parser.add_argument("--verified_top_k", type=int, default=None, help="Optional selected-row cap for verified mode; defaults to --top_k.")
+    parser.add_argument("--require_actual_type_verified", action="store_true", help="In verified mode, drop rows whose actual_scenario_type could not be verified instead of selecting DB-tag-only rows.")
     return parser.parse_args()
 
 
