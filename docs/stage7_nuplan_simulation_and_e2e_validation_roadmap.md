@@ -1359,3 +1359,549 @@ If the balanced 20-scenario pilot shows stable speed and embedding differences, 
 1. keep PDM v1 as an auxiliary validation experiment, or
 2. move to PDM v2 with deeper scorer / comfort / tracker parameter exposure, or
 3. implement explicit adjacent-lane proposal and target-lane gap acceptance for true lane-change-intention experiments.
+
+## Stage 7 Milestone 1 PDM Balanced20 Data Credibility Audit（2026-07-25）
+
+审计确认 20 个候选中 17 个场景、34 个 planner run 成功；selected index 12、13、19 在 scenario extraction 阶段失败。Stage7C tensor 正确使用非连续轴 `0..11,14..18`，但 Stage7E 未读取该轴并按连续 `range(17)` 重建 metadata；同时 `find_msgpack()` 存在全局首文件 fallback。后 5 个 tensor 场景、共 10 行因此发生 ego、neighbor、metadata 错配。
+
+当前 `balanced17` Stage7F 结果不能作为论文统计证据。Full geometric fallback rate 为 `0.865104`；strict-0.8 仅保留 4 行/2 对；raw lateral acceleration/curvature 亦有物理告警。完整产物见 `outputs/stage7_m1_pdm_data_quality_audit_v1/`。
+
+进入 Milestone 2 前必须修复 scenario-axis 映射和 msgpack identity validation，增加非连续轴回归测试，并用已有 17 个成功 official rollouts 重建 Stage7E/7F。
+
+## Stage 7 Milestone 1 修复后重审（2026-07-25）
+
+已完成 scenario-axis / msgpack identity 修复，并使用原有 17 个成功 official rollout 重建到 `v2_aligned` 目录。Stage7E 现在强制读取 `simulated_ego_seq_index.json`，明确区分 tensor position 与原始 `scenario_index`；每个 tensor 单元都必须匹配 `status=succeeded`、planner id/name、scenario token，并且 msgpack 必须唯一位于对应的 `scenario_<index>/<planner>/` 目录且文件名 token 一致。全局 msgpack fallback 已删除。
+
+重审结果：
+
+```text
+scenario_axis: [0..11,14..18]
+alignment rows passed: 34 / 34
+context shape: [34,150,83]
+embedding shape: [34,64]
+Stage7F full paired alignment: 17 / 17 scenarios
+Milestone 1 verdict: PASS_WITH_LIMITATIONS
+```
+
+主要重建结果：
+
+- full BDD MMD² = `0.0357706`，permutation p = `0.752475`，仍为小样本 exploratory、无显著分布差异；
+- assertive > conservative mean speed = `17/17`；
+- assertive RMS acceleration 更高 = `14/17`；
+- assertive mean THW 更小 = `15/17`；
+- task-conditioned all-strength 有 5 个有效 task，strong-only 有 4 个有效 task，均无显著 p-value；
+- following 与 queue positive rows / paired scenarios 完全重合（Jaccard=`1.0`），不能作为两份独立证据；
+- `task_yield_conflict` 在修复后对 34 行全部为正，属于 degenerate task，因此不再进入有效 task BDD。
+
+对齐修复不改变地图投影限制：geometric fallback 仍为 `0.865104`，strict-0.8 仍只有 4 行/2 个完整场景。因此 full 数据可以作为结构正确的 exploratory planner comparison，不能作为 strong lane-aware 证据；strict subset 不能用于 BDD。
+
+物理告警已定位到具体帧：9 个超阈值点中，8 个 lateral-acceleration 点发生在 `t=149` 的无效 padding 帧；唯一有效帧异常为 scenario index `1`、token `a59a8c3490f154e2`、conservative planner、`t=49` 的 raw absolute curvature `4.1180`。这说明 Stage6C 当前 raw physical diagnostics 会把 padding 边界差分计入统计，下一步应先传播/消费 rollout validity mask，再重新生成 behavior-event 与物理诊断。
+
+完整重审产物见 `outputs/stage7_m1_pdm_data_quality_audit_v2_aligned/`；修复前的 `v1` 产物仅保留用于问题溯源，不再用于论文统计。
+
+## Stage 7 Milestone 1 validity-mask follow-up（2026-07-26）
+
+已完成上一节要求的 rollout validity mask 修复：
+
+- Stage7E context 正式写出 `ego_seq_mask.npy [34,150]`，与 Stage7C `simulated_ego_seq_mask.npy` 逐元素一致；
+- 34 行有效长度为 149 或 150，共排除 22 个 padding 帧；
+- `interaction_feat_style.npy` 只聚合 mask=true 的帧；
+- Stage6C 在 smoothing、导数、事件检测与 raw physical diagnostics 之前同步裁剪 ego/neighbor 序列；
+- Stage7F paired kinematic metrics 同样消费 mask；
+- 曲率 `yaw_rate/speed` 只在 `|speed| >= 0.5 m/s` 时定义，近静止帧记为 NaN。
+
+修复后的 behavior-event warnings：
+
+```text
+rollout_validity_mask_applied: true
+padding_frames_excluded: 22
+metric_physical_range_warning: 0
+raw_metric_physically_implausible: false
+```
+
+此前 9 个超阈值点中，8 个确认为无效 `t=149` padding 边界，已从所有下游指标中排除；剩余的 4.118 curvature 来自 `speed=0.009 m/s` 的近零速除法，加入 0.5 m/s 有效速度门槛后不再被视为物理曲率样本。修复后有效 rollout 帧上的 physical anomaly 数为 0。
+
+主 embedding 没有改变，因此 full BDD 仍为 `MMD²=0.0357706, p=0.752475`。Pairwise/category 解释层已使用 mask-aware interaction features 重新生成；paired speed/accel/THW 方向和 task-conditioned BDD 结果保持不变。
+
+Milestone 1 最终状态仍为 `PASS_WITH_LIMITATIONS`，但 physical-metric limitation 已关闭。剩余限制只有：
+
+1. geometric fallback rate=`0.865104`；
+2. strict-0.8 只有 4/34 行、2 个完整场景。
+
+因此下一阶段不应先扩大样本量，而应优先诊断 nuPlan lane projection / adjacency 覆盖，降低 fallback 后再决定是否扩展到 30–50 paired scenarios。
+
+## Stage 7 Milestone 2A lane projection / adjacency repair（2026-07-26）
+
+Milestone 2A 已完成。原 `v2_aligned` 数据的 `fallback_assignment_used_rate=0.865104` 不是投影阈值本身过严，主要由两项地图适配错误造成：
+
+1. lane extraction 是以 ego rollout 为中心的局部查询，但 cache 只使用 `map_name` 作为 key，导致同一地图上的后续远距离场景复用第一个场景的局部 lane 集合；
+2. Stage7C index 没有 location 时，旧命令把 Las Vegas CLI map 当作所有场景的地图。实际 balanced17 同时包含 Las Vegas、Pittsburgh、Boston 和 Singapore。nuPlan DB 中还存在 `location=las_vegas`、`map_version=us-nv-las-vegas-strip` 的别名差异。
+
+修复后的适配规则：
+
+- lane cache key 为 `(canonical map_name, original scenario_index)`；
+- 地图查询坐标合并同一场景的全部 planner valid frames；
+- map API 按 canonical map name 复用，但局部 LaneInfo 不跨场景复用；
+- 地图名优先级为 row metadata、scenario metadata、nuPlan DB `log.map_version`、CLI fallback；
+- dense rollout 坐标按空间覆盖选取查询 anchor，减少重复 map API 查询；
+- 全部 34 行输出 frame-weighted fallback 统计，候选级 projection debug 记录具体失败原因；
+- strict-filter 主阈值和 ratio sweep 均使用非连续原始 scenario ID。
+
+最终 `v3_m2a` 结果：
+
+```text
+source scenarios: 17
+planner rows: 34
+canonical maps: 4
+lane cache entries: 17
+map API cache entries: 4
+fallback rate: 0.0161481
+ego projection success rate: 0.983852
+candidate projection success rate: 0.649271
+lane_map_unavailable fallback frames: 0
+remaining fallback frames: 82 (heading_difference_exceeded)
+strict-0.8 rows: 20 / 34
+strict-0.8 complete paired scenarios: 7
+Milestone 2A verdict: PASS
+```
+
+相对 `v2_aligned`，fallback 绝对下降 `0.848956`，相对减少 `98.13%`。因此 high geometric fallback 和 strict-subset-too-small 两项 Milestone 1 limitation 已关闭。
+
+下游使用相同 17 个 official rollout 重建后：
+
+```text
+context: [34,150,83]
+embedding: [34,64]
+full BDD MMD²: 0.0292350
+permutation p: 0.891089
+paired scenarios: 17
+assertive > conservative mean speed: 17/17
+assertive > conservative RMS accel: 14/17
+assertive smaller mean THW: 13/17
+valid-frame physical anomalies: 0
+```
+
+lane-aware 修复使 context/embedding 和 behavior-event task slices 发生实质变化，但总体结论不变：assertive 与 conservative 在轨迹运动学上存在一致差异，当前 17 对样本的 embedding distribution BDD 仍小且不显著。Milestone 2A 解决的是数据可信度与地图语义覆盖，不应被描述为提高统计显著性的调参步骤。
+
+## Stage 7 Milestone 2B lane-context quality stratification（2026-07-26）
+
+Milestone 2B 已完成，最终审计为 `PASS`，扩容判定为 `READY_TO_SCALE`。
+
+旧 strict filter 会因任意一个 ambiguous frame 否决整条 rollout，造成 34 行只保留
+20 行，而且 planner 留存不对称（conservative 12、assertive 8）。这种逐 planner
+的 realized-rollout 过滤会破坏 same-scenario pairing，并可能引入
+post-treatment selection bias。
+
+M2B 改为先计算每行有效帧上的精确质量比例，再在 scenario pair 层取两个 planner
+中的较差 tier：
+
+```text
+Tier A: fallback <= 0.05, ambiguity <= 0.05, bad frame = 0
+Tier B: fallback <= 0.20, ambiguity <= 0.20, bad frame = 0
+Tier C: otherwise
+```
+
+最终 row tiers 为 `A=31, B=2, C=1`，pair tiers 为 `A=15, B=1, C=1`。
+只有 scenario index 5 为 Tier C（conservative fallback=`0.2953`），scenario
+index 6 为 Tier B（conservative ambiguity=`0.0733`）；其余 15 对均为 Tier A。
+全部 tier subset 都保持 assertive/conservative 成对选择。
+
+全部 17 个完整 planner pair 继续作为主分析。Tier A 和 Tier A+B 仅作为质量
+敏感性分析，不能替代主估计，原因是 lane-context quality 来自 planner 已经实现的
+rollout。逐 planner 或只报告高质量子集会改变 estimand，并可能偏向某个 planner。
+
+| 数据集 | pairs | MMD² | permutation p |
+| --- | ---: | ---: | ---: |
+| full | 17 | 0.0292350 | 0.891089 |
+| Tier A | 15 | 0.0365372 | 0.722772 |
+| Tier A+B | 16 | 0.0326079 | 0.702970 |
+
+三个集合均支持相同定性结论：assertive 与 conservative 的 embedding
+distribution 差异较小，在当前样本量下不显著。质量分层没有揭示被低质量
+lane assignment 掩盖的显著 BDD。
+
+M2B context 重建增加了逐行 ambiguity/bad/quality-eligible 统计和地图来源字段。
+`context_traj.npy`、`ego_seq.npy`、`ego_seq_mask.npy`、`neighbor_seq.npy`、
+`interaction_feat_style.npy`、`neighbor_slot_ids.npy` 与 M2A 版本逐字节一致，
+因此复用 M2A embedding 是严格的数据等价复用，不是近似复用。
+
+projection debug 中的 candidate-level `lane_relation_unknown` 主要由
+`lane_connector_unhandled`、`missing_adjacency` 和候选投影失败构成。它统计的是
+采样候选 lane，其中包括不属于正确 ego topology 的候选，不能解释为 accepted
+ego/neighbor assignment 的失败率，也不是当前扩容 blocker。
+
+`READY_TO_SCALE` 只表示结构、地图、对齐、有效帧、pair symmetry 和质量敏感性
+检查均通过。17 对仍然是 exploratory evidence；下一步应扩大到至少 30–50 个
+完整 paired scenarios，并在扩容数据上原样执行 full-primary、Tier-sensitivity
+政策。若目标是 task-conditioned BDD，每个 task slice 应优先达到至少 10 对，
+理想为 20–30 对。
+
+## Stage 7 Milestone 3 Balanced50 scale-up（2026-07-26，已完成）
+
+Milestone 3 已正式启动。目标不是通过扩容“追求显著性”，而是在 M1–M2B
+已经通过的数据可信度协议上，将 17-pair exploratory evidence 扩展到论文最低
+有用范围。
+
+冻结设计为：
+
+| bucket | target |
+| --- | ---: |
+| actual verified lane-change | 8 |
+| following interaction | 10 |
+| stop-go / signal | 10 |
+| dense interaction | 8 |
+| lateral / turning | 7 |
+| speed context | 7 |
+| total | 50 |
+
+选择集包含 M2B 已成功的 17 个场景和 33 个新候选，共覆盖 37 个 log，每个 log
+最多 2 个场景。历史 balanced20 中的 3 个 technical extraction failure token 已
+排除。另冻结 20 个 reserve，但 replacement 只能针对记录明确的技术失败并严格
+遵循 reserve rank，不能查看 planner behavior 或 BDD 后再换样本。
+
+冻结选择 manifest：
+
+```text
+SHA-256 = a59b003ee517237d5a888e9774f939879ce812ac99d09a8f41e23c6d7e196313
+target = 50 scenarios × 2 planners = 100 official rollouts
+```
+
+统计协议保持不变：
+
+1. 所有成功的 complete planner pairs 构成 primary full dataset；
+2. 不允许只保留一个 planner row；
+3. Tier A 和 Tier A+B 是 symmetric pair-level sensitivity analysis；
+4. 不以 embedding distance、BDD 大小或 p-value 决定场景保留与替换；
+5. M3 的通过条件是数据结构、配对、质量和最小规模通过，不要求统计显著。
+
+official simulation 的完整进度记录保存在
+`outputs/stage7_m3_pdm_balanced50_stage7c_v1/stage7c_progress.json`。执行期间修正了
+启动脚本缺少 `NUPLAN_MAPS_ROOT` 的环境问题；修正前的无效任务未进入正式结果。
+修正后已依次完成 Stage7E context、embedding、Stage7F
+full/task-conditioned analysis、M2B quality stratification 和 M3 final audit。
+
+最终 100 个 official tasks 全部执行结束。5 个场景在 nuPlan scenario extraction
+阶段对两个 planner 对称失败，错误均为 `No scenarios found to simulate`；其余
+45 个场景形成 90 个严格 token-aligned official rollouts。因此没有使用 reserve
+追补，也没有根据 planner outcome 选择替换样本。
+
+最终数据质量：
+
+```text
+complete pairs: 45
+successful rollouts: 90
+context shape: [90,150,83]
+embedding shape: [90,64]
+fallback assignment rate: 0.00737156
+ego lane projection success rate: 0.992628
+Tier A pairs: 40
+Tier A+B pairs: 44
+valid-frame physical anomalies: 0
+```
+
+轨迹层结果：
+
+```text
+assertive higher mean speed: 44 / 45
+assertive higher RMS acceleration: 40 / 45
+assertive smaller mean THW: 24 / 45
+mean delta mean-speed: +1.4277 m/s
+mean embedding L2 distance: 5.6227
+```
+
+BDD 质量敏感性：
+
+| dataset | pairs | MMD² | permutation p |
+| --- | ---: | ---: | ---: |
+| full | 45 | 0.0142209 | 0.742574 |
+| Tier A | 40 | 0.0163792 | 0.683168 |
+| Tier A+B | 44 | 0.0164485 | 0.673267 |
+
+三层结果均为小且不显著，说明 M2B 的 lane-context 质量筛选不会改变 M3
+embedding-distribution 结论。相比 17-pair pilot，MMD² 进一步下降；这不能解释为
+“assertive 和 conservative 没有行为差异”，因为 same-scenario 轨迹指标仍显示
+高度一致的速度与加速度方向。更准确的结论是：当前 encoder 的总体 embedding
+distribution BDD 对这些 PDM 参数变化较弱，而 trajectory-level paired metrics
+能够稳定识别 realized behavior difference。
+
+task-conditioned 结果生成了 6 个有效 task，但解释仍受以下限制：
+
+1. `task_lead_brake_response` 只有 7 个 complete positive pairs，低于预设的 10；
+2. following 与 queue 的 paired-scenario Jaccard=`0.833`，不能当作两份独立证据；
+3. lead-brake 和 cut-in detector 仍为 proxy-dominant；
+4. 所有 task-conditioned p-value 均不显著。
+
+Milestone 3 最终状态：
+
+```text
+overall verdict: PASS_WITH_LIMITATIONS
+thesis scale status: MINIMUM_USEFUL_SCALE_REACHED
+```
+
+这表示 Stage7 已达到预设的论文最低有用 paired scale，并完成结构、地图、有效帧、
+质量分层和敏感性审计；不表示已经获得显著的 embedding-distribution difference。
+
+## Stage 7 Milestone 4 formal statistical evidence（2026-07-26）
+
+M4 冻结 M3 的45个 complete pairs，不再改变场景、planner 参数或质量阈值。
+需要明确：M4 主端点是在已经观察 M3 exploratory result 后冻结，因此属于
+retrospective formalization，不是独立 preregistered confirmation。
+
+主统计 family 为：
+
+1. assertive minus conservative mean speed，方向 `> 0`；
+2. assertive minus conservative RMS acceleration，方向 `> 0`；
+3. assertive minus conservative mean THW，方向 `< 0`。
+
+每项使用10000次 paired bootstrap mean CI、单侧 Wilcoxon signed-rank、exact
+sign test、paired Cohen's dz、rank-biserial 和 Hodges–Lehmann delta。Wilcoxon
+与 sign test 分别在三项 family 内执行 Holm correction。
+
+结果：
+
+| endpoint | n | mean delta | 95% paired bootstrap CI | paired dz | Wilcoxon Holm p | sign Holm p |
+| --- | ---: | ---: | --- | ---: | ---: | ---: |
+| mean speed | 45 | +1.4277 m/s | [1.0106, 1.8723] | 0.948 | 1.71e-13 | 3.92e-12 |
+| RMS acceleration | 45 | +0.2562 m/s² | [0.1701, 0.3416] | 0.862 | 3.00e-7 | 7.88e-8 |
+| mean THW | 35 | -7.9987 s | [-31.1524, 12.3490] | 0.119 | 0.0177 | 0.00677 |
+
+速度与RMS加速度同时满足均值CI不跨零、两类非参数检验经Holm校正后显著，并具有
+较大的 paired standardized effect。它们构成目前最稳健的 realized trajectory
+evidence。
+
+THW 的 median=`-2.3005 s`、Hodges–Lehmann delta=`-3.2037 s`，方向计数为
+24 smaller、9 larger、2 zero；非参数检验通过。但10个场景没有 finite
+front-agent THW contrast，mean bootstrap CI 跨零，且均值受极端长THW影响。
+因此论文中不能声称“assertive 稳定降低平均THW”；可表述为：
+
+> 在具有有效前车THW对比的35个场景中，THW的稳健位置统计显示向更小值偏移，
+> 但平均差异不稳定，且该结论受available-case选择和极端值影响。
+
+BDD 使用1000次 bootstrap 与1000次 permutation 重算：
+
+| dataset | pairs | MMD² | permutation p |
+| --- | ---: | ---: | ---: |
+| full | 45 | 0.0142209 | 0.733267 |
+| Tier A | 40 | 0.0163792 | 0.697303 |
+| Tier A+B | 44 | 0.0164485 | 0.593407 |
+
+高分辨率复算保持 M3 结论：embedding distribution BDD 小且不显著，并且不依赖
+lane-context quality tier。BDD bootstrap interval 表示重采样变异，不是以0为
+null的置信区间；统计显著性应读取 permutation p-value。
+
+六个 task-conditioned BDD 在独立的 exploratory family 内进行 Holm correction，
+调整后 p-value 均为1.0。结合 task overlap 与 proxy detector 限制，没有
+task-level embedding distribution significance。
+
+Milestone 4 状态：
+
+```text
+verdict: PASS_WITH_LIMITATIONS
+analysis status: RETROSPECTIVE_FORMALIZATION_OF_M3_EXPLORATORY_RESULTS
+```
+
+当前最强结论是：PDM assertive 参数在同场景 official rollout 中稳定提高速度和
+RMS加速度，但现有 behavior encoder 的总体及task-conditioned embedding BDD
+未检测到显著分布漂移。轨迹层敏感而embedding distribution层较弱，是研究结果，
+不应通过继续增加 permutation 次数或选择子集来追求显著性。
+
+## Stage 7 Milestone 5 representation mechanism（2026-07-26）
+
+M5 用三类相同90行、45个scenario pairs的表示解释为何轨迹配对统计显著，而
+embedding marginal BDD 不显著：
+
+1. learned behavior embedding，64维；
+2. interaction features，33维；
+3. trajectory summary，12维。
+
+三个诊断回答不同问题：
+
+- paired sign-flip：同一个scenario内部的 A-B 表示差是否具有一致平均方向；
+- scenario-grouped probe：表示能否推广到未出现在训练fold的新scenario并识别planner；
+- marginal MMD：忽略scenario pairing后，两组总体边际分布是否不同。
+
+grouped probe 使用5-fold GroupKFold，scenario不会跨train/test。缺失值填补、
+standard scaling和logistic classifier全部在training fold内拟合。Permutation
+null 在每个scenario pair内部交换planner label，保留一对一设计。
+
+| representation | paired concentration | sign-flip p | grouped ROC-AUC | pair-swap p | marginal MMD p |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| learned embedding | 0.326 | 0.000100 | 0.638 | 0.00699 | 0.733 |
+| interaction features | 0.429 | 0.000100 | 0.773 | 0.000999 | 0.126 |
+| trajectory summary | 0.464 | 0.000400 | 0.704 | 0.000999 | 0.123 |
+
+learned embedding 的 paired shift 和scenario-disjoint probe均显著，说明它并非
+完全没有planner behavior信息。但interaction features和trajectory summary具有
+更强的probe AUC，说明encoder压缩后丢失了部分易分辨信号。
+
+更关键的是，三种表示的marginal MMD均未显著。即使直接使用interaction/trajectory
+表示，忽略pairing后的总体分布检验仍受scenario heterogeneity主导。因此M3/M4的
+BDD结果不应只解释为“encoder失败”，而应解释为：
+
+> planner参数产生了稳定的within-scenario behavior shift；该shift相对于跨场景
+> variation较小。paired estimand和scenario-grouped prediction能够利用设计结构，
+> marginal distribution BDD则回答更强、也不同的总体分布问题。
+
+Embedding pair distance 与 absolute mean-speed delta 的 Spearman rho=`0.454`，
+Holm p=`0.00518`；与RMS acceleration和THW delta的距离相关性未通过Holm校正。
+这表明embedding距离对速度变化具有可解释敏感性，但对comfort/headway差异仍弱。
+
+不依赖observed effect的paired-t设计敏感度：
+
+| paired n | MDE dz, alpha=.05 | MDE dz, alpha=.05/3 |
+| ---: | ---: | ---: |
+| 30 | 0.465 | 0.564 |
+| 45 | 0.376 | 0.454 |
+| 60 | 0.325 | 0.391 |
+| 90 | 0.264 | 0.317 |
+| 120 | 0.228 | 0.274 |
+
+MDE不是post-hoc achieved power，也不能直接外推MMD所需样本量。
+
+Milestone 5 状态：
+
+```text
+verdict: PASS_WITH_LIMITATIONS
+analysis status: EXPLANATORY_POST_M4_MECHANISM_ANALYSIS
+```
+
+M5是在观察M3/M4结果后设计的解释性分析。linear probe不是新的planner performance
+metric，interaction/trajectory baselines也来自相同realized rollouts，因此这些
+结果用于解释measurement mechanism，而不是独立确认planner优越性。
+
+## Stage 7 Milestone 6 scenario-conditioned BDD 与跨域重训练协议（2026-07-26）
+
+M6 将 M5 的 mechanism finding 落到设计匹配的 BDD。对相同90行、45个 complete
+same-scenario pairs，M6 固定 pooled median RBF bandwidth，并比较 pooled shuffle
+与 within-pair label swap：
+
+| analysis | space | MMD² | p-value |
+| --- | --- | ---: | ---: |
+| frozen M4 marginal BDD | original | 0.0142209 | 0.733267 |
+| fixed-kernel marginal recheck | original | 0.0141802 | 0.737126 |
+| paired-label-swap BDD | original | 0.0141802 | 0.002300 |
+| scenario-residualized paired BDD | pair-midpoint residual | 0.0994187 | 0.000100 |
+
+同一个 original-space MMD² 仅改变 permutation exchangeability assumption 后从
+不显著变为显著，说明当前 embedding 已包含可检测的 within-scenario planner
+shift。Residual BDD 进一步去除每个 scenario pair 的 midpoint，但它与 original
+space 的 MMD² 不能直接按数值比较。
+
+M6 不覆盖 marginal BDD：matched simulation 以 paired BDD 为主，marginal BDD 为
+补充；真实 unpaired logs 继续使用 Stage6 unpaired-first 与 scenario control。
+
+训练侧诊断是 Stage5D 33维 supervision 缺少 `mean_speed`，且现有 checkpoint
+从未使用 nuPlan pairs 做 domain adaptation。后续新 checkpoint family 将增加
+versioned kinematic targets、same-scenario pair ranking 与 Waymo teacher
+consistency。现有45对已经被反复分析，只作为 exploratory set；最终确认必须使用
+新的 scenario-disjoint locked test。
+
+当前本机的 Waymo full51 manifest 指向不存在的 `/Users/liuqing/...` shards，
+所以联合重训练在数据恢复前不宣称完成。详细协议见
+`docs/stage7_cross_domain_style_sensitive_training_protocol.md`。
+
+Milestone 6A 状态：
+
+```text
+verdict: PASS_WITH_LIMITATIONS
+analysis status: POST_M5_DESIGN_AWARE_ESTIMAND_CORRECTION
+```
+
+## Stage 7 Milestone 6.1 方法冻结（2026-07-29）
+
+M6.1 将原 M6 从解释性修正推进到可复现的方法冻结，但当前45对仍是
+`METHOD_DEVELOPMENT_ONLY_NOT_CONFIRMATORY`。冻结 primary 为原始64维 embedding
+上的 single-RBF biased V-statistic MMD²、精确 pooled positive off-diagonal
+median bandwidth、within-pair label swap、100000 permutations 和 plus-one
+p-value。
+
+实际 primary MMD²=`0.0141802`，exceedance=`175/100000`，
+p=`0.001760`；pooled-shuffle control exceedance=`74086/100000`，
+p=`0.740863`。Residual secondary exceedance=`0/100000`，按 Monte Carlo
+分辨率报告 `p<=0.000010`。45/45 pairs 完整，duplicate token、missing planner、
+row conflict、unequal within-pair horizon 和 non-finite embedding 均为0。
+Tier A 40对和 Tier A+B 44对的 primary 结果经 Holm correction 后仍显著；已测
+fallback/ambiguous-rate 与 embedding pair distance 的相关性经 Holm correction
+均不显著。
+
+这完成的是方法校准，不是新数据上的确认。下一步先做：
+
+1. 新 log/scenario-disjoint pairs 的盲化、独立 selection-config 冻结与确认；
+2. 预处理定义的 task-conditioned paired BDD 和 representation controls；
+3. 只有锁定证据显示关键任务的表示敏感性不足时，才恢复 Waymo shards 并启动
+   新 checkpoint family 的条件式重训练消融。
+
+Waymo-only Stage5D-balanced-v2 继续作为主跨域模型，nuPlan 继续作为外部验证域。
+
+## Stage 7 Milestone 6.2 锁定确认入口（2026-07-29）
+
+M6.2 已实现锁定 manifest、planner 参数指纹、pre-treatment task mapping、小样本
+exact paired randomization 和 representation controls。新确认数据的 log 和
+scenario token 必须与45对开发集不相交，但被比较的 planner 参数必须与开发阶段
+冻结 treatment 完全相同。
+
+| task | complete pairs | learned embedding exact p | Holm p |
+| --- | ---: | ---: | ---: |
+| following interaction | 9 | 0.167969 | 0.671875 |
+| lane change | 8 | 0.789062 | 0.875000 |
+| stop-go control | 9 | 0.175781 | 0.671875 |
+| high motion dynamics | 9 | 0.003906 | 0.019531 |
+| dense/vulnerable interaction | 8 | 0.437500 | 0.875000 |
+
+五个任务都低于12对运行下限，只有 high-motion dynamics 在开发集上通过 Holm
+correction。因此 M6.2 状态是 `DEVELOPMENT_VALIDATED_NOT_CONFIRMATORY`。下一步
+是完成 simulation-based power justification，并按冻结 task targets 生成新
+log/scenario-disjoint rollout pairs。
+
+## Stage 7 Milestone 6.3 仿真功效与采集冻结（2026-07-29）
+
+M6.3 已完成 empirical-pilot simulation power analysis，并将机器可读的 power
+justification 接入 M6.2 locked-confirmation fail-closed 检查。主设计冻结
+effect scale=`0.75`、power target=`0.80`、500 simulations/cell、999 planning
+swaps、最终确认100000 swaps 和20% attrition。
+
+| design | complete pairs/task | gross pairs/task | gross total | simultaneous power |
+| --- | ---: | ---: | ---: | ---: |
+| primary：75% pilot effect | 60 | 75 | 375 | 0.918 |
+| sensitivity：50% pilot effect | 160 | 200 | 1000 | 0.936 |
+
+Primary 的 simultaneous power 95% CI 为 `[0.891,0.939]`；50% sensitivity 为
+`[0.911,0.954]`。Overall 的 power-selected n=45，但执行时保留 M6.2 的80对
+complete-pair 质量下限。过去每任务12对只是不允许更小样本进入正式流程的运行
+下限，现由每任务60对的冻结功效配额取代为主确认目标。
+
+该结果仍属于 `DEVELOPMENT_PILOT_POWER_PLANNING_NOT_CONFIRMATORY`。下一步不是
+重新训练，而是按主配额生成新 log/scenario-disjoint、planner-fingerprint-identical
+rollouts；采集不得根据中途 effect size 停止。只有锁定确认显示关键任务在充分
+功效下仍缺乏 learned-embedding sensitivity，且机制对照支持存在真实行为 shift，
+才进入条件式重训练。
+
+## Stage 7 Milestone 6.4 锁定采集预检（2026-08-04）
+
+M6.4 已实现 `tools/stage7_m6_4_freeze_locked_collection.py`，把 M6.2/M6.3 的
+disjointness、planner fingerprints、task mapping、75 primary/task 和15
+reserve/task 转化为机器可执行的仿真启动门。选择全程只用 pre-treatment DB
+scenario tags；跨任务歧义 token 排除，固定 salt 排序，primary+reserve 每 log
+最多2个。
+
+当前真实 mini inventory 审计结果：
+
+| task | eligible candidates | primary selected under log cap / 75 |
+| --- | ---: | ---: |
+| following interaction | 3077 | 14 / 75 |
+| lane change | 2 | 2 / 75 |
+| stop-go control | 25408 | 15 / 75 |
+| high motion dynamics | 37565 | 14 / 75 |
+| dense/vulnerable interaction | 4943 | 13 / 75 |
+
+mini inventory 有63个 log，开发集覆盖34个，故只有29个新 log 可用；在每 log
+最多2个的冻结多样性约束下，primary 375个场景至少需要188个新 log。Lane-change
+即使忽略该总量约束也仅剩2个，是独立的硬缺口。M6.4 当前状态因此为
+`BLOCKED_INSUFFICIENT_PRETREATMENT_INVENTORY`，没有输出 locked collection
+manifest，也没有启动任何新仿真。
+
+下一步为 M6.4A data acquisition：增加足够的 nuPlan log DB，重建同 schema 的
+`all_scenario_tags.csv`，然后原样重跑预检。只有 status 变为
+`FROZEN_BEFORE_LOCKED_ROLLOUTS` 后，才进入 M6.4B 的750个 primary rollouts
+（375 scenarios × 2 planners）；不能通过改变冻结 task family 或复用开发 log
+绕过该门槛。

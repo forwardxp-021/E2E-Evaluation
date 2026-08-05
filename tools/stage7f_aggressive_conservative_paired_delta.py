@@ -49,7 +49,14 @@ def load_context_arrays(context_dir):
         if ego.exists():
             nei = d/"neighbor_seq.npy"
             feat = d/"interaction_feat_style.npy"
-            return np.load(ego, mmap_mode="r"), (np.load(nei, mmap_mode="r") if nei.exists() else None), (np.load(feat, mmap_mode="r") if feat.exists() else None), d
+            mask = d/"ego_seq_mask.npy"
+            return (
+                np.load(ego, mmap_mode="r"),
+                (np.load(nei, mmap_mode="r") if nei.exists() else None),
+                (np.load(feat, mmap_mode="r") if feat.exists() else None),
+                (np.load(mask, mmap_mode="r") if mask.exists() else None),
+                d,
+            )
     raise FileNotFoundError(f"Missing ego_seq.npy under {context_dir}")
 
 
@@ -196,13 +203,16 @@ def minv(x):
 def maxv(x):
     v=finite(x); return float(np.max(v)) if v.size else np.nan
 
-def row_metrics(i, emb, ego, nei, meta):
-    e = np.asarray(ego[i], dtype=float)
+def row_metrics(i, emb, ego, nei, validity_mask, meta):
+    row_mask = np.asarray(validity_mask[i], dtype=bool) if validity_mask is not None else np.ones(ego.shape[1], dtype=bool)
+    if row_mask.ndim != 1 or row_mask.shape[0] != ego.shape[1] or not np.any(row_mask):
+        raise ValueError(f"invalid ego validity mask for row={i}: shape={list(row_mask.shape)}")
+    e = np.asarray(ego[i], dtype=float)[row_mask]
     speed=e[:,EGO["speed"]]; accel=e[:,EGO["accel"]]; yaw=e[:,EGO["yaw_rate"]]
     jerk=np.diff(accel)/0.1 if accel.size>1 else np.asarray([])
     m = {"mean_speed":mean(speed), "max_speed":maxv(speed), "rms_accel":rms(accel), "max_abs_accel":maxv(np.abs(accel)), "rms_jerk":rms(jerk), "max_abs_jerk":maxv(np.abs(jerk)), "mean_abs_yaw_rate":mean(np.abs(yaw))}
     if nei is not None and nei.ndim >= 4 and nei.shape[1] > 0:
-        front = np.asarray(nei[i,0], dtype=float)
+        front = np.asarray(nei[i,0], dtype=float)[row_mask]
         valid = front[:,FRONT["valid"]] > 0.5 if front.shape[1] > FRONT["valid"] else np.zeros(front.shape[0], dtype=bool)
         dist = np.where(valid, front[:,FRONT["distance"]], np.nan) if front.shape[1] > FRONT["distance"] else np.full(front.shape[0], np.nan)
         thw = np.where(valid, front[:,FRONT["thw"]], np.nan) if front.shape[1] > FRONT["thw"] else np.full(front.shape[0], np.nan)
@@ -256,13 +266,15 @@ def run(args):
         shutil.rmtree(out)
     out.mkdir(parents=True)
     meta, meta_path = load_metadata(args.embedding_dir, args.context_dataset_dir)
-    emb = load_embedding(args.embedding_dir); ego, nei, feat, arr_dir = load_context_arrays(args.context_dataset_dir)
+    emb = load_embedding(args.embedding_dir); ego, nei, feat, validity_mask, arr_dir = load_context_arrays(args.context_dataset_dir)
     if len(meta) != emb.shape[0] or ego.shape[0] != emb.shape[0]: raise ValueError(f"row count mismatch: metadata={len(meta)} embeddings={emb.shape[0]} ego={ego.shape[0]}")
+    if validity_mask is not None and validity_mask.shape != ego.shape[:2]:
+        raise ValueError(f"ego_seq_mask shape mismatch: mask={list(validity_mask.shape)} ego={list(ego.shape)}")
     pairs, align = align_pairs(meta, args.planner_a, args.planner_b)
     planner_params, planner_param_sources = load_planner_parameters(meta, align["planner_column"], args.embedding_dir, args.context_dataset_dir, args.stage7f_dir)
     rows=[]
     for scen, ia, ib in pairs:
-        ma=row_metrics(ia, emb, ego, nei, meta.iloc[ia]); mb=row_metrics(ib, emb, ego, nei, meta.iloc[ib])
+        ma=row_metrics(ia, emb, ego, nei, validity_mask, meta.iloc[ia]); mb=row_metrics(ib, emb, ego, nei, validity_mask, meta.iloc[ib])
         ea=np.asarray(emb[ia], float); eb=np.asarray(emb[ib], float); denom=np.linalg.norm(ea)*np.linalg.norm(eb)
         r={"scenario":scen,"row_A":ia,"row_B":ib,"embedding_l2_distance":float(np.linalg.norm(ea-eb)),"embedding_cosine_distance":float(1-np.dot(ea,eb)/denom) if denom>1e-12 else np.nan}
         keys=sorted(set(ma)|set(mb))
@@ -273,11 +285,11 @@ def run(args):
         rows.append(r)
     df=pd.DataFrame(rows); df.to_csv(out/"paired_delta_by_scenario.csv", index=False)
     label=conclusion(df)
-    summary={"planner_a":args.planner_a,"planner_b":args.planner_b,"num_paired_scenarios":len(df),"alignment":align,"metadata_path":str(meta_path),"context_array_dir":str(arr_dir),"planner_parameter_sources":planner_param_sources,"planner_parameters_available":[p for p in [args.planner_a,args.planner_b] if p in planner_params],"delta_summary":summarize(df),"aggressive_gt_conservative_speed_count":int((df["delta_mean_speed"]>0).sum()),"aggressive_gt_conservative_speed_fraction":float((df["delta_mean_speed"]>0).mean()),"aggressive_gt_conservative_accel_count":int((df["delta_rms_accel"]>0).sum()),"aggressive_gt_conservative_accel_fraction":float((df["delta_rms_accel"]>0).mean()),"aggressive_smaller_thw_count":int((df["delta_mean_thw"]<0).sum()),"aggressive_smaller_thw_fraction":float((df["delta_mean_thw"]<0).mean()),"aggressive_smaller_front_distance_count":int((df["delta_mean_front_distance"]<0).sum()),"aggressive_smaller_front_distance_fraction":float((df["delta_mean_front_distance"]<0).mean()),"conclusion_label":label}
+    summary={"planner_a":args.planner_a,"planner_b":args.planner_b,"num_paired_scenarios":len(df),"alignment":align,"metadata_path":str(meta_path),"context_array_dir":str(arr_dir),"rollout_validity_mask_applied":bool(validity_mask is not None),"planner_parameter_sources":planner_param_sources,"planner_parameters_available":[p for p in [args.planner_a,args.planner_b] if p in planner_params],"delta_summary":summarize(df),"aggressive_gt_conservative_speed_count":int((df["delta_mean_speed"]>0).sum()),"aggressive_gt_conservative_speed_fraction":float((df["delta_mean_speed"]>0).mean()),"aggressive_gt_conservative_accel_count":int((df["delta_rms_accel"]>0).sum()),"aggressive_gt_conservative_accel_fraction":float((df["delta_rms_accel"]>0).mean()),"aggressive_smaller_thw_count":int((df["delta_mean_thw"]<0).sum()),"aggressive_smaller_thw_fraction":float((df["delta_mean_thw"]<0).mean()),"aggressive_smaller_front_distance_count":int((df["delta_mean_front_distance"]<0).sum()),"aggressive_smaller_front_distance_fraction":float((df["delta_mean_front_distance"]<0).mean()),"conclusion_label":label}
     (out/"paired_delta_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     plots(out, df)
     parameter_section = planner_parameter_markdown(args.planner_a, args.planner_b, planner_params, planner_param_sources)
-    lines=["# Stage7F same-scenario paired delta report","",f"* A = `{args.planner_a}`",f"* B = `{args.planner_b}`","* Delta convention: A - B.",f"* paired scenarios: `{len(df)}`",f"* conclusion_label: `{label}`"]
+    lines=["# Stage7F same-scenario paired delta report","",f"* A = `{args.planner_a}`",f"* B = `{args.planner_b}`","* Delta convention: A - B.",f"* paired scenarios: `{len(df)}`",f"* rollout validity mask applied: `{validity_mask is not None}`",f"* conclusion_label: `{label}`"]
     if parameter_section:
         lines += ["", parameter_section]
     lines += ["","## Summary","",f"* aggressive > conservative speed: {summary['aggressive_gt_conservative_speed_count']} / {len(df)}",f"* aggressive > conservative rms accel: {summary['aggressive_gt_conservative_accel_count']} / {len(df)}",f"* aggressive smaller mean THW: {summary['aggressive_smaller_thw_count']} / {len(df)}",f"* aggressive smaller mean front distance: {summary['aggressive_smaller_front_distance_count']} / {len(df)}"]

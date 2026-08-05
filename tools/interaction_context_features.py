@@ -11,12 +11,19 @@ def wrap(a):
     return (a + np.pi) % (2 * np.pi) - np.pi
 
 
-def aggregate_interaction_features(ego_seq: np.ndarray, neighbor_seq: np.ndarray, dt: float) -> Tuple[np.ndarray, List[str]]:
+def aggregate_interaction_features(
+    ego_seq: np.ndarray,
+    neighbor_seq: np.ndarray,
+    dt: float,
+    curvature_min_speed: float = 0.5,
+) -> Tuple[np.ndarray, List[str]]:
     speed = ego_seq[:, 5]
     accel = ego_seq[:, 6]
     yaw_rate = ego_seq[:, 7]
     jerk = np.diff(accel, prepend=accel[0]) / max(dt, 1e-6)
-    curvature = yaw_rate / np.maximum(speed, 1e-3)
+    curvature = np.full(speed.shape, np.nan, dtype=float)
+    curvature_valid = np.isfinite(speed) & np.isfinite(yaw_rate) & (np.abs(speed) >= float(curvature_min_speed))
+    curvature[curvature_valid] = yaw_rate[curvature_valid] / np.abs(speed[curvature_valid])
     heading = ego_seq[:, 4]
 
     front = neighbor_seq[0]
@@ -39,7 +46,7 @@ def aggregate_interaction_features(ego_seq: np.ndarray, neighbor_seq: np.ndarray
     feats = [
         np.sqrt(np.mean(accel ** 2)), np.sqrt(np.mean(jerk ** 2)), np.max(np.abs(accel)), np.max(np.abs(jerk)),
         safe_mean(thw_f), safe_min(thw_f), safe_mean(dist_f), safe_min(dist_f), safe_mean(cr_f), safe_p95(cr_f),
-        np.sqrt(np.mean(yaw_rate ** 2)), np.sqrt(np.mean(curvature ** 2)), float(np.sum(np.abs(wrap(np.diff(heading))))),
+        np.sqrt(np.mean(yaw_rate ** 2)), safe_mean(curvature ** 2) ** 0.5, float(np.sum(np.abs(wrap(np.diff(heading))))),
         float(lc_count), float(lc_count / max(len(ego_seq) * dt, 1e-6)),
         float(lc_count // 2), float(lc_count - lc_count // 2),
         float(np.mean(np.diff(np.where(lane_change_proxy, 1, 0), prepend=0) > 0) * dt),
@@ -78,7 +85,7 @@ FEATURE_SPECS: List[Dict[str, Any]] = [
     {"name": "mean_rel_speed", "description": "Mean front closing rate for valid front-neighbor frames.", "source": "aggregate_interaction_features: front[:,8]"},
     {"name": "p95_rel_speed", "description": "95th percentile front closing rate for valid front-neighbor frames.", "source": "aggregate_interaction_features: front[:,8]"},
     {"name": "rms_yaw_rate", "description": "Root mean square of ego yaw-rate proxy.", "source": "aggregate_interaction_features: yaw_rate"},
-    {"name": "rms_curvature", "description": "Root mean square of curvature proxy (yaw_rate/speed).", "source": "aggregate_interaction_features: curvature"},
+    {"name": "rms_curvature", "description": "Root mean square of curvature proxy (yaw_rate/speed) on frames with |speed| >= 0.5 m/s.", "source": "aggregate_interaction_features: curvature"},
     {"name": "heading_change_total", "description": "Total absolute heading change across the window.", "source": "aggregate_interaction_features: heading"},
     {"name": "lane_change_count_proxy", "description": "Count of lane-change transitions from lateral-offset proxy.", "source": "aggregate_interaction_features: lane_change_proxy"},
     {"name": "lane_change_rate_proxy", "description": "Lane-change transition count normalized by window duration.", "source": "aggregate_interaction_features: lane_change_proxy"},

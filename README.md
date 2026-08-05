@@ -1311,3 +1311,87 @@ Stage 4F 评估分两部分，缺一不可：
 仓库已新增 Stage 5A lane-aware 5-neighbor context 数据构建脚本：`tools/build_waymo_5neighbor_context_dataset.py`，用于在训练前验证交互上下文输入质量。设计说明见 `07_stage5_interaction_design.md`。
 
 - Stage 5A-v2 focuses on true lane-aware neighbor assignment.
+
+## Stage 7 M4（当前 nuPlan 闭环主结果）
+
+Stage 7 已完成45个 same-scenario、assertive-vs-conservative PDM closed-loop
+planner pairs，并通过 scenario/token/msgpack、地图投影、validity mask 和
+lane-context Tier sensitivity 审计。
+
+M4 正式统计结果：
+
+- assertive mean speed delta：`+1.4277 m/s`，95% paired bootstrap CI
+  `[1.0106,1.8723]`，paired dz=`0.948`；
+- assertive RMS acceleration delta：`+0.2562 m/s²`，95% CI
+  `[0.1701,0.3416]`，paired dz=`0.862`；
+- Full embedding BDD：MMD²=`0.0142209`，1000-permutation
+  `p=0.733267`；
+- Tier A / Tier A+B BDD 同样不显著。
+
+当前结论是：PDM assertive 参数在 official same-scenario rollout 中稳定改变
+trajectory-level speed/acceleration，但现有 behavior encoder 的总体与
+task-conditioned embedding distribution BDD 未检测到显著漂移。
+
+M4 是对已观察 M3 exploratory result 的 retrospective formalization，不是独立
+预注册确认实验。THW 仅有35个 finite available-case pairs，均值CI跨零；task
+detector 仍存在 overlap 和 proxy 语义限制。完整结果见
+`outputs/stage7_m4_statistical_evidence_v1/`。
+
+M5 进一步解释 paired trajectory evidence 与 marginal BDD 的差异：learned
+embedding 的同场景 sign-flip `p=0.0001`，scenario-grouped planner probe
+ROC-AUC=`0.638`、pair-swap `p=0.00699`，说明embedding确实包含可推广的planner
+信息；但 marginal MMD `p=0.733`。interaction features和trajectory summary也呈现
+paired/probe显著而marginal MMD不显著。结论是跨场景异质性与estimand差异是主要
+机制之一，不能把BDD不显著简化为embedding完全没有行为信息。完整结果见
+`outputs/stage7_m5_representation_mechanism_v1/`。
+
+M6 使用相同 embedding 和相同45个 scenario pairs，把 MMD 的 permutation null
+与 matched simulation 设计对齐。original-space MMD²=`0.0141802` 在 pooled
+shuffle 下 `p=0.737126`，在 within-scenario pair swap 下 `p=0.002300`；
+pair-midpoint residual BDD 为 MMD²=`0.0994187`、`p=0.000100`。这证明现有
+embedding 已编码稳定的同场景 planner shift，先前的主要矛盾是 marginal estimand
+丢弃了 pairing，而不是模型完全失效。
+
+M6.1 将 primary estimator、100000次 permutation、exceedance count、输入与
+checkpoint hash、pair audit 和 quality sensitivity 正式冻结。Primary
+exceedance=`175/100000`、plus-one `p=0.001760`；45/45 pairs 完整，Tier A 40对
+和 Tier A+B 44对的 sensitivity 经 Holm correction 后仍显著，已测
+fallback/ambiguous-rate 相关性经 Holm correction 后均不显著。
+
+M6 保留 M4 marginal BDD，不把 paired BDD 用于异源实路日志。当前45对是方法开发集，
+不是独立确认集；`mean_speed` supervision 只是候选改进假设，绝对速度还可能泄漏
+ODD/限速。Waymo-only Stage5D-balanced-v2 继续作为主跨域模型，下一步是新
+log/scenario-disjoint 且 selection config 独立冻结的锁定确认，而不是默认联合
+重训练；两套 planner treatment 参数本身必须保持一致。M6.1 结果见
+`outputs/stage7_m6_1_paired_bdd_method_freeze_v1/`，协议见
+`docs/stage7_cross_domain_style_sensitive_training_protocol.md`。
+
+M6.2 进一步冻结了新确认集入口和 pre-treatment task-conditioned paired BDD。
+新数据必须与当前45对在 log/scenario 上不相交，同时保持两套 planner 参数指纹
+完全一致。当前五个 task 各有8–9对，全部低于12对运行下限；learned embedding
+只有 high-motion dynamics 在开发集上通过 Holm correction
+（exact p=`0.00390625`，Holm p=`0.01953125`）。这说明总体 paired effect 存在
+task heterogeneity，不能宣称所有任务都有同等明显差异。结果见
+`outputs/stage7_m6_2_locked_task_bdd_development_v1/`。
+
+M6.3 已把锁定确认集的样本规模变成机器可执行的 simulation-based power
+justification。主设计假设锁定域效应至少保留开发 pilot 均值差的75%，要求五个
+冻结任务各60个完整 pairs；按20%损耗率应采各75对，共375对，五任务 simultaneous
+Holm-corrected power=`0.918`（95% CI `[0.891,0.939]`）。Overall complete pairs
+另受 M6.2 质量下限约束，至少80对。若按50%效应做保守预算，需求上升到每任务
+160个完整 pairs、总计1000个 gross pairs。M6.2 locked mode 会核验 power 文件
+hash、task mapping、配额和 planner fingerprints，不满足即拒绝运行。M6.3 仍是
+开发 pilot 驱动的采集规划，不是 achieved power，也没有触发重新训练。主设计见
+`outputs/stage7_m6_3_simulation_power_v1/`。
+
+M6.4 已实现 outcome-blind collection preflight：候选选择只使用 nuPlan
+`scenario_type` 元数据，并强制开发 token/log 零重叠、歧义标签排除、DB 文件存在、
+每 log 最多2个场景、planner fingerprint 及 M6.2/M6.3 SHA256 链一致。只有五任务
+各75个 primary 和15个 reserve 均满足时才会生成 locked collection manifest。
+
+当前本机只有63个 mini logs，其中34个已进入开发集；剩余 inventory 的冻结
+lane-change 候选仅2个。因此预检状态为
+`BLOCKED_INSUFFICIENT_PRETREATMENT_INVENTORY`，未生成 locked manifest、未启动
+rollout。下一步必须增加新的 nuPlan logs 并重建 scenario-tag inventory，而不是
+复用开发 log、放宽任务定义或提前重训练。审计见
+`outputs/stage7_m6_4_locked_collection_preflight_v1/`。

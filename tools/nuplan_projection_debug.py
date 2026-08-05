@@ -83,8 +83,9 @@ def collect_nuplan_projection_debug_rows(
     for t in frame_indices:
         ex = float(stage7c_seq[t, 0]); ey = float(stage7c_seq[t, 1]); eh = float(stage7c_seq[t, 2])
         ego_proj = None
+        ego_projection_reason = "lane_map_unavailable"
         if lane_infos:
-            ego_proj, _, _ = find_best_lane_for_agent(__import__("numpy").array([ex, ey]), eh, lane_infos, max_lat, max_hd,
+            ego_proj, ego_projection_reason, _ = find_best_lane_for_agent(__import__("numpy").array([ex, ey]), eh, lane_infos, max_lat, max_hd,
                 search_radius=float(config.get("lane_search_radius", 20.0)), topk_candidates=int(config.get("lane_topk_candidates", 32)),
                 disable_spatial_index=bool(config.get("disable_lane_spatial_index", False)))
         dbg = assign_debug[t] if t < len(assign_debug) else {}
@@ -98,8 +99,9 @@ def collect_nuplan_projection_debug_rows(
             rel_x, rel_y = _rel_xy(ex, ey, eh, x, y)
             dist = float(math.hypot(x - ex, y - ey))
             cand_proj = None
+            candidate_projection_reason = "lane_map_unavailable"
             if lane_infos:
-                cand_proj, _, _ = find_best_lane_for_agent(__import__("numpy").array([x, y]), heading, lane_infos, max_lat, max_hd,
+                cand_proj, candidate_projection_reason, _ = find_best_lane_for_agent(__import__("numpy").array([x, y]), heading, lane_infos, max_lat, max_hd,
                     search_radius=float(config.get("lane_search_radius", 20.0)), topk_candidates=int(config.get("lane_topk_candidates", 32)),
                     disable_spatial_index=bool(config.get("disable_lane_spatial_index", False)))
             cand_lane = str(cand_proj.get("lane_id", "")) if cand_proj else ""
@@ -136,11 +138,13 @@ def collect_nuplan_projection_debug_rows(
                 "global_row": global_row, "scenario_index": scenario_index, "planner_id": planner_id, "planner_name": planner_name,
                 "timestep": t, "candidate_index": ci, "track_id": track_id, "object_type": "", "map_name": map_name, "assignment_mode": assignment_mode,
                 "ego_x": ex, "ego_y": ey, "ego_heading": eh, "ego_lane_id": ego_lane, "ego_lane_projection_success": bool(ego_proj),
+                "ego_lane_projection_reason": ego_projection_reason,
                 "ego_lane_lateral_offset": _finite_float((ego_proj or {}).get("l")), "ego_lane_heading_diff_deg": float(math.degrees(abs(wrap_to_pi(eh - float((ego_proj or {}).get("heading", eh)))))) if ego_proj else None,
                 "ego_lane_s": _finite_float((ego_proj or {}).get("s")), "ego_lane_context_quality": dbg.get("lane_context_quality", "unknown"),
                 "candidate_x": x, "candidate_y": y, "candidate_heading": heading, "candidate_speed": speed,
                 "candidate_distance_to_ego": dist, "candidate_rel_x": rel_x, "candidate_rel_y": rel_y, "candidate_rel_heading_deg": float(math.degrees(wrap_to_pi(heading - eh))),
                 "candidate_best_lane_id": cand_lane, "candidate_projection_success": bool(cand_proj),
+                "candidate_projection_reason": candidate_projection_reason,
                 "candidate_lane_lateral_offset": _finite_float((cand_proj or {}).get("l")), "candidate_lane_heading_diff_deg": float(math.degrees(abs(wrap_to_pi(heading - float((cand_proj or {}).get("heading", heading)))))) if cand_proj else None,
                 "candidate_lane_s": _finite_float((cand_proj or {}).get("s")), "candidate_lane_distance_to_ego_lane": None,
                 "candidate_lane_type": getattr(cand_info, "lane_type", ""), "ego_lane_type": getattr(ego_info, "lane_type", ""),
@@ -172,6 +176,8 @@ def summarize_projection_debug(rows: List[Dict[str, Any]], assignment_debug_rows
     by_dist = defaultdict(lambda: [0, 0])
     lat_vals: List[float] = []; hd_vals: List[float] = []
     rej = Counter(); rej_by_slot = defaultdict(Counter)
+    ego_projection_reasons = Counter()
+    candidate_projection_reasons = Counter()
     for r in rows:
         ot = str(r.get("object_type") or "unknown"); by_type[ot][1] += 1; by_type[ot][0] += int(bool(r.get("candidate_projection_success")))
         db = _bucket_distance(float(r.get("candidate_distance_to_ego") or 0.0)); by_dist[db][1] += 1; by_dist[db][0] += int(bool(r.get("candidate_projection_success")))
@@ -179,6 +185,8 @@ def summarize_projection_debug(rows: List[Dict[str, Any]], assignment_debug_rows
         if r.get("candidate_lane_heading_diff_deg") is not None: hd_vals.append(abs(float(r["candidate_lane_heading_diff_deg"])))
         if not r.get("accepted_by_lane_aware"):
             reason = str(r.get("rejection_reason") or "unknown"); rej[reason] += 1; rej_by_slot[str(r.get("assigned_slot") or "unassigned")][reason] += 1
+        ego_projection_reasons[str(r.get("ego_lane_projection_reason") or "unknown")] += 1
+        candidate_projection_reasons[str(r.get("candidate_projection_reason") or "unknown")] += 1
     fallback_no_ego = sum(1 for d in assignment_debug_rows if d.get("fallback_assignment_used") and str(d.get("fallback_reason", "")).startswith("ego"))
     fallback_projection = sum(1 for d in assignment_debug_rows if d.get("fallback_assignment_used") and d.get("fallback_reason") not in {"lane_map_unavailable", "no_candidate_for_slot", ""})
     unknown_categories = ["missing_adjacency", "topology_disconnected", "direction_mismatch", "candidate_projection_failed", "ego_projection_failed", "lane_connector_unhandled", "other"]
@@ -193,6 +201,8 @@ def summarize_projection_debug(rows: List[Dict[str, Any]], assignment_debug_rows
         "candidate_projection_success_rate": cand_success / cand_total if cand_total else None,
         "candidate_projection_success_rate_by_object_type": {k: v[0] / v[1] for k, v in by_type.items() if v[1]},
         "candidate_projection_success_rate_by_distance_bucket": {k: v[0] / v[1] for k, v in sorted(by_dist.items()) if v[1]},
+        "ego_projection_reason_counts": dict(ego_projection_reasons),
+        "candidate_projection_reason_counts": dict(candidate_projection_reasons),
         "rejection_reason_counts": dict(rej),
         "rejection_reason_counts_by_slot": {k: dict(v) for k, v in rej_by_slot.items()},
         "best_lane_lateral_offset_distribution": _dist(lat_vals),
@@ -230,7 +240,7 @@ def write_projection_debug_artifacts(out_dir: Path, rows: List[Dict[str, Any]], 
     summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     artifacts["summary_json"] = str(summary_path)
     report_path = out_dir / "nuplan_lane_projection_debug_report.md"
-    lines = ["# nuPlan Lane Projection Debug", "", f"- sampled_candidate_rows: `{summary.get('sampled_candidate_rows')}`", f"- ego_projection_success_rate: `{summary.get('ego_projection_success_rate')}`", f"- candidate_projection_success_rate: `{summary.get('candidate_projection_success_rate')}`", f"- rejection_reason_counts: `{summary.get('rejection_reason_counts')}`", f"- lane_relation_unknown_breakdown: `{summary.get('lane_relation_unknown_breakdown')}`", f"- candidate_projection_success_rate_by_distance_bucket: `{summary.get('candidate_projection_success_rate_by_distance_bucket')}`"]
+    lines = ["# nuPlan Lane Projection Debug", "", f"- sampled_candidate_rows: `{summary.get('sampled_candidate_rows')}`", f"- ego_projection_success_rate: `{summary.get('ego_projection_success_rate')}`", f"- candidate_projection_success_rate: `{summary.get('candidate_projection_success_rate')}`", f"- ego_projection_reason_counts: `{summary.get('ego_projection_reason_counts')}`", f"- candidate_projection_reason_counts: `{summary.get('candidate_projection_reason_counts')}`", f"- rejection_reason_counts: `{summary.get('rejection_reason_counts')}`", f"- lane_relation_unknown_breakdown: `{summary.get('lane_relation_unknown_breakdown')}`", f"- candidate_projection_success_rate_by_distance_bucket: `{summary.get('candidate_projection_success_rate_by_distance_bucket')}`"]
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     artifacts["report_md"] = str(report_path)
     unknown_rows = [r for r in rows if r.get("lane_relation_used_by_assignment") == "unknown" or r.get("rejection_reason") == "wrong_lane"]

@@ -98,7 +98,7 @@ def smooth_signal(x, window: int, enabled: bool = True) -> np.ndarray:
     arr = np.asarray(x, dtype=float)
     if not enabled or window <= 1 or arr.size == 0:
         return arr.copy()
-    window = int(max(1, window))
+    window = int(min(arr.size, max(1, window)))
     kernel = np.ones(window, dtype=float)
     valid = np.isfinite(arr)
     filled = np.where(valid, arr, 0.0)
@@ -168,6 +168,39 @@ def valid_ratio(slot: Optional[np.ndarray]) -> float:
     if not has_cols(slot, [NEI["valid"]]):
         return np.nan
     return safe_ratio(np.asarray(slot[:, NEI["valid"]], dtype=float) > 0.5)
+
+
+def apply_rollout_validity_mask(
+    ego: np.ndarray,
+    neighbor: Optional[np.ndarray],
+    validity_mask: Optional[np.ndarray],
+) -> Tuple[np.ndarray, Optional[np.ndarray], int]:
+    """Remove fixed-length padding before derivatives and event detection.
+
+    Stage7 official rollout masks are required to be a contiguous valid prefix.
+    Datasets without a mask preserve the historical all-frames behavior.
+    """
+    ego_arr = np.asarray(ego)
+    neighbor_arr = np.asarray(neighbor) if neighbor is not None else None
+    if validity_mask is None:
+        return ego_arr, neighbor_arr, int(ego_arr.shape[0])
+    mask = np.asarray(validity_mask, dtype=bool)
+    if mask.ndim != 1 or mask.shape[0] != ego_arr.shape[0]:
+        raise ValueError(
+            f"rollout validity mask must have shape [{ego_arr.shape[0]}], got {list(mask.shape)}"
+        )
+    valid_count = int(np.sum(mask))
+    expected_prefix = np.arange(mask.size) < valid_count
+    if not np.array_equal(mask, expected_prefix):
+        raise ValueError("rollout validity mask must be one contiguous valid prefix followed by padding")
+    if neighbor_arr is not None:
+        if neighbor_arr.ndim != 3 or neighbor_arr.shape[1] != ego_arr.shape[0]:
+            raise ValueError(
+                f"neighbor sequence must have shape [slots,{ego_arr.shape[0]},channels], "
+                f"got {list(neighbor_arr.shape)}"
+            )
+        neighbor_arr = neighbor_arr[:, :valid_count, :]
+    return ego_arr[:valid_count], neighbor_arr, valid_count
 
 
 def first_index(mask) -> Optional[int]:
@@ -246,7 +279,14 @@ def load_meta_frame(shard_dir: Path, rows: int, shard_id: int, warnings: List[Di
     return frame[META_COLUMNS]
 
 
-def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_available: bool, args) -> Tuple[Dict[str, str], Dict[str, float], Dict[str, str], Dict[str, float]]:
+def derive_row(
+    ego: np.ndarray,
+    neighbor: Optional[np.ndarray],
+    slot_ids_available: bool,
+    args,
+    validity_mask: Optional[np.ndarray] = None,
+) -> Tuple[Dict[str, str], Dict[str, float], Dict[str, str], Dict[str, float]]:
+    ego, neighbor, _ = apply_rollout_validity_mask(ego, neighbor, validity_mask)
     strengths = {task: "strong" for task in TASK_SPECS}
     if ego.ndim != 2 or ego.shape[0] < 2 or ego.shape[1] <= max(EGO.values()):
         return ({task: "unknown" for task in TASK_SPECS}, {}, {task: "weak_proxy" for task in TASK_SPECS}, {})
@@ -267,13 +307,28 @@ def derive_row(ego: np.ndarray, neighbor: Optional[np.ndarray], slot_ids_availab
 
     raw_jerk = np.diff(accel_raw, prepend=accel_raw[0]) / dt
     raw_lateral_accel = np.diff(vy, prepend=vy[0]) / dt
-    raw_curvature = yaw_rate_raw / np.maximum(np.abs(speed_raw), 1e-3)
+    raw_curvature = np.full(speed_raw.shape, np.nan, dtype=float)
+    raw_curvature_valid = (
+        np.isfinite(speed_raw)
+        & np.isfinite(yaw_rate_raw)
+        & (np.abs(speed_raw) >= float(args.curvature_min_speed))
+    )
+    raw_curvature[raw_curvature_valid] = (
+        yaw_rate_raw[raw_curvature_valid] / np.abs(speed_raw[raw_curvature_valid])
+    )
 
     accel = np.clip(accel_smoothed, args.accel_min_cap, args.accel_max_cap)
     yaw_rate = clip_abs(yaw_rate_smoothed, args.yaw_rate_abs_cap)
     jerk = clip_abs(np.diff(accel, prepend=accel[0]) / dt, args.jerk_abs_cap)
     lateral_accel = clip_abs(np.diff(vy_smoothed, prepend=vy_smoothed[0]) / dt, args.lateral_accel_abs_cap)
-    curvature = clip_abs(yaw_rate / np.maximum(np.abs(speed), 1e-3), args.curvature_abs_cap)
+    curvature_unclipped = np.full(speed.shape, np.nan, dtype=float)
+    curvature_valid = (
+        np.isfinite(speed)
+        & np.isfinite(yaw_rate)
+        & (np.abs(speed) >= float(args.curvature_min_speed))
+    )
+    curvature_unclipped[curvature_valid] = yaw_rate[curvature_valid] / np.abs(speed[curvature_valid])
+    curvature = clip_abs(curvature_unclipped, args.curvature_abs_cap)
     speed_delta = speed[-1] - speed[0] if np.isfinite(speed[[0, -1]]).all() else np.nan
     peak_decel = min(args.accel_max_cap + abs(args.accel_min_cap), max(0.0, -safe_min(accel))) if np.isfinite(safe_min(accel)) else np.nan
     peak_decel = min(float(args.decel_metric_cap), peak_decel) if np.isfinite(peak_decel) else np.nan
@@ -788,7 +843,31 @@ def build(args):
         rows = int(ego_arr.shape[0])
         neighbor_arr = load_optional_array(shard_dir, "neighbor_seq.npy", rows, shard_id, warnings)
         slot_ids_arr = load_optional_array(shard_dir, "neighbor_slot_ids.npy", rows, shard_id, warnings)
+        validity_mask_arr = load_optional_array(shard_dir, "ego_seq_mask.npy", rows, shard_id, warnings)
         _ = load_optional_array(shard_dir, "interaction_feat_style.npy", rows, shard_id, warnings)
+        if validity_mask_arr is not None:
+            if validity_mask_arr.ndim != 2 or validity_mask_arr.shape[1] != ego_arr.shape[1]:
+                raise ValueError(
+                    f"ego_seq_mask.npy must match ego_seq [rows,T]: mask={list(validity_mask_arr.shape)}, "
+                    f"ego={list(ego_arr.shape)}"
+                )
+            valid_counts = np.sum(np.asarray(validity_mask_arr, dtype=bool), axis=1)
+            warnings.append({
+                "warning": "rollout_validity_mask_applied",
+                "shard_id": int(shard_id),
+                "path": str(shard_dir / "ego_seq_mask.npy"),
+                "rows": rows,
+                "timesteps": int(ego_arr.shape[1]),
+                "valid_timestep_count_min": int(np.min(valid_counts)),
+                "valid_timestep_count_max": int(np.max(valid_counts)),
+                "padding_frames_excluded": int(validity_mask_arr.size - np.sum(valid_counts)),
+            })
+        else:
+            warnings.append({
+                "warning": "rollout_validity_mask_missing_all_frames_used",
+                "shard_id": int(shard_id),
+                "message": "Backward-compatible fallback: derivatives and event detectors use every stored timestep.",
+            })
         if neighbor_arr is None:
             warnings.append({"warning": "raw_neighbor_missing_detectors_unknown_or_weak_proxy", "shard_id": int(shard_id), "shard_path": str(shard_path)})
         if slot_ids_arr is None:
@@ -806,7 +885,14 @@ def build(args):
         meta = load_meta_frame(shard_dir, rows, shard_id, warnings)
         for local_row in range(rows):
             neighbor_row = np.asarray(neighbor_arr[local_row]) if neighbor_arr is not None else None
-            events, metrics, strengths, raw_diagnostics = derive_row(np.asarray(ego_arr[local_row]), neighbor_row, slot_ids_arr is not None, args)
+            validity_mask_row = np.asarray(validity_mask_arr[local_row], dtype=bool) if validity_mask_arr is not None else None
+            events, metrics, strengths, raw_diagnostics = derive_row(
+                np.asarray(ego_arr[local_row]),
+                neighbor_row,
+                slot_ids_arr is not None,
+                args,
+                validity_mask=validity_mask_row,
+            )
             base = {"global_row": int(global_row), "shard_id": int(shard_id), "local_row": int(local_row)}
             for col in META_COLUMNS:
                 base[col] = meta.iloc[local_row][col]
@@ -861,6 +947,8 @@ def build(args):
         "detector_strength_values": ["strong", "proxy", "weak_proxy", "unknown"],
         "schema_notes": {
             "neighbor_slot_ids_loaded_with_pickle": True,
+            "rollout_validity_mask_applied_when_available": True,
+            "invalid_padding_frames_excluded_before_derivatives_and_event_detection": True,
             "ttc_thw_sentinel_and_out_of_range_values_are_nan": True,
             "ttc_metrics_use_true_neighbor_seq_ttc_column_only": True,
             "detector_reliability_note": "following and yield_conflict are currently the most reliable strong detectors; cutin, overtake, and much of lead/queue remain proxy-based; lane_change and hesitation are usable only if positive_ratio is not broad after tightening.",
@@ -894,6 +982,7 @@ def parse_args():
     p.add_argument("--yaw_rate_abs_cap", type=float, default=2.0, help="Absolute cap for yaw-rate metrics in rad/s.")
     p.add_argument("--lateral_accel_abs_cap", type=float, default=8.0, help="Absolute cap for lateral acceleration metrics in m/s^2.")
     p.add_argument("--curvature_abs_cap", type=float, default=1.0, help="Absolute cap for curvature metrics.")
+    p.add_argument("--curvature_min_speed", type=float, default=0.5, help="Minimum absolute ego speed in m/s required for yaw_rate/speed curvature metrics.")
     p.add_argument("--lateral_speed_abs_cap", type=float, default=5.0, help="Absolute cap for lane-change lateral-speed metrics in m/s.")
     p.add_argument("--heading_change_total_cap", type=float, default=8.0, help="Upper cap for total heading-change metrics in radians.")
     p.add_argument("--ttc_valid_max_s", type=float, default=30.0, help="Maximum valid TTC in seconds; <=0, >=999, and larger values are set to NaN.")

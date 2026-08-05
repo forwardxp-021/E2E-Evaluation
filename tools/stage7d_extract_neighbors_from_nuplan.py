@@ -168,19 +168,56 @@ def parse_neighbor_world_tracks(path: Path, timesteps: int) -> Tuple[Dict[str, D
 
 
 def find_msgpack(sim_dir: Path, row: Dict[str, str]) -> Path | None:
-    direct = row.get("actual_msgpack_path") or row.get("msgpack_path")
-    if direct and Path(direct).exists():
-        return Path(direct)
     scenario_index = str(row.get("scenario_index", ""))
     planner_name = str(row.get("planner_name", ""))
+    expected_token = str(
+        row.get("actual_nuplan_scenario_token")
+        or row.get("scenario_token")
+        or row.get("scenario_id")
+        or row.get("scene_token")
+        or ""
+    ).strip()
+    if not scenario_index or not planner_name or not expected_token:
+        raise ValueError(
+            "Strict msgpack identity requires non-empty scenario_index, planner_name, "
+            f"and scenario token; got scenario_index={scenario_index!r}, "
+            f"planner_name={planner_name!r}, token={expected_token!r}"
+        )
     base = sim_dir / "official_nuplan_runs" / f"scenario_{scenario_index}" / planner_name
-    roots = [base, sim_dir / "official_nuplan_runs"] if base.exists() else [sim_dir / "official_nuplan_runs"]
-    msgpacks: List[Path] = []
-    for root in roots:
-        msgpacks.extend(sorted(root.rglob("*.msgpack.xz")))
-        if msgpacks:
-            return msgpacks[0]
-    return None
+    direct = row.get("actual_msgpack_path") or row.get("msgpack_path")
+    candidates: List[Path]
+    if direct:
+        direct_path = Path(direct)
+        if not direct_path.is_absolute():
+            direct_path = sim_dir / direct_path
+        candidates = [direct_path] if direct_path.exists() else []
+    else:
+        candidates = sorted(base.rglob("*.msgpack.xz")) if base.exists() else []
+    base_resolved = base.resolve()
+    matched: List[Path] = []
+    for path in candidates:
+        resolved = path.resolve()
+        try:
+            resolved.relative_to(base_resolved)
+        except ValueError as exc:
+            raise ValueError(
+                f"Msgpack path escapes expected scenario/planner directory: path={resolved}, "
+                f"expected_base={base_resolved}"
+            ) from exc
+        filename_token = resolved.name.removesuffix(".msgpack.xz")
+        if filename_token == expected_token:
+            matched.append(resolved)
+    if not matched and candidates:
+        raise ValueError(
+            f"No msgpack token match under scenario_index={scenario_index}, planner={planner_name}: "
+            f"expected_token={expected_token}, candidates={[str(p) for p in candidates]}"
+        )
+    if len(matched) > 1:
+        raise ValueError(
+            f"Ambiguous msgpack identity for scenario_index={scenario_index}, planner={planner_name}, "
+            f"token={expected_token}: {[str(p) for p in matched]}"
+        )
+    return matched[0] if matched else None
 
 
 def ego_world(seq: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:

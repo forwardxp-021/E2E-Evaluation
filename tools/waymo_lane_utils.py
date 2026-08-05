@@ -143,12 +143,16 @@ def find_best_lane_for_agent(point_xy, heading, lane_infos: Dict[str, LaneInfo],
                              search_radius: float = 20.0, topk_candidates: int = 32, disable_spatial_index: bool = False):
     candidate_ids = list(lane_infos.keys()) if disable_spatial_index else _candidate_lane_ids(point_xy, lane_infos, search_radius, topk_candidates)[0]
     cand = []
+    projectable_count = 0
+    lateral_pass_count = 0
     for lid in candidate_ids:
         proj = project_point_to_lane(point_xy, lane_infos[lid])
         if not proj["projection_success"]:
             continue
+        projectable_count += 1
         if proj["distance_to_lane"] > max_lateral_distance:
             continue
+        lateral_pass_count += 1
         hd = 0.0
         if np.isfinite(heading):
             hd = abs(wrap_to_pi(float(heading) - float(proj["heading"])))
@@ -156,7 +160,15 @@ def find_best_lane_for_agent(point_xy, heading, lane_infos: Dict[str, LaneInfo],
                 continue
         cand.append((proj["distance_to_lane"], hd, lid, proj))
     if not cand:
-        return None, "no_lane_passed_threshold", len(candidate_ids)
+        if not candidate_ids:
+            reason = "no_candidate_lane"
+        elif projectable_count == 0:
+            reason = "no_projectable_lane"
+        elif lateral_pass_count == 0:
+            reason = "lateral_distance_exceeded"
+        else:
+            reason = "heading_difference_exceeded"
+        return None, reason, len(candidate_ids)
     cand.sort(key=lambda x: (x[0], x[1]))
     return cand[0][3], "ok", len(candidate_ids)
 

@@ -6578,3 +6578,723 @@ python tools/stage7c_run_external_planner_simulation.py \
 - 如果存在 strict DB-tag candidates 但 `final_selected_rows=0`，`lane_change_candidate_summary.json` 和 report 必须写出 `strict_db_tag_candidates_exist_but_none_selected=true` / insufficient warning，且不应把 empty `stage7c_candidate_context/merged_metadata.csv` 误判为 OK。
 - `log_name` 非空，`scenario_token` 不重复，`scene_token == scenario_token`，`db_scene_token` 保留原始 DB scene token。
 - Stage7C smoke 的 expected scenario-planner pairs = `2 × 2 = 4`，`warnings.json.validation.pass == true`，`scenario_alignment.passed == true`，且 official command successes 为 4。
+
+## Stage7 Milestone 1 non-contiguous-axis repair and aligned rebuild
+
+Stage7E 必须读取 `simulated_ego_seq_index.json`，不能假设成功场景轴连续。以下命令复用已有 17 个成功 official rollouts，不重新运行 Stage7C simulation：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7p_pdm_v1_balanced_20_stage7c_v1 \
+  --output_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --write_strict_filter_diagnostic \
+  --write_strict_filtered_dataset \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --debug_projection_sample_rows 20 \
+  --overwrite
+
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v2_aligned \
+  --device cuda \
+  --overwrite
+
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v2_aligned \
+  --context_dataset_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --output_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/report_card \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+
+python tools/stage6c_build_behavior_events_v2.py \
+  --shard_manifest outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned/shard_manifest.json \
+  --feature_schema_path outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned/feature_schema.json \
+  --output_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/behavior_events_v2 \
+  --overwrite
+
+python tools/stage7f_aggressive_conservative_paired_delta.py \
+  --embedding_dir outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v2_aligned \
+  --context_dataset_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --stage7f_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/report_card \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --output_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/paired_delta_assertive_minus_conservative \
+  --overwrite
+
+python tools/stage7f_run_task_conditioned_bdd.py \
+  --embedding_dir outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v2_aligned \
+  --context_dataset_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --stage7f_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/report_card \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --behavior_events_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/behavior_events_v2 \
+  --task_keys task_following,task_lead_brake_response,task_queue_approach,task_lane_change,task_cutin_response,task_yield_conflict \
+  --min_bin_size 2 \
+  --output_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned/task_bdd_assertive_minus_conservative_v1 \
+  --overwrite
+
+python tools/audit_stage7_m1_data_credibility.py \
+  --sim_dir outputs/stage7p_pdm_v1_balanced_20_stage7c_v1 \
+  --context_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --embedding_dir outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v2_aligned \
+  --stage7f_dir outputs/stage7f_pdm_v1_balanced20_paired17_v2_aligned \
+  --output_dir outputs/stage7_m1_pdm_data_quality_audit_v2_aligned \
+  --overwrite
+```
+
+通过标准：
+
+- metadata 原始 scenario axis 为 `0..11,14..18`，不是重新编号后的 `0..16`；
+- 34/34 行通过 scenario/planner/token/msgpack 严格一致性检查；
+- `warnings.json.validation.scenario_planner_token_alignment_strict=true`；
+- `warnings.json.validation.msgpack_global_fallback_disabled=true`；
+- `ego_seq_mask.npy` shape=`[34,150]` 且逐元素匹配 Stage7C `simulated_ego_seq_mask.npy`；
+- `interaction_feat_style.npy` 只聚合 mask=true 的有效 rollout 帧；
+- Stage6C `behavior_event_warnings_v2.json` 包含 `rollout_validity_mask_applied`，padding 帧不得进入导数、事件检测或 raw physical diagnostics；
+- `yaw_rate/speed` 曲率仅在 `|speed| >= 0.5 m/s` 时定义；更低速度的曲率为 NaN，不使用分母下限制造大曲率；
+- context shape=`[34,150,83]`，embedding shape=`[34,64]`；
+- Stage7F full mode 保持 17 个完整 planner pair；
+- Milestone 1 重审输出 `PASS_WITH_LIMITATIONS` 时，limitations 必须继续在论文结论中披露，不能把 high fallback、过小 strict subset 或 padding-frame physical warning 隐藏为 PASS。
+
+## Stage 7 Milestone 2A：逐场景地图投影与 fallback 修复
+
+### 1. 命令
+
+复用已有 17 个成功 rollout，不重新执行 Stage7C simulation：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7p_pdm_v1_balanced_20_stage7c_v1 \
+  --output_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v3_m2a \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/data/cache/mini \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --debug_projection_sample_rows 34 \
+  --debug_projection_max_frames_per_row 30 \
+  --debug_projection_max_candidates_per_frame 16 \
+  --write_strict_filter_diagnostic \
+  --write_strict_filtered_dataset \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --overwrite
+
+python tools/audit_stage7_m2a_lane_assignment.py \
+  --baseline_context_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v2_aligned \
+  --repaired_context_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v3_m2a \
+  --output_dir outputs/stage7_m2a_lane_assignment_audit_v1 \
+  --overwrite
+```
+
+embedding 和 Stage7F 使用 `v3_m2a` context 重建到：
+
+```text
+outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v3_m2a/
+outputs/stage7f_pdm_v1_balanced20_paired17_v3_m2a/
+outputs/stage7_m1_pdm_data_quality_audit_v3_m2a/
+```
+
+### 2. 期望行为
+
+- lane cache 的作用域必须是 `(map_name, source scenario_index)`，不能把同一地图第一个场景的局部 lane 集合复用于其他场景。
+- 同一场景的两个 planner 共同定义地图查询覆盖范围。
+- 构建器优先从 nuPlan log DB 的 `log.map_version` 解析真实地图；`--map_name` 仅是最后兜底。
+- `log.location=las_vegas` 等旧内部别名不能直接传给 map factory，必须使用 canonical `map_version=us-nv-las-vegas-strip`。
+- 输出 `nuplan_lane_assignment_by_row.csv` 和 `nuplan_lane_assignment_diagnostics.json`，覆盖全部 34 行及所有有效帧。
+- 投影失败必须区分 `lateral_distance_exceeded`、`heading_difference_exceeded`、`no_projectable_lane` 等原因。
+
+### 3. 通过标准
+
+- `lane_cache_scope=map_name_plus_source_scenario`；
+- lane cache entries=`17`，map API cache entries=`4`；
+- 34/34 行诊断完整，每个场景包含两个 planner；
+- geometric fallback rate `<0.5`，且相对 v2 绝对下降至少 `0.3`；
+- 实际结果：fallback `0.865104 → 0.016148`，相对减少 `98.13%`；
+- ego lane projection success rate=`0.983852`；
+- `lane_map_unavailable` fallback=`0`，剩余 82 帧均为 `heading_difference_exceeded`；
+- strict-0.8：`20/34` 行、7 个完整 planner-paired 场景；
+- Milestone 2A audit verdict=`PASS`。
+
+## Stage 7 Milestone 2B：lane-context 质量分层、成对门控与扩容判定
+
+### 1. 命令
+
+使用与 Milestone 2A 相同的 17 个成功 rollout 重建带逐行质量统计的 context：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7p_pdm_v1_balanced_20_stage7c_v1 \
+  --output_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/data/cache/mini \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --debug_projection_sample_rows 34 \
+  --debug_projection_max_frames_per_row 30 \
+  --debug_projection_max_candidates_per_frame 16 \
+  --write_strict_filter_diagnostic \
+  --write_strict_filtered_dataset \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --overwrite
+
+python tools/stage7_m2b_build_paired_quality_gate.py \
+  --context_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b \
+  --output_dir outputs/stage7_m2b_lane_context_quality_v1 \
+  --overwrite
+```
+
+Tier A 与 Tier A+B 的 BDD 敏感性分析使用同一份 M2A embedding：
+
+```bash
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_path outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v3_m2a/embedding.npy \
+  --feature_path outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b/interaction_feat_style.npy \
+  --feature_schema_path outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b/feature_schema.json \
+  --a_indices_path outputs/stage7_m2b_lane_context_quality_v1/indices/tier_a_pdm_closed_assertive_v1.npy \
+  --b_indices_path outputs/stage7_m2b_lane_context_quality_v1/indices/tier_a_pdm_closed_conservative_v1.npy \
+  --output_dir outputs/stage7_m2b_lane_context_quality_v1/bdd_sensitivity/tier_a_assertive_vs_conservative \
+  --num_bootstrap 50 --num_permutation 100 --min_slice_size 2 --top_k 20 \
+  --overwrite
+
+python tools/stage6_compare_unpaired_style.py \
+  --embedding_path outputs/stage7e_pdm_v1_balanced20_paired17_embeddings_v3_m2a/embedding.npy \
+  --feature_path outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b/interaction_feat_style.npy \
+  --feature_schema_path outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b/feature_schema.json \
+  --a_indices_path outputs/stage7_m2b_lane_context_quality_v1/indices/tier_b_inclusive_pdm_closed_assertive_v1.npy \
+  --b_indices_path outputs/stage7_m2b_lane_context_quality_v1/indices/tier_b_inclusive_pdm_closed_conservative_v1.npy \
+  --output_dir outputs/stage7_m2b_lane_context_quality_v1/bdd_sensitivity/tier_b_inclusive_assertive_vs_conservative \
+  --num_bootstrap 50 --num_permutation 100 --min_slice_size 2 --top_k 20 \
+  --overwrite
+
+python tools/stage7_m2b_finalize_quality_analysis.py \
+  --quality_dir outputs/stage7_m2b_lane_context_quality_v1 \
+  --baseline_context_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v3_m2a \
+  --rebuilt_context_dir outputs/stage7e_pdm_v1_balanced20_paired17_context_v4_m2b \
+  --full_bdd_summary outputs/stage7f_pdm_v1_balanced20_paired17_v3_m2a/report_card/stage6_pairwise/pdm_closed_assertive_v1_vs_pdm_closed_conservative_v1/bdd_summary.json \
+  --output_dir outputs/stage7_m2b_final_audit_v1 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 每个 planner row 按有效帧统计 fallback、ambiguity、bad 与 quality-eligible 比例。
+- Tier A 默认要求 fallback 与 ambiguity 均不超过 `0.05` 且没有 bad frame；Tier B 上限均为 `0.20`；其他为 Tier C。
+- pair tier 取同一 scenario 两个 planner 中较差的 tier，任何敏感性子集都必须同时保留或删除两个 planner row。
+- 全部 17 对是论文主分析；Tier A 与 Tier A+B 仅用于敏感性分析，不能按 realized rollout quality 单独删除某个 planner row。
+- 六个核心数组与 `v3_m2a` 逐字节一致时复用原 embedding，不重复编码。
+- 候选级 `lane_relation_unknown` 是采样候选 lane 的关系诊断，不等同于 ego slot assignment fallback。
+
+### 3. 通过标准
+
+- row tiers=`A:31, B:2, C:1`，pair tiers=`A:15, B:1, C:1`；
+- full / Tier A / Tier A+B pair 数为 `17 / 15 / 16`，各子集 planner 索引严格对称；
+- 六个核心数组相对 `v3_m2a` 的 SHA-256 全部一致；
+- full BDD：`MMD²=0.0292350, p=0.891089`；
+- Tier A BDD：`MMD²=0.0365372, p=0.722772`；
+- Tier A+B BDD：`MMD²=0.0326079, p=0.702970`；
+- 三层结果均保持“小且不显著”的定性结论；
+- final audit verdict=`PASS`，`scale_readiness=READY_TO_SCALE`。这表示数据管线可以扩容，不表示 17 对已经达到论文最终统计规模。
+
+## Stage 7 Milestone 3：Balanced50 论文规模扩容
+
+### 1. 命令
+
+先冻结 50 个目标场景和 20 个仅用于技术失败替换的 reserve：
+
+```bash
+python tools/stage7_m3_select_balanced_scaleup.py \
+  --inventory_csv outputs/stage7p_mini_scenario_inventory_v2/all_scenario_tags.csv \
+  --seed_context outputs/stage7p_pdm_balanced_20_context_v1/stage7c_candidate_context/merged_metadata.csv \
+  --prior_sim_dir outputs/stage7p_pdm_v1_balanced_20_stage7c_v1 \
+  --output_dir outputs/stage7_m3_pdm_balanced50_selection_v1 \
+  --overwrite
+```
+
+执行 50 scenarios × 2 planners 的 official nuPlan simulation：
+
+```bash
+bash scripts/run_stage7_m3_balanced50_simulation.sh
+```
+
+长任务运行时可查看：
+
+```bash
+python -m json.tool \
+  outputs/stage7_m3_pdm_balanced50_stage7c_v1/stage7c_progress.json
+
+tail -f outputs/stage7_m3_pdm_balanced50_stage7c_v1.run.log
+```
+
+### 2. 期望行为
+
+- 选择集以 M2B 的 17 个成功 complete pairs 为冻结种子，再加入 33 个新候选。
+- 历史技术失败 token `8b9c1329bd1855c9`、`20d049975d305f58`、
+  `736373a7bc135d12` 不再进入主选择集。
+- 冻结配额为 lane-change 8、following 10、stop-go/signal 10、dense
+  interaction 8、lateral/turning 7、speed context 7。
+- 主选择集在看到 M3 planner outcome 之前冻结；manifest SHA-256 必须为
+  `a59b003ee517237d5a888e9774f939879ce812ac99d09a8f41e23c6d7e196313`。
+- reserve 只能按 `reserve_rank` 替换被记录为 scenario extraction 等技术失败的
+  场景，不能依据 planner 轨迹、embedding distance、BDD 或显著性选择替换对象。
+- 两个 planner 必须对同一 scenario 同时进入或退出统计分析。
+- simulation 脚本在运行前复核冻结 hash，防止长任务期间选择集被静默修改。
+
+### 3. 通过标准
+
+- selection verdict=`PASS`；
+- selected scenarios=`50`，official rollout target=`100`；
+- selected token 唯一，覆盖 37 个 log，每个 log 不超过 2 个场景；
+- 六个 bucket 精确达到冻结配额；
+- selected 与 reserve token 不重合；
+- official simulation 至少得到 30 个、目标 50 个 complete planner pairs；
+- 所有成功 pair 必须通过 scenario/planner/token/msgpack 严格一致性检查；
+- 下游继续使用 full pairs 作为主分析，Tier A 和 Tier A+B 仅作为成对敏感性分析；
+- `READY_TO_SCALE` 不预设 M3 BDD 必须显著，统计结果无论显著与否都必须报告。
+
+完成 simulation 后的下游命令：
+
+```bash
+python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7_m3_pdm_balanced50_stage7c_v1 \
+  --output_dir outputs/stage7e_pdm_v1_balanced50_paired45_context_v1_m3 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/maps \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/data/cache/mini \
+  --map_name us-nv-las-vegas-strip \
+  --write_projection_debug \
+  --write_strict_filter_diagnostic \
+  --write_strict_filtered_dataset \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --overwrite
+
+python tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage7e_pdm_v1_balanced50_paired45_context_v1_m3 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3 \
+  --device cuda \
+  --overwrite
+
+python tools/stage7f_run_report_card.py \
+  --embedding_dir outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3 \
+  --context_dataset_dir outputs/stage7e_pdm_v1_balanced50_paired45_context_v1_m3 \
+  --output_dir outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/report_card \
+  --mode full \
+  --run_stage6_pairwise \
+  --overwrite
+
+python tools/stage7_m3_final_audit.py \
+  --selection_dir outputs/stage7_m3_pdm_balanced50_selection_v1 \
+  --sim_dir outputs/stage7_m3_pdm_balanced50_stage7c_v1 \
+  --context_dir outputs/stage7e_pdm_v1_balanced50_paired45_context_v1_m3 \
+  --embedding_dir outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3 \
+  --stage7f_dir outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3 \
+  --quality_dir outputs/stage7_m3_lane_context_quality_v1 \
+  --output_dir outputs/stage7_m3_final_audit_v1 \
+  --overwrite
+```
+
+M3 实际通过结果：
+
+```text
+selected scenarios: 50
+complete paired scenarios: 45
+successful official rollouts: 90
+context: [90,150,83]
+embedding: [90,64]
+fallback rate: 0.00737156
+ego projection success: 0.992628
+Full / Tier A / Tier A+B pairs: 45 / 40 / 44
+Full BDD: MMD²=0.0142209, p=0.742574
+Tier A BDD: MMD²=0.0163792, p=0.683168
+Tier A+B BDD: MMD²=0.0164485, p=0.673267
+final verdict: PASS_WITH_LIMITATIONS
+thesis scale: MINIMUM_USEFUL_SCALE_REACHED
+```
+
+必须保留的 M3 限制：
+
+- `task_lead_brake_response` 只有 7 个 complete positive pairs，低于 10；
+- following/queue paired-scenario Jaccard=`0.833`，不能当作相互独立证据；
+- lead-brake 与 cut-in detector 含 proxy-dominant 语义。
+
+## Stage 7 Milestone 4：正式统计推断与论文证据包
+
+### 1. 命令
+
+Full、Tier A 和 Tier A+B BDD 均使用 `1000 bootstrap + 1000 permutation`
+重新计算，输出到：
+
+```text
+outputs/stage7_m4_bdd_robustness_v1/full/
+outputs/stage7_m4_bdd_robustness_v1/tier_a/
+outputs/stage7_m4_bdd_robustness_v1/tier_b_inclusive/
+```
+
+生成配对统计推断、Holm 校正和论文表图：
+
+```bash
+python tools/stage7_m4_build_statistical_evidence.py \
+  --paired_delta_csv outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --task_bdd_csv outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/task_bdd_assertive_minus_conservative_v1/task_bdd_summary.csv \
+  --m3_summary outputs/stage7_m3_final_audit_v1/milestone3_final_summary.json \
+  --bdd_root outputs/stage7_m4_bdd_robustness_v1 \
+  --output_dir outputs/stage7_m4_statistical_evidence_v1 \
+  --bootstrap_repetitions 10000 \
+  --seed 20260726 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 冻结 M3 的45个 complete pairs，不重新选择场景或修改 planner 参数。
+- 主统计 family 固定为 mean speed、RMS acceleration、mean THW 三项。
+- 每项报告 paired mean delta、10000次 paired bootstrap CI、median、Hodges–Lehmann
+  delta、paired Cohen's dz、rank-biserial、单侧 Wilcoxon 和 exact sign test。
+- Wilcoxon 与 sign-test 分别在三项主端点内使用 Holm family-wise correction。
+- 六个 task-conditioned BDD 作为单独 exploratory family 做 Holm correction。
+- THW 没有 finite front-agent contrast 的场景不能填补，必须执行 available-case
+  分析并报告缺失数。
+- BDD bootstrap interval 只能解释为重采样变异，显著性以 permutation p-value 为准。
+
+### 3. 通过标准
+
+- paired rows=`45`；
+- paired bootstrap=`10000`，固定 seed=`20260726`；
+- 三组 BDD 均为 `1000 bootstrap + 1000 permutation`；
+- Full/Tier A/Tier A+B 的 pair 数仍为 `45/40/44`；
+- 主端点和 task family 均完成 Holm correction；
+- 生成非空 CSV、Markdown、JSON 和两张论文图；
+- verdict=`PASS_WITH_LIMITATIONS`；
+- analysis status=`RETROSPECTIVE_FORMALIZATION_OF_M3_EXPLORATORY_RESULTS`，不能称为独立预注册确认实验。
+
+M4 实际主端点结果：
+
+| endpoint | n | mean delta (95% paired bootstrap CI) | paired dz | Wilcoxon Holm p | sign-test Holm p |
+| --- | ---: | --- | ---: | ---: | ---: |
+| mean speed | 45 | `+1.4277 [1.0106, 1.8723] m/s` | 0.948 | `1.71e-13` | `3.92e-12` |
+| RMS acceleration | 45 | `+0.2562 [0.1701, 0.3416] m/s²` | 0.862 | `3.00e-7` | `7.88e-8` |
+| mean THW | 35 | `-7.9987 [-31.1524, 12.3490] s` | 0.119 | `0.0177` | `0.00677` |
+
+THW 的 median=`-2.3005 s`、Hodges–Lehmann=`-3.2037 s`，非参数方向检验通过，
+但 mean CI 跨零、10对缺失且均值受极端值影响。论文中只能将其描述为
+available-case robust location shift，不能写成稳定的平均THW下降。
+
+高分辨率 BDD：
+
+| dataset | pairs | MMD² | permutation p |
+| --- | ---: | ---: | ---: |
+| Full | 45 | 0.0142209 | 0.733267 |
+| Tier A | 40 | 0.0163792 | 0.697303 |
+| Tier A+B | 44 | 0.0164485 | 0.593407 |
+
+六个 task BDD 的 Holm p-value 均为 `1.0`，没有 task-level distribution
+significance。
+
+## Stage 7 Milestone 5：paired-vs-marginal representation mechanism
+
+### 1. 命令
+
+```bash
+python tools/stage7_m5_representation_mechanism_analysis.py \
+  --embedding_path outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/embedding.npy \
+  --interaction_feature_path outputs/stage7e_pdm_v1_balanced50_paired45_context_v1_m3/interaction_feat_style.npy \
+  --paired_delta_csv outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --m4_summary outputs/stage7_m4_statistical_evidence_v1/milestone4_statistical_summary.json \
+  --m4_full_bdd_summary outputs/stage7_m4_bdd_robustness_v1/full/bdd_summary.json \
+  --output_dir outputs/stage7_m5_representation_mechanism_v1 \
+  --probe_permutations 1000 \
+  --sign_flip_repetitions 10000 \
+  --mmd_permutations 1000 \
+  --folds 5 \
+  --seed 20260726 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 固定使用 M4 的45个 complete pairs。
+- 比较 learned embedding、33维 interaction features 和12维 trajectory summary。
+- paired sign-flip 检查同场景 A-B 表示向量是否存在一致平均方向。
+- grouped linear probe 使用 scenario-disjoint 5-fold GroupKFold；median imputation、
+  scaling 和 classifier 都只能在每个 training fold 内拟合。
+- probe null 通过每个 scenario pair 内随机交换 assertive/conservative label 构造，
+  不能跨场景任意打乱。
+- marginal MMD 继续回答“不使用scenario pairing时，两组边际分布是否不同”。
+- 三种表示的 MMD² 因维度和kernel bandwidth不同，不能直接按数值大小排名；
+  主要比较各自 permutation p-value 和 paired/probe 结果。
+- paired MDE 是给定 n/alpha/power 的设计敏感度，不是 observed-effect post-hoc power，
+  也不是 MMD 样本量保证。
+
+### 3. 通过标准
+
+- 三种表示覆盖相同45个 pairs；
+- sign-flip=`10000`，probe pair-swap permutation=`1000`，MMD permutation=`1000`；
+- grouped probe 每个测试scenario均不进入对应training fold；
+- 所有probe预处理在training fold内拟合；
+- learned embedding 同时报告 paired、grouped probe 和 marginal BDD；
+- 生成representation table、distance-sensitivity table、MDE table、JSON、报告和图；
+- verdict=`PASS_WITH_LIMITATIONS`；
+- analysis status=`EXPLANATORY_POST_M4_MECHANISM_ANALYSIS`。
+
+M5 实际结果：
+
+| representation | paired concentration | sign-flip p | grouped ROC-AUC | pair-swap p | marginal MMD p |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| learned embedding | 0.326 | 0.000100 | 0.638 | 0.00699 | 0.733 |
+| interaction features | 0.429 | 0.000100 | 0.773 | 0.000999 | 0.126 |
+| trajectory summary | 0.464 | 0.000400 | 0.704 | 0.000999 | 0.123 |
+
+Embedding distance 与 `|delta mean speed|` 的 Spearman rho=`0.454`，
+Holm p=`0.00518`；与 acceleration/THW contrast 的相关性未通过 Holm 校正。
+
+45对的 paired-t design sensitivity：
+
+```text
+one-sided alpha=0.05, power=0.80: minimum detectable dz=0.376
+conservative alpha=0.05/3, power=0.80: minimum detectable dz=0.454
+```
+
+解释：三种表示都包含系统性的同场景 planner shift，且能够在scenario-disjoint
+probe中提供planner信息；但三者的边际MMD均未显著。主要机制是paired analysis
+控制了场景异质性，而marginal BDD丢弃了这种配对结构。不能把MMD不显著等同于
+embedding完全没有行为信息。
+
+## Stage 7 Milestone 6.1：paired BDD 方法冻结与质量审计
+
+### 1. 命令
+
+```bash
+python tools/stage7_m6_scenario_conditioned_bdd.py \
+  --embedding_path outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/embedding.npy \
+  --embedding_manifest outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/embedding_manifest.json \
+  --metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --paired_delta_csv outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --marginal_bdd_summary outputs/stage7_m4_bdd_robustness_v1/full/bdd_summary.json \
+  --row_quality_csv outputs/stage7_m3_lane_context_quality_v1/row_quality_tiers.csv \
+  --pair_quality_csv outputs/stage7_m3_lane_context_quality_v1/paired_quality_gate.csv \
+  --output_dir outputs/stage7_m6_1_paired_bdd_method_freeze_v1 \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --permutations 100000 \
+  --seed 20260726 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 严格检查 embedding、metadata、scenario token/index、planner、global row 和
+  valid horizon 一致性；
+- `paired_delta_csv` 必须覆盖所有 embedding rows，scenario 不得重复；
+- primary 使用原始64维 embedding、single-RBF biased V-statistic MMD²、精确
+  pooled positive off-diagonal median bandwidth 和 within-pair label swap；
+- 报告 exceedance count、plus-one p-value 和 Monte Carlo resolution；
+- residual BDD 为 secondary；M4 marginal BDD 与 fixed-kernel pooled shuffle
+  作为历史参考和 control；
+- 对 full、Tier A、Tier A+B 运行预定义质量敏感性分析，并检查 embedding pair
+  distance 是否由 fallback/ambiguous rate 驱动；
+- 写入输入、checkpoint、脚本 SHA256、git/runtime provenance 与 frozen spec；
+- 不修改 Stage6 unpaired BDD，不修改 Stage5D checkpoint；
+- 当前45对只能标记为方法开发集，不得标记为独立确认集。
+
+### 3. 通过标准
+
+- complete pairs=`45`，duplicate/missing/conflict/unequal-horizon/non-finite 均为0；
+- original-space paired-label-swap BDD `p <= 0.01`；
+- Tier A 与 Tier A+B primary sensitivity 的 Holm-adjusted `p <= 0.05`；
+- fallback-distance correlations 在 Holm correction 后不显著；
+- frozen marginal BDD 仍在结果中且未被覆盖；
+- `mmd_magnitudes_across_spaces_not_ranked=true`；
+- verdict=`PASS_WITH_LIMITATIONS`；
+- analysis status=`DEVELOPMENT_SET_METHOD_FREEZE`；
+- `method_freeze_ready_for_new_locked_set=true`。
+
+M6.1 实际结果（100000 permutations）：
+
+| analysis | role | MMD² | exceedance | plus-one p |
+| --- | --- | ---: | ---: | ---: |
+| frozen M4 marginal BDD | historical reference | 0.0142209 | — | 0.733267 |
+| fixed-kernel pooled shuffle | control | 0.0141802 | 74086/100000 | 0.740863 |
+| original-space paired-label-swap | primary | 0.0141802 | 175/100000 | 0.001760 |
+| pair-midpoint residual | secondary | 0.0994187 | 0/100000 | ≤0.000010 |
+
+Tier A 有40对，primary p=`0.000440`；Tier A+B 有44对，primary
+p=`0.000080`，两个子集经 Holm 校正后仍显著。四个 fallback/ambiguous-rate
+相关性经 Holm 校正均不显著。完整审计、frozen spec 和 provenance 位于
+`outputs/stage7_m6_1_paired_bdd_method_freeze_v1/`。
+
+注意：M4 与 M6 pooled statistic 的轻微差异来自历史 multi-kernel 与本次冻结
+single-RBF 估计器配置差异。下一步是新 log/scenario-disjoint、selection config
+独立冻结且 planner treatment 参数不变的锁定确认，
+不是默认重训练。异源实路日志仍使用 Stage6 unpaired-first 协议。
+
+## Stage 7 Milestone 6.2：锁定确认入口与 task-conditioned paired BDD
+
+### 1. 命令
+
+```bash
+python tools/stage7_m6_2_locked_task_bdd.py \
+  --metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --paired_delta_csv outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --development_metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --m6_frozen_spec outputs/stage7_m6_1_paired_bdd_method_freeze_v1/m6_frozen_analysis_spec.json \
+  --representation learned_embedding=outputs/stage7_m5_representation_mechanism_v1/representations/learned_embedding.npy \
+  --representation interaction_features=outputs/stage7_m5_representation_mechanism_v1/representations/interaction_features.npy \
+  --representation trajectory_summary=outputs/stage7_m5_representation_mechanism_v1/representations/trajectory_summary.npy \
+  --output_dir outputs/stage7_m6_2_locked_task_bdd_development_v1 \
+  --analysis_role development_validation \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --minimum_overall_pairs 80 \
+  --minimum_task_pairs 12 \
+  --task_monte_carlo_permutations 100000 \
+  --seed 20260729 \
+  --overwrite
+```
+
+未来新数据运行时改为 `--analysis_role locked_confirmation`，并额外提供
+`--lock_manifest` 与 `--power_justification_file`。
+
+### 2. 期望行为
+
+- 用仿真前已知的 `scenario_type` 定义五个 task；
+- 小于等于20对时枚举全部 `2^n` assignments，超过20对时运行100000次 swaps；
+- learned embedding task family 使用 Holm correction；
+- handcrafted representations 仅作为机制对照；
+- 开发模式生成锁定规范和 power-justification 模板；
+- 确认模式强制开发集与新数据 log/scenario 零重叠，并强制 planner 参数一致；
+- 不训练或修改 Stage5D checkpoint。
+
+### 3. 通过标准
+
+- 45个开发 pairs 通过原 M6 alignment；
+- task selection timing=`pre_treatment`；
+- dataset role=`METHOD_DEVELOPMENT_ONLY_NOT_CONFIRMATORY`；
+- 生成锁定规范和 power 模板；
+- 未来确认集 log/scenario overlap 均为0、planner fingerprints 完全相同；
+- 不在解盲后修改 task mapping、估计器或样本量。
+
+开发集实际结果：五个 task 各8–9对，均低于12对运行下限。只有 high motion
+dynamics 的 learned embedding 通过 Holm correction（exact p=`0.00390625`，
+Holm p=`0.01953125`）；其余任务不显著，不能视为独立确认。
+
+## Stage 7 Milestone 6.3：simulation-based power planning
+
+### 1. 命令
+
+```bash
+python tools/stage7_m6_3_simulation_power_analysis.py \
+  --embedding_path outputs/stage7_m5_representation_mechanism_v1/representations/learned_embedding.npy \
+  --metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --paired_delta_csv outputs/stage7f_pdm_v1_balanced50_paired45_v1_m3/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --m6_2_lock_spec outputs/stage7_m6_2_locked_task_bdd_development_v1/m6_2_locked_confirmation_spec.json \
+  --output_dir outputs/stage7_m6_3_simulation_power_v1 \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --candidate_pairs 12,20,30,45,60,80,120 \
+  --effect_scales 0.5,0.75,1.0 \
+  --target_effect_scale 0.75 \
+  --target_power 0.80 \
+  --attrition_rate 0.20 \
+  --simulations 500 \
+  --planning_permutations 999 \
+  --blas_threads 1 \
+  --alpha 0.05 \
+  --seed 20260730 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 以45对开发集为 pilot，对中心化 pair midpoint 和 pair-difference residual
+  分别 bootstrap，再按冻结 effect scale 注入均值差；
+- overall 使用冻结的 paired single-RBF biased MMD，五个 task 使用同一统计量并
+  做 Holm correction；
+- 报告每个网格点的 Monte Carlo power 和 Wilson 95% CI；
+- 同时满足五个 task 的最小样本数决定 task quota，而不是逐 task 事后选择；
+- 生成与 M6.2 lock SHA256 绑定的机器可读 power justification 和采集配额；
+- M6.2 locked mode 对 overall/task 数量、task mapping、lock hash 和 planner
+  fingerprints fail closed；
+- 不训练或修改 Stage5D checkpoint。
+
+### 3. 通过标准
+
+- power justification status=`FROZEN_BEFORE_LOCKED_CONFIRMATION`；
+- target effect scale=`0.75`、target power=`0.80`；
+- 五个 task 的 simultaneous Holm-corrected power 不低于0.80；
+- 每 task complete quota=`60`，20%损耗后 gross quota=`75`；
+- overall complete pairs 不低于 M6.2 运行下限80；
+- 新确认集仍须与开发集 log/scenario 零重叠，且 planner treatment 指纹不变；
+- 不能把模拟功效写成 achieved power 或确认性结果。
+
+实际主设计：每任务60个完整 pairs 时，五任务 simultaneous power=`0.918`，
+Wilson 95% CI=`[0.891,0.939]`；按20%损耗率为每任务75个 gross pairs、总计
+375个 gross pairs。Overall 的纯功效选择为45对，但由冻结运行/质量下限提升为
+至少80个完整 pairs。
+
+保守敏感性分析位于
+`outputs/stage7_m6_3_half_effect_extension_v1/`：若锁定域真实均值差只有开发
+pilot 的50%，需要每任务160个完整 pairs；其 simultaneous power=`0.936`
+（95% CI `[0.911,0.954]`），对应每任务200个 gross pairs、总计1000个。
+该结果是预算敏感性上界，不覆盖0.75主冻结设计。
+
+## Stage 7 Milestone 6.4：锁定采集候选池预检
+
+### 1. 命令
+
+```bash
+python tools/stage7_m6_4_freeze_locked_collection.py \
+  --inventory_csv outputs/stage7p_mini_scenario_inventory_v2/all_scenario_tags.csv \
+  --development_metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --m6_2_lock_spec outputs/stage7_m6_2_locked_task_bdd_development_v1/m6_2_locked_confirmation_spec.json \
+  --power_justification_file outputs/stage7_m6_3_simulation_power_v1/m6_3_locked_power_justification.json \
+  --nuplan_db_root /home/forwardxp/00_nuplan_E2E_eva/nuplan/dataset/data/cache/mini \
+  --output_dir outputs/stage7_m6_4_locked_collection_preflight_v1 \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --max_per_log 2 \
+  --reserve_per_task 15 \
+  --selection_salt stage7-m6.4-locked-v1 \
+  --overwrite
+```
+
+### 2. 期望行为
+
+- 只读取 rollout 前已经存在的 nuPlan `scenario_type` 和 DB/log/token 元数据；
+- 严格排除开发集45个 scenario token 及其全部34个 log；
+- 排除同时命中多个冻结 scenario type 的歧义 token 和缺失 DB 文件；
+- 检查 M6.2 lock、M6.3 power justification、当前 M6.2/M6.3 脚本、开发
+  metadata 及 planner treatment fingerprints 的 SHA256 链；
+- 按固定 salt 稳定排序，限制 primary+reserve 每 log 最多2个场景；
+- 准备每任务75个 primary gross scenarios 和15个 task-specific reserve；
+- 只有全部配额满足时才生成 `m6_4_locked_collection_manifest.json` 和 Stage7C
+  context；否则只输出容量审计并返回非零，不启动仿真；
+- 不读取新 planner outcome、embedding 或 BDD，不重新训练模型。
+
+### 3. 通过标准
+
+- status=`FROZEN_BEFORE_LOCKED_ROLLOUTS`；
+- 五任务 primary 均为75，reserve 均为15；
+- development token/log overlap 均为0；
+- candidate、primary、reserve token 唯一且互不重叠；
+- planner fingerprints 与 M6.2 lock 完全相同；
+- `--max_per_log 2` 下 primary 至少来自188个未使用 log；
+- locked manifest 在任何新 planner outcome 产生之前冻结。
+
+当前 mini inventory 实际结果为
+`BLOCKED_INSUFFICIENT_PRETREATMENT_INVENTORY`，因此没有生成 locked manifest，也
+没有启动 rollout。mini 共有63个 log，开发集使用34个；排除开发 log 后只有29个
+eligible logs，而 primary 在每 log 最多2个的约束下至少需要188个。更关键的是，
+冻结 lane-change 类型只有2个 eligible candidates，距离75个 primary 和15个 reserve
+明显不足。必须扩展并重新索引新的 nuPlan log DB；不得放宽任务定义或复用开发 log
+来消除该缺口。

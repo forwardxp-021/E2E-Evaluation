@@ -252,14 +252,35 @@ def _objects_from_result(res: Any, layer: Any) -> List[Any]:
     return []
 
 
+def select_spatial_query_anchors(ego_xy: np.ndarray, spacing: float) -> np.ndarray:
+    """Deduplicate dense rollout positions while preserving spatial coverage."""
+    points = np.asarray(ego_xy, dtype=np.float64)
+    if points.ndim != 2 or points.shape[1] != 2:
+        raise ValueError(f"ego_xy must have shape [N,2], got {list(points.shape)}")
+    if not np.isfinite(points).all():
+        raise ValueError("ego_xy contains non-finite coordinates")
+    if spacing <= 0:
+        raise ValueError(f"spacing must be positive, got {spacing}")
+    if len(points) == 0:
+        return np.empty((0, 2), dtype=np.float64)
+    anchors = [points[0]]
+    for point in points[1:]:
+        if min(float(np.linalg.norm(point - anchor)) for anchor in anchors) >= spacing:
+            anchors.append(point)
+    return np.asarray(anchors, dtype=np.float64)
+
+
 def extract_nuplan_lane_infos(api: Any, ego_xy: np.ndarray, radius: float = 120.0) -> Tuple[Dict[str, LaneInfo], Dict[str, int]]:
     """Convert local nuPlan map objects to Stage-5-compatible LaneInfo objects."""
     counts: Counter[str] = Counter()
     if api is None or ego_xy.size == 0:
         counts["none"] += 1
         return {}, dict(counts)
+    query_xy = select_spatial_query_anchors(ego_xy, max(1.0, float(radius) * 0.5))
+    counts["input_ego_position_count"] = int(len(ego_xy))
+    counts["spatial_query_anchor_count"] = int(len(query_xy))
     objects: List[Tuple[Any, str]] = []
-    for x, y in ego_xy:
+    for x, y in query_xy:
         for layer in _layer_values():
             try:
                 res = api.get_proximal_map_objects(_point_obj(float(x), float(y)), float(radius), [layer])

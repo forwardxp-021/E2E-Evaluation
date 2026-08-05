@@ -195,3 +195,70 @@ Stage 6C v2 保持 task-conditioned behavior-event BDD 架构不变。本轮只�
 - `task_lane_change` 必须有足够 lateral displacement；yaw-rate / heading-change 不可单独触发。若 positive_ratio 仍大于 0.40，输出 `lane_change_detector_broad`。
 - `task_hesitation` 必须满足 maneuver context 且至少两个 evidence components，默认 sign-change 阈值提高到 8；若 positive_ratio 仍大于 0.40，输出 `hesitation_detector_broad`。
 - 当前解释优先级：`following` 与 `yield_conflict` 是最可靠 strong detectors；`cutin`、`overtake` 以及相当一部分 `lead_brake` / `queue` 仍是 proxy-based；`lane_change` 与 `hesitation` 只有在收紧后 positive_ratio 不 broad 时才建议作为稳定结论。
+
+## 18. Matched simulation 的 scenario-conditioned paired BDD
+
+Stage6 unpaired-first 协议继续用于异源实路日志，不能被 paired BDD 替代。但
+nuPlan same-scenario simulation 是明确的 matched experiment；对这类数据只使用
+pooled label permutation 会丢弃实验设计并让 cross-scenario heterogeneity 主导
+零假设。
+
+Stage7 M6 因此增加两类补充统计：
+
+1. original embedding 上的 within-scenario pair label swap MMD；
+2. pair-midpoint residual embedding 上的 within-scenario pair label swap MMD。
+
+二者的 estimand 是“控制 scenario 后的 planner effect”。原 Stage6 marginal
+BDD 仍必须保留并报告，它回答“不使用 pairing 时的总体边际分布差异”。original
+space 与 residual space 的 MMD² 因数据变换和 bandwidth 不同，不得直接比较数值
+大小。
+
+工具：`tools/stage7_m6_scenario_conditioned_bdd.py`。
+
+完整设计与防泄漏要求见
+`docs/stage7_cross_domain_style_sensitive_training_protocol.md`。
+
+### 18.1 M6.1 冻结说明
+
+Matched simulation 的 primary estimator 冻结为：原始64维 embedding、
+single-RBF biased V-statistic MMD²、精确 pooled positive off-diagonal median
+bandwidth、固定 bandwidth、within-pair label swap、100000 permutations 和
+plus-one p-value。Pair-midpoint residual BDD 是 secondary，不能替代原空间
+primary，也不能按 MMD² 数值与 primary 排名。
+
+当前45对只用于方法开发。锁定确认必须使用新的 log/scenario-disjoint pairs、
+独立冻结 selection config，并保持 planner treatment 参数不变，再复用冻结
+估计器。M6.1 同时要求 complete-pair/token/planner/row/horizon
+审计、Tier A 与 Tier A+B 敏感性分析，以及 fallback/ambiguous-rate 与 embedding
+pair distance 的相关性检查。
+
+这些约束不改变真实部署日志的 Stage6 unpaired-first 主协议：两套软件运行十天而
+无法获得相同场景时，应先按预处理、静态 ODD 和动态 interaction exposure 做匹配/
+重加权与 cluster-aware resampling，再报告 task-conditioned BDD；task frequency
+shift 与 within-task behavior shift 必须分开。驾驶结果本身定义的 outcome bins
+主要用于解释，不能作为无条件 matching covariates。
+
+### 18.2 M6.2 的 task timing 约束
+
+M6.2 确认性 task slices 只能来自 planner rollout 前已知的 nuPlan
+`scenario_type`。这与 Stage6 实路日志原则一致：matching/stratification 使用
+pre-treatment ODD 和 interaction exposure；由软件行为产生的 lane change、
+hesitation、hard braking 等 outcome 只能做结果解释或明确标记的敏感性分析。
+
+当前45对中五个冻结 task 各只有8–9对，低于12对运行下限；只有 high-motion
+dynamics 的 learned-embedding paired BDD 在开发集上通过 Holm correction。不能
+把该开发集结果外推为所有任务均有明显差异，也不能用总体 paired BDD 替代
+task-specific coverage。
+
+### 18.3 M6.3 功效配额与 Stage6 部署边界
+
+M6.3 的每任务60个完整 pairs（20%损耗后75个 gross pairs）只适用于 nuPlan
+same-scenario paired locked confirmation。它来自0.75 pilot-effect 假设下五任务
+Holm family 的 simultaneous power 规划，不得迁移为 Stage6 十天异源实路日志的
+逐样本配对要求。
+
+Stage6 仍以 unpaired、exposure-matched/reweighted、cluster-aware inference 为
+主。实际部署的样本量必须按 log/day/route cluster、任务暴露率、有效样本量和目标
+最小可检测 BDD 另行规划；软件间 task-frequency shift 与 within-task behavior
+shift 分开报告。M6.3 可借鉴的是“解盲前冻结任务、效应假设、功效目标和停止规则”，
+不是其具体60/75数值。
