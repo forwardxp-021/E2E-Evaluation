@@ -241,6 +241,8 @@ def test_all_pdm_closed_profiles_are_external_hydra_planners():
         "pdm_closed_default",
         "pdm_closed_conservative_v1",
         "pdm_closed_assertive_v1",
+        "pdm_closed_conservative_longitudinal_v1",
+        "pdm_closed_assertive_longitudinal_v1",
     ]:
         profile = stage7c.PLANNER_PROFILES[planner_name]
         assert profile["planner_type"] == "external_hydra_planner"

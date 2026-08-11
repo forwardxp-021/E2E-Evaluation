@@ -1,0 +1,57 @@
+{
+  "schema_version": "stage6k_longitudinal_dose_response_design_v1",
+  "issue": "https://github.com/forwardxp-021/E2E-Evaluation/issues/252",
+  "source_stage6j_locked_scenarios_sha256": "90b35382b53d4fada7fd4237f1a3efb8595505406ba99a6e0e3f839d7c777036",
+  "expected_scenario_count": 183,
+  "expected_task_counts": {
+    "following_interaction": 60,
+    "longitudinal_high_motion": 56,
+    "stop_go_control": 67
+  },
+  "baseline_planner": "pdm_closed_conservative_longitudinal_v1",
+  "assertive_anchor_planner": "pdm_closed_assertive_longitudinal_v1",
+  "dose_profiles": [
+    {"dose": 0.25, "label": "dose25", "planner": "pdm_closed_assertive_longitudinal_dose25_v1"},
+    {"dose": 0.50, "label": "dose50", "planner": "pdm_closed_assertive_longitudinal_dose50_v1"},
+    {"dose": 0.75, "label": "dose75", "planner": "pdm_closed_assertive_longitudinal_dose75_v1"}
+  ],
+  "all_analysis_doses": [0.0, 0.25, 0.50, 0.75, 1.0],
+  "shared_lateral_parameters": {
+    "lateral_offsets": [-0.5, 0.5]
+  },
+  "interpolated_longitudinal_parameters": [
+    "idm_policies.speed_limit_fraction",
+    "idm_policies.fallback_target_velocity",
+    "idm_policies.min_gap_to_lead_agent",
+    "idm_policies.headway_time",
+    "idm_policies.accel_max",
+    "idm_policies.decel_max"
+  ],
+  "analysis_freeze": {
+    "primary_question": "Waymo-trained embedding detects a graded, realized pure-longitudinal nuPlan treatment",
+    "reuse_dose_0": "same-profile null constructed from the frozen Stage 6J conservative representation without new rollout",
+    "reuse_dose_1": "Stage 6J assertive-versus-conservative endpoint",
+    "new_rollout_doses": [0.25, 0.50, 0.75],
+    "paired_randomization_swaps": 100000,
+    "random_seed": 20260810,
+    "familywise_task_correction": "Holm",
+    "alpha": 0.05,
+    "report_metrics": [
+      "raw_mmd2_bdd",
+      "paired_null_q95",
+      "bdd_to_null_q95_ratio",
+      "null_standardized_z_bdd",
+      "paired_randomization_p",
+      "realized_speed_acceleration_jerk_thw_gap"
+    ],
+    "dose_response_rule": "Report the smallest nonzero dose passing both the frozen kinematic contrast gate and paired BDD p<0.05; no universal raw-BDD threshold is claimed.",
+    "ordered_trend_rule": "Report Spearman dose trend for realized kinematics and BDD/null-normalized evidence; do not remove a dose or scenario after seeing results.",
+    "prohibitions": [
+      "do_not_read_new_dose_embedding_or_bdd_before_rollouts_are_complete",
+      "do_not_change_the_183_scenarios",
+      "do_not_change_kernel_or_checkpoint_by_dose",
+      "do_not_stop_early_after_a_significant_dose",
+      "do_not_interpret_raw_bdd_with_a_cross_dataset_universal_cutoff"
+    ]
+  }
+}

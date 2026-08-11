@@ -1,0 +1,62 @@
+{
+  "schema_version": "stage6j_pure_longitudinal_confirmation_design_v1",
+  "issue": "https://github.com/forwardxp-021/E2E-Evaluation/issues/249",
+  "planner_a": "pdm_closed_assertive_longitudinal_v1",
+  "planner_b": "pdm_closed_conservative_longitudinal_v1",
+  "shared_lateral_parameters": {
+    "lateral_offsets": [-0.5, 0.5]
+  },
+  "allowed_different_longitudinal_parameters": [
+    "idm_policies.speed_limit_fraction",
+    "idm_policies.fallback_target_velocity",
+    "idm_policies.min_gap_to_lead_agent",
+    "idm_policies.headway_time",
+    "idm_policies.accel_max",
+    "idm_policies.decel_max"
+  ],
+  "included_scenario_types": {
+    "following_interaction": [
+      "following_lane_with_lead",
+      "following_lane_with_slow_lead",
+      "near_long_vehicle"
+    ],
+    "stop_go_control": [
+      "accelerating_at_traffic_light_with_lead",
+      "stationary_at_traffic_light_without_lead",
+      "stationary_in_traffic",
+      "stopping_at_traffic_light_with_lead",
+      "stopping_with_lead"
+    ],
+    "longitudinal_high_motion": [
+      "high_magnitude_speed",
+      "medium_magnitude_speed"
+    ]
+  },
+  "expected_selected_counts": {
+    "following_interaction": 60,
+    "stop_go_control": 67,
+    "longitudinal_high_motion": 56
+  },
+  "expected_selected_total": 183,
+  "excluded_tasks": [
+    "lane_change",
+    "dense_or_vulnerable_interaction"
+  ],
+  "excluded_scenario_types": [
+    "high_lateral_acceleration"
+  ],
+  "primary_estimand": "same_scenario_paired_pure_longitudinal_planner_contrast",
+  "analysis_order": [
+    "realized_longitudinal_kinematic_gate",
+    "paired_overall_bdd",
+    "paired_task_bdd",
+    "log_cluster_robustness",
+    "unpaired_release_emulation_after_paired_gate"
+  ],
+  "prohibitions": [
+    "do_not_read_embedding_or_bdd_when_freezing",
+    "do_not_change_lateral_parameters_between_planners",
+    "do_not_include_lane_change_or_high_lateral_acceleration_in_primary",
+    "do_not_launch_full_rollouts_without_explicit_execute_confirmation"
+  ]
+}

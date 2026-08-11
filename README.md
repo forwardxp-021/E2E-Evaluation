@@ -4,6 +4,216 @@
 
 ## 项目目标
 
+## 中文术语与指标解释清单
+
+本节是本项目报告、图表和实验输出的统一中文词典。统计结论应以对应阶段的冻结配置和中文
+报告为准；术语相同不代表不同数据集、不同checkpoint或不同实验设计下的数值可以直接比较。
+
+### 一、如何阅读 BDD 结果表
+
+Stage 6J/6K 报告中的典型表头如下：
+
+| 表头 | 中文解释 | 正确读法 | 常见误解 |
+|---|---|---|---|
+| 名义剂量 | planner纵向参数从保守端点到激进端点的插值比例 | 25%表示六个IDM纵向参数走完保守→激进差值的25% | 不是“驾驶风格改变25%”，也不是现实车辆风格的统一单位 |
+| BDD/MMD² | 两组embedding分布差异的观测统计量；当前Stage 6主要用带RBF核的biased MMD²实现 | 数值越大通常表示在当前数据和kernel下分布差异越大，但必须结合本次null分布解释 | 不能规定“达到0.5才有效”，也不能跨数据集直接比较裸值 |
+| paired-null q95 | 在同场景pair内随机交换A/B标签后得到的零分布95%分位数 | observed BDD高于q95，表示超过了本次未校正的5%随机化参考线 | 不是通用阈值；也不能替代多重检验后的Holm p |
+| BDD/q95 | `observed BDD ÷ paired-null q95` | 大于1表示观测值越过本档未校正q95；例如1.29表示是q95的1.29倍 | 不是“风格差异129%”，也不是模型准确率 |
+| Z_BDD | `(observed BDD − null均值) ÷ null标准差` | 表示观测BDD距离本档随机化null均值多少个null标准差 | 这是null标准化诊断，不是默认服从正态分布的传统z检验，不能机械套用1.96 |
+| raw p | 当前单项随机化检验未经多重校正的p值 | 越小表示null随机交换产生同样或更极端BDD的比例越低 | 单看raw p选剂量或选task会增加假阳性 |
+| 四档Holm p | 对25/50/75/100%四个overall检验做Holm family-wise校正后的p值 | Stage 6K overall结论用该列；小于0.05才通过冻结统计门槛 | 不是把raw p简单乘4；表中的“4档”也不包括描述性0%原点 |
+
+以Stage 6K的25%档为例：BDD=`0.001156`虽然绝对值不大，但paired-null q95=`0.000896`，
+BDD/q95=`1.290`、Z_BDD=`3.649`、四档Holm p=`0.004290`，且实现运动学门禁通过，
+因此在本冻结协议内判定为“检出”。这个结论不能转换成“0.001156是通用BDD阈值”。
+
+### 二、模型、表征与数据术语
+
+| 术语 | 中文解释与本项目中的含义 |
+|---|---|
+| behavior embedding | 行为嵌入/行为表征。编码器把一段轨迹及其交互上下文压缩成固定维度向量；向量不是人工可直接解释的单一风格分数。 |
+| encoder | 编码器。把轨迹、邻车和派生特征映射为embedding的神经网络。 |
+| checkpoint | 一次训练得到并保存的模型参数快照。本项目比较实验必须记录checkpoint路径和SHA-256；换checkpoint后BDD标尺可能改变。 |
+| Waymo-only trained | 模型只用Waymo训练；nuPlan在当前主实验中是外部验证域，不参与该checkpoint训练。 |
+| cross-domain | 跨域。训练域与验证域来自不同数据来源、传感/地图体系或生成机制，例如Waymo实车轨迹→nuPlan闭环仿真。 |
+| domain shift | 域偏移。不同数据域在场景、轨迹尺度、交通参与者、地图或采样方式上的分布差异。 |
+| trajectory-only baseline | 只使用自车轨迹、不使用邻车交互上下文的基线。 |
+| interaction-aware | 交互感知。模型输入显式包含前车、相邻车等交通参与者信息。 |
+| context | 上下文输入。本项目Stage5D通常是自车、5邻车slot、相对运动和lane关系组成的83维逐帧特征。 |
+| 5-neighbor | 五邻车布局：front、left-front、left-rear、right-front、right-rear。空slot由mask/缺失规则处理。 |
+| embedding dimension / 64D | embedding向量维度；64D表示每条rollout最终得到64个数，不表示64种已命名驾驶风格。 |
+| context dimension / 83D | 输入上下文每个时间步的特征维度；83D与64D embedding不是一回事。 |
+| feature | 人工计算或模型使用的输入/评价特征，例如速度、加速度、jerk、THW。 |
+| style feature | 用来描述驾驶行为倾向的统计特征集合；它是风格代理量，不等于驾驶员身份或安全水平。 |
+| learned representation | 由训练学习得到的表征，与人工定义的kinematic feature相区别。 |
+| baseline | 比较基线。可以是旧模型、trajectory-only模型、显式运动学方法或保守planner；必须看具体上下文。 |
+| ablation | 消融实验。固定其他条件，移除或替换某个输入/模块，以判断结果是否依赖它。 |
+| seed | 随机种子。用于复现数据划分、bootstrap或permutation抽样；同seed不保证不同软件环境逐bit完全一致。 |
+| split | 数据划分，例如train/validation/test，或release A/B集合。 |
+| train / validation / test | 训练集用于拟合参数；验证集用于选模型/超参数；测试集用于最终评价。反复查看测试结果会使其退化为开发集。 |
+| log-disjoint | 两个集合不共享采集log，降低同一次连续采集带来的依赖和泄漏。 |
+| scenario-disjoint | 两个集合不共享scenario token；比只按行随机拆分更严格。 |
+
+### 三、BDD、MMD与kernel术语
+
+| 术语 | 中文解释与使用边界 |
+|---|---|
+| BDD | Behavior Distribution Difference，行为分布差异。本项目对“两个版本/策略的behavior embedding分布差多少”的总称；具体实现必须看报告。 |
+| MMD | Maximum Mean Discrepancy，最大均值差异。使用kernel比较两组分布；理论上分布越不同，MMD通常越大。 |
+| MMD² | MMD的平方。本项目Stage 6表格中的BDD通常实际报告MMD²，因此0.005是平方统计量，不是概率或百分比。 |
+| MDD | 不是本项目当前冻结协议中的独立正式指标。历史文字若出现MDD，多数是BDD/MMD的口头混写或笔误；正式引用时应回到输出确认究竟是MMD²还是其他量。 |
+| observed statistic | 用真实A/B标签计算出的观测统计量，与随机交换标签产生的null统计量相对。 |
+| kernel | 核函数。把embedding间距离转换成相似度，决定MMD比较分布的尺度。 |
+| RBF kernel | 径向基核/高斯核，形式为`exp(-distance²/(2×bandwidth²))`。距离越近，相似度越接近1。 |
+| bandwidth | RBF核带宽。控制“多远算相似”；带宽变化会改变MMD²绝对量级，因此跨bandwidth裸BDD不可直接比较。 |
+| pooled median bandwidth | 把A/B两组样本合并，取所有正的非对角欧氏距离中位数作为bandwidth；每个冻结比较独立确定后，在全部随机化中保持不变。 |
+| biased MMD² / V-statistic | 包含kernel对角项的MMD²估计量。这里“biased”是统计估计形式，不表示实验有主观偏见。 |
+| null distribution | 零分布。在“没有可区分的A/B标签效应”规则下反复随机化得到的BDD分布。 |
+| q95 / q99 | null分布的95%/99%分位数；q95约有5%的null统计量位于其上方。 |
+| paired-null | 保留scenario配对结构，只在每个pair内部交换A/B标签得到的null。 |
+| unpaired-null | 不利用同场景pair，通常在两组间做整体标签重排；回答的是边际分布是否不同。 |
+| permutation / randomization test | 置换/随机化检验。按照预先定义的可交换规则重排标签，并比较null统计量是否达到observed。 |
+| within-pair label swap | 每个同场景pair独立决定是否交换A/B，是paired BDD的primary随机化方式。 |
+| log-cluster label flip | 同一log内所有pair一起交换A/B，承认同一log内场景相关；Stage 6K中是补充敏感性，不替代primary。 |
+| exceedance count | 随机化样本中，BDD达到或超过observed的次数。 |
+| plus-one p | Monte Carlo p=`(exceedance+1)/(repetitions+1)`，避免有限随机化中报告p=0。0/100000对应约`9.9999e-6`。 |
+| Monte Carlo resolution | 有限随机化能够报告的最小plus-one p；100000次时约为`1/100001`。 |
+| Euclidean / L2 distance | 欧氏距离。可衡量两个embedding向量相距多远，但不是BDD本身。 |
+| standardized BDD | 为降低采集构成差异而在共同支持域、固定参考分布或null尺度下标准化的BDD；必须查看具体标准化定义。 |
+| raw BDD | 未相对null、共同支持域或其他参考量标准化的原始MMD²。 |
+| universal BDD threshold | “通用BDD阈值”。当前证据明确不支持它；阈值必须针对checkpoint、数据域、样本量和运行设计重新标定。 |
+
+### 四、统计检验与不确定性术语
+
+| 术语 | 中文解释与使用边界 |
+|---|---|
+| p-value / p值 | 在冻结null和随机化规则成立时，得到当前或更极端统计量的概率量度；不是“原假设为真的概率”。 |
+| raw p | 单个检验未经多重比较校正的p值。 |
+| adjusted p | 经过Holm等多重比较方法调整后的p值；所属family必须同时说明。 |
+| Holm correction | Holm逐步校正，用于控制一组检验的family-wise error rate；先按raw p排序，再逐步调整，不等同于每项机械乘以固定数。 |
+| hypothesis family | 同时解释的一组假设。例如Stage 6K有4个overall剂量family和12个task×dose family。 |
+| alpha / α | 预先设定的显著性水平，常用0.05；不是模型准确率。 |
+| reject / not reject | reject表示在冻结检验下拒绝null；not reject表示证据不足，不等于已经证明两组完全相同。 |
+| confidence interval / CI | 置信区间。表示按指定重采样/模型重复实验时估计量的不确定性范围；不是“真值有95%概率落在本次区间”。 |
+| one-sided 95% lower bound | 单侧95%下界，只关心效应是否严格大于0；Stage 6K运动学门禁用于预期正方向的速度和RMS加速度。 |
+| two-sided 95% CI | 双侧95%区间，同时描述正负两个方向的不确定性。 |
+| bootstrap | 从观测单位中有放回重采样，估计统计量的不确定性。它不随机交换A/B标签，因此与permutation检验用途不同。 |
+| cluster bootstrap | 以log等cluster为单位重采样，保留cluster内部相关性。 |
+| Spearman rho / ρ | 基于秩的单调相关系数，范围[-1,1]；rho=1表示排序完全同向，不代表线性比例为1。 |
+| task-adjusted rank residual | 先按task移除秩的组均值，再看质量指标与embedding距离的剩余相关；是描述性诊断，不是因果调整。 |
+| effect size | 效应量，描述差异有多大。BDD、速度差、检测率差都可作为不同效应量，不能相互当作同一单位。 |
+| statistical power | 真实存在指定效应时检验成功检出的概率；受效应大小、样本量、噪声和阈值影响。 |
+| detection rate | A/B已知存在差异时，重复release trial超过阈值的比例；等于该实验定义下的经验检出率。 |
+| false-negative rate / FNR | 假阴性率=`1−detection rate`。66.5%检出率对应33.5%假阴性率。 |
+| false-positive rate / FPR | A/A本来没有版本差异时，仍超过阈值的比例。 |
+| Wilson interval | 二项比例的Wilson置信区间；比简单正态近似更适合有限trial的检测率/FPR。 |
+| calibration | 用独立A/A历史试验确定阈值或null参考，不在看到目标A/B结果后调阈值。 |
+| sensitivity analysis | 敏感性分析。更换合理的依赖/质量处理规则，检查主结论是否稳健；不应事后替换预冻结primary。 |
+
+### 五、实验设计与因果解释术语
+
+| 术语 | 中文解释与本项目中的角色 |
+|---|---|
+| A/A | 同一软件/同一planner的两个独立样本集合比较，用于估计自然波动、FPR和阈值；不是期待BDD严格等于0。 |
+| A/B | 两个不同软件版本或planner profile比较，用于评价是否能检出已知风格差异。 |
+| paired A/B | A和B在相同scenario上各运行一次，能控制场景异质性，回答“同场景换版本是否改变行为”。 |
+| unpaired A/B | 两版本来自不同log/路线/场景，贴近实际路试发布，但更容易被采集构成差异淹没或混杂。 |
+| same-scenario pair | scenario token相同，只有planner/version不同的一对rollout。 |
+| marginal BDD | 忽略pair，只比较两组总体边际embedding分布。场景差异较大时可能掩盖同场景版本效应。 |
+| scenario-conditioned / paired BDD | 保留同场景对应关系，通过pair内label swap检验版本效应。 |
+| overall | 合并冻结范围内全部符合条件的pair得到的总体分析。 |
+| task-conditioned | 按预先定义的scenario type/task切片后分析，例如following或stop/go。 |
+| primary | 预先指定、承载主要论文结论的分析。 |
+| secondary | 预先指定的次要分析，通常需要自己的多重性控制；不能在primary失败后挑一个显著secondary冒充主结论。 |
+| supplementary | 补充稳健性证据，例如log-cluster label flip；不替代primary estimand。 |
+| exploratory | 探索性分析，用于发现问题或提出后续假设，不能包装成预先确认性结论。 |
+| pre-treatment variable | 处置/版本运行前已经确定的变量，例如scenario type、log、路线；适合用于分层或匹配。 |
+| post-treatment variable | 处置后才产生或可能受处置影响的变量，例如实现后的fallback、急刹、embedding距离；不得随意用于确认性删样本。 |
+| treatment / intervention | 实验中有意改变的因素，例如planner的六个纵向IDM参数。 |
+| confounding | 组间同时存在、会影响结果的其他差异；unpaired真实路试中路线、天气、交通密度等尤其重要。 |
+| estimand | 统计分析真正要回答的目标量。paired BDD与unpaired release BDD的estimand不同。 |
+| common support | A/B在预处理协变量上都有样本覆盖的可比区域；没有共同支持时不应强行比较。 |
+| matching covariate | 用于匹配A/B采集构成的处置前变量，不能用版本运行后的结果变量。 |
+| ESS | Effective Sample Size，有效样本量。重加权后权重越集中，ESS越小，名义样本数会高估信息量。 |
+| release emulation | 用公开数据模拟两个软件版本在不同log/场景采集后进行比较；不是实际OEM发布验证。 |
+| independent confirmation | 使用未参与方法开发、阈值选择或结果查看的新数据做确认。反复使用的数据不能继续称为独立确认集。 |
+| leakage | 信息泄漏。相同token/log或测试结果进入训练、选模、阈值制定，会使性能过于乐观。 |
+
+### 六、nuPlan仿真与场景术语
+
+| 术语 | 中文解释与本项目中的含义 |
+|---|---|
+| planner | 自动驾驶规划器。根据当前状态和环境生成未来控制/轨迹；本项目比较的是planner行为，不直接比较安全优劣。 |
+| PDM-Closed | nuPlan/tuPlan Garage的闭环PDM planner配置；自车后续状态会影响下一步规划。 |
+| assertive | 本项目设置的相对激进纵向profile，通常目标速度更高、headway/min-gap更小、加速能力更强。 |
+| conservative | 相对保守纵向profile，通常速度更低、headway/min-gap更大、加速度更温和。 |
+| IDM | Intelligent Driver Model，智能驾驶员模型。PDM纵向策略使用的一组跟驰/速度参数；本项目只把它作为可控planner处置。 |
+| nominal dose | 名义剂量。六个纵向IDM参数的插值比例，例如25/50/75/100%。 |
+| realized dose | 实现剂量。rollout实际产生的速度、加速度、jerk、THW、gap等差异；不假定与名义剂量线性一致。 |
+| kinematic gate | 运动学门禁。先确认planner参数确实在rollout中形成预期方向的行为差异，再允许解释embedding/BDD。 |
+| rollout | planner在一个scenario中的完整仿真运行及其输出轨迹。 |
+| official rollout | 由nuPlan官方仿真链路生成并通过token、planner、时间长度等审计的rollout。 |
+| pseudo rollout | 非官方闭环输出或人为替代轨迹，只能用于接口/方法开发，不能冒充official simulation证据。 |
+| open-loop | 只评价给定历史输入下的预测，不把planner输出反馈为下一时刻自车状态。 |
+| closed-loop | planner输出会影响后续状态和观测，能反映控制行为累积，但仍是仿真。 |
+| scenario | 一个有固定起始时间、地图、交通参与者和场景类型的仿真片段。 |
+| scenario token | scenario的唯一标识；strict-token alignment用于确保A/B确实运行同一场景。 |
+| log | 一段连续采集记录，通常包含多个scenario；同一log内场景可能相关。 |
+| task | 按驾驶行为/场景类型定义的分析类别，不是后台计算任务。 |
+| following | 跟车交互类场景，例如有前车、慢前车或邻近长车。 |
+| stop/go | 红绿灯起停、拥堵静止、跟车停车等纵向控制场景。 |
+| longitudinal high-motion | 高/中速度等纵向高运动工况；Stage 6J/6K排除了高横向加速度类型。 |
+| lane-change | 数据标签为换道相关的场景slice；标签不自动证明本次planner rollout中的ego实际完成了换道。 |
+| dense/vulnerable | 多车辆、行人/弱势交通参与者等密集交互场景集合。 |
+| ODD | Operational Design Domain，设计运行域，包括道路、天气、速度、地区等适用条件。当前公开数据结论不能自动覆盖OEM全部ODD。 |
+
+### 七、轨迹、交互与质量指标
+
+| 术语 | 中文解释与单位 |
+|---|---|
+| speed | 速度，通常单位m/s。 |
+| acceleration / accel | 加速度，通常单位m/s²；正负表示加速/减速方向。 |
+| jerk | 加加速度，即加速度对时间的变化率，单位m/s³；绝对值/RMS常用于描述平顺性。 |
+| yaw rate | 横摆角速度，单位rad/s，描述车辆航向变化快慢。 |
+| RMS | Root Mean Square，均方根。先平方、求均值、再开方；对较大波动更敏感。 |
+| p95 / p99 | 95%/99%分位数，用于描述尾部较大的加速度、jerk等，不等于最大值。 |
+| median / p50 | 中位数，50%样本在其两侧，对极端值比均值稳健。 |
+| IQR | 四分位距=`p75−p25`，描述中间50%数据的离散程度。 |
+| THW | Time Headway，车头时距，常近似为前车距离/自车速度，单位秒；无有效前车时可能缺失。 |
+| gap / front distance | 与前车的空间距离，单位米；必须同时关注前车有效帧比例。 |
+| relative speed / v_rel | 自车与前车速度差；正负号定义必须查看具体特征实现。 |
+| exposure rate | 某对象/条件在有效帧中出现的比例，例如有效前车覆盖率。 |
+| lane-aware assignment | 结合地图lane、航向和拓扑关系，把交通参与者分配到五邻车slot。 |
+| geometric fallback | lane投影不可用或不可靠时，退回基于自车局部几何位置分配邻车。fallback不是丢帧，但可能改变context语义。 |
+| fallback rate | 有效帧中使用geometric fallback的比例；Stage 6K发现它与embedding pair距离正相关，因此必须作为测量限制。 |
+| ambiguity rate | lane/context关系无法唯一确定或被标为模糊的帧比例。 |
+| map/lane projection | 把车辆位置投影到地图lane中心线，并检查横向距离、航向和拓扑。 |
+| valid frame / valid horizon | 轨迹和特征有效的时间步及总长度；A/B pair通常要求时间范围对齐。 |
+| mask | 指示哪些时间步或slot有效的布尔数组，防止把填充值当作真实交通参与者。 |
+| Tier A / Tier B | 按lane/context质量规则划分的样本等级；具体阈值看对应冻结配置。它们不是安全等级。 |
+
+### 八、工程运行与证据冻结术语
+
+| 术语 | 中文解释与操作含义 |
+|---|---|
+| freeze / 冻结 | 在读取目标结果前固定场景、模型、统计量、随机化次数、seed和判定规则，避免看结果后改口径。 |
+| locked | 已锁定且带完整性校验的输入/清单；修改后SHA-256应变化并触发审计失败。 |
+| manifest | 机器可读的清单文件，记录输入路径、数量、hash、配置、状态和输出。 |
+| SHA-256 | 文件内容指纹。hash一致表示字节内容一致；它验证完整性，不证明科学结论正确。 |
+| provenance | 可追溯信息，包括代码commit、工作树状态、输入hash、依赖版本、命令和随机seed。 |
+| smoke test | 小规模真实链路冒烟测试，用于确认命令和接口能运行；不能替代全量统计结果。 |
+| dry-run | 只检查配置、清单和将要执行的任务，不真正启动大规模仿真或写入核心结果。 |
+| execute | 显式允许真实运行的开关；本项目的大规模任务通常默认dry-run以防误启动。 |
+| resume | 断点续跑。重新审计已成功任务并跳过，只继续未完成任务。 |
+| attempt | 某个任务的一次独立执行目录；重试应创建新attempt，保留旧日志用于追溯。 |
+| SUCCEEDED / FAILED / PENDING | 成功/失败/待运行状态；只有全部目标任务成功且审计通过才称为完成。 |
+| PASS / FAIL | 某项预先定义验证规则是否通过；PASS不自动等于论文所有主张成立。 |
+| overwrite | 覆盖已有输出。冻结和权威结果默认禁止随意overwrite，除非明确验证目标和保留旧证据。 |
+| issue-first | 先在GitHub Issue记录研究问题、冻结规则和结果，再实现/运行，形成可审计决策链。 |
+
+如报告出现本清单没有收录的缩写，应在对应中文报告首次出现处写出英文全称、中文含义、
+单位、方向和判定规则，并同步补充到本节，不能只依赖代码变量名推测。
+
 ## 当前状态（Stage 4）
 
 - Stage 4G（comfort metric alignment）是当前最佳结果（current best）。
@@ -1395,3 +1605,295 @@ lane-change 候选仅2个。因此预检状态为
 rollout。下一步必须增加新的 nuPlan logs 并重建 scenario-tag inventory，而不是
 复用开发 log、放宽任务定义或提前重训练。审计见
 `outputs/stage7_m6_4_locked_collection_preflight_v1/`。
+
+M6.4A 已新增 first-class multi-DB inventory builder
+`tools/stage7p_build_scenario_inventory.py`（GitHub Issue #236）。工具只读取一个或
+多个 nuPlan SQLite DB root 中的 `scenario_tag`、`lidar_pc`、`scene` 和 `log`，
+流式生成 M6.4 兼容的 `all_scenario_tags.csv`，同时输出 DB SHA-256 输入清单、
+summary、报告和可选的扁平相对符号链接 DB pool。它不会读取 planner outcome、
+trajectory、embedding 或 BDD，也不会自动运行 M6.4 preflight 或启动 rollout。
+Mac mini-only smoke 扫描64个 DB、63个 logs 和892204个原始 tag rows；按
+token/type/log/DB 去重后输出821831行，移除70373个重复 tag，token-location
+冲突为0。重建后的 M6.4 task-capacity CSV 与历史版本逐字节相同，状态仍为
+`BLOCKED_INSUFFICIENT_PRETREATMENT_INVENTORY`，未生成 locked manifest。在扩展
+DB 到位前，mini-only 容量不足结论保持不变。
+
+M6.4A Pittsburgh 扩展已于2026-08-07完成。官方 DB-only ZIP 精确大小为
+`30620248893` bytes，CRC 测试通过；安全解压得到1560个 SQLite DB（51.90 GiB）。
+其中3个 DB 与 mini 同名且 SHA-256 完全一致，因此 expanded 输入使用1560个
+Pittsburgh DB 加61个非重叠 mini DB，共1621个 DB、1576个 logs。最终 inventory
+包含9604184行、5386575个 unique scenario tokens，token-location conflict为0。
+
+expanded M6.4 preflight 状态为 `FROZEN_BEFORE_LOCKED_ROLLOUTS`，五个冻结任务均
+选满75个 primary 和15个 reserve；375个 primary来自306个 logs，primary+reserve
+共覆盖350个 logs，每log最多2个。development token/log overlap均为0，planner
+fingerprints保持不变，已生成锁定 manifest 和375行 Stage7C primary context。
+M6.4B Mac readiness 与首个 locked scenario 双 planner smoke 已于2026-08-07通过。
+tuPlan Garage 固定在 `b51d5d04fac1bd4389653b9ab2ff73ea88f435a3`，nuPlan devkit 固定在
+`e9241677997dd86bfc0bcd44817ab04fe631405b`；PDM readiness 为
+`ready_for_pdm_smoke`，两套 planner fingerprints、Stage7C tool hash 和 primary /
+reserve CSV hash 均与 locked manifest 一致。首个 primary token
+`6b5a9da8c0b353b9` 的 assertive / conservative official commands 均成功，输出
+shape=`(1,2,149,8)`、298个有效 timesteps、missing pair=0，same-log 与 strict token
+alignment 均通过，且未生成 pseudo rollout。该 smoke 只运行了2/750个 primary
+rollouts；其余748个仍未启动。
+
+M6.4B 批处理执行层已由 GitHub Issue #237 固化为
+`tools/stage7_m6_4b_run_locked_rollouts.py`。它在每次启动前复核 locked manifest、
+primary/reserve CSV、Stage7C hash、planner fingerprints、450个 DB 文件和
+nuPlan/tuPlan commits；默认只生成 dry-run plan，真实运行还要求 `--execute` 和
+primary manifest hash 双重确认。每个场景使用独立 one-row context、绝对输出路径和
+append-only attempt/event 审计；`--resume` 只跳过重新验证为完整 PASS 的 pair，失败
+不会覆盖旧 attempt。Reserve 仅生成 `PROPOSED_NOT_APPROVED_NOT_EXECUTED` 提案，工具
+本身禁止自动执行。真实 batch smoke 已将 order 1 记录为 `SUCCEEDED`，原样 resume
+未新增 event 或 attempt；当前权威 batch state 为1/375场景成功、374 pending、0
+failed、0 reserve proposals，其余748个 rollout仍未启动。最终 v2 batch manifest
+还冻结 batch tool SHA-256
+`ef0026b3cc20942846035ac23d0d16d616a3d7dd6675e9a0f9c2612871d7fb06` 和 command
+timeout，后续 runner 代码或 timeout 变化会使 resume fail closed。
+
+随后按冻结顺序完成 order 2–6 技术 canary，五个场景覆盖 lane-change、stop-go、
+high-motion、dense/vulnerable 和第二个 following；全部双 planner pair PASS，未产生
+失败或 reserve 提案。连同 order 1，当前 batch state 为6/375场景成功、369 pending。
+六个场景端到端耗时为30.70–41.05秒，均值35.48秒、中位数35.20秒；order 2–6
+连续批次的实际 wall time 为176.64秒，即35.33秒/场景。按该 wall rate 外推，原始
+374个 pending 场景约需3小时40分；canary后剩余369个约需3小时37分。按观测最慢值
+外推上界约4小时16分，正式运行应预留4.5–5小时并防止Mac休眠。
+
+M6.4B 全量冻结批次已于2026-08-07完成375/375个 primary 场景。原始结果为283
+`SUCCEEDED`、92 `FAILED_REVIEW_REQUIRED`；任务成功数依次为 following=60、
+lane-change=50、stop-go=67、high-motion=43、dense/vulnerable=63。375个场景的
+attempt 端到端均值为27.54秒、中位数30.72秒。失败后的 M6.4C 审计只读取冻结
+collection、SQLite scene 结构和技术状态，不读取 embedding、BDD、effect size、
+trajectory metric 或 planner outcome。审计确认90条失败 token 位于 nuPlan 官方
+scene 查询排除的边界位置，另2条 scene 有效但 token 会被 Hydra/OmegaConf 解析成
+整数或科学计数法，必须以保留引号的字符串重试。
+
+M6.4C 由 GitHub Issue #238 固化为独立审计与恢复流程：
+`tools/stage7_m6_4c_audit_locked_recovery.py` 生成不可覆盖的技术审计和冻结配额方案，
+`tools/stage7_m6_4c_run_locked_recovery.py` 只执行显式选择的 quoted-primary 或 frozen
+reserve 动作；M6.4B batch runner 和 Stage7C 源文件保持原 SHA-256 不变。权威审计位于
+`outputs/stage7_m6_4c_locked_recovery_audit_v2/`：primary 分类为283成功、90无效
+scene position、2 quoted-token retry；75 reserve 中58条技术可运行、17条无效。
+
+两条 quoted primary retry 均通过双 planner、trajectory completeness、same-log 和
+strict-token alignment，耗时37.26秒与30.09秒。随后按冻结 task-rank 执行 lane-change
+10条和 high-motion 10条 reserve，20/20全部通过，均值33.00秒、中位数32.55秒。
+恢复后可用完整 pairs 总数为305：following=60、lane-change=60、stop-go=67、
+high-motion=55、dense/vulnerable=63。除 high-motion 外均达到每任务60对的冻结要求；
+high-motion 仍缺5对，而且冻结 primary+reserve 已耗尽。不得从集合外静默补样；下一步
+必须先提交 outcome-blind supplemental protocol amendment，再冻结新增候选及哈希。
+
+M6.4D outcome-blind high-motion supplement 已于2026-08-08完成（GitHub Issue #239）。
+新工具从原 eligible inventory 中排除 development 及原375 primary/75 reserve 的全部
+token/log，使用独立 salt 和 nuPlan 官方 scene-position 技术门冻结5个 primary 与5个
+reserve。补充集合与既有数据的 token/log overlap 均为0；固定顺序前16个候选中，
+4个无效 scene position、2个重复 log 被排除，最终10个候选全部技术可运行。
+
+5个 supplemental primary 已全部运行成功，双 planner、trajectory completeness、
+same-log 与 strict-token alignment 均通过；均值31.14秒/场，0失败，因此5个 supplement
+reserve 保持未执行。最终有效完整 pairs 总数为310：following=60、lane-change=60、
+stop-go=67、high-motion=60、dense/vulnerable=63，五任务均达到预冻结的每任务60对
+要求。M6.4D 仅补齐 collection/technical completeness；下一步应按冻结的 M6.2/M6.3
+统计协议生成确认性 task-conditioned paired BDD，不得再改变 estimand 或显著性规则。
+
+M6.5 locked confirmation 已于2026-08-08完成（GitHub Issue #240）。新工具先把
+M6.4B/C/D 的283+2+20+5个成功场景固化为310-pair ledger，并逐场景重跑 Stage7C
+audit；确认集相对45-pair development set 的 token/log overlap 均为0。分析锁在读取
+确认 embedding 前固定 M6.1/M6.2 工具、100000次 within-pair swaps、plus-one p、
+exact pooled median bandwidth、Holm families、质量阈值、checkpoint 和全部入口 hash。
+
+Mac context build 必须把本地 `tuplan_garage` 加入 `PYTHONPATH`。一次缺少该路径的
+预检被识别为 neighbor 全空并隔离，未进入统计；修正后310场 context 在23分56秒完成，
+620 rows、83D schema 通过，front/side neighbor coverage 非零。总体原始64D embedding
+primary 为 MMD²=0.004469、0/100000 null exceedances、plus-one p=9.9999e-6。五个
+pre-treatment task 的 learned-embedding BDD 全部通过 Holm（adjusted p 从0.00030到
+0.01820），满足新的 log/scenario-disjoint confirmation。
+
+质量结论须和主结果同时保留：Tier A=58、Tier A+B=135，两个原始-embedding
+sensitivity 均通过 Holm（0.0182），但 Tier A residual p=0.126；全局 lane fallback
+为10.59%，且 fallback 与 embedding pair distance 强相关。因此结果证明冻结 planner
+treatment 下存在可检测的 behavior-distribution difference，不证明安全性或 planner
+优越性，也不能把全部差异归因于不受 lane-context quality 影响的纯 mechanism。
+
+M6.6 paper evidence package 已于2026-08-08完成（GitHub Issue #241）。新工具
+`tools/stage7_m6_6_build_confirmation_evidence.py` 在生成任何产物前重新验证 M6.5 lock
+及结果输入的全部 SHA-256、310 pairs/620 rows、development disjointness、power targets、
+五任务 Holm 结果和58/135质量计数。它不重算确认性 p 值，而是把锁定结果、planner
+treatment、mechanism controls、质量敏感性、运动学对比整理成10张 CSV/Markdown 表、
+6张 PNG/PDF 图、双语 manuscript text、JSON summary 和完整 provenance。
+
+探索性质量归因使用固定 seed 的10000次 bootstrap，并同时报告总体任务分层、五个
+任务内及 task-adjusted rank residual 关联。最大 paired fallback 与 embedding distance
+总体 rho=`0.5088`（95% CI `[0.4086,0.6035]`），任务调整后 rho=`0.4499`
+（95% CI `[0.3842,0.5719]`）。这些量均为 post-treatment descriptive evidence，不能
+作为因果调整；最终状态为 `PASS_WITH_QUALITY_LIMITATIONS`。详见
+`docs/stage7_m6_6_confirmation_evidence_protocol.md` 和
+`outputs/stage7_m6_6_confirmation_evidence_v1/`。
+
+## Stage 6D：异源实路软件版本风格比较
+
+Stage 6D（GitHub Issue #242）增加 `tools/stage6d_unpaired_version_bdd.py`，用于比较
+无法同场景配对的两个软件版本路试集合。工具同时输出实际采集构成下的 raw BDD 和
+共同支持域、equal-group pooled reference 标准化后的 BDD，并提供 support fraction、
+ESS、最大权重、covariate balance 与 log/route/day/vehicle cluster bootstrap 区间。
+
+设计 JSON 强制 matching covariates 和 task slices 为 pre-treatment；急刹、迟疑、
+变道结果等软件行为 outcome 不能用于匹配。共同支持或有效样本不足时工具返回
+`NOT_COMPARABLE_INSUFFICIENT_COMMON_SUPPORT`。结果是观察性风格漂移证据，不是
+因果、安全或版本优劣结论；生产阈值仍需独立的同版本 A/A 历史窗口标定。
+
+nuPlan 310-pair balanced embedding 已完成接口冒烟：20/20 common-support cells、两组
+ESS ratio=1.0，raw 与 standardized overall MMD² 均为 `0.0044865829`。该结果只验证
+接口和标准化实现，不替代真实异源路试验证。完整协议见
+`docs/stage6_unpaired_style_drift_protocol.md`。
+
+## Stage 6E：公开 field-release emulation
+
+Stage 6E（GitHub Issue #243）新增 `tools/stage6e_calibrate_unpaired_release.py`。工具将
+310个 paired nuPlan 场景按257个 logs 拆成完全 log/token-disjoint 的伪发布集合，以
+同 planner A/A 的200个 calibration trials 冻结95% empirical threshold，再用独立
+seed streams 的200个 A/A 和200个双方向 A/B trials 估计误报率和检出率。
+
+总体 standardized BDD threshold=`0.00994295`；A/A holdout 为7/200、3.5%误报
+（Wilson 95% CI `[1.7%,7.0%]`），A/B 为70/200、35.0%检出
+（`[28.7%,41.8%]`）。两区间分离且 detection/false-positive ratio=10，但单次发布
+敏感性仍有限。任务诊断里 lane-change 最强（53.5% vs 6.0%），stop/go 没有检测增益。
+
+因此当前证据支持“公开闭环基准中，不配对版本仍有可检测信号”，但不支持“已经能够
+稳定判定每次实路版本发布”。任务行没有多重性控制；公司数据到位后仍须重新 A/A 标定。
+
+## Stage 6F：样本量功效曲线与公开数据充分性
+
+Stage 6F（GitHub Issue #244）新增 `tools/stage6f_unpaired_power_curve.py`，对每版本
+40/60/80/100/125/150个场景分别运行600次 log/token-disjoint pseudo releases，并为
+每个 n 单独重标定 A/A threshold。总体 A/B detection 依次为7.0%、10.5%、12.0%、
+11.5%、17.0%、35.0%；有限场景池和 Monte Carlo 波动使观测曲线不要求严格单调。
+
+n=150 时 detection Wilson 95% CI=`[28.7%,41.8%]`，A/A false-positive=7.0%
+（`[4.2%,11.4%]`），未达到 detection 下界≥80%且 false-positive 上界≤5%的冻结门，
+状态为 `TARGET_NOT_REACHED_WITH_AVAILABLE_PUBLIC_LOGS`。不允许在150以上做伪精确外推。
+
+要增加下一个200/250/300/400场景/版本档位，唯一场景池至少需400/500/600/800条，
+即相对当前310条至少新增90/190/290/490条；这只是实验集合规模，不保证达到80%功效。
+
+## Stage 6G–6I：800场景扩展与论文结论冻结
+
+Stage 6G（Issue #245）按outcome-blind冻结顺序完成新增490/490场景的两套official planner
+rollout；与原310场景合并后，Stage 6H（Issue #246）得到800个完整pair、1600条64D
+embedding和489个log clusters。全部2400个release splits均精确达到200/250/300/400目标
+样本量，且版本间log和scenario overlap为0。
+
+扩展曲线在400场景/版本时得到A/B detection=66.5%（Wilson 95% `[59.7%,72.7%]`）和
+A/A false-positive=5.0%（`[2.7%,9.0%]`）。Stage 6I（Issue #247）进一步冻结可靠性
+分解：四个观测档位的A/B与A/A Wilson区间均分离，支持“已知软件风格差异在异log、
+异场景公开release emulation中仍可检测”；但400场景/版本的false-negative仍为33.5%，
+所以不支持80%单次发布可靠性或通用BDD阈值。
+
+论文可主张跨域表征和公开异场景版本差异检测的可行性，但不能声称已完成真实整车厂
+软件版本验证、量产可靠报警或因果归因。公司数据可用后必须重新执行同版本A/A标定和
+已知A/B版本验证。详见`docs/stage6_unpaired_style_drift_protocol.md`及
+`outputs/stage6i_reliability_evidence_v1/`。
+
+## Stage 6J：Waymo模型检出nuPlan纯纵向风格差异
+
+Stage 6J（Issues #249–#251）针对“原PDM A/B同时改变横向参数，不能证明纯纵向检出”
+的问题，冻结了横向参数完全相同、只改变speed/headway/gap/accel/decel等六项纵向参数
+的两套PDM closed planners。主集合排除lane-change、dense/vulnerable和
+high-lateral-acceleration，仅保留following=60、stop/go=67、longitudinal
+high-motion=56，共183个same-scenario pairs、366条official rollouts、156个logs。
+
+183/183场景运行和重新审计全部通过。Stage5D 5邻车context在Mac上耗时14分37秒，
+输出366×150×83。读取本批结果前冻结的运动学门禁也通过：平均速度A-B=0.9147 m/s，
+log-cluster bootstrap 95% CI `[0.7578,1.0784]`；RMS加速度A-B=0.1816 m/s²，
+95% CI `[0.1456,0.2175]`。这说明处置本身确实产生了足够强的纯纵向差异。
+
+使用原Waymo Stage5/6的83D context GRU checkpoint导出366×64 embedding后，预冻结
+paired BDD总体MMD²=`0.00500090`，100000次pair内label swap中0次达到observed，
+plus-one p=`9.9999e-6`。三个pre-treatment task经Holm校正后也全部reject：following
+MMD²=`0.01706723`、Holm p=`0.00129999`；stop/go MMD²=`0.00537483`、Holm
+p=`0.03300967`；longitudinal high-motion MMD²=`0.01358617`、Holm
+p=`0.0000299997`。
+
+因此当前证据直接支持窄论文主张：Waymo训练的模型可以检出nuPlan闭环中人为设置且经
+运动学验证的典型纯纵向风格差异。MMD²的绝对数值依赖embedding尺度与kernel bandwidth，
+不能因约0.005就单独判为“太小”；可检出性应以预冻结随机化null为准。该结果仍不等价于
+异log/异场景单次release的高可靠性、通用BDD阈值或真实整车厂版本验证。
+
+## Stage 6K：纯纵向风格最小可检出剂量
+
+Stage 6K（Issue #252）在Stage 6J相同183场景、156 logs和同一Waymo checkpoint上增加
+25%、50%、75%三档纵向IDM参数插值。549/549个scene-dose任务和1098/1098条official
+rollout全部成功。新增embedding/BDD读取前冻结四档overall Holm、12项task×dose Holm、
+实现运动学门禁、同log整体翻转及lane-quality post-treatment敏感性。
+
+25/50/75/100%四档的平均速度差依次为0.255/0.446/0.637/0.915 m/s，RMS加速度差依次为
+0.036/0.077/0.128/0.182 m/s²；两个门禁指标的单侧log-cluster 95%下界四档均大于0。
+overall BDD依次为0.001156/0.001600/0.003322/0.005001，四档Holm p分别为0.004290、
+0.000040、0.000040、0.000040。因此本冻结协议内最小可检出名义剂量为25%；该档
+BDD/null-q95=1.290、Z_BDD=3.649。同log整体翻转四档也全部显著。
+
+task结果并非一致：25%只有longitudinal-high-motion通过12项Holm，following到75%才通过，
+stop/go在50%和75%通过但100%校正后未通过。lane-quality诊断还显示fallback rate与
+embedding pair距离中等正相关，所以当前结果支持“受控同场景纯纵向差异可检出”的窄主张，
+但不能声称25%所有task均可靠、存在通用BDD阈值或全部信号都不受context assignment质量
+影响。中文总报告见`outputs/stage6k_final_conclusion_v1/stage6k_final_report_zh.md`。
+
+### Stage 6K context 完整性修正（2026-08-11）
+
+后续 Stage 6L 审计发现，原 Stage 6K `dose50/dose75` context 因 Mac 运行环境缺少完整
+nuPlan/tuPlan `PYTHONPATH`，366/366行均发生`msgpack_timestep_mismatch samples=0`，
+`neighbor_seq.npy`有效邻车覆盖为零。旧构建器把全局零覆盖当成低覆盖跳过项，因此仍错误
+标记validation PASS。
+
+旧 dose50/75 的完整64D embedding/BDD和THW/gap结果不再作为权威完整-context证据；
+rollout ego速度、加速度和jerk仍有效。旧目录不删除、不覆盖。修复版写入
+`outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired/`，三档邻车槽位帧覆盖率为
+17.14%/17.44%/17.37%，并新增构建阶段和Stage6L freeze阶段的非零覆盖fail-closed门禁。
+
+修复后完整64D overall BDD在25/50/75/100%分别为0.001156/0.002025/0.003598/0.005001，
+四档Holm均通过，25% overall最小检出剂量结论不变。原
+`outputs/stage6l_context_representation_ablation_results_v1/`已标记superseded；权威结果为v2。
+
+## Stage 6L：Context-quality representation 消融
+
+Stage 6L（Issue #253）在修复版相同183场景剂量曲线上比较完整learned64、同checkpoint
+邻车置零64D、显式ego运动学13D和手工交互+轨迹46D。不同表示各自使用独立bandwidth/null，
+禁止跨表示比较raw MMD²。
+
+完整64D、邻车置零、ego13D和手工46D的median overall Z_BDD分别为7.539、11.066、
+21.082、5.384；12个task×dose Holm通过数为7、11、12、2；最小overall检出剂量分别为
+25%、25%、25%、50%。因此当前完整64D没有相对ego-only control增加纯纵向敏感性，邻车
+context在本受控问题上更像稀释ego信号。该结论不表示interaction对其他驾驶风格无用。
+
+fallback与pair L2的正关联在邻车置零后仍存在但系数减弱，说明它不能全部归因于邻车通道。
+预冻结决策为准备独立context-v2协议和新训练协议，但GO不授权覆盖checkpoint或结果导向调参。
+权威结果位于`outputs/stage6l_context_representation_ablation_results_v2_runtime_repaired/`。
+
+## Stage 6M：四种异场景 release BDD 方法
+
+Stage 6M（Issue #254）复用Stage6H 800 pairs、489 logs和既有log/token-disjoint release
+splits，在聚合结果前冻结四种release statistic：raw marginal、task-conditioned、
+context-balanced、task+context-balanced。每种方法与每个200/250/300/400样本量均使用独立
+A/A calibration threshold；平衡只使用pre-treatment map_name、scenario_type和冻结task。
+
+n=400时四方法A/B detection为63.0%/65.0%/66.5%/64.5%，A/A FPR为4.5%/5.5%/5.0%/
+6.0%。context-balanced相对raw为+3.5个百分点，但同split配对McNemar exact p=0.2478，
+不支持稳定提升。协变量审计重建28800行；2个task scope-trial因支持度不足不可比，其余
+加权后map/scenario-type最大类别比例差为1.22e-15，证明平衡实现正确。
+
+所以当前约33.5%假阴性不能主要归因于已测量场景构成不平衡。主要瓶颈是representation
+sensitivity，scenario heterogeneity次之，A/A calibration仍是部署必要条件。权威结果位于
+`outputs/stage6m_context_balanced_unpaired_bdd_results_v1/`。
+
+## Stage 6N：新 checkpoint Go/No-Go
+
+Stage 6L预冻结规则已触发`GO_PREPARE_SEPARATELY_VERSIONED_TRAINING_PROTOCOL`，Stage 6M又
+显示场景平衡没有解决unpaired检出瓶颈。因此Issue #255只负责准备独立新checkpoint协议：
+扩大Waymo纵向覆盖，加入longitudinal contrastive/ranking、speed/accel/jerk/THW/gap
+auxiliary objectives与context dropout/quality mask。旧checkpoint SHA-256
+`909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc`保持冻结baseline。
+
+GO不是立即训练或覆盖授权。新模型在任何结论前必须重新通过Waymo validation、Stage6J/6K
+paired dose curve、Stage6M unpaired A/A calibration、A/B detection及FPR/FNR tradeoff。
+完整中文主报告见`docs/stage6n_context_balanced_retraining_decision.md`。

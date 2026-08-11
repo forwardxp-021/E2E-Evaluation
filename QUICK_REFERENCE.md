@@ -1,5 +1,597 @@
 # E2E-Evaluation 项目快速参考
 
+## Stage 6K — 纯纵向风格剂量曲线（Issue #252）
+
+### 1. 命令
+
+冻结25%、50%、75%三档纵向处置和549个场景×剂量任务：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_freeze_longitudinal_dose_response.py \
+  --design_json configs/stage6k_longitudinal_dose_response.json \
+  --stage6j_locked_scenarios_csv outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_locked_scenarios.csv \
+  --output_dir outputs/stage6k_longitudinal_dose_freeze_v1
+```
+
+先将下述runner命令作为dry-run执行；真实全量在末尾追加`--execute`、确认SHA和`--resume`，
+并使用`caffeinate -dimsu`：
+
+```bash
+caffeinate -dimsu /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_run_longitudinal_dose_rollouts.py \
+  --freeze_manifest outputs/stage6k_longitudinal_dose_freeze_v1/stage6k_freeze_manifest.json \
+  --locked_jobs_csv outputs/stage6k_longitudinal_dose_freeze_v1/stage6k_locked_jobs.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  --expected_nuplan_commit e9241677997dd86bfc0bcd44817ab04fe631405b \
+  --expected_tuplan_commit b51d5d04fac1bd4389653b9ab2ff73ea88f435a3 \
+  --output_dir outputs/stage6k_longitudinal_dose_batch_v1 \
+  --execute \
+  --confirm_locked_jobs_sha256 4bbfa3adb23c5e3e090c3d5a66f636cb9400d059257c987709dda55056980b26 \
+  --resume
+```
+
+全量结束后，先冻结解盲前统计补充，再构建三档统一view、context和实现运动学曲线：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_freeze_preanalysis_addendum.py \
+  --design_json configs/stage6k_preanalysis_addendum.json \
+  --rollout_freeze_manifest outputs/stage6k_longitudinal_dose_freeze_v1/stage6k_freeze_manifest.json \
+  --locked_jobs_csv outputs/stage6k_longitudinal_dose_freeze_v1/stage6k_locked_jobs.csv \
+  --batch_manifest outputs/stage6k_longitudinal_dose_batch_v1/batch_manifest.json \
+  --batch_state outputs/stage6k_longitudinal_dose_batch_v1/batch_state.json \
+  --batch_status_csv outputs/stage6k_longitudinal_dose_batch_v1/batch_scenario_status.csv \
+  --output_dir outputs/stage6k_preanalysis_addendum_freeze_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_prepare_longitudinal_dose_views.py
+
+# 三档分别运行；dose_label替换为dose25/dose50/dose75，planner名称同步替换。
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage6k_longitudinal_dose_views_v1/dose25 \
+  --output_dir outputs/stage6k_longitudinal_dose_context_v1/dose25 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --required_planners pdm_closed_assertive_longitudinal_dose25_v1 pdm_closed_conservative_longitudinal_v1 \
+  --write_projection_debug --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_evaluate_realized_dose_curve.py \
+  --addendum_manifest outputs/stage6k_preanalysis_addendum_freeze_v1/stage6k_preanalysis_addendum_manifest.json \
+  --views_dir outputs/stage6k_longitudinal_dose_views_v1 \
+  --contexts_dir outputs/stage6k_longitudinal_dose_context_v1 \
+  --stage6j_kinematic_dir outputs/stage6j_pure_longitudinal_kinematic_gate_v1 \
+  --output_dir outputs/stage6k_realized_longitudinal_dose_curve_v1
+```
+
+使用同一个Waymo checkpoint生成三档embedding后，运行四档统一BDD与质量敏感性：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_run_longitudinal_dose_bdd.py \
+  --addendum_manifest outputs/stage6k_preanalysis_addendum_freeze_v1/stage6k_preanalysis_addendum_manifest.json \
+  --realized_dose_summary outputs/stage6k_realized_longitudinal_dose_curve_v1/stage6k_realized_dose_summary.json \
+  --new_embeddings_dir outputs/stage6k_longitudinal_dose_embeddings_v1 \
+  --stage6j_embedding_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --stage6j_bdd_dir outputs/stage6j_pure_longitudinal_paired_bdd_v1 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage6k_longitudinal_dose_bdd_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6k_evaluate_lane_quality_sensitivity.py \
+  --addendum_manifest outputs/stage6k_preanalysis_addendum_freeze_v1/stage6k_preanalysis_addendum_manifest.json \
+  --new_contexts_dir outputs/stage6k_longitudinal_dose_context_v1 \
+  --new_embeddings_dir outputs/stage6k_longitudinal_dose_embeddings_v1 \
+  --stage6j_context_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --stage6j_embedding_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --output_dir outputs/stage6k_lane_quality_sensitivity_v1
+```
+
+### 2. 期望行为
+
+配置以Stage 6J保守profile为0%、激进profile为100%，六个纵向IDM参数线性插值得到
+25%、50%、75%；所有profile固定`lateral_offsets=[-0.5,0.5]`。0%同profile下限和
+100%端点复用Stage 6J，不新增仿真；新增三档各运行183个相同场景、每场景两个planner，
+合计549个任务和1098条official rollout。冻结阶段不读取新增剂量的embedding、BDD或
+effect size。runner逐任务隔离，支持`--resume`，并写出`batch_state.json`、
+`batch_scenario_status.csv`、`batch_events.jsonl`。
+
+解盲前补充将四个非零overall剂量作为一个Holm family，将4剂量×3 tasks作为一个12项
+Holm family；最小剂量必须同时通过speed和RMS acceleration的单侧log-cluster 95%门禁、
+以及overall Holm p<0.05。lane fallback/ambiguity只做post-treatment描述性敏感性，禁止据此
+删样本、重加权或替代primary。
+
+### 3. 通过标准
+
+- 冻结manifest状态为`FROZEN_BEFORE_LONGITUDINAL_DOSE_ROLLOUTS`，插值审计为true；
+- 任务数549、rollout数1098，三档各183个，固定场景SHA-256不变；
+- 每档smoke均为`SUCCEEDED`，A/B各一条official success，same-log和strict-token均PASS；
+- 全量最终549/549 `SUCCEEDED`、0 failed、0 pending；
+- 三档view、context和embedding各183 pair/366行，context validation全部PASS；
+- 用“运动学处置实现 + overall Holm p<0.05”定义最小可检出剂量，同时报告raw BDD、
+  null q95、BDD/q95、Z_BDD；不得声称存在跨数据集通用raw BDD阈值。
+
+实际结果：549/549任务、1098/1098 rollout成功。25/50/75/100%四档实现运动学门禁均PASS；
+overall BDD依次为0.00115612、0.00159972、0.00332234、0.00500090，四档Holm p依次为
+0.00428996、0.0000399996、0.0000399996、0.0000399996。因此本协议内最小可检出名义剂量为
+25%；25%对应BDD/null q95=1.290、Z_BDD=3.649。同log整体翻转的四档Holm也全部显著。
+task结果不可写成“25%所有任务均检出”：25%仅longitudinal-high-motion通过12项Holm；following
+到75%才通过，stop/go从50%通过但100%在12项Holm后未通过，属于任务异质性诊断。
+
+## Stage 6J — 纯纵向 PDM A/B 冻结与真实 smoke
+
+### 1. 命令
+
+先冻结设计和183个同场景配对，不启动仿真：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6j_freeze_pure_longitudinal_confirmation.py \
+  --design_json configs/stage6j_pure_longitudinal_confirmation.json \
+  --confirmation_ledger_csv outputs/stage7_m6_5_locked_confirmation_view_v1/confirmation_scenario_ledger.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --output_dir outputs/stage6j_pure_longitudinal_freeze_v1 \
+  --overwrite
+```
+
+第一个冻结跟车场景的双planner真实smoke：
+
+```bash
+env \
+  NUPLAN_DEVKIT_ROOT=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  NUPLAN_DATA_ROOT=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset \
+  NUPLAN_MAPS_ROOT=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  NUPLAN_MAP_ROOT=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  NUPLAN_EXP_ROOT=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/exp \
+  PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+  VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+  PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7c1_run_nuplan_simulation.py \
+  --context_dir outputs/stage6j_pure_longitudinal_freeze_v1/stage7c_context \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --output_dir outputs/stage6j_pure_longitudinal_smoke_1scene_v1 \
+  --planners pdm_closed_assertive_longitudinal_v1 pdm_closed_conservative_longitudinal_v1 \
+  --max_scenarios 1 --min_timesteps 2 \
+  --require_same_scenario_alignment \
+  --require_strict_nuplan_token_alignment \
+  --allow_external_planner_name \
+  --hydra_searchpath '[pkg://tuplan_garage.planning.script.config.common,pkg://tuplan_garage.planning.script.config.simulation,pkg://nuplan.planning.script.config.common,pkg://nuplan.planning.script.experiments]' \
+  --command_timeout_s 3600 \
+  --nuplan_simulation_command_template '/Users/liuqing/miniconda3/envs/nuplan/bin/python /Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/run_simulation.py +simulation=closed_loop_nonreactive_agents {planner_hydra_overrides} scenario_builder=nuplan_mini scenario_builder.db_files=[/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1/2021.09.13.18.55.23_veh-45_02099_02822.db] scenario_filter=all_scenarios {scenario_hydra_overrides} worker=single_machine_thread_pool worker.max_workers=1 scenario_builder.max_workers=1 max_callback_workers=1 gpu=false experiment_name=stage6j_pure_longitudinal_smoke_v1 job_name=closed_loop_nonreactive_agents_stage7c_{planner_name_safe} output_dir={output_dir}' \
+  --overwrite
+```
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m py_compile \
+  tools/stage6j_freeze_pure_longitudinal_confirmation.py \
+  tools/stage7c1_run_nuplan_simulation.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/check_no_tmp_dependencies.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6j_pure_longitudinal_confirmation.py \
+  tests/test_stage7c_external_planner.py
+```
+
+### 2. 期望行为
+
+- 两个profile的`lateral_offsets`固定为相同的`[-0.5,0.5]`；
+- 只允许speed fraction、fallback speed、min-gap、headway、accel和decel六项纵向参数不同；
+- freeze只读取M6.5 confirmation ledger和DB存在性，不读取embedding、BDD或planner结果数组；
+- 主分析选择following、stop/go和`high_magnitude_speed/medium_magnitude_speed`；
+- 排除lane-change、dense/vulnerable和`high_lateral_acceleration`；
+- 输出冻结manifest、183行场景清单、3行smoke清单、planner参数审计、Stage7C context和中文报告；
+- smoke只运行1场景×2 planners，不启动366条全量rollout。
+
+### 3. 通过标准
+
+- `pure_longitudinal_treatment=true`、lateral difference=0、longitudinal difference=6；
+- 183个pair分布为following=60、stop/go=67、longitudinal high-motion=56；
+- distinct logs=156、duplicate token=0、missing DB=0；
+- smoke official success=2/2、trajectory rows=298、shape=`(1,2,149,8)`；
+- same-log alignment与strict-token alignment均PASS，`pseudo_rollout=false`；
+- 全量366条rollout必须在可断点续跑批处理和显式execute确认后才能启动。
+
+实际结果：freeze与单场景双planner smoke均PASS；smoke耗时约33秒。权威输出为
+`outputs/stage6j_pure_longitudinal_freeze_v1/`和
+`outputs/stage6j_pure_longitudinal_smoke_1scene_v1/`。
+
+### 4. 183场景可断点续跑批处理（Issue #250）
+
+dry-run：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6j_run_pure_longitudinal_rollouts.py \
+  --freeze_manifest outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_freeze_manifest.json \
+  --locked_scenarios_csv outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_locked_scenarios.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  --expected_nuplan_commit e9241677997dd86bfc0bcd44817ab04fe631405b \
+  --expected_tuplan_commit b51d5d04fac1bd4389653b9ab2ff73ea88f435a3 \
+  --output_dir outputs/stage6j_pure_longitudinal_batch_v1
+```
+
+真实执行在上述命令后追加：
+
+```text
+--execute
+--confirm_locked_scenarios_sha256 90b35382b53d4fada7fd4237f1a3efb8595505406ba99a6e0e3f839d7c777036
+--resume
+```
+
+Mac全量运行必须使用`caffeinate -dimsu`。状态文件为
+`batch_state.json`、`batch_scenario_status.csv`和`batch_events.jsonl`；主日志为
+`full_primary_run.log`。每个场景使用独立`rollouts/order_NNNN_token/attempt_NNN`，
+成功场景在`--resume`时重新审计后跳过；失败场景默认停止重试，只有人工检查后显式
+`--retry_failed`才创建新attempt。
+
+批处理启动前会复核freeze/locked SHA-256、183行顺序、DB/log/token、两个planner
+fingerprint、Stage7C hash以及nuPlan/tuPlan commit。默认dry-run，缺少`--execute`或
+精确确认SHA-256时不得启动official simulation。
+
+实际全量结果：183/183场景成功、366/366 official rollout、0失败、0 pending。
+
+### 5. 统一视图复核与5邻车上下文（Issue #251）
+
+#### 1. 命令
+
+先重新审计并合并183个隔离输出：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6j_prepare_pure_longitudinal_view.py \
+  --freeze_manifest outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_freeze_manifest.json \
+  --locked_scenarios_csv outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_locked_scenarios.csv \
+  --batch_manifest outputs/stage6j_pure_longitudinal_batch_v1/batch_manifest.json \
+  --batch_state outputs/stage6j_pure_longitudinal_batch_v1/batch_state.json \
+  --batch_status_csv outputs/stage6j_pure_longitudinal_batch_v1/batch_scenario_status.csv \
+  --output_dir outputs/stage6j_pure_longitudinal_view_v1
+```
+
+再构建Stage5D兼容的5邻车上下文：
+
+```bash
+caffeinate -dimsu env \
+  PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage6j_pure_longitudinal_view_v1 \
+  --output_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --required_planners pdm_closed_assertive_longitudinal_v1 pdm_closed_conservative_longitudinal_v1 \
+  --write_projection_debug --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6
+```
+
+#### 2. 期望行为
+
+- 统一视图工具重新审计全部183对，不跳过失败场景，不改动原始rollout；
+- official目录以symlink引用隔离输出，ego张量使用memmap合并；
+- 上下文工具解析每条official msgpack，构建与Waymo Stage5D一致的ego、5邻车和interaction特征；
+- 生成lane projection与strict-filter诊断；
+- 两步均不读取embedding、BDD或effect size。
+
+#### 3. 通过标准
+
+- 183/183重新审计通过、366/366 official rollout、任务数60/56/67；
+- 统一张量shape=`(183,2,150,8)`、strict token与same-log均PASS；
+- context输出366行，planner/scenario对齐完整，`validation.pass=true`；
+- Stage5D schema/formula validation通过，且无静默几何fallback；
+- 只有context通过后才允许计算预先定义的纯纵向运动学门禁。
+
+统一视图实际结果：183/183通过、0复核失败、54612个有效trajectory rows、156个独立log。
+
+### 6. 预冻结纯纵向运动学门禁
+
+#### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6j_evaluate_kinematic_gate.py \
+  --config configs/stage6j_kinematic_gate.json \
+  --context_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --view_dir outputs/stage6j_pure_longitudinal_view_v1 \
+  --output_dir outputs/stage6j_pure_longitudinal_kinematic_gate_v1
+```
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m py_compile \
+  tools/stage6j_prepare_pure_longitudinal_view.py \
+  tools/stage6j_evaluate_kinematic_gate.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6j_prepare_pure_longitudinal_view.py \
+  tests/test_stage6j_evaluate_kinematic_gate.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/check_no_tmp_dependencies.py
+```
+
+#### 2. 期望行为
+
+- 只读取统一view ledger、context metadata/ego/mask/neighbor和context validation；
+- 对每个same-scenario pair计算assertive-conservative的speed、accel、jerk、yaw-rate、THW、front distance和front exposure差；
+- 按156个`log_name` cluster做10000次bootstrap，输出总体与三个task的95% CI；
+- 使用结果读取前冻结的速度与RMS加速度双指标门禁；
+- 不读取embedding、BDD或effect size，门禁未通过时禁止进入embedding阶段。
+
+#### 3. 通过标准
+
+- 183个完整pair、156个独立log、任务数60/56/67，context `validation.pass=true`；
+- `delta_mean_speed`的log-cluster bootstrap 95% CI下界≥0.5 m/s；
+- `delta_rms_accel`的log-cluster bootstrap 95% CI下界≥0.1 m/s²；
+- 两个主指标必须全部PASS，才设置`embedding_and_bdd_analysis_allowed=true`；
+- 输出逐pair CSV、总体/分task对比CSV、门禁decision CSV、summary JSON和中文报告。
+
+实际结果：运动学门禁PASS。平均速度A-B=`0.9147 m/s`，log-cluster 95% CI
+`[0.7578,1.0784]`；RMS加速度A-B=`0.1816 m/s²`，95% CI
+`[0.1456,0.2175]`。
+
+### 7. Waymo embedding与纯纵向 paired BDD
+
+#### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --device cpu
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7f_aggressive_conservative_paired_delta.py \
+  --embedding_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --context_dataset_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --stage7f_dir outputs/stage6j_pure_longitudinal_stage7f_v1 \
+  --planner_a pdm_closed_assertive_longitudinal_v1 \
+  --planner_b pdm_closed_conservative_longitudinal_v1 \
+  --output_dir outputs/stage6j_pure_longitudinal_stage7f_v1/paired_delta_assertive_minus_conservative
+
+caffeinate -dimsu /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6j_run_paired_bdd.py \
+  --config configs/stage6j_paired_bdd_analysis.json \
+  --embedding_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --paired_delta_csv outputs/stage6j_pure_longitudinal_stage7f_v1/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --kinematic_gate_summary outputs/stage6j_pure_longitudinal_kinematic_gate_v1/stage6j_kinematic_gate_summary.json \
+  --output_dir outputs/stage6j_pure_longitudinal_paired_bdd_v1
+```
+
+#### 2. 期望行为
+
+- embedding固定使用原Waymo Stage5/6的83D context GRU checkpoint，输出366×64；
+- BDD总体primary固定为single-RBF biased MMD²和100000次pair内label swap；
+- following、stop/go、longitudinal high-motion为三个pre-treatment secondary task；
+- task p值做Holm校正；报告以中文输出；
+- 只解释受控同场景纯纵向benchmark intervention，不外推异场景release可靠性。
+
+#### 3. 通过标准
+
+- checkpoint SHA-256=`909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc`；
+- embedding shape=`(366,64)`、全部finite、无83D padding；
+- 183/183 pair完整且A/B有效时长相同；
+- overall按预冻结alpha=0.05判定；三个task只用Holm p解释；
+- summary和中文报告保留论文主张边界。
+
+实际结果：overall BDD/MMD²=`0.00500090`，0/100000 null达到observed，plus-one
+p=`9.9999e-6`。following=`0.01706723`、Holm p=`0.00129999`；stop/go=
+`0.00537483`、Holm p=`0.03300967`；longitudinal high-motion=`0.01358617`、Holm
+p=`0.0000299997`。总体和三个task均reject。
+
+## Stage 6I — 冻结可靠性分解与论文主张审计
+
+### 1. 命令
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6i_build_reliability_evidence.py \
+  --stage6h_dir outputs/stage6h_nuplan_power_curve_800_v1 \
+  --embedding_pool_summary outputs/stage6h_expanded_800_embedding_pool_v1/stage6h_embedding_pool_summary.json \
+  --embedding_pool_metadata outputs/stage6h_expanded_800_embedding_pool_v1/metadata.csv \
+  --kinematic_contrasts outputs/stage7_m6_6_confirmation_evidence_v1/table_m6_6_kinematic_contrasts.csv \
+  --output_dir outputs/stage6i_reliability_evidence_v1
+```
+
+### 2. 期望行为
+
+- 只读取Stage 6H summary、operating/detection/split/trial CSV、800-pair pool
+  summary/metadata、冻结paired-oracle summary和M6.6运动学对比表；
+- 不读取rollout、context或embedding数组，不重新计算BDD；
+- 生成overall可靠性表、双方向诊断、task定义/分类/BDD大小、planner处置审计、论文主张
+  矩阵、中文Markdown报告和PNG/PDF图；
+- 保留原始非单调曲线和每档独立threshold，不做平滑或事后调参；
+- 禁止外推400场景/版本以上的检出率或精确样本量。
+
+### 3. 通过标准
+
+- 输入必须为800 pairs / 1600 rows / 489 log clusters且Stage 6H状态完整；
+- 2400 splits和14400 scope rows完整，所有split精确达到目标n且log/scenario overlap=0；
+- 四档均报告A/A、A/B、Wilson 95% CI、false-negative rate和区间分离margin；
+- 两个A/B方向分别报告，且明确只作diagnostic；
+- 主张矩阵必须区分公开基准支持、公开release emulation支持、不支持及未评估；
+- summary必须保持`frozen_sufficiency_gate_passed=false`和`no_extrapolation_above_observed_range=true`。
+
+实际结果：输入审计PASS；四档A/A与A/B Wilson区间均分离。400场景/版本时A/B detection
+为66.5%（59.7%–72.7%），A/A FPR为5.0%（2.7%–9.0%），false-negative rate为
+33.5%（27.3%–40.3%）；两个A/B方向分别为62%和71%。公开异场景版本信号获得支持，
+但80%单次发布可靠性、通用threshold和真实OEM验证均未获得支持。
+
+术语统一为：BDD是研究量，MMD是统计方法，报告数值为MMD²；项目没有定义MDD，旧讨论
+中的MDD按MMD笔误处理。五个task的同场景paired-oracle MMD²依次为0.02478050、
+0.02878431、0.00523033、0.01445332、0.01379180；400/版本异场景检出率依次为
+15.5%、46.0%、13.0%、63.0%、11.5%。`lane_change`仅按nuPlan原始
+`scenario_type=changing_lane_to_left/right`切片，没有确认PDM控制自车实际完成变道；
+且两个planner的`lateral_offsets`不同，因此当前A/B是纵向+横向混合处置，不能作为纯
+纵向风格证据。
+
+## Stage 6H — 800-pair embedding池与200/250/300/400扩展功效曲线
+
+### 1. 命令
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6h_prepare_expanded_rollout_view.py \
+  --freeze_manifest outputs/stage6g_expanded_release_pool_freeze_v1/stage6g_freeze_manifest.json \
+  --primary_csv outputs/stage6g_expanded_release_pool_freeze_v1/stage6g_locked_primary.csv \
+  --batch_status_csv outputs/stage6g_expanded_release_pool_run_v1/batch_scenario_status.csv \
+  --existing_ledger_csv outputs/stage7_m6_5_locked_confirmation_view_v1/confirmation_scenario_ledger.csv \
+  --output_dir outputs/stage6h_expanded_490_rollout_view_v1
+
+env PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage \
+  caffeinate -dimsu \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage6h_expanded_490_rollout_view_v1 \
+  --output_dir outputs/stage6h_expanded_490_context_v1 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --write_projection_debug --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7e_embed_stage6_dataset.py \
+  --context_dataset_dir outputs/stage6h_expanded_490_context_v1 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --output_dir outputs/stage6h_expanded_490_embeddings_v1 \
+  --device cpu
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6h_merge_expanded_embedding_pool.py \
+  --existing_embedding_dir outputs/stage7_m6_5_locked_confirmation_embeddings_v1 \
+  --new_embedding_dir outputs/stage6h_expanded_490_embeddings_v1 \
+  --output_dir outputs/stage6h_expanded_800_embedding_pool_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6f_unpaired_power_curve.py \
+  --embedding_path outputs/stage6h_expanded_800_embedding_pool_v1/embedding.npy \
+  --metadata_csv outputs/stage6h_expanded_800_embedding_pool_v1/metadata.csv \
+  --config_json configs/stage6h_nuplan_power_curve_800.json \
+  --paired_oracle_json outputs/stage7_m6_5_locked_confirmation_analysis_v1/m6_5_locked_confirmation_summary.json \
+  --output_dir outputs/stage6h_nuplan_power_curve_800_v1
+```
+
+### 2. 期望行为
+
+- 只对新增490场景构建context和embedding，复用原310个已审计embedding；
+- 新旧数据必须使用同一个Waymo checkpoint、83D Stage5D schema和64D embedding；
+- 合并输出必须为800 pairs / 1600 rows，重建连续`global_row`且每pair严格完整；
+- 功效曲线在200/250/300/400每档运行600 trials，每档独立A/A标定；
+- `sequential_full_log_pool_v1`保证最大档位仍以完整log构造两个不重叠版本集合；
+- 不读取结果重选场景，不平滑曲线，不外推400/版本以上的样本量。
+
+### 3. 通过标准
+
+- 490-pair view的Stage7C re-audit为490/490 PASS；
+- 新embedding为`[980,64]`且全部finite，checkpoint SHA与原310完全一致；
+- 合并pool为`[1600,64]`、800/800 complete pairs、旧新token overlap=0；
+- 2400/2400 trials的A/B log和token overlap均为0，实际样本量在目标±1；
+- 四个overall threshold全部有效，并报告A/A FPR、A/B detection及Wilson 95% CI；
+- 只有Wilson detection下界≥80%且FPR上界≤5%时才能声称达到冻结充分性门槛。
+
+实际执行结果：490/490 rollout复审通过；新增context为`[980,150,83]`，新增embedding为
+`[980,64]`；合并pool为800 pairs / 1600 rows / 489 log clusters；2400/2400 split均为
+精确目标样本量且log、scenario overlap为0。overall结果为：
+
+| 场景/版本 | A/A FPR（Wilson 95% CI） | A/B detection（Wilson 95% CI） |
+| ---: | ---: | ---: |
+| 200 | 8.0%（5.0%–12.6%） | 30.0%（24.1%–36.7%） |
+| 250 | 6.5%（3.8%–10.8%） | 28.5%（22.7%–35.1%） |
+| 300 | 3.5%（1.7%–7.0%） | 41.5%（34.9%–48.4%） |
+| 400 | 5.0%（2.7%–9.0%） | 66.5%（59.7%–72.7%） |
+
+最终状态为`TARGET_NOT_REACHED_WITH_AVAILABLE_PUBLIC_LOGS`，不能声称达到80%检出目标，
+也禁止从当前结果外推400/版本以上所需的精确样本量。
+
+## Stage 6G — 扩展公开不配对发布池到最多800场景
+
+### 1. 命令
+
+冻结 outcome-blind 主集和技术预备集：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6g_freeze_expanded_release_pool.py \
+  --config configs/stage6g_expanded_release_pool.json \
+  --output_dir outputs/stage6g_expanded_release_pool_freeze_v1
+```
+
+runner dry-run：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6g_run_expanded_release_pool.py \
+  --freeze_manifest outputs/stage6g_expanded_release_pool_freeze_v1/stage6g_freeze_manifest.json \
+  --primary_csv outputs/stage6g_expanded_release_pool_freeze_v1/stage6g_locked_primary.csv \
+  --reserve_csv outputs/stage6g_expanded_release_pool_freeze_v1/stage6g_locked_reserve.csv \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  --nuplan_data_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset \
+  --nuplan_exp_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/exp \
+  --nuplan_devkit_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  --tuplan_garage_root /Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  --output_dir outputs/stage6g_expanded_release_pool_run_v1
+```
+
+真实执行时必须额外提供 `--execute`、当前 freeze manifest 文件 SHA-256 和 source
+canonical manifest SHA-256；可用 `--max_actions 1` 做 smoke，并用同一输出目录续跑。
+
+### 2. 期望行为
+
+- 选择只读取 frozen `scenario_type`、token/log/DB identity 和技术可运行性，不读取
+  embedding、BDD、effect size、轨迹指标或 planner outcome；
+- 新增主集490个，配额122/11/115/122/120；与现有310合并后的任务目标为
+  182/71/182/182/183；
+- lane-change 只新增11个，因为其余39个原定义候选不满足官方 scene-position；禁止用
+  不同语义标签补数；
+- runner 持续写入 `batch_state.json`、`batch_scenario_status.csv`、
+  `batch_events.jsonl` 和每个 attempt 的 driver log，进程中断后可续跑；
+- reserve 必须提供主集 status CSV，且只覆盖同任务、reserve-eligible 的技术失败。
+
+### 3. 通过标准
+
+- `stage6g_freeze_manifest.json.status=FROZEN_BEFORE_STAGE6G_ROLLOUTS`；
+- 主集490、预备100，token overlap 均为0，现有+主集+预备每 log 最大3；
+- 590个冻结 token 的 `official_scene_position_valid=true`，所有 forbidden-input flag=false；
+- dry-run 通过 CSV/tool hash、planner fingerprint、nuPlan/tuPlan commit 和路径校验；
+- 真实场景只有在两套 planner 均成功、trajectory 非空、严格 log/token alignment 和
+  pair tensor audit 全通过时才记为 `SUCCEEDED`；最终池规模只按成功主集/预备补充计算。
+
 ## 项目结构
 ```
 E2E-Evaluation/
@@ -7298,3 +7890,848 @@ eligible logs，而 primary 在每 log 最多2个的约束下至少需要188个�
 冻结 lane-change 类型只有2个 eligible candidates，距离75个 primary 和15个 reserve
 明显不足。必须扩展并重新索引新的 nuPlan log DB；不得放宽任务定义或复用开发 log
 来消除该缺口。
+
+## Stage 7 Milestone 6.4A：多 DB pre-treatment inventory 构建
+
+### 1. 命令
+
+仅使用现有 mini DB 重建可复现 inventory：
+
+```bash
+export NUPLAN_DATA_ROOT=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset
+
+python tools/stage7p_build_scenario_inventory.py \
+  --db_root "$NUPLAN_DATA_ROOT/data/cache/mini" \
+  --flat_db_root "$NUPLAN_DATA_ROOT/data/cache/locked_pool_v1" \
+  --output_dir outputs/stage7p_expanded_scenario_inventory_v1 \
+  --overwrite
+```
+
+Pittsburgh 等扩展 DB 解压到独立目录后，重复传入 `--db_root`：
+
+```bash
+python tools/stage7p_build_scenario_inventory.py \
+  --db_root "$NUPLAN_DATA_ROOT/data/cache/mini" \
+  --db_root "$NUPLAN_DATA_ROOT/data/cache/train_pittsburgh" \
+  --flat_db_root "$NUPLAN_DATA_ROOT/data/cache/locked_pool_v1" \
+  --output_dir outputs/stage7p_expanded_scenario_inventory_v1 \
+  --overwrite
+```
+
+测试：
+
+```bash
+python -m py_compile tools/stage7p_build_scenario_inventory.py
+python tools/check_no_tmp_dependencies.py
+python -m pytest -q \
+  tests/test_stage7p_build_scenario_inventory.py \
+  tests/test_stage7_m6_4_freeze_locked_collection.py
+```
+
+### 2. 期望行为
+
+- 每个 `--db_root` 只扫描直接子目录中的 `*.db`，多 root 输入按稳定顺序处理；
+- SQLite 以只读模式打开，读取 `scenario_tag -> lidar_pc -> scene -> log`；
+- BLOB token 统一写成 lowercase hex；`scenario_token` 和兼容 `scene_token` 都使用
+  `scenario_tag.lidar_pc_token`，原始 scene token 写入 `db_scene_token`；
+- 同一 token 的多个 scenario types 保留为多行，由 M6.4 排除跨冻结 task 的歧义；
+- 使用临时 SQLite staging 流式去重，避免把完整 inventory 常驻内存；
+- DB basename 冲突、token 指向多个 log/DB、缺表、缺列、空 token 和断裂外键均
+  fail closed；
+- `--flat_db_root` 只创建相对符号链接，已有正确链接幂等复用，不覆盖普通文件或
+  指向错误目标的链接；
+- 生成 `all_scenario_tags.csv`、`scenario_inventory_inputs.csv`、
+  `scenario_inventory_summary.json` 和 `scenario_inventory_report.md`；
+- 输入清单记录 DB 路径、大小、mtime、SHA-256、原始 tag rows、去重后 rows 和 log；
+- 工具只读取 pre-treatment SQLite metadata，不读取 planner outcome、trajectory、
+  embedding 或 BDD，不启动 M6.4 preflight 和 rollout。
+
+### 3. 通过标准
+
+- 输出 CSV 列严格为 `db_file,log_name,scenario_token,scene_token,db_scene_token,scenario_type,scenario_tag_token`；
+- summary 中 `schema_version=stage7p_scenario_inventory_v1`、
+  `status=COMPLETE_PRETREATMENT_INVENTORY`、`outcome_blind=true`；
+- mini 基准为64个 DB、约892204个 scenario-tag rows、63个 logs；
+- 当前 Mac smoke 实际读取892204个原始 tag rows，按 token/type/log/DB 去重后输出
+  821831行，移除70373个重复 tag，unique tokens=390186，冲突=0；
+- flat DB pool 中每个 inventory `db_file` 均可在单层 root 下解析；
+- fixture 和既有 M6.4 测试通过；
+- mini-only inventory 重跑 M6.4 时仍应返回
+  `BLOCKED_INSUFFICIENT_PRETREATMENT_INVENTORY`，不得生成 locked manifest；
+- 只有扩展 DB 后 M6.4 status 变为 `FROZEN_BEFORE_LOCKED_ROLLOUTS`，才可进入
+  M6.4B official rollouts。
+
+当前重建验证中，新旧 `m6_4_task_capacity.csv` 逐字节一致；冻结类型的 unique
+tokens=`177313`、eligible candidates=`70995`、eligible logs=`29`，五个 task 的
+capacity 均未改变。这说明 tag-level 去重没有改变 M6.4 的候选 estimand。
+
+### 4. Pittsburgh expanded inventory 实际结果（2026-08-07）
+
+下载与解压验收：
+
+```text
+ZIP bytes: 30620248893
+ZIP entries: 1562
+DB entries / extracted DB files: 1560 / 1560
+uncompressed DB bytes: 55726387200 (51.90 GiB)
+unsafe archive paths: 0
+unzip CRC test: pass
+invalid SQLite headers: 0
+```
+
+Pittsburgh 与 mini 有3个同名 DB，三组文件大小和 SHA-256 均完全一致。为保持
+basename-conflict fail-closed 合同，expanded 输入使用 Pittsburgh 中的3个副本，
+并建立 `mini_non_pittsburgh_v1` 相对链接 root，包含其余61个 mini DB。
+
+expanded builder 命令：
+
+```bash
+python tools/stage7p_build_scenario_inventory.py \
+  --db_root ../nuplan/dataset/data/cache/mini_non_pittsburgh_v1 \
+  --db_root ../nuplan/dataset/data/cache/train_pittsburgh \
+  --flat_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --output_dir outputs/stage7p_expanded_scenario_inventory_v2_pittsburgh \
+  --overwrite
+```
+
+实际 inventory：
+
+```text
+DB files: 1621
+logs: 1576
+source scenario_tag rows: 9695626
+inventory rows: 9604184
+unique scenario tokens: 5386575
+duplicate rows removed: 91442
+token-location conflicts: 0
+inventory SHA-256: 3fc6c02647d4df48362e4d124f8b01443d904ad6f491d8a68ddc0871caa2f5ab
+```
+
+expanded M6.4 preflight：
+
+```bash
+python tools/stage7_m6_4_freeze_locked_collection.py \
+  --inventory_csv outputs/stage7p_expanded_scenario_inventory_v2_pittsburgh/all_scenario_tags.csv \
+  --development_metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --m6_2_lock_spec outputs/stage7_m6_2_locked_task_bdd_development_v1/m6_2_locked_confirmation_spec.json \
+  --power_justification_file outputs/stage7_m6_3_simulation_power_v1/m6_3_locked_power_justification.json \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --output_dir outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh \
+  --planner_a pdm_closed_assertive_v1 \
+  --planner_b pdm_closed_conservative_v1 \
+  --max_per_log 2 \
+  --reserve_per_task 15 \
+  --selection_salt stage7-m6.4-locked-v1 \
+  --overwrite
+```
+
+通过结果：
+
+```text
+status: FROZEN_BEFORE_LOCKED_ROLLOUTS
+ready_to_launch_locked_rollouts: true
+primary: 75 × 5 tasks = 375 scenarios / 750 rollouts
+reserve: 15 × 5 tasks = 75 scenarios
+primary distinct logs: 306
+primary + reserve distinct logs: 350
+max scenarios per log: 2
+development token overlap: 0
+development log overlap: 0
+missing DB files: 0
+Stage7C primary context rows: 375
+primary manifest SHA-256: c825d87826b951bcdd6ed987195aeea25b02290eacca7cc6a2fc2b9e91ba8839
+reserve manifest SHA-256: c6c148d6298a0c6b8cdccd083f363cded1335f41845ba802148967e3f5328904
+```
+
+该结果只冻结 M6.4B 的输入和执行顺序，不代表750个 rollouts 已经运行。进入仿真前
+仍须核验 Mac `nuplan` 环境、tuPlan Garage commit、PDM readiness、地图变量和单场景
+smoke；不得直接把全部750个任务投入未经验证的 Apple Silicon 环境。
+
+## Stage 7 Milestone 6.4B：Mac PDM readiness 与首个 locked smoke
+
+### 1. 已核验环境
+
+```text
+nuPlan devkit: e9241677997dd86bfc0bcd44817ab04fe631405b
+tuPlan Garage: b51d5d04fac1bd4389653b9ab2ff73ea88f435a3
+Python: /Users/liuqing/miniconda3/envs/nuplan/bin/python (3.9.19)
+PDM readiness: true / ready_for_pdm_smoke
+```
+
+Readiness 与参数报告：
+
+- `outputs/stage7p_pdm_readiness_check_v2_mac/`
+- `outputs/stage7p_pdm_closed_config_params_v2_mac/`
+
+Mac 的 protobuf C extension 与旧 tensorboard 组合需要在 official command 环境中设置：
+
+```bash
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+```
+
+### 2. 首个 locked smoke 结果
+
+输入为
+`outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/stage7c_primary_context`
+的第一行，目标 token=`6b5a9da8c0b353b9`，只运行两个冻结 planner。输出：
+
+```text
+outputs/stage7_m6_4b_locked_smoke_1scene_mac_v1
+PASS
+official commands = 2 / 2
+shape = (1, 2, 149, 8)
+valid timesteps = 298
+missing pairs = 0
+same-log alignment = true
+strict token alignment = true
+pseudo rollout = false
+```
+
+实际命令模板必须同时满足：
+
+- `{planner_hydra_overrides}` 保留冻结 assertive / conservative 参数；
+- `scenario_builder.db_files=[<exact locked DB>]`，不扫描无关 DB；
+- `scenario_filter=all_scenarios {scenario_hydra_overrides}`，先清除默认
+  `one_continuous_log` 的固定 log，再注入 locked token；
+- `worker.max_workers=1`、`scenario_builder.max_workers=1` 和 BLAS threads=1；
+- 使用绝对 output path；批量运行时令 `job_name` 包含
+  `closed_loop_nonreactive_agents`，避免 metric aggregator 的 challenge-name 警告；
+- 保留 `--require_same_scenario_alignment`、
+  `--require_strict_nuplan_token_alignment` 和 `--allow_external_planner_name`。
+
+首个 token 同时具有 `near_long_vehicle` 与非冻结 `stationary` DB tags，serializer
+目录显示 `stationary`；严格 token/log 对齐仍为 PASS，M6.4 task assignment 保持
+outcome 前冻结的 `near_long_vehicle`，不得根据 smoke 结果改写。
+
+本 smoke 只完成2/750个 primary rollouts。下一步先建立可审计的批处理、进度、断点
+续跑、失败分类和 reserve 消耗流程，再启动剩余748个；禁止按中途 effect size
+停止或修改 manifest / planner 参数。
+
+## Stage 7 Milestone 6.4B：locked primary 批处理与断点续跑
+
+### 1. 命令
+
+先执行 dry-run。该命令验证完整375行 primary、75行 reserve 和450个 DB，但
+`--max_scenarios 1` 只把 order 1 标记为本次候选，不运行仿真：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+
+python tools/stage7_m6_4b_run_locked_rollouts.py \
+  --manifest_path outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_collection_manifest.json \
+  --primary_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_primary_collection.csv \
+  --reserve_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_reserve_collection.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  --expected_nuplan_commit e9241677997dd86bfc0bcd44817ab04fe631405b \
+  --expected_tuplan_commit b51d5d04fac1bd4389653b9ab2ff73ea88f435a3 \
+  --output_dir outputs/stage7_m6_4b_locked_batch_mac_v2 \
+  --max_scenarios 1
+```
+
+真实执行 order 1，必须显式提供执行开关、primary canonical manifest hash 和
+resume；以下命令可直接运行：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage7_m6_4b_run_locked_rollouts.py \
+  --manifest_path outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_collection_manifest.json \
+  --primary_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_primary_collection.csv \
+  --reserve_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_reserve_collection.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  --expected_nuplan_commit e9241677997dd86bfc0bcd44817ab04fe631405b \
+  --expected_tuplan_commit b51d5d04fac1bd4389653b9ab2ff73ea88f435a3 \
+  --output_dir outputs/stage7_m6_4b_locked_batch_mac_v2 \
+  --max_scenarios 1 \
+  --execute \
+  --confirm_primary_manifest_sha256 c825d87826b951bcdd6ed987195aeea25b02290eacca7cc6a2fc2b9e91ba8839 \
+  --resume
+```
+
+后续分段执行可使用 `--start_order`、`--end_order` 或 `--max_scenarios`。完全相同的
+命令配合 `--resume` 会重新审计成功输出后跳过；不要删除 batch manifest 或 status
+文件。只有人工检查失败原因并决定重试时，才增加 `--retry_failed`；它会创建新的
+`attempt_NNN`，不会覆盖旧 attempt。
+
+测试：
+
+```bash
+python -m py_compile tools/stage7_m6_4b_run_locked_rollouts.py
+python tools/check_no_tmp_dependencies.py
+python -m pytest -q tests/test_stage7_m6_4b_run_locked_rollouts.py
+```
+
+### 2. 期望行为
+
+- 每次启动都重新核验 manifest、CSV/Stage7C hash、planner fingerprints、顺序、
+  task rank、selection salt、DB 文件及两个外部 commit；
+- 默认 dry-run，未显式提供 `--execute` 时不产生 rollout；
+- 每个 scenario 生成独立 one-row context，并运行完整 assertive/conservative pair；
+- official command 固定单 worker、BLAS threads=1、精确 DB 和 token、绝对 Stage7C
+  output path；
+- `batch_manifest.json` 额外冻结 batch tool SHA-256、command timeout 和执行环境，
+  `batch_state.json` 原子更新，
+  `batch_events.jsonl` 追加记录 attempt；
+- `--resume` 只有在 pair completeness、trajectory、same-log、strict-token 等全部
+  复核通过时才跳过；损坏/失败输出不会静默覆盖；
+- `reserve_replacement_proposal.csv` 只生成技术/质量失败的 task-rank 顺序提案，
+  所有行均为 `PROPOSED_NOT_APPROVED_NOT_EXECUTED`；工具不会运行 reserve；
+- 不读取 embedding、BDD、effect size，不按观察到的 planner behavior 停止或换样本。
+
+### 3. 通过标准
+
+- full dry-run 显示375 primary、750 planned rollouts、374/375等状态与实际输出一致；
+- frozen input audit 中三个 SHA-256、两个 planner fingerprints 和两个 commits 与
+  locked 值完全一致；
+- order 1 真实 smoke 为2/2 official successes、298 trajectory rows、strict alignment
+  PASS；
+- 原样 resume 输出 `SKIP`，event ledger 行数不变且没有 `attempt_002`；
+- 当前 `batch_scenario_status.csv` 为1个 `SUCCEEDED`、374个 `PENDING`、0个失败；
+- `batch.lock` 在正常退出后不存在；reserve proposal为空；
+- order 2–375 未启动，剩余748个 rollout 保持 pending。
+
+当前真实结果目录：`outputs/stage7_m6_4b_locked_batch_mac_v2/`。冻结 batch tool
+SHA-256 为 `ef0026b3cc20942846035ac23d0d16d616a3d7dd6675e9a0f9c2612871d7fb06`。
+nuPlan metric aggregator 仍会打印“no metric files found for aggregation”警告，但 per-scenario
+metrics、runner report、msgpack 和轨迹导出均存在；该警告不改变 batch PASS。
+
+### 4. Order 2–6 canary 实际耗时与全量估算
+
+```text
+order 1 following_interaction:          36.26 s
+order 2 lane_change:                    32.34 s
+order 3 stop_go_control:                38.39 s
+order 4 high_motion_dynamics:           30.70 s
+order 5 dense_or_vulnerable_interaction:34.13 s
+order 6 following_interaction:          41.05 s
+
+mean / median / sample SD: 35.48 / 35.20 / 3.86 s
+order 2–6 actual wall time: 176.64 s
+effective wall rate: 35.33 s/scenario
+```
+
+按实际连续 wall rate 估算：原始374个 pending场景约3小时40分；canary后剩余369个
+约3小时37分。按当前最快/最慢场景外推，374个约3小时11分至4小时16分；正式全量
+建议预留4.5–5小时。平均磁盘占用约13.66 MiB/scenario，剩余369个约需4.92 GiB。
+
+当前 batch 状态为6 `SUCCEEDED`、369 `PENDING`、0 failures、0 reserve proposals。
+全量运行前应使用 `caffeinate` 防止Mac休眠，并继续使用同一个 v2 output、相同 batch
+tool hash 和 `--resume`；不要新建 manifest 或改变 timeout。
+
+## Stage 7 Milestone 6.4C：locked technical audit 与恢复
+
+M6.4B 全量375场景完成后，先运行 outcome-blind 技术审计。审计不会执行 rollout，
+也不会读取 embedding、BDD、effect size、trajectory metric 或 planner outcome：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage7_m6_4c_audit_locked_recovery.py \
+  --locked_manifest outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_collection_manifest.json \
+  --primary_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_primary_collection.csv \
+  --reserve_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_reserve_collection.csv \
+  --batch_status_csv outputs/stage7_m6_4b_locked_batch_mac_v2/batch_scenario_status.csv \
+  --batch_manifest outputs/stage7_m6_4b_locked_batch_mac_v2/batch_manifest.json \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --output_dir outputs/stage7_m6_4c_locked_recovery_audit_v2
+```
+
+审计结果：283个 primary 已成功、90个落在 nuPlan 官方 scene position 边界外、2个
+有效 token 需要 Hydra 字符串引号；58/75 reserve 技术可运行。`recovery_plan.csv`
+仅提出22个冻结动作：2个 quoted primary retry、10个 lane-change reserve 和10个
+high-motion reserve。输出目录必须不存在，工具拒绝覆盖旧审计。
+
+恢复 runner 默认 dry-run；真实执行必须复述 `recovery_plan.csv` 的 SHA-256，并选择
+单一 action。除 `--action` 与 `--output_dir` 外，两次执行使用相同冻结参数：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage7_m6_4c_run_locked_recovery.py \
+  --audit_summary outputs/stage7_m6_4c_locked_recovery_audit_v2/m6_4c_recovery_audit_summary.json \
+  --recovery_plan outputs/stage7_m6_4c_locked_recovery_audit_v2/recovery_plan.csv \
+  --locked_manifest outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_collection_manifest.json \
+  --primary_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_primary_collection.csv \
+  --reserve_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_reserve_collection.csv \
+  --batch_status_csv outputs/stage7_m6_4b_locked_batch_mac_v2/batch_scenario_status.csv \
+  --batch_manifest outputs/stage7_m6_4b_locked_batch_mac_v2/batch_manifest.json \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  --action RETRY_PRIMARY_QUOTED_TOKEN \
+  --output_dir outputs/stage7_m6_4c_quoted_primary_recovery_mac_v1 \
+  --execute \
+  --confirm_recovery_plan_sha256 370da6919905cdacce616639cfc47407081120a7eacae8fe859fde7d3553d7cb
+```
+
+执行 reserve 时改为 `--action RUN_FROZEN_RESERVE` 和新 output directory。Runner
+复核审计输入哈希、冻结 Stage7C/batch tool、planner fingerprints、两个外部 commits、
+runtime 路径与 timeout；每场仍要求2/2 official success、完整 trajectory pair、
+same-log 和 strict-token alignment。quoted retry 使用转义双引号，让引号在 Stage7C
+的 `shlex.split` 后仍进入 Hydra argv，同时保留原始 `scenario_token` 用于身份校验。
+
+真实结果：2/2 quoted retry 成功；20/20 frozen reserve 成功。恢复后完整 pairs 为：
+
+```text
+following_interaction:             60 / 60
+lane_change:                       60 / 60
+stop_go_control:                   67 / 60
+high_motion_dynamics:              55 / 60
+dense_or_vulnerable_interaction:   63 / 60
+overall:                          305
+```
+
+high-motion 仍缺5对且冻结 reserve 已用完。禁止直接从集合外选择5条；必须先新增
+outcome-blind supplemental protocol amendment，明确候选池、去重/零重叠规则、
+固定 salt、追加配额及新 manifest/hash，再启动补充 rollout。
+
+测试：
+
+```bash
+python -m py_compile tools/*.py
+python tools/check_no_tmp_dependencies.py
+python -m pytest -q tests/test_stage7_m6_4c_audit_locked_recovery.py \
+  tests/test_stage7_m6_4c_run_locked_recovery.py
+```
+
+## Stage 7 Milestone 6.4D：high-motion outcome-blind supplement
+
+### 1. 命令
+
+先冻结补充集合：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage7_m6_4d_freeze_high_motion_supplement.py \
+  --locked_manifest outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_collection_manifest.json \
+  --eligible_inventory outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_eligible_candidate_inventory.csv \
+  --development_metadata_csv outputs/stage7e_pdm_v1_balanced50_paired45_embeddings_v1_m3/metadata.csv \
+  --primary_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_primary_collection.csv \
+  --reserve_csv outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_locked_reserve_collection.csv \
+  --batch_status_csv outputs/stage7_m6_4b_locked_batch_mac_v2/batch_scenario_status.csv \
+  --batch_manifest outputs/stage7_m6_4b_locked_batch_mac_v2/batch_manifest.json \
+  --m6_4c_audit_summary outputs/stage7_m6_4c_locked_recovery_audit_v2/m6_4c_recovery_audit_summary.json \
+  --quoted_recovery_state outputs/stage7_m6_4c_quoted_primary_recovery_mac_v1/recovery_state.json \
+  --reserve_recovery_state outputs/stage7_m6_4c_frozen_reserve_recovery_mac_v1/recovery_state.json \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --output_dir outputs/stage7_m6_4d_high_motion_supplement_freeze_v1
+```
+
+Runner 默认 dry-run；真实执行命令为：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage7_m6_4d_run_locked_supplement.py \
+  --supplement_manifest outputs/stage7_m6_4d_high_motion_supplement_freeze_v1/m6_4d_locked_supplement_manifest.json \
+  --primary_csv outputs/stage7_m6_4d_high_motion_supplement_freeze_v1/m6_4d_locked_primary_collection.csv \
+  --reserve_csv outputs/stage7_m6_4d_high_motion_supplement_freeze_v1/m6_4d_locked_reserve_collection.csv \
+  --batch_manifest outputs/stage7_m6_4b_locked_batch_mac_v2/batch_manifest.json \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  --output_dir outputs/stage7_m6_4d_high_motion_supplement_primary_mac_v1 \
+  --execute \
+  --confirm_supplement_manifest_sha256 3dc11ab70c71479191bb4c789782e5ebe78dd7e43efdaec55651451b99041c2f \
+  --confirm_source_manifest_sha256 e63634711345e590de8db038c44a0fbe890700cd197e4de01156f338481113bb
+```
+
+### 2. 期望行为
+
+- Freeze 工具只读取 pre-treatment inventory、development/original collection identity、
+  SQLite 技术结构和 M6.4B/M6.4C 技术状态；不读取 embedding、BDD、effect size、
+  trajectory metric 或 planner outcome；
+- 排除 development 和原450条集合的全部 token/log，补充集合内部每 log 最多1条；
+- 使用固定 salt `stage7-m6.4d-high-motion-supplement-v1` 冻结5 primary + 5 reserve；
+- Runner 默认不执行；真实执行前复核所有 hashes、commits、planner fingerprints、
+  runtime path、timeout 和 SQLite technical runnability；
+- Primary 必须全部按冻结顺序执行。只有 primary 有 documented technical failure 时，
+  才允许 `--source reserve --primary_run_state ...`；否则 runner 拒绝 reserve；
+- 每场运行完整 assertive/conservative pair，禁止按 effect size 中途停止。
+
+### 3. 通过标准
+
+- supplement 与 development/original collection 的 token/log overlap 均为0；
+- 5 primary + 5 reserve 均通过 official scene-position preflight；
+- dry-run 选择5条但不生成 rollout；
+- 真实 primary 为5 `SUCCEEDED`、0 failures，2/2 official success、trajectory pair、
+  same-log 和 strict-token alignment 全部通过；
+- high-motion 完整 pairs 从55提升到60，五任务均达到冻结配额；
+- reserve 未执行；Stage7C 和 M6.4B tool hashes 保持不变。
+
+测试：
+
+```bash
+python -m py_compile tools/*.py
+python tools/check_no_tmp_dependencies.py
+python -m pytest -q tests/test_stage7_m6_4d_freeze_high_motion_supplement.py \
+  tests/test_stage7_m6_4d_run_locked_supplement.py
+```
+
+## Stage 7 Milestone 6.5：310-pair locked confirmation
+
+### 1. 准备并冻结
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7_m6_5_prepare_locked_confirmation.py \
+  --output_dir outputs/stage7_m6_5_locked_confirmation_view_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7_m6_5_run_locked_confirmation.py freeze \
+  --output_dir outputs/stage7_m6_5_locked_analysis_freeze_v1
+```
+
+确认 view 固定283个 M6.4B primary successes、2个 quoted-primary recoveries、20个
+frozen reserves 和5个 M6.4D supplement，合计310 pairs。Freeze 必须发生在确认
+embedding/effect 被读取之前。
+
+### 2. Mac context 注意事项
+
+```bash
+env PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage \
+  caffeinate -dimsu \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7_m6_5_locked_confirmation_view_v1 \
+  --output_dir outputs/stage7_m6_5_locked_confirmation_context_v1 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --write_projection_debug --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6
+```
+
+缺少 `PYTHONPATH` 会令 nuPlan pickle 因找不到 `tuplan_garage` 而退化为空 history；
+不能只看83D shape，必须同时检查 neighbor slot coverage 非零。正确运行耗时23分56秒，
+输出 `[620,150,83]`。
+
+### 3. 锁定结果
+
+- overall original 64D primary：MMD²=`0.0044693963`，0/100000 exceedances，
+  plus-one p=`9.9999e-6`；
+- five-task learned-embedding Holm p：following `0.00030`、lane `0.00036`、
+  stop/go `0.01820`、high-motion `0.00042`、dense/vulnerable `0.00258`；
+- Tier A=58、Tier A+B=135，original sensitivities Holm p 均为`0.0182`；
+- Tier A residual p=`0.126249`，不显著；
+- global fallback=`10.59%`，max-pair fallback 与 embedding distance 的 rho=`0.5088`。
+
+解释边界：确认支持 planner-conditioned behavior distribution difference；不代表安全性、
+planner superiority 或完全不受 lane-context quality 影响的纯 planner mechanism。
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage7_m6_5_locked_confirmation.py
+python -m py_compile tools/*.py
+python tools/check_no_tmp_dependencies.py
+```
+
+## Stage 6L：修复版 context representation 消融
+
+原Stage6K dose50/75 context为零邻车覆盖，旧Stage6L v1已作废。Mac重建必须同时加入三个
+Python路径，并启用非零覆盖门禁：
+
+```bash
+env PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage6k_longitudinal_dose_views_v1/dose50 \
+  --output_dir outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired/dose50 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --required_planners pdm_closed_assertive_longitudinal_dose50_v1 pdm_closed_conservative_longitudinal_v1 \
+  --write_projection_debug --write_strict_filter_diagnostic \
+  --strict_filter_min_laneaware_ratio 0.8 \
+  --strict_filter_ratio_sweep 1.0 0.9 0.8 0.7 0.6 \
+  --require_nonzero_neighbor_coverage
+```
+
+25/50/75三档修复后，依次运行：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6l_freeze_context_representation_ablation.py \
+  --design_json configs/stage6l_context_representation_ablation.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --stage6j_context_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --stage6j_embedding_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --stage6k_contexts_dir outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired \
+  --stage6k_embeddings_dir outputs/stage6k_longitudinal_dose_embeddings_v2_runtime_repaired \
+  --stage6j_bdd_config configs/stage6j_paired_bdd_analysis.json \
+  --output_dir outputs/stage6l_context_representation_ablation_freeze_v2_runtime_repaired
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6l_prepare_context_representation_ablation.py \
+  --freeze_manifest outputs/stage6l_context_representation_ablation_freeze_v2_runtime_repaired/stage6l_context_representation_ablation_freeze_manifest.json \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --stage6j_context_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --stage6j_embedding_dir outputs/stage6j_pure_longitudinal_embeddings_v1 \
+  --stage6k_contexts_dir outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired \
+  --stage6k_embeddings_dir outputs/stage6k_longitudinal_dose_embeddings_v2_runtime_repaired \
+  --output_dir outputs/stage6l_context_representation_ablation_representations_v2_runtime_repaired \
+  --device cpu
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6l_run_context_representation_ablation.py \
+  --freeze_manifest outputs/stage6l_context_representation_ablation_freeze_v2_runtime_repaired/stage6l_context_representation_ablation_freeze_manifest.json \
+  --decision_addendum_manifest outputs/stage6l_preanalysis_decision_addendum_freeze_v2_runtime_repaired/stage6l_preanalysis_decision_addendum_manifest.json \
+  --representation_dir outputs/stage6l_context_representation_ablation_representations_v2_runtime_repaired \
+  --stage6j_context_dir outputs/stage6j_pure_longitudinal_context_v1 \
+  --stage6k_contexts_dir outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired \
+  --stage6j_bdd_config configs/stage6j_paired_bdd_analysis.json \
+  --output_dir outputs/stage6l_context_representation_ablation_results_v2_runtime_repaired
+```
+
+权威结论：A/B/C/D的task-dose Holm通过为7/11/12/2，median Z_BDD为
+7.539/11.066/21.082/5.384。raw MMD²禁止跨表示比较。
+
+## Stage 6M：Context-balanced unpaired BDD 四方法比较
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6m_freeze_context_balanced_unpaired_bdd.py \
+  --design_json configs/stage6m_context_balanced_unpaired_bdd.json \
+  --stage6h_config configs/stage6h_nuplan_power_curve_800.json \
+  --embedding_pool_summary outputs/stage6h_expanded_800_embedding_pool_v1/stage6h_embedding_pool_summary.json \
+  --embedding_pool_metadata outputs/stage6h_expanded_800_embedding_pool_v1/metadata.csv \
+  --trial_bdd outputs/stage6h_nuplan_power_curve_800_v1/power_curve_trial_bdd.csv \
+  --log_assignments outputs/stage6h_nuplan_power_curve_800_v1/power_curve_log_assignments.csv \
+  --fixed_scope_bandwidths outputs/stage6h_nuplan_power_curve_800_v1/fixed_scope_bandwidths.csv \
+  --output_dir outputs/stage6m_context_balanced_unpaired_bdd_freeze_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6m_run_context_balanced_unpaired_bdd.py \
+  --freeze_manifest outputs/stage6m_context_balanced_unpaired_bdd_freeze_v1/stage6m_freeze_manifest.json \
+  --trial_bdd outputs/stage6h_nuplan_power_curve_800_v1/power_curve_trial_bdd.csv \
+  --output_dir outputs/stage6m_context_balanced_unpaired_bdd_results_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6m_audit_covariate_balance.py \
+  --freeze_manifest outputs/stage6m_context_balanced_unpaired_bdd_freeze_v1/stage6m_freeze_manifest.json \
+  --output_dir outputs/stage6m_context_balanced_unpaired_bdd_results_v1
+```
+
+n=400 raw/task/context/task+context detection为63.0%/65.0%/66.5%/64.5%，FPR为
+4.5%/5.5%/5.0%/6.0%。context相对raw的配对McNemar p=0.2478，不支持稳定提升。
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6l_context_representation_ablation.py \
+  tests/test_stage6m_context_balanced_unpaired_bdd.py \
+  tests/test_stage5d_context_core.py \
+  -k 'stage6l or stage6m or required_neighbor_coverage'
+python tools/check_no_tmp_dependencies.py
+```
+
+## Stage 6E：公开 A/A 标定与 log-disjoint 版本发布模拟
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6e_calibrate_unpaired_release.py \
+  --embedding_path outputs/stage7_m6_5_locked_confirmation_embeddings_v1/embedding.npy \
+  --metadata_csv outputs/stage7_m6_5_locked_confirmation_embeddings_v1/metadata.csv \
+  --config_json configs/stage6e_nuplan_release_emulation.json \
+  --paired_oracle_json outputs/stage7_m6_5_locked_confirmation_analysis_v1/m6_5_locked_confirmation_summary.json \
+  --output_dir outputs/stage6e_nuplan_release_emulation_v1
+```
+
+### 2. 期望行为
+
+- 先确认310个 scenario 各有且只有 assertive/conservative 两行，并审计 pair 内 log、map、
+  scenario type 一致；
+- 以257个 logs 为不可拆分 cluster，运行600次近似 ODD-balanced pseudo releases；
+- 每次 trial 的 A/B logs 和 scenario tokens overlap 必须为0；
+- 200个同版本 A/A calibration trials 冻结每个 scope 的95% threshold；独立随机流的
+  200个 A/A evaluation 估计误报率，200个双方向 A/B 估计检出率；
+- overall 是 primary；task rates 是未做 multiplicity control 的 diagnostic；
+- paired oracle 只作为参考读取，不重算、不修改，也不能把 paired p-value 当成 unpaired
+  p-value；
+- 输出完整 trial、log assignments、support audit、threshold、operating characteristics、
+  JSON/provenance 和 Markdown report；输出目录已存在时拒绝覆盖。
+
+### 3. 通过标准
+
+- summary 状态为 `PASS_PUBLIC_FIELD_RELEASE_EMULATION`；
+- 600/600 trials 的 log overlap 和 scenario overlap 都为0；
+- overall A/A threshold=`0.00994295`，holdout false-positive=7/200=`3.5%`；
+- overall A/B detection=70/200=`35.0%`，Wilson 95% CI 与 A/A 区间分离；
+- conclusion 为 `AB_SEPARATED_FROM_AA_BUT_SINGLE_RELEASE_SENSITIVITY_LIMITED`，不得写成
+  稳定量产报警能力；
+- lane-change 诊断约53.5% detection，stop/go 不得声明有检测能力；
+- 公司数据可用后重新标定，禁止直接迁移当前 absolute threshold。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6e_calibrate_unpaired_release.py
+python -m py_compile tools/*.py
+python tools/check_no_tmp_dependencies.py
+```
+
+## Stage 6F：不配对 BDD 样本量功效曲线
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6f_unpaired_power_curve.py \
+  --embedding_path outputs/stage7_m6_5_locked_confirmation_embeddings_v1/embedding.npy \
+  --metadata_csv outputs/stage7_m6_5_locked_confirmation_embeddings_v1/metadata.csv \
+  --config_json configs/stage6f_nuplan_power_curve.json \
+  --paired_oracle_json outputs/stage7_m6_5_locked_confirmation_analysis_v1/m6_5_locked_confirmation_summary.json \
+  --output_dir outputs/stage6f_nuplan_power_curve_v1
+```
+
+### 2. 期望行为
+
+- 对40/60/80/100/125/150场景/版本分别运行600次伪发布，共3,600 trials；
+- 每个样本量独立生成 A/A threshold、A/A holdout false-positive 和双方向 A/B
+  detection，不能跨样本量复用 threshold；
+- 完整 log 不可拆分，每次 A/B log 和 scenario-token overlap 都必须为0；
+- 实际 n_A/n_B 因单 log 含1–2场景允许目标±1，并写入 split audit；
+- 输出 overall primary 和未做 multiplicity control 的 task diagnostics；
+- 生成 CSV、JSON、provenance、Markdown，以及 PNG/PDF 功效曲线；
+- 不拟合或输出150场景/版本之外的精确 power extrapolation。
+
+### 3. 通过标准
+
+- execution status=`POWER_CURVE_COMPLETE`；
+- 3,600/3,600 trials 的 log/token overlap=0，实际样本量全部在目标±1内；
+- 六个 overall thresholds 全部通过；n=40 的 following/stop-go/dense task thresholds
+  因有效 trials 不足必须标记为 insufficient；
+- overall detection 曲线为7.0%、10.5%、12.0%、11.5%、17.0%、35.0%；
+- n=150 detection=35.0%（Wilson `[28.7%,41.8%]`），A/A false-positive=7.0%
+  （`[4.2%,11.4%]`）；
+- sufficiency status=`TARGET_NOT_REACHED_WITH_AVAILABLE_PUBLIC_LOGS`；
+- 不得报告达到80%所需的伪精确样本量；扩样后必须增加新的实证档位并重新标定阈值。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6f_unpaired_power_curve.py
+python -m py_compile tools/*.py
+python tools/check_no_tmp_dependencies.py
+```
+
+## Stage 7 Milestone 6.6：paper evidence package
+
+```bash
+MPLCONFIGDIR=/tmp/mpl-m6-6 \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage7_m6_6_build_confirmation_evidence.py \
+  --analysis_dir outputs/stage7_m6_5_locked_confirmation_analysis_v1 \
+  --analysis_lock outputs/stage7_m6_5_locked_analysis_freeze_v1/m6_5_confirmation_analysis_lock.json \
+  --quality_summary outputs/stage7_m6_5_locked_confirmation_quality_v1/milestone2b_summary.json \
+  --metadata_csv outputs/stage7_m6_5_locked_confirmation_embeddings_v1/metadata.csv \
+  --paired_delta_csv outputs/stage7_m6_5_locked_confirmation_stage7f_v1/paired_delta_assertive_minus_conservative/paired_delta_by_scenario.csv \
+  --output_dir outputs/stage7_m6_6_confirmation_evidence_v1
+```
+
+输出目录必须不存在；工具会先复核 M6.5 lock/summary 的所有输入 hashes 和完整性门。
+默认固定 seed=`20260808`、bootstrap=`10000`。生成10张 CSV/Markdown 表、6张
+PNG/PDF 图、summary、provenance、report 和中英文 manuscript results，不重新计算
+任何确认性 p 值。
+
+权威状态为 `PASS_WITH_QUALITY_LIMITATIONS`。总体最大 fallback 与 embedding distance
+rho=`0.5088`（task-stratified 95% CI `[0.4086,0.6035]`）；task-adjusted rank-residual
+rho=`0.4499`（95% CI `[0.3842,0.5719]`）。两者都是 post-treatment descriptive
+association，不能解释为因果机制或 covariate adjustment。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage7_m6_6_build_confirmation_evidence.py
+```
+
+## Stage 6D：异源实路软件版本 BDD
+
+### 1. 命令
+
+先复制并按实路字段修改示例设计。matching covariates、task slices 必须是版本运行前
+已确定或不受待比较软件影响的 pre-treatment 字段，cluster 建议使用独立采集单元
+（优先 log / route-day / vehicle-day），不能把逐帧 row ID 当作 cluster。
+
+```bash
+cp configs/stage6d_unpaired_version_design.example.json \
+  configs/stage6d_company_release_design.json
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6d_unpaired_version_bdd.py \
+  --embedding_path /absolute/path/to/embedding.npy \
+  --metadata_csv /absolute/path/to/version_metadata.csv \
+  --design_json configs/stage6d_company_release_design.json \
+  --bootstrap_repetitions 1000 \
+  --max_mmd_samples 2000 \
+  --seed 20260809 \
+  --output_dir outputs/stage6d_company_release_v1
+```
+
+本地 nuPlan balanced interface smoke（只验证接口，不用于实路结论）：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6d_unpaired_version_bdd.py \
+  --embedding_path outputs/stage7_m6_5_locked_confirmation_embeddings_v1/embedding.npy \
+  --metadata_csv outputs/stage7_m6_5_locked_confirmation_embeddings_v1/metadata.csv \
+  --design_json configs/stage6d_nuplan_interface_smoke_design.json \
+  --bootstrap_repetitions 50 \
+  --max_mmd_samples 2000 \
+  --seed 20260809 \
+  --output_dir outputs/stage6d_nuplan_interface_smoke_v1
+```
+
+### 2. 期望行为
+
+- 输入 embedding 必须是与 metadata 逐行对齐的二维 `.npy`；输出目录必须不存在；
+- categorical covariates 做 exact cells，continuous covariates 用 A/B 合并样本的冻结
+  quantile edges 分箱；
+- 两组重加权到 equal-group pooled common-support reference；
+- 同时输出 raw observed-mixture BDD、standardized BDD、task-frequency shift 和
+  task-conditioned BDD；
+- cluster bootstrap 每次都按组重采 cluster，并重新计算共同支持和权重；
+- timing 泄漏、无共同支持或 support / ESS / weight / cluster 门槛失败时 fail closed，
+  状态为 `NOT_COMPARABLE_INSUFFICIENT_COMMON_SUPPORT`；
+- 工具不输出 universal p-value，也不把 BDD 解释为安全性、性能优劣或因果效应。
+
+### 3. 通过标准
+
+- `stage6d_unpaired_version_summary.json` 状态为
+  `PASS_DESCRIPTIVE_STANDARDIZED_VERSION_DRIFT`；
+- A/B support fraction、ESS ratio、max weight ratio 和 cluster 数全部通过设计门槛；
+- `common_support_cells.csv` 非空，`covariate_balance.csv` 不出现未解释的严重失衡；
+- overall 与每个冻结 task 都有 raw / standardized MMD²、固定 bandwidth 和有效的
+  cluster-bootstrap SE / 95% 区间；
+- `task_frequency_shift.csv` 与 within-task BDD 分开，provenance 记录输入和设计 hash；
+- nuPlan interface smoke 应为 A/B 各310行、20/20 common cells、ESS ratio=1.0，raw 与
+  standardized overall MMD² 均约为 `0.0044865829`，bootstrap 样本共600行；
+- 生产应用还必须完成独立同版本 A/A 历史窗口标定，否则只能报告 descriptive drift，
+  不能设置正式报警阈值。
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6d_unpaired_version_bdd.py
+python -m py_compile tools/*.py
+python tools/check_no_tmp_dependencies.py
+```

@@ -1,0 +1,73 @@
+{
+  "schema_version": "stage6d_unpaired_version_design_v1",
+  "group_column": "software_version",
+  "groups": {
+    "A": "release_A",
+    "B": "release_B"
+  },
+  "row_id_column": "global_row",
+  "cluster_column": "route_day_id",
+  "reference_distribution": "equal_group_pooled_common_support",
+  "covariates": [
+    {
+      "name": "city",
+      "kind": "categorical",
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "road_class",
+      "kind": "categorical",
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "time_of_day",
+      "kind": "categorical",
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "speed_limit_mps",
+      "kind": "continuous",
+      "bins": 4,
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "traffic_density_at_window_start",
+      "kind": "continuous",
+      "bins": 4,
+      "timing": "pre_treatment"
+    }
+  ],
+  "tasks": [
+    {
+      "name": "following_opportunity",
+      "column": "following_opportunity_at_window_start",
+      "positive_values": [
+        1,
+        true
+      ],
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "lane_change_opportunity",
+      "column": "lane_change_opportunity_at_window_start",
+      "positive_values": [
+        1,
+        true
+      ],
+      "timing": "pre_treatment"
+    }
+  ],
+  "post_treatment_columns": [
+    "actual_lane_change",
+    "hard_brake",
+    "final_thw",
+    "planner_fallback",
+    "behavior_outcome"
+  ],
+  "thresholds": {
+    "min_support_fraction_per_group": 0.5,
+    "min_ess_ratio_per_group": 0.2,
+    "max_weight_ratio": 20.0,
+    "min_clusters_per_group": 10
+  }
+}

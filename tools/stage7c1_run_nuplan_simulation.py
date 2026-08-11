@@ -284,6 +284,71 @@ PLANNER_PROFILES = {
         "idm_policies.decel_max": 3.5,
         "lateral_offsets": [-1.5, 1.5],
     }),
+    "pdm_closed_conservative_longitudinal_v1": pdm_closed_profile(
+        "conservative_longitudinal",
+        "pure_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.2, 0.4, 0.6, 0.8],
+            "idm_policies.fallback_target_velocity": 10.0,
+            "idm_policies.min_gap_to_lead_agent": 2.0,
+            "idm_policies.headway_time": 2.0,
+            "idm_policies.accel_max": 1.0,
+            "idm_policies.decel_max": 3.0,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
+    "pdm_closed_assertive_longitudinal_v1": pdm_closed_profile(
+        "assertive_longitudinal",
+        "pure_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.4, 0.6, 0.8, 1.0],
+            "idm_policies.fallback_target_velocity": 18.0,
+            "idm_policies.min_gap_to_lead_agent": 0.5,
+            "idm_policies.headway_time": 1.0,
+            "idm_policies.accel_max": 2.0,
+            "idm_policies.decel_max": 3.5,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
+    "pdm_closed_assertive_longitudinal_dose25_v1": pdm_closed_profile(
+        "assertive_longitudinal_dose25",
+        "pure_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.25, 0.45, 0.65, 0.85],
+            "idm_policies.fallback_target_velocity": 12.0,
+            "idm_policies.min_gap_to_lead_agent": 1.625,
+            "idm_policies.headway_time": 1.75,
+            "idm_policies.accel_max": 1.25,
+            "idm_policies.decel_max": 3.125,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
+    "pdm_closed_assertive_longitudinal_dose50_v1": pdm_closed_profile(
+        "assertive_longitudinal_dose50",
+        "pure_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.3, 0.5, 0.7, 0.9],
+            "idm_policies.fallback_target_velocity": 14.0,
+            "idm_policies.min_gap_to_lead_agent": 1.25,
+            "idm_policies.headway_time": 1.5,
+            "idm_policies.accel_max": 1.5,
+            "idm_policies.decel_max": 3.25,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
+    "pdm_closed_assertive_longitudinal_dose75_v1": pdm_closed_profile(
+        "assertive_longitudinal_dose75",
+        "pure_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.35, 0.55, 0.75, 0.95],
+            "idm_policies.fallback_target_velocity": 16.0,
+            "idm_policies.min_gap_to_lead_agent": 0.875,
+            "idm_policies.headway_time": 1.25,
+            "idm_policies.accel_max": 1.75,
+            "idm_policies.decel_max": 3.375,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
 
 
 }

@@ -1905,3 +1905,322 @@ manifest，也没有启动任何新仿真。
 `FROZEN_BEFORE_LOCKED_ROLLOUTS` 后，才进入 M6.4B 的750个 primary rollouts
 （375 scenarios × 2 planners）；不能通过改变冻结 task family 或复用开发 log
 绕过该门槛。
+
+## Stage 7 Milestone 6.4A 可复现多 DB inventory pipeline（2026-08-07）
+
+M6.4A 新增 `tools/stage7p_build_scenario_inventory.py`，将旧 mini
+`all_scenario_tags.csv` 的生成过程固化为正式 CLI。实现范围由 GitHub Issue #236
+冻结。工具支持重复 `--db_root`，只读扫描每个 root 的直接子目录 DB，并严格关联
+`scenario_tag -> lidar_pc -> scene -> log`。BLOB token 统一为 lowercase hex；
+M6.4 的 `scenario_token` 继续使用 `scenario_tag.lidar_pc_token`，原 DB scene token
+单独保留为 `db_scene_token`。
+
+为控制未来 train DB 的规模，builder 使用临时 SQLite staging 做流式写入、稳定
+排序、exact token/type/log/DB 去重和 token-location 冲突审计，不把全量 CSV 放入
+内存。多个 scenario types 不会事先合并，M6.4 仍按冻结规则排除跨 task 歧义。
+DB basename 冲突、缺表/缺列、断裂关联、空 token、同 token 多 log/DB 均 fail
+closed。
+
+每次运行生成：
+
+- `all_scenario_tags.csv`；
+- `scenario_inventory_inputs.csv`，含逐 DB 路径、大小、mtime、SHA-256 和 row counts；
+- `scenario_inventory_summary.json`，含 schema、counts、工具/Git/runtime provenance
+  和输出 hash；
+- `scenario_inventory_report.md`；
+- 可选 `--flat_db_root` 相对符号链接 pool，供 M6.4 单层 `db_root / db_file` 合同使用。
+
+该工具只建立 pre-treatment inventory，不读取 planner outcome、trajectory、embedding
+或 BDD，也不自动启动 M6.4 preflight。mini-only 重建只用于可复现性 smoke；其容量
+不足结论不会改变。必须在新增 DB 到位、expanded inventory 构建完成并原样重跑
+M6.4 后，才判断能否进入 M6.4B。
+
+Mac mini-only reproducibility smoke 已完成：64个 DB、63个 logs、892204个原始
+scenario-tag rows 经 token/type/log/DB 去重后形成821831行 inventory，移除70373个
+重复 tag；unique scenario tokens=`390186`，token-location conflicts=`0`，并建立
+64个相对符号链接。用新 inventory 原样重跑 M6.4 后，冻结类型 unique tokens
+仍为`177313`、eligible candidates仍为`70995`、eligible logs仍为`29`，新旧
+`m6_4_task_capacity.csv` 逐字节一致。状态继续为
+`BLOCKED_INSUFFICIENT_PRETREATMENT_INVENTORY`，没有生成 locked manifest。
+
+Pittsburgh DB-only 扩展于2026-08-07完成。ZIP精确为`30620248893` bytes，1562个
+entries中包含1560个 DB；路径穿越审计、CRC测试和全部 SQLite header 检查通过，
+安全解压大小为51.90 GiB。3个 DB 与 mini 同名且 SHA-256 完全相同；expanded
+输入保留 Pittsburgh 副本，并使用61个非重叠 mini DB，得到1621个 DB、1576个
+logs。
+
+expanded inventory 包含9695626个原始 tag rows、9604184个去重 rows 和5386575个
+unique tokens；移除91442个重复 tag，token-location conflicts为0。M6.4 preflight
+首次达到：
+
+```text
+status = FROZEN_BEFORE_LOCKED_ROLLOUTS
+ready_to_launch_locked_rollouts = true
+primary = 75 per task, 375 scenarios, 750 planned rollouts
+reserve = 15 per task, 75 scenarios
+primary distinct logs = 306
+primary + reserve distinct logs = 350
+max scenarios per log = 2
+development token overlap = 0
+development log overlap = 0
+missing DB files = 0
+Stage7C primary context rows = 375
+```
+
+planner fingerprints与M6.2冻结值一致，全部 task deficit为0。Primary manifest
+SHA-256为`c825d87826b951bcdd6ed987195aeea25b02290eacca7cc6a2fc2b9e91ba8839`；
+reserve manifest SHA-256为
+`c6c148d6298a0c6b8cdccd083f363cded1335f41845ba802148967e3f5328904`。
+这标志M6.4A通过并进入M6.4B readiness阶段，不表示rollouts已经运行。Mac正式启动
+前仍需恢复精确tuPlan Garage commit、完成PDM readiness和单场景official smoke，
+再决定本机或Linux x86_64执行方案。
+
+## Stage 7 Milestone 6.4B Mac readiness 与 locked smoke（2026-08-07）
+
+Mac 环境已恢复并核验指定外部代码版本：nuPlan devkit commit 为
+`e9241677997dd86bfc0bcd44817ab04fe631405b`，tuPlan Garage commit 为
+`b51d5d04fac1bd4389653b9ab2ff73ea88f435a3`。nuPlan 专用 Python 3.9 环境按 devkit
+lock 修复 AWS/HTTP 依赖，并补齐 `scikit-learn==1.2.2`、
+`positional-encodings==6.0.1`；PDM Closed Planner 与 official
+`run_simulation.py` 均可导入。Readiness 输出位于
+`outputs/stage7p_pdm_readiness_check_v2_mac/`，状态为 `pdm_available=true`、
+`required_next_action=ready_for_pdm_smoke`。
+
+启动前重新核验 manifest，以下冻结值均保持不变：
+
+```text
+Stage7C tool SHA-256: 076b35d2112e126008eec5c96bf3e7b159ded75a40be7999212956423cb3e530
+primary CSV SHA-256: 91ef586988856b144a7e7fa5f7d7c187750d9bfec3d9951f0f15015f742a0ca5
+reserve CSV SHA-256: a73dd1d60c24ad09ec69aa11c0466d4c82ad68b4f5222ab064fca3147ff74cad
+assertive fingerprint: 18772fd36a1b0421109a3d93ed494eac5555d2f8f96571be68ff7641a2bac4dc
+conservative fingerprint: 9988f615a5aae5c67b3780076110a5150c3303b65e8beb98cc61090d9e19baac
+```
+
+只对 locked primary collection 的第一行运行了
+`pdm_closed_assertive_v1` / `pdm_closed_conservative_v1` 双 planner official smoke。
+目标 log 为 `2021.09.13.18.55.23_veh-45_02099_02822`，nuPlan scenario token 为
+`6b5a9da8c0b353b9`。命令同时将 `scenario_builder.db_files` 限定为对应 Pittsburgh
+DB，并用 `scenario_filter=all_scenarios` 清除 nuPlan 默认
+`one_continuous_log` 的无关 log filter，再注入锁定 token。
+
+结果位于 `outputs/stage7_m6_4b_locked_smoke_1scene_mac_v1/`：
+
+```text
+status: PASS
+official command successes: 2 / 2
+simulated_ego_seq shape: (1, 2, 149, 8)
+valid timesteps: 298
+msgpack files parsed: 2 / 2
+required pose valid ratio: 1.0
+missing scenario-planner pairs: 0
+same-log alignment: pass
+strict nuPlan token alignment: pass
+pseudo rollout: false
+wall time: about 41 seconds
+```
+
+该 token 在 SQLite `scenario_tag` 中同时有冻结 task 标签 `near_long_vehicle` 和
+非冻结标签 `stationary`；nuPlan serializer 将 actual scenario type 写为
+`stationary`，但 actual log/token 与锁定目标完全一致。M6.4 的 task assignment
+仍按 outcome 前冻结的 `near_long_vehicle` metadata 执行，不根据 rollout 后的目录
+标签改写。两个 official log 仅有 metric aggregator 未找到 challenge-named 聚合输入
+的警告，trajectory、per-scenario metric files 和 runner report 均已生成。后续批量
+模板应令 `job_name` 包含 `closed_loop_nonreactive_agents`，并使用绝对 output path
+避免相对目录嵌套。
+
+本次只产生2个 smoke rollouts，不构成 locked confirmation data，也没有查看或用于
+调整 selection、planner treatment、effect size 或 stopping rule。750个 primary
+rollouts 中仍有748个未运行；在批量启动前应先冻结 Mac 批处理、断点续跑、失败分类
+和 reserve 消耗的操作方案。
+
+## Stage 7 Milestone 6.4B locked batch orchestration（2026-08-07）
+
+GitHub Issue #237 新增 `tools/stage7_m6_4b_run_locked_rollouts.py`，作为冻结
+Stage7C 之上的 orchestration layer。它不修改 `stage7c1_run_nuplan_simulation.py`，
+因此 locked manifest 中 Stage7C SHA-256 继续为
+`076b35d2112e126008eec5c96bf3e7b159ded75a40be7999212956423cb3e530`。
+
+启动安全门包括：manifest status/ready flag、primary/reserve 文件与 canonical
+manifest hash、planner 参数指纹、连续 collection/task rank、跨 primary/reserve
+token 唯一性、selection salt、task counts、450个 DB 路径、nuPlan commit 和
+tuPlan Garage commit。默认运行模式是 dry-run；真实执行同时要求 `--execute` 与
+显式复述 primary manifest SHA-256。批次支持 order range、`--max_scenarios` 和
+`--resume`，但始终保持冻结顺序和完整双 planner pair。
+
+每个 primary scenario 写入
+`rollouts/order_NNNN_<token>/attempt_NNN/stage7c_output/`。成功 skip 前会重新检查
+official successes、trajectory rows、tensor pair completeness、planner axis、same-log
+和 strict-token alignment。失败或损坏 attempt 默认阻塞；只有显式
+`--retry_failed` 才在新 attempt 目录重试，旧输出不覆盖。`batch_events.jsonl` 为
+append-only attempt ledger；`batch_state.json` 原子更新；CSV status 与 Markdown
+report 可直接审计。
+
+Reserve 不属于自动执行范围。只有已记录为 official command、timeout、trajectory
+export、incomplete pair、alignment 或质量门失败的 primary 才会按 task-specific
+reserve rank 进入 `reserve_replacement_proposal.csv`，且状态固定为
+`PROPOSED_NOT_APPROVED_NOT_EXECUTED`。环境/config、missing DB 或 orchestration failure
+不会自动消耗 reserve。任何 reserve rollout 都需要另行审查和批准。
+
+最终冻结的真实数据验收位于 `outputs/stage7_m6_4b_locked_batch_mac_v2/`。Batch tool
+SHA-256=`ef0026b3cc20942846035ac23d0d16d616a3d7dd6675e9a0f9c2612871d7fb06`，并与
+command timeout 一起写入 immutable batch manifest；代码或 timeout 变化时 resume
+会 fail closed。Full dry-run 验证
+375 primary、75 reserve 和450个 DB；随后只执行 order 1 的已观察 smoke token，
+2/2 official commands 成功、298 trajectory rows、same-log 与 strict-token 均通过，
+耗时36.3秒。第二次完全相同的 `--resume` 只输出 `SKIP`，event ledger 保持2行且
+未创建 `attempt_002`。当前状态为：
+
+```text
+SUCCEEDED: 1 scenario / 2 rollouts
+PENDING: 374 scenarios / 748 rollouts
+FAILED_REVIEW_REQUIRED: 0
+reserve proposals: 0
+```
+
+nuPlan metric aggregator 仍为每个 planner 打印两行“no metric files found for
+aggregation”警告，即使 job name 已包含 challenge；但 per-scenario metric parquet、
+runner report、msgpack 和 Stage7C trajectory 均存在，batch validation 为 PASS。该
+警告当前不作为 trajectory collection failure，也不用于 reserve replacement。
+本步没有读取 embedding、BDD 或 effect size，也没有启动 order 2–375。
+
+### Order 2–6 技术 canary 与时间预算（2026-08-07）
+
+在 immutable batch tool hash 保持一致的前提下，按冻结 collection order 执行
+order 2–6。该 canary 只检查运行、解析、pair completeness 和对齐，不读取 planner
+effect、embedding 或 BDD。五个场景全部通过，随后原样 `--resume` 全部 `SKIP`；
+event ledger 从执行后的12行保持不变，没有 `attempt_002`、失败或 reserve proposal。
+
+| order | frozen task | assertive (s) | conservative (s) | scenario end-to-end (s) |
+| ---: | --- | ---: | ---: | ---: |
+| 1 | following interaction | 16.92 | 16.45 | 36.26 |
+| 2 | lane change | 14.49 | 14.26 | 32.34 |
+| 3 | stop-go control | 17.57 | 17.78 | 38.39 |
+| 4 | high motion dynamics | 13.91 | 13.76 | 30.70 |
+| 5 | dense/vulnerable interaction | 15.59 | 15.50 | 34.13 |
+| 6 | following interaction | 19.18 | 18.79 | 41.05 |
+
+六场景 mean=`35.48 s`、median=`35.20 s`、sample SD=`3.86 s`；order 2–6 连续
+canary 实际 wall time=`176.64 s`，有效吞吐=`35.33 s/scenario`。顺序单 worker
+外推为：
+
+```text
+原始 374 pending scenarios: 3h 40m 13s central estimate
+canary 后剩余 369 scenarios: 3h 37m 16s central estimate
+按观测最快/最慢值外推 374 scenarios: 3h 11m – 4h 16m
+建议正式预留: 4.5–5h（温控降频、磁盘与技术重试余量）
+```
+
+六个输出平均约13.66 MiB/scenario，剩余369个按当前 artifact 集合估计约4.92 GiB
+新增磁盘占用。该估算样本仍小，不能视为服务级时限；Mac休眠、其他高负载进程或
+场景复杂度尾部都可能延长 wall time。当前状态为6 `SUCCEEDED`、369 `PENDING`、
+0 `FAILED_REVIEW_REQUIRED`、0 reserve proposals。
+
+## Stage 7 Milestone 6.4C locked technical recovery（2026-08-07）
+
+M6.4B 已完成全部375个 frozen primary 场景，原始状态为283成功、92技术失败。
+GitHub Issue #238 新增独立的 M6.4C audit/recovery 层，不修改冻结的 M6.4B runner
+或 Stage7C。审计输入限于 frozen collection metadata、SQLite scene 结构和 batch
+technical status；明确禁止读取 embedding、BDD、effect size、trajectory metric 与
+planner outcome。
+
+权威审计 `outputs/stage7_m6_4c_locked_recovery_audit_v2/` 将92个失败拆分为：90个
+`INVALID_SCENE_POSITION` 和2个 `RETRY_WITH_QUOTED_HYDRA_TOKEN`。前者来自 nuPlan
+官方 scene 查询对最前两帧及最后两帧的边界排除，不应消耗重试；后者 token 分别被
+OmegaConf 解释为科学计数法和整数，scene 本身有效。75个冻结 reserve 中58个技术
+可运行、17个同样被 scene position 排除。
+
+恢复严格按 audit 生成的 frozen plan 执行。2个 quoted-primary retry 全部通过；随后
+lane-change 10个和 high-motion 10个 frozen reserve 也全部通过。22个恢复场景均为
+2/2 official planner successes，trajectory pair 完整，same-log 与 strict-token
+alignment 通过，0失败。quoted retry 平均33.67秒/场；reserve 平均33.00秒/场。
+
+最终可用完整 pairs 为305：following=60、lane-change=60、stop-go=67、
+high-motion=55、dense/vulnerable=63。Lane-change 已补齐，high-motion 仍比冻结目标
+少5对，且该任务冻结 primary/reserve 已耗尽。M6.4C 在此 fail closed：不得根据本轮
+结果临时挑选集合外样本。下一里程碑应先形成 pre-treatment supplemental protocol
+amendment，冻结新增 high-motion 候选的独立性、排序 salt、追加数量和全部 hash，
+再运行补充仿真；在补足前不得宣称五任务 simultaneous confirmatory quota 达标。
+
+## Stage 7 Milestone 6.4D high-motion supplement（2026-08-08）
+
+Issue #239 将 M6.4C 剩余的5对 high-motion 缺口固化为独立 outcome-blind protocol
+amendment。补充选择不读取 planner outcome、embedding、BDD、effect size 或 trajectory
+metric；只从原 eligible inventory 使用冻结 task mapping、identity metadata 和
+SQLite official scene-position runnability。
+
+新 salt `stage7-m6.4d-high-motion-supplement-v1` 排序后，排除全部 development 和原
+M6.4 primary/reserve token/log，并限制补充集合每 log 1条。前16个候选产生10个
+technically runnable distinct-log 场景、4个 invalid scene position 和2个 duplicate
+supplement log。冻结5 primary + 5 reserve；token/log overlap audit 全为0。
+
+5个 supplemental primary 全部完成，10/10 official planner runs 成功，trajectory
+pair completeness、same-log 与 strict-token alignment 全部通过；端到端均值31.14秒，
+0技术失败，因此5个 reserve 未执行。最终完整 pairs 为310：following=60、
+lane-change=60、stop-go=67、high-motion=60、dense/vulnerable=63。五任务现均达到
+M6.3 冻结的每任务60对要求。
+
+下一阶段进入 confirmatory analysis：必须沿用 M6.2/M6.3 冻结的 task-conditioned
+paired BDD、permutation、Holm correction、quality sensitivity 和 planner treatment
+fingerprints。M6.4D 不授权根据新增结果修改 embedding 或统计 estimand。
+
+## Stage 7 Milestone 6.5 locked confirmation（2026-08-08）
+
+Issue #240 将 M6.4B/C/D 的310个 complete pairs 固化为新 log/scenario-disjoint
+confirmation population。来源为283 primary successes、2 quoted-primary retries、20
+frozen reserves 和5 high-motion supplement；五任务计数为60/60/67/60/63。逐场
+Stage7C re-audit、development overlap、planner fingerprints 和 M6.3 sample targets
+全部通过。
+
+分析在读取确认 embedding 前冻结：原始64D learned embedding、biased single-RBF
+MMD² V-statistic、exact pooled positive off-diagonal median bandwidth、100000次
+within-pair swaps、plus-one p、五任务 learned-embedding Holm family、Tier A/A+B
+quality Holm family，以及 interaction/trajectory mechanism controls。
+
+正确 Mac context 需要显式 `PYTHONPATH=../tuplan_garage`；缺少路径的退化预检因
+neighbor slots 全空被隔离且未用于统计。修正后 `[620,150,83]` context 在23分56秒
+完成，neighbor coverage 非零。Overall primary MMD²=`0.0044694`，0/100000 exceedances，
+p=`9.9999e-6`；五个 pre-treatment tasks 均通过 Holm，确认了跨任务的 planner-
+conditioned behavior distribution difference。
+
+限制同样冻结报告：全局 fallback=`10.59%`，高于旧 M2B 5% scale-readiness 门；
+fallback 与 embedding distance 强相关。Tier A 和 Tier A+B original sensitivities 通过
+Holm，但 Tier A residual p=`0.126`。因此不能从 BDD 推断安全性、planner 优越性，
+也不能声称全部分布差异均不受 lane-context quality 影响。
+
+## Stage 7 Milestone 6.6 confirmation evidence package（2026-08-08）
+
+Issue #241 将 M6.5 锁定结果整理为可复现的论文证据包，不修改 M6.1/M6.2/M6.5
+工具、样本、embedding、estimand、permutation 或 correction family。M6.6 builder 在
+写出前重新计算 analysis lock 和 M6.5 result summary 中记录的每个输入 SHA-256，并
+fail-closed 检查310 pairs、620 rows、development disjointness、power target、pair
+completeness、五任务 Holm 和冻结质量计数。
+
+权威输出 `outputs/stage7_m6_6_confirmation_evidence_v1/` 包含10组 CSV/Markdown 表、
+6组 PNG/PDF 图、machine-readable summary、provenance、报告和中英文 manuscript
+段落。总体 primary 与五任务结果只被读取和转录，没有在 M6.6 重算确认性 p 值。
+
+探索性 lane-quality attribution 使用固定 seed、10000次 bootstrap，报告总体任务分层、
+task-adjusted rank residual 及五个任务内关联。最大 paired fallback 的总体 Spearman
+rho=`0.5088`、95% CI `[0.4086,0.6035]`；任务调整后 rho=`0.4499`、95% CI
+`[0.3842,0.5719]`。fallback quality 关联在控制 pre-treatment task composition 后仍然
+存在，因此最终状态为 `PASS_WITH_QUALITY_LIMITATIONS`。所有 lane-quality 变量均在
+rollout 后实现，只能用于 descriptive/exploratory limitation，不能用于 causal
+adjustment、planner superiority 或 safety claim。
+
+## Stage 6L–6N follow-up（2026-08-11）
+
+Stage6L完整性审计发现原Stage6K dose50/75 context为零邻车覆盖；原因是Mac运行时未同时
+提供nuPlan devkit与tuPlan Garage路径。旧输出未删除，修复版写入新目录，并在context build
+和正式freeze两处增加fail-closed非零覆盖检查。修复后25/50/75/100%完整64D overall BDD
+仍全部通过四档Holm，Stage6J纯纵向窄主张保留。
+
+representation消融显示完整64D的median Z_BDD/task-dose pass为7.539/7，邻车置零为
+11.066/11，显式ego13D为21.082/12，手工46D为5.384/2。下一步不应把lane pipeline调参
+当作提高BDD的首选；完整context-v2只能独立冻结后用于稳健性复验。
+
+面向真实异场景release的Stage6M复用800-pair池，对raw、task、context-balanced和
+task+context四方法分别A/A标定。n=400 detection为63.0%/65.0%/66.5%/64.5%，FPR均约5%；
+context balance相对raw的+3.5pp不显著且跨样本量不稳定。因此路线图进入Stage6N独立训练
+协议准备：扩大Waymo纵向coverage并增加contrastive/ranking与纵向auxiliary objectives，
+但旧checkpoint和Stage6J/6K/6M冻结证据不得覆盖。完整报告见
+`docs/stage6n_context_balanced_retraining_decision.md`。

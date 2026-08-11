@@ -625,6 +625,16 @@ def evaluate_slot_sanity(slot_stats: Dict[str, Dict[str, Any]], min_coverage: fl
             failed.append(slot)
     return sanity, not failed, evaluated, skipped, warnings_out
 
+
+def evaluate_required_neighbor_coverage(
+    slot_stats: Dict[str, Dict[str, Any]], required: bool
+) -> Tuple[bool, float]:
+    """Optionally reject formal datasets when every semantic slot is empty."""
+    total = float(
+        sum(float(row.get("coverage_ratio", 0.0) or 0.0) for row in slot_stats.values())
+    )
+    return (not required or total > 0.0), total
+
 def write_strict_filter_diagnostic(
     output_dir: Path,
     rows: List[Dict[str, Any]],
@@ -836,6 +846,7 @@ def main() -> None:
     ap.add_argument("--debug_projection_max_frames_per_row", type=int, default=149, help="Maximum valid timesteps recorded per sampled context row.")
     ap.add_argument("--write_strict_filter_diagnostic", action="store_true", help="Write nuPlan Stage5-style strict lane-aware filtering summary/report without changing the main output rows.")
     ap.add_argument("--slot_sanity_min_coverage", type=float, default=0.05, help="Minimum per-slot coverage required before directional median slot sanity is evaluated. Lower coverage is diagnostic-only and non-fatal.")
+    ap.add_argument("--require_nonzero_neighbor_coverage", action="store_true", help="Formal-analysis gate: fail when all five semantic neighbor slots have zero valid-frame coverage. Tiny smoke runs may omit this flag.")
     ap.add_argument("--strict_filter_min_laneaware_ratio", type=float, default=1.0, help="Diagnostic row keep threshold: lane-aware available valid frames / valid frames must be at least this value. 1.0 preserves current all-frames behavior; 0.8 approximates Waymo min_valid_ratio philosophy.")
     ap.add_argument("--strict_filter_ratio_sweep", type=float, nargs="*", default=[], help="Optional diagnostic-only thresholds to summarize without writing multiple datasets, e.g. 1.0 0.9 0.8 0.7 0.6.")
     ap.add_argument("--write_strict_filtered_dataset", action="store_true", help="Also write optional filtered metadata/context arrays under strict_filtered_dataset/ for diagnostics.")
@@ -970,6 +981,15 @@ def main() -> None:
         cov=float(np.mean(valid)); slot_stats[sn]={"coverage_ratio":cov,"empty_slot_ratio":1.0-cov,"median_rel_x":float(np.median(vals[:,:,1][valid])) if np.any(valid) else None,"median_rel_y":float(np.median(vals[:,:,2][valid])) if np.any(valid) else None,"median_distance":float(np.median(vals[:,:,5][valid])) if np.any(valid) else None}
     sanity, slot_pass, slot_sanity_evaluated_slots, slot_sanity_skipped_low_coverage_slots, slot_sanity_warnings = evaluate_slot_sanity(slot_stats, args.slot_sanity_min_coverage)
     warnings.extend(slot_sanity_warnings)
+    required_neighbor_coverage_pass, total_slot_coverage = evaluate_required_neighbor_coverage(
+        slot_stats, args.require_nonzero_neighbor_coverage
+    )
+    if not required_neighbor_coverage_pass:
+        warnings.append({
+            "type": "required_nonzero_neighbor_coverage_failed",
+            "severity": "error",
+            "message": "All five semantic neighbor slots have zero coverage. Verify the nuPlan/tuPlan PYTHONPATH and official msgpack deserialization before formal analysis.",
+        })
     strict_filter_summary = None
     if args.write_strict_filter_diagnostic or args.write_strict_filtered_dataset:
         strict_filter_summary = write_strict_filter_diagnostic(args.output_dir, metadata_rows(index_rows, read_csv_rows(args.sim_dir / "simulated_planner_metadata.csv"), planners, scenario_axis), planners, n_scenarios, row_debug_rows, nbr_arr, slot_stats, sanity, args.strict_filter_min_laneaware_ratio, args.strict_filter_ratio_sweep)
@@ -1030,6 +1050,10 @@ def main() -> None:
     if args.assignment_mode == "lane_aware_with_geometric_fallback" and fallback_assignment_used_rate >= 0.5:
         warnings.append({"type": "high_geometric_fallback_rate", "severity": "warning", "fallback_assignment_used_rate": fallback_assignment_used_rate, "message": "More than half of lane-aware assignments used geometric fallback. This is not strong lane-aware thesis evidence; verify --nuplan_map_root, map_name resolution, and projection diagnostics."})
     validation={"pass": bool(slot_pass and planner_non_empty and lane_runtime_ok and core_validation.get("passed", core_validation.get("pass", True)) and ctx_arr.shape[-1] == CONTEXT_DIM and np.isfinite(ctx_arr).all() and row == expected_rows and len(rows) == row and ego_arr.shape[0] == row and ego_mask_arr.shape == (row, timesteps) and feat_arr.shape[0] == row and stage5d_formula_validation_pass), "row_semantics_correct": True, "scenario_axis_source": "simulated_ego_seq_index.json", "scenario_axis": list(scenario_axis), "scenario_axis_non_contiguous": scenario_axis != list(range(n_scenarios)), "scenario_planner_token_alignment_strict": True, "msgpack_global_fallback_disabled": True, "ego_seq_mask_written": True, "ego_seq_mask_shape": list(ego_mask_arr.shape), "valid_timestep_count_min": int(np.min(np.sum(ego_mask_arr, axis=1))), "valid_timestep_count_max": int(np.max(np.sum(ego_mask_arr, axis=1))), "interaction_features_valid_frames_only": True, "no_multi_agent_ego_expansion": True, "background_agents_context_only": True, "stage5d_dim_matched": ctx_arr.shape[-1]==CONTEXT_DIM, "stage5d_channel_schema_matched": True, "stage5d_slot_schema_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_order_matched": list(SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"], "stage5d_slot_semantics_verified": bool(slot_pass), "assignment_mode": args.assignment_mode, "map_name_resolved_rate": map_name_resolved_rate, "map_names_used": map_names_used, "map_name_resolution_sources": dict((src, map_resolution_sources.count(src)) for src in sorted(set(map_resolution_sources))), "nuplan_db_root": str(args.nuplan_db_root) if args.nuplan_db_root else "", "log_db_map_resolution_count": len(db_map_cache), "lane_cache_scope": lane_assignment_diagnostics["cache_scope"], "lane_cache_entry_count": len(map_cache), "map_api_cache_entry_count": len(map_api_cache), "lane_assignment_fallback_reason_counts": lane_assignment_diagnostics["fallback_reason_counts"], "lane_assignment_available": lane_assignment_available, "map_query_success": map_query_success, "lane_info_count": lane_info_count, "fallback_assignment_used_rate": fallback_assignment_used_rate, "ego_lane_projection_success_rate": ego_lane_projection_success_rate, "candidate_lane_projection_success_rate": candidate_lane_projection_success_rate, "projection_debug_summary": projection_debug_summary, "projection_debug_artifacts": projection_debug_artifacts, "topology_debug_summary": topology_debug_summary, "topology_debug_artifacts": topology_debug_artifacts, "adjacency_source_counts": map_counts, "slot_sanity_passed": bool(slot_pass), "slot_sanity_min_coverage": float(args.slot_sanity_min_coverage), "slot_sanity_evaluated_slots": slot_sanity_evaluated_slots, "slot_sanity_skipped_low_coverage_slots": slot_sanity_skipped_low_coverage_slots, "slot_sanity_failed_sufficiently_covered_slots": [slot for slot in slot_sanity_evaluated_slots if any(v.get("slot") == slot and v.get("passed") is False for v in sanity.values())], "slot_coverage_by_slot": {k:v["coverage_ratio"] for k,v in slot_stats.items()}, "context_traj_no_nonfinite": bool(np.isfinite(ctx_arr).all()), "planner_indices_non_empty": bool(planner_non_empty), "rows_equal_num_scenarios_times_num_planners": row == expected_rows, "metadata_row_count_matches": len(rows)==row, "ego_seq_row_count_matches": ego_arr.shape[0]==row, "interaction_feat_style_row_count_matches": feat_arr.shape[0]==row, **formula_status}
+    validation["require_nonzero_neighbor_coverage"] = bool(args.require_nonzero_neighbor_coverage)
+    validation["required_nonzero_neighbor_coverage_pass"] = bool(required_neighbor_coverage_pass)
+    validation["total_slot_coverage"] = float(total_slot_coverage)
+    validation["pass"] = bool(validation["pass"] and required_neighbor_coverage_pass)
     write_stage5d_context_schema(args.output_dir/"stage5d_context_schema.json", schema_name="stage5d83_nuplan_laneaware_stage5_formula_parity", accel_yaw_rate_matched=accel_yaw_rate_matched)
     write_json(args.output_dir/"warnings.json", {"warnings": warnings, "assignment_mode": args.assignment_mode, "slot_assignment_method":"stage5_assign_neighbors_lane_aware", "stage5d_slot_schema_matched": True, "stage5d_slot_order_matched": True, "stage5d_slot_assignment_exact_waymo_lane_aware": args.assignment_mode != "geometric_only", "stage5d_formula_parity_schema_recorded": True, "map_query_success": bool(map_counts.get("map_query_success", 0) > 0), "lane_info_count": lane_info_count, "adjacency_source_counts": map_counts, "topology_debug_summary": topology_debug_summary, "topology_debug_artifacts": topology_debug_artifacts, "stage5d_core_reused": True, "stage5d_slot_names_source": "tools.stage5d_context_core.SLOT_NAMES", "stage5d_feature_formula_source": "tools.stage5d_context_core", **formula_status, "ego_local_frame_source": "tools.stage5d_context_core.build_ego_features_8d", "neighbor_local_frame_contract": "per-timestep ego-centric rel_x/rel_y/rel_vx/rel_vy using current ego world pose and heading, matching Waymo Stage5D neighbor builder", "validation": {**core_validation, **validation}})
     exact_channels = "valid, rel_x, rel_y, rel_vx, rel_vy, distance, delta_x, delta_y, closing, ttc, thw, speed, heading_rel"

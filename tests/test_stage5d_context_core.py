@@ -407,6 +407,27 @@ def test_nuplan_slot_sanity_skips_zero_coverage_and_keeps_schema_order():
     assert skipped == list(builder.SLOT_NAMES)
     assert all(item["passed"] is None and item["status"] == "insufficient_coverage" for item in sanity.values())
     assert {w["type"] for w in warnings} == {"slot_sanity_insufficient_coverage"}
+
+
+def test_formal_nonzero_neighbor_coverage_gate_rejects_all_empty_slots():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    stats = {slot: {"coverage_ratio": 0.0} for slot in core.SLOT_NAMES}
+    passed, total = builder.evaluate_required_neighbor_coverage(stats, required=True)
+    assert passed is False
+    assert total == 0.0
+    passed_smoke, _ = builder.evaluate_required_neighbor_coverage(stats, required=False)
+    assert passed_smoke is True
+
+
+def test_formal_nonzero_neighbor_coverage_gate_accepts_any_covered_slot():
+    import tools.build_nuplan_5neighbor_context_dataset as builder
+
+    stats = {slot: {"coverage_ratio": 0.0} for slot in core.SLOT_NAMES}
+    stats["front"]["coverage_ratio"] = 0.01
+    passed, total = builder.evaluate_required_neighbor_coverage(stats, required=True)
+    assert passed is True
+    assert total == 0.01
     assert list(builder.SLOT_NAMES) == ["front", "left_front", "left_rear", "right_front", "right_rear"]
 
 
