@@ -72,10 +72,13 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
     front_max = float(cfg.get("front_max_distance", 120.0)); side_front_max = float(cfg.get("side_front_max_distance", 80.0)); side_rear_max = float(cfg.get("side_rear_max_distance", 120.0))
     static_th = float(cfg.get("static_speed_threshold", 0.5))
 
-    if ego_projection is None:
+    ego_projection_precomputed = bool(cfg.get("ego_projection_precomputed", False))
+    if ego_projection is None and not ego_projection_precomputed:
         ego_proj, reason, _ = find_best_lane_for_agent(np.array([ego_state["x"], ego_state["y"]]), ego_state["heading"], lane_infos, max_lat, max_hd,
             search_radius=float(cfg.get("lane_search_radius",20.0)), topk_candidates=int(cfg.get("lane_topk_candidates",32)),
             disable_spatial_index=bool(cfg.get("disable_lane_spatial_index",False)))
+    elif ego_projection is None:
+        ego_proj, reason = None, "precomputed_ego_projection_failed"
     else:
         ego_proj, reason = ego_projection, "ok"
     if ego_proj is None:
@@ -85,11 +88,34 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
 
     cur = ego_proj["lane_id"]; left = ""; right = ""; src = "none"
     ln = lane_infos[cur]
-    if ln.left_neighbor_lane_ids or ln.right_neighbor_lane_ids:
+    def active_proto_neighbors(relations):
+        segment = int(ego_proj.get("segment_index", -1))
+        return [relation for relation in relations if relation["self_start_index"] <= segment <= relation["self_end_index"]]
+
+    left_relations = getattr(ln, "left_neighbor_relations", [])
+    right_relations = getattr(ln, "right_neighbor_relations", [])
+    left_relation = None
+    right_relation = None
+    left_options = []
+    right_options = []
+    if left_relations or right_relations:
+        active_left = active_proto_neighbors(left_relations)
+        active_right = active_proto_neighbors(right_relations)
+        left_relation = active_left[0] if active_left else None
+        right_relation = active_right[0] if active_right else None
+        left_options = [(relation["lane_id"], relation) for relation in active_left]
+        right_options = [(relation["lane_id"], relation) for relation in active_right]
+        left = left_relation["lane_id"] if left_relation else ""
+        right = right_relation["lane_id"] if right_relation else ""
+        src = "proto_topology"
+    elif ln.left_neighbor_lane_ids or ln.right_neighbor_lane_ids:
+        # Backward-compatible synthetic/test LaneInfo without interval metadata.
         left = ln.left_neighbor_lane_ids[0] if ln.left_neighbor_lane_ids else ""
         right = ln.right_neighbor_lane_ids[0] if ln.right_neighbor_lane_ids else ""
-        src = "proto_topology"
-    else:
+        left_options = [(left, None)] if left else []
+        right_options = [(right, None)] if right else []
+        src = "proto_topology_without_local_range"
+    elif bool(cfg.get("allow_geometric_adjacent_lane_inference", True)):
         src = "geometric"
         min_off = float(cfg.get("adjacent_lane_min_offset", 2.0)); max_off = float(cfg.get("adjacent_lane_max_offset", 5.5)); max_adj_hd = np.deg2rad(float(cfg.get("adjacent_lane_max_heading_diff_deg", 35.0)))
         for lid, linfo in lane_infos.items():
@@ -100,25 +126,31 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
             if hd > max_adj_hd or not (min_off <= abs(off) <= max_off): continue
             if off > 0 and left == "": left = lid
             if off < 0 and right == "": right = lid
+        left_options = [(left, None)] if left else []
+        right_options = [(right, None)] if right else []
+    else:
+        src = "none"
 
     slot_to_agent = {}; used = set(); debug = []
     ego_s_map = {cur: ego_proj["s"]}
-    if left in lane_infos: ego_s_map[left] = project_point_to_lane(np.array([ego_state["x"], ego_state["y"]]), lane_infos[left])["s"]
-    if right in lane_infos: ego_s_map[right] = project_point_to_lane(np.array([ego_state["x"], ego_state["y"]]), lane_infos[right])["s"]
+    for lane_id, _ in left_options + right_options:
+        if lane_id in lane_infos and lane_id not in ego_s_map:
+            ego_s_map[lane_id] = project_point_to_lane(np.array([ego_state["x"], ego_state["y"]]), lane_infos[lane_id])["s"]
 
     proj_cache = candidate_projections.copy() if candidate_projections else {}
-    for aid, st in candidate_states.items():
-        if aid in proj_cache:
-            continue
-        p, _, _ = find_best_lane_for_agent(np.array([st["x"], st["y"]]), st.get("heading", np.nan), lane_infos, max_lat, max_hd,
-            search_radius=float(cfg.get("lane_search_radius",20.0)), topk_candidates=int(cfg.get("lane_topk_candidates",32)),
-            disable_spatial_index=bool(cfg.get("disable_lane_spatial_index",False)))
-        if p is not None:
-            proj_cache[aid] = p
+    if not bool(cfg.get("candidate_projections_complete", False)):
+        for aid, st in candidate_states.items():
+            if aid in proj_cache:
+                continue
+            p, _, _ = find_best_lane_for_agent(np.array([st["x"], st["y"]]), st.get("heading", np.nan), lane_infos, max_lat, max_hd,
+                search_radius=float(cfg.get("lane_search_radius",20.0)), topk_candidates=int(cfg.get("lane_topk_candidates",32)),
+                disable_spatial_index=bool(cfg.get("disable_lane_spatial_index",False)))
+            if p is not None:
+                proj_cache[aid] = p
 
     rejection_counts = {s: {"too_far":0,"lateral_offset_too_large":0,"heading_diff_too_large":0,"wrong_lane":0,"wrong_direction_s":0,"no_candidate":0} for s in SLOT_NAMES}
 
-    def choose(slot, lane_id, min_ds, max_ds):
+    def choose(slot, lane_id, min_ds, max_ds, neighbor_relation=None):
         if lane_id not in ego_s_map:
             rejection_counts[slot]["no_candidate"] += 1
             return None
@@ -129,6 +161,11 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
             if p.get("lane_id", "") != lane_id:
                 rejection_counts[slot]["wrong_lane"] += 1
                 continue
+            if neighbor_relation is not None:
+                candidate_segment = int(p.get("segment_index", -1))
+                if not (neighbor_relation["neighbor_start_index"] <= candidate_segment <= neighbor_relation["neighbor_end_index"]):
+                    rejection_counts[slot]["wrong_lane"] += 1
+                    continue
             ds = float(p["s"] - es)
             if not (min_ds <= ds <= max_ds):
                 if ds == 0.0 or (min_ds >= 0.0 and ds < min_ds) or (max_ds <= 0.0 and ds > max_ds):
@@ -151,9 +188,20 @@ def assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=None, as
             return None
         return sorted(rows, key=lambda x: (x[0], x[1], x[2], x[3]))[0]
 
-    plan = [("front", cur, 0.0, front_max), ("left_front", left, 0.0, side_front_max), ("left_rear", left, -side_rear_max, 0.0), ("right_front", right, 0.0, side_front_max), ("right_rear", right, -side_rear_max, 0.0)]
-    for slot, lid, mn, mx in plan:
-        ch = choose(slot, lid, mn + (1e-6 if mn >= 0 else 0.0), mx - (1e-6 if mx <= 0 else 0.0))
+    plan = [
+        ("front", [(cur, None)], 0.0, front_max),
+        ("left_front", left_options, 0.0, side_front_max),
+        ("left_rear", left_options, -side_rear_max, 0.0),
+        ("right_front", right_options, 0.0, side_front_max),
+        ("right_rear", right_options, -side_rear_max, 0.0),
+    ]
+    for slot, options, mn, mx in plan:
+        choices = []
+        for lid, relation in options:
+            candidate = choose(slot, lid, mn + (1e-6 if mn >= 0 else 0.0), mx - (1e-6 if mx <= 0 else 0.0), relation)
+            if candidate is not None:
+                choices.append((candidate, lid))
+        ch, lid = min(choices, key=lambda value: value[0][:4]) if choices else (None, options[0][0] if options else "")
         if ch:
             used.add(ch[4]); slot_to_agent[slot] = ch[4]
             debug.append(dict(slot_name=slot, assignment_method="lane_aware", neighbor_id=str(ch[4]), fallback_used=False, fallback_reason="", neighbor_lane_id=lid,

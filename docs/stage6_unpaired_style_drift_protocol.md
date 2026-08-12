@@ -947,3 +947,83 @@ n=400的A/B detection依次为63.0%/65.0%/66.5%/64.5%，A/A FPR依次为4.5%/5.5
 
 任何新checkpoint都必须重新完成Waymo validation、Stage6J/6K paired dose curve、Stage6M
 unpaired A/A calibration、A/B detection和FPR/FNR tradeoff。planner name不得进入encoder。
+
+## 30. Stage 6O 纵向敏感 64D 训练前冻结（Issue #256）
+
+Stage 6O 在任何新训练结果出现前冻结 `ego16 + context/fusion48 = 64D` 的双分支方向、
+hard-negative/near-boundary 采样、全部 loss 权重、3 个随机种子、训练预算、checkpoint 命名、
+Waymo 域内非劣性、nuPlan paired dose/task 和 n=400 unpaired release 门槛。raw BDD、nuPlan
+BDD/MMD、planner name 和 dose 均禁止进入训练、采样、选 epoch 或选 seed。
+
+逐 shard 真实审计确认现有 Waymo full51 数据为35 shards、164871 windows、24426 scenarios；
+train/val/test=`131998/16481/16392`，scenario 与 scenario-agent 跨 split 重叠均为0，全部训练
+数组 shape/finite 和基线/证据 SHA-256 均通过。速度低/中/高为52098/66676/13224，stop/go
+proxy为39949，steady-speed为10242，基础纵向覆盖充分。
+
+但 front valid ratio 只有0或至少0.8：train free-flow=96649、sustained-following=35349，
+intermittent-following=0，未达到预冻结的5000条门槛。因此正式状态为
+`FROZEN_BLOCKED_WAYMO_COVERAGE_NOT_TRAINING`，不授权训练。后续Stage6Q raw audit已经确认
+full51原始scenario内存在大量动态前车窗口，当前应先新建支持逐帧front identity与mask的
+builder版本，而不是先扩展full51；旧Stage6O v1继续保持blocked，禁止事后降低门槛。
+
+旧33D supervision的RMS acceleration median约2.72 m/s²、RMS jerk median/q90约
+42.82/100.80 m/s³，显示差分噪声不可忽略。新协议固定从ego speed经5帧median filter重新
+计算纵向目标，仅用train q01/q99 winsorize和train median/IQR标准化。完整协议见
+`docs/stage6o_longitudinal_representation_training_protocol.md`。
+
+## 31. Stage 6P Representation × Unpaired Release（Issue #257）
+
+Stage6P原样复用800 pair、489 log和2400个release split，在每个representation×样本量内独立
+A/A校准。full64、ego13、handcrafted46、neighbor-zero diagnostic在n=400的A/A FPR分别为
+4.5%/1.5%/3.5%/1.0%，A/B detection为63.5%/100%/100%/100%。
+
+ego13相对full64在n=400高36.5个百分点；相同200个A/B release中ego13-only=73、
+full64-only=0，McNemar exact p=2.12e-22。n=200/250/300也均为ego13 100%检出，FPR为
+2.0%/4.0%/3.5%。因此ego13的配对纵向优势在真正unpaired release下仍成立。
+
+不同representation使用各自bandwidth与A/A q95，禁止跨representation比较raw MMD²。
+ego13更可靠不等于context无用，只说明当前full64没有充分保留这组受控纵向运动学信号。
+
+## 32. Stage 6Q Waymo raw interaction coverage audit（Issue #258）
+
+对生成full51的51个原始TFRecord、24872个scenario逐条审计。3m主规则下182837个raw合格窗口
+包含lead entry=31555、lead exit=44349、intermittent<0.8=54829、identity switch=29103、
+free→closing→following=3465、following→free=43153。2m/4m敏感性下intermittent仍为
+53448/51109，均远高于冻结门槛5000。
+
+根因已确定：正式builder只在参考帧调用一次`assign_stage5d_slots`，固定front track再接受整窗
+`min_valid_ratio=0.8` sanitize，结构上只能稳定输出空槽或>=0.8持续槽。故Stage6O的0不是原始
+Waymo缺失，而是builder/window语义过滤。下一步必须先版本化修builder、重建数据并重新执行
+Stage6O；当前不扩大Waymo、不训练Interaction-aware v2。完整中文报告见
+`docs/stage6p_stage6q_representation_unpaired_and_raw_audit.md`。
+
+## 33. Stage 6R Dynamic Interaction Builder v2（Issue #259）
+
+旧builder的五个semantic slot均为窗口参考帧静态分配。v2改为逐帧semantic assignment，显式保存
+valid、track-id、identity-switch和derivative-valid时间序列；identity切换处禁止跨agent差分，
+ego与neighbor validity门槛分离。首次pilot因丢失Waymo lane-neighbor局部index范围而在视觉检查
+中发现横穿误配，已标记SUPERSEDED。修复版保留双方局部index区间，支持同时有效的多邻接关系，
+强制`lane_aware_only`且禁止几何fallback。
+
+修复版3-file pilot通过自动、原始TFRecord拓扑重建和独立视觉三层门禁；20例每slot 4例，0 topology
+失败、0 track重建不一致、0几何fallback。full51随后重建51个TFRecord、24872个scenario、168700
+窗口、36 shard，train/val/test为135046/16870/16784，scenario跨split重叠为0。
+
+Stage6O-v2状态为`FROZEN_READY_FOR_INTERACTION_AWARE_V2_PREPARATION`。train lead entry/exit/
+intermittent/front switch为47335/48074/63415/8294，两种transition为15175/50236；五槽switch rate
+为1.29%–2.64%，finite/shape/跨identity导数违规均为0。新纵向监督按median5、train q01/q99和
+train median/IQR生成；同窗口RMS口径下accel median为1.48 m/s²，jerk median/q90为15.51/
+28.47 m/s³，明显优于旧2.72和42.82/100.80。旧Stage6O v1保持原SHA且永久BLOCKED。
+
+## 34. Stage 6S interaction-dominant nuPlan benchmark（Issue #260）
+
+24个same-scenario pair、48条official PDM rollout全部成功。两个planner保持desired speed、accel/
+decel与lateral参数一致，只改变minimum gap与time headway；机制分析保持embedding/BDD盲态。
+平均速度差0.232 m/s、RMS accel差0.108 m/s²满足“小变化”门禁，但front-gap差-1.208 m未达到
+-2.0 m门槛，只有THW一个预冻结interaction指标通过，正式状态为
+`PDM_INTERACTION_BENCHMARK_LIMITATION`。这说明当前PDM/scenario pool没有构成确认级benchmark，
+不是Waymo模型失败，也不能外推成nuPlan永远无法构造。不得在本批结果后调planner并当作同一确认实验。
+
+因此当前结论是：Waymo数据侧允许进入Interaction-aware v2训练准备；完整实验侧仍需先接受并披露
+PDM limitation，或另行预注册新的planner/场景生成方案。当前未训练新checkpoint、未扩大Waymo、
+未覆盖Stage5D-balanced-v2。

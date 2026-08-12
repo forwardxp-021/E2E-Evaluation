@@ -8444,6 +8444,115 @@ python -m py_compile tools/*.py
 python tools/check_no_tmp_dependencies.py
 ```
 
+## Stage 6P：Representation × Unpaired Release（Issue #257）
+
+### 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6p_run_representation_unpaired_release.py \
+  --config configs/stage6p_representation_unpaired_release.json \
+  --embedding_pool outputs/stage6h_expanded_800_embedding_pool_v1 \
+  --assignments outputs/stage6h_nuplan_power_curve_800_v1/power_curve_log_assignments.csv \
+  --context_existing outputs/stage7_m6_5_locked_confirmation_context_v1 \
+  --context_expanded outputs/stage6h_expanded_490_context_v1 \
+  --checkpoint outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt \
+  --scaler outputs/stage6l_context_representation_ablation_representations_v2_runtime_repaired/scalers/handcrafted_reference_scalers.npz \
+  --output_dir outputs/stage6p_representation_unpaired_release_v1 \
+  --device cpu
+```
+
+### 期望行为
+
+- 不调用nuPlan simulation、不训练checkpoint，原样复用800 pair、489 log、2400 release split；
+- 四种representation逐trial使用完全相同的日志和场景；
+- 每种representation×n独立计算bandwidth与A/A q95，只在匹配阈值下比较FPR/detection；
+- 禁止跨representation比较raw MMD²；neighbor-zero64只作diagnostic。
+
+### 通过标准
+
+- 生成9600行representation-trial，四个样本量各有200 calibration、200 holdout A/A和200 A/B；
+- ego13在n=400为FPR=1.5%、detection=100%，full64为4.5%/63.5%；
+- 同release ego13-only/full64-only=`73/0`，McNemar exact p约`2.12e-22`；
+- Stage6O v1与既有rollout、embedding输入未修改。
+
+## Stage 6Q：Waymo full51 raw interaction coverage audit（Issue #258）
+
+### 命令
+
+```bash
+waymo_dev/bin/python \
+  tools/stage6q_audit_waymo_raw_interaction_coverage.py \
+  --config configs/stage6q_waymo_raw_interaction_coverage_audit.json \
+  --builder_manifest outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json \
+  --stage6o_manifest outputs/stage6o_longitudinal_training_protocol_freeze_v1/stage6o_training_protocol_freeze_manifest.json \
+  --output_dir outputs/stage6q_waymo_raw_interaction_coverage_v1
+```
+
+### 期望行为
+
+- 直接读取原始Waymo TFRecord 00000–00050，不调用正式builder的neighbor-valid>=0.8筛选；
+- 逐帧动态审计lead entry/exit、intermittent、identity switch和两种transition；
+- 输出raw全部合格vehicle、正式前64 target sampling、正式builder retained三层漏斗；
+- 2/3/4m几何敏感性全部报告，主规则为3m；不修改Stage6O v1、不降低5000门槛。
+
+### 通过标准
+
+- 51/51文件、24872 scenario全部完成且记录SHA-256；
+- 3m raw intermittent<0.8=`54829`，2m/4m为`53448/51109`，全部大于5000；
+- 根因判定为首帧固定front与整窗>=0.8有效率造成的builder结构性过滤；
+- 决策为先修builder和重建版本，不扩大Waymo，不启动Interaction-aware v2训练。
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6p_stage6q_representation_and_raw_audit.py
+python -m py_compile \
+  tools/stage6p_run_representation_unpaired_release.py \
+  tools/stage6q_audit_waymo_raw_interaction_coverage.py
+python tools/check_no_tmp_dependencies.py
+```
+
+## Stage 6O：纵向敏感 64D 训练前冻结
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6o_freeze_longitudinal_training_protocol.py \
+  --config configs/stage6o_longitudinal_representation_training_protocol.json \
+  --out_dir outputs/stage6o_longitudinal_training_protocol_freeze_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6o_freeze_longitudinal_training_protocol.py
+```
+
+如果要重新生成同名冻结目录，必须显式增加`--overwrite`。这只覆盖Stage6O冻结报告，不修改
+Waymo shard、基线checkpoint或任何Stage6J–6M证据。
+
+### 2. 期望行为
+
+- 核对配置、Waymo manifest/build/feature schema、基线checkpoint及Stage6L/6M证据hash；
+- 顺序审计35个shard，不把大型context数组合并到内存；
+- 检查83D context、5D mask、33D features、finite、split和meta逐行对齐；
+- 检查scenario/scenario-agent跨split泄漏和冻结MD5分割算法；
+- 统计速度、free/intermittent/sustained following、steady/dynamic和lateral strata；
+- 写出`stage6o_waymo_data_audit.json`、freeze manifest和中文报告；
+- 不导入trainer、不运行optimizer、不写`.pt`、不覆盖基线。
+
+### 3. 通过标准
+
+- 数据与证据hash全部匹配；
+- 35 shards、164871 windows、train/val/test=`131998/16481/16392`；
+- scenario和scenario-agent跨split重叠均为0；
+- 所有必需数组shape正确且finite；
+- 每个速度档、跟车档和运动状态达到配置中的预冻结最小覆盖；
+- 所有覆盖通过时状态才可为`FROZEN_READY_FOR_IMPLEMENTATION_NOT_TRAINING`；
+- 当前full51的intermittent-following为0，所以权威状态应为
+  `FROZEN_BLOCKED_WAYMO_COVERAGE_NOT_TRAINING`，`training_authorized=false`；
+- 阻塞时先扩展/重建Waymo数据，禁止降低门槛后直接训练。
+
 ## Stage 6L：修复版 context representation 消融
 
 原Stage6K dose50/75 context为零邻车覆盖，旧Stage6L v1已作废。Mac重建必须同时加入三个
@@ -8735,3 +8844,99 @@ cp configs/stage6d_unpaired_version_design.example.json \
 python -m py_compile tools/*.py
 python tools/check_no_tmp_dependencies.py
 ```
+# Stage 6R/6S Dynamic Interaction（2026-08-12）
+
+> 重要更正：`stage6r_dynamic_builder_v2_pilot_file0/1/2`及原`pilot_decision_v1`
+> 是未保留Waymo局部邻接index区间的pre-fix结果，已由视觉检查判定失效，不得用于启动full51。
+> 已中断的`stage6r_dynamic_full51_part_*`也不得续跑或finalize。修复版必须使用新的
+> `*_semantic_strict_multirelation_*`目录，并同时通过自动、拓扑重建、独立视觉三道门禁。
+
+## Stage 6R 3-file pilot
+
+```bash
+waymo_dev/bin/python tools/build_waymo_dynamic_interaction_dataset_v2.py \
+  --waymo_dir /Users/liuqing/Projects/01_E2E_QA_Code/training \
+  --out_dir outputs/stage6r_dynamic_builder_v2_pilot_semantic_strict_multirelation_file0 \
+  --file_start 0 --file_end 1 --max_agents_per_scenario 64 \
+  --window_len 80 --stride 20 --dt 0.1 --min_valid_ratio 0.8 \
+  --min_speed 1.0 --assignment_mode lane_aware_only \
+  --output_shard_size 5000 --overwrite --progress_every 50
+```
+
+预期：生成动态track-id/mask/switch/derivative-mask和longitudinal v2 supervision；`dynamic_summary_validation_pass=true`。对file1/file2分别使用`--file_start 1/2 --file_end 2/3`。
+
+```bash
+waymo_dev/bin/python tools/stage6r_audit_dynamic_builder_pilot.py \
+  --config configs/stage6r_waymo_dynamic_builder_v2.json \
+  --legacy_root outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged \
+  --dynamic_roots outputs/stage6r_dynamic_builder_v2_pilot_semantic_strict_multirelation_file{0,1,2} \
+  --output_dir outputs/stage6r_dynamic_builder_v2_pilot_audit_semantic_strict_multirelation_v1 --overwrite
+```
+
+预期：自动门禁通过后状态为`AUTOMATED_PASS_PENDING_MANUAL_REVIEW`；必须复核20个case后才能启动full51。
+
+```bash
+waymo_dev/bin/python tools/stage6r_review_dynamic_pilot_cases.py \
+  --cases_csv outputs/stage6r_dynamic_builder_v2_pilot_audit_semantic_strict_multirelation_v1/stage6r_manual_semantic_cases.csv \
+  --waymo_dir /Users/liuqing/Projects/01_E2E_QA_Code/training \
+  --file_start 0 --file_end 3 \
+  --output_dir outputs/stage6r_dynamic_builder_v2_pilot_topology_semantic_strict_multirelation_v1 --overwrite
+```
+
+预期：20/20 case、每slot 4例通过原始TFRecord重建与lane-topology复核，track-id重建不一致为0；
+状态只能是`TOPOLOGY_RECONSTRUCTION_PASS_PENDING_VISUAL_REVIEW`，不能把自动重建称为人工语义通过。
+随后必须实际查看overview图，确认20例局部车道方向与slot含义正确，再显式运行
+`stage6r_record_visual_semantic_review.py`记录图像SHA。
+
+## Stage 6S rollout与机制门禁
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage6s_run_interaction_dominant_rollouts.py \
+  --freeze_manifest outputs/stage6s_interaction_dominant_freeze_v1/stage6s_freeze_manifest.json \
+  --locked_scenarios_csv outputs/stage6s_interaction_dominant_freeze_v1/stage6s_locked_scenarios.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  --expected_nuplan_commit e9241677997dd86bfc0bcd44817ab04fe631405b \
+  --expected_tuplan_commit b51d5d04fac1bd4389653b9ab2ff73ea88f435a3 \
+  --output_dir outputs/stage6s_interaction_dominant_batch_v1 --start_order 1 --end_order 999 \
+  --execute --resume \
+  --confirm_locked_scenarios_sha256 c07542c693d31d02327b2d16aabb05b68057da5f270818801049b41d41dc8130
+```
+
+预期：24/24 `SUCCEEDED`、0 failure、48条official rollout；未读取embedding/BDD。
+
+机制报告预期状态以冻结门禁为准。本次结果为`PDM_INTERACTION_BENCHMARK_LIMITATION`：速度/加速度差满足“小”，但THW与front-gap两个预冻结interaction指标只有THW通过；不得在本批结果后调参并继续当作同一确认实验。
+
+## Stage 6R full51 finalize 与 Stage 6O-v2
+
+```bash
+waymo_dev/bin/python tools/stage6r_finalize_dynamic_full51.py \
+  --part_roots outputs/stage6r_dynamic_full51_semantic_strict_part_00_09 \
+    outputs/stage6r_dynamic_full51_semantic_strict_part_09_18 outputs/stage6r_dynamic_full51_semantic_strict_part_18_27 \
+    outputs/stage6r_dynamic_full51_semantic_strict_part_27_36 outputs/stage6r_dynamic_full51_semantic_strict_part_36_44 \
+    outputs/stage6r_dynamic_full51_semantic_strict_part_44_51 \
+  --waymo_dir /Users/liuqing/Projects/01_E2E_QA_Code/training \
+  --pilot_decision outputs/stage6r_dynamic_builder_v2_pilot_decision_semantic_strict_v1/stage6r_pilot_decision.json \
+  --expected_file_count 51 --output_dir outputs/stage6r_dynamic_full51_semantic_strict_v1 --overwrite
+
+waymo_dev/bin/python tools/stage6o_v2_freeze_training_readiness.py \
+  --config configs/stage6r_waymo_dynamic_builder_v2.json \
+  --dynamic_full51_manifest outputs/stage6r_dynamic_full51_semantic_strict_v1/stage6r_dynamic_full51_manifest.json \
+  --stage6o_v1_manifest outputs/stage6o_longitudinal_training_protocol_freeze_v1/stage6o_training_protocol_freeze_manifest.json \
+  --expected_stage6o_v1_sha256 4175054bbcf38d604ff0bab5bda77233a066c475c5e19335b0d219f00f1d164e \
+  --output_dir outputs/stage6o_v2_dynamic_training_readiness_v1 --overwrite
+```
+
+预期：finalize只使用全体train split重算q01/q99、median/IQR并写源TFRecord与shard SHA ledger；Stage6O-v2保持5000 intermittent门槛并强制验证旧Stage6O v1 SHA。即使v2通过，也只允许准备训练，不会启动checkpoint训练。
+
+实际通过标准与结果：
+
+- 51/51 TFRecord、24872 scenario、168700窗口、36 shard；train/val/test=`135046/16870/16784`。
+- Stage6O-v2状态=`FROZEN_READY_FOR_INTERACTION_AWARE_V2_PREPARATION`，8项门禁全部为true。
+- train intermittent=`63415 >= 5000`；scenario跨split重叠、nonfinite、shape和跨identity导数违规均为0。
+- 五槽帧覆盖率=`28.73%/17.78%/16.77%/17.65%/17.19%`，switch rate=`1.29%/2.09%/2.48%/2.12%/2.64%`。
+- 新longitudinal raw `|q99|=21.64/6.20/76.30`，normalized max abs=`4.74`；窗口RMS accel median=`1.48`，jerk median/q90=`15.51/28.47`。
+- 旧Stage6O v1 SHA保持`4175054bbcf38d604ff0bab5bda77233a066c475c5e19335b0d219f00f1d164e`且永久BLOCKED；未训练、未扩大Waymo。

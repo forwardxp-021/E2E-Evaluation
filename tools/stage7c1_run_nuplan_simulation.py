@@ -310,6 +310,32 @@ PLANNER_PROFILES = {
             "lateral_offsets": [-0.5, 0.5],
         },
     ),
+    "pdm_closed_interaction_short_headway_v1": pdm_closed_profile(
+        "interaction_short_headway",
+        "interaction_dominant_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.3, 0.5, 0.7, 0.9],
+            "idm_policies.fallback_target_velocity": 14.0,
+            "idm_policies.min_gap_to_lead_agent": 0.5,
+            "idm_policies.headway_time": 0.8,
+            "idm_policies.accel_max": 1.5,
+            "idm_policies.decel_max": 3.25,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
+    "pdm_closed_interaction_long_headway_v1": pdm_closed_profile(
+        "interaction_long_headway",
+        "interaction_dominant_longitudinal_closed_loop_planner",
+        {
+            "idm_policies.speed_limit_fraction": [0.3, 0.5, 0.7, 0.9],
+            "idm_policies.fallback_target_velocity": 14.0,
+            "idm_policies.min_gap_to_lead_agent": 2.5,
+            "idm_policies.headway_time": 2.2,
+            "idm_policies.accel_max": 1.5,
+            "idm_policies.decel_max": 3.25,
+            "lateral_offsets": [-0.5, 0.5],
+        },
+    ),
     "pdm_closed_assertive_longitudinal_dose25_v1": pdm_closed_profile(
         "assertive_longitudinal_dose25",
         "pure_longitudinal_closed_loop_planner",

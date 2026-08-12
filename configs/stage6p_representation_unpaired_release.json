@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage6p_representation_unpaired_release_design_v1",
+  "issue": 257,
+  "purpose": "在同一组冻结的2400个log-disjoint release splits上，比较四种representation的独立A/A校准、A/A holdout FPR与A/B检出率。",
+  "source_contract": {
+    "release_pool_pairs": 800,
+    "release_pool_rows": 1600,
+    "unique_logs": 489,
+    "release_trials": 2400,
+    "sample_sizes_per_release": [200, 250, 300, 400],
+    "log_assignments_sha256": "310085fe229f93f91712f714d50a44721330a54463e60072249ed705e91a2442",
+    "pool_metadata_sha256": "20a735bb3e9953ac416595ee87f5cb0a825d29b83fb50e8ab1debd6f1bb3a939"
+  },
+  "representations": [
+    {
+      "id": "full64",
+      "dimension": 64,
+      "role": "primary_existing_learned_representation",
+      "definition": "现有checkpoint在完整83D ego+neighbor context上的64D输出"
+    },
+    {
+      "id": "ego13",
+      "dimension": 13,
+      "role": "primary_explicit_ego_kinematic_representation",
+      "definition": "Stage6L冻结的13D ego运动学摘要及其冻结median/IQR scaler"
+    },
+    {
+      "id": "handcrafted46",
+      "dimension": 46,
+      "role": "primary_explicit_ego_plus_interaction_representation",
+      "definition": "Stage6L冻结的ego13+interaction33及其冻结median/IQR scaler"
+    },
+    {
+      "id": "neighbor_zero64",
+      "dimension": 64,
+      "role": "diagnostic_only",
+      "definition": "同一checkpoint输入的neighbor通道8:83置零；不是独立训练模型"
+    }
+  ],
+  "statistic": {
+    "scope": "overall_release_marginal",
+    "kernel": "rbf",
+    "estimator": "biased_mmd2_uniform_rows",
+    "bandwidth": "每个representation在冻结1600行全池上独立median heuristic，一次冻结后用于全部样本量和trial",
+    "bandwidth_seed": 20260811,
+    "median_pair_draws": 20000,
+    "cross_representation_raw_mmd2_comparison_forbidden": true,
+    "permitted_cross_representation_endpoints": [
+      "aa_holdout_false_positive_rate",
+      "ab_detection_rate",
+      "detection_minus_false_positive",
+      "same_trial_alert_discordance"
+    ]
+  },
+  "calibration": {
+    "alpha": 0.05,
+    "quantile_method": "higher",
+    "threshold_rule": "每个representation×sample_size仅使用对应AA_CALIBRATION trials的q95",
+    "aa_holdout_independent": true,
+    "ab_not_used_for_threshold": true
+  },
+  "interpretation_constraints": [
+    "ego13更强不等于neighbor或context无用",
+    "behavior style定义保持为ego response conditioned on traffic / interaction context",
+    "neighbor_zero64只作diagnostic",
+    "不证明安全性、planner优劣或因果效应"
+  ],
+  "forbidden_actions": [
+    "rerun_nuplan_simulation",
+    "train_new_checkpoint",
+    "expand_waymo_source",
+    "modify_or_overwrite_stage6o_v1",
+    "select_threshold_using_ab_results"
+  ]
+}

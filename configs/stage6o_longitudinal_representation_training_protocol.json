@@ -1,0 +1,408 @@
+{
+  "schema_version": "stage6o_longitudinal_representation_training_protocol_v1",
+  "protocol_id": "stage6o_ego16_context48_v1",
+  "issue": 256,
+  "status": "PRETRAINING_FREEZE_ONLY",
+  "authorization": {
+    "training_authorized": false,
+    "checkpoint_write_authorized": false,
+    "baseline_overwrite_authorized": false,
+    "nuplan_result_driven_tuning_authorized": false,
+    "next_authorized_action": "IMPLEMENT_FROZEN_TRAINING_PIPELINE_AFTER_FREEZE_REVIEW"
+  },
+  "source_dataset": {
+    "dataset_id": "waymo_5neighbor_context_laneaware_clean_v1_full51_merged",
+    "manifest": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/shard_manifest.json",
+      "sha256": "12e37bdf5317690639d0a0ac01c7f72b65578658623f2149394e54bb5223451f"
+    },
+    "build_summary": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/build_summary.json",
+      "sha256": "4e6e0dbde7b05be5e28b0b7375c16e7b8e1293b1d9fe3a8ea67c130238268ce1"
+    },
+    "feature_schema": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/feature_schema.json",
+      "sha256": "b080287935ef0494e5a51685931361d78b2db76cd17b14fddfd42bfbf22902b5"
+    },
+    "standardization": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/interaction_feature_standardization.json",
+      "sha256": "5b57ac4fff98c85597b6fc145c4207a67398f9eb2436ccf7eec44c54bbf7a303",
+      "fit_split": "train"
+    },
+    "standardization_report": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/global_feature_standardization_report.json",
+      "sha256": "3b1b018aade817e923089fe931a416f69ad5494f3f9df99d3323855f6d13cc8d"
+    },
+    "allowed_shard_roots": [
+      "outputs",
+      "../outputs"
+    ],
+    "manifest_path_anchor": "outputs"
+  },
+  "baseline": {
+    "family": "context_gru_stage5d_balanced_v2",
+    "checkpoint": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt",
+      "sha256": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc"
+    },
+    "evaluation_summary": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval/evaluation_summary.json",
+      "sha256": "16cb7aa247112eabb14f9e26638c1849a6339dd2ef9a690e052cfdb75714e6f2"
+    },
+    "category_correlation": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval/category_correlation_summary.csv",
+      "sha256": "d5c69fe26c1523b0537cd902d757249ef9e0af32ce229b1838a02ae8345171f4"
+    },
+    "retrieval_metrics": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2_eval/retrieval_metrics.csv",
+      "sha256": "02708ac43b130fd45db52e6011876df6fba83cab556101ce2d1929c1ce7cc37e"
+    },
+    "read_only": true
+  },
+  "expected_dataset": {
+    "total_shards": 35,
+    "total_windows": 164871,
+    "split_counts": {
+      "train": 131998,
+      "val": 16481,
+      "test": 16392
+    },
+    "sequence_length": 80,
+    "context_dim": 83,
+    "context_mask_dim": 5,
+    "feature_dim": 33,
+    "required_files_per_shard": [
+      "context_traj.npy",
+      "context_mask.npy",
+      "interaction_feat_style.npy",
+      "interaction_feat_style_raw.npy",
+      "split.npy",
+      "meta.npy"
+    ],
+    "quality_gates": {
+      "require_all_arrays_finite": true,
+      "min_good_lane_context_rate": 0.98,
+      "min_lane_assignment_success_rate": 0.99,
+      "max_fallback_assignment_rate": 0.01,
+      "min_front_slot_occupied_window_ratio": 0.20,
+      "min_side_slot_occupied_window_ratio": 0.10,
+      "max_nonfinite_output_detected": 0
+    }
+  },
+  "split_and_leakage": {
+    "split_unit": "scenario_id",
+    "split_algorithm": "md5(scenario_id) first 8 hex / 0xffffffff; train<0.8, val<0.9, else test",
+    "expected_ratios": {
+      "train": 0.8,
+      "val": 0.1,
+      "test": 0.1
+    },
+    "ratio_absolute_tolerance": 0.015,
+    "require_scenario_disjoint": true,
+    "require_scenario_agent_disjoint": true,
+    "require_meta_split_matches_split_array": true,
+    "require_standardization_fit_on_train_only": true,
+    "pair_mining_within_split_only": true,
+    "validation_for_epoch_selection_only": true,
+    "test_access_policy": "ONCE_AFTER_ALL_WAYMO_VALIDATION_RULES_AND_CHECKPOINT_SELECTION_ARE_FROZEN",
+    "nuplan_access_policy": "NEVER_FOR_TRAINING_SAMPLING_EPOCH_SELECTION_OR_LOSS_TUNING"
+  },
+  "coverage_audit": {
+    "dt_seconds": 0.1,
+    "ego_channel_indices": {
+      "speed": 5,
+      "accel": 6
+    },
+    "raw_feature_indices": {
+      "rms_accel": 0,
+      "rms_jerk": 1,
+      "max_abs_accel": 2,
+      "max_abs_jerk": 3,
+      "mean_thw": 4,
+      "min_thw": 5,
+      "lane_change_count_proxy": 13
+    },
+    "speed_bins_mps": [
+      0.0,
+      5.0,
+      15.0,
+      1000.0
+    ],
+    "speed_bin_names": [
+      "low_0_5",
+      "medium_5_15",
+      "high_ge_15"
+    ],
+    "front_valid_ratio_bins": [
+      0.0,
+      0.000001,
+      0.5,
+      1.000001
+    ],
+    "front_regime_names": [
+      "free_flow",
+      "intermittent_following",
+      "sustained_following"
+    ],
+    "lateral_nuisance_rule": "lane_change_count_proxy > 0 versus == 0",
+    "motion_regime_rules": {
+      "stop_go": "min_speed < 1.0 m/s and max_speed >= 5.0 m/s",
+      "low_speed_variable": "mean_speed < 5.0 m/s and speed_range >= 2.0 m/s",
+      "steady_speed": "speed_std <= 0.5 m/s",
+      "dynamic_speed": "speed_std > 0.5 m/s"
+    },
+    "train_quantiles_to_freeze": [
+      0.01,
+      0.1,
+      0.25,
+      0.5,
+      0.75,
+      0.9,
+      0.99
+    ],
+    "min_train_windows_per_speed_bin": 5000,
+    "min_train_windows_per_front_regime": 5000,
+    "min_train_windows_per_nonempty_speed_front_cell": 500,
+    "min_train_stop_go_windows": 5000,
+    "min_train_steady_speed_windows": 5000,
+    "known_limitation": "Current 33D supervision excludes mean_speed; Stage6O derives it directly from frozen ego speed channel 5."
+  },
+  "sampling_protocol": {
+    "sampling_unit": "window",
+    "base_sampler": "deterministic_stratified_weighted_sampler",
+    "strata": [
+      "speed_bin",
+      "front_regime",
+      "lateral_nuisance_bin"
+    ],
+    "weight_formula": "inverse_sqrt_train_stratum_frequency_then_clip",
+    "sample_weight_clip": [
+      0.25,
+      4.0
+    ],
+    "epoch_samples": 131998,
+    "replacement": true,
+    "hard_negative_pairs": {
+      "share_of_ranking_pairs": 0.5,
+      "same_nuisance_stratum_required": true,
+      "longitudinal_distance_min_train_quantile": 0.75,
+      "nuisance_distance_max_train_quantile": 0.25,
+      "max_candidates_per_anchor": 64,
+      "selected_per_anchor": 2,
+      "tie_break": "stable_hash(scenario_id,target_agent_id,start,pair_seed)"
+    },
+    "near_boundary_pairs": {
+      "share_of_ranking_pairs": 0.25,
+      "same_nuisance_stratum_required": true,
+      "longitudinal_distance_quantile_interval": [
+        0.4,
+        0.6
+      ],
+      "selected_per_anchor": 1
+    },
+    "uniform_pairs": {
+      "share_of_ranking_pairs": 0.25,
+      "selected_per_anchor": 1
+    },
+    "longitudinal_target_vector": [
+      "mean_speed_from_context_channel_5",
+      "std_speed_from_context_channel_5",
+      "rms_accel_from_5frame_median_smoothed_speed",
+      "p90_abs_accel_from_5frame_median_smoothed_speed",
+      "rms_jerk_from_5frame_median_smoothed_speed",
+      "p90_abs_jerk_from_5frame_median_smoothed_speed"
+    ],
+    "target_preprocessing": {
+      "speed_filter": "centered_5frame_median_with_edge_replication",
+      "derivative_dt_seconds": 0.1,
+      "winsorization": "train_split_q01_q99_per_target_only",
+      "standardization": "train_split_median_and_iqr_only",
+      "apply_train_statistics_unchanged_to_val_test_nuplan": true
+    },
+    "forbidden_sampling_fields": [
+      "planner_name",
+      "nuplan_scenario_token",
+      "nuplan_dose",
+      "BDD",
+      "MMD",
+      "evaluation_outcome",
+      "future_test_metric"
+    ]
+  },
+  "representation": {
+    "input_schema": "stage5d83_context",
+    "input_dim": 83,
+    "output_dim": 64,
+    "architecture_family": "dual_branch_gru_ego_longitudinal_plus_context_fusion",
+    "ego_input_channels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "context_input_channels": "all_83_channels_with_context_mask",
+    "ego_longitudinal_subspace_dim": 16,
+    "context_fusion_subspace_dim": 48,
+    "concatenation_order": [
+      "ego_longitudinal_16d",
+      "context_fusion_48d"
+    ],
+    "neighbor_context_removed": false,
+    "planner_identity_as_input": false,
+    "context_dropout": {
+      "enabled": true,
+      "slot_dropout_probability": 0.15,
+      "all_neighbor_dropout_probability": 0.05,
+      "ego_dropout_probability": 0.0,
+      "mask_is_model_input": true
+    }
+  },
+  "objectives": {
+    "selection_metric": "frozen_weighted_waymo_validation_objective",
+    "weights": {
+      "global_style_soft_contrastive": 1.0,
+      "ego_longitudinal_aux_huber": 1.0,
+      "ego_longitudinal_metric_alignment": 0.5,
+      "ego_longitudinal_pair_ranking": 0.5,
+      "following_interaction_aux": 0.75,
+      "lateral_dynamics_aux": 0.75,
+      "lateral_gap_aux": 0.5,
+      "behavior_proxy_aux": 0.25,
+      "neighbor_dropout_consistency": 0.25
+    },
+    "ranking_margin": 0.2,
+    "metric_loss_type": "huber",
+    "auxiliary_targets_are_training_only": true,
+    "raw_bdd_is_training_objective": false,
+    "nuplan_metric_is_training_objective": false
+  },
+  "optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 128,
+    "max_epochs": 30,
+    "early_stopping_patience_epochs": 5,
+    "early_stopping_min_delta": 0.0001,
+    "gradient_clip_norm": 1.0,
+    "seeds": [
+      3407,
+      3408,
+      3409
+    ],
+    "primary_seed": 3407,
+    "pair_seed": 93407,
+    "num_workers": 0,
+    "max_wallclock_hours_per_seed": 24,
+    "max_total_optimizer_steps_per_seed": 31000,
+    "mixed_precision": false,
+    "device_policy": "mps_if_available_else_cpu",
+    "progress_reporting": "tqdm_per_epoch_and_validation_plus_jsonl_heartbeat_every_100_steps"
+  },
+  "checkpoint_policy": {
+    "family_name": "context_gru_stage6o_ego16_context48_v1",
+    "output_root": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage6o_ego16_context48_v1",
+    "seed_directory_template": "seed_{seed}",
+    "checkpoint_filename": "best_model.pt",
+    "required_checkpoint_metadata": [
+      "protocol_id",
+      "freeze_manifest_sha256",
+      "config_sha256",
+      "dataset_fingerprint_sha256",
+      "seed",
+      "epoch",
+      "embedding_dim",
+      "context_dim",
+      "ego_longitudinal_subspace_dim",
+      "git_commit",
+      "validation_metrics"
+    ],
+    "baseline_checkpoint_read_only": true,
+    "overwrite_existing_seed_directory": false
+  },
+  "waymo_acceptance": {
+    "model_selection_split": "val",
+    "final_noninferiority_split": "test",
+    "test_evaluation_runs_per_checkpoint": 1,
+    "baseline_metrics": {
+      "longitudinal_comfort_mean_spearman": 0.1554217991361369,
+      "following_interaction_mean_spearman": 0.4963128526012862,
+      "lateral_lane_dynamics_mean_spearman": 0.25660176109888927,
+      "behavior_proxy_mean_spearman": 0.316848870624853,
+      "retrieval_hit_at_5": 0.5075646656905808,
+      "mean_neighbor_feature_distance": 1.927856206893921
+    },
+    "candidate_gates": {
+      "min_longitudinal_comfort_mean_spearman": 0.1854217991361369,
+      "min_following_interaction_mean_spearman": 0.4763128526012862,
+      "min_lateral_lane_dynamics_mean_spearman": 0.23660176109888928,
+      "min_behavior_proxy_mean_spearman": 0.296848870624853,
+      "min_retrieval_hit_at_5": 0.4875646656905808,
+      "max_mean_neighbor_feature_distance": 2.024249017238617
+    },
+    "seed_stability_rule": "primary_seed_passes_all_gates_and_at_least_2_of_3_seeds_pass_all_noninferiority_gates",
+    "confidence_interval_rule": "paired bootstrap 95% CI is reported for every candidate-minus-baseline metric; longitudinal improvement CI lower bound must exceed 0.0"
+  },
+  "nuplan_acceptance": {
+    "evaluation_only_after_waymo_candidate_is_locked": true,
+    "authoritative_evidence": {
+      "stage6l_summary": {
+        "path": "outputs/stage6l_context_representation_ablation_results_v2_runtime_repaired/stage6l_context_representation_ablation_summary.json",
+        "sha256": "d93cf0b902015b857d1a6fbe3e8385d54d5a9f7d51389b5cb7e5d9bf5ff0136d"
+      },
+      "stage6m_summary": {
+        "path": "outputs/stage6m_context_balanced_unpaired_bdd_results_v1/stage6m_context_balanced_unpaired_bdd_summary.json",
+        "sha256": "5a440e85d803c135836a0a6a88580b9ba6c38e3f7f93f1efd338bf442f036b09"
+      },
+      "realized_dose_summary": {
+        "path": "outputs/stage6k_realized_longitudinal_dose_curve_v2_runtime_repaired/stage6k_realized_dose_summary.json",
+        "sha256": "aa6999b7c03460063bf5b80ba2aa3d4712ff48452c6f2b38e20a35894a3adb1d"
+      }
+    },
+    "paired_dose_gates": {
+      "required_overall_holm_pass_doses": 4,
+      "required_task_dose_holm_pass_cells": 10,
+      "total_task_dose_cells": 12,
+      "max_minimum_detectable_nominal_dose_percent": 25,
+      "min_median_overall_z_bdd": 11.0,
+      "min_spearman_nominal_dose_vs_z_bdd": 0.8,
+      "require_realized_speed_accel_jerk_monotonicity": true
+    },
+    "unpaired_release_gates_n400": {
+      "primary_method": "context_balanced",
+      "max_aa_false_positive_rate": 0.075,
+      "min_ab_detection_rate": 0.8,
+      "min_directional_detection_rate_each_direction": 0.75,
+      "min_raw_method_ab_detection_rate": 0.75,
+      "require_method_specific_aa_calibration": true,
+      "require_both_release_directions": true
+    },
+    "forbidden_gate": "raw BDD or MMD magnitude compared across datasets, representations, kernels, or bandwidths"
+  },
+  "replacement_policy": {
+    "default_decision": "KEEP_STAGE5D_BALANCED_V2_BASELINE",
+    "candidate_requires_all_integrity_gates": true,
+    "candidate_requires_all_waymo_gates": true,
+    "candidate_requires_all_nuplan_paired_gates": true,
+    "candidate_requires_all_nuplan_unpaired_gates": true,
+    "candidate_requires_seed_stability": true,
+    "manual_review_required": true,
+    "allowed_positive_decision": "PROMOTE_STAGE6O_CANDIDATE_WITH_BASELINE_RETAINED",
+    "baseline_deletion_allowed": false,
+    "partial_pass_decision": "RETAIN_AS_RESEARCH_ABLATION_ONLY",
+    "post_result_threshold_change_allowed": false
+  },
+  "forbidden_information": [
+    "planner identity as model input",
+    "nuPlan dose labels in Waymo training",
+    "nuPlan BDD or MMD in loss or epoch selection",
+    "test split during hyperparameter selection",
+    "cross-split hard-negative mining",
+    "checkpoint selection by largest raw BDD",
+    "overwriting Stage5D-balanced-v2"
+  ]
+}

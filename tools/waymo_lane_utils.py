@@ -33,6 +33,8 @@ class LaneInfo:
     exit_lane_ids: List[str] = field(default_factory=list)
     lane_type: str = "unknown"
     topology_source: str = "unknown"
+    left_neighbor_relations: List[dict] = field(default_factory=list)
+    right_neighbor_relations: List[dict] = field(default_factory=list)
 
 
 def _lane_points_from_feature(feature) -> Optional[np.ndarray]:
@@ -79,11 +81,20 @@ def extract_lane_polylines(scenario) -> Dict[str, LaneInfo]:
         lane = getattr(mf, "lane", None)
         left_ids = []
         right_ids = []
-        for fld, dst in (("left_neighbors", left_ids), ("right_neighbors", right_ids)):
+        left_relations = []
+        right_relations = []
+        for fld, dst, relations in (("left_neighbors", left_ids, left_relations), ("right_neighbors", right_ids, right_relations)):
             for nb in getattr(lane, fld, []):
                 nid = getattr(nb, "feature_id", None)
                 if nid is not None:
                     dst.append(str(nid))
+                    relations.append({
+                        "lane_id": str(nid),
+                        "self_start_index": int(getattr(nb, "self_start_index", 0)),
+                        "self_end_index": int(getattr(nb, "self_end_index", 0)),
+                        "neighbor_start_index": int(getattr(nb, "neighbor_start_index", 0)),
+                        "neighbor_end_index": int(getattr(nb, "neighbor_end_index", 0)),
+                    })
         entry_ids = [str(x) for x in getattr(lane, "entry_lanes", [])]
         exit_ids = [str(x) for x in getattr(lane, "exit_lanes", [])]
         lanes[str(getattr(mf, "id"))] = LaneInfo(
@@ -94,6 +105,8 @@ def extract_lane_polylines(scenario) -> Dict[str, LaneInfo]:
             entry_lane_ids=entry_ids, exit_lane_ids=exit_ids,
             lane_type=str(getattr(lane, "type", "unknown")),
             topology_source="proto_topology" if (left_ids or right_ids) else "geometric_lane_adjacency",
+            left_neighbor_relations=left_relations,
+            right_neighbor_relations=right_relations,
         )
     return lanes
 
@@ -119,7 +132,7 @@ def project_point_to_lane(point_xy, lane_info: LaneInfo, eps: float = 1e-9) -> d
     left = np.array([-math.sin(h), math.cos(h)], dtype=np.float64)
     l = float(np.dot(d[bi], left))
     s = float(lane_info.s_prefix[bi] + u[bi] * lane_info.seg_len[bi])
-    return dict(lane_id=lane_info.lane_id, s=s, l=l, heading=h, distance_to_lane=abs(l), projection_success=True)
+    return dict(lane_id=lane_info.lane_id, s=s, l=l, heading=h, distance_to_lane=abs(l), projection_success=True, segment_index=bi, segment_fraction=float(u[bi]))
 
 
 def _candidate_lane_ids(point_xy, lane_infos, search_radius=20.0, topk=32):
