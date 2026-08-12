@@ -8940,3 +8940,66 @@ waymo_dev/bin/python tools/stage6o_v2_freeze_training_readiness.py \
 - 五槽帧覆盖率=`28.73%/17.78%/16.77%/17.65%/17.19%`，switch rate=`1.29%/2.09%/2.48%/2.12%/2.64%`。
 - 新longitudinal raw `|q99|=21.64/6.20/76.30`，normalized max abs=`4.74`；窗口RMS accel median=`1.48`，jerk median/q90=`15.51/28.47`。
 - 旧Stage6O v1 SHA保持`4175054bbcf38d604ff0bab5bda77233a066c475c5e19335b0d219f00f1d164e`且永久BLOCKED；未训练、未扩大Waymo。
+
+# Stage 6S-v2 interaction benchmark development与confirmation冻结（Issue #261）
+
+## 1. 命令
+
+Development机制评估前，nuPlan msgpack反序列化必须显式包含`tuplan_garage`：
+
+```bash
+env PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage6s_v2_development_view_v1 \
+  --output_dir outputs/stage6s_v2_development_context_v1 \
+  --max_neighbors_for_context 5 \
+  --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --required_planners pdm_closed_interaction_short_headway_v2 pdm_closed_interaction_long_headway_v2 \
+  --require_nonzero_neighbor_coverage --overwrite
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6s_v2_evaluate_development_mechanism.py \
+  --config configs/stage6s_v2_interaction_benchmark.json \
+  --freeze_manifest outputs/stage6s_v2_development_freeze_v1/stage6s_v2_development_freeze_manifest.json \
+  --view_dir outputs/stage6s_v2_development_view_v1 \
+  --context_dir outputs/stage6s_v2_development_context_v1 \
+  --output_dir outputs/stage6s_v2_development_mechanism_v1 --overwrite
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python \
+  tools/stage6s_v2_freeze_confirmation.py \
+  --config configs/stage6s_v2_interaction_benchmark.json \
+  --inventory_summary outputs/stage6s_v2_pretreatment_interaction_inventory_v1/stage6s_v2_pretreatment_inventory_summary.json \
+  --inventory_csv outputs/stage6s_v2_pretreatment_interaction_inventory_v1/stage6s_v2_pretreatment_interaction_inventory.csv \
+  --development_manifest outputs/stage6s_v2_development_freeze_v1/stage6s_v2_development_freeze_manifest.json \
+  --development_roster outputs/stage6s_v2_development_freeze_v1/stage6s_v2_development_roster.csv \
+  --development_mechanism outputs/stage6s_v2_development_mechanism_v1/stage6s_v2_development_mechanism_summary.json \
+  --stage6s_v1_roster outputs/stage6s_interaction_dominant_freeze_v1/stage6s_locked_scenarios.csv \
+  --output_dir outputs/stage6s_v2_confirmation_freeze_v1 --overwrite
+```
+
+## 2. 期望行为
+
+- context命令只从24个development pair的official msgpack恢复动态背景车辆；缺少`tuplan_garage`
+  时必须由`--require_nonzero_neighbor_coverage`报错，不能静默接受五槽全零。
+- mechanism命令只读取realized ego trajectory和semantic neighbor context，不读取embedding、
+  BDD/MMD或confirmation roster；THW只保留有限的`0 < THW < 20 s`。
+- confirmation命令只从pre-treatment eligible inventory排序，在development log/token与旧Stage6S-v1
+  token排除后冻结80对；development outcome只作为是否允许冻结的门禁，不参与排序。
+- confirmation统计固定为原机制门禁加按`log_name`聚类的10,000次bootstrap percentile 95%区间，
+  seed为620261；本阶段只冻结方法，不计算confirmation outcome。
+- 三条命令均不会训练checkpoint或运行正式新模型评估；confirmation freeze不会启动其rollout。
+
+## 3. 通过标准
+
+- development context `validation.pass=true`、front coverage非零且slot sanity通过；
+- 24/24 complete pair、至少18对有有效front，`|Δ mean speed|<=1.0 m/s`、
+  `|Δ RMS accel|<=0.75 m/s²`；四项interaction mechanism至少两项通过；
+- 本次实际通过项为front gap与finite THW，机制状态为
+  `DEVELOPMENT_MECHANISM_PASS_CONFIRMATION_FREEZE_ALLOWED`；
+- confirmation为80 pair、60–100冻结范围内，development log overlap=0、scenario overlap=0、
+  Stage6S-v1 token overlap=0；
+- confirmation状态为`CONFIRMATION_ROSTER_FROZEN_NOT_RUN`，并明确记录outcome-blind、未运行rollout、
+  未读取embedding/BDD、未训练checkpoint。

@@ -1962,3 +1962,22 @@ trajectory、THW、front gap、closing及following acceleration response，保�
 `docs/stage6r_stage6s_dynamic_builder_and_interaction_benchmark.md`。实际结果为
 `PDM_INTERACTION_BENCHMARK_LIMITATION`：平均速度差满足“小”，但front-gap未通过，只有一个预冻结
 interaction指标通过。因此数据侧已准备、确认性benchmark侧仍未准备，当前未启动新checkpoint。
+
+## Stage 6S-v2：扩大库存的interaction benchmark与独立confirmation冻结
+
+Stage6S-v2（Issue #261）不再复用Stage6S-v1的24个场景，也不局限于Stage6J的183场景。
+它从扩大的Pittsburgh DB中仅用pre-treatment信息审计15779个候选，得到301个eligible场景、
+19个日志；随后冻结24个development pair并完成48条official rollout。两个planner的speed
+schedule、accel/decel和lateral参数完全相同，只允许headway 0.8/2.2 s与minimum gap 0.5/2.5 m
+不同。
+
+Development中短headway减长headway的median `Δ mean speed=+0.259 m/s`、
+`Δ RMS accel=+0.225 m/s²`，保持在小差异门槛内；`Δ front gap=-4.284 m`与
+`Δ finite THW=-2.660 s`分别有91.7%和100% pair方向一致，满足预冻结的“至少两项interaction
+mechanism通过”规则。THW严格限制为有限的`0 < THW < 20 s`，不含999/sentinel/cap。
+
+机制通过后已冻结80-pair、15-log confirmation roster；它与development的log/token重叠均为0，
+与Stage6S-v1 token重叠也为0。confirmation筛选未读取planner outcome、embedding或BDD/MMD，
+尚未启动rollout、训练或新模型评估。至此数据与benchmark两侧均已具备准备Interaction-aware v2
+训练的条件，但仍需单独授权才能启动。中文报告见
+`docs/stage6s_v2_interaction_benchmark_confirmation_report_zh.md`。

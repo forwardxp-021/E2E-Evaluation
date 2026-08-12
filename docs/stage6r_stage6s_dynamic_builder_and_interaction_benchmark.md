@@ -41,3 +41,11 @@ Issue：#260。
 ## 训练授权规则
 
 Stage6R full51与Stage6O-v2已完成，Waymo数据侧只代表“具备准备Interaction-aware v2训练的条件”，不代表本阶段已经授权训练。Stage6S仍为`PDM_INTERACTION_BENCHMARK_LIMITATION`，所以整体实验侧应先预注册新的benchmark方案或明确接受该限制。正式训练需用户另行确认，且不得覆盖Stage5D-balanced-v2 checkpoint。
+
+## Stage6S-v2 补充（Issue #261，2026-08-12）
+
+Stage6S-v1的24场景结论保留为历史limitation，不覆盖。Stage6S-v2改从扩大nuPlan inventory中仅用
+pre-treatment信息筛选，24-pair development已在mean-speed/RMS-accel小差异约束下建立front-gap与
+finite-THW两项稳定机制，并冻结独立的80-pair、15-log confirmation roster。新roster与development
+log/token和Stage6S-v1 token均无重叠，尚未启动rollout或任何embedding/BDD分析。权威结果与边界见
+`docs/stage6s_v2_interaction_benchmark_confirmation_report_zh.md`。

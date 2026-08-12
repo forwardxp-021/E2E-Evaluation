@@ -1,5 +1,23 @@
 # Stage 6A 非配对实路风格漂移评估协议（Unpaired-First）
 
+## Stage 6S-v2：interaction benchmark development与confirmation freeze（2026-08-12）
+
+Issue #261在Stage6S-v1 limitation之后重新回到扩大nuPlan inventory，完全以pre-treatment front
+exposure、initial gap、ego speed和closing pressure筛选。15,779个候选中301个eligible；24个
+development pair的48条official rollout全部成功。planner只改变headway 0.8/2.2秒与minimum gap
+0.5/2.5米，speed schedule、accel/decel能力和lateral配置相同。
+
+Development realized mechanism通过：短减长的median mean-speed差为+0.259 m/s、RMS accel差为
++0.225 m/s²；front gap差为-4.284 m（91.7%方向一致），finite THW差为-2.660 s（100%方向一致）。
+closing/following acceleration response未单独通过，因此不得将其写成已建立机制。THW冻结为pair内
+median再跨pair median，只保留`0 < THW < 20 s`有限值并排除999/sentinel/cap。
+
+机制通过后，从未参与development的日志中outcome-blind冻结80-pair/15-log confirmation roster。
+development log overlap、development scenario overlap和Stage6S-v1 token overlap均为0。roster冻结后
+不可根据old64、ego13或new64表现修改。当前未运行confirmation rollout、embedding/BDD、checkpoint
+训练或正式模型评估。完整中文证据见
+`docs/stage6s_v2_interaction_benchmark_confirmation_report_zh.md`。
+
 ## 1. 工程背景
 Stage 6 的目标是服务真实 E2E 模型版本迭代：
 - A 组：上一版模型实路日志；

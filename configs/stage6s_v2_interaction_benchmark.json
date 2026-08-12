@@ -1,0 +1,106 @@
+{
+  "schema_version": "stage6s_v2_interaction_benchmark_design_v1",
+  "issue": 261,
+  "research_role": "interaction safeguard against ego-only representation collapse",
+  "inventory": {
+    "allowed_scenario_types": [
+      "following_lane_with_slow_lead",
+      "following_lane_with_lead"
+    ],
+    "horizon_seconds": 8.0,
+    "minimum_raw_frames": 100,
+    "front_lateral_abs_max_m": 3.5,
+    "front_heading_abs_max_deg": 45.0,
+    "initial_window_seconds": 1.0,
+    "initial_front_gap_min_m": 6.0,
+    "initial_front_gap_max_m": 65.0,
+    "front_exposure_ratio_min": 0.70,
+    "front_exposure_seconds_min": 5.5,
+    "ego_median_speed_min_mps": 2.0,
+    "closing_positive_threshold_mps": 0.5,
+    "closing_pressure_ratio_min": 0.15,
+    "closing_p75_min_mps": 0.5,
+    "pre_treatment_only": true,
+    "front_source": "scenario_tag.agent_track_token",
+    "ego_vehicle_length_m": 4.8
+  },
+  "development": {
+    "pair_count": 24,
+    "minimum_distinct_logs": 4,
+    "maximum_scenarios_per_log": 6,
+    "exclude_stage6s_v1_tokens": true,
+    "exclude_stage6s_v1_logs": false,
+    "stable_rank_salt": "stage6s-v2-development-v1",
+    "selection_order": [
+      "scenario_type_priority",
+      "front_exposure_ratio_desc",
+      "closing_pressure_ratio_desc",
+      "stable_rank_sha256"
+    ]
+  },
+  "confirmation": {
+    "target_pair_count": 80,
+    "minimum_pair_count": 60,
+    "maximum_pair_count": 100,
+    "internal_unique_log_required": false,
+    "development_log_disjoint": true,
+    "development_scenario_disjoint": true,
+    "outcome_blind": true,
+    "stable_rank_salt": "stage6s-v2-confirmation-v1"
+  },
+  "planner_a": "pdm_closed_interaction_short_headway_v2",
+  "planner_b": "pdm_closed_interaction_long_headway_v2",
+  "shared_parameters": {
+    "idm_policies.speed_limit_fraction": [0.3, 0.5, 0.7, 0.9],
+    "idm_policies.fallback_target_velocity": 14.0,
+    "idm_policies.accel_max": 1.5,
+    "idm_policies.decel_max": 3.25,
+    "lateral_offsets": [-0.5, 0.5]
+  },
+  "treatment_parameters": {
+    "pdm_closed_interaction_short_headway_v2": {
+      "idm_policies.min_gap_to_lead_agent": 0.5,
+      "idm_policies.headway_time": 0.8
+    },
+    "pdm_closed_interaction_long_headway_v2": {
+      "idm_policies.min_gap_to_lead_agent": 2.5,
+      "idm_policies.headway_time": 2.2
+    }
+  },
+  "thw_definition": {
+    "statistic": "pair_level_median_then_across_pair_median",
+    "minimum_seconds_exclusive": 0.0,
+    "maximum_seconds_exclusive": 20.0,
+    "exclude_nonfinite": true,
+    "exclude_sentinel_or_cap": true
+  },
+  "mechanism_metrics": [
+    "median_front_gap_m",
+    "median_finite_thw_s",
+    "mean_accel_during_closing_mps2",
+    "mean_accel_during_following_pressure_mps2"
+  ],
+  "mechanism_gate": {
+    "absolute_delta_mean_speed_mps_max": 1.0,
+    "absolute_delta_rms_accel_mps2_max": 0.75,
+    "minimum_complete_pairs": 20,
+    "minimum_pairs_with_valid_front": 18,
+    "minimum_directional_pair_fraction": 0.60,
+    "short_minus_long_median_front_gap_m_max": -1.0,
+    "short_minus_long_median_finite_thw_s_max": -0.15,
+    "short_minus_long_closing_accel_abs_min_mps2": 0.05,
+    "short_minus_long_following_accel_abs_min_mps2": 0.05,
+    "required_interaction_metric_count": 2
+  },
+  "forbidden_actions": [
+    "read_embedding",
+    "read_bdd_or_mmd",
+    "select_development_from_stage6s_v1_roster",
+    "select_confirmation_from_development_logs",
+    "change_confirmation_after_freeze",
+    "train_checkpoint",
+    "evaluate_new_model",
+    "modify_stage6o_v1",
+    "overwrite_stage5d_balanced_v2"
+  ]
+}
