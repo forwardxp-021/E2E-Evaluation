@@ -1981,3 +1981,26 @@ mechanism通过”规则。THW严格限制为有限的`0 < THW < 20 s`，不含9
 尚未启动rollout、训练或新模型评估。至此数据与benchmark两侧均已具备准备Interaction-aware v2
 训练的条件，但仍需单独授权才能启动。中文报告见
 `docs/stage6s_v2_interaction_benchmark_confirmation_report_zh.md`。
+
+## Stage 6T：A/B/C训练与盲测协议冻结
+
+Stage6T（Issue #262）在第一个新checkpoint出现前冻结三个可归因candidate。A使用Dynamic v2数据、
+旧single-GRU与旧objective，用于数据修复主导对照；B保持single-GRU但加入clean longitudinal
+supervision、纵向sampling/ranking和mask-aware dropout；C与B使用完全相同的数据、loss、采样、
+dropout、seed和预算，仅改为参数量匹配的ego16+context48双分支。三者均保持83D输入、64D输出，
+不训练ego-only最终模型。没有额外A0时，old64→A不得严格写成纯数据版本因果效应。
+
+冻结审计发现六个Dynamic v2 part的33D `interaction_feat_style.npy`各自使用局部train统计，不能直接
+混合训练。Stage6T因此禁止A/B/C读取该数组，改为从`interaction_feat_style_raw.npy`用全体135046条
+train rows拟合一次global mean/std，并原样应用到train/val/test；旧shard不被改写。这一规则在
+任何新模型结果之前冻结。
+
+36/36 shard SHA、168700行shape/finite、scenario防泄漏、Stage6O-v1 blocked状态、Stage6O-v2门禁和
+Stage6S-v2 80-pair盲态全部通过。当前状态是
+`FROZEN_READY_FOR_ABC_TRAINER_IMPLEMENTATION_NOT_TRAINING`：可实现和review统一trainer，但训练、
+Waymo test、nuPlan正式盲测与confirmation rollout仍全部未授权，实际checkpoint为0/9。
+
+C成功必须同时通过Waymo纵向提升/整体非劣性、Stage6J/K paired dose、Stage6P n=400 unpaired和
+Stage6S-v2 interaction增量门禁；C不自动优于B，也不要求击败ego13。跨representation比较raw MMD²
+继续禁止，C full-context相对neighbor-zero只使用各自null标准化Z差及log-cluster bootstrap。
+完整中文协议见`docs/stage6t_training_evaluation_protocol_zh.md`。

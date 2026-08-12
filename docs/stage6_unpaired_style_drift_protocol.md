@@ -1045,3 +1045,40 @@ decel与lateral参数一致，只改变minimum gap与time headway；机制分析
 因此当前结论是：Waymo数据侧允许进入Interaction-aware v2训练准备；完整实验侧仍需先接受并披露
 PDM limitation，或另行预注册新的planner/场景生成方案。当前未训练新checkpoint、未扩大Waymo、
 未覆盖Stage5D-balanced-v2。
+
+## 35. Stage 6S-v2 interaction development与confirmation冻结（Issue #261）
+
+Stage6S-v2回到扩大Pittsburgh库存，仅用pre-treatment持续front exposure、初始gap、closing/following
+pressure和ego有效速度筛选场景。24个development pair中，短headway减长headway的median
+`Δ mean speed=+0.259 m/s`、`Δ RMS accel=+0.225 m/s²`，而`Δ front gap=-4.284 m`、
+`Δ finite THW=-2.660 s`，分别有91.7%和100% pair方向一致，满足“小ego差异+至少两项interaction
+mechanism通过”的预冻结门禁。THW仅使用有限`0 < THW < 20 s`，排除999/sentinel/cap。
+
+机制通过后冻结80-pair、15-log confirmation roster；它与development的log/token重叠为0，与
+Stage6S-v1 token重叠也为0。筛选未读取confirmation planner outcome、embedding或BDD/MMD，状态保持
+`CONFIRMATION_ROSTER_FROZEN_NOT_RUN`。因此benchmark侧已具备训练后独立确认条件，但未授权训练或
+confirmation rollout。
+
+## 36. Stage 6T A/B/C训练与评估协议冻结（Issue #262）
+
+Stage6T在任何新checkpoint前冻结A/B/C。A为Dynamic v2 + 旧single-GRU/objective的数据修复主导对照；
+B保持single-GRU拓扑但加入clean longitudinal supervision、ranking/sampling和mask-aware dropout；
+C与B的数据、采样、dropout、objective、loss routing、seed和预算完全相同，仅改为参数量匹配的
+ego16+context48双分支。A/B/C均保留83D输入和64D输出；ego13只作参考，不训练ego-only最终模型。
+
+严格归因限制为：没有使用旧builder数据和Stage6T共同seed/预算重训的A0时，old64→A只能称为
+dynamic-data-dominant comparison，不能称为纯数据版本因果效应；B→C才是冻结的encoder topology
+增量比较。C不自动优先，若B通过全部门禁而C没有full-context相对neighbor-zero增量，应优先B。
+
+冻结过程新发现六个Dynamic v2 part的33D标准化不同。因此Stage6T禁止从part-local
+`interaction_feat_style.npy`训练，统一读取raw33并用全体train 135046行拟合一次global mean/std，
+且不覆盖冻结shard。36个shard原SHA全部匹配，168700行shape/finite通过，scenario跨split重叠为0。
+
+训练只能用Waymo train，epoch只能用Waymo val选择；A/B/C×3 seed的9个checkpoint全部锁定后才允许
+一次性读取同一Dynamic v2 Waymo test。之后按固定顺序运行Stage6J/K、Stage6P和Stage6S-v2；test或
+nuPlan结果均不得返工训练。Stage6S-v2必须先过trajectory mechanism gate，再读取interaction embedding。
+跨representation raw MMD²仍禁止；C context增量使用各自null标准化Z_BDD差及log-cluster bootstrap。
+
+当前状态为`FROZEN_READY_FOR_ABC_TRAINER_IMPLEMENTATION_NOT_TRAINING`，只允许下一步实现并review统一
+trainer。训练、checkpoint写入、Waymo test、nuPlan评估和confirmation rollout均未授权，当前0/9
+checkpoint。完整协议见`docs/stage6t_training_evaluation_protocol_zh.md`。

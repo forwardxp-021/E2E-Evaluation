@@ -9003,3 +9003,42 @@ env PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqi
   Stage6S-v1 token overlap=0；
 - confirmation状态为`CONFIRMATION_ROSTER_FROZEN_NOT_RUN`，并明确记录outcome-blind、未运行rollout、
   未读取embedding/BDD、未训练checkpoint。
+
+# Stage 6T A/B/C训练与盲测协议冻结（Issue #262）
+
+## 1. 命令
+
+```bash
+waymo_dev/bin/python tools/stage6t_freeze_training_evaluation_protocol.py \
+  --config configs/stage6t_training_evaluation_protocol.json \
+  --output_dir outputs/stage6t_training_evaluation_protocol_freeze_v1 \
+  --overwrite
+```
+
+协议测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6t_freeze_training_evaluation_protocol.py
+```
+
+## 2. 期望行为
+
+- 校验Dynamic v2 manifest、36个shard冻结SHA、168700行shape/split和Stage6O-v2门禁；
+- 校验Stage6O-v1继续BLOCKED、old64 SHA不变、Stage6S-v2的80-pair roster仍未运行且未解盲；
+- 冻结A/B/C架构、采样、loss、seed、预算、checkpoint选择和四类成绩单；
+- 检测六个part-local 33D标准化不同，禁止trainer使用`interaction_feat_style.npy`，从raw33生成全体
+  train-only global mean/std，但不改写任何旧shard；
+- 输出manifest、A/B/C差异CSV、global standardization、训练输入SHA ledger和中文报告；
+- 不训练checkpoint，不读取Waymo test，不运行nuPlan/confirmation，不读取embedding、BDD或MMD。
+
+## 3. 通过标准
+
+- 状态为`FROZEN_READY_FOR_ABC_TRAINER_IMPLEMENTATION_NOT_TRAINING`；
+- config/source/dataset/Stage6O-v2/Stage6O-v1/Stage6S-v2/environment八项validation均为true；
+- 36 shards、168700 rows、train/val/test=`135046/16870/16784`，shape failure、raw33 nonfinite、
+  scenario cross-split overlap和SHA mismatch均为0；
+- 六个part-local standardization被识别并明确禁止用于Stage6T训练，全局raw33统计train_count=135046；
+- A/B/C×3 seed计划checkpoint=9，但`training_authorized=false`、`checkpoint_training_launched=false`、
+  实际candidate输出非空目录数=0；
+- Stage6S-v2保持`CONFIRMATION_ROSTER_FROZEN_NOT_RUN`，confirmation rollout与embedding读取均为false。
