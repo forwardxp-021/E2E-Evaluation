@@ -2,6 +2,11 @@
 
 基于 Waymo 轨迹数据学习驾驶风格 embedding 的实验工程。
 
+当前Stage6U已进入A/B/C×3 seeds正式训练阶段。启动前复核发现并修复formal进度显示、epoch边界resume、
+best-val选择和checkpoint审计链问题，因此历史implementation freeze SHA`6d1032...`不再用于正式训练；
+新freeze与独立authorization必须重新生成并绑定。正式训练只读Waymo train/val，单MPS按A→B→C、
+3407→3408→3409串行；9/9锁定前后本阶段均不读取Waymo test或运行任何nuPlan/BDD/MMD评估。
+
 ## 项目目标
 
 ## 中文术语与指标解释清单
@@ -2004,3 +2009,57 @@ C成功必须同时通过Waymo纵向提升/整体非劣性、Stage6J/K paired do
 Stage6S-v2 interaction增量门禁；C不自动优于B，也不要求击败ego13。跨representation比较raw MMD²
 继续禁止，C full-context相对neighbor-zero只使用各自null标准化Z差及log-cluster bootstrap。
 完整中文协议见`docs/stage6t_training_evaluation_protocol_zh.md`。
+
+## Stage 6U：Unified A/B/C Trainer实现冻结
+
+Stage6U（Issue #263）用一套trainer按candidate配置切换A/B/C，没有复制三套训练逻辑。A/B/C均为83D
+输入、64D输出；encoder参数量106560/106560/105616。B/C共用候选无关random plan，同seed下的样本顺序、
+batch、sampling weights、ranking pair、dropout mask、augmentation seed、optimizer schedule和budget逐项
+SHA一致，唯一主要差异是encoder topology。
+
+Trainer只接受Dynamic v2的train/val，只读取raw33并应用Stage6T冻结global train标准化；test split、
+part-local标准化数组、nuPlan/BDD/MMD和Stage6S-v2 confirmation均fail closed。Synthetic和真实Waymo
+train/val subset的A/B/C forward/backward、finite loss、64D、save/load与精确resume全部通过；正式checkpoint
+仍为0/9。
+
+Implementation freeze状态为`FROZEN_READY_FOR_ABC_FORMAL_TRAINING`，但
+`formal_training_authorized=false`。正式CLI必须取得一个独立、绑定最终implementation freeze SHA的授权
+manifest才能运行。本机MPS初步估计A/B/C单seed最大30 epoch约1.0/1.9/3.5小时，9任务串行建议准备
+22–27小时，正式首个epoch后需更新ETA。中文报告见
+`docs/stage6u_unified_abc_trainer_implementation_zh.md`。
+
+## Stage 6U正式训练与Stage 6V一次性盲测
+
+Stage6U正式训练已按A→B→C、每个candidate按3407→3408→3409在单MPS上串行完成。9/9任务均只用
+Waymo train优化、Waymo val选best checkpoint，primary seed在结果出现前固定为3407。checkpoint ledger
+状态为`LOCKED_9_OF_9_READY_FOR_BLIND_EVALUATION_UNLOCK`，9个best checkpoint及其SHA均已锁定。
+
+Stage6V在读取任何test/nuPlan结果前创建一次性盲测授权，绑定Stage6T协议、Stage6U implementation freeze、
+formal authorization、checkpoint ledger、9个best checkpoint和Stage6S-v2 roster。授权明确写入
+`evaluation results cannot trigger retraining or protocol changes`；本轮没有换seed、换epoch、改loss、改架构、
+改benchmark或训练返工。
+
+Waymo Dynamic-v2 test上，A/B/C primary seed的longitudinal delta分别为-0.0232/+0.0248/+0.0159；三者均
+通过following/lateral/behavior/retrieval综合非劣性，但均未达到冻结的primary longitudinal完整门禁。B-3409
+虽通过全部Waymo门禁，但只能作为seed稳定性结果，不能替代预先固定的3407。
+
+Stage6J/K的183个paired场景、四剂量盲测中，ego13以4/4 overall、12/12 task×dose、median Z_BDD=21.115
+唯一通过完整门禁。learned64中A最好，为4/4、7/12、median Z=8.630；B/C均为3/4、2/12，三者都未通过
+冻结paired门禁。因此B/C没有在该paired benchmark中恢复old64丢失的完整纵向敏感性。
+
+Stage6P的800 pair、489 log、2400 split非配对发布结果则明显改善：n=400 context-balanced detection从
+old64的66.5%提升到A/B/C的90.5%/100%/99.5%，FPR为3.0%/5.0%/6.5%，双方向最小检出率为
+90%/100%/99%。A/B/C均通过冻结unpaired门禁；C三个seed均为99.5% detection，B三个seed均为100%，
+说明release-level提升跨seed稳定。各representation独立A/A标定，未跨representation比较raw MMD²。
+
+Stage6S-v2冻结80-pair roster实际完成61对，19对在原token两次运行中均被nuPlan官方`valid_scenes`规则排除。
+根因是confirmation pre-treatment inventory未复用官方的scene-rank边界条件，而不是模型或planner失败。由于
+roster已经冻结，禁止用61个成功子集事后重定义confirmation，也禁止换场景。因此trajectory mechanism未评估，
+interaction embedding/BDD未读取，C full-context相对neighbor-zero的增量interaction证据为“不可判定”，不能写成
+“没有增量”。
+
+按预冻结联合规则，A/B/C均不能成为最终论文主模型。可以写入论文的正结果是：Dynamic-v2训练显著并稳定改善了
+受控纵向版本差异的unpaired release检出；必须同时披露Waymo primary/paired门禁未通过以及confirmation roster
+执行失败。old64继续作为冻结历史baseline，ego13继续作为纵向敏感性参考上界。完整中文报告见
+`docs/stage6v_one_time_blind_evaluation_report_zh.md`，机器可审计结果位于
+`outputs/stage6v_one_time_blind_evaluation_final_v1/`。

@@ -1082,3 +1082,69 @@ nuPlan结果均不得返工训练。Stage6S-v2必须先过trajectory mechanism g
 当前状态为`FROZEN_READY_FOR_ABC_TRAINER_IMPLEMENTATION_NOT_TRAINING`，只允许下一步实现并review统一
 trainer。训练、checkpoint写入、Waymo test、nuPlan评估和confirmation rollout均未授权，当前0/9
 checkpoint。完整协议见`docs/stage6t_training_evaluation_protocol_zh.md`。
+
+## 37. Stage 6U Unified A/B/C Trainer实现冻结（Issue #263）
+
+Stage6U以单一trainer实现A/B/C配置切换。A/B/C输入83D、输出64D，encoder参数量分别为106560、
+106560、105616。A沿用legacy objective；B/C共用clean longitudinal supervision、ranking、sampling、
+dropout、seed与预算，C只替换为ego16+context48双分支。
+
+B/C公平性由candidate-independent epoch plan代码级保证。同seed的sampling weights、sample indices、batch
+offsets、ranking positive/negative、pair type、slot/all-neighbor dropout mask、augmentation seed、optimizer
+schedule和budget逐项SHA一致；synthetic和Waymo subset均通过，并有篡改检测单测。全量135046行计划生成
+B/C fingerprint也一致。
+
+Trainer dataset API只接受Dynamic v2 train/val，只载入raw33并使用Stage6T冻结global train mean/std；
+test、part-local标准化数组、Stage6J/K/P、nuPlan、BDD/MMD和Stage6S-v2 confirmation均禁止。Synthetic与
+Waymo train/val subset的A/B/C forward/backward、64D、finite loss/gradient均通过。Resume恢复epoch、
+batch cursor、optimizer、constant scheduler、Python/NumPy/Torch RNG与plan ledger，连续与恢复路径的loss
+序列和最终model state完全一致。
+
+正式loop已包含最多30 epoch/31680 step、Waymo val早停、每100 step heartbeat、best/last checkpoint和
+绑定SHA的resume。但formal模式必须由独立授权manifest绑定最终implementation freeze SHA；当前状态虽为
+`FROZEN_READY_FOR_ABC_FORMAL_TRAINING`，仍有`formal_training_authorized=false`且checkpoint=0/9。
+
+## 38. Stage 6U正式训练前复核、重新冻结与授权
+
+2026-08-12用户授权A/B/C×3 seeds正式训练后，启动前只读复核确认旧implementation freeze SHA
+`6d1032b47f7dfaf4329a83db63105bedbeabf5a88ecbbc309ca77714a4d938fb`与其记录文件一致，但formal实现尚有
+进度条未实际启用、epoch边界plan ledger错误校验、checkpoint锁定元数据不完整、best-val选择错误复用
+early-stopping min-delta四项问题。为避免用已知缺陷生成正式checkpoint，旧freeze标记为superseded，不启动
+任何训练。
+
+修复只涉及训练工程语义和审计链，不改变Stage6T冻结科研协议。Train/val分别使用tqdm；每100 optimizer
+steps原子更新带epoch累计量与plan ledger的`resume_model.pt`；epoch边界checkpoint的plan ledger为空，恢复
+下一epoch时不再误比较；最低Waymo val objective负责best checkpoint，`min_delta=1e-4`只负责patience。
+Checkpoint同时绑定candidate/seed/trainer/config/Stage6T/implementation freeze/authorization/Dynamic v2
+content signature/package IDs/环境/resume history。
+
+重新运行Stage6T/6U tests、synthetic和真实Dynamic v2 train/val smoke、普通resume与formal epoch-boundary
+resume后，才允许生成新的implementation freeze。独立formal authorization随后固定A→B→C、每个candidate
+按3407→3408→3409、精确输出目录、单MPS串行、日志/checkpoint规则和全部盲测禁止项。9/9完成后只生成
+checkpoint ledger并停止，不读取Waymo test、Stage6J/K/P、nuPlan、BDD/MMD或Stage6S-v2 confirmation。
+MPS smoke估计9任务串行建议22–27小时，首个正式epoch后必须用实测更新。完整中文报告见
+`docs/stage6u_unified_abc_trainer_implementation_zh.md`。
+
+## 39. Stage 6U checkpoint锁定与Stage 6V一次性盲测
+
+Stage6U最终9/9任务完成，primary seed固定3407，checkpoint ledger状态为
+`LOCKED_9_OF_9_READY_FOR_BLIND_EVALUATION_UNLOCK`。Stage6V在任何test/nuPlan结果出现前冻结一次性授权，绑定
+Stage6T、Stage6U implementation/formal authorization、checkpoint ledger、9个best checkpoint以及
+Stage6S-v2 roster；任何评估结果均不得触发训练或协议变更。
+
+Waymo Dynamic-v2 test上A/B/C primary longitudinal delta为-0.0232/+0.0248/+0.0159，综合非劣性均通过，
+但完整Waymo门禁均未通过。Stage6J/K paired中A/B/C分别为4/4 overall+7/12 task、3/4+2/12、3/4+2/12，
+三者均未通过冻结门禁；ego13以4/4+12/12通过。
+
+Stage6P n=400 context-balanced detection从old64 66.5%提升到A/B/C的90.5%/100%/99.5%，FPR为
+3.0%/5.0%/6.5%，三者均通过unpaired门禁且B/C跨seed稳定。这是新64D纵向signal recovery的主要正结果，
+但不能单独覆盖Waymo/paired负结果。
+
+Stage6S-v2的80-pair roster有61对official rollout成功；19对原token两次均被nuPlan官方`valid_scenes`
+scene-rank边界规则排除。该规则在pre-treatment inventory建榜时遗漏。冻结后不得替换场景或使用complete-case
+子集重新定义confirmation，因此机制门禁未评估、embedding/BDD未读取、C full-context相对neighbor-zero增量
+不可判定。
+
+按预冻结规则，A/B/C均不满足最终论文主模型联合门禁。论文可以报告unpaired release检出的强、跨seed提升；
+必须同时把Waymo primary/paired失败与confirmation roster执行失败写为限制或负结果。完整中文报告见
+`docs/stage6v_one_time_blind_evaluation_report_zh.md`。

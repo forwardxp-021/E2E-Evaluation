@@ -9042,3 +9042,227 @@ waymo_dev/bin/python tools/stage6t_freeze_training_evaluation_protocol.py \
 - A/B/C×3 seed计划checkpoint=9，但`training_authorized=false`、`checkpoint_training_launched=false`、
   实际candidate输出非空目录数=0；
 - Stage6S-v2保持`CONFIRMATION_ROSTER_FROZEN_NOT_RUN`，confirmation rollout与embedding读取均为false。
+
+# Stage 6U Unified A/B/C Trainer实现冻结（Issue #263）
+
+## 1. 命令
+
+运行synthetic与小规模Waymo train/val smoke：
+
+```bash
+waymo_dev/bin/python tools/stage6u_smoke_unified_abc_trainer.py \
+  --config configs/stage6u_unified_abc_trainer.json \
+  --output_dir outputs/stage6u_unified_abc_trainer_smoke_v1 \
+  --overwrite
+```
+
+Smoke全部通过后冻结implementation：
+
+```bash
+waymo_dev/bin/python tools/stage6u_freeze_trainer_implementation.py \
+  --config configs/stage6u_unified_abc_trainer.json \
+  --smoke_dir outputs/stage6u_unified_abc_trainer_smoke_v1 \
+  --output_dir outputs/stage6u_trainer_implementation_freeze_v1 \
+  --overwrite
+```
+
+测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_stage6u_unified_abc_trainer.py \
+  tests/test_stage6t_freeze_training_evaluation_protocol.py
+```
+
+## 2. 期望行为
+
+- 单一trainer按candidate配置构造A/B/C，全部输入83D、输出64D；
+- B/C同seed生成相同sample/batch/pair/weight/dropout/augmentation/schedule/budget随机计划，并输出逐项SHA ledger；
+- synthetic与Dynamic v2 train/val subset各运行A/B/C少量forward/backward；
+- 只读取`interaction_feat_style_raw.npy`并应用Stage6T global33，不读取part-local标准化数组；
+- checkpoint smoke验证save/load和epoch、batch cursor、optimizer、scheduler、Python/NumPy/Torch RNG与plan恢复；
+- freeze记录trainer/config/data/standardization/smoke/fairness SHA、参数量、环境、ETA和0/9正式checkpoint；
+- 不读取test、Stage6J/K/P、nuPlan、embedding、BDD/MMD或Stage6S-v2 confirmation，不启动正式训练。
+
+Formal CLI虽然已实现完整epoch loop，但没有独立授权manifest时必须失败：
+
+```bash
+waymo_dev/bin/python tools/stage6u_unified_abc_trainer.py \
+  --config configs/stage6u_unified_abc_trainer.json \
+  --candidate A --mode formal --seed 3407 \
+  --output_dir outputs/stage6t_candidates_v1/candidate_A_dynamic_data_legacy/seed_3407
+```
+
+预期报错：缺少独立authorization manifest与implementation freeze SHA，不会创建正式输出。
+
+## 3. 通过标准
+
+- smoke状态=`PASS_UNIFIED_ABC_TRAINER_SMOKE_NO_FORMAL_TRAINING`，全部validation=true；
+- A/B/C encoder参数量=`106560/106560/105616`，embedding shape均为64D，loss/gradient均finite；
+- synthetic和Waymo subset的B/C全部11项公平随机流SHA相同；
+- global33手工公式逐位一致、fit split=train、train_count=135046；
+- resume连续/恢复loss序列与最终model state SHA完全一致；
+- implementation状态=`FROZEN_READY_FOR_ABC_FORMAL_TRAINING`，全部validation=true；
+- `formal_checkpoint_count=0`、`formal_training_authorized=false`、`formal_training_launched=false`；
+- Waymo test、nuPlan、BDD/MMD和confirmation读取/运行标志全部为false。
+
+# Stage 6U A/B/C正式训练授权、串行运行与每小时监控
+
+## 1. 命令
+
+Trainer代码有任何变化后，先重跑smoke和implementation freeze：
+
+```bash
+waymo_dev/bin/python tools/stage6u_smoke_unified_abc_trainer.py \
+  --config configs/stage6u_unified_abc_trainer.json \
+  --output_dir outputs/stage6u_unified_abc_trainer_smoke_v2_preformal \
+  --overwrite
+
+waymo_dev/bin/python tools/stage6u_freeze_trainer_implementation.py \
+  --config configs/stage6u_unified_abc_trainer.json \
+  --smoke_dir outputs/stage6u_unified_abc_trainer_smoke_v2_preformal \
+  --output_dir outputs/stage6u_trainer_implementation_freeze_v2_preformal \
+  --overwrite
+```
+
+用最终freeze生成一次性formal authorization：
+
+```bash
+waymo_dev/bin/python tools/stage6u_create_formal_authorization.py \
+  --config configs/stage6u_unified_abc_trainer.json \
+  --implementation_freeze_manifest \
+    outputs/stage6u_trainer_implementation_freeze_v2_preformal/stage6u_trainer_implementation_freeze_manifest.json \
+  --output_dir outputs/stage6u_formal_training_authorization_v1
+```
+
+在单MPS上串行启动9个任务；Mac终端可用`caffeinate`防止系统休眠：
+
+```bash
+caffeinate -dimsu waymo_dev/bin/python tools/stage6u_run_formal_abc_serial.py \
+  --authorization_manifest \
+    outputs/stage6u_formal_training_authorization_v1/stage6u_formal_training_authorization_manifest.json \
+  --run_dir outputs/stage6u_abc_formal_training_v1
+```
+
+普通中断或重启后，从现有`resume_model.pt`继续：
+
+```bash
+caffeinate -dimsu waymo_dev/bin/python tools/stage6u_run_formal_abc_serial.py \
+  --authorization_manifest \
+    outputs/stage6u_formal_training_authorization_v1/stage6u_formal_training_authorization_manifest.json \
+  --run_dir outputs/stage6u_abc_formal_training_v1 \
+  --resume
+```
+
+只读查看当前进度与剩余时间：
+
+```bash
+waymo_dev/bin/python tools/stage6u_monitor_formal_training.py \
+  --run_dir outputs/stage6u_abc_formal_training_v1
+```
+
+## 2. 期望行为
+
+- Authorization绑定最终implementation freeze SHA、A/B/C、seeds 3407/3408/3409、A→B→C串行顺序和9个精确输出目录；
+- orchestrator同一时间最多启动一个formal trainer，自动跳过已经完成且SHA绑定正确的任务；
+- formal trainer只打开Dynamic v2 train/val，train优化、val选best与早停，不打开test；
+- train/val每epoch显示tqdm；每100 steps写`progress.jsonl`并原子更新`resume_model.pt`；
+- 任务完成后写`best_model.pt`、`last_model.pt`、`formal_training_summary.json`；
+- 9/9完成后自动生成JSON/CSV checkpoint ledger与中文锁定报告，然后停止；
+- 不运行Stage6J/K/P、nuPlan、embedding、BDD/MMD或Stage6S-v2 confirmation。
+
+## 3. 通过标准
+
+- 新implementation freeze状态=`FROZEN_READY_FOR_ABC_FORMAL_TRAINING`且全部validation=true；
+- authorization状态=`AUTHORIZED_STAGE6U_ABC_FORMAL_TRAINING`且其implementation freeze SHA与文件实际SHA完全一致；
+- 全程最多一个formal trainer进程，任务顺序固定为A3407/3408/3409、B3407/3408/3409、C3407/3408/3409；
+- 每个任务`training_complete=true`，有best/last checkpoint、best epoch、Waymo val loss和完整resume history；
+- 9个best checkpoint均计算并写入各自SHA；primary seed保持3407；
+- ledger状态=`LOCKED_9_OF_9_READY_FOR_BLIND_EVALUATION_UNLOCK`；
+- test、Stage6J/K/P、nuPlan、BDD/MMD、confirmation标志全部为false，本阶段不自动解锁正式评估。
+
+# Stage 6V一次性盲测与最终决策
+
+## 1. 命令
+
+一次性授权与前三类冻结评估分别使用：
+
+```bash
+waymo_dev/bin/python tools/stage6v_create_blind_evaluation_authorization.py \
+  --output_dir outputs/stage6v_blind_evaluation_authorization_v1
+
+waymo_dev/bin/python tools/stage6v_run_waymo_test.py \
+  --output_dir outputs/stage6v_waymo_dynamic_v2_test_v1
+
+waymo_dev/bin/python tools/stage6v_run_stage6jk_blind.py \
+  --output_dir outputs/stage6v_stage6jk_paired_blind_v1
+
+waymo_dev/bin/python tools/stage6v_run_stage6p_blind.py \
+  --output_dir outputs/stage6v_stage6p_unpaired_blind_v1
+```
+
+Stage6S-v2必须先运行冻结roster的official rollout，再根据完整执行状态决定是否允许机制和representation分析。
+本轮权威执行冻结与最终汇总命令为：
+
+```bash
+waymo_dev/bin/python tools/stage6v_finalize_stage6s_v2_confirmation_execution.py \
+  --run_dir outputs/stage6v_stage6s_v2_confirmation_batch_v1 \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --freeze_manifest outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_freeze_manifest.json \
+  --locked_scenarios_csv outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_roster.csv \
+  --batch_manifest outputs/stage6v_stage6s_v2_confirmation_batch_v1/batch_manifest.json \
+  --batch_state outputs/stage6v_stage6s_v2_confirmation_batch_v1/batch_state.json \
+  --batch_status_csv outputs/stage6v_stage6s_v2_confirmation_batch_v1/batch_scenario_status.csv \
+  --output_dir outputs/stage6v_stage6s_v2_confirmation_execution_freeze_v1
+
+waymo_dev/bin/python tools/stage6v_finalize_blind_evaluation.py \
+  --authorization outputs/stage6v_blind_evaluation_authorization_v1/stage6v_blind_evaluation_authorization_manifest.json \
+  --waymo_manifest outputs/stage6v_waymo_dynamic_v2_test_v1/stage6v_waymo_test_result_manifest.json \
+  --waymo_decisions outputs/stage6v_waymo_dynamic_v2_test_v1/waymo_test_decisions.csv \
+  --paired_manifest outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_result_manifest.json \
+  --paired_decisions outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_decisions.csv \
+  --unpaired_manifest outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_result_manifest.json \
+  --unpaired_decisions outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_primary_decisions.csv \
+  --unpaired_seed_stability outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_seed_stability_n400.csv \
+  --confirmation_execution outputs/stage6v_stage6s_v2_confirmation_execution_freeze_v1/stage6s_v2_confirmation_execution_freeze.json \
+  --output_dir outputs/stage6v_one_time_blind_evaluation_final_v1
+```
+
+## 2. 期望行为
+
+- 先校验并绑定Stage6T/6U、checkpoint ledger、9个best checkpoint和Stage6S-v2 roster SHA；
+- Waymo test只用primary 3407做确认结论，其余seed只做稳定性；
+- Stage6J/K和Stage6P复用冻结rollout/split，不重跑原纵向simulation；
+- Stage6S-v2只有80/80 official rollout完整且机制门禁通过后才能读取representation；
+- 任何失败都不得触发换seed、换epoch、训练返工、benchmark替换或complete-case重定义；
+- 输出独立manifest、CSV和中文报告，不跨representation比较raw MMD²。
+
+## 3. 通过标准
+
+- authorization包含`evaluation results cannot trigger retraining or protocol changes`且SHA匹配；
+- Waymo、Stage6J/K、Stage6P结果状态分别冻结完成；
+- confirmation若不完整，必须状态为`CONFIRMATION_EXECUTION_INCOMPLETE_STOP_NO_MECHANISM_OR_EMBEDDING`；
+- confirmation失败时`embedding_or_bdd_read=false`且不生成post-hoc子集；
+- 最终manifest按Stage6T联合门禁给出可审计模型决策，并保持训练/协议修改标志为false。
+
+## 4. 本轮结果
+
+Stage6U的A/B/C×3407/3408/3409共9个任务已全部完成并锁定，状态为
+`LOCKED_9_OF_9_READY_FOR_BLIND_EVALUATION_UNLOCK`。所有best epoch只由Waymo val选择，primary seed固定3407；
+checkpoint ledger SHA为`e87c74527d3702de49bc68bebd47ebb485f3ced2a143cd5724cc3c12d59e7ab5`。
+
+Stage6V盲测授权SHA为`c7f945b3236856b4bb0ee9c8e888c2eca83856dd6201d4c4c957fae9dacef5bd`，明确禁止用结果返工训练或协议。
+Waymo primary的A/B/C longitudinal delta为-0.0232/+0.0248/+0.0159；综合非劣性均通过，但完整Waymo门禁均未通过。
+
+Stage6J/K paired中ego13以4/4 overall、12/12 task×dose和median Z=21.115唯一通过完整门禁。A为4/4、7/12、
+Z=8.630；B/C均为3/4、2/12，三者未通过。Stage6P n=400则明显改善：old64/A/B/C/ego13的context-balanced
+detection为66.5%/90.5%/100%/99.5%/100%，FPR为5.0%/3.0%/5.0%/6.5%/2.0%；A/B/C均通过unpaired门禁。
+
+Stage6S-v2的80个冻结scenario有61个成功、19个因nuPlan官方`valid_scenes` scene-rank边界规则失败；原token重试
+仍完全复现。禁止事后替换roster或把61个成功项重新定义为confirmation，因此mechanism未评估、interaction
+embedding/BDD未读取、C相对neighbor-zero增量不可判定。
+
+最终状态为`FROZEN_STAGE6V_ONE_TIME_BLIND_EVALUATION_COMPLETE`，预冻结决策是
+`NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE`。正结果限于新64D显著改善unpaired release检出；Waymo/paired
+门禁失败和confirmation执行失败必须作为限制或负结果同步披露。完整报告见
+`docs/stage6v_one_time_blind_evaluation_report_zh.md`。
