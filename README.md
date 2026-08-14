@@ -2110,3 +2110,21 @@ release-level learned engineering candidate，不是universal/final validated re
 论文核心claim而必须补做的实验，状态为`RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING`。
 
 中文权威蓝图见[`docs/phd_thesis_research_closure_blueprint_zh.md`](docs/phd_thesis_research_closure_blueprint_zh.md)。
+
+## 统一BDD Evaluation Matrix与Style Report Card
+
+后续全部BDD报告统一使用`unified_bdd_reporting_schema_v1`，严格分离Behavior Drift Profile、BDD Statistic和
+Representation Evaluation。任何结果必须显式给出Reference、Target、task、paired/unpaired、representation和
+null/calibration；行为方向只能由Target−Reference semantic delta解释，禁止用BDD大小直接命名“激进/保守”。
+
+固定报告包含13个行为维度，覆盖overall、纵向、横向和interaction。无样本或缺少冻结结果的维度保留为N/A并写明
+reason code。业务结论使用表A Behavior Profile，表示能力使用表B Representation Scorecard；禁止跨representation
+比较raw MMD²。中文规范见
+[`docs/unified_bdd_evaluation_matrix_style_report_card_zh.md`](docs/unified_bdd_evaluation_matrix_style_report_card_zh.md)，
+机器schema与历史task mapping位于`configs/unified_bdd_reporting_schema_v1.json`和
+`configs/unified_bdd_stage_task_mapping_v1.csv`。冻结状态为`UNIFIED_BDD_REPORTING_SCHEMA_FROZEN`。
+
+已完成的A/B/C训练后比较试验已按该规范重新输出为只读报告：
+[`outputs/unified_bdd_posttraining_report_v1/unified_bdd_posttraining_report_zh.md`](outputs/unified_bdd_posttraining_report_v1/unified_bdd_posttraining_report_zh.md)。
+其中表A报告固定13维的Reference→Target行为变化，表B独立比较old64/A/B/C/ego13的检测能力；不会把表示能力误写成行为方向，
+也不会跨representation比较raw MMD²。可复跑命令见`QUICK_REFERENCE.md`。

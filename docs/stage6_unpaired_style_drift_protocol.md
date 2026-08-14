@@ -1204,3 +1204,25 @@ B/C显著提高unpaired release detection；同池机制解释排除了pairing�
 本阶段不授权训练v3。若论文必须坚持interaction-aware主模型这一更强主张，C增量失败提供了明确研究理由；但任何
 v3设计必须只用Waymo train/val完成，并在训练前另行扩展和冻结真正未使用、100% runnable的confirmation。当前
 120个runnable candidate中80个已用于v3，只余40个，不足既有60-pair最低规模，不能复用本次confirmation或降低门槛。
+
+## 41. 统一BDD Evaluation Matrix与Style Report Card冻结
+
+Stage6及后续BDD报告统一服从`docs/unified_bdd_evaluation_matrix_style_report_card_zh.md`。Behavior Drift Profile、
+BDD Statistic和Representation Evaluation必须分离；Stage6J/K、Stage6P等表示能力结果不能直接替代行为报告。
+所有BDD行必须显式记录Reference、Target、固定behavior dimension、task、paired/unpaired、representation、null及
+semantic delta。固定13维taxonomy和Stage5/6/7 task mapping分别由
+`configs/unified_bdd_reporting_schema_v1.json`与`configs/unified_bdd_stage_task_mapping_v1.csv`冻结。
+
+Stage6J/K、Stage6P、Stage6S-v3和Stage6W现有数值未修改，只按新schema重新解释。缺失的free-flow、lane-keeping、
+lateral-gap acceptance及exact merge/yield/cut-in证据标为N/A/evidence gap，不启动补实验。状态为
+`UNIFIED_BDD_REPORTING_SCHEMA_FROZEN`。
+
+## 42. 训练后比较试验的统一BDD输出
+
+冻结A/B/C后的比较结果通过`tools/build_unified_bdd_posttraining_report.py`映射为固定表A/表B，输出目录为
+`outputs/unified_bdd_posttraining_report_v1/`。工具只读取Stage6J/K、Stage6P、Stage6S-v3、Stage6W与Stage7
+已冻结的CSV/JSON，明确禁止训练、仿真、embedding读取和BDD/MMD重算；写入的manifest保存每个输入与输出的SHA256。
+
+表A固定为13行，主行为报告固定使用old64以避免把表示选择混入Target→Reference解释；A/B/C/ego13的训练后比较
+只放在表B scorecard，使用paired coverage、n=400 unpaired detection/FPR、seed稳定性和Stage6W signal/noise
+归因。报告状态为`FROZEN_UNIFIED_BDD_POSTTRAINING_REPORT_COMPLETE`，不会改变Stage6V的联合决策。

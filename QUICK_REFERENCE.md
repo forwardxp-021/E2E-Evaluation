@@ -9382,3 +9382,47 @@ waymo_dev/bin/python tools/stage6s_v3_evaluate_representations.py \
 - interaction增量：只有C-full减C-neighbor-zero的cluster bootstrap 95% CI下界>0才通过；实际
   `ΔZ=-7.852, CI=[-33.393,29.219]`，因此正式结果为不通过，不得解释成增量interaction证据。
 - 最终状态=`FROZEN_STAGE6W_STAGE6S_V3_COMPLETE_NO_NEW_CHECKPOINT`，Stage6V联合模型结论不变。
+
+## 统一BDD Evaluation Matrix与Style Report Card
+
+### 1. 命令
+
+冻结后的训练比较试验可直接生成统一报告（只读取锁定的CSV/JSON，不会重新跑BDD）：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+python tools/build_unified_bdd_posttraining_report.py \
+  --output-dir outputs/unified_bdd_posttraining_report_v1
+```
+
+若目标目录已存在且非空，工具会拒绝覆盖；请使用新的版本目录，不要覆盖已冻结报告。
+
+所有后续BDD导出器和人工报告必须读取以下冻结定义：
+
+```text
+configs/unified_bdd_reporting_schema_v1.json
+configs/unified_bdd_stage_task_mapping_v1.csv
+docs/unified_bdd_evaluation_matrix_style_report_card_zh.md
+```
+
+不得为了填满统一矩阵自动启动训练、仿真、embedding导出或重算已冻结BDD。
+
+### 2. 期望行为
+
+- 固定输出13个behavior dimensions；缺失行保留N/A和reason code；
+- 每个BDD行显式记录Reference、Target、task、paired/unpaired、representation和null/calibration；
+- semantic delta统一为Target减Reference，并与BDD并列报告；
+- 业务行为变化写入表A Behavior Profile；representation能力写入表B Evaluator Scorecard；
+- Stage6J/K、Stage6P、Stage6S-v3、Stage6W和Stage7历史结果只做schema映射，不修改原统计值。
+- 本命令生成`behavior_drift_profile.csv`（表A）、`representation_scorecard.csv`（表B）、
+  `evidence_gap_matrix.csv`、中文总报告和带输入/输出SHA256的manifest；不会读取embedding、Waymo test或nuPlan rollout。
+
+### 3. 通过标准
+
+- 报告能直接回答Reference/Target、行为维度、显著性、semantic方向、最大差异task、可靠representation和paired/unpaired来源；
+- BDD显著但缺少semantic delta时，Direction必须为N/A；
+- 不使用overall semantic delta冒充task-specific方向；
+- 不跨representation比较raw MMD²；
+- 同一task-level BDD映射多个semantic维度时共享`parent_bdd_result_id`，不重复计作独立检验；
+- 运行成功时输出状态必须为`FROZEN_UNIFIED_BDD_POSTTRAINING_REPORT_COMPLETE`，表A为13行、表B为5行；
+- schema冻结状态保持`UNIFIED_BDD_REPORTING_SCHEMA_FROZEN`。
