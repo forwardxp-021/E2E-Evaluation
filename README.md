@@ -2128,3 +2128,16 @@ reason code。业务结论使用表A Behavior Profile，表示能力使用表B R
 [`outputs/unified_bdd_posttraining_report_v1/unified_bdd_posttraining_report_zh.md`](outputs/unified_bdd_posttraining_report_v1/unified_bdd_posttraining_report_zh.md)。
 其中表A报告固定13维的Reference→Target行为变化，表B独立比较old64/A/B/C/ego13的检测能力；不会把表示能力误写成行为方向，
 也不会跨representation比较raw MMD²。可复跑命令见`QUICK_REFERENCE.md`。
+
+## 固定维度BDD标准化矩阵
+
+在原报告schema之上，项目已冻结`standardized_fixed_dimension_bdd_protocol_v1`，将已有冻结的
+Stage6J/K、Stage6S-v3与Stage7资产组织为同一张`behavior × representation`BDD考试卷。每个结果明确拆开
+Behavior Reference、Null Reference和old64 capability baseline；主矩阵固定输出13个维度和old64/A/B/C/ego13五列，
+并保留raw MMD²、null q95、BDD/null-q95 ratio、Z_BDD、p、semantic delta/CI与evidence status。raw MMD²仍禁止跨representation排序。
+
+Stage6J/K与Stage6S-v3继续是继承的确认性结果。为补齐Stage7 lane-change/lateral维度，工具仅在已有310对官方
+assertive/conservative rollout上以锁定primary checkpoint重新导出表示；全部明确标记为
+`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`，不修改Stage6V预注册结论。完整中文报告见
+[`outputs/standardized_fixed_dimension_bdd_matrix_v1/standardized_fixed_dimension_bdd_evaluation_report_zh.md`](outputs/standardized_fixed_dimension_bdd_matrix_v1/standardized_fixed_dimension_bdd_evaluation_report_zh.md)，
+当前状态为`STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE`。

@@ -1226,3 +1226,26 @@ lateral-gap acceptance及exact merge/yield/cut-in证据标为N/A/evidence gap，
 表A固定为13行，主行为报告固定使用old64以避免把表示选择混入Target→Reference解释；A/B/C/ego13的训练后比较
 只放在表B scorecard，使用paired coverage、n=400 unpaired detection/FPR、seed稳定性和Stage6W signal/noise
 归因。报告状态为`FROZEN_UNIFIED_BDD_POSTTRAINING_REPORT_COMPLETE`，不会改变Stage6V的联合决策。
+
+## 43. Standardized Fixed-Dimension BDD Matrix（冻结资产的统一考试卷）
+
+`unified_bdd_reporting_schema_v1`只冻结报告字段；其后新增的
+`configs/standardized_fixed_dimension_bdd_protocol_v1.json`进一步冻结同一张
+`behavior dimension × representation`考试卷。它严格区分三类reference：
+
+1. **Behavior Reference**：Reference planner/version/release与Target必须显式出现，全部语义量为Target−Reference；
+2. **Null Reference**：paired为对应representation自己的within-pair label-swap/randomization null，unpaired为该representation自己的独立A/A calibration，必须保留null q95；
+3. **Representation Baseline**：old64只是历史能力baseline，A/B/C/ego13只能以检测能力、ratio或各自null标准化Z解释，禁止以raw MMD²横向排名。
+
+固定13维保留Overall、纵向、横向和interaction全部维度；没有冻结样本的free-flow、lane-keeping和lateral-gap仍为N/A/evidence gap。每一格保留raw MMD²、null q95、ratio、Z_BDD、raw/Holm p、pass、N scenario/log、semantic delta及CI、direction和evidence status。一个parent task BDD支持多个semantic子维度时，子行共享`parent_bdd_result_id`，不作为重复独立检验。
+
+Stage6J/K完全沿用原确认性183-pair、四dose和四scope结果；同一following dose100为60个场景、52个log，old64/A/B/C/ego13分别输出完整BDD/null/Z/p。仅有speed/accel语义时，`LON.CAR_FOLLOWING`方向统一为
+`TARGET_MORE_ACTIVE_FOLLOWING`，不再错误写成`CLOSER`。Stage6S-v3沿用80-pair/11-log已通过机制的short−long contrast；front gap/finite THW、closing与following-pressure三条语义行共享同一个BDD parent，C-neighbor-zero只保留为diagnostic。
+
+为补齐横向与变道的同一工况representation矩阵，Stage7只使用既有310对
+`pdm_closed_conservative_v1 → pdm_closed_assertive_v1` official rollout、冻结的pre-treatment task membership以及A/B/C primary seed 3407。对old64/A/B/C/ego13重新导出embedding与同一pair-swap null的BDD，严格标记为
+`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`；它不得替代Stage6V预注册端点，不能据此触发训练或协议改变。lane-change是changing-lane scenario slice，不能自动解释为ego已经执行变道。
+
+当前完整结果位于`outputs/standardized_fixed_dimension_bdd_matrix_v1/`，状态为
+`STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE`。主矩阵的纵向与跟车最强within-null敏感性均仍为ego13；Stage6S-v3
+interaction同样以ego13的Z最高，但这不构成raw MMD²或通用representation排名。C相对C-neighbor-zero的既有interaction增量门禁仍为false；Stage6V最终联合结论不变。

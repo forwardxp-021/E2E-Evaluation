@@ -9426,3 +9426,47 @@ docs/unified_bdd_evaluation_matrix_style_report_card_zh.md
 - 同一task-level BDD映射多个semantic维度时共享`parent_bdd_result_id`，不重复计作独立检验；
 - 运行成功时输出状态必须为`FROZEN_UNIFIED_BDD_POSTTRAINING_REPORT_COMPLETE`，表A为13行、表B为5行；
 - schema冻结状态保持`UNIFIED_BDD_REPORTING_SCHEMA_FROZEN`。
+
+## 固定维度BDD标准化对比矩阵（冻结checkpoint后的描述性补齐）
+
+### 1. 命令
+
+先只读检查冻结资产、任务成员、old64与A/B/C checkpoint SHA，不导出embedding：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+waymo_dev/bin/python tools/build_standardized_fixed_dimension_bdd_matrix.py \
+  --preflight-only
+```
+
+在新的、尚不存在的输出目录中构建完整矩阵：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+waymo_dev/bin/python tools/build_standardized_fixed_dimension_bdd_matrix.py \
+  --output-dir outputs/standardized_fixed_dimension_bdd_matrix_v1
+```
+
+冻结协议位于：
+
+```text
+configs/standardized_fixed_dimension_bdd_protocol_v1.json
+```
+
+### 2. 期望行为
+
+- 固定13个行为维度，以及old64/A/B/C/ego13五列；没有冻结有效证据的维度仍输出`N/A`，不删除行。
+- 每一条BDD长表行分开记录三类Reference：Behavior Reference（Reference→Target）、该representation自己的Null Reference和old64 capability baseline。
+- Stage6J/K完整保留`overall`、`following_interaction`、`longitudinal_high_motion`、`stop_go_control`及25/50/75/100% dose；Stage6S-v3保留相同80对的old64/A/B/C/ego13和C-neighbor-zero diagnostic。
+- 使用既有Stage7 310对assertive/conservative rollout、固定pre-treatment task membership和primary seed 3407重新导出A/B/C/ego13 embedding；结果必须标记为`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`，不能替代Stage6V确认性端点。
+- 写入`standardized_bdd_long.csv`、`fixed_dimension_primary_matrix.csv`、`representation_gate_scorecard.csv`、`evidence_gap_matrix.csv`、中文报告和带SHA256的manifest。
+- 命令不会训练、重跑nuPlan、修改planner/checkpoint、选择新场景或改写Stage6V联合结论；也不会以raw MMD²跨representation排序。
+
+### 3. 通过标准
+
+- preflight返回`PREFLIGHT_PASS_STANDARDIZED_FIXED_DIMENSION_BDD_PROTOCOL`，并确认固定Stage7任务数量：following=60、lane_change=60、stop_go=67、high_motion=60、dense/vulnerable=63。
+- 完整运行返回`STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE`；主矩阵为13行，审计长表包含Stage6J/K、Stage6S-v3和Stage7的逐representation行。
+- 同一跟车工况在长表中为60个场景/52个log，并为每个representation同时给出raw MMD²、null q95、BDD/null-q95 ratio、Z_BDD、raw/Holm p及semantic delta。
+- `LON.CAR_FOLLOWING`如果只绑定speed/accel语义，direction必须为`TARGET_MORE_ACTIVE_FOLLOWING`，不得写`CLOSER`。
+- Stage6S-v3的front-gap/THW、closing与following子行共享同一个`parent_bdd_result_id`，不得计为多次独立BDD检验；C-neighbor-zero仅为diagnostic。
+- Stage6P/Waymo/Stage6J/K/interaction/Stage6V门禁必须在`representation_gate_scorecard.csv`拆成五个明确字段，不得再合并为模糊的`frozen_gate_result`。
