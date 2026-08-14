@@ -1148,3 +1148,59 @@ scene-rank边界规则排除。该规则在pre-treatment inventory建榜时遗�
 按预冻结规则，A/B/C均不满足最终论文主模型联合门禁。论文可以报告unpaired release检出的强、跨seed提升；
 必须同时把Waymo primary/paired失败与confirmation roster执行失败写为限制或负结果。完整中文报告见
 `docs/stage6v_one_time_blind_evaluation_report_zh.md`。
+
+## 40. Stage 6W-A paired/unpaired机制与Stage 6S-v3 prospective确认（Issue #266）
+
+### 40.1 Stage6W-A同池控制
+
+分析只读取冻结old64/A/B/C/ego13、Stage6P 800 pairs、489 logs、2400 release splits和既有nuPlan
+rollout，不训练checkpoint、不重跑Stage6P simulation。每个n=400 A/B release分别在release-A与release-B的
+scenario support上构造same-support paired contrast，所以pairing、scenario pool与样本量不再混杂。
+每个representation使用自身bandwidth和null标准化；禁止跨representation比较raw MMD²。
+
+同池n=400下old64/A/B/C/ego13的paired median Z为13.502/27.535/28.295/25.368/101.139，均不弱于
+对应unpaired结果。B/C在同池paired下明显强于old64，证明Stage6J/K中B/C较弱不是paired统计量固有问题，也不能
+由183 vs 400样本量直接解释；真正差异来自Stage6J/K窄纵向dose/task与Stage6P广义planner contrast、场景池和
+estimand的交互。
+
+B/C的release-direction resultant length为0.925/0.927，old64为0.815；planner signal energy fraction为
+3.97%/3.80%，old64为1.62%。log heterogeneity仍约66%–67%，但release aggregation会平均局部异质性并保留
+一致shift。context-balanced口径下，B/C标准化signal为old64的2.586×/2.643×，null noise为0.856×/0.927×；
+signal占log-Z增益85.9%/92.8%。因此unpaired接近100%主要由signal增强和方向一致性提高驱动，null variance下降
+只作次要贡献。raw-marginal口径下B/C null noise没有下降，仍得到相同主结论。
+
+### 40.2 Stage6S-v3 prospective roster repair
+
+Stage6S-v2失败记录SHA
+`e092ee198d412c0fcc830649ae7b22031d09a4284197131b9d0f2733c61faea8`保持不变，禁止用61个成功场景
+做post-hoc confirmation。v3只新增nuPlan官方scene边界`row_num >= 3 AND row_num < scene_count - 1`，其余
+short/long planner、THW、front-gap、mechanism gates、bootstrap和representation endpoint均复用v2冻结设计。
+
+旧v2 roster的官方查询返回61/80，与实际61成功/19失败逐token完全一致。新筛选依次排除Stage6S-v1 token、
+v2 development token/log和v2全部80个confirmation token，162个候选中120个通过官方查询；冻结80个token、
+11个log，80/80场景、160条planner rollout全部成功。development log/token与v1/v2 confirmation token重叠均为0。
+排除development logs后没有任何candidate位于v2 confirmation之外的log，所以与v2做log-disjoint在当前库存不可行；
+该限制在冻结前记录，selection保持outcome-blind，最终不确定性按log cluster bootstrap处理。
+
+### 40.3 mechanism与representation结果
+
+机制确认使用完整80对。短减长的median `Δ mean speed=+0.289 m/s`、`Δ RMS accel=+0.150 m/s²`均低于
+冻结上限；`Δ front gap=-4.202 m`、`Δ finite THW=-2.670 s`，方向一致率93.75%/100%。closing与
+following accel median差均为+0.085 m/s²、方向一致率88.75%。四项interaction checks和全部control gates均通过。
+THW仍只取有限`0 < THW < 20 s`，排除sentinel/cap。
+
+机制通过后才加载representation。old64/A/B/C/ego13/C-neighbor-zero的null-standardized Z分别为
+27.976/26.454/30.603/28.955/35.905/36.807，各自均显著；这不是跨表示raw MMD比较。预冻结主端点
+C-full减C-neighbor-zero的`ΔZ=-7.852`，log-cluster bootstrap 95% CI=`[-33.393, 29.219]`，故
+`incremental_interaction_information_pass=false`。不能把两者都显著误写成C context有增量价值。
+
+### 40.4 冻结决策
+
+Stage6V联合结论仍为`NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE`。当前论文可以按混合结果收口：
+B/C显著提高unpaired release detection；同池机制解释排除了pairing本身；interaction benchmark机制稳定；但C没有
+证明context相对neighbor-zero的增量，Waymo primary与Stage6J/K完整门禁仍未通过。B可作为更简单的release-level
+工程候选讨论，不能改写成通过联合门禁的最终主模型。
+
+本阶段不授权训练v3。若论文必须坚持interaction-aware主模型这一更强主张，C增量失败提供了明确研究理由；但任何
+v3设计必须只用Waymo train/val完成，并在训练前另行扩展和冻结真正未使用、100% runnable的confirmation。当前
+120个runnable candidate中80个已用于v3，只余40个，不足既有60-pair最低规模，不能复用本次confirmation或降低门槛。

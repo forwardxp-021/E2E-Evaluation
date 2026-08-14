@@ -9266,3 +9266,119 @@ embedding/BDD未读取、C相对neighbor-zero增量不可判定。
 `NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE`。正结果限于新64D显著改善unpaired release检出；Waymo/paired
 门禁失败和confirmation执行失败必须作为限制或负结果同步披露。完整报告见
 `docs/stage6v_one_time_blind_evaluation_report_zh.md`。
+
+# Stage 6W-A paired/unpaired解释与Stage 6S-v3 prospective confirmation
+
+## 1. 命令
+
+Stage6W-A只复用冻结representation、800-pair pool和release splits：
+
+```bash
+waymo_dev/bin/python tools/stage6w_a_analyze_paired_unpaired_separation.py \
+  --output_dir outputs/stage6w_a_paired_unpaired_mechanism_v1
+
+waymo_dev/bin/python tools/stage6w_a_context_balanced_driver_addendum.py \
+  --output_dir outputs/stage6w_a_context_balanced_driver_addendum_v2
+```
+
+Stage6S-v3先在任何rollout前冻结官方scene可运行性边界和80-pair roster：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage6s_v3_freeze_confirmation.py \
+  --stage6s_v2_config configs/stage6s_v2_interaction_benchmark.json \
+  --repair_config configs/stage6s_v3_interaction_confirmation_repair.json \
+  --inventory_summary outputs/stage6s_v2_pretreatment_interaction_inventory_v1/stage6s_v2_pretreatment_inventory_summary.json \
+  --inventory_csv outputs/stage6s_v2_pretreatment_interaction_inventory_v1/stage6s_v2_pretreatment_interaction_inventory.csv \
+  --development_manifest outputs/stage6s_v2_development_freeze_v1/stage6s_v2_development_freeze_manifest.json \
+  --development_roster outputs/stage6s_v2_development_freeze_v1/stage6s_v2_development_roster.csv \
+  --development_mechanism outputs/stage6s_v2_development_mechanism_v1/stage6s_v2_development_mechanism_summary.json \
+  --stage6s_v1_roster outputs/stage6s_interaction_dominant_freeze_v1/stage6s_locked_scenarios.csv \
+  --stage6s_v2_confirmation_manifest outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_freeze_manifest.json \
+  --stage6s_v2_confirmation_roster outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_roster.csv \
+  --stage6s_v2_confirmation_design outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_frozen_design.json \
+  --stage6s_v2_execution_failure outputs/stage6v_stage6s_v2_confirmation_execution_freeze_v1/stage6s_v2_confirmation_execution_freeze.json \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_devkit_root ../nuplan-devkit \
+  --nuplan_scenario_query_source ../nuplan-devkit/nuplan/database/nuplan_db/nuplan_scenario_queries.py \
+  --output_dir outputs/stage6s_v3_confirmation_freeze_v1
+```
+
+official rollout使用冻结roster SHA
+`47ad896c2afcb4c2a6272f8027eb50cc19bb7a3e6b06a64fbc10d7466400d5e7`：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage6s_v3_run_confirmation_rollouts.py \
+  --freeze_manifest outputs/stage6s_v3_confirmation_freeze_v1/stage6s_v3_confirmation_freeze_manifest.json \
+  --locked_scenarios_csv outputs/stage6s_v3_confirmation_freeze_v1/stage6s_v3_confirmation_roster.csv \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root ../nuplan/dataset/maps --nuplan_data_root ../nuplan/dataset \
+  --nuplan_exp_root ../nuplan/exp --nuplan_devkit_root ../nuplan-devkit \
+  --tuplan_garage_root ../tuplan_garage \
+  --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  --expected_nuplan_commit e9241677997dd86bfc0bcd44817ab04fe631405b \
+  --expected_tuplan_commit b51d5d04fac1bd4389653b9ab2ff73ea88f435a3 \
+  --output_dir outputs/stage6s_v3_confirmation_batch_v1 --execute \
+  --confirm_locked_scenarios_sha256 47ad896c2afcb4c2a6272f8027eb50cc19bb7a3e6b06a64fbc10d7466400d5e7
+```
+
+80/80成功后构建view/context并运行机制门禁：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage6s_v3_prepare_confirmation_view.py \
+  --freeze_manifest outputs/stage6s_v3_confirmation_freeze_v1/stage6s_v3_confirmation_freeze_manifest.json \
+  --locked_scenarios_csv outputs/stage6s_v3_confirmation_freeze_v1/stage6s_v3_confirmation_roster.csv \
+  --batch_manifest outputs/stage6s_v3_confirmation_batch_v1/batch_manifest.json \
+  --batch_state outputs/stage6s_v3_confirmation_batch_v1/batch_state.json \
+  --batch_status_csv outputs/stage6s_v3_confirmation_batch_v1/batch_scenario_status.csv \
+  --output_dir outputs/stage6s_v3_confirmation_view_v1 --overwrite
+
+env PYTHONPATH=../nuplan-devkit:../tuplan_garage:. \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage6s_v3_confirmation_view_v1 \
+  --output_dir outputs/stage6s_v3_confirmation_context_v1 \
+  --max_neighbors_for_context 5 --assignment_mode lane_aware_with_geometric_fallback \
+  --nuplan_map_root ../nuplan/dataset/maps \
+  --nuplan_db_root ../nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --required_planners pdm_closed_interaction_short_headway_v2 pdm_closed_interaction_long_headway_v2 \
+  --require_nonzero_neighbor_coverage --overwrite
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/stage6s_v3_evaluate_confirmation_mechanism.py \
+  --design outputs/stage6s_v3_confirmation_freeze_v1/stage6s_v3_confirmation_frozen_design.json \
+  --freeze_manifest outputs/stage6s_v3_confirmation_freeze_v1/stage6s_v3_confirmation_freeze_manifest.json \
+  --view_dir outputs/stage6s_v3_confirmation_view_v1 \
+  --context_dir outputs/stage6s_v3_confirmation_context_v1 \
+  --output_dir outputs/stage6s_v3_confirmation_mechanism_v1 --overwrite
+```
+
+只有机制状态为`STAGE6S_V3_MECHANISM_GATE_PASS_REPRESENTATION_EVALUATION_AUTHORIZED`时运行：
+
+```bash
+waymo_dev/bin/python tools/stage6s_v3_evaluate_representations.py \
+  --mechanism_summary outputs/stage6s_v3_confirmation_mechanism_v1/stage6s_v3_confirmation_mechanism_summary.json \
+  --context_dir outputs/stage6s_v3_confirmation_context_v1 \
+  --output_dir outputs/stage6s_v3_confirmation_representations_v1
+```
+
+## 2. 期望行为
+
+- Stage6W-A在同一800-pair pool、同一n=400下比较paired/unpaired，并输出pair displacement、方向一致性、
+  planner/log/scenario能量分解和raw/context-balanced signal-noise归因；不训练、不重跑nuPlan。
+- Stage6S-v3冻结前用nuPlan官方`get_scenarios_from_db`验证100% runnability，排除v1、v2 development与
+  v2全部80个confirmation token；v2失败记录不修改。
+- rollout阶段只写official trajectory；机制阶段只读运动学与邻车context；机制失败时禁止运行representation。
+- representation阶段比较old64/A/B/C/ego13/C-neighbor-zero，各自独立bandwidth/null；主端点只比较
+  null-standardized ΔZ及log-cluster bootstrap，不比较raw MMD²。
+- 全阶段不训练、不换checkpoint、不改seed/epoch/loss/architecture或既有benchmark。
+
+## 3. 通过标准
+
+- Stage6W-A：同池paired support均为n=400；analytic paired null与10000次swap验证相对误差可接受；
+  B/C driver在raw和context-balanced口径均可审计。
+- roster：80个token；v1/v2 development/v2 confirmation token重叠为0；selected official runnability=100%；
+  freeze manifest SHA=`7105940bd822f02d643ed4f5cb9a8321b3827ca6117be289914057e3fe8a26c6`。
+- rollout：`SUCCEEDED=80, FAILED=0, PENDING=0`，160条planner rollout、strict token和same-log审计通过。
+- mechanism：mean-speed/RMS-accel控制门禁通过，至少两项interaction指标通过；实际四项全部通过。
+- interaction增量：只有C-full减C-neighbor-zero的cluster bootstrap 95% CI下界>0才通过；实际
+  `ΔZ=-7.852, CI=[-33.393,29.219]`，因此正式结果为不通过，不得解释成增量interaction证据。
+- 最终状态=`FROZEN_STAGE6W_STAGE6S_V3_COMPLETE_NO_NEW_CHECKPOINT`，Stage6V联合模型结论不变。

@@ -1,0 +1,36 @@
+{
+  "schema_version": "stage6s_v3_interaction_confirmation_repair_v1",
+  "issue": 266,
+  "base_stage6s_v2_config_sha256": "454a85573b268ad92e6a3d27c7a2e2be4630d98626b6535621ee68b5517cfd3f",
+  "repair_scope": "prospective roster runnability only",
+  "official_scene_runnability_rule": {
+    "source_function": "nuplan.database.nuplan_db.nuplan_scenario_queries.get_scenarios_from_db",
+    "include_invalid_mission_goals": true,
+    "include_cameras": false,
+    "valid_scene_sql_boundary": "row_num >= 3 AND row_num < scene_count - 1",
+    "required_selected_fraction": 1.0
+  },
+  "exclusions": {
+    "stage6s_v1_scenario_tokens": true,
+    "stage6s_v2_development_scenario_tokens": true,
+    "stage6s_v2_development_logs": true,
+    "stage6s_v2_all_confirmation_scenario_tokens": true
+  },
+  "selection": {
+    "target_pair_count": 80,
+    "minimum_pair_count": 60,
+    "maximum_pair_count": 100,
+    "stable_rank_salt_from_stage6s_v2": true,
+    "log_diversity_rule": "stable round-robin across all available runnable logs",
+    "outcome_blind": true
+  },
+  "unchanged_from_stage6s_v2": [
+    "planner treatment",
+    "headway and minimum gap",
+    "THW definition",
+    "front-gap metric",
+    "mechanism metrics and gates",
+    "log-cluster bootstrap",
+    "representation evaluation definition"
+  ]
+}

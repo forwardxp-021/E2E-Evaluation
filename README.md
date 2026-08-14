@@ -2063,3 +2063,50 @@ interaction embedding/BDD未读取，C full-context相对neighbor-zero的增量i
 执行失败。old64继续作为冻结历史baseline，ego13继续作为纵向敏感性参考上界。完整中文报告见
 `docs/stage6v_one_time_blind_evaluation_report_zh.md`，机器可审计结果位于
 `outputs/stage6v_one_time_blind_evaluation_final_v1/`。
+
+## Stage 6W-A / Stage 6S-v3：paired-unpaired机制与prospective interaction确认
+
+Stage6W-A（Issue #266）在冻结的Stage6P 800-pair pool上，把paired与unpaired都固定为n=400，避免把
+Stage6J/K的183场景与Stage6P的400场景规模差异误写成representation机制。同池结果中old64/B/C的paired
+median Z分别为13.502/28.295/25.368，说明B/C并不存在固有的“paired不敏感”。历史Stage6J/K较弱主要来自
+窄纵向dose/task benchmark与Stage6P广义assertive/conservative treatment、场景池和estimand不同。
+
+B/C的release shift方向一致性为0.925/0.927，高于old64的0.815；planner signal energy fraction也由old64的
+1.62%提高到3.97%/3.80%，但log heterogeneity仍占主导。context-balanced口径下B/C相对old64的标准化signal
+为2.586×/2.643×，null noise为0.856×/0.927×；按log-Z增益分解，signal贡献85.9%/92.8%。因此接近100%的
+unpaired检出主要由更强、更一致的planner signal驱动，null方差下降只是次要贡献。各representation只使用自身
+bandwidth/null标准化，未跨representation比较raw MMD²。
+
+Stage6S-v2永久保留为`confirmation execution failure due to roster runnability omission`。Stage6S-v3只在
+pre-treatment roster冻结前新增nuPlan官方`valid_scenes`边界。v2的80个token中官方查询恰好返回61个，与实际
+61成功/19失败逐场景完全一致。排除v1、v2 development和v2全部80个confirmation token后有162个候选，官方
+可运行120个；新roster冻结80个、11个log，80/80 official pair全部成功。因合格库存只剩v2 confirmation使用过的
+日志，v3无法做到与v2 log-disjoint，但token完全disjoint、选择不读outcome，统计使用log-cluster bootstrap。
+
+v3机制门禁通过：median `Δ mean speed=+0.289 m/s`、`Δ RMS accel=+0.150 m/s²`，而`Δ front gap=-4.202 m`、
+`Δ finite THW=-2.670 s`；front-gap、finite-THW、closing accel和following accel四项均通过。机制通过后才解锁
+representation。C full-context与C neighbor-zero的Z分别为28.955/36.807；预冻结增量端点`ΔZ=-7.852`，
+log-cluster bootstrap 95% CI为`[-33.393, 29.219]`，没有证明C具有增量interaction信息。
+
+论文可以按“强unpaired release正结果 + paired/Waymo/interaction增量负结果”收口，但不能宣称C已成为验证通过的
+interaction-aware主模型；Stage6V的`NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE`保持不变。若必须继续
+追求interaction-aware主模型，当前负结果构成训练v3的科学理由，但须在训练前扩展并冻结全新、100% runnable的
+confirmation；当前库存仅余40个未使用runnable候选，不足60-pair最低规模。本阶段未训练或写入任何新checkpoint。
+中文总报告和审计manifest位于`outputs/stage6w_stage6s_v3_final_v1/`。
+
+## 博士论文研究收口与写作冻结
+
+自2026-08-14起停止模型训练与Stage6扩展，研究主线正式冻结为：
+
+`Task-conditioned trajectory-level behavior drift evaluation for closed-loop planning policies`
+
+论文不再以“提出新GRU模型”或“A/B/C谁胜出”为主线，而按paired attribution、unpaired release monitoring、
+representation mechanism和interaction confirmation四个科学问题组织。核心正结果是n=400 context-balanced
+release detection从old64的66.5%提升到A/B/C的90.5%/100%/99.5%，且Stage6W-A证明B/C提升主要由signal
+增强驱动；必须同时保留Waymo primary、纯纵向paired和C context增量的负结果。
+
+联合模型决策仍为`NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE`。B只定位为当前最简单、最强的
+release-level learned engineering candidate，不是universal/final validated representation。当前没有为支撑收窄后
+论文核心claim而必须补做的实验，状态为`RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING`。
+
+中文权威蓝图见[`docs/phd_thesis_research_closure_blueprint_zh.md`](docs/phd_thesis_research_closure_blueprint_zh.md)。
