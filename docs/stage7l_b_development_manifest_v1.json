@@ -1,0 +1,43 @@
+{
+  "schema_version": "stage7l_b_development_manifest_v1",
+  "status": "STAGE7L_B_DEVELOPMENT_NOT_READY_FOR_FREEZE",
+  "role": "DEVELOPMENT_ONLY_NOT_CONFIRMATORY",
+  "stage7l_c_started": false,
+  "base_commit": "5208220a09ec3d33e55f6099697b555c59f2b218",
+  "development_unique_tokens": 26,
+  "development_unique_logs": 26,
+  "final_roster": {"scenario_count": 24, "log_count": 24, "left": 6, "right": 18},
+  "dose_parameter_versions_tested": 2,
+  "recommended_dose_transition_length_m": {"dose0": 60.0, "dose25": 58.5, "dose50": 57.0, "dose75": 55.5, "dose100": 54.0},
+  "official_full_development": {
+    "rollout_count": 120,
+    "success_count": 120,
+    "completion_count": 120,
+    "offroad_count": 0,
+    "collision_rollout_count": 20,
+    "collision_unique_scenario_count": 4,
+    "canonical_s_route_pointwise_identical": true
+  },
+  "remaining_inventory_current_static_rule": {"tokens": 83, "logs": 67, "left": 15, "right": 68},
+  "blocking_issue": "future-horizon pre-treatment traffic clearance rule not yet implemented or rescanned",
+  "sha256": {
+    "final_roster": "4d8b12f923120260d186ae9bc7b35cc4ff47f7d5ecd67925bd907886c872bc04",
+    "final_maneuver_manifest": "e2d1c1b14777226017779ac0190e2ad60146231b808882de84e467e58ce3673e",
+    "permanent_exclusion_ledger": "2910e77970e32ad865bcb7b27ea8189d80ac5baf3c5d0a83dcecc622d47fe127",
+    "refined_inventory": "4ee0469f17c7ab02b7552b3b83820319d3e2d9773c2c6f777094cdad71011e16",
+    "mechanism_metrics": "780c16914cc924f17191afff00ff8884ff79db185f7631857824074b11cc151d",
+    "development_analysis": "083f1d493158f1e119051bf987c14128a2fc4bd852ea1c9232c2270efeb118e2",
+    "planner_code": "284d60263621a99b3e57f63f3092797e44a9c393ec6975f419ed02ecb64885d0",
+    "mechanism_evaluator": "f700378a50e7e02d8a6a7d675617c2bc2147a1031b9926d29bf4da8f62a7ecb4",
+    "background_config": "9aad54d780d4c53612be8e397f51d8b1f6718b8323617f5eee6d49617c3b9f0c"
+  },
+  "prohibited_work_audit": {
+    "training_run": false,
+    "confirmation_roster_created": false,
+    "confirmation_run": false,
+    "embedding_read_or_exported": false,
+    "bdd_or_mmd_read_or_computed": false,
+    "checkpoint_modified": false,
+    "frozen_stage6_or_stage7_result_modified": false
+  }
+}

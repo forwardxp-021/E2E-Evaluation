@@ -301,6 +301,9 @@ def evaluate_candidate(
         return result
     left, right = source.adjacent_edges
     objects = initial_objects(db_path, official_token)
+    result["minimum_source_lane_object_gap_m"] = round(
+        float(minimum_target_gap(objects, source, result["initial_x"], result["initial_y"])), 3
+    )
     options = []
     for direction, target in (("left", left), ("right", right)):
         if target is None:
@@ -343,6 +346,10 @@ def evaluate_candidate(
 def run(args: argparse.Namespace) -> Dict[str, Any]:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     exclusions = historical_exclusions(args.stage7_lane_change_roster, args.stage7p_root)
+    if args.additional_exclusion_ledger and args.additional_exclusion_ledger.is_file():
+        merged = {row["scenario_token"]: row for row in exclusions}
+        merged.update({row["scenario_token"]: row for row in read_csv(args.additional_exclusion_ledger)})
+        exclusions = sorted(merged.values(), key=lambda row: row["scenario_token"])
     existing_ledger = args.output_dir / "stage7l_prior_exclusion_ledger.csv"
     if existing_ledger.is_file():
         preserved = [
@@ -445,6 +452,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stage7_lane_change_roster", type=Path, required=True)
     parser.add_argument("--stage7p_root", type=Path, required=True)
     parser.add_argument("--output_dir", type=Path, required=True)
+    parser.add_argument("--additional_exclusion_ledger", type=Path)
     parser.add_argument("--candidates_per_db", type=int, default=4)
     parser.add_argument("--max_dbs", type=int, default=0)
     parser.add_argument("--stop_after_eligible", type=int, default=160)

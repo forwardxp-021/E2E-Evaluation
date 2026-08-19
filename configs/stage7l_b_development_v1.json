@@ -1,0 +1,65 @@
+{
+  "schema_version": "stage7l_b_development_v1",
+  "status": "DEVELOPMENT_ONLY_NOT_CONFIRMATORY",
+  "base_commit": "5208220a09ec3d33e55f6099697b555c59f2b218",
+  "roster": {
+    "scenario_count": 24,
+    "left_count": 6,
+    "right_count": 18,
+    "sanity_subset_count": 8,
+    "sanity_left_count": 2,
+    "sanity_right_count": 6,
+    "maximum_total_unique_development_tokens": 32,
+    "prefer_single_candidate_logs": true
+  },
+  "candidate_development_dose_set_v1": {
+    "dose0": 60.0,
+    "dose25": 54.0,
+    "dose50": 48.0,
+    "dose75": 42.0,
+    "dose100": 36.0,
+    "unit": "m",
+    "axis": "lateral_transition_length_only"
+  },
+  "candidate_development_dose_set_v2_safe": {
+    "dose0": 60.0,
+    "dose25": 58.5,
+    "dose50": 57.0,
+    "dose75": 55.5,
+    "dose100": 54.0,
+    "unit": "m",
+    "axis": "lateral_transition_length_only",
+    "reason": "sanity-v1 off-road incidence increased below 54 m; retain a physical dose while narrowing to the empirically safe interval"
+  },
+  "planner": {
+    "trigger_s_route_m": 12.0,
+    "trajectory_horizon_s": 0.4,
+    "sampling_s": 0.1,
+    "scenario_horizon_s": 15.0,
+    "target_speed_mps": 5.0,
+    "accel_limit_mps2": 1.0,
+    "background_mode": "closed_loop_nonreactive_agents"
+  },
+  "pretreatment_eligibility_addendum": {
+    "rule_id": "PAIRED_REFERENCE_COVERS_CANONICAL_SCENARIO_PLUS_PLANNER_HORIZON",
+    "required_remaining_m": "canonical_progress(initial_speed, 15.4 s)",
+    "reason": "prevent a receding official plan from exceeding either frozen lane reference",
+    "uses_rollout_outcome": false
+  },
+  "pretreatment_clearance_addendum": {
+    "minimum_target_lane_object_gap_m": 15.0,
+    "scope": "uniformly applied before final full-development roster execution",
+    "reason": "development safety refinement: uniformly exclude initially occupied target-lane opportunities; threshold is applied before the full-24 run"
+  },
+  "analysis": {
+    "bootstrap_replicates": 5000,
+    "bootstrap_seed": 3407,
+    "reference_dose": "dose0"
+  },
+  "prohibited": {
+    "training": true,
+    "confirmation": true,
+    "embedding": true,
+    "bdd_or_mmd": true
+  }
+}

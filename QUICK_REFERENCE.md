@@ -9566,3 +9566,62 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
 - realized longitudinal nuisance不得出现明显分叉；最终最大绝对值为mean speed 0.005553 m/s、RMS accel 0.000187 m/s²、RMS jerk 0.002776 m/s³、route progress 0.051174 m。
 - 排除旧Stage7/Stage7P及全部A2 smoke token后，fresh eligible必须≥104；最终为148 token / 120 log、left/right=25/123，严格log-disjoint 24+80分配可行。
 - 通过后状态仅升级为`STAGE7L_PURE_LATERAL_IMPLEMENTATION_CLEAN`和`STAGE7L_B_DEVELOPMENT_AUTHORIZED`；不得自动进入Stage7L-B。
+
+## Stage7L-B Pure-Lateral Development（当前已执行）
+
+### 1. 最终安全版参数
+
+```text
+dose0/25/50/75/100 transition length = 60/58.5/57/55.5/54 m
+trigger = 12 m
+planner horizon = 0.4 s
+scenario horizon = 15 s（tagged与untagged统一）
+background = closed_loop_nonreactive_agents
+```
+
+参数通过`configs/stage7l_hydra/planner/stage7l_b2_pure_lateral_dose*.yaml`切换；只改变横向transition length。
+
+### 2. Full-development运行
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_run_development.py \
+  --maneuver_manifest outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  --nuplan_data_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset \
+  --nuplan_exp_root "$PWD/outputs" \
+  --nuplan_devkit_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  --tuplan_garage_root /Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage \
+  --stage7c_tool tools/stage7c1_run_nuplan_simulation.py \
+  --python_executable /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  --planner_prefix stage7l_b2_pure_lateral \
+  --output_dir outputs/stage7l_b_full_development_v1
+```
+
+### 3. 机制与dose-response分析
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_evaluate_lateral_mechanism.py \
+  --trajectory_csv outputs/stage7l_b_full_development_v1/stage7c_output/simulated_ego_trajectory.csv \
+  --maneuver_manifest outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json \
+  --official_runs_root outputs/stage7l_b_full_development_v1/stage7c_output/official_nuplan_runs \
+  --output_dir outputs/stage7l_b_full_development_mechanism_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_analyze_development_dose_response.py \
+  --mechanism_metrics_csv outputs/stage7l_b_full_development_mechanism_v1/stage7l_a2_lateral_mechanism_metrics.csv \
+  --roster_csv outputs/stage7l_b_final_development_freeze_v1/final_development_roster.csv \
+  --run_summary outputs/stage7l_b_full_development_v1/stage7l_b_development_run_summary.json \
+  --freeze_summary outputs/stage7l_b_final_development_freeze_v1/refined_development_roster_freeze_summary.json \
+  --output_dir outputs/stage7l_b_development_analysis_v1
+```
+
+### 4. 当前门禁
+
+- 120/120 official success、120/120 completion、0 off-road、canonical纵向一致性通过。
+- 4个场景在五档均发生责任碰撞；不是dose-dependent，但使safety feasibility gate失败。
+- 静态规则后剩余83 token / 67 log / 15 left / 68 right；动态15 s traffic-clearance规则尚未重扫。
+- 状态：`STAGE7L_B_DEVELOPMENT_NOT_READY_FOR_FREEZE`；不得建立Stage7L-C roster或运行confirmation。
+- 本流程禁止并未执行embedding、BDD、MMD或model training。

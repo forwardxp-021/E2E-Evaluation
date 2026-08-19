@@ -138,12 +138,19 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
         baseline = dose0.get(row["scenario_token"])
         for key in ("mean_speed_mps", "rms_longitudinal_accel_mps2", "rms_longitudinal_jerk_mps3", "route_progress_m"):
             row[f"delta_vs_dose0_{key}"] = None if baseline is None else float(row[key]) - float(baseline[key])
-    ordered_doses = [f"stage7l_pure_lateral_dose{dose}" for dose in (0, 25, 50, 75, 100)]
-    by_planner = {row["planner_name"]: row for row in metrics}
-    peak_lateral = [float(by_planner[name]["peak_lateral_accel_mps2"]) for name in ordered_doses if name in by_planner]
-    lateral_dose_ordering = len(peak_lateral) == 5 and all(
-        current < following for current, following in zip(peak_lateral, peak_lateral[1:])
-    )
+    scenario_ordering: List[bool] = []
+    for token in sorted({row["scenario_token"] for row in metrics}):
+        token_rows = [row for row in metrics if row["scenario_token"] == token]
+        peak_lateral = []
+        for dose in (0, 25, 50, 75, 100):
+            matches = [row for row in token_rows if row["planner_name"].endswith(f"dose{dose}")]
+            if len(matches) == 1:
+                peak_lateral.append(float(matches[0]["peak_lateral_accel_mps2"]))
+        scenario_ordering.append(
+            len(peak_lateral) == 5
+            and all(current < following for current, following in zip(peak_lateral, peak_lateral[1:]))
+        )
+    lateral_dose_ordering = bool(scenario_ordering) and all(scenario_ordering)
     nuisance_keys = (
         "delta_vs_dose0_mean_speed_mps",
         "delta_vs_dose0_rms_longitudinal_accel_mps2",
@@ -157,13 +164,16 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
     fields = sorted({key for row in metrics for key in row})
     csv_path = args.output_dir / "stage7l_a2_lateral_mechanism_metrics.csv"
     write_csv(csv_path, metrics, fields)
+    scenario_count = len({row["scenario_token"] for row in metrics})
     summary = {
-        "schema_version": "stage7l_a2_lateral_mechanism_v1",
-        "status": "A2_SMOKE_MECHANISM_EVALUATED_NO_BDD",
+        "schema_version": "stage7l_lateral_mechanism_v2",
+        "status": "DEVELOPMENT_MECHANISM_EVALUATED_NO_BDD" if scenario_count > 1 else "A2_SMOKE_MECHANISM_EVALUATED_NO_BDD",
+        "scenario_count": scenario_count,
         "trajectory_group_count": len(metrics),
         "all_valid": all(row["valid"] for row in metrics),
         "all_complete": all(row["lane_change_completion"] for row in metrics),
         "lateral_peak_accel_strict_dose_ordering": lateral_dose_ordering,
+        "lateral_peak_accel_strict_dose_ordering_scenario_fraction": float(np.mean(scenario_ordering)),
         "official_safety_metrics_available": len(official_safety) == len(metrics),
         "all_collision_free": all(row.get("collision") is False for row in metrics),
         "all_drivable_area_compliant": all(row.get("offroad") is False for row in metrics),

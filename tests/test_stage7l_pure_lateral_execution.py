@@ -86,3 +86,13 @@ def test_canonical_generator_is_independent_of_dose() -> None:
     arrays = [generator.sample(time)[0] for _ in DOSE_TRANSITION_LENGTH_M]
     for array in arrays[1:]:
         np.testing.assert_array_equal(arrays[0], array)
+
+
+def test_safe_development_lengths_preserve_one_dimensional_lateral_axis() -> None:
+    safe_lengths = [60.0, 58.5, 57.0, 55.5, 54.0]
+    assert all(a > b for a, b in zip(safe_lengths, safe_lengths[1:]))
+    time = np.arange(0.0, 8.1, 0.1)
+    progress, _, _ = CanonicalLongitudinalProgressGenerator(5.0, 8.0, 1.0).sample(time)
+    trajectories = [build_lateral_positions(maneuver(), progress, length)[0] for length in safe_lengths]
+    assert all(np.array_equal(progress, CanonicalLongitudinalProgressGenerator(5.0, 8.0, 1.0).sample(time)[0]) for _ in safe_lengths)
+    assert not np.array_equal(trajectories[0], trajectories[-1])

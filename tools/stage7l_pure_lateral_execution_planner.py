@@ -240,6 +240,7 @@ class PureLateralExecutionPlanner:
         scenario: Any,
         manifest_path: str,
         dose_id: str,
+        transition_length_m: float | None = None,
         horizon_seconds: float = 4.0,
         sampling_time: float = 0.1,
         target_speed_mps: float = 5.0,
@@ -251,7 +252,11 @@ class PureLateralExecutionPlanner:
             raise ValueError(f"unknown Stage7L dose: {dose_id}")
         self._scenario = scenario
         self._dose_id = dose_id
-        self._transition_length_m = DOSE_TRANSITION_LENGTH_M[dose_id]
+        self._transition_length_m = float(
+            DOSE_TRANSITION_LENGTH_M[dose_id] if transition_length_m is None else transition_length_m
+        )
+        if self._transition_length_m <= 0:
+            raise ValueError("transition_length_m must be positive")
         self._horizon_seconds = float(horizon_seconds)
         self._sampling_time = float(sampling_time)
         self._target_speed_mps = float(target_speed_mps)

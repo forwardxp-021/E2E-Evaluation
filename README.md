@@ -2165,3 +2165,19 @@ Stage6S-v3的逼近响应、front-gap/THW和纵向跟车交互三行统一带`�
 `parent_bdd_result_id`并只计一次独立BDD检验。最终中文报告见
 [`outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md`](outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md)，
 最终状态为`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`。
+
+## Stage7L-B Pure-Lateral Development
+
+Stage7L-B已完成24场景×5档的official development：120/120运行成功、五档canonical `s_route(t)`逐点一致、
+24/24各档均完成换道且无off-road。开发共使用26个unique token，最终roster为24 token / 24 log、6 left / 18 right；
+共测试两套transition-length参数，安全版建议值为`60/58.5/57/55.5/54 m`。
+
+安全版的RMS/peak lateral acceleration、yaw和RMS lateral jerk呈清晰有序变化，dose100相对dose0的duration中位差为
+`-0.300 s`；最强dose的纵向副作用max仅为mean speed `0.001086 m/s`、RMS accel `0.017632 m/s²`、
+RMS jerk `0.020811 m/s³`、route progress `0.031012 m`。
+
+当前结论仍为`STAGE7L_B_DEVELOPMENT_NOT_READY_FOR_FREEZE`：4个场景在所有五档均发生相同责任碰撞，说明碰撞不由
+Sharp剂量驱动，但当前只看初始帧的traffic-clearance规则不足。按静态规则尚余83 token / 67 log（15 left / 68 right），
+必须先新增15 s pre-treatment动态走廊净空审计并重扫供给，才可人工审阅Stage7L-C。未建立confirmation roster，未读取
+embedding，未计算BDD/MMD。中文报告见
+[`docs/stage7l_b_pure_lateral_development_report_zh.md`](docs/stage7l_b_pure_lateral_development_report_zh.md)。
