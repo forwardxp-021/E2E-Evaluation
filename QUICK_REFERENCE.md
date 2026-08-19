@@ -9625,3 +9625,53 @@ background = closed_loop_nonreactive_agents
 - 静态规则后剩余83 token / 67 log / 15 left / 68 right；动态15 s traffic-clearance规则尚未重扫。
 - 状态：`STAGE7L_B_DEVELOPMENT_NOT_READY_FOR_FREEZE`；不得建立Stage7L-C roster或运行confirmation。
 - 本流程禁止并未执行embedding、BDD、MMD或model training。
+
+## Stage7L-B2 动态预处理交通净空与库存扩展（已完成）
+
+### 1. 命令
+
+对已有development roster进行纯replay动态审计：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:$PWD \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_audit_dynamic_lane_change_clearance.py \
+  --candidate_csv outputs/stage7l_b_final_development_freeze_v1/final_development_roster.csv \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --output_dir outputs/stage7l_b2_dynamic_clearance_development_audit_v1
+```
+
+扩大Pittsburgh inventory：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:$PWD \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_expand_clean_opportunity_inventory.py \
+  --inventory_inputs outputs/stage7p_expanded_scenario_inventory_v2_pittsburgh/scenario_inventory_inputs.csv \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  --stage7_lane_change_roster outputs/stage7_m6_5_locked_confirmation_view_v1/confirmation_scenario_ledger.csv \
+  --stage7p_root outputs \
+  --additional_exclusion_ledger outputs/stage7l_b_final_development_freeze_v1/stage7l_b_final_prior_exclusion_ledger.csv \
+  --candidates_per_db 24 \
+  --required_map_name us-pa-pittsburgh-hazelwood \
+  --output_dir outputs/stage7l_b2_dynamic_clearance_expanded_inventory_v2_pittsburgh
+```
+
+### 2. 期望行为
+
+- 只读取原始map、route、official initial state和`lidar_box` replay track；绝不读取planner rollout、dose ID、collision outcome、embedding、BDD或MMD。
+- 使用15 s / 0.1 s共同canonical longitudinal schedule。触发前仅检查source lane；54–60 m family期间检查source→target共同strip；之后检查target lane。
+- replay track按timestamp线性插值，最大允许间隔0.25 s；全局轨迹时域不足15 s返回`INSUFFICIENT_TRACK_HORIZON`。
+- 输出Pool A（scenario-disjoint）和Pool B（与所有Stage7L-B development log严格分离），但不会选择、冻结或运行任何confirmation roster。
+
+### 3. 通过标准
+
+- 单元测试覆盖time alignment、远离包络、未来transition冲突、方向对称、buffer边界、missing track和dose independence。
+- development audit以同一算法识别4/4固定collision case，且无token hardcode。
+- Pittsburgh Pool B需≥120 dynamic-clean token、≥80 unique log、左右方向均有真实供给，并且official runnability为100%。
+- 当前实测：Pool B为152 token / 94 log / 19 left / 133 right；满足上述门槛。
+- 状态仅为`STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE`和`STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED`，不得自动进入Stage7L-C。

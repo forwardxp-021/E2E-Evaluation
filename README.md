@@ -2181,3 +2181,15 @@ Sharp剂量驱动，但当前只看初始帧的traffic-clearance规则不足。�
 必须先新增15 s pre-treatment动态走廊净空审计并重扫供给，才可人工审阅Stage7L-C。未建立confirmation roster，未读取
 embedding，未计算BDD/MMD。中文报告见
 [`docs/stage7l_b_pure_lateral_development_report_zh.md`](docs/stage7l_b_pure_lateral_development_report_zh.md)。
+
+## Stage7L-B2 Dynamic Pre-treatment Traffic Clearance
+
+Stage7L-B2已完成：在不读取任何Stage7L rollout、dose、embedding或BDD的条件下，以原始nuPlan replay tracks建立15 s、
+time-aligned、dose-independent的common lane-change envelope。它用ego/agent footprint加3.0 m纵向和0.5 m横向固定buffer，
+对24个development场景解释了4/4固定碰撞场景；同时没有为了保留未碰撞场景调节buffer。
+
+扩大扫描全部1,621个Pittsburgh DB后，静态eligible 327个token，dynamic-clean为165个；排除全部历史token并与26个
+Stage7L-B development log严格分离后，Pool B仍有152 token / 94 log（19 left / 133 right），且official runnability为100%。
+状态升级为`STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE`与`STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED`。这只是允许人工审阅
+Stage7L-C协议，尚未建立confirmation roster或运行confirmation。详见
+[`docs/stage7l_b2_dynamic_clearance_inventory_report_zh.md`](docs/stage7l_b2_dynamic_clearance_inventory_report_zh.md)。

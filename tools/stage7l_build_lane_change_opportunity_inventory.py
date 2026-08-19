@@ -257,10 +257,16 @@ def minimum_target_gap(objects_xy: Sequence[Tuple[float, float]], target_lane: A
     return min(gaps) if gaps else 999.0
 
 
-def evaluate_candidate(
+def evaluate_candidate_options(
     row: Mapping[str, Any], db_root: Path, map_root: Path, map_version: str,
     minimum_remaining_m: float, minimum_target_gap_m: float, minimum_speed_mps: float,
-) -> Dict[str, Any]:
+) -> List[Dict[str, Any]]:
+    """Return every native left/right pre-treatment option for one scenario.
+
+    The legacy inventory uses :func:`evaluate_candidate` below to select one
+    deterministic option.  Stage7L-B2 can enumerate both options to improve
+    search recall without applying different scientific eligibility by side.
+    """
     from nuplan.common.maps.nuplan_map.map_factory import get_maps_api
     from nuplan.database.nuplan_db.nuplan_scenario_queries import get_ego_state_for_lidarpc_token_from_db
     db_path = db_root / str(row["db_file"])
@@ -285,20 +291,20 @@ def evaluate_candidate(
     }
     if speed < minimum_speed_mps:
         result["reason_code"] = "OFFICIAL_INITIAL_SPEED_BELOW_MINIMUM"
-        return result
+        return [result]
     api = get_maps_api(str(map_root), map_version, str(row["map_name"]))
     source, reason = select_source_lane(api, result["initial_x"], result["initial_y"], yaw)
     if source is None:
         result["reason_code"] = reason
-        return result
+        return [result]
     route = route_ids(db_path, str(row["scenario_token"]))
     if not route:
         result["reason_code"] = "MISSING_ROUTE"
-        return result
+        return [result]
     source_roadblock = str(source.get_roadblock_id())
     if source_roadblock not in route:
         result["reason_code"] = "SOURCE_ROADBLOCK_NOT_ON_ROUTE"
-        return result
+        return [result]
     left, right = source.adjacent_edges
     objects = initial_objects(db_path, official_token)
     result["minimum_source_lane_object_gap_m"] = round(
@@ -322,25 +328,44 @@ def evaluate_candidate(
             options.append((remaining, gap, direction, target, source_xy, target_xy, source_arc, target_arc))
     if not options:
         result["reason_code"] = "NO_NATIVE_ADJACENT_WITH_ROUTE_LENGTH_AND_CLEARANCE"
-        return result
-    options.sort(key=lambda item: (item[0], item[1], item[2] == "left"), reverse=True)
-    remaining, gap, direction, target, source_xy, target_xy, source_arc, target_arc = options[0]
+        return [result]
     route_tuple = tuple(route)
-    result.update({
-        "eligible": True, "reason_code": "ELIGIBLE_NATIVE_ADJACENT_PRETREATMENT",
-        "source_lane_id": str(source.id), "target_lane_id": str(target.id), "direction": direction,
-        "source_roadblock_id": source_roadblock, "target_roadblock_id": str(target.get_roadblock_id()),
-        "route_roadblock_ids_json": json.dumps(route_tuple, separators=(",", ":")),
-        "route_fingerprint": canonical_json_sha256(route_tuple),
-        "source_start_arc_m": round(float(source_arc), 6), "target_start_arc_m": round(float(target_arc), 6),
-        "paired_reference_remaining_m": round(float(remaining), 3),
-        "minimum_target_lane_object_gap_m": round(float(gap), 3),
-        "nominal_lane_width_m": round(float(np.median(np.linalg.norm(np.asarray(target_xy)[:min(len(target_xy), len(source_xy))] - np.asarray(source_xy)[:min(len(target_xy), len(source_xy))], axis=1))), 3),
-        "source_reference_xy_json": json.dumps(source_xy, separators=(",", ":")),
-        "target_reference_xy_json": json.dumps(target_xy, separators=(",", ":")),
-        "initial_state_fingerprint": initial_state_fingerprint(result["initial_x"], result["initial_y"], yaw, speed, int(official_initial.time_us)),
-    })
-    return result
+    option_results: List[Dict[str, Any]] = []
+    for remaining, gap, direction, target, source_xy, target_xy, source_arc, target_arc in options:
+        item = dict(result)
+        item.update({
+            "eligible": True, "reason_code": "ELIGIBLE_NATIVE_ADJACENT_PRETREATMENT",
+            "source_lane_id": str(source.id), "target_lane_id": str(target.id), "direction": direction,
+            "source_roadblock_id": source_roadblock, "target_roadblock_id": str(target.get_roadblock_id()),
+            "route_roadblock_ids_json": json.dumps(route_tuple, separators=(",", ":")),
+            "route_fingerprint": canonical_json_sha256(route_tuple),
+            "source_start_arc_m": round(float(source_arc), 6), "target_start_arc_m": round(float(target_arc), 6),
+            "paired_reference_remaining_m": round(float(remaining), 3),
+            "minimum_target_lane_object_gap_m": round(float(gap), 3),
+            "nominal_lane_width_m": round(float(np.median(np.linalg.norm(np.asarray(target_xy)[:min(len(target_xy), len(source_xy))] - np.asarray(source_xy)[:min(len(target_xy), len(source_xy))], axis=1))), 3),
+            "source_reference_xy_json": json.dumps(source_xy, separators=(",", ":")),
+            "target_reference_xy_json": json.dumps(target_xy, separators=(",", ":")),
+            "initial_state_fingerprint": initial_state_fingerprint(result["initial_x"], result["initial_y"], yaw, speed, int(official_initial.time_us)),
+        })
+        option_results.append(item)
+    return option_results
+
+
+def evaluate_candidate(
+    row: Mapping[str, Any], db_root: Path, map_root: Path, map_version: str,
+    minimum_remaining_m: float, minimum_target_gap_m: float, minimum_speed_mps: float,
+) -> Dict[str, Any]:
+    """Legacy-compatible deterministic single-option selection."""
+    options = evaluate_candidate_options(
+        row, db_root, map_root, map_version, minimum_remaining_m, minimum_target_gap_m, minimum_speed_mps
+    )
+    eligible = [item for item in options if item.get("eligible")]
+    if not eligible:
+        return options[0]
+    eligible.sort(key=lambda item: (
+        float(item["paired_reference_remaining_m"]), float(item["minimum_target_lane_object_gap_m"]), item["direction"] == "left"
+    ), reverse=True)
+    return eligible[0]
 
 
 def run(args: argparse.Namespace) -> Dict[str, Any]:
