@@ -9507,3 +9507,62 @@ configs/standardized_fixed_dimension_bdd_protocol_v2.json
 - 跟车保持60 scenario / 52 log；变道保持60场景且为`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`；Stage6S-v3保持80 pair / 11 log。
 - B的冻结摘要保持：跟车`1.72× / Z=5.25`、变道`2.50× / Z=9.12`、纵向`2.74× / Z=10.33`、interaction `7.39× / Z=30.60 †`。
 - manifest明确`training_run=false`、`simulation_run=false`、`embedding_export_run=false`、`statistics_recomputed=false`。
+
+## Stage7L-A2 Pure-Lateral清洁实现与Smoke（已冻结）
+
+### 1. 命令
+
+运行新增单元测试：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_stage7l_pure_lateral_execution.py \
+  tests/test_stage7l_opportunity_inventory.py
+```
+
+重建pre-treatment map opportunity inventory：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:$PWD \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_build_lane_change_opportunity_inventory.py \
+  --inventory_inputs outputs/stage7p_expanded_scenario_inventory_v2_pittsburgh/scenario_inventory_inputs.csv \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_map_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  --stage7_lane_change_roster outputs/stage7_m6_5_locked_confirmation_view_v1/confirmation_scenario_ledger.csv \
+  --stage7p_root outputs \
+  --output_dir outputs/stage7l_a2_lane_change_opportunity_inventory_v1 \
+  --candidates_per_db 8 --stop_after_eligible 160
+```
+
+冻结一个明确标记为A2 smoke-only的maneuver后，可用`tools/stage7l_run_official_smoke.py`运行同token五档official simulation。最终机制及安全检查命令为：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_evaluate_lateral_mechanism.py \
+  --trajectory_csv outputs/stage7l_a2_official_smoke_v2_safe_final4/stage7c_output/simulated_ego_trajectory.csv \
+  --maneuver_manifest outputs/stage7l_a2_official_smoke_v2_safe/stage7l_a2_smoke_maneuver_manifest.json \
+  --official_runs_root outputs/stage7l_a2_official_smoke_v2_safe_final4/stage7c_output/official_nuplan_runs \
+  --output_dir outputs/stage7l_a2_lateral_mechanism_v2_safe_final_with_safety
+```
+
+### 2. 期望行为
+
+- external planner在冻结source/target lane和共同canonical source-lane progress上生成五档轨迹；dose只改变60/54/48/42/36 m横向transition length。
+- official simulation固定为`closed_loop_nonreactive_agents`；五档共享initial state、route、trigger、纵向目标速度/加速度约束和background配置。
+- inventory会区分tagged token的官方-3 s extraction offset与untagged/default token，并冻结official真实首帧fingerprint。
+- smoke token在任何rollout前写入prior exclusion ledger，未来不得进入confirmation。
+- mechanism工具只读trajectory和official collision/drivable-area metric，不读取checkpoint、embedding或BDD。
+- 本流程不建立Stage7L-B development roster，不运行formal development或confirmation。
+
+### 3. 通过标准
+
+- 单元测试通过quintic边界、dose顺序、manifest identity、canonical progress逐点一致、dynamic consistency和native map adjacency。
+- official smoke必须5/5成功；五档maneuver SHA、canonical generator SHA一致，`s_route(t)`逐点完全相同。
+- 五档轨迹均valid、完成换道、无责任碰撞、drivable-area compliant，且横向峰值加速度随dose严格递增。
+- realized longitudinal nuisance不得出现明显分叉；最终最大绝对值为mean speed 0.005553 m/s、RMS accel 0.000187 m/s²、RMS jerk 0.002776 m/s³、route progress 0.051174 m。
+- 排除旧Stage7/Stage7P及全部A2 smoke token后，fresh eligible必须≥104；最终为148 token / 120 log、left/right=25/123，严格log-disjoint 24+80分配可行。
+- 通过后状态仅升级为`STAGE7L_PURE_LATERAL_IMPLEMENTATION_CLEAN`和`STAGE7L_B_DEVELOPMENT_AUTHORIZED`；不得自动进入Stage7L-B。

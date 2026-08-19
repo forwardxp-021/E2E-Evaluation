@@ -2,10 +2,13 @@
 
 基于 Waymo 轨迹数据学习驾驶风格 embedding 的实验工程。
 
-当前Stage6U已进入A/B/C×3 seeds正式训练阶段。启动前复核发现并修复formal进度显示、epoch边界resume、
-best-val选择和checkpoint审计链问题，因此历史implementation freeze SHA`6d1032...`不再用于正式训练；
-新freeze与独立authorization必须重新生成并绑定。正式训练只读Waymo train/val，单MPS按A→B→C、
-3407→3408→3409串行；9/9锁定前后本阶段均不读取Waymo test或运行任何nuPlan/BDD/MMD评估。
+Stage6/Stage7、A/B/C checkpoint、一次性盲测和最终BDD报告体系均已冻结。Stage7L-A2已完成独立
+external pure-lateral planner、pre-treatment map opportunity inventory、单元测试与development-only
+official smoke；最终148个fresh token / 120个log，五档smoke 5/5成功，canonical route progress逐点一致，
+且未读取embedding/BDD。当前冻结状态为`STAGE7L_PURE_LATERAL_IMPLEMENTATION_CLEAN`和
+`STAGE7L_B_DEVELOPMENT_AUTHORIZED`，但尚未启动Stage7L-B。详细证据见
+[`docs/stage7l_a2_pure_lateral_clean_implementation_zh.md`](docs/stage7l_a2_pure_lateral_clean_implementation_zh.md)；
+Stage7L-A技术审计仍作为实施前历史记录保留。
 
 ## 项目目标
 

@@ -1,0 +1,25 @@
+{
+  "schema_version": "stage7l_pure_lateral_execution_smoke_v1",
+  "status": "A2_SMOKE_ONLY_NOT_FROZEN_FOR_CONFIRMATION",
+  "doses": {
+    "dose0": {"transition_length_m": 60.0},
+    "dose25": {"transition_length_m": 54.0},
+    "dose50": {"transition_length_m": 48.0},
+    "dose75": {"transition_length_m": 42.0},
+    "dose100": {"transition_length_m": 36.0}
+  },
+  "canonical_longitudinal": {
+    "reference": "frozen source-lane canonical route centerline",
+    "target_speed_mps": 5.0,
+    "accel_limit_mps2": 1.0,
+    "dose_dependency": false
+  },
+  "lateral_profile": "q(u)=10u^3-15u^4+6u^5",
+  "trigger_s_route_m": 12.0,
+  "trajectory_horizon_s": 4.0,
+  "trajectory_sampling_s": 0.1,
+  "background_mode": "closed_loop_nonreactive_agents",
+  "background_agent_model": "nuplan.planning.simulation.observation.tracks_observation.TracksObservation",
+  "confirmation_parameters_frozen": false,
+  "embedding_or_bdd_read": false
+}
