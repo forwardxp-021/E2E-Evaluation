@@ -1,0 +1,76 @@
+{
+  "schema_version": "stage7l_c1_protocol_consistency_amendment_manifest_v1",
+  "status": "STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN",
+  "amendment_timing": "BEFORE_STAGE7L_D_START_AND_BEFORE_ANY_CONFIRMATION_RESULT",
+  "amendment_reason_1": "clarify paired analysis population under 76–79 complete-scenario case",
+  "amendment_reason_2": "include B dose-response/task endpoints in frozen secondary multiplicity family",
+  "provenance": {
+    "stage7l_c_freeze_commit": "86b5c9e2764f1bd5468c57e35a34ba73b1b6000b",
+    "old_protocol_sha256": "ae4c1a3ea639d12c9d5f257d87b07e3442e4b22f11c199e40d14f8dab407d125",
+    "new_protocol_sha256": "55eb0fe0cd606cd9607521439e163886bb9028c13a8c609762f12f71e65ef94f",
+    "old_blind_authorization_sha256": "28ed85ac366ba7d4e741aed2af44ae98b04091a485628140451bbbea46464e56",
+    "new_blind_authorization_sha256": "64162e0451697e6b77e43bab018359abd46d01668708e2e08bf2377b16b9dbbe",
+    "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+    "maneuver_manifest_sha256": "ad0abdb3ebfaf8f06c92987538254a79455ad3d7b03a42e609462b49596de725"
+  },
+  "analysis_population_amendment": {
+    "design_population": "all_80_frozen_confirmation_scenarios",
+    "analysis_population": "all complete doseX-vs-dose0 pairs arising from the frozen 80 with legally constructible representation inputs, no replacement and no outcome-based deletion",
+    "minimum_official_complete_scenarios": 76,
+    "primary_minimum_pair_count": 76,
+    "primary_insufficient_status": "STAGE7L_E_PRIMARY_BDD_INSUFFICIENT_COMPLETE_PAIRS",
+    "safety_denominator_remains_design_population": true
+  },
+  "multiplicity_amendment": {
+    "representations": ["old64", "A_seed3407", "B_seed3407", "C_seed3407", "ego13"],
+    "dose_contrasts": ["dose25_vs_dose0", "dose50_vs_dose0", "dose75_vs_dose0", "dose100_vs_dose0"],
+    "task_views": ["LAT.LANE_CHANGE", "LAT.DYNAMICS"],
+    "theoretical_test_count": 40,
+    "primary_cell": "B_seed3407_x_dose100_vs_dose0_x_LAT.LANE_CHANGE",
+    "secondary_test_count": 39,
+    "correction": "Holm_across_single_frozen_39_test_family",
+    "primary_excluded_from_secondary_holm": true,
+    "primary_table_label": "PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY",
+    "B_full_dose_curve_required": true,
+    "shared_parent_rule_unchanged": true
+  },
+  "semantic_ci_presentation": {
+    "method": "log_cluster_bootstrap",
+    "replicates": 10000,
+    "seed": 620272,
+    "cluster_unit": "log_name",
+    "gate_changed": false
+  },
+  "canonical_invariant_sha256": {
+    "treatment": "fc9d58caaa737233b70e3c7420c6f03cfe646979c3c2f05a615fbcb82cb07e33",
+    "eligibility": "6f3cd81c2ce01b422f3d8391f7e24629a263a6bbbb51e5ad1ab930980b380a1d",
+    "mechanism": "28b02ad241d80f394debbc65fe11577f7445d24f44a96582cfcbd91a144eddc3",
+    "nuisance_gate": "84ce77ef19f6fef5458b49b069b921c0f73ae9a7a117e7b2c34fbf8fc0afdbd8",
+    "safety_validity_gate": "024c066451c57618d6ca27f151f624eb728a6bcbea89020aacf2d36692fc8a4b",
+    "representation_lock": "118ecd84c26c6272ede94d2e105c4cb99deb464c72d468e42b5b64eff82f3dbf",
+    "primary_endpoint_scientific_definition": "0cd6287dbcd2a7a2062606ef0701b58b8f90f2190f1580c2dbeb1aae21af3995"
+  },
+  "change_flags": {
+    "roster_changed": false,
+    "dose_changed": false,
+    "trigger_changed": false,
+    "eligibility_changed": false,
+    "mechanism_gate_changed": false,
+    "nuisance_gate_changed": false,
+    "safety_gate_changed": false,
+    "checkpoint_changed": false,
+    "primary_endpoint_changed": false,
+    "stage7l_d_started": false,
+    "confirmation_result_existed": false,
+    "embedding_read": false,
+    "bdd_read": false,
+    "mmd_read": false
+  },
+  "final_states": [
+    "STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN",
+    "STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN",
+    "STAGE7L_C_CONFIRMATION_ROSTER_FROZEN",
+    "STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED",
+    "STAGE7L_D_NOT_STARTED"
+  ]
+}

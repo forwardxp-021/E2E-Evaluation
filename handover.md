@@ -733,15 +733,19 @@ Final BDD schema:
 
 ### Track B — Stage7L
 
-当前只允许：
+Stage7L-A2、B/B2 development与Stage7L-C prospective protocol/80-scenario roster freeze均已完成。Stage7L-C1已在任何confirmation结果产生前完成protocol consistency amendment：roster仍为80场景、15 left/65 right、79 logs，SHA为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；Primary pair下限为76，secondary family为排除唯一Primary后的39-test Holm family。
 
-1. Stage7L-A2 clean implementation；
-2. unit tests；
-3. map-based opportunity inventory；
-4. development-only smoke；
-5. technical cleanliness re-audit。
+当前状态：
 
-A2通过后才允许进入Stage7L-B development、Stage7L-C protocol freeze、one-time confirmation和BDD。
+```text
+STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN
+STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN
+STAGE7L_C_CONFIRMATION_ROSTER_FROZEN
+STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED
+STAGE7L_D_NOT_STARTED
+```
+
+Stage7L-D尚未启动；必须等待单独授权，不能自动运行planner rollout、embedding或BDD/MMD。
 Stage7L不得重新打开Stage6模型训练，也不得为了让BDD更显著而调representation。
 **新实验 ≠ 重新训练模型。**
 
@@ -800,7 +804,7 @@ RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
 9. 哪些实验、checkpoint、场景和门槛绝对不能事后修改？
 10. 下一步是否以论文写作为主，且没有默认重开冻结实验？
 11. 当前唯一开放的新实验是否为Stage7L？
-12. Stage7L是否仍停留在technical implementation阶段？
+12. Stage7L-C1是否已冻结且Stage7L-D仍为NOT_STARTED？
 13. 是否明确现有PDM不能直接提供clean pure-lateral treatment？
 14. 是否区分Stage7 post-hoc lane-change slice与未来Stage7L prospective confirmation？
 15. 是否明确Stage7L不能重新打开模型训练？

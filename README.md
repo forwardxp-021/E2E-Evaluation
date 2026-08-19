@@ -2199,3 +2199,9 @@ Stage7L-C协议，尚未建立confirmation roster或运行confirmation。详见
 Stage7L-C冻结80个Pittsburgh、pre-treatment dynamic-clean confirmation场景及其不可变maneuver manifest：15 left + 65 right，来自严格与Stage7L-B development log分离的Pool B。selection使用固定seed=620271和仅含几何/traffic的确定性分层规则；不读取任何rollout、embedding、BDD或MMD。冻结后只授权Stage7L-D进行`80×5=400`条planner-level rollout，并且仍必须先通过mechanism/safety gate才可解锁representation。
 
 完整科学协议见[`docs/stage7l_c_prospective_confirmation_protocol_zh.md`](docs/stage7l_c_prospective_confirmation_protocol_zh.md)。
+
+## Stage7L-C1 Protocol Consistency Amendment
+
+Stage7L-D启动前完成了纯协议修订：`N_design=80`继续作为execution/safety/missingness人口；每个BDD contrast使用冻结80场景中全部完整dose0+doseX pair，Primary要求`N_pair(dose100)≥76`。secondary family现固定为old64/A/B/C/ego13×4 doses×2独立task views的40格减去唯一Primary格，即单一39-test Holm family；B保留完整dose curve，Primary固定标记`PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY`。semantic CI仅作展示，使用log-cluster bootstrap 10,000次、seed 620272。
+
+roster仍为80场景、15 left/65 right、79 logs，SHA256仍为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；没有运行Stage7L-D、rollout、embedding、BDD/MMD或训练。详见[`docs/stage7l_c1_protocol_consistency_amendment_zh.md`](docs/stage7l_c1_protocol_consistency_amendment_zh.md)。

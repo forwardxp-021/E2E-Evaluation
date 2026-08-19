@@ -9723,3 +9723,27 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/P
 - `official runnable=80/80`、dynamic clearance=`80/80`、static eligibility=`80/80`、source/target/trigger manifest完整=`80/80`。
 - 选择trace必须由`Pool B + config + seed=620271`重放；reserve明确不是运行失败后的replacement pool。
 - 只有通过后才可记录`STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN`、`STAGE7L_C_CONFIRMATION_ROSTER_FROZEN`和`STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED`；仍不得自动启动Stage7L-D。
+
+## Stage7L-C1 Protocol Consistency Amendment验证
+
+### 1. 命令
+
+只读验证C1 protocol、盲测授权、原80场景roster和development-disjoint不变性：
+
+```bash
+python tools/stage7l_validate_c1_amendment.py
+```
+
+### 2. 期望行为
+
+- 只读取protocol/manifest、原roster、development exclusion ledger和原freeze summary。
+- 检查`N_design=80`与逐dose `N_pair`定义、Primary pair下限76、B完整dose curve、单一39-test Holm family及Primary排除标记。
+- 检查roster SHA、80/15/65/79 logs、scenario/log overlap、dose/trigger/eligibility/gates/checkpoint/Primary科学定义均未改变。
+- 不启动Stage7L-D，不读取或生成rollout、embedding、BDD/MMD，不训练模型。
+
+### 3. 通过标准
+
+- 输出状态`STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN`。
+- roster SHA仍为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`，N/left/right/log=`80/15/65/79`，development scenario/log overlap均为0。
+- minimum complete与Primary minimum pair均为76；secondary test count为39；Primary不进入secondary Holm。
+- amended protocol与blind authorization SHA互相绑定，`stage7l_d=NOT_STARTED`。

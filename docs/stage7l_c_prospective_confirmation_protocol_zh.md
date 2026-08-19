@@ -1,5 +1,7 @@
 # Stage7L-C：前瞻性 Protocol 与 80 场景 Confirmation Roster 冻结
 
+> Stage7L-C1 consistency amendment：本文件于Stage7L-D启动前、任何confirmation结果产生前补充了76–79 complete case的paired analysis population，以及B的secondary dose/task family归属。原protocol SHA256为`ae4c1a3ea639d12c9d5f257d87b07e3442e4b22f11c199e40d14f8dab407d125`。roster、dose、eligibility、mechanism/nuisance/safety gate、checkpoint、paired null和Primary endpoint科学定义均未改变。
+
 ## 1. Scientific question
 
 本协议检验：在80个全新、完全预处理筛选、动态交通净空的相同场景上，Sharp lateral execution（dose100）相对于 Gentle lateral execution（dose0）是否产生可验证的**纯横向执行处置**；只有运动学、安全和纵向 nuisance 门禁通过后，才允许读取 Primary Representation B 的 paired BDD。
@@ -38,6 +40,8 @@
 
 所有 semantic delta 为`Target − Behavior Reference = dose100 − dose0`。预期方向分别为：duration `<0`、RMS lateral acceleration `>0`、peak yaw rate `>0`。
 
+机制delta与nuisance summary的95% CI只作不确定性展示，固定使用以`log_name`为cluster的percentile bootstrap、10,000次重采样、seed=`620272`。该CI不参与mechanism/nuisance gate；原有paired median方向和directional consistency门槛保持不变。
+
 ## 8. Mechanism pass criteria
 
 在80个冻结场景的主对照上：
@@ -62,6 +66,10 @@ Infrastructure/runtime failure（loader、DB、Hydra、official scene constructi
 
 Treatment/trajectory outcome failure（collision、off-road、invalid、incomplete、route failure）保留为结果，绝不删除。即使完成数为76–79，仍保留完整80场景冻结population并按预注册缺失/失败策略报告。
 
+必须区分两个人口：`N_design=80`始终用于protocol identity、execution/safety denominator、missing/runtime failure和no-replacement审计；某个`doseX vs dose0`的BDD analysis population则是冻结80场景中同时具有完整dose0、完整doseX且representation input存在并可合法构造的全部pair，记为`N_pair(doseX)`。不得replacement，不得依据collision、off-road、lane-change incomplete、BDD或embedding表现删样。只要representation input技术上存在，treatment outcome failure仍进入BDD；只有input事实缺失或无法合法构造才是non-analyzable。
+
+结果必须同时报告`N_design=80`、`N_complete_all_five_doses`、`N_pair(dose25/50/75/100)`，以及`infrastructure/runtime`、`treatment outcome`、`invalid/incomplete`、`other pre-frozen category`四类missing reason。official success、completion、responsible collision和off-road仍以原冻结80场景规则为分母，不能改用BDD pair数。
+
 ## 12. Representation lock
 
 Primary learned representation固定为`B, seed=3407`；historical baseline为`old64`；ego13为诊断运动学参考；A与C为次要representation。old64、A/B/C primary checkpoint及ego13定义/scaler实现的路径和SHA均写入配置与盲测授权，禁止换seed、换epoch、换checkpoint。
@@ -70,17 +78,19 @@ ego13即使在本横向kinematic treatment中更敏感，也仅说明其在该�
 
 ## 13. Primary BDD
 
-只有 Stage7L-D mechanism/safety gates全数通过时，才解锁 Stage7L-E。Primary endpoint固定为：`B seed3407; dose100 vs dose0; all 80 frozen scenarios; paired; LAT.LANE_CHANGE`。
+只有 Stage7L-D mechanism/nuisance/safety gates全数通过且official completed≥76/80时，才解锁 Stage7L-E。Primary endpoint的科学定义保持：`B seed3407; dose100 vs dose0; paired; LAT.LANE_CHANGE`。其design population是全部80个冻结场景；analysis population是其中全部完整dose100-vs-dose0 pair，不替换、不按outcome删除，且必须`N_pair(dose100)≥76`。若少于76，状态固定为`STAGE7L_E_PRIMARY_BDD_INSUFFICIENT_COMPLETE_PAIRS`，不得声明Primary成功。
 
 统计采用 same-scenario pair-label-swap、100,000 swaps、plus-one p-value、representation-specific RBF median-heuristic bandwidth和representation-specific paired-null q95。输出 raw MMD²、null mean/SD/q95、BDD/q95、Z_BDD及plus-one p。主成功标准为预先指定、未经校正的`p<0.05`；只有一个primary endpoint，因此不作Holm。
 
 ## 14. Secondary BDD
 
-次要representation为old64、A、C、ego13；次要对照为dose25/50/75/100各自相对dose0；task为`LAT.LANE_CHANGE`和`LAT.DYNAMICS`。禁止跨representation排序raw MMD²；仅比较各自null标准化的BDD/q95、Z_BDD、detection、minimum detectable dose与覆盖度。
+次要矩阵包含old64、A、B、C、ego13全部五个representation；对照为dose25/50/75/100各自相对dose0；task为`LAT.LANE_CHANGE`和`LAT.DYNAMICS`。B必须输出完整dose curve；唯一Primary格除外，其余B格均进入secondary family。禁止跨representation排序raw MMD²；仅比较各自null标准化的BDD/q95、Z_BDD、detection、minimum detectable dose与覆盖度。
+
+现有Stage7实现将两项定义为不同的pre-treatment task scope：`LAT.LANE_CHANGE`对应official scenario types `changing_lane_to_left/right`；`LAT.DYNAMICS`对应`high_lateral_acceleration/high_magnitude_speed/medium_magnitude_speed`，后者仍须标为mixed proxy，不能写成pure-lateral因果证据。Stage7L-E只有在两者确实形成不同的pre-treatment mask并记录不同mask SHA时，才按两个独立test计数；若实际复用同一个parent BDD，必须标记`† shared parent BDD`且不得重复计入独立检验。
 
 ## 15. Multiplicity
 
-唯一primary endpoint使用未校正、预先指定的p。次要family定义为`representation × dose contrast × task`，使用Holm correction。若一个task-level BDD映射多个semantic row，必须标记`† shared parent BDD`，不得当成多次独立检验。
+唯一primary endpoint使用未校正、预先指定的raw/plus-one p，并固定标记`PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY`。理论矩阵为`5 representations × 4 dose contrasts × 2 independently computed task views = 40`；排除`B × dose100 × LAT.LANE_CHANGE`这一Primary格后，冻结为单一39-test secondary Holm family。Primary不得再次进入Holm，也不得用adjusted p改变Primary结论。若一个task-level BDD映射多个semantic row，必须标记`† shared parent BDD`，不得当成多次独立检验。
 
 ## 16. Reporting
 
@@ -94,6 +104,6 @@ ego13即使在本横向kinematic treatment中更敏感，也仅说明其在该�
 
 ## 18. No-replacement/no-retuning 与 D/E unlock
 
-冻结后不得换scenario/log/比例、dose、trigger、eligibility、buffer、mechanism primary、nuisance threshold、checkpoint、seed、null、primary endpoint或failure policy；不因不显著、B不如ego13或次要dose失败而重训、调kernel或再次确认。
+冻结后不得换scenario/log/比例、dose、trigger、eligibility、buffer、mechanism primary、nuisance threshold、checkpoint、seed、null、primary endpoint或原failure policy；C1只把原有minimum-complete规则对应的analysis population闭合，不因不显著、B不如ego13或次要dose失败而重训、调kernel或再次确认。
 
 Stage7L-C只授权 Stage7L-D 的400条planner-level rollout与机制/安全审计。只有脚本判定D通过既定门禁才输出`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`；否则输出`STAGE7L_E_REPRESENTATION_EVALUATION_NOT_UNLOCKED`并停止。Stage7L-C本身不运行任何rollout。
