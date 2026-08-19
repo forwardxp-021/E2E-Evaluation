@@ -9470,3 +9470,40 @@ configs/standardized_fixed_dimension_bdd_protocol_v1.json
 - `LON.CAR_FOLLOWING`如果只绑定speed/accel语义，direction必须为`TARGET_MORE_ACTIVE_FOLLOWING`，不得写`CLOSER`。
 - Stage6S-v3的front-gap/THW、closing与following子行共享同一个`parent_bdd_result_id`，不得计为多次独立BDD检验；C-neighbor-zero仅为diagnostic。
 - Stage6P/Waymo/Stage6J/K/interaction/Stage6V门禁必须在`representation_gate_scorecard.csv`拆成五个明确字段，不得再合并为模糊的`frozen_gate_result`。
+
+## 最终标准化BDD Style Report Card（只读排版冻结）
+
+### 1. 命令
+
+该命令只读取已经冻结的v1矩阵CSV/JSON，并生成最终两层报告；不会读取checkpoint、embedding或rollout，也不会重算BDD：
+
+```bash
+cd /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation
+waymo_dev/bin/python tools/build_standardized_fixed_dimension_bdd_matrix.py \
+  --finalize-existing-dir outputs/standardized_fixed_dimension_bdd_matrix_v1 \
+  --final-output-dir outputs/final_standardized_bdd_style_report_card_v1
+```
+
+若输出目录已经存在，工具会拒绝覆盖。正式定义位于：
+
+```text
+configs/unified_bdd_reporting_schema_v2.json
+configs/standardized_fixed_dimension_bdd_protocol_v2.json
+```
+
+### 2. 期望行为
+
+- 校验既有`standardized_bdd_long.csv`、主矩阵、门禁表和evidence-gap表的冻结SHA256；任何源文件变化立即失败。
+- 原13维和全部统计值原样保留；free-flow、lane-keeping、lateral-gap继续为N/A。
+- 最终第一页使用`Primary Representation = B`回答Behavior Reference→Target的行为变化；第二页独立评价representation资格。
+- 主矩阵列名为`该Treatment下最高标准化检测敏感度`，不出现`Best capability`。
+- Stage6S-v3三条共享语义维度的所有表示单元格均带`†`；`final_shared_parent_bdd_audit.csv`按representation保留统一`parent_bdd_result_id`，三行只计一个独立检验。
+- 只读取Stage6P已冻结n=400 detection/FPR以补充资格表；不修改Stage6V联合结论。
+
+### 3. 通过标准
+
+- 命令返回`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`与`statistics_recomputed=false`。
+- `final_fixed_dimension_primary_matrix.csv`恰好13行，shared-parent维度恰好3行，N/A维度恰好3行。
+- 跟车保持60 scenario / 52 log；变道保持60场景且为`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`；Stage6S-v3保持80 pair / 11 log。
+- B的冻结摘要保持：跟车`1.72× / Z=5.25`、变道`2.50× / Z=9.12`、纵向`2.74× / Z=10.33`、interaction `7.39× / Z=30.60 †`。
+- manifest明确`training_run=false`、`simulation_run=false`、`embedding_export_run=false`、`statistics_recomputed=false`。

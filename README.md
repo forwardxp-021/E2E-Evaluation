@@ -2141,3 +2141,24 @@ assertive/conservative rollout上以锁定primary checkpoint重新导出表示�
 `POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`，不修改Stage6V预注册结论。完整中文报告见
 [`outputs/standardized_fixed_dimension_bdd_matrix_v1/standardized_fixed_dimension_bdd_evaluation_report_zh.md`](outputs/standardized_fixed_dimension_bdd_matrix_v1/standardized_fixed_dimension_bdd_evaluation_report_zh.md)，
 当前状态为`STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE`。
+
+## Final Standardized BDD Style Report Card
+
+固定维度矩阵完成后，最终报告体系只对既有冻结CSV/JSON做一次排版冻结，不再导出embedding或重算BDD。控制定义升级为
+`unified_bdd_reporting_schema_v2_final`与`standardized_fixed_dimension_bdd_protocol_v2_final_render_only`；v1文件和
+原始输出永久保留为历史证据，不覆盖。
+
+最终报告固定为两层：第一页`Behavior Drift / Style Report Card`只回答Target相对Behavior Reference发生了什么，
+并在顶部独立声明Behavior Reference、Target、Evaluation mode、`Primary Representation = B`和Null Reference；
+B只是测量行为漂移的representation，不是被评价的planner/version。第二页`Representation Qualification Matrix`
+比较old64/A/B/C/ego13的固定treatment标准化敏感度、Stage6P detection/FPR及各类门禁。
+
+原`Best capability`字段永久替换为`Highest standardized sensitivity on this treatment`（中文：
+`该Treatment下最高标准化检测敏感度`）。它只描述特定已知treatment下相对各表示自身null的敏感度，不代表完整性、
+通用性或全局最优。ego13的高敏感度不能解释为neighbor/context无价值；learned64的主要强正结果仍是production-style
+unpaired release monitoring。
+
+Stage6S-v3的逼近响应、front-gap/THW和纵向跟车交互三行统一带`†`，机器审计按每个representation保留同一个
+`parent_bdd_result_id`并只计一次独立BDD检验。最终中文报告见
+[`outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md`](outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md)，
+最终状态为`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`。

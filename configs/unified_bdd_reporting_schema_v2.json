@@ -1,0 +1,70 @@
+{
+  "schema_version": "unified_bdd_reporting_schema_v2_final",
+  "status": "FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN",
+  "frozen_on": "2026-08-19",
+  "supersedes_for_future_reporting": "configs/unified_bdd_reporting_schema_v1.json",
+  "base_schema_sha256": "4e979b8432182e7995180c346e609a10cc61198aab23eaead0c2ac96e7d9eab5",
+  "inheritance": "The 13-dimension taxonomy, row fields, Target-minus-Reference convention, N/A rules, and evidence classifications are inherited unchanged from v1.",
+  "permanent_reference_terms": {
+    "behavior_reference": "Who the Target is compared against; defines behavior direction together with Target.",
+    "null_reference": "Representation-specific paired randomization q95 or unpaired A/A calibration q95; 1.0x is the statistical-background reference line.",
+    "representation_baseline": "old64 historical capability baseline; never defines behavior direction."
+  },
+  "prohibited_term": "reference BDD",
+  "report_layers": [
+    {
+      "page": 1,
+      "name": "Behavior Drift / Style Report Card",
+      "question": "What behavior changed in Target relative to Behavior Reference?",
+      "required_header_fields": [
+        "Behavior Reference",
+        "Target",
+        "Evaluation mode",
+        "Primary Representation",
+        "Null Reference"
+      ],
+      "primary_representation": "B",
+      "identity_boundary": "B measures behavior drift and is not the planner/version being evaluated."
+    },
+    {
+      "page": 2,
+      "name": "Representation Qualification Matrix",
+      "question": "How are old64/A/B/C/ego13 qualified for each fixed treatment and deployment mode?",
+      "required_sections": [
+        "13-dimension standardized sensitivity matrix",
+        "Stage6P n=400 detection/FPR",
+        "paired/unpaired/Waymo/interaction/joint gates",
+        "applicability boundaries"
+      ]
+    }
+  ],
+  "primary_matrix_column": {
+    "machine_name": "highest_standardized_sensitivity_on_this_treatment",
+    "english": "Highest standardized sensitivity on this treatment",
+    "chinese": "该Treatment下最高标准化检测敏感度",
+    "interpretation": "Within-representation-null standardized sensitivity on this specific known treatment only; not completeness, generality, or global representation optimality."
+  },
+  "shared_parent_bdd": {
+    "marker": "†",
+    "semantic_dimensions": [
+      "LON.CLOSING_RESPONSE",
+      "INT.FRONT_GAP_THW",
+      "INT.LONG_FOLLOWING"
+    ],
+    "footnote": "† These semantic dimensions share the same parent task-level BDD and are not independent BDD tests.",
+    "machine_identity_field": "parent_bdd_result_id",
+    "counting_rule": "The three semantic rows count as one independent BDD test per representation."
+  },
+  "ego13_interpretation_boundary": "ego13 has the highest within-null standardized sensitivity on several controlled treatments that directly act on ego kinematics. This does not make ego13 a general style representation and does not show neighbor/context is useless. Learned64 retains strong positive evidence for production-style unpaired release monitoring; representation capability is task- and deployment-conditioned.",
+  "immutable_evidence": {
+    "dimension_count": 13,
+    "following": "60 scenarios / 52 logs",
+    "lane_change": "60 scenarios; POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION",
+    "stage6s_v3": "80 pairs / 11 logs",
+    "must_remain_na": [
+      "LON.FREE_FLOW_SPEED",
+      "LAT.LANE_KEEPING",
+      "INT.LATERAL_GAP"
+    ]
+  }
+}

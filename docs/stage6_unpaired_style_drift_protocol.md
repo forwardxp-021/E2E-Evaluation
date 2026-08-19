@@ -1249,3 +1249,23 @@ Stage6J/K完全沿用原确认性183-pair、四dose和四scope结果；同一fol
 当前完整结果位于`outputs/standardized_fixed_dimension_bdd_matrix_v1/`，状态为
 `STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE`。主矩阵的纵向与跟车最强within-null敏感性均仍为ego13；Stage6S-v3
 interaction同样以ego13的Z最高，但这不构成raw MMD²或通用representation排名。C相对C-neighbor-zero的既有interaction增量门禁仍为false；Stage6V最终联合结论不变。
+
+## 44. Final Standardized BDD Reporting System冻结
+
+最终报告协议`standardized_fixed_dimension_bdd_protocol_v2_final_render_only`只读取第43节冻结输出的CSV/JSON与
+Stage6P冻结decision表。源文件SHA不匹配时立即失败；不会读取checkpoint、embedding或rollout，不执行BDD/null重算，
+不改变场景、planner、Stage6V结论或任何统计值。
+
+报告固定分为两页：第一页用`Primary Representation = B`回答Target相对Behavior Reference的行为变化，并逐行绑定
+Behavior Reference、Target、paired/unpaired mode及B自己的Null Reference；第二页才评价old64/A/B/C/ego13。
+B是测量工具，不是被测planner/version。old64永久称为Representation Baseline，不能定义行为方向。
+
+Stage6S-v3的closing、front-gap/THW与longitudinal following三条语义维度共享一个parent task-level BDD，主矩阵
+统一显示`†`，机器审计按每个representation保留同一`parent_bdd_result_id`并把三行计为一个独立检验。原
+`Best capability`字段废止，替换为`该Treatment下最高标准化检测敏感度`；它不是通用representation排名。
+
+ego13的高within-null敏感度仅适用于当前大量直接作用于ego运动学的controlled treatments，不能推导为neighbor/context
+无价值。B继续只定位为当前最简单的learned release-level工程候选；A/B/C的Waymo、paired、interaction与联合门禁
+事实均保持不变。
+
+最终输出状态：`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`。到此停止扩展BDD报告体系。

@@ -1,0 +1,6 @@
+representation_id,representation_baseline,stage6jk_paired_gate_pass,stage6p_unpaired_gate_pass,waymo_gate_pass,interaction_increment_gate_pass,stage6v_joint_candidate_gate_pass,stage6p_n400_detection,stage6p_n400_aa_fpr,stage6p_n400_direction_min_detection,applicability_boundary
+old64,old64,False,False,N/A_NOT_A_STAGE6T_LEARNED_CANDIDATE,N/A_C_ONLY_DIAGNOSTIC,N/A_NOT_ABC_CANDIDATE,0.665,0.05,0.62,历史Representation Baseline；用于能力比较，不定义行为方向。
+A,compared_to_old64_by_capability_not_raw_mmd2,False,True,False,N/A_C_ONLY_DIAGNOSTIC,False,0.905,0.03,0.9,Dynamic-data-only候选；release检出提升，但未通过Waymo与paired联合门禁。
+B,compared_to_old64_by_capability_not_raw_mmd2,False,True,False,N/A_C_ONLY_DIAGNOSTIC,False,1.0,0.05,1.0,当前最简单的learned release-level工程候选；不是通用或最终验证representation。
+C,compared_to_old64_by_capability_not_raw_mmd2,False,True,False,False,False,0.995,0.065,0.99,dual-branch候选；release检出强，但未证明full-context相对neighbor-zero的增量interaction信息。
+ego13,compared_to_old64_by_capability_not_raw_mmd2,True,True,N/A_NOT_A_STAGE6T_LEARNED_CANDIDATE,N/A_C_ONLY_DIAGNOSTIC,N/A_NOT_ABC_CANDIDATE,1.0,0.02,1.0,controlled treatment高敏感参考；不能解释为通用style representation或neighbor/context无价值。

@@ -362,3 +362,67 @@ Stage6W已经证明历史paired/unpaired分离主要来自treatment、task、poo
 - 禁止跨representation比较raw MMD²。
 
 `UNIFIED_BDD_REPORTING_SCHEMA_FROZEN`
+
+## 14. 最终报告体系冻结（v2）
+
+v1的13维taxonomy、字段、mapping与历史输出保持不变；最终控制层升级为
+`configs/unified_bdd_reporting_schema_v2.json`。v2不重新定义统计量，只冻结以下最后一次表达清理。
+
+### 14.1 两页固定结构
+
+第一页固定为`Behavior Drift / Style Report Card`，顶部必须独立显示：
+
+- **Behavior Reference**；
+- **Target**；
+- **Evaluation mode**；
+- **Primary Representation**；
+- **Null Reference**。
+
+当前最终报告的`Primary Representation = B`。B只负责测量Behavior Reference→Target漂移，不是被测planner/version。
+第一页主体不得进行representation优劣排名。第二页固定为`Representation Qualification Matrix`，分别报告
+old64/A/B/C/ego13的固定treatment标准化敏感度、Stage6P n=400 detection/FPR、paired/unpaired/Waymo/
+interaction/Stage6V联合门禁和适用边界。
+
+### 14.2 三类Reference
+
+以后永久只使用：
+
+1. **Behavior Reference**：与Target共同定义变化对象和Target−Reference方向；
+2. **Null Reference**：paired randomization q95或unpaired A/A calibration q95，`BDD/null-q95=1.0×`为统计背景线；
+3. **Representation Baseline**：old64历史能力baseline，不定义行为方向。
+
+禁止把三者混写为模糊的“reference BDD”。
+
+### 14.3 shared-parent BDD
+
+`LON.CLOSING_RESPONSE`、`INT.FRONT_GAP_THW`与`INT.LONG_FOLLOWING`共享同一Stage6S-v3 task-level BDD。
+主矩阵所有相关单元格必须追加`†`，并固定使用表下注释：
+
+> † These semantic dimensions share the same parent task-level BDD and are not independent BDD tests.
+
+机器长表和最终审计表必须按representation保留相同`parent_bdd_result_id`。三条semantic row只计一次独立BDD检验，
+不得写成三次独立发现。
+
+### 14.4 标准化敏感度列与ego13边界
+
+原`Best capability`永久改名为`Highest standardized sensitivity on this treatment`，中文为
+`该Treatment下最高标准化检测敏感度`。它只表示特定已知treatment下相对各representation自身null的标准化敏感度，
+不表示完整、通用或全局最优representation。
+
+ego13在多个controlled treatments中具有最高within-null标准化敏感度，但这些treatment大量直接作用于ego运动学。
+因此不能称ego13为通用style representation，不能据此宣称neighbor/context无价值。learned64的主要强正证据仍包括
+production-style unpaired release monitoring；representation能力必须按deployment/evaluation task解释。
+
+### 14.5 不变内容
+
+- 13维与全部统计值不变；
+- 跟车保持60 scenario / 52 log；
+- Stage7变道保持固定60场景及`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`身份；
+- Stage6S-v3保持80 pair / 11 log；
+- free-flow speed、lane keeping、lateral gap interaction保持N/A；
+- Stage6V联合结论保持不变；不新增训练、仿真、checkpoint、场景或post-hoc主指标。
+
+最终权威输出为
+`outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md`，状态：
+
+`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`

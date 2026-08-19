@@ -41,6 +41,8 @@ from tools.stage7_m6_scenario_conditioned_bdd import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL_DEFAULT = ROOT / "configs/standardized_fixed_dimension_bdd_protocol_v1.json"
 SCHEMA = ROOT / "configs/unified_bdd_reporting_schema_v1.json"
+FINAL_PROTOCOL_DEFAULT = ROOT / "configs/standardized_fixed_dimension_bdd_protocol_v2.json"
+FINAL_SCHEMA_DEFAULT = ROOT / "configs/unified_bdd_reporting_schema_v2.json"
 SCHEMA_FREEZE = ROOT / "docs/unified_bdd_reporting_schema_freeze_v1.json"
 LEDGER = ROOT / "outputs/stage6u_abc_formal_training_v1/checkpoint_lock/stage6u_formal_checkpoint_ledger.json"
 OLD_STAGE7_MANIFEST = ROOT / "outputs/stage7_m6_5_locked_confirmation_representations_v1/m6_5_representation_manifest.json"
@@ -106,6 +108,21 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Validate all frozen inputs and checkpoint hashes without exporting embeddings or BDD.",
     )
+    parser.add_argument(
+        "--finalize-existing-dir",
+        type=Path,
+        help=(
+            "Render the final two-layer report from an existing frozen matrix. "
+            "This path reads CSV/JSON only and does not export embeddings or recompute statistics."
+        ),
+    )
+    parser.add_argument(
+        "--final-output-dir",
+        type=Path,
+        default=ROOT / "outputs/final_standardized_bdd_style_report_card_v1",
+    )
+    parser.add_argument("--final-protocol", type=Path, default=FINAL_PROTOCOL_DEFAULT)
+    parser.add_argument("--final-schema", type=Path, default=FINAL_SCHEMA_DEFAULT)
     return parser.parse_args()
 
 
@@ -831,8 +848,333 @@ def build_report(protocol: Mapping[str, Any], matrix: Sequence[Mapping[str, Any]
     return "\n".join(lines) + "\n"
 
 
+FINAL_SHARED_PARENT_DIMENSIONS = (
+    "LON.CLOSING_RESPONSE",
+    "INT.FRONT_GAP_THW",
+    "INT.LONG_FOLLOWING",
+)
+FINAL_PRIMARY_TASKS = {
+    "OVR.ALL": "stage7_overall",
+    "LON.ACCEL_DECEL": "stage6jk_overall_dose100",
+    "LON.CAR_FOLLOWING": "stage6jk_following_interaction_dose100",
+    "LON.CLOSING_RESPONSE": "stage6s_v3_following_interaction_confirmation",
+    "LON.COMFORT": "stage6jk_overall_dose100_shared_parent",
+    "LAT.LANE_CHANGE": "stage7_lane_change",
+    "LAT.DYNAMICS": "stage7_high_motion_dynamics",
+    "INT.FRONT_GAP_THW": "stage6s_v3_following_interaction_confirmation",
+    "INT.LONG_FOLLOWING": "stage6s_v3_following_interaction_confirmation",
+    "INT.MERGE_YIELD_CUTIN": "stage7_dense_or_vulnerable_interaction",
+}
+
+
+def _validate_final_source_files(source_dir: Path, protocol: Mapping[str, Any]) -> None:
+    expected = protocol["frozen_source_sha256"]
+    for name, expected_sha in expected.items():
+        path = source_dir / name
+        actual = sha256(path)
+        if actual != expected_sha:
+            raise ValueError(f"Frozen source SHA mismatch for {path}: {actual} != {expected_sha}")
+
+
+def _final_primary_matrix(source: pd.DataFrame) -> pd.DataFrame:
+    required = {"dimension_id", "behavior_dimension", *REPS, "best_capability"}
+    missing = sorted(required - set(source.columns))
+    if missing:
+        raise ValueError(f"Existing primary matrix missing columns: {missing}")
+    if len(source) != 13 or set(source["dimension_id"]) != set(DIMENSION_META):
+        raise ValueError("Final report requires the unchanged 13-dimension frozen matrix")
+    final = source.copy()
+    final = final.rename(columns={"best_capability": "highest_standardized_sensitivity_on_this_treatment"})
+    final["highest_standardized_sensitivity_on_this_treatment"] = (
+        final["highest_standardized_sensitivity_on_this_treatment"]
+        .astype(str)
+        .str.replace("max within-null Z=", "within-null Z=", regex=False)
+        .str.replace("; no raw-MMD² ranking", "", regex=False)
+    )
+    shared = final["dimension_id"].isin(FINAL_SHARED_PARENT_DIMENSIONS)
+    for rep in REPS:
+        final.loc[shared & (final[rep] != "N/A"), rep] = final.loc[shared & (final[rep] != "N/A"), rep].astype(str) + " †"
+    final["shared_parent_bdd"] = shared
+    final["shared_parent_note"] = np.where(
+        shared,
+        "These semantic dimensions share the same parent task-level BDD and are not independent BDD tests.",
+        "N/A",
+    )
+    return final
+
+
+def _final_style_rows(long_table: pd.DataFrame, matrix: pd.DataFrame, gaps: pd.DataFrame) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    gap_by_dimension = gaps.set_index("dimension_id").to_dict(orient="index") if len(gaps) else {}
+    for matrix_row in matrix.to_dict(orient="records"):
+        dimension = str(matrix_row["dimension_id"])
+        task_id = FINAL_PRIMARY_TASKS.get(dimension)
+        if task_id is None:
+            gap = gap_by_dimension.get(dimension, {})
+            rows.append({
+                "dimension_id": dimension,
+                "behavior_dimension": matrix_row["behavior_dimension"],
+                "behavior_reference": "N/A",
+                "target": "N/A",
+                "evaluation_mode": "N/A",
+                "primary_representation": "B",
+                "null_reference": "N/A",
+                "n_scenarios": "N/A",
+                "n_logs": "N/A",
+                "raw_mmd2": "N/A",
+                "null_q95": "N/A",
+                "bdd_to_null_q95_ratio": "N/A",
+                "z_bdd": "N/A",
+                "significance": "N/A",
+                "semantic_delta_target_minus_reference": "N/A",
+                "semantic_95ci": "N/A",
+                "semantic_direction": "N/A",
+                "evidence_status": matrix_row["evidence_status"],
+                "parent_bdd_result_id": "N/A",
+                "shared_parent_bdd": False,
+                "evidence_gap": gap.get("missing", "N/A"),
+            })
+            continue
+        selected = long_table[
+            (long_table["dimension_id"] == dimension)
+            & (long_table["representation_id"] == "B")
+            & (long_table["task_id"] == task_id)
+        ]
+        if len(selected) != 1:
+            raise ValueError(f"Expected one frozen B primary row for {dimension}/{task_id}, got {len(selected)}")
+        row = selected.iloc[0]
+        detected = str(row["detection_or_pass"]).strip().lower() == "true"
+        rows.append({
+            "dimension_id": dimension,
+            "behavior_dimension": matrix_row["behavior_dimension"],
+            "behavior_reference": row["behavior_reference"],
+            "target": row["target"],
+            "evaluation_mode": row["evaluation_mode"],
+            "primary_representation": "B",
+            "null_reference": row["null_reference"],
+            "n_scenarios": row["n_scenarios"],
+            "n_logs": row["n_logs"],
+            "raw_mmd2": row["raw_mmd2"],
+            "null_q95": row["null_q95"],
+            "bdd_to_null_q95_ratio": row["bdd_to_null_q95_ratio"],
+            "z_bdd": row["z_bdd"],
+            "significance": "显著" if detected else "未显著",
+            "semantic_delta_target_minus_reference": row["semantic_delta_target_minus_reference"],
+            "semantic_95ci": row["semantic_95ci"],
+            "semantic_direction": row["semantic_direction"],
+            "evidence_status": row["evidence_status"],
+            "parent_bdd_result_id": row["parent_bdd_result_id"],
+            "shared_parent_bdd": dimension in FINAL_SHARED_PARENT_DIMENSIONS,
+            "evidence_gap": "N/A",
+        })
+    return pd.DataFrame(rows)
+
+
+def _shared_parent_audit(long_table: pd.DataFrame) -> pd.DataFrame:
+    audit_rows: list[dict[str, Any]] = []
+    for rep in REPS:
+        selected = long_table[
+            (long_table["representation_id"] == rep)
+            & (long_table["dimension_id"].isin(FINAL_SHARED_PARENT_DIMENSIONS))
+            & (long_table["task_id"] == "stage6s_v3_following_interaction_confirmation")
+        ]
+        if len(selected) != 3 or selected["parent_bdd_result_id"].nunique() != 1:
+            raise ValueError(f"Stage6S-v3 shared-parent invariant failed for {rep}")
+        audit_rows.append({
+            "representation_id": rep,
+            "parent_bdd_result_id": selected.iloc[0]["parent_bdd_result_id"],
+            "semantic_dimension_count": 3,
+            "semantic_dimensions": " | ".join(FINAL_SHARED_PARENT_DIMENSIONS),
+            "independent_bdd_test_count": 1,
+            "footnote_marker": "†",
+        })
+    return pd.DataFrame(audit_rows)
+
+
+def _representation_qualification(gates: pd.DataFrame) -> pd.DataFrame:
+    unpaired = pd.read_csv(STAGE6P_DECISIONS)
+    unpaired_keys = {"old64": "old64", "A": "A_3407", "B": "B_3407", "C": "C_3407", "ego13": "ego13"}
+    boundaries = {
+        "old64": "历史Representation Baseline；用于能力比较，不定义行为方向。",
+        "A": "Dynamic-data-only候选；release检出提升，但未通过Waymo与paired联合门禁。",
+        "B": "当前最简单的learned release-level工程候选；不是通用或最终验证representation。",
+        "C": "dual-branch候选；release检出强，但未证明full-context相对neighbor-zero的增量interaction信息。",
+        "ego13": "controlled treatment高敏感参考；不能解释为通用style representation或neighbor/context无价值。",
+    }
+    merged: list[dict[str, Any]] = []
+    for gate in gates.to_dict(orient="records"):
+        rep = str(gate["representation_id"])
+        metric = unpaired[unpaired["representation"] == unpaired_keys[rep]]
+        if len(metric) != 1:
+            raise ValueError(f"Missing frozen Stage6P n=400 row for {rep}")
+        source = metric.iloc[0]
+        merged.append({
+            **gate,
+            "stage6p_n400_detection": source["context_balanced_detection"],
+            "stage6p_n400_aa_fpr": source["context_balanced_fpr"],
+            "stage6p_n400_direction_min_detection": source["context_balanced_direction_min"],
+            "applicability_boundary": boundaries[rep],
+        })
+    return pd.DataFrame(merged)
+
+
+def _style_display(style: pd.DataFrame) -> pd.DataFrame:
+    display = style.copy()
+    ratio = pd.to_numeric(display["bdd_to_null_q95_ratio"], errors="coerce")
+    z_value = pd.to_numeric(display["z_bdd"], errors="coerce")
+    display["BDD/null-q95"] = [f"{value:.2f}×" if math.isfinite(value) else "N/A" for value in ratio]
+    display["Z_BDD"] = [f"{value:.2f}" if math.isfinite(value) else "N/A" for value in z_value]
+    display.loc[display["shared_parent_bdd"] == True, "BDD/null-q95"] += " †"  # noqa: E712
+    return display[[
+        "behavior_dimension", "behavior_reference", "target", "evaluation_mode", "null_reference",
+        "n_scenarios", "n_logs",
+        "BDD/null-q95", "Z_BDD", "significance", "semantic_delta_target_minus_reference",
+        "semantic_direction", "evidence_status",
+    ]]
+
+
+def build_final_report(
+    protocol: Mapping[str, Any],
+    matrix: pd.DataFrame,
+    style: pd.DataFrame,
+    qualification: pd.DataFrame,
+    shared_audit: pd.DataFrame,
+) -> str:
+    matrix_display = matrix[[
+        "behavior_dimension", "old64", "A", "B", "C", "ego13",
+        "highest_standardized_sensitivity_on_this_treatment",
+    ]].rename(columns={
+        "highest_standardized_sensitivity_on_this_treatment": "该Treatment下最高标准化检测敏感度",
+    })
+    style_display = _style_display(style)
+    gate_display = qualification[[
+        "representation_id", "stage6p_n400_detection", "stage6p_n400_aa_fpr",
+        "stage6p_n400_direction_min_detection", "stage6jk_paired_gate_pass",
+        "stage6p_unpaired_gate_pass", "waymo_gate_pass", "interaction_increment_gate_pass",
+        "stage6v_joint_candidate_gate_pass", "applicability_boundary",
+    ]]
+    parent_ids = ", ".join(shared_audit["parent_bdd_result_id"].astype(str))
+    lines = [
+        "# Final Standardized BDD Style Report Card", "",
+        f"> 最终协议：`{protocol['schema_version']}`  ",
+        "> 最终状态：`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`  ",
+        "> 本报告只重新组织已冻结数值；未训练、未仿真、未导出新embedding、未重算BDD、未改变Stage6V结论。", "",
+        "## 第一页：Behavior Drift / Style Report Card", "",
+        "### 报告身份", "",
+        "- **Behavior Reference**：逐行列出；回答谁相对谁发生变化。",
+        "- **Target**：逐行列出；所有semantic delta固定为`Target − Behavior Reference`。",
+        "- **Evaluation mode**：逐行列出paired/unpaired；本页现有固定行为对比均为paired。",
+        "- **Primary Representation**：`B`。",
+        "- **Null Reference**：逐行绑定B自己的paired randomization q95；`BDD/null-q95 = 1.0×`是统计背景参考线。",
+        "- **身份边界**：B是用于测量行为漂移的representation，**不是**被评价的planner/version本身。", "",
+        "本页只回答Target相对Behavior Reference发生了哪些行为变化。不同来源的固定treatment不被混写为一个Behavior Reference；每行均保留自己的Reference、Target与Null Reference。", "",
+        markdown_table(style_display), "",
+        "† These semantic dimensions share the same parent task-level BDD and are not independent BDD tests.", "",
+        "### 三类Reference的永久定义", "",
+        "- **Behavior Reference**：定义谁相对谁变化，并与Target共同决定semantic delta方向。",
+        "- **Null Reference**：paired randomization q95或unpaired A/A calibration q95；ratio中的`1.0×`仅表示统计背景参考线。",
+        "- **Representation Baseline**：`old64`历史baseline，只比较检测能力，不定义行为方向。",
+        "- 禁止使用模糊术语“reference BDD”。", "",
+        "## 第二页：Representation Qualification Matrix", "",
+        "### 固定13维Treatment标准化敏感度", "",
+        "单元格为`BDD/null-q95 ratio / Z_BDD`。该Treatment下最高标准化检测敏感度，只表示在这一已知treatment上相对各representation自身null的标准化敏感度；不表示最完整、最通用或全局最优的behavior representation，也不得据此宣称ego13是‘全局最佳representation’。禁止跨representation排序raw MMD²。", "",
+        markdown_table(matrix_display), "",
+        "† These semantic dimensions share the same parent task-level BDD and are not independent BDD tests.", "",
+        "### Release与联合门禁资格", "",
+        markdown_table(gate_display), "",
+        "Primary Representation选择说明：B在Stage6P context-balanced n=400达到100.0% detection、5.0% A/A FPR，并且是结构更简单的learned release-level工程候选；这不推翻其Stage6J/K、Waymo与Stage6V联合门禁未通过的事实。", "",
+        "### ego13固定解释边界", "",
+        "ego13在当前多个controlled treatments中具有最高within-null standardized sensitivity，但这些treatment大量直接作用于ego运动学。因此不能解释为ego13是通用style representation，不能解释为neighbor/context无价值。learned64的主要强正结果仍包括production-style unpaired release monitoring；representation能力必须按deployment/evaluation task解释。", "",
+        "### Shared-parent统计身份", "",
+        "Closing response、Front-gap / THW interaction、Longitudinal following interaction对每个representation均绑定同一个Stage6S-v3 parent task-level BDD；三条语义解释只计为一个独立BDD检验。机器审计中的parent IDs为：", "",
+        f"`{parent_ids}`", "",
+        "## 一眼可答的最终结论", "",
+        "1. **跟车BDD（Primary Representation B）**：`1.72× / Z=5.25`；Behavior Reference为longitudinal conservative v2，Target为longitudinal assertive v2；60 scenario / 52 log，确认性结果。",
+        "2. **变道BDD（B）**：`2.50× / Z=9.12`；Behavior Reference为conservative v1，Target为assertive v1；固定60场景，`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`。它是变道场景slice，不证明ego一定执行了变道。",
+        "3. **纵向加速/减速BDD（B）**：`2.74× / Z=10.33`；Stage6J/K dose100确认性结果。",
+        "4. **interaction BDD（B）**：`7.39× / Z=30.60 †`；long-headway v2 → short-headway v2，80 pair / 11 log，确认性结果。",
+        "5. **Null Reference**：以上每项均使用B自己的冻结paired randomization q95；Behavior Reference与Target逐行显示。",
+        "6. **该Treatment下最高标准化检测敏感度**：当前有证据的矩阵行均为ego13；这只是controlled treatment下的within-null敏感度，不是全局排名。",
+        "7. **共享parent test**：逼近前车响应、前车间距/THW交互、纵向跟车交互响应共享Stage6S-v3 parent BDD，均以`†`标识，不是三次独立检验。",
+        "8. **证据身份**：Stage6J/K与Stage6S-v3为继承的预冻结confirmatory；Stage7 overall/lane-change/lateral/dense-interaction为post-hoc standardized descriptive；N/A维度不补实验。", "",
+        "`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def finalize_existing_report(args: argparse.Namespace) -> None:
+    source_dir = args.finalize_existing_dir.resolve()
+    output_dir = args.final_output_dir.resolve()
+    protocol_path = args.final_protocol.resolve()
+    schema_path = args.final_schema.resolve()
+    protocol = read_json(protocol_path)
+    schema = read_json(schema_path)
+    assert_status(protocol, "FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN", "final protocol")
+    assert_status(schema, "FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN", "final schema")
+    _validate_final_source_files(source_dir, protocol)
+    if output_dir.exists():
+        raise FileExistsError(f"Refusing to overwrite existing output_dir: {output_dir}")
+    output_dir.mkdir(parents=True)
+    long_table = pd.read_csv(source_dir / "standardized_bdd_long.csv")
+    source_matrix = pd.read_csv(source_dir / "fixed_dimension_primary_matrix.csv", keep_default_na=False)
+    gates = pd.read_csv(source_dir / "representation_gate_scorecard.csv", keep_default_na=False)
+    gaps = pd.read_csv(source_dir / "evidence_gap_matrix.csv", keep_default_na=False)
+    matrix = _final_primary_matrix(source_matrix)
+    style = _final_style_rows(long_table, matrix, gaps)
+    shared_audit = _shared_parent_audit(long_table)
+    qualification = _representation_qualification(gates)
+    report = build_final_report(protocol, matrix, style, qualification, shared_audit)
+    matrix.to_csv(output_dir / "final_fixed_dimension_primary_matrix.csv", index=False)
+    style.to_csv(output_dir / "final_behavior_style_report_card.csv", index=False)
+    qualification.to_csv(output_dir / "final_representation_qualification_matrix.csv", index=False)
+    shared_audit.to_csv(output_dir / "final_shared_parent_bdd_audit.csv", index=False)
+    (output_dir / "final_standardized_bdd_style_report_card_zh.md").write_text(report, encoding="utf-8")
+    output_files = [
+        "final_fixed_dimension_primary_matrix.csv",
+        "final_behavior_style_report_card.csv",
+        "final_representation_qualification_matrix.csv",
+        "final_shared_parent_bdd_audit.csv",
+        "final_standardized_bdd_style_report_card_zh.md",
+    ]
+    manifest = {
+        "schema_version": "final_standardized_bdd_reporting_system_v1",
+        "status": "FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN",
+        "protocol_path": str(protocol_path),
+        "protocol_sha256": sha256(protocol_path),
+        "schema_path": str(schema_path),
+        "schema_sha256": sha256(schema_path),
+        "source_dir": str(source_dir),
+        "source_file_sha256": protocol["frozen_source_sha256"],
+        "statistics_recomputed": False,
+        "training_run": False,
+        "simulation_run": False,
+        "checkpoint_created_or_modified": False,
+        "embedding_export_run": False,
+        "scenario_selection_modified": False,
+        "stage6v_joint_conclusion_modified": False,
+        "raw_mmd2_cross_representation_ranking_performed": False,
+        "primary_representation": "B",
+        "representation_baseline": "old64",
+        "dimension_count": int(len(matrix)),
+        "shared_parent_semantic_dimension_count": 3,
+        "shared_parent_independent_bdd_count_per_representation": 1,
+        "output_files": {name: sha256(output_dir / name) for name in output_files},
+    }
+    write_json(output_dir / "final_standardized_bdd_reporting_manifest.json", manifest)
+    print(json.dumps({
+        "status": manifest["status"],
+        "output_dir": str(output_dir),
+        "manifest_sha256": sha256(output_dir / "final_standardized_bdd_reporting_manifest.json"),
+        "dimension_count": manifest["dimension_count"],
+        "statistics_recomputed": False,
+    }, ensure_ascii=False, indent=2))
+
+
 def main() -> None:
     args = parse_args()
+    if args.finalize_existing_dir is not None:
+        finalize_existing_report(args)
+        return
     protocol_path = args.protocol.resolve()
     protocol = read_json(protocol_path)
     preflight = load_preflight(protocol)
