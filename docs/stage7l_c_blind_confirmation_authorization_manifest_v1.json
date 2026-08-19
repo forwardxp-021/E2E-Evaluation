@@ -1,0 +1,305 @@
+{
+  "schema_version": "stage7l_c_blind_confirmation_authorization_manifest_v1",
+  "status": "STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED",
+  "authorization_scope": "Stage7L-D planner-level one-time confirmation only: 80 frozen scenarios x 5 frozen doses = 400 official rollouts",
+  "created_utc": "2026-08-19T09:42:04.629879+00:00",
+  "freeze_repository_head": "c6216882513af4d33499f35626a4cc66a0081a15",
+  "stage7l_d_started": false,
+  "stage7l_e_representation_evaluation_authorized_now": false,
+  "representation_unlock_condition": "ONLY_IF_STAGE7L_D_MECHANISM_AND_SAFETY_GATES_PASS",
+  "frozen_protocol": {
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/configs/stage7l_c_prospective_confirmation_protocol_v1.json",
+    "sha256": "ae4c1a3ea639d12c9d5f257d87b07e3442e4b22f11c199e40d14f8dab407d125",
+    "treatment": {
+      "axis": "lateral_transition_length_only",
+      "behavior_reference": {
+        "id": "dose0",
+        "label": "Gentle Lateral Execution",
+        "transition_length_m": 60.0
+      },
+      "target": {
+        "id": "dose100",
+        "label": "Sharp Lateral Execution",
+        "transition_length_m": 54.0
+      },
+      "dose_transition_length_m": {
+        "dose0": 60.0,
+        "dose25": 58.5,
+        "dose50": 57.0,
+        "dose75": 55.5,
+        "dose100": 54.0
+      },
+      "trigger_s_route_m": 12.0,
+      "planner_horizon_s": 0.4,
+      "sampling_interval_s": 0.1,
+      "scenario_horizon_s": 15.0,
+      "target_speed_mps": 5.0,
+      "accel_limit_mps2": 1.0,
+      "background_mode": "closed_loop_nonreactive_agents",
+      "pure_lateral_definition": "The treatment parameterization affects only the lateral trajectory-generation channel, while canonical longitudinal route progress, initial state, scenario, source lane, target lane, trigger, background mode and all longitudinal controller parameters are held fixed. Realized closed-loop longitudinal quantities may have small numerical or indirect differences and are therefore assessed by pre-frozen nuisance gates.",
+      "hydra_planner_configs": {
+        "dose0": {
+          "path": "configs/stage7l_hydra/planner/stage7l_b2_pure_lateral_dose0.yaml",
+          "sha256": "c420f1e818729cce1e91ce1a2bfde26d7e0f2d79ad07fd9899704187e5ce3074"
+        },
+        "dose25": {
+          "path": "configs/stage7l_hydra/planner/stage7l_b2_pure_lateral_dose25.yaml",
+          "sha256": "8ba1c9b66a135ca4aefab56729298aca02e4ee0e0b929882cee6b06ac8915bcb"
+        },
+        "dose50": {
+          "path": "configs/stage7l_hydra/planner/stage7l_b2_pure_lateral_dose50.yaml",
+          "sha256": "52a9f6fcce497724a994a81d0f1e9bcf224a9967b40c8575da2bfa77ca64a0a2"
+        },
+        "dose75": {
+          "path": "configs/stage7l_hydra/planner/stage7l_b2_pure_lateral_dose75.yaml",
+          "sha256": "88c28161b1deaa03fdaa0bfcd0d2c5f13c8fe331f0d872cbf0b35bb96ce1a58e"
+        },
+        "dose100": {
+          "path": "configs/stage7l_hydra/planner/stage7l_b2_pure_lateral_dose100.yaml",
+          "sha256": "14d1d1fc6389c82676f35c14bccfcaff849cf5d40fd18f8ea529845bc7caa31c"
+        }
+      }
+    },
+    "eligibility": {
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "static_requirements": [
+        "native_source_lane",
+        "native_adjacent_target_lane",
+        "route_compatibility",
+        "official_runnability",
+        "initial_target_lane_object_gap_at_least_15m",
+        "source_target_reference_coverage_through_15_4s",
+        "existing_stage7l_b_geometry_exclusions"
+      ],
+      "dynamic_requirements": {
+        "horizon_s": 15.0,
+        "time_step_s": 0.1,
+        "maximum_track_interpolation_gap_s": 0.25,
+        "source_only_before_trigger": true,
+        "common_source_target_envelope": true,
+        "target_only_after_transition_and_settling": true,
+        "ego_length_width_m": [
+          5.0,
+          2.0
+        ],
+        "longitudinal_buffer_m": 3.0,
+        "lateral_buffer_m": 0.5,
+        "dose_independent": true,
+        "original_replay_tracks_only": true
+      }
+    },
+    "mechanism": {
+      "primary_semantic_metric": "lane_change_duration_s",
+      "core_physical_metrics": [
+        "rms_lateral_accel_mps2",
+        "peak_yaw_rate_radps"
+      ],
+      "secondary_metrics": [
+        "peak_lateral_accel_mps2",
+        "rms_yaw_rate_radps",
+        "rms_lateral_jerk_mps3",
+        "settling_time_s",
+        "final_target_center_offset_m"
+      ],
+      "behavior_delta_definition": "Target minus Behavior Reference = dose100 minus dose0",
+      "expected_direction": {
+        "lane_change_duration_s": "negative",
+        "rms_lateral_accel_mps2": "positive",
+        "peak_yaw_rate_radps": "positive"
+      },
+      "primary_contrast": "dose100_vs_dose0",
+      "secondary_contrasts": [
+        "dose25_vs_dose0",
+        "dose50_vs_dose0",
+        "dose75_vs_dose0",
+        "dose100_vs_dose0"
+      ],
+      "pass_criteria": {
+        "lane_change_duration_s": {
+          "paired_median_delta": "less_than_zero",
+          "directional_consistency_at_least": 0.7
+        },
+        "rms_lateral_accel_mps2": {
+          "paired_median_delta": "greater_than_zero",
+          "directional_consistency_at_least": 0.8
+        },
+        "peak_yaw_rate_radps": {
+          "paired_median_delta": "greater_than_zero",
+          "directional_consistency_at_least": 0.8
+        }
+      }
+    },
+    "nuisance_gate": {
+      "contrast": "dose100_vs_dose0",
+      "aggregate_rule": "paired_median_and_p90_are_formal; maximum_is_diagnostic_only",
+      "absolute_paired_median_thresholds": {
+        "mean_speed_mps": 0.02,
+        "rms_longitudinal_accel_mps2": 0.05,
+        "rms_longitudinal_jerk_mps3": 0.1,
+        "route_progress_m": 0.25
+      },
+      "absolute_p90_thresholds": {
+        "mean_speed_mps": 0.02,
+        "rms_longitudinal_accel_mps2": 0.05,
+        "rms_longitudinal_jerk_mps3": 0.1,
+        "route_progress_m": 0.25
+      }
+    },
+    "safety_validity_gate": {
+      "official_success_rate_at_least": 0.95,
+      "lane_change_completion_rate_at_least": 0.95,
+      "offroad_rate_at_most": 0.05,
+      "responsible_collision_rate_at_most": 0.05,
+      "population": "all_80_frozen_scenarios_no_post_treatment_deletion"
+    },
+    "failure_policy": {
+      "infrastructure_runtime_failure": "No replacement. Retain the frozen 80-scenario population and record the failure. If official completed scenarios are below 76, set STAGE7L_D_CONFIRMATION_EXECUTION_INSUFFICIENT and stop before representation evaluation.",
+      "treatment_or_trajectory_outcome_failure": "No deletion and no replacement. Collision, off-road, invalidity, incompletion, route failure and treatment-caused trajectory failure remain outcome data.",
+      "minimum_completed_scenarios": 76
+    },
+    "paired_bdd": {
+      "evaluation_condition": "ONLY_IF_STAGE7L_D_MECHANISM_AND_SAFETY_GATES_PASS",
+      "primary_endpoint": {
+        "representation": "B_seed3407",
+        "contrast": "dose100_vs_dose0",
+        "population": "all_80_frozen_confirmation_scenarios",
+        "mode": "paired",
+        "task": "LAT.LANE_CHANGE",
+        "statistic": "biased_rbf_mmd2",
+        "null": "same_scenario_pair_label_swap",
+        "swaps": 100000,
+        "plus_one_p_value": true,
+        "success_rule": "raw_prespecified_primary_p_less_than_0_05"
+      },
+      "primary_outputs": [
+        "raw_mmd2",
+        "null_mean",
+        "null_sd",
+        "null_q95",
+        "bdd_over_null_q95",
+        "z_bdd",
+        "plus_one_p"
+      ],
+      "secondary_representations": [
+        "old64",
+        "A_seed3407",
+        "C_seed3407",
+        "ego13"
+      ],
+      "secondary_contrasts": [
+        "dose25_vs_dose0",
+        "dose50_vs_dose0",
+        "dose75_vs_dose0",
+        "dose100_vs_dose0"
+      ],
+      "secondary_tasks": [
+        "LAT.LANE_CHANGE",
+        "LAT.DYNAMICS"
+      ],
+      "bandwidth": "representation_specific_rbf_median_heuristic",
+      "cross_representation_raw_mmd2_comparison_forbidden": true,
+      "multiplicity": "One unadjusted prespecified primary endpoint. The secondary family is representation x dose x task and uses Holm correction. Shared parent BDD semantic rows carry a shared-parent marker and are not independent tests."
+    },
+    "representation_lock": {
+      "primary_representation": "B",
+      "primary_seed": 3407,
+      "representation_baseline": "old64",
+      "diagnostic_kinematic_reference": "ego13",
+      "secondary_representations": [
+        "A",
+        "C"
+      ],
+      "checkpoints": {
+        "old64": {
+          "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt",
+          "sha256": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc"
+        },
+        "A_seed3407": {
+          "path": "outputs/stage6t_candidates_v1/candidate_A_dynamic_data_legacy/seed_3407/best_model.pt",
+          "sha256": "353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d"
+        },
+        "B_seed3407": {
+          "path": "outputs/stage6t_candidates_v1/candidate_B_single_gru_recovery/seed_3407/best_model.pt",
+          "sha256": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f"
+        },
+        "C_seed3407": {
+          "path": "outputs/stage6t_candidates_v1/candidate_C_dual_branch/seed_3407/best_model.pt",
+          "sha256": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d"
+        }
+      },
+      "ego13_definition": {
+        "definition": "frozen 13D ego kinematic summary plus median/IQR scaler",
+        "design_config": {
+          "path": "configs/stage6p_representation_unpaired_release.json",
+          "sha256": "6febfe1608e4b312b8ea4107d939e1571ac9548f16cd670befa17a28b58eb33f"
+        },
+        "implementation": {
+          "path": "tools/stage6v_evaluate_stage6s_v2_representations.py",
+          "sha256": "0d7f25ccb2c65b5f3273d8d479738828b5d8ba2fa11d41fb8dda3c443328ed89"
+        }
+      }
+    }
+  },
+  "frozen_confirmation_artifacts": {
+    "roster": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_c_confirmation_freeze_v1/confirmation_roster.csv",
+      "sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9"
+    },
+    "maneuver_manifest": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_c_confirmation_freeze_v1/confirmation_maneuver_manifest.json",
+      "sha256": "ad0abdb3ebfaf8f06c92987538254a79455ad3d7b03a42e609462b49596de725"
+    },
+    "selection_trace": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_c_confirmation_freeze_v1/confirmation_selection_trace.csv",
+      "sha256": "a568642ab22b95457993f2142897d65de5d0cbcd6de0cef3f6843a0f8df97a26"
+    },
+    "runnability_audit": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_c_confirmation_freeze_v1/confirmation_runnability_audit.csv",
+      "sha256": "1cfac93d2bfe048de6be1eb4133d321ccb135455d9b7fa8e12edce04122bee3e"
+    },
+    "freeze_summary": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_c_confirmation_freeze_v1/confirmation_freeze_summary.json",
+      "sha256": "05adbf90f03142c2da91ddf3f8d495c520942484f6d7a2418879458828facd37"
+    }
+  },
+  "hard_assertions": {
+    "scenario_count_equals_80": true,
+    "left_equals_15": true,
+    "right_equals_65": true,
+    "duplicate_token_count_equals_0": true,
+    "historical_scenario_overlap_count_equals_0": true,
+    "stage7l_b_development_log_overlap_count_equals_0": true,
+    "official_runnability_80_of_80": true,
+    "dynamic_clearance_80_of_80": true,
+    "static_eligibility_80_of_80": true,
+    "manifest_source_target_trigger_complete_80_of_80": true,
+    "unsupported_map_count_equals_0": true,
+    "dynamic_config_sha_matches_b2": true
+  },
+  "no_replacement_rule": true,
+  "forbidden_before_stage7l_d_e_complete": [
+    "scenario",
+    "log",
+    "left_right_ratio",
+    "dose",
+    "trigger",
+    "eligibility",
+    "buffer",
+    "mechanism_primary",
+    "nuisance_threshold",
+    "checkpoint",
+    "seed",
+    "paired_null",
+    "primary_endpoint",
+    "failure_policy"
+  ],
+  "forbidden_actions": [
+    "new_development",
+    "training",
+    "checkpoint_change",
+    "embedding_export",
+    "BDD_or_MMD_before_mechanism_unlock",
+    "scenario_replacement"
+  ],
+  "claim_boundary": "If successful, the permissible claim is limited to official nuPlan closed-loop with fixed replay background and fresh pre-treatment dynamic-clean lane-change opportunities: the prospectively frozen pure-lateral execution treatment produced expected lateral kinematic changes and can be detected by BDD. It does not validate fleet deployment, reactive traffic, a lane-change decision policy, safety superiority, universal representation superiority or arbitrary ODD generalization."
+}

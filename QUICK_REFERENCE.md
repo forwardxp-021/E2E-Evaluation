@@ -9675,3 +9675,51 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
 - Pittsburgh Pool B需≥120 dynamic-clean token、≥80 unique log、左右方向均有真实供给，并且official runnability为100%。
 - 当前实测：Pool B为152 token / 94 log / 19 left / 133 right；满足上述门槛。
 - 状态仅为`STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE`和`STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED`，不得自动进入Stage7L-C。
+
+## Stage7L-C 前瞻性 Protocol 与 80 场景 Confirmation Roster Freeze
+
+### 1. 命令
+
+冻结protocol、80场景roster与盲测授权；此命令只读取Pool B、ledger、map/DB官方scene query和冻结checkpoint SHA，不构建planner rollout：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:$PWD \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_freeze_confirmation_roster.py \
+  --protocol_config configs/stage7l_c_prospective_confirmation_protocol_v1.json \
+  --pool_b outputs/stage7l_b2_dynamic_clearance_expanded_inventory_v2_pittsburgh/pool_b_strict_development_log_disjoint_dynamic_clean.csv \
+  --development_ledger outputs/stage7l_b_final_development_freeze_v1/stage7l_b_final_prior_exclusion_ledger.csv \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --nuplan_devkit_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  --output_dir outputs/stage7l_c_confirmation_freeze_v1 \
+  --authorization_manifest docs/stage7l_c_blind_confirmation_authorization_manifest_v1.json
+```
+
+随后验证冻结可重放性和全部门禁：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:$PWD \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_validate_confirmation_freeze.py \
+  --protocol_config configs/stage7l_c_prospective_confirmation_protocol_v1.json \
+  --pool_b outputs/stage7l_b2_dynamic_clearance_expanded_inventory_v2_pittsburgh/pool_b_strict_development_log_disjoint_dynamic_clean.csv \
+  --development_ledger outputs/stage7l_b_final_development_freeze_v1/stage7l_b_final_prior_exclusion_ledger.csv \
+  --freeze_dir outputs/stage7l_c_confirmation_freeze_v1 \
+  --authorization_manifest docs/stage7l_c_blind_confirmation_authorization_manifest_v1.json \
+  --output_json outputs/stage7l_c_confirmation_freeze_v1/confirmation_freeze_validation.json
+```
+
+### 2. 期望行为
+
+- 固定5档`60/58.5/57/55.5/54 m`、trigger 12 m、15 s horizon与non-reactive replay background。
+- 只从B2 Pool B选取80个候选，固定`15 left + 65 right`。left供给只有14个log，因此一处预先记录的left log重用不可避免；right优先不重用log。
+- 对选中的80个token再次执行official nuPlan scene query/boundary一致性审计，输出runnability audit、selection trace、geometry summary、roster、maneuver manifest和reserve inventory。
+- 不运行Stage7L-D rollout，不导出embedding，不计算BDD/MMD，不产生representation结果。
+
+### 3. 通过标准
+
+- `N=80`、left/right=`15/65`、duplicate token=`0`；与所有历史token scenario-disjoint，且与26个Stage7L-B development log严格分离。
+- `official runnable=80/80`、dynamic clearance=`80/80`、static eligibility=`80/80`、source/target/trigger manifest完整=`80/80`。
+- 选择trace必须由`Pool B + config + seed=620271`重放；reserve明确不是运行失败后的replacement pool。
+- 只有通过后才可记录`STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN`、`STAGE7L_C_CONFIRMATION_ROSTER_FROZEN`和`STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED`；仍不得自动启动Stage7L-D。

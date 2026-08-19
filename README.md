@@ -2193,3 +2193,9 @@ Stage7L-B development log严格分离后，Pool B仍有152 token / 94 log（19 l
 状态升级为`STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE`与`STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED`。这只是允许人工审阅
 Stage7L-C协议，尚未建立confirmation roster或运行confirmation。详见
 [`docs/stage7l_b2_dynamic_clearance_inventory_report_zh.md`](docs/stage7l_b2_dynamic_clearance_inventory_report_zh.md)。
+
+## Stage7L-C Prospective Confirmation Freeze
+
+Stage7L-C冻结80个Pittsburgh、pre-treatment dynamic-clean confirmation场景及其不可变maneuver manifest：15 left + 65 right，来自严格与Stage7L-B development log分离的Pool B。selection使用固定seed=620271和仅含几何/traffic的确定性分层规则；不读取任何rollout、embedding、BDD或MMD。冻结后只授权Stage7L-D进行`80×5=400`条planner-level rollout，并且仍必须先通过mechanism/safety gate才可解锁representation。
+
+完整科学协议见[`docs/stage7l_c_prospective_confirmation_protocol_zh.md`](docs/stage7l_c_prospective_confirmation_protocol_zh.md)。
