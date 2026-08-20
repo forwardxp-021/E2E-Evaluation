@@ -19,11 +19,11 @@
     },
     "formal_inference_and_bdd": {
       "path": "tools/stage7l_e_run_prospective_bdd.py",
-      "sha256": "989211a8608eac61056a3421b237db334bd86b6002538d66a655fd53b3237467"
+      "sha256": "9eb9afeacf99fac209a2e380004e3d129c9e0d64a5fc474a879952ff05c10475"
     },
     "tests": {
       "path": "tests/test_stage7l_e_prospective_bdd.py",
-      "sha256": "40781e5226627b911ac134353d75c086cab228ec8c664d3dcaf7891b4d79524f"
+      "sha256": "399a6fcf60ec9865f5afa675e37b20109fc0f6197700f56b27647053d2e7302d"
     }
   },
   "inherited_statistics": {
@@ -57,6 +57,13 @@
     "primary_result_read": false,
     "training_or_checkpoint_modified": false,
     "planner_rerun": false
+  },
+  "resume_contract": {
+    "embedding_artifacts_atomic_and_reusable": true,
+    "each_bdd_cell_atomic_and_reusable": true,
+    "cell_identity_revalidated_on_resume": true,
+    "null_samples_revalidated_on_resume": true,
+    "completed_cell_recomputation_forbidden": true
   },
   "next_authorized_step": "E2_FORMAL_FIVE_REPRESENTATION_INFERENCE_AND_FROZEN_40_CELL_BDD_ONLY"
 }

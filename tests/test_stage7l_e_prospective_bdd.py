@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import tools.stage7l_e_run_prospective_bdd as stage7l_e
 
 from tools.interaction_context_features import get_feature_schema
 from tools.stage6l_run_context_representation_ablation import (
@@ -17,6 +18,8 @@ from tools.stage7l_e_run_prospective_bdd import (
     NULL_SEED_BASE,
     PRIMARY_KEY,
     apply_fixed_holm,
+    atomic_save_npy,
+    atomic_write_json,
     cell_seed,
 )
 from tools.train_context_behavior_embedding import ContextFlattenGRUEncoder
@@ -184,3 +187,46 @@ def test_tool_hard_codes_no_raw_mmd_cross_representation_ranking() -> None:
     source = Path("tools/stage7l_e_run_prospective_bdd.py").read_text(encoding="utf-8")
     assert '"cross_representation_raw_mmd2_comparison_performed": False' in source
     assert '"stage6v_qualification_changed": False' in source
+
+
+def test_atomic_cell_artifacts_are_resume_safe(tmp_path: Path) -> None:
+    json_path = tmp_path / "cell.json"
+    array_path = tmp_path / "cell_null.npy"
+    atomic_write_json(json_path, {"status": "COMPUTED", "null_seed": 17})
+    atomic_save_npy(array_path, np.arange(8, dtype=np.float32))
+    assert json.loads(json_path.read_text()) == {"status": "COMPUTED", "null_seed": 17}
+    assert np.array_equal(np.load(array_path), np.arange(8, dtype=np.float32))
+    assert not list(tmp_path.glob("*.partial"))
+
+
+def test_full_40_cell_ledger_resumes_without_recomputation(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr(stage7l_e, "NULL_REPETITIONS", 16)
+    rng = np.random.default_rng(19)
+    representations = {}
+    for representation in stage7l_e.REPRESENTATIONS:
+        dim = 13 if representation == "ego13" else 4
+        base = rng.normal(size=(80, dim))
+        for dose_index, dose in enumerate(stage7l_e.DOSES):
+            representations[(representation, dose)] = base + dose_index * 0.01
+    task_rows = [
+        {
+            "LAT.LANE_CHANGE": "True",
+            "LAT.DYNAMICS": "True" if index < 38 else "False",
+        }
+        for index in range(80)
+    ]
+    cells1, nulls1 = stage7l_e.evaluate_cells(
+        representations, task_rows, cell_dir=tmp_path / "cells"
+    )
+    assert len(cells1) == 40
+    assert len(nulls1) == 40
+    monkeypatch.setattr(
+        stage7l_e,
+        "kernel_analysis",
+        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("must resume")),
+    )
+    cells2, nulls2 = stage7l_e.evaluate_cells(
+        representations, task_rows, cell_dir=tmp_path / "cells"
+    )
+    assert cells2 == cells1
+    assert set(nulls2) == set(nulls1)

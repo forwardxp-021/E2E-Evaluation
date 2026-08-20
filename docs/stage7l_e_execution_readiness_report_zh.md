@@ -61,7 +61,8 @@ Stage7L-E直接复用Stage6V/W实际运行过的标准实现：
 - raw MMD²禁止跨representation排序。
 
 synthetic测试验证了vectorized pair swap的数学支持、plus-one p、q95、Z、确定性null、Holm39、Primary唯一排除、
-non-computable p=1和A/B/C/old64的83D→64D forward合同。
+non-computable p=1和A/B/C/old64的83D→64D forward合同。embedding与每个BDD cell均采用原子落盘；中断后会
+复核representation/dose/task/N/seed/repetitions及null shape/finite，再复用已完成cell，测试已证明不会重复计算。
 
 ## 6. 下一段
 

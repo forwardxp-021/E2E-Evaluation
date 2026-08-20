@@ -87,6 +87,19 @@ def write_json(path: Path, value: Any) -> None:
     )
 
 
+def atomic_write_json(path: Path, value: Any) -> None:
+    temporary = path.with_suffix(path.suffix + ".partial")
+    write_json(temporary, value)
+    temporary.replace(path)
+
+
+def atomic_save_npy(path: Path, values: np.ndarray) -> None:
+    temporary = path.with_suffix(path.suffix + ".partial")
+    with temporary.open("wb") as handle:
+        np.save(handle, values)
+    temporary.replace(path)
+
+
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fields: Sequence[str] | None = None) -> None:
     if not rows:
         raise ValueError(f"Refusing to write empty CSV: {path}")
@@ -217,25 +230,41 @@ def build_representations(
     values: dict[tuple[str, str], np.ndarray] = {}
     per_rep: dict[str, list[dict[str, Any]]] = {name: [] for name in REPRESENTATIONS}
     embedding_root = output_dir / "embeddings"
-    embedding_root.mkdir()
+    embedding_root.mkdir(exist_ok=True)
     for dose in DOSES:
         directory = context_root / dose
         context = np.asarray(np.load(directory / "context_traj.npy", mmap_mode="r"), dtype=np.float32)
         for representation, model in models.items():
-            values[(representation, dose)] = embed_model(model, context, device)
+            rep_dir = embedding_root / representation
+            rep_dir.mkdir(exist_ok=True)
+            path = rep_dir / f"{dose}.npy"
+            if path.is_file():
+                restored = np.asarray(np.load(path, mmap_mode="r"), dtype=np.float64)
+                if restored.shape != (80, 64) or not np.isfinite(restored).all():
+                    raise RuntimeError(f"Invalid resumable embedding: {path}")
+                values[(representation, dose)] = restored
+            else:
+                values[(representation, dose)] = embed_model(model, context, device)
+                atomic_save_npy(path, values[(representation, dose)].astype(np.float32))
         ego = np.asarray(np.load(directory / "ego_seq.npy", mmap_mode="r"), dtype=np.float32)
         mask = np.asarray(np.load(directory / "ego_seq_mask.npy", mmap_mode="r"), dtype=bool)
-        values[("ego13", dose)] = np.asarray(
-            apply_scaler(ego_kinematic_features(ego, mask), scaler["ego_median"], scaler["ego_scale"]),
-            dtype=np.float64,
-        )
+        ego_dir = embedding_root / "ego13"
+        ego_dir.mkdir(exist_ok=True)
+        ego_path = ego_dir / f"{dose}.npy"
+        if ego_path.is_file():
+            values[("ego13", dose)] = np.asarray(np.load(ego_path, mmap_mode="r"), dtype=np.float64)
+        else:
+            values[("ego13", dose)] = np.asarray(
+                apply_scaler(ego_kinematic_features(ego, mask), scaler["ego_median"], scaler["ego_scale"]),
+                dtype=np.float64,
+            )
+            atomic_save_npy(ego_path, values[("ego13", dose)].astype(np.float32))
         if values[("ego13", dose)].shape != (80, 13) or not np.isfinite(values[("ego13", dose)]).all():
             raise RuntimeError(f"Invalid ego13 representation at {dose}")
         for representation in REPRESENTATIONS:
             rep_dir = embedding_root / representation
             rep_dir.mkdir(exist_ok=True)
             path = rep_dir / f"{dose}.npy"
-            np.save(path, values[(representation, dose)].astype(np.float32))
             per_rep[representation].append(
                 {
                     "dose": dose,
@@ -284,7 +313,10 @@ def apply_fixed_holm(cells: list[dict[str, Any]]) -> None:
 
 
 def evaluate_cells(
-    representations: Mapping[tuple[str, str], np.ndarray], task_rows: Sequence[Mapping[str, str]]
+    representations: Mapping[tuple[str, str], np.ndarray],
+    task_rows: Sequence[Mapping[str, str]],
+    *,
+    cell_dir: Path | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, np.ndarray]]:
     task_masks = {
         task: np.asarray([str(row[task]).lower() == "true" for row in task_rows], dtype=bool)
@@ -294,6 +326,8 @@ def evaluate_cells(
         raise RuntimeError("Frozen task population mismatch before BDD")
     cells: list[dict[str, Any]] = []
     nulls: dict[str, np.ndarray] = {}
+    if cell_dir is not None:
+        cell_dir.mkdir(parents=True, exist_ok=True)
     for rep_index, representation in enumerate(REPRESENTATIONS):
         for dose_index, dose in enumerate(NONZERO_DOSES):
             for task_index, task in enumerate(TASKS):
@@ -305,6 +339,32 @@ def evaluate_cells(
                     if key == PRIMARY_KEY
                     else "SECONDARY_HOLM_39"
                 )
+                seed = cell_seed(rep_index, dose_index, task_index)
+                cell_id = f"{representation}__{dose}__{task.replace('.', '_')}"
+                cell_path = cell_dir / f"{cell_id}.json" if cell_dir is not None else None
+                null_path = cell_dir / f"{cell_id}_null.npy" if cell_dir is not None else None
+                if cell_path is not None and cell_path.is_file():
+                    row = read_json(cell_path)
+                    expected_identity = {
+                        "representation": representation,
+                        "dose": dose,
+                        "task": task,
+                        "N_pair": n_pair,
+                        "null_seed": seed,
+                        "null_reps": NULL_REPETITIONS,
+                        "multiplicity_role": role,
+                    }
+                    if any(row.get(key) != value for key, value in expected_identity.items()):
+                        raise RuntimeError(f"Resumable cell identity mismatch: {cell_path}")
+                    if row.get("status") != "NOT_COMPUTABLE_PRE_FROZEN_TASK_POPULATION":
+                        if null_path is None or not null_path.is_file():
+                            raise RuntimeError(f"Resumable cell lacks null samples: {cell_path}")
+                        samples = np.asarray(np.load(null_path, mmap_mode="r"), dtype=np.float32)
+                        if samples.shape != (NULL_REPETITIONS,) or not np.isfinite(samples).all():
+                            raise RuntimeError(f"Invalid resumable null samples: {null_path}")
+                        nulls[f"{representation}__{dose}__{task}"] = samples
+                    cells.append(row)
+                    continue
                 if n_pair == 0:
                     row = {
                         "representation": representation,
@@ -312,12 +372,13 @@ def evaluate_cells(
                         "task": task,
                         "N_pair": 0,
                         "status": "NOT_COMPUTABLE_PRE_FROZEN_TASK_POPULATION",
+                        "null_seed": seed,
+                        "null_reps": NULL_REPETITIONS,
                         "raw_p": None,
                         "raw_p_for_multiplicity": 1.0,
                         "multiplicity_role": role,
                     }
                 else:
-                    seed = cell_seed(rep_index, dose_index, task_index)
                     result, samples, _ = kernel_analysis(
                         representations[(representation, "dose0")][mask],
                         representations[(representation, dose)][mask],
@@ -346,6 +407,10 @@ def evaluate_cells(
                         "exceedance_count": result["exceedance_count"],
                         "multiplicity_role": role,
                     }
+                    if null_path is not None:
+                        atomic_save_npy(null_path, nulls[null_key])
+                if cell_path is not None:
+                    atomic_write_json(cell_path, row)
                 cells.append(row)
     apply_fixed_holm(cells)
     return cells, nulls
@@ -383,7 +448,11 @@ def main() -> int:
     write_json(args.output_dir / "task_mask_audit.json", read_json(args.prepared_dir / "task_mask_audit.json"))
     checkpoint_locks = validate_checkpoint_locks()
     representations, embedding_manifests = build_representations(args.context_root, args.output_dir, checkpoint_locks)
-    cells, nulls = evaluate_cells(representations, task_rows)
+    cells, nulls = evaluate_cells(
+        representations,
+        task_rows,
+        cell_dir=args.output_dir / "cell_ledger",
+    )
     np.savez_compressed(args.output_dir / "paired_null_samples.npz", **nulls)
     fields = sorted({key for row in cells for key in row})
     write_csv(args.output_dir / "all_bdd_cells.csv", cells, fields)
