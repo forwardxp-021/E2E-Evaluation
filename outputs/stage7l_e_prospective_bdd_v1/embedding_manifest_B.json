@@ -1,0 +1,60 @@
+{
+  "schema_version": "stage7l_e_embedding_manifest_v1",
+  "representation": "B_seed3407",
+  "checkpoint_or_scaler": {
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6t_candidates_v1/candidate_B_single_gru_recovery/seed_3407/best_model.pt",
+    "sha256": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f"
+  },
+  "preprocessing_contract": "frozen_stage6v_stage6w_inference_pipeline",
+  "model_eval": true,
+  "dropout_disabled": true,
+  "scenario_order_sha256": "74206af6b0d7bc5be4b16e8ef8343feebad6ced722d1d3232e4e72c6396a3ec3",
+  "finite": true,
+  "doses": [
+    {
+      "dose": "dose0",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "83cec148fe94fef0b301f33c5e9c469473fa48a26d0baceec7091cb45a498a33",
+      "input_feature_sha256": "dbea7094be6fd8d5b0145cfa7aae43e525e2b83d81cef52a53f595abd20359fd"
+    },
+    {
+      "dose": "dose25",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "6e478223c16c78815ff2d335b5299d6c03ec40a22dac26e778c9f1c38ad80688",
+      "input_feature_sha256": "884250a46485efbe8887f1f8083db2b0856aa6c568d5b56c68da9193be16b08b"
+    },
+    {
+      "dose": "dose50",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "183593cec8e456f5a827b67d05b1f4a7afa9e37d938d52e24b9af15cda045529",
+      "input_feature_sha256": "02b4e28b9c2289502ce20f7928b7c658f79dec8955a7bc78e76f5e63a45190f7"
+    },
+    {
+      "dose": "dose75",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "aab8126c586d3f8575dd458cc614c22e93cb0e22c0a2a972cf32c0cd1cf74263",
+      "input_feature_sha256": "47850cd1b48a9b337f66e15468d9d4ce6200cb697f9cfb06e48e15def80713f0"
+    },
+    {
+      "dose": "dose100",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "57ef58da71ec10a9a875009af941670a3f6faa2914b0c1a5f4579123696c69a4",
+      "input_feature_sha256": "7a80ab3db564a78925318e9dcde59bb3a0a42f14e4d66276d751c5d727f3ec5f"
+    }
+  ]
+}
