@@ -1,0 +1,106 @@
+{
+  "schema_version": "stage7l_c2_task_population_consistency_amendment_manifest_v1",
+  "status": "STAGE7L_C2_TASK_POPULATION_CONSISTENCY_AMENDMENT_FROZEN",
+  "timing": "BEFORE_STAGE7L_D_START_AND_BEFORE_ANY_CONFIRMATION_RESULT",
+  "reason_1": "make Primary LAT.LANE_CHANGE population identical to the corresponding secondary matrix cell",
+  "reason_2": "freeze treatment-independent handling of non-computable secondary task cells",
+  "provenance": {
+    "stage7l_c1_freeze_commit": "a3b94a895be8461ff6318bb44fb80a8d67442887",
+    "original_stage7l_c_protocol_sha256": "ae4c1a3ea639d12c9d5f257d87b07e3442e4b22f11c199e40d14f8dab407d125",
+    "stage7l_c1_protocol_sha256": "55eb0fe0cd606cd9607521439e163886bb9028c13a8c609762f12f71e65ef94f",
+    "stage7l_c2_protocol_sha256": "f5a8b2df5ed60c0384e8181feceab33f3c6f048780e95aab851184e49247490a",
+    "stage7l_c1_authorization_sha256": "64162e0451697e6b77e43bab018359abd46d01668708e2e08bf2377b16b9dbbe",
+    "stage7l_c2_authorization_sha256": "f2d46f586a3131144aa2d20b6d86a1cfdd2bfe77dccf2b224a99e8de66acfb5e",
+    "stage7l_c1_manifest_sha256": "c17200cbeef00a60d961d7f6acc915b91bb0d9f6fc5faab899215fda81f275a1",
+    "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+    "maneuver_manifest_sha256": "ad0abdb3ebfaf8f06c92987538254a79455ad3d7b03a42e609462b49596de725",
+    "pretreatment_source_sha256": "7b045a347881b48bd7558ed7f234122c60292c12d90c685c5c5244e9fa4e110b",
+    "task_mask_generation_tool_sha256": "99b1201d511e09c2b2b6b2190fc4c3f893443e821f6c775331311bd9883b1663"
+  },
+  "task_population_freeze": {
+    "task_mask_definition_version": "stage7l_c2_pretreatment_task_masks_v1",
+    "LAT.LANE_CHANGE": {
+      "definition": "all frozen Stage7L confirmation roster members",
+      "n_scenarios": 80,
+      "mask_sha256": "99063af8910597cdf81d82086c13bd13fb489e3f74172f4b2e816a03e62ea0d1",
+      "source": "frozen_roster_membership"
+    },
+    "LAT.DYNAMICS": {
+      "definition": "official_scenario_types_json intersects the frozen high-motion type set",
+      "frozen_official_types": ["high_lateral_acceleration", "high_magnitude_speed", "medium_magnitude_speed"],
+      "n_scenarios": 38,
+      "mask_sha256": "2840d14d5d4083d7ed890363f0f91ee7d4b9e90aa176836b1f9627741508be9b",
+      "source": "pre_treatment_official_scenario_metadata_only",
+      "mapping_strength": "MIXED_PROXY"
+    },
+    "mask_hash_definition": "canonical_sha256_of_ordered_scenario_token_list_where_mask_true_in_frozen_roster_order",
+    "masks_are_distinct": true
+  },
+  "primary_secondary_identity": {
+    "primary_cell": "B_seed3407_x_dose100_vs_dose0_x_LAT.LANE_CHANGE",
+    "primary_cell_definition_sha256": "283d4c0abd55990f99c5a1c4080c61667e395de7e4e2156cdae0a34c50427b1b",
+    "secondary_corresponding_cell_definition_sha256": "283d4c0abd55990f99c5a1c4080c61667e395de7e4e2156cdae0a34c50427b1b",
+    "definition_identical": true,
+    "primary_excluded_exactly_once": true
+  },
+  "secondary_family": {
+    "theoretical_cells": 40,
+    "fixed_secondary_cells": 39,
+    "correction": "Holm_across_single_frozen_39_test_family",
+    "non_computable_status": "NOT_COMPUTABLE_PRE_FROZEN_TASK_POPULATION",
+    "non_computable_raw_p_for_multiplicity": 1.0,
+    "non_computable_cell_remains_in_family": true,
+    "low_n_status": "LOW_N_SECONDARY_DIAGNOSTIC",
+    "low_n_compute_normally": true,
+    "new_secondary_minimum_n_gate": null
+  },
+  "canonical_invariant_sha256": {
+    "source_assets": "8ea3e64eb6aa1c432d2bf52aad66b8385bfb778622e560841d6b3a3d01e9e0a9",
+    "treatment": "fc9d58caaa737233b70e3c7420c6f03cfe646979c3c2f05a615fbcb82cb07e33",
+    "eligibility": "6f3cd81c2ce01b422f3d8391f7e24629a263a6bbbb51e5ad1ab930980b380a1d",
+    "selection": "b22f6341cf3a58fe08b8dbb7ce35998ee9182b9337ef385c2d2717ca889c8013",
+    "mechanism": "28b02ad241d80f394debbc65fe11577f7445d24f44a96582cfcbd91a144eddc3",
+    "semantic_uncertainty_reporting": "ac9e9f41a005906cc227cf340350bdba0ae7eb9240464b0cb6d9bb2845fcd88a",
+    "nuisance_gate": "84ce77ef19f6fef5458b49b069b921c0f73ae9a7a117e7b2c34fbf8fc0afdbd8",
+    "safety_validity_gate": "024c066451c57618d6ca27f151f624eb728a6bcbea89020aacf2d36692fc8a4b",
+    "failure_policy": "8bbece81c5bb353d2e3a83cc898dc608f69285f99d97226a9154a2cb39644cc0",
+    "representation_lock": "118ecd84c26c6272ede94d2e105c4cb99deb464c72d468e42b5b64eff82f3dbf",
+    "primary_endpoint_scientific_definition": "0cd6287dbcd2a7a2062606ef0701b58b8f90f2190f1580c2dbeb1aae21af3995"
+  },
+  "change_flags": {
+    "scientific_design_changed": false,
+    "roster_changed": false,
+    "treatment_changed": false,
+    "dose_changed": false,
+    "trigger_changed": false,
+    "planner_changed": false,
+    "eligibility_changed": false,
+    "dynamic_clearance_changed": false,
+    "buffer_changed": false,
+    "mechanism_metrics_changed": false,
+    "mechanism_gate_changed": false,
+    "nuisance_gate_changed": false,
+    "safety_gate_changed": false,
+    "failure_policy_changed": false,
+    "checkpoint_changed": false,
+    "primary_endpoint_changed": false,
+    "stage7l_d_started": false,
+    "confirmation_result_existed": false,
+    "rollout_read": false,
+    "embedding_read": false,
+    "bdd_or_mmd_read": false
+  },
+  "protocol_finality": {
+    "c2_is_final_pre_stage7l_d_consistency_amendment": true,
+    "result_contingent_protocol_change_forbidden": true,
+    "post_stage7l_d_exception_only_for": ["demonstrated_code_non_executability", "sha_asset_corruption", "fatal_logical_non_runnability"]
+  },
+  "final_states": [
+    "STAGE7L_C2_TASK_POPULATION_CONSISTENCY_AMENDMENT_FROZEN",
+    "STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN",
+    "STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN",
+    "STAGE7L_C_CONFIRMATION_ROSTER_FROZEN",
+    "STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED",
+    "STAGE7L_D_NOT_STARTED"
+  ]
+}
