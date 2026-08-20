@@ -9747,3 +9747,37 @@ python tools/stage7l_validate_c1_amendment.py
 - roster SHA仍为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`，N/left/right/log=`80/15/65/79`，development scenario/log overlap均为0。
 - minimum complete与Primary minimum pair均为76；secondary test count为39；Primary不进入secondary Holm。
 - amended protocol与blind authorization SHA互相绑定，`stage7l_d=NOT_STARTED`。
+
+## Stage7L-C2 Task-Population Consistency Amendment验证
+
+### 1. 命令
+
+只读重放pre-treatment task mask并验证最终C2机器协议：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_validate_c2_amendment.py
+```
+
+如需单独导出可审计mask，只允许使用冻结roster与pre-treatment Pool B：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_generate_pretreatment_task_masks.py \
+  --output-csv /path/to/stage7l_c2_pretreatment_task_masks.csv
+```
+
+### 2. 期望行为
+
+- `LAT.LANE_CHANGE`直接等于完整冻结roster membership；不读取expert/treatment outcome。
+- `LAT.DYNAMICS`只根据`official_scenario_types_json`是否命中冻结high-motion标签生成。
+- 检查Primary与理论矩阵对应格定义SHA相同、Primary只排除一次、40格理论矩阵与39格Holm family一致。
+- 检查不可计算cell固定raw p=1且仍留在family，小样本可计算cell不新增门槛。
+- 不运行Stage7L-D、planner rollout、embedding、BDD/MMD或训练。
+
+### 3. 通过标准
+
+- 输出`STAGE7L_C2_TASK_POPULATION_CONSISTENCY_AMENDMENT_FROZEN`。
+- task mask重放为`LAT.LANE_CHANGE=80/80`、`LAT.DYNAMICS=38/80`且SHA匹配C2 manifest。
+- roster仍为80/15/65/79 logs且SHA不变；dose、gates、failure policy、checkpoint和Primary统计规则均不变。
+- `theoretical_cells=40`、`secondary_cells=39`、`stage7l_d_started=false`。

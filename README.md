@@ -2205,3 +2205,9 @@ Stage7L-C冻结80个Pittsburgh、pre-treatment dynamic-clean confirmation场景�
 Stage7L-D启动前完成了纯协议修订：`N_design=80`继续作为execution/safety/missingness人口；每个BDD contrast使用冻结80场景中全部完整dose0+doseX pair，Primary要求`N_pair(dose100)≥76`。secondary family现固定为old64/A/B/C/ego13×4 doses×2独立task views的40格减去唯一Primary格，即单一39-test Holm family；B保留完整dose curve，Primary固定标记`PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY`。semantic CI仅作展示，使用log-cluster bootstrap 10,000次、seed 620272。
 
 roster仍为80场景、15 left/65 right、79 logs，SHA256仍为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；没有运行Stage7L-D、rollout、embedding、BDD/MMD或训练。详见[`docs/stage7l_c1_protocol_consistency_amendment_zh.md`](docs/stage7l_c1_protocol_consistency_amendment_zh.md)。
+
+## Stage7L-C2 Task-Population Consistency Amendment
+
+C2将`LAT.LANE_CHANGE`统一定义为完整80场景prospective roster membership，使Primary与理论矩阵对应格共享同一个task population和cell-definition SHA；`LAT.DYNAMICS`仅按冻结Pool B的pre-treatment `official_scenario_types_json`生成mixed-proxy mask。当前重放为80/80与38/80，两mask不同。
+
+理论矩阵仍为40格并只排除一次Primary，secondary Holm family固定39格。不可计算secondary cell不得删除，固定以`NOT_COMPUTABLE_PRE_FROZEN_TASK_POPULATION`和raw p=1进入Holm；可计算小样本cell正常计算并标记`LOW_N_SECONDARY_DIAGNOSTIC`。C2是Stage7L-D前最后一次protocol consistency amendment；Stage7L-D仍未启动。详见[`docs/stage7l_c2_task_population_consistency_amendment_zh.md`](docs/stage7l_c2_task_population_consistency_amendment_zh.md)。

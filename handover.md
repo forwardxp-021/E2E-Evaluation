@@ -733,11 +733,12 @@ Final BDD schema:
 
 ### Track B — Stage7L
 
-Stage7L-A2、B/B2 development与Stage7L-C prospective protocol/80-scenario roster freeze均已完成。Stage7L-C1已在任何confirmation结果产生前完成protocol consistency amendment：roster仍为80场景、15 left/65 right、79 logs，SHA为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；Primary pair下限为76，secondary family为排除唯一Primary后的39-test Holm family。
+Stage7L-A2、B/B2 development与Stage7L-C prospective protocol/80-scenario roster freeze均已完成。Stage7L-C1/C2已在任何confirmation结果产生前完成最终protocol consistency amendment：roster仍为80场景、15 left/65 right、79 logs，SHA为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；Primary pair下限为76，`LAT.LANE_CHANGE`等于完整roster membership，`LAT.DYNAMICS`使用冻结pre-treatment official type mask；secondary family为排除唯一Primary后的39-test Holm family。
 
 当前状态：
 
 ```text
+STAGE7L_C2_TASK_POPULATION_CONSISTENCY_AMENDMENT_FROZEN
 STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN
 STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN
 STAGE7L_C_CONFIRMATION_ROSTER_FROZEN
@@ -804,7 +805,7 @@ RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
 9. 哪些实验、checkpoint、场景和门槛绝对不能事后修改？
 10. 下一步是否以论文写作为主，且没有默认重开冻结实验？
 11. 当前唯一开放的新实验是否为Stage7L？
-12. Stage7L-C1是否已冻结且Stage7L-D仍为NOT_STARTED？
+12. Stage7L-C2是否已作为最后一次pre-D amendment冻结，且Stage7L-D仍为NOT_STARTED？
 13. 是否明确现有PDM不能直接提供clean pure-lateral treatment？
 14. 是否区分Stage7 post-hoc lane-change slice与未来Stage7L prospective confirmation？
 15. 是否明确Stage7L不能重新打开模型训练？
