@@ -743,10 +743,10 @@ STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN
 STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN
 STAGE7L_C_CONFIRMATION_ROSTER_FROZEN
 STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED
-STAGE7L_D_NOT_STARTED
+STAGE7L_D_ONE_TIME_CONFIRMATION_IN_PROGRESS
 ```
 
-Stage7L-D尚未启动；必须等待单独授权，不能自动运行planner rollout、embedding或BDD/MMD。
+Stage7L-D已获单独授权。统一可恢复runner、attempt ledger、机制/nuisance/safety/canonical identity门禁工具已完成代码级验证；正式400格运行按冻结roster order×五档确定性执行，不允许replacement。当前仍禁止embedding、checkpoint、BDD/MMD和任何训练；只有机器gate全部通过才可解锁Stage7L-E，且不得自动执行Stage7L-E。
 Stage7L不得重新打开Stage6模型训练，也不得为了让BDD更显著而调representation。
 **新实验 ≠ 重新训练模型。**
 
@@ -805,7 +805,7 @@ RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
 9. 哪些实验、checkpoint、场景和门槛绝对不能事后修改？
 10. 下一步是否以论文写作为主，且没有默认重开冻结实验？
 11. 当前唯一开放的新实验是否为Stage7L？
-12. Stage7L-C2是否已作为最后一次pre-D amendment冻结，且Stage7L-D仍为NOT_STARTED？
+12. Stage7L-C2是否已作为最后一次pre-D amendment冻结，且Stage7L-D只运行planner-level confirmation、尚未读取representation？
 13. 是否明确现有PDM不能直接提供clean pure-lateral treatment？
 14. 是否区分Stage7 post-hoc lane-change slice与未来Stage7L prospective confirmation？
 15. 是否明确Stage7L不能重新打开模型训练？

@@ -9781,3 +9781,53 @@ python tools/stage7l_validate_c1_amendment.py
 - task mask重放为`LAT.LANE_CHANGE=80/80`、`LAT.DYNAMICS=38/80`且SHA匹配C2 manifest。
 - roster仍为80/15/65/79 logs且SHA不变；dose、gates、failure policy、checkpoint和Primary统计规则均不变。
 - `theoretical_cells=40`、`secondary_cells=39`、`stage7l_d_started=false`。
+
+## Stage7L-D 一次性 Planner-Level Confirmation（运行中）
+
+### 1. 命令
+
+第一条rollout前只做SHA/roster/环境验证并预建400格账本：
+
+```bash
+PYTHONPATH=../nuplan-devkit:../tuplan_garage:$PWD \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_run_confirmation.py \
+  --prepare_only \
+  --output_dir outputs/stage7l_d_one_time_confirmation_v1
+```
+
+正式执行或中断后确定性resume：
+
+```bash
+PYTHONPATH=../nuplan-devkit:../tuplan_garage:$PWD \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_run_confirmation.py \
+  --output_dir outputs/stage7l_d_one_time_confirmation_v1
+```
+
+400格结束后，仅提取planner trajectory/official safety并运行冻结门禁：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_extract_confirmation_metrics.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/stage7l_evaluate_confirmation_gates.py
+```
+
+### 2. 期望行为
+
+- preflight精确验证protocol/authorization/roster/planner/dose config SHA，以及80场景、15/65、79 logs、development零重叠和80/80 official runnable。
+- 预先写入400个固定cell；运行顺序为roster collection order×dose0/25/50/75/100。每个attempt单独保留，成功结果不会被覆盖；只允许同cell基础设施重试，不允许replacement或结果性重跑。
+- gate evaluator只读取official rollout、trajectory mechanism、nuisance、safety和canonical identity；绝不加载checkpoint/embedding，不计算BDD/MMD。
+- safety denominator固定为全部80场景；五档均成功/完成才算scenario success/completion，任一档off-road或责任碰撞即计为该scenario发生。
+
+### 3. 通过标准
+
+- `planned_rollout_ledger.csv`恰好400行数据，`N_complete_all_five_doses>=76`。
+- dose100−dose0：duration median<0且一致性≥70%；RMS lateral accel与peak yaw median>0且一致性各≥80%。
+- mean speed、RMS longitudinal accel、RMS longitudinal jerk、route progress的median absolute与p90均不超过冻结门槛。
+- 80场景口径official success/completion≥95%，off-road/责任碰撞≤5%，canonical longitudinal identity无mismatch。
+- 全部门禁通过才写`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`；否则写`...NOT_UNLOCKED`。本命令永远不自动执行Stage7L-E。

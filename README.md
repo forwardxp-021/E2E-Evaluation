@@ -2211,3 +2211,9 @@ roster仍为80场景、15 left/65 right、79 logs，SHA256仍为`90ec9b427636cef
 C2将`LAT.LANE_CHANGE`统一定义为完整80场景prospective roster membership，使Primary与理论矩阵对应格共享同一个task population和cell-definition SHA；`LAT.DYNAMICS`仅按冻结Pool B的pre-treatment `official_scenario_types_json`生成mixed-proxy mask。当前重放为80/80与38/80，两mask不同。
 
 理论矩阵仍为40格并只排除一次Primary，secondary Holm family固定39格。不可计算secondary cell不得删除，固定以`NOT_COMPUTABLE_PRE_FROZEN_TASK_POPULATION`和raw p=1进入Holm；可计算小样本cell正常计算并标记`LOW_N_SECONDARY_DIAGNOSTIC`。C2是Stage7L-D前最后一次protocol consistency amendment；Stage7L-D仍未启动。详见[`docs/stage7l_c2_task_population_consistency_amendment_zh.md`](docs/stage7l_c2_task_population_consistency_amendment_zh.md)。
+
+## Stage7L-D One-Time Planner-Level Confirmation
+
+Stage7L-D已获单独授权并进入`STAGE7L_D_ONE_TIME_CONFIRMATION_IN_PROGRESS`。统一runner在第一条official rollout前精确验证protocol SHA `f5a8b2df...`、roster SHA `90ec9b42...`、80场景/15 left/65 right/79 logs、development零重叠、80/80 runnable/dynamic-clear/static-eligible，并预先建立固定400格计划账本。运行顺序固定为roster order×dose0/25/50/75/100；不允许replacement，只有尚未产生有效rollout的同格基础设施故障可保留attempt后技术重试。
+
+本阶段只处理official planner trajectory、mechanism、longitudinal nuisance、safety/validity和canonical identity。安全门禁在结果前固定为80场景scenario-level保守聚合；任何一档off-road/责任碰撞即记该场景发生，official success和lane-change completion要求五档全部满足。Stage7L-D完成前禁止读取checkpoint/embedding或计算BDD/MMD；即使全部planner gate通过，也只解锁Stage7L-E，不自动执行Stage7L-E。当前结果尚未产生，中文执行报告见[`docs/stage7l_d_one_time_planner_confirmation_report_zh.md`](docs/stage7l_d_one_time_planner_confirmation_report_zh.md)。
