@@ -743,11 +743,13 @@ STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN
 STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN
 STAGE7L_C_CONFIRMATION_ROSTER_FROZEN
 STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED
-STAGE7L_D_ONE_TIME_CONFIRMATION_IN_PROGRESS
+STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED
+STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED
 ```
 
-Stage7L-D已获单独授权。统一可恢复runner、attempt ledger、机制/nuisance/safety/canonical identity门禁工具已完成代码级验证；正式400格运行按冻结roster order×五档确定性执行，不允许replacement。当前仍禁止embedding、checkpoint、BDD/MMD和任何训练；只有机器gate全部通过才可解锁Stage7L-E，且不得自动执行Stage7L-E。
-首轮执行在0条有效rollout时发现冻结confirmation maneuver manifest缺少4个planner dataclass接口字段；已按C2允许的`demonstrated code non-executability`例外准备只补冻结常量的runtime adapter。源manifest SHA、roster、几何、dose、planner和gate保持不变，失败attempt永久保留。
+Stage7L-D已完成：冻结80场景（15 left/65 right）×5档共400格全部official成功，80/80场景五剂量完整，replacement=0。dose100−dose0的duration、RMS lateral accel与peak yaw三项机制均按预注册方向通过；四项纵向nuisance、80场景scenario-level safety/validity以及canonical identity也全部通过。最终状态为`STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED`，因此只解锁`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`，但尚未执行Stage7L-E。
+
+首轮执行在0条有效rollout时发现冻结confirmation maneuver manifest缺少4个planner dataclass接口字段；按C2允许的`demonstrated code non-executability`例外使用只补冻结常量的runtime adapter。第二代在0条有效rollout时发现Hydra searchpath接口问题，最终只恢复历史已验证searchpath。源manifest SHA、roster、几何、dose、planner和gate保持不变，12条结果前基础设施失败attempt永久保留；全程未读取embedding/checkpoint，未计算BDD/MMD。
 Stage7L不得重新打开Stage6模型训练，也不得为了让BDD更显著而调representation。
 **新实验 ≠ 重新训练模型。**
 

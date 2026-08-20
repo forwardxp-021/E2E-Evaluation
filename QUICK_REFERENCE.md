@@ -9782,7 +9782,7 @@ python tools/stage7l_validate_c1_amendment.py
 - roster仍为80/15/65/79 logs且SHA不变；dose、gates、failure policy、checkpoint和Primary统计规则均不变。
 - `theoretical_cells=40`、`secondary_cells=39`、`stage7l_d_started=false`。
 
-## Stage7L-D 一次性 Planner-Level Confirmation（运行中）
+## Stage7L-D 一次性 Planner-Level Confirmation（已通过并停止）
 
 ### 1. 命令
 
@@ -9831,3 +9831,12 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
 - mean speed、RMS longitudinal accel、RMS longitudinal jerk、route progress的median absolute与p90均不超过冻结门槛。
 - 80场景口径official success/completion≥95%，off-road/责任碰撞≤5%，canonical longitudinal identity无mismatch。
 - 全部门禁通过才写`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`；否则写`...NOT_UNLOCKED`。本命令永远不自动执行Stage7L-E。
+
+### 4. 冻结结果
+
+- 80场景、400计划格；400/400 official rollout成功，80/80场景五剂量完整，各dose均80/80，replacement=0。
+- dose100−dose0：duration `−0.200160 s / 88.75%`，RMS lateral accel `+0.055832 m/s² / 100%`，peak yaw `+0.014404 rad/s / 96.25%`；三项mechanism PASS。
+- 四项longitudinal nuisance PASS；scenario-level official success/completion `100%/100%`，off-road `2.5%`，responsible collision `1.25%`，safety PASS。
+- canonical identity `80/80`、mismatch `0`；总状态`STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED`。
+- 仅解锁`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`；Stage7L-E尚未执行，embedding/checkpoint/BDD/MMD均未读取或计算。
+- 详见`docs/stage7l_d_one_time_planner_confirmation_report_zh.md`和`docs/stage7l_d_confirmation_manifest_v1.json`。
