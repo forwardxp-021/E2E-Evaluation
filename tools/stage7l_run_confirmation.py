@@ -286,7 +286,16 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
             "maneuver_manifest_sha256", "planner_code_sha256", "dose_config_sha256", "runner_sha256",
             "mechanism_evaluator_sha256", "gate_evaluator_sha256",
         )
-        mismatch = [key for key in immutable_keys if existing.get(key) != provenance.get(key)]
+        mismatch = []
+        for key in immutable_keys:
+            if existing.get(key) == provenance.get(key):
+                continue
+            # The original execution-start commit remains immutable after the
+            # audited interface repair.  Resume is bound to repair_commit plus
+            # the repaired runner SHA rather than rewriting scientific history.
+            if key == "execution_start_commit" and existing.get("repair_commit") == provenance.get("execution_start_commit"):
+                continue
+            mismatch.append(key)
         if mismatch:
             if not args.authorize_manifest_interface_repair:
                 raise ValueError(f"resume provenance mismatch: {mismatch}")
