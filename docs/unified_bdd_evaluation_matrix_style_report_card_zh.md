@@ -426,3 +426,48 @@ production-style unpaired release monitoring；representation能力必须按depl
 `outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md`，状态：
 
 `FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`
+
+## 15. Stage7L prospective lateral evidence addendum（E3）
+
+Stage7L-E完成后，固定13维taxonomy、Reference术语、字段定义和既有统计值均不改变。新增mapping文件
+`configs/unified_bdd_stage7l_evidence_mapping_v1.csv`只规定prospective lateral证据如何进入既有维度：
+
+| Stage7L task | 固定维度 | 人口 | 证据身份 | semantic绑定 |
+|---|---|---:|---|---|
+| `LAT.LANE_CHANGE` | `LAT.LANE_CHANGE` | 80 pair / 79 log | prospective；B dose100为Primary | Stage7L-D全80场景duration、RMS lateral accel、peak yaw |
+| `LAT.DYNAMICS` | `LAT.DYNAMICS` | 38 pair / frozen pre-treatment mask | prospective secondary；low-N mixed proxy | task-specific semantic delta为N/A，不借用全80场景语义量 |
+
+### 15.1 主展示优先级与历史证据保留
+
+- `LAT.LANE_CHANGE`和`LAT.DYNAMICS`的当前主展示采用Stage7L dose100 prospective结果；
+- 旧Stage7固定60场景changing-lane/high-motion结果继续原值保存在
+  `historical_stage7_posthoc_lateral_evidence.csv`；
+- 旧结果身份始终是`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`，不得与Stage7L合并成一次检验，
+  也不得删除或改写为prospective；
+- Stage7L-D planner mechanism PASS与Stage7L-E representation结果分层报告，不能把机制PASS写成BDD PASS。
+
+### 15.2 Stage7L Primary与能力边界
+
+Behavior Reference为dose0，Target为dose100，evaluation mode为same-scenario paired；每个representation的
+Null Reference为其自身100,000次within-pair label-swap null。Primary Representation固定为B-3407：
+
+```text
+raw MMD² = 0.001075040606
+null q95 = 0.002466807391
+BDD/null-q95 = 0.435802410×
+Z_BDD = -0.065036660
+raw p = 0.411905881
+STAGE7L_E_PRIMARY_BDD_FAILED
+```
+
+dose100 `LAT.LANE_CHANGE`下old64/A/B/C均未检出；ego13为`13.087068× / Z=40.201025`。ego13只表示
+在这个直接作用于ego横向运动学的已知treatment下标准化敏感度最高，不能改写B Primary、不能称为全局最佳
+representation，也不能推导neighbor/context无价值。Stage6V联合结论保持不变。
+
+### 15.3 E3权威输出与冻结状态
+
+更新后的两层报告位于`outputs/final_standardized_bdd_style_report_card_v2_stage7l/`；完整prospective中文
+报告与manifest位于`docs/stage7l_e_prospective_representation_bdd_report_zh.md`和
+`docs/stage7l_e_prospective_bdd_manifest_v1.json`。E3不重算BDD/MMD、不重新导出embedding、不训练、不仿真。
+
+`STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS`

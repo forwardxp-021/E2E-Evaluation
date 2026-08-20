@@ -9885,3 +9885,62 @@ E1测试：
 - 五档builder structural validation均PASS，不删除collision/off-road场景。
 - pytest通过；实现manifest状态为`FROZEN_READY_FOR_STAGE7L_E_PROSPECTIVE_BDD_EXECUTION_NOT_RUN`。
 - E2单独执行前，`stage7l_e_final_decision.json`、正式embedding和BDD结果均不存在。
+
+## Stage7L-E E2 正式BDD与机器结果冻结（已完成）
+
+### 1. 命令
+
+正式一次性推理与40格BDD：
+
+```bash
+waymo_dev/bin/python tools/stage7l_e_run_prospective_bdd.py \
+  --prepared-dir outputs/stage7l_e_prospective_bdd_v1 \
+  --context-root outputs/stage7l_e_prospective_bdd_v1/contexts \
+  --output-dir outputs/stage7l_e_prospective_bdd_v1
+```
+
+只读审计并冻结机器结果：
+
+```bash
+waymo_dev/bin/python tools/stage7l_e_freeze_machine_results.py \
+  --result-dir outputs/stage7l_e_prospective_bdd_v1
+```
+
+### 2. 期望行为
+
+- 只读取E1冻结context、old64/A/B/C primary seed 3407 checkpoint及ego13 scaler；不调用nuPlan、不训练、不改checkpoint。
+- 计算5 representations×4 nonzero doses×2固定task共40格；Primary固定为B-3407、dose100 vs dose0、`LAT.LANE_CHANGE`。
+- null固定100,000次same-scenario within-pair label swap；Primary独立报告，剩余39格组成唯一secondary Holm family。
+- machine freeze只审计E2已有结果并写小型JSON/CSV与中文摘要，不重算统计。
+
+### 3. 通过标准与冻结结果
+
+- 40格齐全；`LAT.LANE_CHANGE`每格80 pair，`LAT.DYNAMICS`每格38 pair；39个Holm检验、20个low-N diagnostic、0个不可计算格。
+- Primary raw MMD²=`0.001075040606`、null q95=`0.002466807391`、ratio=`0.435802410`、`Z=-0.065036660`、raw p=`0.411905881`，状态必须为`STAGE7L_E_PRIMARY_BDD_FAILED`。
+- dose100 lane-change中old64/A/B/C均未检出；ego13=`13.087068× / Z=40.201025 / p=9.9999e-06`。
+- 总状态为`STAGE7L_E_MACHINE_RESULTS_FROZEN_READY_FOR_E3_REPORTING`；不得因Primary失败调整模型、task、roster、null或门槛。
+
+## Stage7L-E E3 报告与论文证据整合（已完成）
+
+### 1. 命令
+
+```bash
+waymo_dev/bin/python tools/stage7l_e_finalize_reporting.py
+```
+
+### 2. 期望行为
+
+- 逐值继承E2冻结CSV/JSON，仅生成中文完整报告、最终manifest和13维Style Report Card addendum。
+- `LAT.LANE_CHANGE`与`LAT.DYNAMICS`主展示采用Stage7L prospective dose100；旧Stage7 60场景post-hoc证据另表保留。
+- 固定taxonomy、Stage6V联合结论、checkpoint、planner、scenario和所有统计值不变；不运行训练、仿真、embedding或BDD重算。
+- 若默认输出目录已经存在，工具拒绝覆盖；复核时应给新的临时`--output-dir`并比较哈希。
+
+### 3. 通过标准
+
+- `stage7l_e_prospective_bdd_long.csv`为40行，整合主矩阵保持13维，历史Stage7 post-hoc lateral evidence非空且身份未改变。
+- Primary仍精确等于E2的B-3407失败结果；`statistics_recomputed=false`、`stage6v_joint_conclusion_modified=false`。
+- 最终状态同时为`STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE`与
+  `STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS`。
+- 权威输出：`docs/stage7l_e_prospective_representation_bdd_report_zh.md`、
+  `docs/stage7l_e_prospective_bdd_manifest_v1.json`和
+  `outputs/final_standardized_bdd_style_report_card_v2_stage7l/`。

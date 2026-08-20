@@ -1,0 +1,31 @@
+{
+  "schema_version": "final_standardized_bdd_reporting_stage7l_addendum_v1",
+  "status": "STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS",
+  "base_schema_status": "FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN",
+  "stage7l_e_final_status": "STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE",
+  "base_final_manifest_sha256": "64d27ba6f584b6f835c20ac68562b326b8dd9660def53e0f3b047b045fbd4d23",
+  "stage7l_e_machine_manifest_sha256": "554f1ac835456f8888c54e112913b9537dda77e3415e569dc752f7da86d93769",
+  "stage7l_evidence_mapping_path": "configs/unified_bdd_stage7l_evidence_mapping_v1.csv",
+  "stage7l_evidence_mapping_sha256": "adaf155aa5f34854e55640b0cce39977225b3cf94ffc87cbf3311e14bdb14938",
+  "finalizer_tool_sha256": "ae833018e3fcfd6fc050c18698b60defe7063e2336294a5b50036b0f126d6fbe",
+  "statistics_recomputed": false,
+  "training_run": false,
+  "simulation_run": false,
+  "checkpoint_created_or_modified": false,
+  "scenario_selection_modified": false,
+  "raw_mmd2_cross_representation_ranking_performed": false,
+  "stage6v_joint_conclusion_modified": false,
+  "stage7_historical_posthoc_preserved": true,
+  "dimension_count": 13,
+  "stage7l_prospective_row_count": 40,
+  "output_files": {
+    "stage7l_e_prospective_bdd_long.csv": "2fdb615fea09f4b4a44dca5f2b45a4f21637e48b2c3010d7e9dcd7ec2236c516",
+    "standardized_bdd_long_with_stage7l.csv": "37c154a5ca690a9b1f4cf38eea021f1e6cd03df5796fc8f253edd232c244bfb3",
+    "historical_stage7_posthoc_lateral_evidence.csv": "e60b90decf02b04977608ba8229a8e2c2ce7e9f2cc99164896f2ac92223153fe",
+    "final_fixed_dimension_primary_matrix.csv": "b031e790c9fa2d56daf61311db9fa156331e85001cc26673f87c5ce20043d6de",
+    "final_behavior_style_report_card.csv": "16861311e6ba1511ec0137bea83c3f54c2ec8a5e166741ac69d88dc4ebced0ca",
+    "final_representation_qualification_matrix.csv": "cd8b2b4cfa55b11444f4c6a2c5ff6ccece2d8d29631e40981a78ba09808437d0",
+    "final_shared_parent_bdd_audit.csv": "6156e46a7c9822184dc06c7f5afe975fad494063c73d57e54bfd13d1b0059c33",
+    "final_standardized_bdd_style_report_card_zh.md": "b4cede6e14adbb5fe6a2d44ae88ef7b8290e184b0ef52b98f8302a98575f4489"
+  }
+}

@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import tools.stage7l_e_run_prospective_bdd as stage7l_e
+import tools.stage7l_e_finalize_reporting as stage7l_e_reporting
 
 from tools.interaction_context_features import get_feature_schema
 from tools.stage6l_run_context_representation_ablation import (
@@ -230,3 +231,24 @@ def test_full_40_cell_ledger_resumes_without_recomputation(tmp_path: Path, monke
     )
     assert cells2 == cells1
     assert set(nulls2) == set(nulls1)
+
+
+def test_e3_reporting_preserves_primary_failure_identity() -> None:
+    row = {
+        "representation": "B_seed3407",
+        "dose": "dose100",
+        "task": "LAT.LANE_CHANGE",
+        "holm_significant_0_05": "",
+    }
+    assert (
+        stage7l_e_reporting.evidence_status(row)
+        == "PROSPECTIVE_PRE_REGISTERED_PRIMARY_FAILED"
+    )
+
+
+def test_e3_reporting_keeps_prospective_and_posthoc_evidence_separate() -> None:
+    source = Path("tools/stage7l_e_finalize_reporting.py").read_text(encoding="utf-8")
+    assert "historical_stage7_posthoc_lateral_evidence.csv" in source
+    assert "stage7l_e_prospective_bdd_long.csv" in source
+    assert '"statistics_recomputed": False' in source
+    assert '"stage6v_joint_conclusion_modified": False' in source

@@ -2,13 +2,13 @@
 
 基于 Waymo 轨迹数据学习驾驶风格 embedding 的实验工程。
 
-Stage6/Stage7、A/B/C checkpoint、一次性盲测和最终BDD报告体系均已冻结。Stage7L-A2已完成独立
-external pure-lateral planner、pre-treatment map opportunity inventory、单元测试与development-only
-official smoke；最终148个fresh token / 120个log，五档smoke 5/5成功，canonical route progress逐点一致，
-且未读取embedding/BDD。当前冻结状态为`STAGE7L_PURE_LATERAL_IMPLEMENTATION_CLEAN`和
-`STAGE7L_B_DEVELOPMENT_AUTHORIZED`，但尚未启动Stage7L-B。详细证据见
-[`docs/stage7l_a2_pure_lateral_clean_implementation_zh.md`](docs/stage7l_a2_pure_lateral_clean_implementation_zh.md)；
-Stage7L-A技术审计仍作为实施前历史记录保留。
+Stage6/Stage7、A/B/C checkpoint、一次性盲测及BDD报告体系均已冻结。Stage7L前瞻性pure-lateral
+验证也已完成：80个冻结场景×5档共400条official rollout全部成功，planner-level横向机制与纵向
+nuisance门禁通过；但预注册Primary（B-3407、dose100 vs dose0、`LAT.LANE_CHANGE`）未检出，
+`BDD/null-q95=0.435802×`、`Z_BDD=-0.065037`、`p=0.411906`。ego13在该treatment下具有最高
+标准化敏感度，但不构成“全局最佳representation”结论。当前只进入论文写作，不再开放新训练、
+新仿真或Stage7L返工。权威结果见
+[`docs/stage7l_e_prospective_representation_bdd_report_zh.md`](docs/stage7l_e_prospective_representation_bdd_report_zh.md)。
 
 ## 项目目标
 
@@ -2166,7 +2166,14 @@ Stage6S-v3的逼近响应、front-gap/THW和纵向跟车交互三行统一带`�
 [`outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md`](outputs/final_standardized_bdd_style_report_card_v1/final_standardized_bdd_style_report_card_zh.md)，
 最终状态为`FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN`。
 
-## Stage7L-B Pure-Lateral Development
+Stage7L完成后，13维taxonomy与既有统计定义保持不变，只新增prospective lateral evidence addendum。
+`LAT.LANE_CHANGE`与`LAT.DYNAMICS`的主展示优先采用Stage7L-E；旧Stage7 60场景结果继续以
+`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`身份单独保留，不能与prospective证据混写。更新后的
+两层报告位于
+[`outputs/final_standardized_bdd_style_report_card_v2_stage7l/final_standardized_bdd_style_report_card_zh.md`](outputs/final_standardized_bdd_style_report_card_v2_stage7l/final_standardized_bdd_style_report_card_zh.md)，
+冻结状态为`STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS`。
+
+## Stage7L-B Pure-Lateral Development（历史development门禁）
 
 Stage7L-B已完成24场景×5档的official development：120/120运行成功、五档canonical `s_route(t)`逐点一致、
 24/24各档均完成换道且无off-road。开发共使用26个unique token，最终roster为24 token / 24 log、6 left / 18 right；
@@ -2176,13 +2183,13 @@ Stage7L-B已完成24场景×5档的official development：120/120运行成功、
 `-0.300 s`；最强dose的纵向副作用max仅为mean speed `0.001086 m/s`、RMS accel `0.017632 m/s²`、
 RMS jerk `0.020811 m/s³`、route progress `0.031012 m`。
 
-当前结论仍为`STAGE7L_B_DEVELOPMENT_NOT_READY_FOR_FREEZE`：4个场景在所有五档均发生相同责任碰撞，说明碰撞不由
+本节记录B阶段当时结论`STAGE7L_B_DEVELOPMENT_NOT_READY_FOR_FREEZE`：4个场景在所有五档均发生相同责任碰撞，说明碰撞不由
 Sharp剂量驱动，但当前只看初始帧的traffic-clearance规则不足。按静态规则尚余83 token / 67 log（15 left / 68 right），
 必须先新增15 s pre-treatment动态走廊净空审计并重扫供给，才可人工审阅Stage7L-C。未建立confirmation roster，未读取
 embedding，未计算BDD/MMD。中文报告见
 [`docs/stage7l_b_pure_lateral_development_report_zh.md`](docs/stage7l_b_pure_lateral_development_report_zh.md)。
 
-## Stage7L-B2 Dynamic Pre-treatment Traffic Clearance
+## Stage7L-B2 Dynamic Pre-treatment Traffic Clearance（历史供给门禁）
 
 Stage7L-B2已完成：在不读取任何Stage7L rollout、dose、embedding或BDD的条件下，以原始nuPlan replay tracks建立15 s、
 time-aligned、dose-independent的common lane-change envelope。它用ego/agent footprint加3.0 m纵向和0.5 m横向固定buffer，
@@ -2190,8 +2197,8 @@ time-aligned、dose-independent的common lane-change envelope。它用ego/agent 
 
 扩大扫描全部1,621个Pittsburgh DB后，静态eligible 327个token，dynamic-clean为165个；排除全部历史token并与26个
 Stage7L-B development log严格分离后，Pool B仍有152 token / 94 log（19 left / 133 right），且official runnability为100%。
-状态升级为`STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE`与`STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED`。这只是允许人工审阅
-Stage7L-C协议，尚未建立confirmation roster或运行confirmation。详见
+当时状态升级为`STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE`与`STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED`，仅允许人工审阅
+Stage7L-C协议；后续C/D/E现已完成，最终结果见本页Stage7L-E章节。B2历史证据详见
 [`docs/stage7l_b2_dynamic_clearance_inventory_report_zh.md`](docs/stage7l_b2_dynamic_clearance_inventory_report_zh.md)。
 
 ## Stage7L-C Prospective Confirmation Freeze
@@ -2222,14 +2229,27 @@ Stage7L-D已完成并冻结为`STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED`。�
 
 首轮执行在任何有效trajectory产生前暴露出冻结maneuver manifest少4个planner接口字段的代码不可执行问题。按C2允许的pre-outcome例外，runner使用单独runtime adapter补齐既有冻结常量，不修改源manifest、roster、treatment、planner或gate；所有失败attempt原样保留并按实现代次审计。
 
-## Stage7L-E Prospective Representation / BDD（E1执行就绪）
+## Stage7L-E Prospective Representation / BDD（E1/E2/E3已完成）
 
-Stage7L-E因总预计3–5小时拆成三段。E1已完成并冻结输入、推理与统计实现，但尚未运行正式representation/BDD。
-它只复用Stage7L-D的400条official rollout，五档各80条，按既有规则将149步右侧零填充到150步，并构建五档
-`[80,150,83]` context；没有重新仿真、replacement或outcome filtering。C2 task mask重放为
-`LAT.LANE_CHANGE=80`、`LAT.DYNAMICS=38`。
+E1冻结输入、推理与统计实现；E2在不重新仿真、不训练、不改checkpoint的前提下，一次性读取冻结的
+400条Stage7L-D rollout并完成old64/A/B/C/ego13的40格prospective paired BDD；E3只做同值报告整合。
+`LAT.LANE_CHANGE`每档80 pair，`LAT.DYNAMICS`每档38 pair；null固定为100,000次same-scenario
+within-pair label swap，Primary不进入secondary 39-test Holm family。
 
-paired BDD复用Stage6V/W实际实现，固定100,000次pair-label swap、plus-one p、seed base 2026081301和39-test Holm。
-synthetic/forward测试全部通过。当前状态为`FROZEN_READY_FOR_STAGE7L_E_PROSPECTIVE_BDD_EXECUTION_NOT_RUN`；
-checkpoint、embedding和正式BDD/MMD仍未读取。详见
-[`docs/stage7l_e_execution_readiness_report_zh.md`](docs/stage7l_e_execution_readiness_report_zh.md)。
+Primary B-3407 dose100 vs dose0结果为raw MMD²=`0.001075041`、null q95=`0.002466807`、
+ratio=`0.435802×`、`Z_BDD=-0.065037`、raw p=`0.411906`，冻结为
+`STAGE7L_E_PRIMARY_BDD_FAILED`。dose100 lane-change下old64/A/B/C均未检出；ego13为
+`13.087068× / Z=40.201025 / p=9.9999e-06`。这与Stage7L-D的planner-level physical mechanism PASS
+并不矛盾：处置确实产生了横向差异，但Candidate B没有在其冻结表示/null下检出该差异。
+
+E3把prospective结果映射到固定13维Style Report Card，同时永久保留旧Stage7 post-hoc lateral证据；
+没有重算统计、修改Stage6V联合结论或新增实验。最终状态：
+
+```text
+STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE
+STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS
+```
+
+完整中文报告与机器manifest分别见
+[`docs/stage7l_e_prospective_representation_bdd_report_zh.md`](docs/stage7l_e_prospective_representation_bdd_report_zh.md)和
+[`docs/stage7l_e_prospective_bdd_manifest_v1.json`](docs/stage7l_e_prospective_bdd_manifest_v1.json)。

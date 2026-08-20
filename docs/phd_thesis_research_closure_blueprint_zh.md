@@ -1,6 +1,6 @@
 # 博士论文研究收口与写作蓝图
 
-> 证据冻结日期：2026-08-14
+> 证据冻结日期：2026-08-20
 > 论文核心主线：**Task-conditioned trajectory-level behavior drift evaluation for closed-loop planning policies**
 > 研究阶段状态：`FROZEN_FOR_THESIS_WRITING`
 > 联合模型决策：`NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE`
@@ -10,11 +10,11 @@
 
 ## 一、一句话核心贡献
 
-本文建立了一个面向闭环规划策略的、任务条件化的轨迹级行为漂移评估框架，明确区分同场景配对归因与异场景非配对发布监控，并通过 Waymo 表示学习与 official nuPlan 闭环实验同时给出正证据和能力边界：学习式表示可以显著增强发布级纵向行为漂移检出，但这种增强不等价于更强的同场景纵向归因能力，也没有证明邻车上下文具有独立增量价值。
+本文建立了一个面向闭环规划策略的、任务条件化的轨迹级行为漂移评估框架，明确区分同场景配对归因与异场景非配对发布监控，并通过 Waymo 表示学习与 official nuPlan 闭环实验同时给出正证据和能力边界：学习式表示可以显著增强发布级纵向行为漂移检出，但这种增强不等价于更强的同场景纵向或横向归因能力，也没有证明邻车上下文具有独立增量价值；前瞻性pure-lateral实验进一步确认了planner机制成立而Candidate B Primary未检出。
 
 英文一句话建议：
 
-> We present a task-conditioned trajectory-level framework that separates same-scenario attribution from unpaired release monitoring, showing that learned representations can substantially improve release-level longitudinal drift detection while exposing clear limits in paired sensitivity and incremental interaction information.
+> We present a task-conditioned trajectory-level framework that separates same-scenario attribution from unpaired release monitoring, showing that learned representations can substantially improve release-level longitudinal drift detection while exposing clear limits in paired longitudinal/lateral sensitivity and incremental interaction information.
 
 ## 二、论文要回答的科学问题与冻结结论
 
@@ -40,6 +40,7 @@ BDD/MMD² 的绝对值依赖表示尺度和 kernel bandwidth，不允许跨 repr
 1. 在 310 个新 log/scenario-disjoint 的同场景确认对上，old64 能显著区分 assertive 与 conservative planner，overall plus-one p=`9.9999e-06`，五个 pre-treatment task 经 Holm 校正后均显著；但该证据受 lane-assignment fallback 与 embedding distance 相关的质量限制约束。
 2. 在更窄的纯纵向 183-pair、四剂量任务中，ego13 通过 4/4 overall 和 12/12 task×dose；old64/A 为 4/4 和 7/12，B/C 只有 3/4 和 2/12。由此不能声称 B/C 恢复了完整的同场景纵向敏感性。
 3. 在同一 800-pair pool、相同 n=400 的控制分析中，B/C 的 paired median Z 为 28.295/25.368，高于 old64 的 13.502。这证明历史 paired 较弱不是“配对统计天然不适合 B/C”，也不只是 183 与 400 的样本量差异，而是 treatment、任务范围、场景池和 estimand 的共同作用。
+4. 在独立冻结的80场景pure-lateral prospective benchmark中，planner-level横向机制与纵向nuisance门禁通过，但B-3407 Primary仅为`0.435802× / Z=-0.065037 / p=0.411906`而未检出；ego13为`13.087068× / Z=40.201025`。这进一步说明“处置真实存在”与“某一representation能检出”是两个不同命题。
 
 ### 科学问题 3：新数据与训练目标是否改善了真实发布条件下的漂移监控？
 
@@ -68,6 +69,8 @@ B/C 的提升跨三个 seed 稳定。机制分解进一步表明，B/C 相对 ol
 Waymo Dynamic-v2 test 的 primary seed 3407 上，A/B/C longitudinal delta 分别为 `-0.0232/+0.0248/+0.0159`。三者均通过 following、lateral、behavior proxy 和 retrieval 的综合非劣性，但都没有通过冻结的 primary longitudinal 完整门禁。B-3409 虽通过全部 Waymo 门禁，但 primary seed 在盲测前已固定为 3407，不能事后换 seed。
 
 纯纵向 paired benchmark 中，A 在 learned64 中最好，但只与 old64 同为 4/4 overall、7/12 task×dose；B/C 更弱。故不能声称新 64D 全面优于 old64，也不能以强 unpaired 结果覆盖 Waymo 与 paired 负结果。
+
+Stage7L pure-lateral benchmark同样给出确认性能力边界：dose100 lane-change下old64/A/B/C均未检出；只有ego13显著。该结果不能改写为“ego13全局最佳”，因为处置直接作用于ego横向运动学；但它明确否定了“Candidate B已经具备prospective controlled lateral sensitivity”的更强主张。
 
 冻结联合决策保持：
 
@@ -107,7 +110,7 @@ prospective interaction confirmation 的 80/80 official pairs 全部成功。sho
 
 ### 贡献 5：正负证据共同定义表示能力边界
 
-给出可复现的能力矩阵：Dynamic-v2 与新纵向训练目标显著增强 learned64 的发布级纵向漂移检出，但 ego13 仍是 controlled longitudinal sensitivity 最强参考，A/B/C 未通过联合 Waymo/paired 门禁，C 也未证明 context 的独立增量价值。由此论证 task-conditioned evaluation 比追求单一“万能 embedding”更符合实际版本评估需求。
+给出可复现的能力矩阵：Dynamic-v2 与新纵向训练目标显著增强 learned64 的发布级纵向漂移检出，但 ego13 仍是 controlled longitudinal及当前pure-lateral treatment的最强敏感度参考，A/B/C 未通过联合 Waymo/paired 门禁，B未通过Stage7L prospective lateral Primary，C也未证明 context 的独立增量价值。由此论证 task-conditioned evaluation 比追求单一“万能 embedding”更符合实际版本评估需求。
 
 ## 四、主结果、负结果与 claim boundary
 
@@ -119,6 +122,7 @@ prospective interaction confirmation 的 80/80 official pairs 全部成功。sho
 | ego13 在 183-pair 四剂量 paired 中唯一通过完整门禁 | 诊断主结果 | 显式 ego 运动学对 controlled longitudinal 差异最敏感 | 不表示 context 无用，也不是最终 behavior style 模型 |
 | A/B/C primary 均未通过 Waymo longitudinal 完整门禁 | 负结果/能力边界 | 新模型未获得跨指标联合资格 | 不能挑选 B-3409 替代预冻结 primary seed |
 | B/C 在窄纵向 paired 中弱于 ego13，且未通过完整门禁 | 负结果/estimand 边界 | 强 unpaired 能力不保证低剂量、任务内 paired 敏感性 | 不能宣称 learned64 全面恢复纵向敏感性 |
+| Stage7L planner mechanism通过，但B Primary为0.436×/Z=-0.065且未检出 | 前瞻性负结果/横向能力边界 | 已知pure-lateral处置成立，但Candidate B没有通过冻结表示检验 | 不能换用ego13改写Primary，也不能声称learned64横向确认通过 |
 | interaction benchmark 机制通过 | 主结果：benchmark validity | 已实现小 mean-speed/accel 差与明确 gap/THW/response 差异 | 不等于任何 representation 已学到 interaction |
 | C full-context 相对 neighbor-zero 的 ΔZ CI 跨 0 | 确认性负结果 | 未证明当前 C 具有增量 interaction information | 不能写“C 已验证”，也不能写“context 永远无用” |
 | 联合决策无 candidate 入选 | 最终模型负结果 | 无 A/B/C 满足全部预冻结论文主模型规则 | 不得事后改变联合规则或重新定义主模型 |
@@ -129,7 +133,8 @@ prospective interaction confirmation 的 80/80 official pairs 全部成功。sho
 2. task-conditioned trajectory-level BDD 能在 official closed-loop planner rollout 上检出冻结任务族内的行为分布变化。
 3. Dynamic-v2 与新训练目标大幅且跨 seed 稳定地改善了 context-balanced release-level longitudinal drift detection。
 4. 该改善主要由标准化 planner signal 增强与方向一致性提高驱动。
-5. 完整的正负证据支持按任务和用途选择 representation，而不是假设存在一个统一最优 embedding。
+5. 前瞻性pure-lateral实验确认planner机制成立，同时给出Candidate B未检出的表示能力边界。
+6. 完整的正负证据支持按任务和用途选择 representation，而不是假设存在一个统一最优 embedding。
 
 ### 不能作为论文 claim 的内容
 
@@ -139,15 +144,16 @@ prospective interaction confirmation 的 80/80 official pairs 全部成功。sho
 4. ego13 证明 neighbor/context 无用。
 5. BDD 数值可跨 representation 直接比较，或存在一个可跨数据集复用的通用 BDD 阈值。
 6. 当前公开数据实验已经证明真实整车厂软件发布的检出率、功能安全性或道路风险。
+7. Candidate B或learned64已经通过prospective pure-lateral BDD confirmation。
 
 ## 五、各 representation 在论文中的定位
 
 | Representation | 定义与用途 | 论文定位 | 不能赋予的定位 |
 |---|---|---|---|
 | old64 | 历史 Stage5D learned 64D；83D context 输入 | 冻结历史 baseline；证明 paired planner behavior difference 可检出的既有表示 | 不称为最终最优模型，也不掩盖其 release detection 只有 66.5% |
-| ego13 | 13D ego kinematic 手工表示 | controlled longitudinal sensitivity 的诊断参考上界；帮助识别 learned64 丢失的运动学信号 | 不是最终 style representation；不能用于证明 interaction/context 无用 |
+| ego13 | 13D ego kinematic 手工表示 | controlled longitudinal与当前pure-lateral treatment的诊断敏感度参考；帮助识别 learned64 丢失的运动学信号 | 不是最终 style representation；不能用于证明 interaction/context 无用或全局最优 |
 | A | Dynamic-v2 数据 + legacy single-GRU/objective | 数据修复贡献的工程消融；release detection 明显提升 | Waymo longitudinal 下降，不能称为全面改善 |
-| B | Dynamic-v2 + single-GRU + clean longitudinal supervision/ranking/sampling | 当前最简单、最强且稳定的 release-level learned engineering candidate；用于支持训练目标贡献 | 未通过联合 Waymo/paired 门禁，不是 universal/final validated model |
+| B | Dynamic-v2 + single-GRU + clean longitudinal supervision/ranking/sampling | 当前最简单、最强且稳定的 release-level learned engineering candidate；也是Stage7L预注册Primary | 未通过联合 Waymo/paired门禁与Stage7L lateral Primary，不是 universal/final validated model |
 | C | 与 B 相同训练条件，dual-branch ego/context encoder | interaction architecture 假设的确认性候选；release monitoring 强 | 未证明相对 neighbor-zero 的 interaction 增量，不能称为 validated interaction-aware model |
 
 论文不选择 A/B/C 中任何一个作为“最终全能主模型”。框架和评估方法是论文主角；不同 representation 是用于揭示任务适配性与能力边界的被评对象。
@@ -199,12 +205,13 @@ prospective interaction confirmation 的 80/80 official pairs 全部成功。sho
 
 ### 第 6 章 Controlled Paired Evaluation
 
-分两部分：
+分三部分：
 
 1. 310-pair 锁定确认：报告 old64 overall primary 与五个 task strata，说明 task-conditioned paired attribution 的可行性，并披露 lane fallback 质量限制。
 2. 183-pair 纯纵向四剂量：统一比较 old64/A/B/C/ego13 的 dose-response、overall 与 task×dose 覆盖，突出 ego13 最强和 B/C 未通过完整门禁。
+3. 80-pair pure-lateral前瞻确认：先报告400/400 official execution、机制与nuisance PASS，再报告B Primary FAIL及old64/A/B/C/ego13固定比较；旧Stage7 post-hoc lane-change slice只作为历史描述性证据。
 
-章节结论不是“paired 失败”，而是：paired 结果依赖 treatment/task，显式 ego kinematics 对窄纵向低剂量更敏感。
+章节结论不是“paired 失败”，而是：paired 结果依赖 treatment/task；显式 ego kinematics 对窄纵向与直接横向运动学处置更敏感，而planner机制成立不保证learned representation必然检出。
 
 ### 第 7 章 Unpaired Release Monitoring
 
@@ -261,7 +268,7 @@ prospective interaction confirmation 的 80/80 official pairs 全部成功。sho
 
 ### 图 4：Controlled paired evidence
 
-双面板：A 为 310-pair overall + 五个 task 的 null-standardized 结果；B 为 183-pair 25/50/75/100% dose 下 old64/A/B/C/ego13 的 Z_BDD 或通过单元格热图。图注披露 lane fallback 质量限制。
+三面板：A 为 310-pair overall + 五个 task 的 null-standardized 结果；B 为 183-pair 25/50/75/100% dose 下 old64/A/B/C/ego13 的 Z_BDD 或通过单元格热图；C为Stage7L pure-lateral planner mechanism PASS与dose100各representation标准化敏感度，突出B Primary FAIL。图注披露 lane fallback 质量限制与Stage7L prospective身份。
 
 ### 图 5：n=400 unpaired detection 与 FPR
 
@@ -301,11 +308,15 @@ Dynamic-v2 恢复了旧 builder 丢失的动态交互窗口，新纵向目标和
 
 可能解释包括：ego 分支已经吸收 treatment 的主要可见后果；现有 interaction supervision 未迫使 context branch 学到条件响应的独立信息；fusion 可能冗余或稀释 context；80-pair benchmark 虽有明确机制差异，但其可辨识结果仍可由 ego trajectory 单独解释。论文只能把这些写为解释性假设，不能在当前 blind confirmation 上选择其中一个因果解释。
 
-### 9.5 为什么 task-conditioned evaluation 更合理
+### 9.5 为什么planner机制成立但B未检出pure-lateral漂移
+
+Stage7L将planner-level treatment validity与representation sensitivity分成两个预冻结层级。换道时长、RMS横向加速度和峰值横摆角速度证明处置确实改变了realized trajectory；但B的64D压缩与纵向恢复目标并不保证保留该类横向执行差异，因此其observed BDD仍落在自身paired null背景内。ego13的显著结果说明差异在显式运动学坐标中可见，但不能把Primary从B事后改成ego13，也不能推导ego-only在所有style任务上最优。
+
+### 9.6 为什么 task-conditioned evaluation 更合理
 
 不同版本验证问题需要不同证据：低剂量纵向归因、跨场景发布监控、interaction-conditioned response、横向动态或舒适性不必共享同一最优表示。将 representation、task 和 estimand 联合报告，可以避免 raw BDD 大小崇拜，也避免把某一 benchmark 的成功误写成普适能力。
 
-### 9.6 面向整车厂的现实意义
+### 9.7 面向整车厂的现实意义
 
 在两个软件版本无法复现相同道路场景时，A/A-calibrated、log-disjoint、context-balanced 的 unpaired 流程是更接近实际发布监控的原型。部署到公司数据前仍需要以历史同版本路试建立 A/A null、冻结 ODD/task composition、按 log/route/region 聚类重采样，并以独立版本发布进行前瞻确认。当前 100% 不能直接视为真实公司检出率保证。
 
@@ -321,6 +332,7 @@ Dynamic-v2 恢复了旧 builder 丢失的动态交互窗口，新纵向目标和
 8. **模型资格失败**：A/B/C 都没有同时通过 Waymo、paired、unpaired 和 interaction 联合规则；没有最终 universal learned representation。
 9. **统计含义边界**：BDD 检出 distribution shift，不评价安全、舒适性优劣、责任、风险或法规合规。
 10. **缺少真实 OEM 前瞻数据**：当前方法适合作为工程候选与公开数据证据，尚未完成真实整车厂版本发布的独立前瞻验证。
+11. **pure-lateral learned sensitivity有限**：Stage7L虽前瞻确认planner机制，但old64/A/B/C在dose100 lane-change下均未检出；当前不能主张learned64具备完整横向敏感性，ego13高敏感度也不能外推为通用表示优势。
 
 ## 十一、仅放附录的研发内容
 
@@ -339,6 +351,7 @@ Dynamic-v2 恢复了旧 builder 丢失的动态交互窗口，新纵向目标和
 | Appendix I | v2 roster runnability omission、61/80 complete 的失败审计与 prospective repair | Stage 6S-v2 execution freeze |
 | Appendix J | smoke、blocked/superseded 输出、失败路径和 no-post-hoc 规则 | Stage 6D–6G、早期 6S、其他开发记录 |
 | Appendix K | 全部 manifest、SHA256、环境、依赖、命令和 reproducibility index | QUICK_REFERENCE 与各 freeze manifest |
+| Appendix L | Stage7L pure-lateral技术审计、动态净空、prospective protocol、400条confirmation、40格BDD与E3报告映射 | Stage7L A–E |
 
 Stage6S-v2 的执行失败不能删除，也不能用 61 个成功子集包装为主结果；它应作为 prospective benchmark runnability 设计教训放在附录。早期 smoke、阈值 probe、superseded builder 和下载/环境迁移过程不进入论文正文。
 
@@ -350,10 +363,11 @@ Stage6S-v2 的执行失败不能删除，也不能用 61 个成功子集包装�
 2. 尚未证明 C 或任何 learned64 具有独立 interaction-context 增量；因此 interaction-aware 主模型主张必须删除，而不是补写。
 3. 尚未获得同时通过 Waymo、paired、unpaired 和 interaction 联合门禁的 universal representation；论文应把它作为能力边界。
 4. interaction confirmation 的 log 数量有限，不能覆盖横向博弈、cut-in、merge 等更广交互类型。
+5. learned64未在Stage7L prospective pure-lateral Primary中检出已确认的横向处置；这是已冻结能力边界，不需要在本论文中返工模型。
 
 ### 是否存在必须补做的实验
 
-**没有。** 当前证据足以支撑经过收窄后的核心主张：提出并验证 task-conditioned trajectory-level behavior drift evaluation，区分 paired attribution 与 unpaired release monitoring，证明 learned representation 的强 release-level 改善，并通过预冻结负结果界定其 paired、Waymo 和 interaction 边界。
+**没有。** 当前证据足以支撑经过收窄后的核心主张：提出并验证 task-conditioned trajectory-level behavior drift evaluation，区分 paired attribution 与 unpaired release monitoring，证明 learned representation 的强 release-level 改善，并通过预冻结负结果界定其 paired、Waymo、lateral 和 interaction 边界。
 
 只有在论文必须坚持以下更强主张时，才需要另立新研究阶段，而不是修改当前冻结实验：
 
@@ -367,7 +381,7 @@ Stage6S-v2 的执行失败不能删除，也不能用 61 个成功子集包装�
 
 最终研究叙事固定为：
 
-> **强 release-level 正结果 + estimand 分离机制 + paired/Waymo/interaction 增量负结果 + 明确的 task-conditioned claim boundary。**
+> **强 release-level 正结果 + estimand 分离机制 + paired/Waymo/lateral/interaction增量负结果 + 明确的 task-conditioned claim boundary。**
 
 论文的主要成果是评估问题定义、双 estimand 方法、task-conditioned 统计框架、发布监控协议和可审计的能力边界，而不是某个 A/B/C 模型胜出。
 
@@ -388,3 +402,5 @@ Stage6S-v2 的执行失败不能删除，也不能用 61 个成功子集包装�
 | pure-longitudinal paired result manifest | `242f88517bdca31359c163244d26f7f556376dec2065ffc5cde859cec4f3d42b` |
 | unpaired release result manifest | `70205230c9a3f10db01e0604dbd6ac75765a4fdc004a086b6f14a5bf46e455fa` |
 | interaction representation result manifest | `74b601795decb2f6de90928d527429f27c1320a705d9a4f672400ce4d32412b9` |
+| Stage7L prospective representation BDD manifest | `4fae0ede5bb77e86eec7f9aa1222b6605248b746dec8767ba3bd75fed6947a8b` |
+| Stage7L-integrated standardized reporting manifest | `284cac2a37cdf521d08f6352a9c3dcec3eac9c780d9473d8b7790c3a77250ec6` |

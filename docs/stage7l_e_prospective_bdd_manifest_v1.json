@@ -1,0 +1,150 @@
+{
+  "schema_version": "stage7l_e_prospective_bdd_manifest_v1",
+  "status": "STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE",
+  "primary_status": "STAGE7L_E_PRIMARY_BDD_FAILED",
+  "branch": "20260611_stage7_conclusion",
+  "frozen_provenance": {
+    "stage7l_d_commit": "6279bc742ad527246a945a4b6d5d7090fab591ea",
+    "e2_preformal_resume_commit": "a85314a34518aaec627dca7baf5b73b15483553c",
+    "protocol_sha256": "f5a8b2df5ed60c0384e8181feceab33f3c6f048780e95aab851184e49247490a",
+    "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+    "stage7l_d_manifest_sha256": "eb8c04795d1ee2c10419dbd9db3f9145ece9f9add618ba46241e53374ff461ba",
+    "stage7l_e_implementation_manifest_sha256": "95d8bfa1a7d5acdc8f0dd6850ec808de58c6f342d9899e20a7c3b0c3b7ad9a39",
+    "task_mask_sha256": "74206af6b0d7bc5be4b16e8ef8343feebad6ced722d1d3232e4e72c6396a3ec3",
+    "formal_inference_and_bdd_sha256": "9eb9afeacf99fac209a2e380004e3d129c9e0d64a5fc474a879952ff05c10475",
+    "machine_freeze_tool_sha256": "65d6aaa64127019edd4dcdeb9c8a05455752ef1c6dd7c97b3289f86b8378d5ee",
+    "inherited_kernel_analysis_sha256": "847c66d9bf7b996dfe7fb4d9e3b5712d8d54a9eb5804b2fe98dafe9c82bdf32b"
+  },
+  "machine_result_freeze_manifest_sha256": "554f1ac835456f8888c54e112913b9537dda77e3415e569dc752f7da86d93769",
+  "stage7l_evidence_mapping_sha256": "adaf155aa5f34854e55640b0cce39977225b3cf94ffc87cbf3311e14bdb14938",
+  "finalizer_tool_sha256": "ae833018e3fcfd6fc050c18698b60defe7063e2336294a5b50036b0f126d6fbe",
+  "stage7l_d_mechanism_summary_sha256": "bf4fee6703acdc3373f7081f65abeb6044b6161fbd7d83327f1d373f95290440",
+  "stage7l_d_longitudinal_nuisance_summary_sha256": "3f607706edf4da7ed141e940c488d32bdb3bc74a6820b2356bf8b4b1db17602f",
+  "checkpoint_or_scaler_sha256": {
+    "old64": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc",
+    "A_seed3407": "353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d",
+    "B_seed3407": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f",
+    "C_seed3407": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d",
+    "ego13": "0b5b5a7049b97045f4e006ed97eb7a1500731a591aa33fd517aac99850296a19"
+  },
+  "null_settings": {
+    "official_rollouts_reused": 400,
+    "planner_rerun": false,
+    "checkpoint_or_training_modified": false,
+    "representations": [
+      "old64",
+      "A_seed3407",
+      "B_seed3407",
+      "C_seed3407",
+      "ego13"
+    ],
+    "null": "same_scenario_within_pair_label_swap",
+    "null_repetitions": 100000,
+    "plus_one_p": true,
+    "biased_rbf_mmd2": true,
+    "representation_specific_median_heuristic": true
+  },
+  "task_populations": {
+    "LAT.LANE_CHANGE": {
+      "dose25": 80,
+      "dose50": 80,
+      "dose75": 80,
+      "dose100": 80
+    },
+    "LAT.DYNAMICS": {
+      "dose25": 38,
+      "dose50": 38,
+      "dose75": 38,
+      "dose100": 38
+    }
+  },
+  "primary": {
+    "representation": "B_seed3407",
+    "dose": "dose100",
+    "task": "LAT.LANE_CHANGE",
+    "N_pair": 80,
+    "status": "COMPUTED",
+    "null_seed": 2026083601,
+    "null_reps": 100000,
+    "raw_mmd2": 0.0010750406060657607,
+    "bandwidth": 5.70154371222525,
+    "null_mean": 0.0011183772786964126,
+    "null_sd": 0.0006663422210394926,
+    "null_q95": 0.00246680739100163,
+    "bdd_over_null_q95": 0.4358024100249059,
+    "z_bdd": -0.06503666023600715,
+    "raw_p": 0.41190588094119057,
+    "raw_p_for_multiplicity": 0.41190588094119057,
+    "exceedance_count": 41190,
+    "multiplicity_role": "PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY",
+    "holm_p": null,
+    "holm_significant_0_05": null,
+    "primary_success": false,
+    "final_primary_status": "STAGE7L_E_PRIMARY_BDD_FAILED"
+  },
+  "secondary_family": {
+    "theoretical_cells": 40,
+    "holm_tests": 39,
+    "holm_pass_count": 8,
+    "not_computable_count": 0,
+    "low_n_count": 20
+  },
+  "dose100_lane_change_standardized_comparison": [
+    {
+      "representation": "old64",
+      "bdd_over_null_q95": 0.5804694203926174,
+      "z_bdd": -0.6457639955813627,
+      "raw_p": 0.7199428005719943,
+      "multiplicity_role": "SECONDARY_HOLM_39"
+    },
+    {
+      "representation": "A_seed3407",
+      "bdd_over_null_q95": 0.4596285043285111,
+      "z_bdd": -0.021421465631160035,
+      "raw_p": 0.3781662183378166,
+      "multiplicity_role": "SECONDARY_HOLM_39"
+    },
+    {
+      "representation": "B_seed3407",
+      "bdd_over_null_q95": 0.4358024100249059,
+      "z_bdd": -0.06503666023600715,
+      "raw_p": 0.41190588094119057,
+      "multiplicity_role": "PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY"
+    },
+    {
+      "representation": "C_seed3407",
+      "bdd_over_null_q95": 0.5453479320798916,
+      "z_bdd": 0.3730130704153008,
+      "raw_p": 0.26224737752622473,
+      "multiplicity_role": "SECONDARY_HOLM_39"
+    },
+    {
+      "representation": "ego13",
+      "bdd_over_null_q95": 13.087068295833081,
+      "z_bdd": 40.20102515841172,
+      "raw_p": 9.99990000099999e-06,
+      "multiplicity_role": "SECONDARY_HOLM_39"
+    }
+  ],
+  "claim_boundary": {
+    "planner_level_pure_lateral_mechanism_confirmed": true,
+    "candidate_b_prospective_primary_detected": false,
+    "ego13_highest_standardized_sensitivity_on_treatment": true,
+    "ego13_global_best_claim_allowed": false,
+    "stage6v_qualification_changed": false,
+    "new_stage7l_model_development_allowed": false
+  },
+  "report_sha256": "327541cfdfd6dcef4d297eace9e582ec6ec1190b1667bee5cf0e35eef056c4fd",
+  "integrated_reporting_manifest_sha256": "284cac2a37cdf521d08f6352a9c3dcec3eac9c780d9473d8b7790c3a77250ec6",
+  "integrated_reporting_output_sha256": {
+    "stage7l_e_prospective_bdd_long.csv": "2fdb615fea09f4b4a44dca5f2b45a4f21637e48b2c3010d7e9dcd7ec2236c516",
+    "standardized_bdd_long_with_stage7l.csv": "37c154a5ca690a9b1f4cf38eea021f1e6cd03df5796fc8f253edd232c244bfb3",
+    "historical_stage7_posthoc_lateral_evidence.csv": "e60b90decf02b04977608ba8229a8e2c2ce7e9f2cc99164896f2ac92223153fe",
+    "final_fixed_dimension_primary_matrix.csv": "b031e790c9fa2d56daf61311db9fa156331e85001cc26673f87c5ce20043d6de",
+    "final_behavior_style_report_card.csv": "16861311e6ba1511ec0137bea83c3f54c2ec8a5e166741ac69d88dc4ebced0ca",
+    "final_representation_qualification_matrix.csv": "cd8b2b4cfa55b11444f4c6a2c5ff6ccece2d8d29631e40981a78ba09808437d0",
+    "final_shared_parent_bdd_audit.csv": "6156e46a7c9822184dc06c7f5afe975fad494063c73d57e54bfd13d1b0059c33",
+    "final_standardized_bdd_style_report_card_zh.md": "b4cede6e14adbb5fe6a2d44ae88ef7b8290e184b0ef52b98f8302a98575f4489"
+  },
+  "next_authorized_step": "THESIS_WRITING_FIGURES_TABLES_AND_CLAIM_CLEANUP_ONLY"
+}

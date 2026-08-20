@@ -1,14 +1,14 @@
 # E2E-Evaluation 博士研究项目权威交接
 
 > **状态：`CURRENT_RESEARCH_HANDOVER_UPDATED_FOR_THESIS_CLOSURE`**  
-> 更新时间：2026-08-19 13:36（Asia/Shanghai）
+> 更新时间：2026-08-20（Asia/Shanghai）
 > 仓库：`forwardxp-021/E2E-Evaluation`  
 > 分支：`20260611_stage7_conclusion`  
-> 本次更新前基线：`c901fb53316b06791fc628cd8415f888bb8cba60`
+> 本次更新前基线：`a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`
 > 本文件更新提交：运行 `git log -1 --format='%H %s' -- handover.md` 获取（Git提交无法在自身内容中稳定保存自己的最终SHA）  
-> 当前阶段：核心研究证据、模型训练和BDD报告体系保持冻结；论文写作为主，同时开放一个prospective Stage7L pure-lateral controlled validation作为最终横向证据补充。
-> 核心状态：`CORE_EVIDENCE_AND_MODELS_FROZEN`
-> 唯一开放例外：`STAGE7L_PROSPECTIVE_LATERAL_VALIDATION_OPEN`
+> 当前阶段：Stage6/Stage7/Stage7L研究证据、模型与BDD报告体系全部冻结；只进入论文写作、图表和claim cleanup。
+> 核心状态：`STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS`
+> 实验状态：`RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING`
 
 本文件是当前项目状态、科学结论、冻结协议、关键资产和后续工作的**总入口**。旧的
 Windows→Mac迁移记录、Pittsburgh下载过程和Stage5/6/7早期研发流水已经降级到末尾的历史背景，
@@ -22,18 +22,19 @@ Windows→Mac迁移记录、Pittsburgh下载过程和Stage5/6/7早期研发流�
 
 1. `AGENTS.md`
 2. `handover.md`
-3. `docs/stage7l_pure_lateral_technical_feasibility_audit_zh.md`
-4. `docs/stage7l_pure_lateral_technical_feasibility_audit_v1.json`
-5. `docs/phd_thesis_research_closure_blueprint_zh.md`
-6. `docs/stage6v_one_time_blind_evaluation_report_zh.md`
-7. `outputs/stage6w_stage6s_v3_final_v1/stage6w_stage6s_v3_report_zh.md`
-8. `docs/unified_bdd_evaluation_matrix_style_report_card_zh.md`
-9. `configs/unified_bdd_reporting_schema_v2.json`
-10. `configs/standardized_fixed_dimension_bdd_protocol_v2.json`
-11. `README.md`
-12. `QUICK_REFERENCE.md`
+3. `docs/stage7l_e_prospective_representation_bdd_report_zh.md`
+4. `docs/stage7l_e_prospective_bdd_manifest_v1.json`
+5. `outputs/final_standardized_bdd_style_report_card_v2_stage7l/final_standardized_bdd_style_report_card_zh.md`
+6. `docs/phd_thesis_research_closure_blueprint_zh.md`
+7. `docs/stage6v_one_time_blind_evaluation_report_zh.md`
+8. `outputs/stage6w_stage6s_v3_final_v1/stage6w_stage6s_v3_report_zh.md`
+9. `docs/unified_bdd_evaluation_matrix_style_report_card_zh.md`
+10. `configs/unified_bdd_reporting_schema_v2.json`
+11. `configs/standardized_fixed_dimension_bdd_protocol_v2.json`
+12. `README.md`
+13. `QUICK_REFERENCE.md`
 
-其中两份Stage7L-A审计文件是Stage7L当前技术状态的权威来源。
+Stage7L-E完整报告和manifest是prospective lateral结果的当前权威来源；Stage7L-A/B/C/D文档继续作为设计与执行溯源。
 
 启动时先执行：
 
@@ -43,10 +44,9 @@ git rev-parse HEAD
 git log -1 --oneline
 ```
 
-> Stage6、A/B/C checkpoint和BDD reporting schema均保持冻结；不得默认重新训练、重新选择场景、
-> 修改统计门槛、继续扩展Stage6或补齐N/A行为维度。当前唯一授权的新实验方向是Stage7L
-> pure-lateral controlled validation。除Stage7L外，不默认启动任何新训练、新模型或新Stage6实验；
-> Stage7L不得反向修改旧冻结结论。新session应首先理解已有证据并推进论文写作。
+> Stage6、Stage7、Stage7L、A/B/C checkpoint和BDD reporting schema均保持冻结；不得重新训练、
+> 重新选择场景、修改统计门槛、补齐N/A行为维度或因Stage7L Primary失败返工representation。
+> 新session只应在既有claim boundary内推进论文写作、图表和复现索引。
 
 工作树长期包含大量未跟踪实验输出和一个既有tracked数据文件修改。不要运行`git reset --hard`、
 `git clean`或批量删除outputs；先区分用户资产与当前任务修改。
@@ -95,10 +95,9 @@ universal/final validated representation。当前研究状态为：
 RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
 ```
 
-这是Stage7L启动前形成的研究收口判断；Stage7L是一个受限、单独预注册的补充验证，不重新打开
-Stage6模型研发。
+Stage7L现已在不重新打开Stage6模型研发的前提下完成并冻结；该收口判断继续有效。
 
-### 1.4 当前唯一开放实验：Stage7L
+### 1.4 Stage7L最终结果：planner机制确认、Candidate B Primary未检出
 
 **名称**：`Prospective Controlled Pure-Lateral Lane-Change Execution Benchmark`
 
@@ -106,26 +105,34 @@ Stage6模型研发。
 canonical longitudinal progress生成规则下，仅改变横向execution profile时，BDD是否能够可靠检测已知
 pure-lateral behavior drift？
 
-根据Stage7L-A技术审计，当前状态为：
+最终状态为：
 
 ```text
-PURE_LATERAL_TREATMENT_IMPLEMENTATION_NOT_YET_CLEAN
+STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED
+STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE
+STAGE7L_E_PRIMARY_BDD_FAILED
+STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS
 ```
 
-当前还没有Stage7L development、confirmation roster、confirmation rollout、embedding、BDD或scientific
-result。**No Stage7L scientific result exists yet.**
+80个冻结场景（15 left / 65 right，79 logs）×5剂量共400条official rollout全部成功。dose100−dose0的
+换道时长、RMS lateral acceleration与peak yaw rate按预注册方向变化，纵向nuisance、安全/有效性与canonical
+identity门禁均通过，证明planner-level pure-lateral treatment成立。
+
+随后按冻结的old64/A/B/C/ego13、100,000次same-scenario pair-label swap和39-test Holm协议执行一次性
+representation evaluation。Primary B-3407 dose100 vs dose0 `LAT.LANE_CHANGE`为raw MMD²=`0.001075041`、
+null q95=`0.002466807`、ratio=`0.435802×`、`Z=-0.065037`、raw p=`0.411906`，未检出。dose100下
+old64/A/B/C均未检出，ego13为`13.087068× / Z=40.201025 / p=9.9999e-06`。
 
 正式定义：**Pure-lateral means that the treatment parameterization affects only the lateral
 trajectory-generation channel, while canonical longitudinal route progress, initial state, scenario,
 source lane, target lane, trigger and all longitudinal controller parameters are held fixed.**
 
-closed-loop realized behavior仍可能出现小量纵向副作用，因此未来必须设置longitudinal nuisance gate；
+closed-loop realized behavior存在小量纵向副作用，因此本实验使用预冻结longitudinal nuisance gate；
 pure-lateral不意味着所有纵向指标在数学上完全为零差异。
 
-现有Stage7 changing-lane slice属于`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`：它证明changing-lane
-场景中的planner行为分布存在变化，但尚未证明一个已知、prospective、pure-lateral execution treatment
-可以被BDD稳定检测。Stage7L专门补充这一evidence gap；当前论文不能写“BDD已经通过prospective
-pure-lateral controlled confirmation”。
+旧Stage7 changing-lane slice继续属于`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`并保留为历史证据；
+Stage7L是独立prospective证据。论文可以写“pure-lateral planner mechanism得到前瞻确认”，但不能写
+“Candidate B或learned64通过prospective lateral BDD confirmation”，更不能用ego13结果改写Primary结论。
 
 ---
 
@@ -394,7 +401,7 @@ log-cluster bootstrap 95% CI ≈ [-33.39, 29.22]
 不能把它扩大解释为“interaction context整体无价值”。这只是当前模型、当前数据、当前冻结interaction
 treatment下没有获得C的独立增量证据；不能写成interaction失败、context无价值或C完全没有interaction能力。
 
-### 4.8 Stage7L-A：pure-lateral technical feasibility audit
+### 4.8 Stage7L-A：pure-lateral technical feasibility audit（历史设计门禁）
 
 Stage7L-A是技术可行性审计，不是实验结果。审计确认当前PDM的横向path、leading-agent识别、IDM纵向推进、
 proposal simulation/scoring和argmax相互耦合；修改`lateral_offsets`或对最终trajectory做warp，都不能构造
@@ -407,11 +414,10 @@ PURE_LATERAL_TREATMENT_IMPLEMENTATION_NOT_YET_CLEAN
 
 这不是横向BDD实验失败，而是技术洁净性审计拒绝了一个因果解释不充分的实现方案。
 
-未来A2的推荐方向是external `PureLateralExecutionPlanner`：使用canonical route/Frenet progress
+后续A2按该审计建议实现了external `PureLateralExecutionPlanner`：使用canonical route/Frenet progress
 `s_route(t)`，固定source lane、target lane、direction与trigger，以quintic/minimum-jerk `d(s_route)`生成
-five-dose lateral execution；old64/A/B/C/ego13 representation保持固定，并使用same-scenario paired null。
-核心原则是dose只能进入lateral trajectory-generation channel，不能通过PDM总aggressiveness或
-`lateral_offsets`间接改变整个planner。
+five-dose lateral execution。核心原则是dose只能进入lateral trajectory-generation channel，不能通过
+PDM总aggressiveness或`lateral_offsets`间接改变整个planner。该历史门禁随后由B/B2/C/D/E完整执行链闭环。
 
 最终实验逻辑为：
 
@@ -421,8 +427,8 @@ Pure longitudinal treatment
   → controlled longitudinal BDD
 
 Pure lateral execution treatment
-  → Stage7L [prospective / not yet completed]
-  → controlled lateral BDD
+  → Stage7L [prospective / complete]
+  → planner mechanism PASS；B Primary BDD FAIL；ego13 sensitive
 
 Interaction/headway treatment
   → Stage6S-v3
@@ -433,7 +439,18 @@ Unpaired release emulation
   → production release monitoring
 ```
 
-Stage7L目前是planned evidence，不能与另外三条已完成证据混为一谈。
+Stage7L现在是独立prospective evidence；旧Stage7 changing-lane post-hoc结果仍需单独标记，不能与Stage7L混写。
+
+### 4.9 Stage7L-D/E：prospective pure-lateral最终证据
+
+- roster：80 scenarios / 79 logs / 15 left / 65 right；五剂量完整，400/400 official success；
+- planner mechanism：duration median Δ=`−0.200160 s`、RMS lateral accel Δ=`+0.055832 m/s²`、
+  peak yaw rate Δ=`+0.014404 rad/s`，三项门禁通过；
+- Primary representation：B-3407；Behavior Reference=`dose0`，Target=`dose100`，paired null为各representation
+  自身100,000次within-pair label swap；
+- Primary BDD：`0.435802× / Z=-0.065037 / p=0.411906`，结论为FAIL；
+- ego13：`13.087068× / Z=40.201025 / p=9.9999e-06`，只说明该运动学直接处置下标准化敏感度最高；
+- Stage6V联合结论不变，禁止因该结果重新训练或重开Stage7L。
 
 ---
 
@@ -477,14 +494,14 @@ standardized_fixed_dimension_bdd_protocol_v2_final_render_only
 |---|---:|---:|---|
 | Longitudinal acceleration/deceleration | 2.74× | 10.33 | Stage6J/K confirmatory |
 | Car-following | 1.72× | 5.25 | Stage6J/K confirmatory；60 scenario / 52 log |
-| Lane-change scenario slice | 2.50× | 9.12 | `POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`；60场景 |
+| Lane-change pure-lateral | 0.436× | −0.065 | Stage7L prospective Primary；80 pair / 79 log；B FAIL |
 | Interaction | 7.39× † | 30.60 | Stage6S-v3 confirmatory；80 pair / 11 log |
 
 `†`表示Closing response、Front-gap/THW interaction和Longitudinal following interaction共享同一个
 parent task-level BDD，不是三次独立BDD检验。
 
-其中Stage7 changing-lane slice仍只是post-hoc描述性证据，不得替代未来Stage7L的prospective
-pure-lateral confirmation。
+Stage7L的planner-level mechanism PASS与B Primary BDD FAIL必须并列展示。旧Stage7 changing-lane 60场景
+结果仍以post-hoc描述性证据保留在历史审计表，不得替代或覆盖Stage7L prospective结论。
 
 ### 6.2 第二层：Representation Qualification Matrix
 
@@ -506,7 +523,7 @@ N/A表示没有符合冻结协议的证据，不表示没有行为差异。不�
 权威报告：
 
 ```text
-outputs/final_standardized_bdd_style_report_card_v1/
+outputs/final_standardized_bdd_style_report_card_v2_stage7l/
   final_standardized_bdd_style_report_card_zh.md
   final_behavior_style_report_card.csv
   final_fixed_dimension_primary_matrix.csv
@@ -514,6 +531,8 @@ outputs/final_standardized_bdd_style_report_card_v1/
   final_shared_parent_bdd_audit.csv
   final_standardized_bdd_reporting_manifest.json
 ```
+
+新增mapping addendum为`configs/unified_bdd_stage7l_evidence_mapping_v1.csv`；固定13维taxonomy及既有统计值未改变。
 
 ---
 
@@ -530,8 +549,8 @@ outputs/final_standardized_bdd_style_report_card_v1/
 - Stage6W证明B/C提升主要来自signal增强，而不是主要依赖null variance下降；
 - standardized BDD matrix能够按纵向、跟车、变道场景slice、interaction等固定维度输出可读报告；
 - negative results明确了paired、Waymo与interaction context增量的representation能力边界。
-- 已完成pure-lateral technical feasibility audit，并明确现有PDM不适合直接构造因果洁净的
-  pure-lateral treatment。
+- Stage7L在80个独立冻结场景中前瞻确认了pure-lateral planner mechanism与纵向nuisance门禁；
+- 同一Stage7L prospective benchmark中，B Primary未检出而ego13显著，进一步证明representation能力依赖task/treatment。
 
 ### 7.2 当前不能写什么
 
@@ -544,10 +563,10 @@ outputs/final_standardized_bdd_style_report_card_v1/
 - 不能跨representation直接比较raw MMD²；
 - 不能把Stage7 post-hoc lane-change矩阵写成原预注册confirmation，或写成ego已确认执行换道；
 - 不能写Stage6S-v2是模型interaction失败；
-- 不能写Stage7L已经完成，或横向BDD已经得到prospective confirmation；
+- 不能写Candidate B、learned64或“横向BDD整体”已经通过Stage7L prospective confirmation；
 - 不能写现有PDM的`lateral_offsets`代表lane-change execution style；
-- 不能用Stage7 changing-lane slice替代Stage7L prospective evidence；
-- 不能因为未来Stage7L结果不好而重新训练B/C；
+- 不能用Stage7 changing-lane post-hoc slice替代Stage7L prospective evidence，也不能反向用Stage7L覆盖历史slice；
+- 不能因为Stage7L Primary失败而重新训练B/C、换representation Primary或修改门槛；
 - 不能声称存在通用OEM BDD报警阈值；
 - 不能声称已经完成真实整车厂版本验证或达到任意ODD下的单次release可靠性保证。
 
@@ -565,11 +584,11 @@ outputs/final_standardized_bdd_style_report_card_v1/
 | Stage6W paired/unpaired diagnostic | Complete |
 | Stage6S-v2 | Frozen execution failure due to roster runnability omission |
 | Stage6S-v3 interaction confirmation | Complete；80/80；mechanism passed；C increment failed |
-| Stage7L pure-lateral validation | Prospective；Stage7L-A technical audit complete；implementation not yet clean |
-| Stage7L scientific result | None yet |
-| Stage7L-B development | Not authorized yet |
+| Stage7L pure-lateral validation | Complete；400/400 official；planner mechanism/nuisance/safety gates passed |
+| Stage7L scientific result | Prospective B Primary FAIL；ego13 highly sensitive；40-cell matrix frozen |
+| Stage7L-E reporting integration | `STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS` |
 | Unified fixed-dimension BDD matrix | Complete |
-| Final BDD reporting system | Frozen |
+| Final BDD reporting system | Frozen；13维Stage7L addendum已整合，历史post-hoc证据保留 |
 | Stage6V joint candidate decision | `NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE` |
 | New model training | Not planned / not authorized |
 | Thesis writing | **Current priority** |
@@ -680,6 +699,9 @@ outputs/stage6w_stage6s_v3_final_v1/
 
 Final BDD reporting system:
 outputs/final_standardized_bdd_style_report_card_v1/
+
+Stage7L prospective integrated BDD reporting:
+outputs/final_standardized_bdd_style_report_card_v2_stage7l/
 ```
 
 这些目录以及对应rollout/context/checkpoint是科研provenance的一部分。磁盘清理前必须先确认是否可由Git或其他
@@ -691,16 +713,16 @@ outputs/final_standardized_bdd_style_report_card_v1/
 
 ```text
 branch: 20260611_stage7_conclusion
-baseline before this handover update: c901fb53316b06791fc628cd8415f888bb8cba60
+baseline before this handover update: a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa
 remote: origin/20260611_stage7_conclusion
 PR: #265, OPEN DRAFT, large historical development PR
 ```
 
 PR #265用于当前长期研发分支归档，不应被当作一份小而独立的单实验PR。
 
-本handover的权威重构版本已由`c901fb53316b06791fc628cd8415f888bb8cba60`正式纳入仓库。本次仅修正
-Stage7L开放后的当前状态；提交时必须只stage `handover.md`，不得顺带提交大型outputs、日志、数据或
-既有工作树修改。
+本handover的权威重构历史版本由`c901fb53316b06791fc628cd8415f888bb8cba60`纳入仓库；E2机器结果冻结基线为
+`a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`。E3只提交明确列出的报告、映射、工具、测试与文档，
+不得顺带提交大型outputs、日志、数据或既有工作树修改。
 
 关键provenance SHA：
 
@@ -716,11 +738,17 @@ fac9f04d479185b1ef3548c08bc782d2a3114de8595da482a1f418e58f698762
 
 Final BDD schema:
 1c0325dc6e25bbeb40bbbc69c0b90504a792f19dfd3624c715e8d1d4a908d33d
+
+Stage7L prospective representation BDD manifest:
+4fae0ede5bb77e86eec7f9aa1222b6605248b746dec8767ba3bd75fed6947a8b
+
+Stage7L-integrated standardized reporting manifest:
+284cac2a37cdf521d08f6352a9c3dcec3eac9c780d9473d8b7790c3a77250ec6
 ```
 
 ---
 
-## 12. 当前下一步：论文写作为主 + 一个受控Stage7L补充验证
+## 12. 当前下一步：只进入论文写作
 
 ### Track A — Thesis writing
 
@@ -731,9 +759,11 @@ Final BDD schema:
 5. Limitations；
 6. standardized BDD matrix整理。
 
-### Track B — Stage7L
+### Track B — Stage7L（已完成并停止）
 
-Stage7L-A2、B/B2 development与Stage7L-C prospective protocol/80-scenario roster freeze均已完成。Stage7L-C1/C2已在任何confirmation结果产生前完成最终protocol consistency amendment：roster仍为80场景、15 left/65 right、79 logs，SHA为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；Primary pair下限为76，`LAT.LANE_CHANGE`等于完整roster membership，`LAT.DYNAMICS`使用冻结pre-treatment official type mask；secondary family为排除唯一Primary后的39-test Holm family。
+Stage7L-A/A2、B/B2、C/C1/C2、D、E1/E2/E3全部完成。roster为80场景、15 left/65 right、79 logs，
+SHA为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；`LAT.LANE_CHANGE=80`、
+`LAT.DYNAMICS=38`，secondary family为排除唯一Primary后的39-test Holm family。
 
 当前状态：
 
@@ -745,17 +775,21 @@ STAGE7L_C_CONFIRMATION_ROSTER_FROZEN
 STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED
 STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED
 STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED
+STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE
+STAGE7L_E_PRIMARY_BDD_FAILED
+STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS
 ```
 
-Stage7L-D已完成：冻结80场景（15 left/65 right）×5档共400格全部official成功，80/80场景五剂量完整，replacement=0。dose100−dose0的duration、RMS lateral accel与peak yaw三项机制均按预注册方向通过；四项纵向nuisance、80场景scenario-level safety/validity以及canonical identity也全部通过。最终状态为`STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED`，因此只解锁`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`，但尚未执行Stage7L-E。
+Stage7L-D冻结80场景×5档共400格全部official成功，三项横向机制、四项纵向nuisance、scenario-level
+safety/validity与canonical identity均通过。Stage7L-E随后一次性完成40格representation BDD；B Primary为
+`0.435802× / Z=-0.065037 / p=0.411906`，结论FAIL，ego13为`13.087068× / Z=40.201025`。
+E3已把结果整合进13维Style Report Card，统计没有重算，旧Stage7 post-hoc evidence保持独立。
 
-首轮执行在0条有效rollout时发现冻结confirmation maneuver manifest缺少4个planner dataclass接口字段；按C2允许的`demonstrated code non-executability`例外使用只补冻结常量的runtime adapter。第二代在0条有效rollout时发现Hydra searchpath接口问题，最终只恢复历史已验证searchpath。源manifest SHA、roster、几何、dose、planner和gate保持不变，12条结果前基础设施失败attempt永久保留；全程未读取embedding/checkpoint，未计算BDD/MMD。
-Stage7L不得重新打开Stage6模型训练，也不得为了让BDD更显著而调representation。
-**新实验 ≠ 重新训练模型。**
+首轮D执行的结果前基础设施失败attempt与runtime adapter审计永久保留；它们没有改变源manifest、roster、
+几何、dose、planner或gate。当前不得重新打开Stage6/Stage7L模型训练，不得为了让BDD更显著而调representation，
+也不得补齐全部N/A。
 
-除这一受限例外外，当前不要再做Stage6K、训练v3、扩Stage6S或补齐全部N/A。
-
-Stage7L启动前的研究收口判断保留为：
+最终研究收口判断为：
 
 ```text
 RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
@@ -807,11 +841,11 @@ RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
 8. 为什么B是release工程候选但不是最终主模型？
 9. 哪些实验、checkpoint、场景和门槛绝对不能事后修改？
 10. 下一步是否以论文写作为主，且没有默认重开冻结实验？
-11. 当前唯一开放的新实验是否为Stage7L？
-12. Stage7L-C2是否已作为最后一次pre-D amendment冻结，且Stage7L-D只运行planner-level confirmation、尚未读取representation？
-13. 是否明确现有PDM不能直接提供clean pure-lateral treatment？
-14. 是否区分Stage7 post-hoc lane-change slice与未来Stage7L prospective confirmation？
-15. 是否明确Stage7L不能重新打开模型训练？
+11. 是否明确Stage7L已经完成，当前没有开放的新实验？
+12. 是否同时保留Stage7L-D planner mechanism PASS与Stage7L-E B Primary FAIL，而不混成一个结论？
+13. 是否明确Primary为B-3407 dose100 vs dose0 `LAT.LANE_CHANGE`，且不能事后换成ego13？
+14. 是否区分Stage7 post-hoc lane-change slice与Stage7L prospective confirmation？
+15. 是否明确Stage7L失败结果不能重新打开模型训练、场景选择或门槛？
 
 若以上任一问题不清楚，先回到本文件和第0节权威文档，不要启动训练、仿真或BDD重算。
 
