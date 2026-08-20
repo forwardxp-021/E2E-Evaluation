@@ -747,6 +747,7 @@ STAGE7L_D_ONE_TIME_CONFIRMATION_IN_PROGRESS
 ```
 
 Stage7L-D已获单独授权。统一可恢复runner、attempt ledger、机制/nuisance/safety/canonical identity门禁工具已完成代码级验证；正式400格运行按冻结roster order×五档确定性执行，不允许replacement。当前仍禁止embedding、checkpoint、BDD/MMD和任何训练；只有机器gate全部通过才可解锁Stage7L-E，且不得自动执行Stage7L-E。
+首轮执行在0条有效rollout时发现冻结confirmation maneuver manifest缺少4个planner dataclass接口字段；已按C2允许的`demonstrated code non-executability`例外准备只补冻结常量的runtime adapter。源manifest SHA、roster、几何、dose、planner和gate保持不变，失败attempt永久保留。
 Stage7L不得重新打开Stage6模型训练，也不得为了让BDD更显著而调representation。
 **新实验 ≠ 重新训练模型。**
 

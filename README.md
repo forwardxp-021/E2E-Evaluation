@@ -2217,3 +2217,5 @@ C2将`LAT.LANE_CHANGE`统一定义为完整80场景prospective roster membership
 Stage7L-D已获单独授权并进入`STAGE7L_D_ONE_TIME_CONFIRMATION_IN_PROGRESS`。统一runner在第一条official rollout前精确验证protocol SHA `f5a8b2df...`、roster SHA `90ec9b42...`、80场景/15 left/65 right/79 logs、development零重叠、80/80 runnable/dynamic-clear/static-eligible，并预先建立固定400格计划账本。运行顺序固定为roster order×dose0/25/50/75/100；不允许replacement，只有尚未产生有效rollout的同格基础设施故障可保留attempt后技术重试。
 
 本阶段只处理official planner trajectory、mechanism、longitudinal nuisance、safety/validity和canonical identity。安全门禁在结果前固定为80场景scenario-level保守聚合；任何一档off-road/责任碰撞即记该场景发生，official success和lane-change completion要求五档全部满足。Stage7L-D完成前禁止读取checkpoint/embedding或计算BDD/MMD；即使全部planner gate通过，也只解锁Stage7L-E，不自动执行Stage7L-E。当前结果尚未产生，中文执行报告见[`docs/stage7l_d_one_time_planner_confirmation_report_zh.md`](docs/stage7l_d_one_time_planner_confirmation_report_zh.md)。
+
+首轮执行在任何有效trajectory产生前暴露出冻结maneuver manifest少4个planner接口字段的代码不可执行问题。按C2允许的pre-outcome例外，runner使用单独runtime adapter补齐既有冻结常量，不修改源manifest、roster、treatment、planner或gate；所有失败attempt原样保留并按实现代次审计。

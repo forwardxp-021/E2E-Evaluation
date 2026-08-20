@@ -40,13 +40,13 @@ ATTEMPT_FIELDS = (
     "cell_id", "collection_order", "scenario_token", "log_name", "direction", "dose",
     "transition_length_m", "planned", "attempt_id", "start_time", "end_time", "exit_code",
     "official_run_status", "trajectory_available", "failure_category", "failure_detail",
-    "retry_count", "attempt_dir", "trajectory_csv", "planner_audit_path",
+    "retry_count", "attempt_generation", "attempt_dir", "trajectory_csv", "planner_audit_path",
 )
 SUMMARY_FIELDS = (
     "cell_id", "collection_order", "scenario_token", "log_name", "direction", "dose",
     "transition_length_m", "attempt_id", "official_run_status", "trajectory_available",
     "failure_category", "failure_detail", "retry_count", "exit_code", "start_time", "end_time",
-    "duration_seconds", "attempt_dir", "trajectory_csv", "official_runs_root",
+    "duration_seconds", "attempt_generation", "attempt_dir", "trajectory_csv", "official_runs_root",
     "planner_audit_path", "strict_alignment_passed", "trajectory_row_count",
 )
 
@@ -209,12 +209,76 @@ def initial_plan(roster: List[Dict[str, str]]) -> List[Dict[str, Any]]:
     return rows
 
 
+def build_runtime_manifest_adapter(
+    source_path: Path, output_path: Path, protocol: Mapping[str, Any]
+) -> Dict[str, Any]:
+    """Project the frozen C manifest onto the already-frozen planner interface.
+
+    The prospective manifest retained all scenario geometry but omitted four
+    dataclass interface fields.  Passing it directly therefore fails before a
+    planner trajectory exists.  This adapter neither changes nor overwrites the
+    frozen source asset; it only adds values already fixed by the protocol and
+    the frozen non-reactive background definition.
+    """
+    from tools.stage7l_build_lane_change_opportunity_inventory import (
+        BACKGROUND_AGENT_MODEL, BACKGROUND_CONFIG,
+    )
+    from tools.stage7l_pure_lateral_execution_planner import (
+        FrozenLaneChangeManeuver, canonical_json_sha256,
+    )
+
+    source = read_json(source_path)
+    required = tuple(FrozenLaneChangeManeuver.__dataclass_fields__)
+    added_fields = ("horizon_s", "background_agent_model", "background_config_sha256", "planner_profile_ids")
+    adapted: List[Dict[str, Any]] = []
+    for original in source["maneuvers"]:
+        values = dict(original)
+        values["horizon_s"] = float(original["scenario_horizon_s"])
+        values["background_agent_model"] = BACKGROUND_AGENT_MODEL
+        values["background_config_sha256"] = canonical_json_sha256(BACKGROUND_CONFIG)
+        values["planner_profile_ids"] = list(DOSES)
+        projected = {key: values[key] for key in required}
+        # Construction here proves the adapted schema is actually executable.
+        FrozenLaneChangeManeuver.from_mapping(projected)
+        adapted.append(projected)
+    payload = {
+        "schema_version": "stage7l_d_runtime_maneuver_manifest_adapter_v1",
+        "status": "CODE_NON_EXECUTABILITY_INTERFACE_REPAIR_NO_SCIENTIFIC_CHANGE",
+        "frozen_source_path": str(source_path.resolve()),
+        "frozen_source_sha256": sha256_file(source_path),
+        "added_interface_fields": list(added_fields),
+        "dropped_non_planner_metadata_fields": sorted(set(source["maneuvers"][0]) - set(required)),
+        "scenario_count": len(adapted),
+        "dose_transition_length_m": protocol["treatment"]["dose_transition_length_m"],
+        "maneuvers": adapted,
+        "representation_boundary": "NO_EMBEDDING_CHECKPOINT_BDD_OR_MMD",
+    }
+    output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    audit = {
+        "schema_version": "stage7l_d_runtime_manifest_adapter_audit_v1",
+        "status": "PASS_CODE_NON_EXECUTABILITY_INTERFACE_REPAIRED",
+        "source_sha256": sha256_file(source_path), "runtime_sha256": sha256_file(output_path),
+        "scenario_count": len(adapted), "added_fields": list(added_fields),
+        "source_scenario_tokens_identical": [row["scenario_token"] for row in source["maneuvers"]] == [row["scenario_token"] for row in adapted],
+        "geometry_identity_fields": [
+            "scenario_token", "log_name", "initial_state_fingerprint", "source_lane_id", "target_lane_id",
+            "direction", "route_fingerprint", "trigger_s_route_m", "source_start_arc_m", "target_start_arc_m",
+            "source_reference_xy", "target_reference_xy",
+        ],
+        "protocol_changed": False, "roster_changed": False, "treatment_changed": False,
+        "valid_rollout_existed_before_repair": False,
+    }
+    return audit
+
+
 def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
     protocol, roster, provenance = validate_preflight(args)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     preflight_path = args.output_dir / "preflight_audit.json"
     plan_path = args.output_dir / "planned_rollout_ledger.csv"
     contract_path = args.output_dir / "stage7l_d_execution_contract.json"
+    runtime_manifest_path = args.output_dir / "runtime_maneuver_manifest.json"
+    adapter_audit_path = args.output_dir / "runtime_manifest_adapter_audit.json"
     if preflight_path.is_file():
         existing = read_json(preflight_path)
         immutable_keys = (
@@ -224,13 +288,61 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
         )
         mismatch = [key for key in immutable_keys if existing.get(key) != provenance.get(key)]
         if mismatch:
-            raise ValueError(f"resume provenance mismatch: {mismatch}")
+            if not args.authorize_manifest_interface_repair:
+                raise ValueError(f"resume provenance mismatch: {mismatch}")
+            attempts = read_csv(args.output_dir / "attempt_ledger.csv")
+            valid_before = any(
+                row.get("official_run_status") == "SUCCEEDED" and str(row.get("trajectory_available")).lower() == "true"
+                for row in attempts
+            )
+            if valid_before:
+                raise ValueError("runtime manifest interface repair is forbidden after any valid confirmation rollout")
+            audit = build_runtime_manifest_adapter(args.maneuver_manifest, runtime_manifest_path, protocol)
+            adapter_audit_path.write_text(json.dumps(audit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            prior_preflight_sha = sha256_file(preflight_path)
+            prior_runner_sha = existing.get("runner_sha256")
+            existing.update({
+                "runner_sha256": provenance["runner_sha256"],
+                "mechanism_evaluator_sha256": provenance["mechanism_evaluator_sha256"],
+                "gate_evaluator_sha256": provenance["gate_evaluator_sha256"],
+                "runtime_maneuver_manifest_sha256": sha256_file(runtime_manifest_path),
+                "runtime_manifest_adapter_audit_sha256": sha256_file(adapter_audit_path),
+                "implementation_generation": "runtime_manifest_adapter_v2",
+                "repair_commit": git_head(args.repo_root),
+            })
+            existing.setdefault("execution_amendments", []).append({
+                "status": "STAGE7L_D_CODE_NON_EXECUTABILITY_INTERFACE_REPAIR",
+                "reason": "frozen confirmation maneuver manifest omitted four already-frozen planner dataclass interface fields",
+                "prior_preflight_sha256": prior_preflight_sha,
+                "prior_runner_sha256": prior_runner_sha,
+                "runtime_manifest_sha256": sha256_file(runtime_manifest_path),
+                "valid_rollout_count_before_repair": 0,
+                "protocol_changed": False, "roster_changed": False, "treatment_changed": False,
+            })
+            contract = read_json(contract_path)
+            contract["implementation_generation"] = "runtime_manifest_adapter_v2"
+            contract["code_non_executability_repair"] = {
+                "status": "AUTHORIZED_PRE_OUTCOME_INTERFACE_REPAIR",
+                "prior_attempts_preserved": True,
+                "new_generation_same_cell_retry_allowed_only_without_prior_valid_rollout": True,
+                "protocol_roster_treatment_unchanged": True,
+            }
+            contract_path.write_text(json.dumps(contract, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            existing["execution_contract_sha256"] = sha256_file(contract_path)
+            preflight_path.write_text(json.dumps(existing, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        elif not runtime_manifest_path.is_file():
+            raise FileNotFoundError("resume runtime maneuver manifest is missing")
         plan = read_csv(plan_path)
         if len(plan) != 400:
             raise ValueError("resume planned ledger is not 400 rows")
-        return plan, existing
+        return plan, read_json(preflight_path)
     if any(args.output_dir.iterdir()):
         raise FileExistsError(f"new Stage7L-D output_dir is not empty: {args.output_dir}")
+    audit = build_runtime_manifest_adapter(args.maneuver_manifest, runtime_manifest_path, protocol)
+    adapter_audit_path.write_text(json.dumps(audit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    provenance["runtime_maneuver_manifest_sha256"] = sha256_file(runtime_manifest_path)
+    provenance["runtime_manifest_adapter_audit_sha256"] = sha256_file(adapter_audit_path)
+    provenance["implementation_generation"] = "runtime_manifest_adapter_v2"
     plan = initial_plan(roster)
     write_csv_atomic(plan_path, plan, PLANNED_FIELDS)
     contract = {
@@ -250,6 +362,7 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
             "rationale": "faithful implementation of frozen population=all_80_frozen_scenarios_no_post_treatment_deletion; fixed before results",
         },
         "representation_boundary": "NO_EMBEDDING_CHECKPOINT_BDD_OR_MMD",
+        "implementation_generation": "runtime_manifest_adapter_v2",
     }
     provenance["execution_contract_sha256_pending_write"] = True
     contract_path.write_text(json.dumps(contract, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -403,6 +516,7 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
     write_csv_atomic(attempts_path, attempts, ATTEMPT_FIELDS)
     summary = write_summary(summary_path, plan, attempts)
     successes = latest_successes(attempts)
+    generation = provenance.get("implementation_generation", "pre_runtime_adapter_v1")
     started = time.monotonic()
     update_progress(args, summary, started)
     for planned in plan:
@@ -410,8 +524,9 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
         if cid in successes:
             continue
         existing = [row for row in attempts if row["cell_id"] == cid]
+        generation_attempts = [row for row in existing if row.get("attempt_generation") == generation]
         retry_limit = 1 + args.max_infrastructure_retries
-        while len(existing) < retry_limit and cid not in successes:
+        while len(generation_attempts) < retry_limit and cid not in successes:
             attempt_number = len(existing) + 1
             attempt_id = f"{cid}_A{attempt_number:02d}"
             attempt_dir = args.output_dir / "cells" / cid / attempt_id
@@ -421,7 +536,8 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
             row: Dict[str, Any] = {
                 **planned, "attempt_id": attempt_id, "start_time": start_iso, "end_time": "", "exit_code": "",
                 "official_run_status": "RUNNING", "trajectory_available": False, "failure_category": "",
-                "failure_detail": "", "retry_count": attempt_number - 1, "attempt_dir": str(attempt_dir.resolve()),
+                "failure_detail": "", "retry_count": attempt_number - 1, "attempt_generation": generation,
+                "attempt_dir": str(attempt_dir.resolve()),
                 "trajectory_csv": "", "planner_audit_path": "",
             }
             attempts.append(row)
@@ -437,7 +553,7 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
             env["NUPLAN_DATA_ROOT"] = str(args.nuplan_data_root.resolve())
             env["NUPLAN_MAPS_ROOT"] = str(args.nuplan_map_root.resolve())
             env["NUPLAN_EXP_ROOT"] = str(args.nuplan_exp_root.resolve())
-            env["STAGE7L_MANEUVER_MANIFEST"] = str(args.maneuver_manifest.resolve())
+            env["STAGE7L_MANEUVER_MANIFEST"] = str((args.output_dir / "runtime_maneuver_manifest.json").resolve())
             env["STAGE7L_PLANNER_AUDIT_DIR"] = str((attempt_dir / "planner_audits").resolve())
             log_path = attempt_dir / "stage7l_d_cell.log"
             cell_started = time.monotonic()
@@ -452,6 +568,7 @@ def run(args: argparse.Namespace) -> Dict[str, Any]:
             row["duration_seconds"] = time.monotonic() - cell_started
             write_csv_atomic(attempts_path, attempts, ATTEMPT_FIELDS)
             existing = [item for item in attempts if item["cell_id"] == cid]
+            generation_attempts = [item for item in existing if item.get("attempt_generation") == generation]
             if row["official_run_status"] == "SUCCEEDED":
                 successes[cid] = row
             summary = write_summary(summary_path, plan, attempts)
@@ -501,6 +618,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--command_timeout_s", type=int, default=1200)
     parser.add_argument("--max_infrastructure_retries", type=int, default=1, choices=(0, 1))
     parser.add_argument("--prepare_only", action="store_true")
+    parser.add_argument(
+        "--authorize_manifest_interface_repair", action="store_true",
+        help="One-time pre-outcome repair for the frozen manifest's demonstrated planner-interface non-executability.",
+    )
     return parser.parse_args()
 
 

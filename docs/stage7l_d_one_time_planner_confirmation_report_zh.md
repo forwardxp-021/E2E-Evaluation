@@ -18,6 +18,8 @@
 
 正式数值将在400格official inventory完成后，由`tools/stage7l_extract_confirmation_metrics.py`和`tools/stage7l_evaluate_confirmation_gates.py`从planner-level资产一次性写入。安全口径在结果前固定为全部80场景的scenario-level conservative aggregation；不做post-treatment deletion或replacement。
 
+第一轮执行在0条有效rollout、0条treatment outcome时证明冻结confirmation maneuver manifest缺少planner dataclass所需的4个接口字段。该问题属于C2允许的`demonstrated code non-executability`：失败attempt永久保留。修复不覆盖冻结manifest，而是从其逐字段生成可审计runtime adapter，仅补入协议已冻结的15 s horizon、non-reactive background agent/config和五档profile IDs；roster、几何、dose、planner和gate均不变。adapter及repair commit SHA记录在正式输出的`runtime_manifest_adapter_audit.json`与`preflight_audit.json`。
+
 ## Blind boundary
 
 - embedding read：No

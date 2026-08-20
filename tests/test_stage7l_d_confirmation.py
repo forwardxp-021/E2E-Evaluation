@@ -9,7 +9,12 @@ from tools.stage7l_evaluate_confirmation_gates import (
     nuisance_summary,
     safety_summary,
 )
-from tools.stage7l_run_confirmation import DOSES, TRANSITION_LENGTH_M, initial_plan
+from tools.stage7l_run_confirmation import (
+    DOSES,
+    TRANSITION_LENGTH_M,
+    build_runtime_manifest_adapter,
+    initial_plan,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -191,3 +196,27 @@ def test_no_representation_runtime_imports() -> None:
         }
         assert "torch" not in imported
         assert "tensorflow" not in imported
+
+
+def test_runtime_manifest_adapter_only_repairs_frozen_planner_interface(tmp_path: Path) -> None:
+    source_full = json.loads(
+        (ROOT / "outputs/stage7l_c_confirmation_freeze_v1/confirmation_maneuver_manifest.json").read_text()
+    )
+    source = {**source_full, "maneuvers": source_full["maneuvers"][:1]}
+    source_path = tmp_path / "source.json"
+    output_path = tmp_path / "runtime.json"
+    source_path.write_text(json.dumps(source))
+    audit = build_runtime_manifest_adapter(source_path, output_path, frozen_protocol_for_test())
+    runtime = json.loads(output_path.read_text())
+    original = source["maneuvers"][0]
+    adapted = runtime["maneuvers"][0]
+    assert audit["status"] == "PASS_CODE_NON_EXECUTABILITY_INTERFACE_REPAIRED"
+    assert audit["protocol_changed"] is False
+    assert audit["roster_changed"] is False
+    assert audit["treatment_changed"] is False
+    assert adapted["scenario_token"] == original["scenario_token"]
+    assert adapted["source_reference_xy"] == original["source_reference_xy"]
+    assert adapted["target_reference_xy"] == original["target_reference_xy"]
+    assert adapted["horizon_s"] == 15.0
+    assert adapted["planner_profile_ids"] == list(DOSES)
+    assert adapted["background_mode"] == "closed_loop_nonreactive_agents"
