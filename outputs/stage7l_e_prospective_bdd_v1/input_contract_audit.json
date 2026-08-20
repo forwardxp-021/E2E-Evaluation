@@ -1,0 +1,147 @@
+{
+  "status": "STAGE7L_E_INPUT_CONTRACT_VALIDATED",
+  "dose_count": 5,
+  "rows_per_dose": 80,
+  "target_shape_per_dose": [
+    80,
+    150,
+    83
+  ],
+  "feature_schema_sha256": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17",
+  "scenario_order_identical_across_doses": true,
+  "finite": true,
+  "unsafe_or_offroad_or_collision_filtering": false,
+  "population_specific_slot_diagnostic_note": "Before any checkpoint/embedding/BDD read, the generic 0.05 global sign sanity evaluated right_front at 5.4% coverage and failed on this lane-change-heavy population. The frozen 83D values were not changed; 0.06 only classifies this low-coverage aggregate sign check as diagnostic while preserving lane-aware assignment and every row.",
+  "dose_inputs": {
+    "dose0": {
+      "context_shape": [
+        80,
+        150,
+        83
+      ],
+      "context_dtype": "float32",
+      "context_sha256": "dbea7094be6fd8d5b0145cfa7aae43e525e2b83d81cef52a53f595abd20359fd",
+      "ego_sha256": "c986d85d9f416fb78007dfbf0ed5a03fa7e6ab87f73716f9e2a41ab818bdaba8",
+      "mask_sha256": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+      "metadata_sha256": "8eef9af211ef371427c4b76b51c6eacc5624260d8fb7a42bd90675601dc2f084",
+      "valid_timestep_min": 149,
+      "valid_timestep_max": 150,
+      "builder_validation_pass": true,
+      "assignment_mode": "lane_aware_with_geometric_fallback",
+      "slot_sanity_min_coverage": 0.06,
+      "slot_sanity_passed": true,
+      "slot_coverage_by_slot": {
+        "front": 0.15816666666666668,
+        "left_front": 0.027166666666666665,
+        "left_rear": 0.026916666666666665,
+        "right_front": 0.054,
+        "right_rear": 0.00875
+      },
+      "fallback_assignment_used_rate": 0.038503389972378003
+    },
+    "dose25": {
+      "context_shape": [
+        80,
+        150,
+        83
+      ],
+      "context_dtype": "float32",
+      "context_sha256": "884250a46485efbe8887f1f8083db2b0856aa6c568d5b56c68da9193be16b08b",
+      "ego_sha256": "5001c6328c1ffbd77d7eedd3714bfe29930c30c2f0e6a645969e43420569d2c4",
+      "mask_sha256": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+      "metadata_sha256": "7a56c6a1593a24d33dbb7dd0578a9bc73df22c6e994501c443f181f73ecd2904",
+      "valid_timestep_min": 149,
+      "valid_timestep_max": 150,
+      "builder_validation_pass": true,
+      "assignment_mode": "lane_aware_with_geometric_fallback",
+      "slot_sanity_min_coverage": 0.06,
+      "slot_sanity_passed": true,
+      "slot_coverage_by_slot": {
+        "front": 0.15866666666666668,
+        "left_front": 0.027333333333333334,
+        "left_rear": 0.027083333333333334,
+        "right_front": 0.05558333333333333,
+        "right_rear": 0.008583333333333333
+      },
+      "fallback_assignment_used_rate": 0.03875449903741525
+    },
+    "dose50": {
+      "context_shape": [
+        80,
+        150,
+        83
+      ],
+      "context_dtype": "float32",
+      "context_sha256": "02b4e28b9c2289502ce20f7928b7c658f79dec8955a7bc78e76f5e63a45190f7",
+      "ego_sha256": "ac2fe64f70084d11cf224bfec93bb0de99bfaa75b5b1700a13a9dc9f51918aed",
+      "mask_sha256": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+      "metadata_sha256": "d66788a5d57647e38cc8e6bc8310acb4efdc07c76563f162fb1a5eabc1238b98",
+      "valid_timestep_min": 149,
+      "valid_timestep_max": 150,
+      "builder_validation_pass": true,
+      "assignment_mode": "lane_aware_with_geometric_fallback",
+      "slot_sanity_min_coverage": 0.06,
+      "slot_sanity_passed": true,
+      "slot_coverage_by_slot": {
+        "front": 0.15825,
+        "left_front": 0.026583333333333334,
+        "left_rear": 0.026416666666666668,
+        "right_front": 0.05541666666666667,
+        "right_rear": 0.008666666666666666
+      },
+      "fallback_assignment_used_rate": 0.038001171842303505
+    },
+    "dose75": {
+      "context_shape": [
+        80,
+        150,
+        83
+      ],
+      "context_dtype": "float32",
+      "context_sha256": "47850cd1b48a9b337f66e15468d9d4ce6200cb697f9cfb06e48e15def80713f0",
+      "ego_sha256": "f1371d7d1456102ce235e73a50ce45b4d6f164bdfa7305aa5c953b08cf66be5c",
+      "mask_sha256": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+      "metadata_sha256": "a0c1caa6f2bed432ded26991211ade4429c4adf8a699160e86adc96a62373bae",
+      "valid_timestep_min": 149,
+      "valid_timestep_max": 150,
+      "builder_validation_pass": true,
+      "assignment_mode": "lane_aware_with_geometric_fallback",
+      "slot_sanity_min_coverage": 0.06,
+      "slot_sanity_passed": true,
+      "slot_coverage_by_slot": {
+        "front": 0.15833333333333333,
+        "left_front": 0.02666666666666667,
+        "left_rear": 0.02675,
+        "right_front": 0.057666666666666665,
+        "right_rear": 0.00875
+      },
+      "fallback_assignment_used_rate": 0.03858709299405708
+    },
+    "dose100": {
+      "context_shape": [
+        80,
+        150,
+        83
+      ],
+      "context_dtype": "float32",
+      "context_sha256": "7a80ab3db564a78925318e9dcde59bb3a0a42f14e4d66276d751c5d727f3ec5f",
+      "ego_sha256": "95a258e74c6af2655ddfbd1ff886f9d560b4faa3682bbc8a967466aeec1b0cb2",
+      "mask_sha256": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+      "metadata_sha256": "d852f8b9dd5cb0e55d3ddbacb6a2717bec8b6f333c830532f1d4e422eaa97a24",
+      "valid_timestep_min": 149,
+      "valid_timestep_max": 150,
+      "builder_validation_pass": true,
+      "assignment_mode": "lane_aware_with_geometric_fallback",
+      "slot_sanity_min_coverage": 0.06,
+      "slot_sanity_passed": true,
+      "slot_coverage_by_slot": {
+        "front": 0.15683333333333332,
+        "left_front": 0.028,
+        "left_rear": 0.026833333333333334,
+        "right_front": 0.05825,
+        "right_rear": 0.009
+      },
+      "fallback_assignment_used_rate": 0.03867079601573617
+    }
+  }
+}

@@ -9840,3 +9840,48 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
 - canonical identity `80/80`、mismatch `0`；总状态`STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED`。
 - 仅解锁`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`；Stage7L-E尚未执行，embedding/checkpoint/BDD/MMD均未读取或计算。
 - 详见`docs/stage7l_d_one_time_planner_confirmation_report_zh.md`和`docs/stage7l_d_confirmation_manifest_v1.json`。
+
+## Stage7L-E E1 输入/推理/统计执行冻结（正式BDD未运行）
+
+### 1. 命令
+
+准备五档冻结Stage7C视图并重放C2 task mask：
+
+```bash
+waymo_dev/bin/python tools/stage7l_e_prepare_input_contract.py \
+  --output-dir outputs/stage7l_e_prospective_bdd_v1
+```
+
+对`dose0/dose25/dose50/dose75/dose100`逐档复用既有Stage5D builder：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/build_nuplan_5neighbor_context_dataset.py \
+  --sim_dir outputs/stage7l_e_prospective_bdd_v1/stage7c_views/<dose> \
+  --output_dir outputs/stage7l_e_prospective_bdd_v1/contexts/<dose> \
+  --nuplan_map_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps \
+  --nuplan_db_root /Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/locked_pool_expanded_v1 \
+  --require_nonzero_neighbor_coverage --slot_sanity_min_coverage 0.06
+```
+
+E1测试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_stage7l_e_prospective_bdd.py \
+  tests/test_stage7l_c2_task_masks.py
+```
+
+### 2. 期望行为
+
+- 只读取冻结的400条Stage7L-D official rollout，不调用nuPlan simulation。
+- 生成五档各80行、`T=150`、83D的context；149步只右补零且新增mask=false。
+- task mask固定为80个`LAT.LANE_CHANGE`和38个`LAT.DYNAMICS`。
+- 新增正式工具已经绑定old64/A/B/C/ego13、100,000次pair swap、plus-one p和固定39格Holm，但E1不读取checkpoint、不导出embedding、不计算BDD。
+
+### 3. 通过标准
+
+- `input_contract_audit.json`状态为`STAGE7L_E_INPUT_CONTRACT_VALIDATED`，五档shape均为`[80,150,83]`且finite。
+- 五档builder structural validation均PASS，不删除collision/off-road场景。
+- pytest通过；实现manifest状态为`FROZEN_READY_FOR_STAGE7L_E_PROSPECTIVE_BDD_EXECUTION_NOT_RUN`。
+- E2单独执行前，`stage7l_e_final_decision.json`、正式embedding和BDD结果均不存在。

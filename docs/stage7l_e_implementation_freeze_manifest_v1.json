@@ -1,0 +1,62 @@
+{
+  "schema_version": "stage7l_e_implementation_freeze_manifest_v1",
+  "status": "FROZEN_READY_FOR_STAGE7L_E_PROSPECTIVE_BDD_EXECUTION_NOT_RUN",
+  "scope": "E1_INPUT_INFERENCE_AND_STATISTICS_IMPLEMENTATION_ONLY",
+  "stage7l_d_unlock_verified": true,
+  "stage7l_d_frozen_commit": "6279bc742ad527246a945a4b6d5d7090fab591ea",
+  "frozen_inputs": {
+    "protocol_sha256": "f5a8b2df5ed60c0384e8181feceab33f3c6f048780e95aab851184e49247490a",
+    "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+    "stage7l_d_manifest_sha256": "eb8c04795d1ee2c10419dbd9db3f9145ece9f9add618ba46241e53374ff461ba",
+    "input_contract_audit_sha256": "89f1e3668ca5cabac48a703226a9ea7224d5d57eb855533d186423e960064375",
+    "task_mask_sha256": "74206af6b0d7bc5be4b16e8ef8343feebad6ced722d1d3232e4e72c6396a3ec3",
+    "task_mask_audit_sha256": "687ee44db9fc796acee48a2128cd1a0e942ca100087cd321c8fcf625ff364354"
+  },
+  "implementation": {
+    "input_preparation": {
+      "path": "tools/stage7l_e_prepare_input_contract.py",
+      "sha256": "79ae1860e26698ff5211278ab6965d9143428dd10a6d0874b82aed2a02d8acbb"
+    },
+    "formal_inference_and_bdd": {
+      "path": "tools/stage7l_e_run_prospective_bdd.py",
+      "sha256": "989211a8608eac61056a3421b237db334bd86b6002538d66a655fd53b3237467"
+    },
+    "tests": {
+      "path": "tests/test_stage7l_e_prospective_bdd.py",
+      "sha256": "40781e5226627b911ac134353d75c086cab228ec8c664d3dcaf7891b4d79524f"
+    }
+  },
+  "inherited_statistics": {
+    "kernel_analysis_path": "tools/stage6l_run_context_representation_ablation.py",
+    "kernel_analysis_sha256": "847c66d9bf7b996dfe7fb4d9e3b5712d8d54a9eb5804b2fe98dafe9c82bdf32b",
+    "null_diagnostics_path": "tools/stage6k_run_longitudinal_dose_bdd.py",
+    "null_diagnostics_sha256": "cafaedc4f279da841a77d513ef2be74190c1b7498990b45fca77907757decf08",
+    "bandwidth_kernel_holm_path": "tools/stage7_m6_scenario_conditioned_bdd.py",
+    "bandwidth_kernel_holm_sha256": "fc22984f6a93fc1e625dc7040369ec2fd143e4829224304c61c419da01189e1f",
+    "stage6v_actual_pipeline_path": "tools/stage6v_run_stage6jk_blind.py",
+    "stage6v_actual_pipeline_sha256": "c9d1ba71cc8856e78e5b337b04ce9cb4171cbee01824f09b32d8d1c1bf932259",
+    "null_repetitions": 100000,
+    "null_seed_base": 2026081301,
+    "plus_one_p": true,
+    "fixed_secondary_holm_tests": 39
+  },
+  "input_contract": {
+    "official_rollouts_reused": 400,
+    "planner_rerun": false,
+    "dose_rows": 80,
+    "context_shape_per_dose": [80, 150, 83],
+    "lat_lane_change": 80,
+    "lat_dynamics": 38,
+    "outcome_filtering": false,
+    "population_specific_low_coverage_slot_diagnostic_recorded": true
+  },
+  "blind_state": {
+    "checkpoint_read": false,
+    "embedding_read": false,
+    "formal_bdd_or_mmd_computed": false,
+    "primary_result_read": false,
+    "training_or_checkpoint_modified": false,
+    "planner_rerun": false
+  },
+  "next_authorized_step": "E2_FORMAL_FIVE_REPRESENTATION_INFERENCE_AND_FROZEN_40_CELL_BDD_ONLY"
+}

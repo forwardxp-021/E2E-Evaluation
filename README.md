@@ -2221,3 +2221,15 @@ Stage7L-D已完成并冻结为`STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED`。�
 全部planner-level gate通过，仅解锁`STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED`，未自动执行Stage7L-E。全过程没有读取checkpoint/embedding或计算BDD/MMD。中文结果见[`docs/stage7l_d_one_time_planner_confirmation_report_zh.md`](docs/stage7l_d_one_time_planner_confirmation_report_zh.md)，机器化小型manifest见[`docs/stage7l_d_confirmation_manifest_v1.json`](docs/stage7l_d_confirmation_manifest_v1.json)。
 
 首轮执行在任何有效trajectory产生前暴露出冻结maneuver manifest少4个planner接口字段的代码不可执行问题。按C2允许的pre-outcome例外，runner使用单独runtime adapter补齐既有冻结常量，不修改源manifest、roster、treatment、planner或gate；所有失败attempt原样保留并按实现代次审计。
+
+## Stage7L-E Prospective Representation / BDD（E1执行就绪）
+
+Stage7L-E因总预计3–5小时拆成三段。E1已完成并冻结输入、推理与统计实现，但尚未运行正式representation/BDD。
+它只复用Stage7L-D的400条official rollout，五档各80条，按既有规则将149步右侧零填充到150步，并构建五档
+`[80,150,83]` context；没有重新仿真、replacement或outcome filtering。C2 task mask重放为
+`LAT.LANE_CHANGE=80`、`LAT.DYNAMICS=38`。
+
+paired BDD复用Stage6V/W实际实现，固定100,000次pair-label swap、plus-one p、seed base 2026081301和39-test Holm。
+synthetic/forward测试全部通过。当前状态为`FROZEN_READY_FOR_STAGE7L_E_PROSPECTIVE_BDD_EXECUTION_NOT_RUN`；
+checkpoint、embedding和正式BDD/MMD仍未读取。详见
+[`docs/stage7l_e_execution_readiness_report_zh.md`](docs/stage7l_e_execution_readiness_report_zh.md)。

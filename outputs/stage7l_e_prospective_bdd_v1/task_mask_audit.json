@@ -1,0 +1,9 @@
+{
+  "definition_version": "stage7l_c2_pretreatment_task_masks_v1",
+  "LAT.LANE_CHANGE": 80,
+  "LAT.DYNAMICS": 38,
+  "task_mask_sha256": "74206af6b0d7bc5be4b16e8ef8343feebad6ced722d1d3232e4e72c6396a3ec3",
+  "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+  "pretreatment_source_sha256": "7b045a347881b48bd7558ed7f234122c60292c12d90c685c5c5244e9fa4e110b",
+  "forbidden_inputs_read": []
+}
