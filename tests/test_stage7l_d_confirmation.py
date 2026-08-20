@@ -198,6 +198,12 @@ def test_no_representation_runtime_imports() -> None:
         assert "tensorflow" not in imported
 
 
+def test_confirmation_runner_reuses_historically_working_hydra_searchpath() -> None:
+    source = (ROOT / "tools/stage7l_run_confirmation.py").read_text()
+    assert "pkg://nuplan.planning.script.config.common,pkg://nuplan.planning.script.experiments" in source
+    assert "pkg://nuplan.planning.script.config.experiments" not in source
+
+
 def test_runtime_manifest_adapter_only_repairs_frozen_planner_interface(tmp_path: Path) -> None:
     source_full = json.loads(
         (ROOT / "outputs/stage7l_c_confirmation_freeze_v1/confirmation_maneuver_manifest.json").read_text()

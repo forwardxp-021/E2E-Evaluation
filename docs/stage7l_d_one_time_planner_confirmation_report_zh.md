@@ -20,6 +20,8 @@
 
 第一轮执行在0条有效rollout、0条treatment outcome时证明冻结confirmation maneuver manifest缺少planner dataclass所需的4个接口字段。该问题属于C2允许的`demonstrated code non-executability`：失败attempt永久保留。修复不覆盖冻结manifest，而是从其逐字段生成可审计runtime adapter，仅补入协议已冻结的15 s horizon、non-reactive background agent/config和五档profile IDs；roster、几何、dose、planner和gate均不变。adapter及repair commit SHA记录在正式输出的`runtime_manifest_adapter_audit.json`与`preflight_audit.json`。
 
+adapter之后的首轮调用又在0条有效rollout时发现runner Hydra searchpath与已验证Stage7L-B历史命令不一致，导致simulation config缺少`ego_controller`。第三实现代次只恢复历史工作searchpath；失败attempt继续保留，未改变任何科学参数。
+
 ## Blind boundary
 
 - embedding read：No

@@ -316,7 +316,7 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
                 "gate_evaluator_sha256": provenance["gate_evaluator_sha256"],
                 "runtime_maneuver_manifest_sha256": sha256_file(runtime_manifest_path),
                 "runtime_manifest_adapter_audit_sha256": sha256_file(adapter_audit_path),
-                "implementation_generation": "runtime_manifest_adapter_v2",
+                "implementation_generation": "runtime_manifest_adapter_v3_hydra_searchpath",
                 "repair_commit": git_head(args.repo_root),
             })
             existing.setdefault("execution_amendments", []).append({
@@ -329,7 +329,7 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
                 "protocol_changed": False, "roster_changed": False, "treatment_changed": False,
             })
             contract = read_json(contract_path)
-            contract["implementation_generation"] = "runtime_manifest_adapter_v2"
+            contract["implementation_generation"] = "runtime_manifest_adapter_v3_hydra_searchpath"
             contract["code_non_executability_repair"] = {
                 "status": "AUTHORIZED_PRE_OUTCOME_INTERFACE_REPAIR",
                 "prior_attempts_preserved": True,
@@ -351,7 +351,7 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
     adapter_audit_path.write_text(json.dumps(audit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     provenance["runtime_maneuver_manifest_sha256"] = sha256_file(runtime_manifest_path)
     provenance["runtime_manifest_adapter_audit_sha256"] = sha256_file(adapter_audit_path)
-    provenance["implementation_generation"] = "runtime_manifest_adapter_v2"
+    provenance["implementation_generation"] = "runtime_manifest_adapter_v3_hydra_searchpath"
     plan = initial_plan(roster)
     write_csv_atomic(plan_path, plan, PLANNED_FIELDS)
     contract = {
@@ -371,7 +371,7 @@ def prepare_output(args: argparse.Namespace) -> tuple[List[Dict[str, Any]], Dict
             "rationale": "faithful implementation of frozen population=all_80_frozen_scenarios_no_post_treatment_deletion; fixed before results",
         },
         "representation_boundary": "NO_EMBEDDING_CHECKPOINT_BDD_OR_MMD",
-        "implementation_generation": "runtime_manifest_adapter_v2",
+        "implementation_generation": "runtime_manifest_adapter_v3_hydra_searchpath",
     }
     provenance["execution_contract_sha256_pending_write"] = True
     contract_path.write_text(json.dumps(contract, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -404,7 +404,7 @@ def stage7c_command(args: argparse.Namespace, item: Mapping[str, Any], attempt_d
     planner = f"stage7l_b2_pure_lateral_{item['dose']}"
     searchpath = (
         f"[file://{(args.repo_root / 'configs/stage7l_hydra').resolve()},"
-        "pkg://nuplan.planning.script.config.common,pkg://nuplan.planning.script.config.experiments]"
+        "pkg://nuplan.planning.script.config.common,pkg://nuplan.planning.script.experiments]"
     )
     template = " ".join([
         str(args.python_executable.resolve()),
