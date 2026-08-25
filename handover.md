@@ -1,14 +1,16 @@
 # E2E-Evaluation 博士研究项目权威交接
 
 > **状态：`CURRENT_RESEARCH_HANDOVER_UPDATED_FOR_THESIS_CLOSURE`**  
-> 更新时间：2026-08-20（Asia/Shanghai）
+> 更新时间：2026-08-20 17:56（Asia/Shanghai）
 > 仓库：`forwardxp-021/E2E-Evaluation`  
 > 分支：`20260611_stage7_conclusion`  
-> 本次更新前基线：`a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`
+> E3本地提交：`2e77d3b6d3b993cce64a41c75826e702176c58e6`
+> 当前已知远端提交：`a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`（本地已包含E3及本次handover更新；GitHub 443超时，尚待重推）
 > 本文件更新提交：运行 `git log -1 --format='%H %s' -- handover.md` 获取（Git提交无法在自身内容中稳定保存自己的最终SHA）  
 > 当前阶段：Stage6/Stage7/Stage7L研究证据、模型与BDD报告体系全部冻结；只进入论文写作、图表和claim cleanup。
 > 核心状态：`STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS`
 > 实验状态：`RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING`
+> 交接状态：`E3_COMPLETE_LOCAL_COMMIT_PENDING_REMOTE_SYNC`
 
 本文件是当前项目状态、科学结论、冻结协议、关键资产和后续工作的**总入口**。旧的
 Windows→Mac迁移记录、Pittsburgh下载过程和Stage5/6/7早期研发流水已经降级到末尾的历史背景，
@@ -50,6 +52,29 @@ git log -1 --oneline
 
 工作树长期包含大量未跟踪实验输出和一个既有tracked数据文件修改。不要运行`git reset --hard`、
 `git clean`或批量删除outputs；先区分用户资产与当前任务修改。
+
+### 0.2 新conversation首先处理的唯一工程事项
+
+E3已经完成、测试并提交，不得重新生成或重算。新conversation启动后先核对：
+
+```bash
+git rev-parse HEAD
+git rev-parse origin/20260611_stage7_conclusion
+git status --short --branch
+```
+
+E3提交为`2e77d3b6d3b993cce64a41c75826e702176c58e6`。2026-08-20 17:20前后两次执行
+`git push origin HEAD:20260611_stage7_conclusion`均因无法连接`github.com:443`约75秒后超时；这不是认证、
+代码或分支冲突。网络恢复后只需重试同一push并核对远端SHA，不要重新commit E3。
+
+必须保留的用户工作树修改：
+
+```text
+outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/
+  behavior_events_v2/behavior_event_metrics_v2.csv
+```
+
+该CSV不属于E3，未被stage或提交。大量其他未跟踪outputs同样不得批量删除或加入提交。
 
 ---
 
@@ -713,7 +738,9 @@ outputs/final_standardized_bdd_style_report_card_v2_stage7l/
 
 ```text
 branch: 20260611_stage7_conclusion
-baseline before this handover update: a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa
+local E3 commit: 2e77d3b6d3b993cce64a41c75826e702176c58e6
+last known remote commit: a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa
+sync status: LOCAL_CONTAINS_E3_AND_HANDOVER_UPDATE_REMOTE_STILL_E2_GITHUB_443_TIMEOUT
 remote: origin/20260611_stage7_conclusion
 PR: #265, OPEN DRAFT, large historical development PR
 ```
@@ -722,7 +749,20 @@ PR #265用于当前长期研发分支归档，不应被当作一份小而独立�
 
 本handover的权威重构历史版本由`c901fb53316b06791fc628cd8415f888bb8cba60`纳入仓库；E2机器结果冻结基线为
 `a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`。E3只提交明确列出的报告、映射、工具、测试与文档，
-不得顺带提交大型outputs、日志、数据或既有工作树修改。
+不得顺带提交大型outputs、日志、数据或既有工作树修改。E3本地提交已经形成；当前仅因GitHub网络不可达
+尚未同步。不得把“远端仍为E2”误解为E3需要重做。
+
+E3提交前验证结果：
+
+```text
+py_compile: PASS
+check_no_tmp_dependencies: PASS
+pytest: 24 passed, 14 dependency deprecation warnings
+E3 reproducibility/hash comparison: PASS
+prospective rows: 40
+fixed behavior dimensions: 13
+historical Stage7 post-hoc rows preserved: 10
+```
 
 关键provenance SHA：
 
@@ -749,6 +789,17 @@ Stage7L-integrated standardized reporting manifest:
 ---
 
 ## 12. 当前下一步：只进入论文写作
+
+### Track 0 — 完成E3远端同步
+
+若`origin/20260611_stage7_conclusion`仍指向`a4c8cd2...`，网络恢复后执行：
+
+```bash
+git push origin HEAD:20260611_stage7_conclusion
+git ls-remote origin refs/heads/20260611_stage7_conclusion
+```
+
+远端必须包含E3提交`2e77d3b6...`或其后的handover-only提交。同步成功前不要创建另一份E3结果提交。
 
 ### Track A — Thesis writing
 
@@ -846,6 +897,8 @@ RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
 13. 是否明确Primary为B-3407 dose100 vs dose0 `LAT.LANE_CHANGE`，且不能事后换成ego13？
 14. 是否区分Stage7 post-hoc lane-change slice与Stage7L prospective confirmation？
 15. 是否明确Stage7L失败结果不能重新打开模型训练、场景选择或门槛？
+16. 是否核对E3本地提交与远端SHA，并在网络恢复后只补做一次push而不是重做E3？
+17. 是否保留用户已有`behavior_event_metrics_v2.csv`修改及其他未跟踪实验资产？
 
 若以上任一问题不清楚，先回到本文件和第0节权威文档，不要启动训练、仿真或BDD重算。
 
