@@ -1,0 +1,36 @@
+{
+  "schema_version": "r0_contract_verification_result_v0.2_template",
+  "generated_at_utc": null,
+  "repo": {
+    "path": null,
+    "branch": null,
+    "head_sha": null,
+    "status_short": null,
+    "remote_url": null
+  },
+  "protected_local_assets": [
+    {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+      "sha256": null,
+      "exists": null,
+      "modified": null
+    }
+  ],
+  "checkpoints": [],
+  "datasets": [],
+  "configs": [],
+  "contracts": {},
+  "warnings": [],
+  "prohibited_actions_confirmed": [
+    "no_git_reset_hard",
+    "no_git_clean",
+    "no_bulk_output_delete",
+    "no_training",
+    "no_simulation"
+  ],
+  "repository": "forwardxp-021/E2E-Evaluation",
+  "expected_active_branch": "20260825_stageR_new",
+  "observed_branch": null,
+  "observed_head_sha": null,
+  "remote_stageR_head_reference": "460832bde6266f1367a10bfe00e9b3bc176740ce"
+}

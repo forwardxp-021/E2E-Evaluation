@@ -1,0 +1,67 @@
+{
+  "schema_version": "r0_training_authorization_manifest_v0.2",
+  "protocol_version": "R0_v1.0_PENDING",
+  "protocol_sha": null,
+  "decision_table_sha": null,
+  "asset_inventory_sha": null,
+  "contract_inventory_sha": null,
+  "split_manifest_sha": null,
+  "sap_sha": null,
+  "target_definition_sha": null,
+  "authorization_values": [
+    "AUTHORIZED",
+    "NOT_AUTHORIZED",
+    "CONDITIONALLY_AUTHORIZED_WITH_FROZEN_FALLBACK"
+  ],
+  "RBR_A_TRAINING_AUTHORIZATION": "NOT_AUTHORIZED",
+  "RBR_B_TRAINING_AUTHORIZATION": "NOT_AUTHORIZED",
+  "RBR_C_TRAINING_AUTHORIZATION": "NOT_AUTHORIZED",
+  "candidate_records": {
+    "RBR_A": {
+      "status": "NOT_AUTHORIZED",
+      "protocol_sha": null,
+      "decision_table_sha": null,
+      "asset_inventory_sha": null,
+      "contract_inventory_sha": null,
+      "split_manifest_sha": null,
+      "sap_sha": null,
+      "target_definition_sha": null,
+      "fallback_id": null,
+      "authorization_rationale": "R0 v1.0 not yet frozen/executed.",
+      "authorized_at_utc": null,
+      "authorized_by_protocol_version": null
+    },
+    "RBR_B": {
+      "status": "NOT_AUTHORIZED",
+      "protocol_sha": null,
+      "decision_table_sha": null,
+      "asset_inventory_sha": null,
+      "contract_inventory_sha": null,
+      "split_manifest_sha": null,
+      "sap_sha": null,
+      "target_definition_sha": null,
+      "fallback_id": null,
+      "authorization_rationale": "R0 v1.0 not yet frozen/executed.",
+      "authorized_at_utc": null,
+      "authorized_by_protocol_version": null
+    },
+    "RBR_C": {
+      "status": "NOT_AUTHORIZED",
+      "protocol_sha": null,
+      "decision_table_sha": null,
+      "asset_inventory_sha": null,
+      "contract_inventory_sha": null,
+      "split_manifest_sha": null,
+      "sap_sha": null,
+      "target_definition_sha": null,
+      "fallback_id": null,
+      "authorization_rationale": "R0 v1.0 not yet frozen/executed.",
+      "authorized_at_utc": null,
+      "authorized_by_protocol_version": null
+    }
+  },
+  "invariant": "Missing required SHA binding => NOT_AUTHORIZED.",
+  "repository": "forwardxp-021/E2E-Evaluation",
+  "active_development_branch": "20260825_stageR_new",
+  "active_branch_head_sha": null
+}
