@@ -1,0 +1,32 @@
+freeze_id,module,parameter_or_contract,readiness_status,verified_basis,remaining_work,blocking,notes
+NBR000,Global,active_development_branch,READY,Branch verified as 20260825_stageR_new,Bind again at freeze,YES,
+NBR001,Global,active_branch_exact_local_head_sha,READY,Dynamic git rev-parse HEAD procedure verified,Read after final approved pre-freeze commit and record SHA,YES,Do not freeze pre-integration HEAD
+NBR002,Global,historical_gen1_source_reference,READY,Historical branch/commit provenance separated from artifact SHA,Bind exact references in final manifest,NO,
+N000,Global,alpha_family,NEEDS_DEVELOPMENT_ESTIMATION,Historical alpha 0.05 exists but R0 hypothesis families are new,Define primary families and multiplicity in SAP using development only,YES,Do not inherit one alpha family implicitly
+N001,Global,bootstrap_repetitions,NEEDS_DEVELOPMENT_ESTIMATION,Cluster units can be specified but R0 CI precision/runtime not measured,Run development timing/Monte Carlo error estimate,YES,No audit outcomes
+N002,Global,permutation_repetitions,NEEDS_DEVELOPMENT_ESTIMATION,Historical Stage7L used 100000 while Stage6P uses no permutation,Set per R0 estimand based on p-value resolution/runtime,YES,Historical counts are evidence not automatic R0 value
+N003,Global,minimum_seed_consistency,READY,All A/B/C 3407/3408/3409 best checkpoints exist and >=2/3 rule is pre-frozen,Bind nine checkpoint SHAs,NO,
+N004,Global,independence_bootstrap_permutation_units,READY,"Stage7L unit=scenario pair; Stage6P releases log-disjoint and scenario-overlap forbidden",Declare unit separately for each new R0 analysis,YES,New R0 log-cluster CI still needs SAP entry
+N010,D0,temporal_contract_fact,READY,Training T=80 and Stage7L learned inference T=150 are locally verified,Freeze audit policy/views; do not invent effect threshold,YES,Contract fact ready but resolution policy is not
+N011,D0,minimum_temporal_effect,NEEDS_DEVELOPMENT_ESTIMATION,No numerical minimum effect is locally frozen,Estimate measurement variability on R0_DEVELOPMENT,YES,Separate length/position/pooling
+N012,D0,event_position_bins,NEEDS_DEVELOPMENT_ESTIMATION,150-step event support is verified but bins are not,Define from time coordinates and event metadata before holdout,YES,
+N013,D0,probe_capacity_contract,NEEDS_DEVELOPMENT_ESTIMATION,Linear/low-capacity family is methodological rule but grid is absent,Freeze model family regularization grid and tie-break,YES,
+N020,D1,semantic_probe_targets,NEEDS_DEVELOPMENT_ESTIMATION,ego13 exact 13D is verified; full lateral/interaction target set is not frozen,Create target_definition JSON from verified schemas,YES,No Stage7L outcome selection
+N021,D1,information_retention_effect_thresholds,NEEDS_DEVELOPMENT_ESTIMATION,No target-specific R2/MAE/rank threshold exists,Use physical relevance and development uncertainty,YES,
+N022,D1,geometry_diagnostic_thresholds,NOT_YET_APPLICABLE,Geometry is diagnostic and never standalone gate,Define descriptive conventions after embedding inventory,NO,
+N030,D2,context_shuffle_matching_strata,NEEDS_DEVELOPMENT_ESTIMATION,83D schema and missingness are known but strata/bins are not,Develop pre-treatment matching strata and sparse-cell rules,YES,
+N031,D2,ablation_value_and_mask_contract,BLOCKED,Input is unnormalized but sentinel/mask synchronization is not defined,Freeze physical zero sentinel valid-mask and derived-feature policy,YES,Gen-1 result may only be ablation sensitivity
+N032,D2,ablation_ood_threshold,NEEDS_DEVELOPMENT_ESTIMATION,Training embedding bank and candidate metrics exist but boundary absent,Choose training-distribution quantile on development,YES,
+N040,D3,primary_kernel_family,NEEDS_DEVELOPMENT_ESTIMATION,Historical paired/unpaired RBF contracts are verified but R0 primary/multikernel role not selected,Freeze primary family and multiplicity before holdout,YES,
+N041,D3,bandwidth_rule,NEEDS_DEVELOPMENT_ESTIMATION,Two historical rules are verified and differ by estimand,Select treatment-label-blind R0 rule and fit dataset,YES,Do not mix Stage7L cell-adaptive and Stage6P fixed-pool silently
+N042,D3,projection_rank_candidates,NEEDS_DEVELOPMENT_ESTIMATION,No bounded rank set has been frozen,Choose bounded set on R0_DEVELOPMENT only,YES,
+N043,D3,projection_selection_metric,NEEDS_DEVELOPMENT_ESTIMATION,No frozen metric/tie-break,Define semantic retention plus null-calibration criterion,YES,
+N044,D3,null_calibration_split,BLOCKED,R0_AUDIT_HOLDOUT candidate is NOT_FOUND,Create disjoint development/calibration/audit roles,YES,Historical Stage6P split cannot be relabeled
+N050,D4,F_match_feature_set,NEEDS_DEVELOPMENT_ESTIMATION,ego13 is verified but extended handcrafted/residual family definitions are not frozen,Separate F_match from M_behavior per family,YES,
+N051,D4,equivalence_margin_per_feature,BLOCKED,No physical/measurement/business rationale has yet been integrated,Develop rationale and feasibility without representation outcomes,YES,Power cannot define equivalence
+N052,D4,equivalence_inference,READY,TOST or CI-inside-frozen-margin method is pre-frozen,Specify family-wise intersection/multiplicity in SAP,YES,
+N053,D4,minimum_independent_units,BLOCKED,No verified R0 holdout or R4 reserved pool inventory,Build outcome-blind source inventory and power plan,YES,
+N054,D4,controlled_treatment_primary_estimand,READY,Whole-frozen-roster/intention-to-evaluate rule is pre-frozen,Encode in future manifest,YES,No mechanism-success survivor primary
+N055,D4,r0_audit_holdout,BLOCKED,Local verification found no eligible locked holdout,Identify new outcome-blind scenario/log-disjoint candidate and check power,YES,
+N056,D4,future_r4_reserved_pool,BLOCKED,Local verification found no frozen source/token/generator pool,Lock source/token pool/generator rules before training,YES,
+N060,R4,release_noninferiority_margin_delta_NI,NOT_YET_APPLICABLE,R0 only freezes definition method principle and CI not numeric value,Defer numeric value until architecture/sample design before R4 authorization,NO_R0,Never use R4 outcome
