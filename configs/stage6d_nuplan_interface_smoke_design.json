@@ -1,0 +1,87 @@
+{
+  "schema_version": "stage6d_unpaired_version_design_v1",
+  "group_column": "planner_name",
+  "groups": {
+    "A": "pdm_closed_assertive_v1",
+    "B": "pdm_closed_conservative_v1"
+  },
+  "row_id_column": "global_row",
+  "cluster_column": "log_name",
+  "reference_distribution": "equal_group_pooled_common_support",
+  "covariates": [
+    {
+      "name": "map_name",
+      "kind": "categorical",
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "scenario_type",
+      "kind": "categorical",
+      "timing": "pre_treatment"
+    }
+  ],
+  "tasks": [
+    {
+      "name": "following_interaction",
+      "column": "scenario_type",
+      "positive_values": [
+        "following_lane_with_lead",
+        "following_lane_with_slow_lead",
+        "near_long_vehicle"
+      ],
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "lane_change",
+      "column": "scenario_type",
+      "positive_values": [
+        "changing_lane_to_left",
+        "changing_lane_to_right"
+      ],
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "stop_go_control",
+      "column": "scenario_type",
+      "positive_values": [
+        "accelerating_at_traffic_light_with_lead",
+        "stationary_at_traffic_light_without_lead",
+        "stationary_in_traffic",
+        "stopping_at_traffic_light_with_lead",
+        "stopping_with_lead"
+      ],
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "high_motion_dynamics",
+      "column": "scenario_type",
+      "positive_values": [
+        "high_lateral_acceleration",
+        "high_magnitude_speed",
+        "medium_magnitude_speed"
+      ],
+      "timing": "pre_treatment"
+    },
+    {
+      "name": "dense_or_vulnerable_interaction",
+      "column": "scenario_type",
+      "positive_values": [
+        "near_multiple_vehicles",
+        "near_pedestrian_on_crosswalk"
+      ],
+      "timing": "pre_treatment"
+    }
+  ],
+  "post_treatment_columns": [
+    "pair_quality_tier",
+    "fallback_rate",
+    "actual_lane_change",
+    "hard_brake"
+  ],
+  "thresholds": {
+    "min_support_fraction_per_group": 0.9,
+    "min_ess_ratio_per_group": 0.5,
+    "max_weight_ratio": 10.0,
+    "min_clusters_per_group": 2
+  }
+}

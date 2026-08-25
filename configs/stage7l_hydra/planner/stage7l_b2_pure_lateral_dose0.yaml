@@ -1,0 +1,12 @@
+stage7l_b2_pure_lateral_dose0:
+  _target_: tools.stage7l_pure_lateral_execution_planner.PureLateralExecutionPlanner
+  _convert_: all
+  manifest_path: ${oc.env:STAGE7L_MANEUVER_MANIFEST}
+  dose_id: dose0
+  transition_length_m: 60.0
+  horizon_seconds: 0.4
+  sampling_time: 0.1
+  target_speed_mps: 5.0
+  accel_limit_mps2: 1.0
+  audit_dir: ${oc.env:STAGE7L_PLANNER_AUDIT_DIR}
+  parameter_status: STAGE7L_B_SAFE_DEVELOPMENT_DOSE_SET_V2

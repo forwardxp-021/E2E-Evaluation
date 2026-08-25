@@ -1,0 +1,47 @@
+{
+  "status": "UNIFIED_BDD_REPORTING_SCHEMA_FROZEN",
+  "frozen_on": "2026-08-14",
+  "schema_version": "unified_bdd_reporting_schema_v1",
+  "training_run": false,
+  "simulation_run": false,
+  "embedding_or_bdd_recomputed": false,
+  "frozen_artifacts": {
+    "schema": {
+      "path": "configs/unified_bdd_reporting_schema_v1.json",
+      "sha256": "4e979b8432182e7995180c346e609a10cc61198aab23eaead0c2ac96e7d9eab5"
+    },
+    "stage_task_mapping": {
+      "path": "configs/unified_bdd_stage_task_mapping_v1.csv",
+      "sha256": "1301c2c6966b8618b9ef8122b4e461374a41fcae3f509e63ec9b0639592b6e49"
+    },
+    "chinese_specification": {
+      "path": "docs/unified_bdd_evaluation_matrix_style_report_card_zh.md",
+      "sha256": "3e95778907bac4718f5433aa1cd83231df764e8a715943cf0ee79eb66d1c48fd"
+    }
+  },
+  "source_evidence_sha256": {
+    "stage6jk_paired_result_manifest": "242f88517bdca31359c163244d26f7f556376dec2065ffc5cde859cec4f3d42b",
+    "stage6p_unpaired_result_manifest": "70205230c9a3f10db01e0604dbd6ac75765a4fdc004a086b6f14a5bf46e455fa",
+    "stage6s_v3_representation_result_manifest": "74b601795decb2f6de90928d527429f27c1320a705d9a4f672400ce4d32412b9",
+    "stage6w_stage6s_v3_final_manifest": "462f1fb6aecbd8c2cc3a4ccf345bb16d8c95a1d47a0f1241b3ee96e6db7b1062",
+    "stage7_confirmation_evidence_summary": "7c21a3b36da8670aed1f29a4af1d4a91cf6b55c2e4fc5713915445a948b2bb2c"
+  },
+  "frozen_rules": [
+    "Behavior Drift Profile, BDD Statistic, and Representation Evaluation are separate concepts.",
+    "Every BDD row explicitly identifies Reference, Target, task, evaluation mode, representation, and null or calibration.",
+    "All semantic deltas use Target minus Reference.",
+    "The 13-leaf behavior taxonomy is fixed; missing dimensions remain N/A with a reason code.",
+    "BDD significance does not determine semantic direction.",
+    "Behavior Profile and Representation Scorecard are separate mandatory tables.",
+    "Cross-representation raw MMD2 comparison is prohibited.",
+    "Existing frozen conclusions are not modified by schema migration."
+  ],
+  "existing_evidence_gaps": [
+    "exact free-flow-speed task BDD",
+    "exact lane-keeping BDD",
+    "task-specific semantic direction for locked lane-change BDD",
+    "fair old64/A/B/C/ego13 lane-change representation comparison",
+    "exact lateral-gap-acceptance BDD with semantic delta",
+    "exact merge/yield/cut-in confirmation"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "stage7l_a2_clean_implementation_manifest_v1",
+  "status": "STAGE7L_PURE_LATERAL_IMPLEMENTATION_CLEAN",
+  "next_stage_status": "STAGE7L_B_DEVELOPMENT_AUTHORIZED",
+  "stage7l_b_started": false,
+  "baseline_commit": "213e859db7c0133b0e3cf383a92e71a452608a2e",
+  "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "tuplan_garage_commit": "b51d5d04fac1bd4389653b9ab2ff73ea88f435a3",
+  "dose_transition_length_m": {
+    "dose0": 60.0,
+    "dose25": 54.0,
+    "dose50": 48.0,
+    "dose75": 42.0,
+    "dose100": 36.0
+  },
+  "parameter_status": "A2_SMOKE_ONLY_NOT_FROZEN_FOR_CONFIRMATION",
+  "canonical_reference": "frozen source-lane baseline centerline route progress",
+  "canonical_s_route_pointwise_identical": true,
+  "background_mode": "closed_loop_nonreactive_agents",
+  "background_agent_model": "nuplan.planning.simulation.observation.tracks_observation.TracksObservation",
+  "background_config_sha256": "9aad54d780d4c53612be8e397f51d8b1f6718b8323617f5eee6d49617c3b9f0c",
+  "official_smoke": {
+    "scenario_token": "2880228e6471586a",
+    "dose_count": 5,
+    "official_success_count": 5,
+    "all_complete": true,
+    "all_collision_free": true,
+    "all_drivable_area_compliant": true,
+    "lateral_peak_accel_strict_dose_ordering": true
+  },
+  "max_abs_realized_longitudinal_nuisance": {
+    "delta_mean_speed_mps": 0.0055529040810711194,
+    "delta_rms_longitudinal_accel_mps2": 0.00018670121406738627,
+    "delta_rms_longitudinal_jerk_mps3": 0.002776333661237862,
+    "delta_route_progress_m": 0.0511737501632723
+  },
+  "fresh_inventory": {
+    "eligible_unique_token_count": 148,
+    "eligible_unique_log_count": 120,
+    "left_count": 25,
+    "right_count": 123,
+    "strict_log_disjoint_partition_feasible": true,
+    "fresh_supply_gate_pass": true,
+    "history_excluded_unique_token_count": 1182
+  },
+  "sha256": {
+    "smoke_config": "17ca08c903b0fa13be6f05f282a7a9ac5639c9ff5aa922344868e4460c7de664",
+    "inventory_csv": "d3de7f2af7e7aac106f987cfbbdd69e95eb305c51554a097810efe26aacb8ead",
+    "inventory_summary": "830098d32eec08cb70ee6e874a97cc90e764a94e2cf3482e90e18a9dc347d8ce",
+    "smoke_maneuver_manifest": "9d823d5346ddabc7bf3708560d04888965fa493a8733688a7638e176f1810624",
+    "official_smoke_summary": "6d070c5633a5c6b11f254dcd17292f5dfc3b4bd68f68896710618a9a149df1c0",
+    "mechanism_safety_summary": "24d7376608ab11323c846ecb2dbaab5d2ced3c51f712716c3adbea2d9fab6963",
+    "a2_smoke_exclusion_ledger": "e05cfe46e80b8c2ff219f710bcfabba282efbd9e8f7079afa4c157ab2a4a0b8e"
+  },
+  "prohibited_work_audit": {
+    "training_run": false,
+    "formal_development_run": false,
+    "confirmation_roster_frozen": false,
+    "confirmation_rollout_run": false,
+    "embedding_read_or_exported": false,
+    "bdd_read_or_computed": false,
+    "frozen_stage6_or_stage7_result_modified": false
+  }
+}

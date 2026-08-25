@@ -1,0 +1,124 @@
+{
+  "schema_version": "stage6l_context_representation_ablation_design_v1",
+  "issue": 253,
+  "purpose": "Diagnose whether the frozen Waymo encoder's nuPlan longitudinal dose sensitivity is driven by ego kinematics, neighbor context, or handcrafted interaction summaries before any retraining or lane-pipeline change.",
+  "frozen_checkpoint_sha256": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc",
+  "doses": [
+    {"label": "dose25", "nominal_dose": 0.25, "planner_a": "pdm_closed_assertive_longitudinal_dose25_v1"},
+    {"label": "dose50", "nominal_dose": 0.50, "planner_a": "pdm_closed_assertive_longitudinal_dose50_v1"},
+    {"label": "dose75", "nominal_dose": 0.75, "planner_a": "pdm_closed_assertive_longitudinal_dose75_v1"},
+    {"label": "dose100", "nominal_dose": 1.00, "planner_a": "pdm_closed_assertive_longitudinal_v1"}
+  ],
+  "planner_b": "pdm_closed_conservative_longitudinal_v1",
+  "representations": [
+    {
+      "id": "learned64_full_context",
+      "role": "current_primary_reference",
+      "dimension": 64,
+      "definition": "Existing frozen Stage 6J/K 64D embeddings; no recomputation or rescaling."
+    },
+    {
+      "id": "learned64_neighbor_zero_input",
+      "role": "same_checkpoint_input_ablation_not_ego_only_retraining",
+      "dimension": 64,
+      "definition": "Run the same frozen encoder after preserving context_traj channels 0:8 and setting all five neighbor-slot channels 8:83 to zero at every timestep."
+    },
+    {
+      "id": "ego_kinematic_13d",
+      "role": "explicit_ego_only_kinematic_baseline",
+      "dimension": 13,
+      "features": [
+        "mean_speed",
+        "std_speed",
+        "p95_speed",
+        "end_minus_start_speed",
+        "rms_accel",
+        "mean_abs_accel",
+        "p95_abs_accel",
+        "rms_jerk",
+        "p95_abs_jerk",
+        "rms_yaw_rate",
+        "mean_abs_yaw_rate",
+        "heading_change_abs_total",
+        "path_length"
+      ],
+      "formula": {
+        "valid_frames": "ego_seq_mask true only",
+        "dt_seconds": 0.1,
+        "speed": "ego_seq channel 5",
+        "accel": "first difference of valid-frame speed divided by dt; first sample repeats the first finite difference convention as zero",
+        "jerk": "first difference of recomputed accel divided by dt; first sample zero",
+        "yaw_rate": "wrapped first difference of ego_seq channel 4 divided by dt; first sample zero",
+        "heading_change_abs_total": "sum absolute wrapped heading differences",
+        "path_length": "sum Euclidean displacement of valid-frame ego_seq x/y"
+      }
+    },
+    {
+      "id": "handcrafted_interaction_trajectory_46d",
+      "role": "explicit_interaction_and_trajectory_baseline",
+      "dimension": 46,
+      "definition": "Concatenate the frozen 13D ego kinematic summary with all 33 mask-aware interaction_feat_style features in feature_schema order."
+    }
+  ],
+  "handcrafted_scaling": {
+    "reference": "dose100 conservative planner rows only",
+    "method": "median_and_iqr",
+    "nonfinite_imputation": "reference_median",
+    "scale_floor": 1e-06,
+    "uses_planner_or_dose_labels_to_optimize_scale": false
+  },
+  "statistics": {
+    "kernel": "single_rbf",
+    "estimator": "biased_mmd2_v_statistic",
+    "bandwidth": "exact pooled positive off_diagonal median independently within each representation x dose x scope",
+    "paired_randomization": "within_scenario_label_swap",
+    "paired_permutations": 100000,
+    "paired_seed": 2026081301,
+    "log_cluster_randomization": "all scenario pairs sharing log_name flip together",
+    "log_cluster_permutations": 100000,
+    "log_cluster_seed": 2026081302,
+    "plus_one_p": true,
+    "overall_holm_family": "four nonzero doses separately within each representation",
+    "task_holm_family": "four doses x three frozen Stage 6J tasks separately within each representation",
+    "log_cluster_holm_family": "four nonzero doses separately within each representation",
+    "cross_representation_raw_mmd_comparison_forbidden": true,
+    "required_reporting": [
+      "mmd2",
+      "paired_null_q95",
+      "bdd_to_null_q95_ratio",
+      "null_standardized_z_bdd",
+      "raw_p",
+      "holm_p",
+      "task_conditioned_results",
+      "log_cluster_results"
+    ]
+  },
+  "pair_diagnostics": {
+    "distance": "euclidean_l2_within_each_representation",
+    "kernel_contribution": "per_pair_signed_mmd_witness_contribution_whose_mean_equals_observed_mmd2",
+    "quality_metrics": ["max_pair_fallback_rate", "max_pair_ambiguity_rate"],
+    "associations": [
+      "quality_vs_pair_l2_spearman",
+      "quality_vs_absolute_kernel_contribution_spearman",
+      "task_adjusted_rank_residual_for_both_outcomes"
+    ],
+    "bootstrap_unit": "log_name_cluster",
+    "bootstrap_repetitions": 10000,
+    "bootstrap_seed": 2026081303,
+    "role": "post_treatment_descriptive_not_causal_adjustment"
+  },
+  "geometric_only_supplement": {
+    "enabled_in_primary_freeze": false,
+    "reason": "Run only after A-D diagnostics because rebuilding the lane assignment changes the context construction path and is a supplementary stress test, not the first representation ablation.",
+    "future_label": "same_checkpoint_geometric_only_context_supplement"
+  },
+  "go_no_go": {
+    "retraining_go_only_if_any": [
+      "learned64_full_context is materially less null-standardized-sensitive than ego_kinematic_13d across the frozen dose curve",
+      "neighbor-zero ablation preserves most sensitivity while full-context distance remains quality-associated",
+      "handcrafted representation shows robust task sensitivity that learned64 misses"
+    ],
+    "context_v2_go_only_if": "full-context sensitivity or pair contribution remains materially associated with lane quality after the A-D diagnostic",
+    "no_go_for_immediate_retraining": "Do not retrain solely because raw BDD values are numerically small."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": "stage7l_e_input_contract_preparation_v1",
+  "status": "STAGE7L_E_INPUT_VIEWS_PREPARED_CONTEXT_BUILD_NOT_YET_VALIDATED",
+  "stage7l_d_unlock_verified": true,
+  "stage7l_d_commit_contained_in_head": "6279bc742ad527246a945a4b6d5d7090fab591ea",
+  "stage7l_d_manifest_sha256": "eb8c04795d1ee2c10419dbd9db3f9145ece9f9add618ba46241e53374ff461ba",
+  "protocol_sha256": "f5a8b2df5ed60c0384e8181feceab33f3c6f048780e95aab851184e49247490a",
+  "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+  "official_rollouts_reused": 400,
+  "planner_rerun": false,
+  "checkpoint_read": false,
+  "embedding_read": false,
+  "bdd_or_mmd_computed": false,
+  "target_contract": [
+    80,
+    150,
+    83
+  ],
+  "dose_views": [
+    {
+      "dose": "dose0",
+      "scenario_count": 80,
+      "shape": [
+        80,
+        1,
+        150,
+        8
+      ],
+      "raw_timestep_values": [
+        149,
+        150
+      ],
+      "padding_policy": "zero_values_false_mask_right_pad_to_150",
+      "scenario_order_sha256": "fcf6f9ad0b95f295a406f578774f3912c8cef44f084689e514b61040004dc7ed",
+      "trajectory_view_sha256": "874a2deda24dea21c2be4173e097b6d03477935de5451f4d0e3c82b4b703be57",
+      "mask_view_sha256": "93a39dce5a2081800b35cb6f3bbd07fa07539d1456f66ec6038a4fa763df5196"
+    },
+    {
+      "dose": "dose25",
+      "scenario_count": 80,
+      "shape": [
+        80,
+        1,
+        150,
+        8
+      ],
+      "raw_timestep_values": [
+        149,
+        150
+      ],
+      "padding_policy": "zero_values_false_mask_right_pad_to_150",
+      "scenario_order_sha256": "7de347a7675374ea68d1b0e186c0eddf46aaca1986f99654d1a6dd1dd812dafa",
+      "trajectory_view_sha256": "3584259024b0f26c6b53a149b13b1fefa3b99b4c6e6da0b9421b51ff67df227c",
+      "mask_view_sha256": "93a39dce5a2081800b35cb6f3bbd07fa07539d1456f66ec6038a4fa763df5196"
+    },
+    {
+      "dose": "dose50",
+      "scenario_count": 80,
+      "shape": [
+        80,
+        1,
+        150,
+        8
+      ],
+      "raw_timestep_values": [
+        149,
+        150
+      ],
+      "padding_policy": "zero_values_false_mask_right_pad_to_150",
+      "scenario_order_sha256": "8b08e497f728eef83a99d9905a63b8d5b7a441cf186357afcb3dd5cfad9fc60c",
+      "trajectory_view_sha256": "5227e5834c3770f899e15edb9bcf84899bd8405f58184a873522cc0a999ec0fc",
+      "mask_view_sha256": "93a39dce5a2081800b35cb6f3bbd07fa07539d1456f66ec6038a4fa763df5196"
+    },
+    {
+      "dose": "dose75",
+      "scenario_count": 80,
+      "shape": [
+        80,
+        1,
+        150,
+        8
+      ],
+      "raw_timestep_values": [
+        149,
+        150
+      ],
+      "padding_policy": "zero_values_false_mask_right_pad_to_150",
+      "scenario_order_sha256": "47e3b9f5ce74f776344c60e76f799c75be88b0148e9c157b00adc38ca2633b3b",
+      "trajectory_view_sha256": "202e7cfc54938463a985093229202b693ddc4f9ad1871a554556eab754c9b640",
+      "mask_view_sha256": "93a39dce5a2081800b35cb6f3bbd07fa07539d1456f66ec6038a4fa763df5196"
+    },
+    {
+      "dose": "dose100",
+      "scenario_count": 80,
+      "shape": [
+        80,
+        1,
+        150,
+        8
+      ],
+      "raw_timestep_values": [
+        149,
+        150
+      ],
+      "padding_policy": "zero_values_false_mask_right_pad_to_150",
+      "scenario_order_sha256": "ec64e4a96f0ef261c7b357f84b3e5835cc045a68b81d5eddb99ee573aa26e369",
+      "trajectory_view_sha256": "935dc4da295da42bf2c7342ab3d3a01cb2cafd625b6311894583ecdedf95eb30",
+      "mask_view_sha256": "93a39dce5a2081800b35cb6f3bbd07fa07539d1456f66ec6038a4fa763df5196"
+    }
+  ],
+  "task_masks": {
+    "definition_version": "stage7l_c2_pretreatment_task_masks_v1",
+    "LAT.LANE_CHANGE": 80,
+    "LAT.DYNAMICS": 38,
+    "task_mask_sha256": "74206af6b0d7bc5be4b16e8ef8343feebad6ced722d1d3232e4e72c6396a3ec3",
+    "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+    "pretreatment_source_sha256": "7b045a347881b48bd7558ed7f234122c60292c12d90c685c5c5244e9fa4e110b",
+    "forbidden_inputs_read": []
+  },
+  "unsafe_or_offroad_or_collision_filtering": false
+}

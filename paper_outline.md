@@ -1,5 +1,7 @@
 # paper_outline — Trajectory-level Behavior Evaluation Benchmark 论文结构草稿
 
+> **历史文档提示（2026-08-14）：** 本文件保留早期 Stage 3/4 论文构想，不再代表当前论文目录、最终结论或模型状态。论文收口阶段的权威结构、贡献、图表和 claim boundary 请使用 [`docs/phd_thesis_research_closure_blueprint_zh.md`](docs/phd_thesis_research_closure_blueprint_zh.md)。不得继续引用本文件中“Stage 5 为未来扩展”或“公开人类验证尚未完成”等过时状态作为当前结论。
+
 > 更新时间：2026-05-07  
 > 当前阶段：阶段 3 收尾 / 阶段 4 规划中  
 > 当前定位：自动驾驶端到端（E2E）决策/规划 policy 的 trajectory-level behavior evaluation benchmark

@@ -1,0 +1,65 @@
+{
+  "schema_version": "stage6j_pure_longitudinal_kinematic_gate_v1",
+  "issue": "https://github.com/forwardxp-021/E2E-Evaluation/issues/251",
+  "frozen_before_context_result_read": true,
+  "planner_a": "pdm_closed_assertive_longitudinal_v1",
+  "planner_b": "pdm_closed_conservative_longitudinal_v1",
+  "expected_pair_count": 183,
+  "expected_distinct_log_count": 156,
+  "expected_task_counts": {
+    "following_interaction": 60,
+    "longitudinal_high_motion": 56,
+    "stop_go_control": 67
+  },
+  "bootstrap": {
+    "unit": "log_name_cluster",
+    "repetitions": 10000,
+    "seed": 20260810,
+    "confidence_level": 0.95
+  },
+  "primary_gate": {
+    "rule": "all_primary_metrics_must_pass",
+    "metrics": {
+      "delta_mean_speed": {
+        "expected_direction": "positive",
+        "minimum_one_sided_ci_bound": 0.5,
+        "unit": "m/s",
+        "interpretation": "assertive planner must realize a materially higher mean speed"
+      },
+      "delta_rms_accel": {
+        "expected_direction": "positive",
+        "minimum_one_sided_ci_bound": 0.1,
+        "unit": "m/s^2",
+        "interpretation": "assertive planner must realize materially stronger acceleration dynamics"
+      }
+    }
+  },
+  "supporting_metrics_not_used_for_primary_gate": [
+    "delta_rms_jerk",
+    "delta_mean_abs_yaw_rate",
+    "delta_mean_thw",
+    "delta_mean_front_distance",
+    "delta_front_valid_ratio"
+  ],
+  "front_interaction_exposure_diagnostic": {
+    "tasks": [
+      "following_interaction",
+      "stop_go_control"
+    ],
+    "minimum_mean_front_valid_ratio": 0.2,
+    "role": "diagnostic_not_primary_gate"
+  },
+  "decision_order": [
+    "validate_183_complete_same_scenario_pairs",
+    "compute_log_cluster_bootstrap_kinematic_contrasts",
+    "apply_primary_speed_and_acceleration_gate",
+    "only_if_gate_passes_allow_embedding_and_bdd_analysis"
+  ],
+  "prohibitions": [
+    "do_not_read_embedding",
+    "do_not_read_bdd",
+    "do_not_read_effect_size_before_gate",
+    "do_not_change_thresholds_after_observing_stage6j_kinematics",
+    "do_not_treat_thw_or_gap_as_primary_when_front_exposure_is_incomplete"
+  ]
+}

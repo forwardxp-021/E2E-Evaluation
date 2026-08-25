@@ -1,0 +1,70 @@
+{
+  "schema_version": "stage6k_preanalysis_addendum_design_v1",
+  "issue": "https://github.com/forwardxp-021/E2E-Evaluation/issues/252#issuecomment-5240601343",
+  "reason": "Freeze dose-family multiplicity, realized-dose reporting, clustered sensitivity, and quality sensitivity before any new-dose embedding or BDD result is read.",
+  "nominal_doses": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "nonzero_inferential_doses": [0.25, 0.5, 0.75, 1.0],
+  "primary_overall_dose_family": {
+    "hypothesis_count": 4,
+    "correction": "Holm",
+    "alpha": 0.05,
+    "minimum_detectable_nominal_dose_rule": "Smallest nonzero dose with realized-kinematic gate PASS and overall paired-BDD Holm-adjusted p < 0.05.",
+    "raw_p_role": "descriptive_only_not_used_to_select_minimum_dose"
+  },
+  "secondary_task_dose_family": {
+    "tasks": ["following_interaction", "stop_go_control", "longitudinal_high_motion"],
+    "hypothesis_count": 12,
+    "correction": "Holm_across_all_4_doses_x_3_tasks",
+    "alpha": 0.05,
+    "role": "inferential_secondary_not_used_for_overall_minimum_dose"
+  },
+  "realized_kinematic_gate": {
+    "cluster_unit": "log_name",
+    "bootstrap_repetitions": 10000,
+    "random_seed": 20260810,
+    "required_metrics": ["delta_mean_speed", "delta_rms_accel"],
+    "expected_direction": "positive",
+    "pass_rule": "One-sided log-cluster bootstrap 95% lower bound must be > 0 for both required metrics at the dose.",
+    "supporting_metrics": ["delta_rms_jerk", "delta_mean_thw", "delta_mean_front_distance", "delta_front_exposure_rate"],
+    "supporting_metrics_do_not_gate": true
+  },
+  "nominal_vs_realized_dose_reporting": {
+    "nominal_axis": "linear interpolation fraction in six longitudinal IDM parameters",
+    "realized_axes": ["delta_mean_speed_mps", "delta_rms_accel_mps2", "delta_rms_jerk_mps3", "delta_mean_thw_s", "delta_mean_front_distance_m"],
+    "required_statement": "A nominal parameter dose is not assumed to produce a linear behavioral dose.",
+    "minimum_detectable_realized_effect": "Report realized kinematic estimates and cluster intervals associated with the minimum detectable nominal dose; do not generalize them as universal thresholds."
+  },
+  "paired_bdd_primary": {
+    "representation": "frozen_Waymo_trained_64D_embedding",
+    "estimator": "single-RBF biased MMD2",
+    "bandwidth": "pooled positive off-diagonal exact median independently fixed per frozen dose comparison",
+    "randomization": "within-scenario-pair label swap",
+    "permutations": 100000,
+    "random_seed": 20260810,
+    "report": ["raw_mmd2", "paired_null_q95", "bdd_to_null_q95_ratio", "null_standardized_z_bdd", "raw_p", "Holm_p"]
+  },
+  "log_cluster_sensitivity": {
+    "role": "supplementary_does_not_replace_scenario_pair_primary",
+    "randomization": "flip the A/B labels for all scenario pairs sharing the same log_name as one cluster",
+    "permutations": 100000,
+    "random_seed": 20260811,
+    "overall_dose_correction": "Holm_across_4_nonzero_doses"
+  },
+  "lane_quality_sensitivity": {
+    "role": "descriptive_exploratory_post_treatment_not_causal_adjustment",
+    "metrics": ["max_pair_fallback_rate", "max_pair_ambiguity_rate"],
+    "outcome": "embedding_pair_l2_distance",
+    "analyses": ["overall_rank_association", "task_adjusted_rank_residual", "log_cluster_bootstrap_interval"],
+    "prohibition": "Do not filter, reweight, or replace the frozen paired primary using realized lane quality."
+  },
+  "dose_zero_role": "descriptive origin only; no inferential p-value and no duplicated same-sample claim",
+  "prohibitions": [
+    "do_not_overwrite_the_original_rollout_freeze",
+    "do_not_change_scenarios_planners_or_rollouts",
+    "do_not_read_new_dose_embedding_or_bdd_before_this_addendum_is_frozen",
+    "do_not_select_minimum_dose_using_uncorrected_p_values",
+    "do_not_call_nominal_parameter_dose_a_realized_behavioral_effect",
+    "do_not_claim_cluster_sensitivity_replaces_the_frozen_primary",
+    "do_not_use_post_treatment_quality_for_confirmatory_selection"
+  ]
+}

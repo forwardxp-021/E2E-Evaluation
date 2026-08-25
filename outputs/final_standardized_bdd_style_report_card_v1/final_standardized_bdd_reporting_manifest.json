@@ -1,0 +1,35 @@
+{
+  "schema_version": "final_standardized_bdd_reporting_system_v1",
+  "status": "FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN",
+  "protocol_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/configs/standardized_fixed_dimension_bdd_protocol_v2.json",
+  "protocol_sha256": "fac9f04d479185b1ef3548c08bc782d2a3114de8595da482a1f418e58f698762",
+  "schema_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/configs/unified_bdd_reporting_schema_v2.json",
+  "schema_sha256": "1c0325dc6e25bbeb40bbbc69c0b90504a792f19dfd3624c715e8d1d4a908d33d",
+  "source_dir": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/standardized_fixed_dimension_bdd_matrix_v1",
+  "source_file_sha256": {
+    "standardized_bdd_long.csv": "a5d1cf3ef596e5dc1d33c501744820f290d4c5c0947b2c517615337d9f8d8632",
+    "fixed_dimension_primary_matrix.csv": "c539ae519f140e490070de3979de0b1597f8f0233905234d7b2cd59f7b1f5f81",
+    "representation_gate_scorecard.csv": "ed95d72ff46915717888018fd712ed75913d20b2882abf6cc7f4bd74ef95a999",
+    "evidence_gap_matrix.csv": "ab4c9543a280ce273630733a948a2539293fcea2689132b3768c19507b6b96d9"
+  },
+  "statistics_recomputed": false,
+  "training_run": false,
+  "simulation_run": false,
+  "checkpoint_created_or_modified": false,
+  "embedding_export_run": false,
+  "scenario_selection_modified": false,
+  "stage6v_joint_conclusion_modified": false,
+  "raw_mmd2_cross_representation_ranking_performed": false,
+  "primary_representation": "B",
+  "representation_baseline": "old64",
+  "dimension_count": 13,
+  "shared_parent_semantic_dimension_count": 3,
+  "shared_parent_independent_bdd_count_per_representation": 1,
+  "output_files": {
+    "final_fixed_dimension_primary_matrix.csv": "d3f12a1ec539892c63aec3ace0c5de95f05ed23592de8c22d1a46aaa9cd97fcc",
+    "final_behavior_style_report_card.csv": "c5ca226451f03bfba6bebda5426e101109e505ce2fc929185962dea0145dffc3",
+    "final_representation_qualification_matrix.csv": "d3ef6619b1019ace16779c2e42c1579186cec2a969c85e89ad20e3de066dd53f",
+    "final_shared_parent_bdd_audit.csv": "6156e46a7c9822184dc06c7f5afe975fad494063c73d57e54bfd13d1b0059c33",
+    "final_standardized_bdd_style_report_card_zh.md": "9248e4d8e994a287e53a3911ef2b1e7f6f8ad86f96f9e92d2f6449d9d5d73e97"
+  }
+}

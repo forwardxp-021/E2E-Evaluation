@@ -1,0 +1,36 @@
+{
+  "schema_version": "stage6s_interaction_dominant_nuplan_benchmark_design_v1",
+  "issue": 260,
+  "source_locked_scenarios_csv": "outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_locked_scenarios.csv",
+  "pilot_pair_count": 24,
+  "selection": {
+    "allowed_task": "following_interaction",
+    "scenario_type_priority": ["following_lane_with_slow_lead", "following_lane_with_lead", "near_long_vehicle"],
+    "within_type_order": "existing_frozen_collection_order",
+    "pre_treatment_only": true
+  },
+  "planner_a": "pdm_closed_interaction_short_headway_v1",
+  "planner_b": "pdm_closed_interaction_long_headway_v1",
+  "shared_parameters": {
+    "idm_policies.speed_limit_fraction": [0.3, 0.5, 0.7, 0.9],
+    "idm_policies.fallback_target_velocity": 14.0,
+    "idm_policies.accel_max": 1.5,
+    "idm_policies.decel_max": 3.25,
+    "lateral_offsets": [-0.5, 0.5]
+  },
+  "treatment_parameters": {
+    "pdm_closed_interaction_short_headway_v1": {"idm_policies.min_gap_to_lead_agent": 0.5, "idm_policies.headway_time": 0.8},
+    "pdm_closed_interaction_long_headway_v1": {"idm_policies.min_gap_to_lead_agent": 2.5, "idm_policies.headway_time": 2.2}
+  },
+  "mechanism_gate": {
+    "absolute_delta_mean_speed_mps_max": 1.0,
+    "absolute_delta_rms_accel_mps2_max": 0.75,
+    "short_minus_long_mean_thw_max": -0.25,
+    "short_minus_long_mean_front_gap_m_max": -2.0,
+    "minimum_pairs_with_valid_front": 12,
+    "required_interaction_metric_count": 2,
+    "embedding_or_bdd_read": false
+  },
+  "planner_limitation_rule": "If the frozen treatment fails, record PDM limitation; do not tune parameters or select scenarios using outcomes.",
+  "forbidden_actions": ["read_embedding", "read_bdd", "change_treatment_after_results", "change_scenarios_after_results", "train_checkpoint", "modify_stage6o_v1"]
+}

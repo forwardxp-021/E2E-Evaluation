@@ -1,0 +1,53 @@
+{
+  "schema_version": "stage7l_b2_dynamic_clearance_v1",
+  "status": "PRETREATMENT_DYNAMIC_CLEARANCE_AUDIT",
+  "purpose": "offline pre-treatment clean-opportunity selection for controlled validation; not an online lane-change policy",
+  "prohibited_inputs": [
+    "Stage7L planner rollout", "dose ID", "collision/completion/yaw/lateral-acceleration outcome",
+    "embedding", "BDD", "MMD", "checkpoint"
+  ],
+  "common_lane_change_envelope": {
+    "definition": "time-aligned source-to-target centerline strip during the common 54--60 m transition family; source-only before trigger and target-only after gentle-length plus settling margin",
+    "trigger_route_progress_m": 12.0,
+    "gentle_transition_length_m": 60.0,
+    "settling_margin_m": 10.0,
+    "dose_independent": true
+  },
+  "canonical_longitudinal_schedule": {
+    "horizon_seconds": 15.0,
+    "time_step_seconds": 0.1,
+    "target_speed_mps": 5.0,
+    "accel_limit_mps2": 1.0,
+    "reference_coverage": "source and target references cover canonical progress through 15.4 s"
+  },
+  "footprint_and_buffer_m": {
+    "ego_length": 5.0,
+    "ego_width": 2.0,
+    "longitudinal_buffer": 3.0,
+    "lateral_buffer": 0.5,
+    "basis": "ego/agent oriented rectangular footprints plus fixed engineering reserve; no fitted collision classifier"
+  },
+  "replay_alignment": {
+    "source": "original nuPlan lidar_box replay tracks",
+    "maximum_track_interpolation_gap_seconds": 0.25,
+    "global_horizon_missing_policy": "reject: INSUFFICIENT_TRACK_HORIZON",
+    "individual_track_missing_policy": "do not extrapolate; record missing interpolation coverage"
+  },
+  "static_eligibility_retained": {
+    "native_adjacency": true,
+    "route_compatibility": true,
+    "official_runnability": true,
+    "minimum_initial_target_lane_object_gap_m": 15.0,
+    "minimum_paired_reference_remaining_m": 90.0
+  },
+  "future_stage7l_c_proposals_unchanged": {
+    "dose_transition_length_m": {"dose0": 60.0, "dose25": 58.5, "dose50": 57.0, "dose75": 55.5, "dose100": 54.0},
+    "primary_mechanism_metrics": ["lane_change_duration_s", "rms_lateral_accel_mps2", "peak_yaw_rate_radps"],
+    "nuisance_gates": {
+      "abs_delta_mean_speed_mps": 0.02,
+      "abs_delta_rms_longitudinal_accel_mps2": 0.05,
+      "abs_delta_rms_longitudinal_jerk_mps3": 0.1,
+      "abs_delta_route_progress_m": 0.25
+    }
+  }
+}

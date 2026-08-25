@@ -1,0 +1,84 @@
+{
+  "schema_version": "stage6m_context_balanced_unpaired_bdd_design_v1",
+  "issue": 254,
+  "purpose": "Compare four pre-frozen release-level unpaired BDD estimands on the existing Stage6H 800-pair log-disjoint trials without changing rollout, embedding, kernel bandwidth, or trial assignment.",
+  "source_sha256": {
+    "stage6h_config": "be24f58348ba3c836467243fd069be5c529801395714bed6909476f56bca7cf6",
+    "embedding_pool_summary": "77eb7d02198e562d15c18b408bce59284887fb7173b730512cd5c141feddd0db",
+    "embedding_pool_metadata": "20a735bb3e9953ac416595ee87f5cb0a825d29b83fb50e8ab1debd6f1bb3a939",
+    "trial_bdd": "ed73efb1a6f068882fea8231e0862d4746183d94768de3563b242b6205f1167c",
+    "log_assignments": "310085fe229f93f91712f714d50a44721330a54463e60072249ed705e91a2442",
+    "fixed_scope_bandwidths": "3c4e37de555d4c02a9fbd818fa513d08774672df7d8a28dab2de5291d2cb8c5b"
+  },
+  "sample_sizes_per_release": [200, 250, 300, 400],
+  "alpha": 0.05,
+  "calibration_quantile_method": "higher",
+  "minimum_valid_calibration_trials": 50,
+  "tasks": [
+    {"name": "following_interaction", "pool_count": 182, "weight": 0.2275},
+    {"name": "lane_change", "pool_count": 71, "weight": 0.08875},
+    {"name": "stop_go_control", "pool_count": 182, "weight": 0.2275},
+    {"name": "high_motion_dynamics", "pool_count": 182, "weight": 0.2275},
+    {"name": "dense_or_vulnerable_interaction", "pool_count": 183, "weight": 0.22875}
+  ],
+  "methods": [
+    {
+      "id": "raw_marginal",
+      "scope": "overall",
+      "source_statistic": "raw_mmd2",
+      "role": "actual observed release mixture without context balancing"
+    },
+    {
+      "id": "task_conditioned",
+      "scope": "five_frozen_mutually_exclusive_tasks",
+      "source_statistic": "raw_mmd2",
+      "aggregation": "sum full_pool_task_prevalence_weight times task_scope_mmd2",
+      "role": "within-task behavior difference aggregated at a fixed public-pool task prevalence"
+    },
+    {
+      "id": "context_balanced",
+      "scope": "overall",
+      "source_statistic": "standardized_mmd2",
+      "balancing": "exact common-support cells of pre-treatment map_name x scenario_type with equal-group pooled target mass",
+      "role": "overall context-balanced behavior difference"
+    },
+    {
+      "id": "task_context_balanced",
+      "scope": "five_frozen_mutually_exclusive_tasks",
+      "source_statistic": "standardized_mmd2",
+      "aggregation": "sum full_pool_task_prevalence_weight times task_scope_mmd2",
+      "balancing": "within each task, exact common-support cells of pre-treatment map_name x scenario_type",
+      "role": "task-conditioned and context-balanced behavior difference"
+    }
+  ],
+  "pre_treatment_variables": ["map_name", "scenario_type", "frozen_task"],
+  "forbidden_matching_variables": [
+    "planner_name",
+    "policy_style",
+    "realized_braking",
+    "realized_lane_change",
+    "embedding_distance",
+    "bdd",
+    "fallback_rate",
+    "post_rollout_behavior_metric"
+  ],
+  "validity": {
+    "task_method_requires_all_five_scope_statistics_finite": true,
+    "balanced_method_requires_stage6h_common_support_status_pass": true,
+    "aa_calibration_pooled_across_assertive_and_conservative_same_planner_trials": true,
+    "aa_evaluation_independent_from_calibration": true,
+    "ab_directions_reported_separately_and_pooled": true,
+    "universal_raw_bdd_threshold_forbidden": true
+  },
+  "required_diagnostics": [
+    "common_support_fraction_by_group",
+    "effective_sample_size_ratio_by_group",
+    "maximum_weight_ratio_by_group",
+    "not_comparable_trial_count",
+    "raw_and_standardized_covariate_balance",
+    "log_overlap_and_scenario_overlap",
+    "aa_false_positive_rate_with_wilson95",
+    "ab_detection_rate_with_wilson95",
+    "direction_specific_ab_detection"
+  ]
+}

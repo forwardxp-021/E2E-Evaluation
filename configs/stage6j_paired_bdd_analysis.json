@@ -1,0 +1,63 @@
+{
+  "schema_version": "stage6j_pure_longitudinal_paired_bdd_analysis_v1",
+  "issue": "https://github.com/forwardxp-021/E2E-Evaluation/issues/251",
+  "frozen_before_stage6j_bdd_result_read": true,
+  "dataset_role": "same_scenario_pure_longitudinal_benchmark_intervention_validation",
+  "planner_a": "pdm_closed_assertive_longitudinal_v1",
+  "planner_b": "pdm_closed_conservative_longitudinal_v1",
+  "expected_pair_count": 183,
+  "expected_row_count": 366,
+  "expected_embedding_dim": 64,
+  "expected_checkpoint_sha256": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc",
+  "primary_analysis": {
+    "scope": "overall",
+    "representation": "unchanged_original_64d_waymo_learned_embedding",
+    "statistic": "biased_single_rbf_mmd2_v_statistic",
+    "bandwidth": "exact_pooled_median_positive_off_diagonal_distance",
+    "bandwidth_fixed_during_randomization": true,
+    "null": "independent_label_swap_within_each_complete_scenario_pair",
+    "permutations": 100000,
+    "plus_one_correction": true,
+    "alpha": 0.05,
+    "alternative": "upper_tail"
+  },
+  "task_conditioned_secondary": {
+    "multiplicity": "holm_across_three_pretreatment_tasks",
+    "family_alpha": 0.05,
+    "minimum_pairs_per_task": 12,
+    "tasks": {
+      "following_interaction": [
+        "following_lane_with_lead",
+        "following_lane_with_slow_lead",
+        "near_long_vehicle"
+      ],
+      "stop_go_control": [
+        "accelerating_at_traffic_light_with_lead",
+        "stationary_at_traffic_light_without_lead",
+        "stationary_in_traffic",
+        "stopping_at_traffic_light_with_lead",
+        "stopping_with_lead"
+      ],
+      "longitudinal_high_motion": [
+        "high_magnitude_speed",
+        "medium_magnitude_speed"
+      ]
+    }
+  },
+  "seed": 20260810,
+  "required_kinematic_gate_status": "KINEMATIC_GATE_PASS",
+  "report_language": "zh-CN",
+  "interpretation_limits": [
+    "supports_detection_of_a_controlled_same_scenario_pure_longitudinal_benchmark_intervention_only",
+    "does_not_establish_unpaired_release_detection_reliability",
+    "does_not_establish_real_oem_field_validation",
+    "does_not_imply_safety_or_planner_superiority",
+    "source_scenarios_were_conditioned_on_prior_technical_success"
+  ],
+  "prohibitions": [
+    "do_not_change_estimator_bandwidth_permutations_or_alpha_after_reading_results",
+    "do_not_call_task_tests_primary",
+    "do_not_use_unadjusted_task_p_values_for_claims",
+    "do_not_relabel_this_as_independent_scenario_confirmation"
+  ]
+}

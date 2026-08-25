@@ -1,0 +1,36 @@
+{
+  "status": "RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING",
+  "frozen_on": "2026-08-14",
+  "source_experiment_status": "FROZEN_STAGE6W_STAGE6S_V3_COMPLETE_NO_NEW_CHECKPOINT",
+  "joint_model_decision": "NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE",
+  "core_thesis": "Task-conditioned trajectory-level behavior drift evaluation for closed-loop planning policies",
+  "blueprint": {
+    "path": "docs/phd_thesis_research_closure_blueprint_zh.md",
+    "sha256": "4312157448da3f7970a0e47e3d06f882805a5a28623a5907c3d7ec8eb0771ae8"
+  },
+  "evidence_sha256": {
+    "stage6v_blind_evaluation_final_manifest": "9aa7c10d50f30b1cb6798e9e7ffc8fe52004c7897291a1cc5134c829ec237e5b",
+    "stage6w_stage6s_v3_final_manifest": "462f1fb6aecbd8c2cc3a4ccf345bb16d8c95a1d47a0f1241b3ee96e6db7b1062",
+    "stage7_confirmation_evidence_summary": "7c21a3b36da8670aed1f29a4af1d4a91cf6b55c2e4fc5713915445a948b2bb2c",
+    "waymo_dynamic_v2_test_result_manifest": "6c5bd844974f6a6333a293ab761e23528cbaff06310b89c85bd95f09692c06af",
+    "pure_longitudinal_paired_result_manifest": "242f88517bdca31359c163244d26f7f556376dec2065ffc5cde859cec4f3d42b",
+    "unpaired_release_result_manifest": "70205230c9a3f10db01e0604dbd6ac75765a4fdc004a086b6f14a5bf46e455fa",
+    "interaction_representation_result_manifest": "74b601795decb2f6de90928d527429f27c1320a705d9a4f672400ce4d32412b9"
+  },
+  "frozen_claims": [
+    "paired attribution and unpaired release monitoring are distinct estimands",
+    "Dynamic Builder v2 and the new objectives improve release-level longitudinal drift signal",
+    "the B/C release-level gain is primarily signal-driven rather than null-variance-driven",
+    "ego13 remains the strongest controlled-longitudinal diagnostic reference",
+    "no A/B/C candidate passes the complete pre-frozen joint qualification rule",
+    "Candidate C does not demonstrate incremental interaction information over neighbor-zero"
+  ],
+  "prohibited_after_freeze": [
+    "new A/B/C/v3 training",
+    "seed or epoch replacement",
+    "post-hoc threshold changes",
+    "benchmark changes triggered by blind results",
+    "claiming a universal validated representation",
+    "claiming Candidate C is a validated interaction-aware representation"
+  ]
+}

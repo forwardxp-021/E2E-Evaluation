@@ -1,0 +1,116 @@
+{
+  "schema_version": "standardized_fixed_dimension_bdd_protocol_v1",
+  "status": "FROZEN_STANDARDIZED_FIXED_DIMENSION_BDD_PROTOCOL",
+  "frozen_on": "2026-08-14",
+  "purpose": "Use one fixed behavior-dimension examination sheet to describe behavior drift and to compare the detection capability of frozen representations.",
+  "immutability": {
+    "training_allowed": false,
+    "checkpoint_modification_allowed": false,
+    "planner_modification_allowed": false,
+    "scenario_selection_after_result_read_allowed": false,
+    "stage6v_joint_conclusion_modification_allowed": false,
+    "cross_representation_raw_mmd2_ranking_allowed": false
+  },
+  "representations": {
+    "baseline": "old64",
+    "primary_seed": 3407,
+    "matrix_columns": ["old64", "A", "B", "C", "ego13"],
+    "diagnostics": ["C_neighbor_zero"]
+  },
+  "three_references": {
+    "behavior_reference": "Every row names a planner/version/release Reference and Target. All semantic deltas are Target minus Reference.",
+    "null_reference": "Paired rows use the representation-specific within-pair label-swap/randomization null. Unpaired release rows use the representation-specific independent A/A calibration. Every BDD row retains null q95.",
+    "representation_baseline": "old64 is the historical representation baseline. A/B/C/ego13 are compared to it only by capability metrics or within-representation normalized evidence, never raw MMD2."
+  },
+  "behavior_dimensions": [
+    "OVR.ALL",
+    "LON.FREE_FLOW_SPEED",
+    "LON.ACCEL_DECEL",
+    "LON.CAR_FOLLOWING",
+    "LON.CLOSING_RESPONSE",
+    "LON.COMFORT",
+    "LAT.LANE_KEEPING",
+    "LAT.LANE_CHANGE",
+    "LAT.DYNAMICS",
+    "INT.FRONT_GAP_THW",
+    "INT.LONG_FOLLOWING",
+    "INT.LATERAL_GAP",
+    "INT.MERGE_YIELD_CUTIN"
+  ],
+  "source_contracts": {
+    "stage6jk": {
+      "classification": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT",
+      "result_csv": "outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_paired_results.csv",
+      "result_manifest": "outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_result_manifest.json",
+      "kinematic_csv": "outputs/stage6k_realized_longitudinal_dose_curve_v2_runtime_repaired/stage6k_kinematic_contrasts.csv",
+      "reference": "pdm_closed_longitudinal_conservative_v2",
+      "target": "pdm_closed_longitudinal_assertive_v2",
+      "mode": "paired",
+      "scopes": ["overall", "following_interaction", "longitudinal_high_motion", "stop_go_control"],
+      "doses": ["dose25", "dose50", "dose75", "dose100"],
+      "null_method": "representation-specific paired within-scenario label-swap randomization inherited from Stage6J/K",
+      "shared_parent_rule": "One task/scope BDD can support multiple semantic dimensions only through the same parent_bdd_result_id; child rows are not independent BDD tests."
+    },
+    "stage6s_v3": {
+      "classification": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT",
+      "result_csv": "outputs/stage6s_v3_confirmation_representations_v1/stage6s_v3_confirmation_representation_results.csv",
+      "mechanism_summary": "outputs/stage6s_v3_confirmation_mechanism_v1/stage6s_v3_confirmation_mechanism_summary.json",
+      "reference": "pdm_closed_interaction_long_headway_v2",
+      "target": "pdm_closed_interaction_short_headway_v2",
+      "mode": "paired",
+      "pair_count": 80,
+      "log_count": 11,
+      "null_method": "representation-specific paired within-scenario label-swap randomization inherited from Stage6S-v3",
+      "shared_parent_rule": "The following-interaction BDD is a shared parent for front-gap/THW, closing response, and following-pressure semantic mechanisms."
+    },
+    "stage7": {
+      "classification": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION",
+      "context_dir": "outputs/stage7_m6_5_locked_confirmation_context_v1",
+      "old64_embedding": "outputs/stage7_m6_5_locked_confirmation_representations_v1/learned_embedding.npy",
+      "pair_delta_csv": "outputs/stage7_m6_5_locked_confirmation_stage7f_v1/representation_input/paired_delta_by_global_row.csv",
+      "task_definition_csv": "outputs/stage7_m6_5_locked_confirmation_analysis_v1/task_conditioned/m6_2_pretreatment_task_definitions.csv",
+      "reference": "pdm_closed_conservative_v1",
+      "target": "pdm_closed_assertive_v1",
+      "mode": "paired",
+      "pair_count": 310,
+      "null_method": "representation-specific paired within-scenario label-swap randomization; common seeded swap stream across representations in each fixed task",
+      "permutations": 100000,
+      "seed": 2026081401,
+      "task_scopes": ["overall", "following_interaction", "lane_change", "stop_go_control", "high_motion_dynamics", "dense_or_vulnerable_interaction"],
+      "post_hoc_boundary": "The scenario roster, planner pair, context, task membership, checkpoint seed, null family, and semantic fields are fixed before new embeddings are read. This output is descriptive only and must not replace a Stage6V pre-registered endpoint."
+    }
+  },
+  "primary_dimension_cells": {
+    "OVR.ALL": {"source": "stage7", "scope": "overall", "evidence_status": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION"},
+    "LON.FREE_FLOW_SPEED": {"source": "none", "evidence_status": "N/A_NO_FROZEN_FREE_FLOW_SLICE"},
+    "LON.ACCEL_DECEL": {"source": "stage6jk", "scope": "overall", "dose": "dose100", "evidence_status": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT"},
+    "LON.CAR_FOLLOWING": {"source": "stage6jk", "scope": "following_interaction", "dose": "dose100", "evidence_status": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT"},
+    "LON.CLOSING_RESPONSE": {"source": "stage6s_v3", "scope": "following_interaction_confirmation_v3", "evidence_status": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT"},
+    "LON.COMFORT": {"source": "stage6jk", "scope": "overall", "dose": "dose100", "evidence_status": "SHARED_PARENT_BDD_SEMANTIC_PROXY"},
+    "LAT.LANE_KEEPING": {"source": "none", "evidence_status": "N/A_NO_FROZEN_LANE_KEEPING_SLICE"},
+    "LAT.LANE_CHANGE": {"source": "stage7", "scope": "lane_change", "evidence_status": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION"},
+    "LAT.DYNAMICS": {"source": "stage7", "scope": "high_motion_dynamics", "evidence_status": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION_PROXY"},
+    "INT.FRONT_GAP_THW": {"source": "stage6s_v3", "scope": "following_interaction_confirmation_v3", "evidence_status": "SHARED_PARENT_BDD_SEMANTIC_PROXY"},
+    "INT.LONG_FOLLOWING": {"source": "stage6s_v3", "scope": "following_interaction_confirmation_v3", "evidence_status": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT"},
+    "INT.LATERAL_GAP": {"source": "none", "evidence_status": "N/A_NO_FROZEN_LATERAL_GAP_OUTCOME"},
+    "INT.MERGE_YIELD_CUTIN": {"source": "stage7", "scope": "dense_or_vulnerable_interaction", "evidence_status": "POST_HOC_STANDARDIZED_DESCRIPTIVE_PROXY_ONLY"}
+  },
+  "post_hoc_multiplicity": {
+    "overall": "descriptive; no claim-level multiplicity correction",
+    "secondary_tasks": "Within each representation, Holm correction across following_interaction, lane_change, stop_go_control, high_motion_dynamics, dense_or_vulnerable_interaction"
+  },
+  "semantic_rules": {
+    "direction_convention": "Target minus Reference",
+    "car_following_if_only_speed_and_accel": "TARGET_MORE_ACTIVE_FOLLOWING",
+    "prohibited_car_following_direction": "CLOSER",
+    "finite_thw_only": "Finite THW excludes sentinel/cap values; do not use Stage7 historical mean_thw if finite-THW provenance is absent."
+  },
+  "gate_fields": [
+    "stage6jk_paired_gate_pass",
+    "stage6p_unpaired_gate_pass",
+    "waymo_gate_pass",
+    "interaction_increment_gate_pass",
+    "stage6v_joint_candidate_gate_pass"
+  ],
+  "final_status_when_complete": "STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE"
+}

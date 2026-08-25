@@ -1,0 +1,34 @@
+{
+  "schema_version": "stage6l_preanalysis_decision_addendum_v1",
+  "issue": 253,
+  "frozen_before_representation_bdd_read": true,
+  "minimum_detectable_dose_rule": "smallest nonzero dose with overall Holm p < 0.05 within the representation; all Stage 6K kinematic gates are already PASS",
+  "quality_association_positive_rule": "task-adjusted log-cluster bootstrap 95% CI excludes zero",
+  "context_v2_go": {
+    "rule": "GO if learned64_full_context has positive fallback association with pair L2 or absolute kernel contribution in at least two of four doses; also report whether neighbor-zero reduces that positive-association count by at least two doses",
+    "primary_quality_metric": "max_pair_fallback_rate",
+    "outcomes": ["pair_l2_distance", "absolute_kernel_contribution"],
+    "minimum_positive_doses": 2,
+    "neighbor_zero_reduction_doses": 2
+  },
+  "retraining_go": {
+    "rule_any": [
+      "ego_kinematic_13d median overall Z_BDD is at least 1.5 times learned64_full_context and it passes at least two more task-dose Holm cells",
+      "handcrafted_interaction_trajectory_46d median overall Z_BDD is at least 1.25 times learned64_full_context and it passes at least three more task-dose Holm cells",
+      "learned64_neighbor_zero_input preserves at least 80% of learned64_full_context median overall Z_BDD, passes no fewer than one less task-dose Holm cell, and learned64_full_context meets context_v2_go"
+    ],
+    "ego_z_ratio": 1.5,
+    "ego_extra_task_cells": 2,
+    "handcrafted_z_ratio": 1.25,
+    "handcrafted_extra_task_cells": 3,
+    "neighbor_zero_min_z_retention": 0.8,
+    "neighbor_zero_max_task_cell_loss": 1,
+    "otherwise": "NO_GO_FOR_IMMEDIATE_RETRAINING"
+  },
+  "interpretation": {
+    "go_does_not_authorize_training": true,
+    "go_meaning": "prepare a separately versioned training protocol and data audit; do not overwrite the frozen checkpoint",
+    "raw_mmd_cross_representation_comparison_forbidden": true,
+    "geometric_only_supplement_not_part_of_primary_decision": true
+  }
+}

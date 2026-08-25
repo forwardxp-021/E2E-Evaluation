@@ -1,0 +1,100 @@
+{
+  "schema_version": "standardized_fixed_dimension_bdd_matrix_v1",
+  "status": "STANDARDIZED_FIXED_DIMENSION_BDD_MATRIX_COMPLETE",
+  "protocol_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/configs/standardized_fixed_dimension_bdd_protocol_v1.json",
+  "protocol_sha256": "bd3862932686ea978196cba22cf65eea62446e0de443e978484a35454588d2d0",
+  "unified_schema_sha256": "4e979b8432182e7995180c346e609a10cc61198aab23eaead0c2ac96e7d9eab5",
+  "source_contracts": {
+    "stage6jk": {
+      "classification": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT",
+      "result_csv": "outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_paired_results.csv",
+      "result_manifest": "outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_result_manifest.json",
+      "kinematic_csv": "outputs/stage6k_realized_longitudinal_dose_curve_v2_runtime_repaired/stage6k_kinematic_contrasts.csv",
+      "reference": "pdm_closed_longitudinal_conservative_v2",
+      "target": "pdm_closed_longitudinal_assertive_v2",
+      "mode": "paired",
+      "scopes": [
+        "overall",
+        "following_interaction",
+        "longitudinal_high_motion",
+        "stop_go_control"
+      ],
+      "doses": [
+        "dose25",
+        "dose50",
+        "dose75",
+        "dose100"
+      ],
+      "null_method": "representation-specific paired within-scenario label-swap randomization inherited from Stage6J/K",
+      "shared_parent_rule": "One task/scope BDD can support multiple semantic dimensions only through the same parent_bdd_result_id; child rows are not independent BDD tests."
+    },
+    "stage6s_v3": {
+      "classification": "INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT",
+      "result_csv": "outputs/stage6s_v3_confirmation_representations_v1/stage6s_v3_confirmation_representation_results.csv",
+      "mechanism_summary": "outputs/stage6s_v3_confirmation_mechanism_v1/stage6s_v3_confirmation_mechanism_summary.json",
+      "reference": "pdm_closed_interaction_long_headway_v2",
+      "target": "pdm_closed_interaction_short_headway_v2",
+      "mode": "paired",
+      "pair_count": 80,
+      "log_count": 11,
+      "null_method": "representation-specific paired within-scenario label-swap randomization inherited from Stage6S-v3",
+      "shared_parent_rule": "The following-interaction BDD is a shared parent for front-gap/THW, closing response, and following-pressure semantic mechanisms."
+    },
+    "stage7": {
+      "classification": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION",
+      "context_dir": "outputs/stage7_m6_5_locked_confirmation_context_v1",
+      "old64_embedding": "outputs/stage7_m6_5_locked_confirmation_representations_v1/learned_embedding.npy",
+      "pair_delta_csv": "outputs/stage7_m6_5_locked_confirmation_stage7f_v1/representation_input/paired_delta_by_global_row.csv",
+      "task_definition_csv": "outputs/stage7_m6_5_locked_confirmation_analysis_v1/task_conditioned/m6_2_pretreatment_task_definitions.csv",
+      "reference": "pdm_closed_conservative_v1",
+      "target": "pdm_closed_assertive_v1",
+      "mode": "paired",
+      "pair_count": 310,
+      "null_method": "representation-specific paired within-scenario label-swap randomization; common seeded swap stream across representations in each fixed task",
+      "permutations": 100000,
+      "seed": 2026081401,
+      "task_scopes": [
+        "overall",
+        "following_interaction",
+        "lane_change",
+        "stop_go_control",
+        "high_motion_dynamics",
+        "dense_or_vulnerable_interaction"
+      ],
+      "post_hoc_boundary": "The scenario roster, planner pair, context, task membership, checkpoint seed, null family, and semantic fields are fixed before new embeddings are read. This output is descriptive only and must not replace a Stage6V pre-registered endpoint."
+    }
+  },
+  "stage7_representation_checkpoint_or_scaler_sha256": {
+    "old64": "8ed8fc8ad296cb368144634bae70f7faa6c002fe0501381a623a884b46a98919",
+    "A": "353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d",
+    "B": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f",
+    "C": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d",
+    "ego13": "0b5b5a7049b97045f4e006ed97eb7a1500731a591aa33fd517aac99850296a19"
+  },
+  "stage7_classification": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION",
+  "training_run": false,
+  "simulation_run": false,
+  "planner_modified": false,
+  "checkpoint_modified": false,
+  "scenario_selection_modified": false,
+  "cross_representation_raw_mmd2_comparison_performed": false,
+  "stage6v_joint_conclusion_modified": false,
+  "row_count": 133,
+  "matrix_dimension_count": 13,
+  "output_files": {
+    "standardized_bdd_long.csv": "a5d1cf3ef596e5dc1d33c501744820f290d4c5c0947b2c517615337d9f8d8632",
+    "fixed_dimension_primary_matrix.csv": "c539ae519f140e490070de3979de0b1597f8f0233905234d7b2cd59f7b1f5f81",
+    "representation_gate_scorecard.csv": "ed95d72ff46915717888018fd712ed75913d20b2882abf6cc7f4bd74ef95a999",
+    "evidence_gap_matrix.csv": "ab4c9543a280ce273630733a948a2539293fcea2689132b3768c19507b6b96d9",
+    "stage7_posthoc_standardized_audit.json": "ae728e785486d176d1199a755505fc97d57c97e77e8f7970ac85ff947dbe453c",
+    "stage7_posthoc_null_samples.npz": "0bee09d394d8c7f387a303d65a8eeb2251f7935e9cea4a55427f138dcf127c3f",
+    "standardized_fixed_dimension_bdd_evaluation_report_zh.md": "7bbb74139bfaf5e65e87da497b378431edff303e7cc63ff7040fb55a69caadbc"
+  },
+  "representation_files": {
+    "old64": "8ed8fc8ad296cb368144634bae70f7faa6c002fe0501381a623a884b46a98919",
+    "A": "1fd0280440e9e59ff3d319c7a37512b5b5e7c8a27080b18ca271e652e48bfe50",
+    "B": "da8a875d255b7ed902cb4137bd8746fc86aae705ad7074fc2982292b89a13024",
+    "C": "fee0a7a7ab77dfe393b55d65e0c7dc7d5a2a6dfc57a62855af481eb6f78b5558",
+    "ego13": "822841934e167a0349a52f6ce6b5a6965002c4b7fcf7f030aeb4cd91bb69218d"
+  }
+}

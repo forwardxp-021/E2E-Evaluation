@@ -1,0 +1,14 @@
+dimension_id,behavior_dimension,behavior_level,source,evidence_status,old64,A,B,C,ego13,best_capability
+OVR.ALL,总体行为漂移,Overall,stage7,POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION,2.69× / Z=11.08,5.41× / Z=25.53,5.23× / Z=21.16,4.75× / Z=18.08,23.26× / Z=86.10,ego13 (max within-null Z=86.10; no raw-MMD² ranking)
+LON.FREE_FLOW_SPEED,自由流速度,Longitudinal,none,N/A_NO_FROZEN_FREE_FLOW_SLICE,N/A,N/A,N/A,N/A,N/A,N/A
+LON.ACCEL_DECEL,纵向加速/减速,Longitudinal,stage6jk,INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT,2.39× / Z=9.23,2.65× / Z=10.79,2.74× / Z=10.33,2.40× / Z=8.48,8.87× / Z=35.09,ego13 (max within-null Z=35.09; no raw-MMD² ranking)
+LON.CAR_FOLLOWING,跟车行为,Longitudinal,stage6jk,INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT,1.85× / Z=5.63,1.61× / Z=5.43,1.72× / Z=5.25,1.59× / Z=4.61,4.81× / Z=18.74,ego13 (max within-null Z=18.74; no raw-MMD² ranking)
+LON.CLOSING_RESPONSE,逼近前车响应,Longitudinal,stage6s_v3,INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT,6.84× / Z=27.98,7.41× / Z=26.45,7.39× / Z=30.60,6.83× / Z=28.95,11.14× / Z=35.91,ego13 (max within-null Z=35.91; no raw-MMD² ranking)
+LON.COMFORT,纵向平顺性,Longitudinal,stage6jk,SHARED_PARENT_BDD_SEMANTIC_PROXY,2.39× / Z=9.23,2.65× / Z=10.79,2.74× / Z=10.33,2.40× / Z=8.48,8.87× / Z=35.09,ego13 (max within-null Z=35.09; no raw-MMD² ranking)
+LAT.LANE_KEEPING,车道保持,Lateral,none,N/A_NO_FROZEN_LANE_KEEPING_SLICE,N/A,N/A,N/A,N/A,N/A,N/A
+LAT.LANE_CHANGE,变道行为,Lateral,stage7,POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION,2.04× / Z=7.44,2.81× / Z=10.86,2.50× / Z=9.12,2.66× / Z=9.15,6.66× / Z=22.80,ego13 (max within-null Z=22.80; no raw-MMD² ranking)
+LAT.DYNAMICS,横向动态,Lateral,stage7,POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION_PROXY,1.63× / Z=5.73,2.93× / Z=11.61,2.99× / Z=10.43,3.01× / Z=10.44,6.57× / Z=22.01,ego13 (max within-null Z=22.01; no raw-MMD² ranking)
+INT.FRONT_GAP_THW,前车间距/车头时距交互,Interaction,stage6s_v3,SHARED_PARENT_BDD_SEMANTIC_PROXY,6.84× / Z=27.98,7.41× / Z=26.45,7.39× / Z=30.60,6.83× / Z=28.95,11.14× / Z=35.91,ego13 (max within-null Z=35.91; no raw-MMD² ranking)
+INT.LONG_FOLLOWING,纵向跟车交互响应,Interaction,stage6s_v3,INHERITED_PRE_FROZEN_CONFIRMATORY_RESULT,6.84× / Z=27.98,7.41× / Z=26.45,7.39× / Z=30.60,6.83× / Z=28.95,11.14× / Z=35.91,ego13 (max within-null Z=35.91; no raw-MMD² ranking)
+INT.LATERAL_GAP,横向间隙接受/横向交互,Interaction,none,N/A_NO_FROZEN_LATERAL_GAP_OUTCOME,N/A,N/A,N/A,N/A,N/A,N/A
+INT.MERGE_YIELD_CUTIN,汇入/让行/切入响应,Interaction,stage7,POST_HOC_STANDARDIZED_DESCRIPTIVE_PROXY_ONLY,1.43× / Z=4.16,1.22× / Z=2.98,1.71× / Z=4.95,1.83× / Z=5.30,6.03× / Z=19.79,ego13 (max within-null Z=19.79; no raw-MMD² ranking)

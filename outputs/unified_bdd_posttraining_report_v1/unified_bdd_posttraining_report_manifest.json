@@ -1,0 +1,104 @@
+{
+  "schema_version": "unified_bdd_posttraining_report_v1",
+  "status": "FROZEN_UNIFIED_BDD_POSTTRAINING_REPORT_COMPLETE",
+  "created_utc": "2026-08-14T08:16:35.900367+00:00",
+  "schema": {
+    "name": "unified_bdd_reporting_schema_v1",
+    "sha256": "4e979b8432182e7995180c346e609a10cc61198aab23eaead0c2ac96e7d9eab5"
+  },
+  "frozen_schema_freeze_sha256": "18c3b7c51a303071b1ed3fdd82ed10f6c0d46df961611c23cfe0799d03649853",
+  "input_sources": {
+    "schema": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/configs/unified_bdd_reporting_schema_v1.json",
+      "sha256": "4e979b8432182e7995180c346e609a10cc61198aab23eaead0c2ac96e7d9eab5"
+    },
+    "schema_freeze": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/unified_bdd_reporting_schema_freeze_v1.json",
+      "sha256": "18c3b7c51a303071b1ed3fdd82ed10f6c0d46df961611c23cfe0799d03649853"
+    },
+    "stage6jk_manifest": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_result_manifest.json",
+      "sha256": "242f88517bdca31359c163244d26f7f556376dec2065ffc5cde859cec4f3d42b"
+    },
+    "stage6jk_results": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_paired_results.csv",
+      "sha256": "9063521cda90cbc98f2693a81913c64005e3003881cb33db44e603ade66f7f58"
+    },
+    "stage6jk_decisions": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6jk_paired_blind_v1/stage6v_stage6jk_decisions.csv",
+      "sha256": "9c6552b8deaad0cea40abdc89c47cb3e522ba5d03893e4d4714c8a1a168c8589"
+    },
+    "stage6jk_kinematics": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6k_realized_longitudinal_dose_curve_v2_runtime_repaired/stage6k_kinematic_contrasts.csv",
+      "sha256": "bb90043f04a4771d209eca43385529d8db010b9b78d810d4c63c7cc3d99ee205"
+    },
+    "stage6p_manifest": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_result_manifest.json",
+      "sha256": "70205230c9a3f10db01e0604dbd6ac75765a4fdc004a086b6f14a5bf46e455fa"
+    },
+    "stage6p_operating": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_operating_characteristics.csv",
+      "sha256": "3118af488e147011e35c3a0fae8db62024f6c65feb6dc738f5b24f24074d8561"
+    },
+    "stage6p_primary": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_primary_decisions.csv",
+      "sha256": "0a0d7a6bee3d0a32129d60ae44596eb9142ed595412884ce713bb51142eb2aa6"
+    },
+    "stage6p_seed_stability": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6v_stage6p_unpaired_blind_v1/stage6v_stage6p_seed_stability_n400.csv",
+      "sha256": "53cfcee0d7b74dc45324437dd7a111531b2eb5cbb7fad0a5238d06d7ae83858d"
+    },
+    "stage6s_mechanism": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6s_v3_confirmation_mechanism_v1/stage6s_v3_confirmation_mechanism_summary.json",
+      "sha256": "221c57cd0e7562fadffe78a4af6a8e71a7b3b527d05393df157dc8bc2d62b89a"
+    },
+    "stage6s_results": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6s_v3_confirmation_representations_v1/stage6s_v3_confirmation_representation_results.csv",
+      "sha256": "9c6c07fe3bd63700ebf7dfd4cc7ffa070a1fa7c9ebb88787fc67617eb7b75402"
+    },
+    "stage6s_increment": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6s_v3_confirmation_representations_v1/stage6s_v3_c_context_increment.json",
+      "sha256": "f7f61034ba1489e453b6878fe7d36a4a2628137ef72e62592eebae0d6384333a"
+    },
+    "stage6w_driver": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6w_a_context_balanced_driver_addendum_v2/stage6w_a_unpaired_driver_by_method.csv",
+      "sha256": "445179f48426130f12418c258f915b796c121a372af33bc9ef03c7c3fffbcd91"
+    },
+    "stage7_summary": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7_m6_6_confirmation_evidence_v1/m6_6_confirmation_evidence_summary.json",
+      "sha256": "7c21a3b36da8670aed1f29a4af1d4a91cf6b55c2e4fc5713915445a948b2bb2c"
+    },
+    "stage7_tasks": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7_m6_6_confirmation_evidence_v1/table_m6_6_task_bdd.csv",
+      "sha256": "f191f0ea277c3e41bb8ca636180ea534329a2609f5e97f2606e1a31996625db6"
+    },
+    "stage7_kinematics": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7_m6_6_confirmation_evidence_v1/table_m6_6_kinematic_contrasts.csv",
+      "sha256": "c0ec335873d235164d70a98243be67ffecae35580292ce4711c1f7cdcd024a46"
+    }
+  },
+  "output_files": {
+    "behavior_drift_profile.csv": "f895dd98dbef3b45fb96f11c739c56ebf2fb585fbbb2fea6424d4f3a116d873c",
+    "representation_scorecard.csv": "ed4b256d88dd60561f6b140687f0545091c54111850895a5d09f4e8d3bcdcf63",
+    "evidence_gap_matrix.csv": "5ce4b1a1e11d616ee11097d083543a1cbfa51d29d1047922142728477d813668",
+    "unified_bdd_posttraining_report_zh.md": "c33dba90c1df01dc40d7cd77d813847190e0ca4421048a3bac897929321b7d3d"
+  },
+  "profile_representation": "old64",
+  "scorecard_representations": [
+    "old64",
+    "A",
+    "B",
+    "C",
+    "ego13"
+  ],
+  "profile_rows": 13,
+  "scorecard_rows": 5,
+  "evidence_gap_rows": 13,
+  "training_run": false,
+  "simulation_run": false,
+  "embedding_read": false,
+  "bdd_or_mmd_recomputed": false,
+  "cross_representation_raw_mmd2_comparison_performed": false,
+  "existing_frozen_conclusions_modified": false,
+  "stage6v_joint_model_decision": "NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE"
+}

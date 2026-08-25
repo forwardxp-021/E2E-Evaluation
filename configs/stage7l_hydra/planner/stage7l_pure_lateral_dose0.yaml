@@ -1,0 +1,11 @@
+stage7l_pure_lateral_dose0:
+  _target_: tools.stage7l_pure_lateral_execution_planner.PureLateralExecutionPlanner
+  _convert_: all
+  manifest_path: ${oc.env:STAGE7L_MANEUVER_MANIFEST}
+  dose_id: dose0
+  horizon_seconds: 4.0
+  sampling_time: 0.1
+  target_speed_mps: 5.0
+  accel_limit_mps2: 1.0
+  audit_dir: ${oc.env:STAGE7L_PLANNER_AUDIT_DIR}
+  parameter_status: A2_SMOKE_ONLY_NOT_FROZEN_FOR_CONFIRMATION

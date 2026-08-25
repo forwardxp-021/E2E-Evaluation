@@ -1,0 +1,382 @@
+{
+  "schema_version": "unified_bdd_reporting_schema_v1",
+  "status": "UNIFIED_BDD_REPORTING_SCHEMA_FROZEN",
+  "frozen_on": "2026-08-14",
+  "scope": "all future BDD behavior profiles and representation evaluations",
+  "concepts": {
+    "behavior_drift_profile": "Which behavior dimensions changed in Target relative to Reference, with direction determined only by semantic deltas.",
+    "bdd_statistic": "How strongly two behavior-representation distributions differ under a fixed task, Reference, Target, representation, and null.",
+    "representation_evaluation": "How reliably a representation detects a known treatment using predeclared capability metrics."
+  },
+  "canonical_notation": "BDD(Target | Reference, task, representation, evaluation_mode)",
+  "delta_convention": "Target minus Reference",
+  "evaluation_mode_enum": [
+    "paired",
+    "unpaired"
+  ],
+  "mapping_strength_enum": [
+    "EXACT_DIMENSION",
+    "TASK_SLICE_PROXY",
+    "TREATMENT_ALIGNED_PROXY",
+    "MIXED_PROXY",
+    "REPRESENTATION_EVALUATION_ONLY",
+    "SEMANTIC_ONLY",
+    "INSUFFICIENT_FOR_DIMENSION_CLAIM"
+  ],
+  "value_status_enum": [
+    "AVAILABLE",
+    "N/A_NO_ELIGIBLE_SAMPLES",
+    "N/A_NOT_APPLICABLE_TO_SLICE",
+    "EVIDENCE_GAP_BDD_NOT_COMPUTED",
+    "EVIDENCE_GAP_SEMANTIC_DELTA_NOT_COMPUTED",
+    "EVIDENCE_GAP_REPRESENTATION_NOT_EVALUATED",
+    "LEGACY_FIELD_NOT_ARCHIVED",
+    "PROXY_ONLY_NOT_CONFIRMATORY"
+  ],
+  "behavior_taxonomy": [
+    {
+      "dimension_id": "OVR.ALL",
+      "level_1": "Overall",
+      "name_en": "overall behavior drift",
+      "name_zh": "总体行为漂移",
+      "primary_semantic_metrics": [
+        "semantic_metric_bundle"
+      ],
+      "direction_labels": [
+        "MIXED",
+        "NO_SINGLE_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LON.FREE_FLOW_SPEED",
+      "level_1": "Longitudinal",
+      "name_en": "free-flow speed",
+      "name_zh": "自由流速度",
+      "primary_semantic_metrics": [
+        "delta_free_flow_mean_speed_mps",
+        "delta_free_flow_speed_p50_mps"
+      ],
+      "direction_labels": [
+        "TARGET_FASTER_IN_FREE_FLOW",
+        "TARGET_SLOWER_IN_FREE_FLOW",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LON.ACCEL_DECEL",
+      "level_1": "Longitudinal",
+      "name_en": "acceleration/deceleration",
+      "name_zh": "纵向加速/减速",
+      "primary_semantic_metrics": [
+        "delta_mean_positive_accel_mps2",
+        "delta_peak_decel_mps2",
+        "delta_rms_accel_mps2",
+        "delta_mean_speed_mps"
+      ],
+      "direction_labels": [
+        "TARGET_HIGHER_LONGITUDINAL_EXCITATION",
+        "TARGET_LOWER_LONGITUDINAL_EXCITATION",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LON.CAR_FOLLOWING",
+      "level_1": "Longitudinal",
+      "name_en": "car-following",
+      "name_zh": "跟车行为",
+      "primary_semantic_metrics": [
+        "delta_following_mean_speed_mps",
+        "delta_following_rms_accel_mps2",
+        "delta_following_front_gap_m",
+        "delta_following_finite_thw_s"
+      ],
+      "direction_labels": [
+        "TARGET_CLOSER_OR_MORE_ACTIVE_FOLLOWING",
+        "TARGET_MORE_DISTANT_OR_LESS_ACTIVE_FOLLOWING",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LON.CLOSING_RESPONSE",
+      "level_1": "Longitudinal",
+      "name_en": "closing response",
+      "name_zh": "逼近前车响应",
+      "primary_semantic_metrics": [
+        "delta_mean_accel_during_closing_mps2",
+        "delta_reaction_delay_s",
+        "delta_peak_decel_after_closing_mps2",
+        "delta_min_ttc_s"
+      ],
+      "direction_labels": [
+        "TARGET_MAINTAINS_MORE_ACCEL_DURING_CLOSING",
+        "TARGET_BRAKES_EARLIER_OR_MORE_DURING_CLOSING",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LON.COMFORT",
+      "level_1": "Longitudinal",
+      "name_en": "longitudinal comfort",
+      "name_zh": "纵向平顺性",
+      "primary_semantic_metrics": [
+        "delta_rms_jerk_mps3",
+        "delta_peak_abs_jerk_mps3",
+        "delta_accel_variability_mps2"
+      ],
+      "direction_labels": [
+        "TARGET_HIGHER_LONGITUDINAL_JERK",
+        "TARGET_LOWER_LONGITUDINAL_JERK",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LAT.LANE_KEEPING",
+      "level_1": "Lateral",
+      "name_en": "lane keeping",
+      "name_zh": "车道保持",
+      "primary_semantic_metrics": [
+        "delta_rms_lateral_offset_m",
+        "delta_rms_heading_error_rad",
+        "delta_lane_boundary_margin_m"
+      ],
+      "direction_labels": [
+        "TARGET_MORE_LATERAL_DEVIATION",
+        "TARGET_LESS_LATERAL_DEVIATION",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LAT.LANE_CHANGE",
+      "level_1": "Lateral",
+      "name_en": "lane change",
+      "name_zh": "变道行为",
+      "primary_semantic_metrics": [
+        "delta_lane_change_rate",
+        "delta_lane_change_duration_s",
+        "delta_lane_change_peak_lateral_accel_mps2",
+        "delta_lane_change_peak_yaw_rate_rps"
+      ],
+      "direction_labels": [
+        "TARGET_MORE_OR_SHARPER_LANE_CHANGES",
+        "TARGET_FEWER_OR_SMOOTHER_LANE_CHANGES",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "LAT.DYNAMICS",
+      "level_1": "Lateral",
+      "name_en": "lateral dynamics",
+      "name_zh": "横向动态",
+      "primary_semantic_metrics": [
+        "delta_rms_lateral_accel_mps2",
+        "delta_rms_yaw_rate_rps",
+        "delta_rms_curvature_inv_m"
+      ],
+      "direction_labels": [
+        "TARGET_HIGHER_LATERAL_EXCITATION",
+        "TARGET_LOWER_LATERAL_EXCITATION",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "INT.FRONT_GAP_THW",
+      "level_1": "Interaction",
+      "name_en": "front-gap / THW interaction",
+      "name_zh": "前车间距/车头时距交互",
+      "primary_semantic_metrics": [
+        "delta_median_front_gap_m",
+        "delta_median_finite_thw_s"
+      ],
+      "direction_labels": [
+        "TARGET_SHORTER_GAP_OR_THW",
+        "TARGET_LONGER_GAP_OR_THW",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "INT.LONG_FOLLOWING",
+      "level_1": "Interaction",
+      "name_en": "longitudinal following interaction",
+      "name_zh": "纵向跟车交互响应",
+      "primary_semantic_metrics": [
+        "delta_mean_accel_during_following_pressure_mps2",
+        "delta_relative_closing_speed_mps",
+        "delta_following_response_delay_s"
+      ],
+      "direction_labels": [
+        "TARGET_MORE_ACCEL_UNDER_FOLLOWING_PRESSURE",
+        "TARGET_LESS_ACCEL_UNDER_FOLLOWING_PRESSURE",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "INT.LATERAL_GAP",
+      "level_1": "Interaction",
+      "name_en": "lateral gap acceptance / lateral interaction",
+      "name_zh": "横向间隙接受/横向交互",
+      "primary_semantic_metrics": [
+        "delta_accepted_front_gap_m",
+        "delta_accepted_rear_gap_m",
+        "delta_lateral_gap_acceptance_score"
+      ],
+      "direction_labels": [
+        "TARGET_ACCEPTS_SMALLER_LATERAL_GAPS",
+        "TARGET_ACCEPTS_LARGER_LATERAL_GAPS",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    },
+    {
+      "dimension_id": "INT.MERGE_YIELD_CUTIN",
+      "level_1": "Interaction",
+      "name_en": "merge / yield / cut-in",
+      "name_zh": "汇入/让行/切入响应",
+      "primary_semantic_metrics": [
+        "delta_yield_rate",
+        "delta_cutin_reaction_delay_s",
+        "delta_min_gap_after_cutin_m",
+        "delta_merge_conflict_accel_mps2"
+      ],
+      "direction_labels": [
+        "TARGET_LESS_YIELDING_OR_LATER_RESPONSE",
+        "TARGET_MORE_YIELDING_OR_EARLIER_RESPONSE",
+        "MIXED",
+        "NO_CLEAR_DIRECTION",
+        "N/A"
+      ]
+    }
+  ],
+  "required_behavior_profile_fields": [
+    "schema_version",
+    "report_id",
+    "result_id",
+    "parent_bdd_result_id",
+    "dimension_id",
+    "behavior_dimension",
+    "reference_id",
+    "reference_role",
+    "target_id",
+    "target_role",
+    "contrast_label",
+    "task_id",
+    "scenario_slice_definition",
+    "selection_timing",
+    "evaluation_mode",
+    "pairing_or_cluster_unit",
+    "n_reference",
+    "n_target",
+    "n_pairs",
+    "n_scenarios",
+    "n_logs",
+    "representation_id",
+    "representation_checkpoint_sha256",
+    "statistic_name",
+    "raw_mmd2",
+    "kernel",
+    "bandwidth",
+    "null_or_calibration_method",
+    "null_repetitions",
+    "null_q95",
+    "z_bdd",
+    "raw_p_value",
+    "corrected_p_value",
+    "multiplicity_family",
+    "alarm_threshold",
+    "detection_or_alarm",
+    "semantic_metric",
+    "semantic_delta_target_minus_reference",
+    "semantic_unit",
+    "semantic_ci95_low",
+    "semantic_ci95_high",
+    "semantic_direction",
+    "mapping_strength",
+    "value_status",
+    "interpretation",
+    "provenance_path",
+    "provenance_sha256"
+  ],
+  "required_representation_scorecard_fields": [
+    "schema_version",
+    "dimension_id",
+    "reference_id",
+    "target_id",
+    "task_id",
+    "evaluation_mode",
+    "sample_size",
+    "representation_id",
+    "detection_rate",
+    "aa_false_positive_rate",
+    "detection_minus_fpr",
+    "minimum_detectable_dose",
+    "task_coverage",
+    "normalized_z_within_representation",
+    "seed_stability",
+    "capability_decision",
+    "value_status",
+    "provenance_path"
+  ],
+  "field_rules": {
+    "reference_target": "Reference and Target must be explicit IDs. Target-minus-Reference is the only semantic delta sign convention.",
+    "bdd_direction": "BDD magnitude, Z_BDD, and p-values never determine aggressive/conservative or better/worse direction.",
+    "semantic_binding": "A directional conclusion requires at least one dimension-approved semantic delta with its unit, finite sample count, and confidence interval.",
+    "shared_bdd": "If one task-level BDD supports multiple semantic child dimensions, rows must share parent_bdd_result_id and must not be counted as independent BDD tests.",
+    "raw_mmd2": "Raw MMD2 may be shown for audit within a representation but must never be used to rank different representations.",
+    "multiplicity": "Raw and corrected p-values must both be retained. A corrected decision is mandatory when the result belongs to a frozen multiplicity family.",
+    "unpaired": "Unpaired rows must report A/A calibration source, held-out FPR, log/scenario overlap rules, and both A/B directions when available.",
+    "legacy": "Missing historical fields are N/A with a frozen reason. They must not be reconstructed silently or replaced with fields from another scope.",
+    "proxy": "A proxy mapping must be labeled and cannot be promoted to an exact dimension claim."
+  },
+  "table_a_business_columns": [
+    "Behavior dimension",
+    "Reference to Target",
+    "Task / slice",
+    "Mode",
+    "N scenario / N log",
+    "Representation",
+    "Z_BDD",
+    "Significance",
+    "Semantic delta",
+    "Direction",
+    "Conclusion"
+  ],
+  "table_b_scorecard_columns": [
+    "Representation",
+    "Longitudinal",
+    "Following",
+    "Lane change",
+    "Interaction",
+    "Unpaired release detection",
+    "A/A FPR",
+    "Detection minus FPR",
+    "Seed stability",
+    "Capability conclusion"
+  ],
+  "comparability_rules": [
+    "Behavior Profile rows answer what changed and must not be replaced by representation gate summaries.",
+    "Representation Scorecard rows answer evaluator reliability and must not be interpreted as semantic behavior direction.",
+    "Cross-representation ranking may use detection rate, A/A FPR, detection-minus-FPR, minimum detectable dose, task coverage, within-representation normalized Z, and seed stability.",
+    "Cross-representation raw MMD2 comparison is prohibited.",
+    "Paired and unpaired results must never be pooled into one capability number."
+  ]
+}

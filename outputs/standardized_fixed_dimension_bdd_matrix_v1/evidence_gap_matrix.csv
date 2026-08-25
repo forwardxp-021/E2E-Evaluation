@@ -1,0 +1,4 @@
+dimension_id,behavior_dimension,evidence_status,missing
+LON.FREE_FLOW_SPEED,自由流速度,N/A_NO_FROZEN_FREE_FLOW_SLICE,没有冻结的同维度场景、BDD及绑定semantic delta；N/A不等同于没有差异。
+LAT.LANE_KEEPING,车道保持,N/A_NO_FROZEN_LANE_KEEPING_SLICE,没有冻结的同维度场景、BDD及绑定semantic delta；N/A不等同于没有差异。
+INT.LATERAL_GAP,横向间隙接受/横向交互,N/A_NO_FROZEN_LATERAL_GAP_OUTCOME,没有冻结的同维度场景、BDD及绑定semantic delta；N/A不等同于没有差异。

@@ -1,0 +1,44 @@
+source_family,source_task_or_group,unified_dimension_id,mapping_role,mapping_strength,evidence_class,profile_use,notes
+Stage5 representation groups,following,LON.CAR_FOLLOWING,secondary,REPRESENTATION_EVALUATION_ONLY,representation_training_or_validation,scorecard_only,Does not by itself constitute a BDD behavior profile
+Stage5 representation groups,longitudinal,LON.ACCEL_DECEL,primary,REPRESENTATION_EVALUATION_ONLY,representation_training_or_validation,scorecard_only,Does not provide Reference-to-Target behavior direction
+Stage5 representation groups,lateral,LAT.DYNAMICS,primary,REPRESENTATION_EVALUATION_ONLY,representation_training_or_validation,scorecard_only,Lane-change proxy features may contribute but are not an exact lane-change BDD
+Stage5 representation groups,behavior_proxy,OVR.ALL,secondary,REPRESENTATION_EVALUATION_ONLY,representation_training_or_validation,scorecard_only,Mixed proxy bundle
+Stage6C v2,task_following,INT.LONG_FOLLOWING,primary,TASK_SLICE_PROXY,task_conditioned_bdd,profile_allowed,Also maps secondarily to LON.CAR_FOLLOWING; detector strength must be reported
+Stage6C v2,task_following,LON.CAR_FOLLOWING,secondary,TASK_SLICE_PROXY,task_conditioned_bdd,profile_allowed,Shared parent BDD with INT.LONG_FOLLOWING
+Stage6C v2,task_lead_brake_response,LON.CLOSING_RESPONSE,primary,MIXED_PROXY,task_conditioned_bdd,profile_proxy_only,Uses front-closing derivative until raw lead acceleration is available
+Stage6C v2,task_queue_approach,LON.ACCEL_DECEL,primary,MIXED_PROXY,task_conditioned_bdd,profile_proxy_only,Exact stopped-front interpretation requires valid front speed
+Stage6C v2,task_queue_approach,LON.COMFORT,secondary,MIXED_PROXY,semantic_metrics,profile_proxy_only,Shared parent BDD; jerk/deceleration are semantic explanation
+Stage6C v2,task_lane_change,LAT.LANE_CHANGE,primary,TASK_SLICE_PROXY,task_conditioned_bdd,profile_allowed,Allowed only when detector is not broad and positive ratio is within frozen quality rule
+Stage6C v2,task_lane_change,LAT.DYNAMICS,secondary,TASK_SLICE_PROXY,semantic_metrics,profile_allowed,Shared parent BDD; yaw/curvature/lateral acceleration explain direction
+Stage6C v2,task_lane_change,INT.LATERAL_GAP,secondary,MIXED_PROXY,semantic_metrics,profile_proxy_only,Requires valid target-lane front/rear gap metrics
+Stage6C v2,task_cutin_response,INT.MERGE_YIELD_CUTIN,primary,INSUFFICIENT_FOR_DIMENSION_CLAIM,proxy_task,profile_not_confirmatory,Current detector is gap-drop proxy rather than true slot-transition cut-in
+Stage6C v2,task_overtake_opportunity,INT.LATERAL_GAP,secondary,MIXED_PROXY,proxy_task,profile_proxy_only,Opportunity is exposure and not behavior outcome
+Stage6C v2,task_overtake_executed,LAT.LANE_CHANGE,secondary,MIXED_PROXY,proxy_task,profile_proxy_only,Execution remains proxy-based
+Stage6C v2,task_hesitation,LAT.DYNAMICS,secondary,MIXED_PROXY,proxy_task,profile_proxy_only,Only usable when detector is not broad
+Stage6C v2,task_yield_conflict,INT.MERGE_YIELD_CUTIN,primary,MIXED_PROXY,task_conditioned_bdd,profile_proxy_only,Yield-conflict is broader than merge/yield/cut-in exact event taxonomy
+Stage6C dynamic exposure,exposure_free_cruising,LON.FREE_FLOW_SPEED,primary,MIXED_PROXY,proxy_task,profile_proxy_only,Requires low interaction pressure and a frozen free-flow semantic speed definition
+Current frozen inventory,no_exact_lane_keeping_task,LAT.LANE_KEEPING,primary,INSUFFICIENT_FOR_DIMENSION_CLAIM,evidence_gap,profile_not_available,No frozen exact lane-keeping BDD with bound semantic delta
+Stage7 locked confirmation,overall,OVR.ALL,primary,EXACT_DIMENSION,paired_bdd,profile_allowed,Original old64 overall planner-conditioned behavior drift
+Stage7 locked confirmation,following_interaction,INT.LONG_FOLLOWING,primary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Pre-treatment following scenario slice
+Stage7 locked confirmation,following_interaction,LON.CAR_FOLLOWING,secondary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Shared parent BDD; task-specific semantic direction was not frozen
+Stage7 locked confirmation,lane_change,LAT.LANE_CHANGE,primary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Scenario type does not prove ego executed a lane change
+Stage7 locked confirmation,stop_go_control,LON.ACCEL_DECEL,primary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Task-specific semantic direction was not frozen
+Stage7 locked confirmation,stop_go_control,LON.COMFORT,secondary,MIXED_PROXY,paired_task_bdd,profile_proxy_only,No task-specific frozen jerk delta
+Stage7 locked confirmation,high_motion_dynamics,LAT.DYNAMICS,primary,MIXED_PROXY,paired_task_bdd,profile_proxy_only,Mixes high lateral acceleration and speed-magnitude scenario types
+Stage7 locked confirmation,high_motion_dynamics,LON.ACCEL_DECEL,secondary,MIXED_PROXY,paired_task_bdd,profile_proxy_only,Must not be called pure lateral evidence
+Stage7 locked confirmation,dense_or_vulnerable_interaction,INT.MERGE_YIELD_CUTIN,primary,INSUFFICIENT_FOR_DIMENSION_CLAIM,paired_task_bdd,profile_not_confirmatory,Only a broad dense-or-vulnerable interaction proxy
+Stage6J/K pure longitudinal,overall,LON.ACCEL_DECEL,primary,TREATMENT_ALIGNED_PROXY,paired_bdd,profile_allowed,Pure-longitudinal planner treatment over mixed tasks
+Stage6J/K pure longitudinal,overall,LON.COMFORT,secondary,TREATMENT_ALIGNED_PROXY,semantic_metrics,profile_allowed,Shared parent BDD with RMS jerk semantic delta
+Stage6J/K pure longitudinal,following_interaction,LON.CAR_FOLLOWING,primary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Following task within pure-longitudinal treatment
+Stage6J/K pure longitudinal,following_interaction,INT.LONG_FOLLOWING,secondary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Shared parent BDD
+Stage6J/K pure longitudinal,stop_go_control,LON.ACCEL_DECEL,primary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Stop-go slice
+Stage6J/K pure longitudinal,stop_go_control,LON.COMFORT,secondary,TASK_SLICE_PROXY,semantic_metrics,profile_allowed,Shared parent BDD
+Stage6J/K pure longitudinal,longitudinal_high_motion,LON.ACCEL_DECEL,primary,TASK_SLICE_PROXY,paired_task_bdd,profile_allowed,Derived from high-motion task after excluding high-lateral scenarios
+Stage6J/K pure longitudinal,longitudinal_high_motion,LON.COMFORT,secondary,MIXED_PROXY,semantic_metrics,profile_proxy_only,Shared parent BDD
+Stage6P unpaired release,context_balanced_overall,OVR.ALL,primary,REPRESENTATION_EVALUATION_ONLY,unpaired_detection,scorecard_only,Aggregated bidirectional release detection does not provide semantic behavior direction
+Stage6P unpaired release,raw_marginal_overall,OVR.ALL,secondary,REPRESENTATION_EVALUATION_ONLY,unpaired_detection,scorecard_only,Diagnostic method; context-balanced is primary
+Stage6W mechanism,same_support_paired_unpaired,OVR.ALL,secondary,REPRESENTATION_EVALUATION_ONLY,signal_noise_decomposition,scorecard_only,Explains evaluator signal/noise rather than Target behavior direction
+Stage6S-v3 interaction,following_interaction_confirmation_v3,INT.LONG_FOLLOWING,primary,EXACT_DIMENSION,paired_bdd_and_semantic,profile_allowed,Short-headway Target versus long-headway Reference
+Stage6S-v3 interaction,following_interaction_confirmation_v3,INT.FRONT_GAP_THW,secondary,EXACT_DIMENSION,paired_bdd_and_semantic,profile_allowed,Shared parent BDD with explicit front-gap and finite-THW deltas
+Stage6S-v3 interaction,following_interaction_confirmation_v3,LON.CLOSING_RESPONSE,secondary,EXACT_DIMENSION,paired_bdd_and_semantic,profile_allowed,Shared parent BDD with closing-response acceleration delta
+Stage6S-v3 interaction,C_full_minus_C_neighbor_zero,INT.LONG_FOLLOWING,diagnostic,REPRESENTATION_EVALUATION_ONLY,representation_increment,scorecard_only,Tests incremental interaction information and not behavior direction

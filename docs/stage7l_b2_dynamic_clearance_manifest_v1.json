@@ -1,0 +1,59 @@
+{
+  "schema_version": "stage7l_b2_dynamic_clearance_manifest_v1",
+  "status": "STAGE7L_B2_DYNAMIC_CLEARANCE_COMPLETE",
+  "next_stage_status": "STAGE7L_C_PROTOCOL_FREEZE_RECOMMENDED",
+  "stage7l_c_started": false,
+  "stage7l_b_base_commit": "ec217e7f9a92857dea83d3e0c9fd4e9589eb26f6",
+  "scope": "offline pre-treatment dynamic replay-traffic clearance and Pittsburgh inventory expansion",
+  "dynamic_clearance": {
+    "dose_independent": true,
+    "rollout_outcome_read": false,
+    "embedding_or_bdd_read": false,
+    "horizon_seconds": 15.0,
+    "time_step_seconds": 0.1,
+    "maximum_track_interpolation_gap_seconds": 0.25,
+    "common_envelope": "source-to-target time-aligned strip for the 54--60 m family",
+    "ego_length_width_m": [5.0, 2.0],
+    "longitudinal_lateral_buffer_m": [3.0, 0.5],
+    "config_fingerprint": "be1da2a2736c63b1c262183c223f4cbc00dc8bca62ad6e7892672057f1817640"
+  },
+  "development_retrospective_audit": {
+    "candidate_count": 24,
+    "fixed_collision_cases": 4,
+    "fixed_collision_dynamic_rejected": 4,
+    "non_collision_cases": 20,
+    "non_collision_dynamic_rejected": 11,
+    "collision_cases_outside_transition_corridor": 0
+  },
+  "pittsburgh_expansion": {
+    "scanned_db_count": 1621,
+    "scanned_anchor_candidate_count": 34782,
+    "static_eligible_tokens": 327,
+    "dynamic_clean_tokens": 165,
+    "pool_a_scenario_disjoint": {"tokens": 165, "logs": 102, "left": 24, "right": 141},
+    "pool_b_strict_stage7l_b_log_disjoint": {"tokens": 152, "logs": 94, "left": 19, "right": 133},
+    "official_runnability_all_pool_b": true
+  },
+  "sha256": {
+    "expanded_pittsburgh_inventory_input": "a781850bc3a2e48de42db3bb5deeef0e610b71ffccde5683d9a82df2bc67fc11",
+    "stage7l_b_final_exclusion_ledger": "2910e77970e32ad865bcb7b27ea8189d80ac5baf3c5d0a83dcecc622d47fe127",
+    "dynamic_config": "983eb1fe37826d74637149329a20b2a5b7187953eb72abce542371e6a3b0cd77",
+    "dynamic_clearance_tool": "50253b75eed8473b1141b3b76d51ce755f1a8df1f7a2f0690a4075b35a3df129",
+    "dynamic_audit_tool": "7a947d035ee07e85efa4f8b9053f36722cbb0f8aa2566d3c8d1d68ee6d3ce909",
+    "inventory_expansion_tool": "2416c33fab0a1a4e7e079a75f60868d8f2b8cb7c0fb5f6197ed68e35c44844d0",
+    "static_inventory_builder_tool": "d40cf29a88e1223f507ee77e09e39d3adf6b4f41c656a5eb7021482c85f1eb60",
+    "development_dynamic_audit": "d9440f4a2f83ae18838fdb3badfbe3d1e0b25d1eb219326e232217038fcd4c9b",
+    "expanded_pittsburgh_inventory": "f7b23370a09e24aec29b2edea3ff11dce92a31e933505eb305d1b125a871c8a7",
+    "pool_a": "f14025626237010abf8433a07a25748ad335f324071d5f8ea9f316c62dd1e144",
+    "pool_b": "7b045a347881b48bd7558ed7f234122c60292c12d90c685c5c5244e9fa4e110b"
+  },
+  "prohibited_work_audit": {
+    "formal_confirmation_roster_created": false,
+    "formal_confirmation_rollout_run": false,
+    "stage7l_treatment_rollout_run": false,
+    "model_training_run": false,
+    "embedding_export_run": false,
+    "bdd_or_mmd_run": false,
+    "checkpoint_modified": false
+  }
+}

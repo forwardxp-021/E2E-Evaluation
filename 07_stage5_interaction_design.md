@@ -1211,3 +1211,70 @@ BDD（Behavioral Distribution Distance）定义为：比较 policy/model A 与 B
 - energy distance
 
 关系总结：Stage 5 提供了更强的 interaction-aware encoder；Stage 6 将在此基础上对真实 E2E 模型版本计算 BDD，并形成风格漂移与行为差异报告。
+
+## Stage 5D context core single-source-of-truth
+
+Stage 5D 83 维 context 构造现在由 `tools/stage5d_context_core.py` 统一管理。Waymo builder 与 nuPlan builder 只保留各自的数据源适配逻辑，然后调用同一个 core 完成 slot 顺序、ego/neighbor channel 顺序、derived formulas、`context_traj` 拼接、schema 与 validation。
+
+- slot 顺序：`front, left_front, left_rear, right_front, right_rear`。
+- context 维度：`83 = ego 8 + 5 semantic neighbor slots × 15 channels`。
+- nuPlan row 语义保持不变：`scenario × planner × planner-controlled ego rollout`。
+- nuPlan background agents 只作为 context candidates，不扩展成 ego rows。
+- Stage 6 逻辑不因本次 refactor 改变。
+
+## Stage 5H / Stage 7 M6 cross-domain style-sensitive extension
+
+Stage7 M4-M6 提出了一个需要后续验证的表示学习假设：当前33维 schema 不包含
+`mean_speed`，而 nuPlan PDM assertive/conservative 的稳定同场景差异包含 mean
+speed 与 RMS acceleration。现有 encoder 从83维 raw context 中部分保留速度信息，
+但现有结果不能证明“缺少 mean_speed supervision”是 marginal BDD 不显著的根因；
+M6.1 反而表明，使用与 matched design 对齐的 primary paired BDD 后，现有
+Waymo-only embedding 已能检测系统 planner shift。
+
+因此 Stage5D-balanced-v2 继续作为 Waymo-only 主模型，nuPlan 作为外部验证域。
+不使用当前45对 exploratory rollout 微调主模型后再把同一批数据称为外部验证。
+只有新 log/scenario-disjoint、selection config 独立冻结的锁定集显示表示能力
+不足时，才启动新的
+cross-domain checkpoint 消融，并且不得覆盖 Stage5D-balanced-v2。
+
+候选 kinematic supervision 应优先采用场景归一化或关系型目标：
+
+- 同场景相对 speed/progress；
+- speed-limit-normalized speed；
+- 相对前车的 closing/progress；
+- 同任务内 longitudinal response。
+
+绝对 `mean_speed`、`speed_p90` 或 progress 只能作为对照消融，否则容易泄漏道路
+等级、限速和拥堵。新增 target 不得静默改变历史33维 schema。若触发训练，
+nuPlan supervision 使用 same-scenario complete pairs、连续物理 behavior delta
+与 pair ranking；planner name/config 不得进入 encoder input，并使用冻结
+Stage5D-balanced-v2 的 Waymo teacher consistency。
+
+数据切分、loss、泄漏防护和验收门槛见
+`docs/stage7_cross_domain_style_sensitive_training_protocol.md`。当前工作区缺少
+部分 Waymo full51 实际 shards，这只阻塞被条件触发的重训练，不阻塞当前
+Waymo-only checkpoint 的 nuPlan 外部验证。
+
+### Stage 5H.1 M6.2 representation controls
+
+M6.2 在冻结的 pre-treatment scenario-type tasks 内并列检查 learned embedding、
+33维 interaction features 和12维 trajectory summary。后两者使用 label-blind
+pooled median/IQR transform，只作为机制对照，不能替代 Stage5D embedding
+primary。
+
+45对开发集上，learned embedding 只有 high-motion dynamics 通过 task-family
+Holm correction，其他 task 未显著且每任务均低于12对运行下限。因此当前证据支持
+“表示敏感性具有 task heterogeneity”，不支持“encoder 对所有任务已经充分敏感”，
+也尚不足以触发默认重训练。
+
+### Stage 5H.2 M6.3 power planning 的表示边界
+
+M6.3 在冻结 learned embedding 上规划新确认集，而不是用扩大样本量替代表示学习
+诊断。0.75 pilot-effect 主设计要求五个 pre-treatment task 各60个完整 pairs；
+50% effect 敏感性需求为各160对。样本量增加只能提高检测既有效应的概率，不能保证
+encoder 对未编码的 behavior dimension 变敏感。
+
+因此新锁定确认的决策顺序为：先按冻结配额收集并检验；若关键 task 在充分功效下
+仍无稳定 paired BDD，同时 handcrafted interaction/trajectory controls 显示明确
+shift，才触发 Stage5D 新 checkpoint family 的任务条件化或关系型监督消融。不得
+用 locked labels 回改当前 checkpoint、task mapping 或功效假设。

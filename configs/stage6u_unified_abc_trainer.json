@@ -1,0 +1,115 @@
+{
+  "schema_version": "stage6u_unified_abc_trainer_implementation_v1",
+  "implementation_id": "stage6u_unified_abc_trainer_v1",
+  "issue": 263,
+  "status": "IMPLEMENTATION_AND_SMOKE_ONLY_NO_FORMAL_TRAINING",
+  "authorization": {
+    "formal_training_authorized": false,
+    "formal_checkpoint_write_authorized": false,
+    "waymo_test_authorized": false,
+    "nuplan_authorized": false,
+    "stage6s_v2_confirmation_authorized": false,
+    "next_authorized_action": "RUN_SYNTHETIC_AND_SMALL_WAYMO_TRAIN_VAL_SMOKE_THEN_FREEZE_IMPLEMENTATION"
+  },
+  "stage6t_protocol": {
+    "config_path": "configs/stage6t_training_evaluation_protocol.json",
+    "config_sha256": "0d402d5ff845f5ab490f09295a60d043ef5c84e9ec0b865898285b03d9636570",
+    "freeze_manifest_path": "outputs/stage6t_training_evaluation_protocol_freeze_v1/stage6t_training_evaluation_protocol_freeze_manifest.json",
+    "freeze_manifest_sha256": "733dbe59886c2514a58c203905f01151e1cd468554f654475e100dc373452384",
+    "protocol_content_fingerprint_sha256": "0f33a7939030397488dd53179fa7821e3b0c9a81721f01235a380ee058f5b1da"
+  },
+  "training_data": {
+    "dynamic_full51_manifest_path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/stage6r_dynamic_full51_manifest.json",
+    "dynamic_full51_manifest_sha256": "c67391c26f70734ddecd38b95bcb81b744494383cf62bbfdeb4e024b1fe8305f",
+    "global_33d_standardization_path": "outputs/stage6t_training_evaluation_protocol_freeze_v1/stage6t_global_interaction_target_standardization.json",
+    "global_33d_standardization_sha256": "fd92c818abbe74d3239bbaafd90e72bf9b534b325e6852961c709aa42252381a",
+    "allowed_splits": ["train", "val"],
+    "forbidden_split": "test",
+    "allowed_33d_source": "interaction_feat_style_raw.npy",
+    "forbidden_33d_source": "interaction_feat_style.npy",
+    "clean_longitudinal_source": "longitudinal_supervision_v2.npy",
+    "slot_mask_source": "slot_valid_mask.npy",
+    "modify_or_rewrite_shards": false
+  },
+  "operational_semantics": {
+    "clean_longitudinal_window_target": [
+      "mean_normalized_smoothed_speed",
+      "std_normalized_smoothed_speed",
+      "rms_normalized_accel",
+      "p90_abs_normalized_accel",
+      "rms_normalized_jerk",
+      "p90_abs_normalized_jerk"
+    ],
+    "legacy_33d_groups_source": "tools.train_context_behavior_embedding.FEATURE_GROUPS",
+    "candidate_A_legacy_objective_source": "tools.train_context_behavior_embedding",
+    "constant_learning_rate_scheduler": "LambdaLR_factor_1.0",
+    "ranking_triplet": {
+      "positive": "minimum_clean_longitudinal_distance_among_candidate_pool_with_same_front_and_lateral_nuisance_stratum",
+      "hard_negative": "longitudinal_distance_ge_pool_q75_and_nuisance_distance_le_pool_q25_else_lexicographic_fallback",
+      "near_boundary": "longitudinal_distance_within_pool_q40_q60_then_minimum_nuisance_distance",
+      "uniform": "deterministic_uniform_member_of_candidate_pool",
+      "candidate_pool_max": 64,
+      "loss": "relu(margin + cosine_distance_anchor_positive - cosine_distance_anchor_negative)"
+    },
+    "neighbor_dropout_consistency": "smooth_l1_between_l2_normalized_clean_and_augmented_z64",
+    "validation_plan": "all_val_rows_once_in_deterministic_seeded_order_with_deterministic_pairs_and_dropout_stream",
+    "validation_statistics": "same_frozen_train_fitted_global33_and_longitudinal_statistics_as_training",
+    "non_dropout_augmentation": "none_frozen; augmentation seed stream reserved and audited",
+    "B_C_random_plan_candidate_independent": true
+  },
+  "fairness_streams": [
+    "sampling_weights",
+    "epoch_sample_indices",
+    "batch_boundaries",
+    "ranking_positive_indices",
+    "ranking_negative_indices",
+    "ranking_pair_types",
+    "slot_dropout_masks",
+    "all_neighbor_dropout_masks",
+    "augmentation_seeds",
+    "optimizer_schedule",
+    "training_budget"
+  ],
+  "formal_training_guard": {
+    "mode": "formal",
+    "separate_authorization_manifest_required": true,
+    "required_authorization_status": "AUTHORIZED_STAGE6U_ABC_FORMAL_TRAINING",
+    "required_training_authorized_value": true,
+    "authorization_manifest_must_bind_implementation_freeze_sha256": true,
+    "implementation_freeze_manifest_file_must_match_supplied_sha256": true,
+    "implementation_freeze_must_bind_current_trainer_and_config_sha256": true,
+    "authorized_candidates_required": ["A", "B", "C"],
+    "authorized_seeds_required": [3407, 3408, 3409],
+    "maximum_formal_runs": 9,
+    "output_directory_rule": "exact_frozen_candidate_output_root/seed_{seed}",
+    "existing_output_directory_must_be_absent": true
+  },
+  "smoke": {
+    "device_policy": "mps_if_available_else_cpu",
+    "synthetic_rows": 48,
+    "synthetic_train_rows": 40,
+    "synthetic_val_rows": 8,
+    "waymo_train_rows": 48,
+    "waymo_val_rows": 16,
+    "batch_size": 8,
+    "train_batches_per_candidate": 2,
+    "val_batches_per_candidate": 1,
+    "resume_total_batches": 3,
+    "timing_probe_batch_size": 128,
+    "timing_probe_warmup_batches": 2,
+    "timing_probe_measured_batches": 5,
+    "seed": 3407,
+    "formal_checkpoint_roots_must_remain_empty": [
+      "outputs/stage6t_candidates_v1/candidate_A_dynamic_data_legacy",
+      "outputs/stage6t_candidates_v1/candidate_B_single_gru_recovery",
+      "outputs/stage6t_candidates_v1/candidate_C_dual_branch"
+    ]
+  },
+  "freeze": {
+    "required_smoke_status": "PASS_UNIFIED_ABC_TRAINER_SMOKE_NO_FORMAL_TRAINING",
+    "ready_status": "FROZEN_READY_FOR_ABC_FORMAL_TRAINING",
+    "formal_checkpoint_count_required": 0,
+    "formal_checkpoint_count_planned": 9,
+    "formal_training_remains_unauthorized": true
+  }
+}

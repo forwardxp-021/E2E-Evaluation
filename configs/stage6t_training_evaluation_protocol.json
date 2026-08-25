@@ -1,0 +1,493 @@
+{
+  "schema_version": "stage6t_training_evaluation_protocol_v1",
+  "protocol_id": "stage6t_abc_attributable_waymo_only_v1",
+  "issue": 262,
+  "status": "PRETRAINING_FREEZE_NO_CHECKPOINT",
+  "authorization": {
+    "training_authorized": false,
+    "checkpoint_write_authorized": false,
+    "waymo_test_authorized": false,
+    "nuplan_evaluation_authorized": false,
+    "confirmation_rollout_authorized": false,
+    "next_authorized_action": "IMPLEMENT_AND_REVIEW_UNIFIED_ABC_TRAINER_THEN_REQUEST_SEPARATE_TRAINING_AUTHORIZATION"
+  },
+  "source_records": {
+    "dynamic_full51_manifest": {
+      "path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/stage6r_dynamic_full51_manifest.json",
+      "sha256": "c67391c26f70734ddecd38b95bcb81b744494383cf62bbfdeb4e024b1fe8305f"
+    },
+    "dynamic_full51_sha256_ledger": {
+      "path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/stage6r_full51_sha256_ledger.json",
+      "sha256": "e39e22354b11679eb66a43be2c658760ad627ac8b843452565225cecf8007d9e"
+    },
+    "dynamic_longitudinal_global_schema": {
+      "path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/longitudinal_supervision_v2_global_schema.json",
+      "sha256": "aad0cce8cd6833ec34b8f59d24cf34a318e05e4ee9dd067b355c915fe54dbaa2"
+    },
+    "dynamic_feature_schema": {
+      "path": "outputs/stage6r_dynamic_full51_semantic_strict_part_00_09/feature_schema.json",
+      "sha256": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17"
+    },
+    "dynamic_part00_interaction_standardization_diagnostic": {
+      "path": "outputs/stage6r_dynamic_full51_semantic_strict_part_00_09/interaction_feature_standardization.json",
+      "sha256": "a2fa070f38251ef6703d024f59029d7341823436395ccd91ad19775c673f92ea"
+    },
+    "legacy_training_semantics": {
+      "path": "tools/train_context_behavior_embedding.py",
+      "sha256": "5b157166a299c0f644fcb6114cc8cc2ebb5a50e5fdfb13f4fba282c00191c5f9"
+    },
+    "stage6o_v2_readiness": {
+      "path": "outputs/stage6o_v2_dynamic_training_readiness_v1/stage6o_v2_training_readiness_manifest.json",
+      "sha256": "5324b65d9800033082023e47437887baca9729917d1967d9ee31b8498cd89cd1"
+    },
+    "stage6o_v1_blocked_freeze": {
+      "path": "outputs/stage6o_longitudinal_training_protocol_freeze_v1/stage6o_training_protocol_freeze_manifest.json",
+      "sha256": "4175054bbcf38d604ff0bab5bda77233a066c475c5e19335b0d219f00f1d164e"
+    },
+    "stage6o_design_config": {
+      "path": "configs/stage6o_longitudinal_representation_training_protocol.json",
+      "sha256": "eb7c2357cf31de68c5de47ab21d89dcaa3dd104a13d4c56eb31f99e4a1ce9d39"
+    },
+    "old64_checkpoint": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/best_model.pt",
+      "sha256": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc"
+    },
+    "old64_training_config": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/context_gru_stage5d_balanced_v2/training_config.json",
+      "sha256": "babab58ebb888b03ca0cc15e9621b2feb3c6cc818294edb4d490a9a5b7dca1f4"
+    },
+    "stage6j_analysis_config": {
+      "path": "configs/stage6j_paired_bdd_analysis.json",
+      "sha256": "4a0e330e7148ac10dda61c146f1d81d7b447548ff2b654825ade063fb12ed613"
+    },
+    "stage6j_locked_roster": {
+      "path": "outputs/stage6j_pure_longitudinal_freeze_v1/stage6j_locked_scenarios.csv",
+      "sha256": "90b35382b53d4fada7fd4237f1a3efb8595505406ba99a6e0e3f839d7c777036"
+    },
+    "stage6k_dose_config": {
+      "path": "configs/stage6k_longitudinal_dose_response.json",
+      "sha256": "b8198f3df5fe1c90f06e3e398d5889dd69861096837e42416cc2a1042fbf56f2"
+    },
+    "stage6k_addendum_config": {
+      "path": "configs/stage6k_preanalysis_addendum.json",
+      "sha256": "950ff301ca8683723c39d26378c761709c9e2fc44045be18802025b611afd077"
+    },
+    "stage6k_addendum_manifest": {
+      "path": "outputs/stage6k_preanalysis_addendum_freeze_v1/stage6k_preanalysis_addendum_manifest.json",
+      "sha256": "3896a08f8015fac295963a2f992428a000b2666840782733686c16c3566744da"
+    },
+    "stage6p_config": {
+      "path": "configs/stage6p_representation_unpaired_release.json",
+      "sha256": "6febfe1608e4b312b8ea4107d939e1571ac9548f16cd670befa17a28b58eb33f"
+    },
+    "stage6p_log_assignments": {
+      "path": "outputs/stage6h_nuplan_power_curve_800_v1/power_curve_log_assignments.csv",
+      "sha256": "310085fe229f93f91712f714d50a44721330a54463e60072249ed705e91a2442"
+    },
+    "stage6p_pool_metadata": {
+      "path": "outputs/stage6h_expanded_800_embedding_pool_v1/metadata.csv",
+      "sha256": "20a735bb3e9953ac416595ee87f5cb0a825d29b83fb50e8ab1debd6f1bb3a939"
+    },
+    "stage6s_v2_config": {
+      "path": "configs/stage6s_v2_interaction_benchmark.json",
+      "sha256": "454a85573b268ad92e6a3d27c7a2e2be4630d98626b6535621ee68b5517cfd3f"
+    },
+    "stage6s_v2_confirmation_roster": {
+      "path": "outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_roster.csv",
+      "sha256": "a2360bf38f8c60fc481226d580475cb651cf503cb46c5b6167ad1d916d50d1e2"
+    },
+    "stage6s_v2_confirmation_design": {
+      "path": "outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_frozen_design.json",
+      "sha256": "055c39b19f079d3f0f742093447d0bd51d2dc47ac08ac8a16c4d8b2efdc8a7ba"
+    },
+    "stage6s_v2_confirmation_manifest": {
+      "path": "outputs/stage6s_v2_confirmation_freeze_v1/stage6s_v2_confirmation_freeze_manifest.json",
+      "sha256": "4ada675278e0e634da2f552f69abf04b73c9b0f90e114b3f05dda8eaaadf6472"
+    }
+  },
+  "dataset_contract": {
+    "dataset_id": "waymo_dynamic_interaction_full51_semantic_strict_v1",
+    "builder": "Dynamic Interaction Builder v2",
+    "source_file_count": 51,
+    "shard_count": 36,
+    "row_count": 168700,
+    "split_counts": {
+      "train": 135046,
+      "val": 16870,
+      "test": 16784
+    },
+    "split_unit": "scenario_id",
+    "sequence_length": 80,
+    "context_dim": 83,
+    "output_dim": 64,
+    "normalization_fit_split": "train_only",
+    "pair_mining_scope": "within_split_only",
+    "waymo_source_expanded": false,
+    "legacy_33d_target_policy": {
+      "authoritative_array": "interaction_feat_style_raw.npy",
+      "forbidden_training_array": "interaction_feat_style.npy",
+      "reason": "The six independently built Dynamic v2 part roots contain part-local 33D normalization. Stage6T must derive one global train-only mean/std without rewriting the frozen shards.",
+      "stage6t_global_standardization": "population_mean_std_from_all_dynamic_v2_train_rows",
+      "apply_same_statistics_to_train_val_test": true,
+      "rewrite_frozen_dynamic_shards": false
+    },
+    "required_files_per_shard": [
+      "context_traj.npy",
+      "context_mask.npy",
+      "interaction_feat_style.npy",
+      "interaction_feat_style_raw.npy",
+      "longitudinal_supervision_v2.npy",
+      "longitudinal_supervision_v2_raw.npy",
+      "slot_valid_mask.npy",
+      "slot_identity_switch_mask.npy",
+      "slot_derivative_valid_mask.npy",
+      "meta.npy",
+      "split.npy"
+    ]
+  },
+  "frozen_baseline": {
+    "id": "old64",
+    "role": "read_only_historical_baseline",
+    "architecture": "legacy_single_gru_83_to_64",
+    "checkpoint_sha256": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc",
+    "overwrite_or_delete_allowed": false,
+    "historical_test_metrics_role": "reference_only_not_directly_comparable_to_dynamic_v2_test",
+    "required_same_dynamic_test_reevaluation": true
+  },
+  "common_optimization": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 128,
+    "epoch_samples": 135046,
+    "max_epochs": 30,
+    "early_stopping_patience_epochs": 5,
+    "early_stopping_min_delta": 0.0001,
+    "gradient_clip_norm": 1.0,
+    "seeds": [3407, 3408, 3409],
+    "primary_seed": 3407,
+    "pair_seed": 93407,
+    "num_workers": 0,
+    "mixed_precision": false,
+    "device_policy": "mps_if_available_else_cpu",
+    "max_wallclock_hours_per_seed": 24,
+    "max_total_optimizer_steps_per_seed": 31680,
+    "progress_reporting": "tqdm_per_epoch_and_validation_plus_jsonl_heartbeat_every_100_steps",
+    "same_budget_for_candidates": ["A", "B", "C"]
+  },
+  "architecture_definitions": {
+    "legacy_single_gru_83_to_64": {
+      "input": "context_traj[B,80,83]",
+      "gru": {"input_dim": 83, "hidden_dim": 128, "num_layers": 1, "dropout": 0.0},
+      "projection": [128, 128, 64],
+      "projection_activation": "ReLU_between_linear_layers",
+      "exported_embedding": "z64",
+      "encoder_projection_parameter_count": 106560
+    },
+    "single_gru_partitioned_16_48": {
+      "input": "context_traj[B,80,83]",
+      "gru": {"input_dim": 83, "hidden_dim": 128, "num_layers": 1, "dropout": 0.0},
+      "projection": [128, 128, 64],
+      "projection_activation": "ReLU_between_linear_layers",
+      "exported_embedding": "z64",
+      "training_views": {"z_long16": "z64[:,0:16]", "z_context48": "z64[:,16:64]"},
+      "encoder_projection_parameter_count": 106560
+    },
+    "dual_branch_ego16_context48": {
+      "ego_input": "context_traj[:,:,0:8]",
+      "ego_gru": {"input_dim": 8, "hidden_dim": 48, "num_layers": 1, "dropout": 0.0},
+      "ego_projection": [48, 48, 16],
+      "context_input": "context_traj[B,80,83]",
+      "context_gru": {"input_dim": 83, "hidden_dim": 120, "num_layers": 1, "dropout": 0.0},
+      "context_projection": [120, 120, 48],
+      "fusion": "concat(z_ego16,z_context48)",
+      "exported_embedding": "z64",
+      "training_views": {"z_long16": "z_ego16", "z_context48": "z_context48"},
+      "encoder_projection_parameter_count": 105616,
+      "parameter_count_ratio_vs_single_gru": 0.9911411411411412,
+      "context_branch_keeps_full_ego_and_neighbor_context": true,
+      "neighbor_only_branch_claim_allowed": false
+    }
+  },
+  "sampling_packages": {
+    "legacy_uniform_v1": {
+      "epoch_order": "deterministic_seeded_shuffle_without_replacement",
+      "replacement": false,
+      "epoch_samples": 135046,
+      "stratified_weighting": false,
+      "ranking_pair_mining": false
+    },
+    "dynamic_longitudinal_v2": {
+      "base_sampler": "deterministic_stratified_weighted_sampler",
+      "strata": ["speed_bin", "front_regime", "lateral_nuisance_bin"],
+      "weight_formula": "inverse_sqrt_train_stratum_frequency_then_clip_0.25_4.0",
+      "replacement": true,
+      "epoch_samples": 135046,
+      "ranking_pairs": {
+        "hard_negative_share": 0.50,
+        "near_boundary_share": 0.25,
+        "uniform_share": 0.25,
+        "hard_negative_longitudinal_min_quantile": 0.75,
+        "hard_negative_nuisance_max_quantile": 0.25,
+        "near_boundary_longitudinal_quantiles": [0.40, 0.60],
+        "same_nuisance_stratum_required": true,
+        "tie_break": "stable_hash(scenario_id,target_agent_id,start,pair_seed)"
+      },
+      "forbidden_fields": ["planner_name", "nuplan_scenario_token", "dose", "BDD", "MMD", "test_metric"]
+    }
+  },
+  "dropout_packages": {
+    "none": {"slot_dropout_probability": 0.0, "all_neighbor_dropout_probability": 0.0},
+    "dynamic_mask_aware_v2": {
+      "slot_dropout_probability": 0.15,
+      "all_neighbor_dropout_probability": 0.05,
+      "ego_dropout_probability": 0.0,
+      "mask_source": "slot_valid_mask.npy",
+      "application": "zero_all_15_channels_of_selected_slot_and_update_embedded_slot_valid_channel",
+      "extra_mask_dimensions_appended_to_83d": false,
+      "same_dropout_draws_required_for_B_and_C": true
+    }
+  },
+  "objective_packages": {
+    "legacy_stage5d_balanced_v2_exact": {
+      "loss_formula_source": "frozen_old64_training_config_and_train_context_behavior_embedding_semantics",
+      "feature_target_source": "stage6t_global_standardized_interaction_feat_style_raw_33d",
+      "temperature": 0.1,
+      "feature_temperature": 1.0,
+      "metric_loss_type": "huber",
+      "weights": {
+        "style_soft_contrastive": 1.0,
+        "aux_longitudinal": 0.5,
+        "aux_following": 1.2,
+        "aux_lateral_dynamics": 1.5,
+        "aux_lateral_gap": 1.0,
+        "aux_behavior_proxy": 0.5,
+        "metric_longitudinal": 0.5,
+        "metric_following": 1.5,
+        "metric_lateral_dynamics": 1.5,
+        "metric_lateral_gap": 1.0,
+        "metric_behavior_proxy": 0.5
+      },
+      "uses_dynamic_longitudinal_supervision_v2": false,
+      "uses_ranking_pairs": false,
+      "uses_neighbor_dropout_consistency": false,
+      "selection_metric": "same_weighted_legacy_objective_on_waymo_val"
+    },
+    "longitudinal_recovery_v2": {
+      "metric_loss_type": "huber",
+      "ranking_margin": 0.2,
+      "global_style_and_legacy_group_target_source": "stage6t_global_standardized_interaction_feat_style_raw_33d",
+      "weights": {
+        "global_style_soft_contrastive": 1.0,
+        "ego_longitudinal_aux_huber": 1.0,
+        "ego_longitudinal_metric_alignment": 0.5,
+        "ego_longitudinal_pair_ranking": 0.5,
+        "following_interaction_aux": 0.75,
+        "lateral_dynamics_aux": 0.75,
+        "lateral_gap_aux": 0.5,
+        "behavior_proxy_aux": 0.25,
+        "neighbor_dropout_consistency": 0.25
+      },
+      "loss_routing": {
+        "global_style_soft_contrastive": "z64",
+        "ego_longitudinal_aux_huber": "z_long16",
+        "ego_longitudinal_metric_alignment": "z_long16",
+        "ego_longitudinal_pair_ranking": "z_long16",
+        "following_interaction_aux": "z_context48",
+        "lateral_dynamics_aux": "z_context48",
+        "lateral_gap_aux": "z_context48",
+        "behavior_proxy_aux": "z64",
+        "neighbor_dropout_consistency": "z64"
+      },
+      "clean_longitudinal_target": "longitudinal_supervision_v2_train_q01_q99_winsorized_train_median_iqr_normalized",
+      "selection_metric": "same_weighted_longitudinal_recovery_v2_objective_on_waymo_val",
+      "raw_bdd_weight": 0.0,
+      "nuplan_metric_weight": 0.0
+    }
+  },
+  "candidates": {
+    "A": {
+      "name": "dynamic_data_legacy_model_objective",
+      "role": "dynamic_data_dominant_attribution_control",
+      "architecture": "legacy_single_gru_83_to_64",
+      "sampling_package": "legacy_uniform_v1",
+      "dropout_package": "none",
+      "objective_package": "legacy_stage5d_balanced_v2_exact",
+      "uses_dynamic_builder_v2": true,
+      "uses_clean_longitudinal_v2": false,
+      "output_root": "outputs/stage6t_candidates_v1/candidate_A_dynamic_data_legacy",
+      "causal_wording_limit": "Without optional A0 retraining, describe A as dynamic-data-dominant versus the historical baseline, not a pure data-only causal effect."
+    },
+    "B": {
+      "name": "single_gru_longitudinal_recovery",
+      "role": "no_encoder_topology_change_primary_candidate",
+      "architecture": "single_gru_partitioned_16_48",
+      "sampling_package": "dynamic_longitudinal_v2",
+      "dropout_package": "dynamic_mask_aware_v2",
+      "objective_package": "longitudinal_recovery_v2",
+      "uses_dynamic_builder_v2": true,
+      "uses_clean_longitudinal_v2": true,
+      "output_root": "outputs/stage6t_candidates_v1/candidate_B_single_gru_recovery"
+    },
+    "C": {
+      "name": "dual_branch_interaction_aware_v2",
+      "role": "architecture_increment_candidate",
+      "architecture": "dual_branch_ego16_context48",
+      "sampling_package": "dynamic_longitudinal_v2",
+      "dropout_package": "dynamic_mask_aware_v2",
+      "objective_package": "longitudinal_recovery_v2",
+      "uses_dynamic_builder_v2": true,
+      "uses_clean_longitudinal_v2": true,
+      "output_root": "outputs/stage6t_candidates_v1/candidate_C_dual_branch"
+    }
+  },
+  "optional_reproducibility_extension": {
+    "id": "A0",
+    "required_for_initial_ABC_training": false,
+    "definition": "old_builder_data_plus_legacy_architecture_objective_retrained_under_stage6t_common_seeds_and_budget",
+    "purpose": "required only for a strict pure causal claim that A0_to_A isolates data version",
+    "initial_abc_claim_without_A0": "historical_baseline_comparison_not_pure_data_causal_effect"
+  },
+  "checkpoint_selection": {
+    "train_split_role": "optimization_and_train_only_statistics",
+    "val_split_role": "per_seed_epoch_selection_and_early_stopping_only",
+    "test_split_role": "one_time_post_lock_noninferiority_only",
+    "best_epoch_rule": "minimum_candidate_specific_frozen_waymo_val_objective_then_earliest_epoch_tie_break",
+    "primary_seed_rule": "seed_3407_is_predeclared_for_all_nuplan_primary_evaluations",
+    "seed_stability_rule": "all_three_seeds_train_and_lock; primary_seed_passes_all_waymo_gates_and_at_least_two_of_three_seeds_pass_waymo_noninferiority_gates",
+    "best_of_three_seed_selection_for_nuplan_forbidden": true,
+    "all_nine_candidate_seed_checkpoints_locked_before_waymo_test": true,
+    "required_checkpoint_metadata": [
+      "protocol_id", "stage6t_freeze_manifest_sha256", "candidate_id", "seed", "best_epoch",
+      "architecture_id", "sampling_package_id", "objective_package_id", "dataset_content_signature_sha256",
+      "git_commit", "training_environment", "validation_objective", "checkpoint_sha256"
+    ],
+    "overwrite_existing_seed_directory": false
+  },
+  "waymo_test_scorecard": {
+    "unlock_condition": "A_B_C_all_three_seeds_complete_and_checkpoint_locked_from_val_only",
+    "old64_reevaluated_on_same_dynamic_v2_test": true,
+    "historical_old_builder_test_metrics_used_as_gate": false,
+    "test_runs_per_locked_checkpoint": 1,
+    "cluster_unit": "scenario_id",
+    "bootstrap_repetitions": 10000,
+    "bootstrap_seed": 620270,
+    "relative_to_same_dynamic_test_old64": {
+      "minimum_longitudinal_comfort_spearman_delta": 0.03,
+      "longitudinal_delta_ci_lower_must_exceed": 0.0,
+      "following_spearman_noninferiority_margin": -0.02,
+      "lateral_spearman_noninferiority_margin": -0.02,
+      "behavior_proxy_spearman_noninferiority_margin": -0.02,
+      "retrieval_hit_at_5_noninferiority_margin": -0.02,
+      "mean_neighbor_feature_distance_max_ratio": 1.05
+    },
+    "candidate_cross_comparison_uses_paired_same_test_rows": true,
+    "test_result_driven_retraining_allowed": false
+  },
+  "blinded_evaluation_sequence": [
+    "LOCK_ALL_A_B_C_SEED_CHECKPOINTS_FROM_WAYMO_VAL_ONLY",
+    "RUN_ONE_TIME_WAYMO_DYNAMIC_V2_TEST_FOR_OLD64_AND_ALL_LOCKED_A_B_C_SEEDS",
+    "RUN_STAGE6J_K_EXISTING_ROLLOUT_EMBEDDING_AND_PAIRED_DOSE_ANALYSIS_WITH_PRIMARY_SEED",
+    "RUN_STAGE6P_EXISTING_800_PAIR_489_LOG_2400_SPLIT_UNPAIRED_ANALYSIS_WITH_PRIMARY_SEED",
+    "RUN_STAGE6S_V2_CONFIRMATION_ROLLOUT_AND_MECHANISM_GATE_WITHOUT_EMBEDDING",
+    "ONLY_IF_STAGE6S_V2_MECHANISM_PASSES_RUN_LOCKED_INTERACTION_EMBEDDING_ANALYSIS"
+  ],
+  "stage6jk_paired_scorecard": {
+    "scenario_count": 183,
+    "representations": ["old64", "A_primary", "B_primary", "C_primary", "ego13"],
+    "reuse_existing_rollouts": true,
+    "rerun_nuplan_simulation": false,
+    "doses": [0.0, 0.25, 0.50, 0.75, 1.0],
+    "kernel_and_null": "each_representation_independent_bandwidth_and_100000_within_scenario_pair_swaps",
+    "cross_representation_raw_mmd2_comparison_forbidden": true,
+    "candidate_gates": {
+      "required_overall_holm_pass_nonzero_doses": 4,
+      "required_task_dose_holm_pass_cells": 10,
+      "total_task_dose_cells": 12,
+      "maximum_minimum_detectable_nominal_dose": 0.25,
+      "minimum_median_overall_z_bdd": 11.0,
+      "minimum_spearman_nominal_dose_vs_z_bdd": 0.8,
+      "require_realized_speed_accel_jerk_monotonicity": true
+    }
+  },
+  "stage6p_unpaired_scorecard": {
+    "representations": ["old64", "A_primary", "B_primary", "C_primary", "ego13"],
+    "release_pool_pairs": 800,
+    "unique_logs": 489,
+    "frozen_trials": 2400,
+    "sample_sizes": [200, 250, 300, 400],
+    "rerun_nuplan_simulation": false,
+    "calibration": "independent_AA_calibration_per_representation_and_sample_size",
+    "cross_representation_raw_mmd2_comparison_forbidden": true,
+    "primary_n400_gates": {
+      "maximum_aa_holdout_false_positive_rate": 0.075,
+      "minimum_context_balanced_ab_detection_rate": 0.80,
+      "minimum_each_direction_ab_detection_rate": 0.75,
+      "minimum_raw_method_ab_detection_rate": 0.75
+    },
+    "old64_improvement_test": "same_trial_alert_discordance_McNemar_exact_and_paired_bootstrap_detection_rate_delta",
+    "ego13_role": "reference_upper_control_not_a_required_superiority_target"
+  },
+  "stage6s_v2_interaction_scorecard": {
+    "confirmation_pair_count": 80,
+    "confirmation_roster_immutable": true,
+    "planner_parameters_metrics_mechanism_gates_immutable": true,
+    "rollout_before_embedding": true,
+    "embedding_unlock_status": "CONFIRMATION_MECHANISM_PASS",
+    "representations_after_mechanism_pass": ["old64", "A_primary", "B_primary", "C_primary", "ego13", "C_neighbor_zero_diagnostic"],
+    "thw_rule": "finite_0_lt_thw_lt_20_excluding_sentinel_and_cap",
+    "paired_null": {
+      "kernel": "single_rbf",
+      "bandwidth": "independent_pooled_median_per_representation",
+      "common_swap_vectors_across_representations": true,
+      "permutations": 100000,
+      "seed": 620271,
+      "cross_representation_raw_mmd2_comparison_forbidden": true
+    },
+    "candidate_detection_gate": "paired_randomization_p_lt_0.05_and_observed_z_bdd_gt_1.645",
+    "c_context_increment": {
+      "comparison": "C_full_minus_C_neighbor_zero",
+      "primary_statistic": "difference_in_representation_specific_null_standardized_z_bdd",
+      "raw_mmd2_difference_forbidden": true,
+      "null_mean_and_sd": "frozen_from_full_80_pair_common_swap_null_for_each_representation",
+      "uncertainty": "10000_log_cluster_bootstrap_recompute_observed_bdd_with_fixed_full_set_bandwidth_and_null_standardization",
+      "bootstrap_seed": 620272,
+      "pass_rule": "delta_z_bdd_gt_0_and_log_cluster_bootstrap_95pct_lower_bound_gt_0"
+    },
+    "ego13_role": "reference_not_required_to_be_beaten",
+    "mechanism_failure_action": "report_planner_benchmark_limitation_and_do_not_read_interaction_embeddings"
+  },
+  "candidate_C_success_rule": {
+    "training_integrity": "all_three_C_seeds_complete_and_locked_before_test",
+    "waymo": "primary_seed_all_gates_and_two_of_three_seed_noninferiority",
+    "stage6jk": "all_paired_dose_gates_pass",
+    "stage6p": "all_n400_unpaired_gates_pass",
+    "stage6s_v2": "mechanism_pass_then_C_detection_gate_and_C_context_increment_pass",
+    "must_beat_ego13": false,
+    "raw_bdd_magnitude_target": false
+  },
+  "architecture_decision_rule": {
+    "C_is_not_automatically_preferred": true,
+    "B_remains_valid_final_candidate_if_it_passes_all_applicable_gates": true,
+    "claim_dual_branch_added_value_only_if": [
+      "C_passes_candidate_C_success_rule",
+      "C_is_noninferior_to_B_on_waymo_following_lateral_behavior_retrieval",
+      "C_n400_detection_rate_is_not_more_than_0.025_below_B",
+      "C_context_increment_passes"
+    ],
+    "if_B_and_C_equivalent_without_C_context_increment": "prefer_simpler_B_and_do_not_claim_architecture_gain",
+    "post_blind_result_retraining_or_threshold_change_allowed": false
+  },
+  "forbidden_information_and_actions": [
+    "nuplan_planner_identity_or_dose_as_waymo_training_input",
+    "nuplan_embedding_bdd_mmd_or_detection_rate_for_epoch_seed_architecture_loss_or_weight_selection",
+    "waymo_test_for_epoch_seed_architecture_loss_or_weight_selection",
+    "best_of_three_seed_selection_by_waymo_test_or_nuplan",
+    "cross_split_pair_mining",
+    "cross_representation_raw_mmd2_comparison",
+    "training_ego_only_as_final_candidate",
+    "overwriting_or_deleting_old64",
+    "modifying_stage6s_v2_roster_planners_metrics_or_gates",
+    "running_training_waymo_test_nuplan_evaluation_or_confirmation_during_stage6t_freeze"
+  ]
+}

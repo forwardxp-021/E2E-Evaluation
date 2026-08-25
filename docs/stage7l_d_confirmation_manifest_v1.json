@@ -1,0 +1,59 @@
+{
+  "schema_version": "stage7l_d_confirmation_manifest_v1",
+  "status": "STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED",
+  "representation_status": "STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED",
+  "branch": "20260611_stage7_conclusion",
+  "frozen_provenance": {
+    "c2_remote_baseline_commit": "c2d6ff0225967244422e749c677de548c3b8c1cf",
+    "execution_start_commit": "63080ed8547966c572fe55e7819f93e7b99c44ea",
+    "implementation_generation": "runtime_manifest_adapter_v3_hydra_searchpath",
+    "protocol_sha256": "f5a8b2df5ed60c0384e8181feceab33f3c6f048780e95aab851184e49247490a",
+    "roster_sha256": "90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9",
+    "authorization_sha256": "f2d46f586a3131144aa2d20b6d86a1cfdd2bfe77dccf2b224a99e8de66acfb5e",
+    "planner_code_sha256": "284d60263621a99b3e57f63f3092797e44a9c393ec6975f419ed02ecb64885d0",
+    "source_maneuver_manifest_sha256": "ad0abdb3ebfaf8f06c92987538254a79455ad3d7b03a42e609462b49596de725",
+    "runtime_maneuver_manifest_sha256": "9bf1777f94f70239b69a5af1cb5106d923558ceda5d26fad69861ddea5a4dce1"
+  },
+  "population": {"scenario_count": 80, "left": 15, "right": 65, "unique_logs": 79, "replacement_count": 0},
+  "execution": {
+    "planned_cells": 400,
+    "successful_cells": 400,
+    "failed_cells": 0,
+    "complete_all_five_doses": 80,
+    "dose_success_count": {"dose0": 80, "dose25": 80, "dose50": 80, "dose75": 80, "dose100": 80},
+    "attempt_count": 412,
+    "infrastructure_failed_attempts_before_valid_rollout": 12,
+    "treatment_outcome_failed_cells": 8
+  },
+  "primary_mechanism_dose100_minus_dose0": {
+    "lane_change_duration_s": {"paired_median_delta": -0.20016014575958252, "directional_consistency": 0.8875, "pass": true},
+    "rms_lateral_accel_mps2": {"paired_median_delta": 0.05583248614409554, "directional_consistency": 1.0, "pass": true},
+    "peak_yaw_rate_radps": {"paired_median_delta": 0.014404013149868833, "directional_consistency": 0.9625, "pass": true}
+  },
+  "longitudinal_nuisance_dose100_minus_dose0": {
+    "mean_speed_mps": {"median_absolute_delta": 0.0009506526886267075, "p90_absolute_delta": 0.0009874838006485476, "pass": true},
+    "rms_longitudinal_accel_mps2": {"median_absolute_delta": 0.00020193893696168752, "p90_absolute_delta": 0.0008089940135454113, "pass": true},
+    "rms_longitudinal_jerk_mps3": {"median_absolute_delta": 0.00023020350356731112, "p90_absolute_delta": 0.0007104536335493409, "pass": true},
+    "route_progress_m": {"median_absolute_delta": 0.01387993919232855, "p90_absolute_delta": 0.020229402651025918, "pass": true}
+  },
+  "safety_scenario_level_conservative": {
+    "denominator": 80,
+    "official_success_rate": 1.0,
+    "lane_change_completion_rate": 1.0,
+    "offroad_rate": 0.025,
+    "responsible_collision_rate": 0.0125,
+    "any_collision": "N/A_OFFICIAL_BUNDLE_ONLY_EXPOSES_AT_FAULT_COLLISION",
+    "pass": true
+  },
+  "gates": {"execution": true, "canonical_identity": true, "mechanism": true, "longitudinal_nuisance": true, "safety_validity": true, "stage7l_d_total": true, "representation_unlock": true},
+  "blind_boundary": {"embedding_read": false, "checkpoint_read": false, "bdd_computed": false, "mmd_computed": false, "stage7l_e_executed": false},
+  "output_sha256": {
+    "official_execution_summary.json": "f0c3863887737feb48b04ba915fc59db8829461ee0ba13b985fbbb9cacc9d325",
+    "mechanism_summary.json": "bf4fee6703acdc3373f7081f65abeb6044b6161fbd7d83327f1d373f95290440",
+    "longitudinal_nuisance_summary.json": "3f607706edf4da7ed141e940c488d32bdb3bc74a6820b2356bf8b4b1db17602f",
+    "safety_validity_summary.json": "1f6bb4e026d82a7e1df07e3ed99937734a3f576b5defb9fa9ff95420468852db",
+    "canonical_identity_audit.json": "301fd835257e38d7e65298ddd543dfaff6f80ceb1825bc1e78cb0f2fea92a54f",
+    "missingness_summary.json": "68b316957bfec29230ffa67a892e527d84b2ca1f545e9cbb3706923976f920e9",
+    "stage7l_d_gate_decision.json": "8274b6db53b33bc69d1f00137c2421e7d4026c502324bd0322ee284c37eabf11"
+  }
+}

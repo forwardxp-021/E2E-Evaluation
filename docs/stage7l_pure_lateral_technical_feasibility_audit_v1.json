@@ -1,0 +1,82 @@
+{
+  "schema_version": "stage7l_a_pure_lateral_technical_feasibility_audit_v1",
+  "created_utc": "2026-08-19T05:10:18Z",
+  "status": "PURE_LATERAL_TREATMENT_IMPLEMENTATION_NOT_YET_CLEAN",
+  "branch": "20260611_stage7_conclusion",
+  "repository_commit": "c901fb53316b06791fc628cd8415f888bb8cba60",
+  "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "tuplan_garage_commit": "b51d5d04fac1bd4389653b9ab2ff73ea88f435a3",
+  "scope": {
+    "planner_modified": false,
+    "new_checkpoint_trained": false,
+    "development_roster_created": false,
+    "confirmation_roster_created": false,
+    "simulation_launched": false,
+    "new_embedding_or_bdd_read": false,
+    "frozen_stage6_stage7_results_modified": false
+  },
+  "blocking_findings": [
+    "PDM lateral offsets are constant parallel centerline offsets, not lane-change transition controls",
+    "PDM computes path-specific leading agents and IDM longitudinal states before joint proposal scoring",
+    "post-processing the final trajectory would not preserve closed-loop longitudinal equivalence",
+    "strict changing-lane tags cannot supply 24 development plus at least 80 fresh confirmation scenarios after exclusions and official runnability",
+    "no frozen lane/Frenet Stage7L mechanism evaluator exists"
+  ],
+  "recommended_injection_point": "after shared scalar longitudinal progress generation and before dose-specific SE2 path interpolation",
+  "recommended_new_component": "external Hydra PureLateralExecutionPlanner using a shared canonical longitudinal generator and frozen per-scenario maneuver manifest",
+  "inventory_audit": {
+    "expanded_inventory_db_files": 1621,
+    "expanded_inventory_logs": 1576,
+    "expanded_inventory_rows": 9604184,
+    "expanded_inventory_unique_scenario_tokens": 5386575,
+    "strict_changing_lane_unique_tokens": 169,
+    "strict_changing_lane_logs": 154,
+    "after_old_stage7_60_token_exclusion": 109,
+    "after_old_stage7_token_and_log_exclusion": 102,
+    "after_old_stage7_token_exclusion_and_official_boundary": 47,
+    "official_boundary_candidate_logs": 43,
+    "official_boundary_left_labels": 34,
+    "official_boundary_right_labels": 13,
+    "identified_stage7p_tuning_token_ids": 48,
+    "after_old_stage7_tuning_and_official_boundary": 32,
+    "after_old_stage7_tuning_and_official_boundary_logs": 30,
+    "strict_tag_pool_supports_24_dev_plus_80_confirmation": false,
+    "formal_map_opportunity_inventory_built": false
+  },
+  "rollout_budget": {
+    "development_endpoint_only": 48,
+    "development_five_dose_recommended": 120,
+    "confirmation_minimum_80_scenarios_five_dose": 400,
+    "confirmation_target_100_scenarios_five_dose": 500
+  },
+  "resource_estimate": {
+    "reference_mean_seconds_per_two_rollouts": 34.4561375,
+    "reference_seconds_per_rollout": 17.22806875,
+    "development_120_simulation_minutes": 34.4561375,
+    "confirmation_400_simulation_hours": 1.9142298611,
+    "confirmation_500_simulation_hours": 2.3927873264,
+    "development_120_rollout_storage_gib": 1.125,
+    "confirmation_400_rollout_storage_gib": 3.75,
+    "confirmation_500_rollout_storage_gib": 4.6875,
+    "recommended_total_free_space_gib": "8-12",
+    "available_disk_gib_at_audit": 131
+  },
+  "source_sha256": {
+    "tools/stage7c1_run_nuplan_simulation.py": "1c67ddbf11aa4bc556e26cd4549370c92463e36e0fcf8f89d9b071f393ea25d1",
+    "tools/stage7p_build_scenario_inventory.py": "614b110fe2d98572d734a22fb3dcf60ab374cd499ba9d860412a93152b9f02b0",
+    "tools/stage7p_find_lane_change_candidates.py": "17802bb967ea6d43beef6d085aa755dda0eea1410ec8e86d553e92a609f78d59",
+    "tools/build_nuplan_5neighbor_context_dataset.py": "37a33ca320f8c87b86a9fa78dc6c2fa013a1f1b04fc2631e9c7a2cb2c984032f",
+    "tools/stage6s_v3_freeze_confirmation.py": "c59da23637820bf6601a1e23c1ab915c30cb31d05908a4c1ec204daf1418491c",
+    "tools/stage6s_v3_evaluate_representations.py": "a88550792b1f8101a02d6eeb342cef3d15e839f0f7a00c3b388628f4101dacec",
+    "tools/stage6v_evaluate_stage6s_v2_representations.py": "0d7f25ccb2c65b5f3273d8d479738828b5d8ba2fa11d41fb8dda3c443328ed89",
+    "tools/stage6j_run_paired_bdd.py": "a9403aa48f415d6e6079be15bd76d206e50b27de537add57e17e844120ebbd4c",
+    "expanded_inventory_summary": "c52eab243018181df69671942bff8ffe931ab144e68684e346d60e1e44af3cf4",
+    "old_stage7_confirmation_ledger": "7b618878222a982501f545229fa50fa7623f34ae563c4fcdf0244f232050733b",
+    "stage6s_v3_batch_result": "9fc69693942664731dfaf319996c14e4846dd5bf5ae1817e1c0311728938abe6",
+    "tuplan_pdm_closed_planner.py": "cdd3a679b8fe7aadaba838d538409b0366091a7cbeac4b765d20d8a6b8af39a8",
+    "tuplan_abstract_pdm_closed_planner.py": "159ef9f989b749439639894585ab6eaf46bde6cccb675f2174bc8f237844b52d",
+    "tuplan_pdm_generator.py": "b263b38c94aa05dab525fbcc41724288aaee0bfae6d4f316b890bc5c10b2630c"
+  },
+  "next_authorized_stage": "none; requires separate authorization for Stage7L-A2 implementation and smoke",
+  "stage7l_b_development_authorized": false
+}

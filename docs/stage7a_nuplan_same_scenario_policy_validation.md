@@ -1,5 +1,16 @@
 # Stage 7A — nuPlan Same-Scenario Policy Validation
 
+> **Current roadmap note:** This document is retained as Stage 7A / early nuPlan-readiness notes. The current Stage 7 A–G roadmap is [`stage7_nuplan_simulation_and_e2e_validation_roadmap.md`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md). In the current roadmap, E2E model integration belongs to Stage 7F, and final thesis-facing synthesis belongs to Stage 7G.
+
+
+> **Stage 7C.1 smoke update:** official nuPlan `simple_planner` smoke is PASS for pipeline connectivity: official command success `1`, `pseudo_rollout=false`, parsed `simulation_log/**/*.msgpack.xz`, 150 trajectory rows, `simulated_ego_seq.npy` shape `[1, 1, 150, 8]`, mask shape `[1, 1, 150]`, pose and x/y/yaw non-sentinel ratios all `1.0`, warnings `[]`. This is not full Stage 7C PASS; Stage 7C.1C same-scenario alignment with Stage 7B.4 metadata, Stage 7C.2 multi-planner/multi-scenario rollout, and Stage 7D BDD validation remain TODO.
+
+## 0. Scope Clarification
+
+Stage 7A.0 / Stage 7A.1 expert-data inspection is only an infrastructure step. The final Stage 7 objective is same-scenario policy A/B rollout and task-conditioned BDD. Expert trajectory export is not the main validation result.
+
+For the full Stage 7 A-E structure, see [Stage 7 Master Plan — Same-Scenario Policy / E2E BDD Validation](stage7_master_plan_same_scenario_policy_bdd.md).
+
 ## 1. Motivation
 
 Stage 6 pseudo splits are useful for validating the behavior embedding and task-conditioned BDD protocol, but they are still pseudo-label based. They show that the representation can separate constructed style groups, not that real policies or drivers produce separable behavior distributions under matched scenarios.
@@ -39,7 +50,9 @@ This is not yet E2E model A/B validation, but it is empirical same-scenario poli
 
 ## 4. Initial Policy Definitions
 
-Start with configurable planner variants.
+> **Current Stage 7C planner-strategy note:** Stage 7C should first use existing nuPlan devkit / official-compatible planners before any custom planner. Preferred order is expert / log replay, simple planner, IDM planner, configurable IDM-style variants, and only then a minimal nuPlan `AbstractPlanner`-compatible wrapper if needed. Offline pseudo rollout and numpy rewriting of logged trajectories are not acceptable Stage 7C evidence. See the current roadmap section [`Stage 7C Planner Strategy`](stage7_nuplan_simulation_and_e2e_validation_roadmap.md#stage-7c-planner-strategy).
+
+Start with configurable planner variants when official nuPlan/devkit support is available.
 
 Conservative planner:
 
@@ -213,3 +226,53 @@ These commands are placeholders until the nuPlan rollout exporter and converter 
 - Full E2E A/B trajectories can replace conservative / aggressive planner variants later.
 - nuPlan mini is small; a final dissertation experiment may need more scenarios if hardware and time allow.
 - Sensor-based E2E model training is intentionally out of scope for Stage 7A.
+
+## Stage 7B.2 — expert dynamic context converter
+
+Stage 7B.2 converts the Stage 7B.1 expert export CSV files into a Stage 6-style **dynamic-only** context dataset.  It reads expert ego trajectory rows, nearby dynamic object rows, and optional selected-scene metadata, then writes fixed-length `ego_seq.npy` / `neighbor_seq.npy` windows plus metadata and schema files.
+
+This step is infrastructure validation only.  It does not run planner simulation, does not generate fake rollout data, does not modify Stage 6C result files, and does not change BDD logic.
+
+### 命令
+
+```bash
+python tools/stage7b_convert_expert_context_to_dataset.py \
+  --expert_ego_csv outputs/stage7A_nuplan/expert_context_export/expert_ego_trajectory.csv \
+  --expert_objects_csv outputs/stage7A_nuplan/expert_context_export/expert_nearby_objects.csv \
+  --selected_scenes_csv outputs/stage7A_nuplan/expert_context_export/selected_scenes.csv \
+  --output_dir outputs/stage7A_nuplan/expert_context_dataset \
+  --target_hz 10 \
+  --window_sec 8 \
+  --stride_sec 4 \
+  --num_neighbors 10 \
+  --overwrite
+```
+
+### 输出
+
+- `ego_seq.npy`: `[N, 80, 7]` dynamic ego windows.
+- `neighbor_seq.npy`: `[N, 80, 10, 9]` nearby-object windows.
+- `metadata.csv`: one row per generated window, with `source=nuplan_expert`, `policy_id=expert`, and `map_odd_status=not_built`.
+- `shard_manifest.json`: dynamic dataset manifest with `map_odd_feat_path=null`, `map_feature_status=not_built`, and `next_map_stage=Stage 7B.3 map/ODD feature builder`.
+- `feature_schema.json`: dynamic feature order and reserved Stage 6-style map/ODD feature names.
+- `conversion_report.md` and `warnings.json`: conversion summary and structured warnings.
+
+## Stage 7B.3 — nuPlan map/ODD feature builder placeholder
+
+Stage 7B.3 is reserved for building Stage 6-style map/ODD context for each Stage 7B.2 generated window.  It is not implemented yet.
+
+Planned purpose:
+
+- Build Stage 6-style map/ODD features for each generated window.
+- Use nuPlan maps / `map.gpkg` or the nuPlan map API.
+- Align map features by ego path and scene/map location.
+
+Planned outputs:
+
+- `map_odd_feat.npy`
+- `map_odd_meta.csv`
+- `map_odd_feature_schema.json`
+- `map_odd_report.md`
+- `warnings.json`
+
+Stage 7B.2 reserves this interface in `shard_manifest.json` and `feature_schema.json`; it deliberately does not parse maps or fabricate map/ODD values.

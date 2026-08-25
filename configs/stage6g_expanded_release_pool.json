@@ -1,0 +1,50 @@
+{
+  "schema_version": "stage6g_expanded_release_pool_config_v1",
+  "selection_salt": "stage6g-expanded-release-pool-v1",
+  "existing_pool_size": 310,
+  "target_combined_pool_size": 800,
+  "max_scenarios_per_log_across_existing_primary_and_reserve": 3,
+  "probe_limit_per_task": 5000,
+  "primary_additions_by_task": {
+    "following_interaction": 122,
+    "lane_change": 11,
+    "stop_go_control": 115,
+    "high_motion_dynamics": 122,
+    "dense_or_vulnerable_interaction": 120
+  },
+  "reserve_by_task": {
+    "following_interaction": 25,
+    "lane_change": 0,
+    "stop_go_control": 25,
+    "high_motion_dynamics": 25,
+    "dense_or_vulnerable_interaction": 25
+  },
+  "expected_existing_counts_by_task": {
+    "following_interaction": 60,
+    "lane_change": 60,
+    "stop_go_control": 67,
+    "high_motion_dynamics": 60,
+    "dense_or_vulnerable_interaction": 63
+  },
+  "inputs": {
+    "eligible_inventory_csv": "outputs/stage7_m6_4_locked_collection_preflight_v3_pittsburgh/m6_4_eligible_candidate_inventory.csv",
+    "eligible_inventory_sha256": "cd5ba7d5dc5d445bd65e01a4b58b0b447f6060900042d18dd9d5f2ea2873b98d",
+    "existing_confirmation_ledger_csv": "outputs/stage7_m6_5_locked_confirmation_view_v1/confirmation_scenario_ledger.csv",
+    "existing_confirmation_ledger_sha256": "7b618878222a982501f545229fa50fa7623f34ae563c4fcdf0244f232050733b",
+    "historical_batch_manifest_json": "outputs/stage7_m6_4b_locked_batch_mac_v2/batch_manifest.json",
+    "historical_batch_manifest_sha256": "e67dd487eb3713c30dbe14d2fd4ef407c7466e97f700e8466453db2e9ee77c96",
+    "stage7c_tool": "tools/stage7c1_run_nuplan_simulation.py",
+    "stage7c_tool_sha256": "076b35d2112e126008eec5c96bf3e7b159ded75a40be7999212956423cb3e530",
+    "historical_batch_tool": "tools/stage7_m6_4b_run_locked_rollouts.py",
+    "historical_batch_tool_sha256": "ef0026b3cc20942846035ac23d0d16d616a3d7dd6675e9a0f9c2612871d7fb06",
+    "runner_tool": "tools/stage6g_run_expanded_release_pool.py"
+  },
+  "forbidden_inputs": [
+    "embedding",
+    "BDD",
+    "effect_size",
+    "trajectory_metric",
+    "planner_outcome"
+  ],
+  "issue": "https://github.com/forwardxp-021/E2E-Evaluation/issues/245"
+}

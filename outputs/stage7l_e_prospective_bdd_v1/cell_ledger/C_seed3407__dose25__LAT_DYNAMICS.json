@@ -1,0 +1,20 @@
+{
+  "representation": "C_seed3407",
+  "dose": "dose25",
+  "task": "LAT.DYNAMICS",
+  "N_pair": 38,
+  "status": "LOW_N_SECONDARY_DIAGNOSTIC",
+  "null_seed": 2026084302,
+  "null_reps": 100000,
+  "raw_mmd2": 0.0003624532353882154,
+  "bandwidth": 5.512919130549301,
+  "null_mean": 0.00022862642669208987,
+  "null_sd": 8.245258372514094e-05,
+  "null_q95": 0.0003721558993804478,
+  "bdd_over_null_q95": 0.9739284960727882,
+  "z_bdd": 1.6230759868270799,
+  "raw_p": 0.08481915180848192,
+  "raw_p_for_multiplicity": 0.08481915180848192,
+  "exceedance_count": 8481,
+  "multiplicity_role": "SECONDARY_HOLM_39"
+}

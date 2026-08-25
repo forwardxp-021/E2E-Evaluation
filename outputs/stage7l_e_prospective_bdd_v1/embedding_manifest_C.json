@@ -1,0 +1,60 @@
+{
+  "schema_version": "stage7l_e_embedding_manifest_v1",
+  "representation": "C_seed3407",
+  "checkpoint_or_scaler": {
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage6t_candidates_v1/candidate_C_dual_branch/seed_3407/best_model.pt",
+    "sha256": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d"
+  },
+  "preprocessing_contract": "frozen_stage6v_stage6w_inference_pipeline",
+  "model_eval": true,
+  "dropout_disabled": true,
+  "scenario_order_sha256": "74206af6b0d7bc5be4b16e8ef8343feebad6ced722d1d3232e4e72c6396a3ec3",
+  "finite": true,
+  "doses": [
+    {
+      "dose": "dose0",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "9608a44112cd98ffa4b59bcc062775c38b8c65470bfc5d8fe03b9c9ce4d06f67",
+      "input_feature_sha256": "dbea7094be6fd8d5b0145cfa7aae43e525e2b83d81cef52a53f595abd20359fd"
+    },
+    {
+      "dose": "dose25",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "cb40b31d73cb0686a4c1362968bbf3f023f70417e3ed058a1cffca8dbe1f562e",
+      "input_feature_sha256": "884250a46485efbe8887f1f8083db2b0856aa6c568d5b56c68da9193be16b08b"
+    },
+    {
+      "dose": "dose50",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "f468b0e23ac35806b7497bfb743caf0f01ed0033d3972acf6c13495cc8d70b8a",
+      "input_feature_sha256": "02b4e28b9c2289502ce20f7928b7c658f79dec8955a7bc78e76f5e63a45190f7"
+    },
+    {
+      "dose": "dose75",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "766b5aaa0a46fd5a49626d5474d17e1023396ecf9de3a85c238169640e719a4d",
+      "input_feature_sha256": "47850cd1b48a9b337f66e15468d9d4ce6200cb697f9cfb06e48e15def80713f0"
+    },
+    {
+      "dose": "dose100",
+      "shape": [
+        80,
+        64
+      ],
+      "embedding_sha256": "8a73920e6215643925dfe62eeeeab1e3166447caf9c29db3f85e73854ac8114d",
+      "input_feature_sha256": "7a80ab3db564a78925318e9dcde59bb3a0a42f14e4d66276d751c5d727f3ec5f"
+    }
+  ]
+}

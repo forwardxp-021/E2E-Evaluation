@@ -1,0 +1,60 @@
+{
+  "schema_version": "stage7l_e_prospective_bdd_decision_v1",
+  "primary_status": "STAGE7L_E_PRIMARY_BDD_FAILED",
+  "final_status": "STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE",
+  "primary": {
+    "representation": "B_seed3407",
+    "dose": "dose100",
+    "task": "LAT.LANE_CHANGE",
+    "N_pair": 80,
+    "status": "COMPUTED",
+    "null_seed": 2026083601,
+    "null_reps": 100000,
+    "raw_mmd2": 0.0010750406060657607,
+    "bandwidth": 5.70154371222525,
+    "null_mean": 0.0011183772786964126,
+    "null_sd": 0.0006663422210394926,
+    "null_q95": 0.00246680739100163,
+    "bdd_over_null_q95": 0.4358024100249059,
+    "z_bdd": -0.06503666023600715,
+    "raw_p": 0.41190588094119057,
+    "raw_p_for_multiplicity": 0.41190588094119057,
+    "exceedance_count": 41190,
+    "multiplicity_role": "PRIMARY_NOT_PART_OF_SECONDARY_HOLM_FAMILY",
+    "holm_p": null,
+    "holm_significant_0_05": null,
+    "primary_success": false,
+    "final_primary_status": "STAGE7L_E_PRIMARY_BDD_FAILED"
+  },
+  "theoretical_cell_count": 40,
+  "secondary_holm_family_count": 39,
+  "secondary_holm_pass_count": 8,
+  "not_computable_count": 0,
+  "low_n_count": 20,
+  "cross_representation_raw_mmd2_comparison_performed": false,
+  "stage6v_qualification_changed": false,
+  "planner_rerun": false,
+  "checkpoint_or_training_modified": false,
+  "embedding_manifests": [
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_e_prospective_bdd_v1/embedding_manifest_old64.json",
+      "sha256": "8dea7214caf13a3e6a3f6a9dee0fb8dac69328ea58988f15479b8300e2f0bdf4"
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_e_prospective_bdd_v1/embedding_manifest_A.json",
+      "sha256": "6d804d2cb99ee509e64e2d7d3380bf44bbf0610b387aa2a7f44fd295e26523d6"
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_e_prospective_bdd_v1/embedding_manifest_B.json",
+      "sha256": "e5cd259454d99c43f7a8ce7cb20b5eab5dfefef967f4e5ca01deb88ddf88259b"
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_e_prospective_bdd_v1/embedding_manifest_C.json",
+      "sha256": "8c8e8d45883f1bef4c067e5e7ce38a61bee016f59af931366c00c4c9fb84ca5c"
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stage7l_e_prospective_bdd_v1/embedding_manifest_ego13.json",
+      "sha256": "9e14ea368c4251c68bd4d7e0145222348842ab8163d16ba33db26adfe18086e8"
+    }
+  ]
+}

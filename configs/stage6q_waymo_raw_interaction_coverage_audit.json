@@ -1,0 +1,67 @@
+{
+  "schema_version": "stage6q_waymo_raw_interaction_coverage_audit_design_v1",
+  "issue": 258,
+  "purpose": "直接审计生成full51的Waymo原始scenario，区分原始交互覆盖不足与正式builder/window sampling的结构性过滤。",
+  "source": {
+    "waymo_dir": "/Users/liuqing/Projects/01_E2E_QA_Code/training",
+    "file_glob": "uncompressed_scenario_training_training.tfrecord-*",
+    "file_indices_inclusive": [0, 50],
+    "expected_files": 51,
+    "window_len": 80,
+    "stride": 20,
+    "dt_seconds": 0.1
+  },
+  "candidate_funnels": [
+    {
+      "id": "raw_all_vehicle_windows",
+      "definition": "全部vehicle track的start=0窗口；ego有效率>=0.8且平均速度>=1.0m/s；不限制每scenario前64个target"
+    },
+    {
+      "id": "formal_target_sampling",
+      "definition": "正式builder的tracks插入顺序前64个vehicle target，start=0、ego有效率>=0.8、平均速度>=1.0m/s"
+    },
+    {
+      "id": "formal_builder_retained",
+      "definition": "与full51正式builder输出meta中的scenario_id+target_agent_id+start逐行匹配"
+    }
+  ],
+  "dynamic_lead_rule": {
+    "source": "raw_track_states_only",
+    "per_frame": true,
+    "other_object_type": "vehicle",
+    "longitudinal_min_m": 0.0,
+    "longitudinal_max_m": 120.0,
+    "absolute_lateral_max_m": 3.0,
+    "absolute_heading_difference_max_deg": 45.0,
+    "selection": "minimum_positive_ego_frame_longitudinal_distance",
+    "neighbor_valid_ratio_filter": null,
+    "sensitivity_lateral_max_m": [2.0, 3.0, 4.0]
+  },
+  "events": {
+    "minimum_state_run_frames": 5,
+    "minimum_event_frames": 5,
+    "lead_entry": "至少5帧无lead后，至少5帧有lead",
+    "lead_exit": "至少5帧有lead后，至少5帧无lead",
+    "intermittent_following_primary": "0 < lead_valid_ratio < 0.8，且至少5帧有lead及至少5帧无lead",
+    "intermittent_following_strict": "0 < lead_valid_ratio < 0.5，且至少5帧有lead及至少5帧无lead",
+    "front_identity_switch": "相邻有效lead帧的track id变化，且变化前后各至少5帧保持同一id",
+    "free_flow_to_closing_to_following": "先至少5帧无lead，随后至少5帧closing_speed>0.5m/s，最后至少5帧有lead且gap<=40m",
+    "following_to_free_flow": "先至少5帧有lead且gap<=40m，随后至少5帧无lead"
+  },
+  "root_cause_rule": {
+    "builder_structural_filter": "raw或formal_target_sampling存在>=5000个primary intermittent窗口，且formal builder的冻结Stage6O统计为0",
+    "raw_source_insufficient": "raw_all_vehicle_windows的primary intermittent窗口<5000",
+    "threshold_change_forbidden": true
+  },
+  "interpretation_constraints": [
+    "几何动态lead是coverage audit proxy，不替代正式lane-aware语义",
+    "behavior style定义保持为ego response conditioned on traffic / interaction context",
+    "不得将ego-only优势解释为context无用"
+  ],
+  "forbidden_actions": [
+    "modify_or_overwrite_stage6o_v1",
+    "lower_stage6o_5000_threshold",
+    "train_ego16_context48",
+    "expand_waymo_source_before_raw_audit_conclusion"
+  ]
+}

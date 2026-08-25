@@ -1,0 +1,20 @@
+{
+  "representation": "A_seed3407",
+  "dose": "dose50",
+  "task": "LAT.LANE_CHANGE",
+  "N_pair": 80,
+  "status": "COMPUTED",
+  "null_seed": 2026082401,
+  "null_reps": 100000,
+  "raw_mmd2": 0.00041662637017172576,
+  "bandwidth": 5.758697798757822,
+  "null_mean": 0.0006968582870126598,
+  "null_sd": 0.0004177150821873549,
+  "null_q95": 0.0015789149812648756,
+  "bdd_over_null_q95": 0.26386878021637655,
+  "z_bdd": -0.6708685627856825,
+  "raw_p": 0.6996230037699623,
+  "raw_p_for_multiplicity": 0.6996230037699623,
+  "exceedance_count": 69962,
+  "multiplicity_role": "SECONDARY_HOLM_39"
+}

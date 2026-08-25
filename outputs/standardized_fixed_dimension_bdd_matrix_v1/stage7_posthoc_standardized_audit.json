@@ -1,0 +1,18 @@
+{
+  "classification": "POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION",
+  "pair_count": 310,
+  "task_pair_counts": {
+    "overall": 310,
+    "following_interaction": 60,
+    "lane_change": 60,
+    "stop_go_control": 67,
+    "high_motion_dynamics": 60,
+    "dense_or_vulnerable_interaction": 63
+  },
+  "common_swap_stream_within_task_across_representations": true,
+  "permutations": 100000,
+  "seed": 2026081401,
+  "raw_mmd2_cross_representation_ranking": false,
+  "semantic_delta_is_target_minus_reference": true,
+  "note": "The scenario roster, planner pair, context, task membership, checkpoint seed, null family, and semantic fields are fixed before new embeddings are read. This output is descriptive only and must not replace a Stage6V pre-registered endpoint."
+}
