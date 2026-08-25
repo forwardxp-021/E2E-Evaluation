@@ -1,0 +1,22 @@
+{
+  "schema_version": "r0_protocol_frozen_v1.0_template_v0.2",
+  "status": "NOT_FROZEN",
+  "protocol_version": "R0_v1.0_PENDING",
+  "protocol_sha256": null,
+  "asset_inventory_sha256": null,
+  "contract_inventory_sha256": null,
+  "split_manifest_sha256": null,
+  "target_definition_sha256": null,
+  "sap_sha256": null,
+  "environment_sha256": null,
+  "training_authorization_manifest_sha256": null,
+  "r0_audit_holdout_locked": false,
+  "future_r4_reserved_pool_locked": false,
+  "rbr_training_authorized": false,
+  "notes": "Template only. Do not set FROZEN until all mandatory hashes and contracts are verified.",
+  "repository": "forwardxp-021/E2E-Evaluation",
+  "active_development_branch": "20260825_stageR_new",
+  "active_branch_head_sha": null,
+  "historical_gen1_branch": "20260611_stage7_conclusion",
+  "historical_gen1_remote_head_reference": "0f6fefd4363bdfcdeec37f3f7d38782516ba72dd"
+}
