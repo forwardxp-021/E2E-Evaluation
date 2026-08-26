@@ -1,0 +1,24 @@
+{
+  "execution_id": "R0_WAVE1_D0_D1_D3_V1",
+  "status": "METRICS_COMPLETE_REPORTING_FINALIZED",
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "STOPPED_BEFORE_MODEL_LOAD",
+      "reason": "local PyTorch 1.9 does not accept the later weights_only load argument"
+    },
+    {
+      "attempt": 2,
+      "result": "METRICS_COMPLETE",
+      "reason": "report aggregation key error after all metric tables had been written"
+    },
+    {
+      "attempt": 3,
+      "result": "REPORTING_FINALIZATION",
+      "reason": "reports derived read-only from attempt-2 metric tables"
+    }
+  ],
+  "scientific_protocol_deviation": false,
+  "metric_tables_overwritten": false,
+  "embeddings_recomputed": false
+}

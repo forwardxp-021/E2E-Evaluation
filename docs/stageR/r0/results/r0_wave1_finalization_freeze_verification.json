@@ -1,0 +1,10 @@
+{
+  "tag": "r0-v1.0-protocol-freeze",
+  "binding_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+  "content_commit": "5bd5c7ac58c284d4c938919cacf2eefb969a5c44",
+  "frozen_artifact_count": 19,
+  "protected_csv_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+  "protected_csv_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "git_status_sha256_before_execution": "4ec38a6f4519b8fd5db2d05b7cccc98bba716ffd47876db838556ceb3818a826",
+  "git_status_line_count_before_execution": 399
+}

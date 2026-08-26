@@ -1,0 +1,24 @@
+{
+  "execution_status": "COMPLETE_WITH_EXPLICIT_NOT_EVALUABLE_AND_INCONCLUSIVE_RESULTS",
+  "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "hypothesis_results": {
+    "D0_LENGTH_EFFECT": "NOT_EVALUABLE",
+    "D0_POSITION_RETENTION_ASSOCIATION": "NOT_EVALUABLE",
+    "D0_POOLING_EFFECT": "SUPPORTED",
+    "D0_MASK_PADDING_SENSITIVITY": "SUPPORTED",
+    "D1_KNOWN_SEMANTIC_INFORMATION_PRESENT": "SUPPORTED",
+    "D1_CROSS_DOMAIN_SEMANTIC_TRANSFER": "NOT_EVALUABLE",
+    "D1_GEOMETRY_DEGENERACY": "INCONCLUSIVE",
+    "D3_FULL64_SIGNAL_DILUTION": "INCONCLUSIVE",
+    "D3_PROJECTED_READOUT_GAIN": "INCONCLUSIVE",
+    "D3_NULL_CALIBRATION_PRESERVED": "INCONCLUSIVE"
+  },
+  "limitations": [
+    "R0_AUDIT_HOLDOUT=NOT_AVAILABLE",
+    "D0-A controlled content equivalence unavailable",
+    "D0-B frozen matched-natural ledger unavailable",
+    "D3 independent null calibration series unavailable",
+    "D3 non-lateral domain contrasts have no frozen Wave-1 readout contract"
+  ],
+  "next_action": "Do not alter frozen protocol; address only under a separately authorized future wave."
+}

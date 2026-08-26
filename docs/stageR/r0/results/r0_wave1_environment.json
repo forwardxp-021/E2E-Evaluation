@@ -1,0 +1,27 @@
+{
+  "execution_id": "R0_WAVE1_D0_D1_D3_V1",
+  "timestamp_utc": "2026-08-26T06:51:48Z",
+  "git_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+  "git_branch": "20260825_stageR_new",
+  "dirty_worktree": true,
+  "pre_execution_status_sha256": "2ccf9a53c12565df1115dd6db6cc0aca2e8d77f8ba12e696f474cf19a43fede0",
+  "os": "macOS-26.5.2-arm64-arm-64bit",
+  "python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+  "package_lock_or_environment_sha256": "da8ebd91a7ef01616b00b70eb52cb1c49d5d2fdbd7635b4d223660dc9d2522fe",
+  "hardware": "CPU; cuda=false",
+  "seed": 2026082601,
+  "input_artifact_sha256": {
+    "old64": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc",
+    "A_seed3407": "353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d",
+    "A_seed3408": "8d9886490b9308623abe938b48fc926106dcf1c109800b78952175970a31077c",
+    "A_seed3409": "5e22156f0f0197aca9a3fef1fe0e0db1573efd589f93527edfa25eec9f1c92bd",
+    "B_seed3407": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f",
+    "B_seed3408": "3b8ca8949da185bc25715997d49a64aa4131641409d10f44565a94a9c86f4f35",
+    "B_seed3409": "c2d54a51bfc13d597b0265c59bfe5377035168d133ab97498cbd2d4a1fa53ac5",
+    "C_seed3407": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d",
+    "C_seed3408": "603d56f34b62fb22e6c59d6558fb42b8dbc67ca0897d09660e87dc8e1f09f521",
+    "C_seed3409": "1b0a10779d5c90559e71af42cbd2d8c7b6611f6ecb2efca6059b426ce51a974e"
+  },
+  "protocol_frozen_sha256": "e80d1ecb51481e987cff13d0bf1ec88c9720327102ce32d9f45aed43e12f4dc8",
+  "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE"
+}
