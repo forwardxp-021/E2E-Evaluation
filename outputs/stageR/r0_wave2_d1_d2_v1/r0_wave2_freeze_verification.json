@@ -1,0 +1,65 @@
+{
+  "checkpoint_sha256": {
+    "A_seed3407": "353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d",
+    "A_seed3408": "8d9886490b9308623abe938b48fc926106dcf1c109800b78952175970a31077c",
+    "A_seed3409": "5e22156f0f0197aca9a3fef1fe0e0db1573efd589f93527edfa25eec9f1c92bd",
+    "B_seed3407": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f",
+    "B_seed3408": "3b8ca8949da185bc25715997d49a64aa4131641409d10f44565a94a9c86f4f35",
+    "B_seed3409": "c2d54a51bfc13d597b0265c59bfe5377035168d133ab97498cbd2d4a1fa53ac5",
+    "C_seed3407": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d",
+    "C_seed3408": "603d56f34b62fb22e6c59d6558fb42b8dbc67ca0897d09660e87dc8e1f09f521",
+    "C_seed3409": "1b0a10779d5c90559e71af42cbd2d8c7b6611f6ecb2efca6059b426ce51a974e",
+    "old64": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc"
+  },
+  "declared_remote_commit_local_object_available": false,
+  "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "execution_id": "R0_WAVE2_D1_D2_V1",
+  "git_branch": "20260825_stageR_new",
+  "git_commit": "677fac9b3b34bcf00079d4634026d7d90b69522a",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "prohibited_actions": "no training; no simulation; no new planner rollout; no checkpoint/tensor/historical-output mutation; no git reset/clean",
+  "protocol_freeze_verification": {
+    "active_head": "677fac9b3b34bcf00079d4634026d7d90b69522a",
+    "binding_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+    "content_commit": "5bd5c7ac58c284d4c938919cacf2eefb969a5c44",
+    "freeze_is_ancestor_of_active_head": true,
+    "frozen_artifact_count": 19,
+    "git_status_line_count_before_execution": 398,
+    "git_status_sha256_before_execution": "f118d7f9564cb39b3d30a07a968faf3156401302bd015e98574e0a685c2a6df5",
+    "protected_csv_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "protected_csv_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "tag": "r0-v1.0-protocol-freeze"
+  },
+  "python": "3.10.20 (main, Jun  2 2026, 22:39:36) [Clang 22.1.3 ]",
+  "seed": 2026082601,
+  "stage7l_context_sha256": {
+    "dose0": "dbea7094be6fd8d5b0145cfa7aae43e525e2b83d81cef52a53f595abd20359fd",
+    "dose100": "7a80ab3db564a78925318e9dcde59bb3a0a42f14e4d66276d751c5d727f3ec5f",
+    "dose25": "884250a46485efbe8887f1f8083db2b0856aa6c568d5b56c68da9193be16b08b",
+    "dose50": "02b4e28b9c2289502ce20f7928b7c658f79dec8955a7bc78e76f5e63a45190f7",
+    "dose75": "47850cd1b48a9b337f66e15468d9d4ce6200cb697f9cfb06e48e15def80713f0"
+  },
+  "stage7l_ego_mask_sha256": {
+    "dose0": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose100": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose25": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose50": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose75": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830"
+  },
+  "timestamp_utc": "2026-08-26T09:15:31Z",
+  "wave1_1_declared_remote_commit": "b5bc0b16a4fe5abd819a347bac6ee4b1ea365fbe",
+  "wave1_1_local_equivalent_commit": "677fac9b3b34bcf00079d4634026d7d90b69522a",
+  "waymo_reference_embedding_sha256": {
+    "A_seed3407": "8c135214d6a36b7009e1c084c363a07df70f0d94f52261f90471081385314aec",
+    "A_seed3408": "bff96bd65a6f39a39595735ca99fa0cbec811e91501d642f25f535a07fc62602",
+    "A_seed3409": "48235ad58a47b7c10f1efd6ee7f64885d801fce64b937758d79e6dee1ca787e2",
+    "B_seed3407": "1d697d6efc5d268c1e02513ff6f2338d90bc03a1c34c777fa4a620219c229461",
+    "B_seed3408": "b1bc2af91abc5da3be1470f486c9151cc03ac3ade6a69bbcd00b64ba4be3b463",
+    "B_seed3409": "c97e6d19710531a07f29bc9f1a5f2cefd0e1f53364c1d686841c21a62751b9fc",
+    "C_seed3407": "a196227f72d2003847df967b72905fb48aa4d448f92d740b120db60271685cf1",
+    "C_seed3408": "72310a905692f7450cf6b706ac9481ea78d3acf22be4c534a8012d5fd8c6449a",
+    "C_seed3409": "68941e32c637ef9c9d04c1833c007253cbd78f13ca5647c4587958decd694d9b",
+    "old64": "90a0c7049c0d57b78720eeecbddeafa47a9caaf70f465c82acb200fc6f0a5f76"
+  },
+  "waymo_reference_rows": 16870
+}

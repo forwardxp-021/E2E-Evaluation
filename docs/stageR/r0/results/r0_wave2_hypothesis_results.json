@@ -1,0 +1,27 @@
+{
+  "d4_executed": false,
+  "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "execution_status": "COMPLETE",
+  "hypothesis_results": {
+    "D1_CROSS_DOMAIN_SEMANTIC_TRANSFER": "INCONCLUSIVE",
+    "D1_GEOMETRY_DEGENERACY": "INCONCLUSIVE",
+    "D1_KNOWN_SEMANTIC_INFORMATION_PRESENT": "SUPPORTED",
+    "D2_ABLATION_OOD_RISK": "INCONCLUSIVE",
+    "D2_CONTEXT_SENSITIVITY": "INCONCLUSIVE",
+    "D2_PAIRING_SENSITIVITY": "NOT_EVALUABLE",
+    "D2_RESPONSE_SENSITIVITY": "NOT_EVALUABLE",
+    "D2_SHORTCUT_RISK": "INCONCLUSIVE"
+  },
+  "limitations": [
+    "R0_AUDIT_HOLDOUT=NOT_AVAILABLE",
+    "No frozen cross-domain D1 numerical support gate",
+    "Gen-1 has no native ego missingness/branch-ablation contract",
+    "Frozen D2 shuffle strata are incompletely retained",
+    "Frozen D2 q99 rule lacks a condition-level aggregation threshold"
+  ],
+  "module_summaries": {
+    "D1": "KNOWN_SEMANTICS_PRESENT_WITH_CROSS_DOMAIN_TRANSFER_INCONCLUSIVE",
+    "D2": "MIXED_LIMITED_TO_LEGAL_NEIGHBOR_ABLATION_DIAGNOSTIC"
+  },
+  "training_authorization_modified": false
+}
