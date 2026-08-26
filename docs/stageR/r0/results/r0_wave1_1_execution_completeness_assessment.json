@@ -1,0 +1,7 @@
+{
+  "classification": "PROTOCOL_DEVIATION_WITH_EXECUTION_COMPLETENESS_CORRECTION",
+  "wave1_issue": "D0 primary hypothesis labels were produced from paired standardized embedding displacement without the simultaneously frozen readout-retention probe pair.",
+  "frozen_requirement": "D0 must report frozen-probe-across-view plus same-capacity-refit-probe-per-view.",
+  "effect_on_primary": "Yes: Wave1 D0 SUPPORTED labels are superseded by Wave1.1 results. D1 and D3 are unchanged.",
+  "protocol_assets_modified": false
+}

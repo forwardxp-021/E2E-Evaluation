@@ -1,0 +1,25 @@
+{
+  "execution_id": "R0_WAVE1_1_D0_RETENTION_COMPLETION_V1",
+  "command_id": "R0_WAVE1_1_D0_FINALIZE_002",
+  "timestamp_utc": "2026-08-26T08:27:21Z",
+  "command": "python -m tools.stageR_finalize_r0_wave1_1_d0_decision",
+  "git_commit": "ed72dbd87d8dc49ff761c95fca460ea4bfafa5c7",
+  "input_artifact_sha256": {
+    "family_summary": "4899f8162f9e1a1cacbea7e58ec9c3139d490f3275b305e515feb21fd9d91247",
+    "probe_metrics": "1cf15b0b9371d49fffdcb41cdb509d2cec49862b2bb4774b5bd5448b2a3ada19"
+  },
+  "output_artifact_sha256": {
+    "R0_Wave1_Cross_Module_Diagnosis_v1.1.md": "01abbfb6f333d218a523e62ab4d55f72124cad8f49806267a5d1adde7893fdfc",
+    "r0_wave1_1_command_ledger.json": "9458075cbdbb24408a846e55fd326141f88bbaa639e9f655978b7f4129dae539",
+    "r0_wave1_1_hypothesis_results.json": "19a28be9ffdeb73cce3a094164d024e2c0034d4583af05944fcfd8b88f7909b0",
+    "r0_wave1_1_decision_finalization_log.json": "b75b4e14d577ded0e16da24355c510f28e845a389b922ef8a4b5c91f39a1ae42",
+    "R0_Wave1_Training_Implication_Report_v1.md": "2cf61c444b3647fee40873788fc3bdc6524543be6172c3eed1fcd1dd571c7df3",
+    "R0_Wave1_1_D0_Retention_Completion_Report_v1.md": "25cf429334b8aebfa47bc0ec6e1abf8a455ac3e6af7ea27102ea6916b8a9431e",
+    "r0_wave1_1_execution_manifest.json": "63345396ba8424a1b33f77be0a2ef0d905917e7224fbf31e4dd39adf150b72e2",
+    "r0_wave1_1_execution_completeness_assessment.json": "a26cfafddcc14c10c3c03ac5476cd78e2a6f3e18f01f5a144f8b6779d742aa95",
+    "R0_Wave1_Cross_Module_Diagnosis_v1.md": "aec056e8f9aa2591d3660c190222c8fddfa11d0e8936b5283d9d18bf7a4463fc"
+  },
+  "exit_code": 0,
+  "thresholds_or_targets_changed": false,
+  "outcomes_recomputed": false
+}

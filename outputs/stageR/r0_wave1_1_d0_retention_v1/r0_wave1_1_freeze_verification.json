@@ -1,0 +1,12 @@
+{
+  "branch": "20260825_stageR_new",
+  "wave1_commit": "ed72dbd87d8dc49ff761c95fca460ea4bfafa5c7",
+  "protocol_tag": "r0-v1.0-protocol-freeze",
+  "protocol_binding_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+  "protocol_content_commit": "5bd5c7ac58c284d4c938919cacf2eefb969a5c44",
+  "frozen_artifact_count": 19,
+  "protected_csv_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+  "protected_csv_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "git_status_sha256_before_execution": "f6cde877009a39df843a0edf1723d50162719843a674a45366d6dd33031b6fd4",
+  "git_status_line_count_before_execution": 398
+}

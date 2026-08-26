@@ -1,0 +1,117 @@
+{
+  "execution_id": "R0_WAVE1_1_D0_RETENTION_COMPLETION_V1",
+  "completed_at_utc": "2026-08-26T08:24:27Z",
+  "freeze_verification": {
+    "branch": "20260825_stageR_new",
+    "wave1_commit": "ed72dbd87d8dc49ff761c95fca460ea4bfafa5c7",
+    "protocol_tag": "r0-v1.0-protocol-freeze",
+    "protocol_binding_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+    "protocol_content_commit": "5bd5c7ac58c284d4c938919cacf2eefb969a5c44",
+    "frozen_artifact_count": 19,
+    "protected_csv_path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "protected_csv_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "git_status_sha256_before_execution": "f6cde877009a39df843a0edf1723d50162719843a674a45366d6dd33031b6fd4",
+    "git_status_line_count_before_execution": 398
+  },
+  "checkpoint_sha256": {
+    "old64": "909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc",
+    "A_seed3407": "353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d",
+    "A_seed3408": "8d9886490b9308623abe938b48fc926106dcf1c109800b78952175970a31077c",
+    "A_seed3409": "5e22156f0f0197aca9a3fef1fe0e0db1573efd589f93527edfa25eec9f1c92bd",
+    "B_seed3407": "d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f",
+    "B_seed3408": "3b8ca8949da185bc25715997d49a64aa4131641409d10f44565a94a9c86f4f35",
+    "B_seed3409": "c2d54a51bfc13d597b0265c59bfe5377035168d133ab97498cbd2d4a1fa53ac5",
+    "C_seed3407": "cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d",
+    "C_seed3408": "603d56f34b62fb22e6c59d6558fb42b8dbc67ca0897d09660e87dc8e1f09f521",
+    "C_seed3409": "1b0a10779d5c90559e71af42cbd2d8c7b6611f6ecb2efca6059b426ce51a974e"
+  },
+  "stage7l_input_sha256": {
+    "dose0/context_traj.npy": "dbea7094be6fd8d5b0145cfa7aae43e525e2b83d81cef52a53f595abd20359fd",
+    "dose0/ego_seq_mask.npy": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose0/ego_seq.npy": "c986d85d9f416fb78007dfbf0ed5a03fa7e6ab87f73716f9e2a41ab818bdaba8",
+    "dose0/interaction_feat_style.npy": "a56fd170324bf1e29aec314a7c6943a073c9748d3e6b3df628117dc647382644",
+    "dose0/metadata.csv": "8eef9af211ef371427c4b76b51c6eacc5624260d8fb7a42bd90675601dc2f084",
+    "dose0/feature_schema.json": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17",
+    "dose25/context_traj.npy": "884250a46485efbe8887f1f8083db2b0856aa6c568d5b56c68da9193be16b08b",
+    "dose25/ego_seq_mask.npy": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose25/ego_seq.npy": "5001c6328c1ffbd77d7eedd3714bfe29930c30c2f0e6a645969e43420569d2c4",
+    "dose25/interaction_feat_style.npy": "576eb36aec71b07e55f54a001e49ccb30b908fc8ea26ef4aec1663067b18e2b4",
+    "dose25/metadata.csv": "7a56c6a1593a24d33dbb7dd0578a9bc73df22c6e994501c443f181f73ecd2904",
+    "dose25/feature_schema.json": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17",
+    "dose50/context_traj.npy": "02b4e28b9c2289502ce20f7928b7c658f79dec8955a7bc78e76f5e63a45190f7",
+    "dose50/ego_seq_mask.npy": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose50/ego_seq.npy": "ac2fe64f70084d11cf224bfec93bb0de99bfaa75b5b1700a13a9dc9f51918aed",
+    "dose50/interaction_feat_style.npy": "f7db36672229c09a2d780c5efefc43a9c063275957dd08cbe1e4ffbfb8dff180",
+    "dose50/metadata.csv": "d66788a5d57647e38cc8e6bc8310acb4efdc07c76563f162fb1a5eabc1238b98",
+    "dose50/feature_schema.json": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17",
+    "dose75/context_traj.npy": "47850cd1b48a9b337f66e15468d9d4ce6200cb697f9cfb06e48e15def80713f0",
+    "dose75/ego_seq_mask.npy": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose75/ego_seq.npy": "f1371d7d1456102ce235e73a50ce45b4d6f164bdfa7305aa5c953b08cf66be5c",
+    "dose75/interaction_feat_style.npy": "8882524f3d1da21e6a0e88869e4a4c7fe7de3271d88fdf5549845119b1221435",
+    "dose75/metadata.csv": "a0c1caa6f2bed432ded26991211ade4429c4adf8a699160e86adc96a62373bae",
+    "dose75/feature_schema.json": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17",
+    "dose100/context_traj.npy": "7a80ab3db564a78925318e9dcde59bb3a0a42f14e4d66276d751c5d727f3ec5f",
+    "dose100/ego_seq_mask.npy": "21489eef8e6a4e224a1e05889c426bda9ff1a9b397a68e5dd3fef2490191a830",
+    "dose100/ego_seq.npy": "95a258e74c6af2655ddfbd1ff886f9d560b4faa3682bbc8a967466aeec1b0cb2",
+    "dose100/interaction_feat_style.npy": "64dd2e0dab64aadbd86b3eb42c504a077e173fb8d2fdd9b11df9d0c562a85e3b",
+    "dose100/metadata.csv": "d852f8b9dd5cb0e55d3ddbacb6a2717bec8b6f333c830532f1d4e422eaa97a24",
+    "dose100/feature_schema.json": "c8071506a94146eb5341b19d15823e11f444cca84f271cae38471fcfbb988f17"
+  },
+  "input_rows": 400,
+  "scenario_groups": 80,
+  "log_clusters": 79,
+  "valid_length_values": [
+    149,
+    150
+  ],
+  "hypothesis_results": {
+    "execution_status": "COMPLETE_EXECUTION_COMPLETENESS_CORRECTION",
+    "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+    "supersedes": {
+      "D0_POOLING_EFFECT": "Wave 1 result only",
+      "D0_MASK_PADDING_SENSITIVITY": "Wave 1 result only"
+    },
+    "hypothesis_results": {
+      "D0_POOLING_EFFECT": "MIXED",
+      "D0_MASK_PADDING_SENSITIVITY": "MIXED"
+    },
+    "embedding_geometry_effect": "SUPPORTED",
+    "semantic_retention_effect": "MIXED",
+    "case_c": "CASE_C_TEMPORAL_CONTRIBUTION_MIXED_NOT_GENERALIZED",
+    "D1_KNOWN_SEMANTIC_INFORMATION_PRESENT": "SUPPORTED_UNCHANGED_FROM_WAVE1",
+    "D3_FORMAL_HYPOTHESES": "INCONCLUSIVE_UNCHANGED_FROM_WAVE1",
+    "no_training_authorization_change": true,
+    "no_d2_d4_or_new_planner_rollout": true
+  },
+  "protocol_deviation_id": "R0-WAVE1-D0-PRIMARY-METRIC-OMISSION-001",
+  "training_authorization_modified": false,
+  "large_embeddings_written": false,
+  "result_files": [
+    "R0_Wave1_1_D0_Retention_Completion_Report_v1.md",
+    "R0_Wave1_Cross_Module_Diagnosis_v1.1.md",
+    "r0_d0_retention_decision_matrix_wave1_1.csv",
+    "r0_d0_retention_family_summary_wave1_1.csv",
+    "r0_d0_retention_probe_metrics_wave1_1.csv",
+    "r0_wave1_1_command_ledger.json",
+    "r0_wave1_1_decision_finalization_log.json",
+    "r0_wave1_1_execution_completeness_assessment.json",
+    "r0_wave1_1_execution_manifest.json",
+    "r0_wave1_1_hypothesis_results.json"
+  ],
+  "decision_finalization": {
+    "finalized_at_utc": "2026-08-26T08:27:21Z",
+    "basis": "frozen r0_decision_table_v1.0 MIXED rule for material conflict across predeclared strata",
+    "prior_intermediate_status": {
+      "D0_POOLING_EFFECT": "SUPPORTED",
+      "D0_MASK_PADDING_SENSITIVITY": "MIXED",
+      "case_c": "CASE_C_TEMPORAL_CONTRIBUTION_SUPPORTED"
+    },
+    "final_status": {
+      "D0_POOLING_EFFECT": "MIXED",
+      "D0_MASK_PADDING_SENSITIVITY": "MIXED",
+      "case_c": "CASE_C_TEMPORAL_CONTRIBUTION_MIXED_NOT_GENERALIZED"
+    },
+    "thresholds_or_targets_changed": false,
+    "outcomes_recomputed": false
+  }
+}

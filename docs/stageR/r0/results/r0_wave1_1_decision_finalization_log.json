@@ -1,0 +1,16 @@
+{
+  "finalized_at_utc": "2026-08-26T08:27:21Z",
+  "basis": "frozen r0_decision_table_v1.0 MIXED rule for material conflict across predeclared strata",
+  "prior_intermediate_status": {
+    "D0_POOLING_EFFECT": "SUPPORTED",
+    "D0_MASK_PADDING_SENSITIVITY": "MIXED",
+    "case_c": "CASE_C_TEMPORAL_CONTRIBUTION_SUPPORTED"
+  },
+  "final_status": {
+    "D0_POOLING_EFFECT": "MIXED",
+    "D0_MASK_PADDING_SENSITIVITY": "MIXED",
+    "case_c": "CASE_C_TEMPORAL_CONTRIBUTION_MIXED_NOT_GENERALIZED"
+  },
+  "thresholds_or_targets_changed": false,
+  "outcomes_recomputed": false
+}

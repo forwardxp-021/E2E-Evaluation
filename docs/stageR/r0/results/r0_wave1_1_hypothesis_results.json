@@ -1,0 +1,19 @@
+{
+  "execution_status": "COMPLETE_EXECUTION_COMPLETENESS_CORRECTION",
+  "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "supersedes": {
+    "D0_POOLING_EFFECT": "Wave 1 result only",
+    "D0_MASK_PADDING_SENSITIVITY": "Wave 1 result only"
+  },
+  "hypothesis_results": {
+    "D0_POOLING_EFFECT": "MIXED",
+    "D0_MASK_PADDING_SENSITIVITY": "MIXED"
+  },
+  "embedding_geometry_effect": "SUPPORTED",
+  "semantic_retention_effect": "MIXED",
+  "case_c": "CASE_C_TEMPORAL_CONTRIBUTION_MIXED_NOT_GENERALIZED",
+  "D1_KNOWN_SEMANTIC_INFORMATION_PRESENT": "SUPPORTED_UNCHANGED_FROM_WAVE1",
+  "D3_FORMAL_HYPOTHESES": "INCONCLUSIVE_UNCHANGED_FROM_WAVE1",
+  "no_training_authorization_change": true,
+  "no_d2_d4_or_new_planner_rollout": true
+}
