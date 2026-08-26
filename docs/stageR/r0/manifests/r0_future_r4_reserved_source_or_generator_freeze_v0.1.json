@@ -1,0 +1,45 @@
+{
+  "schema_version": "r0_future_r4_reserved_source_or_generator_freeze_v0.1",
+  "status": "FUTURE_R4_RESERVED_SOURCE_OR_GENERATOR_FROZEN",
+  "frozen_date": "2026-08-26",
+  "source_baseline_commit": "b4bcc9699c534ea6341c19b9a247f80c9e279cbe",
+  "freeze_form": "FROZEN_PROSPECTIVE_ACQUISITION_RULE",
+  "rule_id": "R4_PROSPECTIVE_CONTROLLED_SOURCE_RULE_V1",
+  "eligible_source": "first newly acquired, research-licensed, nuPlan-compatible source batch satisfying schema/map/runnability and complete identity-ledger requirements after this freeze",
+  "deterministic_source_tie_break": "lexicographic(dataset_release_id, source_manifest_sha256) among simultaneously eligible batches",
+  "identity_exclusions": [
+    "all Waymo train/val/historical-test",
+    "all Stage6/Stage7/Stage7L identities",
+    "all R0 development/audit identities",
+    "any source/log/token exposed to representation outcome"
+  ],
+  "selection": {
+    "seed": 2026082601,
+    "algorithm": "SHA-256",
+    "sort_key": "sha256(seed|source_release|log_name|scenario_token)",
+    "allocation": "log-disjoint whole roster"
+  },
+  "generation_contract": {
+    "design": "paired baseline/treatment controlled planner",
+    "families": [
+      "R-HLC",
+      "R-TSB",
+      "R-IP"
+    ],
+    "pre_treatment_eligibility_only": true,
+    "whole_roster_intention_to_evaluate": true,
+    "realized_mechanism_exclusion": "PROHIBITED",
+    "representation_outcome_selection": "PROHIBITED"
+  },
+  "bindings_required_before_rollout": [
+    "exact acquired source manifest and SHA",
+    "exact token/log roster",
+    "planner/config/code SHA",
+    "dose grid",
+    "failure/missingness policy",
+    "power and family allocation"
+  ],
+  "final_confirmation_roster": "NOT_FROZEN_BY_DESIGN; form outcome-blind in R1 after mechanism/matching/equivalence/runnability rules stabilize",
+  "immutability": "source/acquisition/generator rule cannot change after any RBR outcome is available",
+  "rbr_training_authorization": "NOT_AUTHORIZED_BY_THIS_FREEZE_ALONE"
+}

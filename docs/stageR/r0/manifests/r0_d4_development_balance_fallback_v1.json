@@ -1,0 +1,122 @@
+{
+  "schema_version": "D4_DEVELOPMENT_BALANCE_FALLBACK_V1",
+  "status": "FROZEN_DEVELOPMENT_ONLY",
+  "scientific_acceptability": "ACCEPTABLE_FOR_R0_R1_DEVELOPMENT_FEASIBILITY_ONLY",
+  "authorization_effect": "D4_CONDITIONALLY_NONBLOCKING_FOR_RBR_DEVELOPMENT; NOT sufficient for R4 confirmation or RBR training authorization by itself",
+  "families": {
+    "R-HLC": {
+      "primary_f_match_count": 4,
+      "calipers": [
+        {
+          "target_id": "ego13.mean_speed",
+          "caliper": 0.708203939,
+          "unit": "m/s",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.end_minus_start_speed",
+          "caliper": 0.978755681,
+          "unit": "m/s",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.heading_change_abs_total",
+          "caliper": 0.0492160141,
+          "unit": "rad",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.path_length",
+          "caliper": 5.38423459,
+          "unit": "m",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        }
+      ],
+      "balance_rule": "all Primary F_match absolute pair differences within caliper; report family-wise failures without dropping pairs by representation outcome"
+    },
+    "R-TSB": {
+      "primary_f_match_count": 4,
+      "calipers": [
+        {
+          "target_id": "ego13.mean_speed",
+          "caliper": 0.708203939,
+          "unit": "m/s",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.end_minus_start_speed",
+          "caliper": 0.978755681,
+          "unit": "m/s",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.mean_abs_accel",
+          "caliper": 0.11777666,
+          "unit": "m/s^2",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.path_length",
+          "caliper": 5.38423459,
+          "unit": "m",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        }
+      ],
+      "balance_rule": "all Primary F_match absolute pair differences within caliper; report family-wise failures without dropping pairs by representation outcome"
+    },
+    "R-IP": {
+      "primary_f_match_count": 3,
+      "calipers": [
+        {
+          "target_id": "ego13.mean_speed",
+          "caliper": 0.708203939,
+          "unit": "m/s",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.end_minus_start_speed",
+          "caliper": 0.978755681,
+          "unit": "m/s",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        },
+        {
+          "target_id": "ego13.path_length",
+          "caliper": 5.38423459,
+          "unit": "m",
+          "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+          "formal_equivalence_margin": false
+        }
+      ],
+      "balance_rule": "all Primary F_match absolute pair differences within caliper; report family-wise failures without dropping pairs by representation outcome"
+    }
+  },
+  "allowed_uses": [
+    "R0/R1 benchmark development",
+    "descriptor-balanced hard-negative construction",
+    "feasibility diagnosis"
+  ],
+  "prohibited_claims": [
+    "NOT_FORMAL_PHYSICAL_EQUIVALENCE",
+    "NOT_R4_CONFIRMATORY_EQUIVALENCE",
+    "not human perceptibility",
+    "not evidence of model superiority"
+  ],
+  "activation_conditions": [
+    "family-specific roles frozen",
+    "pre-treatment Context_match applied",
+    "M_behavior separately confirms mechanism",
+    "no representation/BDD/probe outcome used for selection",
+    "whole-roster accounting retained"
+  ],
+  "r4_upgrade_gate": "family-specific physical/material equivalence margins and TOST/IUT rule must be frozen before any R4 outcome is unblinded"
+}

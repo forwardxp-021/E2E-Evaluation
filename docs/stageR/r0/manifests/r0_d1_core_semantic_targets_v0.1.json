@@ -1,0 +1,200 @@
+{
+  "schema_version": "r0_d1_core_semantic_targets_v0.1",
+  "status": "FROZEN_FOR_R0_V1_PROTOCOL",
+  "core_target_count": 9,
+  "families": {
+    "longitudinal": [
+      "ego13.mean_speed",
+      "ego13.end_minus_start_speed",
+      "ego13.rms_accel"
+    ],
+    "lateral": [
+      "ego13.rms_yaw_rate",
+      "ego13.heading_change_abs_total",
+      "raw33.lane_change_count_proxy"
+    ],
+    "interaction": [
+      "raw33.mean_front_distance",
+      "raw33.mean_rel_speed",
+      "raw33.front_pressure_score"
+    ]
+  },
+  "targets": [
+    {
+      "semantic_family": "longitudinal",
+      "target_id": "ego13.mean_speed",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 135046,
+        "iqr": 7.08203939,
+        "p05": 1.36293909,
+        "median": 6.29287753,
+        "p95": 17.6771605
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "longitudinal",
+      "target_id": "ego13.end_minus_start_speed",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 135046,
+        "iqr": 9.78755681,
+        "p05": -10.6193849,
+        "median": 1.41445482,
+        "p95": 10.8169387
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "longitudinal",
+      "target_id": "ego13.rms_accel",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 135046,
+        "iqr": 1.82746656,
+        "p05": 1.18998729,
+        "median": 2.73294707,
+        "p95": 9.12212691
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "lateral",
+      "target_id": "ego13.rms_yaw_rate",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 135046,
+        "iqr": 0.0946773674,
+        "p05": 0.0102418927,
+        "median": 0.0331469235,
+        "p95": 0.28034205
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "lateral",
+      "target_id": "ego13.heading_change_abs_total",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 135046,
+        "iqr": 0.492160141,
+        "p05": 0.0631489754,
+        "median": 0.193333983,
+        "p95": 1.6573019
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "lateral",
+      "target_id": "raw33.lane_change_count_proxy",
+      "target_kind": "categorical:any_count_gt_0",
+      "primary_metric": "balanced_accuracy",
+      "development_target_statistics": {
+        "development_rows": 135046,
+        "positive_prevalence": 0.36552730180827275,
+        "definition": "1[count_proxy>0]"
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "interaction",
+      "target_id": "raw33.mean_front_distance",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 88787,
+        "iqr": 14.6092257,
+        "p05": 9.66402731,
+        "median": 21.0149117,
+        "p95": 48.2552395
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "interaction",
+      "target_id": "raw33.mean_rel_speed",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 88787,
+        "iqr": 8.75386572,
+        "p05": -0.788531297,
+        "median": 6.51710606,
+        "p95": 18.8592434
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    },
+    {
+      "semantic_family": "interaction",
+      "target_id": "raw33.front_pressure_score",
+      "target_kind": "continuous",
+      "primary_metric": "R2",
+      "development_target_statistics": {
+        "development_rows": 88787,
+        "iqr": 12.2388922,
+        "p05": 0.0,
+        "median": 9.56919003,
+        "p95": 20.3464266
+      },
+      "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+    }
+  ],
+  "probe_contract": {
+    "continuous": "linear ridge; held-out log/source-group split",
+    "categorical": "linear logistic; held-out grouped evaluation",
+    "ridge_grid": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1,
+      10,
+      100,
+      1000,
+      10000
+    ],
+    "hyperparameter_selection": "development validation only",
+    "bootstrap_cluster": "log; scenario/source group only when log unavailable and downgrade recorded"
+  },
+  "target_level_gates": {
+    "continuous": {
+      "point_estimate": "held-out R2 >= 0.10",
+      "uncertainty": "log-cluster 95% CI lower bound > 0",
+      "secondary_required_report": [
+        "MAE",
+        "NRMSE",
+        "Spearman",
+        "calibration_slope"
+      ]
+    },
+    "categorical": {
+      "point_estimate": "balanced_accuracy >= 0.60",
+      "uncertainty": "log-cluster 95% CI lower bound > 0.50",
+      "secondary_required_report": [
+        "AUROC",
+        "macro_F1"
+      ]
+    }
+  },
+  "family_gate": {
+    "minimum_targets_passing": 2,
+    "minimum_fraction_passing": "2/3",
+    "all_three_families_required": false,
+    "module_support_rule": "at least 2/3 semantic families pass in at least 2 learned representation families; A/B/C require >=2/3 seed direction consistency",
+    "old64_single_seed": "SEED_REPLICATION_NOT_AVAILABLE; descriptive corroboration only"
+  },
+  "evaluability": {
+    "minimum_independent_log_or_source_groups": 30,
+    "categorical_minimum_groups_per_class": 50,
+    "insufficient_support_result": "INCONCLUSIVE",
+    "probe_failure_alone_means_information_absent": false
+  },
+  "evidence_level_without_audit_holdout": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "stage7l_outcome_used_for_target_selection": false
+}

@@ -1,0 +1,1238 @@
+{
+  "schema_version": "r0_statistical_analysis_plan_v0.3",
+  "status": "READY_FOR_R0_V1_PROTOCOL_FREEZE",
+  "data_roles": {
+    "parameterization": "R0_DEVELOPMENT_ONLY",
+    "r0_audit_holdout": "NOT_AVAILABLE_NONBLOCKING; evidence limited to DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+    "future_r4_reserved_pool": "FUTURE_R4_RESERVED_SOURCE_OR_GENERATOR_FROZEN_PROSPECTIVE_ACQUISITION_RULE_V1"
+  },
+  "global": {
+    "alpha": 0.05,
+    "confidence_level": 0.95,
+    "bootstrap_repetitions": 5000,
+    "permutation_repetitions": 49999,
+    "fixed_seeds": [
+      2026082601,
+      3407,
+      3408,
+      3409
+    ],
+    "missing_value_policy": "preserve mask/sentinel semantics; no silent imputation; target-specific rules recorded",
+    "outlier_policy": "no outcome-driven trimming; predeclared physical/quality exclusions only",
+    "ci_method": "log-cluster bootstrap; BCa when estimable, percentile fallback declared",
+    "evidence_level_rule": "no confirmatory wording without R0_AUDIT_HOLDOUT"
+  },
+  "d0": {
+    "event_position_bins": {
+      "early": [
+        0,
+        49
+      ],
+      "middle": [
+        50,
+        99
+      ],
+      "late": [
+        100,
+        149
+      ]
+    },
+    "pooling_set": [
+      "last",
+      "mean",
+      "max"
+    ],
+    "historical_reference": "T150 + final hidden + historical mask/padding behavior",
+    "content_windows": [
+      "first80",
+      "last80",
+      "event80",
+      "overlap80",
+      "full_native"
+    ],
+    "minimum_temporal_effect": {
+      "absolute_paired_standardized_difference_min": 0.1,
+      "ci": "95% excludes 0",
+      "seed_direction": ">=2/3",
+      "status": "SCIENTIFIC_OWNER_APPROVED"
+    }
+  },
+  "d2": {
+    "matching_strata": [
+      "scenario_family",
+      "lane_change_direction",
+      "initial_speed_tertile",
+      "traffic_density_tertile",
+      "neighbor_availability_pattern",
+      "event_phase_bin"
+    ],
+    "ood_boundary": "reference q99 per metric; OOD_DOMINATED when >=2/4 exceed"
+  },
+  "d3": {
+    "projection_ranks": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "maximum_rank": 16,
+    "primary_kernel": "RBF",
+    "calibration_fpr_gate": {
+      "nominal": 0.05,
+      "upper_95_ci_max": 0.075,
+      "insufficient_independent_units": "INCONCLUSIVE",
+      "status": "SCIENTIFIC_OWNER_APPROVED"
+    }
+  },
+  "d4": {
+    "equivalence_margin_status": "DEVELOPMENT_CALIPERS_FROZEN; R4_PHYSICAL_MARGINS_DEFERRED_TO_PRE_UNBLIND_R4_UPGRADE_GATE",
+    "whole_roster_primary": true,
+    "legacy_global_24_f_match_status": "SUPERSEDED",
+    "legacy_global_f_match_target_ids_v0_1": [
+      "ego13.mean_speed",
+      "ego13.std_speed",
+      "ego13.p95_speed",
+      "ego13.end_minus_start_speed",
+      "ego13.rms_accel",
+      "ego13.mean_abs_accel",
+      "ego13.p95_abs_accel",
+      "ego13.rms_jerk",
+      "ego13.p95_abs_jerk",
+      "ego13.rms_yaw_rate",
+      "ego13.mean_abs_yaw_rate",
+      "ego13.heading_change_abs_total",
+      "ego13.path_length",
+      "raw33.mean_thw",
+      "raw33.min_thw",
+      "raw33.mean_front_distance",
+      "raw33.min_front_distance",
+      "raw33.mean_rel_speed",
+      "raw33.p95_rel_speed",
+      "raw33.front_pressure_score",
+      "raw33.left_front_min_gap",
+      "raw33.left_rear_min_gap",
+      "raw33.right_front_min_gap",
+      "raw33.right_rear_min_gap"
+    ],
+    "legacy_global_m_behavior_target_ids_v0_1": [
+      "raw33.lane_change_count_proxy",
+      "raw33.lane_change_rate_proxy",
+      "raw33.lane_change_left_count_proxy",
+      "raw33.lane_change_right_count_proxy",
+      "raw33.lane_change_duration_mean_proxy",
+      "raw33.lane_change_oscillation_score_proxy",
+      "raw33.left_gap_acceptance_proxy",
+      "raw33.right_gap_acceptance_proxy",
+      "raw33.rear_vehicle_pressure_proxy",
+      "raw33.yielding_score_proxy",
+      "raw33.assertiveness_score_proxy"
+    ],
+    "family_specific_contracts": {
+      "R-HLC": {
+        "F_match": [
+          "ego13.mean_speed",
+          "ego13.end_minus_start_speed",
+          "ego13.heading_change_abs_total",
+          "ego13.path_length"
+        ],
+        "Context_match": [
+          "context.map_location",
+          "context.road_class",
+          "context.log_id",
+          "context.intended_lane_change_direction",
+          "context.initial_speed_mps",
+          "context.initial_lane_offset_m",
+          "context.traffic_density",
+          "context.neighbor_availability_pattern",
+          "context.target_lane_initial_front_gap_m",
+          "context.target_lane_initial_rear_gap_m"
+        ],
+        "M_behavior": [
+          "raw33.lane_change_count_proxy",
+          "raw33.lane_change_duration_mean_proxy",
+          "raw33.lane_change_oscillation_score_proxy",
+          "mechanism.hesitation_retreat_count",
+          "mechanism.commit_latency_s",
+          "mechanism.monotonic_transition_fraction"
+        ],
+        "Semantic_probe_only": [
+          "ego13.mean_abs_accel",
+          "ego13.mean_abs_yaw_rate",
+          "ego13.p95_abs_accel",
+          "ego13.p95_abs_jerk",
+          "ego13.p95_speed",
+          "ego13.rms_accel",
+          "ego13.rms_jerk",
+          "ego13.rms_yaw_rate",
+          "ego13.std_speed",
+          "longitudinal_v2.ego_longitudinal_accel",
+          "longitudinal_v2.ego_longitudinal_jerk",
+          "longitudinal_v2.ego_speed_smoothed",
+          "raw33.assertiveness_score_proxy",
+          "raw33.front_pressure_score",
+          "raw33.heading_change_total",
+          "raw33.lane_change_left_count_proxy",
+          "raw33.lane_change_rate_proxy",
+          "raw33.lane_change_right_count_proxy",
+          "raw33.left_front_min_gap",
+          "raw33.left_gap_acceptance_proxy",
+          "raw33.left_gap_min",
+          "raw33.left_rear_min_gap",
+          "raw33.max_abs_accel",
+          "raw33.max_abs_jerk",
+          "raw33.max_lateral_speed",
+          "raw33.mean_front_distance",
+          "raw33.mean_rel_speed",
+          "raw33.mean_thw",
+          "raw33.min_front_distance",
+          "raw33.min_thw",
+          "raw33.p95_rel_speed",
+          "raw33.rear_vehicle_pressure_proxy",
+          "raw33.right_front_min_gap",
+          "raw33.right_gap_acceptance_proxy",
+          "raw33.right_gap_min",
+          "raw33.right_rear_min_gap",
+          "raw33.rms_accel",
+          "raw33.rms_curvature",
+          "raw33.rms_jerk",
+          "raw33.rms_lateral_accel",
+          "raw33.rms_yaw_rate",
+          "raw33.yielding_score_proxy"
+        ],
+        "primary_f_match_count": 4,
+        "primary_f_m_overlap": []
+      },
+      "R-TSB": {
+        "F_match": [
+          "ego13.mean_speed",
+          "ego13.end_minus_start_speed",
+          "ego13.mean_abs_accel",
+          "ego13.path_length"
+        ],
+        "Context_match": [
+          "context.map_location",
+          "context.road_class",
+          "context.log_id",
+          "context.initial_speed_mps",
+          "context.initial_front_gap_m",
+          "context.initial_lead_relative_speed_mps",
+          "context.initial_thw_s",
+          "context.traffic_density",
+          "context.neighbor_availability_pattern",
+          "context.planned_stop_or_hazard_class"
+        ],
+        "M_behavior": [
+          "raw33.rms_accel",
+          "raw33.rms_jerk",
+          "raw33.max_abs_jerk",
+          "mechanism.brake_phase_count",
+          "mechanism.interstage_release_fraction",
+          "mechanism.second_brake_peak_ratio"
+        ],
+        "Semantic_probe_only": [
+          "ego13.heading_change_abs_total",
+          "ego13.mean_abs_yaw_rate",
+          "ego13.p95_abs_accel",
+          "ego13.p95_abs_jerk",
+          "ego13.p95_speed",
+          "ego13.rms_accel",
+          "ego13.rms_jerk",
+          "ego13.rms_yaw_rate",
+          "ego13.std_speed",
+          "longitudinal_v2.ego_longitudinal_accel",
+          "longitudinal_v2.ego_longitudinal_jerk",
+          "longitudinal_v2.ego_speed_smoothed",
+          "raw33.assertiveness_score_proxy",
+          "raw33.front_pressure_score",
+          "raw33.heading_change_total",
+          "raw33.lane_change_count_proxy",
+          "raw33.lane_change_duration_mean_proxy",
+          "raw33.lane_change_left_count_proxy",
+          "raw33.lane_change_oscillation_score_proxy",
+          "raw33.lane_change_rate_proxy",
+          "raw33.lane_change_right_count_proxy",
+          "raw33.left_front_min_gap",
+          "raw33.left_gap_acceptance_proxy",
+          "raw33.left_gap_min",
+          "raw33.left_rear_min_gap",
+          "raw33.max_abs_accel",
+          "raw33.max_lateral_speed",
+          "raw33.mean_front_distance",
+          "raw33.mean_rel_speed",
+          "raw33.mean_thw",
+          "raw33.min_front_distance",
+          "raw33.min_thw",
+          "raw33.p95_rel_speed",
+          "raw33.rear_vehicle_pressure_proxy",
+          "raw33.right_front_min_gap",
+          "raw33.right_gap_acceptance_proxy",
+          "raw33.right_gap_min",
+          "raw33.right_rear_min_gap",
+          "raw33.rms_curvature",
+          "raw33.rms_lateral_accel",
+          "raw33.rms_yaw_rate",
+          "raw33.yielding_score_proxy"
+        ],
+        "primary_f_match_count": 4,
+        "primary_f_m_overlap": []
+      },
+      "R-IP": {
+        "F_match": [
+          "ego13.mean_speed",
+          "ego13.end_minus_start_speed",
+          "ego13.path_length"
+        ],
+        "Context_match": [
+          "context.map_location",
+          "context.road_class",
+          "context.log_id",
+          "context.intended_lane_change_direction",
+          "context.initial_speed_mps",
+          "context.traffic_density",
+          "context.neighbor_availability_pattern",
+          "context.target_lane_initial_front_gap_m",
+          "context.target_lane_initial_rear_gap_m",
+          "context.target_lane_initial_rear_closing_speed_mps",
+          "context.gap_opportunity_class"
+        ],
+        "M_behavior": [
+          "raw33.left_gap_acceptance_proxy",
+          "raw33.right_gap_acceptance_proxy",
+          "raw33.yielding_score_proxy",
+          "raw33.assertiveness_score_proxy",
+          "mechanism.gap_acceptance_latency_s",
+          "mechanism.minimum_accepted_rear_gap_m",
+          "mechanism.yield_response_onset_s"
+        ],
+        "Semantic_probe_only": [
+          "ego13.heading_change_abs_total",
+          "ego13.mean_abs_accel",
+          "ego13.mean_abs_yaw_rate",
+          "ego13.p95_abs_accel",
+          "ego13.p95_abs_jerk",
+          "ego13.p95_speed",
+          "ego13.rms_accel",
+          "ego13.rms_jerk",
+          "ego13.rms_yaw_rate",
+          "ego13.std_speed",
+          "longitudinal_v2.ego_longitudinal_accel",
+          "longitudinal_v2.ego_longitudinal_jerk",
+          "longitudinal_v2.ego_speed_smoothed",
+          "raw33.front_pressure_score",
+          "raw33.heading_change_total",
+          "raw33.lane_change_count_proxy",
+          "raw33.lane_change_duration_mean_proxy",
+          "raw33.lane_change_left_count_proxy",
+          "raw33.lane_change_oscillation_score_proxy",
+          "raw33.lane_change_rate_proxy",
+          "raw33.lane_change_right_count_proxy",
+          "raw33.left_front_min_gap",
+          "raw33.left_gap_min",
+          "raw33.left_rear_min_gap",
+          "raw33.max_abs_accel",
+          "raw33.max_abs_jerk",
+          "raw33.max_lateral_speed",
+          "raw33.mean_front_distance",
+          "raw33.mean_rel_speed",
+          "raw33.mean_thw",
+          "raw33.min_front_distance",
+          "raw33.min_thw",
+          "raw33.p95_rel_speed",
+          "raw33.rear_vehicle_pressure_proxy",
+          "raw33.right_front_min_gap",
+          "raw33.right_gap_min",
+          "raw33.right_rear_min_gap",
+          "raw33.rms_accel",
+          "raw33.rms_curvature",
+          "raw33.rms_jerk",
+          "raw33.rms_lateral_accel",
+          "raw33.rms_yaw_rate"
+        ],
+        "primary_f_match_count": 3,
+        "primary_f_m_overlap": []
+      }
+    },
+    "development_balance_fallback": {
+      "schema_version": "D4_DEVELOPMENT_BALANCE_FALLBACK_V1",
+      "status": "FROZEN_DEVELOPMENT_ONLY",
+      "scientific_acceptability": "ACCEPTABLE_FOR_R0_R1_DEVELOPMENT_FEASIBILITY_ONLY",
+      "authorization_effect": "D4_CONDITIONALLY_NONBLOCKING_FOR_RBR_DEVELOPMENT; NOT sufficient for R4 confirmation or RBR training authorization by itself",
+      "families": {
+        "R-HLC": {
+          "primary_f_match_count": 4,
+          "calipers": [
+            {
+              "target_id": "ego13.mean_speed",
+              "caliper": 0.708203939,
+              "unit": "m/s",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.end_minus_start_speed",
+              "caliper": 0.978755681,
+              "unit": "m/s",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.heading_change_abs_total",
+              "caliper": 0.0492160141,
+              "unit": "rad",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.path_length",
+              "caliper": 5.38423459,
+              "unit": "m",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            }
+          ],
+          "balance_rule": "all Primary F_match absolute pair differences within caliper; report family-wise failures without dropping pairs by representation outcome"
+        },
+        "R-TSB": {
+          "primary_f_match_count": 4,
+          "calipers": [
+            {
+              "target_id": "ego13.mean_speed",
+              "caliper": 0.708203939,
+              "unit": "m/s",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.end_minus_start_speed",
+              "caliper": 0.978755681,
+              "unit": "m/s",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.mean_abs_accel",
+              "caliper": 0.11777666,
+              "unit": "m/s^2",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.path_length",
+              "caliper": 5.38423459,
+              "unit": "m",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            }
+          ],
+          "balance_rule": "all Primary F_match absolute pair differences within caliper; report family-wise failures without dropping pairs by representation outcome"
+        },
+        "R-IP": {
+          "primary_f_match_count": 3,
+          "calipers": [
+            {
+              "target_id": "ego13.mean_speed",
+              "caliper": 0.708203939,
+              "unit": "m/s",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.end_minus_start_speed",
+              "caliper": 0.978755681,
+              "unit": "m/s",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            },
+            {
+              "target_id": "ego13.path_length",
+              "caliper": 5.38423459,
+              "unit": "m",
+              "basis": "0.10 x frozen Waymo TRAIN robust IQR",
+              "formal_equivalence_margin": false
+            }
+          ],
+          "balance_rule": "all Primary F_match absolute pair differences within caliper; report family-wise failures without dropping pairs by representation outcome"
+        }
+      },
+      "allowed_uses": [
+        "R0/R1 benchmark development",
+        "descriptor-balanced hard-negative construction",
+        "feasibility diagnosis"
+      ],
+      "prohibited_claims": [
+        "NOT_FORMAL_PHYSICAL_EQUIVALENCE",
+        "NOT_R4_CONFIRMATORY_EQUIVALENCE",
+        "not human perceptibility",
+        "not evidence of model superiority"
+      ],
+      "activation_conditions": [
+        "family-specific roles frozen",
+        "pre-treatment Context_match applied",
+        "M_behavior separately confirms mechanism",
+        "no representation/BDD/probe outcome used for selection",
+        "whole-roster accounting retained"
+      ],
+      "r4_upgrade_gate": "family-specific physical/material equivalence margins and TOST/IUT rule must be frozen before any R4 outcome is unblinded"
+    }
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "D0_LENGTH_EFFECT",
+      "module": "D0",
+      "analysis_family": "D0",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D0_POSITION_RETENTION_ASSOCIATION",
+      "module": "D0",
+      "analysis_family": "D0",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D0_POOLING_EFFECT",
+      "module": "D0",
+      "analysis_family": "D0",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D0_MASK_PADDING_SENSITIVITY",
+      "module": "D0",
+      "analysis_family": "D0",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D1_KNOWN_SEMANTIC_INFORMATION_PRESENT",
+      "module": "D1",
+      "analysis_family": "D1",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D1_CROSS_DOMAIN_SEMANTIC_TRANSFER",
+      "module": "D1",
+      "analysis_family": "D1",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D1_GEOMETRY_DEGENERACY",
+      "module": "D1",
+      "analysis_family": "D1",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D2_RESPONSE_SENSITIVITY",
+      "module": "D2",
+      "analysis_family": "D2",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D2_CONTEXT_SENSITIVITY",
+      "module": "D2",
+      "analysis_family": "D2",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D2_PAIRING_SENSITIVITY",
+      "module": "D2",
+      "analysis_family": "D2",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D2_SHORTCUT_RISK",
+      "module": "D2",
+      "analysis_family": "D2",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D2_ABLATION_OOD_RISK",
+      "module": "D2",
+      "analysis_family": "D2",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D3_FULL64_SIGNAL_DILUTION",
+      "module": "D3",
+      "analysis_family": "D3",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D3_PROJECTED_READOUT_GAIN",
+      "module": "D3",
+      "analysis_family": "D3",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D3_NULL_CALIBRATION_PRESERVED",
+      "module": "D3",
+      "analysis_family": "D3",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_DESCRIPTOR_EQUIVALENCE_R_HLC",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_MECHANISM_DIFFERENCE_R_HLC",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_OUTCOME_BLIND_FEASIBILITY_R_HLC",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_DESCRIPTOR_EQUIVALENCE_R_TSB",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_MECHANISM_DIFFERENCE_R_TSB",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_OUTCOME_BLIND_FEASIBILITY_R_TSB",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_DESCRIPTOR_EQUIVALENCE_R_IP",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_MECHANISM_DIFFERENCE_R_IP",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    },
+    {
+      "hypothesis_id": "D4_OUTCOME_BLIND_FEASIBILITY_R_IP",
+      "module": "D4",
+      "analysis_family": "D4",
+      "alpha": 0.05,
+      "multiplicity": "Holm within module/family; D4 equivalence uses intersection-union across frozen F_match",
+      "independence_unit": "scenario or same-scenario pair; log cluster where repeated scenarios share a log",
+      "split_unit": "scenario/source grouping; no cross-role identity overlap",
+      "bootstrap_cluster": "log (scenario if no log identity exists, explicitly downgraded)",
+      "permutation_unit": "same-scenario pair for paired tests; log-disjoint group label for eligible unpaired tests",
+      "probe_family": "fixed-capacity linear ridge/logistic; both frozen-probe-across-view and same-capacity-refit-per-view for D0",
+      "kernel_family": "single RBF primary",
+      "bandwidth_rule": "fixed per representation/readout from treatment-label-blind R0_DEVELOPMENT reference bank positive off-diagonal median",
+      "projection_candidate_rule": "ranks {1,2,4,8,16}; smallest within 1 SE after semantic-retention and null-calibration gates",
+      "equivalence_method": "D4 family-specific: development fallback uses frozen robust-IQR balance calipers only; formal R4 uses pre-unblind physical/material margins with TOST/IUT",
+      "status_model": "execution COMPLETE/BLOCKED; hypothesis SUPPORTED/NOT_SUPPORTED/MIXED/INCONCLUSIVE/NOT_EVALUABLE",
+      "allowed_evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE; R0_AUDIT_HOLDOUT not required for execution"
+    }
+  ],
+  "training_authorization": "NOT_AUTHORIZED",
+  "sample_size_binding": {
+    "D0": {
+      "gate_id": "D0",
+      "planning_target": "absolute paired standardized retention difference=0.10",
+      "independent_units_required": 785,
+      "raw_units_required": 1492,
+      "log_cluster_assumption": "10 scenarios/log; planning ICC=0.10; design effect=1.90",
+      "minimum_logs_required": 150,
+      "precision_or_power": "two-sided power=0.80; sensitivity n=1051 for power=0.90",
+      "available_capacity_status": "INSUFFICIENT_FOR_FROZEN_GATE",
+      "alpha": 0.05,
+      "available_clean_runnable_logs": 19
+    },
+    "D1": {
+      "gate_id": "D1",
+      "planning_target": "semantic-probe target-level effect",
+      "independent_units_required": "NOT_IDENTIFIABLE",
+      "raw_units_required": "NOT_IDENTIFIABLE",
+      "log_cluster_assumption": "requires target prevalence/variance and owner SESOI; 5-fold grouping alone is not power",
+      "minimum_logs_required": "NOT_IDENTIFIABLE",
+      "precision_or_power": "no target-specific SESOI is approved",
+      "available_capacity_status": "INSUFFICIENT_FOR_FROZEN_GATE",
+      "alpha": 0.05,
+      "available_clean_runnable_logs": 19
+    },
+    "D2": {
+      "gate_id": "D2",
+      "planning_target": "within-stratum context shuffle",
+      "independent_units_required": "4 per nonempty final stratum",
+      "raw_units_required": "depends on frozen stratum occupancy after pre-treatment metadata",
+      "log_cluster_assumption": "same log remains clustered; never coarsen across scenario_family",
+      "minimum_logs_required": "NOT_IDENTIFIABLE",
+      "precision_or_power": "minimum operational cell size, not powered effect detection",
+      "available_capacity_status": "INSUFFICIENT_FOR_FROZEN_GATE",
+      "alpha": 0.05,
+      "available_clean_runnable_logs": 19
+    },
+    "D3": {
+      "gate_id": "D3",
+      "planning_target": "nominal FPR=.05; two-sided Wilson upper 95% CI<=.075",
+      "independent_units_required": 406,
+      "raw_units_required": 406,
+      "log_cluster_assumption": "trials must be independent/effective null units; dependence lowers effective n",
+      "minimum_logs_required": "not interchangeable with null trials",
+      "precision_or_power": "at n=406, x=round(.05n)=20, upper=0.07485945",
+      "available_capacity_status": "INSUFFICIENT_FOR_FROZEN_GATE",
+      "alpha": 0.05,
+      "available_clean_runnable_logs": 19
+    }
+  },
+  "scientific_owner_approval_binding": {
+    "path": "docs/stageR/r0/manifests/r0_scientific_owner_approval_v0.1.json",
+    "sha256": "c9692a95a39f8fc42348a7e5aead696ff68f677f9cde723552deecfb452994f5"
+  },
+  "readiness_semantics": {
+    "r0_audit_holdout": {
+      "blocks_protocol_freeze": false,
+      "blocks_r0_execution": false,
+      "blocks_rbr_training": false,
+      "limits_evidence_level": true,
+      "limitation_type": "EVIDENCE_LEVEL_LIMITATION"
+    },
+    "confirmatory_capacity_150_logs": {
+      "blocks_protocol_freeze": false,
+      "blocks_r0_execution": false,
+      "blocks_rbr_training": false,
+      "limits_evidence_level": true,
+      "limitation_type": "EXECUTION_CAPACITY_LIMITATION",
+      "available_runnable_logs": 19,
+      "reference_logs": 150,
+      "gap": 131
+    }
+  },
+  "d1": {
+    "schema_version": "r0_d1_core_semantic_targets_v0.1",
+    "status": "FROZEN_FOR_R0_V1_PROTOCOL",
+    "core_target_count": 9,
+    "families": {
+      "longitudinal": [
+        "ego13.mean_speed",
+        "ego13.end_minus_start_speed",
+        "ego13.rms_accel"
+      ],
+      "lateral": [
+        "ego13.rms_yaw_rate",
+        "ego13.heading_change_abs_total",
+        "raw33.lane_change_count_proxy"
+      ],
+      "interaction": [
+        "raw33.mean_front_distance",
+        "raw33.mean_rel_speed",
+        "raw33.front_pressure_score"
+      ]
+    },
+    "targets": [
+      {
+        "semantic_family": "longitudinal",
+        "target_id": "ego13.mean_speed",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 135046,
+          "iqr": 7.08203939,
+          "p05": 1.36293909,
+          "median": 6.29287753,
+          "p95": 17.6771605
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "longitudinal",
+        "target_id": "ego13.end_minus_start_speed",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 135046,
+          "iqr": 9.78755681,
+          "p05": -10.6193849,
+          "median": 1.41445482,
+          "p95": 10.8169387
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "longitudinal",
+        "target_id": "ego13.rms_accel",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 135046,
+          "iqr": 1.82746656,
+          "p05": 1.18998729,
+          "median": 2.73294707,
+          "p95": 9.12212691
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "lateral",
+        "target_id": "ego13.rms_yaw_rate",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 135046,
+          "iqr": 0.0946773674,
+          "p05": 0.0102418927,
+          "median": 0.0331469235,
+          "p95": 0.28034205
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "lateral",
+        "target_id": "ego13.heading_change_abs_total",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 135046,
+          "iqr": 0.492160141,
+          "p05": 0.0631489754,
+          "median": 0.193333983,
+          "p95": 1.6573019
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "lateral",
+        "target_id": "raw33.lane_change_count_proxy",
+        "target_kind": "categorical:any_count_gt_0",
+        "primary_metric": "balanced_accuracy",
+        "development_target_statistics": {
+          "development_rows": 135046,
+          "positive_prevalence": 0.36552730180827275,
+          "definition": "1[count_proxy>0]"
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "interaction",
+        "target_id": "raw33.mean_front_distance",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 88787,
+          "iqr": 14.6092257,
+          "p05": 9.66402731,
+          "median": 21.0149117,
+          "p95": 48.2552395
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "interaction",
+        "target_id": "raw33.mean_rel_speed",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 88787,
+          "iqr": 8.75386572,
+          "p05": -0.788531297,
+          "median": 6.51710606,
+          "p95": 18.8592434
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      },
+      {
+        "semantic_family": "interaction",
+        "target_id": "raw33.front_pressure_score",
+        "target_kind": "continuous",
+        "primary_metric": "R2",
+        "development_target_statistics": {
+          "development_rows": 88787,
+          "iqr": 12.2388922,
+          "p05": 0.0,
+          "median": 9.56919003,
+          "p95": 20.3464266
+        },
+        "selection_basis": "predeclared semantic coverage and nondegenerate development target support; no representation/Stage7L outcome used"
+      }
+    ],
+    "probe_contract": {
+      "continuous": "linear ridge; held-out log/source-group split",
+      "categorical": "linear logistic; held-out grouped evaluation",
+      "ridge_grid": [
+        0.0001,
+        0.001,
+        0.01,
+        0.1,
+        1,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "hyperparameter_selection": "development validation only",
+      "bootstrap_cluster": "log; scenario/source group only when log unavailable and downgrade recorded"
+    },
+    "target_level_gates": {
+      "continuous": {
+        "point_estimate": "held-out R2 >= 0.10",
+        "uncertainty": "log-cluster 95% CI lower bound > 0",
+        "secondary_required_report": [
+          "MAE",
+          "NRMSE",
+          "Spearman",
+          "calibration_slope"
+        ]
+      },
+      "categorical": {
+        "point_estimate": "balanced_accuracy >= 0.60",
+        "uncertainty": "log-cluster 95% CI lower bound > 0.50",
+        "secondary_required_report": [
+          "AUROC",
+          "macro_F1"
+        ]
+      }
+    },
+    "family_gate": {
+      "minimum_targets_passing": 2,
+      "minimum_fraction_passing": "2/3",
+      "all_three_families_required": false,
+      "module_support_rule": "at least 2/3 semantic families pass in at least 2 learned representation families; A/B/C require >=2/3 seed direction consistency",
+      "old64_single_seed": "SEED_REPLICATION_NOT_AVAILABLE; descriptive corroboration only"
+    },
+    "evaluability": {
+      "minimum_independent_log_or_source_groups": 30,
+      "categorical_minimum_groups_per_class": 50,
+      "insufficient_support_result": "INCONCLUSIVE",
+      "probe_failure_alone_means_information_absent": false
+    },
+    "evidence_level_without_audit_holdout": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+    "stage7l_outcome_used_for_target_selection": false
+  },
+  "future_r4_reserved_source_or_generator": {
+    "schema_version": "r0_future_r4_reserved_source_or_generator_freeze_v0.1",
+    "status": "FUTURE_R4_RESERVED_SOURCE_OR_GENERATOR_FROZEN",
+    "frozen_date": "2026-08-26",
+    "source_baseline_commit": "b4bcc9699c534ea6341c19b9a247f80c9e279cbe",
+    "freeze_form": "FROZEN_PROSPECTIVE_ACQUISITION_RULE",
+    "rule_id": "R4_PROSPECTIVE_CONTROLLED_SOURCE_RULE_V1",
+    "eligible_source": "first newly acquired, research-licensed, nuPlan-compatible source batch satisfying schema/map/runnability and complete identity-ledger requirements after this freeze",
+    "deterministic_source_tie_break": "lexicographic(dataset_release_id, source_manifest_sha256) among simultaneously eligible batches",
+    "identity_exclusions": [
+      "all Waymo train/val/historical-test",
+      "all Stage6/Stage7/Stage7L identities",
+      "all R0 development/audit identities",
+      "any source/log/token exposed to representation outcome"
+    ],
+    "selection": {
+      "seed": 2026082601,
+      "algorithm": "SHA-256",
+      "sort_key": "sha256(seed|source_release|log_name|scenario_token)",
+      "allocation": "log-disjoint whole roster"
+    },
+    "generation_contract": {
+      "design": "paired baseline/treatment controlled planner",
+      "families": [
+        "R-HLC",
+        "R-TSB",
+        "R-IP"
+      ],
+      "pre_treatment_eligibility_only": true,
+      "whole_roster_intention_to_evaluate": true,
+      "realized_mechanism_exclusion": "PROHIBITED",
+      "representation_outcome_selection": "PROHIBITED"
+    },
+    "bindings_required_before_rollout": [
+      "exact acquired source manifest and SHA",
+      "exact token/log roster",
+      "planner/config/code SHA",
+      "dose grid",
+      "failure/missingness policy",
+      "power and family allocation"
+    ],
+    "final_confirmation_roster": "NOT_FROZEN_BY_DESIGN; form outcome-blind in R1 after mechanism/matching/equivalence/runnability rules stabilize",
+    "immutability": "source/acquisition/generator rule cannot change after any RBR outcome is available",
+    "rbr_training_authorization": "NOT_AUTHORIZED_BY_THIS_FREEZE_ALONE"
+  },
+  "readiness": {
+    "protocol_freeze": "READY_FOR_R0_V1_PROTOCOL_FREEZE",
+    "r0_execution": "READY_WITH_DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+    "rbr_training": "NOT_AUTHORIZED",
+    "r4_confirmation": "SOURCE_OR_GENERATOR_FROZEN_FINAL_ROSTER_NOT_FROZEN"
+  }
+}

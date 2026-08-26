@@ -1,0 +1,1510 @@
+{
+  "schema_version": "r0_target_definition_v0.2",
+  "status": "READY_FOR_R0_V1_PROTOCOL_FREEZE",
+  "evidence_level": "R0_DEVELOPMENT_CONTRACT_EVIDENCE",
+  "dt_seconds": 0.1,
+  "targets": [
+    {
+      "target_id": "ego13.mean_speed",
+      "name": "mean_speed",
+      "family": "ego13",
+      "definition": "Mean speed over valid frames",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": true,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "F_match",
+        "R-TSB": "F_match",
+        "R-IP": "F_match"
+      }
+    },
+    {
+      "target_id": "ego13.std_speed",
+      "name": "std_speed",
+      "family": "ego13",
+      "definition": "Population standard deviation of speed over valid frames",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.p95_speed",
+      "name": "p95_speed",
+      "family": "ego13",
+      "definition": "95th percentile speed over valid frames",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.end_minus_start_speed",
+      "name": "end_minus_start_speed",
+      "family": "ego13",
+      "definition": "Last valid speed minus first valid speed",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": true,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "F_match",
+        "R-TSB": "F_match",
+        "R-IP": "F_match"
+      }
+    },
+    {
+      "target_id": "ego13.rms_accel",
+      "name": "rms_accel",
+      "family": "ego13",
+      "definition": "RMS of speed-derived acceleration with dt=0.1 s",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s^2",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.mean_abs_accel",
+      "name": "mean_abs_accel",
+      "family": "ego13",
+      "definition": "Mean absolute speed-derived acceleration",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s^2",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": true,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "F_match",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.p95_abs_accel",
+      "name": "p95_abs_accel",
+      "family": "ego13",
+      "definition": "95th percentile absolute speed-derived acceleration",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s^2",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.rms_jerk",
+      "name": "rms_jerk",
+      "family": "ego13",
+      "definition": "RMS of acceleration-derived jerk",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s^3",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.p95_abs_jerk",
+      "name": "p95_abs_jerk",
+      "family": "ego13",
+      "definition": "95th percentile absolute acceleration-derived jerk",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m/s^3",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.rms_yaw_rate",
+      "name": "rms_yaw_rate",
+      "family": "ego13",
+      "definition": "RMS of wrapped-heading-derived yaw rate",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "rad/s",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.mean_abs_yaw_rate",
+      "name": "mean_abs_yaw_rate",
+      "family": "ego13",
+      "definition": "Mean absolute wrapped-heading-derived yaw rate",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "rad/s",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.heading_change_abs_total",
+      "name": "heading_change_abs_total",
+      "family": "ego13",
+      "definition": "Sum of absolute wrapped heading increments",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "rad",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": true,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "F_match",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "ego13.path_length",
+      "name": "path_length",
+      "family": "ego13",
+      "definition": "Sum of xy displacement norms across valid frames",
+      "source_path": "tools/stage6l_prepare_context_representation_ablation.py:ego_kinematic_features",
+      "unit": "m",
+      "valid_frame_rule": "all frames selected by ego_seq_mask; require at least 2 valid frames; dt=0.1 s",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": true,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "F_match",
+        "R-TSB": "F_match",
+        "R-IP": "F_match"
+      }
+    },
+    {
+      "target_id": "raw33.rms_accel",
+      "name": "rms_accel",
+      "family": "longitudinal",
+      "definition": "RMS ego acceleration",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s^2",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "M_behavior",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.rms_jerk",
+      "name": "rms_jerk",
+      "family": "longitudinal",
+      "definition": "RMS ego jerk",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s^3",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "M_behavior",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.max_abs_accel",
+      "name": "max_abs_accel",
+      "family": "longitudinal",
+      "definition": "Maximum absolute ego acceleration",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s^2",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.max_abs_jerk",
+      "name": "max_abs_jerk",
+      "family": "longitudinal",
+      "definition": "Maximum absolute ego jerk",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s^3",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "M_behavior",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.mean_thw",
+      "name": "mean_thw",
+      "family": "longitudinal",
+      "definition": "Mean valid-front time headway",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.min_thw",
+      "name": "min_thw",
+      "family": "longitudinal",
+      "definition": "Minimum valid-front time headway",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.mean_front_distance",
+      "name": "mean_front_distance",
+      "family": "longitudinal",
+      "definition": "Mean valid-front distance",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.min_front_distance",
+      "name": "min_front_distance",
+      "family": "longitudinal",
+      "definition": "Minimum valid-front distance",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.mean_rel_speed",
+      "name": "mean_rel_speed",
+      "family": "longitudinal",
+      "definition": "Mean valid-front closing-rate proxy",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.p95_rel_speed",
+      "name": "p95_rel_speed",
+      "family": "longitudinal",
+      "definition": "95th percentile valid-front closing-rate proxy",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.rms_yaw_rate",
+      "name": "rms_yaw_rate",
+      "family": "lateral",
+      "definition": "RMS ego yaw-rate proxy",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "rad/s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.rms_curvature",
+      "name": "rms_curvature",
+      "family": "lateral",
+      "definition": "RMS yaw-rate/speed where abs(speed)>=0.5",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "1/m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.heading_change_total",
+      "name": "heading_change_total",
+      "family": "lateral",
+      "definition": "Total absolute wrapped heading change",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "rad",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.lane_change_count_proxy",
+      "name": "lane_change_count_proxy",
+      "family": "lateral",
+      "definition": "Count of lateral-offset threshold entries",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "count",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "M_behavior",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.lane_change_rate_proxy",
+      "name": "lane_change_rate_proxy",
+      "family": "lateral",
+      "definition": "Lane-change count divided by window duration",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "1/s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.lane_change_left_count_proxy",
+      "name": "lane_change_left_count_proxy",
+      "family": "lateral",
+      "definition": "Integer proxy split attributed left",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "count",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.lane_change_right_count_proxy",
+      "name": "lane_change_right_count_proxy",
+      "family": "lateral",
+      "definition": "Integer proxy split attributed right",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "count",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.lane_change_duration_mean_proxy",
+      "name": "lane_change_duration_mean_proxy",
+      "family": "lateral",
+      "definition": "Mean transition indicator times dt",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "s/frame proxy",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "M_behavior",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.max_lateral_speed",
+      "name": "max_lateral_speed",
+      "family": "lateral",
+      "definition": "Maximum absolute local lateral speed",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.rms_lateral_accel",
+      "name": "rms_lateral_accel",
+      "family": "lateral",
+      "definition": "RMS per-frame lateral-speed increment",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s per frame",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.lane_change_oscillation_score_proxy",
+      "name": "lane_change_oscillation_score_proxy",
+      "family": "lateral",
+      "definition": "Mean absolute change of lane-change proxy",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "fraction",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "M_behavior",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.front_pressure_score",
+      "name": "front_pressure_score",
+      "family": "interaction_context",
+      "definition": "Mean clipped max(0,30-front_distance)",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m proxy",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.left_front_min_gap",
+      "name": "left_front_min_gap",
+      "family": "interaction_context",
+      "definition": "Minimum left-front gap",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.left_rear_min_gap",
+      "name": "left_rear_min_gap",
+      "family": "interaction_context",
+      "definition": "Minimum left-rear gap",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.right_front_min_gap",
+      "name": "right_front_min_gap",
+      "family": "interaction_context",
+      "definition": "Minimum right-front gap",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.right_rear_min_gap",
+      "name": "right_rear_min_gap",
+      "family": "interaction_context",
+      "definition": "Minimum right-rear gap",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.left_gap_min",
+      "name": "left_gap_min",
+      "family": "interaction_context",
+      "definition": "Minimum of left-front and left-rear gaps",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.right_gap_min",
+      "name": "right_gap_min",
+      "family": "interaction_context",
+      "definition": "Minimum of right-front and right-rear gaps",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.left_gap_acceptance_proxy",
+      "name": "left_gap_acceptance_proxy",
+      "family": "interaction_context",
+      "definition": "Fraction with positive left-front closing rate",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "fraction",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "M_behavior"
+      }
+    },
+    {
+      "target_id": "raw33.right_gap_acceptance_proxy",
+      "name": "right_gap_acceptance_proxy",
+      "family": "interaction_context",
+      "definition": "Fraction with positive right-front closing rate",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "fraction",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "M_behavior"
+      }
+    },
+    {
+      "target_id": "raw33.rear_vehicle_pressure_proxy",
+      "name": "rear_vehicle_pressure_proxy",
+      "family": "interaction_context",
+      "definition": "Mean max rear closing-rate proxy",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "m/s proxy",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "raw33.yielding_score_proxy",
+      "name": "yielding_score_proxy",
+      "family": "interaction_context",
+      "definition": "Mean clipped closing-rate/front-distance ratio",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "1/s proxy",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "M_behavior"
+      }
+    },
+    {
+      "target_id": "raw33.assertiveness_score_proxy",
+      "name": "assertiveness_score_proxy",
+      "family": "interaction_context",
+      "definition": "Fraction of frames above sequence mean speed",
+      "source_path": "tools/interaction_context_features.py:aggregate_interaction_features",
+      "unit": "fraction",
+      "valid_frame_rule": "ego uses the supplied sequence; neighbor aggregates use slot presence>0.5 and NaN-safe reduction; empty valid neighbor set maps to 0.0",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": true,
+        "matching": false,
+        "leakage_audit": true
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "M_behavior"
+      }
+    },
+    {
+      "target_id": "longitudinal_v2.ego_speed_smoothed",
+      "name": "ego_speed_smoothed",
+      "family": "longitudinal",
+      "definition": "Median-filtered ego speed",
+      "source_path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/longitudinal_supervision_v2_global_schema.json",
+      "unit": "m/s",
+      "valid_frame_rule": "all finite frames in each 80-frame row; train-q01/q99 winsorization and train median/IQR normalization are target preprocessing, not input preprocessing",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "longitudinal_v2.ego_longitudinal_accel",
+      "name": "ego_longitudinal_accel",
+      "family": "longitudinal",
+      "definition": "Finite-difference longitudinal acceleration",
+      "source_path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/longitudinal_supervision_v2_global_schema.json",
+      "unit": "m/s^2",
+      "valid_frame_rule": "all finite frames in each 80-frame row; train-q01/q99 winsorization and train median/IQR normalization are target preprocessing, not input preprocessing",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    },
+    {
+      "target_id": "longitudinal_v2.ego_longitudinal_jerk",
+      "name": "ego_longitudinal_jerk",
+      "family": "longitudinal",
+      "definition": "Finite-difference longitudinal jerk",
+      "source_path": "outputs/stage6r_dynamic_full51_semantic_strict_v1/longitudinal_supervision_v2_global_schema.json",
+      "unit": "m/s^3",
+      "valid_frame_rule": "all finite frames in each 80-frame row; train-q01/q99 winsorization and train median/IQR normalization are target preprocessing, not input preprocessing",
+      "independence_unit": "scenario; log-clustered when multiple scenarios share a log",
+      "used_for": {
+        "semantic_probe": true,
+        "mechanism_validation": false,
+        "matching": false,
+        "leakage_audit": false
+      },
+      "descriptor_role": "FAMILY_SPECIFIC",
+      "family_specific_d4_roles": {
+        "R-HLC": "Semantic_probe_only",
+        "R-TSB": "Semantic_probe_only",
+        "R-IP": "Semantic_probe_only"
+      }
+    }
+  ],
+  "normalization_contracts": {
+    "learned_encoder_input": "NONE",
+    "raw33_target": "train-only population mean/std; epsilon floor 1e-6",
+    "longitudinal_v2_target": "train q01/q99 winsorize then train median/IQR",
+    "ego13_stage6l_representation": "dose100 conservative reference median/IQR; valid-mask aggregation"
+  },
+  "legacy_global_descriptor_sets_v0_1": {
+    "F_match": {
+      "purpose": "descriptor/context equivalence and matching only",
+      "target_ids": [
+        "ego13.mean_speed",
+        "ego13.std_speed",
+        "ego13.p95_speed",
+        "ego13.end_minus_start_speed",
+        "ego13.rms_accel",
+        "ego13.mean_abs_accel",
+        "ego13.p95_abs_accel",
+        "ego13.rms_jerk",
+        "ego13.p95_abs_jerk",
+        "ego13.rms_yaw_rate",
+        "ego13.mean_abs_yaw_rate",
+        "ego13.heading_change_abs_total",
+        "ego13.path_length",
+        "raw33.mean_thw",
+        "raw33.min_thw",
+        "raw33.mean_front_distance",
+        "raw33.min_front_distance",
+        "raw33.mean_rel_speed",
+        "raw33.p95_rel_speed",
+        "raw33.front_pressure_score",
+        "raw33.left_front_min_gap",
+        "raw33.left_rear_min_gap",
+        "raw33.right_front_min_gap",
+        "raw33.right_rear_min_gap"
+      ]
+    },
+    "M_behavior": {
+      "purpose": "mechanism qualification only; excluded from core F_match equivalence",
+      "target_ids": [
+        "raw33.lane_change_count_proxy",
+        "raw33.lane_change_rate_proxy",
+        "raw33.lane_change_left_count_proxy",
+        "raw33.lane_change_right_count_proxy",
+        "raw33.lane_change_duration_mean_proxy",
+        "raw33.lane_change_oscillation_score_proxy",
+        "raw33.left_gap_acceptance_proxy",
+        "raw33.right_gap_acceptance_proxy",
+        "raw33.rear_vehicle_pressure_proxy",
+        "raw33.yielding_score_proxy",
+        "raw33.assertiveness_score_proxy"
+      ]
+    },
+    "intersection": [],
+    "status": "SUPERSEDED_BY_FAMILY_SPECIFIC_ROLES"
+  },
+  "d4_family_specific_contracts": {
+    "R-HLC": {
+      "F_match": [
+        "ego13.mean_speed",
+        "ego13.end_minus_start_speed",
+        "ego13.heading_change_abs_total",
+        "ego13.path_length"
+      ],
+      "Context_match": [
+        "context.map_location",
+        "context.road_class",
+        "context.log_id",
+        "context.intended_lane_change_direction",
+        "context.initial_speed_mps",
+        "context.initial_lane_offset_m",
+        "context.traffic_density",
+        "context.neighbor_availability_pattern",
+        "context.target_lane_initial_front_gap_m",
+        "context.target_lane_initial_rear_gap_m"
+      ],
+      "M_behavior": [
+        "raw33.lane_change_count_proxy",
+        "raw33.lane_change_duration_mean_proxy",
+        "raw33.lane_change_oscillation_score_proxy",
+        "mechanism.hesitation_retreat_count",
+        "mechanism.commit_latency_s",
+        "mechanism.monotonic_transition_fraction"
+      ],
+      "Semantic_probe_only": [
+        "ego13.mean_abs_accel",
+        "ego13.mean_abs_yaw_rate",
+        "ego13.p95_abs_accel",
+        "ego13.p95_abs_jerk",
+        "ego13.p95_speed",
+        "ego13.rms_accel",
+        "ego13.rms_jerk",
+        "ego13.rms_yaw_rate",
+        "ego13.std_speed",
+        "longitudinal_v2.ego_longitudinal_accel",
+        "longitudinal_v2.ego_longitudinal_jerk",
+        "longitudinal_v2.ego_speed_smoothed",
+        "raw33.assertiveness_score_proxy",
+        "raw33.front_pressure_score",
+        "raw33.heading_change_total",
+        "raw33.lane_change_left_count_proxy",
+        "raw33.lane_change_rate_proxy",
+        "raw33.lane_change_right_count_proxy",
+        "raw33.left_front_min_gap",
+        "raw33.left_gap_acceptance_proxy",
+        "raw33.left_gap_min",
+        "raw33.left_rear_min_gap",
+        "raw33.max_abs_accel",
+        "raw33.max_abs_jerk",
+        "raw33.max_lateral_speed",
+        "raw33.mean_front_distance",
+        "raw33.mean_rel_speed",
+        "raw33.mean_thw",
+        "raw33.min_front_distance",
+        "raw33.min_thw",
+        "raw33.p95_rel_speed",
+        "raw33.rear_vehicle_pressure_proxy",
+        "raw33.right_front_min_gap",
+        "raw33.right_gap_acceptance_proxy",
+        "raw33.right_gap_min",
+        "raw33.right_rear_min_gap",
+        "raw33.rms_accel",
+        "raw33.rms_curvature",
+        "raw33.rms_jerk",
+        "raw33.rms_lateral_accel",
+        "raw33.rms_yaw_rate",
+        "raw33.yielding_score_proxy"
+      ],
+      "primary_f_match_count": 4,
+      "primary_f_m_overlap": []
+    },
+    "R-TSB": {
+      "F_match": [
+        "ego13.mean_speed",
+        "ego13.end_minus_start_speed",
+        "ego13.mean_abs_accel",
+        "ego13.path_length"
+      ],
+      "Context_match": [
+        "context.map_location",
+        "context.road_class",
+        "context.log_id",
+        "context.initial_speed_mps",
+        "context.initial_front_gap_m",
+        "context.initial_lead_relative_speed_mps",
+        "context.initial_thw_s",
+        "context.traffic_density",
+        "context.neighbor_availability_pattern",
+        "context.planned_stop_or_hazard_class"
+      ],
+      "M_behavior": [
+        "raw33.rms_accel",
+        "raw33.rms_jerk",
+        "raw33.max_abs_jerk",
+        "mechanism.brake_phase_count",
+        "mechanism.interstage_release_fraction",
+        "mechanism.second_brake_peak_ratio"
+      ],
+      "Semantic_probe_only": [
+        "ego13.heading_change_abs_total",
+        "ego13.mean_abs_yaw_rate",
+        "ego13.p95_abs_accel",
+        "ego13.p95_abs_jerk",
+        "ego13.p95_speed",
+        "ego13.rms_accel",
+        "ego13.rms_jerk",
+        "ego13.rms_yaw_rate",
+        "ego13.std_speed",
+        "longitudinal_v2.ego_longitudinal_accel",
+        "longitudinal_v2.ego_longitudinal_jerk",
+        "longitudinal_v2.ego_speed_smoothed",
+        "raw33.assertiveness_score_proxy",
+        "raw33.front_pressure_score",
+        "raw33.heading_change_total",
+        "raw33.lane_change_count_proxy",
+        "raw33.lane_change_duration_mean_proxy",
+        "raw33.lane_change_left_count_proxy",
+        "raw33.lane_change_oscillation_score_proxy",
+        "raw33.lane_change_rate_proxy",
+        "raw33.lane_change_right_count_proxy",
+        "raw33.left_front_min_gap",
+        "raw33.left_gap_acceptance_proxy",
+        "raw33.left_gap_min",
+        "raw33.left_rear_min_gap",
+        "raw33.max_abs_accel",
+        "raw33.max_lateral_speed",
+        "raw33.mean_front_distance",
+        "raw33.mean_rel_speed",
+        "raw33.mean_thw",
+        "raw33.min_front_distance",
+        "raw33.min_thw",
+        "raw33.p95_rel_speed",
+        "raw33.rear_vehicle_pressure_proxy",
+        "raw33.right_front_min_gap",
+        "raw33.right_gap_acceptance_proxy",
+        "raw33.right_gap_min",
+        "raw33.right_rear_min_gap",
+        "raw33.rms_curvature",
+        "raw33.rms_lateral_accel",
+        "raw33.rms_yaw_rate",
+        "raw33.yielding_score_proxy"
+      ],
+      "primary_f_match_count": 4,
+      "primary_f_m_overlap": []
+    },
+    "R-IP": {
+      "F_match": [
+        "ego13.mean_speed",
+        "ego13.end_minus_start_speed",
+        "ego13.path_length"
+      ],
+      "Context_match": [
+        "context.map_location",
+        "context.road_class",
+        "context.log_id",
+        "context.intended_lane_change_direction",
+        "context.initial_speed_mps",
+        "context.traffic_density",
+        "context.neighbor_availability_pattern",
+        "context.target_lane_initial_front_gap_m",
+        "context.target_lane_initial_rear_gap_m",
+        "context.target_lane_initial_rear_closing_speed_mps",
+        "context.gap_opportunity_class"
+      ],
+      "M_behavior": [
+        "raw33.left_gap_acceptance_proxy",
+        "raw33.right_gap_acceptance_proxy",
+        "raw33.yielding_score_proxy",
+        "raw33.assertiveness_score_proxy",
+        "mechanism.gap_acceptance_latency_s",
+        "mechanism.minimum_accepted_rear_gap_m",
+        "mechanism.yield_response_onset_s"
+      ],
+      "Semantic_probe_only": [
+        "ego13.heading_change_abs_total",
+        "ego13.mean_abs_accel",
+        "ego13.mean_abs_yaw_rate",
+        "ego13.p95_abs_accel",
+        "ego13.p95_abs_jerk",
+        "ego13.p95_speed",
+        "ego13.rms_accel",
+        "ego13.rms_jerk",
+        "ego13.rms_yaw_rate",
+        "ego13.std_speed",
+        "longitudinal_v2.ego_longitudinal_accel",
+        "longitudinal_v2.ego_longitudinal_jerk",
+        "longitudinal_v2.ego_speed_smoothed",
+        "raw33.front_pressure_score",
+        "raw33.heading_change_total",
+        "raw33.lane_change_count_proxy",
+        "raw33.lane_change_duration_mean_proxy",
+        "raw33.lane_change_left_count_proxy",
+        "raw33.lane_change_oscillation_score_proxy",
+        "raw33.lane_change_rate_proxy",
+        "raw33.lane_change_right_count_proxy",
+        "raw33.left_front_min_gap",
+        "raw33.left_gap_min",
+        "raw33.left_rear_min_gap",
+        "raw33.max_abs_accel",
+        "raw33.max_abs_jerk",
+        "raw33.max_lateral_speed",
+        "raw33.mean_front_distance",
+        "raw33.mean_rel_speed",
+        "raw33.mean_thw",
+        "raw33.min_front_distance",
+        "raw33.min_thw",
+        "raw33.p95_rel_speed",
+        "raw33.rear_vehicle_pressure_proxy",
+        "raw33.right_front_min_gap",
+        "raw33.right_gap_min",
+        "raw33.right_rear_min_gap",
+        "raw33.rms_accel",
+        "raw33.rms_curvature",
+        "raw33.rms_jerk",
+        "raw33.rms_lateral_accel",
+        "raw33.rms_yaw_rate"
+      ],
+      "primary_f_match_count": 3,
+      "primary_f_m_overlap": []
+    }
+  },
+  "context_match_contract_definitions": {
+    "context.map_location": {
+      "unit": "category",
+      "definition": "Map/location identity known before treatment",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.road_class": {
+      "unit": "category",
+      "definition": "Road/lane topology class known before treatment",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.log_id": {
+      "unit": "identifier",
+      "definition": "Log cluster identity; matching/blocking only",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.intended_lane_change_direction": {
+      "unit": "category",
+      "definition": "Pre-treatment intended maneuver direction",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.initial_speed_mps": {
+      "unit": "m/s",
+      "definition": "Ego speed at frozen pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.initial_lane_offset_m": {
+      "unit": "m",
+      "definition": "Ego lane offset at pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.traffic_density": {
+      "unit": "count or frozen bin",
+      "definition": "Pre-treatment traffic-density measure",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.neighbor_availability_pattern": {
+      "unit": "bit pattern",
+      "definition": "Pre-treatment semantic-slot availability",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.target_lane_initial_front_gap_m": {
+      "unit": "m",
+      "definition": "Target-lane front gap at pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.target_lane_initial_rear_gap_m": {
+      "unit": "m",
+      "definition": "Target-lane rear gap at pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.initial_front_gap_m": {
+      "unit": "m",
+      "definition": "Current-lane front gap at pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.initial_lead_relative_speed_mps": {
+      "unit": "m/s",
+      "definition": "Lead relative speed at pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.initial_thw_s": {
+      "unit": "s",
+      "definition": "THW at pre-treatment anchor with frozen validity/sentinel rule",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.planned_stop_or_hazard_class": {
+      "unit": "category",
+      "definition": "Pre-treatment route/hazard intent class",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.target_lane_initial_rear_closing_speed_mps": {
+      "unit": "m/s",
+      "definition": "Target-lane rear closing speed at pre-treatment anchor",
+      "time_role": "PRE_TREATMENT_ONLY"
+    },
+    "context.gap_opportunity_class": {
+      "unit": "category",
+      "definition": "Pre-treatment gap-opportunity stratum",
+      "time_role": "PRE_TREATMENT_ONLY"
+    }
+  },
+  "mechanism_contract_definitions": {
+    "mechanism.hesitation_retreat_count": {
+      "unit": "count",
+      "definition": "Count of predeclared retreat/reversal episodes before commitment",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.commit_latency_s": {
+      "unit": "s",
+      "definition": "Time from opportunity/intent anchor to committed transition",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.monotonic_transition_fraction": {
+      "unit": "fraction",
+      "definition": "Fraction of transition progress consistent with committed direction",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.brake_phase_count": {
+      "unit": "count",
+      "definition": "Count of separated braking phases under frozen acceleration thresholds",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.interstage_release_fraction": {
+      "unit": "fraction",
+      "definition": "Release magnitude between first and second braking phases",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.second_brake_peak_ratio": {
+      "unit": "ratio",
+      "definition": "Second-to-first peak braking magnitude ratio",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.gap_acceptance_latency_s": {
+      "unit": "s",
+      "definition": "Time from frozen gap opportunity to commitment",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.minimum_accepted_rear_gap_m": {
+      "unit": "m",
+      "definition": "Rear gap at frozen acceptance event",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    },
+    "mechanism.yield_response_onset_s": {
+      "unit": "s",
+      "definition": "Latency from interaction cue to yielding response onset",
+      "time_role": "POST_TREATMENT_MECHANISM",
+      "implementation_status": "REQUIRED_BEFORE_D4_EXECUTION"
+    }
+  },
+  "role_rules": {
+    "primary_f_match_and_primary_m_behavior_overlap_within_family": "PROHIBITED",
+    "post_treatment_response_as_context_match": "PROHIBITED",
+    "shared_f_match_across_families": "NOT_REQUIRED",
+    "thw_and_front_gap_whole_window_features": "SEMANTIC_PROBE_ONLY; pre-treatment anchor variants may be Context_match"
+  }
+}
