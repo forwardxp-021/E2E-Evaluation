@@ -1,0 +1,62 @@
+residual_family,feature_id,role,availability,candidate_sources,evidence_or_reason
+R-HLC,ego13.end_minus_start_speed,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage7l_pure_lateral,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-HLC,ego13.heading_change_abs_total,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage7l_pure_lateral,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-HLC,ego13.mean_speed,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage7l_pure_lateral,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-HLC,ego13.path_length,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage7l_pure_lateral,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-HLC,context.initial_lane_offset_m,Context_match,NOT_AVAILABLE,stage7l_pure_lateral,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-HLC,context.initial_speed_mps,Context_match,AMBIGUOUS,stage7l_pure_lateral,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-HLC,context.intended_lane_change_direction,Context_match,NOT_AVAILABLE,stage7l_pure_lateral,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-HLC,context.log_id,Context_match,AVAILABLE_EXACT,stage7l_pure_lateral,metadata.log_name
+R-HLC,context.map_location,Context_match,AVAILABLE_EXACT,stage7l_pure_lateral,metadata.location
+R-HLC,context.neighbor_availability_pattern,Context_match,AMBIGUOUS,stage7l_pure_lateral,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-HLC,context.road_class,Context_match,NOT_AVAILABLE,stage7l_pure_lateral,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-HLC,context.target_lane_initial_front_gap_m,Context_match,AMBIGUOUS,stage7l_pure_lateral,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-HLC,context.target_lane_initial_rear_gap_m,Context_match,AMBIGUOUS,stage7l_pure_lateral,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-HLC,context.traffic_density,Context_match,AMBIGUOUS,stage7l_pure_lateral,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-HLC,mechanism.commit_latency_s,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage7l_pure_lateral,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-HLC,mechanism.hesitation_retreat_count,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage7l_pure_lateral,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-HLC,mechanism.monotonic_transition_fraction,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage7l_pure_lateral,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-HLC,raw33.lane_change_count_proxy,M_behavior,AVAILABLE_EXACT,stage7l_pure_lateral,feature_schema.json + interaction_feat_style.npy
+R-HLC,raw33.lane_change_duration_mean_proxy,M_behavior,AVAILABLE_EXACT,stage7l_pure_lateral,feature_schema.json + interaction_feat_style.npy
+R-HLC,raw33.lane_change_oscillation_score_proxy,M_behavior,AVAILABLE_EXACT,stage7l_pure_lateral,feature_schema.json + interaction_feat_style.npy
+R-TSB,ego13.end_minus_start_speed,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6j_pure_longitudinal;stage6k_longitudinal_dose,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-TSB,ego13.mean_abs_accel,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6j_pure_longitudinal;stage6k_longitudinal_dose,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-TSB,ego13.mean_speed,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6j_pure_longitudinal;stage6k_longitudinal_dose,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-TSB,ego13.path_length,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6j_pure_longitudinal;stage6k_longitudinal_dose,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-TSB,context.initial_front_gap_m,Context_match,AMBIGUOUS,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-TSB,context.initial_lead_relative_speed_mps,Context_match,AMBIGUOUS,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-TSB,context.initial_speed_mps,Context_match,AMBIGUOUS,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-TSB,context.initial_thw_s,Context_match,AMBIGUOUS,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-TSB,context.log_id,Context_match,AVAILABLE_EXACT,stage6j_pure_longitudinal;stage6k_longitudinal_dose,metadata.log_name
+R-TSB,context.map_location,Context_match,AVAILABLE_EXACT,stage6j_pure_longitudinal;stage6k_longitudinal_dose,metadata.location
+R-TSB,context.neighbor_availability_pattern,Context_match,AMBIGUOUS,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-TSB,context.planned_stop_or_hazard_class,Context_match,NOT_AVAILABLE,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-TSB,context.road_class,Context_match,NOT_AVAILABLE,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-TSB,context.traffic_density,Context_match,AMBIGUOUS,stage6j_pure_longitudinal;stage6k_longitudinal_dose,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-TSB,mechanism.brake_phase_count,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage6j_pure_longitudinal;stage6k_longitudinal_dose,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-TSB,mechanism.interstage_release_fraction,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage6j_pure_longitudinal;stage6k_longitudinal_dose,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-TSB,mechanism.second_brake_peak_ratio,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage6j_pure_longitudinal;stage6k_longitudinal_dose,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-TSB,raw33.max_abs_jerk,M_behavior,AVAILABLE_EXACT,stage6j_pure_longitudinal;stage6k_longitudinal_dose,feature_schema.json + interaction_feat_style.npy
+R-TSB,raw33.rms_accel,M_behavior,AVAILABLE_EXACT,stage6j_pure_longitudinal;stage6k_longitudinal_dose,feature_schema.json + interaction_feat_style.npy
+R-TSB,raw33.rms_jerk,M_behavior,AVAILABLE_EXACT,stage6j_pure_longitudinal;stage6k_longitudinal_dose,feature_schema.json + interaction_feat_style.npy
+R-IP,ego13.end_minus_start_speed,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6s_v3_interaction,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-IP,ego13.mean_speed,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6s_v3_interaction,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-IP,ego13.path_length,F_match,AVAILABLE_DERIVABLE_WITH_FROZEN_DEFINITION,stage6s_v3_interaction,ego_seq + ego_seq_mask satisfy frozen ego13 valid-frame contract
+R-IP,context.gap_opportunity_class,Context_match,NOT_AVAILABLE,stage6s_v3_interaction,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-IP,context.initial_speed_mps,Context_match,AMBIGUOUS,stage6s_v3_interaction,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-IP,context.intended_lane_change_direction,Context_match,NOT_AVAILABLE,stage6s_v3_interaction,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-IP,context.log_id,Context_match,AVAILABLE_EXACT,stage6s_v3_interaction,metadata.log_name
+R-IP,context.map_location,Context_match,AVAILABLE_EXACT,stage6s_v3_interaction,metadata.location
+R-IP,context.neighbor_availability_pattern,Context_match,AMBIGUOUS,stage6s_v3_interaction,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-IP,context.road_class,Context_match,NOT_AVAILABLE,stage6s_v3_interaction,历史 metadata/schema 中不存在该冻结字段；不得由 scenario_type 或 planner 名替代
+R-IP,context.target_lane_initial_front_gap_m,Context_match,AMBIGUOUS,stage6s_v3_interaction,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-IP,context.target_lane_initial_rear_closing_speed_mps,Context_match,AMBIGUOUS,stage6s_v3_interaction,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-IP,context.target_lane_initial_rear_gap_m,Context_match,AMBIGUOUS,stage6s_v3_interaction,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-IP,context.traffic_density,Context_match,AMBIGUOUS,stage6s_v3_interaction,历史资产没有逐项绑定到冻结的 pre-treatment anchor；不得以首帧、whole-window 或 response-derived proxy 替代。
+R-IP,mechanism.gap_acceptance_latency_s,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage6s_v3_interaction,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-IP,mechanism.minimum_accepted_rear_gap_m,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage6s_v3_interaction,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-IP,mechanism.yield_response_onset_s,M_behavior,NOT_EVALUABLE_MECHANISM_VARIABLE,stage6s_v3_interaction,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。
+R-IP,raw33.assertiveness_score_proxy,M_behavior,AVAILABLE_EXACT,stage6s_v3_interaction,feature_schema.json + interaction_feat_style.npy
+R-IP,raw33.left_gap_acceptance_proxy,M_behavior,AVAILABLE_EXACT,stage6s_v3_interaction,feature_schema.json + interaction_feat_style.npy
+R-IP,raw33.right_gap_acceptance_proxy,M_behavior,AVAILABLE_EXACT,stage6s_v3_interaction,feature_schema.json + interaction_feat_style.npy
+R-IP,raw33.yielding_score_proxy,M_behavior,AVAILABLE_EXACT,stage6s_v3_interaction,feature_schema.json + interaction_feat_style.npy

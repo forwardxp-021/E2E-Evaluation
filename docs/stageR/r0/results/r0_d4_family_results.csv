@@ -1,0 +1,10 @@
+hypothesis_id,residual_family,formal_hypothesis_result,development_feasibility_status,reason
+D4_DESCRIPTOR_EQUIVALENCE_R_HLC,R-HLC,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,冻结 Context_match 未能逐项从历史资产获得 exact pre-treatment anchor；未执行 fallback matching。
+D4_MECHANISM_DIFFERENCE_R_HLC,R-HLC,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,全部 family-specific mechanism 变量缺少冻结的可执行 deterministic rule；未使用替代指标。
+D4_OUTCOME_BLIND_FEASIBILITY_R_HLC,R-HLC,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,candidate source 盘点完成，但 descriptor/context/mechanism 三重资格门未能合法执行。
+D4_DESCRIPTOR_EQUIVALENCE_R_TSB,R-TSB,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,冻结 Context_match 未能逐项从历史资产获得 exact pre-treatment anchor；未执行 fallback matching。
+D4_MECHANISM_DIFFERENCE_R_TSB,R-TSB,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,全部 family-specific mechanism 变量缺少冻结的可执行 deterministic rule；未使用替代指标。
+D4_OUTCOME_BLIND_FEASIBILITY_R_TSB,R-TSB,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,candidate source 盘点完成，但 descriptor/context/mechanism 三重资格门未能合法执行。
+D4_DESCRIPTOR_EQUIVALENCE_R_IP,R-IP,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,冻结 Context_match 未能逐项从历史资产获得 exact pre-treatment anchor；未执行 fallback matching。
+D4_MECHANISM_DIFFERENCE_R_IP,R-IP,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,全部 family-specific mechanism 变量缺少冻结的可执行 deterministic rule；未使用替代指标。
+D4_OUTCOME_BLIND_FEASIBILITY_R_IP,R-IP,NOT_EVALUABLE,INSUFFICIENT_FOR_RBR_DEVELOPMENT,candidate source 盘点完成，但 descriptor/context/mechanism 三重资格门未能合法执行。

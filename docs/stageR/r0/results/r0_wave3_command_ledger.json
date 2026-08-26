@@ -1,0 +1,18 @@
+{
+  "schema_version": "r0_wave3_command_ledger_v1",
+  "commands": [
+    {
+      "argv": [
+        "tools/stageR_execute_r0_wave3_d4_feasibility.py"
+      ],
+      "purpose": "read-only D4 feasibility audit",
+      "status": "COMPLETE"
+    }
+  ],
+  "prohibited_actions": [
+    "RBR training",
+    "new planner rollout",
+    "representation/BDD/probe outcome selection",
+    "R4 outcome access"
+  ]
+}

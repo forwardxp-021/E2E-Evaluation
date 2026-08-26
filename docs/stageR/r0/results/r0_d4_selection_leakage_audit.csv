@@ -1,0 +1,10 @@
+residual_family,audit_check,status,evidence
+R-HLC,F_match_M_behavior_zero_overlap,PASS,frozen role CSV overlap=[]
+R-HLC,representation_BDD_probe_outcome_used_for_selection,PASS_NO_SELECTION_EXECUTED,"Wave3 tool only opens contract, manifest, metadata, raw trajectory and raw33 schema/value paths."
+R-HLC,post_treatment_metric_in_matching_distance,PASS_NO_SELECTION_EXECUTED,matching_distance_used=NONE because required pre-treatment context anchors are unavailable.
+R-TSB,F_match_M_behavior_zero_overlap,PASS,frozen role CSV overlap=[]
+R-TSB,representation_BDD_probe_outcome_used_for_selection,PASS_NO_SELECTION_EXECUTED,"Wave3 tool only opens contract, manifest, metadata, raw trajectory and raw33 schema/value paths."
+R-TSB,post_treatment_metric_in_matching_distance,PASS_NO_SELECTION_EXECUTED,matching_distance_used=NONE because required pre-treatment context anchors are unavailable.
+R-IP,F_match_M_behavior_zero_overlap,PASS,frozen role CSV overlap=[]
+R-IP,representation_BDD_probe_outcome_used_for_selection,PASS_NO_SELECTION_EXECUTED,"Wave3 tool only opens contract, manifest, metadata, raw trajectory and raw33 schema/value paths."
+R-IP,post_treatment_metric_in_matching_distance,PASS_NO_SELECTION_EXECUTED,matching_distance_used=NONE because required pre-treatment context anchors are unavailable.

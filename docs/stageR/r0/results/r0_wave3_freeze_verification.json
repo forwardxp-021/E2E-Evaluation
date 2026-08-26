@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "freeze_tag_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+  "freeze_content_commit": "5bd5c7ac58c284d4c938919cacf2eefb969a5c44",
+  "frozen_artifact_checks": [
+    {
+      "artifact": "protocol_v1",
+      "path": "docs/stageR/r0/protocol/R0_Representation_Measurement_Audit_Protocol_v1.0_zh.md",
+      "expected": "4c391cc3ce70b84512b2303a6be19f840b494b9096d71e02c91aff028ebed89c",
+      "actual": "4c391cc3ce70b84512b2303a6be19f840b494b9096d71e02c91aff028ebed89c"
+    },
+    {
+      "artifact": "sap_v1_markdown",
+      "path": "docs/stageR/r0/protocol/R0_Statistical_Analysis_Plan_v1.0.md",
+      "expected": "7bb3157203a36010c49a43433d22c1410cf97f8f7d4112dcf6644d581a3f9844",
+      "actual": "7bb3157203a36010c49a43433d22c1410cf97f8f7d4112dcf6644d581a3f9844"
+    },
+    {
+      "artifact": "sap_v1_json",
+      "path": "docs/stageR/r0/manifests/r0_statistical_analysis_plan_v1.0.json",
+      "expected": "804512b50468f8f8534a702ed13db63fed21e2c7db8cfa0cc3518cff9b66f58d",
+      "actual": "804512b50468f8f8534a702ed13db63fed21e2c7db8cfa0cc3518cff9b66f58d"
+    },
+    {
+      "artifact": "decision_table",
+      "path": "docs/stageR/r0/manifests/r0_decision_table_v1.0.csv",
+      "expected": "96ed757e9f34aa929ded60ba631e261361fa024eababbb28908c4bacb9521a8b",
+      "actual": "96ed757e9f34aa929ded60ba631e261361fa024eababbb28908c4bacb9521a8b"
+    },
+    {
+      "artifact": "asset_inventory",
+      "path": "docs/stageR/r0/manifests/r0_asset_inventory_v0.3.csv",
+      "expected": "c4e4daa788abcd377c059514e64409cefb2e58e72d715e17ce2bbf1d57089e12",
+      "actual": "c4e4daa788abcd377c059514e64409cefb2e58e72d715e17ce2bbf1d57089e12"
+    },
+    {
+      "artifact": "contract_inventory",
+      "path": "docs/stageR/r0/manifests/r0_contract_inventory_v0.3.csv",
+      "expected": "c9dfda7d6337532cf6b9ff0e5b26ba548e48d770f6c9379e2f7d741a7cacad47",
+      "actual": "c9dfda7d6337532cf6b9ff0e5b26ba548e48d770f6c9379e2f7d741a7cacad47"
+    },
+    {
+      "artifact": "split_manifest",
+      "path": "docs/stageR/r0/manifests/r0_split_manifest_v1.0.csv",
+      "expected": "c2dbb756c6cebae69a45475aaca2bc1ac4f0e70643fcd381b72b26fb72179915",
+      "actual": "c2dbb756c6cebae69a45475aaca2bc1ac4f0e70643fcd381b72b26fb72179915"
+    },
+    {
+      "artifact": "target_definition",
+      "path": "docs/stageR/r0/manifests/r0_target_definition_v0.2.json",
+      "expected": "534c90a59e0e730732c25a26933dd63ca93ccaf638f2900d113e029ec2c25c7f",
+      "actual": "534c90a59e0e730732c25a26933dd63ca93ccaf638f2900d113e029ec2c25c7f"
+    },
+    {
+      "artifact": "d0_temporal_policy",
+      "path": "docs/stageR/r0/protocol/R0_D0_Temporal_Audit_Policy_v0.1.md",
+      "expected": "f0357d7a5fd5f2bb91bd58146db29bdeeda2c8cf4ed7123b30415dac3d10d8c2",
+      "actual": "f0357d7a5fd5f2bb91bd58146db29bdeeda2c8cf4ed7123b30415dac3d10d8c2"
+    },
+    {
+      "artifact": "mask_padding_policy",
+      "path": "docs/stageR/r0/protocol/R0_Mask_Padding_Audit_Policy_v0.1.md",
+      "expected": "847cfbdea78d4ed7f306baad91240bb7e44a87d9196a6472e8a633b94d8704bb",
+      "actual": "847cfbdea78d4ed7f306baad91240bb7e44a87d9196a6472e8a633b94d8704bb"
+    },
+    {
+      "artifact": "d1_gate",
+      "path": "docs/stageR/r0/manifests/r0_d1_core_semantic_targets_v0.1.json",
+      "expected": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b",
+      "actual": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b"
+    },
+    {
+      "artifact": "d4_family_specific_contract",
+      "path": "docs/stageR/r0/manifests/r0_d4_family_specific_feature_roles_v0.1.csv",
+      "expected": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4",
+      "actual": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4"
+    },
+    {
+      "artifact": "d4_development_fallback",
+      "path": "docs/stageR/r0/manifests/r0_d4_development_balance_fallback_v1.json",
+      "expected": "616dfc0bcfc55ff4524d4b2add164b7ecd11da2963d0b7cbe44c698138f0f6e9",
+      "actual": "616dfc0bcfc55ff4524d4b2add164b7ecd11da2963d0b7cbe44c698138f0f6e9"
+    },
+    {
+      "artifact": "r4_reserved_source_or_generator_freeze",
+      "path": "docs/stageR/r0/manifests/r0_future_r4_reserved_source_or_generator_freeze_v0.2.json",
+      "expected": "b05b5776c365c8134b2a97c5e799be67a84b8988947c8d40a420cfd7c2a0e743",
+      "actual": "b05b5776c365c8134b2a97c5e799be67a84b8988947c8d40a420cfd7c2a0e743"
+    },
+    {
+      "artifact": "scientific_owner_approval",
+      "path": "docs/stageR/r0/manifests/r0_scientific_owner_approval_v0.2.json",
+      "expected": "cc1ee9754c1a008cc89187145818557900f1ca0919acb095e64d4b9c7b3c33d3",
+      "actual": "cc1ee9754c1a008cc89187145818557900f1ca0919acb095e64d4b9c7b3c33d3"
+    },
+    {
+      "artifact": "training_authorization",
+      "path": "docs/stageR/r0/manifests/r0_training_authorization_manifest_v1.0.json",
+      "expected": "f863fbbcd1c93a3f529b3fe497b8bf0ef70f07441bda88c97c7d09df407f8342",
+      "actual": "f863fbbcd1c93a3f529b3fe497b8bf0ef70f07441bda88c97c7d09df407f8342"
+    },
+    {
+      "artifact": "environment_schema",
+      "path": "docs/stageR/r0/manifests/r0_environment_schema_v1.0.json",
+      "expected": "826358fe0abfc9d1d1054a01477e68c8d8b5cadf8a3eb4811fb3870781720fbd",
+      "actual": "826358fe0abfc9d1d1054a01477e68c8d8b5cadf8a3eb4811fb3870781720fbd"
+    },
+    {
+      "artifact": "command_ledger_schema",
+      "path": "docs/stageR/r0/manifests/r0_command_ledger_schema_v1.0.json",
+      "expected": "a46f2288a6bdf4f9b8a70731e5aef578fd898c65abbdc48ac39df2237f1e980e",
+      "actual": "a46f2288a6bdf4f9b8a70731e5aef578fd898c65abbdc48ac39df2237f1e980e"
+    },
+    {
+      "artifact": "protocol_deviation_log_schema",
+      "path": "docs/stageR/r0/manifests/r0_protocol_deviation_log_v1.0.csv",
+      "expected": "cdf2b20be15da71cc206e24dd45298d0fa0062de630a38433581ff1c6dee9f98",
+      "actual": "cdf2b20be15da71cc206e24dd45298d0fa0062de630a38433581ff1c6dee9f98"
+    }
+  ]
+}

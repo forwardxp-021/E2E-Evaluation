@@ -1,0 +1,10 @@
+residual_family,mechanism_variable,availability,raw_trajectory_available,frozen_definition,reason,substitute_metric_used
+R-HLC,mechanism.commit_latency_s,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Time from opportunity/intent anchor to committed transition,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-HLC,mechanism.hesitation_retreat_count,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Count of predeclared retreat/reversal episodes before commitment,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-HLC,mechanism.monotonic_transition_fraction,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Fraction of transition progress consistent with committed direction,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-TSB,mechanism.brake_phase_count,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Count of separated braking phases under frozen acceleration thresholds,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-TSB,mechanism.interstage_release_fraction,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Release magnitude between first and second braking phases,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-TSB,mechanism.second_brake_peak_ratio,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Second-to-first peak braking magnitude ratio,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-IP,mechanism.gap_acceptance_latency_s,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Time from frozen gap opportunity to commitment,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-IP,mechanism.minimum_accepted_rear_gap_m,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Rear gap at frozen acceptance event,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
+R-IP,mechanism.yield_response_onset_s,NOT_EVALUABLE_MECHANISM_VARIABLE,True,Latency from interaction cue to yielding response onset,冻结目标定义仅给出语义描述，并未冻结计算阈值、anchor、阶段分割或判定算法；历史机制表不是同名冻结变量，不能替代。,False
