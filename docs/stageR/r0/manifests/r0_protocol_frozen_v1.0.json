@@ -1,0 +1,102 @@
+{
+  "schema_version": "r0_protocol_frozen_v1.0",
+  "status": "R0_PROTOCOL_V1_0_FROZEN",
+  "source_branch": "20260825_stageR_new",
+  "pre_freeze_baseline_commit": "b929cd62109f3e5cdc015903a958fa574d181e40",
+  "worktree": {
+    "dirty": true,
+    "preexisting_protected_dirty_output": {
+      "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+      "sha256_at_freeze_generation": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+      "git_status": "modified_tracked",
+      "included_in_freeze_commit": false,
+      "exclusion_proof_required_before_commit": "git diff --cached --name-only must not contain this path"
+    },
+    "untracked_historical_output_count": 395
+  },
+  "execution_authorization": "R0_EXECUTION_AUTHORIZED_WITH_DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "protocol_definition_blocker": false,
+  "r0_audit_holdout": "NOT_AVAILABLE",
+  "evidence_level": "DEVELOPMENT_DIAGNOSTIC_EVIDENCE",
+  "r4_source_or_generator": "FROZEN",
+  "r4_confirmation_roster": "NOT_FROZEN_BY_DESIGN",
+  "artifact_sha256": {
+    "protocol_v1": {
+      "path": "docs/stageR/r0/protocol/R0_Representation_Measurement_Audit_Protocol_v1.0_zh.md",
+      "sha256": "4c391cc3ce70b84512b2303a6be19f840b494b9096d71e02c91aff028ebed89c"
+    },
+    "sap_v1_markdown": {
+      "path": "docs/stageR/r0/protocol/R0_Statistical_Analysis_Plan_v1.0.md",
+      "sha256": "7bb3157203a36010c49a43433d22c1410cf97f8f7d4112dcf6644d581a3f9844"
+    },
+    "sap_v1_json": {
+      "path": "docs/stageR/r0/manifests/r0_statistical_analysis_plan_v1.0.json",
+      "sha256": "804512b50468f8f8534a702ed13db63fed21e2c7db8cfa0cc3518cff9b66f58d"
+    },
+    "decision_table": {
+      "path": "docs/stageR/r0/manifests/r0_decision_table_v1.0.csv",
+      "sha256": "96ed757e9f34aa929ded60ba631e261361fa024eababbb28908c4bacb9521a8b"
+    },
+    "asset_inventory": {
+      "path": "docs/stageR/r0/manifests/r0_asset_inventory_v0.3.csv",
+      "sha256": "c4e4daa788abcd377c059514e64409cefb2e58e72d715e17ce2bbf1d57089e12"
+    },
+    "contract_inventory": {
+      "path": "docs/stageR/r0/manifests/r0_contract_inventory_v0.3.csv",
+      "sha256": "c9dfda7d6337532cf6b9ff0e5b26ba548e48d770f6c9379e2f7d741a7cacad47"
+    },
+    "split_manifest": {
+      "path": "docs/stageR/r0/manifests/r0_split_manifest_v1.0.csv",
+      "sha256": "c2dbb756c6cebae69a45475aaca2bc1ac4f0e70643fcd381b72b26fb72179915"
+    },
+    "target_definition": {
+      "path": "docs/stageR/r0/manifests/r0_target_definition_v0.2.json",
+      "sha256": "534c90a59e0e730732c25a26933dd63ca93ccaf638f2900d113e029ec2c25c7f"
+    },
+    "d0_temporal_policy": {
+      "path": "docs/stageR/r0/protocol/R0_D0_Temporal_Audit_Policy_v0.1.md",
+      "sha256": "f0357d7a5fd5f2bb91bd58146db29bdeeda2c8cf4ed7123b30415dac3d10d8c2"
+    },
+    "mask_padding_policy": {
+      "path": "docs/stageR/r0/protocol/R0_Mask_Padding_Audit_Policy_v0.1.md",
+      "sha256": "847cfbdea78d4ed7f306baad91240bb7e44a87d9196a6472e8a633b94d8704bb"
+    },
+    "d1_gate": {
+      "path": "docs/stageR/r0/manifests/r0_d1_core_semantic_targets_v0.1.json",
+      "sha256": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b"
+    },
+    "d4_family_specific_contract": {
+      "path": "docs/stageR/r0/manifests/r0_d4_family_specific_feature_roles_v0.1.csv",
+      "sha256": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4"
+    },
+    "d4_development_fallback": {
+      "path": "docs/stageR/r0/manifests/r0_d4_development_balance_fallback_v1.json",
+      "sha256": "616dfc0bcfc55ff4524d4b2add164b7ecd11da2963d0b7cbe44c698138f0f6e9"
+    },
+    "r4_reserved_source_or_generator_freeze": {
+      "path": "docs/stageR/r0/manifests/r0_future_r4_reserved_source_or_generator_freeze_v0.2.json",
+      "sha256": "b05b5776c365c8134b2a97c5e799be67a84b8988947c8d40a420cfd7c2a0e743"
+    },
+    "scientific_owner_approval": {
+      "path": "docs/stageR/r0/manifests/r0_scientific_owner_approval_v0.2.json",
+      "sha256": "cc1ee9754c1a008cc89187145818557900f1ca0919acb095e64d4b9c7b3c33d3"
+    },
+    "training_authorization": {
+      "path": "docs/stageR/r0/manifests/r0_training_authorization_manifest_v1.0.json",
+      "sha256": "f863fbbcd1c93a3f529b3fe497b8bf0ef70f07441bda88c97c7d09df407f8342"
+    },
+    "environment_schema": {
+      "path": "docs/stageR/r0/manifests/r0_environment_schema_v1.0.json",
+      "sha256": "826358fe0abfc9d1d1054a01477e68c8d8b5cadf8a3eb4811fb3870781720fbd"
+    },
+    "command_ledger_schema": {
+      "path": "docs/stageR/r0/manifests/r0_command_ledger_schema_v1.0.json",
+      "sha256": "a46f2288a6bdf4f9b8a70731e5aef578fd898c65abbdc48ac39df2237f1e980e"
+    },
+    "protocol_deviation_log_schema": {
+      "path": "docs/stageR/r0/manifests/r0_protocol_deviation_log_v1.0.csv",
+      "sha256": "cdf2b20be15da71cc206e24dd45298d0fa0062de630a38433581ff1c6dee9f98"
+    }
+  },
+  "phase_b_binding": "r0_v1_freeze_binding.json is deliberately created after the Phase-A content commit to avoid self-referential Git binding"
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "r0_training_authorization_manifest_v1.0",
+  "status": "R0_PROTOCOL_FROZEN_RBR_FORMAL_TRAINING_NOT_AUTHORIZED",
+  "RBR_A_TRAINING_AUTHORIZATION": "NOT_AUTHORIZED",
+  "RBR_B_TRAINING_AUTHORIZATION": "NOT_AUTHORIZED",
+  "RBR_C_TRAINING_AUTHORIZATION": "NOT_AUTHORIZED",
+  "automatic_not_authorized_rule": "if any required SHA is absent, mismatched, or unverifiable, authorization is NOT_AUTHORIZED",
+  "candidates": {
+    "RBR_A": {
+      "authorization": "NOT_AUTHORIZED",
+      "required_bindings": {
+        "protocol_sha": "4c391cc3ce70b84512b2303a6be19f840b494b9096d71e02c91aff028ebed89c",
+        "decision_table_sha": "96ed757e9f34aa929ded60ba631e261361fa024eababbb28908c4bacb9521a8b",
+        "asset_inventory_sha": "c4e4daa788abcd377c059514e64409cefb2e58e72d715e17ce2bbf1d57089e12",
+        "contract_inventory_sha": "c9dfda7d6337532cf6b9ff0e5b26ba548e48d770f6c9379e2f7d741a7cacad47",
+        "split_manifest_sha": "c2dbb756c6cebae69a45475aaca2bc1ac4f0e70643fcd381b72b26fb72179915",
+        "sap_sha": "804512b50468f8f8534a702ed13db63fed21e2c7db8cfa0cc3518cff9b66f58d",
+        "target_definition_sha": "534c90a59e0e730732c25a26933dd63ca93ccaf638f2900d113e029ec2c25c7f",
+        "D1_gate_sha": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b",
+        "D4_contract_sha": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4",
+        "R4_source_or_generator_freeze_sha": "b05b5776c365c8134b2a97c5e799be67a84b8988947c8d40a420cfd7c2a0e743",
+        "fallback_id": "D4_DEVELOPMENT_BALANCE_FALLBACK_V1"
+      },
+      "missing_required_sha": [],
+      "r4_source_acquisition_choice_status": "NOT_YET_FROZEN",
+      "scientific_execution_decision_records": "NOT_YET_FORMED",
+      "candidate_specific_activation_gates": "NOT_EXECUTED",
+      "authorization_rationale": "Protocol is frozen, but R0 scientific execution/decision records, candidate-specific activation gates, and exact R4 source acquisition choice are not complete. Any missing required SHA would also require NOT_AUTHORIZED."
+    },
+    "RBR_B": {
+      "authorization": "NOT_AUTHORIZED",
+      "required_bindings": {
+        "protocol_sha": "4c391cc3ce70b84512b2303a6be19f840b494b9096d71e02c91aff028ebed89c",
+        "decision_table_sha": "96ed757e9f34aa929ded60ba631e261361fa024eababbb28908c4bacb9521a8b",
+        "asset_inventory_sha": "c4e4daa788abcd377c059514e64409cefb2e58e72d715e17ce2bbf1d57089e12",
+        "contract_inventory_sha": "c9dfda7d6337532cf6b9ff0e5b26ba548e48d770f6c9379e2f7d741a7cacad47",
+        "split_manifest_sha": "c2dbb756c6cebae69a45475aaca2bc1ac4f0e70643fcd381b72b26fb72179915",
+        "sap_sha": "804512b50468f8f8534a702ed13db63fed21e2c7db8cfa0cc3518cff9b66f58d",
+        "target_definition_sha": "534c90a59e0e730732c25a26933dd63ca93ccaf638f2900d113e029ec2c25c7f",
+        "D1_gate_sha": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b",
+        "D4_contract_sha": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4",
+        "R4_source_or_generator_freeze_sha": "b05b5776c365c8134b2a97c5e799be67a84b8988947c8d40a420cfd7c2a0e743",
+        "fallback_id": "D4_DEVELOPMENT_BALANCE_FALLBACK_V1"
+      },
+      "missing_required_sha": [],
+      "r4_source_acquisition_choice_status": "NOT_YET_FROZEN",
+      "scientific_execution_decision_records": "NOT_YET_FORMED",
+      "candidate_specific_activation_gates": "NOT_EXECUTED",
+      "authorization_rationale": "Protocol is frozen, but R0 scientific execution/decision records, candidate-specific activation gates, and exact R4 source acquisition choice are not complete. Any missing required SHA would also require NOT_AUTHORIZED."
+    },
+    "RBR_C": {
+      "authorization": "NOT_AUTHORIZED",
+      "required_bindings": {
+        "protocol_sha": "4c391cc3ce70b84512b2303a6be19f840b494b9096d71e02c91aff028ebed89c",
+        "decision_table_sha": "96ed757e9f34aa929ded60ba631e261361fa024eababbb28908c4bacb9521a8b",
+        "asset_inventory_sha": "c4e4daa788abcd377c059514e64409cefb2e58e72d715e17ce2bbf1d57089e12",
+        "contract_inventory_sha": "c9dfda7d6337532cf6b9ff0e5b26ba548e48d770f6c9379e2f7d741a7cacad47",
+        "split_manifest_sha": "c2dbb756c6cebae69a45475aaca2bc1ac4f0e70643fcd381b72b26fb72179915",
+        "sap_sha": "804512b50468f8f8534a702ed13db63fed21e2c7db8cfa0cc3518cff9b66f58d",
+        "target_definition_sha": "534c90a59e0e730732c25a26933dd63ca93ccaf638f2900d113e029ec2c25c7f",
+        "D1_gate_sha": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b",
+        "D4_contract_sha": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4",
+        "R4_source_or_generator_freeze_sha": "b05b5776c365c8134b2a97c5e799be67a84b8988947c8d40a420cfd7c2a0e743",
+        "fallback_id": "D4_DEVELOPMENT_BALANCE_FALLBACK_V1"
+      },
+      "missing_required_sha": [],
+      "r4_source_acquisition_choice_status": "NOT_YET_FROZEN",
+      "scientific_execution_decision_records": "NOT_YET_FORMED",
+      "candidate_specific_activation_gates": "NOT_EXECUTED",
+      "authorization_rationale": "Protocol is frozen, but R0 scientific execution/decision records, candidate-specific activation gates, and exact R4 source acquisition choice are not complete. Any missing required SHA would also require NOT_AUTHORIZED."
+    }
+  }
+}

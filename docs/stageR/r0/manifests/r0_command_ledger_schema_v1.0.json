@@ -1,0 +1,25 @@
+{
+  "schema_version": "r0_command_ledger_schema_v1.0",
+  "status": "FROZEN_FOR_R0_EXECUTION",
+  "required_fields": [
+    "execution_id",
+    "command_id",
+    "timestamp_utc",
+    "operator",
+    "command",
+    "working_directory",
+    "git_commit",
+    "input_artifact_sha256",
+    "output_artifact_sha256",
+    "exit_code",
+    "seed",
+    "environment_record_id",
+    "protocol_deviation_id"
+  ],
+  "rules": [
+    "append-only",
+    "record before outcome interpretation",
+    "no silent rerun replacement",
+    "outcome access must be declared"
+  ]
+}

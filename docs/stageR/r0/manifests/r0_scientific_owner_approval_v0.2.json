@@ -1,0 +1,98 @@
+{
+  "schema_version": "r0_scientific_owner_approval_v0.2",
+  "recorded_date": "2026-08-26",
+  "approval_source": "explicit scientific-owner final approval addendum for R0 V1 Formal Protocol Freeze",
+  "parameter_proposals": {
+    "approved": 18,
+    "total": 18,
+    "status": "SCIENTIFIC_OWNER_APPROVED",
+    "parameter_ids": [
+      "P001",
+      "P002",
+      "P003",
+      "P004",
+      "P005",
+      "P006",
+      "P007",
+      "P008",
+      "P009",
+      "P010",
+      "P011",
+      "P012",
+      "P013",
+      "P014",
+      "P015",
+      "P016",
+      "P017",
+      "P018"
+    ],
+    "source_path": "docs/stageR/r0/manifests/r0_parameterization_proposal_v0.1.csv",
+    "source_sha256": "d67d87990441dd6200cfc50cdbfb6a6b42715a8f87d5fb7ad704f8c88a331321"
+  },
+  "previous_ready_for_freeze_proposals": {
+    "approved": 16,
+    "total": 16
+  },
+  "d0": {
+    "absolute_paired_standardized_retention_difference_min": 0.1,
+    "ci_rule": "95% CI excludes 0",
+    "seed_direction_rule": ">=2/3 seeds direction-consistent",
+    "status": "SCIENTIFIC_OWNER_APPROVED",
+    "interpretation_boundary": "representation temporal-retention diagnostic SESOI; not physical driving or human-perceptibility threshold"
+  },
+  "d3": {
+    "nominal_fpr": 0.05,
+    "upper_95_ci_max": 0.075,
+    "insufficient_independent_null_units": "INCONCLUSIVE",
+    "gate_relaxation_for_low_n": "PROHIBITED",
+    "status": "SCIENTIFIC_OWNER_APPROVED"
+  },
+  "f_match_equivalence_margins": {
+    "approved": 0,
+    "total": 24,
+    "status": "REQUIRES_SCIENTIFIC_OWNER_APPROVAL",
+    "population_sd_or_power_as_margin": "PROHIBITED"
+  },
+  "training_authorization": "NOT_AUTHORIZED",
+  "supersedes": "docs/stageR/r0/manifests/r0_scientific_owner_approval_v0.1.json",
+  "d1": {
+    "continuous_information_presence_gate": {
+      "point_estimate": "held-out grouped R2 >= 0.10",
+      "uncertainty": "cluster-aware 95% CI lower bound > 0"
+    },
+    "categorical_information_presence_gate": {
+      "point_estimate": "balanced accuracy >= 0.60",
+      "uncertainty": "95% CI lower bound > 0.50"
+    },
+    "family_gate": "each semantic family has at least 2/3 core targets passing",
+    "insufficient_sample_result": "INCONCLUSIVE",
+    "interpretation_boundary": [
+      "R0_MINIMUM_SEMANTIC_INFORMATION_PRESENCE only",
+      "not RBR semantic superiority",
+      "not RBR semantic noninferiority",
+      "not human-perceptible semantic fidelity",
+      "interaction front-distance, relative-speed, or pressure decoding alone is not correct ego-context causal coupling; interpret with D2 pairing and shortcut results"
+    ],
+    "status": "SCIENTIFIC_OWNER_APPROVED",
+    "gate_manifest": "docs/stageR/r0/manifests/r0_d1_core_semantic_targets_v0.1.json",
+    "gate_manifest_sha256": "e7bd8d927434f73d611359cb6dcee6b03189172e3cb1f5fa548312d70649344b"
+  },
+  "d4_family_specific_matching_contract": {
+    "R-HLC_primary_f_match_count": 4,
+    "R-TSB_primary_f_match_count": 4,
+    "R-IP_primary_f_match_count": 3,
+    "status": "SCIENTIFIC_OWNER_APPROVED",
+    "contract_path": "docs/stageR/r0/manifests/r0_d4_family_specific_feature_roles_v0.1.csv",
+    "contract_sha256": "a8abe0ade201b18ba613535d87cdf33f0a5d30424be521ba05f8020db96802d4"
+  },
+  "d4_development_fallback": {
+    "fallback_id": "D4_DEVELOPMENT_BALANCE_FALLBACK_V1",
+    "status": "CONDITIONALLY_NONBLOCKING_FOR_RBR_DEVELOPMENT",
+    "permanent_interpretation_boundaries": [
+      "NOT_FORMAL_PHYSICAL_EQUIVALENCE",
+      "NOT_R4_CONFIRMATORY_EQUIVALENCE"
+    ],
+    "fallback_path": "docs/stageR/r0/manifests/r0_d4_development_balance_fallback_v1.json",
+    "fallback_sha256": "616dfc0bcfc55ff4524d4b2add164b7ecd11da2963d0b7cbe44c698138f0f6e9"
+  }
+}
