@@ -1,0 +1,23 @@
+readiness_id,module,parameter_or_contract,readiness_status,verified_basis,remaining_work,blocking,future_outcome_used
+R001,Global,raw33_current_file_provenance,READY,36 current SHAs/rows/shapes bound in non-destructive addendum,none,NO,false
+R002,Global,raw33_historical_ledger_entry,HISTORICAL_LEDGER_ENTRY_NOT_AVAILABLE,historical ledger remains unchanged,retain explicit limitation,NO,false
+R003,D0,temporal_audit_policy,READY_FOR_FREEZE,D0-A/B/C/D and interpretation levels drafted,scientific owner approval of minimum effect,YES,false
+R004,D0,mask_padding_audit_policy,READY_FOR_FREEZE,historical/diagnostic/future layers and measured baseline drafted,execute diagnostics after v1 freeze,YES,false
+R005,D0,minimum_temporal_effect,REQUIRES_SCIENTIFIC_OWNER_APPROVAL,0.10 standardized paired effect proposal,approve or replace using domain materiality,YES,false
+R006,D0,event_position_bins,READY_FOR_FREEZE,equal 5-second bins at dt=0.1,owner freeze,YES,false
+R007,D1,target_definition,READY_FOR_FREEZE,49 targets with roles/units/rules; F_match and M_behavior disjoint,owner freeze,YES,false
+R008,Global,alpha_multiplicity,READY_FOR_FREEZE,alpha .05 and Holm by predeclared family,owner freeze,YES,false
+R009,Global,bootstrap_repetitions,READY_FOR_FREEZE,5000 proposal,owner freeze,YES,false
+R010,Global,permutation_repetitions,READY_FOR_FREEZE,49999 plus-one proposal,owner freeze,YES,false
+R011,D1,probe_capacity_grid,READY_FOR_FREEZE,bounded linear ridge/logistic grid,owner freeze,YES,false
+R012,D2,matching_strata,READY_FOR_FREEZE,outcome-blind fixed strata/coarsening,owner freeze,YES,false
+R013,D2,ood_boundary,READY_FOR_FREEZE,reference q99 and 2-of-4 proposal,owner freeze,YES,false
+R014,D3,kernel_bandwidth,READY_FOR_FREEZE,single RBF and fixed label-blind reference median,owner freeze,YES,false
+R015,D3,projection_rank_rule,READY_FOR_FREEZE,"{1,2,4,8,16}, max16, smallest-within-1SE",owner freeze,YES,false
+R016,D3,calibration_fpr_gate,REQUIRES_SCIENTIFIC_OWNER_APPROVAL,upper 95% CI <=.075 proposal,approve material inflation tolerance,YES,false
+R017,D4,equivalence_inference_method,READY_FOR_FREEZE,TOST/90% CI plus intersection-union,owner freeze,YES,false
+R018,D4,equivalence_margins,REQUIRES_SCIENTIFIC_OWNER_APPROVAL,measurement repeatability/business tolerances unavailable,approve each of 24 F_match margins,YES,false
+R019,D4,r0_audit_holdout,NOT_AVAILABLE,all verified pools used/unblinded; unused identity ledger absent,acquire new disjoint data and freeze identities,YES,false
+R020,D4/R4,future_r4_reserved_pool,NOT_AVAILABLE,prospective rules drafted but source/token roster not locked,lock source and roster before RBR training,YES,false
+R021,Global,sap,DRAFT_READY_FOR_REVIEW,machine and human v0.1 created,resolve blocking fields and freeze,YES,false
+R022,Global,rbr_training_authorization,NOT_AUTHORIZED,holdout/reserved/equivalence/operational freeze unresolved,do not train RBR-A/B/C,YES,false
