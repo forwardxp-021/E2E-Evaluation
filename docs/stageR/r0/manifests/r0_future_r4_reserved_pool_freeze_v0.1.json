@@ -1,0 +1,17 @@
+{
+  "schema_version": "r0_future_r4_reserved_pool_freeze_v0.1",
+  "status": "NOT_FROZEN_ROUTE_B_PROSPECTIVE_SOURCE_REQUIRED",
+  "identity_roster_frozen": false,
+  "seed": 2026082601,
+  "hash_algorithm": "SHA-256",
+  "sort_key": "sha256(seed|dataset_release|log_name|scenario_token), then log_name, then scenario_token",
+  "tie_break": "lexicographic log_name then scenario_token",
+  "available_clean_logs": 111,
+  "available_clean_runnable_logs": 19,
+  "available_clean_runnable_tokens": 12805,
+  "minimum_additional_log_acquisition_requirement": 131,
+  "outcome_accessed": false,
+  "representation_accessed": false,
+  "rollout_executed": false,
+  "reason": "R0 audit holdout was not allocated; retain Route B prospective controlled-planner source acquisition"
+}

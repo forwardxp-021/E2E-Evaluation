@@ -1,0 +1,57 @@
+{
+  "schema_version": "r0_scientific_owner_approval_v0.1",
+  "recorded_date": "2026-08-26",
+  "approval_source": "explicit scientific-owner instruction in R0 V1 Blocker Closure handoff",
+  "parameter_proposals": {
+    "approved": 18,
+    "total": 18,
+    "status": "SCIENTIFIC_OWNER_APPROVED",
+    "parameter_ids": [
+      "P001",
+      "P002",
+      "P003",
+      "P004",
+      "P005",
+      "P006",
+      "P007",
+      "P008",
+      "P009",
+      "P010",
+      "P011",
+      "P012",
+      "P013",
+      "P014",
+      "P015",
+      "P016",
+      "P017",
+      "P018"
+    ],
+    "source_path": "docs/stageR/r0/manifests/r0_parameterization_proposal_v0.1.csv",
+    "source_sha256": "d67d87990441dd6200cfc50cdbfb6a6b42715a8f87d5fb7ad704f8c88a331321"
+  },
+  "previous_ready_for_freeze_proposals": {
+    "approved": 16,
+    "total": 16
+  },
+  "d0": {
+    "absolute_paired_standardized_retention_difference_min": 0.1,
+    "ci_rule": "95% CI excludes 0",
+    "seed_direction_rule": ">=2/3 seeds direction-consistent",
+    "status": "SCIENTIFIC_OWNER_APPROVED",
+    "interpretation_boundary": "representation temporal-retention diagnostic SESOI; not physical driving or human-perceptibility threshold"
+  },
+  "d3": {
+    "nominal_fpr": 0.05,
+    "upper_95_ci_max": 0.075,
+    "insufficient_independent_null_units": "INCONCLUSIVE",
+    "gate_relaxation_for_low_n": "PROHIBITED",
+    "status": "SCIENTIFIC_OWNER_APPROVED"
+  },
+  "f_match_equivalence_margins": {
+    "approved": 0,
+    "total": 24,
+    "status": "REQUIRES_SCIENTIFIC_OWNER_APPROVAL",
+    "population_sd_or_power_as_margin": "PROHIBITED"
+  },
+  "training_authorization": "NOT_AUTHORIZED"
+}
