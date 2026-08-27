@@ -1,0 +1,60 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.1",
+  "status": "DESIGN_ONLY_REQUIRES_SCIENTIFIC_OWNER_APPROVAL",
+  "actual_roster_selected": false,
+  "selection_scope": {
+    "families": ["R-HLC", "R-TSB"],
+    "scenarios_per_family": 6,
+    "candidate_arms_per_family": 3,
+    "construction_rule": "per scenario construct one reusable baseline plus three treatment trajectories",
+    "planned_core_construction_calls": {"R-HLC": 24, "R-TSB": 24, "total": 48},
+    "authorized_cap": 48
+  },
+  "eligibility_rule": [
+    "candidate is eligible under the unchanged frozen v1.0 context/mechanism contract",
+    "scenario_token and log_id are both absent from the permanent old-smoke blacklist",
+    "scenario has never contributed to prior R1 technical-smoke execution",
+    "scenario is reserved exclusively for fresh technical-smoke use",
+    "scenario is excluded from the formal R1 development roster",
+    "scenario is excluded from future R4 confirmation",
+    "all selection features are pre-treatment and outcome-blind",
+    "official nuPlan database, map, identity, route, traffic-light, and replay prerequisites are READY before selection"
+  ],
+  "forbidden_selection_inputs": [
+    "old technical-smoke metric values",
+    "old technical-smoke pass/fail labels",
+    "representation",
+    "BDD",
+    "probe",
+    "checkpoint",
+    "RBR",
+    "post-treatment trajectory outcomes"
+  ],
+  "blacklist": {
+    "path": "docs/stageR/r1/r1_technical_smoke_v1_permanent_blacklist_v1.json",
+    "required_match_keys": ["scenario_token", "log_id"],
+    "fail_closed": true
+  },
+  "hash_rule": {
+    "salt_status": "MUST_BE_FROZEN_BEFORE_CANDIDATE_ENUMERATION",
+    "rank_payload": "SHA256(selector_version || frozen_salt || family || scenario_token || log_id)",
+    "sort": "ascending hexadecimal digest",
+    "tie_break": "scenario_token then log_id ascending",
+    "minimum_log_diversity": 3,
+    "source_inventory_sha256_binding_required": true,
+    "blacklist_sha256_binding_required": true,
+    "selected_roster_sha256_binding_required_before_any_construction": true
+  },
+  "execution_fail_closed_rules": [
+    "preflight schedule must equal exactly 48 calls",
+    "CoreConstructionBudget.claim must execute immediately before every construction",
+    "the first attempted call above 48 must raise before construction",
+    "partial or failed execution cannot be relabeled compliant",
+    "no actual selection or execution is authorized by this contract"
+  ],
+  "isolation_labels": [
+    "FRESH_TECHNICAL_SMOKE_ONLY",
+    "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+    "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+  ]
+}

@@ -9944,3 +9944,26 @@ waymo_dev/bin/python tools/stage7l_e_finalize_reporting.py
 - 权威输出：`docs/stage7l_e_prospective_representation_bdd_report_zh.md`、
   `docs/stage7l_e_prospective_bdd_manifest_v1.json`和
   `outputs/final_standardized_bdd_style_report_card_v2_stage7l/`。
+
+## StageR / R1 Phase B0 合同兼容性审计
+
+### 1. 命令
+
+```bash
+waymo_dev/bin/python tools/r1_phaseb0_compatibility_audit.py \
+  --output /new/path/r1_phaseb0_compatibility_results_v0.1.json
+waymo_dev/bin/python -m unittest tests.test_r1_phaseb0_compatibility -v
+```
+
+### 2. 期望行为
+
+- 只读取冻结 HLC/TSB mechanism contract 与 treatment-independent raw-scale evidence。
+- 只构造平行车道和分段加速度合成 fixture；不选择真实 scenario，不运行 planner/smoke，不读取 representation、BDD、probe、checkpoint 或 RBR。
+- 第一条命令拒绝覆盖已存在的输出；第二条用 mock ID 验证 baseline reuse 与 48-call 构造前 hard cap。
+
+### 3. 通过标准
+
+- HLC synthetic witness 同时为 `HLC_MECHANISM_PAIR_PASS` 和 `F_MATCH_PASS`，兼容性记录为 `MARGINALLY_FEASIBLE`。
+- 三个 `TSB_GEN_V2_OPTION_*` 均同时通过冻结 mechanism/F_match，且仍标记 `PROPOSED_NOT_FROZEN`。
+- 每 family 精确 24 次、总计 48 次 core construction；第 49 次 claim 必须在构造前抛错，计数保持 48。
+- unit tests 全部通过；不得产生任何真实 rollout、smoke metrics 或 roster。

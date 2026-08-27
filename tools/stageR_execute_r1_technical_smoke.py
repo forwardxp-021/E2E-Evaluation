@@ -32,6 +32,73 @@ HLC_ROSTER = ROOT / "outputs/stage7l_b_final_development_freeze_v1/final_develop
 TSB_METADATA = ROOT / "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv"
 OUT_DIR = ROOT / "docs/stageR/r1"
 ROSTER_SALT = "R1_PHASEB_TECHNICAL_SMOKE_ROSTER_V1"
+AUTHORIZED_CORE_CONSTRUCTION_CAP = 48
+
+
+class CoreConstructionBudget:
+    """Pre-construction hard stop for trajectory-core calls."""
+
+    def __init__(self, authorized_cap: int = AUTHORIZED_CORE_CONSTRUCTION_CAP) -> None:
+        if authorized_cap <= 0:
+            raise ValueError("authorized core-construction cap must be positive")
+        self.authorized_cap = int(authorized_cap)
+        self.actual_calls = 0
+        self.ledger: List[Dict[str, str]] = []
+
+    def claim(self, family: str, scenario_id: str, arm: str) -> None:
+        """Reserve one call before construction; refuse the first excess call."""
+        if self.actual_calls >= self.authorized_cap:
+            raise RuntimeError(
+                "trajectory-core construction blocked before exceeding authorized "
+                f"cap {self.authorized_cap}: {family}/{scenario_id}/{arm}"
+            )
+        self.actual_calls += 1
+        self.ledger.append(
+            {"family": str(family), "scenario_id": str(scenario_id), "arm": str(arm)}
+        )
+
+    def assert_exact(self, expected: int) -> None:
+        if self.actual_calls != expected:
+            raise RuntimeError(
+                f"expected exactly {expected} trajectory-core calls, got {self.actual_calls}"
+            )
+        if self.actual_calls > self.authorized_cap:
+            raise RuntimeError("trajectory-core construction cap exceeded")
+
+
+def build_core_construction_schedule(
+    family_scenario_ids: Mapping[str, Sequence[str]],
+    family_candidate_ids: Mapping[str, Sequence[str]],
+    authorized_cap: int = AUTHORIZED_CORE_CONSTRUCTION_CAP,
+) -> List[Dict[str, str]]:
+    """Build and preflight a baseline-reuse schedule without constructing trajectories."""
+    schedule: List[Dict[str, str]] = []
+    for family in ("R-HLC", "R-TSB"):
+        scenarios = list(family_scenario_ids.get(family, ()))
+        candidates = list(family_candidate_ids.get(family, ()))
+        if len(scenarios) != 6 or len(set(scenarios)) != 6:
+            raise ValueError(f"{family} schedule requires exactly six unique scenarios")
+        if len(candidates) != 3 or len(set(candidates)) != 3:
+            raise ValueError(f"{family} schedule requires exactly three unique candidates")
+        for scenario_id in scenarios:
+            schedule.append(
+                {"family": family, "scenario_id": str(scenario_id), "arm": "BASELINE"}
+            )
+            schedule.extend(
+                {
+                    "family": family,
+                    "scenario_id": str(scenario_id),
+                    "arm": f"TREATMENT::{candidate_id}",
+                }
+                for candidate_id in candidates
+            )
+    if len(schedule) > authorized_cap:
+        raise RuntimeError(
+            f"planned {len(schedule)} core constructions exceeds authorized cap {authorized_cap}"
+        )
+    if len(schedule) != 48:
+        raise RuntimeError(f"compliant smoke schedule must contain exactly 48 calls, got {len(schedule)}")
+    return schedule
 
 
 def sha256_file(path: Path) -> str:
@@ -160,6 +227,18 @@ def main() -> None:
         raise FileExistsError(f"refusing to overwrite smoke outputs: {existing_non_candidate}")
     selected_hlc = select_six("R-HLC", load_hlc_candidates())
     selected_tsb = select_six("R-TSB", load_tsb_candidates())
+    planned_schedule = build_core_construction_schedule(
+        {
+            "R-HLC": [str(row["scenario_token"]) for row in selected_hlc],
+            "R-TSB": [str(row["scenario_token"]) for row in selected_tsb],
+        },
+        {
+            "R-HLC": list(HLC_SMOKE_CANDIDATES),
+            "R-TSB": list(TSB_SMOKE_CANDIDATES),
+        },
+    )
+    if len(planned_schedule) != AUTHORIZED_CORE_CONSTRUCTION_CAP:
+        raise RuntimeError("technical-smoke construction schedule failed the 48-call preflight")
     candidate_payload = {"schema_version": "r1_smoke_candidate_parameters_v1", "status": "PREDECLARED_BEFORE_TECHNICAL_SMOKE", "scope": "TRAJECTORY_ONLY_NO_REPRESENTATION_OUTCOMES", "hlc": {"baseline": {"profile": "decisive_quintic_transition", "transition_seconds": 2.0}, "candidates": HLC_SMOKE_CANDIDATES}, "tsb": {"baseline": TSB_BASELINE, "candidates": TSB_SMOKE_CANDIDATES}, "solver": {"status": "F_MATCH_CONSTRAINED_TRAJECTORY_ONLY_PRECHECK", "input_allowlist": ["raw_generated_trajectory", "frozen_F_match_descriptors", "frozen_development_calipers", "mechanism_variables", "physical_safety_constraints"], "objective_constraint_order": ["finite_and_time_integrity", "frozen_F_match", "mechanism_pair_gate", "kinematic_integrity"], "forbidden_inputs": ["embedding", "BDD", "probe", "representation", "RBR"]}}
     if paths["candidate"].exists():
         with paths["candidate"].open("r", encoding="utf-8") as handle:
@@ -171,12 +250,14 @@ def main() -> None:
     roster_payload = {"schema_version": "r1_technical_smoke_roster_v1", "status": "TECHNICAL_SMOKE_ONLY", "selection": {"method": "outcome_blind_deterministic_sha256_rank", "salt": ROSTER_SALT, "source_scope": "HISTORICAL_OR_R0_DEVELOPMENT_ONLY", "formal_r1_development_roster_created": False, "exclusions": ["EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER", "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"]}, "families": {"R-HLC": [{"scenario_token": row["scenario_token"], "log_id": row["log_id"], "map_location": row["map_location"], "source": str(HLC_MANIFEST.relative_to(ROOT)), "rank_sha256": stable_rank("R-HLC", row["scenario_token"], row["log_id"])} for row in selected_hlc], "R-TSB": [{"scenario_token": row["scenario_token"], "log_id": row["log_id"], "map_location": row["map_location"], "source": str(TSB_METADATA.relative_to(ROOT)), "rank_sha256": stable_rank("R-TSB", row["scenario_token"], row["log_id"])} for row in selected_tsb]}}
     write_new_json(paths["roster"], roster_payload)
     rows: List[Dict[str, Any]] = []
+    construction_budget = CoreConstructionBudget()
     for family, selected in (("R-HLC", selected_hlc), ("R-TSB", selected_tsb)):
         for item in selected:
             context = build_canonical_context_record(hlc_context_payload(item) if family == "R-HLC" else tsb_context_payload(item))
             # Exactly one baseline arm is constructed per scenario.  It is then
             # paired with each fixed treatment candidate, preserving the hard
             # 6 x (baseline + 3 treatment) rollout accounting.
+            construction_budget.claim(family, str(item["scenario_token"]), "BASELINE")
             if family == "R-HLC":
                 baseline_traj = generate_hlc_trajectory(item["maneuver"])
                 baseline_mechanism = calculate_hlc_option_b(baseline_traj["time_s"], baseline_traj["progress_p"], baseline_traj["speed_mps"])
@@ -187,6 +268,9 @@ def main() -> None:
             baseline_integrity = kinematic_integrity(baseline_traj)
             for candidate_id in (HLC_SMOKE_CANDIDATES if family == "R-HLC" else TSB_SMOKE_CANDIDATES):
                 began = time.perf_counter()
+                construction_budget.claim(
+                    family, str(item["scenario_token"]), f"TREATMENT::{candidate_id}"
+                )
                 if family == "R-HLC":
                     treatment_traj = generate_hlc_trajectory(item["maneuver"], candidate_id)
                     treatment_mechanism = calculate_hlc_option_b(treatment_traj["time_s"], treatment_traj["progress_p"], treatment_traj["speed_mps"])
@@ -206,6 +290,7 @@ def main() -> None:
                 rows.append({"family": family, "candidate_id": candidate_id, "scenario_token": item["scenario_token"], "technical_execution_pass": bool(baseline_integrity["pass"] and treatment_integrity["pass"]), "pre_context_identity_pass": pair_context["fields"]["pre_context_raw_hash"], "canonical_context_identity_pass": pair_context["fields"]["canonical_context_json_hash"], "f_match_pass": f_match["pass"], "mechanism_pair_pass": mechanism["pass"], "kinematic_integrity_pass": bool(baseline_integrity["pass"] and treatment_integrity["pass"]), "pair_runtime_ms": round(runtime_ms, 3), "baseline_mechanism_status": baseline_mechanism["status"], "treatment_mechanism_status": treatment_mechanism["status"], "mechanism_pair_status": mechanism["status"], "f_match_status": f_match["status"], "baseline_descriptors": baseline_desc, "treatment_descriptors": treatment_desc, "f_match": f_match, "pair_context": pair_context, "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"})
     if len(rows) != 36:
         raise RuntimeError(f"expected 36 baseline-treatment candidate pairs / 48 rollouts, got {len(rows)} pairs")
+    construction_budget.assert_exact(AUTHORIZED_CORE_CONSTRUCTION_CAP)
     summary = [summarize(rows, "R-HLC", candidate) for candidate in HLC_SMOKE_CANDIDATES] + [summarize(rows, "R-TSB", candidate) for candidate in TSB_SMOKE_CANDIDATES]
     with paths["metrics"].open("x", encoding="utf-8", newline="") as handle:
         columns = list(summary[0].keys())

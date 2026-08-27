@@ -1,0 +1,36 @@
+{
+  "schema_version": "r1_phaseb0_runtime_readiness_v0.1",
+  "status": "NOT_READY",
+  "scope": "ENVIRONMENT_AND_INTERFACE_AUDIT_ONLY_NO_SCENARIO_EXECUTION",
+  "dedicated_runtime": {
+    "python": "/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9",
+    "required_pythonpath": [
+      "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit",
+      "/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage",
+      "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation"
+    ],
+    "protobuf_mode": "python"
+  },
+  "components": [
+    {"component": "nuplan_import", "status": "READY", "evidence": "dedicated nuplan environment imports local nuplan-devkit"},
+    {"component": "exact_nuplan_version", "status": "READY", "evidence": "nuplan-devkit==1.2.2; hydra-core==1.1.0rc1; omegaconf==2.1.0rc1"},
+    {"component": "database_access", "status": "NOT_READY", "evidence": "candidate cache root exists but is 0 bytes; no executable scenario database was established"},
+    {"component": "scenario_database_files", "status": "NOT_FOUND", "evidence": "no fresh-smoke database file was bound or opened"},
+    {"component": "map_root", "status": "READY", "evidence": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps exists and occupies approximately 1.3 GiB"},
+    {"component": "official_history_buffer", "status": "READY", "evidence": "nuPlan Simulation builds PlannerInput with its official history buffer; interface import verified only"},
+    {"component": "original_background_replay", "status": "NOT_READY", "evidence": "interface/code exists, but no accessible fresh-scenario database and no official replay was executed"},
+    {"component": "external_planner_integration", "status": "READY", "evidence": "AbstractPlanner/PlannerInput/PlannerInitialization and local external planner imports are available; execution not claimed"},
+    {"component": "traffic_light_api", "status": "READY", "evidence": "Simulation retrieves scenario traffic-light status and passes it in PlannerInput; interface only"},
+    {"component": "route_control_api", "status": "READY", "evidence": "PlannerInitialization exposes route_roadblock_ids; interface only"},
+    {"component": "collision_offroad_evaluation", "status": "READY", "evidence": "official collision and drivable-area metric extractors exist; no Phase B0 metric execution"},
+    {"component": "scenario_token_log_identity", "status": "NOT_READY", "evidence": "future fresh roster is intentionally unselected and the scenario database is unavailable"},
+    {"component": "deterministic_replay_seed", "status": "VERSION_AMBIGUOUS", "evidence": "no dedicated frozen seed/replay determinism contract was located for the future compliant smoke"}
+  ],
+  "blocking_items": [
+    "accessible non-empty official scenario database",
+    "fresh scenario token/log identity binding",
+    "versioned deterministic replay seed contract",
+    "scientific-owner approval of any generator amendment and new compliant smoke"
+  ],
+  "interpretation": "Trajectory-only core tests are not official nuPlan runtime validation."
+}

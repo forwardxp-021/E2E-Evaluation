@@ -1,0 +1,29 @@
+{
+  "schema_version": "r1_technical_smoke_v1_permanent_blacklist_v1",
+  "status": "PERMANENT_EXCLUSION_ACTIVE",
+  "source_roster": "docs/stageR/r1/r1_technical_smoke_roster_v1.json",
+  "source_roster_sha256": "6891a82e9c1bf60af9b14105b4c4a52f14391e49237746e3e561f69524082ee9",
+  "source_execution_status": "NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY",
+  "required_labels": [
+    "TECHNICAL_SMOKE_ONLY",
+    "NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY",
+    "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+    "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+  ],
+  "match_keys": ["scenario_token", "log_id"],
+  "entries": [
+    {"family": "R-HLC", "scenario_token": "2c70dfdf24c55774", "log_id": "2021.09.27.17.52.47_veh-44_02062_02160"},
+    {"family": "R-HLC", "scenario_token": "b1f30cb92e7c55e4", "log_id": "2021.09.24.14.23.05_veh-45_00811_01131"},
+    {"family": "R-HLC", "scenario_token": "512198168cbc55af", "log_id": "2021.09.17.14.49.23_veh-42_00690_00846"},
+    {"family": "R-HLC", "scenario_token": "dfeffcca2ef05c96", "log_id": "2021.09.20.18.15.46_veh-08_00078_00230"},
+    {"family": "R-HLC", "scenario_token": "92f1a8a7d00a5632", "log_id": "2021.08.23.14.27.31_veh-45_00895_01001"},
+    {"family": "R-HLC", "scenario_token": "d1a65b17145f5472", "log_id": "2021.08.27.14.37.47_veh-08_01291_01597"},
+    {"family": "R-TSB", "scenario_token": "5c04df4c02975a77", "log_id": "2021.09.20.18.55.11_veh-08_00069_00483"},
+    {"family": "R-TSB", "scenario_token": "5ab20ff9cc3c5d29", "log_id": "2021.08.20.17.54.47_veh-45_02642_02801"},
+    {"family": "R-TSB", "scenario_token": "8494670cfa8f5e09", "log_id": "2021.08.19.19.22.25_veh-08_00186_00866"},
+    {"family": "R-TSB", "scenario_token": "f603f5b88813572b", "log_id": "2021.09.20.20.32.00_veh-08_00211_00332"},
+    {"family": "R-TSB", "scenario_token": "057c831f5acf5c76", "log_id": "2021.09.28.18.57.35_veh-44_01064_01998"},
+    {"family": "R-TSB", "scenario_token": "e135794d38c1565c", "log_id": "2021.08.23.12.33.24_veh-42_00864_01009"}
+  ],
+  "use_restriction": "These identities may never enter a fresh R1 development roster or future R4 confirmation. Their prior outputs remain diagnostic-only and may not be used as a candidate-parameter optimization objective."
+}
