@@ -1,0 +1,22 @@
+{
+  "schema_version": "r1_runtime_determinism_failure_manifest_v0.2",
+  "status": "FAIL_CLOSED_AFTER_ONE_CLAIMED_OFFICIAL_RUN",
+  "result_path": "docs/stageR/r1/r1_runtime_determinism_result_v1.0.json",
+  "result_sha256": "4c56970755f9b41818c807ef8bf3d6ffd48a979f465475ab06ccc2b428468e41",
+  "raw_execution_manifest_sha256": "e87e56f653173c5dc1af3d15a18435d30ad985bf43a9e093f60d68f08018c228",
+  "raw_budget_ledger_sha256": "186c4a5ee7181b8a1d2f316763aa8c6b105893b8b369c2a472b65bd0314491f5",
+  "first_and_only_claimed_run": {
+    "run_id": "R-HLC__25944935eadb52f1__RUN_A",
+    "official_command_return_code": 0,
+    "scenario_runner_status": "FAILED",
+    "failure": "AttributeError_R1RuntimeDeterminismPlanner_missing_compute_trajectory",
+    "trace_available": false,
+    "collision_metric_available": false,
+    "offroad_drivable_metric_available": false
+  },
+  "unexecuted_runs": 7,
+  "pair_comparisons_completed": 0,
+  "ninth_preflight": "NOT_ATTEMPTED_DUE_TO_EARLY_FAIL_CLOSED_STOP",
+  "rerun_or_reselection_performed": false,
+  "scientific_outcome_analysis_performed": false
+}

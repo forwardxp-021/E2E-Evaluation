@@ -1,0 +1,105 @@
+{
+  "schema_version": "r1_runtime_determinism_result_v1.0",
+  "status": "FAIL",
+  "scope": "BOUND_RUNTIME_REPRODUCIBILITY_ONLY_NO_SCIENTIFIC_OUTCOME_ANALYSIS",
+  "background_replay_determinism": "NOT_VERIFIED",
+  "official_replay": "NOT_READY",
+  "roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+  "selector_contract_sha256": "eecce068afc4f7f94709d006a58f41f41e0cfbc1435c0d88a7b3eca6b2a6bc5b",
+  "owner_approval_sha256": "f12811edd8ab759aa7ebed191c38119998c920dd7bd254fc8ef5c16685be0ab5",
+  "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+  "official_run_unit": "OFFICIAL_CLOSED_LOOP_RUN",
+  "authorized_cap": 8,
+  "actual_official_run_count": 1,
+  "ninth_preflight": {
+    "status": "NOT_ATTEMPTED_DUE_TO_EARLY_STOP"
+  },
+  "stopped_reason": "RUN_FAILURE:R-HLC__25944935eadb52f1__RUN_A",
+  "runs": {
+    "R-HLC__25944935eadb52f1__RUN_A": {
+      "run_id": "R-HLC__25944935eadb52f1__RUN_A",
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "family": "R-HLC",
+      "repeat": "RUN_A",
+      "official_command_return_code": 0,
+      "technical_failure_status": "TECHNICAL_FAILURE",
+      "technical_failure_reasons": [
+        "TRACE_UNAVAILABLE:FileNotFoundError:planner trace was not produced: /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_runtime_determinism_validation_v1/runs/R-HLC__25944935eadb52f1__RUN_A/trace/planner_trace.jsonl",
+        "COLLISION_METRIC_UNAVAILABLE",
+        "OFFROAD_DRIVABLE_METRIC_UNAVAILABLE"
+      ],
+      "planner_binding": {
+        "schema_version": "r1_runtime_determinism_trace_v1.0",
+        "scenario_token": "25944935eadb52f1",
+        "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+        "family": "R-HLC",
+        "runtime_arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "map_name": "us-pa-pittsburgh-hazelwood",
+        "route_roadblock_ids": [
+          "19723",
+          "19088",
+          "19712",
+          "19031",
+          "19317",
+          "19032",
+          "19369",
+          "14567",
+          "19408",
+          "19069",
+          "19457",
+          "19036",
+          "19509",
+          "19035",
+          "19514",
+          "19050",
+          "19529",
+          "19034",
+          "19473",
+          "19021",
+          "19362",
+          "19024",
+          "19551"
+        ],
+        "route_roadblocks_sha256": "4d0966f5e55284e59d0d3b39287c8b0879549332a103187d3c00b29d4b108889",
+        "roster_entry_sha256": "707c7f4ef6e6a070596f14c99de157fefd7fe9eb86b285fb888af70196ba7201",
+        "float_comparison": "EXACT_CANONICAL_JSON_NO_TOLERANCE"
+      },
+      "planner_binding_sha256": "c33e371e2fb881711b67ab969156c2f53641d48f63e52ef28bbfae35d9e24f08",
+      "simulation_step_count": 0,
+      "sequence": {
+        "initial_history_canonical": [],
+        "pre_context_raw": [],
+        "canonical_context": [],
+        "traffic_light_states": [],
+        "background_tracked_object_states": [],
+        "ego_state_trajectory": [],
+        "planner_output_trajectory": [],
+        "timestamps_us": []
+      },
+      "sequence_hashes": {
+        "initial_history_canonical": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "pre_context_raw": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "canonical_context": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "traffic_light_states": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "background_tracked_object_states": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "ego_state_trajectory": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "planner_output_trajectory": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "timestamps_us": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "metrics": {
+        "all_metric_payloads": [],
+        "collision_metric_payloads": [],
+        "offroad_drivable_metric_payloads": [],
+        "collision_metric_present": false,
+        "offroad_drivable_metric_present": false
+      },
+      "trace_sha256": null,
+      "command_log_sha256": "21ca764c41dcf86dbf6da5b1c5d307add37a39492dda451a67f499ae137cff60"
+    }
+  },
+  "pairs": [],
+  "raw_output_directory": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_runtime_determinism_validation_v1",
+  "raw_output_directory_committed": false,
+  "scientific_outcome_analysis_performed": false
+}

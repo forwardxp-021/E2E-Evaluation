@@ -1,0 +1,34 @@
+{
+  "schema_version": "r1_hlc_generator_v2_contract_v1.0",
+  "status": "FROZEN_GENERATOR_PARAMETERS_EXECUTION_LIMITED_TO_BASELINE_RUNTIME_VALIDATION",
+  "generator_id": "HLC_GEN_V2_OPTION_B",
+  "baseline": {
+    "morphology": "DECISIVE_MONOTONIC_LANE_CHANGE",
+    "treatment_like_oscillation_allowed": false
+  },
+  "treatment": {
+    "morphology": "HESITANT_RETREAT_RECOMMIT",
+    "advance_target_p": 0.38,
+    "advance_seconds": 1.4,
+    "hold_seconds": 0.6,
+    "retreat_delta_p": 0.16,
+    "retreat_seconds": 1.0,
+    "recommit_seconds": 2.4,
+    "total_duration_after_divergence_seconds": 5.4,
+    "interpolation": "QUINTIC_C2_PHASE_JOINS"
+  },
+  "mechanism_contract": {
+    "path": "docs/stageR/r1/r1_hlc_mechanism_contract_v1.0.json",
+    "sha256": "f2e20d6e8c443f92d5fd8458069f431d6ba949069d54e703f6ca4bf2df5ce0e8",
+    "modified": false
+  },
+  "primary_f_match": ["mean_speed", "end_minus_start_speed", "path_length"],
+  "secondary_mechanism_proximal_audit": {
+    "feature": "heading_change_abs_total",
+    "restored_to_primary": false
+  },
+  "source_proposal_sha256": "2bdb55522ee8c4874ed5c9d0deb1ed6092f6022adb5c93f8f747a4d25ea5ad6c",
+  "owner_approval_path": "docs/stageR/r1/r1_phaseb1_scientific_owner_approval_v0.1.json",
+  "runtime_validation_authorized_arm": "BASELINE_ONLY",
+  "treatment_execution_authorized": false
+}

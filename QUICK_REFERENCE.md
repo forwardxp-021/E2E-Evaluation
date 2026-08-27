@@ -9999,3 +9999,36 @@ waymo_dev/bin/python tools/check_no_tmp_dependencies.py
 - replay 固定 `MASTER_SEED=2026082701`；background determinism 未实证时，总状态保持 `VERSION_AMBIGUOUS`。
 - executor 必须精确计划 48 次 core construction，逐次 pre-call claim；重复 baseline、未计划调用或第 49 次调用均在计数递增前 fail-closed。
 - 本阶段禁止运行新 technical smoke、真实 planner rollout、representation/BDD/probe/RBR 读取或训练。
+
+## StageR / R1 Phase B1.1 官方 runtime determinism 核验
+
+### 1. 命令
+
+以下命令先只读地以已冻结 salt 选择四个 runtime-only 场景；正式 roster 已存在时工具会拒绝覆盖。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_prepare_runtime_determinism_roster.py
+```
+
+以下命令是唯一获授权的官方执行入口：精确运行四个冻结场景各两次。它只能执行 HLC 的
+`DECISIVE_MONOTONIC_LANE_CHANGE` baseline 和 TSB 的 `SINGLE_CONTINUOUS_BRAKING` baseline；不得加 treatment。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_run_runtime_determinism_validation.py
+```
+
+### 2. 期望行为
+
+- selector 先读取 owner-bound salt、fresh source universe、old12 blacklist、历史 technical-smoke roster 与 R4 freeze；只使用 SQLite/地图/官方初始状态等 pre-treatment 信息，选择 2 个 R-HLC 与 2 个 R-TSB，四个 token/log 均唯一并永久隔离。
+- executor 在每一次调用官方 nuPlan 前写入 `OFFICIAL_CLOSED_LOOP_RUN` claim；总 cap 固定为 8，第 9 次 pre-run claim 必须在启动 simulator 前拒绝。
+- 每个 RUN_A/RUN_B 写入稳定的 history、raw/canonical context、traffic-light、background tracks、ego、planner-output 与官方 collision/drivable metric 的哈希摘要。不会读取 representation、BDD、probe、checkpoint 或 RBR，也不会输出科学 outcome 结论。
+- 原始 trace、nuPlan logs 和 metrics 只保留在 `outputs/r1_runtime_determinism_validation_v1/`，不应提交；小型最终结果写入 `docs/stageR/r1/r1_runtime_determinism_result_v1.0.json`。
+
+### 3. 通过标准
+
+- roster 精确为 R-HLC=2、R-TSB=2、total=4、unique_logs=4，并标记 `RUNTIME_DETERMINISM_VALIDATION_ONLY` 及三个永久排除标签。
+- 官方 run 数必须精确为 8；每对 15 类比较均为 exact canonical equality，浮点没有人为 tolerance；collision 与 off-road/drivable 官方 metric 均必须存在。
+- 四对均一致才可将 `BACKGROUND_REPLAY_DETERMINISM` 设为 `VERIFIED_ON_BOUND_RUNTIME`、将 `OFFICIAL_REPLAY` 设为 `READY_FOR_TECHNICAL_SMOKE_REVIEW`。任一 technical failure 或不一致即 `NOT_VERIFIED/NOT_READY`，不得第三次重跑或换场景。
+- 即使通过，也只满足 48-call technical smoke 的 owner-review 条件；48-call smoke 仍需独立 scientific-owner authorization。

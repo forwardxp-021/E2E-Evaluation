@@ -1,0 +1,44 @@
+{
+  "schema_version": "r1_phaseb1_scientific_owner_approval_v0.1",
+  "status": "APPROVED_AS_RECORDED",
+  "scope": "R1_PHASE_B1_1_ONLY",
+  "decisions": {
+    "HLC_GENERATOR_V2": "HLC_GEN_V2_OPTION_B__APPROVED_FOR_PARAMETER_FREEZE",
+    "HLC_ENDPOINT_PRIMARY_VALIDITY": "OPTION_ENDPOINT_RESOLUTION_BASED",
+    "OFFICIAL_NUPLAN_DB": "READY",
+    "OFFICIAL_NUPLAN_RUNTIME": "NOT_READY_PENDING_REPLAY_DETERMINISM",
+    "MASTER_SEED": 2026082701,
+    "BACKGROUND_REPLAY_DETERMINISM": "NOT_YET_VERIFIED",
+    "OFFICIAL_REPLAY": "NOT_READY",
+    "NEW_COMPLIANT_48_CALL_SMOKE": "NOT_AUTHORIZED",
+    "R1_OFFICIAL_RUNTIME_DETERMINISM_VALIDATION": "AUTHORIZED_ONCE"
+  },
+  "runtime_validation_budget": {
+    "unit": "OFFICIAL_CLOSED_LOOP_RUN",
+    "maximum_runs": 8,
+    "repetitions_per_scenario": 2,
+    "scenario_count": 4,
+    "treatment_arms_authorized": false
+  },
+  "endpoint_primary": {
+    "terminal_lateral_offset_m_max": 0.25,
+    "terminal_heading_error_rad_max": 0.05,
+    "terminal_lateral_velocity_mps_max": 0.25,
+    "paired_route_progress_delta_m_max": 1.5
+  },
+  "endpoint_secondary_sensitivity_only": {
+    "terminal_lateral_offset_m_max": 0.15,
+    "terminal_heading_error_rad_max": 0.03,
+    "terminal_lateral_velocity_mps_max": 0.15,
+    "paired_route_progress_delta_m_max": 1.0,
+    "may_exclude_primary_valid_pair": false
+  },
+  "invariants": {
+    "frozen_mechanism_thresholds_modified": false,
+    "r0_historical_results_modified": false,
+    "old12_smoke_reuse_authorized": false,
+    "fresh_smoke_roster_selection_authorized": false,
+    "rbr_training_authorized": false
+  },
+  "source_decision_sheet": "docs/stageR/r1/R1_PhaseB1_Scientific_Owner_Decision_Sheet_v0.1.md"
+}

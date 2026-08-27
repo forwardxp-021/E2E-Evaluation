@@ -1,0 +1,26 @@
+{
+  "schema_version": "r1_official_nuplan_replay_contract_v0.2",
+  "status": "BOUND_RUNTIME_DETERMINISM_NOT_VERIFIED",
+  "contract_role": "DIAGNOSTIC_ONLY_NOT_READY",
+  "master_seed": 2026082701,
+  "db_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+  "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+  "failing_execution": {
+    "planner_sha256": "2bad6bd4b9a8c331d9e11d9a40278dadee6f1925efe67e17efa7740e916f0908",
+    "simulation_config_sha256": "4e3cd62aacf86fd80a2d86384c86898c84ad25127cf8a4a072b8bfb4187795d7",
+    "execution_manifest_sha256": "e87e56f653173c5dc1af3d15a18435d30ad985bf43a9e093f60d68f08018c228",
+    "official_run_budget_sha256": "186c4a5ee7181b8a1d2f316763aa8c6b105893b8b369c2a472b65bd0314491f5",
+    "official_closed_loop_runs_claimed": 1,
+    "required_runs_for_verification": 8,
+    "failure": "EXECUTOR_INTERFACE_IMPLEMENTATION_DEFECT_NO_COMPUTE_TRAJECTORY",
+    "repetition_pair_completed": false
+  },
+  "hlc_generator_sha256": "72414d1accf656704fadf255f002de815989c2f17908fdbf6bcb36b2352dc142",
+  "tsb_generator_sha256": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+  "runtime_validation_roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+  "determinism_result_sha256": "4c56970755f9b41818c807ef8bf3d6ffd48a979f465475ab06ccc2b428468e41",
+  "background_replay_determinism": "NOT_VERIFIED",
+  "official_replay": "NOT_READY",
+  "48_call_smoke_authorized": false,
+  "next_execution_requires": "SEPARATE_SCIENTIFIC_OWNER_AUTHORIZATION_WITH_A_NEW_BOUND_EXECUTION_RECORD"
+}

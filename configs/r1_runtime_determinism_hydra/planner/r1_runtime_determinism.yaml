@@ -1,0 +1,8 @@
+r1_runtime_determinism:
+  _target_: tools.r1_runtime_determinism_planner.R1RuntimeDeterminismPlanner
+  _convert_: all
+  roster_path: ${oc.env:R1_RUNTIME_DETERMINISM_ROSTER}
+  runtime_family: ${oc.env:R1_RUNTIME_DETERMINISM_FAMILY}
+  trace_dir: ${oc.env:R1_RUNTIME_DETERMINISM_TRACE_DIR}
+  horizon_seconds: 4.5
+  sampling_time: 0.1

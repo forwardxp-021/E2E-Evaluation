@@ -1,0 +1,35 @@
+{
+  "schema_version": "r1_runtime_determinism_selector_contract_v1.0",
+  "status": "FROZEN_BEFORE_CANDIDATE_ENUMERATION",
+  "purpose": "RUNTIME_DETERMINISM_VALIDATION_ONLY",
+  "master_seed": 2026082701,
+  "literal_namespace": "R1_RUNTIME_DETERMINISM_VALIDATION_V1",
+  "salt_derivation": "SHA256(R1_RUNTIME_DETERMINISM_VALIDATION_V1|2026082701)",
+  "salt_sha256": "f176f57a242a0ea5a2a7c38fb6c3527e9f6385aca7d5ac21d522e6b097d1a3b3",
+  "rank_rule": "SHA256(salt_sha256|family|scenario_token|log_id)",
+  "selection_scope": {
+    "families": {"R-HLC": 2, "R-TSB": 2},
+    "required_unique_tokens": 4,
+    "minimum_unique_logs": 4,
+    "pre_treatment_fields_only": true,
+    "actual_fresh_smoke_roster_selected": false
+  },
+  "prohibited_inputs": [
+    "treatment outcome",
+    "mechanism success rate",
+    "f_match result",
+    "representation",
+    "BDD",
+    "probe",
+    "checkpoint",
+    "RBR",
+    "old12 smoke metrics"
+  ],
+  "isolation_labels": [
+    "RUNTIME_DETERMINISM_VALIDATION_ONLY",
+    "EXCLUDED_FROM_FRESH_TECHNICAL_SMOKE",
+    "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+    "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+  ],
+  "run_budget": {"unit": "OFFICIAL_CLOSED_LOOP_RUN", "authorized_cap": 8, "repetitions_per_scenario": 2}
+}

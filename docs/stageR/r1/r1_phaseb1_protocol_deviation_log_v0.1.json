@@ -1,0 +1,23 @@
+{
+  "schema_version": "r1_phaseb1_protocol_deviation_log_v0.1",
+  "status": "NO_SCIENTIFIC_PROTOCOL_DEVIATION_RECORDED",
+  "phase": "R1_PHASE_B1_1",
+  "execution_completeness": {
+    "runtime_validation_started": true,
+    "official_closed_loop_runs_claimed": 1,
+    "planned_official_closed_loop_runs": 8,
+    "stopped_fail_closed": true
+  },
+  "implementation_failure": {
+    "classification": "EXECUTOR_INTERFACE_IMPLEMENTATION_DEFECT",
+    "first_claimed_run_id": "R-HLC__25944935eadb52f1__RUN_A",
+    "official_runner_log_observation": "AttributeError: R1RuntimeDeterminismPlanner has no compute_trajectory",
+    "frozen_mechanism_threshold_modified": false,
+    "hypothesis_result_formed_with_nonprimary_metric": false,
+    "scientific_outcome_analysis_performed": false,
+    "classification_is_protocol_deviation": false
+  },
+  "required_response": "KEEP_BACKGROUND_REPLAY_NOT_VERIFIED_AND_OFFICIAL_REPLAY_NOT_READY; DO_NOT_RERUN_WITHOUT_NEW_SCIENTIFIC_OWNER_AUTHORIZATION",
+  "failing_pre_fix_planner_sha256": "2bad6bd4b9a8c331d9e11d9a40278dadee6f1925efe67e17efa7740e916f0908",
+  "result_sha256": "4c56970755f9b41818c807ef8bf3d6ffd48a979f465475ab06ccc2b428468e41"
+}

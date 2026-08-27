@@ -1,0 +1,35 @@
+{
+  "schema_version": "r1_hlc_generator_endpoint_validity_v1.0",
+  "status": "FROZEN_PRIMARY_VALIDITY_CONTRACT",
+  "role": "GENERATOR_VALIDITY_AND_SAFETY_DEVELOPMENT_DIAGNOSTICS",
+  "not_primary_f_match": true,
+  "not_future_r4_survivor_selection": true,
+  "identity_requirements": [
+    "same_source_lane",
+    "same_intended_target_lane",
+    "same_lane_change_direction",
+    "both_arms_complete_target_lane_transition"
+  ],
+  "primary_endpoint_limits": {
+    "terminal_lateral_offset_to_target_center_m_max": 0.25,
+    "terminal_heading_error_rad_max": 0.05,
+    "terminal_lateral_velocity_mps_max": 0.25,
+    "paired_route_progress_delta_m_max": 1.5
+  },
+  "continuity_and_engineering": {
+    "phase_continuity_required": true,
+    "max_abs_curvature_inv_m": 0.5,
+    "max_abs_lateral_acceleration_mps2": 6.0,
+    "max_abs_yaw_rate_radps": 1.0
+  },
+  "secondary_sensitivity_only": {
+    "name": "OPTION_ENDPOINT_STRICT",
+    "terminal_lateral_offset_to_target_center_m_max": 0.15,
+    "terminal_heading_error_rad_max": 0.03,
+    "terminal_lateral_velocity_mps_max": 0.15,
+    "paired_route_progress_delta_m_max": 1.0,
+    "may_exclude_primary_valid_pair": false
+  },
+  "source_option_contract_sha256": "d95f0fd1ca5095038be226ebe536f2f614c11dcaa29df3559621aeaf0d7a2adb",
+  "owner_approval_path": "docs/stageR/r1/r1_phaseb1_scientific_owner_approval_v0.1.json"
+}

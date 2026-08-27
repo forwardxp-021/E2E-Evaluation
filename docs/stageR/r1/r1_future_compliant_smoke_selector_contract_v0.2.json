@@ -1,0 +1,27 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.2",
+  "status": "FROZEN_BEFORE_CANDIDATE_ENUMERATION",
+  "purpose": "FUTURE_48_CALL_TECHNICAL_SMOKE_SELECTOR_PREPARATION_ONLY",
+  "master_seed": 2026082701,
+  "literal_namespace": "R1_FUTURE_COMPLIANT_TECHNICAL_SMOKE_SELECTOR_V2",
+  "salt_derivation": "SHA256(R1_FUTURE_COMPLIANT_TECHNICAL_SMOKE_SELECTOR_V2|2026082701)",
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "rank_rule": "SHA256(salt_sha256|family|scenario_token|log_id)",
+  "salt_status": "FROZEN_BEFORE_CANDIDATE_ENUMERATION",
+  "actual_roster_selected": false,
+  "execution_authorized": false,
+  "runtime_validation_blacklist": [
+    {"scenario_token": "25944935eadb52f1", "log_id": "2021.09.10.17.09.03_veh-42_01128_02369"},
+    {"scenario_token": "ef3172a208cc5dd7", "log_id": "2021.08.26.17.14.36_veh-08_02322_02631"},
+    {"scenario_token": "b486f9cf33a85455", "log_id": "2021.05.12.23.36.44_veh-35_00152_00504"},
+    {"scenario_token": "3edcce9e7e19573f", "log_id": "2021.09.30.17.20.14_veh-44_00422_00647"}
+  ],
+  "permanent_blacklist_labels": [
+    "RUNTIME_DETERMINISM_VALIDATION_ONLY",
+    "EXCLUDED_FROM_FRESH_TECHNICAL_SMOKE",
+    "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+    "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+  ],
+  "source_contract_v0_1_sha256": "a2ecd4eee9fe3f526a5184110c2f7f53164221f0d4de7ebf8c79374acb7f1707",
+  "runtime_validation_roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6"
+}
