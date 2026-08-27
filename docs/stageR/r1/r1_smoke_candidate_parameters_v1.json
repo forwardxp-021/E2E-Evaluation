@@ -1,0 +1,89 @@
+{
+  "schema_version": "r1_smoke_candidate_parameters_v1",
+  "status": "PREDECLARED_BEFORE_TECHNICAL_SMOKE",
+  "scope": "TRAJECTORY_ONLY_NO_REPRESENTATION_OUTCOMES",
+  "hlc": {
+    "baseline": {
+      "profile": "decisive_quintic_transition",
+      "transition_seconds": 2.0
+    },
+    "candidates": {
+      "HLC_MILD": {
+        "p_hold": 0.3,
+        "retreat_delta_p": 0.1,
+        "hold_seconds": 0.4,
+        "retreat_seconds": 0.4,
+        "recommit_seconds": 0.8
+      },
+      "HLC_NOMINAL": {
+        "p_hold": 0.35,
+        "retreat_delta_p": 0.15,
+        "hold_seconds": 0.5,
+        "retreat_seconds": 0.5,
+        "recommit_seconds": 1.0
+      },
+      "HLC_STRONG": {
+        "p_hold": 0.4,
+        "retreat_delta_p": 0.2,
+        "hold_seconds": 0.6,
+        "retreat_seconds": 0.6,
+        "recommit_seconds": 1.2
+      }
+    }
+  },
+  "tsb": {
+    "baseline": {
+      "brake_intensity_mps2": -1.0,
+      "brake_duration_seconds": 0.95
+    },
+    "candidates": {
+      "TSB_MILD": {
+        "first_brake_intensity_mps2": -0.9,
+        "first_brake_duration_seconds": 0.5,
+        "release_intensity_mps2": 0.3,
+        "release_duration_seconds": 0.3,
+        "second_brake_intensity_mps2": -0.9,
+        "second_brake_duration_seconds": 0.5
+      },
+      "TSB_NOMINAL": {
+        "first_brake_intensity_mps2": -1.0,
+        "first_brake_duration_seconds": 0.6,
+        "release_intensity_mps2": 0.3,
+        "release_duration_seconds": 0.4,
+        "second_brake_intensity_mps2": -1.0,
+        "second_brake_duration_seconds": 0.6
+      },
+      "TSB_STRONG": {
+        "first_brake_intensity_mps2": -1.2,
+        "first_brake_duration_seconds": 0.6,
+        "release_intensity_mps2": 0.4,
+        "release_duration_seconds": 0.4,
+        "second_brake_intensity_mps2": -1.2,
+        "second_brake_duration_seconds": 0.6
+      }
+    }
+  },
+  "solver": {
+    "status": "F_MATCH_CONSTRAINED_TRAJECTORY_ONLY_PRECHECK",
+    "input_allowlist": [
+      "raw_generated_trajectory",
+      "frozen_F_match_descriptors",
+      "frozen_development_calipers",
+      "mechanism_variables",
+      "physical_safety_constraints"
+    ],
+    "objective_constraint_order": [
+      "finite_and_time_integrity",
+      "frozen_F_match",
+      "mechanism_pair_gate",
+      "kinematic_integrity"
+    ],
+    "forbidden_inputs": [
+      "embedding",
+      "BDD",
+      "probe",
+      "representation",
+      "RBR"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "r1_tsb_mechanism_contract_v1.0",
+  "status": "R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN",
+  "owner_approval_sha256": "27aac073d2323aadd8d1a89b96d959fcdcb41e7b913d53e5d8acbc59b6dbc12c",
+  "source_options_sha256": "a66d9ad0e5aef2690172db6b145ca230857592989cfa00bea73d6a26e6927718",
+  "family": "R-TSB",
+  "option": "OPTION_A",
+  "sampling": {"dt_seconds": 0.1, "physical_time_resampling_requires_new_version": true},
+  "measurements": {"speed_signal": "median3_longitudinal_speed", "acceleration": "timestamp_aware_finite_difference", "brake_onset_lte_mps2": -0.8, "release_gte_mps2": -0.2, "brake_min_seconds": 0.3, "release_min_seconds": 0.3, "phase_merge_gap_lt_seconds": 0.3, "low_speed_endstop": "RETAINED", "interstage_release_fraction_denominator_floor_mps": 0.1, "second_brake_peak_ratio_denominator_floor_mps2": 0.8},
+  "pair_qualification": {"baseline_brake_phase_count_equals": 1, "treatment_brake_phase_count_equals": 2, "interstage_release_fraction_gte": 0.15, "second_brake_peak_ratio_gte": 0.5, "pass_label": "TSB_MECHANISM_PAIR_PASS", "treatment_phase_count_relaxation_forbidden": true},
+  "outcome_driven_threshold_tuning_forbidden": true
+}

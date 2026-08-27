@@ -1,0 +1,15 @@
+{
+  "schema_version": "r1_technical_smoke_execution_manifest_v1.1",
+  "status": "TECHNICAL_SMOKE_CAP_VIOLATION_RECORDED_NO_RERUN",
+  "supersedes_execution_accounting_only": "docs/stageR/r1/r1_technical_smoke_execution_manifest_v1.json",
+  "unchanged_contracts": ["R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN", "r1_smoke_candidate_parameters_v1.json", "frozen_R0_F_match_calipers"],
+  "unique_logical_arm_plan": {"R-HLC": 24, "R-TSB": 24, "total": 48},
+  "actual_trajectory_core_construction_calls": {"R-HLC": 36, "R-TSB": 36, "total": 72, "hard_cap": 48, "cap_satisfied": false},
+  "root_cause": "baseline trajectory was reconstructed once per candidate pair rather than once per scenario and reused across the three candidate comparisons",
+  "external_runtime_rollouts": 0,
+  "prohibited_reads": ["embedding", "BDD", "probe", "checkpoint", "RBR"],
+  "formal_roster_created": false,
+  "r4_data_used": false,
+  "rerun_authorized": false,
+  "result_use": "NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY"
+}

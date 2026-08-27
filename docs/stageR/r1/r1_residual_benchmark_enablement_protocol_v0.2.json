@@ -1,0 +1,15 @@
+{
+  "schema_version": "r1_residual_benchmark_enablement_protocol_v0.2",
+  "status": "SCIENTIFIC_OWNER_APPROVED_FOR_IMPLEMENTATION_SMOKE",
+  "supersedes_status_only": "docs/stageR/r1/r1_residual_benchmark_enablement_protocol_v0.1.json",
+  "r1_protocol_frozen": false,
+  "r0_protocol_modified": false,
+  "historical_r0_result_modified": false,
+  "owner_approval": {"path": "docs/stageR/r1/r1_phaseA_scientific_owner_approval_v0.1.json", "sha256": "27aac073d2323aadd8d1a89b96d959fcdcb41e7b913d53e5d8acbc59b6dbc12c"},
+  "frozen_context_mechanism_contract": {"status": "R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN", "context_sha256": "82e4d9dd8bd3a63e1e8dcfb4504d378df510b5d20aebd471e5dfaac3071b7365", "hlc_sha256": "f2e20d6e8c443f92d5fd8458069f431d6ba949069d54e703f6ca4bf2df5ce0e8", "tsb_sha256": "375d3c07fbdf8d5ed6f0ebe5b8056221dec20ae732529076bce0f2e4695ccece"},
+  "technical_smoke": {"authorized_max_rollouts": 48, "unique_logical_arm_plan": 48, "actual_trajectory_core_construction_calls": 72, "cap_satisfied": false, "candidate_parameters_sha256": "8f03fee020756b841e11edc47aa9bc4a2cc4fe7d9e8b21b4fdc5454a8679e7d2", "roster_sha256": "6891a82e9c1bf60af9b14105b4c4a52f14391e49237746e3e561f69524082ee9", "diagnostic_metrics_sha256": "dbe333a61a77dfefdd0da1cfbb905a4c67dfdc217c0884fc405c6fa678b2c35d", "v1_manifest_sha256": "31d8f778c20dc54856498b5fffed8f75946772b97b6bdf228e945fedbb71ee92", "formal_roster_created": false, "result": "NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY", "correction": "docs/stageR/r1/r1_technical_smoke_execution_manifest_v1.1.json"},
+  "readiness": "NOT_READY",
+  "r_ip": "SECONDARY_CONDITIONAL_NOT_REQUIRED_FOR_INITIAL_ENABLEMENT",
+  "training_authorization": {"RBR_A": "NOT_AUTHORIZED", "RBR_B": "NOT_AUTHORIZED", "RBR_C": "NOT_AUTHORIZED"},
+  "prohibited_actions_performed": []
+}

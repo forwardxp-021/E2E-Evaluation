@@ -1,0 +1,12 @@
+{
+  "schema_version": "r1_hlc_mechanism_contract_v1.0",
+  "status": "R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN",
+  "owner_approval_sha256": "27aac073d2323aadd8d1a89b96d959fcdcb41e7b913d53e5d8acbc59b6dbc12c",
+  "source_options_sha256": "2e0042155daa9d9786add57469f90002d3874607d5aa3f8f4073337748b67334",
+  "family": "R-HLC",
+  "option": "OPTION_B",
+  "sampling": {"dt_seconds": 0.1, "physical_time_resampling_requires_new_version": true},
+  "measurements": {"signal": "median3_p", "commit_latency": {"p_depart": 0.1, "p_commit": 0.75, "persistence_seconds": 0.5}, "retreat": {"derivative_lte_per_s": -0.1, "derivative_duration_seconds": 0.3, "cumulative_fall_gte": 0.08, "episode_min_seconds": 0.4, "merge_gap_lt_seconds": 0.4, "recovery_derivative_gte_per_s": 0.04, "recovery_duration_seconds": 0.3}, "monotonic_transition_fraction": {"formula": "1 - sum(max(-delta_median3p-epsilon,0))/sum(max(abs(delta_median3p)-epsilon,0))", "epsilon_progress_per_frame": 0.008, "denominator_min": 0.1}},
+  "pair_qualification": {"baseline_hesitation_retreat_count_equals": 0, "treatment_hesitation_retreat_count_gte": 1, "delta_commit_latency_seconds_gte": 0.5, "treatment_monotonic_fraction_lte_baseline_minus": 0.1, "pass_label": "HLC_MECHANISM_PAIR_PASS"},
+  "outcome_driven_threshold_tuning_forbidden": true
+}

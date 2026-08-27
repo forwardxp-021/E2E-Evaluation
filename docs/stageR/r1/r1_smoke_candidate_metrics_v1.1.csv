@@ -1,0 +1,7 @@
+family,candidate_id,scenario_count,shared_unique_baseline_arms,candidate_treatment_arms,unique_family_arm_plan,actual_family_core_construction_calls,technical_execution_pass_count,pre_context_identity_pass_count,canonical_context_identity_pass_count,f_match_pass_count,mechanism_pair_pass_count,kinematic_integrity_pass_count,corrected_result_use
+R-HLC,HLC_MILD,6,6,6,24,36,0,6,6,0,0,0,NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY
+R-HLC,HLC_NOMINAL,6,6,6,24,36,0,6,6,0,6,0,NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY
+R-HLC,HLC_STRONG,6,6,6,24,36,0,6,6,0,6,0,NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY
+R-TSB,TSB_MILD,6,6,6,24,36,6,6,6,6,0,6,NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY
+R-TSB,TSB_NOMINAL,6,6,6,24,36,6,6,6,6,0,6,NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY
+R-TSB,TSB_STRONG,6,6,6,24,36,6,6,6,6,0,6,NONCOMPLIANT_EXECUTION_DIAGNOSTIC_ONLY

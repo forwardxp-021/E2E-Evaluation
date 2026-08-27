@@ -1,0 +1,104 @@
+{
+  "schema_version": "r1_technical_smoke_roster_v1",
+  "status": "TECHNICAL_SMOKE_ONLY",
+  "selection": {
+    "method": "outcome_blind_deterministic_sha256_rank",
+    "salt": "R1_PHASEB_TECHNICAL_SMOKE_ROSTER_V1",
+    "source_scope": "HISTORICAL_OR_R0_DEVELOPMENT_ONLY",
+    "formal_r1_development_roster_created": false,
+    "exclusions": [
+      "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+      "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+    ]
+  },
+  "families": {
+    "R-HLC": [
+      {
+        "scenario_token": "2c70dfdf24c55774",
+        "log_id": "2021.09.27.17.52.47_veh-44_02062_02160",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json",
+        "rank_sha256": "05a37d423e03546bd332d5fad331696e8a562ff617246b12757c55403c408626"
+      },
+      {
+        "scenario_token": "b1f30cb92e7c55e4",
+        "log_id": "2021.09.24.14.23.05_veh-45_00811_01131",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json",
+        "rank_sha256": "08f871d9c4233d40dd1c0a65e9f50745a3c470cd12f2f42cba443cebbdeb4344"
+      },
+      {
+        "scenario_token": "512198168cbc55af",
+        "log_id": "2021.09.17.14.49.23_veh-42_00690_00846",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json",
+        "rank_sha256": "123e535fb3166b5876fca3fd54f8a01c3a46c3e7e0fecdd6b77c620c09b21992"
+      },
+      {
+        "scenario_token": "dfeffcca2ef05c96",
+        "log_id": "2021.09.20.18.15.46_veh-08_00078_00230",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json",
+        "rank_sha256": "2661c240bac6afb97149756b37d444399d8152178198766c4d8eb78cb236837a"
+      },
+      {
+        "scenario_token": "92f1a8a7d00a5632",
+        "log_id": "2021.08.23.14.27.31_veh-45_00895_01001",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json",
+        "rank_sha256": "2a84624d8b82312d15af75a4ad4a10f78f4d587f9fe53b6360f21002a2648380"
+      },
+      {
+        "scenario_token": "d1a65b17145f5472",
+        "log_id": "2021.08.27.14.37.47_veh-08_01291_01597",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage7l_b_final_development_freeze_v1/final_development_maneuver_manifest.json",
+        "rank_sha256": "449443c43e9fa09d313ae4f7e153a8e039c172001c4f22766cae26e2518d24c3"
+      }
+    ],
+    "R-TSB": [
+      {
+        "scenario_token": "5c04df4c02975a77",
+        "log_id": "2021.09.20.18.55.11_veh-08_00069_00483",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv",
+        "rank_sha256": "0104a88f27cb22b10fa1984debb6349728f49920c190b02787610bafebaa3201"
+      },
+      {
+        "scenario_token": "5ab20ff9cc3c5d29",
+        "log_id": "2021.08.20.17.54.47_veh-45_02642_02801",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv",
+        "rank_sha256": "02a0134d4e584ab93dfd6ef68feb4abb9dcdfc0709edcbe31d50b09ed8105793"
+      },
+      {
+        "scenario_token": "8494670cfa8f5e09",
+        "log_id": "2021.08.19.19.22.25_veh-08_00186_00866",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv",
+        "rank_sha256": "03f06b3088ea8b40b7c3c2c3522e4e7f7c2539b4610b3eb068de6e5c079c3107"
+      },
+      {
+        "scenario_token": "f603f5b88813572b",
+        "log_id": "2021.09.20.20.32.00_veh-08_00211_00332",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv",
+        "rank_sha256": "042614b7aa5dbea0ca6349c99d8c7b1c944c87ba516f495ce59c9fcfe109af9f"
+      },
+      {
+        "scenario_token": "057c831f5acf5c76",
+        "log_id": "2021.09.28.18.57.35_veh-44_01064_01998",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv",
+        "rank_sha256": "05ee7a23c2acd658974411b623eb3a6152791ef48ce0f5c8d334aeb9f565a52d"
+      },
+      {
+        "scenario_token": "e135794d38c1565c",
+        "log_id": "2021.08.23.12.33.24_veh-42_00864_01009",
+        "map_location": "us-pa-pittsburgh-hazelwood",
+        "source": "outputs/stage6j_pure_longitudinal_context_v1/metadata.csv",
+        "rank_sha256": "06cca48a0270650b23c3aeb913143cd9c5f46af8e022de1021ba1675efee6ef7"
+      }
+    ]
+  }
+}

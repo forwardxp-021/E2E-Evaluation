@@ -1,0 +1,2280 @@
+{
+  "schema_version": "r1_technical_smoke_execution_manifest_v1",
+  "status": "TECHNICAL_SMOKE_COMPLETE_CORE_ONLY",
+  "baseline_commit": "ef78536f852e2f1fb0c0f66e928c4da2282eda6c",
+  "frozen_context_mechanism_contract": "R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN",
+  "candidate_parameters_sha256": "8f03fee020756b841e11edc47aa9bc4a2cc4fe7d9e8b21b4fdc5454a8679e7d2",
+  "roster_sha256": "6891a82e9c1bf60af9b14105b4c4a52f14391e49237746e3e561f69524082ee9",
+  "metrics_sha256": "dbe333a61a77dfefdd0da1cfbb905a4c67dfdc217c0884fc405c6fa678b2c35d",
+  "planned_rollouts": 48,
+  "executed_rollouts": 48,
+  "pairs": [
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_token": "2c70dfdf24c55774",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 1.26,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 13.127873,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.461803,
+        "mean_abs_accel": 0.151864,
+        "path_length": 59.083905
+      },
+      "treatment_descriptors": {
+        "mean_speed": 13.176338,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 1.416815,
+        "mean_abs_accel": 0.608188,
+        "path_length": 59.329636
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.048465,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.245731,
+          "heading_change_abs_total": 0.955012
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_token": "2c70dfdf24c55774",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.955,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 13.127873,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.461803,
+        "mean_abs_accel": 0.151864,
+        "path_length": 59.083905
+      },
+      "treatment_descriptors": {
+        "mean_speed": 13.16794,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 1.366015,
+        "mean_abs_accel": 0.511609,
+        "path_length": 59.284404
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.040067,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.200499,
+          "heading_change_abs_total": 0.904212
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_token": "2c70dfdf24c55774",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.937,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 13.127873,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.461803,
+        "mean_abs_accel": 0.151864,
+        "path_length": 59.083905
+      },
+      "treatment_descriptors": {
+        "mean_speed": 13.165213,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 1.374187,
+        "mean_abs_accel": 0.469849,
+        "path_length": 59.269619
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.03734,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.185714,
+          "heading_change_abs_total": 0.912384
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_token": "b1f30cb92e7c55e4",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.946,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.292491,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 0.808466,
+        "mean_abs_accel": 0.268501,
+        "path_length": 32.831189
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.371407,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 2.38921,
+        "mean_abs_accel": 1.030953,
+        "path_length": 33.23032
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.078916,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.399131,
+          "heading_change_abs_total": 1.580744
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_token": "b1f30cb92e7c55e4",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.932,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.292491,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 0.808466,
+        "mean_abs_accel": 0.268501,
+        "path_length": 32.831189
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.360372,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 2.352622,
+        "mean_abs_accel": 0.887292,
+        "path_length": 33.170441
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.067881,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.339252,
+          "heading_change_abs_total": 1.544156
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_token": "b1f30cb92e7c55e4",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.92,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.292491,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 0.808466,
+        "mean_abs_accel": 0.268501,
+        "path_length": 32.831189
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.357337,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 2.389508,
+        "mean_abs_accel": 0.823749,
+        "path_length": 33.153183
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.064846,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.321994,
+          "heading_change_abs_total": 1.581042
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_token": "512198168cbc55af",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.882,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.515746,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.786392,
+        "mean_abs_accel": 0.261168,
+        "path_length": 33.835424
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.592831,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 2.329618,
+        "mean_abs_accel": 1.005141,
+        "path_length": 34.225391
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.077085,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.389967,
+          "heading_change_abs_total": 1.543226
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_token": "512198168cbc55af",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.856,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.515746,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.786392,
+        "mean_abs_accel": 0.261168,
+        "path_length": 33.835424
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.581825,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 2.290646,
+        "mean_abs_accel": 0.863576,
+        "path_length": 34.165742
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.066079,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.330318,
+          "heading_change_abs_total": 1.504254
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_token": "512198168cbc55af",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 1.249,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.515746,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.786392,
+        "mean_abs_accel": 0.261168,
+        "path_length": 33.835424
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.578735,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 2.324912,
+        "mean_abs_accel": 0.801125,
+        "path_length": 34.148281
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.062989,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.312857,
+          "heading_change_abs_total": 1.53852
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_token": "dfeffcca2ef05c96",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.911,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.168217,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.821608,
+        "mean_abs_accel": 0.273255,
+        "path_length": 32.272217
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.248068,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 2.424113,
+        "mean_abs_accel": 1.046495,
+        "path_length": 32.676076
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.079851,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.403859,
+          "heading_change_abs_total": 1.602505
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_token": "dfeffcca2ef05c96",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.887,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.168217,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.821608,
+        "mean_abs_accel": 0.273255,
+        "path_length": 32.272217
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.236994,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 2.388878,
+        "mean_abs_accel": 0.901465,
+        "path_length": 32.615969
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.068777,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.343752,
+          "heading_change_abs_total": 1.56727
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_token": "dfeffcca2ef05c96",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.874,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 7.168217,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.821608,
+        "mean_abs_accel": 0.273255,
+        "path_length": 32.272217
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.233978,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 2.427169,
+        "mean_abs_accel": 0.837345,
+        "path_length": 32.598773
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.065761,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.326556,
+          "heading_change_abs_total": 1.605561
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_token": "92f1a8a7d00a5632",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 0.94,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 9.895778,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 0.606775,
+        "mean_abs_accel": 0.200261,
+        "path_length": 44.542179
+      },
+      "treatment_descriptors": {
+        "mean_speed": 9.95779,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 1.834421,
+        "mean_abs_accel": 0.789448,
+        "path_length": 44.856273
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.062012,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.314094,
+          "heading_change_abs_total": 1.227646
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_token": "92f1a8a7d00a5632",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 2.419,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 9.895778,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 0.606775,
+        "mean_abs_accel": 0.200261,
+        "path_length": 44.542179
+      },
+      "treatment_descriptors": {
+        "mean_speed": 9.947804,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 1.783588,
+        "mean_abs_accel": 0.669874,
+        "path_length": 44.802395
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.052026,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.260216,
+          "heading_change_abs_total": 1.176813
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_token": "92f1a8a7d00a5632",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 2.459,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 9.895778,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 0.606775,
+        "mean_abs_accel": 0.200261,
+        "path_length": 44.542179
+      },
+      "treatment_descriptors": {
+        "mean_speed": 9.944701,
+        "end_minus_start_speed": -0.0,
+        "heading_change_abs_total": 1.80097,
+        "mean_abs_accel": 0.617684,
+        "path_length": 44.785358
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.048923,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.243179,
+          "heading_change_abs_total": 1.194195
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_token": "d1a65b17145f5472",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 2.671,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 10.693332,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.563191,
+        "mean_abs_accel": 0.185622,
+        "path_length": 48.130357
+      },
+      "treatment_descriptors": {
+        "mean_speed": 10.751375,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 1.710564,
+        "mean_abs_accel": 0.735451,
+        "path_length": 48.424437
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.058043,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.29408,
+          "heading_change_abs_total": 1.147373
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_token": "d1a65b17145f5472",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 2.22,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 10.693332,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.563191,
+        "mean_abs_accel": 0.185622,
+        "path_length": 48.130357
+      },
+      "treatment_descriptors": {
+        "mean_speed": 10.741798,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 1.658793,
+        "mean_abs_accel": 0.622329,
+        "path_length": 48.372801
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.048466,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.242444,
+          "heading_change_abs_total": 1.095602
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_token": "d1a65b17145f5472",
+      "technical_execution_pass": false,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": false,
+      "mechanism_pair_pass": true,
+      "kinematic_integrity_pass": false,
+      "pair_runtime_ms": 4.617,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "HLC_MECHANISM_PAIR_PASS",
+      "f_match_status": "F_MATCH_FAIL",
+      "baseline_descriptors": {
+        "mean_speed": 10.693332,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 0.563191,
+        "mean_abs_accel": 0.185622,
+        "path_length": 48.130357
+      },
+      "treatment_descriptors": {
+        "mean_speed": 10.738774,
+        "end_minus_start_speed": 0.0,
+        "heading_change_abs_total": 1.672981,
+        "mean_abs_accel": 0.573098,
+        "path_length": 48.356276
+      },
+      "f_match": {
+        "status": "F_MATCH_FAIL",
+        "pass": false,
+        "absolute_delta": {
+          "mean_speed": 0.045442,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.225919,
+          "heading_change_abs_total": 1.10979
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "heading_change_abs_total": 0.0492160141
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "heading_change_abs_total": false
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_token": "5c04df4c02975a77",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.436,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.506957,
+        "end_minus_start_speed": -0.81,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.202174,
+        "path_length": 33.7725
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.148261,
+          "end_minus_start_speed": 0.19,
+          "path_length": 0.6725,
+          "mean_abs_accel": 0.015217
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_token": "5c04df4c02975a77",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.403,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.377826,
+        "end_minus_start_speed": -1.08,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.273913,
+        "path_length": 33.192
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.01913,
+          "end_minus_start_speed": 0.08,
+          "path_length": 0.092,
+          "mean_abs_accel": 0.056522
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_token": "5c04df4c02975a77",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.356,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.262609,
+        "end_minus_start_speed": -1.28,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.330435,
+        "path_length": 32.672
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.096087,
+          "end_minus_start_speed": 0.28,
+          "path_length": 0.428,
+          "mean_abs_accel": 0.113044
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_token": "5ab20ff9cc3c5d29",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.344,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.506957,
+        "end_minus_start_speed": -0.81,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.202174,
+        "path_length": 33.7725
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.148261,
+          "end_minus_start_speed": 0.19,
+          "path_length": 0.6725,
+          "mean_abs_accel": 0.015217
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_token": "5ab20ff9cc3c5d29",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.339,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.377826,
+        "end_minus_start_speed": -1.08,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.273913,
+        "path_length": 33.192
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.01913,
+          "end_minus_start_speed": 0.08,
+          "path_length": 0.092,
+          "mean_abs_accel": 0.056522
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_token": "5ab20ff9cc3c5d29",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.334,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.262609,
+        "end_minus_start_speed": -1.28,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.330435,
+        "path_length": 32.672
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.096087,
+          "end_minus_start_speed": 0.28,
+          "path_length": 0.428,
+          "mean_abs_accel": 0.113044
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_token": "8494670cfa8f5e09",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.335,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.506957,
+        "end_minus_start_speed": -0.81,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.202174,
+        "path_length": 33.7725
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.148261,
+          "end_minus_start_speed": 0.19,
+          "path_length": 0.6725,
+          "mean_abs_accel": 0.015217
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_token": "8494670cfa8f5e09",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.334,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.377826,
+        "end_minus_start_speed": -1.08,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.273913,
+        "path_length": 33.192
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.01913,
+          "end_minus_start_speed": 0.08,
+          "path_length": 0.092,
+          "mean_abs_accel": 0.056522
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_token": "8494670cfa8f5e09",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.333,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.262609,
+        "end_minus_start_speed": -1.28,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.330435,
+        "path_length": 32.672
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.096087,
+          "end_minus_start_speed": 0.28,
+          "path_length": 0.428,
+          "mean_abs_accel": 0.113044
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_token": "f603f5b88813572b",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.331,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.506957,
+        "end_minus_start_speed": -0.81,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.202174,
+        "path_length": 33.7725
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.148261,
+          "end_minus_start_speed": 0.19,
+          "path_length": 0.6725,
+          "mean_abs_accel": 0.015217
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_token": "f603f5b88813572b",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.331,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.377826,
+        "end_minus_start_speed": -1.08,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.273913,
+        "path_length": 33.192
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.01913,
+          "end_minus_start_speed": 0.08,
+          "path_length": 0.092,
+          "mean_abs_accel": 0.056522
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_token": "f603f5b88813572b",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.333,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.262609,
+        "end_minus_start_speed": -1.28,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.330435,
+        "path_length": 32.672
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.096087,
+          "end_minus_start_speed": 0.28,
+          "path_length": 0.428,
+          "mean_abs_accel": 0.113044
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_token": "057c831f5acf5c76",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.344,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.506957,
+        "end_minus_start_speed": -0.81,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.202174,
+        "path_length": 33.7725
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.148261,
+          "end_minus_start_speed": 0.19,
+          "path_length": 0.6725,
+          "mean_abs_accel": 0.015217
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_token": "057c831f5acf5c76",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.388,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.377826,
+        "end_minus_start_speed": -1.08,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.273913,
+        "path_length": 33.192
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.01913,
+          "end_minus_start_speed": 0.08,
+          "path_length": 0.092,
+          "mean_abs_accel": 0.056522
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_token": "057c831f5acf5c76",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.347,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.262609,
+        "end_minus_start_speed": -1.28,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.330435,
+        "path_length": 32.672
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.096087,
+          "end_minus_start_speed": 0.28,
+          "path_length": 0.428,
+          "mean_abs_accel": 0.113044
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_token": "e135794d38c1565c",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.334,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.506957,
+        "end_minus_start_speed": -0.81,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.202174,
+        "path_length": 33.7725
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.148261,
+          "end_minus_start_speed": 0.19,
+          "path_length": 0.6725,
+          "mean_abs_accel": 0.015217
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_token": "e135794d38c1565c",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.338,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.377826,
+        "end_minus_start_speed": -1.08,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.273913,
+        "path_length": 33.192
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.01913,
+          "end_minus_start_speed": 0.08,
+          "path_length": 0.092,
+          "mean_abs_accel": 0.056522
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_token": "e135794d38c1565c",
+      "technical_execution_pass": true,
+      "pre_context_identity_pass": true,
+      "canonical_context_identity_pass": true,
+      "f_match_pass": true,
+      "mechanism_pair_pass": false,
+      "kinematic_integrity_pass": true,
+      "pair_runtime_ms": 0.332,
+      "baseline_mechanism_status": "OK",
+      "treatment_mechanism_status": "OK",
+      "mechanism_pair_status": "TSB_MECHANISM_PAIR_FAIL",
+      "f_match_status": "F_MATCH_PASS",
+      "baseline_descriptors": {
+        "mean_speed": 7.358696,
+        "end_minus_start_speed": -1.0,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.217391,
+        "path_length": 33.1
+      },
+      "treatment_descriptors": {
+        "mean_speed": 7.262609,
+        "end_minus_start_speed": -1.28,
+        "heading_change_abs_total": 0.0,
+        "mean_abs_accel": 0.330435,
+        "path_length": 32.672
+      },
+      "f_match": {
+        "status": "F_MATCH_PASS",
+        "pass": true,
+        "absolute_delta": {
+          "mean_speed": 0.096087,
+          "end_minus_start_speed": 0.28,
+          "path_length": 0.428,
+          "mean_abs_accel": 0.113044
+        },
+        "calipers": {
+          "mean_speed": 0.708203939,
+          "end_minus_start_speed": 0.978755681,
+          "path_length": 5.38423459,
+          "mean_abs_accel": 0.11777666
+        },
+        "pass_by_feature": {
+          "mean_speed": true,
+          "end_minus_start_speed": true,
+          "path_length": true,
+          "mean_abs_accel": true
+        }
+      },
+      "pair_context": {
+        "pair_context_identity_pass": true,
+        "fields": {
+          "pre_context_raw_hash": true,
+          "canonical_context_json_hash": true
+        }
+      },
+      "safety_scope": "KINEMATIC_ONLY_NOT_OFFICIAL_CLOSED_LOOP_SAFETY"
+    }
+  ],
+  "summary": [
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_MILD",
+      "scenario_count": 6,
+      "rollout_count": 12,
+      "technical_execution_pass_count": 0,
+      "pre_context_identity_pass_count": 6,
+      "canonical_context_identity_pass_count": 6,
+      "f_match_pass_count": 0,
+      "mechanism_pair_pass_count": 0,
+      "kinematic_integrity_pass_count": 0,
+      "mean_pair_runtime_ms": 1.268,
+      "technical_recommendation_status": "NOT_RECOMMENDED_AFTER_TECHNICAL_SMOKE",
+      "scope": "TECHNICAL_SMOKE_CORE_ONLY_NOT_FORMAL_GENERATOR_FREEZE"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_NOMINAL",
+      "scenario_count": 6,
+      "rollout_count": 12,
+      "technical_execution_pass_count": 0,
+      "pre_context_identity_pass_count": 6,
+      "canonical_context_identity_pass_count": 6,
+      "f_match_pass_count": 0,
+      "mechanism_pair_pass_count": 6,
+      "kinematic_integrity_pass_count": 0,
+      "mean_pair_runtime_ms": 1.378,
+      "technical_recommendation_status": "NOT_RECOMMENDED_AFTER_TECHNICAL_SMOKE",
+      "scope": "TECHNICAL_SMOKE_CORE_ONLY_NOT_FORMAL_GENERATOR_FREEZE"
+    },
+    {
+      "family": "R-HLC",
+      "candidate_id": "HLC_STRONG",
+      "scenario_count": 6,
+      "rollout_count": 12,
+      "technical_execution_pass_count": 0,
+      "pre_context_identity_pass_count": 6,
+      "canonical_context_identity_pass_count": 6,
+      "f_match_pass_count": 0,
+      "mechanism_pair_pass_count": 6,
+      "kinematic_integrity_pass_count": 0,
+      "mean_pair_runtime_ms": 1.843,
+      "technical_recommendation_status": "NOT_RECOMMENDED_AFTER_TECHNICAL_SMOKE",
+      "scope": "TECHNICAL_SMOKE_CORE_ONLY_NOT_FORMAL_GENERATOR_FREEZE"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_MILD",
+      "scenario_count": 6,
+      "rollout_count": 12,
+      "technical_execution_pass_count": 6,
+      "pre_context_identity_pass_count": 6,
+      "canonical_context_identity_pass_count": 6,
+      "f_match_pass_count": 6,
+      "mechanism_pair_pass_count": 0,
+      "kinematic_integrity_pass_count": 6,
+      "mean_pair_runtime_ms": 0.354,
+      "technical_recommendation_status": "NOT_RECOMMENDED_AFTER_TECHNICAL_SMOKE",
+      "scope": "TECHNICAL_SMOKE_CORE_ONLY_NOT_FORMAL_GENERATOR_FREEZE"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_NOMINAL",
+      "scenario_count": 6,
+      "rollout_count": 12,
+      "technical_execution_pass_count": 6,
+      "pre_context_identity_pass_count": 6,
+      "canonical_context_identity_pass_count": 6,
+      "f_match_pass_count": 6,
+      "mechanism_pair_pass_count": 0,
+      "kinematic_integrity_pass_count": 6,
+      "mean_pair_runtime_ms": 0.355,
+      "technical_recommendation_status": "NOT_RECOMMENDED_AFTER_TECHNICAL_SMOKE",
+      "scope": "TECHNICAL_SMOKE_CORE_ONLY_NOT_FORMAL_GENERATOR_FREEZE"
+    },
+    {
+      "family": "R-TSB",
+      "candidate_id": "TSB_STRONG",
+      "scenario_count": 6,
+      "rollout_count": 12,
+      "technical_execution_pass_count": 6,
+      "pre_context_identity_pass_count": 6,
+      "canonical_context_identity_pass_count": 6,
+      "f_match_pass_count": 6,
+      "mechanism_pair_pass_count": 0,
+      "kinematic_integrity_pass_count": 6,
+      "mean_pair_runtime_ms": 0.339,
+      "technical_recommendation_status": "NOT_RECOMMENDED_AFTER_TECHNICAL_SMOKE",
+      "scope": "TECHNICAL_SMOKE_CORE_ONLY_NOT_FORMAL_GENERATOR_FREEZE"
+    }
+  ],
+  "external_runtime": {
+    "nuplan_available": false,
+    "official_closed_loop_background_replay_executed": false,
+    "traffic_light_route_api_executed": false,
+    "result": "CORE_SMOKE_ONLY_RUNTIME_INTEGRATION_PENDING"
+  },
+  "prohibited_reads": [
+    "embedding",
+    "BDD",
+    "probe",
+    "checkpoint",
+    "RBR"
+  ],
+  "formal_roster_created": false,
+  "r4_data_used": false
+}
