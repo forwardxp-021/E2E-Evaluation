@@ -1,0 +1,270 @@
+{
+  "schema_version": "r1_phasea_raw_trajectory_evidence_v0.1",
+  "status": "READ_ONLY_TREATMENT_INDEPENDENT_DEVELOPMENT_RAW_EVIDENCE",
+  "sampling_interval_seconds": 0.1,
+  "selection_rule": "all valid frames in every predeclared source; no scenario-, family-, or outcome-driven filtering",
+  "forbidden_inputs_not_opened": [
+    "embedding",
+    "BDD",
+    "probe",
+    "checkpoint",
+    "RBR",
+    "detection",
+    "planner rollout output"
+  ],
+  "interpretation_limit": "Quantiles support only draft threshold/noise-sensitivity proposals; they do not freeze a mechanism rule or establish a scientific outcome.",
+  "sources": [
+    {
+      "source_id": "waymo_dynamic_v2_unstratified_development_raw",
+      "purpose": "Raw measurement-scale reference; no residual-family or outcome filtering.",
+      "ego_path": "outputs/stage6r_dynamic_full51_semantic_strict_part_00_09/shards/shard_000000/ego_seq.npy",
+      "mask_path": null,
+      "shape": [
+        5000,
+        80,
+        8
+      ],
+      "valid_frame_count": 400000,
+      "consecutive_valid_pair_count": 395000,
+      "metrics": {
+        "speed_mps": {
+          "n": 400000,
+          "q01": 0.029398,
+          "q05": 0.146484,
+          "q50": 6.389094,
+          "q95": 18.037214,
+          "q99": 21.569454
+        },
+        "longitudinal_accel_mps2": {
+          "n": 400000,
+          "q01": -11.306767,
+          "q05": -4.94785,
+          "q50": 0.0,
+          "q95": 5.057927,
+          "q99": 11.525956
+        },
+        "lateral_velocity_mps": {
+          "n": 400000,
+          "q01": -8.339388,
+          "q05": -2.242478,
+          "q50": 0.003227,
+          "q95": 3.346409,
+          "q99": 9.414062
+        },
+        "yaw_rate_radps": {
+          "n": 400000,
+          "q01": -0.433319,
+          "q05": -0.141857,
+          "q50": 0.0,
+          "q95": 0.204881,
+          "q99": 0.418265
+        },
+        "longitudinal_jerk_mps3": {
+          "n": 395000,
+          "q01": -198.069619,
+          "q05": -82.540764,
+          "q50": 0.0,
+          "q95": 82.109089,
+          "q99": 198.375795
+        },
+        "lateral_accel_mps2": {
+          "n": 395000,
+          "q01": -4.816494,
+          "q05": -2.232932,
+          "q50": 0.0,
+          "q95": 2.314655,
+          "q99": 4.815816
+        }
+      }
+    },
+    {
+      "source_id": "r_tsb_stage6j_raw",
+      "purpose": "Existing R0 DEVELOPMENT raw trajectory reference for longitudinal morphology.",
+      "ego_path": "outputs/stage6j_pure_longitudinal_context_v1/ego_seq.npy",
+      "mask_path": "outputs/stage6j_pure_longitudinal_context_v1/ego_seq_mask.npy",
+      "shape": [
+        366,
+        150,
+        8
+      ],
+      "valid_frame_count": 54612,
+      "consecutive_valid_pair_count": 54246,
+      "metrics": {
+        "speed_mps": {
+          "n": 54612,
+          "q01": 1e-06,
+          "q05": 7e-06,
+          "q50": 0.992682,
+          "q95": 11.082019,
+          "q99": 12.833684
+        },
+        "longitudinal_accel_mps2": {
+          "n": 54612,
+          "q01": -2.215267,
+          "q05": -0.922779,
+          "q50": -1.2e-05,
+          "q95": 0.954695,
+          "q99": 1.293538
+        },
+        "lateral_velocity_mps": {
+          "n": 54612,
+          "q01": -8.388644,
+          "q05": -1.649477,
+          "q50": 0.0,
+          "q95": 1.271173,
+          "q99": 6.574837
+        },
+        "yaw_rate_radps": {
+          "n": 54612,
+          "q01": -0.387546,
+          "q05": -0.040263,
+          "q50": 0.0,
+          "q95": 0.051706,
+          "q99": 0.561718
+        },
+        "longitudinal_jerk_mps3": {
+          "n": 54246,
+          "q01": -3.601215,
+          "q05": -0.529948,
+          "q50": 1.4e-05,
+          "q95": 0.759333,
+          "q99": 3.256824
+        },
+        "lateral_accel_mps2": {
+          "n": 54246,
+          "q01": -2.027294,
+          "q05": -0.481378,
+          "q50": -0.0,
+          "q95": 0.360771,
+          "q99": 1.82426
+        }
+      }
+    },
+    {
+      "source_id": "r_tsb_stage6k_dose25_raw",
+      "purpose": "Existing R0 DEVELOPMENT raw trajectory reference for longitudinal morphology.",
+      "ego_path": "outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired/dose25/ego_seq.npy",
+      "mask_path": "outputs/stage6k_longitudinal_dose_context_v2_runtime_repaired/dose25/ego_seq_mask.npy",
+      "shape": [
+        366,
+        150,
+        8
+      ],
+      "valid_frame_count": 54612,
+      "consecutive_valid_pair_count": 54246,
+      "metrics": {
+        "speed_mps": {
+          "n": 54612,
+          "q01": 1e-06,
+          "q05": 7e-06,
+          "q50": 0.758872,
+          "q95": 9.365982,
+          "q99": 11.71995
+        },
+        "longitudinal_accel_mps2": {
+          "n": 54612,
+          "q01": -1.943552,
+          "q05": -0.805608,
+          "q50": -1.4e-05,
+          "q95": 0.595608,
+          "q99": 0.736616
+        },
+        "lateral_velocity_mps": {
+          "n": 54612,
+          "q01": -6.893797,
+          "q05": -1.191483,
+          "q50": 0.0,
+          "q95": 0.893087,
+          "q99": 4.839388
+        },
+        "yaw_rate_radps": {
+          "n": 54612,
+          "q01": -0.361211,
+          "q05": -0.037443,
+          "q50": 0.0,
+          "q95": 0.045234,
+          "q99": 0.505097
+        },
+        "longitudinal_jerk_mps3": {
+          "n": 54246,
+          "q01": -3.408985,
+          "q05": -0.28512,
+          "q50": 2e-05,
+          "q95": 0.587893,
+          "q99": 2.561197
+        },
+        "lateral_accel_mps2": {
+          "n": 54246,
+          "q01": -1.675143,
+          "q05": -0.410486,
+          "q50": -0.0,
+          "q95": 0.28501,
+          "q99": 1.338936
+        }
+      }
+    },
+    {
+      "source_id": "r_hlc_stage7l_dose0_raw",
+      "purpose": "Existing R0 DEVELOPMENT raw trajectory reference for lateral measurement scale only.",
+      "ego_path": "outputs/stage7l_e_prospective_bdd_v1/contexts/dose0/ego_seq.npy",
+      "mask_path": "outputs/stage7l_e_prospective_bdd_v1/contexts/dose0/ego_seq_mask.npy",
+      "shape": [
+        80,
+        150,
+        8
+      ],
+      "valid_frame_count": 11947,
+      "consecutive_valid_pair_count": 11867,
+      "metrics": {
+        "speed_mps": {
+          "n": 11947,
+          "q01": 4.992095,
+          "q05": 5.000047,
+          "q50": 5.164934,
+          "q95": 11.892896,
+          "q99": 13.292885
+        },
+        "longitudinal_accel_mps2": {
+          "n": 11947,
+          "q01": -1.018447,
+          "q05": -1.008419,
+          "q50": -0.074792,
+          "q95": -0.0,
+          "q99": 0.032756
+        },
+        "lateral_velocity_mps": {
+          "n": 11947,
+          "q01": -1.188343,
+          "q05": -0.926177,
+          "q50": -0.008555,
+          "q95": 0.495711,
+          "q99": 0.878881
+        },
+        "yaw_rate_radps": {
+          "n": 11947,
+          "q01": -0.072954,
+          "q05": -0.051023,
+          "q50": 0.0,
+          "q95": 0.04712,
+          "q99": 0.077007
+        },
+        "longitudinal_jerk_mps3": {
+          "n": 11867,
+          "q01": -1.399124,
+          "q05": -0.431709,
+          "q50": 0.000334,
+          "q95": 0.518517,
+          "q99": 0.69105
+        },
+        "lateral_accel_mps2": {
+          "n": 11867,
+          "q01": -0.717792,
+          "q05": -0.456035,
+          "q50": -0.0,
+          "q95": 0.419785,
+          "q99": 0.736914
+        }
+      }
+    }
+  ]
+}

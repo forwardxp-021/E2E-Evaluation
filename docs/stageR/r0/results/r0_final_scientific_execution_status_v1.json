@@ -1,0 +1,33 @@
+{
+  "schema_version": "r0_final_scientific_execution_status_v1",
+  "status": "COMPLETE_WITH_NOT_EVALUABLE_COMPONENTS",
+  "frozen_protocol_tag": "r0-v1.0-protocol-freeze",
+  "frozen_protocol_tag_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+  "frozen_binding_verification": {
+    "status": "PASS",
+    "artifact_count": 19,
+    "source": "docs/stageR/r0/results/r0_wave3_freeze_verification.json"
+  },
+  "formal_status": {
+    "R0_V1_SCIENTIFIC_EXECUTION": "COMPLETE_WITH_NOT_EVALUABLE_COMPONENTS",
+    "R0_D4": "NOT_EVALUABLE_WITH_EXISTING_HISTORICAL_ASSETS",
+    "RBR_FORMAL_TRAINING": "NOT_AUTHORIZED",
+    "RBR_DEVELOPMENT_AUTHORIZATION": "BLOCKED_PENDING_RESIDUAL_BENCHMARK_ENABLEMENT"
+  },
+  "module_status": {
+    "D0": "MIXED_POOLING_GEOMETRY_SENSITIVITY_SUPPORTED_TEMPORAL_INFORMATION_LOSS_NOT_SUPPORTED",
+    "D1": "KNOWN_SEMANTIC_INFORMATION_PRESENT_SUPPORTED_CROSS_DOMAIN_INCONCLUSIVE",
+    "D2": "PARTIALLY_NOT_EVALUABLE_AND_UNRESOLVED",
+    "D3": "INCONCLUSIVE",
+    "D4": "NOT_EVALUABLE_WITH_EXISTING_HISTORICAL_ASSETS"
+  },
+  "d4_interpretation": "BENCHMARK_ENABLEMENT / ASSET-CONTRACT LIMITATION; not a representation negative outcome.",
+  "preserved_wave3_result": {
+    "formal_hypothesis_count": 9,
+    "all_formal_hypotheses": "NOT_EVALUABLE",
+    "family_development_feasibility": "INSUFFICIENT_FOR_RBR_DEVELOPMENT",
+    "source": "docs/stageR/r0/results/r0_wave3_hypothesis_results.json"
+  },
+  "training_authorization_manifest_modified": false,
+  "prohibited_actions_performed": []
+}

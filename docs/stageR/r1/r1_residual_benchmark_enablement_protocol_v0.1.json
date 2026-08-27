@@ -1,0 +1,61 @@
+{
+  "schema_version": "r1_residual_benchmark_enablement_protocol_v0.1",
+  "status": "DRAFT_FOR_SCIENTIFIC_OWNER_REVIEW",
+  "phase": "R0 Closure + R1 Residual Benchmark Enablement / Phase A",
+  "frozen": false,
+  "r0_dependency": {
+    "tag": "r0-v1.0-protocol-freeze",
+    "tag_commit": "319757c7f72efb55c80c780e4d0f17e5341b19ec",
+    "r0_d4_status_preserved": "NOT_EVALUABLE_WITH_EXISTING_HISTORICAL_ASSETS",
+    "r0_d4_interpretation": "BENCHMARK_ENABLEMENT / ASSET-CONTRACT LIMITATION; not a representation negative outcome."
+  },
+  "scope": {
+    "design_only": true,
+    "r0_protocol_modified": false,
+    "historical_d4_result_modified": false,
+    "rbr_training_run": false,
+    "planner_rollout_run": false,
+    "benchmark_rollout_run": false,
+    "representation_or_bdd_outcome_used": false
+  },
+  "family_scope": {
+    "primary": ["R-HLC", "R-TSB"],
+    "secondary": {
+      "R-IP": "SECONDARY_CONDITIONAL_NOT_REQUIRED_FOR_INITIAL_ENABLEMENT",
+      "reason": "D2 attribution unresolved and interaction anchor complexity."
+    }
+  },
+  "anchor_contract_proposal": {
+    "t_anchor": "pre-divergence deterministic generator reference time recorded before roster freeze",
+    "t_diverge_rule": "t_diverge >= t_anchor + 0.1 s",
+    "pre_context_window": "[t_anchor - 1.0 s, t_anchor)",
+    "sampling_interval_seconds": 0.1,
+    "required_valid_frames": 10,
+    "source": "official original replay/history buffer only; never closed-loop response",
+    "runtime_option_requiring_approval": "condition-identical 1.0 s warm-up if official history is unavailable; window duration is not shortened",
+    "tsb_hazard_source_alternative_requiring_approval": "SCENARIO_ELIGIBILITY_ALTERNATIVE_TSB_LEAD_FOLLOWING_ONLY if route/signal pre-treatment state is not exposed; this does not modify the R0 role."
+  },
+  "artifacts": {
+    "context_contract": "docs/stageR/r1/r1_context_anchor_definition_proposal_v0.1.csv",
+    "hlc_evidence_pack": "docs/stageR/r1/R1_HLC_Mechanism_Definition_Evidence_Pack_v0.1.md",
+    "hlc_options": "docs/stageR/r1/r1_hlc_mechanism_definition_options_v0.1.csv",
+    "tsb_evidence_pack": "docs/stageR/r1/R1_TSB_Mechanism_Definition_Evidence_Pack_v0.1.md",
+    "tsb_options": "docs/stageR/r1/r1_tsb_mechanism_definition_options_v0.1.csv",
+    "generator_proposal": "docs/stageR/r1/R1_Controlled_Treatment_Generator_Proposal_v0.1.md",
+    "raw_evidence": "docs/stageR/r1/r1_phasea_raw_trajectory_evidence_v0.1.json",
+    "owner_decision_sheet": "docs/stageR/r1/R1_PhaseA_Scientific_Owner_Decision_Sheet_v0.1.md"
+  },
+  "whole_roster_order": ["pre_treatment_eligibility", "roster_freeze", "rollout", "whole_roster_mechanism_gate", "representation_evaluation"],
+  "f_match_preservation": {
+    "source": "docs/stageR/r0/manifests/r0_d4_development_balance_fallback_v1.json",
+    "status": "FROZEN_DEVELOPMENT_ONLY_UNCHANGED",
+    "outcome_driven_adjustment_forbidden": true
+  },
+  "training_authorization": {
+    "r0_manifest_modified": false,
+    "RBR_A": "NOT_AUTHORIZED",
+    "RBR_B": "NOT_AUTHORIZED",
+    "RBR_C": "NOT_AUTHORIZED"
+  },
+  "approval_status": "REQUIRES_SCIENTIFIC_OWNER_APPROVAL"
+}
