@@ -9967,3 +9967,35 @@ waymo_dev/bin/python -m unittest tests.test_r1_phaseb0_compatibility -v
 - 三个 `TSB_GEN_V2_OPTION_*` 均同时通过冻结 mechanism/F_match，且仍标记 `PROPOSED_NOT_FROZEN`。
 - 每 family 精确 24 次、总计 48 次 core construction；第 49 次 claim 必须在构造前抛错，计数保持 48。
 - unit tests 全部通过；不得产生任何真实 rollout、smoke metrics 或 roster。
+
+## StageR / R1 Phase B1 科学修订与冻结准备
+
+### 1. 只读/合成准备命令
+
+以下工具只生成 HLC synthetic design、SQLite/map inventory 与 fresh source universe，不运行 nuPlan simulation 或 roster selection；正式输出已存在时会拒绝覆盖：
+
+```bash
+waymo_dev/bin/python tools/r1_phaseb1_freeze_preparation.py
+waymo_dev/bin/python tools/export_r1_official_nuplan_db_inventory_csv.py
+```
+
+### 2. 48-call preflight 与静态检查
+
+```bash
+waymo_dev/bin/python -m unittest \
+  tests.test_r1_phaseb0_compatibility \
+  tests.test_r1_phaseb1_freeze_preparation -v
+waymo_dev/bin/python -m py_compile \
+  tools/r1_phaseb1_freeze_preparation.py \
+  tools/export_r1_official_nuplan_db_inventory_csv.py \
+  tools/stageR_execute_r1_technical_smoke.py
+waymo_dev/bin/python tools/check_no_tmp_dependencies.py
+```
+
+### 3. 通过标准与边界
+
+- HLC A/B/C 在 12-cell synthetic speed/lane-width 包络内均通过冻结 mechanism、新三项 Primary F_match 与既有 engineering limits，但必须保持 `PROPOSED_NOT_FROZEN`。
+- inventory 必须为 1,624 个非零、SQLite read-only 可读且 map-compatible 的 DB；fresh source universe 只可为 `READY_FOR_OUTCOME_BLIND_SELECTION`，不得包含实际 roster。
+- replay 固定 `MASTER_SEED=2026082701`；background determinism 未实证时，总状态保持 `VERSION_AMBIGUOUS`。
+- executor 必须精确计划 48 次 core construction，逐次 pre-call claim；重复 baseline、未计划调用或第 49 次调用均在计数递增前 fail-closed。
+- 本阶段禁止运行新 technical smoke、真实 planner rollout、representation/BDD/probe/RBR 读取或训练。

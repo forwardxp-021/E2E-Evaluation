@@ -1,0 +1,53 @@
+{
+  "schema_version": "r1_hlc_generator_endpoint_validity_contract_v0.1",
+  "status": "STRUCTURAL_RULES_READY_NUMERICAL_ENDPOINT_OPTIONS_PENDING_OWNER_APPROVAL",
+  "role": "GENERATOR_VALIDITY_AND_SAFETY_DEVELOPMENT_DIAGNOSTICS",
+  "not_primary_f_match": true,
+  "not_future_r4_survivor_selection": true,
+  "required_identity_checks": [
+    "same_source_lane",
+    "same_intended_target_lane",
+    "same_lane_change_direction",
+    "baseline_completes_target_lane_transition",
+    "treatment_completes_target_lane_transition"
+  ],
+  "required_terminal_checks": [
+    "terminal_lateral_offset_to_target_lane_center",
+    "terminal_heading_error",
+    "terminal_lateral_velocity",
+    "route_progress"
+  ],
+  "required_continuity_and_safety_checks": [
+    "no_phase_discontinuity",
+    "curvature",
+    "lateral_acceleration",
+    "yaw_rate"
+  ],
+  "existing_treatment_independent_engineering_limits": {
+    "max_abs_lateral_acceleration_mps2": 6.0,
+    "max_abs_yaw_rate_radps": 1.0,
+    "max_abs_curvature_inv_m": 0.5
+  },
+  "owner_review_numerical_options": {
+    "OPTION_ENDPOINT_STRICT": {
+      "terminal_lateral_offset_m_max": 0.15,
+      "terminal_heading_error_rad_max": 0.03,
+      "terminal_lateral_velocity_mps_max": 0.15,
+      "baseline_treatment_route_progress_delta_m_max": 1.0
+    },
+    "OPTION_ENDPOINT_RESOLUTION_BASED": {
+      "terminal_lateral_offset_m_max": 0.25,
+      "terminal_heading_error_rad_max": 0.05,
+      "terminal_lateral_velocity_mps_max": 0.25,
+      "baseline_treatment_route_progress_delta_m_max": 1.5
+    }
+  },
+  "numerical_endpoint_option_frozen": false,
+  "owner_approval_required": true,
+  "basis": [
+    "map_geometry",
+    "sampling_resolution_0.1s",
+    "vehicle_kinematics",
+    "existing_treatment_independent_engineering_limits"
+  ]
+}

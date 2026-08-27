@@ -38,23 +38,80 @@ AUTHORIZED_CORE_CONSTRUCTION_CAP = 48
 class CoreConstructionBudget:
     """Pre-construction hard stop for trajectory-core calls."""
 
-    def __init__(self, authorized_cap: int = AUTHORIZED_CORE_CONSTRUCTION_CAP) -> None:
+    LEDGER_SCHEMA = (
+        "sequence",
+        "family",
+        "scenario_id",
+        "arm_type",
+        "candidate_id",
+        "call_key",
+        "claim_status",
+        "planned_call_count",
+        "actual_call_number",
+        "authorized_cap",
+    )
+
+    def __init__(
+        self,
+        authorized_cap: int = AUTHORIZED_CORE_CONSTRUCTION_CAP,
+        planned_schedule: Sequence[Mapping[str, str]] | None = None,
+    ) -> None:
         if authorized_cap <= 0:
             raise ValueError("authorized core-construction cap must be positive")
         self.authorized_cap = int(authorized_cap)
         self.actual_calls = 0
-        self.ledger: List[Dict[str, str]] = []
+        self.ledger: List[Dict[str, Any]] = []
+        self._claimed_keys: set[str] = set()
+        self._baseline_keys: set[str] = set()
+        self._planned_keys = {
+            self._call_key(str(row["family"]), str(row["scenario_id"]), str(row["arm"]))
+            for row in (planned_schedule or ())
+        }
+        self.planned_call_count = len(planned_schedule) if planned_schedule is not None else authorized_cap
+
+    @staticmethod
+    def _call_key(family: str, scenario_id: str, arm: str) -> str:
+        return f"{family}|{scenario_id}|{arm}"
 
     def claim(self, family: str, scenario_id: str, arm: str) -> None:
         """Reserve one call before construction; refuse the first excess call."""
+        family = str(family)
+        scenario_id = str(scenario_id)
+        arm = str(arm)
+        call_key = self._call_key(family, scenario_id, arm)
+        baseline_key = f"{family}|{scenario_id}"
+        if arm == "BASELINE" and baseline_key in self._baseline_keys:
+            raise RuntimeError(
+                f"duplicate baseline construction blocked before call: {family}/{scenario_id}"
+            )
+        if call_key in self._claimed_keys:
+            raise RuntimeError(f"duplicate trajectory construction blocked before call: {call_key}")
+        if self._planned_keys and call_key not in self._planned_keys:
+            raise RuntimeError(f"unplanned trajectory construction blocked before call: {call_key}")
         if self.actual_calls >= self.authorized_cap:
             raise RuntimeError(
                 "trajectory-core construction blocked before exceeding authorized "
                 f"cap {self.authorized_cap}: {family}/{scenario_id}/{arm}"
             )
         self.actual_calls += 1
+        self._claimed_keys.add(call_key)
+        if arm == "BASELINE":
+            self._baseline_keys.add(baseline_key)
+        arm_type = "BASELINE" if arm == "BASELINE" else "TREATMENT"
+        candidate_id = "NOT_APPLICABLE" if arm_type == "BASELINE" else arm.removeprefix("TREATMENT::")
         self.ledger.append(
-            {"family": str(family), "scenario_id": str(scenario_id), "arm": str(arm)}
+            {
+                "sequence": self.actual_calls,
+                "family": family,
+                "scenario_id": scenario_id,
+                "arm_type": arm_type,
+                "candidate_id": candidate_id,
+                "call_key": call_key,
+                "claim_status": "CLAIMED_BEFORE_CONSTRUCTION",
+                "planned_call_count": self.planned_call_count,
+                "actual_call_number": self.actual_calls,
+                "authorized_cap": self.authorized_cap,
+            }
         )
 
     def assert_exact(self, expected: int) -> None:
@@ -64,6 +121,17 @@ class CoreConstructionBudget:
             )
         if self.actual_calls > self.authorized_cap:
             raise RuntimeError("trajectory-core construction cap exceeded")
+        if self.ledger and tuple(self.ledger[0]) != self.LEDGER_SCHEMA:
+            raise RuntimeError("trajectory-core construction ledger schema changed")
+        if self._planned_keys and self._claimed_keys != self._planned_keys:
+            raise RuntimeError("actual trajectory-core ledger does not equal the preflight schedule")
+
+    def counters(self) -> Dict[str, int]:
+        return {
+            "planned_core_construction_calls": self.planned_call_count,
+            "actual_core_construction_calls": self.actual_calls,
+            "authorized_cap": self.authorized_cap,
+        }
 
 
 def build_core_construction_schedule(
@@ -250,7 +318,7 @@ def main() -> None:
     roster_payload = {"schema_version": "r1_technical_smoke_roster_v1", "status": "TECHNICAL_SMOKE_ONLY", "selection": {"method": "outcome_blind_deterministic_sha256_rank", "salt": ROSTER_SALT, "source_scope": "HISTORICAL_OR_R0_DEVELOPMENT_ONLY", "formal_r1_development_roster_created": False, "exclusions": ["EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER", "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"]}, "families": {"R-HLC": [{"scenario_token": row["scenario_token"], "log_id": row["log_id"], "map_location": row["map_location"], "source": str(HLC_MANIFEST.relative_to(ROOT)), "rank_sha256": stable_rank("R-HLC", row["scenario_token"], row["log_id"])} for row in selected_hlc], "R-TSB": [{"scenario_token": row["scenario_token"], "log_id": row["log_id"], "map_location": row["map_location"], "source": str(TSB_METADATA.relative_to(ROOT)), "rank_sha256": stable_rank("R-TSB", row["scenario_token"], row["log_id"])} for row in selected_tsb]}}
     write_new_json(paths["roster"], roster_payload)
     rows: List[Dict[str, Any]] = []
-    construction_budget = CoreConstructionBudget()
+    construction_budget = CoreConstructionBudget(planned_schedule=planned_schedule)
     for family, selected in (("R-HLC", selected_hlc), ("R-TSB", selected_tsb)):
         for item in selected:
             context = build_canonical_context_record(hlc_context_payload(item) if family == "R-HLC" else tsb_context_payload(item))
@@ -298,7 +366,7 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(summary)
     runtime_available = importlib.util.find_spec("nuplan") is not None
-    manifest = {"schema_version": "r1_technical_smoke_execution_manifest_v1", "status": "TECHNICAL_SMOKE_COMPLETE_CORE_ONLY", "baseline_commit": "ef78536f852e2f1fb0c0f66e928c4da2282eda6c", "frozen_context_mechanism_contract": "R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN", "candidate_parameters_sha256": sha256_file(paths["candidate"]), "roster_sha256": sha256_file(paths["roster"]), "metrics_sha256": sha256_file(paths["metrics"]), "planned_rollouts": 48, "executed_rollouts": 48, "pairs": rows, "summary": summary, "external_runtime": {"nuplan_available": runtime_available, "official_closed_loop_background_replay_executed": False, "traffic_light_route_api_executed": False, "result": "CORE_SMOKE_ONLY_RUNTIME_INTEGRATION_PENDING" if not runtime_available else "RUNTIME_PRESENT_BUT_NOT_USED_FOR_FORMAL_ROLLOUT"}, "prohibited_reads": ["embedding", "BDD", "probe", "checkpoint", "RBR"], "formal_roster_created": False, "r4_data_used": False}
+    manifest = {"schema_version": "r1_technical_smoke_execution_manifest_v1", "status": "TECHNICAL_SMOKE_COMPLETE_CORE_ONLY", "baseline_commit": "ef78536f852e2f1fb0c0f66e928c4da2282eda6c", "frozen_context_mechanism_contract": "R1_CONTEXT_MECHANISM_CONTRACT_V1_FROZEN", "candidate_parameters_sha256": sha256_file(paths["candidate"]), "roster_sha256": sha256_file(paths["roster"]), "metrics_sha256": sha256_file(paths["metrics"]), "planned_rollouts": 48, "executed_rollouts": 48, "construction_accounting": {**construction_budget.counters(), "claim_timing": "IMMEDIATELY_BEFORE_EACH_CORE_CONSTRUCTION", "fail_closed": True, "ledger_schema": list(CoreConstructionBudget.LEDGER_SCHEMA), "ledger": construction_budget.ledger}, "pairs": rows, "summary": summary, "external_runtime": {"nuplan_available": runtime_available, "official_closed_loop_background_replay_executed": False, "traffic_light_route_api_executed": False, "result": "CORE_SMOKE_ONLY_RUNTIME_INTEGRATION_PENDING" if not runtime_available else "RUNTIME_PRESENT_BUT_NOT_USED_FOR_FORMAL_ROLLOUT"}, "prohibited_reads": ["embedding", "BDD", "probe", "checkpoint", "RBR"], "formal_roster_created": False, "r4_data_used": False}
     write_new_json(paths["manifest"], manifest)
     write_report(paths["report"], roster_payload, summary, runtime_available)
     print(json.dumps({"executed_rollouts": 48, "metrics": str(paths["metrics"]), "manifest": str(paths["manifest"]), "recommendations": {f"{row['family']}:{row['candidate_id']}": row["technical_recommendation_status"] for row in summary}}, ensure_ascii=False))

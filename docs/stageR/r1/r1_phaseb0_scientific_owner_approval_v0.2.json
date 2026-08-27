@@ -1,0 +1,40 @@
+{
+  "schema_version": "r1_phaseb0_scientific_owner_approval_v0.2",
+  "status": "APPROVED_AS_RECORDED",
+  "effective_scope": "PROSPECTIVE_R1_ONLY",
+  "decisions": {
+    "HLC_MECHANISM_FMATCH_COMPATIBILITY": "MARGINALLY_FEASIBLE",
+    "HLC_HEADING_ASSESSMENT": "STRUCTURAL_MECHANISM_OVERLAP_CONFIRMED",
+    "HLC_NONEMPTY_INTERSECTION": true,
+    "HLC_AMENDMENT": "OPTION_B_APPROVED",
+    "HLC_HEADING_NEW_ROLE": "SECONDARY_MECHANISM_PROXIMAL_AUDIT",
+    "HLC_PRIMARY_F_MATCH": [
+      "ego13.mean_speed",
+      "ego13.end_minus_start_speed",
+      "ego13.path_length"
+    ],
+    "HLC_IMPLEMENTATION": "NO_IMPLEMENTATION_DEFINITION_BUG_CONFIRMED",
+    "TSB_COMPATIBILITY": "JOINTLY_FEASIBLE",
+    "TSB_ROOT_CAUSE": "NO_IMPLEMENTATION_BUG_CONFIRMED__GENERATOR_PROFILE_REDESIGN_REQUIRED",
+    "TSB_GENERATOR": "TSB_GEN_V2_OPTION_A_APPROVED_FOR_GENERATOR_PARAMETER_FREEZE_PREPARATION",
+    "OFFICIAL_NUPLAN_RUNTIME": "NOT_READY",
+    "NEW_COMPLIANT_48_CALL_SMOKE": "NOT_AUTHORIZED"
+  },
+  "tsb_gen_v2_option_a": {
+    "first_brake_mps2": -0.9,
+    "first_brake_seconds": 0.5,
+    "release_mps2": 0.4,
+    "release_seconds": 0.7,
+    "second_brake_mps2": -0.9,
+    "second_brake_seconds": 0.5
+  },
+  "invariants": {
+    "r0_v1_artifacts_modified": false,
+    "wave3_d4_history_modified": false,
+    "hlc_tsb_mechanism_thresholds_modified": false,
+    "smoke_authorized": false,
+    "rbr_training_authorized": false
+  },
+  "source_decision_sheet": "docs/stageR/r1/R1_PhaseB0_Scientific_Owner_Decision_Sheet_v0.1.md",
+  "recorded_at_utc": "2026-08-27T00:00:00Z"
+}

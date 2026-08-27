@@ -1,0 +1,46 @@
+{
+  "schema_version": "r1_tsb_generator_v2_contract_v1.0",
+  "status": "FROZEN_GENERATOR_PARAMETERS_EXECUTION_NOT_AUTHORIZED",
+  "generator_id": "TSB_GEN_V2_OPTION_A",
+  "baseline": {
+    "definition": "SINGLE_CONTINUOUS_BRAKING",
+    "changed_from_approved_definition": false
+  },
+  "treatment": {
+    "first_brake_mps2": -0.9,
+    "first_brake_seconds": 0.5,
+    "release_mps2": 0.4,
+    "release_seconds": 0.7,
+    "second_brake_mps2": -0.9,
+    "second_brake_seconds": 0.5
+  },
+  "frozen_mechanism_contract": {
+    "path": "docs/stageR/r1/r1_tsb_mechanism_contract_v1.0.json",
+    "sha256": "375d3c07fbdf8d5ed6f0ebe5b8056221dec20ae732529076bce0f2e4695ccece",
+    "thresholds": {
+      "brake_mps2_lte": -0.8,
+      "release_mps2_gte": -0.2,
+      "minimum_brake_seconds": 0.3,
+      "minimum_release_seconds": 0.3,
+      "merge_gap_seconds_lt": 0.3,
+      "baseline_phase_count": 1,
+      "treatment_phase_count": 2,
+      "release_fraction_gte": 0.15,
+      "second_peak_ratio_gte": 0.5
+    },
+    "modified": false
+  },
+  "evidence": {
+    "scope": "SYNTHETIC_ONLY",
+    "phaseb0_compatibility_results_path": "docs/stageR/r1/r1_phaseb0_compatibility_results_v0.1.json",
+    "phaseb0_compatibility_results_sha256": "a6219093d5271a3f9093eb67041259dd7483226e8701e3c94d79ba007c4093e5",
+    "old_smoke_outcomes_used_for_parameter_choice": false,
+    "compatibility": "JOINTLY_FEASIBLE"
+  },
+  "authorization": {
+    "technical_smoke": false,
+    "real_scenario_rollout": false,
+    "formal_roster_selection": false,
+    "rbr_training": false
+  }
+}

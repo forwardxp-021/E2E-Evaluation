@@ -1,0 +1,43 @@
+{
+  "schema_version": "r1_official_nuplan_replay_contract_v0.1",
+  "status": "VERSION_AMBIGUOUS",
+  "execution_authorized": false,
+  "master_seed": 2026082701,
+  "seed_propagation": {
+    "python_random": "random.seed(MASTER_SEED)",
+    "numpy": "numpy.random.seed(MASTER_SEED % 2**32)",
+    "torch": "manual_seed + cuda.manual_seed_all_if_available + deterministic_algorithms_requested_if_used",
+    "scenario_ordering": "SHA256(selector_version|MASTER_SEED|family|scenario_token|log_id)",
+    "selector_ordering": "same stable SHA256 rank; no outcome fields",
+    "planner_specific_random_source": "DETERMINISTIC_NO_SEED_CONSUMPTION_IN_BOUND_PLANNER",
+    "hydra_config_seed": 2026082701,
+    "stochastic_traffic_or_simulation": "NOT_PROVEN_DETERMINISTIC_BACKGROUND_REPLAY"
+  },
+  "runtime_binding": {
+    "nuplan_devkit": "1.2.2",
+    "hydra_core": "1.1.0rc1",
+    "omegaconf": "2.1.0rc1",
+    "runtime_environment": "/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9",
+    "map_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps",
+    "map_root_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3"
+  },
+  "implementation_binding": {
+    "planner_path": "tools/stage7l_pure_lateral_execution_planner.py",
+    "planner_sha256": "284d60263621a99b3e57f63f3092797e44a9c393ec6975f419ed02ecb64885d0",
+    "generator_preparation_path": "tools/r1_phaseb1_freeze_preparation.py",
+    "generator_preparation_sha256": "b2f50a826923e91a393be0be026939e45f62192535b741d997ac7ef31a65644e",
+    "existing_generator_library_path": "tools/r1_residual_generators.py",
+    "existing_generator_library_sha256": "3c39322c0fbc82d9b5494c3ea9966606081a238ada93ea00eae4c286eb1e03f0",
+    "simulation_config_path": "docs/stageR/r1/r1_official_nuplan_replay_config_v0.1.json",
+    "simulation_config_sha256": "94a642bd277f77caf0e8af275fe0b43780c0dd198ae9b784a2f59286f0124003"
+  },
+  "readiness": {
+    "seed_contract": "READY",
+    "package_version_binding": "READY",
+    "map_binding": "READY",
+    "background_replay_determinism": "VERSION_AMBIGUOUS",
+    "official_closed_loop_replay": "NOT_READY"
+  },
+  "reason_not_ready": "尚未在授权的官方 closed-loop background replay 中证明所有背景交通与 simulation 组件对 MASTER_SEED 的可重放性。",
+  "prohibited_execution_performed": false
+}

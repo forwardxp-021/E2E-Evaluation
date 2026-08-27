@@ -1,0 +1,48 @@
+{
+  "schema_version": "r1_hlc_residual_benchmark_amendment_v1.0",
+  "status": "FROZEN_PROSPECTIVE_R1_SCIENTIFIC_AMENDMENT",
+  "effective_scope": "R1_PROSPECTIVE_HLC_ONLY",
+  "timing_attestation": {
+    "before_rbr_training": true,
+    "before_representation_evaluation": true,
+    "before_formal_r1_development_roster": true,
+    "before_future_r4_confirmation": true
+  },
+  "scientific_basis": "ANALYTICAL_SYNTHETIC_PHYSICAL_COMPATIBILITY_AUDIT_ONLY",
+  "old_smoke_success_rate_used": false,
+  "primary_f_match": [
+    "ego13.mean_speed",
+    "ego13.end_minus_start_speed",
+    "ego13.path_length"
+  ],
+  "secondary_mechanism_proximal_audit": {
+    "feature": "ego13.heading_change_abs_total",
+    "descriptive_original_caliper": 0.0492160141,
+    "participates_in_primary_pair_qualification": false,
+    "participates_in_matching_distance": false,
+    "participates_in_roster_eligibility": false,
+    "may_delete_unfavorable_pairs": false
+  },
+  "mechanism_contract": {
+    "path": "docs/stageR/r1/r1_hlc_mechanism_contract_v1.0.json",
+    "sha256": "f2e20d6e8c443f92d5fd8458069f431d6ba949069d54e703f6ca4bf2df5ce0e8",
+    "thresholds_modified": false
+  },
+  "evidence_binding": {
+    "phaseb0_compatibility_sha256": "a6219093d5271a3f9093eb67041259dd7483226e8701e3c94d79ba007c4093e5",
+    "owner_approval_sha256": "fe6b208978d9cf7c2e059fe025ddae8f7a0e31b0bd16f7154fe868a93885ac50",
+    "hlc_v2_synthetic_proposals_sha256": "2bdb55522ee8c4874ed5c9d0deb1ed6092f6022adb5c93f8f747a4d25ea5ad6c"
+  },
+  "claim_boundary": {
+    "forbidden": [
+      "ALL_HANDCRAFTED_FEATURES_MATCHED",
+      "HANDCRAFTED_FEATURES_CANNOT_DETECT"
+    ],
+    "allowed": [
+      "PREDEFINED_LOW_ORDER_F_MATCH_CONTROLLED",
+      "MECHANISTICALLY_DISTINCT_TEMPORAL_MORPHOLOGY"
+    ]
+  },
+  "r0_v1_modified": false,
+  "wave3_d4_history_modified": false
+}

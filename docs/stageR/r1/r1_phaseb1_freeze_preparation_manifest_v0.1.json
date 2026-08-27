@@ -1,0 +1,42 @@
+{
+  "schema_version": "r1_phaseb1_freeze_preparation_manifest_v0.1",
+  "status": "PHASE_B1_PREPARATION_COMPLETE_SMOKE_NOT_AUTHORIZED",
+  "baseline_remote_commit": "d2e7d5f11ff2fd855eaa170c3f8796fe790c9181",
+  "artifacts": {
+    "owner_approval_sha256": "fe6b208978d9cf7c2e059fe025ddae8f7a0e31b0bd16f7154fe868a93885ac50",
+    "hlc_amendment_sha256": "6655cbeb3ea056e1dcfec7a1171989bab19e184395aba50073dc3bc19df0be5c",
+    "hlc_endpoint_contract_sha256": "d95f0fd1ca5095038be226ebe536f2f614c11dcaa29df3559621aeaf0d7a2adb",
+    "hlc_v2_proposals_sha256": "2bdb55522ee8c4874ed5c9d0deb1ed6092f6022adb5c93f8f747a4d25ea5ad6c",
+    "tsb_v2_contract_sha256": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+    "replay_contract_sha256": "a9e829c64e91a1ac59e2263167083fe5dd7d82e54423926449b36631c00ae4ae",
+    "replay_config_sha256": "94a642bd277f77caf0e8af275fe0b43780c0dd198ae9b784a2f59286f0124003",
+    "db_inventory_csv_sha256": "e4acb94fc66888ce514464ad0597993e120150a5a5a8fb85dc08d40bb5928643",
+    "db_inventory_rows_sha256": "300e9edcbe21d148860d97afb235ddb5dfc2b99bc6c14f95aad85cbacd283a60",
+    "fresh_source_universe_sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e"
+  },
+  "implementation": {
+    "freeze_preparation_tool_sha256": "b2f50a826923e91a393be0be026939e45f62192535b741d997ac7ef31a65644e",
+    "inventory_csv_export_tool_sha256": "a322fdbd57f1dac4f6b252c97f7441264a58d5ca5bb4b2394f15367b0314ca0e",
+    "48_call_executor_sha256": "7607ea0580c5329ad4035394f8627bc2cd8d2759796a849a1768d80dc6a1eb0a"
+  },
+  "readiness": {
+    "hlc_amendment": "READY",
+    "hlc_generator": "PENDING_OWNER_APPROVAL",
+    "tsb_generator": "READY",
+    "official_db": "READY",
+    "replay_seed": "READY",
+    "fresh_source_universe": "READY_FOR_OUTCOME_BLIND_SELECTION",
+    "48_call_executor": "READY",
+    "background_replay": "VERSION_AMBIGUOUS",
+    "overall": "NOT_READY"
+  },
+  "execution_attestation": {
+    "new_technical_smoke_run": false,
+    "real_scenario_planner_rollout_run": false,
+    "fresh_roster_selected": false,
+    "representation_bdd_probe_rbr_read": false,
+    "rbr_training_run": false,
+    "r0_v1_artifact_modified": false,
+    "wave3_d4_history_modified": false
+  }
+}

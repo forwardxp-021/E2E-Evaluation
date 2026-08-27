@@ -1,0 +1,18 @@
+{
+  "schema_version": "r1_official_nuplan_replay_config_v0.1",
+  "status": "CONFIG_FROZEN_EXECUTION_NOT_AUTHORIZED",
+  "master_seed": 2026082701,
+  "scenario_ordering": "SHA256(selector_version|MASTER_SEED|family|scenario_token|log_id)",
+  "planner": "tools/stage7l_pure_lateral_execution_planner.py",
+  "simulation_mode": "OFFICIAL_NUPLAN_CLOSED_LOOP_NON_REACTIVE_AGENTS_PROPOSED",
+  "scenario_filter": "FRESH_SOURCE_UNIVERSE_THEN_OUTCOME_BLIND_SELECTOR",
+  "traffic_light_source": "OFFICIAL_SCENARIO_TRAFFIC_LIGHT_STATUS",
+  "route_source": "OFFICIAL_SCENARIO_ROUTE_ROADBLOCK_IDS",
+  "metrics_required": [
+    "collision",
+    "off_road",
+    "route_progress",
+    "traffic_light_compliance"
+  ],
+  "execution_authorized": false
+}

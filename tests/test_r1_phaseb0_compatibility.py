@@ -147,6 +147,49 @@ class ExecutorCapTest(unittest.TestCase):
         self.assertEqual(budget.actual_calls, 48)
         budget.assert_exact(48)
 
+    def test_budget_ledger_schema_and_planned_actual_counters(self) -> None:
+        families = {
+            "R-HLC": [f"HLC_{index}" for index in range(6)],
+            "R-TSB": [f"TSB_{index}" for index in range(6)],
+        }
+        candidates = {
+            "R-HLC": ["A", "B", "C"],
+            "R-TSB": ["A", "B", "C"],
+        }
+        schedule = build_core_construction_schedule(families, candidates)
+        budget = CoreConstructionBudget(planned_schedule=schedule)
+        for row in schedule:
+            budget.claim(row["family"], row["scenario_id"], row["arm"])
+        budget.assert_exact(48)
+        self.assertEqual(tuple(budget.ledger[0]), CoreConstructionBudget.LEDGER_SCHEMA)
+        self.assertEqual(
+            budget.counters(),
+            {
+                "planned_core_construction_calls": 48,
+                "actual_core_construction_calls": 48,
+                "authorized_cap": 48,
+            },
+        )
+        self.assertTrue(
+            all(row["claim_status"] == "CLAIMED_BEFORE_CONSTRUCTION" for row in budget.ledger)
+        )
+
+    def test_duplicate_baseline_fails_closed_before_increment(self) -> None:
+        budget = CoreConstructionBudget(authorized_cap=48)
+        budget.claim("R-HLC", "S0", "BASELINE")
+        with self.assertRaisesRegex(RuntimeError, "duplicate baseline construction blocked"):
+            budget.claim("R-HLC", "S0", "BASELINE")
+        self.assertEqual(budget.actual_calls, 1)
+
+    def test_unplanned_call_fails_closed_before_increment(self) -> None:
+        schedule = [
+            {"family": "R-HLC", "scenario_id": "S0", "arm": "BASELINE"},
+        ]
+        budget = CoreConstructionBudget(authorized_cap=48, planned_schedule=schedule)
+        with self.assertRaisesRegex(RuntimeError, "unplanned trajectory construction blocked"):
+            budget.claim("R-HLC", "S1", "BASELINE")
+        self.assertEqual(budget.actual_calls, 0)
+
     def test_combined_result_builder_opens_only_allowlisted_inputs(self) -> None:
         results = build_results()
         self.assertEqual(results["hlc"]["classification"], "MARGINALLY_FEASIBLE")
