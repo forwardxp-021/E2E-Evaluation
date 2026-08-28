@@ -1,0 +1,75 @@
+{
+  "schema_version": "r1_official_metric_canonicalizer_preflight_v1.0",
+  "status": "PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED",
+  "scope": "SYNTHETIC_PARQUET_FIXTURES_PLUS_HISTORICAL_V2_SCHEMA_COMPATIBILITY_ONLY",
+  "canonicalizer_sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+  "fixture_results": [
+    {
+      "name": "synthetic_collision0_drivable_true",
+      "status": "PASS",
+      "canonical_payload": {
+        "collision": {
+          "number_of_all_at_fault_collisions_stat_value": 0
+        },
+        "drivable_area": {
+          "drivable_area_compliance_stat_value": true
+        }
+      }
+    },
+    {
+      "name": "synthetic_collision1_drivable_false",
+      "status": "PASS",
+      "canonical_payload": {
+        "collision": {
+          "number_of_all_at_fault_collisions_stat_value": 1
+        },
+        "drivable_area": {
+          "drivable_area_compliance_stat_value": false
+        }
+      }
+    },
+    {
+      "name": "missing_file",
+      "status": "EXPECTED_FAIL",
+      "failure_marker": "MISSING_EXPECTED_METRIC_FILE"
+    },
+    {
+      "name": "duplicate_file",
+      "status": "EXPECTED_FAIL",
+      "failure_marker": "DUPLICATE_EXPECTED_METRIC_FILE"
+    },
+    {
+      "name": "missing_column",
+      "status": "EXPECTED_FAIL",
+      "failure_marker": "EXPECTED_COLUMN_MISSING"
+    },
+    {
+      "name": "empty_table",
+      "status": "EXPECTED_FAIL",
+      "failure_marker": "EMPTY_TABLE"
+    }
+  ],
+  "historical_v2_compatibility": {
+    "status": "PASS_CANONICALIZED_WITHOUT_INTERPRETING_METRIC_VALUES",
+    "canonical_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+    "artifact_provenance": {
+      "collision": {
+        "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+        "artifact_provenance_sha256": "1b12248ce36661859f9ccc66b2c002fdd4b4b80856117efca9808877a5afa7a4"
+      },
+      "drivable_area": {
+        "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+        "artifact_provenance_sha256": "a9964c3ef59b799e3471186e84c178f6539bf3956c509963e23d0fd289c2ce9c"
+      }
+    }
+  },
+  "official_closed_loop_runs_claimed": 0,
+  "official_closed_loop_runs_started": 0,
+  "budget_consumed": 0,
+  "prohibited_actions_not_performed": [
+    "official simulation",
+    "V3 run claim",
+    "scientific metric interpretation",
+    "threshold tuning"
+  ]
+}

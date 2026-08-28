@@ -1,0 +1,833 @@
+{
+  "schema_version": "r1_runtime_determinism_result_v3.0",
+  "status": "PASS",
+  "scope": "BOUND_RUNTIME_REPRODUCIBILITY_ONLY_NO_SCIENTIFIC_OUTCOME_ANALYSIS",
+  "background_replay_determinism": "VERIFIED_ON_BOUND_RUNTIME",
+  "official_replay": "READY_FOR_TECHNICAL_SMOKE_REVIEW",
+  "authorization_sha256": "aace702832ae3fa80179a5867c8514d63ab0aff63fec0b2f6f07a576cdadbf57",
+  "metric_parser_preflight_sha256": "f82e67d4fd011d47bb886b4440d9b1507621d8d66c4545eb271d8219cda9b6f5",
+  "roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+  "planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+  "metric_parser_sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+  "execution_tool_sha256": "bb22c4a525b8b546d779cd858030daf2e8ff325d183bd97d3734b7fc041c9877",
+  "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+  "official_run_unit": "OFFICIAL_CLOSED_LOOP_RUN",
+  "authorized_cap": 8,
+  "actual_official_run_count": 8,
+  "ninth_preflight": {
+    "status": "REJECTED_BEFORE_SIMULATION",
+    "reason": "OFFICIAL_CLOSED_LOOP_RUN cap 8 reached before simulation start"
+  },
+  "stopped_reason": null,
+  "runs": {
+    "R-HLC__25944935eadb52f1__V3_RUN_A": {
+      "run_id": "R-HLC__25944935eadb52f1__V3_RUN_A",
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "family": "R-HLC",
+      "repeat": "V3_RUN_A",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "c33e371e2fb881711b67ab969156c2f53641d48f63e52ef28bbfae35d9e24f08",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "8c46a4fdc91f3307552b76523b262d2850ab97cd649c0650432ac45405ec3fcf",
+        "pre_context_raw": "224a9b5e442d68138c058487deecdcbe7c5c938b167252eaac09bca0f4d065f3",
+        "canonical_context": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+        "traffic_light_states": "1dfbb2382d0c3e2808f4094ae5db2919b75f1687e1b4041cc2ab8f0c1947760e",
+        "background_tracked_object_states": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+        "ego_state_trajectory": "22917e94e2593b5893d661a9f94779c4122b559d026d689704b478b6d6577a87",
+        "planner_output_trajectory": "c4102bb6455e18f84f3dcf9cab8fbf8f45c0a4e1cb9b328a38be554d6cc7c68a",
+        "timestamps_us": "2d2789e0ce88b529176cc275591beed26d1ae0e9b11d54cf9e97f409761b82ce"
+      },
+      "canonical_metric_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "1b12248ce36661859f9ccc66b2c002fdd4b4b80856117efca9808877a5afa7a4"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "a9964c3ef59b799e3471186e84c178f6539bf3956c509963e23d0fd289c2ce9c"
+        }
+      },
+      "trace_sha256": "fd31084a8c6df283e24d4c7c79d1d34ed52fe33b9a13a7437d018cda228d1f63",
+      "command_log_sha256": "29d1af01e792129a6bed91a84866286c353be2e295b8d07c063a90fe7f403cb4"
+    },
+    "R-HLC__25944935eadb52f1__V3_RUN_B": {
+      "run_id": "R-HLC__25944935eadb52f1__V3_RUN_B",
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "family": "R-HLC",
+      "repeat": "V3_RUN_B",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "c33e371e2fb881711b67ab969156c2f53641d48f63e52ef28bbfae35d9e24f08",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "8c46a4fdc91f3307552b76523b262d2850ab97cd649c0650432ac45405ec3fcf",
+        "pre_context_raw": "224a9b5e442d68138c058487deecdcbe7c5c938b167252eaac09bca0f4d065f3",
+        "canonical_context": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+        "traffic_light_states": "1dfbb2382d0c3e2808f4094ae5db2919b75f1687e1b4041cc2ab8f0c1947760e",
+        "background_tracked_object_states": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+        "ego_state_trajectory": "22917e94e2593b5893d661a9f94779c4122b559d026d689704b478b6d6577a87",
+        "planner_output_trajectory": "c4102bb6455e18f84f3dcf9cab8fbf8f45c0a4e1cb9b328a38be554d6cc7c68a",
+        "timestamps_us": "2d2789e0ce88b529176cc275591beed26d1ae0e9b11d54cf9e97f409761b82ce"
+      },
+      "canonical_metric_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "1b12248ce36661859f9ccc66b2c002fdd4b4b80856117efca9808877a5afa7a4"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "a9964c3ef59b799e3471186e84c178f6539bf3956c509963e23d0fd289c2ce9c"
+        }
+      },
+      "trace_sha256": "fd31084a8c6df283e24d4c7c79d1d34ed52fe33b9a13a7437d018cda228d1f63",
+      "command_log_sha256": "96d290f1df2e5b550bc9ff31e8cdaf75c3d11b690dfd5b25175e990e5f0e3783"
+    },
+    "R-HLC__ef3172a208cc5dd7__V3_RUN_A": {
+      "run_id": "R-HLC__ef3172a208cc5dd7__V3_RUN_A",
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "family": "R-HLC",
+      "repeat": "V3_RUN_A",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "1861366d07f6b9bb48e481ca339a31a57705cb1b09b5940434f9838faa5a7ae4",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "ebd28c04a7ad4f4f2a8915245c7b396785c0ec501b0983ceed5e3ddf26e31eb6",
+        "pre_context_raw": "032a81245ca264c3b857a70fe5e4e132c7493e07dc0be7c903495b345a440e64",
+        "canonical_context": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+        "traffic_light_states": "6ec1a7d0481b46c1766f5b476625546a90cee414c8bda2fcc36e40f7444e5b16",
+        "background_tracked_object_states": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+        "ego_state_trajectory": "f6294ce431a5fd4e6e08e5b2f1030d48129ae460a738b0d895da307fdd56cbf4",
+        "planner_output_trajectory": "9df4513543b0eda81efb940ecc76d46e28863b896e34291f1abe6a2683753035",
+        "timestamps_us": "e39c71810a1246e5e74862d95985d3ab005acd58bbd928ce971dce1db31fc8b6"
+      },
+      "canonical_metric_payload_sha256": "1c1b76418e6f1464ffd7a856111b548cd96786a35c8abdcfca9a83b172772a04",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "dab8e475b8e79e0988dbcc2bea4f593adf054fab7c38a3f72140e4e3899b9b64"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "828d304aa7e9d7d38e4cd29bff05b0023e9220aa92b6ab280cca585459b9bc2b"
+        }
+      },
+      "trace_sha256": "89975207665bbcfb396422691bfcf05873eaf8ca06a1a1b4cd0e2a0bc07e0d9d",
+      "command_log_sha256": "155ef56b1e9a36437eb8affa69f1f2d6bad3f411771596af284b84588232c6e1"
+    },
+    "R-HLC__ef3172a208cc5dd7__V3_RUN_B": {
+      "run_id": "R-HLC__ef3172a208cc5dd7__V3_RUN_B",
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "family": "R-HLC",
+      "repeat": "V3_RUN_B",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "1861366d07f6b9bb48e481ca339a31a57705cb1b09b5940434f9838faa5a7ae4",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "ebd28c04a7ad4f4f2a8915245c7b396785c0ec501b0983ceed5e3ddf26e31eb6",
+        "pre_context_raw": "032a81245ca264c3b857a70fe5e4e132c7493e07dc0be7c903495b345a440e64",
+        "canonical_context": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+        "traffic_light_states": "6ec1a7d0481b46c1766f5b476625546a90cee414c8bda2fcc36e40f7444e5b16",
+        "background_tracked_object_states": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+        "ego_state_trajectory": "f6294ce431a5fd4e6e08e5b2f1030d48129ae460a738b0d895da307fdd56cbf4",
+        "planner_output_trajectory": "9df4513543b0eda81efb940ecc76d46e28863b896e34291f1abe6a2683753035",
+        "timestamps_us": "e39c71810a1246e5e74862d95985d3ab005acd58bbd928ce971dce1db31fc8b6"
+      },
+      "canonical_metric_payload_sha256": "1c1b76418e6f1464ffd7a856111b548cd96786a35c8abdcfca9a83b172772a04",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "dab8e475b8e79e0988dbcc2bea4f593adf054fab7c38a3f72140e4e3899b9b64"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "828d304aa7e9d7d38e4cd29bff05b0023e9220aa92b6ab280cca585459b9bc2b"
+        }
+      },
+      "trace_sha256": "89975207665bbcfb396422691bfcf05873eaf8ca06a1a1b4cd0e2a0bc07e0d9d",
+      "command_log_sha256": "a982675dec40908db6cbbb9a7ddb358dc8bca93f93c6f2d6b7a814f309e84a83"
+    },
+    "R-TSB__b486f9cf33a85455__V3_RUN_A": {
+      "run_id": "R-TSB__b486f9cf33a85455__V3_RUN_A",
+      "scenario_token": "b486f9cf33a85455",
+      "log_id": "2021.05.12.23.36.44_veh-35_00152_00504",
+      "family": "R-TSB",
+      "repeat": "V3_RUN_A",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "4b533c6d9f6113d8185bd880642a7c96a096ce73d5f1c4ee811c4354c4431d77",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "66f55cb93a744c335e54a8c40fcf247e1559399fb06e64481078f8ec9e1d6c59",
+        "pre_context_raw": "cd874d38b1787b8e97fd4443e977db5b46bf5e5ebfeb63c5c0c875c0d360b87f",
+        "canonical_context": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+        "traffic_light_states": "178d4290752d75218954fc9d2f2e442e76c788db352bcc5e5316c8d46c067412",
+        "background_tracked_object_states": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+        "ego_state_trajectory": "ed2641e1130f56ca822740caa7fb90f8ad7ebebb8902f5446c1359b75e852f98",
+        "planner_output_trajectory": "1a5fc4af96662e6a3635acf638f5a3c69f59619e5e14f898196cd800cdfefd80",
+        "timestamps_us": "82460c8d35eda035d36ff14e08dd5fb41779a93f4c777d92ace0f300b1526177"
+      },
+      "canonical_metric_payload_sha256": "d381bbd0a7a5848ae74085f72aaf4a1e9ea8063b8622e58c47799827b95cac14",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "e3ebe2fc715b1ab4dfd31236fb5aa5a1f508069933a843aaa70962257ab52a87"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "04b2d43f68ef441448c688d264c2bfac099c29a211f35f060465bb2d39a95830"
+        }
+      },
+      "trace_sha256": "388d9c85e9a9072555a60711570a2928b83844962fa33c96f293868132c920a6",
+      "command_log_sha256": "3096e9bbaf7ffcf49addb62eff5417944caa109fee5f185e63065405739804ed"
+    },
+    "R-TSB__b486f9cf33a85455__V3_RUN_B": {
+      "run_id": "R-TSB__b486f9cf33a85455__V3_RUN_B",
+      "scenario_token": "b486f9cf33a85455",
+      "log_id": "2021.05.12.23.36.44_veh-35_00152_00504",
+      "family": "R-TSB",
+      "repeat": "V3_RUN_B",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "4b533c6d9f6113d8185bd880642a7c96a096ce73d5f1c4ee811c4354c4431d77",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "66f55cb93a744c335e54a8c40fcf247e1559399fb06e64481078f8ec9e1d6c59",
+        "pre_context_raw": "cd874d38b1787b8e97fd4443e977db5b46bf5e5ebfeb63c5c0c875c0d360b87f",
+        "canonical_context": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+        "traffic_light_states": "178d4290752d75218954fc9d2f2e442e76c788db352bcc5e5316c8d46c067412",
+        "background_tracked_object_states": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+        "ego_state_trajectory": "ed2641e1130f56ca822740caa7fb90f8ad7ebebb8902f5446c1359b75e852f98",
+        "planner_output_trajectory": "1a5fc4af96662e6a3635acf638f5a3c69f59619e5e14f898196cd800cdfefd80",
+        "timestamps_us": "82460c8d35eda035d36ff14e08dd5fb41779a93f4c777d92ace0f300b1526177"
+      },
+      "canonical_metric_payload_sha256": "d381bbd0a7a5848ae74085f72aaf4a1e9ea8063b8622e58c47799827b95cac14",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "e3ebe2fc715b1ab4dfd31236fb5aa5a1f508069933a843aaa70962257ab52a87"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "04b2d43f68ef441448c688d264c2bfac099c29a211f35f060465bb2d39a95830"
+        }
+      },
+      "trace_sha256": "388d9c85e9a9072555a60711570a2928b83844962fa33c96f293868132c920a6",
+      "command_log_sha256": "3c75916a2636934ae1ef5f44b5f4fc28008ccc6d15b8fc897985bbf0b410c958"
+    },
+    "R-TSB__3edcce9e7e19573f__V3_RUN_A": {
+      "run_id": "R-TSB__3edcce9e7e19573f__V3_RUN_A",
+      "scenario_token": "3edcce9e7e19573f",
+      "log_id": "2021.09.30.17.20.14_veh-44_00422_00647",
+      "family": "R-TSB",
+      "repeat": "V3_RUN_A",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "cc57fdfcf55dd89ec3fe5c4f75ba4793c8316970b218a28daa686d70b045d38d",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "1f4ebefe95ebc228a1f8241ce49dc7fc6f3cc00452b713cc07d3d2af1be690c9",
+        "pre_context_raw": "c5c1f98709dda43a00c58da4b1af78f4028e861199dc55d5fd522b5ccbba66fc",
+        "canonical_context": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+        "traffic_light_states": "c0003ffa46cf2e01c626c3abd7588a63129448a69829838a54842247e7528f2f",
+        "background_tracked_object_states": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+        "ego_state_trajectory": "304be52319f331d4534b8ddb8b0970270043a5c7d25653c96d5cd001c72be268",
+        "planner_output_trajectory": "34fcc24c5804434eab4d4ebd5769c9bf374566c75fe4cca922b24bdd37849691",
+        "timestamps_us": "b502b717ccf0127adea81ef5d5311358ebbb1c94ed0d8da1009fe8c8f7da2a32"
+      },
+      "canonical_metric_payload_sha256": "1c1b76418e6f1464ffd7a856111b548cd96786a35c8abdcfca9a83b172772a04",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "9b12dab83af0eb3f698779d463b7bc08db882149b83c2a8263a854442c08322b"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "1881df20abac99d1ba9712fcb0d1b98629a5c4e15b2263a1cb7eb6cbe8e6ecae"
+        }
+      },
+      "trace_sha256": "67fff03b939641ff2a6d64ee93d43332ee73d55349950b5d1d38205b11518b85",
+      "command_log_sha256": "c36d12d9e2ef10eef919127e74e4ce6ae986a14d2d899812e437b5f9ea5de6af"
+    },
+    "R-TSB__3edcce9e7e19573f__V3_RUN_B": {
+      "run_id": "R-TSB__3edcce9e7e19573f__V3_RUN_B",
+      "scenario_token": "3edcce9e7e19573f",
+      "log_id": "2021.09.30.17.20.14_veh-44_00422_00647",
+      "family": "R-TSB",
+      "repeat": "V3_RUN_B",
+      "official_command_return_code": 0,
+      "technical_failure_status": "NO_TECHNICAL_FAILURE",
+      "technical_failure_reasons": [],
+      "planner_binding_sha256": "cc57fdfcf55dd89ec3fe5c4f75ba4793c8316970b218a28daa686d70b045d38d",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "1f4ebefe95ebc228a1f8241ce49dc7fc6f3cc00452b713cc07d3d2af1be690c9",
+        "pre_context_raw": "c5c1f98709dda43a00c58da4b1af78f4028e861199dc55d5fd522b5ccbba66fc",
+        "canonical_context": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+        "traffic_light_states": "c0003ffa46cf2e01c626c3abd7588a63129448a69829838a54842247e7528f2f",
+        "background_tracked_object_states": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+        "ego_state_trajectory": "304be52319f331d4534b8ddb8b0970270043a5c7d25653c96d5cd001c72be268",
+        "planner_output_trajectory": "34fcc24c5804434eab4d4ebd5769c9bf374566c75fe4cca922b24bdd37849691",
+        "timestamps_us": "b502b717ccf0127adea81ef5d5311358ebbb1c94ed0d8da1009fe8c8f7da2a32"
+      },
+      "canonical_metric_payload_sha256": "1c1b76418e6f1464ffd7a856111b548cd96786a35c8abdcfca9a83b172772a04",
+      "artifact_provenance": {
+        "collision": {
+          "relative_path": "nuplan_output/metrics/no_ego_at_fault_collisions.parquet",
+          "artifact_provenance_sha256": "9b12dab83af0eb3f698779d463b7bc08db882149b83c2a8263a854442c08322b"
+        },
+        "drivable_area": {
+          "relative_path": "nuplan_output/metrics/drivable_area_compliance.parquet",
+          "artifact_provenance_sha256": "1881df20abac99d1ba9712fcb0d1b98629a5c4e15b2263a1cb7eb6cbe8e6ecae"
+        }
+      },
+      "trace_sha256": "67fff03b939641ff2a6d64ee93d43332ee73d55349950b5d1d38205b11518b85",
+      "command_log_sha256": "db7781e6dc74a516631ea5e60e47ca429418a0bc84faaa955ffd646c793a96ff"
+    }
+  },
+  "pairs": [
+    {
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "family": "R-HLC",
+      "run_a": "R-HLC__25944935eadb52f1__V3_RUN_A",
+      "run_b": "R-HLC__25944935eadb52f1__V3_RUN_B",
+      "comparison_rule": "EXACT_CANONICAL_EQUALITY_NO_TOLERANCE",
+      "categories": {
+        "scenario_token_log": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "dce8808e12a2a9a89639cd9b8581401a6660221743a0880c427b6ce7e56a6228",
+          "run_b_sha256": "dce8808e12a2a9a89639cd9b8581401a6660221743a0880c427b6ce7e56a6228",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "map_fingerprint": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "run_b_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "route_roadblock_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "4d0966f5e55284e59d0d3b39287c8b0879549332a103187d3c00b29d4b108889",
+          "run_b_sha256": "4d0966f5e55284e59d0d3b39287c8b0879549332a103187d3c00b29d4b108889",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "initial_history_canonical": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "8c46a4fdc91f3307552b76523b262d2850ab97cd649c0650432ac45405ec3fcf",
+          "run_b_sha256": "8c46a4fdc91f3307552b76523b262d2850ab97cd649c0650432ac45405ec3fcf",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "pre_context_raw": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "224a9b5e442d68138c058487deecdcbe7c5c938b167252eaac09bca0f4d065f3",
+          "run_b_sha256": "224a9b5e442d68138c058487deecdcbe7c5c938b167252eaac09bca0f4d065f3",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "canonical_context_json": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+          "run_b_sha256": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_step_count": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "run_b_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_timestamps": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "2d2789e0ce88b529176cc275591beed26d1ae0e9b11d54cf9e97f409761b82ce",
+          "run_b_sha256": "2d2789e0ce88b529176cc275591beed26d1ae0e9b11d54cf9e97f409761b82ce",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "traffic_light_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "1dfbb2382d0c3e2808f4094ae5db2919b75f1687e1b4041cc2ab8f0c1947760e",
+          "run_b_sha256": "1dfbb2382d0c3e2808f4094ae5db2919b75f1687e1b4041cc2ab8f0c1947760e",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "background_tracked_object_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+          "run_b_sha256": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "ego_state_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "22917e94e2593b5893d661a9f94779c4122b559d026d689704b478b6d6577a87",
+          "run_b_sha256": "22917e94e2593b5893d661a9f94779c4122b559d026d689704b478b6d6577a87",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "planner_output_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "c4102bb6455e18f84f3dcf9cab8fbf8f45c0a4e1cb9b328a38be554d6cc7c68a",
+          "run_b_sha256": "c4102bb6455e18f84f3dcf9cab8fbf8f45c0a4e1cb9b328a38be554d6cc7c68a",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "collision_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "beef1eca6245680913ace5ea1d21e794948b785ba3e8454cc58e4addaaf11bc3",
+          "run_b_sha256": "beef1eca6245680913ace5ea1d21e794948b785ba3e8454cc58e4addaaf11bc3",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "offroad_drivable_area_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "21aeb65bf3a9e7397ba46858f74cedef6f8b806075f0342ac712cc6fbfc35032",
+          "run_b_sha256": "21aeb65bf3a9e7397ba46858f74cedef6f8b806075f0342ac712cc6fbfc35032",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "technical_failure_status": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "run_b_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        }
+      },
+      "status": "EXACTLY_EQUAL"
+    },
+    {
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "family": "R-HLC",
+      "run_a": "R-HLC__ef3172a208cc5dd7__V3_RUN_A",
+      "run_b": "R-HLC__ef3172a208cc5dd7__V3_RUN_B",
+      "comparison_rule": "EXACT_CANONICAL_EQUALITY_NO_TOLERANCE",
+      "categories": {
+        "scenario_token_log": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "b4f8a24887188d2a51d3a76060396209591a15279abcf1901c8a6a2d22b07d8f",
+          "run_b_sha256": "b4f8a24887188d2a51d3a76060396209591a15279abcf1901c8a6a2d22b07d8f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "map_fingerprint": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "run_b_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "route_roadblock_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "a0ff5d6d22144856915c1be651c507e6cfa2a695df5d5f4029b51068154ab2d4",
+          "run_b_sha256": "a0ff5d6d22144856915c1be651c507e6cfa2a695df5d5f4029b51068154ab2d4",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "initial_history_canonical": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "ebd28c04a7ad4f4f2a8915245c7b396785c0ec501b0983ceed5e3ddf26e31eb6",
+          "run_b_sha256": "ebd28c04a7ad4f4f2a8915245c7b396785c0ec501b0983ceed5e3ddf26e31eb6",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "pre_context_raw": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "032a81245ca264c3b857a70fe5e4e132c7493e07dc0be7c903495b345a440e64",
+          "run_b_sha256": "032a81245ca264c3b857a70fe5e4e132c7493e07dc0be7c903495b345a440e64",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "canonical_context_json": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+          "run_b_sha256": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_step_count": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "run_b_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_timestamps": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "e39c71810a1246e5e74862d95985d3ab005acd58bbd928ce971dce1db31fc8b6",
+          "run_b_sha256": "e39c71810a1246e5e74862d95985d3ab005acd58bbd928ce971dce1db31fc8b6",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "traffic_light_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "6ec1a7d0481b46c1766f5b476625546a90cee414c8bda2fcc36e40f7444e5b16",
+          "run_b_sha256": "6ec1a7d0481b46c1766f5b476625546a90cee414c8bda2fcc36e40f7444e5b16",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "background_tracked_object_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+          "run_b_sha256": "606e19b6500274da0dc263de465740ad7e6eb3bd61d6d926125d8b98ebf71c7f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "ego_state_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "f6294ce431a5fd4e6e08e5b2f1030d48129ae460a738b0d895da307fdd56cbf4",
+          "run_b_sha256": "f6294ce431a5fd4e6e08e5b2f1030d48129ae460a738b0d895da307fdd56cbf4",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "planner_output_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "9df4513543b0eda81efb940ecc76d46e28863b896e34291f1abe6a2683753035",
+          "run_b_sha256": "9df4513543b0eda81efb940ecc76d46e28863b896e34291f1abe6a2683753035",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "collision_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "beef1eca6245680913ace5ea1d21e794948b785ba3e8454cc58e4addaaf11bc3",
+          "run_b_sha256": "beef1eca6245680913ace5ea1d21e794948b785ba3e8454cc58e4addaaf11bc3",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "offroad_drivable_area_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "7bed6aef49ddbc01545045955ecf3d5b576cb1803ab1fba96e1c1d52808671dc",
+          "run_b_sha256": "7bed6aef49ddbc01545045955ecf3d5b576cb1803ab1fba96e1c1d52808671dc",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "technical_failure_status": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "run_b_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        }
+      },
+      "status": "EXACTLY_EQUAL"
+    },
+    {
+      "scenario_token": "b486f9cf33a85455",
+      "log_id": "2021.05.12.23.36.44_veh-35_00152_00504",
+      "family": "R-TSB",
+      "run_a": "R-TSB__b486f9cf33a85455__V3_RUN_A",
+      "run_b": "R-TSB__b486f9cf33a85455__V3_RUN_B",
+      "comparison_rule": "EXACT_CANONICAL_EQUALITY_NO_TOLERANCE",
+      "categories": {
+        "scenario_token_log": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "8c6bf72b880344fca8c4c0f3c9c6732e22fcfdf6950ede33dae30731f9227fff",
+          "run_b_sha256": "8c6bf72b880344fca8c4c0f3c9c6732e22fcfdf6950ede33dae30731f9227fff",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "map_fingerprint": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "run_b_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "route_roadblock_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "e6b8918723d55da9b800177cb3a7b22fe8a82fd4d545b64cdcc19674678c4c9a",
+          "run_b_sha256": "e6b8918723d55da9b800177cb3a7b22fe8a82fd4d545b64cdcc19674678c4c9a",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "initial_history_canonical": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "66f55cb93a744c335e54a8c40fcf247e1559399fb06e64481078f8ec9e1d6c59",
+          "run_b_sha256": "66f55cb93a744c335e54a8c40fcf247e1559399fb06e64481078f8ec9e1d6c59",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "pre_context_raw": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "cd874d38b1787b8e97fd4443e977db5b46bf5e5ebfeb63c5c0c875c0d360b87f",
+          "run_b_sha256": "cd874d38b1787b8e97fd4443e977db5b46bf5e5ebfeb63c5c0c875c0d360b87f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "canonical_context_json": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+          "run_b_sha256": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_step_count": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "run_b_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_timestamps": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "82460c8d35eda035d36ff14e08dd5fb41779a93f4c777d92ace0f300b1526177",
+          "run_b_sha256": "82460c8d35eda035d36ff14e08dd5fb41779a93f4c777d92ace0f300b1526177",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "traffic_light_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "178d4290752d75218954fc9d2f2e442e76c788db352bcc5e5316c8d46c067412",
+          "run_b_sha256": "178d4290752d75218954fc9d2f2e442e76c788db352bcc5e5316c8d46c067412",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "background_tracked_object_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+          "run_b_sha256": "5227375c1348bf1521327dcfa99c4cb79f583450387d21df5517839aee512b7f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "ego_state_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "ed2641e1130f56ca822740caa7fb90f8ad7ebebb8902f5446c1359b75e852f98",
+          "run_b_sha256": "ed2641e1130f56ca822740caa7fb90f8ad7ebebb8902f5446c1359b75e852f98",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "planner_output_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "1a5fc4af96662e6a3635acf638f5a3c69f59619e5e14f898196cd800cdfefd80",
+          "run_b_sha256": "1a5fc4af96662e6a3635acf638f5a3c69f59619e5e14f898196cd800cdfefd80",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "collision_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "65a3138993ee2ba9df2c6175ca494a9730cbce9c3eca72c92188c14590520d8c",
+          "run_b_sha256": "65a3138993ee2ba9df2c6175ca494a9730cbce9c3eca72c92188c14590520d8c",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "offroad_drivable_area_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "21aeb65bf3a9e7397ba46858f74cedef6f8b806075f0342ac712cc6fbfc35032",
+          "run_b_sha256": "21aeb65bf3a9e7397ba46858f74cedef6f8b806075f0342ac712cc6fbfc35032",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "technical_failure_status": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "run_b_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        }
+      },
+      "status": "EXACTLY_EQUAL"
+    },
+    {
+      "scenario_token": "3edcce9e7e19573f",
+      "log_id": "2021.09.30.17.20.14_veh-44_00422_00647",
+      "family": "R-TSB",
+      "run_a": "R-TSB__3edcce9e7e19573f__V3_RUN_A",
+      "run_b": "R-TSB__3edcce9e7e19573f__V3_RUN_B",
+      "comparison_rule": "EXACT_CANONICAL_EQUALITY_NO_TOLERANCE",
+      "categories": {
+        "scenario_token_log": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "534904d9eac78d745fecdc6f70408f5b3d0769d502de897a02b110a8a3accfc1",
+          "run_b_sha256": "534904d9eac78d745fecdc6f70408f5b3d0769d502de897a02b110a8a3accfc1",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "map_fingerprint": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "run_b_sha256": "8d7085cc1a967c6ff4b5823670cd61673328d23ca3415e1f438384247dfffc67",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "route_roadblock_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "e12ce8b46934ef07fbf89a3e2daa14eca477bca0be19dd884aaf0bb1656f2e10",
+          "run_b_sha256": "e12ce8b46934ef07fbf89a3e2daa14eca477bca0be19dd884aaf0bb1656f2e10",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "initial_history_canonical": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "1f4ebefe95ebc228a1f8241ce49dc7fc6f3cc00452b713cc07d3d2af1be690c9",
+          "run_b_sha256": "1f4ebefe95ebc228a1f8241ce49dc7fc6f3cc00452b713cc07d3d2af1be690c9",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "pre_context_raw": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "c5c1f98709dda43a00c58da4b1af78f4028e861199dc55d5fd522b5ccbba66fc",
+          "run_b_sha256": "c5c1f98709dda43a00c58da4b1af78f4028e861199dc55d5fd522b5ccbba66fc",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "canonical_context_json": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+          "run_b_sha256": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_step_count": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "run_b_sha256": "05ada863a4cf9660fd8c68e2295f1d35b2264815f5b605003d6625bd9e0492cf",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "simulation_timestamps": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "b502b717ccf0127adea81ef5d5311358ebbb1c94ed0d8da1009fe8c8f7da2a32",
+          "run_b_sha256": "b502b717ccf0127adea81ef5d5311358ebbb1c94ed0d8da1009fe8c8f7da2a32",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "traffic_light_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "c0003ffa46cf2e01c626c3abd7588a63129448a69829838a54842247e7528f2f",
+          "run_b_sha256": "c0003ffa46cf2e01c626c3abd7588a63129448a69829838a54842247e7528f2f",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "background_tracked_object_state_sequence": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+          "run_b_sha256": "33ae054453e0c2e4e91c017d7ca09d96bf5dd44d191c2d8ddd65fa0e264fd9a3",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "ego_state_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "304be52319f331d4534b8ddb8b0970270043a5c7d25653c96d5cd001c72be268",
+          "run_b_sha256": "304be52319f331d4534b8ddb8b0970270043a5c7d25653c96d5cd001c72be268",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "planner_output_trajectory": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "34fcc24c5804434eab4d4ebd5769c9bf374566c75fe4cca922b24bdd37849691",
+          "run_b_sha256": "34fcc24c5804434eab4d4ebd5769c9bf374566c75fe4cca922b24bdd37849691",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "collision_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "beef1eca6245680913ace5ea1d21e794948b785ba3e8454cc58e4addaaf11bc3",
+          "run_b_sha256": "beef1eca6245680913ace5ea1d21e794948b785ba3e8454cc58e4addaaf11bc3",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "offroad_drivable_area_metric": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "7bed6aef49ddbc01545045955ecf3d5b576cb1803ab1fba96e1c1d52808671dc",
+          "run_b_sha256": "7bed6aef49ddbc01545045955ecf3d5b576cb1803ab1fba96e1c1d52808671dc",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        },
+        "technical_failure_status": {
+          "exact_canonical_equality": true,
+          "run_a_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "run_b_sha256": "391161b9764ccd5d80270fc9d9fb3c7f46f3f2d6344d98bd4eb5a9510335aee9",
+          "max_abs_difference_diagnostic_only": null,
+          "first_difference_step": null,
+          "affected_fields": []
+        }
+      },
+      "status": "EXACTLY_EQUAL"
+    }
+  ],
+  "raw_output_directory": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_runtime_determinism_validation_v3",
+  "raw_output_directory_committed": false,
+  "scientific_outcome_analysis_performed": false
+}

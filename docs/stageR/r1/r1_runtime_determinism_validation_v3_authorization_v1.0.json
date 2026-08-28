@@ -1,0 +1,54 @@
+{
+  "schema_version": "r1_runtime_determinism_validation_v3_authorization_v1.0",
+  "status": "AUTHORIZED_ONCE",
+  "phase": "R1_PHASE_B1_3_CANONICAL_PARQUET_METRIC_BINDING_AND_OFFICIAL_RUNTIME_DETERMINISM_VALIDATION_V3",
+  "authorization": {
+    "unit": "OFFICIAL_CLOSED_LOOP_RUN",
+    "maximum_new_runs": 8,
+    "scenarios": 4,
+    "repetitions_per_scenario": 2,
+    "permitted_arms": {
+      "R-HLC": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "R-TSB": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING"
+    },
+    "treatment_runs_authorized": false,
+    "new_48_call_smoke_authorized": false,
+    "development_roster_authorized": false,
+    "rbr_training_authorized": false
+  },
+  "binding": {
+    "current_local_git_commit_sha": "bdc727a9496ac346258ebefc3aceea3f6a5166a0",
+    "current_remote_equivalent_commit_sha": "49d2a6136e2d0a5644bb3832288dbf043e863379",
+    "current_tree_sha": "6667b91b0b44e68869ca42e4372f125923e76ea8",
+    "repaired_planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+    "v3_execution_tool_sha256": "bb22c4a525b8b546d779cd858030daf2e8ff325d183bd97d3734b7fc041c9877",
+    "canonical_metric_parser_sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+    "metric_contract_sha256": "7e1368e9b79acbc19186ba8e4b240253c3c3f2d4b91e0f265970519339357fa6",
+    "metric_parser_preflight_sha256": "f82e67d4fd011d47bb886b4440d9b1507621d8d66c4545eb271d8219cda9b6f5",
+    "original_frozen_runtime_roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+    "db_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+    "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+    "master_seed": 2026082701,
+    "hlc_generator_sha256": "72414d1accf656704fadf255f002de815989c2f17908fdbf6bcb36b2352dc142",
+    "tsb_generator_sha256": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+    "simulation_config_sha256": "94a642bd277f77caf0e8af275fe0b43780c0dd198ae9b784a2f59286f0124003"
+  },
+  "roster_reuse": {
+    "roster_path": "docs/stageR/r1/r1_runtime_determinism_validation_roster_v1.0.json",
+    "selector_rerun_authorized": false,
+    "scenario_replacement_authorized": false,
+    "identity_route_lane_initial_state_context_ordering_mutable": false,
+    "required_counts": {"R-HLC": 2, "R-TSB": 2, "total": 4, "unique_tokens": 4, "unique_logs": 4},
+    "required_isolation_labels": [
+      "RUNTIME_DETERMINISM_VALIDATION_ONLY",
+      "EXCLUDED_FROM_FRESH_TECHNICAL_SMOKE",
+      "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+      "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+    ]
+  },
+  "historical_executions": [
+    {"run_id": "R-HLC__25944935eadb52f1__RUN_A", "version": "V1", "status": "HISTORICAL_TECHNICAL_EXECUTION", "counts_against_v3_cap": false, "part_of_v3_evidence": false},
+    {"run_id": "R-HLC__25944935eadb52f1__V2_RUN_A", "version": "V2", "status": "HISTORICAL_TECHNICAL_EXECUTION", "failure": "METRIC_OUTPUT_DISCOVERY_DID_NOT_INCLUDE_PARQUET", "counts_against_v3_cap": false, "part_of_v3_evidence": false}
+  ],
+  "precondition": "CANONICAL_METRIC_PARSER_PREFLIGHT_PASS_BEFORE_FIRST_V3_OFFICIAL_RUN_CLAIM"
+}

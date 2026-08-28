@@ -1,0 +1,28 @@
+{
+  "schema_version": "r1_runtime_determinism_v3_hash_manifest_v1.0",
+  "scope": "SMALL_COMMITTED_EVIDENCE_HASHES_ONLY",
+  "result_status": "PASS",
+  "bound_inputs": {
+    "v3_authorization_sha256": "aace702832ae3fa80179a5867c8514d63ab0aff63fec0b2f6f07a576cdadbf57",
+    "metric_parser_preflight_sha256": "f82e67d4fd011d47bb886b4440d9b1507621d8d66c4545eb271d8219cda9b6f5",
+    "metric_contract_sha256": "7e1368e9b79acbc19186ba8e4b240253c3c3f2d4b91e0f265970519339357fa6",
+    "canonicalizer_sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+    "v3_execution_tool_sha256": "bb22c4a525b8b546d779cd858030daf2e8ff325d183bd97d3734b7fc041c9877",
+    "planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+    "frozen_roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6"
+  },
+  "committed_results": {
+    "result_v3_0_sha256": "fcedbeedc844031123cf78d89f2fa1e5d7d8a100abf4700d8748dfd8b3b98bdd",
+    "comparison_v3_0_sha256": "cefcd6f2302d57112e0de9556a5abc78eedc84394a7819f1bc23ec3c6e6e3768",
+    "run_ledger_v3_0_sha256": "28035919e017957f57d88971e76edf29f2053e369d68482185f742525cd1c083",
+    "validation_report_v1_1_sha256": "d124eafdbafeaaed3a52ac8320f4b97815fcc1640b9752134da450a1c14b7258",
+    "replay_contract_v1_0_markdown_sha256": "77fb79b23d676e1db086a5fa1edab742777d8aec39eac56e37359343d4c24237",
+    "replay_contract_v1_0_json_sha256": "4f491acbfdf3b974506fed420261096720640e3817ff74ad8fd64cfd476dd510",
+    "development_readiness_v0_6_sha256": "bedb46c6c7ea3c5e06b04d20958fbe9fb85e280995e42c11efe8a80f7e159f98"
+  },
+  "uncommitted_raw_output_hashes": {
+    "execution_manifest_v3_sha256": "ab6d13b182b1c336381a461e663de9a843ce1265086b3743e709ba5ee5dfce3b",
+    "official_run_budget_v3_sha256": "238dd132c218a9f61e7e562b3ee34e6e230540fa5d3dd7e47aee845cb78e6755"
+  },
+  "raw_output_directory_committed": false
+}

@@ -10089,3 +10089,61 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
   pre-run claim 被拒绝，才是 `VERIFIED_ON_BOUND_RUNTIME / READY_FOR_TECHNICAL_SMOKE_REVIEW`。
 - 任一技术失败、缺 artifact、A/B 不相等或预检 binding 不一致即立即 fail-closed，保持
   `NOT_VERIFIED / NOT_READY`；不得重跑、调参或转入 48-call smoke。
+
+## StageR / R1 Phase B1.3 官方 Parquet metric canonicalization
+
+### 1. 命令
+
+先以合成 Parquet fixture 和 V2 已有 output 做零预算 parser preflight；该命令绝不启动 official simulation。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_official_metric_canonicalizer_preflight.py
+```
+
+单独解析一个已完成 official run 的两份冻结 metric 时，使用：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_official_metric_canonicalizer.py \
+  --run-dir /path/to/official_run \
+  --output /new/path/canonical_metric_payload.json
+```
+
+### 2. 期望行为
+
+- 只接收恰好一个 `no_ego_at_fault_collisions.parquet` 与一个
+  `drivable_area_compliance.parquet`，并按 Stage7L 已有字段语义输出小型 canonical JSON payload。
+- Parquet file SHA 仅作为 provenance；V3 primary replay comparison 只比较 collision/drivable canonical payload
+  的 exact JSON equality。
+- preflight 覆盖两组有效 fixture 和 missing/duplicate/missing-column/empty-table 的 fail-closed fixture，并只把
+  V2 既有 run 用于 path/schema/column compatibility，不解释其 metric 数值。
+
+### 3. 通过标准
+
+- `r1_official_metric_canonicalizer_preflight_v1.0.json` 为
+  `PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED`，同时所有无效 fixture 都在预期位置拒绝。
+- 每次 future official run 缺少、重复、不可读、空表、多 row、列缺失或类型不兼容时，parser 必须在 comparison
+  前报 `TECHNICAL_FAILURE`；不得以 trace 或 Parquet container SHA 替代 canonical metric comparison。
+
+## StageR / R1 Phase B1.3 V3 官方 runtime determinism 核验
+
+### 1. 命令
+
+仅在 canonical metric parser preflight 已通过且 V3 authorization binding 完整时，使用以下唯一入口。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_run_runtime_determinism_validation_v3.py
+```
+
+### 2. 期望行为
+
+- 原四行 frozen roster 各执行 `V3_RUN_A/B`，总计精确 8 个 `OFFICIAL_CLOSED_LOOP_RUN`；每次 simulation 前写 `V3_CLAIMED_BEFORE_SIMULATION`，第九次在启动前拒绝。
+- 仅运行 HLC decisive baseline 和 TSB single-continuous-braking baseline。每个 run 必须有 trace、binding、恰好一份两类官方 Parquet，并由 canonicalizer 成功解析；任一失败立即停止整个 V3。
+- 4 个 A/B pair 逐项比较 15 个冻结类别；collision/drivable primary 比较 canonical semantic payload，浮点仍不设 tolerance。原始 outputs/Parquet 永不提交。
+
+### 3. 通过标准
+
+- 仅当 8/8 run 成功、4/4 pairs 的 15/15 类别精确相等、canonicalization 完整、且第九次 claim 被拒绝时，才能写 `VERIFIED_ON_BOUND_RUNTIME / READY_FOR_TECHNICAL_SMOKE_REVIEW`。
+- 即使通过，48-call smoke 仍是 `PENDING_SEPARATE_SCIENTIFIC_OWNER_AUTHORIZATION`；本命令不选择 smoke roster、不执行 smoke、treatment 或 RBR training。

@@ -1,0 +1,45 @@
+{
+  "schema_version": "r1_official_metric_canonicalization_contract_v1.0",
+  "status": "FROZEN_CANONICAL_OFFICIAL_METRIC_BINDING",
+  "scope": "BOUND_RUNTIME_REPRODUCIBILITY_ONLY_NO_SCIENTIFIC_OUTCOME_INTERPRETATION",
+  "source_semantics": {
+    "stage7l_extractor_path": "tools/stage7l_extract_confirmation_metrics.py",
+    "stage7l_extractor_sha256": "eb834af609ac621881dda0202dae711a16406be57035ee59e42b9674b515c23f",
+    "collision_semantics": "int(collision[number_of_all_at_fault_collisions_stat_value])",
+    "drivable_semantics": "bool(drivable[drivable_area_compliance_stat_value])"
+  },
+  "official_file_contract": {
+    "collision": {
+      "exact_filename": "no_ego_at_fault_collisions.parquet",
+      "exact_primary_field": "number_of_all_at_fault_collisions_stat_value",
+      "canonical_type": "integer",
+      "canonical_payload_path": "collision.number_of_all_at_fault_collisions_stat_value"
+    },
+    "drivable_area": {
+      "exact_filename": "drivable_area_compliance.parquet",
+      "exact_primary_field": "drivable_area_compliance_stat_value",
+      "official_binary_encoding": "boolean_or_finite_numeric_0_or_1",
+      "canonical_type": "boolean",
+      "canonical_payload_path": "drivable_area.drivable_area_compliance_stat_value"
+    }
+  },
+  "canonical_payload_schema": {
+    "collision": {"number_of_all_at_fault_collisions_stat_value": "integer"},
+    "drivable_area": {"drivable_area_compliance_stat_value": "boolean"}
+  },
+  "comparison_rule": "EXACT_CANONICAL_JSON_EQUALITY_NO_TOLERANCE",
+  "parquet_container_sha_role": "ARTIFACT_PROVENANCE_SHA_ONLY_NOT_PRIMARY_DETERMINISM_COMPARISON",
+  "fail_closed_requirements": [
+    "exactly_one_expected_collision_file",
+    "exactly_one_expected_drivable_file",
+    "readable_parquet",
+    "nonempty_single_scenario_row",
+    "expected_column_present",
+    "finite_valid_value",
+    "schema_compatible_type"
+  ],
+  "canonicalizer_path": "tools/r1_official_metric_canonicalizer.py",
+  "canonicalizer_sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+  "scientific_metric_design_performed": false,
+  "threshold_tuning_performed": false
+}
