@@ -1,0 +1,247 @@
+{
+  "schema_version": "r1_runtime_determinism_v2_interface_preflight_v1.0",
+  "status": "PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED",
+  "scope": "IN_MEMORY_MOCK_ONLY_NO_SCENARIO_DB_NO_SIMULATION",
+  "current_git_commit_sha": "43f5d69023215b248bfc2a1dde9477d2565a9536",
+  "authorization_sha256": "2cd0a0648b0a13331075603ae0ccb85fd7d0bb1096ef96bed44745606692458a",
+  "roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+  "planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+  "abstract_planner_subclass": true,
+  "interface_signature_comparisons": {
+    "name": {
+      "abstract_planner_signature": {
+        "text": "(self) -> 'str'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "candidate_signature": {
+        "text": "(self) -> 'str'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "parameter_contract_exact": true
+    },
+    "observation_type": {
+      "abstract_planner_signature": {
+        "text": "(self) -> 'Type[Observation]'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "candidate_signature": {
+        "text": "(self) -> 'Type[Any]'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "parameter_contract_exact": true
+    },
+    "initialize": {
+      "abstract_planner_signature": {
+        "text": "(self, initialization: 'PlannerInitialization') -> 'None'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "initialization",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "candidate_signature": {
+        "text": "(self, initialization: 'Any') -> 'None'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "initialization",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "parameter_contract_exact": true
+    },
+    "compute_planner_trajectory": {
+      "abstract_planner_signature": {
+        "text": "(self, current_input: 'PlannerInput') -> 'AbstractTrajectory'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "current_input",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "candidate_signature": {
+        "text": "(self, current_input: 'Any') -> 'Any'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "current_input",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "parameter_contract_exact": true
+    },
+    "compute_trajectory": {
+      "abstract_planner_signature": {
+        "text": "(self, current_input: 'PlannerInput') -> 'AbstractTrajectory'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "current_input",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "candidate_signature": {
+        "text": "(self, current_input: 'Any') -> 'Any'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "current_input",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          }
+        ]
+      },
+      "parameter_contract_exact": true
+    },
+    "generate_planner_report": {
+      "abstract_planner_signature": {
+        "text": "(self, clear_stats: 'bool' = True) -> 'PlannerReport'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "clear_stats",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": true,
+            "default_repr": "True"
+          }
+        ]
+      },
+      "candidate_signature": {
+        "text": "(self, clear_stats: 'bool' = True) -> 'Any'",
+        "parameters": [
+          {
+            "name": "self",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": false,
+            "default_repr": null
+          },
+          {
+            "name": "clear_stats",
+            "kind": "POSITIONAL_OR_KEYWORD",
+            "has_default": true,
+            "default_repr": "True"
+          }
+        ]
+      },
+      "parameter_contract_exact": true
+    }
+  },
+  "family_mock_results": [
+    {
+      "family": "R-HLC",
+      "scenario_token": "25944935eadb52f1",
+      "planner_name": "R1RuntimeDeterminismPlanner_R-HLC",
+      "observation_type": "DetectionsTracks",
+      "trajectory_type": "InterpolatedTrajectory",
+      "trajectory_sample_count": 46,
+      "planner_report_runtime_samples": 1,
+      "trace_present": true,
+      "binding_present": true,
+      "trace_sha256": "df7f85e7a58b8233fc3fd6e8d328479ff4ac55ac77c1c4744570c64ff3cc2f99",
+      "binding_sha256": "86da72d2ef6ce6152e32b543749dc99bb1a22de4c8c5a7d97998519287227ade"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "b486f9cf33a85455",
+      "planner_name": "R1RuntimeDeterminismPlanner_R-TSB",
+      "observation_type": "DetectionsTracks",
+      "trajectory_type": "InterpolatedTrajectory",
+      "trajectory_sample_count": 46,
+      "planner_report_runtime_samples": 1,
+      "trace_present": true,
+      "binding_present": true,
+      "trace_sha256": "8e6591b789b7246b539f0e15f47bff88c24426d31c38c528e48fffb7a8f0e93f",
+      "binding_sha256": "cd00d263bdac768d8e83ea44c9150059512fd9d5b4083cce965d62b7c8e5cae2"
+    }
+  ],
+  "official_closed_loop_runs_claimed": 0,
+  "official_closed_loop_runs_started": 0,
+  "budget_consumed": 0,
+  "prohibited_actions_not_performed": [
+    "NuPlanScenario construction",
+    "SQLite database read",
+    "simulation start",
+    "official V2 output write"
+  ]
+}

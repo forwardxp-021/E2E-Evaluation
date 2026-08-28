@@ -22,6 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
 
+from nuplan.planning.simulation.planner.abstract_planner import AbstractPlanner
+
 from tools.stage7l_pure_lateral_execution_planner import (
     derive_trajectory_states,
     initial_state_fingerprint,
@@ -161,7 +163,7 @@ def _braking_displacement(initial_speed_mps: float, relative_s: np.ndarray) -> T
     return distance, speed, acceleration
 
 
-class R1RuntimeDeterminismPlanner:
+class R1RuntimeDeterminismPlanner(AbstractPlanner):
     """Official nuPlan external planner restricted to the two approved baselines."""
 
     requires_scenario = True

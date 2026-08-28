@@ -10032,3 +10032,60 @@ waymo_dev/bin/python tools/check_no_tmp_dependencies.py
 - 官方 run 数必须精确为 8；每对 15 类比较均为 exact canonical equality，浮点没有人为 tolerance；collision 与 off-road/drivable 官方 metric 均必须存在。
 - 四对均一致才可将 `BACKGROUND_REPLAY_DETERMINISM` 设为 `VERIFIED_ON_BOUND_RUNTIME`、将 `OFFICIAL_REPLAY` 设为 `READY_FOR_TECHNICAL_SMOKE_REVIEW`。任一 technical failure 或不一致即 `NOT_VERIFIED/NOT_READY`，不得第三次重跑或换场景。
 - 即使通过，也只满足 48-call technical smoke 的 owner-review 条件；48-call smoke 仍需独立 scientific-owner authorization。
+
+## StageR / R1 Phase B1.2 V2 零预算接口预检
+
+### 1. 命令
+
+在申领任何 V2 官方闭环额度前，使用以下命令检查修复后的 planner 是否满足 nuPlan 1.2.2 的
+`AbstractPlanner` 可调用接口。该命令只构造两个内存 mock 输入（R-HLC、R-TSB 各一个），不会读取
+scenario DB、启动仿真或写入 V2 正式运行目录。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_runtime_determinism_v2_interface_preflight.py
+```
+
+### 2. 期望行为
+
+- 比较 `name()`、`observation_type()`、`initialize()`、`compute_planner_trajectory()`、`compute_trajectory()` 和
+  `generate_planner_report()` 的参数契约，并确认 planner 是 `AbstractPlanner` 子类。
+- 对冻结 roster 的一个 HLC 和一个 TSB 条目完成单步内存调用，输出 trace/binding 的摘要哈希；不消耗
+  `OFFICIAL_CLOSED_LOOP_RUN` 额度。
+- 早期 v1.0/v1.1 预检均为零预算诊断；当前完整 V2 执行器 binding 对应的最终预检为
+  `docs/stageR/r1/r1_runtime_determinism_v2_interface_preflight_v1.2.json`；
+  `PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED` 才允许启动 V2 执行器。
+
+### 3. 通过标准
+
+- 全部接口参数契约精确匹配、两种 family mock 均产生非空 trajectory 与一个 planner report runtime sample。
+- `official_closed_loop_runs_claimed=0`、`official_closed_loop_runs_started=0`、`budget_consumed=0`。
+
+## StageR / R1 Phase B1.2 V2 官方 runtime determinism 核验
+
+### 1. 命令
+
+以下是绑定 V2 授权、最终零预算 preflight 与原四行冻结 roster 的唯一执行入口。它只会为每个
+scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何理由替换 roster 或增加运行。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_run_runtime_determinism_validation_v2.py \
+  --preflight docs/stageR/r1/r1_runtime_determinism_v2_interface_preflight_v1.2.json
+```
+
+### 2. 期望行为
+
+- 每次 nuPlan 调用前将 `V2_CLAIMED_BEFORE_SIMULATION` 写入独立账本；第九次 pre-run claim 在 simulator
+  启动前拒绝。V1 的历史技术失败不计入 V2 账本。
+- 对四个 A/B pair 的 15 个冻结类别使用 exact canonical equality，不设浮点 tolerance；不一致时报告
+  max-absolute diagnostic、first differing step 与 affected fields，但不把该 diagnostic 当作通过阈值。
+- 原始 trace、logs、metrics 仅在 `outputs/r1_runtime_determinism_validation_v2/`，不提交；小型结果为
+  `r1_runtime_determinism_result_v2.0.json`、比较 CSV 与 V2 ledger CSV。
+
+### 3. 通过标准
+
+- 8/8 完成、全部四个 pair 的 15 类比较精确相等、collision 与 off-road/drivable metric 均存在，且第九次
+  pre-run claim 被拒绝，才是 `VERIFIED_ON_BOUND_RUNTIME / READY_FOR_TECHNICAL_SMOKE_REVIEW`。
+- 任一技术失败、缺 artifact、A/B 不相等或预检 binding 不一致即立即 fail-closed，保持
+  `NOT_VERIFIED / NOT_READY`；不得重跑、调参或转入 48-call smoke。

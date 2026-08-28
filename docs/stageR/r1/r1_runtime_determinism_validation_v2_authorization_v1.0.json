@@ -1,0 +1,53 @@
+{
+  "schema_version": "r1_runtime_determinism_validation_v2_authorization_v1.0",
+  "status": "AUTHORIZED_ONCE",
+  "phase": "R1_PHASE_B1_2_REPLACEMENT_OFFICIAL_RUNTIME_DETERMINISM_VALIDATION_V2",
+  "authorization": {
+    "unit": "OFFICIAL_CLOSED_LOOP_RUN",
+    "maximum_new_runs": 8,
+    "scenarios": 4,
+    "repetitions_per_scenario": 2,
+    "permitted_arms": {
+      "R-HLC": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "R-TSB": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING"
+    },
+    "treatment_runs_authorized": false,
+    "new_48_call_smoke_authorized": false,
+    "rbr_training_authorized": false
+  },
+  "binding": {
+    "current_local_git_commit_sha": "43f5d69023215b248bfc2a1dde9477d2565a9536",
+    "current_remote_equivalent_commit_sha": "546864ce31d88405076332aaf007acf01a24b65d",
+    "current_tree_sha": "a633ab66fc3979e4e3c7c445fd994948b6904bc7",
+    "repaired_planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+    "original_frozen_runtime_roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+    "db_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+    "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+    "master_seed": 2026082701,
+    "hlc_generator_sha256": "72414d1accf656704fadf255f002de815989c2f17908fdbf6bcb36b2352dc142",
+    "tsb_generator_sha256": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+    "simulation_config_sha256": "94a642bd277f77caf0e8af275fe0b43780c0dd198ae9b784a2f59286f0124003",
+    "v1_historical_execution_tool_sha256": "b4ec5187daa13e0805f367afb8d7be3e7209c095b3a6f4e0947c336acdd9f2dd",
+    "v2_execution_tool_sha256": "175da17efe923e7c374a57431a6308cbecda292a12b8e9e69b1eaf5449c7856f"
+  },
+  "roster_reuse": {
+    "selector_rerun_authorized": false,
+    "scenario_replacement_authorized": false,
+    "identity_route_lane_initial_state_context_ordering_mutable": false,
+    "required_counts": {"R-HLC": 2, "R-TSB": 2, "total": 4, "unique_tokens": 4, "unique_logs": 4},
+    "required_isolation_labels": [
+      "RUNTIME_DETERMINISM_VALIDATION_ONLY",
+      "EXCLUDED_FROM_FRESH_TECHNICAL_SMOKE",
+      "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+      "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+    ]
+  },
+  "historical_v1_failure": {
+    "run_id": "R-HLC__25944935eadb52f1__RUN_A",
+    "status": "TECHNICAL_FAILURE",
+    "labels": ["HISTORICAL_FAILED_EXECUTION", "NOT_PART_OF_VALIDATION_V2_EVIDENCE"],
+    "counts_against_v2_cap": false,
+    "may_be_overwritten": false
+  },
+  "precondition": "V2_INTERFACE_PREFLIGHT_MUST_PASS_BEFORE_FIRST_OFFICIAL_RUN_CLAIM"
+}

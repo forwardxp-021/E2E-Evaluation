@@ -1,0 +1,29 @@
+{
+  "schema_version": "r1_runtime_determinism_v2_hash_manifest_v1.0",
+  "scope": "SMALL_COMMITTED_EVIDENCE_HASHES_ONLY",
+  "result_status": "FAIL_CLOSED_TECHNICAL_OUTPUT_DISCOVERY_FAILURE",
+  "committed_evidence": {
+    "authorization_markdown_sha256": "06d862d4dcc3daa085a3ce2a6c6d481a2ac7bd73571eaa050c65f3b913511fa4",
+    "authorization_json_sha256": "2cd0a0648b0a13331075603ae0ccb85fd7d0bb1096ef96bed44745606692458a",
+    "final_interface_preflight_v1_2_sha256": "4465778c4a2855adea79a767c6ffed6e3c9e58156d12c70da558014f3dcc2f1f",
+    "result_v2_0_sha256": "7eb7fb7d78130a4de57af0b442f85b49f38b8290c099b0a1696079b245f64edd",
+    "comparison_v2_0_sha256": "9475dda013784364dbb87b9f0036fc5a13eab959cdf7b4e2c9870561c2d935d7",
+    "run_ledger_v2_0_sha256": "340b9cb0ffa955e049e98c402ab017c2596af677030a324ffd7c4f1a4fe8fffc",
+    "validation_report_v1_0_sha256": "e55f7cc0ec49cb19842450925b2603dc95e7a827110c526d4eb57c2e1fbe42e7",
+    "replay_contract_v0_3_sha256": "efdbd12aeca07af724c185ab3718280f7128ba773356eb80dd1e05bb075f3922",
+    "development_readiness_v0_5_sha256": "dd643e9c9060b2bef88cc001ec6647eb183694e894e5ec88e9ecfac66ff087b4"
+  },
+  "bound_implementation": {
+    "planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+    "interface_preflight_tool_sha256": "8f7f22cb2951a85d3d43f2b8c4856c9b6e46701a6d26724587fe19a9085b129b",
+    "v2_execution_tool_sha256": "175da17efe923e7c374a57431a6308cbecda292a12b8e9e69b1eaf5449c7856f",
+    "hydra_planner_config_sha256": "08332763ffee730ca8618c84f9f5fc0a845735129faa7a42e930a06bcb3ca3c0"
+  },
+  "uncommitted_raw_output_hashes": {
+    "execution_manifest_v2_sha256": "0e31e9a86b570d390f089d2568856896ed9a91cf556549d78162961c316ad0a3",
+    "official_run_budget_v2_sha256": "d7d59a454adbe655160ca4c87d8fb560ba09873a5763bedbb11d1170bca2b349",
+    "v2_run_a_trace_sha256": "fd31084a8c6df283e24d4c7c79d1d34ed52fe33b9a13a7437d018cda228d1f63",
+    "v2_run_a_binding_file_sha256": "86da72d2ef6ce6152e32b543749dc99bb1a22de4c8c5a7d97998519287227ade"
+  },
+  "raw_output_directory_committed": false
+}

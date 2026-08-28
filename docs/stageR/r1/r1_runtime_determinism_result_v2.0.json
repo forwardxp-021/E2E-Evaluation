@@ -1,0 +1,60 @@
+{
+  "schema_version": "r1_runtime_determinism_result_v2.0",
+  "status": "FAIL",
+  "scope": "BOUND_RUNTIME_REPRODUCIBILITY_ONLY_NO_SCIENTIFIC_OUTCOME_ANALYSIS",
+  "background_replay_determinism": "NOT_VERIFIED",
+  "official_replay": "NOT_READY",
+  "authorization_sha256": "2cd0a0648b0a13331075603ae0ccb85fd7d0bb1096ef96bed44745606692458a",
+  "preflight_sha256": "4465778c4a2855adea79a767c6ffed6e3c9e58156d12c70da558014f3dcc2f1f",
+  "roster_sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6",
+  "planner_sha256": "bddbe8e26433fb27d205b5a0d7261a4ac71980b7a5516dad61e498ec465c5d88",
+  "execution_tool_sha256": "175da17efe923e7c374a57431a6308cbecda292a12b8e9e69b1eaf5449c7856f",
+  "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+  "official_run_unit": "OFFICIAL_CLOSED_LOOP_RUN",
+  "authorized_cap": 8,
+  "actual_official_run_count": 1,
+  "ninth_preflight": {
+    "status": "NOT_ATTEMPTED_DUE_TO_EARLY_STOP"
+  },
+  "stopped_reason": "RUN_FAILURE:R-HLC__25944935eadb52f1__V2_RUN_A",
+  "runs": {
+    "R-HLC__25944935eadb52f1__V2_RUN_A": {
+      "run_id": "R-HLC__25944935eadb52f1__V2_RUN_A",
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "family": "R-HLC",
+      "repeat": "V2_RUN_A",
+      "official_command_return_code": 0,
+      "technical_failure_status": "TECHNICAL_FAILURE",
+      "technical_failure_reasons": [
+        "COLLISION_METRIC_UNAVAILABLE",
+        "OFFROAD_DRIVABLE_METRIC_UNAVAILABLE"
+      ],
+      "planner_binding_sha256": "c33e371e2fb881711b67ab969156c2f53641d48f63e52ef28bbfae35d9e24f08",
+      "simulation_step_count": 149,
+      "sequence_hashes": {
+        "initial_history_canonical": "8c46a4fdc91f3307552b76523b262d2850ab97cd649c0650432ac45405ec3fcf",
+        "pre_context_raw": "224a9b5e442d68138c058487deecdcbe7c5c938b167252eaac09bca0f4d065f3",
+        "canonical_context": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+        "traffic_light_states": "1dfbb2382d0c3e2808f4094ae5db2919b75f1687e1b4041cc2ab8f0c1947760e",
+        "background_tracked_object_states": "4c5067bdd1a85173d0035932d85c9833128a56cf5e5e8784ebc2e6de02378a73",
+        "ego_state_trajectory": "22917e94e2593b5893d661a9f94779c4122b559d026d689704b478b6d6577a87",
+        "planner_output_trajectory": "c4102bb6455e18f84f3dcf9cab8fbf8f45c0a4e1cb9b328a38be554d6cc7c68a",
+        "timestamps_us": "2d2789e0ce88b529176cc275591beed26d1ae0e9b11d54cf9e97f409761b82ce"
+      },
+      "metrics": {
+        "all_metric_payloads": [],
+        "collision_metric_payloads": [],
+        "offroad_drivable_metric_payloads": [],
+        "collision_metric_present": false,
+        "offroad_drivable_metric_present": false
+      },
+      "trace_sha256": "fd31084a8c6df283e24d4c7c79d1d34ed52fe33b9a13a7437d018cda228d1f63",
+      "command_log_sha256": "90a03a19b18a0263c3c21e609767b70e9abffdec9d50c88651bee708e23718a0"
+    }
+  },
+  "pairs": [],
+  "raw_output_directory": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_runtime_determinism_validation_v2",
+  "raw_output_directory_committed": false,
+  "scientific_outcome_analysis_performed": false
+}
