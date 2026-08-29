@@ -1,0 +1,49 @@
+{
+  "schema_version": "r1_official_compliant_technical_smoke_authorization_v1.0",
+  "status": "AUTHORIZED_ONCE_AFTER_ZERO_BUDGET_PREFLIGHT",
+  "authorization_scope": "R1_PHASE_B2_FRESH_OFFICIAL_COMPLIANT_TECHNICAL_SMOKE_ONLY",
+  "owner_decision": "R1_OFFICIAL_COMPLIANT_TECHNICAL_SMOKE_V1=AUTHORIZED_ONCE_CONDITIONAL",
+  "precondition": {
+    "preflight_path": "docs/stageR/r1/r1_official_technical_smoke_preflight_v1.0.json",
+    "preflight_sha256": "63ac50c965c68571c912ce5537d1102fa420f572a494d05cc44eab416798f539",
+    "preflight_status": "PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED",
+    "preflight_official_run_count": 0
+  },
+  "binding": {
+    "local_git_commit_sha": "bbba281aaaf2cebb6158c27f2e623de23b6a6e54",
+    "local_git_tree_sha": "685ddc3654190ddc3682d1ec634de94dbac23f7f",
+    "remote_equivalent_commit_sha": "9cf47f89eb80618c90a3c7c241f9280497fed080",
+    "scope_amendment_sha256": "891c2042b3c3569f1723f79abe72e062a03e3297f89123155b0fb11929b828b9",
+    "selector_contract_sha256": "1108df60c62fb33b6108588f1a6db1133f06d384fa394eeabf93b0264a1aefcc",
+    "roster_sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+    "replay_contract_sha256": "4f491acbfdf3b974506fed420261096720640e3817ff74ad8fd64cfd476dd510",
+    "metric_canonicalizer_sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+    "context_mechanism_contract_sha256": "82e4d9dd8bd3a63e1e8dcfb4504d378df510b5d20aebd471e5dfaac3071b7365",
+    "hlc_amendment_sha256": "6655cbeb3ea056e1dcfec7a1171989bab19e184395aba50073dc3bc19df0be5c",
+    "hlc_generator_sha256": "72414d1accf656704fadf255f002de815989c2f17908fdbf6bcb36b2352dc142",
+    "hlc_endpoint_sha256": "711bb39d8342312e6eb12bf9a907005782245f1b906244c2fd80c3b2a5b44cea",
+    "tsb_generator_sha256": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+    "planner_sha256": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc",
+    "smoke_executor_sha256": "de8c21d3a3766cd04db5dabfac756f07ca79d2b4c425854fd83bc860218b1b49",
+    "simulation_config_sha256": "318fac78935e168b5646cafcfbef69c7616d4f97317e6fcb909dc3119bc11fa6",
+    "preflight_sha256": "63ac50c965c68571c912ce5537d1102fa420f572a494d05cc44eab416798f539",
+    "db_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+    "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+    "master_seed": 2026082701,
+    "run_cap": 48
+  },
+  "frozen_schedule": {
+    "R-HLC": ["HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE", "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"],
+    "R-TSB": ["TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING", "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"],
+    "scenario_count": 24,
+    "arms_per_scenario": 2,
+    "official_closed_loop_runs": 48,
+    "48th_plus_one_pre_run_claim": "MUST_REJECT_BEFORE_SIMULATION"
+  },
+  "failure_policy": {
+    "technical_failure": "STOP_ENTIRE_SMOKE_NO_REPLACEMENT_NO_RERUN",
+    "scientific_or_generator_gate_failure": "RECORD_PAIR_AND_CONTINUE_FROZEN_FULL_SCHEDULE",
+    "outcome_driven_threshold_or_generator_change": "FORBIDDEN"
+  },
+  "continued_prohibitions": ["formal_development_rollout", "RBR_A_B_C_training", "representation_readout", "BDD", "probe", "new_planner_rollout", "roster_replacement"]
+}
