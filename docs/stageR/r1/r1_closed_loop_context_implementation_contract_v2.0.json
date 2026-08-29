@@ -1,0 +1,13 @@
+{
+  "schema_version": "r1_closed_loop_context_implementation_contract_v2.0",
+  "status": "PROSPECTIVE_IMPLEMENTATION_PENDING_FINAL_FREEZE",
+  "temporal": {"t_anchor_s": 1.0, "t_diverge_s": 1.1, "pre_context": "[0.0,1.0)", "iterations": "0...9", "source": "CONDITION_IDENTICAL_1S_WARMUP", "physical_dt_seconds": 0.1, "exact_required": true, "silent_resampling": false, "failure": "NOT_EVALUABLE_TEMPORAL_GRID", "historical_history_slice_primary_forbidden": "history[-11:-1]"},
+  "sources": ["OFFICIAL_OBSERVATION", "OFFICIAL_MAP_QUERY", "TRAFFIC_LIGHT_DATA", "ROUTE_DATA"],
+  "common": ["traffic_density", "five_neighbor_availability_slots", "stable_track_ids", "map_lane_validity", "real_missingness"],
+  "R-HLC": ["target_lane_front", "target_lane_rear", "arc_gaps", "intended_direction"],
+  "R-TSB": ["current_lane_front", "front_gap", "lead_relative_speed", "THW", "hazard_multi_hot"],
+  "hardcoded_absent_forbidden": true,
+  "hardcoded_none_observed_forbidden": true,
+  "implementation": "tools/r1_closed_loop_context_adapter_v2.py",
+  "historical_core_modified": false
+}

@@ -1,5 +1,36 @@
 # E2E-Evaluation 项目快速参考
 
+## StageR / R1 B2.3 — Prospective closed-loop benchmark implementation amendment
+
+### 1. 命令
+
+本阶段只运行 synthetic/unit 与既有 B2.1 trace/map 的只读测试，不启动 planner rollout：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m py_compile \
+  tools/r1_closed_loop_benchmark_v2.py \
+  tools/r1_closed_loop_context_adapter_v2.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_closed_loop_benchmark_v2.py \
+  tests/test_r1_closed_loop_context_adapter_v2.py
+```
+
+### 2. 期望行为
+
+- context v2 只接受 condition-identical warmup iterations 0–9 和 exact 100000 μs cadence，并从 official observation/map/route/traffic-light 真实构造 slots、稳定 track IDs、gap、THW 与 hazard multi-hot；
+- Primary measurement 只使用 actual realized current-ego iterations 0–79；planned-first 仅作 generator-intent secondary；
+- 每次 replan 的 trajectory[0] 与 current ego position/heading/speed/timestamp exact identity，phase clock 为 absolute episode time；
+- TSB 沿 native route realization，HLC 沿 native source/target geometry 且禁止 extrapolation；generator schedules、mechanism thresholds、F_match calipers 均不修改；
+- 历史 B2.1 trace/map 只作 `DIAGNOSTIC_NOT_NEW_SMOKE_EVIDENCE`，不选择新 roster、不运行新 smoke。
+
+### 3. 通过标准
+
+- 两个测试文件全部 PASS；旧 48-run trace 均能读取真实 actors/stable IDs，但 0/48 满足新的 exact temporal grid；
+- old-map 8 s native route 构造为 HLC 12/12、TSB 11/12，失败 identity 仅作 applicability diagnosis；
+- TSB outcome-blind 解析与 0.001 m/s synthetic grid 均得到 proposed floor 2.0 m/s；
+- 保持 `NEW_ROLLOUT=NOT_AUTHORIZED`、`R1_FORMAL_DEVELOPMENT_ROSTER=NOT_READY`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
 ## StageR / R1 B2.2 — B2.1 残差基准只读法证审计
 
 ### 1. 命令

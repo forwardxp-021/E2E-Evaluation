@@ -1,0 +1,17 @@
+{
+  "schema_version": "r1_b2_2_scientific_owner_approval_v1.0",
+  "status": "APPROVED_AS_RECORDED_FOR_PROSPECTIVE_IMPLEMENTATION",
+  "approved": {
+    "A": "CORRECT_FROZEN_CONTEXT_CANONICALIZATION",
+    "A2": "CORRECT_COMMON_PREFIX_TEMPORAL_ANCHOR",
+    "B": "TSB_ROUTE_ALIGNED_LONGITUDINAL_REALIZATION",
+    "C": "HLC_MAP_GEOMETRY_APPLICABILITY_CONTRACT",
+    "D": {"decision": "CURRENT_EGO_CONTINUOUS_REPLAN_ANCHOR", "families": ["R-HLC", "R-TSB"]},
+    "E": {"primary_measurement_source": "REALIZED_CLOSED_LOOP_EGO", "secondary_measurement_source": "INITIAL_PLANNED_TRAJECTORY", "secondary_role": "GENERATOR_INTENT_DIAGNOSTIC_ONLY"},
+    "F": {"mechanism_applicability_eligibility": "APPROVED_IN_PRINCIPLE", "numeric_tsb_speed_floor": "ANALYTICAL_DERIVATION_REQUIRED_BEFORE_FINAL_FREEZE"}
+  },
+  "unchanged": ["HLC_GEN_V2_OPTION_B_PARAMETERS", "TSB_GEN_V2_OPTION_A_PARAMETERS", "HLC_MECHANISM_THRESHOLDS", "TSB_MECHANISM_THRESHOLDS", "F_MATCH_CALIPERS"],
+  "historical_artifacts_overwritten": false,
+  "new_rollout_authorized": false,
+  "rbr_training_authorized": false
+}

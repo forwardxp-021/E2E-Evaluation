@@ -1,0 +1,12 @@
+{
+  "schema_version": "r1_hlc_map_geometry_applicability_contract_v0.1",
+  "status": "PROPOSED_REQUIRES_SCIENTIFIC_OWNER_APPROVAL",
+  "basis": "PHYSICS_AND_NATIVE_MAP_ONLY_OUTCOME_BLIND",
+  "required": ["NATIVE_SOURCE_LANE_RESOLVED", "NATIVE_TARGET_ADJACENCY", "ROUTE_CONSISTENCY", "SAME_TRAVEL_DIRECTION", "NO_REFERENCE_REVERSAL", "NO_SELF_INTERSECTION", "ALL_80_FRAME_8S_NATIVE_QUERIES_AVAILABLE", "NO_EXTRAPOLATION"],
+  "frozen_engineering_limits": {"max_abs_lateral_accel_mps2": 6.0, "max_abs_yaw_rate_radps": 1.0, "max_abs_curvature_inv_m": 0.5},
+  "forbidden_outcome_fitted_thresholds": ["curvature", "heading", "speed", "coverage_percentage"],
+  "new_numeric_geometry_rule": "REQUIRES_SCIENTIFIC_OWNER_APPROVAL",
+  "historical_b2_1_outcomes_used": false,
+  "primary_extrapolation_allowed": false,
+  "implementation_module": "tools/r1_closed_loop_benchmark_v2.py"
+}

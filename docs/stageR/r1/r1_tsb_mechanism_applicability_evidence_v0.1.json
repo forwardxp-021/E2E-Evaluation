@@ -1,0 +1,15 @@
+{
+  "schema_version": "r1_tsb_mechanism_applicability_evidence_v0.1",
+  "status": "PROPOSED_REQUIRES_OWNER_APPROVAL",
+  "dt_seconds": 0.1,
+  "low_speed_endstop": "speed < 1.0m/s continuously >=0.5s",
+  "baseline_total_speed_loss_mps": 1.0,
+  "option_a_net_speed_loss_mps": 0.62,
+  "analytical_baseline_floor_mps": 2.0,
+  "analytical_option_a_floor_mps": 1.62,
+  "proposed_initial_speed_floor_mps": 2.0,
+  "synthetic_grid": {"minimum_mps": 0.0, "maximum_mps": 4.0, "step_mps": 0.001, "first_jointly_evaluable_mps": 2.0, "matches_analytical": true},
+  "b2_1_initial_speeds_used": false,
+  "hlc_low_speed_audit": "APPLICABILITY_EXISTS_BUT_NO_THRESHOLD_AUTOMATICALLY_ADDED",
+  "implementation": "tools/r1_closed_loop_benchmark_v2.py::tsb_minimum_initial_speed_evidence"
+}

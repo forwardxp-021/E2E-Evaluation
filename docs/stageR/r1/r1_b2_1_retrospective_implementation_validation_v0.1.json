@@ -1,0 +1,13 @@
+{
+  "schema_version": "r1_b2_1_retrospective_implementation_validation_v0.1",
+  "status": "DIAGNOSTIC_NOT_NEW_SMOKE_EVIDENCE",
+  "new_rollout_count": 0,
+  "context": {"runs_with_real_dynamic_actors": "48/48", "runs_with_track_stable_ge8_of_10": "48/48", "full_semantic_reconstruction": "NOT_EVALUABLE_RUNTIME_OFFICIAL_MAP_QUERY_REQUIRED"},
+  "temporal": {"exact_100000us_grid": "0/48", "iteration_0_to_9_span_seconds_min": 0.899445, "iteration_0_to_9_span_seconds_max": 0.900746, "classification": "NOT_EVALUABLE_TEMPORAL_GRID", "silent_resampling_used": false},
+  "native_route_builder": {"all_families": "23/24", "R-HLC": "12/12", "R-TSB": "11/12", "failed_identity": "f464a2a451d85356", "failure": "CURRENT_EGO_HAS_NO_NATIVE_ROUTE_EDGE"},
+  "new_current_ego_anchor_synthetic_identity": "PASS_EXACT_CONSTRUCTION",
+  "old_tsb_discontinuity_interpretation": "ELIMINATED_BY_PROSPECTIVE_DEFINITION_NOT_NEW_SMOKE_EVIDENCE",
+  "hlc_native_8s_coverage": {"pass": "7/12", "fail_no_extrapolation": "5/12"},
+  "historical_thresholds_optimized": false,
+  "amended_benchmark_pass_claimed": false
+}

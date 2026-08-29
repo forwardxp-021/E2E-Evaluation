@@ -1,0 +1,17 @@
+{
+  "schema_version": "r1_closed_loop_residual_measurement_contract_v1.0",
+  "status": "PROSPECTIVE_IMPLEMENTATION_CONTRACT_PENDING_FINAL_FREEZE",
+  "inherits": "docs/stageR/r1/R1_HLC_Residual_Benchmark_Scientific_Amendment_v1.0",
+  "primary_source": "REALIZED_CLOSED_LOOP_EGO_TRAJECTORY",
+  "window": {"iterations": "0...79", "frames": 80, "dt_seconds": 0.1, "interval": "[0.0,8.0)", "interpolation": false, "extrapolation": false, "planned_substitution": false, "grid_failure": "NOT_EVALUABLE_TEMPORAL_GRID"},
+  "primary": {
+    "R-HLC": ["mechanism", "F_match_mean_speed", "F_match_end_minus_start_speed", "F_match_path_length", "endpoint", "engineering"],
+    "R-TSB": ["mechanism", "F_match"],
+    "safety": "OFFICIAL_CLOSED_LOOP_METRIC"
+  },
+  "hlc_secondary_only": "heading_change_abs_total",
+  "secondary_source": "INITIAL_PLANNED_TRAJECTORY",
+  "secondary_role": "GENERATOR_INTENT_DIAGNOSTIC_ONLY",
+  "secondary_determines_primary_readiness": false,
+  "implementation_module": "tools/r1_closed_loop_benchmark_v2.py"
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "r1_current_ego_continuous_replan_contract_v1.0",
+  "status": "PROSPECTIVE_IMPLEMENTATION_CONTRACT_PENDING_FINAL_FREEZE",
+  "families": ["R-HLC", "R-TSB"],
+  "trajectory_zero": {"position": "EXACT_CURRENT_EGO_IDENTITY", "heading": "EXACT_CURRENT_EGO_IDENTITY", "speed": "EXACT_CURRENT_EGO_IDENTITY", "timestamp": "EXACT_CURRENT_EGO_IDENTITY", "post_hoc_tolerance": false},
+  "phase_clock": "ABSOLUTE_EPISODE_TIME",
+  "replan_resets_phase_zero": false,
+  "replan_resets_frozen_initial_pose_or_speed": false,
+  "audit_fields": ["position_error_m", "heading_error_rad", "speed_error_mps", "timestamp_error_us"],
+  "implementation_module": "tools/r1_closed_loop_benchmark_v2.py"
+}

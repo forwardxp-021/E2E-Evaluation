@@ -1,0 +1,26 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.4",
+  "status": "PREPARED_NOT_FROZEN_NO_ENUMERATION_AUTHORIZED",
+  "purpose": "FUTURE_FRESH_IDENTITY_SMOKE_SELECTOR_PREPARATION_ONLY",
+  "inherits": {"path": "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v0.3.json", "sha256": "1108df60c62fb33b6108588f1a6db1133f06d384fa394eeabf93b0264a1aefcc"},
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "salt_regenerated": false,
+  "rank_rule": "SHA256(salt_sha256|family|scenario_token|log_id)",
+  "permanent_blacklist_union": {
+    "match_keys": ["scenario_token", "log_id"],
+    "expected_unique_identities": 40,
+    "sources": [
+      {"class": "HISTORICAL_NONCOMPLIANT_SMOKE", "count": 12, "path": "docs/stageR/r1/r1_technical_smoke_v1_permanent_blacklist_v1.json", "sha256": "f0b222e94dbb52609167fbb886d1e50890c36eea96b7895bbb2cae8efb7ce43f"},
+      {"class": "RUNTIME_DETERMINISM_VALIDATION", "count": 4, "path": "docs/stageR/r1/r1_runtime_determinism_validation_roster_v1.0.json", "sha256": "fc5c52a15eef9f71adb6f279e99bb4a0a6312fdc6013671c75550703c2759ac6"},
+      {"class": "B2_B2_1_FRESH_SMOKE", "count": 24, "path": "docs/stageR/r1/r1_official_technical_smoke_roster_v1.0.json", "sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52"}
+    ],
+    "all_sources_permanently_excluded": true
+  },
+  "enumeration_preconditions": ["CONTEXT_IMPLEMENTATION_FROZEN", "TSB_ROUTE_REALIZATION_FROZEN", "CURRENT_EGO_ANCHOR_FROZEN", "PRIMARY_MEASUREMENT_SOURCE_FROZEN", "HLC_APPLICABILITY_FROZEN", "TSB_APPLICABILITY_FROZEN"],
+  "preconditions_currently_met": false,
+  "actual_candidates_enumerated": 0,
+  "actual_roster_selected": false,
+  "new_smoke_authorized": false,
+  "forbidden_inputs": ["old smoke pass/fail", "planner outcome", "mechanism outcome", "safety outcome", "representation", "BDD", "probe", "checkpoint", "RBR"]
+}

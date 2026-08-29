@@ -1,0 +1,31 @@
+{
+  "schema_version": "r1_b2_3_prospective_implementation_manifest_v1",
+  "status": "COMPLETE_PROSPECTIVE_IMPLEMENTATION_NO_ROLLOUT",
+  "remote_baseline": "4c2b83818deb4f8d8b05bdf9b603ad7e713a14d2",
+  "historical_implementation_preserved": {
+    "tools/r1_context_mechanism_core.py": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e",
+    "tools/r1_official_technical_smoke_planner.py": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc"
+  },
+  "frozen_generators_modified": false,
+  "mechanism_thresholds_modified": false,
+  "f_match_calipers_modified": false,
+  "b2_1_outcomes_used_for_thresholds": false,
+  "new_modules": ["tools/r1_closed_loop_context_adapter_v2.py", "tools/r1_closed_loop_benchmark_v2.py"],
+  "validation": {
+    "synthetic_and_unit_tests": "13_PASS",
+    "old_trace_actor_ingestion": "48/48",
+    "old_trace_stable_track_presence": "48/48",
+    "old_trace_exact_new_temporal_grid": "0/48_NOT_EVALUABLE_TEMPORAL_GRID",
+    "old_map_native_route_builder": "23/24_DIAGNOSTIC_ONLY",
+    "old_hlc_native_coverage": "7/12_DIAGNOSTIC_ONLY",
+    "tsb_analytical_and_grid_floor_mps": 2.0
+  },
+  "actual_new_identity_selected": false,
+  "new_smoke_roster_created": false,
+  "new_planner_rollout_count": 0,
+  "representation_bdd_probe_rbr_read": false,
+  "rbr_training_count": 0,
+  "NEW_ROLLOUT": "NOT_AUTHORIZED",
+  "R1_FORMAL_DEVELOPMENT_ROSTER": "NOT_READY",
+  "RBR_A_B_C": "NOT_AUTHORIZED"
+}
