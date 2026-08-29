@@ -1,0 +1,78 @@
+{
+  "schema_version": "r1_official_compliant_technical_smoke_authorization_v1.1",
+  "status": "AUTHORIZED_ONCE_AFTER_ZERO_BUDGET_RECOVERY_PREFLIGHT",
+  "authorization_scope": "R1_PHASE_B2_1_FRESH_RECOVERY_BATCH_ONLY",
+  "owner_decision": "R1_OFFICIAL_COMPLIANT_TECHNICAL_SMOKE_V1_1=AUTHORIZED_ONCE_AFTER_ZERO_BUDGET_RECOVERY_PREFLIGHT",
+  "precondition": {
+    "preflight_path": "docs/stageR/r1/r1_official_technical_smoke_recovery_preflight_v1.1.json",
+    "preflight_sha256": "9ef0d20937a9819362f01310997b0eb731fcb082a8f5b046bd6a3c782723970b",
+    "preflight_status": "PASS_COMPLETE_EXECUTION_PATH_NO_OFFICIAL_RUN_BUDGET_CONSUMED",
+    "preflight_official_run_count": 0,
+    "environment_binding_path": "docs/stageR/r1/r1_official_smoke_runtime_environment_binding_v1.1.json",
+    "environment_binding_sha256": "6524412f759c32451ccf838cb4ec864ddc8234bfda214a62ff22e538277dc6aa",
+    "environment_binding_status": "MATCHES_V3_BOUND_RUNTIME"
+  },
+  "binding": {
+    "historical_b2_failure_manifest": "73aa91978663df5857cae721ca85e2e8055b31b4807140a4f0a2f7af1847aaef",
+    "scope_amendment": "891c2042b3c3569f1723f79abe72e062a03e3297f89123155b0fb11929b828b9",
+    "selector_contract": "1108df60c62fb33b6108588f1a6db1133f06d384fa394eeabf93b0264a1aefcc",
+    "roster": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+    "replay_contract": "4f491acbfdf3b974506fed420261096720640e3817ff74ad8fd64cfd476dd510",
+    "environment_binding": "6524412f759c32451ccf838cb4ec864ddc8234bfda214a62ff22e538277dc6aa",
+    "corrected_executor": "9d7ba27f2248c083f72688f6dea7790d61a15681b1b46a7d52906277abdee653",
+    "legacy_frozen_science_executor": "de8c21d3a3766cd04db5dabfac756f07ca79d2b4c425854fd83bc860218b1b49",
+    "smoke_planner": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc",
+    "hlc_generator": "72414d1accf656704fadf255f002de815989c2f17908fdbf6bcb36b2352dc142",
+    "tsb_generator": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+    "hlc_endpoint": "711bb39d8342312e6eb12bf9a907005782245f1b906244c2fd80c3b2a5b44cea",
+    "context_mechanism_contract": "82e4d9dd8bd3a63e1e8dcfb4504d378df510b5d20aebd471e5dfaac3071b7365",
+    "metric_canonicalizer": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+    "simulation_config": "318fac78935e168b5646cafcfbef69c7616d4f97317e6fcb909dc3119bc11fa6",
+    "recovery_preflight": "9ef0d20937a9819362f01310997b0eb731fcb082a8f5b046bd6a3c782723970b",
+    "historical_status_correction": "5ce11e529b153523df24709324b120f74f5807af51d17a3908b2e5420449b548",
+    "authorization_source_local_git_commit_sha": "30a2b6d79432d16267a3cf370c73ba92a53df36e",
+    "authorization_source_local_git_tree_sha": "379e30f53f2d2b3bf827ce279b1289b0b704a515",
+    "db_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+    "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+    "master_seed": 2026082701,
+    "run_cap": 48
+  },
+  "historical_b2_record": {
+    "manifest_sha256": "73aa91978663df5857cae721ca85e2e8055b31b4807140a4f0a2f7af1847aaef",
+    "claim_label": "HISTORICAL_B2_PRE_SIMULATION_TECHNICAL_CLAIM",
+    "simulator_status": "SIMULATOR_NOT_STARTED",
+    "b2_1_evidence": "NOT_PART_OF_B2_1_EVIDENCE",
+    "raw_budget_modified": false
+  },
+  "frozen_schedule": {
+    "R-HLC": [
+      "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+    ],
+    "R-TSB": [
+      "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+    ],
+    "scenario_count": 24,
+    "arms_per_scenario": 2,
+    "official_closed_loop_runs": 48,
+    "run_id_namespace": "B2R1",
+    "49th_plus_one_pre_run_claim": "MUST_REJECT_BEFORE_SIMULATION"
+  },
+  "failure_policy": {
+    "technical_failure": "STOP_ENTIRE_B2_1_BATCH_NO_REPLACEMENT_NO_RERUN",
+    "scientific_or_generator_gate_failure": "RECORD_PAIR_AND_CONTINUE_FROZEN_FULL_SCHEDULE",
+    "outcome_driven_threshold_or_generator_change": "FORBIDDEN"
+  },
+  "scientific_protocol_deviation": "NO__EXECUTION_ENVIRONMENT_BINDING_CORRECTION_ONLY",
+  "continued_prohibitions": [
+    "selector_rerun",
+    "scenario_replacement",
+    "formal_development_rollout",
+    "RBR_A_B_C_training",
+    "representation_readout",
+    "BDD",
+    "probe",
+    "new_planner_rollout"
+  ]
+}
