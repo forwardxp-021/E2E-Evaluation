@@ -1,0 +1,17 @@
+{
+  "schema_version": "r1_hlc_pretreatment_dynamic_clearance_contract_v1.0",
+  "status": "FROZEN_PROSPECTIVE_PRETREATMENT_COMMON_ENVELOPE",
+  "numerics": {"horizon_seconds": 8.0, "nominal_query_dt_seconds": 0.1, "maximum_actor_interpolation_gap_seconds": 0.25, "longitudinal_buffer_m": 3.0, "lateral_buffer_m": 0.5},
+  "numeric_provenance": {"path": "tools/stage7l_dynamic_clearance.py", "sha256": "50253b75eed8473b1141b3b76d51ce755f1a8df1f7a2f0690a4075b35a3df129", "classification": "PREEXISTING_TREATMENT_INDEPENDENT_ENGINEERING_CLEARANCE_NOT_R1_OUTCOME_DERIVED"},
+  "ego_footprint": "OFFICIAL_RUNTIME_VEHICLE_PARAMETERS_REQUIRED",
+  "fallback_footprint": "FORBIDDEN",
+  "actor_footprint": "OFFICIAL_TRACK_DIMENSIONS_REQUIRED",
+  "missing_required_footprint": "NOT_ELIGIBLE",
+  "common_envelope": ["HLC_BASELINE", "HLC_OPTION_B_TREATMENT"],
+  "arm_specific_envelope": "FORBIDDEN",
+  "dynamic_source": "ORIGINAL_REPLAY_TRACKS_ONLY",
+  "map_extrapolation": "FORBIDDEN",
+  "actor_extrapolation": "FORBIDDEN",
+  "forbidden_inputs": ["planner_outcome", "mechanism_outcome", "F_match", "safety_outcome", "representation", "BDD", "probe", "checkpoint", "RBR"],
+  "implementation": "tools/r1_hlc_dynamic_clearance_v1.py"
+}

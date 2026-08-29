@@ -1,0 +1,18 @@
+{
+  "schema_version": "r1_b2_4_status_v1.0",
+  "phase": "R1_B2_4_FINAL_PROSPECTIVE_CONTRACT_CONFORMANCE_FREEZE",
+  "temporal_measurement_v1_1": "FROZEN_PROSPECTIVE_TIMESTAMP_AWARE",
+  "exact_physical_100000us_rule": "REMOVED_FROM_FINAL_FREEZE",
+  "context_v2_1": "FROZEN",
+  "tsb_baseline_execution": "BOUND",
+  "tsb_speed_floor_mps": 2.0,
+  "tsb_route_continuity_v1_1": "FROZEN",
+  "hlc_geometry_realization_v1_1": "FROZEN",
+  "hlc_map_applicability_v1_0": "FROZEN",
+  "hlc_dynamic_clearance_v1_0": "FROZEN",
+  "NEW_ROLLOUT": "NOT_AUTHORIZED",
+  "R1_FORMAL_DEVELOPMENT_ROSTER": "NOT_READY",
+  "RBR_A": "NOT_AUTHORIZED",
+  "RBR_B": "NOT_AUTHORIZED",
+  "RBR_C": "NOT_AUTHORIZED"
+}

@@ -1,5 +1,35 @@
 # E2E-Evaluation 项目快速参考
 
+## StageR / R1 B2.4 — Final Prospective Contract Conformance Freeze
+
+### 1. 命令
+
+仅执行 prospective synthetic/readonly conformance tests；不会启动 rollout、enumeration、roster selection 或 RBR：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_closed_loop_benchmark_v2.py \
+  tests/test_r1_closed_loop_context_adapter_v2.py \
+  tests/test_r1_b2_4_adversarial_conformance.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 验证 timestamp-aware HLC/TSB calculators 在 exact 0.1 s grid 上与 frozen v1 完整输出一致，并接受微小 official timestamp jitter；
+- 验证 context v2.1 的 iteration ordering、actual time audit、anchor hazard、velocity fail-closed 与 stable 8/10 slow lead；
+- 验证 TSB curved/offset/repeated-route continuity、HLC ±179° geometry、state0/first-segment continuity、2.0 m/s floor 与 HLC common-envelope clearance；
+- 不读取 representation、BDD、probe、checkpoint 或 RBR，不生成新 scenario/roster/rollout。
+
+### 3. 通过标准
+
+- 合并测试为 `28 passed`，其中 B2.4 adversarial suite 为 `15 passed`；
+- `tools/check_no_tmp_dependencies.py` 输出 `OK`；
+- SHA binding manifest 中所有 implementation/contract SHA 与工作区一致；
+- 保持 `NEW_ROLLOUT=NOT_AUTHORIZED`、`R1_FORMAL_DEVELOPMENT_ROSTER=NOT_READY`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
 ## StageR / R1 B2.3 — Prospective closed-loop benchmark implementation amendment
 
 ### 1. 命令

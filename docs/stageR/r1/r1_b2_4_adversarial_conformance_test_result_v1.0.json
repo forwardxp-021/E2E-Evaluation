@@ -1,0 +1,11 @@
+{
+  "schema_version": "r1_b2_4_adversarial_conformance_test_result_v1.0",
+  "status": "15_OF_15_PASS_SYNTHETIC_AND_READONLY_ONLY",
+  "test_file": "tests/test_r1_b2_4_adversarial_conformance.py",
+  "passed": 15,
+  "failed": 0,
+  "coverage": ["timestamp_plus_1us", "non_monotonic_timestamp", "missing_iteration", "missing_context_velocity", "anchor_hazard_semantics", "stable_slow_lead_8_of_10", "HLC_heading_wrap", "TSB_curved_offset_route", "repeated_roadblock", "trajectory_state0_exact", "first_segment_structural_continuity", "exact_grid_v1_v2_parity", "HLC_primary_fmatch_excludes_heading", "TSB_floor_parity", "HLC_clearance_common_envelope"],
+  "new_rollout_count": 0,
+  "scenario_enumeration_count": 0,
+  "rbr_read_or_training": false
+}

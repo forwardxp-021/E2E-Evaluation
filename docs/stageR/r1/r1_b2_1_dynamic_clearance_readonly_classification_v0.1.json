@@ -1,0 +1,10 @@
+{
+  "schema_version": "r1_b2_1_dynamic_clearance_readonly_classification_v0.1",
+  "status": "DIAGNOSTIC_NOT_NEW_SMOKE_EVIDENCE",
+  "roster": {"path": "docs/stageR/r1/r1_official_technical_smoke_roster_v1.0.json", "sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52", "identity_count": 24},
+  "classification": {"R-HLC": {"count": 12, "status": "NOT_EVALUABLE_UNDER_V1_0_MISSING_OFFICIAL_RUNTIME_EGO_FOOTPRINT_BINDING"}, "R-TSB": {"count": 12, "status": "NOT_APPLICABLE_FAMILY"}},
+  "scenario_failure_inferred": false,
+  "contract_numerics_modified_from_historical_results": false,
+  "new_rollout_count": 0,
+  "new_smoke_evidence": false
+}

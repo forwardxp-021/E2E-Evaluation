@@ -1,0 +1,11 @@
+{
+  "schema_version": "r1_tsb_route_realization_contract_v1.1",
+  "status": "FROZEN_PROSPECTIVE_ROUTE_CONTINUITY",
+  "acceleration_profiles_modified": false,
+  "same_spatial_reference_both_arms": true,
+  "route_cursor": {"current_native_edge": true, "repeated_roadblock_occurrence_resolved_by_native_successor": true},
+  "continuity": {"trajectory_state0_exact": true, "signed_lateral_offset_preserved": true, "current_heading_offset_preserved_in_first_geometry": true, "centerline_snap": "FORBIDDEN", "structural_first_segment_audit": true},
+  "map_extrapolation": "FORBIDDEN",
+  "tests": ["curved_route", "nonzero_lateral_offset", "nonzero_heading_offset", "repeated_roadblock_ID"],
+  "implementation": "tools/r1_closed_loop_benchmark_v2_1.py::build_tsb_route_aligned_v1_1"
+}

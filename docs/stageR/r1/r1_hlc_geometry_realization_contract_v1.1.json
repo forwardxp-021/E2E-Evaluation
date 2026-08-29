@@ -1,0 +1,15 @@
+{
+  "schema_version": "r1_hlc_geometry_realization_contract_v1.1",
+  "status": "FROZEN_PROSPECTIVE_FINAL_XY_TANGENT_HEADING",
+  "hlc_option_b_progress_modified": false,
+  "native_source_target_geometry": true,
+  "map_extrapolation": "FORBIDDEN",
+  "separate_source_target_heading_unwrap_then_mix": "FORBIDDEN",
+  "primary_heading_source": "FINAL_XY_PATH_TANGENT",
+  "yaw_curvature_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+  "trajectory_state0_exact": true,
+  "structural_first_segment_audit": true,
+  "plus179_minus179_short_geometry_test": "PASS",
+  "new_numeric_geometry_threshold": false,
+  "implementation": "tools/r1_closed_loop_benchmark_v2_1.py::build_hlc_native_geometry_v1_1"
+}

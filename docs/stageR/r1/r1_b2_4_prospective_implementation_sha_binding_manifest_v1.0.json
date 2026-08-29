@@ -1,0 +1,23 @@
+{
+  "schema_version": "r1_b2_4_prospective_implementation_sha_binding_manifest_v1.0",
+  "status": "FROZEN_AFTER_28_OF_28_TESTS_PASS",
+  "remote_baseline": "4e7a08b46cca3ac85b6e3655236c5d0c5834c9d2",
+  "bindings": {
+    "timestamp_aware_measurement_and_mechanism": {"implementation": "tools/r1_closed_loop_benchmark_v2_1.py", "implementation_sha256": "b36870ae0d98783707ad7e24f677c607dbb49a09674007a3706c636cee079170", "contract": "docs/stageR/r1/r1_closed_loop_residual_measurement_contract_v1.1.json", "contract_sha256": "96fbdad467b6e1b321c963f83b1b98ca49f8032cf85b572bb1a5a3a774d7f6a1"},
+    "context_v2_1": {"implementation": "tools/r1_closed_loop_context_adapter_v2_1.py", "implementation_sha256": "ac4cc0c212707b1990eb8ca1e308bd0dab8f614dceb507b5334f09c286831421", "contract": "docs/stageR/r1/r1_closed_loop_context_implementation_contract_v2.1.json", "contract_sha256": "8b5adf18098801164adf17f3826d68d7b5a12294204da784124d99d95cb83520"},
+    "current_ego_replan_v1_1": {"implementation_sha256": "b36870ae0d98783707ad7e24f677c607dbb49a09674007a3706c636cee079170", "contract": "docs/stageR/r1/r1_current_ego_continuous_replan_contract_v1.1.json", "contract_sha256": "ca028dee42d05136e87b98ffb38ce6a80f9611934057d595e0a0c7c1fa1820bf"},
+    "tsb_baseline_execution": {"contract": "docs/stageR/r1/r1_tsb_baseline_discrete_execution_binding_v1.0.json", "contract_sha256": "505d205d8649a608f9832405056f983ada4014af2bd705b6c7c6208340b7389a"},
+    "tsb_applicability_v1_0": {"implementation_sha256": "b36870ae0d98783707ad7e24f677c607dbb49a09674007a3706c636cee079170", "contract": "docs/stageR/r1/r1_tsb_mechanism_applicability_contract_v1.0.json", "contract_sha256": "8d249dad707b58337029cd24fa825549a9b05dfc5c9b24f5dc9993956fde8cf2"},
+    "tsb_route_realization_v1_1": {"implementation_sha256": "b36870ae0d98783707ad7e24f677c607dbb49a09674007a3706c636cee079170", "contract": "docs/stageR/r1/r1_tsb_route_realization_contract_v1.1.json", "contract_sha256": "69da56611a3e782e3939ebafa1ce064d1ef4702eab96c0c34e28040b69fe1132"},
+    "hlc_geometry_realization_v1_1": {"implementation_sha256": "b36870ae0d98783707ad7e24f677c607dbb49a09674007a3706c636cee079170", "contract": "docs/stageR/r1/r1_hlc_geometry_realization_contract_v1.1.json", "contract_sha256": "820bf18f26fd13e0c052786aecd322c87442e02c20550f3c5a0bdaef831d183e"},
+    "hlc_map_applicability_v1_0": {"contract": "docs/stageR/r1/r1_hlc_map_geometry_applicability_contract_v1.0.json", "contract_sha256": "9dfa8d50b8f660a0f4986f191f94afcb9290d50b39b55f1971c6b1529b203499"},
+    "hlc_dynamic_clearance_v1_0": {"implementation": "tools/r1_hlc_dynamic_clearance_v1.py", "implementation_sha256": "fb6c6ecf2109f429c688e59c006e2ca272cf85592614adba066bef7e807fa8fc", "contract": "docs/stageR/r1/r1_hlc_pretreatment_dynamic_clearance_contract_v1.0.json", "contract_sha256": "14b8e6b0c4c7a78f4553bd7bcc991f4f84efc29bb302c0927ff461741e6d929b"}
+  },
+  "adversarial_test": {"path": "tests/test_r1_b2_4_adversarial_conformance.py", "sha256": "0fe8f1121e2f1183bf46ecb99de0cfeb25b0d18e535218b08a82b9ad2db7f309", "result": "15_OF_15_PASS"},
+  "combined_regression_result": "28_OF_28_PASS",
+  "historical_implementation_preserved": {"tools/r1_context_mechanism_core.py": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e", "tools/r1_official_technical_smoke_planner.py": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc"},
+  "new_rollout_count": 0,
+  "scenario_enumeration_count": 0,
+  "new_roster_created": false,
+  "rbr_read_or_training": false
+}

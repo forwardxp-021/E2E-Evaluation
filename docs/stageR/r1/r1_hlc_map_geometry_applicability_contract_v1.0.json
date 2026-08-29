@@ -1,0 +1,10 @@
+{
+  "schema_version": "r1_hlc_map_geometry_applicability_contract_v1.0",
+  "status": "FROZEN_PROSPECTIVE_OUTCOME_BLIND",
+  "required": ["NATIVE_SOURCE", "NATIVE_ADJACENT_TARGET", "ROUTE_CONSISTENCY", "SAME_TRAVEL_DIRECTION", "NO_REVERSAL", "NO_SELF_INTERSECTION", "FULL_NATIVE_80_FRAME_QUERY_COVERAGE", "NO_EXTRAPOLATION"],
+  "frozen_engineering_limits": {"max_abs_lateral_accel_mps2": 6.0, "max_abs_yaw_rate_radps": 1.0, "max_abs_curvature_inv_m": 0.5},
+  "additional_numeric_geometry_cutoff": "FORBIDDEN",
+  "b2_1_outcome_fitting": false,
+  "implementation": "tools/r1_closed_loop_benchmark_v2.py::hlc_map_applicability",
+  "geometry_realization": "tools/r1_closed_loop_benchmark_v2_1.py::build_hlc_native_geometry_v1_1"
+}

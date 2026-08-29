@@ -1,0 +1,14 @@
+{
+  "schema_version": "r1_closed_loop_context_implementation_contract_v2.1",
+  "status": "FROZEN_PROSPECTIVE_CONTEXT_V2_1",
+  "temporal": {"pre_context_iterations": "0...9", "anchor_frame_iteration": 10, "t_diverge_iteration": 11, "t_diverge_nominal_seconds": 1.1, "canonical_ordering_coordinate": "SIMULATION_ITERATION_INDEX", "nominal_labels_seconds": "0.0...0.9", "actual_time_us_audit_required": true, "exact_100000us_required": false, "actual_time_finite_and_strictly_increasing": true, "interpolation": "FORBIDDEN", "extrapolation": "FORBIDDEN", "physical_time_relabeling": "FORBIDDEN"},
+  "pre_context_fields": ["initial_speed_median", "lane_offset_median", "traffic_density", "neighbor_pattern", "front_target_gaps", "relative_speed", "THW", "stable_track_ids"],
+  "anchor_fields": ["road_class", "route_relevant_traffic_light_state", "static_stop_control_relation"],
+  "hazard_priority": ["ROUTE_SIGNAL_RED_OR_YELLOW", "STATIC_STOP_CONTROL_AHEAD", "OBSERVED_SLOW_LEAD", "NONE_OBSERVED"],
+  "observed_slow_lead": {"source": "PRE_CONTEXT_STABLE_FRONT_SLOT", "minimum_valid_frames": 8, "one_stable_track_id": true},
+  "slot_semantics": {"source": "tools.stage5d_context_core.assign_stage5d_slots", "implementation": "STRICT_EQUIVALENT_LANE_ID_ARC_SLOT_ORDER_TIE_BREAK", "geometric_fallback": "FORBIDDEN"},
+  "velocity_missing_or_nonfinite": "FAIL_CLOSED",
+  "density": {"distance_m": 50.0, "coordinate": "PROJECTED_ROUTE_DISTANCE", "HLC_corridor": "source+target+their_immediate_native_adjacent", "TSB_corridor": "current+immediate_adjacent"},
+  "implementation": "tools/r1_closed_loop_context_adapter_v2_1.py",
+  "conformance_matrix": "docs/stageR/r1/r1_closed_loop_context_v2_1_conformance_matrix_v1.0.csv"
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "r1_tsb_mechanism_applicability_contract_v1.0",
+  "status": "FROZEN_OWNER_APPROVED_BASELINE_EXECUTION_BOUND",
+  "TSB_MECHANISM_APPLICABILITY_INITIAL_SPEED_FLOOR_MPS": 2.0,
+  "domain": "MEASUREMENT_APPLICABILITY_NOT_BEHAVIOR_OUTCOME_THRESHOLD",
+  "baseline_binding": "docs/stageR/r1/r1_tsb_baseline_discrete_execution_binding_v1.0.json",
+  "analytical_floor_mps": 2.0,
+  "synthetic_grid": {"minimum_mps": 0.0, "maximum_mps": 4.0, "step_mps": 0.001, "first_jointly_evaluable_mps": 2.0, "parity": true},
+  "b2_1_initial_speeds_used": false,
+  "unchanged": ["TSB_OPTION_A", "SINGLE_CONTINUOUS_BRAKING", "LOW_SPEED_ENDSTOP", "MECHANISM_NUMERICAL_GATES"],
+  "implementation": "tools/r1_closed_loop_benchmark_v2_1.py::tsb_applicability_v1"
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "r1_b2_3_scientific_owner_approval_v1.0",
+  "status": "OWNER_REVIEW_RECORDED_FOR_B2_4_FINAL_FREEZE",
+  "measurement": {"primary": "REALIZED_CLOSED_LOOP_EGO", "secondary": "INITIAL_PLANNED_TRAJECTORY", "secondary_role": "SECONDARY_GENERATOR_INTENT_ONLY"},
+  "current_ego_replan": {"approved": true, "trajectory_state0_identity_sufficient_alone": false, "structural_first_segment_continuity_audit_required": true},
+  "hlc_map_applicability": {"approved": true, "new_geometry_numeric_threshold_forbidden": true},
+  "tsb_initial_speed_floor_mps": {"value": 2.0, "status": "OWNER_APPROVED_CONDITIONAL_ON_EXPLICIT_BASELINE_EXECUTION_BINDING"},
+  "hlc_dynamic_clearance": {
+    "horizon_seconds": 8.0,
+    "nominal_query_dt_seconds": 0.1,
+    "maximum_actor_interpolation_gap_seconds": 0.25,
+    "longitudinal_buffer_m": 3.0,
+    "lateral_buffer_m": 0.5,
+    "ego_footprint": "OFFICIAL_RUNTIME_VEHICLE_PARAMETERS_REQUIRED",
+    "fallback_footprint": "FORBIDDEN",
+    "actor_footprint": "OFFICIAL_TRACK_DIMENSIONS_REQUIRED",
+    "map_extrapolation": "FORBIDDEN",
+    "actor_extrapolation": "FORBIDDEN",
+    "numeric_provenance": "PREEXISTING_STAGE7L_TREATMENT_INDEPENDENT_ENGINEERING_CLEARANCE_NOT_R1_OUTCOME_DERIVED"
+  },
+  "exact_physical_100000us_rule": "REJECTED_FOR_FINAL_FREEZE",
+  "official_timestamp_jitter_automatic_not_evaluable": false,
+  "unchanged": ["HLC_OPTION_B_PARAMETERS", "TSB_OPTION_A_PARAMETERS", "MECHANISM_NUMERICAL_THRESHOLDS", "F_MATCH_CALIPERS"],
+  "new_rollout_authorized": false,
+  "rbr_training_authorized": false
+}

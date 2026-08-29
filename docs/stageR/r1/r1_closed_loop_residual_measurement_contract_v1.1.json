@@ -1,0 +1,15 @@
+{
+  "schema_version": "r1_closed_loop_residual_measurement_contract_v1.1",
+  "status": "FROZEN_PROSPECTIVE_TIMESTAMP_AWARE",
+  "supersedes_prospectively_not_overwrites": "r1_closed_loop_residual_measurement_contract_v1.0",
+  "primary_source": "REALIZED_CLOSED_LOOP_EGO_TRAJECTORY",
+  "window": {"official_iteration_indices": "0...79", "consecutive_required": true, "frame_count": 80, "nominal_cadence_hz": 10, "nominal_interval": "[0.0,8.0)"},
+  "physical_time": {"finite": true, "strictly_increasing": true, "preserve_actual": true, "exact_delta_100000us_required": false, "interpolation": "FORBIDDEN", "extrapolation": "FORBIDDEN", "relabeling": "FORBIDDEN"},
+  "actual_timestamp_derivatives": ["longitudinal_acceleration", "yaw_rate", "curvature", "HLC_dp_dt"],
+  "frozen_sample_count_gates": {"0.3s": 3, "0.5s": 5, "threshold_change_due_to_jitter": false},
+  "HLC_primary": ["timestamp_aware_mechanism", "primary_f_match_mean_speed_end_minus_path", "endpoint", "timestamp_aware_engineering"],
+  "TSB_primary": ["timestamp_aware_mechanism", "primary_f_match"],
+  "safety": "OFFICIAL_CLOSED_LOOP_METRIC",
+  "secondary": {"source": "INITIAL_PLANNED_TRAJECTORY", "role": "SECONDARY_GENERATOR_INTENT_ONLY", "can_decide_primary_readiness": false},
+  "implementation": "tools/r1_closed_loop_benchmark_v2_1.py"
+}

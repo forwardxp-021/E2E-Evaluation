@@ -1,0 +1,14 @@
+{
+  "schema_version": "r1_tsb_baseline_discrete_execution_binding_v1.0",
+  "status": "TSB_BASELINE_DISCRETE_EXECUTION_BOUND",
+  "behavior": "SINGLE_CONTINUOUS_BRAKING",
+  "acceleration_mps2": -1.0,
+  "nominal_dt_seconds": 0.1,
+  "active_sample_indices": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  "active_integration_interval_count": 10,
+  "total_speed_loss_mps": 1.0,
+  "proposal_source": {"path": "tools/r1_residual_generators.py", "sha256": "3c39322c0fbc82d9b5494c3ea9966606081a238ada93ea00eae4c286eb1e03f0", "symbol": "TSB_BASELINE"},
+  "approved_implementation_source": {"path": "tools/r1_official_technical_smoke_planner.py", "sha256": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc", "symbol": "tsb_profile"},
+  "prospective_assertion": "tools/r1_closed_loop_benchmark_v2_1.py::tsb_baseline_execution_binding",
+  "b2_1_outcomes_used": false
+}

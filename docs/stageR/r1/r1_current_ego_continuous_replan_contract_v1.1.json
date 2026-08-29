@@ -1,0 +1,10 @@
+{
+  "schema_version": "r1_current_ego_continuous_replan_contract_v1.1",
+  "status": "FROZEN_PROSPECTIVE_STRUCTURAL_CONTINUITY",
+  "families": ["R-HLC", "R-TSB"],
+  "trajectory_state0": ["current_ego_position_exact", "current_ego_heading_exact", "current_ego_speed_exact", "current_ego_timestamp_exact"],
+  "state0_identity_sufficient_alone": false,
+  "future_segment": {"same_native_reference_construction": true, "centerline_snap": "FORBIDDEN", "nonfinite_or_zero_length": "FAIL", "structural_first_segment_audit_required": true, "new_numeric_geometry_threshold": false},
+  "treatment_phase_clock": "ABSOLUTE_EPISODE_TIME",
+  "implementation": "tools/r1_closed_loop_benchmark_v2_1.py::structural_first_segment_audit"
+}

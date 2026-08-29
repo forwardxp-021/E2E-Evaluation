@@ -1,0 +1,13 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.5",
+  "status": "FROZEN_PREPARATION_NO_ENUMERATION",
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "blacklist": {"minimum_unique_identities": 40, "classes": [{"name": "historical_noncompliant_smoke", "count": 12}, {"name": "runtime_determinism", "count": 4}, {"name": "B2_B2_1_fresh_smoke", "count": 24}]},
+  "preconditions": ["TIMESTAMP_AWARE_MEASUREMENT_FROZEN", "CONTEXT_V2_1_FROZEN", "TSB_BASELINE_EXECUTION_BOUND", "TSB_SPEED_FLOOR_FROZEN", "TSB_ROUTE_CONTINUITY_FROZEN", "HLC_GEOMETRY_REALIZATION_FROZEN", "HLC_MAP_APPLICABILITY_FROZEN", "HLC_DYNAMIC_CLEARANCE_FROZEN"],
+  "actual_candidates_enumerated": 0,
+  "actual_roster_selected": false,
+  "enumeration_authorized": false,
+  "new_rollout_authorized": false,
+  "forbidden_inputs": ["historical_outcome", "planner_outcome", "mechanism_outcome", "safety_outcome", "representation", "BDD", "probe", "checkpoint", "RBR"]
+}
