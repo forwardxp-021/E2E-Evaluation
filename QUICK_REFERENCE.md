@@ -1,5 +1,31 @@
 # E2E-Evaluation 项目快速参考
 
+## StageR / R1 B2.2 — B2.1 残差基准只读法证审计
+
+### 1. 命令
+
+仅分析既有 B2.1 48-run trace；该命令不会启动 planner rollout，也不会读取 representation、BDD、probe、checkpoint 或 RBR：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_audit_b2_1_residual_forensics_v1.py \
+  --output-dir docs/stageR/r1
+```
+
+### 2. 期望行为
+
+- 先核验 48/48 run、24/24 pair、0 技术失败、冻结 roster SHA 和 selector salt；
+- 流式只读既有 trace，构造 planned-first 与前 80 个连续 iteration 的 realized-ego 诊断；
+- 分开报告 raw pre-context identity 与 frozen canonical context semantic conformance；
+- 生成 gate contingency、安全归因、时间锚点、replan continuity、HLC geometry、HLC/TSB mechanism forensic、中文诊断报告和 owner 决策单；
+- 不覆盖任何 v1.1 历史文件，不产生新 rollout，不修改生成器或冻结门禁。
+
+### 3. 通过标准
+
+- 工具输出 `status=PASS`，并在结束时通过冻结输入 SHA before/after 一致性断言；
+- B2.1 完整性为 48 run、24 pair、0 技术失败；roster SHA 为 `0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52`，selector salt 为 `617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9`；
+- 保持 `R1_RESIDUAL_BENCHMARK_ENABLEMENT=BENCHMARK_FAMILY_NOT_READY`、`NEW_ROLLOUT=NOT_AUTHORIZED`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
 ## Stage 6K — 纯纵向风格剂量曲线（Issue #252）
 
 ### 1. 命令

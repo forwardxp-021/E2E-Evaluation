@@ -1,0 +1,38 @@
+{
+  "classification": "VERSIONED_IMPLEMENTATION_CONFORMANCE_CORRECTION_NOT_A_FROZEN_CONTRACT_CHANGE",
+  "contract_change": "NO",
+  "historical_record_preserved": {
+    "artifact": "docs/stageR/r1/r1_official_technical_smoke_execution_manifest_v1.1.json",
+    "scientific_protocol_deviation": "NO__EXECUTION_ENVIRONMENT_BINDING_CORRECTION_ONLY"
+  },
+  "implementation_conformance": "IMPLEMENTATION_NONCONFORMANCE_AFFECTING_SCIENTIFIC_GATE",
+  "primary_conclusion_impact": "B2_1 BENCHMARK_FAMILY_NOT_READY remains; causal diagnosis is corrected and historical v1.1 files are not overwritten.",
+  "records": [
+    {
+      "code": "CONTEXT_CANONICALIZATION_IMPLEMENTATION_NONCONFORMANCE",
+      "primary_impact": "FROZEN_CONTEXT_SEMANTIC_GATE_NOT_INSTANTIATED",
+      "status": "SUPPORTED_AS_IMPLEMENTATION_DEFECT"
+    },
+    {
+      "code": "TEMPORAL_ANCHOR_IMPLEMENTATION_NONCONFORMANCE",
+      "primary_impact": "PHYSICAL_TIMESTAMPS_RELABELLED_TO_EXACT_GRID_WITHOUT_VERSIONED_RESAMPLING",
+      "status": "SUPPORTED_AS_IMPLEMENTATION_DEFECT"
+    },
+    {
+      "code": "TSB_REPLAN_ANCHOR_IMPLEMENTATION_DEFECT",
+      "primary_impact": "PLANNER_CONTINUITY_AND_REALIZED_MECHANISM",
+      "status": "SUPPORTED_AS_IMPLEMENTATION_DEFECT"
+    },
+    {
+      "code": "STRAIGHT_LINE_ROUTE_REALIZATION_LIMITATION",
+      "primary_impact": "TSB_ROUTE_AND_DRIVABLE_AREA_APPLICABILITY",
+      "status": "SUPPORTED_AS_IMPLEMENTATION_DEFECT"
+    },
+    {
+      "code": "MEASUREMENT_SOURCE_MISMATCH",
+      "primary_impact": "B2_1_PRIMARY_USED_PLANNED_FIRST_OUTPUT_ONLY",
+      "status": "SUPPORTED"
+    }
+  ],
+  "schema_version": "r1_b2_2_protocol_conformance_audit_v1"
+}

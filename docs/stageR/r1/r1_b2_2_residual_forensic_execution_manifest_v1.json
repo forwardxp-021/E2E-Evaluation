@@ -1,0 +1,49 @@
+{
+  "baseline_commit_supplied_by_owner": "b38b184c7c8ac7a814ad5515040227e070b43f8f",
+  "enablement": "BENCHMARK_FAMILY_NOT_READY",
+  "frozen_artifacts_overwritten": false,
+  "immutable_input_sha256_after": {
+    "docs/stageR/r1/r1_context_anchor_definition_proposal_v0.1.csv": "83b02a71e49d6e96ec87970e8bd301f909b4b04cb23309bce29b98ffb5dccaf1",
+    "docs/stageR/r1/r1_context_contract_v1.0.json": "82e4d9dd8bd3a63e1e8dcfb4504d378df510b5d20aebd471e5dfaac3071b7365",
+    "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v0.3.json": "1108df60c62fb33b6108588f1a6db1133f06d384fa394eeabf93b0264a1aefcc",
+    "docs/stageR/r1/r1_official_technical_smoke_context_identity_v1.1.csv": "bd2cade8b47fd0e55ef6216ce5e2753489c5c6a61ffaa1f8f570fd1cbab51907",
+    "docs/stageR/r1/r1_official_technical_smoke_execution_manifest_v1.1.json": "73ff4b272f2cdfac6fe160d29003c74dc55104380c1aa8afd49a672a1d4d280c",
+    "docs/stageR/r1/r1_official_technical_smoke_pair_metrics_v1.1.csv": "4f1a991e2174d8020932a13995f71cd36423931614f770d936b1192147087782",
+    "docs/stageR/r1/r1_official_technical_smoke_roster_v1.0.json": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+    "docs/stageR/r1/r1_official_technical_smoke_run_ledger_v1.1.csv": "941a87127c00f995290cc4e1744f48774b25083599d0adb0b985de9f97598eeb",
+    "docs/stageR/r1/r1_official_technical_smoke_safety_v1.1.csv": "a20a0d162dafe727e4baa54c853fb43e8d855e870e687d20a956cdc8e65cebed",
+    "tools/r1_context_mechanism_core.py": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e",
+    "tools/r1_official_technical_smoke_planner.py": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc"
+  },
+  "immutable_input_sha256_before": {
+    "docs/stageR/r1/r1_context_anchor_definition_proposal_v0.1.csv": "83b02a71e49d6e96ec87970e8bd301f909b4b04cb23309bce29b98ffb5dccaf1",
+    "docs/stageR/r1/r1_context_contract_v1.0.json": "82e4d9dd8bd3a63e1e8dcfb4504d378df510b5d20aebd471e5dfaac3071b7365",
+    "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v0.3.json": "1108df60c62fb33b6108588f1a6db1133f06d384fa394eeabf93b0264a1aefcc",
+    "docs/stageR/r1/r1_official_technical_smoke_context_identity_v1.1.csv": "bd2cade8b47fd0e55ef6216ce5e2753489c5c6a61ffaa1f8f570fd1cbab51907",
+    "docs/stageR/r1/r1_official_technical_smoke_execution_manifest_v1.1.json": "73ff4b272f2cdfac6fe160d29003c74dc55104380c1aa8afd49a672a1d4d280c",
+    "docs/stageR/r1/r1_official_technical_smoke_pair_metrics_v1.1.csv": "4f1a991e2174d8020932a13995f71cd36423931614f770d936b1192147087782",
+    "docs/stageR/r1/r1_official_technical_smoke_roster_v1.0.json": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+    "docs/stageR/r1/r1_official_technical_smoke_run_ledger_v1.1.csv": "941a87127c00f995290cc4e1744f48774b25083599d0adb0b985de9f97598eeb",
+    "docs/stageR/r1/r1_official_technical_smoke_safety_v1.1.csv": "a20a0d162dafe727e4baa54c853fb43e8d855e870e687d20a956cdc8e65cebed",
+    "tools/r1_context_mechanism_core.py": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e",
+    "tools/r1_official_technical_smoke_planner.py": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc"
+  },
+  "new_rollout_count": 0,
+  "pair_count": 24,
+  "rbr_assets_read": false,
+  "rbr_authorization": "NOT_AUTHORIZED",
+  "roster_sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+  "run_count": 48,
+  "schema_version": "r1_b2_2_residual_forensic_execution_manifest_v1",
+  "selector_salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "status": "COMPLETE_READ_ONLY_EXISTING_EVIDENCE",
+  "technical_failure_count": 0,
+  "temporal_anchor": {
+    "common_prefix_reconstructed": "planner samples 0.0..1.0 are pre-divergence; first divergent sample is 1.1",
+    "frozen_t_diverge_s": 1.1,
+    "observed_offsets_s": "-1.0..-0.1",
+    "pre_context_window": "[t_anchor-1.0s,t_anchor)",
+    "runs_audited": 48,
+    "status": "TEMPORAL_ANCHOR_IMPLEMENTATION_NONCONFORMANCE"
+  }
+}
