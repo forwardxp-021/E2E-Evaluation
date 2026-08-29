@@ -1,0 +1,45 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.3",
+  "status": "FROZEN_BEFORE_FRESH_OFFICIAL_SMOKE_CANDIDATE_ENUMERATION",
+  "purpose": "R1_PHASE_B2_OUTCOME_BLIND_FRESH_OFFICIAL_TECHNICAL_SMOKE_SELECTOR_ONLY",
+  "inherits": {
+    "path": "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v0.2.json",
+    "sha256": "45a3b817708b36c6298ee1626dca9732380690b7159500a4b43b1a66ac09b79a"
+  },
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "salt_status": "INHERITED_UNCHANGED_FROZEN_BEFORE_CANDIDATE_ENUMERATION",
+  "rank_rule": "SHA256(salt_sha256|family|scenario_token|log_id)",
+  "sort_and_tie_break": "ascending hexadecimal rank digest; then scenario_token; then log_id; then anchor timestamp",
+  "selection_scope": {
+    "families": ["R-HLC", "R-TSB"],
+    "scenarios_per_family": 12,
+    "arms_per_scenario": 2,
+    "planned_official_closed_loop_runs": 48,
+    "authorized_cap": 48
+  },
+  "actual_roster_selected": false,
+  "selection_inputs_allowlist": [
+    "scenario_token", "log_id", "DB timestamp", "DB identity", "official initial state", "official route roadblocks", "native map adjacency", "map lane references", "pre-treatment official history availability"
+  ],
+  "forbidden_selection_inputs": [
+    "planner outcome", "generator outcome", "mechanism result", "F_match result", "safety result", "representation", "BDD", "probe", "checkpoint", "RBR", "old technical-smoke pass/fail labels"
+  ],
+  "diversity_rule": {
+    "unique_scenario_tokens_required": 24,
+    "unique_logs_required_when_source_can_satisfy": 24,
+    "failure_status_if_not_met": "SOURCE_DIVERSITY_REQUIREMENT_NOT_MET",
+    "automatic_relaxation_forbidden": true
+  },
+  "eligibility_policy": {
+    "family_specific_pre_treatment_only": true,
+    "new_numerical_eligibility_thresholds_forbidden": true,
+    "if_new_numerical_threshold_is_required": "STOP_OWNER_REVIEW_REQUIRED"
+  },
+  "isolation_labels_for_selected_identities": [
+    "FRESH_OFFICIAL_TECHNICAL_SMOKE_ONLY",
+    "EXCLUDED_FROM_R1_DEVELOPMENT_ROSTER",
+    "EXCLUDED_FROM_FUTURE_R4_CONFIRMATION"
+  ],
+  "execution_authorized": false
+}

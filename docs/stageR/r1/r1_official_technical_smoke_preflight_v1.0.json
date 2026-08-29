@@ -1,0 +1,53 @@
+{
+  "schema_version": "r1_official_technical_smoke_preflight_v1.0",
+  "status": "PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED",
+  "actual_official_run_count": 0,
+  "official_run_budget_claimed": 0,
+  "planner_abstract_planner_pass": true,
+  "frozen_contract_hashes": {
+    "roster": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+    "scope_amendment": "891c2042b3c3569f1723f79abe72e062a03e3297f89123155b0fb11929b828b9",
+    "selector_contract": "1108df60c62fb33b6108588f1a6db1133f06d384fa394eeabf93b0264a1aefcc",
+    "replay_contract": "4f491acbfdf3b974506fed420261096720640e3817ff74ad8fd64cfd476dd510",
+    "metric_canonicalizer": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+    "context_mechanism_contract": "82e4d9dd8bd3a63e1e8dcfb4504d378df510b5d20aebd471e5dfaac3071b7365",
+    "hlc_generator": "72414d1accf656704fadf255f002de815989c2f17908fdbf6bcb36b2352dc142",
+    "hlc_endpoint": "711bb39d8342312e6eb12bf9a907005782245f1b906244c2fd80c3b2a5b44cea",
+    "tsb_generator": "24068de671a884114660d303283dcdd5e50a8454af0a0ff5f64468d2ac715722",
+    "planner": "7afb15ab4196fcc6952d003672baa925c2b44b43e7f8e4daf2941e4690c9f7cc",
+    "executor": "de8c21d3a3766cd04db5dabfac756f07ca79d2b4c425854fd83bc860218b1b49",
+    "simulation_config": "318fac78935e168b5646cafcfbef69c7616d4f97317e6fcb909dc3119bc11fa6"
+  },
+  "roster_checks": {
+    "entries": 24,
+    "schedule": 48,
+    "unique_run_ids": 48,
+    "unique_scenario_arms": 48,
+    "each_scenario_exactly_two_arms": true
+  },
+  "temporal_window": {
+    "duration_seconds": 8.0,
+    "dt_seconds": 0.1,
+    "frame_count": 80,
+    "convention": "first planner-output trajectory: np.arange(0.0,8.0,0.1), 80 samples [0.0,8.0)"
+  },
+  "evaluator_checks": {
+    "metric_canonicalizer_callable": true,
+    "context_canonicalizer_callable": true,
+    "mechanism_evaluator_callable": true,
+    "f_match_evaluator_callable": true,
+    "hlc_endpoint_evaluator_callable": true
+  },
+  "frozen_generator_synthetic_mechanism_preflight": {
+    "HLC_OPTION_B": "PASS",
+    "TSB_OPTION_A": "PASS"
+  },
+  "49th_pre_run_claim": {
+    "status": "REJECTED_BEFORE_SIMULATION",
+    "reason": "OFFICIAL_CLOSED_LOOP_RUN cap 48 reached before simulation start"
+  },
+  "git": {
+    "commit": "8a232e6a4b3c7dc57208a306dcc086c73850949b",
+    "tree": "f9dd662fa4d3907f986bf588b923bfd61feaaecf"
+  }
+}

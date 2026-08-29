@@ -1,0 +1,32 @@
+{
+  "schema_version": "r1_official_technical_smoke_scope_amendment_v1.0",
+  "status": "FROZEN_PROSPECTIVE_BEFORE_FRESH_CANDIDATE_ENUMERATION",
+  "phase": "R1_PHASE_B2_ONE_TIME_FRESH_OFFICIAL_COMPLIANT_TECHNICAL_SMOKE",
+  "owner_decision": "R1_OFFICIAL_COMPLIANT_TECHNICAL_SMOKE_V1=AUTHORIZED_ONCE_CONDITIONAL",
+  "timing_attestation": {
+    "fresh_candidate_enumeration_started": false,
+    "official_closed_loop_runs_started": false,
+    "fresh_smoke_outcome_used": false,
+    "reason": "HLC_GEN_V2_OPTION_B and TSB_GEN_V2_OPTION_A are already scientifically frozen as one treatment each."
+  },
+  "superseded_candidate_enumeration_only": {
+    "source_contract": "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v0.1.json",
+    "source_contract_sha256": "a2ecd4eee9fe3f526a5184110c2f7f53164221f0d4de7ebf8c79374acb7f1707",
+    "historical_scope": "6 scenarios/family x (1 baseline + 3 treatment candidates) = 48 core constructions",
+    "superseded_arms": ["HLC_MILD", "HLC_NOMINAL", "HLC_STRONG", "TSB_MILD", "TSB_NOMINAL", "TSB_STRONG"],
+    "scope_change_is_not": ["protocol modification", "mechanism threshold modification", "post-hoc scientific hypothesis", "outcome-driven tuning"]
+  },
+  "only_legal_scope": {
+    "R-HLC": {"fresh_scenarios": 12, "arms": ["HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE", "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"], "official_closed_loop_runs": 24},
+    "R-TSB": {"fresh_scenarios": 12, "arms": ["TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING", "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"], "official_closed_loop_runs": 24},
+    "total_official_closed_loop_runs": 48,
+    "run_budget_unit": "OFFICIAL_CLOSED_LOOP_RUN"
+  },
+  "invariants": {
+    "one_baseline_plus_one_frozen_treatment_per_scenario": true,
+    "old_candidate_arms_forbidden": true,
+    "actual_roster_selected": false,
+    "official_execution_authorized_before_preflight": false,
+    "rbr_training_authorized": false
+  }
+}

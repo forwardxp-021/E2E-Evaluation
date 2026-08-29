@@ -1,0 +1,7 @@
+r1_official_technical_smoke:
+  _target_: tools.r1_official_technical_smoke_planner.R1OfficialTechnicalSmokePlanner
+  _convert_: all
+  roster_path: ${oc.env:R1_OFFICIAL_TECHNICAL_SMOKE_ROSTER}
+  runtime_family: ${oc.env:R1_OFFICIAL_TECHNICAL_SMOKE_FAMILY}
+  smoke_arm: ${oc.env:R1_OFFICIAL_TECHNICAL_SMOKE_ARM}
+  trace_dir: ${oc.env:R1_OFFICIAL_TECHNICAL_SMOKE_TRACE_DIR}

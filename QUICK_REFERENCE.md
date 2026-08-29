@@ -10147,3 +10147,51 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 
 - 仅当 8/8 run 成功、4/4 pairs 的 15/15 类别精确相等、canonicalization 完整、且第九次 claim 被拒绝时，才能写 `VERIFIED_ON_BOUND_RUNTIME / READY_FOR_TECHNICAL_SMOKE_REVIEW`。
 - 即使通过，48-call smoke 仍是 `PENDING_SEPARATE_SCIENTIFIC_OWNER_AUTHORIZATION`；本命令不选择 smoke roster、不执行 smoke、treatment 或 RBR training。
+
+## StageR / R1 Phase B2 一次性 fresh 官方合规技术 smoke
+
+### 1. 命令
+
+先冻结前瞻 scope、继承的 selector salt 和 fresh 24-scenario roster。该命令只读 SQLite、官方初始状态、route 与 native map，不启动仿真；输出文件已存在时会拒绝覆盖。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_prepare_official_technical_smoke_roster.py
+```
+
+在任何 official run claim 前执行零额度 preflight：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_run_official_compliant_technical_smoke_v1.py --mode preflight
+```
+
+仅在独立的一次性 authorization 已生成、SHA binding 全部匹配时，以下命令才可执行；不得使用历史
+`tools/stageR_execute_r1_technical_smoke.py`。
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_run_official_compliant_technical_smoke_v1.py --mode execute
+```
+
+### 2. 期望行为
+
+- selector 必须继承 `MASTER_SEED=2026082701` 和既有 salt SHA，不得重新生成 salt；按
+  `SHA256(salt_sha256|family|scenario_token|log_id)` 选择 12 个 R-HLC 与 12 个 R-TSB，且 24 token/log 均唯一。
+- 每个 scenario 仅构造一个 frozen baseline 与一个 frozen treatment：HLC 为 Option-B，TSB 为 Option-A；旧
+  MILD/NOMINAL/STRONG candidate 一律不可执行。
+- executor 只使用 V3 已验证的 official nuPlan runtime 与 official Parquet canonicalizer，统一测量窗口为
+  `np.arange(0.0, 8.0, 0.1)`，即 `[0.0,8.0)` 的 80 帧，不生成 81 帧。
+- 每次 official simulation 前写入 claim，达到 48 次后第 49 次必须在 simulator 启动前被拒绝。任一 technical
+  failure 立即停止；mechanism/F_match/endpoint/engineering/safety 失败则保留该 pair 并继续完整冻结日程。
+- 原始 official trace、Parquet、logs 仅保留在 `outputs/r1_official_compliant_technical_smoke_v1/`，不得提交；小型
+  roster、账本、pair/context/safety CSV、manifest 与中文报告写入 `docs/stageR/r1/`。
+
+### 3. 通过标准
+
+- preflight 只能输出 `PASS_NO_OFFICIAL_RUN_BUDGET_CONSUMED`、`0/48`，并验证 24-row roster、48-run schedule、
+  `AbstractPlanner`、两 family 的 frozen arm、canonicalizer/context/mechanism/F_match/endpoint 调用链及第 49 次 fail-closed。
+- R-HLC 只有 12/12 同时满足 technical、context identity、Option-B mechanism、三项 Primary F_match、Primary endpoint、
+  既有 engineering 与官方 safety 才能进入 formal development roster review；heading total 仅 secondary。
+- R-TSB 只有 12/12 同时满足 technical、context identity、Option-A mechanism、四项 Primary F_match 与官方 safety 才能进入 review。
+- 不论结果如何，本阶段不执行 formal development rollout，RBR-A/B/C 始终 `NOT_AUTHORIZED`。
