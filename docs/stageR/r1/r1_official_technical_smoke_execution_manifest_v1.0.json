@@ -1,0 +1,27 @@
+{
+  "schema_version": "r1_official_technical_smoke_execution_manifest_v1.0",
+  "status": "STOPPED_TECHNICAL_FAILURE_BEFORE_OFFICIAL_SIMULATOR_START",
+  "authorized_run_cap": 48,
+  "budget_claim_count": 1,
+  "official_simulator_command_start_count": 0,
+  "actual_official_closed_loop_run_count": 0,
+  "technical_failure_count": 1,
+  "failed_claimed_run": {
+    "run_id": "R-HLC__7176d7e077925838__HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+    "scenario_token": "7176d7e077925838",
+    "family": "R-HLC",
+    "smoke_arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+    "reason": "UNEXPECTED_EXECUTOR_EXCEPTION_BEFORE_OFFICIAL_SIMULATOR_START:stage7c_environment() missing 1 required positional argument: 'args'"
+  },
+  "raw_budget_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_official_compliant_technical_smoke_v1/official_run_budget_v1.0.json",
+  "raw_budget_modified": false,
+  "unexecuted_frozen_schedule_count": 47,
+  "pair_evaluation": "NOT_EVALUABLE_NO_OFFICIAL_SIMULATOR_OUTPUT",
+  "safety": "NOT_EVALUABLE_NO_OFFICIAL_PARQUET_OUTPUT",
+  "protocol_deviation": "NO_SCIENTIFIC_PROTOCOL_DEVIATION__TECHNICAL_EXECUTION_FAILURE_RECORDED",
+  "continued_execution_forbidden": true,
+  "scenario_replacement_forbidden": true,
+  "rerun_forbidden": true,
+  "formal_development_rollout_authorized": false,
+  "rbr_training_authorized": false
+}

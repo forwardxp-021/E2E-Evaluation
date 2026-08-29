@@ -1,0 +1,3 @@
+family,required_pairs,completed_pairs,technical_execution_pass_pairs,context_identity_pass_pairs,mechanism_pair_pass_pairs,primary_f_match_pass_pairs,endpoint_pass_pairs,engineering_pass_pairs,safety_pass_pairs,readiness,reason
+R-HLC,12,0,0,0,0,0,0,0,0,NOT_READY_FOR_FORMAL_DEVELOPMENT_ROSTER,TECHNICAL_FAILURE_BEFORE_FIRST_OFFICIAL_SIMULATOR_START
+R-TSB,12,0,0,0,0,0,NOT_APPLICABLE,DIAGNOSTIC_ONLY,0,NOT_READY_FOR_FORMAL_DEVELOPMENT_ROSTER,BATCH_STOPPED_AFTER_R_HLC_PRE_SIMULATION_TECHNICAL_FAILURE

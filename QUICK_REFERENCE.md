@@ -10195,3 +10195,28 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
   既有 engineering 与官方 safety 才能进入 formal development roster review；heading total 仅 secondary。
 - R-TSB 只有 12/12 同时满足 technical、context identity、Option-A mechanism、四项 Primary F_match 与官方 safety 才能进入 review。
 - 不论结果如何，本阶段不执行 formal development rollout，RBR-A/B/C 始终 `NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2 technical-failure fail-closed 归档
+
+### 1. 命令
+
+仅当原始 budget 账本明确显示“已 claim、但官方 simulator 命令尚未启动”的技术异常时，使用以下只读归档器生成
+`NOT_EVALUABLE` 结果表和中文报告：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_finalize_official_technical_smoke_failure_v1.py
+```
+
+### 2. 期望行为
+
+- 只读取 `outputs/r1_official_compliant_technical_smoke_v1/official_run_budget_v1.0.json`；不启动 nuPlan、不修改原始 claim
+  账本、不替换 roster、不重跑或继续剩余日程。
+- 仅接受 `claimed_count=1`、`CLAIMED_BEFORE_SIMULATION` 和 `CLAIMED_NOT_STARTED` 的 fail-closed 情形，并输出小型 ledger、
+  空 pair/context/safety 表、family summary、manifest、中文报告和 readiness 更新。
+
+### 3. 通过标准
+
+- manifest 必须明确区分 budget claim 数与 simulator command start 数；没有 trace/Parquet 时，pair gate 与 safety 必须标为
+  `NOT_EVALUABLE`，不得伪造 scientific pass/fail。
+- 归档后仍不得修复后重跑、替换 identity、继续剩余额度、进入 formal development rollout 或训练 RBR。
