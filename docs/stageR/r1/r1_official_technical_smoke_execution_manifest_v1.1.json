@@ -1,0 +1,58 @@
+{
+  "schema_version": "r1_official_technical_smoke_execution_manifest_v1.1",
+  "status": "COMPLETE",
+  "stopped_reason": null,
+  "actual_official_run_count": 48,
+  "authorized_run_cap": 48,
+  "authorization_sha256": "3482458f07e84d2d646a955323bdd3980d98909afc9112ce110ad0d3800d3518",
+  "roster_sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+  "historical_b2_evidence": "NOT_PART_OF_B2_1_EVIDENCE",
+  "run_budget": {
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_official_compliant_technical_smoke_v1_1/official_run_budget_v1.1.json",
+    "49th_pre_run_claim": {
+      "status": "REJECTED_BEFORE_SIMULATION",
+      "reason": "OFFICIAL_CLOSED_LOOP_RUN cap 48 reached before simulation start"
+    }
+  },
+  "technical_failure_count": 0,
+  "pair_result_count": 24,
+  "family_readiness": [
+    {
+      "family": "R-HLC",
+      "required_pairs": 12,
+      "completed_pairs": 12,
+      "technical_execution_pass_pairs": 12,
+      "context_identity_pass_pairs": 12,
+      "mechanism_pair_pass_pairs": 7,
+      "primary_f_match_pass_pairs": 12,
+      "endpoint_pass_pairs": 12,
+      "engineering_pass_pairs": 6,
+      "safety_pass_pairs": 3,
+      "readiness": "NOT_READY_FOR_FORMAL_DEVELOPMENT_ROSTER",
+      "reason": "ONE_OR_MORE_FROZEN_REQUIRED_GATES_NOT_MET"
+    },
+    {
+      "family": "R-TSB",
+      "required_pairs": 12,
+      "completed_pairs": 12,
+      "technical_execution_pass_pairs": 12,
+      "context_identity_pass_pairs": 12,
+      "mechanism_pair_pass_pairs": 5,
+      "primary_f_match_pass_pairs": 12,
+      "endpoint_pass_pairs": "NOT_APPLICABLE",
+      "engineering_pass_pairs": "DIAGNOSTIC_ONLY",
+      "safety_pass_pairs": 5,
+      "readiness": "NOT_READY_FOR_FORMAL_DEVELOPMENT_ROSTER",
+      "reason": "ONE_OR_MORE_FROZEN_REQUIRED_GATES_NOT_MET"
+    }
+  ],
+  "raw_output_directory": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r1_official_compliant_technical_smoke_v1_1",
+  "raw_output_directory_committed": false,
+  "scientific_protocol_deviation": "NO__EXECUTION_ENVIRONMENT_BINDING_CORRECTION_ONLY",
+  "formal_development_rollout_authorized": false,
+  "rbr_training_authorized": false,
+  "git": {
+    "commit": "b9705784b45514da0f95e7dcd71813d9b5a08e7c",
+    "tree": "c03570068e8bc0755d99feb3c47dbd3f7f1876f9"
+  }
+}
