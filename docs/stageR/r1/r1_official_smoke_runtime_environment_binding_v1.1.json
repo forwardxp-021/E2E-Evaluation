@@ -1,0 +1,46 @@
+{
+  "schema_version": "r1_official_smoke_runtime_environment_binding_v1.1",
+  "status": "MATCHES_V3_BOUND_RUNTIME",
+  "purpose": "B2_1_EXECUTION_ENVIRONMENT_BINDING_CORRECTION_ONLY",
+  "v3_reference": {
+    "runtime_validation_authorization": "docs/stageR/r1/r1_runtime_determinism_validation_v3_authorization_v1.0.json",
+    "defaults": {
+      "nuplan_devkit_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit",
+      "tuplan_garage_root": "/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage",
+      "nuplan_data_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data",
+      "nuplan_map_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps",
+      "nuplan_exp_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/exp",
+      "python_executable": "/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9",
+      "command_timeout_s": "1200"
+    }
+  },
+  "environment": {
+    "NUPLAN_DEVKIT_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit",
+    "NUPLAN_DATA_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data",
+    "NUPLAN_MAPS_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps",
+    "NUPLAN_MAP_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps",
+    "NUPLAN_EXP_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/exp",
+    "PYTHONPATH": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit:/Users/liuqing/Projects/01_E2E_QA_Code/tuplan_garage:/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "python_executable": "/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9",
+  "nuplan": {
+    "nuplan_devkit_version": "1.2.2",
+    "nuplan_module_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/__init__.py"
+  },
+  "db_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+  "map_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+  "master_seed": 2026082701,
+  "checks": {
+    "environment_and_threads_match_v3": true,
+    "python_executable_matches_v3": true,
+    "db_fingerprint_matches_replay": true,
+    "map_fingerprint_matches_replay": true,
+    "master_seed_matches_replay": true,
+    "mismatches": {}
+  }
+}
