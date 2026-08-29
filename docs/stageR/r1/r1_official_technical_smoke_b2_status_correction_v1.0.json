@@ -1,0 +1,21 @@
+{
+  "schema_version": "r1_official_technical_smoke_b2_status_correction_v1.0",
+  "historical_b2_manifest_sha256": "73aa91978663df5857cae721ca85e2e8055b31b4807140a4f0a2f7af1847aaef",
+  "historical_b2": {
+    "budget_claim_count": 1,
+    "official_simulator_command_start_count": 0,
+    "actual_official_closed_loop_run_count": 0,
+    "claim_record_label": "HISTORICAL_B2_PRE_SIMULATION_TECHNICAL_CLAIM",
+    "simulator_status": "SIMULATOR_NOT_STARTED",
+    "b2_1_evidence": "NOT_PART_OF_B2_1_EVIDENCE",
+    "mechanism": "NOT_EVALUABLE",
+    "F_match": "NOT_EVALUABLE",
+    "endpoint": "NOT_EVALUABLE",
+    "safety": "NOT_EVALUABLE"
+  },
+  "R1_RESIDUAL_BENCHMARK_ENABLEMENT": "NOT_EVALUABLE_DUE_TO_PRE_SIMULATION_TECHNICAL_FAILURE",
+  "RECOVERY_ACTION": "TECHNICAL_EXECUTION_PATH_CORRECTION_REQUIRED",
+  "FORMAL_DEVELOPMENT_ROSTER": "NOT_READY",
+  "scientific_protocol_deviation": "NO__EXECUTION_ENVIRONMENT_ASSEMBLY_DEFECT",
+  "historical_v0_7_preserved": true
+}

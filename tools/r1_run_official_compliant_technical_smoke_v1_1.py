@@ -137,7 +137,7 @@ def _validate_roster(args: argparse.Namespace) -> tuple[Dict[str, Any], List[Dic
     selector = read_json(args.selector_contract)
     if sha256_file(args.roster) != FROZEN_ROSTER_SHA256:
         raise ValueError("B2.1 roster SHA differs from the frozen 24-scenario roster")
-    if selector.get("selector_salt_sha256") != FROZEN_SELECTOR_SALT_SHA256:
+    if selector.get("salt_sha256") != FROZEN_SELECTOR_SALT_SHA256:
         raise ValueError("B2.1 selector salt differs from the frozen value")
     entries = list(roster.get("entries", []))
     if len(entries) != 24 or len({str(row.get("scenario_token")) for row in entries}) != 24 or len({str(row.get("log_id")) for row in entries}) != 24:
