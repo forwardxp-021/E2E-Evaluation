@@ -1,0 +1,6 @@
+r1_official_technical_smoke_v2_1:
+  _target_: tools.r1_official_technical_smoke_planner_v2_1.R1OfficialTechnicalSmokePlannerV2_1
+  _convert_: all
+  future_roster_row: ${future_roster_row}
+  runtime_family: ${runtime_family}
+  smoke_arm: ${smoke_arm}

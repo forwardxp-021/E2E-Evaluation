@@ -1,0 +1,112 @@
+{
+  "schema_version": "r1_b2_6_final_execution_conformance_sha_manifest_v1.0",
+  "status": "FROZEN_AFTER_ALL_TESTS_PASS",
+  "remote_baseline": "06aa9c8122156276aafaa8e081396fc595e432d6",
+  "bindings": {
+    "OFFICIAL_SMOKE_PLANNER_V2_1": {
+      "path": "tools/r1_official_technical_smoke_planner_v2_1.py",
+      "sha256": "ef853531f33b3d213c76362601034d8a832c9098e3195f782c1f8be3df65b65a"
+    },
+    "OFFICIAL_SMOKE_EVALUATOR_V2_1": {
+      "path": "tools/r1_official_technical_smoke_evaluator_v2_1.py",
+      "sha256": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60"
+    },
+    "HLC_REALIZED_PROGRESS_V1": {
+      "path": "tools/r1_hlc_measurement_conformance_v1.py",
+      "sha256": "40775ffa696abe1a89013c246c96ef48e09dd395b5adb29756a5ea81779bb464",
+      "symbol": "hlc_realized_lane_transition_progress_v1_0",
+      "contract_path": "docs/stageR/r1/r1_hlc_realized_progress_contract_v1.0.json",
+      "contract_sha256": "3a81b0c4fa0eafee1d016c459ae55f41a97772f46f3c8c285e3e4cc73b534083"
+    },
+    "HLC_TERMINAL_ROUTE_PROGRESS_V1": {
+      "path": "tools/r1_hlc_measurement_conformance_v1.py",
+      "sha256": "40775ffa696abe1a89013c246c96ef48e09dd395b5adb29756a5ea81779bb464",
+      "symbol": "terminal_native_route_progress_v1_0",
+      "contract_path": "docs/stageR/r1/r1_hlc_terminal_route_progress_contract_v1.0.json",
+      "contract_sha256": "9b4399f23d85d8a17a49b758e7d1968128139668f091610a80b3a95b8b7e85be"
+    },
+    "ABSOLUTE_EPISODE_CLOCK_BINDING": {
+      "path": "docs/stageR/r1/r1_absolute_episode_clock_binding_v1.0.json",
+      "sha256": "ac158a85366bad51f854f65af4b5b2cd27ce39337d0fda1259feafa0b47883f0"
+    },
+    "OFFICIAL_DISPATCH_PREFLIGHT_V1": {
+      "path": "tools/r1_b2_6_official_dispatch_preflight.py",
+      "sha256": "aed52d70bc59640ad39997400a11449817c8237fdf0fdc8e7f0829ad1040f2ab",
+      "result_path": "docs/stageR/r1/r1_b2_6_official_dispatch_preflight_result_v1.0.json",
+      "result_sha256": "0cc00ecd5e0ef402edbce70bc3152bc5db1330aa9d97c0023126ddbf581cb18e"
+    },
+    "HYDRA_PLANNER_V2_1": {
+      "path": "configs/r1_official_technical_smoke_hydra/planner/r1_official_technical_smoke_v2_1.yaml",
+      "sha256": "de7ecbb074cb6adad2651b509888b9d24e57168c78693b6f199c0da9bfa07545"
+    },
+    "SELECTOR_V0_7": {
+      "path": "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v0.7.json",
+      "sha256": "e9014f200945ed1299bd563c2c86d31391d7698f19db9e15aa79332bcff8b410"
+    }
+  },
+  "frozen_inherited_sha_regression": {
+    "CLOSED_LOOP_RESIDUAL_MEASUREMENT_CONTRACT_V1_1": {
+      "path": "docs/stageR/r1/r1_closed_loop_residual_measurement_contract_v1.1.json",
+      "sha256": "96fbdad467b6e1b321c963f83b1b98ca49f8032cf85b572bb1a5a3a774d7f6a1"
+    },
+    "TSB_MECHANISM_APPLICABILITY_CONTRACT_V1_0": {
+      "path": "docs/stageR/r1/r1_tsb_mechanism_applicability_contract_v1.0.json",
+      "sha256": "8d249dad707b58337029cd24fa825549a9b05dfc5c9b24f5dc9993956fde8cf2"
+    },
+    "HLC_PRETREATMENT_DYNAMIC_CLEARANCE_CONTRACT_V1_1": {
+      "path": "docs/stageR/r1/r1_hlc_pretreatment_dynamic_clearance_contract_v1.1.json",
+      "sha256": "ec41c1c651186d78e7bc0e4a5401133d12bc311d98e134597a69937eae12b46e"
+    },
+    "HLC_GEOMETRY_REALIZATION_CONTRACT_V1_1": {
+      "path": "docs/stageR/r1/r1_hlc_geometry_realization_contract_v1.1.json",
+      "sha256": "820bf18f26fd13e0c052786aecd322c87442e02c20550f3c5a0bdaef831d183e"
+    },
+    "TSB_ROUTE_REALIZATION_CONTRACT_V1_1": {
+      "path": "docs/stageR/r1/r1_tsb_route_realization_contract_v1.1.json",
+      "sha256": "69da56611a3e782e3939ebafa1ce064d1ef4702eab96c0c34e28040b69fe1132"
+    },
+    "HLC_MECHANISM_CONTRACT_V1_0": {
+      "path": "docs/stageR/r1/r1_hlc_mechanism_contract_v1.0.json",
+      "sha256": "f2e20d6e8c443f92d5fd8458069f431d6ba949069d54e703f6ca4bf2df5ce0e8"
+    },
+    "TSB_MECHANISM_CONTRACT_V1_0": {
+      "path": "docs/stageR/r1/r1_tsb_mechanism_contract_v1.0.json",
+      "sha256": "375d3c07fbdf8d5ed6f0ebe5b8056221dec20ae732529076bce0f2e4695ccece"
+    },
+    "ROUTE_BUILDER_ENDPOINT_AND_F_MATCH_IMPLEMENTATION": {
+      "path": "tools/r1_closed_loop_benchmark_v2_1.py",
+      "sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd"
+    },
+    "HLC_CLEARANCE_IMPLEMENTATION_V1_1": {
+      "path": "tools/r1_hlc_dynamic_clearance_v1_1.py",
+      "sha256": "150f0d86a21ee0cbbf257243fb7022b694dd9598d0abd3dbde0a496ddc0e2e60"
+    },
+    "PROSPECTIVE_GENERATOR_CONTRACT_V2": {
+      "path": "tools/r1_prospective_generator_contract_v2.py",
+      "sha256": "750726b4bca66cd4785e03a37fc1445d2208b92c42686ce26feb57708ba448ed"
+    }
+  },
+  "tests": {
+    "b2_6_adversarial_path": "tests/test_r1_b2_6_final_dispatch_conformance.py",
+    "b2_6_adversarial_sha256": "85dff7f5822cd19b363d938bd79f8945fa1a33ee995ee908b5c2524d253bf658",
+    "b2_6_result": "21_OF_21_PASS",
+    "combined_regression_result": "75_OF_75_PASS",
+    "combined_suites": [
+      "tests/test_r1_b2_6_final_dispatch_conformance.py",
+      "tests/test_r1_b2_5_official_execution_integration.py",
+      "tests/test_r1_b2_4_adversarial_conformance.py",
+      "tests/test_r1_closed_loop_benchmark_v2.py",
+      "tests/test_r1_closed_loop_context_adapter_v2.py"
+    ],
+    "py_compile": "PASS",
+    "json_validation": "PASS",
+    "no_tmp_dependencies": "PASS"
+  },
+  "frozen_scientific_numerics_modified": false,
+  "scientific_protocol_deviation": false,
+  "simulation_launched": false,
+  "scenario_enumeration_count": 0,
+  "new_roster_created": false,
+  "new_rollout_count": 0,
+  "rbr_read_or_training": false
+}

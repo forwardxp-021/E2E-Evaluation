@@ -1,0 +1,24 @@
+{
+  "schema_version": "r1_hlc_terminal_route_progress_contract_v1.0",
+  "status": "FROZEN_AFTER_ADVERSARIAL_TESTS_PASS",
+  "symbol": "terminal_native_route_progress_v1_0",
+  "required_inputs": [
+    "baseline_terminal_xy",
+    "treatment_terminal_xy",
+    "native_route_reference_xy",
+    "route_reference_source"
+  ],
+  "semantic": "PROJECT_BOTH_REALIZED_TERMINI_ON_SAME_FROZEN_NATIVE_ROUTE_REFERENCE",
+  "paired_delta": "abs(s_baseline_terminal - s_treatment_terminal)",
+  "frozen_limit_m": 1.5,
+  "required_audit_fields": [
+    "baseline_terminal_route_s_m",
+    "treatment_terminal_route_s_m",
+    "paired_route_progress_delta_m",
+    "route_reference_source",
+    "route_reference_sha256"
+  ],
+  "path_length_difference_as_surrogate_allowed": false,
+  "projection_ambiguity": "FAIL_CLOSED",
+  "scientific_numerical_threshold_modified": false
+}

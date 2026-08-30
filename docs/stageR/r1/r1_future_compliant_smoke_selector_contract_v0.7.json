@@ -1,0 +1,39 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.7",
+  "status": "READY_FOR_FINAL_SCIENTIFIC_OWNER_ENUMERATION_AUTHORIZATION",
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "blacklist": {
+    "minimum_unique_identities": 40,
+    "classes": [
+      {"name": "historical_noncompliant_smoke", "count": 12},
+      {"name": "runtime_determinism", "count": 4},
+      {"name": "B2_B2_1_fresh_smoke", "count": 24}
+    ],
+    "official_union_path": "docs/stageR/r1/r1_official_technical_smoke_permanent_blacklist_v1.0.json",
+    "official_union_sha256": "301a95275f9896c09952b592430bc247dbbee28bbca1a6c4f7bebb70eebaf523"
+  },
+  "preconditions": [
+    "ABSTRACT_PLANNER_DISPATCH_VERIFIED",
+    "ABSOLUTE_EPISODE_CLOCK_FROZEN",
+    "HLC_REALIZED_PROGRESS_FROZEN",
+    "HLC_NATIVE_ROUTE_PROGRESS_FROZEN",
+    "OFFICIAL_SMOKE_PLANNER_V2_1_FROZEN",
+    "OFFICIAL_SMOKE_EVALUATOR_V2_1_FROZEN"
+  ],
+  "actual_candidates_enumerated": 0,
+  "actual_roster_selected": false,
+  "enumeration_authorized": false,
+  "new_rollout_authorized": false,
+  "forbidden_inputs": [
+    "historical_outcome",
+    "planner_outcome",
+    "mechanism_outcome",
+    "safety_outcome",
+    "representation",
+    "BDD",
+    "probe",
+    "checkpoint",
+    "RBR"
+  ]
+}

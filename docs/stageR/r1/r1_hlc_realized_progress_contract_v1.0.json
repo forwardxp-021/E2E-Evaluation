@@ -1,0 +1,29 @@
+{
+  "schema_version": "r1_hlc_realized_progress_contract_v1.0",
+  "status": "FROZEN_AFTER_ADVERSARIAL_TESTS_PASS",
+  "symbol": "hlc_realized_lane_transition_progress_v1_0",
+  "required_inputs": [
+    "source_reference_xy",
+    "target_reference_xy",
+    "realized_ego_xy"
+  ],
+  "semantic": "LOCAL_SOURCE_TO_TARGET_NATIVE_CROSS_LANE_NORMALIZED_PROGRESS",
+  "per_frame_algorithm": [
+    "unambiguous native projection on source reference",
+    "unambiguous native projection on target reference",
+    "construct local source-to-target cross-lane vector",
+    "project realized ego on local vector and normalize"
+  ],
+  "source_center_expected_progress": 0.0,
+  "target_center_expected_progress": 1.0,
+  "raw_progress_preserved_for_audit": true,
+  "clipped_progress_for_frozen_mechanism": [0.0, 1.0],
+  "projection_ambiguity": "FAIL_CLOSED",
+  "forbidden_surrogates": [
+    "longitudinal_travel_distance",
+    "overall_target_displacement",
+    "path_length"
+  ],
+  "hlc_option_b_semantic_changed": false,
+  "scientific_numerical_threshold_modified": false
+}

@@ -10380,3 +10380,41 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - B2.5 adversarial tests、B2.4 regression、benchmark/context regression、语法与临时依赖检查全部通过。
 - SHA manifest 必须在测试全部通过后生成，并绑定 map bridge、planner/evaluator V2、route builder v1.1、endpoint v1.1、clearance v1.1、construction parity 与 Stage5D parity。
 - selector v0.6 只能到 `READY_FOR_SCIENTIFIC_OWNER_ENUMERATION_AUTHORIZATION`；`enumeration_authorized=false`、`new_rollout_authorized=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.6 最终官方调度与 HLC 测量符合性修复
+
+### 1. 命令
+
+本阶段只允许零 rollout dispatch/preflight 与回归测试，禁止调用 `run_simulation.py`：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m py_compile \
+  tools/r1_hlc_measurement_conformance_v1.py \
+  tools/r1_official_technical_smoke_planner_v2_1.py \
+  tools/r1_official_technical_smoke_evaluator_v2_1.py \
+  tools/r1_b2_6_official_dispatch_preflight.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_6_final_dispatch_conformance.py \
+  tests/test_r1_b2_5_official_execution_integration.py \
+  tests/test_r1_b2_4_adversarial_conformance.py \
+  tests/test_r1_closed_loop_benchmark_v2.py \
+  tests/test_r1_closed_loop_context_adapter_v2.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- Planner V2.1 必须从真实公开 `compute_trajectory(current_input)` 入口委托到 `compute_planner_trajectory`，并返回 `InterpolatedTrajectory`；只检查方法存在不算通过。
+- episode phase 必须由 `current_input.iteration.index/time_us` 相对 iteration 0 确定，并记录 iteration、物理时间、nominal/physical elapsed 与 phase source；连续 replan 不得重启 HLC/TSB phase。
+- HLC progress 必须由 source/target native projection 的局部跨车道向量读取，raw progress 留存且只有 frozen mechanism 输入可 clip；纵向-only 运动不得变成 lane-transition progress。
+- HLC paired route progress 必须把两个 realized terminal 投影到同一个 frozen native route reference 后比较 route-s；禁止 path-length difference surrogate，1.5 m gate 不变。
+- Evaluator V2.1 只能以 realized current ego 为 Primary；planned trajectory 仍为 secondary generator intent。所有 projection ambiguity fail closed。
+
+### 3. 通过标准
+
+- B2.6 至少 15 个新增对抗测试及既有 B2.5/B2.4/benchmark/context 回归全部通过；冻结合同 SHA 与 scientific numerics 不变。
+- preflight 通过真实 nuPlan 1.2.2 `PlannerInput` 连续调用公开 dispatch，验证 state0 identity、absolute clock、construction parity、route builder 与 phase persistence，但不得启动 simulation。
+- selector v0.7 只能记为 `READY_FOR_FINAL_SCIENTIFIC_OWNER_ENUMERATION_AUTHORIZATION`，同时保持 `actual_candidates_enumerated=0`、`actual_roster_selected=false`、`enumeration_authorized=false`、`new_rollout_authorized=false`。
+- 本阶段完成后停止：`ENUMERATION=NOT_AUTHORIZED`、`NEW_ROLLOUT=NOT_AUTHORIZED`、`R1_FORMAL_DEVELOPMENT_ROSTER=NOT_READY`、`RBR_A/B/C=NOT_AUTHORIZED`。

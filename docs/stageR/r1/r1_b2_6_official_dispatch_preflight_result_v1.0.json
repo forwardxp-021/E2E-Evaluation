@@ -1,0 +1,32 @@
+{
+  "schema_version": "r1_b2_6_official_dispatch_preflight_result_v1.0",
+  "status": "PASS_ZERO_ROLLOUT",
+  "bound_interface": "nuPlan 1.2.2 AbstractPlanner/PlannerInput/InterpolatedTrajectory",
+  "dispatch_entry": "planner.compute_trajectory(current_input)",
+  "delegate": "compute_planner_trajectory(current_input)",
+  "actual_compute_trajectory_dispatch_calls": 16,
+  "family_preflights": {
+    "R-HLC": {
+      "iteration_indices": [0, 1, 5, 11, 16, 25, 35, 45, 60],
+      "returned_type_all_calls": "InterpolatedTrajectory",
+      "current_ego_state0_identity_all_calls": true,
+      "construction_parity_all_calls": true,
+      "phase_clock_monotonic": true,
+      "advance_hold_retreat_recommit_not_restarted": true
+    },
+    "R-TSB": {
+      "iteration_indices": [0, 1, 5, 11, 16, 25, 35],
+      "returned_type_all_calls": "InterpolatedTrajectory",
+      "current_ego_state0_identity_all_calls": true,
+      "construction_parity_all_calls": true,
+      "phase_clock_monotonic": true,
+      "first_brake_release_second_brake_not_restarted": true
+    }
+  },
+  "route_builder": "build_native_route_reference_v1_1",
+  "historical_b2_1_planner_imported": false,
+  "simulation_launched": false,
+  "actual_candidates_enumerated": 0,
+  "actual_roster_selected": false,
+  "new_rollout_count": 0
+}

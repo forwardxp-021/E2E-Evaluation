@@ -1,0 +1,28 @@
+{
+  "schema_version": "r1_absolute_episode_clock_binding_v1.0",
+  "status": "FROZEN_AFTER_ZERO_ROLLOUT_DISPATCH_TESTS_PASS",
+  "runtime_source": "current_input.iteration",
+  "episode_start_binding": {
+    "first_planner_call_must_be_iteration": 0,
+    "episode_time_at_iteration_0_s": 0.0,
+    "episode_start_physical_time_us": "current_input.iteration.time_us at iteration 0"
+  },
+  "derived_nominal_episode_time": "iteration.index * 0.1",
+  "physical_elapsed_episode_time": "(iteration.time_us - episode_start_physical_time_us) * 1e-6",
+  "required_audit_fields": [
+    "iteration_index",
+    "physical_time_us",
+    "derived_nominal_episode_time_s",
+    "physical_elapsed_episode_time_s",
+    "absolute_episode_time_s",
+    "phase_source"
+  ],
+  "frozen_anchors": {
+    "t_anchor_iteration": 10,
+    "t_diverge_iteration": 11
+  },
+  "monotonic_replan_required": true,
+  "replan_phase_reset_allowed": false,
+  "future_roster_row_absolute_episode_time_used_as_dynamic_clock": false,
+  "scientific_numerical_threshold_modified": false
+}

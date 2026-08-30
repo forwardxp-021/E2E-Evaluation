@@ -1,0 +1,27 @@
+{
+  "schema_version": "r1_b2_6_adversarial_conformance_test_result_v1.0",
+  "status": "PASS",
+  "test_path": "tests/test_r1_b2_6_final_dispatch_conformance.py",
+  "test_count": 21,
+  "pass_count": 21,
+  "fail_count": 0,
+  "required_minimum_new_adversarial_tests": 15,
+  "coverage": [
+    "complete AbstractPlanner V2.1 interface",
+    "explicit compute_trajectory dispatch and missing-method regression guard",
+    "absolute phase monotonic across replans",
+    "TSB phases do not restart",
+    "HLC phases do not restart",
+    "source/target/linear/retreat/curved/different-density/ambiguous native progress",
+    "path length is not route-progress surrogate",
+    "terminal native route projection",
+    "longitudinal-only motion cannot trigger HLC commitment",
+    "realized-first end-to-end synthetic evaluator pair",
+    "planned-first cannot become Primary",
+    "frozen numerics and contract regression",
+    "actual nuPlan dispatch returns InterpolatedTrajectory"
+  ],
+  "simulation_launched": false,
+  "candidate_enumeration_count": 0,
+  "new_rollout_count": 0
+}
