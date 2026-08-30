@@ -1,0 +1,25 @@
+{
+  "schema_version": "r1_b2_5_official_execution_integration_sha_manifest_v1.0",
+  "status": "FROZEN_AFTER_ALL_TESTS_PASS",
+  "remote_baseline": "99138f437dcfe70b652f279ce5a86e9660d97955",
+  "bindings": {
+    "OFFICIAL_MAP_BRIDGE_V2_1": {"path": "tools/r1_official_map_query_bridge_v2_1.py", "sha256": "b6a94138ed6fc7945522d8d3d0deb4207991360977ef4d57494b7cfa2a4d690e"},
+    "OFFICIAL_SMOKE_PLANNER_V2": {"path": "tools/r1_official_technical_smoke_planner_v2.py", "sha256": "4733d08ae310804c43fd60c6b5475aa7fea28e811ca4ae928d7b1bba150d6220"},
+    "OFFICIAL_SMOKE_EVALUATOR_V2": {"path": "tools/r1_official_technical_smoke_evaluator_v2.py", "sha256": "4358c9d4860323da5d7a78e0b74213b599efd5a64d69b50ce34555f542998f2a"},
+    "ROUTE_BUILDER_V1_1": {"path": "tools/r1_closed_loop_benchmark_v2_1.py", "sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd", "symbol": "build_native_route_reference_v1_1"},
+    "HLC_ENDPOINT_V1_1": {"path": "tools/r1_closed_loop_benchmark_v2_1.py", "sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd", "symbol": "hlc_endpoint_v1_1_timestamp_aware"},
+    "CURRENT_EGO_CONSTRUCTION_PARITY": {"path": "tools/r1_closed_loop_benchmark_v2_1.py", "sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd", "symbol": "current_ego_construction_parity_audit"},
+    "HLC_CLEARANCE_V1_1": {"path": "tools/r1_hlc_dynamic_clearance_v1_1.py", "sha256": "150f0d86a21ee0cbbf257243fb7022b694dd9598d0abd3dbde0a496ddc0e2e60", "contract_path": "docs/stageR/r1/r1_hlc_pretreatment_dynamic_clearance_contract_v1.1.json", "contract_sha256": "ec41c1c651186d78e7bc0e4a5401133d12bc311d98e134597a69937eae12b46e"},
+    "STAGE5D_SLOT_PARITY": {"adapter_path": "tools/r1_closed_loop_context_adapter_v2_1.py", "adapter_sha256": "6768585915d32ce0b5c98962132c080adc9ec93fe019d247d8d5aadac18747e0", "authoritative_path": "tools/stage5d_context_core.py", "authoritative_sha256": "1279231b9abbbfd14c97ba718f0369d7e7173e06394ed1328041e15bbcf1410e", "audit_path": "docs/stageR/r1/r1_context_v2_1_stage5d_parity_audit_v1.json", "audit_sha256": "9ef69b509dea76e51520038bcf13a67879ae263c27db944b5e4f30bf60a47e36"},
+    "OFFICIAL_EGO_FOOTPRINT": {"path": "tools/r1_official_ego_vehicle_binding_v1.py", "sha256": "2aee1bf2844499bfcef829156e76b54e88b461c94a2ee6ba8bbde8574d4af735", "official_source_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5"},
+    "ZERO_ROLLOUT_PREFLIGHT": {"path": "tools/r1_b2_5_zero_rollout_preflight.py", "sha256": "9787de11df55ed61a19b28b3b554abebedf77c09ceaedd0f7ab06942807b1306"},
+    "PROSPECTIVE_GENERATOR_CONTRACT": {"path": "tools/r1_prospective_generator_contract_v2.py", "sha256": "750726b4bca66cd4785e03a37fc1445d2208b92c42686ce26feb57708ba448ed"},
+    "HYDRA_PLANNER_V2": {"path": "configs/r1_official_technical_smoke_hydra/planner/r1_official_technical_smoke_v2.yaml", "sha256": "3eb3cf8fbdc56ad00b0f7550a88ff727bc8b8536967091dea0333854b2578a38"}
+  },
+  "tests": {"b2_5_adversarial_path": "tests/test_r1_b2_5_official_execution_integration.py", "b2_5_adversarial_sha256": "74675dac17c276f83b0e015b5dded0429c82f051a3c7fc2ce1ad20e1c23f7ab4", "b2_5_result": "26_OF_26_PASS", "combined_regression_result": "54_OF_54_PASS", "py_compile": "PASS", "no_tmp_dependencies": "PASS"},
+  "zero_rollout_preflight": "READY_TO_LAUNCH_OFFICIAL_SIMULATION_WITH_LAUNCH_HARD_BLOCKED",
+  "new_rollout_count": 0,
+  "scenario_enumeration_count": 0,
+  "new_roster_created": false,
+  "rbr_read_or_training": false
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "r1_b2_4_scientific_owner_approval_v1.0",
+  "prospective_scientific_contracts": "APPROVED",
+  "tsb_floor": {"value_mps": 2.0, "status": "FINAL_OWNER_APPROVED"},
+  "hlc_map_applicability": {"status": "APPROVED", "new_geometry_numeric_cutoff": false},
+  "hlc_clearance": {"status": "APPROVED", "horizon_seconds": 8.0, "nominal_query_dt_seconds": 0.1, "maximum_actor_interpolation_gap_seconds": 0.25, "longitudinal_buffer_m": 3.0, "lateral_buffer_m": 0.5},
+  "fresh_smoke": "NOT_AUTHORIZED_PENDING_EXECUTION_INTEGRATION_FREEZE",
+  "blockers_at_entry": ["REPLAY_OBSERVATION_HORIZON_BINDING", "STAGE5D_SLOT_EXACT_PARITY", "STRUCTURAL_FIRST_SEGMENT_CONSTRUCTION_PARITY", "TIMESTAMP_AWARE_HLC_ENDPOINT", "OFFICIAL_EXECUTION_INTEGRATION_BINDING"],
+  "enumeration_authorized": false,
+  "new_rollout_authorized": false
+}

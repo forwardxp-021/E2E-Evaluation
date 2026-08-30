@@ -10340,3 +10340,43 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - roster SHA256 必须为 `0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52`，24 token/log 唯一，12 R-HLC + 12 R-TSB；不得重跑 selector 或改 salt。
 - 新批次仅允许 48 个 fresh official closed-loop run；任一技术失败立即停止，不重试、不替换场景。科学或 generator gate 未通过则照实记录并继续冻结完整日程。
 - R-HLC 与 R-TSB 各自只能在 `12/12` 所有冻结 required gates 通过时进入 formal review；无论结果如何均不启动 development rollout 或 RBR 训练。
+
+## StageR / R1 Phase B2.5 零 Rollout 官方执行集成冻结
+
+### 1. 命令
+
+本阶段只执行语法检查、依赖检查和 fail-closed integration tests；禁止调用 `run_simulation.py`：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m py_compile \
+  tools/r1_prospective_generator_contract_v2.py \
+  tools/r1_closed_loop_benchmark_v2_1.py \
+  tools/r1_hlc_dynamic_clearance_v1_1.py \
+  tools/r1_official_map_query_bridge_v2_1.py \
+  tools/r1_official_ego_vehicle_binding_v1.py \
+  tools/r1_closed_loop_context_adapter_v2_1.py \
+  tools/r1_official_technical_smoke_planner_v2.py \
+  tools/r1_official_technical_smoke_evaluator_v2.py \
+  tools/r1_b2_5_zero_rollout_preflight.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_5_official_execution_integration.py \
+  tests/test_r1_b2_4_adversarial_conformance.py \
+  tests/test_r1_closed_loop_benchmark_v2.py \
+  tests/test_r1_closed_loop_context_adapter_v2.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- replay observation horizon 不完整时即使 actor tracks 为空也必须 `NOT_ELIGIBLE`；只有 global horizon complete 才能记为 `DYNAMIC_CLEAR_NO_ACTORS`。
+- context adapter 直接调用 authoritative Stage5D assignment，固定 `lane_aware_only`，禁止 geometric fallback。
+- future V2 planner/evaluator 依赖中不得导入历史 B2.1 planner；Primary 只读 realized current ego，planned trajectory 只能是 secondary intent。
+- `launch_official_simulation()` 在 B2.5 必须硬失败；candidate/roster/run ledger 均保持 0。
+
+### 3. 通过标准
+
+- B2.5 adversarial tests、B2.4 regression、benchmark/context regression、语法与临时依赖检查全部通过。
+- SHA manifest 必须在测试全部通过后生成，并绑定 map bridge、planner/evaluator V2、route builder v1.1、endpoint v1.1、clearance v1.1、construction parity 与 Stage5D parity。
+- selector v0.6 只能到 `READY_FOR_SCIENTIFIC_OWNER_ENUMERATION_AUTHORIZATION`；`enumeration_authorized=false`、`new_rollout_authorized=false`、`RBR_A/B/C=NOT_AUTHORIZED`。

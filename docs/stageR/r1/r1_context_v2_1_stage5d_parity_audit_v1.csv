@@ -1,0 +1,11 @@
+case,required_semantic,authoritative_function,assignment_mode,adapter_result,slot_identity_parity
+all_slots,front/left_front/left_rear/right_front/right_rear,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+empty_slot,empty slots preserved,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+distance_boundary,frozen inclusive distance boundary,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+lateral_boundary,frozen 2.0m lateral boundary,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+heading_boundary,frozen 45deg heading boundary,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+duplicate_actor_suppression,one stable track cannot occupy two slots,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+multi_candidate_ranking,frozen lexicographic candidate ranking,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+exact_tied_ranking,authoritative stable tie order,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+native_adjacent_segment_change,native lane IDs supplied per frame,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,EXACT
+geometric_fallback,forbidden,tools.stage5d_context_core.assign_stage5d_slots,lane_aware_only,PASS,NOT_USED

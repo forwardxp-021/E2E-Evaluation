@@ -1,0 +1,13 @@
+{
+  "schema_version": "r1_official_ego_footprint_binding_v1.0",
+  "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+  "vehicle_name": "pacifica",
+  "vehicle_type": "gen1",
+  "length_m": 5.176,
+  "width_m": 2.297,
+  "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+  "source_file": "nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+  "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+  "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "generic_5x2_fallback_used": false
+}

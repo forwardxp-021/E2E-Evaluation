@@ -1,0 +1,13 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v0.6",
+  "status": "READY_FOR_SCIENTIFIC_OWNER_ENUMERATION_AUTHORIZATION",
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "blacklist": {"minimum_unique_identities": 40, "classes": [{"name": "historical_noncompliant_smoke", "count": 12}, {"name": "runtime_determinism", "count": 4}, {"name": "B2_B2_1_fresh_smoke", "count": 24}]},
+  "preconditions": ["OFFICIAL_EXECUTION_INTEGRATION_FROZEN", "OFFICIAL_MAP_BRIDGE_FROZEN", "OFFICIAL_EGO_FOOTPRINT_BOUND", "REPLAY_OBSERVATION_HORIZON_RULE_FROZEN", "STAGE5D_SLOT_PARITY_VERIFIED", "HLC_TIMESTAMP_AWARE_ENDPOINT_FROZEN"],
+  "actual_candidates_enumerated": 0,
+  "actual_roster_selected": false,
+  "enumeration_authorized": false,
+  "new_rollout_authorized": false,
+  "forbidden_inputs": ["historical_outcome", "planner_outcome", "mechanism_outcome", "safety_outcome", "representation", "BDD", "probe", "checkpoint", "RBR"]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "r1_hlc_pretreatment_dynamic_clearance_contract_v1.1",
+  "status": "FROZEN_EXECUTION_INTEGRATION",
+  "numerics_unchanged": {"horizon_seconds": 8.0, "nominal_query_dt_seconds": 0.1, "maximum_actor_interpolation_gap_seconds": 0.25, "longitudinal_buffer_m": 3.0, "lateral_buffer_m": 0.5},
+  "global_observation_horizon": {"source": "OFFICIAL_REPLAY_FRAME_OR_LIDAR_TIMESTAMP_STREAM", "iterations": [0, 79], "window": "[0,8s)", "beginning_coverage_required": true, "end_coverage_required": true, "maximum_interior_gap_seconds": 0.25},
+  "actor_track_full_horizon_required": false,
+  "empty_tracks_semantics": {"complete_global_horizon": "DYNAMIC_CLEAR_NO_ACTORS", "missing_or_incomplete_global_horizon": "NOT_ELIGIBLE"},
+  "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS",
+  "ego_heading_source": "EACH_ARM_PROSPECTIVE_XY_TANGENT",
+  "ego_footprint": "OFFICIAL_RUNTIME_VEHICLE_PARAMETERS_REQUIRED",
+  "generic_5x2_fallback": "FORBIDDEN",
+  "pretreatment_only": true,
+  "posthoc_eligibility_recalculation": "FORBIDDEN",
+  "implementation": "tools/r1_hlc_dynamic_clearance_v1_1.py"
+}

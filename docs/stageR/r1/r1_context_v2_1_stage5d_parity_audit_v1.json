@@ -1,0 +1,11 @@
+{
+  "schema_version": "r1_context_v2_1_stage5d_parity_audit_v1",
+  "status": "STAGE5D_SLOT_PARITY_VERIFIED",
+  "authoritative_function": "tools.stage5d_context_core.assign_stage5d_slots",
+  "assignment_mode": "lane_aware_only",
+  "standardized_inputs": ["ego_state", "candidate_states", "lane_ids", "native_adjacency", "precomputed_projections"],
+  "coverage": ["front", "left_front", "left_rear", "right_front", "right_rear", "empty_slot", "distance_boundary", "lateral_boundary", "heading_boundary", "duplicate_actor_suppression", "multi_candidate_ranking", "exact_tied_ranking", "native_adjacent_segment_change"],
+  "slot_identity_exact_parity": true,
+  "geometric_fallback_used": false,
+  "context_semantic_definition_changed": false
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "r1_b2_5_zero_rollout_preflight_result_v1.0",
+  "status": "READY_TO_LAUNCH_OFFICIAL_SIMULATION",
+  "scope": "OBJECT_CONSTRUCTION_AND_READONLY_BINDING_ONLY",
+  "covered": ["future_roster_row_schema", "config_loading", "official_map_binding", "context_bridge", "planner_initialization", "native_route_builder_v1_1", "frozen_generator_binding", "realized_first_evaluator", "official_metric_canonicalizer_binding", "pretreatment_clearance", "ledger", "budget"],
+  "simulation_launch_guard": "B2_5_SIMULATION_LAUNCH_HARD_BLOCK",
+  "simulation_launched": false,
+  "actual_candidates_enumerated": 0,
+  "actual_roster_selected": false,
+  "new_rollout_count": 0,
+  "official_map_readonly_query_test": "PASS_USING_BLACKLISTED_HISTORICAL_IDENTITY",
+  "synthetic_state_construction_test": "PASS",
+  "historical_outcome_used_for_selection": false
+}

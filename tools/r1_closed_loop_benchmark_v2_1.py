@@ -9,11 +9,14 @@ bindings while leaving the historical B2.1 implementation untouched.
 from __future__ import annotations
 
 import math
+import hashlib
+import inspect
+import json
 from typing import Any, Dict, List, Mapping, Sequence, Tuple
 
 import numpy as np
 
-from tools.r1_closed_loop_benchmark_v2 import (
+from tools.r1_prospective_generator_contract_v2 import (
     DT_SECONDS,
     HLC_PRIMARY_F_MATCH_CALIPERS,
     TSB_PRIMARY_F_MATCH_CALIPERS,
@@ -27,7 +30,7 @@ from tools.r1_closed_loop_benchmark_v2 import (
     wrap_angle,
 )
 from tools.r1_context_mechanism_core import median3
-from tools.r1_official_technical_smoke_planner import (
+from tools.r1_prospective_generator_contract_v2 import (
     HLC_BASELINE,
     HLC_TREATMENT,
     TSB_BASELINE,
@@ -370,6 +373,111 @@ def resolve_route_occurrence_cursor(
     return compatible[0]
 
 
+def build_native_route_reference_v1_1(
+    map_api: Any,
+    route_roadblock_ids: Sequence[str],
+    current_ego: Mapping[str, Any],
+    required_forward_m: float,
+) -> Dict[str, Any]:
+    """Build a native route using the topology-resolved repeated-route cursor."""
+    from nuplan.common.actor_state.state_representation import Point2D
+    from nuplan.common.maps.maps_datatypes import SemanticMapLayer
+
+    route = [str(value) for value in route_roadblock_ids]
+    if not route:
+        raise ValueError("NATIVE_ROUTE_FAIL: empty frozen route")
+    point = Point2D(float(current_ego["rear_axle"]["x"]), float(current_ego["rear_axle"]["y"]))
+    heading = float(current_ego["rear_axle"]["heading"])
+    local = list(map_api.get_all_map_objects(point, SemanticMapLayer.LANE))
+    local += list(map_api.get_all_map_objects(point, SemanticMapLayer.LANE_CONNECTOR))
+    local = [edge for edge in local if str(edge.get_roadblock_id()) in set(route)]
+    if not local:
+        raise ValueError("NATIVE_ROUTE_FAIL: current native edge unavailable")
+    local.sort(key=lambda edge: (abs(wrap_angle(float(edge.baseline_path.get_nearest_pose_from_position(point).heading) - heading)), str(edge.id)))
+    edge = local[0]
+    outgoing_rb = [str(item.get_roadblock_id()) for item in edge.outgoing_edges]
+    cursor = resolve_route_occurrence_cursor(route, str(edge.get_roadblock_id()), outgoing_rb)
+    selected = [edge]
+    current_arc = float(edge.baseline_path.get_nearest_arc_length_from_position(point))
+    available = float(edge.baseline_path.linestring.length) - current_arc
+    for next_roadblock in route[cursor + 1 :]:
+        if available >= float(required_forward_m):
+            break
+        native_outgoing = [candidate for candidate in selected[-1].outgoing_edges if str(candidate.get_roadblock_id()) == str(next_roadblock)]
+        if not native_outgoing:
+            raise ValueError(f"NATIVE_ROUTE_FAIL: no native outgoing successor into {next_roadblock}")
+        selected.append(sorted(native_outgoing, key=lambda candidate: str(candidate.id))[0])
+        available += float(selected[-1].baseline_path.linestring.length)
+    if available < float(required_forward_m):
+        raise ValueError("NATIVE_ROUTE_FAIL: insufficient native forward coverage")
+    points: List[List[float]] = []
+    for selected_edge in selected:
+        coords = [[float(x), float(y)] for x, y in selected_edge.baseline_path.linestring.coords]
+        if points and coords and points[-1] == coords[0]:
+            coords = coords[1:]
+        points.extend(coords)
+    reference = np.asarray(points, dtype=np.float64)
+    polyline_arclength(reference)
+    return {"reference_xy": reference, "current_route_arc_m": current_arc, "route_occurrence_cursor": cursor, "native_edge_ids": [str(item.id) for item in selected], "bridge_used": False, "extrapolation_used": False, "builder_version": "build_native_route_reference_v1_1"}
+
+
+def current_ego_construction_parity_audit(
+    builder: Any,
+    builder_args: Sequence[Any],
+    builder_kwargs: Mapping[str, Any],
+    actual_states: Sequence[Mapping[str, Any]],
+) -> Dict[str, Any]:
+    """Reconstruct state1 from the same inputs and require exact JSON bytes."""
+    expected_states = builder(*builder_args, **dict(builder_kwargs))
+    if len(expected_states) < 2 or len(actual_states) < 2:
+        raise ValueError("CONSTRUCTION_PARITY_FAIL: state1 unavailable")
+    expected = expected_states[1]
+    actual = actual_states[1]
+    encode = lambda value: json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    source = inspect.getsource(builder).encode("utf-8")
+    passed = encode(expected) == encode(actual)
+    return {"status": "CONSTRUCTION_PARITY_PASS" if passed else "CONSTRUCTION_PARITY_FAIL", "pass": passed, "expected_state1": expected, "actual_state1": actual, "construction_source": f"{builder.__module__}.{builder.__name__}", "construction_source_sha256": hashlib.sha256(source).hexdigest(), "comparison": "EXACT_CANONICAL_JSON_MACHINE_REPRESENTATION", "new_numeric_threshold_used": False}
+
+
+def _nearest_native_projection(reference_xy: Sequence[Sequence[float]], point_xy: Sequence[float]) -> Dict[str, float]:
+    points = np.asarray(reference_xy, dtype=np.float64)
+    point = np.asarray(point_xy, dtype=np.float64)
+    delta = np.diff(points, axis=0)
+    denominator = np.sum(delta * delta, axis=1)
+    if len(points) < 2 or np.any(denominator <= 0):
+        raise ValueError("HLC_ENDPOINT_NOT_EVALUABLE_NATIVE_REFERENCE")
+    fraction = np.clip(np.sum((point - points[:-1]) * delta, axis=1) / denominator, 0.0, 1.0)
+    projected = points[:-1] + fraction[:, None] * delta
+    distance = np.linalg.norm(projected - point, axis=1)
+    index = int(np.argmin(distance))
+    arc = polyline_arclength(points)
+    return {"arc_m": float(arc[index] + fraction[index] * math.sqrt(float(denominator[index]))), "distance_m": float(distance[index]), "heading": math.atan2(float(delta[index, 1]), float(delta[index, 0]))}
+
+
+def hlc_endpoint_v1_1_timestamp_aware(
+    states: Sequence[Mapping[str, Any]],
+    target_reference_xy: Sequence[Sequence[float]],
+    *,
+    paired_route_progress_delta_m: float,
+) -> Dict[str, Any]:
+    """Frozen endpoint gates using actual terminal dt and native-route projection."""
+    time, xy, _, _ = trajectory_arrays_timestamp_aware(states)
+    dt = float(time[-1] - time[-2])
+    if dt <= 0:
+        raise ValueError("HLC_ENDPOINT_NOT_EVALUABLE_TERMINAL_DT")
+    target = _nearest_native_projection(target_reference_xy, xy[-1])
+    final_tangent = math.atan2(float(xy[-1, 1] - xy[-2, 1]), float(xy[-1, 0] - xy[-2, 0]))
+    velocity = (xy[-1] - xy[-2]) / dt
+    normal = np.asarray([-math.sin(target["heading"]), math.cos(target["heading"])])
+    offset = target["distance_m"]
+    heading_error = abs(wrap_angle(final_tangent - target["heading"]))
+    lateral_velocity = abs(float(np.dot(velocity, normal)))
+    route_delta = abs(float(paired_route_progress_delta_m))
+    limits = {"offset_m_max": 0.25, "heading_error_rad_max": 0.05, "lateral_velocity_mps_max": 0.25, "paired_route_progress_delta_m_max": 1.5}
+    by_gate = {"offset": offset <= 0.25 + 1e-12, "heading": heading_error <= 0.05 + 1e-12, "lateral_velocity": lateral_velocity <= 0.25 + 1e-12, "paired_route_progress_delta": route_delta <= 1.5 + 1e-12}
+    return {"status": "HLC_ENDPOINT_PASS" if all(by_gate.values()) else "HLC_ENDPOINT_FAIL", "pass": all(by_gate.values()), "terminal_lateral_offset_to_target_center_m": _round(offset), "terminal_heading_error_rad": _round(heading_error), "terminal_lateral_velocity_mps": _round(lateral_velocity), "terminal_actual_dt_s": _round(dt, 9), "terminal_native_route_arc_m": _round(target["arc_m"]), "paired_route_progress_delta_m": _round(route_delta), "pass_by_gate": by_gate, "endpoint_limits": limits, "heading_source": "FINAL_REALIZED_XY_TANGENT_AND_TARGET_NATIVE_GEOMETRY", "route_progress_source": "NATIVE_ROUTE_PROJECTION"}
+
+
 def tsb_baseline_execution_binding() -> Dict[str, Any]:
     time = np.arange(WINDOW_FRAMES, dtype=np.float64) * DT_SECONDS
     active = tuple(index for index, value in enumerate(time) if frozen_tsb_acceleration(float(value), TSB_BASELINE) == -1.0)
@@ -435,6 +543,9 @@ __all__ = [
     "build_hlc_native_geometry_v1_1",
     "structural_first_segment_audit",
     "resolve_route_occurrence_cursor",
+    "build_native_route_reference_v1_1",
+    "current_ego_construction_parity_audit",
+    "hlc_endpoint_v1_1_timestamp_aware",
     "tsb_baseline_execution_binding",
     "tsb_applicability_v1",
 ]

@@ -70,8 +70,9 @@ def build_context_traj_from_standard_tracks(ego_seq: np.ndarray, neighbor_seq: n
     return np.concatenate([ego_seq, neighbor_seq.reshape(ego_seq.shape[0], -1)], axis=1).astype(np.float32)
 
 
-def assign_stage5d_slots(ego_state: Dict[str, Any], candidate_states: Dict[str, Dict[str, Any]], *, lane_infos: Optional[Dict[str, Any]] = None, assignment_mode: str = "lane_aware_with_geometric_fallback", config: Optional[Dict[str, Any]] = None):
-    return assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=lane_infos or {}, assignment_mode=assignment_mode, config=config or {})
+def assign_stage5d_slots(ego_state: Dict[str, Any], candidate_states: Dict[str, Dict[str, Any]], *, lane_infos: Optional[Dict[str, Any]] = None, assignment_mode: str = "lane_aware_with_geometric_fallback", config: Optional[Dict[str, Any]] = None, ego_projection: Optional[Dict[str, Any]] = None, candidate_projections: Optional[Dict[str, Dict[str, Any]]] = None):
+    """Authoritative Stage5D assignment, optionally with official precomputed projections."""
+    return assign_neighbors_lane_aware(ego_state, candidate_states, lane_infos=lane_infos or {}, assignment_mode=assignment_mode, config=config or {}, ego_projection=ego_projection, candidate_projections=candidate_projections)
 
 
 def validate_stage5d_context(context_traj: np.ndarray, ego_seq: Optional[np.ndarray] = None, neighbor_seq: Optional[np.ndarray] = None) -> Dict[str, Any]:

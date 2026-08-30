@@ -15,6 +15,8 @@ from typing import Any, Dict, Mapping, Protocol, Sequence, Tuple
 import numpy as np
 
 from tools.r1_context_mechanism_core import build_canonical_context_record
+from tools.stage5d_context_core import assign_stage5d_slots
+from tools.waymo_lane_utils import LaneInfo
 
 
 SLOT_NAMES = ("front", "left_front", "left_rear", "right_front", "right_rear")
@@ -80,10 +82,13 @@ def normalize_official_actors_v2_1(raw: Sequence[Mapping[str, Any]]) -> Sequence
             if math.hypot(vx, vy) <= 0.0:
                 raise ValueError("CONTEXT_HEADING_FAIL_CLOSED: stationary actor heading is missing")
             heading_value = math.atan2(vy, vx)
-        result.append({
+        normalized = {
             "track_id": _actor_id(actor), "type": actor_type, "x": x, "y": y,
             "vx": vx, "vy": vy, "heading": _finite(heading_value, "actor.heading"),
-        })
+        }
+        if actor.get("lane_id") not in (None, ""):
+            normalized["lane_id"] = str(actor["lane_id"])
+        result.append(normalized)
     return result
 
 
@@ -131,53 +136,62 @@ def _strict_stage5d_equivalent_slots(
         raise ValueError("official current-lane tangent is invalid")
     tangent /= np.linalg.norm(tangent)
     ego_current_projection = map_query.project(current, ego_xy)
-    candidates: Dict[str, list[Tuple[float, float, float, float, str, Mapping[str, Any], np.ndarray]]] = {name: [] for name in SLOT_NAMES}
     density_ids: set[str] = set()
-    lane_by_slot = {"front": current, "left_front": left, "left_rear": left, "right_front": right, "right_rear": right}
-    for actor in normalize_official_actors_v2_1(frame.get("actors", [])):
+    actors = {str(_actor_id(actor)): actor for actor in normalize_official_actors_v2_1(frame.get("actors", []))}
+    candidate_states: Dict[str, Dict[str, Any]] = {}
+    candidate_projections: Dict[str, Dict[str, Any]] = {}
+    lane_ids = [value for value in (current, left, right) if value]
+    official_ego_by_lane = {lane_id: dict(map_query.project(lane_id, ego_xy)) for lane_id in lane_ids}
+
+    def synthetic_official_lane_info(lane_id: str) -> LaneInfo:
+        projection = official_ego_by_lane[lane_id]
+        tangent_value = np.asarray(projection.get("tangent", tangent), dtype=np.float64)
+        tangent_value /= np.linalg.norm(tangent_value)
+        normal = np.asarray([-tangent_value[1], tangent_value[0]])
+        center = np.asarray(ego_xy) - float(projection.get("lateral_offset_m", 0.0)) * normal
+        points = np.asarray([center - 500.0 * tangent_value, center + 500.0 * tangent_value])
+        delta = np.diff(points, axis=0)
+        lengths = np.linalg.norm(delta, axis=1)
+        return LaneInfo(lane_id, points, np.asarray([math.atan2(tangent_value[1], tangent_value[0])]), lengths, np.r_[0.0, np.cumsum(lengths)], points[:-1], delta, np.sum(delta * delta, axis=1), points.min(axis=0), points.max(axis=0), points.mean(axis=0), left_neighbor_lane_ids=[left] if lane_id == current and left else [], right_neighbor_lane_ids=[right] if lane_id == current and right else [], topology_source="OFFICIAL_PRECOMPUTED_PROJECTION_ADAPTER")
+
+    lane_infos = {lane_id: synthetic_official_lane_info(lane_id) for lane_id in lane_ids}
+    for actor_id, actor in actors.items():
         actor_lane_raw = map_query.lane_for_actor(actor)
         if actor_lane_raw in (None, ""):
             continue
         actor_lane = str(actor_lane_raw)
+        if actor_lane not in lane_ids:
+            continue
         actor_projection = map_query.project(actor_lane, _actor_xy(actor))
-        ego_on_actor_lane = map_query.project(actor_lane, ego_xy)
+        ego_on_actor_lane = official_ego_by_lane[actor_lane]
         actor_arc = _finite(actor_projection.get("arc_m"), "actor_projection.arc_m")
         ego_arc = _finite(ego_on_actor_lane.get("arc_m"), "ego_projection.arc_m")
         ds = actor_arc - ego_arc
-        lateral = abs(_finite(actor_projection.get("lateral_offset_m"), "actor_projection.lateral_offset_m"))
-        actor_heading = _finite(actor["heading"], "actor.heading")
-        lane_heading = _finite(actor_projection.get("heading", math.atan2(tangent[1], tangent[0])), "actor_projection.heading")
-        heading_diff = abs(_wrap(actor_heading - lane_heading))
-        projection_distance = abs(_finite(actor_projection.get("distance_to_lane_m", lateral), "actor_projection.distance_to_lane_m"))
         if actor_lane in density_lanes and abs(ds) <= FROZEN_DENSITY_ROUTE_DISTANCE_M:
-            density_ids.add(_actor_id(actor))
-        slots = []
-        if actor_lane == current and ds > 0:
-            slots.append("front")
-        if left is not None and actor_lane == left:
-            slots.append("left_front" if ds > 0 else "left_rear" if ds < 0 else "")
-        if right is not None and actor_lane == right:
-            slots.append("right_front" if ds > 0 else "right_rear" if ds < 0 else "")
-        for slot in (value for value in slots if value):
-            if abs(ds) > STAGE5D_SLOT_LIMITS_M[slot] or lateral > STAGE5D_LATERAL_TOLERANCE_M or heading_diff > STAGE5D_HEADING_TOLERANCE_RAD:
-                continue
-            actor_tangent = np.asarray(actor_projection.get("tangent", tangent), dtype=np.float64)
-            if actor_tangent.shape != (2,) or not np.isfinite(actor_tangent).all() or np.linalg.norm(actor_tangent) <= 0:
-                raise ValueError("actor lane tangent is invalid")
-            actor_tangent /= np.linalg.norm(actor_tangent)
-            candidates[slot].append((abs(ds), projection_distance, lateral, heading_diff, _actor_id(actor), actor, actor_tangent))
+            density_ids.add(actor_id)
+        vx, vy = _actor_velocity(actor)
+        candidate_states[actor_id] = {"x": float(actor["x"]), "y": float(actor["y"]), "heading": float(actor["heading"]), "velocity_x": vx, "velocity_y": vy, "speed": math.hypot(vx, vy)}
+        candidate_projections[actor_id] = {"lane_id": actor_lane, "s": 500.0 + ds, "l": float(actor_projection.get("lateral_offset_m", actor_projection.get("l", math.nan))), "distance_to_lane": float(actor_projection.get("distance_to_lane_m", actor_projection.get("distance_to_lane", math.nan))), "heading": float(actor_projection.get("heading", 0.0)), "segment_index": int(actor_projection.get("segment_index", 0))}
+
+    ego_state = {"x": ego_xy[0], "y": ego_xy[1], "heading": ego_heading, "speed": ego_speed}
+    ego_projection = {"lane_id": current, "s": 500.0, "l": float(ego_current_projection.get("lateral_offset_m", 0.0)), "distance_to_lane": float(ego_current_projection.get("distance_to_lane_m", 0.0)), "heading": float(ego_current_projection.get("heading", math.atan2(tangent[1], tangent[0]))), "segment_index": int(ego_current_projection.get("segment_index", 0))}
+    assignment = assign_stage5d_slots(ego_state, candidate_states, lane_infos=lane_infos, assignment_mode="lane_aware_only", config={"lane_lateral_tolerance": STAGE5D_LATERAL_TOLERANCE_M, "slot_heading_diff_deg": 45.0, "front_max_distance": 120.0, "side_front_max_distance": 80.0, "side_rear_max_distance": 120.0, "ego_projection_precomputed": True, "candidate_projections_complete": True, "allow_geometric_adjacent_lane_inference": False}, ego_projection=ego_projection, candidate_projections=candidate_projections)
+    if not assignment.lane_assignment_available or assignment.fallback_assignment_used:
+        raise ValueError("STAGE5D_LANE_AWARE_ONLY_ASSIGNMENT_UNAVAILABLE")
+    debug_by_slot = {row["slot_name"]: row for row in assignment.per_slot_debug}
     selected: Dict[str, Dict[str, Any]] = {}
-    used: set[str] = set()
     for slot in SLOT_NAMES:
-        rows = [row for row in candidates[slot] if row[4] not in used]
-        if not rows or lane_by_slot[slot] is None:
+        actor_id = assignment.slot_to_agent.get(slot)
+        if actor_id is None:
             selected[slot] = {"valid": False}
             continue
-        row = sorted(rows, key=lambda value: (value[0], value[1], value[2], value[3], value[4]))[0]
-        gap, _, _, _, actor_id, actor, actor_tangent = row
-        used.add(actor_id)
+        actor = actors[actor_id]
+        projection = map_query.project(str(map_query.lane_for_actor(actor)), _actor_xy(actor))
+        actor_tangent = np.asarray(projection.get("tangent", tangent), dtype=np.float64)
+        actor_tangent /= np.linalg.norm(actor_tangent)
         vx, vy = _actor_velocity(actor)
         lead_speed = float(vx * actor_tangent[0] + vy * actor_tangent[1])
+        gap = abs(float(debug_by_slot[slot]["delta_s"]))
         selected[slot] = {
             "valid": True,
             "track_id": actor_id,
@@ -216,9 +230,15 @@ def _frame_semantics(
     return output
 
 
+def stage5d_slot_identity_v2_1(frame: Mapping[str, Any], family: str, direction: str | None, route_ids: Sequence[str], map_query: OfficialMapQueryV2_1) -> Mapping[str, str]:
+    """Expose adapter slot identity for the B2.5 authoritative parity audit."""
+    semantics = _frame_semantics(frame, family, direction, route_ids, map_query)
+    return {slot: str(value["track_id"]) if bool(value.get("valid", False)) else "" for slot, value in semantics["slots"].items()}
+
+
 def context_source_conformance_matrix_v2_1() -> Sequence[Mapping[str, str]]:
     return [
-        {"field": "slot assignment/order", "frozen_source": "tools.stage5d_context_core.assign_stage5d_slots", "v2_1": "strict lane-ID/arc/tie-break equivalent; geometric fallback forbidden", "status": "CONFORMANT"},
+        {"field": "slot assignment/order", "frozen_source": "tools.stage5d_context_core.assign_stage5d_slots", "v2_1": "direct authoritative call with official precomputed projections; lane_aware_only", "status": "EXACT_PARITY"},
         {"field": "velocity", "frozen_source": "official tracked-object velocity", "v2_1": "missing/nonfinite FAIL_CLOSED", "status": "CONFORMANT"},
         {"field": "traffic density", "frozen_source": "median legal projected dynamic vehicle count", "v2_1": "family corridor, |projected route distance|<=50m", "status": "CONFORMANT"},
         {"field": "stable presence", "frozen_source": ">=8/10 one stable track ID", "v2_1": "unchanged frozen canonicalizer", "status": "CONFORMANT"},
@@ -299,7 +319,7 @@ def build_closed_loop_context_v2_1(
         "interpolation_used": False,
         "extrapolation_used": False,
         "physical_timestamp_relabeling_used": False,
-        "stage5d_slot_semantics": "STRICT_EQUIVALENT_NO_GEOMETRIC_FALLBACK",
+        "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
         "context_source_conformance_matrix": list(context_source_conformance_matrix_v2_1()),
     })
     return canonical
@@ -309,4 +329,5 @@ __all__ = [
     "build_closed_loop_context_v2_1",
     "context_source_conformance_matrix_v2_1",
     "normalize_official_actors_v2_1",
+    "stage5d_slot_identity_v2_1",
 ]
