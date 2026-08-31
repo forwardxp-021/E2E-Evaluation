@@ -144,8 +144,15 @@ def run_audit() -> Dict[str, Any]:
     bindings = read_json(R1_BINDINGS)["frozen_run_bindings"]
     schedule = read_json(SCHEDULE)["runs"]
     by_run_id = {entry["run_id"]: entry for entry in bindings}
-    if [entry["run_id"] for entry in schedule] != [entry["run_id"] for entry in bindings]:
-        raise ValueError("冻结 schedule 与 B2.8-R1 bindings 的 run_id 顺序不一致")
+    identity_keys = ("run_id", "pair_id", "family", "scenario_token", "log_id", "arm", "run_order")
+    for index, (schedule_row, binding_row) in enumerate(zip(schedule, bindings), start=1):
+        mismatch = {
+            key: {"schedule": schedule_row[key], "binding": binding_row[key]}
+            for key in identity_keys
+            if schedule_row[key] != binding_row[key]
+        }
+        if mismatch:
+            raise ValueError(f"冻结 schedule 与 B2.8-R1 bindings 第 {index} 行身份不一致：{mismatch}")
     output_root = Path("/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/exp/r1_b2_8_r2_official_smoke")
     runs: List[Dict[str, Any]] = []
     for schedule_row in schedule:
@@ -196,6 +203,7 @@ def write_outputs(audit: Dict[str, Any]) -> None:
         "status": status,
         "simulation_started": False, "official_runs": 0, "consumed_budget": 0,
         "exact_single_scenario_resolution": f"{audit['successful']}_OF_48",
+        "scientific_schedule_identity": "48_OF_48_EXACT_IDENTICAL",
         "runs": audit["runs"],
     }
     write_json(OUTPUTS["launch_manifest"], launch_manifest)
@@ -215,6 +223,7 @@ def write_outputs(audit: Dict[str, Any]) -> None:
         "## 结论", "",
         f"官方 nuPlan 1.2.2 exact resolution 为 {audit['successful']}/48；4 个冻结 identity 为 0 match，对应 8 个 arm/run。",
         "按冻结规则，0 match 必须 FAIL_CLOSED，且不得 replacement。因此没有继续 full Hydra composition、SimulationRunner construction 或任何仿真。", "",
+        "冻结 scientific schedule 的 run_id、pair_id、family、scenario_token、log_id、arm 与 run_order 已逐行比较，48/48 EXACT_IDENTICAL。", "",
         "## 失败身份", "",
     ]
     for entry in failed[::2]:

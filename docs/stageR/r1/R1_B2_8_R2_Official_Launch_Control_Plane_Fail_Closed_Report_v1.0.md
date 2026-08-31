@@ -5,6 +5,8 @@
 官方 nuPlan 1.2.2 exact resolution 为 40/48；4 个冻结 identity 为 0 match，对应 8 个 arm/run。
 按冻结规则，0 match 必须 FAIL_CLOSED，且不得 replacement。因此没有继续 full Hydra composition、SimulationRunner construction 或任何仿真。
 
+冻结 scientific schedule 的 run_id、pair_id、family、scenario_token、log_id、arm 与 run_order 已逐行比较，48/48 EXACT_IDENTICAL。
+
 ## 失败身份
 
 - 2021.08.27.14.14.40_veh-45_01790_02016 / a6e0468e028357de（R-HLC）：0 official match。

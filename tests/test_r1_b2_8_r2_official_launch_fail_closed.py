@@ -6,6 +6,7 @@ def test_frozen_schedule_fails_closed_on_official_scenario_resolution() -> None:
 
     assert audit["successful"] == 40
     assert audit["failed"] == 8
+    assert len(audit["runs"]) == 48
     failed = [row for row in audit["runs"] if row["official_scenario_resolution"] == "FAIL_CLOSED"]
     assert len(failed) == 8
     assert {row["scenario_token"] for row in failed} == {
