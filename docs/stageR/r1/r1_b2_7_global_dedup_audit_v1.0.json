@@ -1,0 +1,79 @@
+{
+  "schema_version": "r1_b2_7_global_dedup_audit_v1.0",
+  "status": "PASS_GLOBAL_UNIQUE_SOURCE_PREFLIGHT",
+  "identity_unit": "GLOBAL_UNIQUE_SCENARIO_TOKEN",
+  "occurrence_token_count": 5405672,
+  "duplicate_token_occurrence_count": 19097,
+  "global_unique_scenario_token_count": 5386575,
+  "global_unique_log_count": 1621,
+  "token_bearing_candidate_log_count": 1576,
+  "closure": "5405672 - 19097 = 5386575",
+  "duplicate_db_groups": [
+    {
+      "sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa",
+      "canonical_representative": {
+        "partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.17.16.57.11_veh-08_01200_01636.db",
+        "db_file": "2021.08.17.16.57.11_veh-08_01200_01636.db",
+        "db_sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa"
+      },
+      "duplicate_occurrences": [
+        {
+          "partition": "train_pittsburgh",
+          "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.16.57.11_veh-08_01200_01636.db",
+          "db_file": "2021.08.17.16.57.11_veh-08_01200_01636.db",
+          "db_sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa"
+        }
+      ],
+      "token_occurrence_count_per_db": 5952,
+      "collapsed_duplicate_token_occurrences": 5952,
+      "canonicalization_rule": "FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE"
+    },
+    {
+      "sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f",
+      "canonical_representative": {
+        "partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.17.18.54.02_veh-45_00665_01065.db",
+        "db_file": "2021.08.17.18.54.02_veh-45_00665_01065.db",
+        "db_sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f"
+      },
+      "duplicate_occurrences": [
+        {
+          "partition": "train_pittsburgh",
+          "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.18.54.02_veh-45_00665_01065.db",
+          "db_file": "2021.08.17.18.54.02_veh-45_00665_01065.db",
+          "db_sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f"
+        }
+      ],
+      "token_occurrence_count_per_db": 6370,
+      "collapsed_duplicate_token_occurrences": 6370,
+      "canonicalization_rule": "FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE"
+    },
+    {
+      "sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51",
+      "canonical_representative": {
+        "partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.17.17.17.01_veh-45_02314_02798.db",
+        "db_file": "2021.08.17.17.17.01_veh-45_02314_02798.db",
+        "db_sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51"
+      },
+      "duplicate_occurrences": [
+        {
+          "partition": "train_pittsburgh",
+          "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.17.17.01_veh-45_02314_02798.db",
+          "db_file": "2021.08.17.17.17.01_veh-45_02314_02798.db",
+          "db_sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51"
+        }
+      ],
+      "token_occurrence_count_per_db": 6775,
+      "collapsed_duplicate_token_occurrences": 6775,
+      "canonicalization_rule": "FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE"
+    }
+  ],
+  "conflicting_duplicate_identity_count": 0,
+  "post_blacklist_candidate_count": 5161344,
+  "source_contract_path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+  "source_contract_sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+  "source_root_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+  "source_metadata_store_reused_after_pre_eligibility_fail_closed_correction": true
+}

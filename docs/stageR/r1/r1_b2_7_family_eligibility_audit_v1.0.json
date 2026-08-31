@@ -1,0 +1,1521 @@
+{
+  "schema_version": "r1_b2_7_family_eligibility_audit_v1.0",
+  "status": "PASS_FROZEN_PRETREATMENT_ONLY_LAZY_RANK_ORDERED_ELIGIBILITY",
+  "execution_mode": "LAZY_RANK_ORDERED_ELIGIBILITY",
+  "TOTAL_ELIGIBLE_COUNT": "NOT_EXHAUSTIVELY_COUNTED_BY_DESIGN",
+  "order": [
+    "GLOBAL_UNIQUE_SOURCE_UNIVERSE",
+    "PERMANENT_BLACKLIST",
+    "FROZEN_SHA_RANKING",
+    "RANK_ORDERED_FROZEN_FAMILY_ELIGIBILITY",
+    "TOP_12_CLOSURE"
+  ],
+  "audited_selected_candidates": {
+    "R-HLC": [
+      {
+        "family": "R-HLC",
+        "scenario_token": "a6e0468e028357de",
+        "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "19850",
+        "native_target_lane": "19834",
+        "direction": "LEFT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.032074,
+          "max_abs_yaw_rate_radps": 0.327002,
+          "max_abs_curvature_inv_m": 0.026531,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.189606,
+          "max_abs_yaw_rate_radps": 0.259468,
+          "max_abs_curvature_inv_m": 0.021112,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 97,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "000c9e65195c324b5445fe7dcbba742a1c278fdcabb72609c5a549937b99f417"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "b1be12bca092597a",
+        "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.22014,
+          "max_abs_yaw_rate_radps": 0.350667,
+          "max_abs_curvature_inv_m": 0.029152,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.192289,
+          "max_abs_yaw_rate_radps": 0.266043,
+          "max_abs_curvature_inv_m": 0.022177,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 452,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0011973f7131aee2b85aa6849bd4afc07b42aa830432f5fc7b426950072fb044"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "5292d0ee192e5b51",
+        "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 3.970358,
+          "max_abs_yaw_rate_radps": 0.329984,
+          "max_abs_curvature_inv_m": 0.027437,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.005738,
+          "max_abs_yaw_rate_radps": 0.250544,
+          "max_abs_curvature_inv_m": 0.020888,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 238,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00140415c61373554527f49d5d3683835f689b4957248fd5540c144487383bdd"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "4fa52d891cb057f3",
+        "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.250663,
+          "max_abs_yaw_rate_radps": 0.336406,
+          "max_abs_curvature_inv_m": 0.026634,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.200934,
+          "max_abs_yaw_rate_radps": 0.253973,
+          "max_abs_curvature_inv_m": 0.020155,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 445,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0017baac8285ddf5790d47ca57775dbf04b7fbad37a3cdfc7130d8bdf122b4bf"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "86eb22d3fb9d5878",
+        "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.599353,
+          "max_abs_yaw_rate_radps": 0.360841,
+          "max_abs_curvature_inv_m": 0.028324,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.215847,
+          "max_abs_yaw_rate_radps": 0.252632,
+          "max_abs_curvature_inv_m": 0.01985,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 146,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "001b2f5bcd3536b48ad0ac41b9dedef7ef62d92667f17f7490cb37f1bc47eeef"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "8c223edd967d5902",
+        "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.076879,
+          "max_abs_yaw_rate_radps": 0.335566,
+          "max_abs_curvature_inv_m": 0.027631,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.123079,
+          "max_abs_yaw_rate_radps": 0.257844,
+          "max_abs_curvature_inv_m": 0.021292,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 56,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0028cc45693a4ac4db3365b573f969d49cd0be3d4901309660dfa3aacc95b368"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "6464ad553b205b77",
+        "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.236768,
+          "max_abs_yaw_rate_radps": 0.353805,
+          "max_abs_curvature_inv_m": 0.029559,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.201402,
+          "max_abs_yaw_rate_radps": 0.268087,
+          "max_abs_curvature_inv_m": 0.022455,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 65,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "002b00e41a5c9c55e43bb8dc309b08e888fb4388ceb13107166482e7d262e12f"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "87dc430b0397561c",
+        "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.332625,
+          "max_abs_yaw_rate_radps": 0.331087,
+          "max_abs_curvature_inv_m": 0.025313,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.330168,
+          "max_abs_yaw_rate_radps": 0.255419,
+          "max_abs_curvature_inv_m": 0.019595,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 156,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "002d09ae65131aff64521767f5febcedb8c79dfc1db1c66448a65b5ca1ced03e"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "97c8d9bd277c5497",
+        "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.300374,
+          "max_abs_yaw_rate_radps": 0.352244,
+          "max_abs_curvature_inv_m": 0.028864,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.015063,
+          "max_abs_yaw_rate_radps": 0.247992,
+          "max_abs_curvature_inv_m": 0.020402,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 63,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00323719861065da340b39554a779d18aef70016375ce14e4ca9857e6c0f4034"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "3606b3c7132f5f96",
+        "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.237786,
+          "max_abs_yaw_rate_radps": 0.361306,
+          "max_abs_curvature_inv_m": 0.03082,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.196855,
+          "max_abs_yaw_rate_radps": 0.273521,
+          "max_abs_curvature_inv_m": 0.023408,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 466,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00357c31f4676e40384c87f0e970fa7f74f8aaebedf118fc21098b4b6c0654be"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "a090bc2ea0fd523d",
+        "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 4.219837,
+          "max_abs_yaw_rate_radps": 0.364203,
+          "max_abs_curvature_inv_m": 0.03145,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.192808,
+          "max_abs_yaw_rate_radps": 0.276458,
+          "max_abs_curvature_inv_m": 0.023944,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 74,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "003d66f65da9e95be197f01413578116f8769af7c9b9a4b0495f7794c328d5e4"
+      },
+      {
+        "family": "R-HLC",
+        "scenario_token": "f52b69619b04507e",
+        "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "native_source_lane": "18524",
+        "native_target_lane": "18525",
+        "direction": "RIGHT",
+        "geometry_coverage": "PASS_80_FRAME_NO_EXTRAPOLATION",
+        "baseline_engineering": {
+          "max_abs_lateral_accel_mps2": 3.957699,
+          "max_abs_yaw_rate_radps": 0.314458,
+          "max_abs_curvature_inv_m": 0.024994,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "treatment_engineering": {
+          "max_abs_lateral_accel_mps2": 3.018687,
+          "max_abs_yaw_rate_radps": 0.240497,
+          "max_abs_curvature_inv_m": 0.019164,
+          "derivative_time_source": "ACTUAL_PHYSICAL_TIMESTAMPS",
+          "frozen_limits": {
+            "lateral_accel_mps2_max": 6.0,
+            "yaw_rate_radps_max": 1.0,
+            "curvature_inv_m_max": 0.5
+          }
+        },
+        "dynamic_clearance": {
+          "status": "DYNAMIC_CLEARANCE_PASS",
+          "pass": true,
+          "evaluated_actor_states": 177,
+          "first_conflict": null,
+          "config": {
+            "horizon_seconds": 8.0,
+            "nominal_query_dt_seconds": 0.1,
+            "maximum_actor_interpolation_gap_seconds": 0.25,
+            "longitudinal_buffer_m": 3.0,
+            "lateral_buffer_m": 0.5
+          },
+          "envelope": "ORIENTED_FOOTPRINT_COMMON_ENVELOPE_BOTH_ARMS"
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0044dc5887544d1af502a5cb435395a4801c9424c4f7af6772c311e7b5d3ce55"
+      }
+    ],
+    "R-TSB": [
+      {
+        "family": "R-TSB",
+        "scenario_token": "b501014f74205892",
+        "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 5.237173,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19826"
+          ],
+          "route_occurrence_cursor": 3,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "000028c0ff3b695ab7ae6aba47ee349a5101e470215244df3c5ae2869bfe132d"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "0198af1831f65977",
+        "log_id": "2021.09.28.13.24.06_veh-44_02759_02879",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 14.097949,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19818"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "000040bcfd4c4c317c18110a463efbf41b7215f3088e6c97a60894da5db4fd2a"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "042b9dfca2095efd",
+        "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 11.615723,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19812"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0000b6c2dcfdd6779d4ba25f640a3d490e1a8f5740aa4d4e41505db29d1bbe33"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "cf56ddebd44f5372",
+        "log_id": "2021.09.28.19.55.30_veh-44_01744_01819",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 7.615687,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19757",
+            "18149",
+            "19765"
+          ],
+          "route_occurrence_cursor": 5,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0000ca7348296ba6aa85a4a59ad0de1f6c28ce25aaeddc0d7954689a33e7193e"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "d0161e1e56015ad4",
+        "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 2.804257,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "18520",
+            "19953"
+          ],
+          "route_occurrence_cursor": 2,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0000d65da13ddb51ded10be44f2a55b435a23d72d122198f94468a26a546dfea"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "095db0df20635617",
+        "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 12.032529,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19820"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0000f63d67d5be05ea1036a10cf16f95755d0e8091006211af43800621d0feaa"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "56cc8049dee85334",
+        "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 9.567281,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19814",
+            "20072",
+            "19769"
+          ],
+          "route_occurrence_cursor": 0,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00010056a0c379947ee2badc7ef57b468ea090a6a648406f28a04e14beaa1e78"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "0f67192c7dd45664",
+        "log_id": "2021.09.10.15.00.33_veh-45_01265_01432",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 9.698916,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19754"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00015274c442658b7315bb74133d7ba0484724c0623d61ac0d9ce86bf225861a"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "f459252afbd15920",
+        "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 11.638141,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19820"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "000156f57c7b7f8d7c7cf666ffc262d660989e053f1270e4621c31f1c94b95ed"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "04aa6b32e2be5124",
+        "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 13.014209,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19820"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00015dbaeb086b12b8aa6ab292bd22a01104082fbd21ea8769523a3d49ca4d7c"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "ddaf8318a0d85750",
+        "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 9.650099,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "19755"
+          ],
+          "route_occurrence_cursor": 1,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "00019bcf33826ac7e82ccecd7070da5d76e26afac025e1d023a29e09ee49e71b"
+      },
+      {
+        "family": "R-TSB",
+        "scenario_token": "ff7ef3a7f7f15e43",
+        "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+        "official_vehicle_binding": {
+          "status": "OFFICIAL_EGO_FOOTPRINT_BOUND",
+          "length_m": 5.176,
+          "width_m": 2.297,
+          "vehicle_name": "pacifica",
+          "vehicle_type": "gen1",
+          "source": "nuplan.common.actor_state.vehicle_parameters.get_pacifica_parameters",
+          "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/vehicle_parameters.py",
+          "source_file_sha256": "abef0f3869261467dec6d5641d0554efe99d9314d0338ccc77cbc6be9b3705d5",
+          "nuplan_devkit_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+          "generic_fallback_used": false
+        },
+        "replay_observation_horizon": "COMPLETE_80_FRAME_NO_EXTRAPOLATION",
+        "initial_speed_mps": 3.728257,
+        "frozen_speed_floor_mps": 2.0,
+        "native_route": {
+          "builder": "build_native_route_reference_v1_1",
+          "native_edge_ids": [
+            "68574",
+            "69684",
+            "68542"
+          ],
+          "route_occurrence_cursor": 0,
+          "extrapolation_used": false
+        },
+        "context": {
+          "status": "PASS",
+          "stage5d_slot_semantics": "AUTHORITATIVE_STAGE5D_EXACT_PARITY_LANE_AWARE_ONLY",
+          "pre_context_iterations": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "anchor_iteration": 10
+        },
+        "selector_rank_sha256": "0001a309b7831eaf7e30b16321f7308f34fe292a4f4e5c1b6a2cb5173c25e3a0"
+      }
+    ]
+  },
+  "accounting": {
+    "R-HLC": {
+      "status": "TOP_K_DETERMINED_BY_FROZEN_RANK_ORDER",
+      "expensive_eligibility_evaluations_performed": 5291,
+      "eligible_candidates_encountered_before_roster_closure": 12,
+      "failure_counts_among_evaluated_candidates": {
+        "HLC_FROZEN_INTENDED_NATIVE_ADJACENT_LANE_UNAVAILABLE": 2666,
+        "R-HLC_PRETREATMENT_CONSTRUCTION_FAIL:ValueError": 1275,
+        "HLC_FULL_NATIVE_80_FRAME_NO_EXTRAPOLATION_FAIL:ValueError": 450,
+        "HLC_FROZEN_PRE_ROLLOUT_ENGINEERING_LIMIT_FAIL": 885,
+        "HLC_DYNAMIC_CLEARANCE_V1_1_FAIL:DYNAMIC_CLEARANCE_FAIL": 3
+      },
+      "pre_evaluation_cross_family_conflicts": 24,
+      "stopping_rank_sha256": "0044dc5887544d1af502a5cb435395a4801c9424c4f7af6772c311e7b5d3ce55"
+    },
+    "R-TSB": {
+      "status": "TOP_K_DETERMINED_BY_FROZEN_RANK_ORDER",
+      "expensive_eligibility_evaluations_performed": 117,
+      "eligible_candidates_encountered_before_roster_closure": 12,
+      "failure_counts_among_evaluated_candidates": {
+        "TSB_INITIAL_SPEED_BELOW_FROZEN_2P0_MPS": 58,
+        "R-TSB_PRETREATMENT_CONSTRUCTION_FAIL:ValueError": 46,
+        "REPLAY_OBSERVATION_HORIZON_INCOMPLETE": 1
+      },
+      "pre_evaluation_cross_family_conflicts": 1,
+      "stopping_rank_sha256": "0001a309b7831eaf7e30b16321f7308f34fe292a4f4e5c1b6a2cb5173c25e3a0"
+    }
+  },
+  "threshold_changed": false,
+  "manual_identity_replacement": false,
+  "outcome_input_used": false
+}

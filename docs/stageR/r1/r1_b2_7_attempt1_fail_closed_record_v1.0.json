@@ -1,0 +1,39 @@
+{
+  "schema_version": "r1_b2_7_attempt1_fail_closed_record_v1.0",
+  "B2_7_ENUMERATION_ATTEMPT_1": "ABORTED_FAIL_CLOSED_PRE_WRITE",
+  "ROOT_CAUSE": "GLOBAL_DEDUP_IMPLEMENTATION_DEFECT",
+  "frozen_source_contract": {
+    "unique_scenario_tokens": 5386575,
+    "unique_logs": 1621
+  },
+  "attempt_1_per_db_token_occurrences": 5405672,
+  "duplicate_token_occurrences": 19097,
+  "closure": "5405672 - 19097 = 5386575",
+  "byte_identical_duplicate_dbs": [
+    {
+      "sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa",
+      "canonical_representative": "../nuplan/dataset/data/cache/mini/2021.08.17.16.57.11_veh-08_01200_01636.db",
+      "duplicate": "../nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.16.57.11_veh-08_01200_01636.db",
+      "token_occurrence_count": 5952
+    },
+    {
+      "sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51",
+      "canonical_representative": "../nuplan/dataset/data/cache/mini/2021.08.17.17.17.01_veh-45_02314_02798.db",
+      "duplicate": "../nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.17.17.01_veh-45_02314_02798.db",
+      "token_occurrence_count": 6775
+    },
+    {
+      "sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f",
+      "canonical_representative": "../nuplan/dataset/data/cache/mini/2021.08.17.18.54.02_veh-45_00665_01065.db",
+      "duplicate": "../nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.18.54.02_veh-45_00665_01065.db",
+      "token_occurrence_count": 6370
+    }
+  ],
+  "SCIENTIFIC_RESULT": "NONE",
+  "ROSTER": "NOT_FROZEN",
+  "THRESHOLD_CHANGE": "NO",
+  "MANUAL_SELECTION": "NO",
+  "SCIENTIFIC_PROTOCOL_DEVIATION": "NO",
+  "simulation_launched": false,
+  "run_simulation_called": false
+}

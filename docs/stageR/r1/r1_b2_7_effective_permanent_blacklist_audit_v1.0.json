@@ -1,0 +1,223 @@
+{
+  "schema_version": "r1_b2_7_effective_permanent_blacklist_audit_v1.0",
+  "status": "PASS_ADDITIVE_OFFICIAL_UNION_40_IDENTITIES",
+  "match_rule": "EXCLUDE_IF_SCENARIO_TOKEN_OR_LOG_ID_MATCHES",
+  "official_union": {
+    "path": "docs/stageR/r1/r1_official_technical_smoke_permanent_blacklist_v1.0.json",
+    "sha256": "301a95275f9896c09952b592430bc247dbbee28bbca1a6c4f7bebb70eebaf523",
+    "entry_count": 16
+  },
+  "b2_b2_1_frozen_roster_addition": {
+    "path": "docs/stageR/r1/r1_official_technical_smoke_roster_v1.0.json",
+    "sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52",
+    "entry_count": 24
+  },
+  "counts": {
+    "entries": 40,
+    "unique_scenario_tokens": 40,
+    "unique_logs": 40
+  },
+  "entries": [
+    {
+      "scenario_token": "057c831f5acf5c76",
+      "log_id": "2021.09.28.18.57.35_veh-44_01064_01998",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "118dae215aa257e2",
+      "log_id": "2021.09.17.18.16.32_veh-45_01447_01769",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "14f06b5194ff5c85",
+      "log_id": "2021.09.17.14.16.24_veh-45_01972_02284",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "reason": "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+    },
+    {
+      "scenario_token": "2c70dfdf24c55774",
+      "log_id": "2021.09.27.17.52.47_veh-44_02062_02160",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "3edcce9e7e19573f",
+      "log_id": "2021.09.30.17.20.14_veh-44_00422_00647",
+      "reason": "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+    },
+    {
+      "scenario_token": "40816601b19a5ca5",
+      "log_id": "2021.09.28.19.55.30_veh-44_00395_01217",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "512198168cbc55af",
+      "log_id": "2021.09.17.14.49.23_veh-42_00690_00846",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "578993bfc973525e",
+      "log_id": "2021.08.17.16.48.45_veh-43_02070_02652",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "5ab20ff9cc3c5d29",
+      "log_id": "2021.08.20.17.54.47_veh-45_02642_02801",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "5c04df4c02975a77",
+      "log_id": "2021.09.20.18.55.11_veh-08_00069_00483",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "5d3f971cd6ff5a3a",
+      "log_id": "2021.08.19.17.14.40_veh-45_02585_02856",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "63f974504fa15b7d",
+      "log_id": "2021.08.30.16.39.44_veh-45_00866_01142",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "7176d7e077925838",
+      "log_id": "2021.09.23.17.03.56_veh-45_01854_02115",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "75ccfab926d352d0",
+      "log_id": "2021.09.03.17.40.20_veh-42_00950_01784",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "8494670cfa8f5e09",
+      "log_id": "2021.08.19.19.22.25_veh-08_00186_00866",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "84cd23d18b58550f",
+      "log_id": "2021.06.23.16.54.19_veh-35_00808_01256",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "8a9802c7a8755477",
+      "log_id": "2021.09.24.14.23.05_veh-45_02144_02442",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "8e39a64c0e655afb",
+      "log_id": "2021.10.01.19.16.42_veh-28_02011_02410",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "92f1a8a7d00a5632",
+      "log_id": "2021.08.23.14.27.31_veh-45_00895_01001",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "b1f30cb92e7c55e4",
+      "log_id": "2021.09.24.14.23.05_veh-45_00811_01131",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "b486f9cf33a85455",
+      "log_id": "2021.05.12.23.36.44_veh-35_00152_00504",
+      "reason": "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+    },
+    {
+      "scenario_token": "bb5670893b7954be",
+      "log_id": "2021.09.09.18.12.06_veh-42_00446_01239",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "bb5bcc610f3853b7",
+      "log_id": "2021.08.19.17.14.40_veh-45_00298_00804",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "bd57b58eddb55436",
+      "log_id": "2021.08.20.13.00.37_veh-08_02328_02673",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "be449a2b6ad959d8",
+      "log_id": "2021.09.27.17.06.43_veh-44_01765_01929",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "bfdbb19e4ff85027",
+      "log_id": "2021.09.15.17.01.41_veh-45_00425_01226",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "d0fbbbd27a6c5882",
+      "log_id": "2021.09.21.17.53.12_veh-08_02449_02583",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "d1a65b17145f5472",
+      "log_id": "2021.08.27.14.37.47_veh-08_01291_01597",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "d42842ff6aca5f6f",
+      "log_id": "2021.09.23.17.03.56_veh-45_02539_02937",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "dfeffcca2ef05c96",
+      "log_id": "2021.09.20.18.15.46_veh-08_00078_00230",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "e135794d38c1565c",
+      "log_id": "2021.08.23.12.33.24_veh-42_00864_01009",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "reason": "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+    },
+    {
+      "scenario_token": "f464a2a451d85356",
+      "log_id": "2021.08.27.13.08.25_veh-42_00375_01720",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "f5c321c583f95ac5",
+      "log_id": "2021.09.24.14.23.05_veh-45_03426_03612",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "f5f5831fd0c05819",
+      "log_id": "2021.09.21.18.54.31_veh-45_01637_02127",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "f603f5b88813572b",
+      "log_id": "2021.09.20.20.32.00_veh-08_00211_00332",
+      "reason": "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE"
+    },
+    {
+      "scenario_token": "f967188819ef539f",
+      "log_id": "2021.06.23.17.31.36_veh-16_00016_00377",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "fd93956a3f9052dc",
+      "log_id": "2021.08.23.15.14.44_veh-08_00917_01175",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    },
+    {
+      "scenario_token": "ff152a4cf9c4503b",
+      "log_id": "2021.08.25.17.17.57_veh-42_01356_01819",
+      "reason": "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION"
+    }
+  ],
+  "removed_or_replaced_existing_blacklist_entry": false
+}

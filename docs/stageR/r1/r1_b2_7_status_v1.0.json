@@ -1,0 +1,13 @@
+{
+  "schema_version": "r1_b2_7_status_v1.0",
+  "B2_7_SELECTOR_DEDUP_CORRECTION": "COMPLETE",
+  "B2_7_ENUMERATION_ATTEMPT_2": "COMPLETE_AUTHORIZED_ONCE",
+  "FRESH_ROSTER": "FROZEN_PENDING_SMOKE_AUTHORIZATION",
+  "OFFICIAL_SMOKE": "NOT_AUTHORIZED",
+  "NEW_RUN_BUDGET": 0,
+  "RBR_A": "NOT_AUTHORIZED",
+  "RBR_B": "NOT_AUTHORIZED",
+  "RBR_C": "NOT_AUTHORIZED",
+  "simulation_launched": false,
+  "run_simulation_called": false
+}

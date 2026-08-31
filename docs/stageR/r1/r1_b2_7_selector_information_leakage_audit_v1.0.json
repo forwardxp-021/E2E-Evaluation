@@ -1,0 +1,32 @@
+{
+  "schema_version": "r1_b2_7_selector_information_leakage_audit_v1.0",
+  "status": "PASS_NO_OUTCOME_INPUTS",
+  "allowed_inputs": [
+    "scenario DB identity and metadata",
+    "official map",
+    "official route",
+    "original replay ego history",
+    "original replay tracked objects",
+    "official vehicle parameters",
+    "frozen prospective generator geometry",
+    "frozen pre-treatment eligibility contracts"
+  ],
+  "forbidden_inputs_not_read": [
+    "historical pass/fail",
+    "B2.1 outcome",
+    "planner outcome",
+    "mechanism outcome",
+    "F_match",
+    "prior engineering outcome",
+    "safety outcome",
+    "representation",
+    "BDD",
+    "probe",
+    "checkpoint",
+    "RBR"
+  ],
+  "historical_outcome_file_open_count": 0,
+  "future_outcome_available": false,
+  "representation_bdd_probe_checkpoint_rbr_open_count": 0,
+  "simulation_launched": false
+}

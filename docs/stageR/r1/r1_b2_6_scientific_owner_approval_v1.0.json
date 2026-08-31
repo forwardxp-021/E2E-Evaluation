@@ -1,0 +1,20 @@
+{
+  "schema_version": "r1_b2_6_scientific_owner_approval_v1.0",
+  "B2_6_PROSPECTIVE_SCIENTIFIC_AND_EXECUTION_CONTRACTS": "APPROVED_FOR_FRESH_ENUMERATION",
+  "FRESH_OUTCOME_BLIND_ENUMERATION": "AUTHORIZED_ONCE",
+  "NEW_24_IDENTITY_ROSTER_FREEZE": "AUTHORIZED_ONCE",
+  "ROSTER_TARGET": {
+    "unique_identities": 24,
+    "R-HLC": 12,
+    "R-TSB": 12
+  },
+  "OFFICIAL_SMOKE": "NOT_AUTHORIZED_PENDING_ROSTER_REVIEW",
+  "OFFICIAL_SIMULATION": "NOT_AUTHORIZED",
+  "48_RUN_SMOKE": "NOT_AUTHORIZED",
+  "RBR_A": "NOT_AUTHORIZED",
+  "RBR_B": "NOT_AUTHORIZED",
+  "RBR_C": "NOT_AUTHORIZED",
+  "run_simulation_allowed": false,
+  "manual_identity_replacement_allowed": false,
+  "authorization_consumption_rule": "ONE_COMPLETED_OUTCOME_BLIND_ENUMERATION_AND_ONE_24_IDENTITY_FREEZE"
+}

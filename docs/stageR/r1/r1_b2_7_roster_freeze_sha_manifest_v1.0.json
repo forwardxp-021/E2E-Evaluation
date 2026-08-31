@@ -1,0 +1,37 @@
+{
+  "schema_version": "r1_b2_7_roster_freeze_sha_manifest_v1.0",
+  "status": "FROZEN_PENDING_SCIENTIFIC_OWNER_SMOKE_AUTHORIZATION",
+  "corrected_selector": {
+    "path": "tools/r1_future_compliant_smoke_selector_v1_1.py",
+    "sha256": "b830476149ce284e0f36a9d9a3328dbb25d97f96eb74a3afecc063d17c85b32a"
+  },
+  "completed_execution_entrypoint": {
+    "path": "tools/r1_b2_7_freeze_official_smoke_roster_v2_1.py",
+    "sha256": "fdaaf90aeddb0c0a8b1f68f37d75a8fb44345347a1a58284a1df63428fdf34ad"
+  },
+  "selector_contract": {
+    "path": "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v1.1.json",
+    "sha256": "338ee58b9cfaa96b513b506bf5484119bb9f347ba5578826b45205d50f40864c"
+  },
+  "global_dedup_audit": {
+    "path": "docs/stageR/r1/r1_b2_7_global_dedup_audit_v1.0.json",
+    "sha256": "2c33d5ab53e2cd9eae19b57f47145d3841f53ad22b1aeff9211dc408b40c86e8"
+  },
+  "roster": {
+    "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v2.0.json",
+    "sha256": "af672c0aa47eadebc1799dfac611016abad5b280ddd2cd56ab8ed02b605a219f"
+  },
+  "schedule": {
+    "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_schedule_v2.0.json",
+    "sha256": "d449db48aa915b5d605d51ee587aa4d6ee5fa40029eb911fbb2af5b0721fc8c5"
+  },
+  "zero_run_preflight": {
+    "path": "docs/stageR/r1/r1_b2_7_zero_run_roster_preflight_v1.0.json",
+    "sha256": "e19ef482cec737681866f39e3393750c1c5091742aa3122c6013f27e5b75bb2d"
+  },
+  "execution_bindings_canonical_sha256": "005cc00218ed9131a13745aad60898c7a54bf04ad578e1b82ffb2d406f6fec86",
+  "B2_6_final_execution_conformance_manifest_sha256": "1e229718676111160f21ce4de374a222a3be69df5a8fc6de446f22c09f048fe7",
+  "OFFICIAL_SMOKE_AUTHORIZED": false,
+  "NEW_RUN_BUDGET": 0,
+  "simulation_launched": false
+}

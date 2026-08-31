@@ -1,0 +1,80 @@
+{
+  "schema_version": "r1_future_compliant_smoke_selector_contract_v1.1",
+  "status": "FROZEN_FOR_B2_7_R1_ONE_TIME_RERUN",
+  "purpose": "B2_7_R1_GLOBAL_DEDUPLICATION_CORRECTION_AND_COMPUTATIONALLY_EQUIVALENT_LAZY_OUTCOME_BLIND_SELECTION",
+  "supersedes_for_attempt_2_only": {
+    "path": "docs/stageR/r1/r1_future_compliant_smoke_selector_contract_v1.0.json",
+    "sha256": "f1b4b1c588dc9c5fd415163f107d32d3b8110d3c936cef4b70e8ce510126cca5",
+    "attempt_1_result": "ABORTED_FAIL_CLOSED_PRE_WRITE"
+  },
+  "scientific_owner_authorization": {
+    "B2_7_SELECTOR_DEDUP_IMPLEMENTATION_CORRECTION_AND_ONE_TIME_RERUN": "AUTHORIZED_ONCE",
+    "LAZY_RANK_ORDERED_ELIGIBILITY_EVALUATION": "AUTHORIZED_AS_COMPUTATIONALLY_EQUIVALENT_EXECUTION"
+  },
+  "corrected_selector_implementation": "tools/r1_future_compliant_smoke_selector_v1_1.py",
+  "corrected_selector_implementation_sha256": "b830476149ce284e0f36a9d9a3328dbb25d97f96eb74a3afecc063d17c85b32a",
+  "execution_entrypoint": "tools/r1_b2_7_freeze_official_smoke_roster_v2_1.py",
+  "global_dedup_semantics": {
+    "identity_unit": "GLOBAL_UNIQUE_SCENARIO_TOKEN",
+    "frozen_unique_scenario_token_count": 5386575,
+    "frozen_unique_log_count": 1621,
+    "attempt_1_occurrence_count": 5405672,
+    "attempt_1_duplicate_occurrence_count": 19097,
+    "duplicate_db_canonicalization": "FILE_SHA256_GROUP_THEN_FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE",
+    "conflicting_duplicate_identity": "FAIL_CLOSED"
+  },
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "salt_regeneration_allowed": false,
+  "rank_rule": "SHA256(salt_sha256|family|scenario_token|log_id)",
+  "sort_and_tie_break": "ascending hexadecimal rank digest; then scenario_token; then log_id; then anchor timestamp",
+  "execution_order": [
+    "GLOBAL_UNIQUE_SOURCE_METADATA_PREFLIGHT",
+    "ADDITIVE_PERMANENT_BLACKLIST",
+    "FROZEN_SHA_RANKING_ALL_POST_BLACKLIST_CANDIDATES",
+    "RANK_ORDERED_FROZEN_EXPENSIVE_ELIGIBILITY",
+    "STOP_WHEN_TOP_12_PER_FAMILY_IS_MATHEMATICALLY_DETERMINED",
+    "DETERMINISTIC_CROSS_FAMILY_TOKEN_AND_LOG_UNIQUENESS"
+  ],
+  "lazy_execution_equivalence_requirement": "EXACT_MATCH_TO_EXHAUSTIVE_ELIGIBLE_THEN_RANK_TOP_K_ON_SYNTHETIC_PROPERTY_TESTS",
+  "source_universe": {
+    "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+    "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+    "dataset_replacement_allowed": false
+  },
+  "permanent_blacklist": {
+    "match_rule": "EXCLUDE_IF_SCENARIO_TOKEN_OR_LOG_ID_MATCHES",
+    "minimum_unique_identities": 40,
+    "entry_removal_reduction_or_replacement_allowed": false
+  },
+  "selection_inputs_allowlist": [
+    "scenario DB identity and metadata",
+    "official map",
+    "official route",
+    "original replay ego history",
+    "original replay tracked objects",
+    "official vehicle parameters",
+    "frozen prospective generator geometry",
+    "frozen pre-treatment eligibility contracts"
+  ],
+  "frozen_eligibility_implementation": {
+    "path": "tools/r1_b2_7_freeze_official_smoke_roster_v2.py",
+    "sha256": "f7871ca38a48acf6c818704048eee5ddd0d1a825bf136481b560c8437efe8238",
+    "threshold_change_allowed": false,
+    "gate_addition_or_removal_allowed": false
+  },
+  "selection_scope": {
+    "R-HLC": 12,
+    "R-TSB": 12,
+    "unique_scenario_tokens": 24,
+    "unique_logs": 24,
+    "cross_family_collision_resolution": "process R-HLC then R-TSB; skip token or log already used and continue in the same frozen rank order",
+    "manual_identity_selection_or_replacement_allowed": false,
+    "insufficient_status": "INSUFFICIENT_ELIGIBLE_FRESH_IDENTITIES"
+  },
+  "OFFICIAL_SMOKE_AUTHORIZED": false,
+  "NEW_RUN_BUDGET": 0,
+  "OFFICIAL_SIMULATION_AUTHORIZED": false,
+  "RBR_A_B_C_AUTHORIZED": false,
+  "run_simulation_allowed": false
+}

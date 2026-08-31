@@ -1,0 +1,27 @@
+{
+  "schema_version": "r1_b2_7_r1_preflight_operational_correction_v1.0",
+  "status": "COMPLETE_PRE_ELIGIBILITY_OPERATIONAL_CORRECTION",
+  "scope": "ATTEMPT_2_SOURCE_METADATA_PREFLIGHT_ONLY",
+  "initial_fail_closed_condition": "TOKEN_BEARING_CANDIDATE_LOG_COUNT_1576_WAS_COMPARED_TO_FROZEN_INVENTORY_LOG_COUNT_1621",
+  "correction": "GLOBAL_UNIQUE_LOG_COUNT_IS_COMPUTED_FROM_FROZEN_DB_INVENTORY; TOKEN_BEARING_CANDIDATE_LOG_COUNT_IS_REPORTED_SEPARATELY",
+  "expensive_eligibility_evaluations_before_correction": 0,
+  "simulation_launched_before_correction": false,
+  "outcome_input_read_before_correction": false,
+  "scientific_result_before_correction": "NONE",
+  "eligibility_cache_reused": false,
+  "source_metadata_rank_store_reused": true,
+  "source_metadata_rank_store_validation": {
+    "db_inventory_revalidated": true,
+    "occurrence_token_count": 5405672,
+    "duplicate_token_occurrence_count": 19097,
+    "global_unique_scenario_token_count": 5386575,
+    "global_unique_inventory_log_count": 1621,
+    "token_bearing_candidate_log_count": 1576,
+    "conflicting_duplicate_identity_count": 0,
+    "contains_outcome_or_eligibility_fields": false
+  },
+  "selector_core_sha256_unchanged": "b830476149ce284e0f36a9d9a3328dbb25d97f96eb74a3afecc063d17c85b32a",
+  "threshold_change": false,
+  "manual_selection": false,
+  "scientific_protocol_deviation": false
+}
