@@ -1,0 +1,231 @@
+{
+  "schema_version": "r1_b2_8_pre_run_integrity_preflight_v1",
+  "status": "STOP_PRE_SIMULATION",
+  "actual_official_run_count": 0,
+  "official_run_budget_claimed": 0,
+  "checks": [
+    {
+      "name": "SHA_EXACT:roster",
+      "status": "PASS",
+      "detail": {
+        "expected": "af672c0aa47eadebc1799dfac611016abad5b280ddd2cd56ab8ed02b605a219f",
+        "observed": "af672c0aa47eadebc1799dfac611016abad5b280ddd2cd56ab8ed02b605a219f"
+      }
+    },
+    {
+      "name": "SHA_EXACT:schedule",
+      "status": "PASS",
+      "detail": {
+        "expected": "d449db48aa915b5d605d51ee587aa4d6ee5fa40029eb911fbb2af5b0721fc8c5",
+        "observed": "d449db48aa915b5d605d51ee587aa4d6ee5fa40029eb911fbb2af5b0721fc8c5"
+      }
+    },
+    {
+      "name": "SHA_EXACT:selector",
+      "status": "PASS",
+      "detail": {
+        "expected": "b830476149ce284e0f36a9d9a3328dbb25d97f96eb74a3afecc063d17c85b32a",
+        "observed": "b830476149ce284e0f36a9d9a3328dbb25d97f96eb74a3afecc063d17c85b32a"
+      }
+    },
+    {
+      "name": "SHA_EXACT:b2_6_manifest",
+      "status": "PASS",
+      "detail": {
+        "expected": "1e229718676111160f21ce4de374a222a3be69df5a8fc6de446f22c09f048fe7",
+        "observed": "1e229718676111160f21ce4de374a222a3be69df5a8fc6de446f22c09f048fe7"
+      }
+    },
+    {
+      "name": "SHA_EXACT:protected_metrics",
+      "status": "PASS",
+      "detail": {
+        "expected": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+        "observed": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+      }
+    },
+    {
+      "name": "SHA_EXACT:execution_bindings",
+      "status": "PASS",
+      "detail": {
+        "expected": "005cc00218ed9131a13745aad60898c7a54bf04ad578e1b82ffb2d406f6fec86",
+        "observed": "005cc00218ed9131a13745aad60898c7a54bf04ad578e1b82ffb2d406f6fec86"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:OFFICIAL_SMOKE_PLANNER_V2_1",
+      "status": "PASS",
+      "detail": {
+        "schedule": "ef853531f33b3d213c76362601034d8a832c9098e3195f782c1f8be3df65b65a",
+        "manifest": "ef853531f33b3d213c76362601034d8a832c9098e3195f782c1f8be3df65b65a"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:OFFICIAL_SMOKE_EVALUATOR_V2_1",
+      "status": "PASS",
+      "detail": {
+        "schedule": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60",
+        "manifest": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:ABSOLUTE_EPISODE_CLOCK_BINDING",
+      "status": "PASS",
+      "detail": {
+        "schedule": "ac158a85366bad51f854f65af4b5b2cd27ce39337d0fda1259feafa0b47883f0",
+        "manifest": "ac158a85366bad51f854f65af4b5b2cd27ce39337d0fda1259feafa0b47883f0"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:HLC_REALIZED_PROGRESS_V1",
+      "status": "PASS",
+      "detail": {
+        "schedule": "3a81b0c4fa0eafee1d016c459ae55f41a97772f46f3c8c285e3e4cc73b534083",
+        "component_path": "docs/stageR/r1/r1_hlc_realized_progress_contract_v1.0.json",
+        "observed": "3a81b0c4fa0eafee1d016c459ae55f41a97772f46f3c8c285e3e4cc73b534083"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:HLC_TERMINAL_ROUTE_PROGRESS_V1",
+      "status": "PASS",
+      "detail": {
+        "schedule": "9b4399f23d85d8a17a49b758e7d1968128139668f091610a80b3a95b8b7e85be",
+        "component_path": "docs/stageR/r1/r1_hlc_terminal_route_progress_contract_v1.0.json",
+        "observed": "9b4399f23d85d8a17a49b758e7d1968128139668f091610a80b3a95b8b7e85be"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:CONTEXT_V2_1",
+      "status": "PASS",
+      "detail": {
+        "schedule": "6768585915d32ce0b5c98962132c080adc9ec93fe019d247d8d5aadac18747e0",
+        "component_path": "tools/r1_closed_loop_context_adapter_v2_1.py",
+        "observed": "6768585915d32ce0b5c98962132c080adc9ec93fe019d247d8d5aadac18747e0"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:HLC_CLEARANCE_V1_1",
+      "status": "PASS",
+      "detail": {
+        "schedule": "150f0d86a21ee0cbbf257243fb7022b694dd9598d0abd3dbde0a496ddc0e2e60",
+        "component_path": "tools/r1_hlc_dynamic_clearance_v1_1.py",
+        "observed": "150f0d86a21ee0cbbf257243fb7022b694dd9598d0abd3dbde0a496ddc0e2e60"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:HLC_APPLICABILITY_V1_0",
+      "status": "PASS",
+      "detail": {
+        "schedule": "9dfa8d50b8f660a0f4986f191f94afcb9290d50b39b55f1971c6b1529b203499",
+        "component_path": "docs/stageR/r1/r1_hlc_map_geometry_applicability_contract_v1.0.json",
+        "observed": "9dfa8d50b8f660a0f4986f191f94afcb9290d50b39b55f1971c6b1529b203499"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:TSB_APPLICABILITY_V1_0",
+      "status": "PASS",
+      "detail": {
+        "schedule": "8d249dad707b58337029cd24fa825549a9b05dfc5c9b24f5dc9993956fde8cf2",
+        "component_path": "docs/stageR/r1/r1_tsb_mechanism_applicability_contract_v1.0.json",
+        "observed": "8d249dad707b58337029cd24fa825549a9b05dfc5c9b24f5dc9993956fde8cf2"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:OFFICIAL_MAP_BRIDGE",
+      "status": "PASS",
+      "detail": {
+        "schedule": "b6a94138ed6fc7945522d8d3d0deb4207991360977ef4d57494b7cfa2a4d690e",
+        "component_path": "tools/r1_official_map_query_bridge_v2_1.py",
+        "observed": "b6a94138ed6fc7945522d8d3d0deb4207991360977ef4d57494b7cfa2a4d690e"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:OFFICIAL_EGO_FOOTPRINT",
+      "status": "PASS",
+      "detail": {
+        "schedule": "2aee1bf2844499bfcef829156e76b54e88b461c94a2ee6ba8bbde8574d4af735",
+        "component_path": "tools/r1_official_ego_vehicle_binding_v1.py",
+        "observed": "2aee1bf2844499bfcef829156e76b54e88b461c94a2ee6ba8bbde8574d4af735"
+      }
+    },
+    {
+      "name": "BINDING_EXACT:B2_6_FINAL_EXECUTION_CONFORMANCE_MANIFEST",
+      "status": "PASS",
+      "detail": {
+        "schedule": "1e229718676111160f21ce4de374a222a3be69df5a8fc6de446f22c09f048fe7",
+        "component_path": "docs/stageR/r1/r1_b2_6_final_execution_conformance_sha_manifest_v1.0.json",
+        "observed": "1e229718676111160f21ce4de374a222a3be69df5a8fc6de446f22c09f048fe7"
+      }
+    },
+    {
+      "name": "ROSTER_24_UNIQUE_TOKEN_LOG",
+      "status": "PASS",
+      "detail": {
+        "entries": 24,
+        "tokens": 24,
+        "logs": 24
+      }
+    },
+    {
+      "name": "ROSTER_12_PLUS_12_FAMILY",
+      "status": "PASS",
+      "detail": {
+        "hlc": 12,
+        "tsb": 12
+      }
+    },
+    {
+      "name": "SCHEDULE_48_24_PAIRS_EXACT_ARMS",
+      "status": "PASS",
+      "detail": {
+        "runs": 48,
+        "unique_run_ids": 48,
+        "pairs": 24,
+        "pair_arms_ok": true
+      }
+    },
+    {
+      "name": "24_OF_24_DB_MAP_ROUTE_CURRENT_FROZEN_PREFLIGHT",
+      "status": "PASS",
+      "detail": {
+        "prior_entries": 24,
+        "token_set_matches": true
+      }
+    },
+    {
+      "name": "BOUND_OFFICIAL_RUNTIME_PATHS_EXIST",
+      "status": "PASS",
+      "detail": {
+        "python": "/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9",
+        "run_simulation": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/run_simulation.py",
+        "db_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data",
+        "map_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps"
+      }
+    },
+    {
+      "name": "REALIZED_CURRENT_EGO_TRACE_WRITER_BOUND",
+      "status": "FAIL",
+      "detail": {
+        "planner": "tools/r1_official_technical_smoke_planner_v2_1.py",
+        "required": "80 timestamp-preserving realized ego rows"
+      }
+    },
+    {
+      "name": "OFFICIAL_HYDRA_RUNTIME_BINDING_COMPLETE",
+      "status": "FAIL",
+      "detail": {
+        "config": "configs/r1_official_technical_smoke_hydra/planner/r1_official_technical_smoke_v2_1.yaml",
+        "unbound_interpolations": [
+          "future_roster_row: ${future_roster_row}",
+          "runtime_family: ${runtime_family}",
+          "smoke_arm: ${smoke_arm}"
+        ]
+      }
+    }
+  ],
+  "failure_policy_applied": "STOP_PRE_SIMULATION_NO_REPAIR_NO_SCENARIO_CHANGE",
+  "simulation_launched": false,
+  "selector_rerun": "FORBIDDEN_NOT_PERFORMED",
+  "identity_replacement": "FORBIDDEN_NOT_PERFORMED",
+  "threshold_change": "FORBIDDEN_NOT_PERFORMED"
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "r1_b2_8_preflight_operational_correction_v1.0",
+  "classification": "EXECUTION_COMPLETENESS_CORRECTION",
+  "scope": "ZERO_BUDGET_READ_ONLY_PREFLIGHT_ONLY",
+  "supersedes": "docs/stageR/r1/r1_b2_8_pre_run_integrity_preflight_v1.json",
+  "reason": "v1 将 B2.6 manifest 作为全部继承组件 hash 的直接来源；但 B2.7 frozen execution binding 对部分组件绑定的是其独立 contract/implementation 路径。因此 v1 产生了九项错误的 binding failure。",
+  "corrected_artifact": "docs/stageR/r1/r1_b2_8_pre_run_integrity_preflight_v1.1.json",
+  "corrected_result": {
+    "status": "STOP_PRE_SIMULATION",
+    "actual_official_run_count": 0,
+    "official_run_budget_claimed": 0,
+    "remaining_failures": [
+      "REALIZED_CURRENT_EGO_TRACE_WRITER_BOUND",
+      "OFFICIAL_HYDRA_RUNTIME_BINDING_COMPLETE"
+    ]
+  },
+  "frozen_assets_modified": false,
+  "simulation_launched": false,
+  "roster_or_schedule_changed": false,
+  "identity_replacement": false,
+  "retry": false,
+  "threshold_change": false
+}

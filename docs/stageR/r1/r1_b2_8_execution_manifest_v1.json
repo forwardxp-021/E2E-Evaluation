@@ -1,0 +1,17 @@
+{
+  "schema_version": "r1_b2_8_execution_manifest_v1",
+  "status": "STOP_PRE_SIMULATION",
+  "stopped_reason": "PRE_RUN_INTEGRITY_FAILURE",
+  "actual_official_run_count": 0,
+  "authorized_run_budget": 48,
+  "consumed_run_budget": 0,
+  "technical_failure_count": 0,
+  "official_simulator_started": false,
+  "retry_occurred": false,
+  "identity_changed": false,
+  "threshold_changed": false,
+  "raw_output_directory": null,
+  "raw_output_directory_committed": false,
+  "R1_FORMAL_DEVELOPMENT_ROSTER": "NOT_AUTHORIZED_PENDING_SCIENTIFIC_OWNER_REVIEW",
+  "RBR_A_B_C": "NOT_AUTHORIZED"
+}

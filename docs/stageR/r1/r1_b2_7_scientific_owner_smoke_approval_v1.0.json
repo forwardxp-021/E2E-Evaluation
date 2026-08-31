@@ -1,0 +1,20 @@
+{
+  "schema_version": "r1_b2_7_scientific_owner_smoke_approval_v1.0",
+  "OFFICIAL_SMOKE": "AUTHORIZED_ONCE",
+  "NEW_RUN_BUDGET": 48,
+  "remote_baseline_commit": "cd0e7793f532407094c7876dc65d36f2f1814587",
+  "binding": {
+    "roster_sha256": "af672c0aa47eadebc1799dfac611016abad5b280ddd2cd56ab8ed02b605a219f",
+    "schedule_sha256": "d449db48aa915b5d605d51ee587aa4d6ee5fa40029eb911fbb2af5b0721fc8c5",
+    "selector_sha256": "b830476149ce284e0f36a9d9a3328dbb25d97f96eb74a3afecc063d17c85b32a",
+    "execution_bindings_canonical_sha256": "005cc00218ed9131a13745aad60898c7a54bf04ad578e1b82ffb2d406f6fec86",
+    "b2_6_execution_conformance_manifest_sha256": "1e229718676111160f21ce4de374a222a3be69df5a8fc6de446f22c09f048fe7"
+  },
+  "ROSTER_MUTABLE": false,
+  "SCHEDULE_MUTABLE": false,
+  "IDENTITY_REPLACEMENT_ALLOWED": false,
+  "RETRY_ALLOWED": false,
+  "THRESHOLD_CHANGE_ALLOWED": false,
+  "RBR_AUTHORIZED": false,
+  "authorization_consumed": false
+}
