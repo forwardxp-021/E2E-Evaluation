@@ -1,0 +1,502 @@
+{
+  "schema_version": "r1_b2_8_r3_1_final_zero_run_regression_v1.0",
+  "status": "48_OF_48_PASS_ZERO_RUN_NO_SIMULATION",
+  "runs": [
+    {
+      "run_id": "R1B27-01-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-01-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-01-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-01-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-02-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-02-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-03-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-03-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-04-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-04-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-05-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-05-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-06-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-06-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-07-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-07-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-08-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-08-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-09-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-09-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-10-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-10-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-11-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-11-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-12-R-HLC-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-12-R-HLC-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-13-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-13-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-14-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-14-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-15-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-15-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-16-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-16-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-17-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-17-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-18-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-18-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-19-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-19-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-20-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-20-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-21-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-21-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-22-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-22-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-23-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-23-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-BASELINE",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-24-R-TSB-BASELINE/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-TREATMENT",
+      "trace_path": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r3_1_zero_run_bfzw_nvk/R1B27-24-R-TSB-TREATMENT/trace",
+      "exact_resolution": 1,
+      "full_hydra_config_resolved": true,
+      "simulation_runner_construction": "PASS",
+      "simulation_started": false,
+      "primary_trace_contract": "REALIZED_CURRENT_EGO_ITERATIONS_0_79_ONLY",
+      "raw_iteration_ge_80": "SECONDARY_NON_PRIMARY_TRACE_ONLY"
+    }
+  ],
+  "counts": {
+    "exact_resolution": 48,
+    "full_hydra": 48,
+    "simulation_runner_construction": 48
+  },
+  "trace_contract": "exact_realized_window_v1_1 authoritative: primary iterations 0...79; >=80 secondary only",
+  "safety_adapter_binding": "PASS",
+  "post_run_evaluator_dispatcher_binding": "PASS",
+  "ledger_dry_run": {
+    "claims_1_to_48": "PASS",
+    "claim_49": "HARD_FAIL_BEFORE_SIMULATOR_START",
+    "consumed_budget": 0
+  },
+  "simulation_started": false,
+  "official_runs": 0,
+  "consumed_budget": 0
+}

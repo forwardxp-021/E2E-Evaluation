@@ -1,0 +1,24 @@
+{
+  "schema_version": "r1_b2_8_r3_1_scientific_owner_approval_record_v1.0",
+  "status": "R3_APPROVAL_RECORDED_IMMUTABLE_R3_1_WIRING_ONLY",
+  "approved": {
+    "selector_v1_2": true,
+    "roster_v2_1": true,
+    "schedule_v2_1": true,
+    "official_exact_resolution_24_of_24": true,
+    "full_hydra_composition_48_of_48": true,
+    "simulation_runner_construction_48_of_48": true
+  },
+  "immutable_scientific_identity": {
+    "roster_path": "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v2.1.json",
+    "roster_sha256": "b977b802a7b25f0be37d04f3277cba2b2e98e521a2e30938ec40af9f278c1973",
+    "schedule_path": "docs/stageR/r1/r1_official_compliant_technical_smoke_schedule_v2.1.json",
+    "schedule_sha256": "6733dc623cce2e2b64b9eb71cd407982b54dcaf5ecd48b644058c767c89d552f",
+    "reselection_permitted_for_pre_run_integration_issue": false
+  },
+  "authorization": {
+    "OFFICIAL_SIMULATION": "NOT_AUTHORIZED",
+    "NEW_RUN_BUDGET": 0,
+    "RBR_A_B_C": "NOT_AUTHORIZED"
+  }
+}

@@ -1,5 +1,34 @@
 # E2E-Evaluation 项目快速参考
 
+## StageR / R1 B2.8-R3.1 — 最终执行 SHA 与 safety/evaluator 接线冻结
+
+### 1. 命令
+
+只在新的版本化结果文件尚不存在时，执行最终零运行回归；它会构造 48 个 `SimulationRunner`，但严格在任何 simulation start、step 或 rollout 前停止：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_8_r3_1_final_zero_run_regression.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_8_r3_launch_freeze.py \
+  tests/test_r1_b2_8_r3_1_final_binding.py
+```
+
+### 2. 期望行为
+
+- 复核 immutable roster v2.1 / schedule v2.1 的 SHA，对已冻结 48 run 完成精确 scenario resolution、完整 Hydra composition 与 `SimulationRunner` 构造；
+- 复用历史冻结的 nuPlan collision/drivable-area canonicalizer，并用版本化 adapter 将实际 metric-engine Parquet 输出交给 V2.1 evaluator；
+- Primary trace 只读取 `REALIZED_CURRENT_EGO` 的 iteration 0...79；任何 iteration >=80 仅保留为 secondary、non-primary raw trace；
+- 不重新枚举、不重新选择身份、不启动 simulation、不消费预算、不训练或运行 RBR。
+
+### 3. 通过标准
+
+- final manifest 状态为 `FROZEN_READY_FOR_SCIENTIFIC_OWNER_48_RUN_AUTHORIZATION`；
+- 48/48 exact resolution、48/48 Hydra 与 48/48 runner construction 均通过，49th dry claim 在 simulator start 前失败；
+- safety adapter 与 post-run evaluator dispatcher 均已 SHA-bind，80/81/100 行 trace 的 primary 0...79 提取通过，primary window 内缺失、重复或时间不单调失败；
+- `OFFICIAL_SMOKE_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RBR_A/B/C=NOT_AUTHORIZED`，actual official runs 与 consumed budget 均为 0。
+
 ## StageR / R1 B2.4 — Final Prospective Contract Conformance Freeze
 
 ### 1. 命令
