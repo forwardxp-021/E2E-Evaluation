@@ -1,0 +1,32 @@
+{
+  "schema_version": "r1_official_execution_ineligible_identity_ledger_v1.0",
+  "status": "PRE_RUN_EXECUTION_ELIGIBILITY_ONLY",
+  "historical_outcome_blacklist": false,
+  "entries": [
+    {
+      "scenario_token": "a6e0468e028357de",
+      "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+      "reason": "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+      "source": "docs/stageR/r1/r1_b2_8_r3_four_token_resolution_forensic_v1.0.json"
+    },
+    {
+      "scenario_token": "0198af1831f65977",
+      "log_id": "2021.09.28.13.24.06_veh-44_02759_02879",
+      "reason": "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+      "source": "docs/stageR/r1/r1_b2_8_r3_four_token_resolution_forensic_v1.0.json"
+    },
+    {
+      "scenario_token": "cf56ddebd44f5372",
+      "log_id": "2021.09.28.19.55.30_veh-44_01744_01819",
+      "reason": "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+      "source": "docs/stageR/r1/r1_b2_8_r3_four_token_resolution_forensic_v1.0.json"
+    },
+    {
+      "scenario_token": "0f67192c7dd45664",
+      "log_id": "2021.09.10.15.00.33_veh-45_01265_01432",
+      "reason": "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+      "source": "docs/stageR/r1/r1_b2_8_r3_four_token_resolution_forensic_v1.0.json"
+    }
+  ],
+  "simulation_started": false
+}

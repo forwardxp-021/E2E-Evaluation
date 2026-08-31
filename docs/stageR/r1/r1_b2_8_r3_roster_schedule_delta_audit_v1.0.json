@@ -1,0 +1,262 @@
+{
+  "schema_version": "r1_b2_8_r3_roster_schedule_delta_audit_v1.0",
+  "v2_0_status": "SUPERSEDED_PROSPECTIVELY_BEFORE_ANY_OFFICIAL_RUN",
+  "v2_1_status": "FROZEN_AFTER_PRE_RUN_EXECUTION_ELIGIBILITY_AMENDMENT",
+  "manual_identity_replacement": false,
+  "outcome_information_used": false,
+  "threshold_changed": false,
+  "salt_changed": false,
+  "ranking_rule_changed": false,
+  "identities": [
+    {
+      "scenario_token": "a6e0468e028357de",
+      "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+      "status": "REMOVED_EXECUTION_INELIGIBLE"
+    },
+    {
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "b501014f74205892",
+      "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "0198af1831f65977",
+      "log_id": "2021.09.28.13.24.06_veh-44_02759_02879",
+      "status": "REMOVED_EXECUTION_INELIGIBLE"
+    },
+    {
+      "scenario_token": "042b9dfca2095efd",
+      "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "cf56ddebd44f5372",
+      "log_id": "2021.09.28.19.55.30_veh-44_01744_01819",
+      "status": "REMOVED_EXECUTION_INELIGIBLE"
+    },
+    {
+      "scenario_token": "d0161e1e56015ad4",
+      "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "095db0df20635617",
+      "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "56cc8049dee85334",
+      "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "0f67192c7dd45664",
+      "log_id": "2021.09.10.15.00.33_veh-45_01265_01432",
+      "status": "REMOVED_EXECUTION_INELIGIBLE"
+    },
+    {
+      "scenario_token": "f459252afbd15920",
+      "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "04aa6b32e2be5124",
+      "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "ddaf8318a0d85750",
+      "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "ff7ef3a7f7f15e43",
+      "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+      "status": "RETAINED"
+    },
+    {
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "status": "NEWLY_SELECTED_BY_FROZEN_RANK_ORDER"
+    },
+    {
+      "scenario_token": "a99149d402545c4b",
+      "log_id": "2021.09.02.14.10.27_veh-08_00168_00649",
+      "status": "NEWLY_SELECTED_BY_FROZEN_RANK_ORDER"
+    },
+    {
+      "scenario_token": "49e7a60a807f58e8",
+      "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+      "status": "NEWLY_SELECTED_BY_FROZEN_RANK_ORDER"
+    },
+    {
+      "scenario_token": "16facbeedddc5425",
+      "log_id": "2021.08.31.14.55.32_veh-08_01493_01713",
+      "status": "NEWLY_SELECTED_BY_FROZEN_RANK_ORDER"
+    }
+  ],
+  "lazy_accounting": {
+    "source": {
+      "schema_version": "r1_b2_7_global_dedup_audit_v1.0",
+      "status": "PASS_GLOBAL_UNIQUE_SOURCE_PREFLIGHT",
+      "identity_unit": "GLOBAL_UNIQUE_SCENARIO_TOKEN",
+      "occurrence_token_count": 5405672,
+      "duplicate_token_occurrence_count": 19097,
+      "global_unique_scenario_token_count": 5386575,
+      "global_unique_log_count": 1621,
+      "token_bearing_candidate_log_count": 1576,
+      "closure": "5405672 - 19097 = 5386575",
+      "duplicate_db_groups": [
+        {
+          "sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa",
+          "canonical_representative": {
+            "partition": "mini",
+            "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.17.16.57.11_veh-08_01200_01636.db",
+            "db_file": "2021.08.17.16.57.11_veh-08_01200_01636.db",
+            "db_sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa"
+          },
+          "duplicate_occurrences": [
+            {
+              "partition": "train_pittsburgh",
+              "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.16.57.11_veh-08_01200_01636.db",
+              "db_file": "2021.08.17.16.57.11_veh-08_01200_01636.db",
+              "db_sha256": "0faf41968a83fc4184d9a9d131eb881007861a1dace9eeb750364517c6c7c1fa"
+            }
+          ],
+          "token_occurrence_count_per_db": 5952,
+          "collapsed_duplicate_token_occurrences": 5952,
+          "canonicalization_rule": "FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE"
+        },
+        {
+          "sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f",
+          "canonical_representative": {
+            "partition": "mini",
+            "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.17.18.54.02_veh-45_00665_01065.db",
+            "db_file": "2021.08.17.18.54.02_veh-45_00665_01065.db",
+            "db_sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f"
+          },
+          "duplicate_occurrences": [
+            {
+              "partition": "train_pittsburgh",
+              "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.18.54.02_veh-45_00665_01065.db",
+              "db_file": "2021.08.17.18.54.02_veh-45_00665_01065.db",
+              "db_sha256": "35534af5a54ab7e0cb06abbf92fba206261b4891555a35b6689cc5528415124f"
+            }
+          ],
+          "token_occurrence_count_per_db": 6370,
+          "collapsed_duplicate_token_occurrences": 6370,
+          "canonicalization_rule": "FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE"
+        },
+        {
+          "sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51",
+          "canonical_representative": {
+            "partition": "mini",
+            "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.17.17.17.01_veh-45_02314_02798.db",
+            "db_file": "2021.08.17.17.17.01_veh-45_02314_02798.db",
+            "db_sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51"
+          },
+          "duplicate_occurrences": [
+            {
+              "partition": "train_pittsburgh",
+              "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.17.17.01_veh-45_02314_02798.db",
+              "db_file": "2021.08.17.17.17.01_veh-45_02314_02798.db",
+              "db_sha256": "bcedc2dca83c7600a52b31881fc8b71ed5a1b8bd51ef0d7a6788a71ab5114c51"
+            }
+          ],
+          "token_occurrence_count_per_db": 6775,
+          "collapsed_duplicate_token_occurrences": 6775,
+          "canonicalization_rule": "FROZEN_INVENTORY_ORDER_FIRST_OCCURRENCE"
+        }
+      ],
+      "conflicting_duplicate_identity_count": 0,
+      "post_blacklist_candidate_count": 5161344,
+      "source_contract_path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+      "source_contract_sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+      "source_root_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489",
+      "source_metadata_store_reused_after_pre_eligibility_fail_closed_correction": false
+    },
+    "family": {
+      "R-HLC": {
+        "status": "TOP_K_DETERMINED_BY_FROZEN_RANK_ORDER",
+        "expensive_eligibility_evaluations_performed": 6305,
+        "eligible_candidates_encountered_before_roster_closure": 12,
+        "failure_counts_among_evaluated_candidates": {
+          "HLC_FROZEN_INTENDED_NATIVE_ADJACENT_LANE_UNAVAILABLE": 2451,
+          "EXECUTION_INELIGIBLE": 1436,
+          "R-HLC_PRETREATMENT_CONSTRUCTION_FAIL:ValueError": 1108,
+          "HLC_FROZEN_PRE_ROLLOUT_ENGINEERING_LIMIT_FAIL": 878,
+          "HLC_FULL_NATIVE_80_FRAME_NO_EXTRAPOLATION_FAIL:ValueError": 419,
+          "HLC_DYNAMIC_CLEARANCE_V1_1_FAIL:DYNAMIC_CLEARANCE_FAIL": 1
+        },
+        "pre_evaluation_cross_family_conflicts": 29,
+        "stopping_rank_sha256": "00518fa939591cc891611a926c164d8b2fa577dd320b8f26fb19b7e1b51269c8"
+      },
+      "R-TSB": {
+        "status": "TOP_K_DETERMINED_BY_FROZEN_RANK_ORDER",
+        "expensive_eligibility_evaluations_performed": 135,
+        "eligible_candidates_encountered_before_roster_closure": 12,
+        "failure_counts_among_evaluated_candidates": {
+          "EXECUTION_INELIGIBLE": 39,
+          "TSB_INITIAL_SPEED_BELOW_FROZEN_2P0_MPS": 49,
+          "R-TSB_PRETREATMENT_CONSTRUCTION_FAIL:ValueError": 35
+        },
+        "pre_evaluation_cross_family_conflicts": 1,
+        "stopping_rank_sha256": "0001ce7a8d910aabf8dafd4bc9fa1d7370e6bfd417234817c15b4a592feb3ce4"
+      }
+    }
+  }
+}
