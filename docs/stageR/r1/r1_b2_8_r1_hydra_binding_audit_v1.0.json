@@ -1,0 +1,584 @@
+{
+  "schema_version": "r1_b2_8_r1_hydra_binding_audit_v1.0",
+  "status": "48_OF_48_HYDRA_FROZEN_RUN_BINDING_PASS",
+  "composition_count": 48,
+  "rows": [
+    {
+      "run_id": "R1B27-01-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-01-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-01-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-01-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-01-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-01-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-02-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-02-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-02-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-02-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-03-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-03-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-03-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-03-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-04-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-04-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-04-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-04-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-05-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-05-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-05-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-05-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-06-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-06-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-06-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-06-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-07-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-07-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-07-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-07-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-08-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-08-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-08-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-08-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-09-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-09-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-09-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-09-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-10-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-10-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-10-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-10-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-11-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-11-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-11-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-11-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-12-R-HLC-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-12-R-HLC-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-12-R-HLC-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-12-R-HLC-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-13-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-13-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-13-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-13-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-14-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-14-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-14-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-14-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-15-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-15-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-15-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-15-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-16-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-16-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-16-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-16-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-17-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-17-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-17-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-17-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-18-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-18-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-18-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-18-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-19-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-19-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-19-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-19-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-20-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-20-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-20-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-20-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-21-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-21-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-21-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-21-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-22-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-22-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-22-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-22-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-23-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-23-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-23-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-23-R-TSB-TREATMENT"
+      }
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-BASELINE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-24-R-TSB-BASELINE",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-24-R-TSB-BASELINE"
+      }
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-TREATMENT",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "resolved": {
+        "_target_": "tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding",
+        "binding_manifest_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json",
+        "run_id": "R1B27-24-R-TSB-TREATMENT",
+        "trace_dir": "/var/folders/ff/nrwy7mbs7sx446pf_g31srmc0000gn/T/r1_b2_8_r1_hydra_b8pnsafv/R1B27-24-R-TSB-TREATMENT"
+      }
+    }
+  ],
+  "official_simulation_started": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": "r1_b2_8_r1_scientific_schedule_identity_audit_v1.0",
+  "status": "EXACT_IDENTICAL_V2_0_SCIENTIFIC_RUN_ROWS",
+  "schedule_wrapper_created": false,
+  "scientific_schedule_path": "docs/stageR/r1/r1_official_compliant_technical_smoke_schedule_v2.0.json",
+  "scientific_schedule_sha256": "d449db48aa915b5d605d51ee587aa4d6ee5fa40029eb911fbb2af5b0721fc8c5",
+  "compared_fields": [
+    "run_id",
+    "pair_id",
+    "family",
+    "scenario_token",
+    "log_id",
+    "arm",
+    "run_order"
+  ],
+  "run_count": 48,
+  "all_48_exact": true,
+  "identity_replacement": false,
+  "threshold_change": false
+}

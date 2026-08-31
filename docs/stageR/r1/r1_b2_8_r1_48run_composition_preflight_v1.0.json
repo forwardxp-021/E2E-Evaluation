@@ -1,0 +1,296 @@
+{
+  "schema_version": "r1_b2_8_r1_48run_composition_preflight_v1.0",
+  "status": "48_OF_48_HYDRA_FROZEN_RUN_BINDING_PASS",
+  "runs": [
+    {
+      "run_id": "R1B27-01-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-01-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-BASELINE",
+      "family": "R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-TREATMENT",
+      "family": "R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-BASELINE",
+      "family": "R-TSB",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-TREATMENT",
+      "family": "R-TSB",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "status": "HYDRA_FROZEN_RUN_BINDING_PASS"
+    }
+  ],
+  "scientific_schedule_mutated": false,
+  "official_simulation_started": false
+}

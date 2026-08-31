@@ -1,0 +1,5 @@
+r1_official_technical_smoke_v2_2:
+  _target_: tools.r1_b2_8_r1_frozen_run_dispatcher.build_planner_from_frozen_binding
+  binding_manifest_path: ${oc.env:R1_B2_8_R1_BINDING_MANIFEST}
+  run_id: ${oc.env:R1_B2_8_R1_RUN_ID}
+  trace_dir: ${oc.env:R1_B2_8_R1_TRACE_DIR}

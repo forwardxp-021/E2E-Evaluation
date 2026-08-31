@@ -1,0 +1,44 @@
+{
+  "schema_version": "r1_b2_8_r1_zero_run_complete_path_preflight_v1.0",
+  "PRE_RUN_INTEGRITY": "PASS_COMPLETE_EXECUTION_PATH_ZERO_RUN",
+  "actual_official_runs": 0,
+  "consumed_budget": 0,
+  "checks": {
+    "REALIZED_CURRENT_EGO_TRACE_WRITER_BOUND": true,
+    "REALIZED_CURRENT_EGO_TRACE_CONTRACT": true,
+    "OFFICIAL_HYDRA_RUNTIME_BINDING_COMPLETE": true,
+    "48_OF_48_HYDRA_COMPOSITION": true,
+    "48_OF_48_FROZEN_ROW_BINDING": true,
+    "PLANNED_PRIMARY_FORBIDDEN": true,
+    "REALIZED_TRACE_80_ROW_FAIL_CLOSED_TESTS": true,
+    "EXECUTION_COMPONENT_SHA_CLOSURE": true,
+    "SCIENTIFIC_RUN_ROWS_V2_0_VS_NEW": "EXACT_IDENTICAL",
+    "PROTECTED_CSV_SHA256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+  },
+  "planner_core_v2_1_modified": false,
+  "planner_v2_2_instrumentation_parity": [
+    {
+      "family": "R-HLC",
+      "scenario_token": "a6e0468e028357de",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "iterations_compared": 80,
+      "trajectory_state_exact_equal": true,
+      "realized_trace_rows": 80,
+      "trace_primary_source": "REALIZED_CURRENT_EGO",
+      "trace_timestamp_preserved": true
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "b501014f74205892",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "iterations_compared": 80,
+      "trajectory_state_exact_equal": true,
+      "realized_trace_rows": 80,
+      "trace_primary_source": "REALIZED_CURRENT_EGO",
+      "trace_timestamp_preserved": true
+    }
+  ],
+  "OFFICIAL_SMOKE_AUTHORIZED": false,
+  "NEW_EXECUTION_RUN_BUDGET": 0,
+  "RBR_AUTHORIZED": false
+}
