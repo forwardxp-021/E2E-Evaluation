@@ -1,0 +1,19 @@
+{
+  "schema_version": "r1_b2_8_r2_official_launch_execution_binding_manifest_v1.0",
+  "status": "INCOMPLETE_FAIL_CLOSED",
+  "reason": "4 个冻结 scenario_token 在 bound nuPlan 1.2.2 官方查询中为 0 match；禁止 replacement。",
+  "inherited_b2_8_r1_binding_manifest_sha256": "ad11ef4e4c2f304f01579cb73cdce61732939aaf377b3a0e66f5f0676cd1da59",
+  "components_sha256": {
+    "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v2.0.json": "af672c0aa47eadebc1799dfac611016abad5b280ddd2cd56ab8ed02b605a219f",
+    "docs/stageR/r1/r1_official_compliant_technical_smoke_schedule_v2.0.json": "d449db48aa915b5d605d51ee587aa4d6ee5fa40029eb911fbb2af5b0721fc8c5",
+    "tools/r1_b2_8_r1_frozen_run_dispatcher.py": "20185b08f4065a2aa44ecc241b009b5d4c1cff4e08d6306e670e17768f3dcb3d",
+    "tools/r1_official_technical_smoke_planner_v2_2.py": "61b23f41d2b0046cdc7983fee38515a1ba9503db9776dfb5cc09ca335a83d9bf",
+    "configs/r1_official_technical_smoke_hydra/planner/r1_official_technical_smoke_v2_2.yaml": "17ef9fdeb81d9cdf504bb2b31ccaa13a3c661b6176aae0a896eab25a8d00d9f2",
+    "tools/stage7_m6_4b_run_locked_rollouts.py": "ef0026b3cc20942846035ac23d0d16d616a3d7dd6675e9a0f9c2612871d7fb06",
+    "tools/r1_official_technical_smoke_evaluator_v2_1.py": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60",
+    "docs/stageR/r1/r1_b2_8_r1_execution_bindings_manifest_v1.0.json": "ad11ef4e4c2f304f01579cb73cdce61732939aaf377b3a0e66f5f0676cd1da59"
+  },
+  "simulation_started": false,
+  "official_runs": 0,
+  "consumed_budget": 0
+}

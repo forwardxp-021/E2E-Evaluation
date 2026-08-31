@@ -1,0 +1,19 @@
+{
+  "schema_version": "r1_b2_8_r1_scientific_owner_approval_v1.0",
+  "status": "RECORDED",
+  "approved": {
+    "REALIZED_CURRENT_EGO_SEMANTICS": true,
+    "PLANNER_V2_2_PASSIVE_INSTRUMENTATION": true,
+    "V2_1_V2_2_TRAJECTORY_PARITY": true,
+    "HYDRA_PLANNER_BINDING_48_OF_48": true,
+    "SCIENTIFIC_SCHEDULE_IDENTITY": true
+  },
+  "not_verified": {
+    "FULL_OFFICIAL_RUN_SIMULATION_LAUNCH_BINDING": true
+  },
+  "scope": "B2.8-R1 仅实例化 planner-side Hydra/runtime wiring，未构造 official nuPlan scenario 或 simulator。",
+  "authorization": {
+    "OFFICIAL_SIMULATION": false,
+    "NEW_RUN_BUDGET": 0
+  }
+}

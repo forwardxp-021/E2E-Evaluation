@@ -10418,3 +10418,26 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - preflight 通过真实 nuPlan 1.2.2 `PlannerInput` 连续调用公开 dispatch，验证 state0 identity、absolute clock、construction parity、route builder 与 phase persistence，但不得启动 simulation。
 - selector v0.7 只能记为 `READY_FOR_FINAL_SCIENTIFIC_OWNER_ENUMERATION_AUTHORIZATION`，同时保持 `actual_candidates_enumerated=0`、`actual_roster_selected=false`、`enumeration_authorized=false`、`new_rollout_authorized=false`。
 - 本阶段完成后停止：`ENUMERATION=NOT_AUTHORIZED`、`NEW_ROLLOUT=NOT_AUTHORIZED`、`R1_FORMAL_DEVELOPMENT_ROSTER=NOT_READY`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.8-R2 官方启动控制面 fail-closed 核验
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_8_r2_official_launch_fail_closed_audit.py --write
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_8_r2_official_launch_fail_closed.py
+```
+
+### 2. 期望行为
+
+- 仅使用已绑定的 nuPlan 1.2.2 官方 `get_scenarios_from_db` 路径核验每个冻结 `scenario_token + log_id`；不会调用 `run_simulation.py`、`SimulationRunner.run()`、`simulation.step()` 或 planner rollout。
+- 为 48 个冻结 run 生成完整的未来启动参数与唯一输出路径；若任意官方场景解析不是恰好一个，立即 fail-closed，后续 Hydra composition 与 SimulationRunner construction 均不执行。
+- 写入 owner approval record、launch manifest、execution binding manifest 与中文阻断报告；不会修改 roster、schedule、selector、阈值或任何实验产物。
+
+### 3. 通过标准
+
+- 只有 `48_OF_48` exact official scenario resolution 才能继续执行完整 Hydra composition 和 SimulationRunner construction。
+- 任一 `0 match` 或 `>1 match` 必须保持 `simulation_started=false`、`official_runs=0`、`consumed_budget=0`，不得 replacement。
