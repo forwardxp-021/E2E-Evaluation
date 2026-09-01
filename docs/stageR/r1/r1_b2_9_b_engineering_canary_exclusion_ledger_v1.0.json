@@ -1,0 +1,36 @@
+{
+  "schema_version": "r1_b2_9_b_engineering_canary_exclusion_ledger_v1.0",
+  "status": "PERMANENT_EXCLUSION_FROZEN",
+  "entries": [
+    {
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "NON_SCIENTIFIC_ENGINEERING_ONLY": true,
+      "future_selector_exclusion": "PERMANENT"
+    },
+    {
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "NON_SCIENTIFIC_ENGINEERING_ONLY": true,
+      "future_selector_exclusion": "PERMANENT"
+    },
+    {
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "NON_SCIENTIFIC_ENGINEERING_ONLY": true,
+      "future_selector_exclusion": "PERMANENT"
+    }
+  ],
+  "forbidden_uses": [
+    "scientific evidence",
+    "threshold tuning",
+    "HLC mechanism tuning",
+    "F_match tuning",
+    "safety tuning",
+    "future scientific identity selection"
+  ],
+  "allowed_use": "TECHNICAL_RUNTIME_IMPLEMENTATION_REPAIR_ONLY"
+}

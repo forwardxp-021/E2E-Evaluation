@@ -1,0 +1,1722 @@
+{
+  "schema_version": "r1_b2_9_b_engineering_canary_run_ledger_v1.0",
+  "status": "ROUTE_CONTINUOUS_ENGINEERING_CANARY_PASS",
+  "track": "NON_SCIENTIFIC_ENGINEERING_ONLY",
+  "nominal_rolling_preflight": {
+    "schema_version": "r1_b2_9_b_canary_nominal_rolling_audit_v1",
+    "status": "3_OF_3_ROLLING_REPLAN_FULL_PRIMARY_WINDOW_COVERAGE_PASS",
+    "diagnostic_only": false,
+    "simulation_started": false,
+    "counts": {
+      "identities": 3,
+      "coverage_pass": 3,
+      "coverage_fail": 0,
+      "topology_ambiguity": 0
+    },
+    "entries": [
+      {
+        "scenario_token": "b1be12bca092597a",
+        "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+        "status": "PASS",
+        "topology_ambiguity": false,
+        "arms": [
+          {
+            "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+            "status": "PASS",
+            "iterations_passed": 80,
+            "minimum_source_margin_m": 1.0952397927327837,
+            "minimum_target_margin_m": 1.1114780465154723,
+            "iteration_0": {
+              "iteration_index": 0,
+              "source_total_length_m": 145.38099317720324,
+              "target_total_length_m": 145.55582470498388,
+              "source_current_arc_m": 8.916313124406177,
+              "target_current_arc_m": 9.045989264638953,
+              "source_requested_max_arc_m": 103.57502162440618,
+              "target_requested_max_arc_m": 103.70469776463895,
+              "source_remaining_margin_m": 41.80597155279706,
+              "target_remaining_margin_m": 41.85112694034491,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "iteration_79": {
+              "iteration_index": 79,
+              "source_total_length_m": 282.0691398763611,
+              "target_total_length_m": 274.28917340375114,
+              "source_current_arc_m": 103.54255388629262,
+              "target_current_arc_m": 103.7051296172131,
+              "source_requested_max_arc_m": 198.20126238629263,
+              "target_requested_max_arc_m": 198.3638381172131,
+              "source_remaining_margin_m": 83.86787749006844,
+              "target_remaining_margin_m": 75.92533528653802,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20156",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.030033898879804,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18516",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 112.65811280027839,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20157",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.00929728186685,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18517",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 104.72405141690082,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20156",
+                      "target_edge_id": "20157",
+                      "source_roadblock_id": "19463",
+                      "target_roadblock_id": "19463",
+                      "route_occurrence_index": 4
+                    }
+                  ],
+                  "selected_source_edge_id": "20156",
+                  "selected_target_edge_id": "20157",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "18516",
+                      "target_edge_id": "18517",
+                      "source_roadblock_id": "19074",
+                      "target_roadblock_id": "19074",
+                      "route_occurrence_index": 5
+                    }
+                  ],
+                  "selected_source_edge_id": "18516",
+                  "selected_target_edge_id": "18517",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "full_rows_omitted_from_small_diagnostic": true
+          },
+          {
+            "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+            "status": "PASS",
+            "iterations_passed": 80,
+            "minimum_source_margin_m": 1.076690625050233,
+            "minimum_target_margin_m": 1.0707618958271183,
+            "iteration_0": {
+              "iteration_index": 0,
+              "source_total_length_m": 145.38099317720324,
+              "target_total_length_m": 145.55582470498388,
+              "source_current_arc_m": 8.916313124406177,
+              "target_current_arc_m": 9.045989264638953,
+              "source_requested_max_arc_m": 103.57502162440618,
+              "target_requested_max_arc_m": 103.70469776463895,
+              "source_remaining_margin_m": 41.80597155279706,
+              "target_remaining_margin_m": 41.85112694034491,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "iteration_79": {
+              "iteration_index": 79,
+              "source_total_length_m": 282.0691398763611,
+              "target_total_length_m": 274.28917340375114,
+              "source_current_arc_m": 103.54255388629262,
+              "target_current_arc_m": 103.7051296172131,
+              "source_requested_max_arc_m": 198.20126238629263,
+              "target_requested_max_arc_m": 198.3638381172131,
+              "source_remaining_margin_m": 83.86787749006844,
+              "target_remaining_margin_m": 75.92533528653802,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20156",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.030033898879804,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18516",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 112.65811280027839,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20157",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.00929728186685,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18517",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 104.72405141690082,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20156",
+                      "target_edge_id": "20157",
+                      "source_roadblock_id": "19463",
+                      "target_roadblock_id": "19463",
+                      "route_occurrence_index": 4
+                    }
+                  ],
+                  "selected_source_edge_id": "20156",
+                  "selected_target_edge_id": "20157",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "18516",
+                      "target_edge_id": "18517",
+                      "source_roadblock_id": "19074",
+                      "target_roadblock_id": "19074",
+                      "route_occurrence_index": 5
+                    }
+                  ],
+                  "selected_source_edge_id": "18516",
+                  "selected_target_edge_id": "18517",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "full_rows_omitted_from_small_diagnostic": true
+          }
+        ]
+      },
+      {
+        "scenario_token": "25944935eadb52f1",
+        "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+        "status": "PASS",
+        "topology_ambiguity": false,
+        "arms": [
+          {
+            "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+            "status": "PASS",
+            "iterations_passed": 80,
+            "minimum_source_margin_m": 0.24636321399589178,
+            "minimum_target_margin_m": 0.23921091408507777,
+            "iteration_0": {
+              "iteration_index": 0,
+              "source_total_length_m": 119.96282064864887,
+              "target_total_length_m": 125.49214628517497,
+              "source_current_arc_m": 4.513594991884241,
+              "target_current_arc_m": 10.019887194466648,
+              "source_requested_max_arc_m": 97.38819492295832,
+              "target_requested_max_arc_m": 102.89448712554072,
+              "source_remaining_margin_m": 22.574625725690552,
+              "target_remaining_margin_m": 22.597659159634247,
+              "source_components": [
+                {
+                  "edge_id": "19822",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 119.96282064864887,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "19925",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 125.49214628517497,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "iteration_79": {
+              "iteration_index": 79,
+              "source_total_length_m": 196.0952539252325,
+              "target_total_length_m": 201.476778849156,
+              "source_current_arc_m": 97.36082435502725,
+              "target_current_arc_m": 102.89403764442335,
+              "source_requested_max_arc_m": 190.2354242861013,
+              "target_requested_max_arc_m": 195.76863757549742,
+              "source_remaining_margin_m": 5.859829639131178,
+              "target_remaining_margin_m": 5.708141273658583,
+              "source_components": [
+                {
+                  "edge_id": "19822",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 119.96282064864887,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19945",
+                  "roadblock_id": "19712",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 32.649728730330295,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19920",
+                  "roadblock_id": "19031",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 25.198818148004523,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20079",
+                  "roadblock_id": "19317",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 18.283886398248693,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "19925",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 125.49214628517497,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19946",
+                  "roadblock_id": "19712",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 32.643908225180425,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19800",
+                  "roadblock_id": "19031",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 25.213306821351626,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20080",
+                  "roadblock_id": "19317",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 18.127417517448784,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "19945",
+                      "target_edge_id": "19946",
+                      "source_roadblock_id": "19712",
+                      "target_roadblock_id": "19712",
+                      "route_occurrence_index": 2
+                    }
+                  ],
+                  "selected_source_edge_id": "19945",
+                  "selected_target_edge_id": "19946",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "19920",
+                      "target_edge_id": "19800",
+                      "source_roadblock_id": "19031",
+                      "target_roadblock_id": "19031",
+                      "route_occurrence_index": 3
+                    }
+                  ],
+                  "selected_source_edge_id": "19920",
+                  "selected_target_edge_id": "19800",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 2,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20079",
+                      "target_edge_id": "20080",
+                      "source_roadblock_id": "19317",
+                      "target_roadblock_id": "19317",
+                      "route_occurrence_index": 4
+                    }
+                  ],
+                  "selected_source_edge_id": "20079",
+                  "selected_target_edge_id": "20080",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "full_rows_omitted_from_small_diagnostic": true
+          },
+          {
+            "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+            "status": "PASS",
+            "iterations_passed": 80,
+            "minimum_source_margin_m": 0.24425457370432468,
+            "minimum_target_margin_m": 0.23672504523921134,
+            "iteration_0": {
+              "iteration_index": 0,
+              "source_total_length_m": 119.96282064864887,
+              "target_total_length_m": 125.49214628517497,
+              "source_current_arc_m": 4.513594991884241,
+              "target_current_arc_m": 10.019887194466648,
+              "source_requested_max_arc_m": 97.38819492295832,
+              "target_requested_max_arc_m": 102.89448712554072,
+              "source_remaining_margin_m": 22.574625725690552,
+              "target_remaining_margin_m": 22.597659159634247,
+              "source_components": [
+                {
+                  "edge_id": "19822",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 119.96282064864887,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "19925",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 125.49214628517497,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "iteration_79": {
+              "iteration_index": 79,
+              "source_total_length_m": 196.0952539252325,
+              "target_total_length_m": 201.476778849156,
+              "source_current_arc_m": 97.36082435502725,
+              "target_current_arc_m": 102.89403764442335,
+              "source_requested_max_arc_m": 190.2354242861013,
+              "target_requested_max_arc_m": 195.76863757549742,
+              "source_remaining_margin_m": 5.859829639131178,
+              "target_remaining_margin_m": 5.708141273658583,
+              "source_components": [
+                {
+                  "edge_id": "19822",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 119.96282064864887,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19945",
+                  "roadblock_id": "19712",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 32.649728730330295,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19920",
+                  "roadblock_id": "19031",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 25.198818148004523,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20079",
+                  "roadblock_id": "19317",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 18.283886398248693,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "19925",
+                  "roadblock_id": "19088",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 125.49214628517497,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19946",
+                  "roadblock_id": "19712",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 32.643908225180425,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "19800",
+                  "roadblock_id": "19031",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 25.213306821351626,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20080",
+                  "roadblock_id": "19317",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 18.127417517448784,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "19945",
+                      "target_edge_id": "19946",
+                      "source_roadblock_id": "19712",
+                      "target_roadblock_id": "19712",
+                      "route_occurrence_index": 2
+                    }
+                  ],
+                  "selected_source_edge_id": "19945",
+                  "selected_target_edge_id": "19946",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "19920",
+                      "target_edge_id": "19800",
+                      "source_roadblock_id": "19031",
+                      "target_roadblock_id": "19031",
+                      "route_occurrence_index": 3
+                    }
+                  ],
+                  "selected_source_edge_id": "19920",
+                  "selected_target_edge_id": "19800",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 2,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20079",
+                      "target_edge_id": "20080",
+                      "source_roadblock_id": "19317",
+                      "target_roadblock_id": "19317",
+                      "route_occurrence_index": 4
+                    }
+                  ],
+                  "selected_source_edge_id": "20079",
+                  "selected_target_edge_id": "20080",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "full_rows_omitted_from_small_diagnostic": true
+          }
+        ]
+      },
+      {
+        "scenario_token": "ef3172a208cc5dd7",
+        "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+        "status": "PASS",
+        "topology_ambiguity": false,
+        "arms": [
+          {
+            "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+            "status": "PASS",
+            "iterations_passed": 80,
+            "minimum_source_margin_m": 0.6168759818286986,
+            "minimum_target_margin_m": 0.6351737924495637,
+            "iteration_0": {
+              "iteration_index": 0,
+              "source_total_length_m": 169.411027076083,
+              "target_total_length_m": 169.5651219868506,
+              "source_current_arc_m": 57.91792129751001,
+              "target_current_arc_m": 58.09768829261519,
+              "source_requested_max_arc_m": 150.11856276309274,
+              "target_requested_max_arc_m": 150.2983297581979,
+              "source_remaining_margin_m": 19.292464312990262,
+              "target_remaining_margin_m": 19.266792228652704,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20156",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.030033898879804,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20157",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.00929728186685,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20156",
+                      "target_edge_id": "20157",
+                      "source_roadblock_id": "19463",
+                      "target_roadblock_id": "19463",
+                      "route_occurrence_index": 2
+                    }
+                  ],
+                  "selected_source_edge_id": "20156",
+                  "selected_target_edge_id": "20157",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "iteration_79": {
+              "iteration_index": 79,
+              "source_total_length_m": 282.0691398763611,
+              "target_total_length_m": 274.28917340375114,
+              "source_current_arc_m": 150.11155929411828,
+              "target_current_arc_m": 150.29838244418445,
+              "source_requested_max_arc_m": 242.312200759701,
+              "target_requested_max_arc_m": 242.49902390976717,
+              "source_remaining_margin_m": 39.75693911666008,
+              "target_remaining_margin_m": 31.79014949398396,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20156",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.030033898879804,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18516",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 112.65811280027839,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20157",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.00929728186685,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18517",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 104.72405141690082,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20156",
+                      "target_edge_id": "20157",
+                      "source_roadblock_id": "19463",
+                      "target_roadblock_id": "19463",
+                      "route_occurrence_index": 2
+                    }
+                  ],
+                  "selected_source_edge_id": "20156",
+                  "selected_target_edge_id": "20157",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "18516",
+                      "target_edge_id": "18517",
+                      "source_roadblock_id": "19074",
+                      "target_roadblock_id": "19074",
+                      "route_occurrence_index": 3
+                    }
+                  ],
+                  "selected_source_edge_id": "18516",
+                  "selected_target_edge_id": "18517",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "full_rows_omitted_from_small_diagnostic": true
+          },
+          {
+            "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+            "status": "PASS",
+            "iterations_passed": 80,
+            "minimum_source_margin_m": 0.6170711021008515,
+            "minimum_target_margin_m": 0.6356362574379801,
+            "iteration_0": {
+              "iteration_index": 0,
+              "source_total_length_m": 169.411027076083,
+              "target_total_length_m": 169.5651219868506,
+              "source_current_arc_m": 57.91792129751001,
+              "target_current_arc_m": 58.09768829261519,
+              "source_requested_max_arc_m": 150.11856276309274,
+              "target_requested_max_arc_m": 150.2983297581979,
+              "source_remaining_margin_m": 19.292464312990262,
+              "target_remaining_margin_m": 19.266792228652704,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20156",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.030033898879804,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20157",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.00929728186685,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20156",
+                      "target_edge_id": "20157",
+                      "source_roadblock_id": "19463",
+                      "target_roadblock_id": "19463",
+                      "route_occurrence_index": 2
+                    }
+                  ],
+                  "selected_source_edge_id": "20156",
+                  "selected_target_edge_id": "20157",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "iteration_79": {
+              "iteration_index": 79,
+              "source_total_length_m": 282.0691398763611,
+              "target_total_length_m": 274.28917340375114,
+              "source_current_arc_m": 150.11155929411828,
+              "target_current_arc_m": 150.29838244418445,
+              "source_requested_max_arc_m": 242.312200759701,
+              "target_requested_max_arc_m": 242.49902390976717,
+              "source_remaining_margin_m": 39.75693911666008,
+              "target_remaining_margin_m": 31.79014949398396,
+              "source_components": [
+                {
+                  "edge_id": "18524",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.38099317720324,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20156",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.030033898879804,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18516",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 112.65811280027839,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "target_components": [
+                {
+                  "edge_id": "18525",
+                  "roadblock_id": "19045",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 145.55582470498388,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "20157",
+                  "roadblock_id": "19463",
+                  "edge_type": "NuPlanLaneConnector",
+                  "native_length_m": 24.00929728186685,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                },
+                {
+                  "edge_id": "18517",
+                  "roadblock_id": "19074",
+                  "edge_type": "NuPlanLane",
+                  "native_length_m": 104.72405141690082,
+                  "join_gap_m": 0.0,
+                  "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                  "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+                }
+              ],
+              "transitions": [
+                {
+                  "source_outgoing_count": 2,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "20156",
+                      "target_edge_id": "20157",
+                      "source_roadblock_id": "19463",
+                      "target_roadblock_id": "19463",
+                      "route_occurrence_index": 2
+                    }
+                  ],
+                  "selected_source_edge_id": "20156",
+                  "selected_target_edge_id": "20157",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                },
+                {
+                  "source_outgoing_count": 1,
+                  "target_outgoing_count": 1,
+                  "route_constrained_corresponding_pair_count": 1,
+                  "candidate_pairs": [
+                    {
+                      "source_edge_id": "18516",
+                      "target_edge_id": "18517",
+                      "source_roadblock_id": "19074",
+                      "target_roadblock_id": "19074",
+                      "route_occurrence_index": 3
+                    }
+                  ],
+                  "selected_source_edge_id": "18516",
+                  "selected_target_edge_id": "18517",
+                  "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+                }
+              ],
+              "extrapolation_used": false,
+              "manual_points_used": false
+            },
+            "full_rows_omitted_from_small_diagnostic": true
+          }
+        ]
+      }
+    ]
+  },
+  "runs": [
+    {
+      "run_id": "R1B29B-CANARY-01-HLC-BASELINE-A01",
+      "canary_identity_index": 1,
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 1,
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-01-HLC-BASELINE-A01",
+      "status": "OTHER_TECHNICAL_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_run_called": false,
+      "primary_80_complete": false,
+      "native_coverage_failure": false,
+      "metric_callback_complete": false,
+      "error": "InterpolationResolutionError:KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\"",
+      "traceback_tail": [
+        "    return visitor.visitInterpolationResolver(self)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/grammar_visitor.py\", line 179, in visitInterpolationResolver",
+        "    return self.resolver_interpolation_callback(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 648, in resolver_interpolation_callback",
+        "    return self._evaluate_custom_resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 591, in _evaluate_custom_resolver",
+        "    return resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/omegaconf.py\", line 435, in resolver_wrapper",
+        "    ret = resolver(*args, **kwargs)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/resolvers/oc/__init__.py\", line 38, in env",
+        "    raise KeyError(f\"Environment variable '{key}' not found\")",
+        "omegaconf.errors.InterpolationResolutionError: KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\""
+      ],
+      "runner_constructed": false,
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-01-HLC-TREATMENT-A01",
+      "canary_identity_index": 1,
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 1,
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-01-HLC-TREATMENT-A01",
+      "status": "OTHER_TECHNICAL_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_run_called": false,
+      "primary_80_complete": false,
+      "native_coverage_failure": false,
+      "metric_callback_complete": false,
+      "error": "InterpolationResolutionError:KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\"",
+      "traceback_tail": [
+        "    return visitor.visitInterpolationResolver(self)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/grammar_visitor.py\", line 179, in visitInterpolationResolver",
+        "    return self.resolver_interpolation_callback(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 648, in resolver_interpolation_callback",
+        "    return self._evaluate_custom_resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 591, in _evaluate_custom_resolver",
+        "    return resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/omegaconf.py\", line 435, in resolver_wrapper",
+        "    ret = resolver(*args, **kwargs)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/resolvers/oc/__init__.py\", line 38, in env",
+        "    raise KeyError(f\"Environment variable '{key}' not found\")",
+        "omegaconf.errors.InterpolationResolutionError: KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\""
+      ],
+      "runner_constructed": false,
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-02-HLC-BASELINE-A01",
+      "canary_identity_index": 2,
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 1,
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-02-HLC-BASELINE-A01",
+      "status": "OTHER_TECHNICAL_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_run_called": false,
+      "primary_80_complete": false,
+      "native_coverage_failure": false,
+      "metric_callback_complete": false,
+      "error": "InterpolationResolutionError:KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\"",
+      "traceback_tail": [
+        "    return visitor.visitInterpolationResolver(self)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/grammar_visitor.py\", line 179, in visitInterpolationResolver",
+        "    return self.resolver_interpolation_callback(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 648, in resolver_interpolation_callback",
+        "    return self._evaluate_custom_resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 591, in _evaluate_custom_resolver",
+        "    return resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/omegaconf.py\", line 435, in resolver_wrapper",
+        "    ret = resolver(*args, **kwargs)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/resolvers/oc/__init__.py\", line 38, in env",
+        "    raise KeyError(f\"Environment variable '{key}' not found\")",
+        "omegaconf.errors.InterpolationResolutionError: KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\""
+      ],
+      "runner_constructed": false,
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-02-HLC-TREATMENT-A01",
+      "canary_identity_index": 2,
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 1,
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-02-HLC-TREATMENT-A01",
+      "status": "OTHER_TECHNICAL_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_run_called": false,
+      "primary_80_complete": false,
+      "native_coverage_failure": false,
+      "metric_callback_complete": false,
+      "error": "InterpolationResolutionError:KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\"",
+      "traceback_tail": [
+        "    return visitor.visitInterpolationResolver(self)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/grammar_visitor.py\", line 179, in visitInterpolationResolver",
+        "    return self.resolver_interpolation_callback(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 648, in resolver_interpolation_callback",
+        "    return self._evaluate_custom_resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 591, in _evaluate_custom_resolver",
+        "    return resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/omegaconf.py\", line 435, in resolver_wrapper",
+        "    ret = resolver(*args, **kwargs)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/resolvers/oc/__init__.py\", line 38, in env",
+        "    raise KeyError(f\"Environment variable '{key}' not found\")",
+        "omegaconf.errors.InterpolationResolutionError: KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\""
+      ],
+      "runner_constructed": false,
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-03-HLC-BASELINE-A01",
+      "canary_identity_index": 3,
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 1,
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-03-HLC-BASELINE-A01",
+      "status": "OTHER_TECHNICAL_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_run_called": false,
+      "primary_80_complete": false,
+      "native_coverage_failure": false,
+      "metric_callback_complete": false,
+      "error": "InterpolationResolutionError:KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\"",
+      "traceback_tail": [
+        "    return visitor.visitInterpolationResolver(self)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/grammar_visitor.py\", line 179, in visitInterpolationResolver",
+        "    return self.resolver_interpolation_callback(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 648, in resolver_interpolation_callback",
+        "    return self._evaluate_custom_resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 591, in _evaluate_custom_resolver",
+        "    return resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/omegaconf.py\", line 435, in resolver_wrapper",
+        "    ret = resolver(*args, **kwargs)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/resolvers/oc/__init__.py\", line 38, in env",
+        "    raise KeyError(f\"Environment variable '{key}' not found\")",
+        "omegaconf.errors.InterpolationResolutionError: KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\""
+      ],
+      "runner_constructed": false,
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-03-HLC-TREATMENT-A01",
+      "canary_identity_index": 3,
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 1,
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-03-HLC-TREATMENT-A01",
+      "status": "OTHER_TECHNICAL_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_run_called": false,
+      "primary_80_complete": false,
+      "native_coverage_failure": false,
+      "metric_callback_complete": false,
+      "error": "InterpolationResolutionError:KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\"",
+      "traceback_tail": [
+        "    return visitor.visitInterpolationResolver(self)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/grammar_visitor.py\", line 179, in visitInterpolationResolver",
+        "    return self.resolver_interpolation_callback(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 648, in resolver_interpolation_callback",
+        "    return self._evaluate_custom_resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/base.py\", line 591, in _evaluate_custom_resolver",
+        "    return resolver(",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/omegaconf.py\", line 435, in resolver_wrapper",
+        "    ret = resolver(*args, **kwargs)",
+        "  File \"/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/omegaconf/resolvers/oc/__init__.py\", line 38, in env",
+        "    raise KeyError(f\"Environment variable '{key}' not found\")",
+        "omegaconf.errors.InterpolationResolutionError: KeyError raised while resolving interpolation: \"Environment variable 'R1_B2_8_R3_BINDING_MANIFEST' not found\""
+      ],
+      "runner_constructed": false,
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-01-HLC-BASELINE-A02",
+      "canary_identity_index": 1,
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 2,
+      "supersedes_failed_attempt": "R1B29B-CANARY-01-HLC-BASELINE-A01",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-01-HLC-BASELINE-A02",
+      "status": "NATIVE_REFERENCE_COVERAGE_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "primary_80_complete": true,
+      "native_coverage_failure": true,
+      "metric_callback_complete": false,
+      "error": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "traceback_tail": [
+        "    return super().compute_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py\", line 115, in compute_trajectory",
+        "    return self.compute_planner_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_0.py\", line 86, in compute_planner_trajectory",
+        "    states, corridor = build_hlc_route_continuous_geometry_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 261, in build_hlc_route_continuous_geometry_v2_2",
+        "    corridor = build_hlc_route_continuous_reference_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 212, in build_hlc_route_continuous_reference_v2_2",
+        "    source_next, target_next, route_cursor, audit = _select_successor_pair(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 125, in _select_successor_pair",
+        "    raise ValueError(",
+        "ValueError: ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0"
+      ],
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 59,
+      "planner_call_count": 139
+    },
+    {
+      "run_id": "R1B29B-CANARY-01-HLC-TREATMENT-A02",
+      "canary_identity_index": 1,
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 2,
+      "supersedes_failed_attempt": "R1B29B-CANARY-01-HLC-TREATMENT-A01",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-01-HLC-TREATMENT-A02",
+      "status": "NATIVE_REFERENCE_COVERAGE_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "primary_80_complete": true,
+      "native_coverage_failure": true,
+      "metric_callback_complete": false,
+      "error": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "traceback_tail": [
+        "    return super().compute_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py\", line 115, in compute_trajectory",
+        "    return self.compute_planner_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_0.py\", line 86, in compute_planner_trajectory",
+        "    states, corridor = build_hlc_route_continuous_geometry_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 261, in build_hlc_route_continuous_geometry_v2_2",
+        "    corridor = build_hlc_route_continuous_reference_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 212, in build_hlc_route_continuous_reference_v2_2",
+        "    source_next, target_next, route_cursor, audit = _select_successor_pair(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 125, in _select_successor_pair",
+        "    raise ValueError(",
+        "ValueError: ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0"
+      ],
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 60,
+      "planner_call_count": 140
+    },
+    {
+      "run_id": "R1B29B-CANARY-02-HLC-BASELINE-A02",
+      "canary_identity_index": 2,
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 2,
+      "supersedes_failed_attempt": "R1B29B-CANARY-02-HLC-BASELINE-A01",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-02-HLC-BASELINE-A02",
+      "status": "NATIVE_REFERENCE_COVERAGE_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "primary_80_complete": true,
+      "native_coverage_failure": true,
+      "metric_callback_complete": false,
+      "error": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18529:target=18528:candidates=0",
+      "traceback_tail": [
+        "    return super().compute_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py\", line 115, in compute_trajectory",
+        "    return self.compute_planner_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_0.py\", line 86, in compute_planner_trajectory",
+        "    states, corridor = build_hlc_route_continuous_geometry_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 261, in build_hlc_route_continuous_geometry_v2_2",
+        "    corridor = build_hlc_route_continuous_reference_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 212, in build_hlc_route_continuous_reference_v2_2",
+        "    source_next, target_next, route_cursor, audit = _select_successor_pair(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 125, in _select_successor_pair",
+        "    raise ValueError(",
+        "ValueError: ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18529:target=18528:candidates=0"
+      ],
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 3,
+      "planner_call_count": 83
+    },
+    {
+      "run_id": "R1B29B-CANARY-02-HLC-TREATMENT-A02",
+      "canary_identity_index": 2,
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 2,
+      "supersedes_failed_attempt": "R1B29B-CANARY-02-HLC-TREATMENT-A01",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-02-HLC-TREATMENT-A02",
+      "status": "NATIVE_REFERENCE_COVERAGE_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "primary_80_complete": true,
+      "native_coverage_failure": true,
+      "metric_callback_complete": false,
+      "error": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18529:target=18528:candidates=0",
+      "traceback_tail": [
+        "    return super().compute_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py\", line 115, in compute_trajectory",
+        "    return self.compute_planner_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_0.py\", line 86, in compute_planner_trajectory",
+        "    states, corridor = build_hlc_route_continuous_geometry_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 261, in build_hlc_route_continuous_geometry_v2_2",
+        "    corridor = build_hlc_route_continuous_reference_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 212, in build_hlc_route_continuous_reference_v2_2",
+        "    source_next, target_next, route_cursor, audit = _select_successor_pair(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 125, in _select_successor_pair",
+        "    raise ValueError(",
+        "ValueError: ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18529:target=18528:candidates=0"
+      ],
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 5,
+      "planner_call_count": 85
+    },
+    {
+      "run_id": "R1B29B-CANARY-03-HLC-BASELINE-A02",
+      "canary_identity_index": 3,
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 2,
+      "supersedes_failed_attempt": "R1B29B-CANARY-03-HLC-BASELINE-A01",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-03-HLC-BASELINE-A02",
+      "status": "NATIVE_REFERENCE_COVERAGE_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "primary_80_complete": true,
+      "native_coverage_failure": true,
+      "metric_callback_complete": false,
+      "error": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "traceback_tail": [
+        "    return super().compute_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py\", line 115, in compute_trajectory",
+        "    return self.compute_planner_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_0.py\", line 86, in compute_planner_trajectory",
+        "    states, corridor = build_hlc_route_continuous_geometry_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 261, in build_hlc_route_continuous_geometry_v2_2",
+        "    corridor = build_hlc_route_continuous_reference_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 212, in build_hlc_route_continuous_reference_v2_2",
+        "    source_next, target_next, route_cursor, audit = _select_successor_pair(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 125, in _select_successor_pair",
+        "    raise ValueError(",
+        "ValueError: ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0"
+      ],
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 25,
+      "planner_call_count": 105
+    },
+    {
+      "run_id": "R1B29B-CANARY-03-HLC-TREATMENT-A02",
+      "canary_identity_index": 3,
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 2,
+      "supersedes_failed_attempt": "R1B29B-CANARY-03-HLC-TREATMENT-A01",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-03-HLC-TREATMENT-A02",
+      "status": "NATIVE_REFERENCE_COVERAGE_FAILURE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "primary_80_complete": true,
+      "native_coverage_failure": true,
+      "metric_callback_complete": false,
+      "error": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "traceback_tail": [
+        "    return super().compute_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py\", line 115, in compute_trajectory",
+        "    return self.compute_planner_trajectory(current_input)",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_0.py\", line 86, in compute_planner_trajectory",
+        "    states, corridor = build_hlc_route_continuous_geometry_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 261, in build_hlc_route_continuous_geometry_v2_2",
+        "    corridor = build_hlc_route_continuous_reference_v2_2(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 212, in build_hlc_route_continuous_reference_v2_2",
+        "    source_next, target_next, route_cursor, audit = _select_successor_pair(",
+        "  File \"/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_2.py\", line 125, in _select_successor_pair",
+        "    raise ValueError(",
+        "ValueError: ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0"
+      ],
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 26,
+      "planner_call_count": 106
+    },
+    {
+      "run_id": "R1B29B-CANARY-01-HLC-BASELINE-A03",
+      "canary_identity_index": 1,
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 3,
+      "supersedes_failed_attempt": "R1B29B-CANARY-01-HLC-BASELINE-A02",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-01-HLC-BASELINE-A03",
+      "status": "TECHNICAL_COMPLETE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "full_runtime_stack_exercised": true,
+      "planner_call_count": 80,
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 0,
+      "primary_80_complete": true,
+      "native_coverage_failure": false,
+      "metric_callback_complete": true,
+      "runner_report_succeeded": true,
+      "minimum_source_margin_m": 0.16992006372944957,
+      "minimum_target_margin_m": 0.16403448410842714,
+      "topology_ambiguity": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-01-HLC-TREATMENT-A03",
+      "canary_identity_index": 1,
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 3,
+      "supersedes_failed_attempt": "R1B29B-CANARY-01-HLC-TREATMENT-A02",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-01-HLC-TREATMENT-A03",
+      "status": "TECHNICAL_COMPLETE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "full_runtime_stack_exercised": true,
+      "planner_call_count": 80,
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 0,
+      "primary_80_complete": true,
+      "native_coverage_failure": false,
+      "metric_callback_complete": true,
+      "runner_report_succeeded": true,
+      "minimum_source_margin_m": 0.9862599611116849,
+      "minimum_target_margin_m": 1.0069026099309326,
+      "topology_ambiguity": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-02-HLC-BASELINE-A03",
+      "canary_identity_index": 2,
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 3,
+      "supersedes_failed_attempt": "R1B29B-CANARY-02-HLC-BASELINE-A02",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-02-HLC-BASELINE-A03",
+      "status": "TECHNICAL_COMPLETE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "full_runtime_stack_exercised": true,
+      "planner_call_count": 80,
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 0,
+      "primary_80_complete": true,
+      "native_coverage_failure": false,
+      "metric_callback_complete": true,
+      "runner_report_succeeded": true,
+      "minimum_source_margin_m": 0.11890339765506042,
+      "minimum_target_margin_m": 0.10958045423588203,
+      "topology_ambiguity": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-02-HLC-TREATMENT-A03",
+      "canary_identity_index": 2,
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 3,
+      "supersedes_failed_attempt": "R1B29B-CANARY-02-HLC-TREATMENT-A02",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-02-HLC-TREATMENT-A03",
+      "status": "TECHNICAL_COMPLETE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "full_runtime_stack_exercised": true,
+      "planner_call_count": 80,
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 0,
+      "primary_80_complete": true,
+      "native_coverage_failure": false,
+      "metric_callback_complete": true,
+      "runner_report_succeeded": true,
+      "minimum_source_margin_m": 0.15916948661589458,
+      "minimum_target_margin_m": 0.16416632646749463,
+      "topology_ambiguity": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-03-HLC-BASELINE-A03",
+      "canary_identity_index": 3,
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 3,
+      "supersedes_failed_attempt": "R1B29B-CANARY-03-HLC-BASELINE-A02",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-03-HLC-BASELINE-A03",
+      "status": "TECHNICAL_COMPLETE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "full_runtime_stack_exercised": true,
+      "planner_call_count": 80,
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 0,
+      "primary_80_complete": true,
+      "native_coverage_failure": false,
+      "metric_callback_complete": true,
+      "runner_report_succeeded": true,
+      "minimum_source_margin_m": 0.7969024964718727,
+      "minimum_target_margin_m": 0.8222438434449373,
+      "topology_ambiguity": false
+    },
+    {
+      "run_id": "R1B29B-CANARY-03-HLC-TREATMENT-A03",
+      "canary_identity_index": 3,
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "terminology": "ENGINEERING_CANARY_REPLAY",
+      "attempt_number": 3,
+      "supersedes_failed_attempt": "R1B29B-CANARY-03-HLC-TREATMENT-A02",
+      "output_root": "outputs/r1_b2_9_b_engineering_canary_v1/R1B29B-CANARY-03-HLC-TREATMENT-A03",
+      "status": "TECHNICAL_COMPLETE",
+      "SCIENTIFIC_USE_FORBIDDEN": true,
+      "exact_scenario_resolution_count": 1,
+      "runner_constructed": true,
+      "runner_run_called": true,
+      "simulation_started": true,
+      "full_runtime_stack_exercised": true,
+      "planner_call_count": 80,
+      "primary_trace_rows": 80,
+      "secondary_diagnostic_rows": 0,
+      "primary_80_complete": true,
+      "native_coverage_failure": false,
+      "metric_callback_complete": true,
+      "runner_report_succeeded": true,
+      "minimum_source_margin_m": 0.5979848171135984,
+      "minimum_target_margin_m": 0.618568347770406,
+      "topology_ambiguity": false
+    }
+  ],
+  "counts": {
+    "planned_base_runs": 6,
+    "orchestration_attempts": 18,
+    "actual_runs": 12,
+    "reruns": 12,
+    "technical_completed": 6,
+    "primary_80_completed": 12,
+    "cumulative_native_coverage_failures": 6,
+    "cumulative_other_technical_failures": 6,
+    "metric_callback_completed": 6,
+    "latest_required_runs": 6,
+    "latest_required_runs_complete": 6,
+    "final_native_coverage_failures": 0,
+    "final_other_technical_failures": 0
+  },
+  "scientific_identities_simulated": false,
+  "scientific_roster_modified": false,
+  "threshold_changed": false,
+  "official_smoke_authorized": false,
+  "RBR_authorized": false,
+  "actual_simulation_scope": "THREE_PERMANENTLY_EXCLUDED_ENGINEERING_CANARY_IDENTITIES_ONLY",
+  "protected_csv_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "current_remaining_scientific_identities_simulated": false,
+  "attempt1_identity_replayed_only_after_scientific_evidence_exclusion": true,
+  "simulated_engineering_canary_tokens": [
+    "b1be12bca092597a",
+    "25944935eadb52f1",
+    "ef3172a208cc5dd7"
+  ]
+}

@@ -10542,3 +10542,39 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - 离线 first invalid iteration 必须与真实 iteration 33 failure 对齐，并区分实际先抛出的 source 与同时越界的 active target。
 - 12 个 identity 各包含 baseline/treatment iteration 0–79 envelope，且明确标记为 technical diagnostic，不作为 scientific outcome。
 - Attempt 1 原始授权、stop record、trace 和 raw partial output 的 SHA 被记录且文件不移动、不删除、不覆盖；`simulation_executed=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.9-B 路线连续 HLC 工程 Canary
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_b_route_continuous_canary.py --prepare
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_b_route_continuous_canary.py --execute
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_b_route_continuous_canary.py --execute --retry-failed
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_b_route_continuous_canary.py --write-reports
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_9_b_route_continuous_canary.py
+```
+
+### 2. 期望行为
+
+- `--prepare` 只从当前冻结 roster、Attempt 1 trace 与既有永久排除账本构造合同、3 个 canary 身份和离线审计；不扫描 source universe，不启动仿真。
+- `--execute` 只允许 ledger 中永久标记为 `NON_SCIENTIFIC_ENGINEERING_ONLY` 的 3 个 HLC identity，使用 V3 planner、官方 nuPlan 1.2.2 runner、TwoStageController、observation、metric 与 callbacks；当前其余科学身份会在 runner 前被拒绝。
+- route-continuous builder 只沿官方 native topology 连接 source/target 对；路线 occurrence、方向和相邻对应关系必须唯一，歧义、反向、self-intersection 或非零 native join gap 均 fail-closed。
+- 工程 canary time controller 沿用官方 StepSimulationTimeController 的逐步语义，只将 canary horizon 版本化为恰好 planner iterations 0...79；不会为 Primary 窗口后的地图终点发明非原生连接。
+- `--retry-failed` 保留旧 run ID、trace 与 raw output，并为允许的工程修复创建新 attempt/run ID；禁止覆盖或 append 历史 run。
+
+### 3. 通过标准
+
+- Attempt 1 iteration 33 离线 source/target 均有正覆盖余量，iterations 0...32 与 V2.2 exact parity，34/34 state0 exact identity。
+- 当前 12 个冻结 HLC identity 的 baseline/treatment 0...79 滚动覆盖为 12/12，拓扑歧义为 0，且结果只标记 `DIAGNOSTIC_ONLY`。
+- 最终至少 3 个独立 canary × baseline/treatment 共 6 个最新 attempt 全部达到 80 行 Primary、无 native coverage failure、无其他技术 failure，并完成 metric/callback。
+- canary token/log 永久写入科学排除 ledger；科学 roster、阈值、F_match、安全定义均不变，`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。

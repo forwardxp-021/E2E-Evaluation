@@ -1,0 +1,3734 @@
+{
+  "schema_version": "r1_b2_9_b_current12_route_continuous_diagnostic_v1",
+  "status": "12_OF_12_ROLLING_REPLAN_FULL_PRIMARY_WINDOW_COVERAGE_PASS",
+  "diagnostic_only": true,
+  "simulation_started": false,
+  "counts": {
+    "identities": 12,
+    "coverage_pass": 12,
+    "coverage_fail": 0,
+    "topology_ambiguity": 0
+  },
+  "entries": [
+    {
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 1.0952397927327837,
+          "minimum_target_margin_m": 1.1114780465154723,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 8.916313124406177,
+            "target_current_arc_m": 9.045989264638953,
+            "source_requested_max_arc_m": 103.57502162440618,
+            "target_requested_max_arc_m": 103.70469776463895,
+            "source_remaining_margin_m": 41.80597155279706,
+            "target_remaining_margin_m": 41.85112694034491,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 103.54255388629262,
+            "target_current_arc_m": 103.7051296172131,
+            "source_requested_max_arc_m": 198.20126238629263,
+            "target_requested_max_arc_m": 198.3638381172131,
+            "source_remaining_margin_m": 83.86787749006844,
+            "target_remaining_margin_m": 75.92533528653802,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 4
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 1.076690625050233,
+          "minimum_target_margin_m": 1.0707618958271183,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 8.916313124406177,
+            "target_current_arc_m": 9.045989264638953,
+            "source_requested_max_arc_m": 103.57502162440618,
+            "target_requested_max_arc_m": 103.70469776463895,
+            "source_remaining_margin_m": 41.80597155279706,
+            "target_remaining_margin_m": 41.85112694034491,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 103.54255388629262,
+            "target_current_arc_m": 103.7051296172131,
+            "source_requested_max_arc_m": 198.20126238629263,
+            "target_requested_max_arc_m": 198.3638381172131,
+            "source_remaining_margin_m": 83.86787749006844,
+            "target_remaining_margin_m": 75.92533528653802,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 4
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.41839047172211963,
+          "minimum_target_margin_m": 0.39931811285650554,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 39.574040306456446,
+            "target_current_arc_m": 39.73276591114241,
+            "source_requested_max_arc_m": 134.18422700645644,
+            "target_requested_max_arc_m": 134.3429526111424,
+            "source_remaining_margin_m": 11.196766170746784,
+            "target_remaining_margin_m": 11.212872093841469,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 134.15099870934597,
+            "target_current_arc_m": 134.3403589598979,
+            "source_requested_max_arc_m": 228.76118540934596,
+            "target_requested_max_arc_m": 228.9505456598979,
+            "source_remaining_margin_m": 53.30795446701511,
+            "target_remaining_margin_m": 45.33862774385322,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.41839047172211963,
+          "minimum_target_margin_m": 0.39931811285650554,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 39.574040306456446,
+            "target_current_arc_m": 39.73276591114241,
+            "source_requested_max_arc_m": 134.18422700645644,
+            "target_requested_max_arc_m": 134.3429526111424,
+            "source_remaining_margin_m": 11.196766170746784,
+            "target_remaining_margin_m": 11.212872093841469,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 134.15099870934597,
+            "target_current_arc_m": 134.3403589598979,
+            "source_requested_max_arc_m": 228.76118540934596,
+            "target_requested_max_arc_m": 228.9505456598979,
+            "source_remaining_margin_m": 53.30795446701511,
+            "target_remaining_margin_m": 45.33862774385322,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.4548972930143691,
+          "minimum_target_margin_m": 0.47071713934811044,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 9.005879890436525,
+            "target_current_arc_m": 9.136536318604977,
+            "source_requested_max_arc_m": 108.44641099043653,
+            "target_requested_max_arc_m": 108.57706741860498,
+            "source_remaining_margin_m": 36.93458218676672,
+            "target_remaining_margin_m": 36.978757286378894,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 108.40533787618341,
+            "target_current_arc_m": 108.58331179784957,
+            "source_requested_max_arc_m": 207.8458689761834,
+            "target_requested_max_arc_m": 208.0238428978496,
+            "source_remaining_margin_m": 74.22327090017767,
+            "target_remaining_margin_m": 66.26533050590156,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.438010468790921,
+          "minimum_target_margin_m": 0.4491606140312854,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 9.005879890436525,
+            "target_current_arc_m": 9.136536318604977,
+            "source_requested_max_arc_m": 108.44641099043653,
+            "target_requested_max_arc_m": 108.57706741860498,
+            "source_remaining_margin_m": 36.93458218676672,
+            "target_remaining_margin_m": 36.978757286378894,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 108.40533787618341,
+            "target_current_arc_m": 108.58331179784957,
+            "source_requested_max_arc_m": 207.8458689761834,
+            "target_requested_max_arc_m": 208.0238428978496,
+            "source_remaining_margin_m": 74.22327090017767,
+            "target_remaining_margin_m": 66.26533050590156,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.09871509945091361,
+          "minimum_target_margin_m": 0.11431765554755202,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 15.586286413739188,
+            "target_current_arc_m": 15.698079207578715,
+            "source_requested_max_arc_m": 116.0615437137392,
+            "target_requested_max_arc_m": 116.17333650757872,
+            "source_remaining_margin_m": 29.319449463464025,
+            "target_remaining_margin_m": 29.382488197405166,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 115.98540660955877,
+            "target_current_arc_m": 116.17396467608172,
+            "source_requested_max_arc_m": 216.46066390955878,
+            "target_requested_max_arc_m": 216.64922197608172,
+            "source_remaining_margin_m": 65.6084759668023,
+            "target_remaining_margin_m": 57.639951427669416,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 7
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.08424105106530533,
+          "minimum_target_margin_m": 0.09894875178591178,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 15.586286413739188,
+            "target_current_arc_m": 15.698079207578715,
+            "source_requested_max_arc_m": 116.0615437137392,
+            "target_requested_max_arc_m": 116.17333650757872,
+            "source_remaining_margin_m": 29.319449463464025,
+            "target_remaining_margin_m": 29.382488197405166,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 115.98540660955877,
+            "target_current_arc_m": 116.17396467608172,
+            "source_requested_max_arc_m": 216.46066390955878,
+            "target_requested_max_arc_m": 216.64922197608172,
+            "source_remaining_margin_m": 65.6084759668023,
+            "target_remaining_margin_m": 57.639951427669416,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 7
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.04917593763420314,
+          "minimum_target_margin_m": 0.04268804687744421,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 30.33051524929623,
+            "target_current_arc_m": 30.48924272008403,
+            "source_requested_max_arc_m": 125.83980884929623,
+            "target_requested_max_arc_m": 125.99853632008404,
+            "source_remaining_margin_m": 19.541184327907004,
+            "target_remaining_margin_m": 19.557288384899834,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 125.80901309687331,
+            "target_current_arc_m": 125.99889814091344,
+            "source_requested_max_arc_m": 221.31830669687332,
+            "target_requested_max_arc_m": 221.50819174091345,
+            "source_remaining_margin_m": 60.750833179487756,
+            "target_remaining_margin_m": 52.78098166283769,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 7
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.04837494357001049,
+          "minimum_target_margin_m": 0.07026917506793495,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 30.33051524929623,
+            "target_current_arc_m": 30.48924272008403,
+            "source_requested_max_arc_m": 125.83980884929623,
+            "target_requested_max_arc_m": 125.99853632008404,
+            "source_remaining_margin_m": 19.541184327907004,
+            "target_remaining_margin_m": 19.557288384899834,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 125.80901309687331,
+            "target_current_arc_m": 125.99889814091344,
+            "source_requested_max_arc_m": 221.31830669687332,
+            "target_requested_max_arc_m": 221.50819174091345,
+            "source_remaining_margin_m": 60.750833179487756,
+            "target_remaining_margin_m": 52.78098166283769,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 7
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.14460047563032674,
+          "minimum_target_margin_m": 0.14166573372150992,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 10.683557790851278,
+            "target_current_arc_m": 10.807084544744672,
+            "source_requested_max_arc_m": 104.8994001908513,
+            "target_requested_max_arc_m": 105.02292694474468,
+            "source_remaining_margin_m": 40.481592986351956,
+            "target_remaining_margin_m": 40.532897760239194,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 104.8600515499151,
+            "target_current_arc_m": 105.02816312839578,
+            "source_requested_max_arc_m": 199.0758939499151,
+            "target_requested_max_arc_m": 199.2440055283958,
+            "source_remaining_margin_m": 82.99324592644595,
+            "target_remaining_margin_m": 75.04516787535536,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.13259861343421164,
+          "minimum_target_margin_m": 0.1414232209859847,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 10.683557790851278,
+            "target_current_arc_m": 10.807084544744672,
+            "source_requested_max_arc_m": 104.8994001908513,
+            "target_requested_max_arc_m": 105.02292694474468,
+            "source_remaining_margin_m": 40.481592986351956,
+            "target_remaining_margin_m": 40.532897760239194,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 104.8600515499151,
+            "target_current_arc_m": 105.02816312839578,
+            "source_requested_max_arc_m": 199.0758939499151,
+            "target_requested_max_arc_m": 199.2440055283958,
+            "source_remaining_margin_m": 82.99324592644595,
+            "target_remaining_margin_m": 75.04516787535536,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.4953269129302953,
+          "minimum_target_margin_m": 0.5114874740639124,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 18.555382553584298,
+            "target_current_arc_m": 18.68645638402822,
+            "source_requested_max_arc_m": 121.4480793535843,
+            "target_requested_max_arc_m": 121.57915318402823,
+            "source_remaining_margin_m": 23.932913823618932,
+            "target_remaining_margin_m": 23.976671520955648,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 121.3917352296711,
+            "target_current_arc_m": 121.57936617599624,
+            "source_requested_max_arc_m": 224.2844320296711,
+            "target_requested_max_arc_m": 224.47206297599627,
+            "source_remaining_margin_m": 57.78470784668997,
+            "target_remaining_margin_m": 49.81711042775487,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 4
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.4940983355105004,
+          "minimum_target_margin_m": 0.510236501677241,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 18.555382553584298,
+            "target_current_arc_m": 18.68645638402822,
+            "source_requested_max_arc_m": 121.4480793535843,
+            "target_requested_max_arc_m": 121.57915318402823,
+            "source_remaining_margin_m": 23.932913823618932,
+            "target_remaining_margin_m": 23.976671520955648,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 121.3917352296711,
+            "target_current_arc_m": 121.57936617599624,
+            "source_requested_max_arc_m": 224.2844320296711,
+            "target_requested_max_arc_m": 224.47206297599627,
+            "source_remaining_margin_m": 57.78470784668997,
+            "target_remaining_margin_m": 49.81711042775487,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 4
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.3485113713667829,
+          "minimum_target_margin_m": 0.3511173082816441,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 42.83527393005347,
+            "target_current_arc_m": 42.99405514064259,
+            "source_requested_max_arc_m": 138.72007823005347,
+            "target_requested_max_arc_m": 138.8788594406426,
+            "source_remaining_margin_m": 6.660914947149777,
+            "target_remaining_margin_m": 6.676965264341291,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 138.69009749017064,
+            "target_current_arc_m": 138.88036343622255,
+            "source_requested_max_arc_m": 234.57490179017066,
+            "target_requested_max_arc_m": 234.76516773622257,
+            "source_remaining_margin_m": 47.494238086190435,
+            "target_remaining_margin_m": 39.524005667528584,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 4
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.34804456683642115,
+          "minimum_target_margin_m": 0.3708328968887997,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 42.83527393005347,
+            "target_current_arc_m": 42.99405514064259,
+            "source_requested_max_arc_m": 138.72007823005347,
+            "target_requested_max_arc_m": 138.8788594406426,
+            "source_remaining_margin_m": 6.660914947149777,
+            "target_remaining_margin_m": 6.676965264341291,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 138.69009749017064,
+            "target_current_arc_m": 138.88036343622255,
+            "source_requested_max_arc_m": 234.57490179017066,
+            "target_requested_max_arc_m": 234.76516773622257,
+            "source_remaining_margin_m": 47.494238086190435,
+            "target_remaining_margin_m": 39.524005667528584,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 4
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 5
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.6414169178940909,
+          "minimum_target_margin_m": 0.636930792246801,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 1.9807290763727161,
+            "target_current_arc_m": 2.1391184691514913,
+            "source_requested_max_arc_m": 94.12154957637271,
+            "target_requested_max_arc_m": 94.2799389691515,
+            "source_remaining_margin_m": 51.25944360083052,
+            "target_remaining_margin_m": 51.275885735832375,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 94.12368753677774,
+            "target_current_arc_m": 94.28399361405148,
+            "source_requested_max_arc_m": 186.26450803677773,
+            "target_requested_max_arc_m": 186.4248141140515,
+            "source_remaining_margin_m": 95.80463183958334,
+            "target_remaining_margin_m": 87.86435928969964,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.6414160366757358,
+          "minimum_target_margin_m": 0.6369442159584793,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 1.9807290763727161,
+            "target_current_arc_m": 2.1391184691514913,
+            "source_requested_max_arc_m": 94.12154957637271,
+            "target_requested_max_arc_m": 94.2799389691515,
+            "source_remaining_margin_m": 51.25944360083052,
+            "target_remaining_margin_m": 51.275885735832375,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 94.12368753677774,
+            "target_current_arc_m": 94.28399361405148,
+            "source_requested_max_arc_m": 186.26450803677773,
+            "target_requested_max_arc_m": 186.4248141140515,
+            "source_remaining_margin_m": 95.80463183958334,
+            "target_remaining_margin_m": 87.86435928969964,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.6775016384912362,
+          "minimum_target_margin_m": 0.6733622360045928,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 8.48583931044034,
+            "target_current_arc_m": 8.618604650673333,
+            "source_requested_max_arc_m": 99.57528041044036,
+            "target_requested_max_arc_m": 99.70804575067335,
+            "source_remaining_margin_m": 45.805712766762866,
+            "target_remaining_margin_m": 45.84777895431054,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 99.55997405627899,
+            "target_current_arc_m": 99.71354131860379,
+            "source_requested_max_arc_m": 190.64941515627902,
+            "target_requested_max_arc_m": 190.8029824186038,
+            "source_remaining_margin_m": 91.41972472008209,
+            "target_remaining_margin_m": 83.48619098514732,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.6761266107937445,
+          "minimum_target_margin_m": 0.6730942304938594,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 8.48583931044034,
+            "target_current_arc_m": 8.618604650673333,
+            "source_requested_max_arc_m": 99.57528041044036,
+            "target_requested_max_arc_m": 99.70804575067335,
+            "source_remaining_margin_m": 45.805712766762866,
+            "target_remaining_margin_m": 45.84777895431054,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 99.55997405627899,
+            "target_current_arc_m": 99.71354131860379,
+            "source_requested_max_arc_m": 190.64941515627902,
+            "target_requested_max_arc_m": 190.8029824186038,
+            "source_remaining_margin_m": 91.41972472008209,
+            "target_remaining_margin_m": 83.48619098514732,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.3633120562546992,
+          "minimum_target_margin_m": 0.36889367767280135,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 34.740871932546355,
+            "target_current_arc_m": 34.89968136738457,
+            "source_requested_max_arc_m": 133.73934273254636,
+            "target_requested_max_arc_m": 133.89815216738458,
+            "source_remaining_margin_m": 11.641650444656875,
+            "target_remaining_margin_m": 11.657672537599296,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 133.70922808632852,
+            "target_current_arc_m": 133.8985820927007,
+            "source_requested_max_arc_m": 232.70769888632853,
+            "target_requested_max_arc_m": 232.8970528927007,
+            "source_remaining_margin_m": 49.36144099003255,
+            "target_remaining_margin_m": 41.39212051105042,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.3633120562546992,
+          "minimum_target_margin_m": 0.36889367767280135,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 34.740871932546355,
+            "target_current_arc_m": 34.89968136738457,
+            "source_requested_max_arc_m": 133.73934273254636,
+            "target_requested_max_arc_m": 133.89815216738458,
+            "source_remaining_margin_m": 11.641650444656875,
+            "target_remaining_margin_m": 11.657672537599296,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 133.70922808632852,
+            "target_current_arc_m": 133.8985820927007,
+            "source_requested_max_arc_m": 232.70769888632853,
+            "target_requested_max_arc_m": 232.8970528927007,
+            "source_remaining_margin_m": 49.36144099003255,
+            "target_remaining_margin_m": 41.39212051105042,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 2
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 3
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    },
+    {
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "status": "PASS",
+      "topology_ambiguity": false,
+      "arms": [
+        {
+          "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.02221054228644448,
+          "minimum_target_margin_m": 0.08164013656418945,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 61.651688858201226,
+            "target_current_arc_m": 61.812759616200815,
+            "source_requested_max_arc_m": 133.53059725820123,
+            "target_requested_max_arc_m": 133.69166801620082,
+            "source_remaining_margin_m": 11.850395919001997,
+            "target_remaining_margin_m": 11.86415668878304,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 133.5034824016133,
+            "target_current_arc_m": 133.6926841680117,
+            "source_requested_max_arc_m": 205.38239080161333,
+            "target_requested_max_arc_m": 205.57159256801174,
+            "source_remaining_margin_m": 76.68674907474777,
+            "target_remaining_margin_m": 68.71758083573941,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 7
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        },
+        {
+          "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+          "status": "PASS",
+          "iterations_passed": 80,
+          "minimum_source_margin_m": 0.022210196468492427,
+          "minimum_target_margin_m": 0.08162774006366647,
+          "iteration_0": {
+            "iteration_index": 0,
+            "source_total_length_m": 145.38099317720324,
+            "target_total_length_m": 145.55582470498388,
+            "source_current_arc_m": 61.651688858201226,
+            "target_current_arc_m": 61.812759616200815,
+            "source_requested_max_arc_m": 133.53059725820123,
+            "target_requested_max_arc_m": 133.69166801620082,
+            "source_remaining_margin_m": 11.850395919001997,
+            "target_remaining_margin_m": 11.86415668878304,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "iteration_79": {
+            "iteration_index": 79,
+            "source_total_length_m": 282.0691398763611,
+            "target_total_length_m": 274.28917340375114,
+            "source_current_arc_m": 133.5034824016133,
+            "target_current_arc_m": 133.6926841680117,
+            "source_requested_max_arc_m": 205.38239080161333,
+            "target_requested_max_arc_m": 205.57159256801174,
+            "source_remaining_margin_m": 76.68674907474777,
+            "target_remaining_margin_m": 68.71758083573941,
+            "source_components": [
+              {
+                "edge_id": "18524",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.38099317720324,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20156",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.030033898879804,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18516",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 112.65811280027839,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "target_components": [
+              {
+                "edge_id": "18525",
+                "roadblock_id": "19045",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 145.55582470498388,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "20157",
+                "roadblock_id": "19463",
+                "edge_type": "NuPlanLaneConnector",
+                "native_length_m": 24.00929728186685,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              },
+              {
+                "edge_id": "18517",
+                "roadblock_id": "19074",
+                "edge_type": "NuPlanLane",
+                "native_length_m": 104.72405141690082,
+                "join_gap_m": 0.0,
+                "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+                "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+              }
+            ],
+            "transitions": [
+              {
+                "source_outgoing_count": 2,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "20156",
+                    "target_edge_id": "20157",
+                    "source_roadblock_id": "19463",
+                    "target_roadblock_id": "19463",
+                    "route_occurrence_index": 6
+                  }
+                ],
+                "selected_source_edge_id": "20156",
+                "selected_target_edge_id": "20157",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              },
+              {
+                "source_outgoing_count": 1,
+                "target_outgoing_count": 1,
+                "route_constrained_corresponding_pair_count": 1,
+                "candidate_pairs": [
+                  {
+                    "source_edge_id": "18516",
+                    "target_edge_id": "18517",
+                    "source_roadblock_id": "19074",
+                    "target_roadblock_id": "19074",
+                    "route_occurrence_index": 7
+                  }
+                ],
+                "selected_source_edge_id": "18516",
+                "selected_target_edge_id": "18517",
+                "selection_rule": "UNIQUE_ROUTE_CONSTRAINED_TOPOLOGY_CORRESPONDING_PAIR"
+              }
+            ],
+            "extrapolation_used": false,
+            "manual_points_used": false
+          },
+          "full_rows_omitted_from_small_diagnostic": true
+        }
+      ]
+    }
+  ]
+}
