@@ -1,5 +1,29 @@
 # E2E-Evaluation 项目快速参考
 
+## StageR / R1 B2.8-R3.2 — Pair binding 与 48-run orchestrator 冻结
+
+### 1. 命令
+
+以下仅执行零运行构造检查，绝不传递 `--execute`：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_8_r3_2_execute_frozen_48run_smoke.py \
+  --output docs/stageR/r1/r1_b2_8_r3_2_orchestrator_dry_run_v1.0.json
+```
+
+### 2. 期望行为
+
+- 固定读取 roster v2.1、schedule v2.1 与 24 个 pair binding，按 run order 1…48 逐一构造 runner；
+- HLC 使用冻结 clearance 与 native references；TSB 的 clearance 固定为 `null`；
+- dry-run 在 `runner.run()` 前硬停止，不启动 simulation、不消费真实预算。
+
+### 3. 通过标准
+
+- pair binding 为 24/24，HLC/TSB 各 12/12；
+- orchestrator 为 48/48 ready，49th claim 在 runner 前失败；
+- 正式执行必须同时具有匹配 final manifest SHA 的 Owner authorization；任何 SHA、输出路径或技术基础设施错误均在后续 run 前停止。
+
 ## StageR / R1 B2.8-R3.1 — 最终执行 SHA 与 safety/evaluator 接线冻结
 
 ### 1. 命令

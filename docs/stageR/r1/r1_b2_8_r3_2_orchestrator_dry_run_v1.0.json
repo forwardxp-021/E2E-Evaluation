@@ -1,0 +1,448 @@
+{
+  "status": "EXECUTION_ORCHESTRATOR_READY",
+  "runs": [
+    {
+      "run_id": "R1B27-01-R-HLC-BASELINE",
+      "run_order": 1,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-01-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-01-R-HLC-TREATMENT",
+      "run_order": 2,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-01-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-BASELINE",
+      "run_order": 3,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-02-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-02-R-HLC-TREATMENT",
+      "run_order": 4,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-02-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-BASELINE",
+      "run_order": 5,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-03-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-03-R-HLC-TREATMENT",
+      "run_order": 6,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-03-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-BASELINE",
+      "run_order": 7,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-04-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-04-R-HLC-TREATMENT",
+      "run_order": 8,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-04-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-BASELINE",
+      "run_order": 9,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-05-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-05-R-HLC-TREATMENT",
+      "run_order": 10,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-05-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-BASELINE",
+      "run_order": 11,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-06-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-06-R-HLC-TREATMENT",
+      "run_order": 12,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-06-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-BASELINE",
+      "run_order": 13,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-07-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-07-R-HLC-TREATMENT",
+      "run_order": 14,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-07-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-BASELINE",
+      "run_order": 15,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-08-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-08-R-HLC-TREATMENT",
+      "run_order": 16,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-08-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-BASELINE",
+      "run_order": 17,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-09-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-09-R-HLC-TREATMENT",
+      "run_order": 18,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-09-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-BASELINE",
+      "run_order": 19,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-10-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-10-R-HLC-TREATMENT",
+      "run_order": 20,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-10-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-BASELINE",
+      "run_order": 21,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-11-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-11-R-HLC-TREATMENT",
+      "run_order": 22,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-11-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-BASELINE",
+      "run_order": 23,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-12-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-12-R-HLC-TREATMENT",
+      "run_order": 24,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-12-R-HLC",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-BASELINE",
+      "run_order": 25,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-13-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-13-R-TSB-TREATMENT",
+      "run_order": 26,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-13-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-BASELINE",
+      "run_order": 27,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-14-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-14-R-TSB-TREATMENT",
+      "run_order": 28,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-14-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-BASELINE",
+      "run_order": 29,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-15-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-15-R-TSB-TREATMENT",
+      "run_order": 30,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-15-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-BASELINE",
+      "run_order": 31,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-16-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-16-R-TSB-TREATMENT",
+      "run_order": 32,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-16-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-BASELINE",
+      "run_order": 33,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-17-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-17-R-TSB-TREATMENT",
+      "run_order": 34,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-17-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-BASELINE",
+      "run_order": 35,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-18-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-18-R-TSB-TREATMENT",
+      "run_order": 36,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-18-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-BASELINE",
+      "run_order": 37,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-19-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-19-R-TSB-TREATMENT",
+      "run_order": 38,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-19-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-BASELINE",
+      "run_order": 39,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-20-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-20-R-TSB-TREATMENT",
+      "run_order": 40,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-20-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-BASELINE",
+      "run_order": 41,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-21-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-21-R-TSB-TREATMENT",
+      "run_order": 42,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-21-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-BASELINE",
+      "run_order": 43,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-22-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-22-R-TSB-TREATMENT",
+      "run_order": 44,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-22-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-BASELINE",
+      "run_order": 45,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-23-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-23-R-TSB-TREATMENT",
+      "run_order": 46,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-23-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-BASELINE",
+      "run_order": 47,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-24-R-TSB",
+      "simulation_started": false
+    },
+    {
+      "run_id": "R1B27-24-R-TSB-TREATMENT",
+      "run_order": 48,
+      "runner_constructed": true,
+      "budget_claimed_before_runner_run": true,
+      "runner_run_called": false,
+      "pair_binding_lookup": "R1B27-24-R-TSB",
+      "simulation_started": false
+    }
+  ],
+  "counts": {
+    "runs": 48,
+    "pair_bindings": 24
+  },
+  "claim_49": "HARD_FAIL_BEFORE_RUNNER_RUN_CAP_48",
+  "simulation_started": false,
+  "official_runs": 0,
+  "consumed_real_budget": 0,
+  "dry_claim_count": 48,
+  "technical_failure_policy": "STOPPED_ON_TECHNICAL_FAILURE_REQUIRES_OWNER_REVIEW_NO_RETRY_NO_REPLACEMENT",
+  "scientific_outcome_policy": "RECORD_AND_CONTINUE_SCHEDULE_NO_RETRY_NO_REPLACEMENT"
+}

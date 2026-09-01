@@ -1,0 +1,55 @@
+{
+  "schema_version": "r1_b2_8_r3_2_final_execution_binding_manifest_v1.1",
+  "status": "FROZEN_READY_FOR_SCIENTIFIC_OWNER_48_RUN_AUTHORIZATION",
+  "inherits_r3_1": {
+    "path": "docs/stageR/r1/r1_b2_8_r3_1_final_execution_binding_manifest_v1.0.json",
+    "sha256": "329ed0b1dcbd5bf57b6197abe5072a8510c2343dfe65572ef87e1984149eaf2b"
+  },
+  "roster": {
+    "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v2.1.json",
+    "sha256": "b977b802a7b25f0be37d04f3277cba2b2e98e521a2e30938ec40af9f278c1973",
+    "changed": false
+  },
+  "schedule": {
+    "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_schedule_v2.1.json",
+    "sha256": "6733dc623cce2e2b64b9eb71cd407982b54dcaf5ecd48b644058c767c89d552f",
+    "changed": false
+  },
+  "frozen_pair_binding": {
+    "path": "docs/stageR/r1/r1_b2_8_r3_2_frozen_pair_evaluation_bindings_v1.0.json",
+    "sha256": "76c339302a882d6e7f8237dab80c9be37639c269bac74561eba0a4369943934f",
+    "counts": {
+      "total": 24,
+      "HLC_PAIR_BINDING_COMPLETE": 12,
+      "TSB_PAIR_BINDING_COMPLETE": 12
+    }
+  },
+  "orchestrator_dry_run": {
+    "path": "docs/stageR/r1/r1_b2_8_r3_2_orchestrator_dry_run_v1.0.json",
+    "sha256": "3d13abd4617639c8a79ec29cf24107da6e5a4a6c5a6a8f703e0467e3e1cf0757",
+    "result": {
+      "runs": 48,
+      "claim_49": "HARD_FAIL_BEFORE_RUNNER_RUN_CAP_48",
+      "simulation_started": false,
+      "official_runs": 0,
+      "consumed_real_budget": 0
+    }
+  },
+  "future_execution_components_sha256": {
+    "tools/r1_b2_8_r3_2_post_run_evaluator_dispatcher.py": "82870a4b42c9343eb1ec22b20901566f3787964bfa7464ae48ea67e9b23396e1",
+    "tools/r1_b2_8_r3_2_execute_frozen_48run_smoke.py": "2ba1d0a34250af2b53ac1b8436e39b868217dddfcc11883996c6e36978179a62",
+    "tools/r1_b2_8_r3_2_freeze_pair_bindings.py": "72dd2ee6e0cbed04c42e1256c31344858cd5489025ad3eae6cbf297aaa93ecdf",
+    "tools/r1_b2_8_r3_1_official_safety_adapter.py": "7f2e0c1f72b6545ca7de5843528e9dfd6c36d099bf9072f5430b66ae982195db",
+    "tools/r1_official_technical_smoke_evaluator_v2_1.py": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60",
+    "tools/r1_b2_8_r3_frozen_run_dispatcher.py": "2893f3676db755ed768af26939b9837de6c27e69e3bc9c5202f88a01375113e6"
+  },
+  "technical_failure_semantics": "STOPPED_ON_TECHNICAL_FAILURE_REQUIRES_OWNER_REVIEW_NO_RETRY_NO_REPLACEMENT",
+  "scientific_outcome_semantics": "RECORD_AND_CONTINUE_SCHEDULE_NO_RETRY_NO_REPLACEMENT",
+  "automatic_pair_evaluation": "R3_2_dispatcher_auto_lookup_by_pair_id_after_both_arms_complete",
+  "authorization": {
+    "OFFICIAL_SMOKE_AUTHORIZED": false,
+    "NEW_RUN_BUDGET": 0,
+    "RBR_A_B_C_AUTHORIZED": false
+  },
+  "threshold_changed": false
+}
