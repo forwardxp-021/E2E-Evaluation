@@ -10494,3 +10494,27 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 
 - 只有 `48_OF_48` exact official scenario resolution 才能继续执行完整 Hydra composition 和 SimulationRunner construction。
 - 任一 `0 match` 或 `>1 match` 必须保持 `simulation_started=false`、`official_runs=0`、`consumed_budget=0`，不得 replacement。
+
+## StageR / R1 Phase B2.8-R3.3 最终授权递归 SHA 闭包
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_8_r3_2_pair_executor.py \
+  tests/test_r1_b2_8_r3_3_recursive_authorization.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- R3.3 执行器沿用 R3.2 的 48-run 调度语义，只在授权前增加递归 SHA 闭包核验；本阶段不得使用 `--execute`。
+- 授权记录必须绑定当前 R3.3 最终 manifest；该 manifest 的 R3.1 继承 manifest、其状态以及 authoritative runtime 组件逐项按 SHA 核验。
+- R3.2 当前层的 roster、schedule、冻结 pair binding 与 runtime 组件继续逐项核验；任一缺失或 SHA 不符均在仿真开始前 fail-closed。
+
+### 3. 通过标准
+
+- 正确的 R3.1→R3.2→R3.3 继承链与 34 个 R3.1 runtime 组件全部闭包通过。
+- inherited manifest SHA、继承组件、当前组件、roster、schedule、pair binding 和 owner manifest SHA 的负向测试全部 fail-closed。
+- 始终保持 `actual_official_runs=0`、`consumed_budget=0`、`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
