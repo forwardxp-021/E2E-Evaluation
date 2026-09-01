@@ -10518,3 +10518,27 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - 正确的 R3.1→R3.2→R3.3 继承链与 34 个 R3.1 runtime 组件全部闭包通过。
 - inherited manifest SHA、继承组件、当前组件、roster、schedule、pair binding 和 owner manifest SHA 的负向测试全部 fail-closed。
 - 始终保持 `actual_official_runs=0`、`consumed_budget=0`、`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.9-A 首次 official smoke native coverage 离线取证
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_a_native_reference_coverage_forensic.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_9_a_native_reference_coverage_forensic.py
+```
+
+### 2. 期望行为
+
+- 只读取冻结 roster、official native map、Attempt 1 的 34-row realized trace 与失败产物；不会调用 runner、simulation step、selector 或 RBR。
+- 离线重建 iteration 0–33 的 source/target 7.9 秒 query envelope，并对 12 个冻结 HLC identity 计算 constant-speed nominal rolling coverage。
+- 输出两个版本化 JSON；若目标已存在则 fail-closed，禁止覆盖。
+
+### 3. 通过标准
+
+- 离线 first invalid iteration 必须与真实 iteration 33 failure 对齐，并区分实际先抛出的 source 与同时越界的 active target。
+- 12 个 identity 各包含 baseline/treatment iteration 0–79 envelope，且明确标记为 technical diagnostic，不作为 scientific outcome。
+- Attempt 1 原始授权、stop record、trace 和 raw partial output 的 SHA 被记录且文件不移动、不删除、不覆盖；`simulation_executed=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
