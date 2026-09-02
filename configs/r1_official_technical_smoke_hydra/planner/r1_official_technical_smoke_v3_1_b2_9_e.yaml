@@ -1,0 +1,6 @@
+r1_official_technical_smoke_v3_1_b2_9_e:
+  _target_: tools.r1_b2_9_e_execute_frozen_48run_smoke.build_planner_from_frozen_binding
+  roster_path: ${oc.env:R1_B2_9_E_ROSTER}
+  schedule_path: ${oc.env:R1_B2_9_E_SCHEDULE}
+  run_id: ${oc.env:R1_B2_9_E_RUN_ID}
+  trace_dir: ${oc.env:R1_B2_9_E_TRACE_DIR}

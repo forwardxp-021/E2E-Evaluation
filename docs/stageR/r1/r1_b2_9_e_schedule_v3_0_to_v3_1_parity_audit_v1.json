@@ -1,0 +1,400 @@
+{
+  "schema_version": "r1_b2_9_e_schedule_v3_0_to_v3_1_parity_audit_v1",
+  "status": "48_OF_48_EXACT_SCIENTIFIC_SEMANTIC_PARITY_RUN_ID_NAMESPACE_ONLY",
+  "old_schedule_sha256": "47b5512bc235eb533d44bf3c8106c97ea5467533fe62d0902a23316e5827b0cf",
+  "new_schedule_sha256": "99f44095c27319b746921376d2549a00186303298b5266ff45dd008a98c08455",
+  "rows": [
+    {
+      "run_order": 1,
+      "old_run_id": "R1B29D-01-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-01-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-01-R-HLC",
+      "new_pair_id": "R1B29E-01-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 2,
+      "old_run_id": "R1B29D-01-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-01-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-01-R-HLC",
+      "new_pair_id": "R1B29E-01-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 3,
+      "old_run_id": "R1B29D-02-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-02-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-02-R-HLC",
+      "new_pair_id": "R1B29E-02-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 4,
+      "old_run_id": "R1B29D-02-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-02-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-02-R-HLC",
+      "new_pair_id": "R1B29E-02-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 5,
+      "old_run_id": "R1B29D-03-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-03-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-03-R-HLC",
+      "new_pair_id": "R1B29E-03-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 6,
+      "old_run_id": "R1B29D-03-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-03-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-03-R-HLC",
+      "new_pair_id": "R1B29E-03-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 7,
+      "old_run_id": "R1B29D-04-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-04-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-04-R-HLC",
+      "new_pair_id": "R1B29E-04-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 8,
+      "old_run_id": "R1B29D-04-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-04-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-04-R-HLC",
+      "new_pair_id": "R1B29E-04-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 9,
+      "old_run_id": "R1B29D-05-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-05-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-05-R-HLC",
+      "new_pair_id": "R1B29E-05-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 10,
+      "old_run_id": "R1B29D-05-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-05-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-05-R-HLC",
+      "new_pair_id": "R1B29E-05-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 11,
+      "old_run_id": "R1B29D-06-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-06-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-06-R-HLC",
+      "new_pair_id": "R1B29E-06-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 12,
+      "old_run_id": "R1B29D-06-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-06-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-06-R-HLC",
+      "new_pair_id": "R1B29E-06-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 13,
+      "old_run_id": "R1B29D-07-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-07-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-07-R-HLC",
+      "new_pair_id": "R1B29E-07-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 14,
+      "old_run_id": "R1B29D-07-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-07-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-07-R-HLC",
+      "new_pair_id": "R1B29E-07-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 15,
+      "old_run_id": "R1B29D-08-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-08-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-08-R-HLC",
+      "new_pair_id": "R1B29E-08-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 16,
+      "old_run_id": "R1B29D-08-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-08-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-08-R-HLC",
+      "new_pair_id": "R1B29E-08-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 17,
+      "old_run_id": "R1B29D-09-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-09-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-09-R-HLC",
+      "new_pair_id": "R1B29E-09-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 18,
+      "old_run_id": "R1B29D-09-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-09-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-09-R-HLC",
+      "new_pair_id": "R1B29E-09-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 19,
+      "old_run_id": "R1B29D-10-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-10-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-10-R-HLC",
+      "new_pair_id": "R1B29E-10-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 20,
+      "old_run_id": "R1B29D-10-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-10-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-10-R-HLC",
+      "new_pair_id": "R1B29E-10-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 21,
+      "old_run_id": "R1B29D-11-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-11-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-11-R-HLC",
+      "new_pair_id": "R1B29E-11-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 22,
+      "old_run_id": "R1B29D-11-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-11-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-11-R-HLC",
+      "new_pair_id": "R1B29E-11-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 23,
+      "old_run_id": "R1B29D-12-R-HLC-BASELINE",
+      "new_run_id": "R1B29E-12-R-HLC-BASELINE",
+      "old_pair_id": "R1B29D-12-R-HLC",
+      "new_pair_id": "R1B29E-12-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 24,
+      "old_run_id": "R1B29D-12-R-HLC-TREATMENT",
+      "new_run_id": "R1B29E-12-R-HLC-TREATMENT",
+      "old_pair_id": "R1B29D-12-R-HLC",
+      "new_pair_id": "R1B29E-12-R-HLC",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 25,
+      "old_run_id": "R1B29D-13-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-13-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-13-R-TSB",
+      "new_pair_id": "R1B29E-13-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 26,
+      "old_run_id": "R1B29D-13-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-13-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-13-R-TSB",
+      "new_pair_id": "R1B29E-13-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 27,
+      "old_run_id": "R1B29D-14-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-14-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-14-R-TSB",
+      "new_pair_id": "R1B29E-14-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 28,
+      "old_run_id": "R1B29D-14-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-14-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-14-R-TSB",
+      "new_pair_id": "R1B29E-14-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 29,
+      "old_run_id": "R1B29D-15-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-15-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-15-R-TSB",
+      "new_pair_id": "R1B29E-15-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 30,
+      "old_run_id": "R1B29D-15-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-15-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-15-R-TSB",
+      "new_pair_id": "R1B29E-15-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 31,
+      "old_run_id": "R1B29D-16-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-16-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-16-R-TSB",
+      "new_pair_id": "R1B29E-16-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 32,
+      "old_run_id": "R1B29D-16-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-16-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-16-R-TSB",
+      "new_pair_id": "R1B29E-16-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 33,
+      "old_run_id": "R1B29D-17-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-17-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-17-R-TSB",
+      "new_pair_id": "R1B29E-17-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 34,
+      "old_run_id": "R1B29D-17-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-17-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-17-R-TSB",
+      "new_pair_id": "R1B29E-17-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 35,
+      "old_run_id": "R1B29D-18-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-18-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-18-R-TSB",
+      "new_pair_id": "R1B29E-18-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 36,
+      "old_run_id": "R1B29D-18-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-18-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-18-R-TSB",
+      "new_pair_id": "R1B29E-18-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 37,
+      "old_run_id": "R1B29D-19-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-19-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-19-R-TSB",
+      "new_pair_id": "R1B29E-19-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 38,
+      "old_run_id": "R1B29D-19-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-19-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-19-R-TSB",
+      "new_pair_id": "R1B29E-19-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 39,
+      "old_run_id": "R1B29D-20-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-20-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-20-R-TSB",
+      "new_pair_id": "R1B29E-20-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 40,
+      "old_run_id": "R1B29D-20-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-20-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-20-R-TSB",
+      "new_pair_id": "R1B29E-20-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 41,
+      "old_run_id": "R1B29D-21-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-21-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-21-R-TSB",
+      "new_pair_id": "R1B29E-21-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 42,
+      "old_run_id": "R1B29D-21-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-21-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-21-R-TSB",
+      "new_pair_id": "R1B29E-21-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 43,
+      "old_run_id": "R1B29D-22-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-22-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-22-R-TSB",
+      "new_pair_id": "R1B29E-22-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 44,
+      "old_run_id": "R1B29D-22-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-22-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-22-R-TSB",
+      "new_pair_id": "R1B29E-22-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 45,
+      "old_run_id": "R1B29D-23-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-23-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-23-R-TSB",
+      "new_pair_id": "R1B29E-23-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 46,
+      "old_run_id": "R1B29D-23-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-23-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-23-R-TSB",
+      "new_pair_id": "R1B29E-23-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 47,
+      "old_run_id": "R1B29D-24-R-TSB-BASELINE",
+      "new_run_id": "R1B29E-24-R-TSB-BASELINE",
+      "old_pair_id": "R1B29D-24-R-TSB",
+      "new_pair_id": "R1B29E-24-R-TSB",
+      "scientific_semantics_exact": true
+    },
+    {
+      "run_order": 48,
+      "old_run_id": "R1B29D-24-R-TSB-TREATMENT",
+      "new_run_id": "R1B29E-24-R-TSB-TREATMENT",
+      "old_pair_id": "R1B29D-24-R-TSB",
+      "new_pair_id": "R1B29E-24-R-TSB",
+      "scientific_semantics_exact": true
+    }
+  ],
+  "counts": {
+    "total": 48,
+    "semantic_exact": 48,
+    "run_order_exact": 48
+  },
+  "selector_invoked": false,
+  "source_universe_scanned": false,
+  "scientific_identity_changed": false
+}

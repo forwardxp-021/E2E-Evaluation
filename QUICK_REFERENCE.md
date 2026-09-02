@@ -10650,3 +10650,41 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/
 - 24/24 pair binding pre-outcome complete，24/24 dispatcher structural invocation 通过；第 49 次 claim 在 runner 前拒绝。
 - 完整传递 SHA 闭包通过，protected CSV SHA256 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
 - 最终状态只能是 `FROZEN_READY_FOR_SCIENTIFIC_OWNER_48_RUN_AUTHORIZATION`；仍保持 `runner.run()=0`、official runs=0、consumed budget=0、`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.9-E Post-Run Callback Lifecycle 修复
+
+### 1. 命令
+
+以下命令只复核新版本 package，不执行 scientific simulation。禁止添加 `--execute`，且已消费的 exact-lifecycle canary 不得再次运行：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_e_execute_frozen_48run_smoke.py \
+  --output docs/stageR/r1/r1_b2_9_e_zero_run_final_construction_audit_v1.0.json
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_9_e_lifecycle_repair.py
+```
+
+`tools/r1_b2_9_e_finalize_package.py` 是一次性 versioned artifact finalizer；本阶段产物已生成后不得对同名输出覆盖运行。
+
+### 2. 期望行为
+
+- roster v3.0 和 24 个 scientific identities 保持原 SHA；selector 不运行，source universe 不扫描。
+- schedule v3.1 与 v3.0 的 identity、family、arm、pair order、run order 完全一致，只把已消费的 B2.9-D run/pair references 机械版本化为 `R1B29E-...`。
+- pair bindings v2.1 与 v2.0 的 context、hash、clearance、measurement/native route reference 和全部 scientific semantics 完全一致，只更新 run/pair references 与 package provenance。
+- zero-run 对 48 个新 run 完成 exact scenario resolution、V3.1 planner、Primary80 controller、runner construction 与 pair lookup，然后在执行前停止；不调用 `runner.run` 或 `run_runners`，不生成 fake metric。
+- 新 executor 的唯一 runtime 修复是经共享 `run_one_with_full_nuplan_lifecycle(...)` 调用 nuPlan `run_runners(...)`，从而完成 runner report、post-run main callbacks 与 metric parquet aggregation。
+- B2.9-D 两个旧 attempts 和输出只作为历史取证；不得补 callback、补 parquet、补 evaluation，亦不得作为新 scientific pair input。
+
+### 3. 通过标准
+
+- exact-executor engineering canary：HLC 2/2、TSB 2/2 technical complete；4/4 Primary80 trace、metric parquet、runner report、安全适配 complete；2/2 pair dispatcher complete；simulation rerun 为 0。
+- 48/48 zero-run construction PASS，`runner.run=0`、`run_runners=0`；24/24 synthetic structural dispatcher PASS。
+- executor 源码没有直接 `SimulationRunner.run()` 调用；expected safety parquet 缺失时 shared helper 必须 fail-closed。
+- roster SHA 保持 `efe8e9d680ca0bcacb367bc9b616610ca78c260195e53b8f025a7bd1d92c23e6`，protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+- callback transitive 与完整 SHA closure 均为 PASS；最终状态只能是 `FROZEN_READY_FOR_SCIENTIFIC_OWNER_48_RUN_REAUTHORIZATION`。
+- 本轮 official scientific simulation 为 0；`OFFICIAL_SMOKE_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RBR_A/B/C=NOT_AUTHORIZED`。
