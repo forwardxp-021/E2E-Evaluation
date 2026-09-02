@@ -1,0 +1,103 @@
+{
+  "schema_version": "r1_b2_9_d_official_smoke_technical_stop_record_v1.0",
+  "status": "TECHNICAL_INFRASTRUCTURE_FAILURE_STOP_REMAINING_SCHEDULE",
+  "scientific_status": "NOT_EVALUABLE",
+  "authorization": {
+    "authorized_remote_commit": "8841b770a6c9fe88d93385ba0e75932728c3e874",
+    "authorized_final_manifest_sha256": "88d1d36ef721c43dda4ce5907d2a85968142279238a4c2f11309b7b2eebe2877",
+    "authorization_record_sha256": "3df134633da17b3d6acf49aa4339d4379ddfcf811b697824a4d9f02d78356b61",
+    "scope": "ONCE",
+    "scope_consumed": true,
+    "retry": "FORBIDDEN"
+  },
+  "execution": {
+    "started_at_local": "2026-09-02T20:18:26+08:00",
+    "stopped_at_local": "2026-09-02T20:18:29+08:00",
+    "output_root": "outputs/r1_b2_9_d_official_smoke_once_v1",
+    "budget_claims": 2,
+    "runner_run_calls": 2,
+    "official_runs_completed": 2,
+    "remaining_runs_unstarted": 46,
+    "initial_budget": 48,
+    "consumed_real_budget": 2,
+    "arithmetic_unconsumed_budget": 46,
+    "unconsumed_budget_reuse_authorized": false,
+    "third_run_output_root_created": false,
+    "retry_performed": false,
+    "identity_replacement_performed": false,
+    "threshold_change_performed": false,
+    "RBR_started": false
+  },
+  "completed_runs": [
+    {
+      "run_id": "R1B29D-01-R-HLC-BASELINE",
+      "run_order": 1,
+      "pair_id": "R1B29D-01-R-HLC",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "trace_rows": 80,
+      "trace_iterations": "0...79_EXACTLY_ONCE",
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "timestamps_strictly_increasing": true,
+      "trace_sha256": "b10a211c794d419f9c8115a8bd0ed582e09448924223719f2b47f34f17621705"
+    },
+    {
+      "run_id": "R1B29D-01-R-HLC-TREATMENT",
+      "run_order": 2,
+      "pair_id": "R1B29D-01-R-HLC",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "trace_rows": 80,
+      "trace_iterations": "0...79_EXACTLY_ONCE",
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "timestamps_strictly_increasing": true,
+      "trace_sha256": "58307ecb3d88eefa96a45bbf6683b5286139aa096c5c7bf5add07cb5b7413a5e"
+    }
+  ],
+  "failure": {
+    "stage": "AUTOMATIC_POST_RUN_PAIR_EVALUATION",
+    "exception_type": "MetricCanonicalizationError",
+    "exception": "collision:MISSING_EXPECTED_METRIC_FILE:no_ego_at_fault_collisions.parquet",
+    "missing_expected_files": [
+      "no_ego_at_fault_collisions.parquet",
+      "drivable_area_compliance.parquet"
+    ],
+    "parquet_files_found_per_completed_run": 0,
+    "temporary_metric_files_found_per_completed_run": 1,
+    "temporary_metric_suffix": ".pickle.temp",
+    "cause": "EXECUTOR_CALLED_SIMULATION_RUNNER_DIRECTLY_WITHOUT_NUPLAN_RUN_RUNNERS_POST_RUN_MAIN_CALLBACK_LIFECYCLE",
+    "cause_evidence": [
+      "tools/r1_b2_9_d_execute_frozen_48run_smoke.py:248 calls runners[0].run() directly",
+      "nuplan/planning/script/utils.py:157 invokes multi_main_callback.on_run_simulation_end() only in run_runners",
+      "both completed runs retain metric .pickle.temp and contain zero parquet files"
+    ],
+    "cause_confidence": "SUPPORTED_BY_CODE_AND_ARTIFACTS"
+  },
+  "pair_disposition": {
+    "pair_id": "R1B29D-01-R-HLC",
+    "baseline_technical_simulation_complete": true,
+    "treatment_technical_simulation_complete": true,
+    "official_safety_canonicalization_complete": false,
+    "frozen_evaluator_invoked": false,
+    "scientific_result": "NOT_EVALUABLE_TECHNICAL_INFRASTRUCTURE_FAILURE",
+    "scientific_outcome_used": false
+  },
+  "raw_evidence_sha256": {
+    "R1B29D-01-R-HLC-BASELINE/raw/log.txt": "2786c2f7f495794473c71b81563b45631a12b78eba16cc3cc1a02a6c540de08b",
+    "R1B29D-01-R-HLC-BASELINE/raw/metrics/high_magnitude_speed_5292d0ee192e5b51_R1OfficialTechnicalSmokePlannerV3_1_R-HLC_HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE.pickle.temp": "d8e35f9ac3d4f6a8949b70035b084f4fc8922a5f1f96160713c88064f304954b",
+    "R1B29D-01-R-HLC-BASELINE/raw/nuboard_1788351506.nuboard": "a9a281914a1cc87312b308561c67b2b67d9ad5c708150121020590b8a90b5eec",
+    "R1B29D-01-R-HLC-BASELINE/raw/simulation_log/R1OfficialTechnicalSmokePlannerV3_1_R-HLC_HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE/high_magnitude_speed/2021.08.25.13.09.17_veh-08_00425_00803/5292d0ee192e5b51/5292d0ee192e5b51.msgpack.xz": "7c7f24581c2864c4036c9051fccdef67ef1a23c3e9df31459904a66ccbccae84",
+    "R1B29D-01-R-HLC-BASELINE/trace/realized_current_ego.jsonl": "b10a211c794d419f9c8115a8bd0ed582e09448924223719f2b47f34f17621705",
+    "R1B29D-01-R-HLC-TREATMENT/raw/log.txt": "d480fbdf31ec9adbacb6a0d2e848a9492fadd0558dfc60982efec02796f0a669",
+    "R1B29D-01-R-HLC-TREATMENT/raw/metrics/high_magnitude_speed_5292d0ee192e5b51_R1OfficialTechnicalSmokePlannerV3_1_R-HLC_HLC_TREATMENT_HLC_GEN_V2_OPTION_B.pickle.temp": "2c842b348d58fda710049bffecc62b69ada8e525881d7f9527b46b5dd62b1e1d",
+    "R1B29D-01-R-HLC-TREATMENT/raw/nuboard_1788351509.nuboard": "0fa7a8adb141622e28cb78560222a5deca4c9f4224f0a95d8b5a7390d4f38a18",
+    "R1B29D-01-R-HLC-TREATMENT/raw/simulation_log/R1OfficialTechnicalSmokePlannerV3_1_R-HLC_HLC_TREATMENT_HLC_GEN_V2_OPTION_B/high_magnitude_speed/2021.08.25.13.09.17_veh-08_00425_00803/5292d0ee192e5b51/5292d0ee192e5b51.msgpack.xz": "e8bcf2e337e50079f9cb920284c9b2c6175a51bba5adcbefd8f308f13fbf8f91",
+    "R1B29D-01-R-HLC-TREATMENT/trace/realized_current_ego.jsonl": "58307ecb3d88eefa96a45bbf6683b5286139aa096c5c7bf5add07cb5b7413a5e"
+  },
+  "final_control_state": {
+    "OFFICIAL_SMOKE": "STOPPED_TECHNICAL_FAILURE_INCOMPLETE",
+    "FURTHER_OFFICIAL_RUNS_AUTHORIZED": false,
+    "RETRY": "FORBIDDEN",
+    "IDENTITY_REPLACEMENT": "FORBIDDEN",
+    "THRESHOLD_CHANGE": "FORBIDDEN",
+    "RBR_A/B/C": "NOT_AUTHORIZED"
+  }
+}
