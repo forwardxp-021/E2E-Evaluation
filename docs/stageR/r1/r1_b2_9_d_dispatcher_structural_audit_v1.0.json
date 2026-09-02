@@ -1,0 +1,260 @@
+{
+  "schema_version": "r1_b2_9_d_dispatcher_structural_audit_v1.0",
+  "status": "24_OF_24_FROZEN_PAIR_DISPATCHER_STRUCTURAL_PASS",
+  "pairs": [
+    {
+      "pair_id": "R1B29D-01-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-02-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-03-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-04-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-05-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-06-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-07-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-08-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-09-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-10-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-11-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-12-R-HLC",
+      "family": "R-HLC",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-13-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-14-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-15-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-16-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-17-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-18-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-19-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-20-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-21-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-22-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-23-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    },
+    {
+      "pair_id": "R1B29D-24-R-TSB",
+      "family": "R-TSB",
+      "dispatcher_invoked": true,
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "trace_rows_per_arm": 80,
+      "trace_source": "REALIZED_CURRENT_EGO",
+      "metric_input_format": "REAL_PARQUET_FORMAT_SYNTHETIC_VALUES",
+      "scientific_outcome_used_for_selection": false
+    }
+  ],
+  "counts": {
+    "total": 24,
+    "R-HLC": 12,
+    "R-TSB": 12,
+    "pass": 24
+  },
+  "contract_valid_synthetic_primary80_trace": true,
+  "real_format_temporary_metric_parquet": true,
+  "future_realized_trace_used": false,
+  "scientific_outcome_used_for_identity_selection": false,
+  "runner_run_calls": 0,
+  "simulation_started": false,
+  "official_runs": 0,
+  "consumed_real_budget": 0
+}

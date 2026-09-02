@@ -10613,3 +10613,40 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - fresh actual runs 为 12、reruns 为 0；HLC 与 TSB 均为 6/6 technical complete，12/12 trace 精确覆盖 0...79，secondary planner calls 为 0。
 - 12/12 metric/callback 与 safety adapter structural complete；pair dispatcher HLC 3/3、TSB 3/3 完成。
 - candidate manifest 状态只能是 `READY_FOR_SCIENTIFIC_SELECTOR_ROSTER_REBUILD_REVIEW`；不得创建 scientific roster，`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.9-D Prospective Scientific Roster 最终冻结
+
+### 1. 命令
+
+以下命令只做冻结资产复核、零运行构造和结构测试。禁止添加 `--execute`：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_d_execute_frozen_48run_smoke.py \
+  --output docs/stageR/r1/r1_b2_9_d_zero_run_final_construction_audit_v1.0.json
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_d_finalize_scientific_package.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_9_d_final_package.py
+```
+
+### 2. 期望行为
+
+- selector v1.3 复用冻结 source universe、master seed、salt、rank/hash 和既有 eligibility gates，只增加永久排除、Primary80 与 HLC route-continuous eligibility；不读取 canary scientific outcome 选 identity。
+- 新 roster 固定 24 个 identity（12 HLC、12 TSB），schedule 固定 48 个全新 `R1B29D-...` run ID，pair binding 在 simulation 前冻结 24/24。
+- 零运行 executor 对 48 个 run 依次完成 exact scenario resolution、完整 Hydra compose、V3.1 planner、Primary80 controller 和 SimulationRunner 构造，然后在 `runner.run()` 前硬停止。
+- finalizer 仅以合约有效的临时 80-row REALIZED trace 和真实 parquet 格式调用 24 个 pair dispatcher；临时文件随进程退出清理，不生成 scientific outcome 或 official output。
+- HLC planner reference 固定为 `ROUTE_CONTINUOUS_V2_3`；measurement reference 仍为 `FROZEN_NATIVE_SOURCE_TARGET_MEASUREMENT_CONTRACT`，不得改变 measurement numerics。
+
+### 3. 通过标准
+
+- effective exclusion 为 45，Attempt 1 identity 永久保留 `OFFICIAL_ATTEMPT_CONSUMED=true`；roster 为 HLC 12/12、TSB 12/12，且没有 excluded token/log。
+- 48/48 exact resolution、48/48 exact V3.1 planner、48/48 exact Primary80 controller、48/48 runner construction 全部通过，controller iteration 数统一为 81。
+- 24/24 pair binding pre-outcome complete，24/24 dispatcher structural invocation 通过；第 49 次 claim 在 runner 前拒绝。
+- 完整传递 SHA 闭包通过，protected CSV SHA256 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+- 最终状态只能是 `FROZEN_READY_FOR_SCIENTIFIC_OWNER_48_RUN_AUTHORIZATION`；仍保持 `runner.run()=0`、official runs=0、consumed budget=0、`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。

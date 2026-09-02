@@ -1,0 +1,454 @@
+{
+  "schema_version": "r1_official_compliant_technical_smoke_schedule_v3.0",
+  "status": "FROZEN_PENDING_SCIENTIFIC_OWNER_48_RUN_AUTHORIZATION",
+  "roster_sha256": "5a5530bf8a17648ecb2184f508f240676e410987119ac182a78c631d5e826baf",
+  "runtime_bindings": {
+    "planner": "tools.r1_official_technical_smoke_planner_v3_1.R1OfficialTechnicalSmokePlannerV3_1",
+    "time_controller": "tools.r1_primary80_scientific_time_controller_v1.R1Primary80ScientificTimeControllerV1",
+    "planner_reference_semantics": "ROUTE_CONTINUOUS_V2_3",
+    "measurement_reference_semantics": "FROZEN_NATIVE_SOURCE_TARGET_MEASUREMENT_CONTRACT"
+  },
+  "runs": [
+    {
+      "run_id": "R1B29D-01-R-HLC-BASELINE",
+      "pair_id": "R1B29D-01-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 1
+    },
+    {
+      "run_id": "R1B29D-01-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-01-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 2
+    },
+    {
+      "run_id": "R1B29D-02-R-HLC-BASELINE",
+      "pair_id": "R1B29D-02-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 3
+    },
+    {
+      "run_id": "R1B29D-02-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-02-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 4
+    },
+    {
+      "run_id": "R1B29D-03-R-HLC-BASELINE",
+      "pair_id": "R1B29D-03-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 5
+    },
+    {
+      "run_id": "R1B29D-03-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-03-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 6
+    },
+    {
+      "run_id": "R1B29D-04-R-HLC-BASELINE",
+      "pair_id": "R1B29D-04-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 7
+    },
+    {
+      "run_id": "R1B29D-04-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-04-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 8
+    },
+    {
+      "run_id": "R1B29D-05-R-HLC-BASELINE",
+      "pair_id": "R1B29D-05-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 9
+    },
+    {
+      "run_id": "R1B29D-05-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-05-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 10
+    },
+    {
+      "run_id": "R1B29D-06-R-HLC-BASELINE",
+      "pair_id": "R1B29D-06-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 11
+    },
+    {
+      "run_id": "R1B29D-06-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-06-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 12
+    },
+    {
+      "run_id": "R1B29D-07-R-HLC-BASELINE",
+      "pair_id": "R1B29D-07-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 13
+    },
+    {
+      "run_id": "R1B29D-07-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-07-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 14
+    },
+    {
+      "run_id": "R1B29D-08-R-HLC-BASELINE",
+      "pair_id": "R1B29D-08-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 15
+    },
+    {
+      "run_id": "R1B29D-08-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-08-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 16
+    },
+    {
+      "run_id": "R1B29D-09-R-HLC-BASELINE",
+      "pair_id": "R1B29D-09-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 17
+    },
+    {
+      "run_id": "R1B29D-09-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-09-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 18
+    },
+    {
+      "run_id": "R1B29D-10-R-HLC-BASELINE",
+      "pair_id": "R1B29D-10-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 19
+    },
+    {
+      "run_id": "R1B29D-10-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-10-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 20
+    },
+    {
+      "run_id": "R1B29D-11-R-HLC-BASELINE",
+      "pair_id": "R1B29D-11-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 21
+    },
+    {
+      "run_id": "R1B29D-11-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-11-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 22
+    },
+    {
+      "run_id": "R1B29D-12-R-HLC-BASELINE",
+      "pair_id": "R1B29D-12-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "720f0657ad1c5980",
+      "log_id": "2021.09.28.14.23.32_veh-44_00437_00870",
+      "arm": "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+      "run_order": 23
+    },
+    {
+      "run_id": "R1B29D-12-R-HLC-TREATMENT",
+      "pair_id": "R1B29D-12-R-HLC",
+      "family": "R-HLC",
+      "scenario_token": "720f0657ad1c5980",
+      "log_id": "2021.09.28.14.23.32_veh-44_00437_00870",
+      "arm": "HLC_TREATMENT_HLC_GEN_V2_OPTION_B",
+      "run_order": 24
+    },
+    {
+      "run_id": "R1B29D-13-R-TSB-BASELINE",
+      "pair_id": "R1B29D-13-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "b501014f74205892",
+      "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 25
+    },
+    {
+      "run_id": "R1B29D-13-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-13-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "b501014f74205892",
+      "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 26
+    },
+    {
+      "run_id": "R1B29D-14-R-TSB-BASELINE",
+      "pair_id": "R1B29D-14-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "042b9dfca2095efd",
+      "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 27
+    },
+    {
+      "run_id": "R1B29D-14-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-14-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "042b9dfca2095efd",
+      "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 28
+    },
+    {
+      "run_id": "R1B29D-15-R-TSB-BASELINE",
+      "pair_id": "R1B29D-15-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "d0161e1e56015ad4",
+      "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 29
+    },
+    {
+      "run_id": "R1B29D-15-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-15-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "d0161e1e56015ad4",
+      "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 30
+    },
+    {
+      "run_id": "R1B29D-16-R-TSB-BASELINE",
+      "pair_id": "R1B29D-16-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "095db0df20635617",
+      "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 31
+    },
+    {
+      "run_id": "R1B29D-16-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-16-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "095db0df20635617",
+      "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 32
+    },
+    {
+      "run_id": "R1B29D-17-R-TSB-BASELINE",
+      "pair_id": "R1B29D-17-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "56cc8049dee85334",
+      "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 33
+    },
+    {
+      "run_id": "R1B29D-17-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-17-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "56cc8049dee85334",
+      "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 34
+    },
+    {
+      "run_id": "R1B29D-18-R-TSB-BASELINE",
+      "pair_id": "R1B29D-18-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "f459252afbd15920",
+      "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 35
+    },
+    {
+      "run_id": "R1B29D-18-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-18-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "f459252afbd15920",
+      "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 36
+    },
+    {
+      "run_id": "R1B29D-19-R-TSB-BASELINE",
+      "pair_id": "R1B29D-19-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "04aa6b32e2be5124",
+      "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 37
+    },
+    {
+      "run_id": "R1B29D-19-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-19-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "04aa6b32e2be5124",
+      "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 38
+    },
+    {
+      "run_id": "R1B29D-20-R-TSB-BASELINE",
+      "pair_id": "R1B29D-20-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "ddaf8318a0d85750",
+      "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 39
+    },
+    {
+      "run_id": "R1B29D-20-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-20-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "ddaf8318a0d85750",
+      "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 40
+    },
+    {
+      "run_id": "R1B29D-21-R-TSB-BASELINE",
+      "pair_id": "R1B29D-21-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "ff7ef3a7f7f15e43",
+      "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 41
+    },
+    {
+      "run_id": "R1B29D-21-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-21-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "ff7ef3a7f7f15e43",
+      "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 42
+    },
+    {
+      "run_id": "R1B29D-22-R-TSB-BASELINE",
+      "pair_id": "R1B29D-22-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "a99149d402545c4b",
+      "log_id": "2021.09.02.14.10.27_veh-08_00168_00649",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 43
+    },
+    {
+      "run_id": "R1B29D-22-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-22-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "a99149d402545c4b",
+      "log_id": "2021.09.02.14.10.27_veh-08_00168_00649",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 44
+    },
+    {
+      "run_id": "R1B29D-23-R-TSB-BASELINE",
+      "pair_id": "R1B29D-23-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "16facbeedddc5425",
+      "log_id": "2021.08.31.14.55.32_veh-08_01493_01713",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 45
+    },
+    {
+      "run_id": "R1B29D-23-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-23-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "16facbeedddc5425",
+      "log_id": "2021.08.31.14.55.32_veh-08_01493_01713",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 46
+    },
+    {
+      "run_id": "R1B29D-24-R-TSB-BASELINE",
+      "pair_id": "R1B29D-24-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "2b8c769f31e5553d",
+      "log_id": "2021.09.03.14.16.10_veh-08_00122_00566",
+      "arm": "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+      "run_order": 47
+    },
+    {
+      "run_id": "R1B29D-24-R-TSB-TREATMENT",
+      "pair_id": "R1B29D-24-R-TSB",
+      "family": "R-TSB",
+      "scenario_token": "2b8c769f31e5553d",
+      "log_id": "2021.09.03.14.16.10_veh-08_00122_00566",
+      "arm": "TSB_TREATMENT_TSB_GEN_V2_OPTION_A",
+      "run_order": 48
+    }
+  ],
+  "audit": {
+    "pairs": 24,
+    "runs": 48,
+    "run_order": "EXACT_1_TO_48_NO_SHUFFLE",
+    "new_namespace": "R1B29D"
+  },
+  "OFFICIAL_SMOKE_AUTHORIZED": false,
+  "NEW_RUN_BUDGET": 0,
+  "simulation_launched": false
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "r1_b2_9_d_roster_v2_1_to_v3_0_comparison_v1",
+  "status": "PASS_DETERMINISTIC_OUTCOME_BLIND_COMPARISON",
+  "old_roster": {
+    "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v2.1.json",
+    "sha256": "b977b802a7b25f0be37d04f3277cba2b2e98e521a2e30938ec40af9f278c1973"
+  },
+  "new_roster_canonical_sha256": "5a5530bf8a17648ecb2184f508f240676e410987119ac182a78c631d5e826baf",
+  "counts": {
+    "HLC_retained": 11,
+    "HLC_replaced": 1,
+    "TSB_retained": 11,
+    "TSB_replaced": 1
+  },
+  "replacements": [
+    {
+      "old_identity": {
+        "scenario_token": "b1be12bca092597a",
+        "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+        "family": "R-HLC"
+      },
+      "old_disposition": "OFFICIAL_ATTEMPT_CONSUMED_AND_PERMANENT_ENGINEERING_CANARY_EXCLUDED",
+      "new_identity": {
+        "scenario_token": "720f0657ad1c5980",
+        "log_id": "2021.09.28.14.23.32_veh-44_00437_00870",
+        "family": "R-HLC",
+        "selector_rank_sha256": "005964847f4dccee1fb6c24b8affd9b5568206f64c75a4fc17ef3e696c9f3e66",
+        "deterministic_reason": "FIRST_COMPLETE_PASS_IN_FROZEN_V1_3_RANK_ORDER_AFTER_EFFECTIVE_EXCLUSIONS"
+      }
+    },
+    {
+      "old_identity": {
+        "scenario_token": "49e7a60a807f58e8",
+        "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+        "family": "R-TSB"
+      },
+      "old_disposition": "ADDITIVE_ELIGIBILITY_EXCLUDED",
+      "new_identity": {
+        "scenario_token": "2b8c769f31e5553d",
+        "log_id": "2021.09.03.14.16.10_veh-08_00122_00566",
+        "family": "R-TSB",
+        "selector_rank_sha256": "00023447afba74332cc2b08fd7138f326771fb33b32256c26708f4b45575cced",
+        "deterministic_reason": "FIRST_COMPLETE_PASS_IN_FROZEN_V1_3_RANK_ORDER_AFTER_EFFECTIVE_EXCLUSIONS"
+      }
+    }
+  ],
+  "scientific_rollout_outcome_used": false
+}
