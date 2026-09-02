@@ -1,0 +1,114 @@
+{
+  "schema_version": "r1_b3_fmatch_distribution_audit_v1",
+  "source": "READ_ONLY_FROZEN_B2_9_E_EVALUATIONS",
+  "families": {
+    "R-HLC": {
+      "pair_pass_count": 12,
+      "required_pair_count": 12,
+      "calipers_unchanged": {
+        "mean_speed": 0.708203939,
+        "end_minus_start_speed": 0.978755681,
+        "path_length": 5.38423459
+      },
+      "absolute_delta_distributions": {
+        "mean_speed": {
+          "n": 12,
+          "min": 0.080319,
+          "p25": 0.089102,
+          "median": 0.091129,
+          "p75": 0.10035,
+          "max": 0.117302,
+          "quantile_method": "numpy_linear"
+        },
+        "end_minus_start_speed": {
+          "n": 12,
+          "min": 0.02999,
+          "p25": 0.05004,
+          "median": 0.061441,
+          "p75": 0.069443,
+          "max": 0.079438,
+          "quantile_method": "numpy_linear"
+        },
+        "path_length": {
+          "n": 12,
+          "min": 0.639588,
+          "p25": 0.707199,
+          "median": 0.723179,
+          "p75": 0.795775,
+          "max": 0.931119,
+          "quantile_method": "numpy_linear"
+        }
+      },
+      "all_feature_pass_counts": {
+        "mean_speed": 12,
+        "end_minus_start_speed": 12,
+        "path_length": 12
+      }
+    },
+    "R-TSB": {
+      "pair_pass_count": 12,
+      "required_pair_count": 12,
+      "calipers_unchanged": {
+        "mean_speed": 0.708203939,
+        "end_minus_start_speed": 0.978755681,
+        "path_length": 5.38423459,
+        "mean_abs_accel": 0.11777666
+      },
+      "absolute_delta_distributions": {
+        "mean_speed": {
+          "n": 12,
+          "min": 0.319245,
+          "p25": 0.326268,
+          "median": 0.326311,
+          "p75": 0.326758,
+          "max": 0.405011,
+          "quantile_method": "numpy_linear"
+        },
+        "end_minus_start_speed": {
+          "n": 12,
+          "min": 0.313199,
+          "p25": 0.362674,
+          "median": 0.36319,
+          "p75": 0.363452,
+          "max": 0.515622,
+          "quantile_method": "numpy_linear"
+        },
+        "path_length": {
+          "n": 12,
+          "min": 2.522681,
+          "p25": 2.573689,
+          "median": 2.574263,
+          "p75": 2.577512,
+          "max": 3.187935,
+          "quantile_method": "numpy_linear"
+        },
+        "mean_abs_accel": {
+          "n": 12,
+          "min": 0.044952,
+          "p25": 0.045065,
+          "median": 0.045312,
+          "p75": 0.045816,
+          "max": 0.053685,
+          "quantile_method": "numpy_linear"
+        }
+      },
+      "all_feature_pass_counts": {
+        "mean_speed": 12,
+        "end_minus_start_speed": 12,
+        "path_length": 12,
+        "mean_abs_accel": 12
+      }
+    }
+  },
+  "scientific_interpretation": "HANDCRAFTED_NUISANCE_MATCHING_SUCCESSFUL",
+  "caliper_redefined": false,
+  "execution_this_phase": {
+    "simulation": 0,
+    "runner.run": 0,
+    "run_runners": 0,
+    "official_rerun": 0,
+    "canary_rerun": 0,
+    "selector": 0,
+    "RBR": 0
+  }
+}

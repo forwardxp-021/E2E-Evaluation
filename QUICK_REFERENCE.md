@@ -10719,3 +10719,35 @@ docs/stageR/r1/R1_B2_9_E_Scientific_Owner_Result_Review_Request_v0.1.md
 - Scientific Owner 只读审阅 execution report、pair gate table、family summary 与 raw-output SHA manifest。
 - `RBR_A/B/C=NOT_AUTHORIZED_PENDING_SCIENTIFIC_OWNER_RESULT_REVIEW`。
 - 原始 simulation output 保留在本地证据目录，不提交 Git；Git 只固化小型账本、门结果、哈希清单、报告和授权记录。
+
+## StageR / R1 Phase B3 Realized Mechanism Transfer Forensic
+
+### 1. 只读复核命令
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b3_realized_mechanism_forensic.py
+```
+
+不得再次运行 B2.9-E `--execute`；B3 不提供 simulation、canary、selector、generator tuning 或 RBR 入口。
+
+### 2. 期望行为
+
+- 只读加载 24 个 B2.9-E frozen evaluator 文件，并验证其与 committed pair gate table 24/24 一致；不重算或替代 scientific result。
+- 24 个 official identities 全部新增标记为 outcome-exposed，只允许 R1 历史失败诊断，禁止用于 R2 development、calibration、model selection 或 confirmatory smoke。
+- HLC 用冻结 native measurement 与 Option-B 函数解析 realized progress，并把 ideal generator 结果明确隔离为 analytical diagnostic。
+- TSB 用冻结 timestamp-aware measurement 解析实际速度和加速度；one-step transfer 只读取 nuPlan 已序列化的 exact planner trajectory，与下一帧 realized ego 对照，不构造或运行 simulator。
+- 所有 B2.9-E raw outputs 由既有 SHA manifest 做 1,080/1,080 只读闭包验证。
+
+### 3. 固化结论
+
+- HLC：baseline monotonic 恒为 1.0；treatment median 为 0.927766；realized delta median 为 -0.072234，未达到冻结 -0.10 gate。Retreat、latency 与 status 均为 12/12，唯一 mechanism failure 为 monotonic attenuation。
+- HLC endpoint：6/12 PASS；5 个 failure 来自 treatment terminal lateral velocity，1 个来自 treatment terminal offset，heading 与 route-progress failure 均为 0。
+- TSB：baseline/treatment 均为 12/12 `NO_BRAKE_PHASE`、0 个 `LOW_SPEED_ENDSTOP`；release window descriptive realization 为 12/12，dominant failure 是 brake-amplitude attenuation。
+- Ideal TSB generator 可产生 baseline 1 phase 与 treatment 2 phases；该结果仅用于 generator-intent validity，不替代 realized failure。
+- F_match：HLC 12/12、TSB 12/12，`HANDCRAFTED_NUISANCE_MATCHING=SUCCESSFUL`。
+- 推荐 R2 repair family：`CONTROLLER_AWARE_TRAJECTORY_SHAPING + FEEDBACK_CALIBRATED_GENERATOR`，但只允许在 fresh、永久 engineering-only identities 上开发；threshold relaxation 不推荐。
+- `R1_RESIDUAL_BENCHMARK_ENABLEMENT=FAILED_UNDER_FROZEN_R1_CONTRACT`；`RBR_FORMAL_TRAINING=NOT_AUTHORIZED`。

@@ -1,0 +1,464 @@
+{
+  "schema_version": "r1_b3_hlc_endpoint_failure_forensic_v1",
+  "source": "READ_ONLY_FROZEN_B2_9_E_EVALUATIONS",
+  "pairs": [
+    {
+      "pair_id": "R1B29E-01-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.218891,
+        "terminal_heading_error_rad": 0.00975,
+        "terminal_lateral_velocity_mps": 0.119885,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_FAIL",
+        "pass": false,
+        "terminal_lateral_offset_to_target_center_m": 0.319546,
+        "terminal_heading_error_rad": 0.012102,
+        "terminal_lateral_velocity_mps": 0.147866,
+        "pass_by_gate": {
+          "offset": false,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.776556,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": false,
+        "failure_labels": [
+          "treatment.offset"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-02-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.185183,
+        "terminal_heading_error_rad": 0.00121,
+        "terminal_lateral_velocity_mps": 0.015701,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_FAIL",
+        "pass": false,
+        "terminal_lateral_offset_to_target_center_m": 0.081282,
+        "terminal_heading_error_rad": 0.019647,
+        "terminal_lateral_velocity_mps": 0.254012,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": false,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.650096,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": false,
+        "failure_labels": [
+          "treatment.lateral_velocity"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-03-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.032609,
+        "terminal_heading_error_rad": 0.00078,
+        "terminal_lateral_velocity_mps": 0.010219,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.137267,
+        "terminal_heading_error_rad": 0.018623,
+        "terminal_lateral_velocity_mps": 0.242745,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.697026,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": true,
+        "failure_labels": []
+      }
+    },
+    {
+      "pair_id": "R1B29E-04-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.034482,
+        "terminal_heading_error_rad": 0.005321,
+        "terminal_lateral_velocity_mps": 0.065977,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_FAIL",
+        "pass": false,
+        "terminal_lateral_offset_to_target_center_m": 0.075444,
+        "terminal_heading_error_rad": 0.027554,
+        "terminal_lateral_velocity_mps": 0.340025,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": false,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.666525,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": false,
+        "failure_labels": [
+          "treatment.lateral_velocity"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-05-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.178289,
+        "terminal_heading_error_rad": 0.000437,
+        "terminal_lateral_velocity_mps": 0.005399,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.067269,
+        "terminal_heading_error_rad": 0.019679,
+        "terminal_lateral_velocity_mps": 0.242156,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.680029,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": true,
+        "failure_labels": []
+      }
+    },
+    {
+      "pair_id": "R1B29E-06-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.057683,
+        "terminal_heading_error_rad": 0.007162,
+        "terminal_lateral_velocity_mps": 0.094542,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_FAIL",
+        "pass": false,
+        "terminal_lateral_offset_to_target_center_m": 0.047336,
+        "terminal_heading_error_rad": 0.02568,
+        "terminal_lateral_velocity_mps": 0.337377,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": false,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.67351,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": false,
+        "failure_labels": [
+          "treatment.lateral_velocity"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-07-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.045149,
+        "terminal_heading_error_rad": 0.010009,
+        "terminal_lateral_velocity_mps": 0.123936,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.053608,
+        "terminal_heading_error_rad": 0.007462,
+        "terminal_lateral_velocity_mps": 0.09181,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.782131,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": true,
+        "failure_labels": []
+      }
+    },
+    {
+      "pair_id": "R1B29E-08-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.160442,
+        "terminal_heading_error_rad": 0.002563,
+        "terminal_lateral_velocity_mps": 0.030824,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_FAIL",
+        "pass": false,
+        "terminal_lateral_offset_to_target_center_m": 0.048977,
+        "terminal_heading_error_rad": 0.022818,
+        "terminal_lateral_velocity_mps": 0.273712,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": false,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.584767,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": false,
+        "failure_labels": [
+          "treatment.lateral_velocity"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-09-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.246701,
+        "terminal_heading_error_rad": 0.001146,
+        "terminal_lateral_velocity_mps": 0.013612,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.130634,
+        "terminal_heading_error_rad": 0.019224,
+        "terminal_lateral_velocity_mps": 0.227545,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.654832,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": true,
+        "failure_labels": []
+      }
+    },
+    {
+      "pair_id": "R1B29E-10-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.041369,
+        "terminal_heading_error_rad": 0.007805,
+        "terminal_lateral_velocity_mps": 0.099557,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.137232,
+        "terminal_heading_error_rad": 0.012924,
+        "terminal_lateral_velocity_mps": 0.163957,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.714487,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": true,
+        "failure_labels": []
+      }
+    },
+    {
+      "pair_id": "R1B29E-11-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.185963,
+        "terminal_heading_error_rad": 0.009257,
+        "terminal_lateral_velocity_mps": 0.085946,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.015413,
+        "terminal_heading_error_rad": 0.017477,
+        "terminal_lateral_velocity_mps": 0.161012,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.830401,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": true,
+        "failure_labels": []
+      }
+    },
+    {
+      "pair_id": "R1B29E-12-R-HLC",
+      "baseline": {
+        "status": "HLC_ENDPOINT_PASS",
+        "pass": true,
+        "terminal_lateral_offset_to_target_center_m": 0.068465,
+        "terminal_heading_error_rad": 0.004484,
+        "terminal_lateral_velocity_mps": 0.056362,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": true,
+          "paired_route_progress_delta": true
+        }
+      },
+      "treatment": {
+        "status": "HLC_ENDPOINT_FAIL",
+        "pass": false,
+        "terminal_lateral_offset_to_target_center_m": 0.178964,
+        "terminal_heading_error_rad": 0.023553,
+        "terminal_lateral_velocity_mps": 0.29458,
+        "pass_by_gate": {
+          "offset": true,
+          "heading": true,
+          "lateral_velocity": false,
+          "paired_route_progress_delta": true
+        }
+      },
+      "pair": {
+        "route_progress_delta_m": 0.686913,
+        "route_progress_pass": true,
+        "all_endpoint_gates_pass": false,
+        "failure_labels": [
+          "treatment.lateral_velocity"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "endpoint_pass": 6,
+    "endpoint_fail": 6,
+    "failure_gate_counts": {
+      "treatment.lateral_velocity": 5,
+      "treatment.offset": 1
+    },
+    "failure_pattern_counts": {
+      "treatment.lateral_velocity": 5,
+      "treatment.offset": 1
+    },
+    "dominant_failure": "TREATMENT_TERMINAL_LATERAL_VELOCITY_5_OF_6_FAILURES",
+    "secondary_failure": "TREATMENT_TERMINAL_OFFSET_1_OF_6_FAILURES",
+    "heading_failures": 0,
+    "route_progress_failures": 0
+  },
+  "threshold_changed": false,
+  "execution_this_phase": {
+    "simulation": 0,
+    "runner.run": 0,
+    "run_runners": 0,
+    "official_rerun": 0,
+    "canary_rerun": 0,
+    "selector": 0,
+    "RBR": 0
+  }
+}

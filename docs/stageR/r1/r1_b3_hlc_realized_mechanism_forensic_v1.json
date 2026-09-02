@@ -1,0 +1,995 @@
+{
+  "schema_version": "r1_b3_hlc_realized_mechanism_forensic_v1",
+  "source": "READ_ONLY_FROZEN_B2_9_E_EVALUATIONS_AND_TRACES",
+  "evaluation_parity": "12_OF_12_EXACT_FROZEN_FUNCTION_PARITY",
+  "ideal_generator_diagnostic": {
+    "role": "ANALYTICAL_GENERATOR_INTENT_DIAGNOSTIC_ONLY",
+    "nominal_time_grid_s": "0.0...7.9_STEP_0.1",
+    "diagnostic_speed_mps": 10.0,
+    "baseline": {
+      "option": "OPTION_B",
+      "map_valid": true,
+      "status": "OK",
+      "departure_time_s": 1.6,
+      "commit_time_s": 2.4,
+      "commit_latency_s": 2.4,
+      "hesitation_retreat_count": 0,
+      "retreat_episodes": [],
+      "monotonic_transition_fraction": 1.0
+    },
+    "treatment": {
+      "option": "OPTION_B",
+      "map_valid": true,
+      "status": "OK",
+      "departure_time_s": 1.7,
+      "commit_time_s": 5.6,
+      "commit_latency_s": 5.6,
+      "hesitation_retreat_count": 1,
+      "retreat_episodes": [
+        {
+          "start_time_s": 3.3,
+          "end_time_s": 4.3
+        }
+      ],
+      "monotonic_transition_fraction": 0.872697
+    },
+    "ideal_delta_monotonic_fraction": -0.127303,
+    "frozen_gate": "delta_monotonic_fraction <= -0.10",
+    "gate_margin": -0.027303,
+    "scientific_result_replacement": false,
+    "ideal_progress": {
+      "baseline": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.001158125000000003,
+        0.008559999999999993,
+        0.026611875000000014,
+        0.057919999999999965,
+        0.103515625,
+        0.16308000000000009,
+        0.23516937499999996,
+        0.31744000000000006,
+        0.40687312499999984,
+        0.5,
+        0.5931268750000003,
+        0.6825600000000003,
+        0.7648306250000003,
+        0.8369199999999997,
+        0.896484375,
+        0.9420800000000005,
+        0.9733881249999996,
+        0.9914399999999999,
+        0.9988418749999983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "treatment": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0012407032783959097,
+        0.008840364133991783,
+        0.026402391860534315,
+        0.05498661272089007,
+        0.09361798655322189,
+        0.13979532337716435,
+        0.19,
+        0.2402046766228358,
+        0.28638201344677805,
+        0.32501338727910994,
+        0.3535976081394655,
+        0.3711596358660082,
+        0.3787592967216042,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.38,
+        0.3786304,
+        0.3707328,
+        0.3539071999999999,
+        0.32920960000000005,
+        0.3,
+        0.2707904,
+        0.24609279999999992,
+        0.22926719999999992,
+        0.22136960000000008,
+        0.22,
+        0.22052955910011576,
+        0.22396846064814815,
+        0.23252075195312508,
+        0.24768518518518526,
+        0.27032574688946787,
+        0.3007421875000002,
+        0.33874055085358845,
+        0.3837037037037041,
+        0.4346618652343752,
+        0.4903631365740746,
+        0.5493440303096069,
+        0.6100000000000007,
+        0.670655969690394,
+        0.729636863425926,
+        0.7853381347656255,
+        0.8362962962962966,
+        0.8812594491464123,
+        0.9192578125000004,
+        0.9496742531105331,
+        0.9723148148148153,
+        0.9874792480468754,
+        0.9960315393518523,
+        0.9994704408998835,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "R1B29E-01-R-HLC",
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.199788,
+        "commit_time_s": 2.600832,
+        "commit_latency_s": 2.600832,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.10025,
+        "max_abs_progress_error_vs_ideal": 0.18314
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.199788,
+        "commit_time_s": 5.700051,
+        "commit_latency_s": 5.700051,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.500522,
+            "end_time_s": 4.599999
+          }
+        ],
+        "monotonic_transition_fraction": 0.936314,
+        "progress_rmse_vs_ideal": 0.102021,
+        "max_abs_progress_error_vs_ideal": 0.185959
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.099219,
+        "delta_monotonic_fraction": -0.063686,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.077707,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.600832,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.700051,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.063686,
+        "MONOTONIC_TRANSFER_RATIO": 0.500271
+      }
+    },
+    {
+      "pair_id": "R1B29E-02-R-HLC",
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.800091,
+        "commit_time_s": 2.900258,
+        "commit_latency_s": 2.900258,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.112618,
+        "max_abs_progress_error_vs_ideal": 0.293322
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 2.000106,
+        "commit_time_s": 6.000053,
+        "commit_latency_s": 6.000053,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.500253,
+            "end_time_s": 4.600024
+          }
+        ],
+        "monotonic_transition_fraction": 0.91476,
+        "progress_rmse_vs_ideal": 0.107351,
+        "max_abs_progress_error_vs_ideal": 0.239551
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.099795,
+        "delta_monotonic_fraction": -0.08524,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.0885,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.900258,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 6.000053,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.08524,
+        "MONOTONIC_TRANSFER_RATIO": 0.669584
+      }
+    },
+    {
+      "pair_id": "R1B29E-03-R-HLC",
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.600942,
+        "commit_time_s": 2.700224,
+        "commit_latency_s": 2.700224,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.076985,
+        "max_abs_progress_error_vs_ideal": 0.224565
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.700905,
+        "commit_time_s": 5.900531,
+        "commit_latency_s": 5.900531,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.399886,
+            "end_time_s": 4.6004
+          }
+        ],
+        "monotonic_transition_fraction": 0.907193,
+        "progress_rmse_vs_ideal": 0.077169,
+        "max_abs_progress_error_vs_ideal": 0.158677
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.200307,
+        "delta_monotonic_fraction": -0.092807,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.098577,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.700224,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.900531,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.092807,
+        "MONOTONIC_TRANSFER_RATIO": 0.729024
+      }
+    },
+    {
+      "pair_id": "R1B29E-04-R-HLC",
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.700522,
+        "commit_time_s": 2.800495,
+        "commit_latency_s": 2.800495,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.075203,
+        "max_abs_progress_error_vs_ideal": 0.225748
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.800567,
+        "commit_time_s": 5.900716,
+        "commit_latency_s": 5.900716,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.400204,
+            "end_time_s": 4.600004
+          }
+        ],
+        "monotonic_transition_fraction": 0.926914,
+        "progress_rmse_vs_ideal": 0.076484,
+        "max_abs_progress_error_vs_ideal": 0.168222
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.100221,
+        "delta_monotonic_fraction": -0.073086,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.093733,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.800495,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.900716,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.073086,
+        "MONOTONIC_TRANSFER_RATIO": 0.574111
+      }
+    },
+    {
+      "pair_id": "R1B29E-05-R-HLC",
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.800328,
+        "commit_time_s": 2.900741,
+        "commit_latency_s": 2.900741,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.111484,
+        "max_abs_progress_error_vs_ideal": 0.292838
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 2.000447,
+        "commit_time_s": 6.000499,
+        "commit_latency_s": 6.000499,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.500402,
+            "end_time_s": 4.599725
+          }
+        ],
+        "monotonic_transition_fraction": 0.919301,
+        "progress_rmse_vs_ideal": 0.106607,
+        "max_abs_progress_error_vs_ideal": 0.239706
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.099758,
+        "delta_monotonic_fraction": -0.080699,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.084815,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.900741,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 6.000499,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.080699,
+        "MONOTONIC_TRANSFER_RATIO": 0.633913
+      }
+    },
+    {
+      "pair_id": "R1B29E-06-R-HLC",
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.699681,
+        "commit_time_s": 2.799455,
+        "commit_latency_s": 2.799455,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.081638,
+        "max_abs_progress_error_vs_ideal": 0.248593
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.799657,
+        "commit_time_s": 5.900303,
+        "commit_latency_s": 5.900303,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.399507,
+            "end_time_s": 4.599608
+          }
+        ],
+        "monotonic_transition_fraction": 0.905146,
+        "progress_rmse_vs_ideal": 0.080525,
+        "max_abs_progress_error_vs_ideal": 0.18263
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.100848,
+        "delta_monotonic_fraction": -0.094854,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.102905,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.799455,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.900303,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.094854,
+        "MONOTONIC_TRANSFER_RATIO": 0.745104
+      }
+    },
+    {
+      "pair_id": "R1B29E-07-R-HLC",
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.698922,
+        "commit_time_s": 2.799502,
+        "commit_latency_s": 2.799502,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.087622,
+        "max_abs_progress_error_vs_ideal": 0.257605
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.798905,
+        "commit_time_s": 5.898892,
+        "commit_latency_s": 5.898892,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.499868,
+            "end_time_s": 4.599519
+          }
+        ],
+        "monotonic_transition_fraction": 0.931378,
+        "progress_rmse_vs_ideal": 0.081442,
+        "max_abs_progress_error_vs_ideal": 0.190787
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.09939,
+        "delta_monotonic_fraction": -0.068622,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.079716,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.799502,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.898892,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.068622,
+        "MONOTONIC_TRANSFER_RATIO": 0.539045
+      }
+    },
+    {
+      "pair_id": "R1B29E-08-R-HLC",
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.799486,
+        "commit_time_s": 2.899564,
+        "commit_latency_s": 2.899564,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.106416,
+        "max_abs_progress_error_vs_ideal": 0.284625
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.899458,
+        "commit_time_s": 5.999422,
+        "commit_latency_s": 5.999422,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.499837,
+            "end_time_s": 4.599863
+          }
+        ],
+        "monotonic_transition_fraction": 0.928618,
+        "progress_rmse_vs_ideal": 0.102781,
+        "max_abs_progress_error_vs_ideal": 0.23195
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.099858,
+        "delta_monotonic_fraction": -0.071382,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.086408,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.899564,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.999422,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.071382,
+        "MONOTONIC_TRANSFER_RATIO": 0.560725
+      }
+    },
+    {
+      "pair_id": "R1B29E-09-R-HLC",
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.899368,
+        "commit_time_s": 2.899427,
+        "commit_latency_s": 2.899427,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.127444,
+        "max_abs_progress_error_vs_ideal": 0.315258
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 2.099346,
+        "commit_time_s": 6.099676,
+        "commit_latency_s": 6.099676,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.499589,
+            "end_time_s": 4.600029
+          }
+        ],
+        "monotonic_transition_fraction": 0.9301,
+        "progress_rmse_vs_ideal": 0.122396,
+        "max_abs_progress_error_vs_ideal": 0.262665
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.200249,
+        "delta_monotonic_fraction": -0.0699,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.080999,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.899427,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 6.099676,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.0699,
+        "MONOTONIC_TRANSFER_RATIO": 0.549084
+      }
+    },
+    {
+      "pair_id": "R1B29E-10-R-HLC",
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.498872,
+        "commit_time_s": 2.699354,
+        "commit_latency_s": 2.699354,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.074795,
+        "max_abs_progress_error_vs_ideal": 0.202027
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.598807,
+        "commit_time_s": 5.799087,
+        "commit_latency_s": 5.799087,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.499834,
+            "end_time_s": 4.599583
+          }
+        ],
+        "monotonic_transition_fraction": 0.936293,
+        "progress_rmse_vs_ideal": 0.074768,
+        "max_abs_progress_error_vs_ideal": 0.144369
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.099733,
+        "delta_monotonic_fraction": -0.063707,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.084461,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.699354,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.799087,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.063707,
+        "MONOTONIC_TRANSFER_RATIO": 0.500436
+      }
+    },
+    {
+      "pair_id": "R1B29E-11-R-HLC",
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.800455,
+        "commit_time_s": 2.89982,
+        "commit_latency_s": 2.89982,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.107128,
+        "max_abs_progress_error_vs_ideal": 0.298387
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 2.000313,
+        "commit_time_s": 6.000265,
+        "commit_latency_s": 6.000265,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.599781,
+            "end_time_s": 4.600391
+          }
+        ],
+        "monotonic_transition_fraction": 0.950015,
+        "progress_rmse_vs_ideal": 0.100243,
+        "max_abs_progress_error_vs_ideal": 0.229688
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.100445,
+        "delta_monotonic_fraction": -0.049985,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.068701,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.89982,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 6.000265,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.049985,
+        "MONOTONIC_TRANSFER_RATIO": 0.392646
+      }
+    },
+    {
+      "pair_id": "R1B29E-12-R-HLC",
+      "scenario_token": "720f0657ad1c5980",
+      "log_id": "2021.09.28.14.23.32_veh-44_00437_00870",
+      "baseline": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.600201,
+        "commit_time_s": 2.700273,
+        "commit_latency_s": 2.700273,
+        "hesitation_retreat_count": 0,
+        "monotonic_transition_fraction": 1.0,
+        "progress_rmse_vs_ideal": 0.075379,
+        "max_abs_progress_error_vs_ideal": 0.210842
+      },
+      "treatment": {
+        "measurement_status": "OK",
+        "departure_time_s": 1.700225,
+        "commit_time_s": 5.900499,
+        "commit_latency_s": 5.900499,
+        "hesitation_retreat_count": 1,
+        "retreat_episodes": [
+          {
+            "start_time_s": 3.400257,
+            "end_time_s": 4.600383
+          }
+        ],
+        "monotonic_transition_fraction": 0.910032,
+        "progress_rmse_vs_ideal": 0.078607,
+        "max_abs_progress_error_vs_ideal": 0.146264
+      },
+      "pair": {
+        "delta_commit_latency_s": 3.200226,
+        "delta_monotonic_fraction": -0.089968,
+        "mechanism_reasons": [
+          "MONOTONIC_PENALTY_LT_0P1"
+        ],
+        "baseline_retreat_eq_0": true,
+        "treatment_retreat_ge_1": true,
+        "latency_delta_ge_0p5": true,
+        "baseline_and_treatment_status_OK": true,
+        "delta_monotonic_le_minus_0p10": false,
+        "all_non_monotonic_mechanism_gates_pass": true
+      },
+      "intent_to_realized": {
+        "comparison_role": "DESCRIPTIVE_NOT_NEW_THRESHOLD",
+        "nominal_retreat_window_s": [
+          3.1,
+          4.1
+        ],
+        "ideal_retreat_drop": 0.15863,
+        "realized_retreat_drop": 0.100385,
+        "ideal_baseline_commit_time_s": 2.4,
+        "realized_baseline_commit_time_s": 2.700273,
+        "ideal_treatment_commit_time_s": 5.6,
+        "realized_treatment_commit_time_s": 5.900499,
+        "ideal_delta_monotonic_fraction": -0.127303,
+        "realized_delta_monotonic_fraction": -0.089968,
+        "MONOTONIC_TRANSFER_RATIO": 0.706723
+      }
+    }
+  ],
+  "distributions": {
+    "baseline_monotonic_transition_fraction": {
+      "n": 12,
+      "min": 1.0,
+      "p25": 1.0,
+      "median": 1.0,
+      "p75": 1.0,
+      "max": 1.0,
+      "quantile_method": "numpy_linear"
+    },
+    "treatment_monotonic_transition_fraction": {
+      "n": 12,
+      "min": 0.905146,
+      "p25": 0.913578,
+      "median": 0.927766,
+      "p75": 0.932607,
+      "max": 0.950015,
+      "quantile_method": "numpy_linear"
+    },
+    "delta_monotonic_fraction": {
+      "n": 12,
+      "min": -0.094854,
+      "p25": -0.086422,
+      "median": -0.072234,
+      "p75": -0.067393,
+      "max": -0.049985,
+      "quantile_method": "numpy_linear"
+    },
+    "delta_commit_latency_s": {
+      "n": 12,
+      "min": 3.099219,
+      "p25": 3.099752,
+      "median": 3.10004,
+      "p75": 3.125692,
+      "max": 3.200307,
+      "quantile_method": "numpy_linear"
+    },
+    "MONOTONIC_TRANSFER_RATIO": {
+      "n": 12,
+      "min": 0.392646,
+      "p25": 0.529392,
+      "median": 0.567418,
+      "p75": 0.678869,
+      "max": 0.745104,
+      "quantile_method": "numpy_linear"
+    }
+  },
+  "gate_counts": {
+    "baseline_retreat_eq_0": 12,
+    "treatment_retreat_ge_1": 12,
+    "latency_delta_ge_0p5": 12,
+    "baseline_and_treatment_status_OK": 12,
+    "delta_monotonic_le_minus_0p10": 0,
+    "unique_failure_reason_is_MONOTONIC_PENALTY_LT_0P1": 12
+  },
+  "interpretation": "REALIZED_RETREAT_AND_LATENCY_TRANSFERRED_12_OF_12_BUT_MONOTONIC_EFFECT_ATTENUATED_BELOW_FROZEN_GATE_12_OF_12",
+  "threshold_changed": false,
+  "execution_this_phase": {
+    "simulation": 0,
+    "runner.run": 0,
+    "run_runners": 0,
+    "official_rerun": 0,
+    "canary_rerun": 0,
+    "selector": 0,
+    "RBR": 0
+  }
+}

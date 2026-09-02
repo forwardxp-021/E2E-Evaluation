@@ -1,0 +1,1342 @@
+{
+  "schema_version": "r1_b3_tsb_realized_mechanism_forensic_v1",
+  "source": "READ_ONLY_FROZEN_B2_9_E_EVALUATIONS_AND_TRACES",
+  "evaluation_parity": "12_OF_12_EXACT_FROZEN_FUNCTION_PARITY",
+  "ideal_generator_diagnostic": {
+    "role": "GENERATOR_INTENT_DIAGNOSTIC_ONLY",
+    "initial_speed_mps": 10.0,
+    "initial_condition_role": "SYMBOLIC_HIGH_SPEED_AVOIDS_LOW_SPEED_ENDSTOP",
+    "baseline": {
+      "option": "OPTION_A",
+      "status": "OK",
+      "brake_phase_count": 1,
+      "brake_phases": [
+        {
+          "start_time_s": 1.2,
+          "end_time_s": 2.0,
+          "peak_decel_mps2": 1.0
+        }
+      ],
+      "interstage_release_fraction": null,
+      "second_brake_peak_ratio": null
+    },
+    "treatment": {
+      "option": "OPTION_A",
+      "status": "OK",
+      "brake_phase_count": 2,
+      "brake_phases": [
+        {
+          "start_time_s": 1.2,
+          "end_time_s": 1.4,
+          "peak_decel_mps2": 0.9
+        },
+        {
+          "start_time_s": 2.5,
+          "end_time_s": 2.7,
+          "peak_decel_mps2": 0.9
+        }
+      ],
+      "interstage_release_fraction": 0.333333,
+      "second_brake_peak_ratio": 1.0
+    },
+    "scientific_result_replacement": false
+  },
+  "pairs": [
+    {
+      "pair_id": "R1B29E-13-R-TSB",
+      "scenario_token": "b501014f74205892",
+      "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.76293,
+        "minimum_speed_mps": 4.450447,
+        "minimum_acceleration_mps2": -0.76293,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 9,
+          "minimum_acceleration_mps2": -0.76293,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.335647,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 4.813015,
+        "minimum_acceleration_mps2": -0.335647,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.222297,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.400012,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.31818,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.400012,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.335647,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.100003,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-14-R-TSB",
+      "scenario_token": "042b9dfca2095efd",
+      "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.769623,
+        "minimum_speed_mps": 10.636554,
+        "minimum_acceleration_mps2": -0.769623,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 9,
+          "minimum_acceleration_mps2": -0.769623,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.333567,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 10.998519,
+        "minimum_acceleration_mps2": -0.333567,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.2315,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.40004,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.31626,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.40004,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.333567,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.10001,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-15-R-TSB",
+      "scenario_token": "d0161e1e56015ad4",
+      "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 1.31553,
+        "minimum_speed_mps": 1.508508,
+        "minimum_acceleration_mps2": -1.31553,
+        "continuous_samples_le_minus_0p80": 2,
+        "longest_duration_le_minus_0p80_s": 0.199964,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 9,
+          "minimum_acceleration_mps2": -0.77638,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 1.315755,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 1.879568,
+        "minimum_acceleration_mps2": -1.315755,
+        "continuous_samples_le_minus_0p80": 2,
+        "longest_duration_le_minus_0p80_s": 0.199964,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.241505,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399928,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.316587,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399928,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.334146,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.099982,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-16-R-TSB",
+      "scenario_token": "095db0df20635617",
+      "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.767503,
+        "minimum_speed_mps": 11.162834,
+        "minimum_acceleration_mps2": -0.767503,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 10,
+          "minimum_acceleration_mps2": -0.767503,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.333485,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 11.525363,
+        "minimum_acceleration_mps2": -0.333485,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 6,
+          "minimum_acceleration_mps2": -0.264046,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399984,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.316171,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399984,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.333485,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.099996,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-17-R-TSB",
+      "scenario_token": "56cc8049dee85334",
+      "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.768522,
+        "minimum_speed_mps": 8.628433,
+        "minimum_acceleration_mps2": -0.768522,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 10,
+          "minimum_acceleration_mps2": -0.768522,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.333516,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 8.991677,
+        "minimum_acceleration_mps2": -0.333516,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.266618,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 3,
+          "longest_continuous_samples_ge_minus_0p20": 3,
+          "longest_duration_ge_minus_0p20_s": 0.299973,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.278547,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 5,
+          "longest_continuous_samples_ge_minus_0p20": 5,
+          "longest_duration_ge_minus_0p20_s": 0.499955,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.333516,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-18-R-TSB",
+      "scenario_token": "f459252afbd15920",
+      "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.76875,
+        "minimum_speed_mps": 10.739866,
+        "minimum_acceleration_mps2": -0.76875,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 9,
+          "minimum_acceleration_mps2": -0.76875,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.331183,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 11.103036,
+        "minimum_acceleration_mps2": -0.331183,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.229795,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399988,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.312583,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399988,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.331183,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.099997,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-19-R-TSB",
+      "scenario_token": "04aa6b32e2be5124",
+      "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.76826,
+        "minimum_speed_mps": 12.099029,
+        "minimum_acceleration_mps2": -0.76826,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 9,
+          "minimum_acceleration_mps2": -0.76826,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.333563,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 12.461628,
+        "minimum_acceleration_mps2": -0.333563,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.229404,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399948,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.316257,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399948,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.333563,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.099987,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-20-R-TSB",
+      "scenario_token": "ddaf8318a0d85750",
+      "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.767991,
+        "minimum_speed_mps": 8.687603,
+        "minimum_acceleration_mps2": -0.767991,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 10,
+          "minimum_acceleration_mps2": -0.767991,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.333094,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 9.050825,
+        "minimum_acceleration_mps2": -0.333094,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.266316,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 3,
+          "longest_continuous_samples_ge_minus_0p20": 3,
+          "longest_duration_ge_minus_0p20_s": 0.300012,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.277999,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 5,
+          "longest_continuous_samples_ge_minus_0p20": 5,
+          "longest_duration_ge_minus_0p20_s": 0.50002,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.333094,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-21-R-TSB",
+      "scenario_token": "ff7ef3a7f7f15e43",
+      "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.755252,
+        "minimum_speed_mps": 2.943672,
+        "minimum_acceleration_mps2": -0.755252,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 10,
+          "minimum_acceleration_mps2": -0.755252,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.301251,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 3.388613,
+        "minimum_acceleration_mps2": -0.301251,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.256943,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 3,
+          "longest_continuous_samples_ge_minus_0p20": 3,
+          "longest_duration_ge_minus_0p20_s": 0.299967,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 8,
+          "minimum_acceleration_mps2": -0.231276,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 7,
+          "longest_continuous_samples_ge_minus_0p20": 7,
+          "longest_duration_ge_minus_0p20_s": 0.699923,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.244677,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 3,
+          "longest_continuous_samples_ge_minus_0p20": 3,
+          "longest_duration_ge_minus_0p20_s": 0.299967,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-22-R-TSB",
+      "scenario_token": "a99149d402545c4b",
+      "log_id": "2021.09.02.14.10.27_veh-08_00168_00649",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.759514,
+        "minimum_speed_mps": 10.620306,
+        "minimum_acceleration_mps2": -0.759514,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 10,
+          "minimum_acceleration_mps2": -0.759514,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.312187,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 11.000499,
+        "minimum_acceleration_mps2": -0.312187,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 6,
+          "minimum_acceleration_mps2": -0.25895,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399952,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 6,
+          "minimum_acceleration_mps2": -0.258673,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399952,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.312187,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-23-R-TSB",
+      "scenario_token": "16facbeedddc5425",
+      "log_id": "2021.08.31.14.55.32_veh-08_01493_01713",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.767351,
+        "minimum_speed_mps": 10.071217,
+        "minimum_acceleration_mps2": -0.767351,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 9,
+          "minimum_acceleration_mps2": -0.767351,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.333541,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 10.433897,
+        "minimum_acceleration_mps2": -0.333541,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.228005,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399984,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.316229,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.399984,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.333541,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.099996,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    },
+    {
+      "pair_id": "R1B29E-24-R-TSB",
+      "scenario_token": "2b8c769f31e5553d",
+      "log_id": "2021.09.03.14.16.10_veh-08_00122_00566",
+      "baseline": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decel_mps2": 0.768702,
+        "minimum_speed_mps": 11.965149,
+        "minimum_acceleration_mps2": -0.768702,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "relevant_brake_window": {
+          "window_s": [
+            1.1,
+            2.05
+          ],
+          "sample_count": 10,
+          "minimum_acceleration_mps2": -0.768702,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 0,
+          "longest_continuous_samples_ge_minus_0p20": 0,
+          "longest_duration_ge_minus_0p20_s": 0.0,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "treatment": {
+        "measurement_status": "NO_BRAKE_PHASE",
+        "brake_phase_count": 0,
+        "brake_phases": [],
+        "peak_decels_mps2": [],
+        "overall_peak_decel_mps2": 0.331738,
+        "release_fraction": null,
+        "second_peak_ratio": null,
+        "minimum_speed_mps": 12.327596,
+        "minimum_acceleration_mps2": -0.331738,
+        "continuous_samples_le_minus_0p80": 0,
+        "longest_duration_le_minus_0p80_s": 0.0,
+        "first_intended_brake_window": {
+          "window_s": [
+            1.1,
+            1.6
+          ],
+          "sample_count": 6,
+          "minimum_acceleration_mps2": -0.266804,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 4,
+          "longest_continuous_samples_ge_minus_0p20": 4,
+          "longest_duration_ge_minus_0p20_s": 0.3999,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "release_window": {
+          "window_s": [
+            1.6,
+            2.3
+          ],
+          "sample_count": 7,
+          "minimum_acceleration_mps2": -0.315795,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 3,
+          "longest_continuous_samples_ge_minus_0p20": 3,
+          "longest_duration_ge_minus_0p20_s": 0.299925,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        },
+        "second_intended_brake_window": {
+          "window_s": [
+            2.3,
+            2.8
+          ],
+          "sample_count": 5,
+          "minimum_acceleration_mps2": -0.331738,
+          "samples_le_minus_0p80": 0,
+          "longest_continuous_samples_le_minus_0p80": 0,
+          "longest_duration_le_minus_0p80_s": 0.0,
+          "samples_ge_minus_0p20": 1,
+          "longest_continuous_samples_ge_minus_0p20": 1,
+          "longest_duration_ge_minus_0p20_s": 0.099975,
+          "duration_semantic": "CONTIGUOUS_SAMPLE_SUPPORT_USING_MEDIAN_ACTUAL_DT"
+        }
+      },
+      "pair": {
+        "mechanism_reasons": [
+          "MEASUREMENT_NOT_OK",
+          "BASELINE_PHASE_COUNT_NOT_ONE",
+          "TREATMENT_PHASE_COUNT_NOT_EXACTLY_TWO",
+          "RELEASE_FRACTION_LT_0P15",
+          "SECOND_PEAK_RATIO_LT_0P50"
+        ],
+        "release_window_realized_descriptive": true,
+        "transfer_failure_labels": [
+          "BRAKE_AMPLITUDE_ATTENUATION"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "baseline_status_counts": {
+      "NO_BRAKE_PHASE": 12,
+      "LOW_SPEED_ENDSTOP": 0,
+      "OK": 0
+    },
+    "treatment_status_counts": {
+      "NO_BRAKE_PHASE": 12,
+      "LOW_SPEED_ENDSTOP": 0,
+      "OK": 0
+    },
+    "baseline_brake_phase_count_distribution": {
+      "0": 12
+    },
+    "treatment_brake_phase_count_distribution": {
+      "0": 12
+    },
+    "overall_peak_decel_mps2": {
+      "baseline": {
+        "n": 12,
+        "min": 0.755252,
+        "p25": 0.766246,
+        "median": 0.768126,
+        "p75": 0.768714,
+        "max": 1.31553,
+        "quantile_method": "numpy_linear"
+      },
+      "treatment": {
+        "n": 12,
+        "min": 0.301251,
+        "p25": 0.331599,
+        "median": 0.3335,
+        "p75": 0.333564,
+        "max": 1.315755,
+        "quantile_method": "numpy_linear"
+      }
+    },
+    "intended_window_peak_decel_mps2": {
+      "baseline_relevant": {
+        "n": 12,
+        "min": 0.755252,
+        "p25": 0.766246,
+        "median": 0.768126,
+        "p75": 0.768714,
+        "max": 0.77638,
+        "quantile_method": "numpy_linear"
+      },
+      "treatment_first": {
+        "n": 12,
+        "min": 0.222297,
+        "p25": 0.229697,
+        "median": 0.249224,
+        "p75": 0.264614,
+        "max": 0.266804,
+        "quantile_method": "numpy_linear"
+      },
+      "treatment_second": {
+        "n": 12,
+        "min": 0.244677,
+        "p25": 0.331599,
+        "median": 0.3335,
+        "p75": 0.333564,
+        "max": 0.335647,
+        "quantile_method": "numpy_linear"
+      }
+    },
+    "treatment_release_window_realized": 12,
+    "treatment_release_window_not_realized": 0,
+    "transfer_failure_label_counts": {
+      "BRAKE_AMPLITUDE_ATTENUATION": 12
+    },
+    "dominant_transfer_failure": "BRAKE_AMPLITUDE_ATTENUATION",
+    "interpretation": "RELEASE_WINDOW_WAS_PRESENT_BUT_BRAKING_AMPLITUDE_DID_NOT_CROSS_THE_FROZEN_PHASE_THRESHOLD_FOR_REQUIRED_DURATION"
+  },
+  "threshold_changed": false,
+  "execution_this_phase": {
+    "simulation": 0,
+    "runner.run": 0,
+    "run_runners": 0,
+    "official_rerun": 0,
+    "canary_rerun": 0,
+    "selector": 0,
+    "RBR": 0
+  }
+}

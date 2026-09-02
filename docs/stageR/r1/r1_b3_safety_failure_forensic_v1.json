@@ -1,0 +1,109 @@
+{
+  "schema_version": "r1_b3_safety_failure_forensic_v1",
+  "source": "READ_ONLY_FROZEN_OFFICIAL_SAFETY_CANONICAL_PAYLOAD",
+  "safety_failing_pair_count": 2,
+  "failures": [
+    {
+      "pair_id": "R1B29E-01-R-HLC",
+      "family": "R-HLC",
+      "baseline": {
+        "collision_count": 0,
+        "drivable_area_compliance": false,
+        "safety_pass": false,
+        "failure_causes": [
+          "DRIVABLE_AREA_NONCOMPLIANCE"
+        ],
+        "canonical_payload_sha256": "1c1b76418e6f1464ffd7a856111b548cd96786a35c8abdcfca9a83b172772a04",
+        "raw_metric_artifact_provenance": {
+          "collision": {
+            "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet",
+            "artifact_provenance_sha256": "30ec563cc7999e4b8ce8cb4846770c471e1e09252ee1853f5c0a3df9ea6fa01f"
+          },
+          "drivable_area": {
+            "relative_path": "raw/metrics/drivable_area_compliance.parquet",
+            "artifact_provenance_sha256": "39a67f31c66e88735804ae2e8491178e102a461493834cfc1f3ff2aa43f46a70"
+          }
+        }
+      },
+      "treatment": {
+        "collision_count": 0,
+        "drivable_area_compliance": true,
+        "safety_pass": true,
+        "failure_causes": [],
+        "canonical_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+        "raw_metric_artifact_provenance": {
+          "collision": {
+            "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet",
+            "artifact_provenance_sha256": "e4619f1216318d5494ad2d54fe201f3898ef7e80139fdbc366ed343da4f47688"
+          },
+          "drivable_area": {
+            "relative_path": "raw/metrics/drivable_area_compliance.parquet",
+            "artifact_provenance_sha256": "f78d357b6b5c62c531e8b5cc8bcf826c2510f12615bc3038da19b5e287515b8b"
+          }
+        }
+      },
+      "pair_failure_causes": [
+        "DRIVABLE_AREA_NONCOMPLIANCE"
+      ]
+    },
+    {
+      "pair_id": "R1B29E-21-R-TSB",
+      "family": "R-TSB",
+      "baseline": {
+        "collision_count": 1,
+        "drivable_area_compliance": false,
+        "safety_pass": false,
+        "failure_causes": [
+          "COLLISION",
+          "DRIVABLE_AREA_NONCOMPLIANCE"
+        ],
+        "canonical_payload_sha256": "96238727eb29a49cfabfb17200c9a4a4714ddc0c9d379266126d77f4dce6ade5",
+        "raw_metric_artifact_provenance": {
+          "collision": {
+            "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet",
+            "artifact_provenance_sha256": "9ed7c87a83c02452f634b9c743f935dac3c6ff7a1912711d79ee0d7b8b87533d"
+          },
+          "drivable_area": {
+            "relative_path": "raw/metrics/drivable_area_compliance.parquet",
+            "artifact_provenance_sha256": "5324dff7fd2fcc6d2f97a489073d23db7205f2094d46999078d2c7714fa863d1"
+          }
+        }
+      },
+      "treatment": {
+        "collision_count": 2,
+        "drivable_area_compliance": false,
+        "safety_pass": false,
+        "failure_causes": [
+          "COLLISION",
+          "DRIVABLE_AREA_NONCOMPLIANCE"
+        ],
+        "canonical_payload_sha256": "4a532ef5753de40c544f4db5520181ea0683f558a3eb46e989b52a8c9ffc7797",
+        "raw_metric_artifact_provenance": {
+          "collision": {
+            "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet",
+            "artifact_provenance_sha256": "c0d8f1c3e1f8bb290c2d8f4c2549b9982ed7f09743c92a7238e6c42ca2e9830d"
+          },
+          "drivable_area": {
+            "relative_path": "raw/metrics/drivable_area_compliance.parquet",
+            "artifact_provenance_sha256": "4bfb6ee1850dc3f6ce85dc51695bd6cf135f21d5064c98973e1e6a141f6037dd"
+          }
+        }
+      },
+      "pair_failure_causes": [
+        "COLLISION",
+        "DRIVABLE_AREA_NONCOMPLIANCE"
+      ]
+    }
+  ],
+  "safety_repair_performed": false,
+  "safety_threshold_changed": false,
+  "execution_this_phase": {
+    "simulation": 0,
+    "runner.run": 0,
+    "run_runners": 0,
+    "official_rerun": 0,
+    "canary_rerun": 0,
+    "selector": 0,
+    "RBR": 0
+  }
+}
