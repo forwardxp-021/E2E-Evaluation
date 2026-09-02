@@ -1,0 +1,16 @@
+{
+  "schema_version": "r1_b2_9_e_scientific_owner_reauthorization_once_v1",
+  "OFFICIAL_SMOKE_AUTHORIZED": true,
+  "AUTHORIZATION_SCOPE": "ONCE",
+  "NEW_RUN_BUDGET": 48,
+  "final_execution_manifest_sha256": "99dfafaa719c5b2ea454b46f637132e5d6e9c755c972bf5a15ec37442057c006",
+  "authorized_remote_commit": "628787063901d420f5367d95941bd8b4ad9ded29",
+  "authorized_roster_sha256": "efe8e9d680ca0bcacb367bc9b616610ca78c260195e53b8f025a7bd1d92c23e6",
+  "authorized_schedule_sha256": "99f44095c27319b746921376d2549a00186303298b5266ff45dd008a98c08455",
+  "authorized_pair_binding_sha256": "a606a87b01cd1fdd340070fca7e77170b6e0782aafa1e7c19ab6c91228cc9fa6",
+  "retry_allowed": false,
+  "identity_replacement_allowed": false,
+  "threshold_change_allowed": false,
+  "RBR_A_B_C_AUTHORIZED": false,
+  "owner_decision_source": "EXPLICIT_USER_MESSAGE_IN_CURRENT_CODEX_THREAD"
+}

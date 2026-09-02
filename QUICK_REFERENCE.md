@@ -10688,3 +10688,34 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/
 - roster SHA 保持 `efe8e9d680ca0bcacb367bc9b616610ca78c260195e53b8f025a7bd1d92c23e6`，protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
 - callback transitive 与完整 SHA closure 均为 PASS；最终状态只能是 `FROZEN_READY_FOR_SCIENTIFIC_OWNER_48_RUN_REAUTHORIZATION`。
 - 本轮 official scientific simulation 为 0；`OFFICIAL_SMOKE_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.9-E 一次性 Official Scientific Smoke 结果
+
+### 1. 已消费的一次性授权
+
+授权 manifest、roster、schedule 与 pair binding 已按 Scientific Owner 的 ONCE 授权完成 48-run 正式执行。该授权和 48 次预算已经全部消费；**不得再次运行带 `--execute` 的命令**，不得重试、替换 identity 或修改阈值。
+
+后续只允许读取并复核下列固化结果：
+
+```text
+docs/stageR/r1/r1_b2_9_e_official_smoke_run_ledger_v1.0.json
+docs/stageR/r1/r1_b2_9_e_official_smoke_pair_gate_table_v1.0.json
+docs/stageR/r1/r1_b2_9_e_official_smoke_family_summary_v1.0.json
+docs/stageR/r1/r1_b2_9_e_official_smoke_raw_output_sha_manifest_v1.0.json
+docs/stageR/r1/R1_B2_9_E_Official_Scientific_Smoke_Execution_Report_v1.md
+docs/stageR/r1/R1_B2_9_E_Scientific_Owner_Result_Review_Request_v0.1.md
+```
+
+### 2. 固化结果
+
+- 48/48 attempts 已 claim，48/48 `run_runners` 完成，48/48 technical complete；没有 retry、identity replacement 或 threshold change。
+- 48/48 Primary trace 精确为 iterations 0...79，source 均为 `REALIZED_CURRENT_EGO`，secondary trace 为 0；48/48 runner report、metric lifecycle 与 safety adapter 输入完整。
+- HLC：context 12/12、mechanism 0/12、F_match 12/12、endpoint 6/12、engineering 12/12、safety 11/12，因此 `HLC_FAMILY_SMOKE_READY=FAIL`。
+- TSB：context 12/12、measurement applicability 0/12、mechanism 0/12、F_match 12/12、safety 11/12，因此 `TSB_FAMILY_SMOKE_READY=FAIL`。
+- 两个 family 的 FAIL 都是冻结门规则下的科学结果，不是技术基础设施失败；完整 schedule 已执行完毕，不得据此补跑或换样本。
+
+### 3. 下一步边界
+
+- Scientific Owner 只读审阅 execution report、pair gate table、family summary 与 raw-output SHA manifest。
+- `RBR_A/B/C=NOT_AUTHORIZED_PENDING_SCIENTIFIC_OWNER_RESULT_REVIEW`。
+- 原始 simulation output 保留在本地证据目录，不提交 Git；Git 只固化小型账本、门结果、哈希清单、报告和授权记录。

@@ -1,0 +1,38 @@
+{
+  "schema_version": "r1_b2_9_e_official_smoke_family_summary_v1.0",
+  "status": "COMPLETE_STRICT_FAMILY_READINESS_EVALUATION",
+  "families": [
+    {
+      "family": "R-HLC",
+      "required_pairs": 12,
+      "technical_complete_pairs": 12,
+      "context_pass": 12,
+      "mechanism_pass": 0,
+      "F_match_pass": 12,
+      "safety_pass": 11,
+      "measurement_applicability_pass": "NOT_APPLICABLE_SEPARATE_GATE",
+      "endpoint_pass": 6,
+      "engineering_pass": 12,
+      "FAMILY_SMOKE_READY": "FAIL",
+      "strict_semantics": "ALL_12_PAIRS_AND_ALL_REQUIRED_GATES_MUST_PASS",
+      "scientific_failure_is_infrastructure_failure": false
+    },
+    {
+      "family": "R-TSB",
+      "required_pairs": 12,
+      "technical_complete_pairs": 12,
+      "context_pass": 12,
+      "mechanism_pass": 0,
+      "F_match_pass": 12,
+      "safety_pass": 11,
+      "measurement_applicability_pass": 0,
+      "endpoint_pass": "NOT_APPLICABLE",
+      "engineering_pass": "NOT_APPLICABLE",
+      "FAMILY_SMOKE_READY": "FAIL",
+      "strict_semantics": "ALL_12_PAIRS_AND_ALL_REQUIRED_GATES_MUST_PASS",
+      "scientific_failure_is_infrastructure_failure": false
+    }
+  ],
+  "strict_rule": "12_OF_12_REQUIRED_PAIRS_MUST_PASS_EVERY_REQUIRED_GATE",
+  "RBR_A/B/C": "NOT_AUTHORIZED_PENDING_SCIENTIFIC_OWNER_RESULT_REVIEW"
+}
