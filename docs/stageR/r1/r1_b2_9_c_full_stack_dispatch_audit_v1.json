@@ -1,0 +1,62 @@
+{
+  "schema_version": "r1_b2_9_c_full_stack_dispatch_audit_v1",
+  "status": "FULL_EXECUTION_STACK_STRUCTURAL_COMPLETION",
+  "evaluations": [
+    {
+      "pair_id": "R1B29C-01-R-HLC",
+      "family": "R-HLC",
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "evaluator_status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT",
+      "official_safety_pair_pass_descriptive_only": true,
+      "scientific_gate_used_for_tuning_or_selection": false
+    },
+    {
+      "pair_id": "R1B29C-02-R-HLC",
+      "family": "R-HLC",
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "evaluator_status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT",
+      "official_safety_pair_pass_descriptive_only": true,
+      "scientific_gate_used_for_tuning_or_selection": false
+    },
+    {
+      "pair_id": "R1B29C-03-R-HLC",
+      "family": "R-HLC",
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "evaluator_status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT",
+      "official_safety_pair_pass_descriptive_only": true,
+      "scientific_gate_used_for_tuning_or_selection": false
+    },
+    {
+      "pair_id": "R1B29C-04-R-TSB",
+      "family": "R-TSB",
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "evaluator_status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT",
+      "official_safety_pair_pass_descriptive_only": false,
+      "scientific_gate_used_for_tuning_or_selection": false
+    },
+    {
+      "pair_id": "R1B29C-05-R-TSB",
+      "family": "R-TSB",
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "evaluator_status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT",
+      "official_safety_pair_pass_descriptive_only": true,
+      "scientific_gate_used_for_tuning_or_selection": false
+    },
+    {
+      "pair_id": "R1B29C-06-R-TSB",
+      "family": "R-TSB",
+      "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+      "evaluator_status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT",
+      "official_safety_pair_pass_descriptive_only": true,
+      "scientific_gate_used_for_tuning_or_selection": false
+    }
+  ],
+  "counts": {
+    "HLC_pair_dispatcher_complete": 3,
+    "TSB_pair_dispatcher_complete": 3,
+    "total": 6
+  },
+  "threshold_tuning": false,
+  "identity_selection": false,
+  "mechanism_or_F_match_change": false
+}

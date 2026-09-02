@@ -1,0 +1,94 @@
+{
+  "schema_version": "r1_b2_9_c_route_progression_invariant_audit_v1",
+  "status": "PASS",
+  "simulation_started": false,
+  "current12_read_only_offline": [
+    {
+      "scenario_token": "b1be12bca092597a",
+      "calls": 160,
+      "selected_transitions": 140
+    },
+    {
+      "scenario_token": "5292d0ee192e5b51",
+      "calls": 160,
+      "selected_transitions": 240
+    },
+    {
+      "scenario_token": "4fa52d891cb057f3",
+      "calls": 160,
+      "selected_transitions": 162
+    },
+    {
+      "scenario_token": "86eb22d3fb9d5878",
+      "calls": 160,
+      "selected_transitions": 188
+    },
+    {
+      "scenario_token": "8c223edd967d5902",
+      "calls": 160,
+      "selected_transitions": 212
+    },
+    {
+      "scenario_token": "6464ad553b205b77",
+      "calls": 160,
+      "selected_transitions": 142
+    },
+    {
+      "scenario_token": "87dc430b0397561c",
+      "calls": 160,
+      "selected_transitions": 208
+    },
+    {
+      "scenario_token": "97c8d9bd277c5497",
+      "calls": 160,
+      "selected_transitions": 256
+    },
+    {
+      "scenario_token": "3606b3c7132f5f96",
+      "calls": 160,
+      "selected_transitions": 102
+    },
+    {
+      "scenario_token": "a090bc2ea0fd523d",
+      "calls": 160,
+      "selected_transitions": 118
+    },
+    {
+      "scenario_token": "f52b69619b04507e",
+      "calls": 160,
+      "selected_transitions": 242
+    },
+    {
+      "scenario_token": "ef95bc7d18095d38",
+      "calls": 160,
+      "selected_transitions": 212
+    }
+  ],
+  "b2_9_b_actual_a03": [
+    {
+      "scenario_token": "b1be12bca092597a",
+      "actual_calls": 160,
+      "selected_transitions": 147
+    },
+    {
+      "scenario_token": "25944935eadb52f1",
+      "actual_calls": 160,
+      "selected_transitions": 220
+    },
+    {
+      "scenario_token": "ef3172a208cc5dd7",
+      "actual_calls": 160,
+      "selected_transitions": 287
+    }
+  ],
+  "counts": {
+    "current12_calls": 1920,
+    "current12_selected_transitions": 2222,
+    "actual_canary_calls": 480,
+    "actual_canary_selected_transitions": 654,
+    "selected_transitions_audited": 2876,
+    "target_route_consistency_violations": 0
+  },
+  "violations": [],
+  "current_scientific_identity_runner_runs": 0
+}

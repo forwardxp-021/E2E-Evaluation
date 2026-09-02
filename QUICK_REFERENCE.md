@@ -10578,3 +10578,38 @@ scenario 运行 `V2_RUN_A` 和 `V2_RUN_B`，总计精确 8 次；不得以任何
 - 当前 12 个冻结 HLC identity 的 baseline/treatment 0...79 滚动覆盖为 12/12，拓扑歧义为 0，且结果只标记 `DIAGNOSTIC_ONLY`。
 - 最终至少 3 个独立 canary × baseline/treatment 共 6 个最新 attempt 全部达到 80 行 Primary、无 native coverage failure、无其他技术 failure，并完成 metric/callback。
 - canary token/log 永久写入科学排除 ledger；科学 roster、阈值、F_match、安全定义均不变，`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。
+
+## StageR / R1 Phase B2.9-C Primary80 与跨 Family 工程 Canary
+
+### 1. 命令
+
+以下命令只适用于已冻结、永久禁止科学使用的工程 canary 身份；不得用于当前 scientific identities：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_c_cross_family_canary.py prepare
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_c_cross_family_canary.py execute
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r1_b2_9_c_cross_family_canary.py finalize
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r1_b2_9_c_primary80_cross_family.py \
+  tests/test_r1_b2_9_b_route_continuous_canary.py
+```
+
+### 2. 期望行为
+
+- `prepare` 冻结 Primary80 runtime contract，离线审计当前 12 个 HLC 身份与 3 个既有 HLC canary 的 source/target frozen-route progression；任何 target roadblock 不一致都在仿真前 fail-closed。
+- `execute` 仅运行 roster 中 3 个 HLC 与 3 个 TSB 永久科学排除身份，每个 baseline/treatment 各一次；每个输出根和 trace path 必须全新，工具不提供自动 rerun。
+- 科学 time-controller 继承 nuPlan 1.2.2 StepSimulationTimeController，仅将有效场景固定为 81 controller iterations，从而产生 planner calls 0...79；少于 81 iterations 显式 `NOT_EVALUABLE`。
+- `finalize` 只读取实际 80-row trace、官方 metric Parquet、历史 pretreatment artifacts，并调用冻结 safety adapter 与 V2.1 evaluator dispatcher；scientific gate 结果不得用于调参或选身份。
+
+### 3. 通过标准
+
+- route progression invariant 为 PASS，target route-consistency violation 为 0；V2.3 与 V2.2 对所有接受输入的 native reference exact parity。
+- fresh actual runs 为 12、reruns 为 0；HLC 与 TSB 均为 6/6 technical complete，12/12 trace 精确覆盖 0...79，secondary planner calls 为 0。
+- 12/12 metric/callback 与 safety adapter structural complete；pair dispatcher HLC 3/3、TSB 3/3 完成。
+- candidate manifest 状态只能是 `READY_FOR_SCIENTIFIC_SELECTOR_ROSTER_REBUILD_REVIEW`；不得创建 scientific roster，`OFFICIAL_SMOKE_AUTHORIZED=false`、`RBR_A/B/C=NOT_AUTHORIZED`。

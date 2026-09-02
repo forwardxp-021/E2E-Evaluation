@@ -1,0 +1,21 @@
+{
+  "schema_version": "r1_hlc_route_progression_invariant_contract_v1.0",
+  "status": "FROZEN_AFTER_ZERO_VIOLATION_READ_ONLY_AUDIT",
+  "implementation": "tools/r1_closed_loop_benchmark_v2_3.py",
+  "invariant": [
+    "each selected source successor roadblock has exactly one later occurrence in frozen route_roadblock_ids",
+    "the paired target successor roadblock exactly equals the source successor roadblock",
+    "source and target component pairs advance through the same strictly increasing frozen-route occurrences"
+  ],
+  "failure": "FAIL_CLOSED_NO_TIE_BREAK_NO_REPLACEMENT",
+  "v2_2_rules_preserved": [
+    "native_only",
+    "no_extrapolation",
+    "no_manual_points",
+    "unique_pair",
+    "direction_continuity",
+    "adjacency",
+    "self_intersection_fail_closed",
+    "exact_native_join"
+  ]
+}
