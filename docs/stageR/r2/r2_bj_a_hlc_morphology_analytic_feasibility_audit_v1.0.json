@@ -1,0 +1,140 @@
+{
+  "schema_version": "r2_bj_a_hlc_morphology_analytic_feasibility_audit_v1.0",
+  "status": "PASS_INTRINSIC_MORPHOLOGY_ONLY__NOT_COMPOSITE_ENVELOPE",
+  "formula": {
+    "quintic_max_normalized_velocity": 1.875,
+    "quintic_max_normalized_acceleration": 5.773502691896257,
+    "scaled_peak_lateral_acceleration": "(10*sqrt(3)/3)*lane_separation*abs(delta_progress)/duration^2"
+  },
+  "lane_separation_for_worst_geometry_m": 5.148466,
+  "frozen_lateral_acceleration_limit_mps2": 6.0,
+  "R2_BI_frozen_morphology": {
+    "phases": [
+      {
+        "phase": "advance",
+        "progress_start": 0.0,
+        "progress_end": 0.44,
+        "delta_progress": 0.44,
+        "duration_s": 1.1,
+        "maximum_normalized_velocity": 1.875,
+        "maximum_normalized_acceleration": 5.773502691896257,
+        "lane_separation_scaled_max_lateral_velocity_mps": 3.8613494999999998,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 10.808975385504128,
+        "boundary_position_velocity_acceleration_continuity": "C2_ZERO_ENDPOINT_VELOCITY_AND_ACCELERATION"
+      },
+      {
+        "phase": "hold",
+        "progress_start": 0.44,
+        "progress_end": 0.44,
+        "delta_progress": 0.0,
+        "duration_s": 0.5,
+        "maximum_normalized_velocity": 0.0,
+        "maximum_normalized_acceleration": 0.0,
+        "lane_separation_scaled_max_lateral_velocity_mps": 0.0,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 0.0,
+        "boundary_position_velocity_acceleration_continuity": "CONSTANT_PHASE_C2"
+      },
+      {
+        "phase": "retreat",
+        "progress_start": 0.44,
+        "progress_end": 0.14,
+        "delta_progress": -0.3,
+        "duration_s": 1.3,
+        "maximum_normalized_velocity": 1.875,
+        "maximum_normalized_acceleration": 5.773502691896257,
+        "lane_separation_scaled_max_lateral_velocity_mps": 2.2277016346153844,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 5.276570824284559,
+        "boundary_position_velocity_acceleration_continuity": "C2_ZERO_ENDPOINT_VELOCITY_AND_ACCELERATION"
+      },
+      {
+        "phase": "recommit",
+        "progress_start": 0.14,
+        "progress_end": 1.0,
+        "delta_progress": 0.86,
+        "duration_s": 1.4,
+        "maximum_normalized_velocity": 1.875,
+        "maximum_normalized_acceleration": 5.773502691896257,
+        "lane_separation_scaled_max_lateral_velocity_mps": 5.929929589285715,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 13.04246264628432,
+        "boundary_position_velocity_acceleration_continuity": "C2_ZERO_ENDPOINT_VELOCITY_AND_ACCELERATION"
+      }
+    ],
+    "intrinsic_limit_pass": false
+  },
+  "R2_BJ_A_revised_global_morphology": {
+    "phases": [
+      {
+        "phase": "advance",
+        "progress_start": 0.0,
+        "progress_end": 0.2,
+        "delta_progress": 0.2,
+        "duration_s": 1.7,
+        "maximum_normalized_velocity": 1.875,
+        "maximum_normalized_acceleration": 5.773502691896257,
+        "lane_separation_scaled_max_lateral_velocity_mps": 1.1356910294117648,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 2.057071440147845,
+        "boundary_position_velocity_acceleration_continuity": "C2_ZERO_ENDPOINT_VELOCITY_AND_ACCELERATION"
+      },
+      {
+        "phase": "hold",
+        "progress_start": 0.2,
+        "progress_end": 0.2,
+        "delta_progress": 0.0,
+        "duration_s": 0.1,
+        "maximum_normalized_velocity": 0.0,
+        "maximum_normalized_acceleration": 0.0,
+        "lane_separation_scaled_max_lateral_velocity_mps": 0.0,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 0.0,
+        "boundary_position_velocity_acceleration_continuity": "CONSTANT_PHASE_C2"
+      },
+      {
+        "phase": "retreat",
+        "progress_start": 0.2,
+        "progress_end": 0.09000000000000001,
+        "delta_progress": -0.11,
+        "duration_s": 1.4,
+        "maximum_normalized_velocity": 1.875,
+        "maximum_normalized_acceleration": 5.773502691896257,
+        "lane_separation_scaled_max_lateral_velocity_mps": 0.7584793660714286,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 1.668221966385204,
+        "boundary_position_velocity_acceleration_continuity": "C2_ZERO_ENDPOINT_VELOCITY_AND_ACCELERATION"
+      },
+      {
+        "phase": "recommit",
+        "progress_start": 0.09000000000000001,
+        "progress_end": 1.0,
+        "delta_progress": 0.91,
+        "duration_s": 3.1,
+        "maximum_normalized_velocity": 1.875,
+        "maximum_normalized_acceleration": 5.773502691896257,
+        "lane_separation_scaled_max_lateral_velocity_mps": 2.833732294354839,
+        "lane_separation_scaled_max_lateral_acceleration_mps2": 2.8147201771304973,
+        "boundary_position_velocity_acceleration_continuity": "C2_ZERO_ENDPOINT_VELOCITY_AND_ACCELERATION"
+      }
+    ],
+    "phase_boundaries_s": {
+      "diverge": 1.1,
+      "advance_end": 2.8,
+      "hold_end": 2.9,
+      "retreat_end": 4.3,
+      "recommit_end": 7.4
+    },
+    "divergence_boundary_C2": {
+      "absolute_time_s": 1.1,
+      "baseline_minus_treatment_position": 0.0,
+      "baseline_minus_treatment_first_derivative": 0.0,
+      "baseline_minus_treatment_second_derivative": 0.0,
+      "direct_positive_lag_shift_used": false,
+      "pass": true
+    },
+    "remaining_Primary80_settling_time_s": 0.5,
+    "intrinsic_limit_pass": true
+  },
+  "terminal_capture": {
+    "capture_start_abs_s": 1.1,
+    "nominal_capture_end_abs_s": 7.4,
+    "minimum_stitching_horizon_s": 3.0,
+    "rule": "GLOBAL_ROLLING_C2_STITCHING_HORIZON_WITHOUT_ZERO_DENOMINATOR_OR_DEADLINE_JUMP",
+    "not_merged_into_intrinsic_morphology": true
+  }
+}

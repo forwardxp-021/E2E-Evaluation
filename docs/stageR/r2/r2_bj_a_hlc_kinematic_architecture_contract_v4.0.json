@@ -1,0 +1,20 @@
+{
+  "schema_version": "r2_bj_a_hlc_kinematic_architecture_contract_v4.0",
+  "status": "OFFLINE_CANDIDATE_NOT_EXECUTION_AUTHORIZED",
+  "architecture": "GLOBAL_C2_MORPHOLOGY_WITH_ROLLING_KINEMATIC_STITCHING_V4",
+  "preserved_V3_invariants": [
+    "FINAL_XY_THEN_TANGENT_HEADING_THEN_CURVATURE_SINGLE_SOURCE",
+    "STATE0_EXACT_REALIZED_POSE",
+    "CONTROLLER_VISIBLE_CURVATURE",
+    "EXACT_FROZEN_LQR_SHADOW",
+    "INFEASIBLE_FAIL_CLOSED"
+  ],
+  "morphology": "ADVANCE_HOLD_RETREAT_RECOMMIT",
+  "T_DIVERGE_s": 1.1,
+  "divergence_boundary": "BASELINE_TREATMENT_POSITION_VELOCITY_ACCELERATION_C2",
+  "lag_precompensation": "DISABLED_ZERO_SECONDS__NO_POSITIVE_PHASE_SHIFT",
+  "capture": "GLOBAL_ROLLING_C2_STITCHING_HORIZON_FLOOR",
+  "scenario_log_identity_specific_parameters": false,
+  "scientific_measurement_or_threshold_changed": false,
+  "execution_authorized": false
+}

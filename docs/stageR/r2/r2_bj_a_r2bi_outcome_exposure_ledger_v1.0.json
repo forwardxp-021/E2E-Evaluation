@@ -1,0 +1,114 @@
+{
+  "schema_version": "r2_bj_a_r2bi_outcome_exposure_ledger_v1.0",
+  "status": "FROZEN_ADDITIVE_FUTURE_GOVERNANCE_LEDGER",
+  "source_roster": {
+    "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_roster_v1.0.json",
+    "sha256": "7155da773653e1b7c31ca6cf37b9b9bc813e9c9fa8c3c88102b8a88351db8f07"
+  },
+  "source_stop_audit": {
+    "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_round_0_architecture_stop_audit_v1.json",
+    "sha256": "c8454a4e1e9a539a93c677eccec3285a226e766c915ceff18cf93756a9910187"
+  },
+  "identity_count": 8,
+  "outcome_exposed_count": 1,
+  "frozen_unrun_count": 7,
+  "entries": [
+    {
+      "scenario_token": "a879e20bb13e5fef",
+      "log_id": "2021.09.17.19.20.02_veh-45_00890_01067",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": true,
+      "FROZEN_UNRUN_HISTORY_ONLY": false,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "c0157d7290f15eb3",
+      "log_id": "2021.08.20.18.44.47_veh-08_00181_00718",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "1ac5efbd2c7a505b",
+      "log_id": "2021.09.03.16.38.35_veh-08_00026_00837",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "6a130a6951e15b47",
+      "log_id": "2021.09.21.20.37.06_veh-45_00155_00357",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "e9022744ac9c58bb",
+      "log_id": "2021.08.25.19.15.01_veh-45_00179_00590",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "c028cb14ea385ddf",
+      "log_id": "2021.09.10.18.03.24_veh-42_01572_02075",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "57c31880394d576a",
+      "log_id": "2021.08.19.18.08.28_veh-45_00419_00852",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "68b3edead77a5ca0",
+      "log_id": "2021.08.30.19.47.46_veh-45_02658_02788",
+      "R2_BI_DEV_KIN": true,
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "OUTCOME_EXPOSED_HISTORY_ONLY": false,
+      "FROZEN_UNRUN_HISTORY_ONLY": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "R2_BI_RERUN_FORBIDDEN": true
+    }
+  ],
+  "historical_ledgers_modified": false
+}

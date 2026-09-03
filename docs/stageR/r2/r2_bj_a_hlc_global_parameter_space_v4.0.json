@@ -1,0 +1,33 @@
+{
+  "schema_version": "r2_bj_a_hlc_global_parameter_space_v4.0",
+  "status": "FROZEN_OFFLINE_CANDIDATE_PARAMETERS",
+  "global_parameters": {
+    "morphology": {
+      "baseline_transition_duration_s": 5.0,
+      "advance_duration_s": 1.7,
+      "advance_progress": 0.2,
+      "hold_duration_s": 0.1,
+      "retreat_depth": 0.11,
+      "retreat_duration_s": 1.4,
+      "recommit_duration_s": 3.1,
+      "lag_precompensation_s": 0.0
+    },
+    "capture": {
+      "capture_start_abs_s": 1.1,
+      "nominal_capture_end_abs_s": 7.4,
+      "minimum_stitching_horizon_s": 3.0,
+      "frozen_feasibility_limits": {
+        "curvature_inv_m_max": 0.5,
+        "yaw_rate_radps_max": 1.0,
+        "lateral_accel_mps2_max": 6.0,
+        "state0_to_state1_distance_excess_m_max": 0.35,
+        "state0_tangent_mismatch_rad_max": 0.2,
+        "heading_xy_consistency_rad_max": 1e-10
+      }
+    }
+  },
+  "derivation": "WORST_FROZEN_LANE_SEPARATION_INTRINSIC_QUINTIC_ACCELERATION_BOUND",
+  "identity_specific_lookup": false,
+  "simulation_fitted": false,
+  "scientific_threshold_changed": false
+}

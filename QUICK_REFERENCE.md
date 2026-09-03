@@ -10886,3 +10886,34 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - treatment 失败的曲率、yaw-rate、state0→state1 连续性和 XY-heading consistency 均在冻结门内；不将单个 identity 外推为跨 identity 系统性结论。
 - 状态必须为 `R2_BI_DEVELOPMENT_NOT_CONVERGED`；Round 1 不启动，不生成 selected HLC V3 parameters 或 complete G_R2 candidate。
 - scientific simulation、TSB simulation 均为 0；R2-C、confirmatory smoke、RBR 均未启动；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BJ-A HLC Morphology Feasibility Envelope
+
+### 1. 命令
+
+本阶段是离线、零仿真的可行性审计。结果文件已版本化，日常复核只运行测试；不得调用任何带 `--execute` 的工程命令：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_a_offline_morphology_feasibility.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 只读核验 8 个 R2-BI DEV-KIN identities 的永久防火墙、V4 全局 C2 morphology、滚动 stitching horizon、完整 planner `_states` 零运行包络和 exact frozen LQR shadow。
+- V4 保留 V3 的 final XY → tangent heading → curvature、state0 continuity、controller-visible curvature 和 infeasible fail-closed；不使用 scenario/log/identity 参数查表。
+- 审计把 morphology intrinsic、online stitching、native curvature、target capture 与 composite final trajectory 分开报告；不会把 composite failure 全部归因于 capture。
+- 不构造 simulator、不调用 `runner.run`，不选择新 roster，不请求 BJ-B simulation authorization，不启动 TSB、R2-C、confirmatory smoke 或 RBR。
+
+### 3. 通过标准
+
+- 新 intrinsic morphology 在冻结最大 lane separation 下的峰值横向加速度不超过 `6.0 m/s²`，1.1 秒 common→treatment 边界满足 P/V/A C2，且无正 lag phase shift。
+- expanded zero-run audit 覆盖 baseline/treatment、Primary80、所有 phase/capture 边界、直/左右曲线、左右目标车道、lane/speed/curvature/residual 边界；每个 case 都走完整 `_states`。
+- 当前 raw source-universe 笛卡尔包络为 1160/3296 PASS，存在 2136 个冻结运动学门失败，因此最终必须为 `R2_BJ_A_OFFLINE_ARCHITECTURE_NOT_READY`，BJ-B request 为 `REQUEST_WITHHELD`。
+- `runner.run=0`、engineering/scientific/TSB simulation 均为 0；R2-C、confirmatory smoke、RBR 均未启动；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

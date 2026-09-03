@@ -1,0 +1,80 @@
+{
+  "schema_version": "r2_bj_a_component_sha_binding_manifest_v1.0",
+  "status": "R2_BJ_A_OFFLINE_ARCHITECTURE_NOT_READY",
+  "components": [
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+      "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+      "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+    },
+    {
+      "path": "tools/r2_bj_a_offline_morphology_feasibility_audit.py",
+      "sha256": "49f02010fa5782829dee9942a104accfcea4530b44b7af31c84961652af6cc2c"
+    },
+    {
+      "path": "tests/test_r2_bj_a_offline_morphology_feasibility.py",
+      "sha256": "1265d0f4678dab092b7f89cfa125a0ac7e5ff0d46d00d2098f1912a80a61d53a"
+    },
+    {
+      "path": "QUICK_REFERENCE.md",
+      "sha256": "5e1b3b607aa1aec89f947aeb7ec2110eb41e5d91c06359a381e5feda8d2072da"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_r2bi_outcome_exposure_ledger_v1.0.json",
+      "sha256": "540a2b293fddd6f75214c23d5e732d266d8f5572c311e331ca592cd691670d7e"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_morphology_analytic_feasibility_audit_v1.0.json",
+      "sha256": "facf846c65e0feb855a9989fa328e2beea8134d1e917016eb01eaf4f709cfbf5"
+    },
+    {
+      "path": "docs/stageR/r2/R2_BJ_A_HLC_Morphology_Analytic_Feasibility_Report_v1.md",
+      "sha256": "6f69ccdbe65ad20b978a1f6eb1fa3f820b64944793aa8bf91a56a3959db3a374"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_kinematic_architecture_contract_v4.0.json",
+      "sha256": "526bbd4335c13dc5177d5f3da80dc8ef0e93b4d8e7ec7346af4096e0955940af"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+      "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_expanded_zero_run_feasibility_envelope_v1.0.json",
+      "sha256": "29f66eca55856aba42fbc68aaa3b91c51b423a2c5262150f874eaab114ba8860"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_data_firewall_audit_v1.0.json",
+      "sha256": "3307fdbcede49cb41d967adba09e0154e0ebbddc33dc25198add935527f57afd"
+    },
+    {
+      "path": "docs/stageR/r2/R2_BJ_A_R2BJ_B_Engineering_Execution_Readiness_Request_v0.1.md",
+      "sha256": "bfbd462851da1903d0be8e53d16d0e187f30d58128cb16648793dd2dbbe76a44"
+    },
+    {
+      "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+      "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e"
+    },
+    {
+      "path": "docs/stageR/r1/r1_b2_1_hlc_geometry_audit_v1.csv",
+      "sha256": "04a512cb6a2ac4200dfe1e7e77e6983a5d9333d1018b219a92e0d2051e0a21ea"
+    },
+    {
+      "path": "tools/r2_bi_hlc_kinematic_target_capture_generator_v3.py",
+      "sha256": "a904e3771d771ffa15677655131a44a6b723b0994672b5ea8ac74269354d3579"
+    },
+    {
+      "path": "tools/r2_bi_zero_run_entry_gate_audit.py",
+      "sha256": "9e7e4656fc061d08909dd8dfafe50886b505ee390b4c42ad2c6c5e7a7e971ca4"
+    }
+  ],
+  "component_SHA_closure": "PASS",
+  "readiness_request_issued": false,
+  "runner_run_calls": 0,
+  "simulation_calls": 0,
+  "TSB_simulation_calls": 0,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}
