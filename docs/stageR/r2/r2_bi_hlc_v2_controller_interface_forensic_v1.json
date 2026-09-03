@@ -1,0 +1,199 @@
+{
+  "schema_version": "r2_bi_hlc_v2_controller_interface_forensic_v1",
+  "status": "R2_BH_V2_CONTROLLER_INTERFACE_DIAGNOSIS_SUPPORTED",
+  "simulation_calls": 0,
+  "frozen_controller_binding": {
+    "controller": "TwoStageController",
+    "tracker": "LQRTracker",
+    "lqr_source": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py",
+      "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b"
+    },
+    "two_stage_source": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/two_stage_controller.py",
+      "sha256": "22797e59f0f13a61ced983a62f8750bb22febac549e1e7ab80f82547c6cadbdd"
+    },
+    "lqr_config": {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/simulation/ego_controller/tracker/lqr_tracker.yaml",
+      "sha256": "79d9baa95cf6b4046f0f230d5b4576c13d13b50a2871f2af5f1d2d5d45f6a14c"
+    },
+    "discretization_time_s": 0.1,
+    "tracking_horizon_steps": 10,
+    "lookahead_s": 1.0,
+    "initial_lateral_state": "[state0 lateral error, state0 heading error, actual tire steering angle]",
+    "reference_input": "velocity and curvature profiles fitted from the pose trajectory"
+  },
+  "evidence_scope": {
+    "R2BH_raw_planner_telemetry_rows": 3840,
+    "R2BH_direct_controller_command_rows": 0,
+    "direct_command_availability": "NOT_AVAILABLE_IN_R2BH_TELEMETRY",
+    "future_V3_requirement": "EXACT_FROZEN_LQR_SHADOW_PLUS_PASSIVE_ACTUAL_CONTROLLER_RETURN_VALUE"
+  },
+  "state0_exact_current_ego_rows": 3840,
+  "telemetry_distributions": {
+    "state0_to_state1_forward_m": {
+      "n": 3840,
+      "min": 0.3463898142178996,
+      "p25": 1.1831694562048527,
+      "median": 1.284506718472974,
+      "p75": 1.3541503721190336,
+      "max": 3.1346225939322228
+    },
+    "state0_to_state1_lateral_m": {
+      "n": 3840,
+      "min": -9.43602072420846,
+      "p25": -0.336913734083376,
+      "median": -0.05342826019716085,
+      "p75": 0.007306348337437485,
+      "max": 0.6115049593632281
+    },
+    "state0_declared_vs_segment_tangent_abs_rad": {
+      "n": 3840,
+      "min": 0.00014601874224462463,
+      "p25": 0.017065029445512137,
+      "median": 0.05292633265181257,
+      "p75": 0.25109391300009454,
+      "max": 1.5307657869223794
+    },
+    "state1_declared_vs_segment_tangent_abs_rad": {
+      "n": 3840,
+      "min": 0.00014601874224462463,
+      "p25": 0.017038785584164717,
+      "median": 0.052855986062066984,
+      "p75": 0.2506099638726331,
+      "max": 1.4663547217248123
+    },
+    "lookahead_abs_declared_curvature_inv_m": {
+      "n": 38400,
+      "min": 0.0,
+      "p25": 0.0006015631443938403,
+      "median": 0.0020129645968206857,
+      "p75": 0.00967763241654312,
+      "max": 0.2040181049846921
+    },
+    "planned_state1_actual_target_offset_m": {
+      "n": 3840,
+      "min": -0.43211715896592623,
+      "p25": 1.8114388680356612e-10,
+      "median": 2.415674072981833,
+      "p75": 3.2669051520773604,
+      "max": 7.562079468112743
+    }
+  },
+  "planned_actual_target_offset_by_capture_phase_abs_m": {
+    "before_capture": {
+      "n": 2496,
+      "min": 0.00011430095192796655,
+      "p25": 1.8252193425591012,
+      "median": 2.9219673385419993,
+      "p75": 3.4080338179826986,
+      "max": 7.396022596233877
+    },
+    "during_capture": {
+      "n": 576,
+      "min": 0.0,
+      "p25": 0.15056730682570327,
+      "median": 0.89946075459802,
+      "p75": 3.6121104923465666,
+      "max": 7.562079468112743
+    },
+    "after_capture": {
+      "n": 768,
+      "min": 0.0,
+      "p25": 0.0,
+      "median": 9.029178985430877e-11,
+      "p75": 9.108343518224359e-11,
+      "max": 1.8313974258444717e-10
+    }
+  },
+  "realized_target_offset_landmarks_abs_m": {
+    "capture_start": {
+      "n": 48,
+      "min": 0.03100695572147885,
+      "p25": 0.31659877168384953,
+      "median": 3.28020043990016,
+      "p75": 4.558791818984089,
+      "max": 7.551991945858624
+    },
+    "capture_midpoint": {
+      "n": 48,
+      "min": 0.010997874706132959,
+      "p25": 0.4360171422170208,
+      "median": 3.4877565068978424,
+      "p75": 4.799502014091341,
+      "max": 8.714683635315057
+    },
+    "capture_end": {
+      "n": 48,
+      "min": 0.0059524563385630865,
+      "p25": 0.49530102981590873,
+      "median": 3.5933570966153434,
+      "p75": 5.120094036738194,
+      "max": 9.376256945613157
+    },
+    "Primary_terminal": {
+      "n": 48,
+      "min": 0.011485871919560324,
+      "p25": 0.4720881233007564,
+      "median": 3.6997678367203894,
+      "p75": 5.178876870199448,
+      "max": 9.239535736700262
+    }
+  },
+  "semantic_separation": {
+    "algebraic_residual_term": "V2 additive scalar field; zero does not establish pose continuity",
+    "actual_planned_target_frame_offset": "projection of final planned xy onto frozen native target reference",
+    "kinematically_realizable_reference": "continuous xy with heading/curvature derived from final xy and frozen feasibility",
+    "LQR_steering_command": "tracker return value driven by initial state plus fitted curvature profile",
+    "realized_closed_loop_offset": "projection of REALIZED_CURRENT_EGO onto frozen native target reference"
+  },
+  "synthetic_V2_cases": [
+    {
+      "corridor": "STRAIGHT",
+      "current_residual_m": 0.5,
+      "algebraic_state1_residual_term_m": 0.0,
+      "actual_state0_to_state1_lateral_jump_m": -0.5,
+      "declared_state0_heading_rad": 0.0,
+      "geometric_state0_to_state1_tangent_rad": -0.4636476090008061,
+      "absolute_heading_inconsistency_rad": 0.46364760900080615,
+      "diagnosis_reproduced": true
+    },
+    {
+      "corridor": "CURVED",
+      "current_residual_m": 0.5,
+      "algebraic_state1_residual_term_m": 0.0,
+      "actual_state0_to_state1_lateral_jump_m": -0.5,
+      "declared_state0_heading_rad": 0.02000000000000061,
+      "geometric_state0_to_state1_tangent_rad": -0.4436742765563788,
+      "absolute_heading_inconsistency_rad": 0.4636742765563793,
+      "diagnosis_reproduced": true
+    },
+    {
+      "corridor": "LEFT",
+      "current_residual_m": 0.5,
+      "algebraic_state1_residual_term_m": 0.0,
+      "actual_state0_to_state1_lateral_jump_m": -0.49999999999999994,
+      "declared_state0_heading_rad": 0.019997333973150535,
+      "geometric_state0_to_state1_tangent_rad": -0.44357029582162005,
+      "absolute_heading_inconsistency_rad": 0.4635676297947704,
+      "diagnosis_reproduced": true
+    },
+    {
+      "corridor": "RIGHT",
+      "current_residual_m": 0.5,
+      "algebraic_state1_residual_term_m": 0.0,
+      "actual_state0_to_state1_lateral_jump_m": -0.5,
+      "declared_state0_heading_rad": -0.019997333973150535,
+      "geometric_state0_to_state1_tangent_rad": -0.4835649637679212,
+      "absolute_heading_inconsistency_rad": 0.46356762979477084,
+      "diagnosis_reproduced": true
+    }
+  ],
+  "synthetic_diagnosis_pass": true,
+  "conclusion": [
+    "STATE0_IDENTITY_FORCES_ZERO_INITIAL_LATERAL_AND_HEADING_ERROR",
+    "V2_DECLARED_HEADING_WAS_NOT_RECOMPUTED_FROM_FINAL_XY",
+    "V2_POST_DEADLINE_ZERO_ADDITIVE_TERM_CAN_COEXIST_WITH_STATE0_TO_STATE1_HARD_JUMP",
+    "ALGEBRAIC_ZERO_IS_NOT_CONTROLLER_VISIBLE_TARGET_CAPTURE"
+  ]
+}

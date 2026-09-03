@@ -10854,3 +10854,35 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - V2 planner command 在每轮 capture end 后 16/16 归零，但最终 realized mechanism 0/8、endpoint 0/8，因此状态必须为 `R2_BH_DEVELOPMENT_NOT_CONVERGED`。
 - 最终 F_match 8/8、engineering 8/8、safety 4/8；不得据此降低 mechanism、endpoint 或 safety 定义。
 - 不生成 HLC selected-parameter 或 complete G_R2 candidate manifest；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BI HLC Controller-Observable Kinematic Target-Capture
+
+### 1. 命令
+
+R2-BI 已在 Round 0 首个 treatment 的首次 arm divergence 触发冻结运动学可行性门并停止。**不得再次运行带 `--execute` 的工程执行命令**，不得补跑剩余 14 个 run 或启动 Round 1。只允许运行以下离线核验：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bi_hlc_kinematic_target_capture.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 只读验证 R2-BH exposure firewall、V2 controller-interface forensic、V3 morphology/capture 组合、25 个 zero-run entry cases、fresh DEV-KIN roster 和 Round 0 stop audit。
+- state0 保持 current ego；state1+ 由最终 XY 唯一推导 heading/curvature；nonzero residual 对 exact frozen LQR shadow 产生方向正确的非零 steering response。
+- Round 0 raw 只作为 SHA provenance：第一个 baseline 完成，第一个 treatment 在 absolute time 1.1 s fail-closed；不得把后续 callback 缺少 safety parquet 误记为根因。
+- 不重跑 R2-B/R2-BH identities，不使用 R2-BH raw 做 V3 数值调参，不修改 scientific threshold，也不提交 raw simulation output。
+
+### 3. 通过标准
+
+- mandatory zero-run entry gates 为 25/25 PASS；fresh DEV-KIN roster 为 8，和 historical/R1/R2-A/R2-B/R2-BH 重叠为 0。
+- 实际 HLC engineering `runner.run` 为 2：baseline 1 次 technical complete，treatment 1 次在首次 divergence 因 `7.391761 m/s² > 6.0 m/s²` 横向加速度门失败；technical rerun 为 0。
+- treatment 失败的曲率、yaw-rate、state0→state1 连续性和 XY-heading consistency 均在冻结门内；不将单个 identity 外推为跨 identity 系统性结论。
+- 状态必须为 `R2_BI_DEVELOPMENT_NOT_CONVERGED`；Round 1 不启动，不生成 selected HLC V3 parameters 或 complete G_R2 candidate。
+- scientific simulation、TSB simulation 均为 0；R2-C、confirmatory smoke、RBR 均未启动；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

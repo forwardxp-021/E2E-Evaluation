@@ -1,0 +1,6 @@
+r2_bi_hlc_kinematic_target_capture_dev_v3:
+  _target_: tools.r2_bi_execute_hlc_kinematic_target_capture_development.build_planner_from_environment
+  run_id: ${oc.env:R2_BI_RUN_ID}
+  trace_dir: ${oc.env:R2_BI_TRACE_DIR}
+  telemetry_dir: ${oc.env:R2_BI_TELEMETRY_DIR}
+  parameter_file: ${oc.env:R2_BI_PARAMETER_FILE}

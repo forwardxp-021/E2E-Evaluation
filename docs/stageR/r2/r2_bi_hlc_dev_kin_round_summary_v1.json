@@ -1,0 +1,46 @@
+{
+  "schema_version": "r2_bi_hlc_dev_kin_round_summary_v1",
+  "status": "R2_BI_DEVELOPMENT_NOT_CONVERGED",
+  "round0": {
+    "started": true,
+    "completed": false,
+    "attempted_runs": 2,
+    "technically_complete_runs": 1,
+    "failed_runs": 1,
+    "remaining_runs_not_started": 14,
+    "pair_scientific_evaluations": 0,
+    "mechanism_pass": "NOT_EVALUABLE",
+    "F_match_pass": "NOT_EVALUABLE",
+    "endpoint_pass": "NOT_EVALUABLE",
+    "engineering_pair_pass": "NOT_EVALUABLE",
+    "safety_pair_pass": "NOT_EVALUABLE"
+  },
+  "round1_started": false,
+  "round1_authorized": false,
+  "actual_HLC_engineering_runner_run_calls": 2,
+  "actual_HLC_technically_complete_runs": 1,
+  "TSB_simulation_calls": 0,
+  "scientific_simulation_calls": 0,
+  "selected_HLC_V3_parameters_created": false,
+  "complete_G_R2_candidate_created": false,
+  "R2C_started": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false,
+  "raw_output_provenance": {
+    "run_count": 2,
+    "aggregate_tree_sha256": "6c774326149b04c89ad5fd275210a7bef060a0c8d81a396eab955681f8969c70",
+    "runs": [
+      {
+        "run_root": "outputs/r2_bi_hlc_kinematic_target_capture_dev_v1/round_0/R2BI-HLC-R0-01-BASELINE",
+        "file_count": 24,
+        "tree_sha256": "2512b82911ad4a928f648d5425473ec63e760a44b03654cdb37d1e9a524af804"
+      },
+      {
+        "run_root": "outputs/r2_bi_hlc_kinematic_target_capture_dev_v1/round_0/R2BI-HLC-R0-01-TREATMENT",
+        "file_count": 7,
+        "tree_sha256": "5f7501be548ffe8517267585796391a949a6510574b2873ff22de6f8d86ec523"
+      }
+    ]
+  },
+  "raw_outputs_committed": false
+}

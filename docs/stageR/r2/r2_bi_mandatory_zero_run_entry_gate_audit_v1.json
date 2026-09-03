@@ -1,0 +1,1271 @@
+{
+  "schema_version": "r2_bi_mandatory_zero_run_entry_gate_audit_v1",
+  "status": "R2_BI_ZERO_RUN_ENTRY_GATES_PASS",
+  "scientific_simulation_calls": 0,
+  "runner_run_calls": 0,
+  "contract": {
+    "path": "docs/stageR/r2/r2_bi_hlc_kinematic_capture_architecture_contract_v3.0.json",
+    "sha256": "9ffa225a0d5e184925d6ef2c094d9276e65d2cb3ff77607e3ff18548415b6a1d"
+  },
+  "parameter_space": {
+    "path": "docs/stageR/r2/r2_bi_hlc_kinematic_capture_parameter_space_v3.0.json",
+    "sha256": "0803f3ba8b45dfca91ac32eeb7e2c93b8af0271a8c1857a665410f89d2cc864b"
+  },
+  "frozen_tolerances": {
+    "curvature_inv_m_max": 0.5,
+    "yaw_rate_radps_max": 1.0,
+    "lateral_accel_mps2_max": 6.0,
+    "state0_to_state1_distance_excess_m_max": 0.25,
+    "state0_tangent_mismatch_rad_max": 0.03,
+    "heading_xy_consistency_rad_max": 1e-10,
+    "zero_residual_straight_shadow_steering_radps_max": 1e-09,
+    "nonzero_residual_shadow_steering_radps_min": 1e-07,
+    "replanning_overlap_xy_m_max": 0.03,
+    "actual_target_offset_terminal_abs_m_max": 1e-09
+  },
+  "synthetic_cases": [
+    {
+      "corridor": "STRAIGHT",
+      "target_direction": 1,
+      "current_residual_m": 0.0,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.0,
+        "state0_pose_heading_rad": 0.0,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.0,
+        "max_abs_yaw_rate_radps": 0.0,
+        "max_abs_lateral_acceleration_mps2": 0.0,
+        "state0_to_state1_distance_m": 1.0,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.999999999999808,
+        "curvature_profile_10": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "acceleration_command_mps2": -1.744059442320246e-13,
+        "steering_rate_command_radps": 0.0,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "STRAIGHT",
+      "target_direction": 1,
+      "current_residual_m": 0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000001491436,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -1.7270989907173517e-05,
+        "state0_pose_heading_rad": 0.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270989907114398e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.0005331882158866971,
+        "max_abs_yaw_rate_radps": 0.00533188215886697,
+        "max_abs_lateral_acceleration_mps2": 0.053318821588669706,
+        "state0_to_state1_distance_m": 1.0000000001491436,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270989907114398e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.00007028957927,
+        "curvature_profile_10": [
+          -0.00016094942984411104,
+          -0.00020501029901987043,
+          -0.0002656563287089131,
+          -0.0003260883451061256,
+          -0.00038018216796048044,
+          -0.0004258911020302362,
+          -0.0004627259251573502,
+          -0.0004907923397628116,
+          -0.0005104233193212068,
+          -0.0005220386807348223
+        ],
+        "acceleration_command_mps2": 6.38996175181009e-05,
+        "steering_rate_command_radps": -0.002857960855083247,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "STRAIGHT",
+      "target_direction": 1,
+      "current_residual_m": 0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000005965741,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -3.4541979804043604e-05,
+        "state0_pose_heading_rad": 0.0,
+        "state0_tangent_mismatch_abs_rad": 3.4541979804014744e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.0010663024166481711,
+        "max_abs_yaw_rate_radps": 0.01066302416648171,
+        "max_abs_lateral_acceleration_mps2": 0.10663024166481712,
+        "state0_to_state1_distance_m": 1.0000000005965741,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.4541979804014744e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.00028115536302,
+        "curvature_profile_10": [
+          -0.00032189862761625317,
+          -0.0004100201012780698,
+          -0.00053131144038728,
+          -0.0006521739143452288,
+          -0.0007603586402984636,
+          -0.0008517716540123371,
+          -0.0009254339922008973,
+          -0.0009815566984825894,
+          -0.0010208055993733427,
+          -0.0010440205018861803
+        ],
+        "acceleration_command_mps2": 0.0002555957845632148,
+        "steering_rate_command_radps": -0.005715831499530776,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "STRAIGHT",
+      "target_direction": 1,
+      "current_residual_m": -0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000001491436,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 1.7270989907173517e-05,
+        "state0_pose_heading_rad": 0.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270989907114398e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.0005331882158866971,
+        "max_abs_yaw_rate_radps": 0.00533188215886697,
+        "max_abs_lateral_acceleration_mps2": 0.053318821588669706,
+        "state0_to_state1_distance_m": 1.0000000001491436,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270989907114398e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.00007028957927,
+        "curvature_profile_10": [
+          0.00016094942984411104,
+          0.00020501029901987043,
+          0.0002656563287089131,
+          0.0003260883451061256,
+          0.00038018216796048044,
+          0.0004258911020302362,
+          0.0004627259251573502,
+          0.0004907923397628116,
+          0.0005104233193212068,
+          0.0005220386807348223
+        ],
+        "acceleration_command_mps2": 6.38996175181009e-05,
+        "steering_rate_command_radps": 0.002857960855083247,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "STRAIGHT",
+      "target_direction": 1,
+      "current_residual_m": -0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000005965741,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 3.4541979804043604e-05,
+        "state0_pose_heading_rad": 0.0,
+        "state0_tangent_mismatch_abs_rad": 3.4541979804014744e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.0010663024166481711,
+        "max_abs_yaw_rate_radps": 0.01066302416648171,
+        "max_abs_lateral_acceleration_mps2": 0.10663024166481712,
+        "state0_to_state1_distance_m": 1.0000000005965741,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.4541979804014744e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.00028115536302,
+        "curvature_profile_10": [
+          0.00032189862761625317,
+          0.0004100201012780698,
+          0.00053131144038728,
+          0.0006521739143452288,
+          0.0007603586402984636,
+          0.0008517716540123371,
+          0.0009254339922008973,
+          0.0009815566984825894,
+          0.0010208055993733427,
+          0.0010440205018861803
+        ],
+        "acceleration_command_mps2": 0.0002555957845632148,
+        "steering_rate_command_radps": 0.005715831499530776,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": -1,
+      "current_residual_m": 0.0,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.9999934895960488,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.006249999999995884,
+        "state0_pose_heading_rad": -0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.012500081380594063,
+        "max_abs_yaw_rate_radps": 0.12500081380594064,
+        "max_abs_lateral_acceleration_mps2": 1.2500081380594064,
+        "state0_to_state1_distance_m": 0.9999934895960488,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.999934895960338,
+        "curvature_profile_10": [
+          -0.012500081379809402,
+          -0.012500081380285749,
+          -0.012500081380467112,
+          -0.012500081380537464,
+          -0.012500081380559408,
+          -0.012500081380575198,
+          -0.012500081380577604,
+          -0.012500081380580586,
+          -0.012500081380576577,
+          -0.012500081380577016
+        ],
+        "acceleration_command_mps2": -5.918549060139485e-05,
+        "steering_rate_command_radps": -0.10736554367618588,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": -1,
+      "current_residual_m": 0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.9999934897451933,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.006267271102344914,
+        "state0_pose_heading_rad": -0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013015450352081695,
+        "max_abs_yaw_rate_radps": 0.13015450352081695,
+        "max_abs_lateral_acceleration_mps2": 1.3015450352081694,
+        "state0_to_state1_distance_m": 0.9999934897451933,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.004677119013833,
+        "curvature_profile_10": [
+          -0.012660887638529638,
+          -0.012704772453616288,
+          -0.012765021666918147,
+          -0.012824759467568114,
+          -0.01287778791277199,
+          -0.012922003240395346,
+          -0.012956879953515918,
+          -0.012982508444287541,
+          -0.012999226188624539,
+          -0.013007475781206458
+        ],
+        "acceleration_command_mps2": 0.0042519263762114635,
+        "steering_rate_command_radps": -0.11019261055526412,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": -1,
+      "current_residual_m": 0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.999993490192627,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.0062845422046836396,
+        "state0_pose_heading_rad": -0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013529106745262857,
+        "max_abs_yaw_rate_radps": 0.1352910674526286,
+        "max_abs_lateral_acceleration_mps2": 1.3529106745262858,
+        "state0_to_state1_distance_m": 0.999993490192627,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.009557545410177,
+        "curvature_profile_10": [
+          -0.012821682534079353,
+          -0.012909439102135111,
+          -0.013029904614152642,
+          -0.013149315488451115,
+          -0.013255262262509523,
+          -0.013343525094641418,
+          -0.013413044073815638,
+          -0.01346399586438313,
+          -0.01349705683466286,
+          -0.013513119311220376
+        ],
+        "acceleration_command_mps2": 0.008688677645615105,
+        "steering_rate_command_radps": -0.11301651336597639,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": -1,
+      "current_residual_m": -0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.9999934897451935,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.006232728897646824,
+        "state0_pose_heading_rad": -0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013024503902750692,
+        "max_abs_yaw_rate_radps": 0.13024503902750692,
+        "max_abs_lateral_acceleration_mps2": 1.3024503902750693,
+        "state0_to_state1_distance_m": 0.9999934897451935,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          2.7755033516307322e-17,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.995331072745113,
+        "curvature_profile_10": [
+          -0.012339263980142675,
+          -0.012295366358970106,
+          -0.012235084921716188,
+          -0.012175283876486922,
+          -0.012122148057569351,
+          -0.012077769388650352,
+          -0.012042664822708955,
+          -0.01201674000990066,
+          -0.011999658767379259,
+          -0.011990985196508715
+        ],
+        "acceleration_command_mps2": -0.004244479322624335,
+        "steering_rate_command_radps": -0.10453539413493065,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": -1,
+      "current_residual_m": -0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.999993490192627,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.00621545779530807,
+        "state0_pose_heading_rad": -0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013554777913733005,
+        "max_abs_yaw_rate_radps": 0.13554777913733004,
+        "max_abs_lateral_acceleration_mps2": 1.3554777913733005,
+        "state0_to_state1_distance_m": 0.999993490192627,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.990865840452763,
+        "curvature_profile_10": [
+          -0.0121784356623925,
+          -0.012090627867784937,
+          -0.011970033460807989,
+          -0.011850369612813634,
+          -0.011743993355815071,
+          -0.011655077184770093,
+          -0.011584646846790775,
+          -0.011532509863441271,
+          -0.011497995059541192,
+          -0.011480236915135566
+        ],
+        "acceleration_command_mps2": -0.00830378140657925,
+        "steering_rate_command_radps": -0.10170224398524322,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": 1,
+      "current_residual_m": 0.0,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.9999934895960488,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.006249999999995884,
+        "state0_pose_heading_rad": 0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.012500081380594063,
+        "max_abs_yaw_rate_radps": 0.12500081380594064,
+        "max_abs_lateral_acceleration_mps2": 1.2500081380594064,
+        "state0_to_state1_distance_m": 0.9999934895960488,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.999934895960708,
+        "curvature_profile_10": [
+          0.012500081379809451,
+          0.012500081380284843,
+          0.01250008138046696,
+          0.012500081380536534,
+          0.01250008138055887,
+          0.012500081380573631,
+          0.012500081380576724,
+          0.012500081380579823,
+          0.012500081380575966,
+          0.012500081380576148
+        ],
+        "acceleration_command_mps2": -5.918549026550192e-05,
+        "steering_rate_command_radps": 0.10736554367618002,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": 1,
+      "current_residual_m": 0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.9999934897451935,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.006232728897646824,
+        "state0_pose_heading_rad": 0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013024503902750692,
+        "max_abs_yaw_rate_radps": 0.13024503902750692,
+        "max_abs_lateral_acceleration_mps2": 1.3024503902750693,
+        "state0_to_state1_distance_m": 0.9999934897451935,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          -2.7755033516307322e-17,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.995331072744703,
+        "curvature_profile_10": [
+          0.0123392639801429,
+          0.012295366358970546,
+          0.012235084921715853,
+          0.012175283876486745,
+          0.012122148057568734,
+          0.012077769388649264,
+          0.01204266482270777,
+          0.012016740009899324,
+          0.011999658767377542,
+          0.0119909851965083
+        ],
+        "acceleration_command_mps2": -0.00424447932299737,
+        "steering_rate_command_radps": 0.10453539413492693,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": 1,
+      "current_residual_m": 0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.999993490192627,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.00621545779530807,
+        "state0_pose_heading_rad": 0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013554777913733005,
+        "max_abs_yaw_rate_radps": 0.13554777913733004,
+        "max_abs_lateral_acceleration_mps2": 1.3554777913733005,
+        "state0_to_state1_distance_m": 0.999993490192627,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 9.990865840453337,
+        "curvature_profile_10": [
+          0.012178435662391907,
+          0.012090627867784897,
+          0.011970033460808082,
+          0.011850369612814134,
+          0.011743993355815122,
+          0.01165507718476967,
+          0.011584646846790576,
+          0.01153250986344121,
+          0.011497995059540748,
+          0.011480236915135219
+        ],
+        "acceleration_command_mps2": -0.008303781406057647,
+        "steering_rate_command_radps": 0.10170224398524191,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": 1,
+      "current_residual_m": -0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.9999934897451933,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.006267271102344914,
+        "state0_pose_heading_rad": 0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013015450352081695,
+        "max_abs_yaw_rate_radps": 0.13015450352081695,
+        "max_abs_lateral_acceleration_mps2": 1.3015450352081694,
+        "state0_to_state1_distance_m": 0.9999934897451933,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7271102349170064e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.004677119013285,
+        "curvature_profile_10": [
+          0.012660887638531291,
+          0.012704772453617664,
+          0.012765021666919122,
+          0.012824759467568298,
+          0.012877787912772337,
+          0.012922003240396282,
+          0.01295687995351636,
+          0.01298250844428812,
+          0.012999226188624728,
+          0.013007475781206713
+        ],
+        "acceleration_command_mps2": 0.004251926375714084,
+        "steering_rate_command_radps": 0.11019261055527142,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "CURVED",
+      "target_direction": 1,
+      "current_residual_m": -0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 0.999993490192627,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.0062845422046836396,
+        "state0_pose_heading_rad": 0.006249999999995883,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.013529106745262857,
+        "max_abs_yaw_rate_radps": 0.1352910674526286,
+        "max_abs_lateral_acceleration_mps2": 1.3529106745262858,
+        "state0_to_state1_distance_m": 0.999993490192627,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454220468768199e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.009557545409848,
+        "curvature_profile_10": [
+          0.012821682534078945,
+          0.012909439102136095,
+          0.013029904614153048,
+          0.013149315488451292,
+          0.013255262262510059,
+          0.013343525094642457,
+          0.013413044073816376,
+          0.013463995864383628,
+          0.01349705683466403,
+          0.013513119311222009
+        ],
+        "acceleration_command_mps2": 0.008688677645316355,
+        "steering_rate_command_radps": 0.11301651336598131,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": -1,
+      "current_residual_m": 0.0,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000689684831,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.000371398651825564,
+        "state0_pose_heading_rad": -0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.009889925199946577,
+        "max_abs_yaw_rate_radps": 0.09889925199946578,
+        "max_abs_lateral_acceleration_mps2": 0.9889925199946578,
+        "state0_to_state1_distance_m": 1.0000000689684831,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.02788671563713,
+        "curvature_profile_10": [
+          -0.003174620903975225,
+          -0.004220492632908435,
+          -0.005497535635460909,
+          -0.00670258417510124,
+          -0.007727820019278437,
+          -0.008540114928203033,
+          -0.00913505146277447,
+          -0.0095194352960456,
+          -0.009704646573550007,
+          -0.009704086626823042
+        ],
+        "acceleration_command_mps2": 0.025351559670118658,
+        "steering_rate_command_radps": -0.05697075051950899,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": -1,
+      "current_residual_m": 0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000691176267,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.0003886696405416317,
+        "state0_pose_heading_rad": -0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.010400450680169763,
+        "max_abs_yaw_rate_radps": 0.10400450680169762,
+        "max_abs_lateral_acceleration_mps2": 1.0400450680169764,
+        "state0_to_state1_distance_m": 1.0000000691176267,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.030736881436328,
+        "curvature_profile_10": [
+          -0.0033355195988844437,
+          -0.004425393972690782,
+          -0.005762925149451073,
+          -0.007028067081135819,
+          -0.008106772000809004,
+          -0.00896375836960222,
+          -0.009594037142612196,
+          -0.010004483760436167,
+          -0.010206836794836043,
+          -0.010215009862790059
+        ],
+        "acceleration_command_mps2": 0.027942619487570527,
+        "steering_rate_command_radps": -0.05981025123260991,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": -1,
+      "current_residual_m": 0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000695650573,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.0004059406292474268,
+        "state0_pose_heading_rad": -0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.010910949482468148,
+        "max_abs_yaw_rate_radps": 0.10910949482468149,
+        "max_abs_lateral_acceleration_mps2": 1.0910949482468149,
+        "state0_to_state1_distance_m": 1.0000000695650573,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.033726341674138,
+        "curvature_profile_10": [
+          -0.003496413388140414,
+          -0.004630284782595366,
+          -0.006028288837703336,
+          -0.007353491183197541,
+          -0.008485603896450766,
+          -0.009387181029293097,
+          -0.010052652778288602,
+          -0.010488959383767416,
+          -0.010708198656538957,
+          -0.010724803824948188
+        ],
+        "acceleration_command_mps2": 0.03066031061285234,
+        "steering_rate_command_radps": -0.06264790939209113,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": -1,
+      "current_residual_m": -0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.000000069117627,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.00035412766310951796,
+        "state0_pose_heading_rad": -0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.009462479900556826,
+        "max_abs_yaw_rate_radps": 0.09462479900556826,
+        "max_abs_lateral_acceleration_mps2": 0.9462479900556826,
+        "state0_to_state1_distance_m": 1.000000069117627,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.025175963222726,
+        "curvature_profile_10": [
+          -0.003013717531826563,
+          -0.004015581252683492,
+          -0.005232121494335808,
+          -0.006377045193337296,
+          -0.007348753528140661,
+          -0.008116260973487818,
+          -0.008675712980802308,
+          -0.009033840729798119,
+          -0.009201666723252531,
+          -0.009192087001614634
+        ],
+        "acceleration_command_mps2": 0.022887239293386846,
+        "steering_rate_command_radps": -0.054129493319022906,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": -1,
+      "current_residual_m": -0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000695650575,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": -0.00033685667440375063,
+        "state0_pose_heading_rad": -0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.00905445352464887,
+        "max_abs_yaw_rate_radps": 0.0905445352464887,
+        "max_abs_lateral_acceleration_mps2": 0.905445352464887,
+        "state0_to_state1_distance_m": 1.0000000695650575,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          5.551114740273819e-17,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.022604737445628,
+        "curvature_profile_10": [
+          -0.0028528097111959936,
+          -0.0038106603221395884,
+          -0.004966683926406833,
+          -0.006051452868552901,
+          -0.0069695781148759895,
+          -0.007692206800327429,
+          -0.008216038996807283,
+          -0.008547726918414699,
+          -0.008697936193975582,
+          -0.00867906425156223
+        ],
+        "acceleration_command_mps2": 0.020549761314206837,
+        "steering_rate_command_radps": -0.051286566091224894,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": 1,
+      "current_residual_m": 0.0,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000689684831,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.000371398651825564,
+        "state0_pose_heading_rad": 0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.009889925199946577,
+        "max_abs_yaw_rate_radps": 0.09889925199946578,
+        "max_abs_lateral_acceleration_mps2": 0.9889925199946578,
+        "state0_to_state1_distance_m": 1.0000000689684831,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 0.0,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.02788671563713,
+        "curvature_profile_10": [
+          0.003174620903975225,
+          0.004220492632908435,
+          0.005497535635460909,
+          0.00670258417510124,
+          0.007727820019278437,
+          0.008540114928203033,
+          0.00913505146277447,
+          0.0095194352960456,
+          0.009704646573550007,
+          0.009704086626823042
+        ],
+        "acceleration_command_mps2": 0.025351559670118658,
+        "steering_rate_command_radps": 0.05697075051950899,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": 1,
+      "current_residual_m": 0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.000000069117627,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.00035412766310951796,
+        "state0_pose_heading_rad": 0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.009462479900556826,
+        "max_abs_yaw_rate_radps": 0.09462479900556826,
+        "max_abs_lateral_acceleration_mps2": 0.9462479900556826,
+        "state0_to_state1_distance_m": 1.000000069117627,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.025175963222726,
+        "curvature_profile_10": [
+          0.003013717531826563,
+          0.004015581252683492,
+          0.005232121494335808,
+          0.006377045193337296,
+          0.007348753528140661,
+          0.008116260973487818,
+          0.008675712980802308,
+          0.009033840729798119,
+          0.009201666723252531,
+          0.009192087001614634
+        ],
+        "acceleration_command_mps2": 0.022887239293386846,
+        "steering_rate_command_radps": 0.054129493319022906,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": 1,
+      "current_residual_m": 0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000695650575,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.00033685667440375063,
+        "state0_pose_heading_rad": 0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.00905445352464887,
+        "max_abs_yaw_rate_radps": 0.0905445352464887,
+        "max_abs_lateral_acceleration_mps2": 0.905445352464887,
+        "state0_to_state1_distance_m": 1.0000000695650575,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          -5.551114740273819e-17,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.022604737445628,
+        "curvature_profile_10": [
+          0.0028528097111959936,
+          0.0038106603221395884,
+          0.004966683926406833,
+          0.006051452868552901,
+          0.0069695781148759895,
+          0.007692206800327429,
+          0.008216038996807283,
+          0.008547726918414699,
+          0.008697936193975582,
+          0.00867906425156223
+        ],
+        "acceleration_command_mps2": 0.020549761314206837,
+        "steering_rate_command_radps": 0.051286566091224894,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": 1,
+      "current_residual_m": -0.25,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000691176267,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.0003886696405416317,
+        "state0_pose_heading_rad": 0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.010400450680169763,
+        "max_abs_yaw_rate_radps": 0.10400450680169762,
+        "max_abs_lateral_acceleration_mps2": 1.0400450680169764,
+        "state0_to_state1_distance_m": 1.0000000691176267,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 1.7270988716067137e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.030736881436328,
+        "curvature_profile_10": [
+          0.0033355195988844437,
+          0.004425393972690782,
+          0.005762925149451073,
+          0.007028067081135819,
+          0.008106772000809004,
+          0.00896375836960222,
+          0.009594037142612196,
+          0.010004483760436167,
+          0.010206836794836043,
+          0.010215009862790059
+        ],
+        "acceleration_command_mps2": 0.027942619487570527,
+        "steering_rate_command_radps": 0.05981025123260991,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    },
+    {
+      "corridor": "LANE_CHANGE",
+      "target_direction": 1,
+      "current_residual_m": -0.5,
+      "state0_pose_identity": true,
+      "state0_to_state1_distance_m": 1.0000000695650573,
+      "pose_consistency": {
+        "state0_geometric_tangent_rad": 0.0004059406292474268,
+        "state0_pose_heading_rad": 0.00037139865182556395,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "max_future_declared_heading_vs_final_xy_tangent_abs_rad": 0.0
+      },
+      "feasibility": {
+        "max_abs_curvature_inv_m": 0.010910949482468148,
+        "max_abs_yaw_rate_radps": 0.10910949482468149,
+        "max_abs_lateral_acceleration_mps2": 1.0910949482468149,
+        "state0_to_state1_distance_m": 1.0000000695650573,
+        "nominal_state_step_distance_m": 1.0,
+        "state0_tangent_mismatch_abs_rad": 3.454197742192022e-05,
+        "future_heading_xy_mismatch_abs_rad": 0.0,
+        "pass": true
+      },
+      "actual_planned_terminal_target_offset_abs_m": 0.0,
+      "lqr_shadow": {
+        "initial_velocity_mps": 10.0,
+        "initial_lateral_state": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference_velocity_at_1s_mps": 10.033726341674138,
+        "curvature_profile_10": [
+          0.003496413388140414,
+          0.004630284782595366,
+          0.006028288837703336,
+          0.007353491183197541,
+          0.008485603896450766,
+          0.009387181029293097,
+          0.010052652778288602,
+          0.010488959383767416,
+          0.010708198656538957,
+          0.010724803824948188
+        ],
+        "acceleration_command_mps2": 0.03066031061285234,
+        "steering_rate_command_radps": 0.06264790939209113,
+        "implementation": "EXACT_FROZEN_NUPLAN_LQR_TRACKER_NO_SIMULATION_RUNNER"
+      },
+      "pass": true
+    }
+  ],
+  "controller_observability": {
+    "zero_residual_no_false_steering": true,
+    "positive_residual_nonzero_correct_direction": true,
+    "negative_residual_nonzero_correct_direction": true,
+    "positive_command_radps": -0.005715831499530776,
+    "negative_command_radps": 0.005715831499530776
+  },
+  "replanning_boundary": {
+    "maximum_overlap_xy_error_m": 0.007513791267253238,
+    "pass": true
+  },
+  "large_unconverged_residual": {
+    "fail_closed": true,
+    "reason": "INSUFFICIENT_REMAINING_TIME"
+  },
+  "actual_planned_state_offsets_audited": true,
+  "additive_residual_field_used_as_success_evidence": false,
+  "all_mandatory_gates_pass": true
+}

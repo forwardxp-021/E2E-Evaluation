@@ -1,0 +1,9 @@
+{
+  "schema_version": "r2_bi_scientific_owner_engineering_authorization_v1.0",
+  "R2_BI_ENGINEERING_ONLY_HLC_SIMULATION_AUTHORIZED_CONDITIONALLY": true,
+  "entry_condition": "ALL_MANDATORY_ZERO_RUN_GATES_PASS_BEFORE_ROSTER_SELECTION",
+  "scope": "FRESH_DEV_KIN_ONLY_MAX_2_ROUNDS_16_RUNS_PER_ROUND",
+  "TSB_simulation_authorized": false,
+  "old_identity_rerun_authorized": false,
+  "R2C_confirmatory_RBR_authorized": false
+}

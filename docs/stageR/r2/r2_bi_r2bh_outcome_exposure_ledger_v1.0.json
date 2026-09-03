@@ -1,0 +1,105 @@
+{
+  "schema_version": "r2_bi_r2bh_outcome_exposure_ledger_v1.0",
+  "status": "R2_BH_DEV_ARCH_FROZEN_HISTORY_ONLY",
+  "source_roster": {
+    "path": "docs/stageR/r2/r2_bh_hlc_arch_dev_roster_v1.0.json",
+    "sha256": "59f70ff99ef48a0abc7c6f9cca42362441d36fdb80733addf3b87e82ff30dde1"
+  },
+  "source_exclusion_ledger": {
+    "path": "docs/stageR/r2/r2_bh_hlc_arch_permanent_exclusion_ledger_v1.0.json",
+    "sha256": "f8f9852a03d689c4f9677a77055fb770e7201ce4fbff2c6cb6447450c040dbfb"
+  },
+  "identity_count": 8,
+  "identities": [
+    {
+      "scenario_token": "01bc3d31165d59f5",
+      "log_id": "2021.09.17.14.49.23_veh-42_00135_00310",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "07593a7e8d9a533e",
+      "log_id": "2021.09.13.18.55.23_veh-45_02099_02822",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "e4384f3ce0935dcd",
+      "log_id": "2021.09.27.17.52.47_veh-44_01631_02044",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "bc32dc9928c45096",
+      "log_id": "2021.08.27.14.14.40_veh-45_02267_02937",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "f12f1fbcd2585456",
+      "log_id": "2021.09.23.14.44.24_veh-45_00353_01052",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "ce7d288fe2565a9d",
+      "log_id": "2021.08.23.13.17.08_veh-42_02282_02392",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "a586ea8bf7ab5f9d",
+      "log_id": "2021.08.19.17.06.41_veh-08_00058_00421",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    },
+    {
+      "scenario_token": "fe8dd8b82a8153b4",
+      "log_id": "2021.10.05.07.10.04_veh-52_01442_01802",
+      "family": "R-HLC",
+      "R2BH_HISTORY_ONLY": true,
+      "FUTURE_GENERATOR_TUNING_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_OFFLINE_FORENSIC_ONLY"
+    }
+  ],
+  "R2B_or_R2BH_identity_resimulation_calls": 0,
+  "V3_numerical_parameters_fitted_from_R2BH_raw": false
+}

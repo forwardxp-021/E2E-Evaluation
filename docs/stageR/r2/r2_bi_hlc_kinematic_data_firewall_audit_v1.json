@@ -1,0 +1,18 @@
+{
+  "schema_version": "r2_bi_hlc_kinematic_data_firewall_audit_v1",
+  "status": "PASS",
+  "R2BH_history_only_identity_count": 8,
+  "fresh_DEV_KIN_identity_count": 8,
+  "overlap_historical_R1_R2A_R2B_R2BH": 0,
+  "overlap_basis": "SELECTION_APPLIED_PRE_SELECTION_FIREWALL_109_AND_SELECTED_ONLY_NONMEMBERS",
+  "R2B_or_R2BH_identity_resimulation_calls": 0,
+  "R2BH_raw_used_for_V3_numerical_tuning": false,
+  "scenario_or_log_specific_adaptation": false,
+  "scientific_thresholds_modified": false,
+  "failed_identity_replaced": false,
+  "technical_reruns": 0,
+  "R2C_identities_selected": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

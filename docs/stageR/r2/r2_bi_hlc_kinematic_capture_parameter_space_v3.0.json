@@ -1,0 +1,84 @@
+{
+  "schema_version": "r2_bi_hlc_kinematic_capture_parameter_space_v3.0",
+  "status": "FROZEN_BEFORE_ENTRY_GATE_AND_ANY_R2_BI_SIMULATION",
+  "maximum_rounds": 2,
+  "round0": {
+    "morphology": {
+      "baseline_transition_duration_s": 2.6,
+      "advance_duration_s": 1.1,
+      "advance_progress": 0.44,
+      "hold_duration_s": 0.5,
+      "retreat_depth": 0.3,
+      "retreat_duration_s": 1.3,
+      "recommit_duration_s": 1.4,
+      "lag_precompensation_s": 0.3
+    },
+    "capture": {
+      "capture_start_abs_s": 1.1,
+      "capture_end_abs_s": 7.2,
+      "minimum_remaining_capture_time_s": 0.8,
+      "deadline_position_tolerance_m": 0.25,
+      "decay_shape": "VECTOR_QUINTIC_C2_TERMINAL_PVA_ZERO",
+      "frozen_feasibility_limits": {
+        "curvature_inv_m_max": 0.5,
+        "yaw_rate_radps_max": 1.0,
+        "lateral_accel_mps2_max": 6.0,
+        "state0_to_state1_distance_excess_m_max": 0.25,
+        "state0_tangent_mismatch_rad_max": 0.03,
+        "heading_xy_consistency_rad_max": 1e-10
+      }
+    }
+  },
+  "bounds": {
+    "morphology": {
+      "retreat_depth": [
+        0.3,
+        0.38
+      ],
+      "retreat_duration_s": [
+        1.3,
+        1.5
+      ]
+    },
+    "capture": {
+      "capture_start_abs_s": [
+        1.1,
+        1.1
+      ],
+      "capture_end_abs_s": [
+        6.8,
+        7.2
+      ]
+    }
+  },
+  "round1_deterministic_aggregate_update": {
+    "mechanism_not_all": {
+      "retreat_depth_add": 0.06,
+      "retreat_duration_add_s": 0.15
+    },
+    "endpoint_not_all": {
+      "capture_end_abs_s_subtract": 0.3
+    },
+    "F_match_or_engineering_not_all": "NO_ADDITIONAL_PARAMETER_CHANGE_BEYOND_CLIPPED_ABOVE_RULES",
+    "clip_to_bounds": true,
+    "identity_specific_update": false
+  },
+  "entry_gate_tolerances": {
+    "curvature_inv_m_max": 0.5,
+    "yaw_rate_radps_max": 1.0,
+    "lateral_accel_mps2_max": 6.0,
+    "state0_to_state1_distance_excess_m_max": 0.25,
+    "state0_tangent_mismatch_rad_max": 0.03,
+    "heading_xy_consistency_rad_max": 1e-10,
+    "zero_residual_straight_shadow_steering_radps_max": 1e-09,
+    "nonzero_residual_shadow_steering_radps_min": 1e-07,
+    "replanning_overlap_xy_m_max": 0.03,
+    "actual_target_offset_terminal_abs_m_max": 1e-09
+  },
+  "numerical_initialization_sources": [
+    "FROZEN_ENGINEERING_LIMITS",
+    "ZERO_SIMULATION_CONTROLLER_INTERFACE_FORENSIC",
+    "QUALITATIVE_R2BH_ARCHITECTURE_DIAGNOSIS_ONLY"
+  ],
+  "R2BH_raw_used_for_V3_numerical_tuning": false
+}

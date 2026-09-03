@@ -1,0 +1,36 @@
+{
+  "schema_version": "r2_bi_hlc_kinematic_capture_architecture_contract_v3.0",
+  "status": "FROZEN_BEFORE_ANY_R2_BI_SIMULATION_OR_ROSTER_SELECTION",
+  "architecture": "CONTROLLER_OBSERVABLE_KINEMATIC_TARGET_CAPTURE_V3",
+  "semantic_partitions": [
+    "BEHAVIOR_MORPHOLOGY",
+    "TARGET_CAPTURE"
+  ],
+  "controller_input": "ONE_CONTINUOUS_KINEMATICALLY_CONSISTENT_TRAJECTORY",
+  "geometry": {
+    "source": "OFFICIAL_NATIVE_SOURCE_TARGET_REFERENCES_ROUTE_CONTINUOUS_V2_3",
+    "composition_frame": "NATIVE_CORRIDOR_FRENET_PROGRESS",
+    "no_extrapolation": true,
+    "manual_centerline": false,
+    "same_frozen_route_progression": true
+  },
+  "state0": "EXACT_REALIZED_CURRENT_EGO_POSE",
+  "future_pose_rule": "FINAL_XY_FIRST_THEN_TANGENT_HEADING_AND_CURVATURE_DERIVED_FROM_FINAL_XY",
+  "capture": {
+    "feedback": "CURRENT_REALIZED_STATE_GLOBAL_RULE_ONLY",
+    "clock": "ABSOLUTE_EPISODE_TIME_FIXED_START_AND_DEADLINE",
+    "correction": "VECTOR_QUINTIC_C2_WITH_TERMINAL_POSITION_VELOCITY_ACCELERATION_ZERO",
+    "deadline_behavior": "FAIL_CLOSED_IF_REALIZED_RESIDUAL_EXCEEDS_FROZEN_TOLERANCE",
+    "denominator_zero_special_case": false,
+    "controller_observability": "NONZERO_RESIDUAL_MUST_CREATE_KINEMATIC_CURVATURE_AND_LQR_STEERING_DEMAND"
+  },
+  "pre_divergence": {
+    "t_lt_s": 1.1,
+    "baseline_treatment_full_trajectory_identical": true
+  },
+  "scientific_realized_progress_measurement_changed": false,
+  "scenario_token_log_or_identity_specific_parameter": false,
+  "maximum_engineering_rounds": 2,
+  "R2BH_round4": false,
+  "R2C_or_confirmatory_or_RBR_authorized": false
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": "r2_bi_hlc_kinematic_development_binding_manifest_v1.0",
+  "status": "R2_BI_DEVELOPMENT_NOT_CONVERGED",
+  "component_SHA_closure": "PASS_WITH_NO_SELECTED_HLC_OR_COMPLETE_G_R2_CANDIDATE",
+  "components": [
+    {
+      "path": "tools/r2_bi_controller_interface_forensic.py",
+      "sha256": "d76a05deb9834b1305ca7c23cbf71b609e16cd613602ee2aad4a0e89751af547",
+      "bytes": 14435
+    },
+    {
+      "path": "tools/r2_bi_hlc_kinematic_target_capture_generator_v3.py",
+      "sha256": "a904e3771d771ffa15677655131a44a6b723b0994672b5ea8ac74269354d3579",
+      "bytes": 12193
+    },
+    {
+      "path": "tools/r2_bi_hlc_kinematic_target_capture_planner_v3.py",
+      "sha256": "6e75958297a35f0eea43cc45363ab807b9f96e2dc9e38ac99e93ec6f5257f0f5",
+      "bytes": 7032
+    },
+    {
+      "path": "tools/r2_bi_zero_run_entry_gate_audit.py",
+      "sha256": "9e7e4656fc061d08909dd8dfafe50886b505ee390b4c42ad2c6c5e7a7e971ca4",
+      "bytes": 10312
+    },
+    {
+      "path": "tools/r2_bi_freeze_hlc_kinematic_architecture.py",
+      "sha256": "1d53537e20d80eef59cf0d76d55cc9a61afb787c05468023207a6f80fcf3c4ef",
+      "bytes": 7766
+    },
+    {
+      "path": "tools/r2_bi_freeze_hlc_dev_kin_roster.py",
+      "sha256": "06cf45c9bea477d8d23d20d3474d4d481a6cd82d583e5c282120b3b7266320cb",
+      "bytes": 8423
+    },
+    {
+      "path": "tools/r2_bi_execute_hlc_kinematic_target_capture_development.py",
+      "sha256": "e4fe4dd7ff8cbc975f888bc3311d71859493b83edc2e7208200e7c871cb3d0ab",
+      "bytes": 28396
+    },
+    {
+      "path": "tools/r2_bi_finalize_hlc_kinematic_development.py",
+      "sha256": "8d7844e8533c179df5591322bc4fa949114fc33f05efa70227061d79f33f0fb5",
+      "bytes": 20198
+    },
+    {
+      "path": "tests/test_r2_bi_hlc_kinematic_target_capture.py",
+      "sha256": "61e19a7f51b9a5eacd9c82732dd0cb8af9e617d943ef78ec7b021e7467f84b7f",
+      "bytes": 6030
+    },
+    {
+      "path": "configs/r1_official_technical_smoke_hydra/planner/r2_bi_hlc_kinematic_target_capture_dev_v3.yaml",
+      "sha256": "e9847ddb0d22f37bc54fa2e74d50983974174d2b2690d3586f09c40f0b1a89c2",
+      "bytes": 315
+    },
+    {
+      "path": "tools/r1_primary80_scientific_time_controller_v1.py",
+      "sha256": "3b78f87593c01ea80e37d5a639a99355ff25a002b2e317409a029766c005f4d1",
+      "bytes": 1274
+    },
+    {
+      "path": "tools/r1_b2_9_e_official_run_lifecycle.py",
+      "sha256": "a330a8a9319bb0e395fb07caf6273aa40a22bb190045f693d3c2a2e842e07d2b",
+      "bytes": 2242
+    },
+    {
+      "path": "tools/r1_b2_8_r3_2_post_run_evaluator_dispatcher.py",
+      "sha256": "82870a4b42c9343eb1ec22b20901566f3787964bfa7464ae48ea67e9b23396e1",
+      "bytes": 3519
+    },
+    {
+      "path": "tools/r1_b2_8_r3_1_official_safety_adapter.py",
+      "sha256": "7f2e0c1f72b6545ca7de5843528e9dfd6c36d099bf9072f5430b66ae982195db",
+      "bytes": 4528
+    },
+    {
+      "path": "tools/r1_official_metric_canonicalizer.py",
+      "sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985",
+      "bytes": 6415
+    },
+    {
+      "path": "tools/r1_official_technical_smoke_evaluator_v2_1.py",
+      "sha256": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60",
+      "bytes": 6202
+    },
+    {
+      "path": "tools/r1_closed_loop_benchmark_v2_1.py",
+      "sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+      "bytes": 29468
+    },
+    {
+      "path": "tools/r1_closed_loop_benchmark_v2_3.py",
+      "sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49",
+      "bytes": 3865
+    },
+    {
+      "path": "tools/r1_hlc_measurement_conformance_v1.py",
+      "sha256": "40775ffa696abe1a89013c246c96ef48e09dd395b5adb29756a5ea81779bb464",
+      "bytes": 5580
+    },
+    {
+      "path": "tools/r2_b_controller_aware_generator_v1.py",
+      "sha256": "d166c4746d0a70668b8e26a532890c641b5166f55661a2d34d7f796a9830e3eb",
+      "bytes": 4959
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_r2bh_outcome_exposure_ledger_v1.0.json",
+      "sha256": "75b91695706c0994cd3d527e72dfa28c3feb61d49e4efaae261e41e440d3c924",
+      "bytes": 3718
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_v2_controller_interface_forensic_v1.json",
+      "sha256": "2b6010ff26f2da1dd0811e421e5f953d73ac8002b5b0cc19462ad3e4b520cca2",
+      "bytes": 7226
+    },
+    {
+      "path": "docs/stageR/r2/R2_BI_HLC_V2_Controller_Interface_Forensic_v1.md",
+      "sha256": "97601769945fdd8050ac38e8654ef60822b143f0e9c1a82d1cb605f562c1f8aa",
+      "bytes": 1564
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_kinematic_capture_architecture_contract_v3.0.json",
+      "sha256": "9ffa225a0d5e184925d6ef2c094d9276e65d2cb3ff77607e3ff18548415b6a1d",
+      "bytes": 1590
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_kinematic_capture_parameter_space_v3.0.json",
+      "sha256": "0803f3ba8b45dfca91ac32eeb7e2c93b8af0271a8c1857a665410f89d2cc864b",
+      "bytes": 2459
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_architecture_failure_taxonomy_v1.0.json",
+      "sha256": "b26cc5216f2ec77a251cf0470ef04481cdea9bb42ba5e9986660bcd74e3919a9",
+      "bytes": 1059
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_scientific_owner_engineering_authorization_v1.0.json",
+      "sha256": "67c045f8a414e06d0cb2b2c74bfaf7fb862ad2fe05b978ac61080789a260a156",
+      "bytes": 424
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_mandatory_zero_run_entry_gate_audit_v1.json",
+      "sha256": "9c255acbad5a0ac460f80014f116039e0559140ddfc3d0a653575df8f5ecd730",
+      "bytes": 46612
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_roster_v1.0.json",
+      "sha256": "7155da773653e1b7c31ca6cf37b9b9bc813e9c9fa8c3c88102b8a88351db8f07",
+      "bytes": 63866
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_permanent_exclusion_ledger_v1.0.json",
+      "sha256": "f56d9d5395a5a051ba23f0624b739779c9c41eb67b3b82d304f671ad9f49bbb7",
+      "bytes": 52381
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_pair_bindings_v1.0.json",
+      "sha256": "72d5146fbd847eb0b1c5911782cade2d7e692737253277e61c29b10e4cc0daf9",
+      "bytes": 1242133
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_rounds/r2_bi_hlc_dev_kin_round_0_parameters_v3.0.json",
+      "sha256": "c5d80d80a2abfd460e0daef36c4838de78387fa1a59a33419a5304aa5ac0d9b2",
+      "bytes": 5491
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_run_ledger_v1.0.json",
+      "sha256": "f5eafcece93dc8dcc8ba5d905cf88f1ea297cf2f6fac920933bb3f97e80f0bec",
+      "bytes": 2285
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_round_0_architecture_stop_audit_v1.json",
+      "sha256": "c8454a4e1e9a539a93c677eccec3285a226e766c915ceff18cf93756a9910187",
+      "bytes": 15220
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_round_summary_v1.json",
+      "sha256": "92624aced58968a3943d61df8fb811e08ee22063a9cdf10237734e8338f7fbf5",
+      "bytes": 1604
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_kinematic_data_firewall_audit_v1.json",
+      "sha256": "25bc9089de59245a19813349c751cbf7cbe2070f022e6133471988fe379efb92",
+      "bytes": 750
+    }
+  ],
+  "raw_DEV_output_provenance": {
+    "run_count": 2,
+    "aggregate_tree_sha256": "6c774326149b04c89ad5fd275210a7bef060a0c8d81a396eab955681f8969c70",
+    "runs": [
+      {
+        "run_root": "outputs/r2_bi_hlc_kinematic_target_capture_dev_v1/round_0/R2BI-HLC-R0-01-BASELINE",
+        "file_count": 24,
+        "tree_sha256": "2512b82911ad4a928f648d5425473ec63e760a44b03654cdb37d1e9a524af804"
+      },
+      {
+        "run_root": "outputs/r2_bi_hlc_kinematic_target_capture_dev_v1/round_0/R2BI-HLC-R0-01-TREATMENT",
+        "file_count": 7,
+        "tree_sha256": "5f7501be548ffe8517267585796391a949a6510574b2873ff22de6f8d86ec523"
+      }
+    ]
+  },
+  "raw_outputs_committed": false,
+  "nuplan_runtime": {
+    "version": "1.2.2",
+    "python": "/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9",
+    "nuplan_devkit_git_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b"
+  },
+  "actual_HLC_engineering_runner_run_calls": 2,
+  "TSB_simulation_calls": 0,
+  "scientific_simulation_calls": 0,
+  "selected_HLC_V3_parameter_sha256": null,
+  "complete_G_R2_candidate_manifest_created": false,
+  "R2C_identities_selected": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}
