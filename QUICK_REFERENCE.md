@@ -10917,3 +10917,35 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - expanded zero-run audit 覆盖 baseline/treatment、Primary80、所有 phase/capture 边界、直/左右曲线、左右目标车道、lane/speed/curvature/residual 边界；每个 case 都走完整 `_states`。
 - 当前 raw source-universe 笛卡尔包络为 1160/3296 PASS，存在 2136 个冻结运动学门失败，因此最终必须为 `R2_BJ_A_OFFLINE_ARCHITECTURE_NOT_READY`，BJ-B request 为 `REQUEST_WITHHELD`。
 - `runner.run=0`、engineering/scientific/TSB simulation 均为 0；R2-C、confirmatory smoke、RBR 均未启动；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BJ-A2 HLC Joint-Support Applicability Envelope Audit
+
+### 1. 命令
+
+A2 的版本化结果已经生成。日常复核只运行静态测试；不要再次执行结果生成工具，也不得调用任何 simulator 或带 `--execute` 的命令：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_a2_joint_support_applicability.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 只读验证已提交、outcome-blind 选择的 HLC opportunity；每条记录把 token/log/anchor、pre-treatment speed、source/target reference、曲率、lane separation 和 provenance 保持为不可拆分联合单元。
+- 同时保留 raw pointwise curvature 与预注册的 `0.25 m` 等弧长重采样、`5.0 m` 固定窗口 robust curvature；历史 `0.082281 1/m` 只作独立取证，不与其他 identity 的速度拼成主包络。
+- 使用冻结 V4 `_states` 对 nominal/预注册速度裕量、`±0.25 m` residual、两 arm 和 Primary80 的所有 absolute replanning time 做分量审计；分别检查 native、morphology、stitching/capture、generated increment 与 composite。
+- 不读取 realized outcome，不选择 roster，不修改 V4 或阈值，不运行 engineering/scientific/TSB simulation，不进入 BJ-B、R2-C、confirmatory smoke 或 RBR。
+
+### 3. 通过标准
+
+- 每个已物化 joint record 的 provenance closure 为 100%，数据防火墙为 `PASS_NO_OUTCOME_LEAKAGE`，`runner.run=0` 且 simulation count 为 0。
+- BJ-A Cartesian 结果继续作为 adversarial stress appendix，不能单独决定 actual-domain readiness；generated increment 必须单独过门，禁止用 native 正负曲率抵消。
+- 因冻结 eligibility 管线没有持久化全 source universe 的全部 eligibility-pass population，A2 必须为 `JOINT_SUPPORT_EXTRACTION_INCOMPLETE` 并 withholding Owner readiness，不得声称包络已闭合。
+- native-only infeasible 记录不得自动排除；任何 curvature representation、generated increment 或 terminal settling 未闭合项都必须附加相应 fail-closed blocker。
+- protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

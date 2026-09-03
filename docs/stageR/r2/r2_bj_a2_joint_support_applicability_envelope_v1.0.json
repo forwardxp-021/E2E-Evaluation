@@ -1,0 +1,72 @@
+{
+  "schema_version": "r2_bj_a2_joint_support_applicability_envelope_v1.0",
+  "status": "JOINT_SUPPORT_EXTRACTION_INCOMPLETE",
+  "all_blocking_categories": [
+    "JOINT_SUPPORT_EXTRACTION_INCOMPLETE",
+    "CURVATURE_REPRESENTATION_UNRESOLVED"
+  ],
+  "actual_joint_support_records": 47,
+  "source_opportunities_considered": 57,
+  "complete_joint_record_provenance_closure_percent": 100.0,
+  "considered_opportunity_extraction_completion_percent": 82.45614035087719,
+  "full_eligible_population_provenance_closure_percent": null,
+  "speed_joint_support_mps": {
+    "official_initial": {
+      "min": 9.098596,
+      "p25": 11.805703000000001,
+      "median": 12.153562,
+      "p75": 13.0338135,
+      "p95": 14.012996699999999,
+      "p99": 14.87822198,
+      "max": 15.26549
+    },
+    "anchor": {
+      "min": 7.050544640505347,
+      "p25": 12.163110575582024,
+      "median": 12.91242595766511,
+      "p75": 13.38312022098279,
+      "p95": 15.105869440311581,
+      "p99": 15.810475843793219,
+      "max": 16.351831897920455
+    },
+    "pre_treatment_sample_min": 8.109625726656134,
+    "pre_treatment_sample_max": 15.807247036264917,
+    "zero_point_two_mps_supported_record_count": 0
+  },
+  "lane_separation_joint_support_m": {
+    "minimum": 2.8766917610856373,
+    "maximum": 3.5777818849732745
+  },
+  "native_only_infeasible_population": {
+    "count": 0,
+    "fraction": 0.0,
+    "automatic_exclusion": false
+  },
+  "generated_increment_infeasible_population": {
+    "count": 0,
+    "fraction": 0.0
+  },
+  "composite_infeasible_population": {
+    "count": 0,
+    "fraction": 0.0
+  },
+  "terminal_settling_infeasible_population": {
+    "count": 0,
+    "fraction": 0.0
+  },
+  "prospective_native_eligibility_option_for_owner": "PRETREATMENT_ONLY_COUPLED_SPEED_AND_RAW_ROBUST_NATIVE_CURVATURE_GATE_USING_EXISTING_FROZEN_LIMITS; DO_NOT_AUTO_EXCLUDE_UNTIL_OWNER_DECISION",
+  "BJ_A_cartesian_envelope": {
+    "path": "docs/stageR/r2/r2_bj_a_expanded_zero_run_feasibility_envelope_v1.0.json",
+    "sha256": "29f66eca55856aba42fbc68aaa3b91c51b423a2c5262150f874eaab114ba8860",
+    "role": "ADVERSARIAL_STRESS_APPENDIX_NOT_ACTUAL_DOMAIN_DECIDER"
+  },
+  "V4_parameters_changed": false,
+  "roster_selected": false,
+  "runner_run_calls": 0,
+  "engineering_simulation_calls": 0,
+  "scientific_simulation_calls": 0,
+  "TSB_simulation_calls": 0,
+  "R2C_started": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false
+}

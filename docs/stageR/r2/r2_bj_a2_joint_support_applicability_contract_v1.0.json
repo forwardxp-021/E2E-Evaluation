@@ -1,0 +1,110 @@
+{
+  "schema_version": "r2_bj_a2_joint_support_applicability_contract_v1.0",
+  "status": "PREREGISTERED_BEFORE_A2_JOINT_SUPPORT_EVALUATION",
+  "phase": "R2-BJ-A2_OFFLINE_JOINT_SUPPORT_APPLICABILITY_AUDIT",
+  "frozen_baseline": {
+    "local_commit": "5c991b32c1d26dc5887016e3760a58b0fec64aeb",
+    "tree": "ab13e024df1b3c78e4c529e56b4ecfb03855f410",
+    "remote_equivalent_commit": "d745d770d449e6f543eb81cdb346faec59e2502d",
+    "BJ_A_mandatory_gate_reinterpreted_or_rewritten": false
+  },
+  "frozen_V4": {
+    "generator": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+    "planner": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+    "parameter_space": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+    "parameter_change_authorized": false,
+    "limits_changed": false
+  },
+  "joint_record_unit": [
+    "scenario_token",
+    "log_id",
+    "scenario_anchor_timestamp_us",
+    "official_initial_state",
+    "pre_treatment_speed_samples",
+    "source_target_route_continuous_reference",
+    "lane_separation",
+    "direction",
+    "available_reference_length"
+  ],
+  "support_scope": {
+    "included": "ALL_COMMITTED_OUTCOME_BLIND_SELECTED_HLC_OPPORTUNITIES_WITH_EXISTING_PRETREATMENT_TECHNICAL_ELIGIBILITY",
+    "cohorts": [
+      "R1_B2_SCIENTIFIC_V1",
+      "R1_B2_8_SCIENTIFIC_V2_1",
+      "R1_B2_9_D_SCIENTIFIC_V3",
+      "R2_A_HLC_DEV",
+      "R2_B_HLC_DEV_CAL",
+      "R2_BH_HLC_DEV_ARCH",
+      "R2_BI_HLC_DEV_KIN"
+    ],
+    "full_source_universe_eligibility_population_materialized": false,
+    "required_fail_closed_if_full_eligible_population_cannot_be_proven": "JOINT_SUPPORT_EXTRACTION_INCOMPLETE",
+    "cartesian_cross_identity_composition": false
+  },
+  "speed_semantics": {
+    "anchor_speed": "NEAREST_OFFICIAL_EGO_POSE_TO_SCENARIO_ANCHOR_TIMESTAMP",
+    "pre_treatment_window": "OFFICIAL_SCENARIO_INITIAL_TIMESTAMP_THROUGH_PLUS_1P0_SECONDS",
+    "sample_source": "READ_ONLY_LIDAR_PC_JOIN_EGO_POSE",
+    "V4_nominal_speed": "OFFICIAL_SCENARIO_INITIAL_SPEED",
+    "zero_point_two_mps_enters_main_envelope_only_if_observed_in_INCLUDED_JOINT_RECORD": true
+  },
+  "curvature_representation": {
+    "raw": "SIGNED_TURNING_ANGLE_DIVIDED_BY_MEAN_ADJACENT_SEGMENT_LENGTH_ON_UNMODIFIED_NATIVE_POLYLINE",
+    "robust_uniform_resample_step_m": 0.25,
+    "robust_window_m": 5.0,
+    "robust": "LEAST_SQUARES_SLOPE_OF_UNWRAPPED_TANGENT_HEADING_VERSUS_ARC_LENGTH_IN_FIXED_CENTERED_WINDOW",
+    "diagnostic_absolute_levels_inv_m": [
+      0.02,
+      0.05,
+      0.08
+    ],
+    "localized_pointwise_spike_rule": "RAW_MAX_AT_LEAST_2X_ROBUST_P99_AND_RAW_ADJACENT_SUPPORT_AT_MOST_1P0_M",
+    "sustained_rule": "RAW_CONTIGUOUS_SUPPORT_ABOVE_0P8_RAW_MAX_AT_LEAST_5P0_M_AND_ROBUST_P99_AT_LEAST_0P8_RAW_MAX",
+    "otherwise": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED",
+    "manual_spike_deletion": false,
+    "identity_specific_smoothing": false,
+    "V4_result_used_to_choose_rule": false
+  },
+  "preregistered_margin_cases": {
+    "speed": [
+      "NOMINAL_INITIAL_SPEED",
+      "INITIAL_SPEED_PLUS_MAX_0P5_MPS_OR_5_PERCENT"
+    ],
+    "realized_pose_normal_residual_m": [
+      -0.25,
+      0.0,
+      0.25
+    ],
+    "parameter_updates_between_cases": false
+  },
+  "component_rules": {
+    "native": "a_native=v^2*kappa_native",
+    "generated": "delta_kappa=kappa_V4-kappa_native; a_generated=v^2*delta_kappa",
+    "composite": "a_composite=v^2*kappa_V4",
+    "generated_absolute_magnitude_checked_without_native_cancellation": true,
+    "native_only_violation_disposition": "SOURCE_NATIVE_KINEMATIC_FEASIBILITY_UNRESOLVED"
+  },
+  "frozen_limits": {
+    "curvature_abs_inv_m_max": 0.5,
+    "yaw_rate_abs_radps_max": 1.0,
+    "lateral_acceleration_abs_mps2_max": 6.0,
+    "state0_continuity": "EXACT",
+    "terminal_target_frame_offset_abs_m_max": 1e-06
+  },
+  "forbidden_inputs": [
+    "baseline_or_treatment_realized_trace",
+    "mechanism_result",
+    "endpoint_result",
+    "safety_result",
+    "F_match_result",
+    "manual_identity_choice"
+  ],
+  "execution": {
+    "runner_run_authorized": 0,
+    "engineering_simulation_authorized": 0,
+    "scientific_simulation_authorized": 0,
+    "TSB_simulation_authorized": 0,
+    "roster_selection_authorized": false,
+    "R2C_confirmatory_RBR_authorized": false
+  }
+}

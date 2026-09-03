@@ -1,0 +1,22 @@
+{
+  "schema_version": "r2_bj_a2_data_firewall_audit_v1.0",
+  "status": "PASS_NO_OUTCOME_LEAKAGE",
+  "allowed_inputs": [
+    "frozen_rosters",
+    "read_only_official_DB_pretreatment_speed",
+    "official_map_native_reference",
+    "frozen_route_builder",
+    "frozen_V4"
+  ],
+  "forbidden_outcome_files_opened": 0,
+  "baseline_treatment_outcomes_used": false,
+  "mechanism_endpoint_safety_F_match_results_used": false,
+  "manual_identity_selection": false,
+  "V4_parameters_changed": false,
+  "historical_BJ_A_rewritten": false,
+  "R2_BI_identity_disposition_changed": false,
+  "new_roster_selected": false,
+  "runner_run_calls": 0,
+  "simulation_calls": 0,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

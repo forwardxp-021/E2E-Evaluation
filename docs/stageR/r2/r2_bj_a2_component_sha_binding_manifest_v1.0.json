@@ -1,0 +1,107 @@
+{
+  "schema_version": "r2_bj_a2_component_sha_binding_manifest_v1.0",
+  "status": "JOINT_SUPPORT_EXTRACTION_INCOMPLETE",
+  "components": [
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_joint_support_applicability_contract_v1.0.json",
+      "sha256": "32ea9052b05bb184f90732e4b4023835a80da88d53e0a7a7b9ca5e0fa3ade182"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_hlc_joint_support_provenance_manifest_v1.0.json",
+      "sha256": "7782abba6e402caf233b0e2d16b3f0beb0e66aef21a61e643b1ecb034f8733fe"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_curvature_quality_forensic_v1.0.json",
+      "sha256": "3b5ce98595027fcf0e8125e10bc182b582d8d9858da18d4333610fdd15779ce8"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_native_generated_composite_component_audit_v1.0.json",
+      "sha256": "fd7ff42212ccd26e8cbc1c0d21714fc7c9ba37c1906c550bd8952c9797e56737"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_joint_support_applicability_envelope_v1.0.json",
+      "sha256": "23b5270bf567cfb6333a08240fa89b1f2829869623f07c168300cd253b55ece4"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_data_firewall_audit_v1.0.json",
+      "sha256": "7a50284af9209b336a3cbc82d450cbfb83e9b44ea87c16c27a4b649a6412c974"
+    },
+    {
+      "path": "docs/stageR/r2/R2_BJ_A2_Scientific_Owner_Readiness_Request_v0.1.md",
+      "sha256": "7d6ce5d35254aa4efc0fcbc8071abe7c6713f7133207bbef6fbb5ceab4547596"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+      "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_expanded_zero_run_feasibility_envelope_v1.0.json",
+      "sha256": "29f66eca55856aba42fbc68aaa3b91c51b423a2c5262150f874eaab114ba8860"
+    },
+    {
+      "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+      "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e"
+    },
+    {
+      "path": "docs/stageR/r1/r1_official_nuplan_db_inventory_rows_v0.1.json",
+      "sha256": "300e9edcbe21d148860d97afb235ddb5dfc2b99bc6c14f95aad85cbacd283a60"
+    },
+    {
+      "path": "tools/r2_bj_a2_joint_support_applicability_audit.py",
+      "sha256": "5ce00e89ce7aadf09d9cb3497f7507037b570c057663a18dbfa5e35ccef4b1c9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+      "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+      "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+    },
+    {
+      "path": "tools/r1_closed_loop_benchmark_v2_3.py",
+      "sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49"
+    },
+    {
+      "path": "tests/test_r2_bj_a2_joint_support_applicability.py",
+      "sha256": "0afbe8da0899ef35c071d00fabb85a7af2f612b60a89d744102f356cebed8a30"
+    },
+    {
+      "path": "QUICK_REFERENCE.md",
+      "sha256": "0dcafeec087c55be033774224ae570e6c551b313d24262ebe4c3ca84c518124b"
+    },
+    {
+      "path": "docs/stageR/r1/r1_official_technical_smoke_roster_v1.0.json",
+      "sha256": "0617e79b9f51d8b2ae8ac76b110e1dbcfaa77dad200a73b405eb2d6a54675e52"
+    },
+    {
+      "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v2.1.json",
+      "sha256": "b977b802a7b25f0be37d04f3277cba2b2e98e521a2e30938ec40af9f278c1973"
+    },
+    {
+      "path": "docs/stageR/r1/r1_official_compliant_technical_smoke_roster_v3.0.json",
+      "sha256": "efe8e9d680ca0bcacb367bc9b616610ca78c260195e53b8f025a7bd1d92c23e6"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json",
+      "sha256": "aca3b1138a189333dc690edaa6399f5c3eeb32029e9c5971210e07651a951bee"
+    },
+    {
+      "path": "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json",
+      "sha256": "2b6c0d8459fadd6fb9b80a6623de31d11c36710bbf2e4666c999f27e87d68dcc"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bh_hlc_arch_dev_roster_v1.0.json",
+      "sha256": "59f70ff99ef48a0abc7c6f9cca42362441d36fdb80733addf3b87e82ff30dde1"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_roster_v1.0.json",
+      "sha256": "7155da773653e1b7c31ca6cf37b9b9bc813e9c9fa8c3c88102b8a88351db8f07"
+    }
+  ],
+  "component_SHA_closure": "PASS",
+  "joint_record_count": 47,
+  "runner_run_calls": 0,
+  "simulation_calls": 0,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}
