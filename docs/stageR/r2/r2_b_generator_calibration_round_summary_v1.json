@@ -1,0 +1,780 @@
+{
+  "schema_version": "r2_b_generator_calibration_round_summary_v1",
+  "status": "R2_B_DEVELOPMENT_NOT_CONVERGED",
+  "rounds": [
+    {
+      "family": "R-HLC",
+      "round_index": 0,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_0_parameters_v1.0.json",
+      "parameter_sha256": "6a1a4c18722285da920dd60993c4648f3e288745069ec82bae3d57af680e8073",
+      "parameters": {
+        "baseline_transition_duration_s": 2.6,
+        "advance_duration_s": 1.1,
+        "advance_progress": 0.44,
+        "hold_duration_s": 0.5,
+        "retreat_depth": 0.3,
+        "retreat_duration_s": 1.3,
+        "recommit_duration_s": 1.4,
+        "lag_precompensation_s": 0.3
+      },
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 1.799748,
+            "p25": 1.899767,
+            "median": 1.949751,
+            "p75": 2.000071,
+            "max": 2.0998,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.025428,
+            "p25": 0.004514,
+            "median": 0.022136,
+            "p75": 0.028845,
+            "max": 0.034292,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-HLC",
+      "round_index": 1,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_1_parameters_v1.0.json",
+      "parameter_sha256": "030ad4749996bdfb0347685f1c577a40646abaf57f80ab16ef29aea8851612e4",
+      "parameters": {
+        "baseline_transition_duration_s": 2.6,
+        "advance_duration_s": 1.1,
+        "advance_progress": 0.44,
+        "hold_duration_s": 0.5,
+        "retreat_depth": 0.36,
+        "retreat_duration_s": 1.45,
+        "recommit_duration_s": 1.25,
+        "lag_precompensation_s": 0.3
+      },
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 1.899736,
+            "p25": 1.999819,
+            "median": 2.049792,
+            "p75": 2.100073,
+            "max": 2.199827,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.017007,
+            "p25": 0.020315,
+            "median": 0.043695,
+            "p75": 0.049723,
+            "max": 0.063904,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-HLC",
+      "round_index": 2,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_2_parameters_v1.0.json",
+      "parameter_sha256": "24cc31f1873ec06134a93463ac87cc99101e2023a2bc57e10baa1d2623bbf86c",
+      "parameters": {
+        "baseline_transition_duration_s": 2.6,
+        "advance_duration_s": 1.1,
+        "advance_progress": 0.44,
+        "hold_duration_s": 0.5,
+        "retreat_depth": 0.42,
+        "retreat_duration_s": 1.6,
+        "recommit_duration_s": 1.1,
+        "lag_precompensation_s": 0.3
+      },
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 1.999736,
+            "p25": 2.099868,
+            "median": 2.14983,
+            "p75": 2.19988,
+            "max": 2.200157,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.015949,
+            "p25": 0.021034,
+            "median": 0.044873,
+            "p75": 0.057881,
+            "max": 0.069262,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-HLC",
+      "round_index": 3,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_3_parameters_v1.0.json",
+      "parameter_sha256": "2e3e1a129a1c53172c9784878c4ff8157284b7072c794bba06be484cf5701e77",
+      "parameters": {
+        "baseline_transition_duration_s": 2.6,
+        "advance_duration_s": 1.1,
+        "advance_progress": 0.44,
+        "hold_duration_s": 0.5,
+        "retreat_depth": 0.48,
+        "retreat_duration_s": 1.75,
+        "recommit_duration_s": 1.0,
+        "lag_precompensation_s": 0.3
+      },
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 2.199709,
+            "p25": 2.200042,
+            "median": 2.299708,
+            "p75": 2.325096,
+            "max": 2.399991,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.012639,
+            "p25": 0.022967,
+            "median": 0.048554,
+            "p75": 0.056683,
+            "max": 0.076216,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-TSB",
+      "round_index": 0,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json",
+      "parameter_sha256": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d",
+      "parameters": {
+        "start_s": 1.1,
+        "baseline_brake_mps2": -1.45,
+        "baseline_duration_s": 1.8,
+        "first_brake_mps2": -2.4,
+        "first_brake_duration_s": 0.9,
+        "release_mps2": 1.4,
+        "release_duration_s": 1.3,
+        "second_brake_mps2": -2.4,
+        "second_brake_duration_s": 0.9
+      },
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 8,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "measurement_OK": 8,
+          "baseline_one_phase": 8,
+          "treatment_two_phase": 8
+        },
+        "mechanism_margin_distributions": {
+          "baseline_exactly_one_phase": {
+            "min": 1.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0,
+            "n": 8
+          },
+          "treatment_exactly_two_phases": {
+            "min": 1.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0,
+            "n": 8
+          },
+          "release_fraction_minus_0p15": {
+            "min": 0.588132,
+            "p25": 0.595193,
+            "median": 0.598495,
+            "p75": 0.599631,
+            "max": 0.613469,
+            "n": 8
+          },
+          "second_peak_ratio_minus_0p50": {
+            "min": 0.70024,
+            "p25": 0.705247,
+            "median": 0.709845,
+            "p75": 0.711391,
+            "max": 0.711545,
+            "n": 8
+          }
+        },
+        "development_success": true
+      }
+    }
+  ],
+  "HLC_rounds_executed": 4,
+  "TSB_rounds_executed": 1,
+  "actual_DEV_engineering_runs": 80,
+  "HLC_final": {
+    "counts": {
+      "pairs": 8,
+      "mechanism_pass": 6,
+      "F_match_pass": 8,
+      "safety_pass": 8,
+      "endpoint_pass": 0,
+      "engineering_pass": 8
+    },
+    "mechanism_margin_distributions": {
+      "treatment_retreat_count_minus_1": {
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.0,
+        "max": 0.0,
+        "n": 8
+      },
+      "latency_delta_minus_0p5_s": {
+        "min": 2.199709,
+        "p25": 2.200042,
+        "median": 2.299708,
+        "p75": 2.325096,
+        "max": 2.399991,
+        "n": 8
+      },
+      "monotonic_delta_beyond_minus_0p10": {
+        "min": -0.012639,
+        "p25": 0.022967,
+        "median": 0.048554,
+        "p75": 0.056683,
+        "max": 0.076216,
+        "n": 8
+      }
+    },
+    "development_success": false
+  },
+  "TSB_final": {
+    "counts": {
+      "pairs": 8,
+      "mechanism_pass": 8,
+      "F_match_pass": 8,
+      "safety_pass": 8,
+      "measurement_OK": 8,
+      "baseline_one_phase": 8,
+      "treatment_two_phase": 8
+    },
+    "mechanism_margin_distributions": {
+      "baseline_exactly_one_phase": {
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 1.0,
+        "n": 8
+      },
+      "treatment_exactly_two_phases": {
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 1.0,
+        "n": 8
+      },
+      "release_fraction_minus_0p15": {
+        "min": 0.588132,
+        "p25": 0.595193,
+        "median": 0.598495,
+        "p75": 0.599631,
+        "max": 0.613469,
+        "n": 8
+      },
+      "second_peak_ratio_minus_0p50": {
+        "min": 0.70024,
+        "p25": 0.705247,
+        "median": 0.709845,
+        "p75": 0.711391,
+        "max": 0.711545,
+        "n": 8
+      }
+    },
+    "development_success": true
+  },
+  "TSB_family_candidate_development_pass": true,
+  "complete_G_R2_candidate_frozen": false,
+  "selected_parameter_file": null,
+  "selected_parameter_sha256": null,
+  "fifth_round_executed": false,
+  "R2C_identities_selected": false,
+  "raw_outputs_committed": false,
+  "raw_output_provenance": {
+    "run_count": 80,
+    "aggregate_tree_sha256": "4689058d3e442a52156af9d26f04b352efdb94e87feebb85df3d4bdecf2794c8",
+    "runs": [
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-01-BASELINE-TECHRERUN01",
+        "file_count": 23,
+        "tree_sha256": "8f4412e88bb68972acdb5c31553edac7b5b1008afb03ebecb0731aba4d0dfac3"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "df1cdca8a3467948482d8c7c1a8c2ebc3c29d69ce0db80e02f424916841a2c8a"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "6bd481403b3e67e0ec9b0689d56c610487988fb55ad1138afbfeb1e85451b934"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "d8275dcf25f152e1a20bfbf211755d6323d83b0bb3d166f850b6fa1948de474a"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "0abb1b080e466893f6b36a28f8811e2d8bf32253015b5939bee35651bbe479b6"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "ec54abfb628579fac6e045b040eb0f538ab3fb0d1bb5c5034b4db84c734f3542"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "189d2fecb09787e45e5fcbe72dc127fd4ea43f14d15616392231aac08f5d0585"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "81577263805128b1aa334dbd854c0bebff650355d380090c73c248b418f55146"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "6e417e30517c80aef76eee5e2378d465bdd9f938d54563710da6a64617db98b6"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "7ca8da3a2d457a52186dbac2782aa3478a9f7c4aa1e0ec169e4de166173d9187"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "8a53c71e3ad08bcf05da55538642643047e21adabdbfab02921520fa84e26395"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "4f4d892a3d28d8b3cc23e83ebbd7e4a7358feadc535ee89cd57e7549491f0bda"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "35c03aa274f55894ece44bf0c7eafd2c2dfd2b0e7f887a82acb03fd1fd45e14b"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "5cc85d2fd94e172f7c4566ea4f20f90f342b2b692bdebd93c81da5083e366888"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "ccd6e81721844cb870b774de69fe7a1e64ed63e92a751380b01eb33c819ce54b"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_0/R2B-HLC-R0-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "85e751f93a351a7622f23801c9b157835c6e25b86682c0a5ee1aac20d0291102"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "d4635e573f726baa850406dcfcb24f7e415fef2f2adefcb8dde04c48f86924c7"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "5398b806254c74b476d64e83ce5aeff097cea2a2e24323fd0420c8565362842f"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "5fadac21dca5ddc1d0150a28510d2c4d5770340578ad6e12a935753b623ba1f5"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "369a848c770abdc042be33d0c4973ed7118c15b8ea2f5a039f032f6a47420363"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "e385bb7b52cf19ab82b6c24f3c518b171768d3beccd2a2ff508a9dfe3cf5bb73"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "b2bec0a25741c42345729206dc3756ae5fa06bbc6d847bab80f2dbed95409a6d"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "1297173b51cfda1709c7f424f74deb056bd30cfeb9f32ed2db29d9b9ef834611"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "940bdc207ad36aa6aa77e4de85b15d0d1898b56b5d8851514ef8704dde20a2b3"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "665b29bd4afc683884565185d77d0f1a1847aea634b43c521506d0e0f5df04e8"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "f2a252972115932be0cc20eaa2505852737751276ead2c30c94fc11e7ebb52da"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "ffb75f6b5e646993d0623b432024a82a8f057209217897f222fd7060030231e2"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "155948aa1ca11b465d7d1c6c76fb7b8cb4d3b53efb096dbc453cb948453b1cc1"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "572044f94b80d15174df4581e11d2f6f00b586311565e54adfb8782f34a898c7"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "e610ed44a5161617c1caaa9c31e8eb74175609192f37af99e556afe7c54ba1e2"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "cbb8d672876bf6019aeb261bf4c5a8cbdb5302240cbf472e10228d0c0a684ef2"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_1/R2B-HLC-R1-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "a683afd940f0c59862d63e33640540336951197d4df4a2d6abbd0f7b9264a51b"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "f3d2ea0c7b20cd573e1d4e037777b836d3f5edd125f3b0075c9efca8b94201a2"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "8d94303ec1bcdb72a6c4c8deb402328b783ef04af276ff3049ed8ba17e867aac"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "dc491744d8b1f4ff84b22b4e5c65ef6c4371083b5947192286e8db6445734665"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "b24b315ad717ed258c3d9ecb9439a387595176fc7b58624101966dc10ffe963c"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "bf3969b13ab586a698d93916bc93b698d127bae756521312a3a4b852307af0e9"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "beac3afc0b19f7f920bda1adbf92b25157b22d05122483722fcbbb3140325aa7"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "0f62e14fff27bf3e85ed0a519e8ed289a5980771e1b520351139fe784b6d61f6"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "83fda271ba7269f9740f9d9738070edb99810776fd2c42e129ff66f4c14842e9"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "570bb765a5ef1719e2e6f08cbafc99daf501cb07332695d2698ad3b30ca677eb"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "44c4e56aec1cce9db9aef4cae61ecdafedb8ecb5ed448fd49951fd20e4a0ff48"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "bb417efc288e6892643556d5c32dcbbd38b3d424a37e9501e24b1e79f8546602"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "01cdf86b0048e0ee1f4ee8a151cb8f0abb3046ec412df4dbbb5fda928836fd93"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "8fe5b3cf78e3560139cf5f980d4cc36959508594b3d583493d13d47888b67fae"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "9cd7a8472cbde4073bd7e1a3eb425a5a14dac82ae110c7db77db4365e52266e0"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "d6a4b0d0aaa7a13fa60186faa7ac28c2c9b8dcc88d1aee013bcbc39c56203693"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_2/R2B-HLC-R2-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "900d2e292d71fd2a163453f762269e6f598ac7113fd9b053b810feb01f8ef121"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "fd3509571343d4cc14833a1e77ed036454e5edd1ebaa9e8fe7eda8102d6ef69c"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "c9810a569f6dd6df172392553f6b789549a9d56d0c3901d81015038126d573a8"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "f540ceb0ca47bfab84d10ffef731abaf8c0ad75cfd4f68864058ee8c00d92751"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "e15e65a13bb3b70f098698b02097460bcb0bb5d6f6a5c72ada29c2d780adabcd"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "dd2a5c226990578558735d58c51c48e551cf057bc999af971618b8085a4ea54c"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "96f1770e0dca89d9f88ae459ad7310644995a9c6bb6950a38911e170ee1a5dcc"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "6f02b80a7c9c7135d59f08937ece90e02c26f99720d7fb61539e480bc00d0691"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "e99e3d18efa943cc0eea21084fe29a12109d295ede9fb046f5e65860df34b146"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "1e73c10d90ee6d0db6a70d49c4639d7a628c0122dd7b85f61af094f9dac7586b"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "c98cdb6f0b5850ec87ef76f0405bc31b6552b80ecb024ca8c1f5dc1dbcac065d"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "1fccfb484ac878d840303bff3d07ca4227bcd921ac4561f1ea1163442f1a42e0"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "0a2a61018296fcd362481c3730bc30a843d31fbb81c913973793720f01f31119"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "af1250d07423f14c3f05faf26e65d7cadaa86644e73999a0fbdc0aa781c814d6"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "a9431eb3d01d2f77da76eb7c3e0deae47ab094bffbe79867f68f3d57753a48ed"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "bd7fe4b0ad45790a4e85bc38e23ff8e631072f3a5392ac7bc56cc718fe438a43"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/hlc/round_3/R2B-HLC-R3-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "24ceaec63af0e821059a579e6d5f22af1894c82c7136738dd301b75473a7fcd1"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "4e2cb1add110694071ccdfb6e1740044814ecbdd28a3b314acdead957db504b8"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "03b897d66dcfb9bb994ad1402dcfafd385f9b93ab783373db0a14b69a6475f4d"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "b1ee3a0302529c2f4fbd808342f77f549c0cff477aa2b5a6b864f9847ec619b9"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "e5cbc13d9a6864ae652f5d4ef52264426eb8abfe23e3c3966b4270e9f13ea0e3"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "1a822596688d74fe31f4e5b0ceabfa00cc4a13dedce67e20a365727ba874b58c"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "35db5c3f5f84a5a1e572cefe41a5f9e50836a95d1b1518896d78abff374e1b04"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "c77a2454deb777f316eef1dffc3cd0d46e9d537e89a9496a748f41b3dd20c0a6"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "98b0486854810d1caa9fbba5769e24effc070ae807dfe50d1670193250580829"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "56af226b7aaec76af3df13c81b17edc3a13921edd5f16aa26341a0d317092f9b"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "f241d314ab5d52b877eff3f3547806b2d7bbd0bf8643048f361351586b87abbe"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "0be96df30c806716b9869efadc15e550523f35d3d0d00492b16d6bf596297101"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "b275ad08c47bb4ef5035f927082942e7a20380c5b93e6e8707b8952ecc60e1b3"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "4cf726145d1da43216b2fe82cbc368752c12b25f46a5b9e927d374e564a84a62"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "e088fd241b41883247c1470120875929da5baa6d8cc0acefda84c3a7e64b66fd"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "f7caa75aada74013d4b5d93ca1f85507a260efea0d0af9633ef2d2cd4b515b5f"
+      },
+      {
+        "run_root": "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "216f946c0d67db8b4165deacf0d3d16d3687960d31ad6a392c562c2058448f48"
+      }
+    ]
+  }
+}

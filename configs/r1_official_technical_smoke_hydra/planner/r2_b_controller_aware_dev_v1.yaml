@@ -1,0 +1,6 @@
+r2_b_controller_aware_dev_v1:
+  _target_: tools.r2_b_calibrate_controller_aware_generator.build_planner_from_environment
+  run_id: ${oc.env:R2_B_RUN_ID}
+  trace_dir: ${oc.env:R2_B_TRACE_DIR}
+  telemetry_dir: ${oc.env:R2_B_TELEMETRY_DIR}
+  parameter_file: ${oc.env:R2_B_PARAMETER_FILE}

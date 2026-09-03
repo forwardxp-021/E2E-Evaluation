@@ -1,0 +1,33 @@
+{
+  "schema_version": "r2_b_generator_calibration_objective_v1.0",
+  "status": "FROZEN_BEFORE_FIRST_R2_B_SIMULATION",
+  "comparison": "LEXICOGRAPHIC_GLOBAL_CANDIDATE_SELECTION",
+  "priority": [
+    "MECHANISM_REALIZED_PASS_COUNT",
+    "F_MATCH_PASS_COUNT",
+    "HLC_ENDPOINT_AND_ENGINEERING_PASS_COUNT",
+    "OFFICIAL_SAFETY_PASS_COUNT",
+    "MINIMUM_MECHANISM_MARGIN",
+    "MINIMUM_ENDPOINT_MARGIN",
+    "F_MATCH_MARGIN"
+  ],
+  "success": {
+    "HLC": {
+      "mechanism": "ALL",
+      "F_match": "ALL",
+      "engineering": "ALL",
+      "endpoint": "ALL",
+      "safety": "NO_SYSTEMATIC_FAILURE"
+    },
+    "TSB": {
+      "measurement_applicability": "ALL",
+      "mechanism": "ALL",
+      "F_match": "ALL",
+      "safety": "NO_SYSTEMATIC_FAILURE"
+    }
+  },
+  "systematic_safety_failure_definition": "MORE_THAN_HALF_OF_FIXED_DEV_CAL_IDENTITIES_FAIL_PAIR_SAFETY",
+  "scientific_threshold_as_optimization_variable": false,
+  "identity_replacement_allowed": false,
+  "maximum_rounds_per_family": 4
+}

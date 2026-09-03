@@ -10789,3 +10789,36 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
 - 每个有效运行恰有 80 个 realized rows、80 个 planner telemetry rows、79 个 controller transitions；planner telemetry 覆盖 state0...state10，LQR control return value 可用。
 - surrogate 采用 leave-one-identity-out；不使用复杂黑盒，不改变 scientific threshold，不冻结最终 R2 generator 参数。
 - `R2_confirmatory_roster_selected=false`、`RBR_started=false`，protected CSV SHA 为 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase B Controller-Aware Generator Development
+
+### 1. 命令
+
+R2-B 已消费冻结的 DEV-CAL 运行计划并达到 4 轮 HLC 上限。**不得再次执行带 `--execute` 的校准命令**。只允许运行下列离线测试与只读核验：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_b_controller_aware_generator_development.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 只读验证 8 个 HLC、8 个 TSB DEV-CAL identities 的数据防火墙、永久 engineering-only 处置和全局参数化。
+- 检查 HLC/TSB 在 1.1 秒之前两 arm 完全一致，generator 不允许 scenario token/log ID 参数查表。
+- 读取 5 个已完成 round 结果与 80 个 DEV 工程 run 的 SHA provenance；不提交 raw simulation output。
+- 不生成 R2-C identities，不运行 confirmatory smoke，不训练 RBR，也不修改任何科学阈值。
+
+### 3. 通过标准
+
+- DEV-CAL 与 R1 official、R2-A、既有黑名单重叠均为 0；16 个 identities 全部永久排除于后续 scientific use。
+- HLC 严格停止在 4 轮：最终 mechanism 6/8、F_match 8/8、endpoint 0/8、engineering 8/8、safety 8/8。
+- TSB 第 0 轮达到 measurement、one/two-phase mechanism、F_match、safety 全部 8/8。
+- 因 HLC 未收敛，整体必须为 `R2_B_DEVELOPMENT_NOT_CONVERGED`；不得生成 `r2_b_selected_generator_parameters_v1.0.json`，不得进入 R2-C。
+- protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

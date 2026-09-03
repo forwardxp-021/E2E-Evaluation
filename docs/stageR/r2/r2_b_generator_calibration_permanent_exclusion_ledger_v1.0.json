@@ -1,0 +1,1378 @@
+{
+  "schema_version": "r2_b_generator_calibration_permanent_exclusion_ledger_v1.0",
+  "status": "FROZEN_ADDITIVE_R2_B_DATA_FIREWALL",
+  "source_ledger": {
+    "path": "docs/stageR/r2/r2_a_controller_id_permanent_exclusion_ledger_v1.0.json",
+    "sha256": "1082b9edfbaa139f8c029e88212eff3048e3a9befa9303d11ab6f27202b67087"
+  },
+  "entries": [
+    {
+      "scenario_token": "0198af1831f65977",
+      "log_id": "2021.09.28.13.24.06_veh-44_02759_02879",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "042b9dfca2095efd",
+      "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "04aa6b32e2be5124",
+      "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "057c831f5acf5c76",
+      "log_id": "2021.09.28.18.57.35_veh-44_01064_01998",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "095db0df20635617",
+      "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "0f67192c7dd45664",
+      "log_id": "2021.09.10.15.00.33_veh-45_01265_01432",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "118dae215aa257e2",
+      "log_id": "2021.09.17.18.16.32_veh-45_01447_01769",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "14f06b5194ff5c85",
+      "log_id": "2021.09.17.14.16.24_veh-45_01972_02284",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "16facbeedddc5425",
+      "log_id": "2021.08.31.14.55.32_veh-08_01493_01713",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2.9-B_FROZEN_HLC_CANARY_ROSTER",
+        "HISTORICAL_PERMANENT_EXCLUSION",
+        "PERMANENT_EXCLUSION_FROZEN",
+        "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "2b8c769f31e5553d",
+      "log_id": "2021.09.03.14.16.10_veh-08_00122_00566",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "2c70dfdf24c55774",
+      "log_id": "2021.09.27.17.52.47_veh-44_02062_02160",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "3edcce9e7e19573f",
+      "log_id": "2021.09.30.17.20.14_veh-44_00422_00647",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "EXISTING_PERMANENT_EXCLUSION_LEDGER",
+        "HISTORICAL_PERMANENT_EXCLUSION",
+        "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "40816601b19a5ca5",
+      "log_id": "2021.09.28.19.55.30_veh-44_00395_01217",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "512198168cbc55af",
+      "log_id": "2021.09.17.14.49.23_veh-42_00690_00846",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "56cc8049dee85334",
+      "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "578993bfc973525e",
+      "log_id": "2021.08.17.16.48.45_veh-43_02070_02652",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "5ab20ff9cc3c5d29",
+      "log_id": "2021.08.20.17.54.47_veh-45_02642_02801",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "5c04df4c02975a77",
+      "log_id": "2021.09.20.18.55.11_veh-08_00069_00483",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "5d3f971cd6ff5a3a",
+      "log_id": "2021.08.19.17.14.40_veh-45_02585_02856",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "63f974504fa15b7d",
+      "log_id": "2021.08.30.16.39.44_veh-45_00866_01142",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "7176d7e077925838",
+      "log_id": "2021.09.23.17.03.56_veh-45_01854_02115",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "720f0657ad1c5980",
+      "log_id": "2021.09.28.14.23.32_veh-44_00437_00870",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "75ccfab926d352d0",
+      "log_id": "2021.09.03.17.40.20_veh-42_00950_01784",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "8494670cfa8f5e09",
+      "log_id": "2021.08.19.19.22.25_veh-08_00186_00866",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "84cd23d18b58550f",
+      "log_id": "2021.06.23.16.54.19_veh-35_00808_01256",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "8a9802c7a8755477",
+      "log_id": "2021.09.24.14.23.05_veh-45_02144_02442",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "8e39a64c0e655afb",
+      "log_id": "2021.10.01.19.16.42_veh-28_02011_02410",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "92f1a8a7d00a5632",
+      "log_id": "2021.08.23.14.27.31_veh-45_00895_01001",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "a6e0468e028357de",
+      "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "a99149d402545c4b",
+      "log_id": "2021.09.02.14.10.27_veh-08_00168_00649",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2.9-B_FROZEN_HLC_CANARY_ROSTER",
+        "HISTORICAL_PERMANENT_EXCLUSION",
+        "OFFICIAL_ATTEMPT_CONSUMED_PERMANENTLY",
+        "PERMANENT_EXCLUSION_FROZEN"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "b1f30cb92e7c55e4",
+      "log_id": "2021.09.24.14.23.05_veh-45_00811_01131",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "b486f9cf33a85455",
+      "log_id": "2021.05.12.23.36.44_veh-35_00152_00504",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "EXISTING_PERMANENT_EXCLUSION_LEDGER",
+        "HISTORICAL_PERMANENT_EXCLUSION",
+        "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "b501014f74205892",
+      "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "bb5670893b7954be",
+      "log_id": "2021.09.09.18.12.06_veh-42_00446_01239",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "bb5bcc610f3853b7",
+      "log_id": "2021.08.19.17.14.40_veh-45_00298_00804",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "bd57b58eddb55436",
+      "log_id": "2021.08.20.13.00.37_veh-08_02328_02673",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "be449a2b6ad959d8",
+      "log_id": "2021.09.27.17.06.43_veh-44_01765_01929",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "bfdbb19e4ff85027",
+      "log_id": "2021.09.15.17.01.41_veh-45_00425_01226",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "cf56ddebd44f5372",
+      "log_id": "2021.09.28.19.55.30_veh-44_01744_01819",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "BOUND_NUPLAN_VALID_SCENE_WINDOW_0_MATCH",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "d0161e1e56015ad4",
+      "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "d0fbbbd27a6c5882",
+      "log_id": "2021.09.21.17.53.12_veh-08_02449_02583",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "d1a65b17145f5472",
+      "log_id": "2021.08.27.14.37.47_veh-08_01291_01597",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "d42842ff6aca5f6f",
+      "log_id": "2021.09.23.17.03.56_veh-45_02539_02937",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "ddaf8318a0d85750",
+      "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "dfeffcca2ef05c96",
+      "log_id": "2021.09.20.18.15.46_veh-08_00078_00230",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "e135794d38c1565c",
+      "log_id": "2021.08.23.12.33.24_veh-42_00864_01009",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2.9-B_FROZEN_HLC_CANARY_ROSTER",
+        "HISTORICAL_PERMANENT_EXCLUSION",
+        "PERMANENT_EXCLUSION_FROZEN",
+        "RUNTIME_DETERMINISM_VALIDATION_ONLY"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f459252afbd15920",
+      "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f464a2a451d85356",
+      "log_id": "2021.08.27.13.08.25_veh-42_00375_01720",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f5c321c583f95ac5",
+      "log_id": "2021.09.24.14.23.05_veh-45_03426_03612",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f5f5831fd0c05819",
+      "log_id": "2021.09.21.18.54.31_veh-45_01637_02127",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f603f5b88813572b",
+      "log_id": "2021.09.20.20.32.00_veh-08_00211_00332",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "HISTORICAL_NONCOMPLIANT_TECHNICAL_SMOKE",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "f967188819ef539f",
+      "log_id": "2021.06.23.17.31.36_veh-16_00016_00377",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "fd93956a3f9052dc",
+      "log_id": "2021.08.23.15.14.44_veh-08_00917_01175",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "ff152a4cf9c4503b",
+      "log_id": "2021.08.25.17.17.57_veh-42_01356_01819",
+      "sources": [
+        "docs/stageR/r1/r1_b2_9_d_effective_scientific_exclusion_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "B2_B2_1_FRESH_SMOKE_PERMANENT_EXCLUSION",
+        "EXISTING_PERMANENT_EXCLUSION_LEDGER",
+        "HISTORICAL_PERMANENT_EXCLUSION"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "ff7ef3a7f7f15e43",
+      "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+      "sources": [
+        "docs/stageR/r1/r1_b3_r1_official_outcome_exposure_ledger_v1.0.json"
+      ],
+      "reasons": [
+        "R1_OFFICIAL_OUTCOME_EXPOSED"
+      ],
+      "R2_DEVELOPMENT_USE_FORBIDDEN": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "b8dfc6ec48ef509c",
+      "log_id": "2021.08.20.19.10.41_veh-45_00197_00454",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "1510420e297e5579",
+      "log_id": "2021.08.17.16.48.45_veh-43_03384_03788",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "004f7ee01e7d5308",
+      "log_id": "2021.08.17.13.10.50_veh-08_00122_00295",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "0092310f762e5b37",
+      "log_id": "2021.09.09.13.32.12_veh-43_00175_00627",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "739dc27f85db509b",
+      "log_id": "2021.08.20.16.40.09_veh-45_01463_01693",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "74458088a69a5c94",
+      "log_id": "2021.08.17.17.17.01_veh-45_00207_00594",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "3feb5f93f24e5b77",
+      "log_id": "2021.09.28.16.50.03_veh-44_00782_01293",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "e1343153105a5b11",
+      "log_id": "2021.09.21.17.53.12_veh-08_00363_00445",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "1e12f52783275ff3",
+      "log_id": "2021.09.28.18.57.35_veh-44_02305_02462",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "0b87141bddba5432",
+      "log_id": "2021.08.23.12.33.24_veh-42_02142_02317",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "b4f04492bc1f5a2a",
+      "log_id": "2021.09.09.19.47.56_veh-45_01379_01541",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "7c3fef609ed1533d",
+      "log_id": "2021.08.25.20.03.37_veh-45_01501_01800",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "e32fd372f8be5fc8",
+      "log_id": "2021.09.09.17.29.55_veh-42_00187_00531",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "563c16c0e6f05a8c",
+      "log_id": "2021.09.28.13.24.06_veh-44_00043_00707",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "76b84ca7c5605298",
+      "log_id": "2021.08.19.14.06.23_veh-45_01977_02108",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "21d7ae213ca459f6",
+      "log_id": "2021.09.28.19.55.30_veh-44_02530_03148",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_A_CONTROLLER_IDENTIFICATION_DEV_IDENTITY"
+      ],
+      "OUTCOME_EXPOSED": false,
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "ee8aa6fdf3105ab2",
+      "log_id": "2021.09.07.13.06.36_veh-42_00266_00935",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "e21c48c9d41d577d",
+      "log_id": "2021.08.20.17.54.47_veh-45_01855_02076",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "2d5bf667b6245057",
+      "log_id": "2021.08.20.12.28.52_veh-42_00290_00447",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "dca82fc3d2de5b2b",
+      "log_id": "2021.08.30.14.36.46_veh-08_00213_00449",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "e8d42bcee4115470",
+      "log_id": "2021.09.03.17.02.10_veh-42_00363_00477",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "dd1367366ff35ad9",
+      "log_id": "2021.10.01.18.57.27_veh-44_00240_00661",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "88df35d6785b5475",
+      "log_id": "2021.09.28.18.22.59_veh-44_00236_00685",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "3e7e8685e0845c2f",
+      "log_id": "2021.09.20.12.58.53_veh-42_00371_00667",
+      "family": "R-HLC",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "54dd637158855bee",
+      "log_id": "2021.09.17.18.42.25_veh-08_00029_00784",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "49276baa21e15d38",
+      "log_id": "2021.08.19.15.03.05_veh-45_01749_02365",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "04df2e81dbbf5f0f",
+      "log_id": "2021.09.27.17.52.47_veh-44_00016_00742",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "922670273e7d5670",
+      "log_id": "2021.09.21.20.04.35_veh-08_00344_00719",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "90550298804e57de",
+      "log_id": "2021.08.25.19.30.22_veh-08_00028_00107",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "8f9cfb40abb85265",
+      "log_id": "2021.09.23.17.03.56_veh-45_00277_00348",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "d6349d35017c5e1e",
+      "log_id": "2021.08.27.16.46.47_veh-45_00098_00785",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    },
+    {
+      "scenario_token": "dc074058a3815a3f",
+      "log_id": "2021.08.23.17.33.08_veh-08_00115_00764",
+      "family": "R-TSB",
+      "sources": [
+        "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json"
+      ],
+      "reasons": [
+        "R2_B_GENERATOR_CALIBRATION_DEV_IDENTITY"
+      ],
+      "PERMANENT_ENGINEERING_ONLY": true,
+      "R2C_VALIDATION_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true
+    }
+  ],
+  "counts": {
+    "pre_R2_B": 85,
+    "R2_B_DEV_CAL": 16,
+    "effective_unique_identities": 101
+  },
+  "entry_removal_or_reduction_allowed": false
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "r2_b_controller_aware_generator_contract_v1.0",
+  "status": "FROZEN_BEFORE_R2_B_DEV_CALIBRATION",
+  "architecture": "CONTROLLER_AWARE_PRECOMPENSATION_PLUS_DEV_ONLY_OFFLINE_FEEDBACK_CALIBRATION",
+  "generator_name": "G_R2_V1",
+  "deterministic": true,
+  "global_parameterization": true,
+  "per_identity_or_token_lookup_forbidden": true,
+  "allowed_inputs": [
+    "family",
+    "arm",
+    "absolute_episode_time",
+    "current_ego_state",
+    "native_route_or_reference_geometry",
+    "frozen_pretreatment_physical_context"
+  ],
+  "forbidden_inputs": [
+    "future_realized_mechanism",
+    "future_safety",
+    "BDD",
+    "embedding",
+    "scenario_token_specific_coefficient",
+    "log_id_specific_coefficient"
+  ],
+  "PRE_CONTEXT": {
+    "iterations": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "identical_between_arms": true
+  },
+  "t_diverge_s": 1.1,
+  "HLC": {
+    "desired_realized_morphology_separate_from_planner_morphology": true,
+    "baseline": "DECISIVE_MONOTONIC_LANE_CHANGE_WITH_ZERO_RETREAT",
+    "treatment": "ADVANCE_HOLD_RETREAT_RECOMMIT_SETTLE",
+    "precompensation_terms": [
+      "transfer_gain",
+      "tracking_lag",
+      "retreat_duration",
+      "recommit_duration",
+      "settling_allowance"
+    ]
+  },
+  "TSB": {
+    "baseline": "ONE_REALIZED_BRAKE_PHASE",
+    "treatment": "TWO_REALIZED_BRAKE_PHASES_WITH_RELEASE",
+    "precompensation_terms": [
+      "first_brake_magnitude_and_effective_duration",
+      "release_magnitude_and_effective_duration",
+      "second_brake_magnitude_and_duration",
+      "one_second_LQR_lookahead_phase_composition",
+      "absolute_time_boundary_migration",
+      "release_carryover"
+    ],
+    "constant_gain_inverse_only": false
+  },
+  "R2_A_surrogate_role": "INITIALIZATION_ONLY_NO_R2_A_RERUN",
+  "scientific_thresholds_modified": false,
+  "R1_generator_modified": false
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "r2_b_tsb_calibration_parameter_space_v1.0",
+  "status": "BOUNDED_AND_FROZEN_BEFORE_FIRST_SIMULATION",
+  "maximum_rounds": 4,
+  "initialization": "R2_A_GENERATOR_TO_LQR_AND_LQR_TO_REALIZED_AGGREGATE_SURROGATE_ONLY",
+  "bounds": {
+    "baseline_brake_mps2": [
+      -2.2,
+      -1.1
+    ],
+    "baseline_duration_s": [
+      1.2,
+      2.4
+    ],
+    "first_brake_mps2": [
+      -3.5,
+      -1.8
+    ],
+    "first_brake_duration_s": [
+      0.7,
+      1.3
+    ],
+    "release_mps2": [
+      0.8,
+      2.2
+    ],
+    "release_duration_s": [
+      1.0,
+      1.8
+    ],
+    "second_brake_mps2": [
+      -3.5,
+      -1.8
+    ],
+    "second_brake_duration_s": [
+      0.7,
+      1.3
+    ]
+  },
+  "round0": {
+    "start_s": 1.1,
+    "baseline_brake_mps2": -1.45,
+    "baseline_duration_s": 1.8,
+    "first_brake_mps2": -2.4,
+    "first_brake_duration_s": 0.9,
+    "release_mps2": 1.4,
+    "release_duration_s": 1.3,
+    "second_brake_mps2": -2.4,
+    "second_brake_duration_s": 0.9
+  },
+  "deterministic_update": {
+    "baseline_one_phase_fail": {
+      "baseline_brake_mps2_subtract": 0.2,
+      "baseline_duration_add_s": 0.1
+    },
+    "treatment_phase_or_peak_fail": {
+      "first_brake_mps2_subtract": 0.3,
+      "second_brake_mps2_subtract": 0.3,
+      "brake_duration_add_s": 0.1
+    },
+    "release_or_phase_separation_fail": {
+      "release_mps2_add": 0.2,
+      "release_duration_add_s": 0.15
+    },
+    "F_match_fail": {
+      "baseline_duration_adjust_toward_treatment_abs_impulse_s": 0.15
+    },
+    "all_updates_clip_to_bounds": true,
+    "aggregate_family_counts_only": true
+  },
+  "manual_update_allowed": false
+}

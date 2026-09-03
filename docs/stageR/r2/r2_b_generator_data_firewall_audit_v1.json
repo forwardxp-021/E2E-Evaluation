@@ -1,0 +1,19 @@
+{
+  "schema_version": "r2_b_generator_data_firewall_audit_v1",
+  "status": "PASS",
+  "DEV_CAL_identity_count": 16,
+  "overlap_with_R1_official": 0,
+  "overlap_with_R2_A": 0,
+  "overlap_with_pre_R2_B_blacklist": 0,
+  "scenario_or_log_specific_parameter_lookup": false,
+  "scientific_thresholds_modified": false,
+  "R1_official_outcomes_used_for_calibration": false,
+  "R2_A_identity_rows_used_for_numerical_calibration": false,
+  "R2_A_surrogate_use": "ROUND_0_INITIALIZATION_ONLY",
+  "R2_A_identities_rerun": false,
+  "all_numerical_feedback_rows_source": "R2_B_FROZEN_DEV_CAL_IDENTITIES_ONLY",
+  "R2C_identities_selected": false,
+  "R2_confirmatory_roster_built": false,
+  "RBR_started": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

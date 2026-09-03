@@ -1,0 +1,271 @@
+{
+  "schema_version": "r2_b_generator_calibration_run_ledger_v1.0",
+  "status": "R2_B_DEV_CALIBRATION_EXECUTION_COMPLETE",
+  "roster_canonical_sha256": "db93e5f75ae629f48e1ef2d2e46723b61209236e72831e381eee5528430f6bc2",
+  "contract_canonical_sha256": "aee4ad1561f9de61b75bc1ba2a96811aa1cd8e947e417009658ac1db9660e6e7",
+  "hlc_parameter_space_canonical_sha256": "e6e2844f89c72d72d48041da2b66de9810f928d6cfb41f04ec2c7a5838c3aa80",
+  "tsb_parameter_space_canonical_sha256": "9ebf5b3ba4c11b3047ef0730348ce0021bb59706426a98639788e656823ca51f",
+  "objective_canonical_sha256": "7837bdf99bd424af2b90b8cbe9bd7990491fc819c862c1f86158da443cf23264",
+  "rounds": [
+    {
+      "family": "R-HLC",
+      "round_index": 0,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_0_parameters_v1.0.json",
+      "parameter_sha256": "6a1a4c18722285da920dd60993c4648f3e288745069ec82bae3d57af680e8073",
+      "result_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_0_results_v1.0.json",
+      "result_sha256": "d0f2d9b643f7f04034a0484adb1d90dbd3e8603881b3e0fc37b95c4e153c0c82",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 1.799748,
+            "p25": 1.899767,
+            "median": 1.949751,
+            "p75": 2.000071,
+            "max": 2.0998,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.025428,
+            "p25": 0.004514,
+            "median": 0.022136,
+            "p75": 0.028845,
+            "max": 0.034292,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-HLC",
+      "round_index": 1,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_1_parameters_v1.0.json",
+      "parameter_sha256": "030ad4749996bdfb0347685f1c577a40646abaf57f80ab16ef29aea8851612e4",
+      "result_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_1_results_v1.0.json",
+      "result_sha256": "43e947f08f912ceacda16c33bb115cf305d4ae4e2e541660ba0e7d5aab7703dc",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 1.899736,
+            "p25": 1.999819,
+            "median": 2.049792,
+            "p75": 2.100073,
+            "max": 2.199827,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.017007,
+            "p25": 0.020315,
+            "median": 0.043695,
+            "p75": 0.049723,
+            "max": 0.063904,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-HLC",
+      "round_index": 2,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_2_parameters_v1.0.json",
+      "parameter_sha256": "24cc31f1873ec06134a93463ac87cc99101e2023a2bc57e10baa1d2623bbf86c",
+      "result_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_2_results_v1.0.json",
+      "result_sha256": "ff4bd8c9f761b9eba265e3bdddb0b5f5af5fe50fe16567dc3c83ffc7c68b2446",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 1.999736,
+            "p25": 2.099868,
+            "median": 2.14983,
+            "p75": 2.19988,
+            "max": 2.200157,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.015949,
+            "p25": 0.021034,
+            "median": 0.044873,
+            "p75": 0.057881,
+            "max": 0.069262,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-HLC",
+      "round_index": 3,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_3_parameters_v1.0.json",
+      "parameter_sha256": "2e3e1a129a1c53172c9784878c4ff8157284b7072c794bba06be484cf5701e77",
+      "result_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_hlc_round_3_results_v1.0.json",
+      "result_sha256": "384296bbab4dbd581c7991dc1f8ff9bc836aea51910f70166ffb89f675901071",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 6,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "endpoint_pass": 0,
+          "engineering_pass": 8
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "min": 0.0,
+            "p25": 0.0,
+            "median": 0.0,
+            "p75": 0.0,
+            "max": 0.0,
+            "n": 8
+          },
+          "latency_delta_minus_0p5_s": {
+            "min": 2.199709,
+            "p25": 2.200042,
+            "median": 2.299708,
+            "p75": 2.325096,
+            "max": 2.399991,
+            "n": 8
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "min": -0.012639,
+            "p25": 0.022967,
+            "median": 0.048554,
+            "p75": 0.056683,
+            "max": 0.076216,
+            "n": 8
+          }
+        },
+        "development_success": false
+      }
+    },
+    {
+      "family": "R-TSB",
+      "round_index": 0,
+      "parameter_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json",
+      "parameter_sha256": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d",
+      "result_file": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_results_v1.0.json",
+      "result_sha256": "6f561df652867aee2204026b2390cacc5e075e8f75c393b880e6cbd21902ca88",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 8,
+          "F_match_pass": 8,
+          "safety_pass": 8,
+          "measurement_OK": 8,
+          "baseline_one_phase": 8,
+          "treatment_two_phase": 8
+        },
+        "mechanism_margin_distributions": {
+          "baseline_exactly_one_phase": {
+            "min": 1.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0,
+            "n": 8
+          },
+          "treatment_exactly_two_phases": {
+            "min": 1.0,
+            "p25": 1.0,
+            "median": 1.0,
+            "p75": 1.0,
+            "max": 1.0,
+            "n": 8
+          },
+          "release_fraction_minus_0p15": {
+            "min": 0.588132,
+            "p25": 0.595193,
+            "median": 0.598495,
+            "p75": 0.599631,
+            "max": 0.613469,
+            "n": 8
+          },
+          "second_peak_ratio_minus_0p50": {
+            "min": 0.70024,
+            "p25": 0.705247,
+            "median": 0.709845,
+            "p75": 0.711391,
+            "max": 0.711545,
+            "n": 8
+          }
+        },
+        "development_success": true
+      }
+    }
+  ],
+  "technical_failures": [
+    {
+      "frozen_run_id": "R2B-HLC-R0-01-BASELINE",
+      "status": "PRE_SIMULATOR_INTERFACE_BINDING_FAILURE",
+      "runner_run_calls": 0,
+      "reason": "R1 inherited planner requires family-specific frozen arm enumeration",
+      "authorized_recovery_run_id": "R2B-HLC-R0-01-BASELINE-TECHRERUN01",
+      "fresh_output_root_required": true
+    },
+    {
+      "scope": "R-HLC_ROUND_0_ALL_16_RUNS",
+      "status": "POST_RUN_DIAGNOSTIC_SCHEMA_UNWRAP_FAILURE",
+      "runner_run_calls_completed": 16,
+      "reason": "post-run diagnostic passed the Primary80 provenance wrapper instead of its current_ego field to frozen measurement functions",
+      "raw_outputs_preserved": true,
+      "authorized_recovery": "POSTPROCESS_EXISTING_COMPLETE_ARTIFACTS_ONLY",
+      "additional_runner_run_calls_authorized": 0
+    }
+  ],
+  "maximum_rounds_per_family": 4,
+  "technical_rerun_policy": "FRESH_RUN_ID_AND_ROOT_TECHNICAL_FAILURE_ONLY",
+  "identity_replacement": false,
+  "R2C_identities_selected": false,
+  "scientific_simulation": false,
+  "RBR_started": false,
+  "actual_engineering_runs": 80
+}
