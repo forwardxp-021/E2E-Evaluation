@@ -1,0 +1,69 @@
+{
+  "schema_version": "r2_a_hlc_excitation_grid_v1.0",
+  "status": "FROZEN_BEFORE_ANY_R2_A_SIMULATION",
+  "design": "ONE_FACTOR_AROUND_GEN1_CENTER_WITH_MONOTONIC_REFERENCE",
+  "purpose": "CONTROLLER_TRANSFER_IDENTIFICATION_NOT_FINAL_GENERATOR_SELECTION",
+  "time_grid_s": 0.1,
+  "primary_horizon_s": [
+    0.0,
+    7.9
+  ],
+  "excitations": [
+    {
+      "excitation_id": "HLC_MONOTONIC_REFERENCE",
+      "kind": "MONOTONIC_REFERENCE",
+      "diverge_s": 1.1,
+      "transition_duration_s": 2.0
+    },
+    {
+      "excitation_id": "HLC_HESITATION_CENTER",
+      "kind": "HESITATION",
+      "diverge_s": 1.1,
+      "advance_duration_s": 1.4,
+      "advance_progress": 0.38,
+      "hold_duration_s": 0.6,
+      "retreat_depth": 0.16,
+      "retreat_duration_s": 1.0,
+      "recommit_duration_s": 2.4,
+      "nominal_settling_duration_s": 1.4
+    },
+    {
+      "excitation_id": "HLC_RETREAT_DEPTH_HIGH",
+      "kind": "HESITATION",
+      "diverge_s": 1.1,
+      "advance_duration_s": 1.4,
+      "advance_progress": 0.38,
+      "hold_duration_s": 0.6,
+      "retreat_depth": 0.28,
+      "retreat_duration_s": 1.0,
+      "recommit_duration_s": 2.4,
+      "nominal_settling_duration_s": 1.4
+    },
+    {
+      "excitation_id": "HLC_RETREAT_DURATION_LONG",
+      "kind": "HESITATION",
+      "diverge_s": 1.1,
+      "advance_duration_s": 1.4,
+      "advance_progress": 0.38,
+      "hold_duration_s": 0.6,
+      "retreat_depth": 0.16,
+      "retreat_duration_s": 1.6,
+      "recommit_duration_s": 2.4,
+      "nominal_settling_duration_s": 0.8
+    },
+    {
+      "excitation_id": "HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "kind": "HESITATION",
+      "diverge_s": 1.1,
+      "advance_duration_s": 1.4,
+      "advance_progress": 0.38,
+      "hold_duration_s": 0.6,
+      "retreat_depth": 0.16,
+      "retreat_duration_s": 1.0,
+      "recommit_duration_s": 1.5,
+      "nominal_settling_duration_s": 2.3
+    }
+  ],
+  "online_adaptation_allowed": false,
+  "scientific_threshold_targeting_allowed": false
+}

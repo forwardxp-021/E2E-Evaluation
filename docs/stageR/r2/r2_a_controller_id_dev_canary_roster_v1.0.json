@@ -1,0 +1,983 @@
+{
+  "schema_version": "r2_a_controller_id_dev_canary_roster_v1.0",
+  "status": "FROZEN_PENDING_ZERO_RUN_AND_AUTHORIZED_ENGINEERING_EXECUTION",
+  "selection_semantics": "CONTINUE_FROZEN_V1_3_HASH_RANK_AFTER_R1_SELECTED_PREFIX",
+  "master_seed": 2026082701,
+  "salt_sha256": "617331678ef4573be11b5408a1dde2c910c8614177541dd51c650c08bc24baf9",
+  "source_universe": {
+    "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+    "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+    "reused": true
+  },
+  "effective_firewall_canonical_sha256": "5d2587996f9a12e17fbde6a0ef24060907b7e3975771dd5d801e4befd0da65ca",
+  "entries": [
+    {
+      "family": "R-HLC",
+      "scenario_token": "b8dfc6ec48ef509c",
+      "log_id": "2021.08.20.19.10.41_veh-45_00197_00454",
+      "db_file": "2021.08.20.19.10.41_veh-45_00197_00454.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.20.19.10.41_veh-45_00197_00454.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629486987050175,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "98440111a35d5585",
+        "official_simulation_initial_timestamp_us": 1629486984099504,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588581.128865,
+        "initial_y": 4475791.277632,
+        "initial_heading": 2.24343168,
+        "initial_speed_mps": 14.423603,
+        "initial_time_us": 1629486984099504,
+        "initial_state_fingerprint": "9af02a72979671a1ee780dd83fd957451b56cc733e4df1b1e258151b6e6e12c5"
+      },
+      "initial_state_fingerprint": "9af02a72979671a1ee780dd83fd957451b56cc733e4df1b1e258151b6e6e12c5",
+      "route_roadblock_ids": [
+        "19486",
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512"
+      ],
+      "route_fingerprint": "d35b146216ccda8dd80bd7e34e871fdeea1fe3f14ef268439c25a678891a8f26",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "00693c4f86fd9649ef19c8d936c8f5c29fbdadbe310e4cb10f3c88a7b0f5fe3a",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "1510420e297e5579",
+      "log_id": "2021.08.17.16.48.45_veh-43_03384_03788",
+      "db_file": "2021.08.17.16.48.45_veh-43_03384_03788.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.16.48.45_veh-43_03384_03788.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629222565499776,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "de8f0d81065d55b5",
+        "official_simulation_initial_timestamp_us": 1629222562500439,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588592.125916,
+        "initial_y": 4475777.315317,
+        "initial_heading": 2.23371612,
+        "initial_speed_mps": 13.072926,
+        "initial_time_us": 1629222562500439,
+        "initial_state_fingerprint": "06a6ce62c71d1c7bf4cd0d115a7a206b57186cdab5efbcbe015ebf8707568c08"
+      },
+      "initial_state_fingerprint": "06a6ce62c71d1c7bf4cd0d115a7a206b57186cdab5efbcbe015ebf8707568c08",
+      "route_roadblock_ids": [
+        "19486",
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512"
+      ],
+      "route_fingerprint": "d35b146216ccda8dd80bd7e34e871fdeea1fe3f14ef268439c25a678891a8f26",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "00747a0c62bd1c4c7ca2252dec32d1bccef9924ba62b04ecfecfea84cdcb3c35",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "004f7ee01e7d5308",
+      "log_id": "2021.08.17.13.10.50_veh-08_00122_00295",
+      "db_file": "2021.08.17.13.10.50_veh-08_00122_00295.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.13.10.50_veh-08_00122_00295.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629206164450063,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "557f8d7c7c715618",
+        "official_simulation_initial_timestamp_us": 1629206161499885,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588588.251636,
+        "initial_y": 4475782.04646,
+        "initial_heading": 2.23649464,
+        "initial_speed_mps": 11.605991,
+        "initial_time_us": 1629206161499885,
+        "initial_state_fingerprint": "8e2b0f33f0927a0806f4dad69432700299fa751a4db5f035956c6ea77f3c6eae"
+      },
+      "initial_state_fingerprint": "8e2b0f33f0927a0806f4dad69432700299fa751a4db5f035956c6ea77f3c6eae",
+      "route_roadblock_ids": [
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512",
+        "18999",
+        "19337"
+      ],
+      "route_fingerprint": "05e550545f070a93e53b6e6e8afe4907917df932f6972620faad9c917ffcd2b3",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0079b053484b6525362ea6080b4d5647d070065d1efba94e005383e01b64e6e5",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "0092310f762e5b37",
+      "log_id": "2021.09.09.13.32.12_veh-43_00175_00627",
+      "db_file": "2021.09.09.13.32.12_veh-43_00175_00627.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.13.32.12_veh-43_00175_00627.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1631194635749734,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "4e9cd6af0daf5ee5",
+        "official_simulation_initial_timestamp_us": 1631194632799255,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588592.948163,
+        "initial_y": 4475776.102523,
+        "initial_heading": 2.23059292,
+        "initial_speed_mps": 12.3504,
+        "initial_time_us": 1631194632799255,
+        "initial_state_fingerprint": "76a846ff7d859e77cb110bb73ec1085ca5018f7b905fe552d18ad8c37a8c173b"
+      },
+      "initial_state_fingerprint": "76a846ff7d859e77cb110bb73ec1085ca5018f7b905fe552d18ad8c37a8c173b",
+      "route_roadblock_ids": [
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512",
+        "18999",
+        "19339",
+        "19062"
+      ],
+      "route_fingerprint": "a0ff5d6d22144856915c1be651c507e6cfa2a695df5d5f4029b51068154ab2d4",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "007fcd6b0fe567d7b78abc93fb451850541b17de40e3dad7e436e1b5c9260fd6",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "739dc27f85db509b",
+      "log_id": "2021.08.20.16.40.09_veh-45_01463_01693",
+      "db_file": "2021.08.20.16.40.09_veh-45_01463_01693.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.20.16.40.09_veh-45_01463_01693.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629479262650566,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "0a869cd2e13c59f5",
+        "official_simulation_initial_timestamp_us": 1629479259700095,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588576.319536,
+        "initial_y": 4475797.551959,
+        "initial_heading": 2.24669229,
+        "initial_speed_mps": 11.809988,
+        "initial_time_us": 1629479259700095,
+        "initial_state_fingerprint": "5b27ff3017199da330bb017c033252cd0b1dd3e4d8c4b47ccc2acfe35f5a1a4c"
+      },
+      "initial_state_fingerprint": "5b27ff3017199da330bb017c033252cd0b1dd3e4d8c4b47ccc2acfe35f5a1a4c",
+      "route_roadblock_ids": [
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512",
+        "18999",
+        "19339",
+        "19062"
+      ],
+      "route_fingerprint": "a0ff5d6d22144856915c1be651c507e6cfa2a695df5d5f4029b51068154ab2d4",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "008a457138ce08643ed2483961fe4e5f49f7e7083ba8d8c6dca9c12fdb91573c",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "74458088a69a5c94",
+      "log_id": "2021.08.17.17.17.01_veh-45_00207_00594",
+      "db_file": "2021.08.17.17.17.01_veh-45_00207_00594.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.17.17.01_veh-45_00207_00594.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629220945799913,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "387f6159e862598f",
+        "official_simulation_initial_timestamp_us": 1629220942800180,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588571.025831,
+        "initial_y": 4475804.301379,
+        "initial_heading": 2.23794713,
+        "initial_speed_mps": 11.851739,
+        "initial_time_us": 1629220942800180,
+        "initial_state_fingerprint": "057540c05d010cc491e76ef58beaf624ff7864f00a9334ae477715d31b48bd0c"
+      },
+      "initial_state_fingerprint": "057540c05d010cc491e76ef58beaf624ff7864f00a9334ae477715d31b48bd0c",
+      "route_roadblock_ids": [
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512",
+        "18999",
+        "19339",
+        "19062"
+      ],
+      "route_fingerprint": "a0ff5d6d22144856915c1be651c507e6cfa2a695df5d5f4029b51068154ab2d4",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "008ed7033f3d617c816aa0c878a5ebc1f7e88613633d1c598f9f95fd996418bc",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "3feb5f93f24e5b77",
+      "log_id": "2021.09.28.16.50.03_veh-44_00782_01293",
+      "db_file": "2021.09.28.16.50.03_veh-44_00782_01293.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.28.16.50.03_veh-44_00782_01293.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1632848741499568,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "e8fa4ce0e4fe5dfc",
+        "official_simulation_initial_timestamp_us": 1632848738548805,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588590.13267,
+        "initial_y": 4475779.553281,
+        "initial_heading": 2.2353221,
+        "initial_speed_mps": 15.26549,
+        "initial_time_us": 1632848738548805,
+        "initial_state_fingerprint": "89c2496b4b362ce44f67aa6ae7d7788ae324975685a2f12e532945b5c5860ad3"
+      },
+      "initial_state_fingerprint": "89c2496b4b362ce44f67aa6ae7d7788ae324975685a2f12e532945b5c5860ad3",
+      "route_roadblock_ids": [
+        "19471",
+        "18997",
+        "19486",
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000"
+      ],
+      "route_fingerprint": "98620ac3f2a5632859ef59d904bdf955722341985d4467a8466cc84a05699122",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "009ce7044bb541dfd6d33420a058b0e8ce843067f0b9fc0d20bd1294d4ec32c0",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-HLC",
+      "scenario_token": "e1343153105a5b11",
+      "log_id": "2021.09.21.17.53.12_veh-08_00363_00445",
+      "db_file": "2021.09.21.17.53.12_veh-08_00363_00445.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.21.17.53.12_veh-08_00363_00445.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1632247311950314,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "4c2fe40d2168596f",
+        "official_simulation_initial_timestamp_us": 1632247308999829,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588587.234242,
+        "initial_y": 4475783.324207,
+        "initial_heading": 2.23141393,
+        "initial_speed_mps": 12.153562,
+        "initial_time_us": 1632247308999829,
+        "initial_state_fingerprint": "220a8b2b10df543db17a36b2c34d6aed5c8ef1bace8dd79ecf13fd060a373b16"
+      },
+      "initial_state_fingerprint": "220a8b2b10df543db17a36b2c34d6aed5c8ef1bace8dd79ecf13fd060a373b16",
+      "route_roadblock_ids": [
+        "19471",
+        "18997",
+        "19486",
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000"
+      ],
+      "route_fingerprint": "98620ac3f2a5632859ef59d904bdf955722341985d4467a8466cc84a05699122",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "RIGHT",
+      "map_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "dynamic_clearance_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "arms": [
+        "HLC_BASELINE_DECISIVE_MONOTONIC_LANE_CHANGE",
+        "HLC_TREATMENT_HLC_GEN_V2_OPTION_B"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "00a00bf7abfad2c319feab3e6813a6d69f9050bc059020585c9e817fcdbb6247",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "HLC_route_continuous_Primary80_applicability": "PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "1e12f52783275ff3",
+      "log_id": "2021.09.28.18.57.35_veh-44_02305_02462",
+      "db_file": "2021.09.28.18.57.35_veh-44_02305_02462.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.28.18.57.35_veh-44_02305_02462.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1632857908599750,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "0a8303725de259f4",
+        "official_simulation_initial_timestamp_us": 1632857905649642,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588967.470305,
+        "initial_y": 4474839.797768,
+        "initial_heading": -1.25599693,
+        "initial_speed_mps": 12.536407,
+        "initial_time_us": 1632857905649642,
+        "initial_state_fingerprint": "473e00683889673a2d6f32a60365edafcd3a6f77bb64d26988b1bfc97f18bfc1"
+      },
+      "initial_state_fingerprint": "473e00683889673a2d6f32a60365edafcd3a6f77bb64d26988b1bfc97f18bfc1",
+      "route_roadblock_ids": [
+        "19314",
+        "18952",
+        "19269",
+        "18958",
+        "19308",
+        "18932",
+        "19288",
+        "18931",
+        "19225",
+        "18971",
+        "19237"
+      ],
+      "route_fingerprint": "283cfe633ff6b0a2d0613aa10cf5248f7d1e854f00172bb6decfc3e9681cb986",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 12.536407,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19769"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0002976eedfac76cba3175ab99d7febec557744a5bd7d6f1cd45863d11d607bb",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "0b87141bddba5432",
+      "log_id": "2021.08.23.12.33.24_veh-42_02142_02317",
+      "db_file": "2021.08.23.12.33.24_veh-42_02142_02317.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.23.12.33.24_veh-42_02142_02317.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629724342249568,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "08273cf02b3459d1",
+        "official_simulation_initial_timestamp_us": 1629724339250022,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588879.292113,
+        "initial_y": 4475104.93122,
+        "initial_heading": -1.17662071,
+        "initial_speed_mps": 12.325356,
+        "initial_time_us": 1629724339250022,
+        "initial_state_fingerprint": "df72b68672f13dc1a31460daaad3eb9dc7e0d89adcd187e599c37fbd549007f3"
+      },
+      "initial_state_fingerprint": "df72b68672f13dc1a31460daaad3eb9dc7e0d89adcd187e599c37fbd549007f3",
+      "route_roadblock_ids": [
+        "19472",
+        "19078",
+        "19314",
+        "18952",
+        "19269",
+        "18958",
+        "19307",
+        "18935"
+      ],
+      "route_fingerprint": "37277c918788e73951351db18db7775ba44b4a5e25e57cc193c0ec7bd0551a11",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 12.325356,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19814"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0002bccdcf4d120398192269754a3c163f420ec54914b6c8b646e5c6d3ad1384",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "b4f04492bc1f5a2a",
+      "log_id": "2021.09.09.19.47.56_veh-45_01379_01541",
+      "db_file": "2021.09.09.19.47.56_veh-45_01379_01541.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.19.47.56_veh-45_01379_01541.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1631218435049989,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "d327c2c8abc850d4",
+        "official_simulation_initial_timestamp_us": 1631218432050584,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588966.410201,
+        "initial_y": 4474867.127427,
+        "initial_heading": 1.91609356,
+        "initial_speed_mps": 11.436542,
+        "initial_time_us": 1631218432050584,
+        "initial_state_fingerprint": "db69408c8b07985632996d9f3e118be6dfee320615bcce3ecd5c41fc80b21f03"
+      },
+      "initial_state_fingerprint": "db69408c8b07985632996d9f3e118be6dfee320615bcce3ecd5c41fc80b21f03",
+      "route_roadblock_ids": [
+        "19268",
+        "18951",
+        "19313",
+        "18994"
+      ],
+      "route_fingerprint": "c39f70e5742564dd5a214c7469ee5a1898f3479057831db03ab780fe5e2a3815",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 11.436542,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19755",
+          "20071"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0002e6daa8ffafa72a54f615829430389964bd0c6c04b99fdc9f521015635184",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "7c3fef609ed1533d",
+      "log_id": "2021.08.25.20.03.37_veh-45_01501_01800",
+      "db_file": "2021.08.25.20.03.37_veh-45_01501_01800.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.20.03.37_veh-45_01501_01800.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629923533649554,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "b4ddbf0609dd54ca",
+        "official_simulation_initial_timestamp_us": 1629923530649771,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 589317.570558,
+        "initial_y": 4473974.69053,
+        "initial_heading": 1.95840798,
+        "initial_speed_mps": 9.051193,
+        "initial_time_us": 1629923530649771,
+        "initial_state_fingerprint": "ffe0b936ee756a781803132deeda5094de50a686a4c25dcbacbec522a826fd7b"
+      },
+      "initial_state_fingerprint": "ffe0b936ee756a781803132deeda5094de50a686a4c25dcbacbec522a826fd7b",
+      "route_roadblock_ids": [
+        "19283",
+        "18969",
+        "19258",
+        "18967",
+        "19266",
+        "18944",
+        "19300",
+        "18950",
+        "19296",
+        "18961",
+        "19293",
+        "18959"
+      ],
+      "route_fingerprint": "9818ca9d410f4a640ed92671065c54d25cde7b7579605093644ac20bdf444e71",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 9.051193,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19765",
+          "20017"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0002f5f910f27f6df6d3666a2f708332efb403c70050f7df4cd3b3244fe7b234",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "e32fd372f8be5fc8",
+      "log_id": "2021.09.09.17.29.55_veh-42_00187_00531",
+      "db_file": "2021.09.09.17.29.55_veh-42_00187_00531.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.17.29.55_veh-42_00187_00531.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1631209060499838,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "1bd0b26889b15582",
+        "official_simulation_initial_timestamp_us": 1631209057499872,
+        "official_scenario_types": [
+          "on_intersection",
+          "on_traffic_light_intersection",
+          "traversing_intersection",
+          "traversing_traffic_light_intersection"
+        ],
+        "initial_x": 588615.504562,
+        "initial_y": 4475706.571062,
+        "initial_heading": 0.62286443,
+        "initial_speed_mps": 3.357728,
+        "initial_time_us": 1631209057499872,
+        "initial_state_fingerprint": "e50819d8e764cbc2c1b35ea7b9c22bc5e3e8a1edebaf35d8ceb79300a6cf0eda"
+      },
+      "initial_state_fingerprint": "e50819d8e764cbc2c1b35ea7b9c22bc5e3e8a1edebaf35d8ceb79300a6cf0eda",
+      "route_roadblock_ids": [
+        "19471",
+        "18997",
+        "19486",
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000"
+      ],
+      "route_fingerprint": "98620ac3f2a5632859ef59d904bdf955722341985d4467a8466cc84a05699122",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 3.357728,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "18745",
+          "20178"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0004c1faa0cb20d1b29cfe385afe21931bcbb0ed15016c692a232b069972b347",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "563c16c0e6f05a8c",
+      "log_id": "2021.09.28.13.24.06_veh-44_00043_00707",
+      "db_file": "2021.09.28.13.24.06_veh-44_00043_00707.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.28.13.24.06_veh-44_00043_00707.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1632835749149790,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "9be589bf7cb2590d",
+        "official_simulation_initial_timestamp_us": 1632835746149804,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 589022.720869,
+        "initial_y": 4474734.343201,
+        "initial_heading": 1.71504088,
+        "initial_speed_mps": 10.881517,
+        "initial_time_us": 1632835746149804,
+        "initial_state_fingerprint": "5064edd72c6165cb55bcc41b84adb114eb828e978328bcc5f9da91234f32f958"
+      },
+      "initial_state_fingerprint": "5064edd72c6165cb55bcc41b84adb114eb828e978328bcc5f9da91234f32f958",
+      "route_roadblock_ids": [
+        "19268",
+        "18951",
+        "19313",
+        "18994"
+      ],
+      "route_fingerprint": "c39f70e5742564dd5a214c7469ee5a1898f3479057831db03ab780fe5e2a3815",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 10.881517,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19755"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "0004c6aedfe474ab5b98095cea43b2aa896cf9aeb7367474b30d68ecff6a48ed",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "76b84ca7c5605298",
+      "log_id": "2021.08.19.14.06.23_veh-45_01977_02108",
+      "db_file": "2021.08.19.14.06.23_veh-45_01977_02108.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.19.14.06.23_veh-45_01977_02108.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1629384211999525,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "75e6eec0d8f75ec0",
+        "official_simulation_initial_timestamp_us": 1629384209000155,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588811.59153,
+        "initial_y": 4475268.51275,
+        "initial_heading": -1.17223762,
+        "initial_speed_mps": 11.430639,
+        "initial_time_us": 1629384209000155,
+        "initial_state_fingerprint": "d7bb9d55486238e22c03ca54902a66885e72f5b5f714fc138b0273fca6d12cf6"
+      },
+      "initial_state_fingerprint": "d7bb9d55486238e22c03ca54902a66885e72f5b5f714fc138b0273fca6d12cf6",
+      "route_roadblock_ids": [
+        "19472",
+        "19078",
+        "19314",
+        "18952",
+        "19269",
+        "18958"
+      ],
+      "route_fingerprint": "99ca39c36b9e850bb1ae35827a4cddd724acd609e93ae80665252505def5ecc9",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 11.430639,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19814"
+        ],
+        "route_occurrence_cursor": 1,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "000509d1230c3a2276e66760913ac128822ef45e016aed25dc4fde7ce42a6a43",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    },
+    {
+      "family": "R-TSB",
+      "scenario_token": "21d7ae213ca459f6",
+      "log_id": "2021.09.28.19.55.30_veh-44_02530_03148",
+      "db_file": "2021.09.28.19.55.30_veh-44_02530_03148.db",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.28.19.55.30_veh-44_02530_03148.db",
+      "source_partition": "train_pittsburgh",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "scenario_anchor_timestamp_us": 1632862075049789,
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "64d2086cce54537c",
+        "official_simulation_initial_timestamp_us": 1632862072099292,
+        "official_scenario_types": [
+          "following_lane_without_lead"
+        ],
+        "initial_x": 588185.474246,
+        "initial_y": 4475830.000531,
+        "initial_heading": 0.65003992,
+        "initial_speed_mps": 12.920702,
+        "initial_time_us": 1632862072099292,
+        "initial_state_fingerprint": "dc93549a5ff59cb5849f855a4f02f78dcd78c9d9dbbd10caf713474b9ca09f4b"
+      },
+      "initial_state_fingerprint": "dc93549a5ff59cb5849f855a4f02f78dcd78c9d9dbbd10caf713474b9ca09f4b",
+      "route_roadblock_ids": [
+        "19340",
+        "19092",
+        "19513",
+        "19073",
+        "19444",
+        "19444",
+        "18998",
+        "19402",
+        "19048",
+        "19465",
+        "19076",
+        "19515",
+        "19044"
+      ],
+      "route_fingerprint": "2da6dd27aee5024324a6be3b7e7fab380376bc96b815db21c0cfb704794d14d1",
+      "pre_treatment_context_availability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "initial_speed_mps": 12.920702,
+      "TSB_applicability_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "native_route_binding": {
+        "builder": "build_native_route_reference_v1_1",
+        "native_edge_ids": [
+          "19818"
+        ],
+        "route_occurrence_cursor": 3,
+        "extrapolation_used": false
+      },
+      "arms": [
+        "TSB_BASELINE_SINGLE_CONTINUOUS_BRAKING",
+        "TSB_TREATMENT_TSB_GEN_V2_OPTION_A"
+      ],
+      "pre_treatment_eligibility_audit_ref": "docs/stageR/r1/r1_b2_7_family_eligibility_audit_v1.0.json",
+      "selector_rank_sha256": "000510bd02e9e004b1888461f7d52bf52afa1bc8f420a0618db7a5e44a8ebe04",
+      "official_exact_single_scenario_resolution": "PASS",
+      "Primary80_execution_eligibility": "PASS_PENDING_EXACT_CONTROLLER_CONFIRMATION_IN_ZERO_RUN",
+      "TSB_frozen_eligibility_semantics": "UNCHANGED_PASS",
+      "PERMANENT_R2_ENGINEERING_ONLY": true,
+      "R2_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "selection_role": "OUTCOME_BLIND_CONTROLLER_TRANSFER_IDENTIFICATION"
+    }
+  ],
+  "counts": {
+    "R-HLC": 8,
+    "R-TSB": 8,
+    "total": 16
+  },
+  "selection_inputs": [
+    "context",
+    "map_and_runtime_applicability",
+    "route_and_reference_availability",
+    "Primary80_technical_eligibility",
+    "exact_single_official_scenario_resolution"
+  ],
+  "forbidden_selection_inputs_used": [],
+  "outcome_or_safety_or_F_match_used": false,
+  "confirmatory_roster": false
+}

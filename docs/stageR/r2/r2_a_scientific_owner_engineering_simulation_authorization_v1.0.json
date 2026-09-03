@@ -1,0 +1,10 @@
+{
+  "schema_version": "r2_a_scientific_owner_engineering_simulation_authorization_v1.0",
+  "R2_DEV_ENGINEERING_SIMULATION_AUTHORIZED": true,
+  "authorization_scope": "FRESH_R2_A_DEVELOPMENT_IDENTITIES_ONLY",
+  "technical_rerun": "ALLOWED_ONLY_AFTER_TECHNICAL_FAILURE_WITH_FRESH_RUN_ID_AND_OUTPUT_ROOT",
+  "mechanism_outcome_triggered_identity_replacement": "FORBIDDEN",
+  "R2_CONFIRMATORY_SMOKE": "NOT_AUTHORIZED",
+  "RBR_A_B_C": "NOT_AUTHORIZED",
+  "source": "SCIENTIFIC_OWNER_R2_PHASE_A_DECISION"
+}

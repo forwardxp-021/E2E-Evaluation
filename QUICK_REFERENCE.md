@@ -10751,3 +10751,41 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
 - F_match：HLC 12/12、TSB 12/12，`HANDCRAFTED_NUISANCE_MATCHING=SUCCESSFUL`。
 - 推荐 R2 repair family：`CONTROLLER_AWARE_TRAJECTORY_SHAPING + FEEDBACK_CALIBRATED_GENERATOR`，但只允许在 fresh、永久 engineering-only identities 上开发；threshold relaxation 不推荐。
 - `R1_RESIDUAL_BENCHMARK_ENABLEMENT=FAILED_UNDER_FROZEN_R1_CONTRACT`；`RBR_FORMAL_TRAINING=NOT_AUTHORIZED`。
+
+## StageR / R2 Phase A Controller Transfer Identification
+
+### 1. 命令
+
+R2-A 的 80 个有效 DEV design units 与 4 个技术重跑已经执行完毕。下面命令只做离线识别、闭包和测试；**不得再次运行 engineering executor**，也不得据此建立 confirmatory roster 或训练 RBR：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r2_a_analyze_controller_transfer.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r2_a_finalize_controller_transfer_freeze.py
+
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_a_controller_transfer_identification.py
+```
+
+### 2. 期望行为
+
+- 只读取 8 个 HLC 与 8 个 TSB 的永久 engineering-only DEV identities，以及 80 套有效的 Primary80 realized/planner/LQR telemetry；不读取 R1 official outcome 来调参。
+- HLC 离线识别 commanded/realized retreat、monotonic effect、commit、tracking lag、settling 与 terminal lateral velocity。
+- TSB 离线分解 generator→LQR 与 LQR→realized gain，并审计 absolute-time repeated replanning 下的 phase shortening、boundary migration、phase disappearance 和 release carryover。
+- 生成小型 deterministic linear surrogate，并执行 leave-one-identity-out 描述性验证；该模型只用于 R2-B architecture，不是最终 generator。
+- finalizer 把 16 个 DEV identities 追加到永久排除账本，并 SHA-bind 80 套有效 telemetry；它不构造 simulator，也不调用 `runner.run`。
+
+### 3. 通过标准
+
+- roster 为 HLC 8、TSB 8，和此前 69 个历史/R1 outcome-exposed identities 的重叠为 0；最终永久排除账本为 85 个 identities。
+- 预冻结设计为 HLC 5×8、TSB 5×8，共 80 个有效运行；80/80 technical complete。只因技术故障产生 4 个 fresh-root 重跑，实际 engineering runs 为 84。
+- 每个有效运行恰有 80 个 realized rows、80 个 planner telemetry rows、79 个 controller transitions；planner telemetry 覆盖 state0...state10，LQR control return value 可用。
+- surrogate 采用 leave-one-identity-out；不使用复杂黑盒，不改变 scientific threshold，不冻结最终 R2 generator 参数。
+- `R2_confirmatory_roster_selected=false`、`RBR_started=false`，protected CSV SHA 为 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

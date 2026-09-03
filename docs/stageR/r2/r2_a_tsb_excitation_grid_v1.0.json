@@ -1,0 +1,70 @@
+{
+  "schema_version": "r2_a_tsb_excitation_grid_v1.0",
+  "status": "FROZEN_BEFORE_ANY_R2_A_SIMULATION",
+  "design": "ONE_FACTOR_FRACTIONAL_DESIGN_AROUND_GEN1_CENTER_WITH_SINGLE_BRAKE_REFERENCE",
+  "purpose": "GAIN_LAG_DURATION_RELEASE_IDENTIFICATION_NOT_GATE_PARAMETER_SELECTION",
+  "time_grid_s": 0.1,
+  "primary_horizon_s": [
+    0.0,
+    7.9
+  ],
+  "excitations": [
+    {
+      "excitation_id": "TSB_SINGLE_BRAKE_REFERENCE",
+      "kind": "SINGLE_BRAKE_REFERENCE",
+      "start_s": 1.1,
+      "first_brake_mps2": -1.0,
+      "first_brake_duration_s": 0.95,
+      "release_mps2": 0.0,
+      "release_duration_s": 0.0,
+      "second_brake_mps2": 0.0,
+      "second_brake_duration_s": 0.0
+    },
+    {
+      "excitation_id": "TSB_TWO_PULSE_CENTER",
+      "kind": "TWO_PULSE",
+      "start_s": 1.1,
+      "first_brake_mps2": -0.9,
+      "first_brake_duration_s": 0.5,
+      "release_mps2": 0.4,
+      "release_duration_s": 0.7,
+      "second_brake_mps2": -0.9,
+      "second_brake_duration_s": 0.5
+    },
+    {
+      "excitation_id": "TSB_BRAKE_AMPLITUDE_HIGH",
+      "kind": "TWO_PULSE",
+      "start_s": 1.1,
+      "first_brake_mps2": -1.5,
+      "first_brake_duration_s": 0.5,
+      "release_mps2": 0.4,
+      "release_duration_s": 0.7,
+      "second_brake_mps2": -1.5,
+      "second_brake_duration_s": 0.5
+    },
+    {
+      "excitation_id": "TSB_BRAKE_DURATION_LONG",
+      "kind": "TWO_PULSE",
+      "start_s": 1.1,
+      "first_brake_mps2": -0.9,
+      "first_brake_duration_s": 0.9,
+      "release_mps2": 0.4,
+      "release_duration_s": 0.7,
+      "second_brake_mps2": -0.9,
+      "second_brake_duration_s": 0.9
+    },
+    {
+      "excitation_id": "TSB_RELEASE_STRONG_LONG",
+      "kind": "TWO_PULSE",
+      "start_s": 1.1,
+      "first_brake_mps2": -0.9,
+      "first_brake_duration_s": 0.5,
+      "release_mps2": 1.0,
+      "release_duration_s": 1.1,
+      "second_brake_mps2": -0.9,
+      "second_brake_duration_s": 0.5
+    }
+  ],
+  "online_adaptation_allowed": false,
+  "scientific_threshold_targeting_allowed": false
+}

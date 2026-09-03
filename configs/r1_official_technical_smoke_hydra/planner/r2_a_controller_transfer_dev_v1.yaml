@@ -1,0 +1,5 @@
+r2_a_controller_transfer_dev_v1:
+  _target_: tools.r2_a_execute_controller_transfer_dev.build_planner_from_frozen_binding
+  run_id: ${oc.env:R2_A_RUN_ID}
+  trace_dir: ${oc.env:R2_A_TRACE_DIR}
+  telemetry_dir: ${oc.env:R2_A_TELEMETRY_DIR}

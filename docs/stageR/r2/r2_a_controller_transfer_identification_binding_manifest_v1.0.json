@@ -1,0 +1,1877 @@
+{
+  "schema_version": "r2_a_controller_transfer_identification_binding_manifest_v1.0",
+  "status": "R2_A_CONTROLLER_TRANSFER_DIAGNOSTIC_FROZEN_COMPLETE",
+  "baseline_remote_commit": "78f3a94c60f6b9571f56974f77e6d9ce285cd51f",
+  "components": [
+    {
+      "path": "configs/r1_official_technical_smoke_hydra/planner/r2_a_controller_transfer_dev_v1.yaml",
+      "sha256": "186bc1fba71b848a947540bf7da89a509a7a43094dde3d3a349f83c1cbad0ed2"
+    },
+    {
+      "path": "tools/r2_a_freeze_controller_id_design.py",
+      "sha256": "3b28e70ff70a43fa83bfba179e028f793dab3a9f91530ff14320d8fcba77f9de"
+    },
+    {
+      "path": "tools/r2_a_controller_transfer_dev_planner_v1.py",
+      "sha256": "66fded052455094d213f08b2685424ec201a26f1bcf9907d2e6cc3576220fa56"
+    },
+    {
+      "path": "tools/r2_a_execute_controller_transfer_dev.py",
+      "sha256": "27624c82cd053ae007eaaa547ff82bc3c56cab378a633f2a229e29d3b530d95f"
+    },
+    {
+      "path": "tools/r2_a_recover_controller_transfer_dev.py",
+      "sha256": "21475035023ba244b6aa3434236785af141e227b3f32461664a65568c0036afa"
+    },
+    {
+      "path": "tools/r2_a_analyze_controller_transfer.py",
+      "sha256": "370ab529e1c1c3e6ee770169e05203a913eac6b1a89c02c3a02db1c928e0e1e9"
+    },
+    {
+      "path": "tools/r2_a_finalize_controller_transfer_freeze.py",
+      "sha256": "43713a8f28506bd77b8f4e3028adcc3c163ca52238eb4e2d3de4cc88504e56f6"
+    },
+    {
+      "path": "tests/test_r2_a_controller_transfer_identification.py",
+      "sha256": "72e5a892498792afa4ff9409c7c4b29dc871139cf3f7b274ff053d31ce0ef7af"
+    },
+    {
+      "path": "QUICK_REFERENCE.md",
+      "sha256": "98d94619e378c765594ef09624c4476ecf871e0de62e74e16596ed8e39781aab"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_scientific_owner_engineering_simulation_authorization_v1.0.json",
+      "sha256": "7598b8047a99157e9420d2970c3973b9bf35d80e2ae9f45f1f2c70114d4432ba"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_id_permanent_exclusion_ledger_v1.0.json",
+      "sha256": "1082b9edfbaa139f8c029e88212eff3048e3a9befa9303d11ab6f27202b67087"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_id_dev_canary_roster_v1.0.json",
+      "sha256": "aca3b1138a189333dc690edaa6399f5c3eeb32029e9c5971210e07651a951bee"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_hlc_excitation_grid_v1.0.json",
+      "sha256": "1e209aac60f1afddef99304c7f49f12107e5695910e37b72ffc55fa1375bd2d8"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_tsb_excitation_grid_v1.0.json",
+      "sha256": "24b41a54b5e077d10407d0ea2f2d4257693317eccab192b0f221e097367a2969"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_id_selection_audit_v1.0.json",
+      "sha256": "8b45bca25c778d25b29879924abfbf8237be1b8b94f8d9a12e221d1c7402383e"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_transfer_run_ledger_v1.0.json",
+      "sha256": "c061eafd6fc85aede38dbebc52785098ce51f88082424f27a5b22c421bd6e84d"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_zero_run_construction_audit_v1.0.json",
+      "sha256": "3e045736aec7f7a638d89e267364683c80af27832b698b985fe5fac79dd41154"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_transfer_execution_audit_v1.0.json",
+      "sha256": "5c5b902bfa8c34622e592a0e60356ccfac8d10bb7e07587b23e34a0c92d0b3d5"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_hlc_transfer_identification_v1.json",
+      "sha256": "56310079eeadc9c28a5ad404afde05b76d19a41691d591a6eadeb2b776c2ef23"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_tsb_transfer_identification_v1.json",
+      "sha256": "1326db7a79fc5eee35020d38be019bfc80363c2c280815b6b5dcf5f06c53946f"
+    },
+    {
+      "path": "docs/stageR/r2/r2_a_controller_transfer_surrogate_v1.json",
+      "sha256": "c796d8104263219b431eb0f9363558eaf4393b0dc22f3d674e4adca88510c890"
+    },
+    {
+      "path": "docs/stageR/r2/R2_A_TSB_Replanning_Transfer_Audit_v1.md",
+      "sha256": "b12a61a54b68ab71a4ee32ffd1e0b92e477800cc0c987b14a424c5e54527e9f0"
+    },
+    {
+      "path": "docs/stageR/r2/R2_A_Controller_Transfer_Identification_Report_v1.md",
+      "sha256": "559f1aa228fc2e8256606da505c10d8d225dfe0d183a8da88839c9f42993a637"
+    },
+    {
+      "path": "docs/stageR/r2/R2_A_R2B_Generator_Architecture_Decision_v1.md",
+      "sha256": "119bc16a537684d9a83bbd48040d2d0b6f2695e1a410ab7614738c07e4c3c728"
+    }
+  ],
+  "effective_runtime_telemetry": [
+    {
+      "frozen_run_id": "R2A-HLC-01-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-01-HLC_MONOTONIC_REFERENCE-TECHRERUN02",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt5/R2A-HLC-01-HLC_MONOTONIC_REFERENCE-TECHRERUN02/trace/realized_current_ego.jsonl",
+          "sha256": "b08cd2442a6576bdc539fcc364688d49019a2e9be995db3df6ba99daddbe3826"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt5/R2A-HLC-01-HLC_MONOTONIC_REFERENCE-TECHRERUN02/telemetry/planner_transfer.jsonl",
+          "sha256": "18c5d50c9281043d3ee9b806fd79da43b3c15c48be5f27b5a507f93e7f1e217b"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt5/R2A-HLC-01-HLC_MONOTONIC_REFERENCE-TECHRERUN02/telemetry/controller_commands.jsonl",
+          "sha256": "21cc0b615e0a29a6548d9f39a44e9f2582b79c6c0cc4308c8602542bd77b5b2e"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-01-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-01-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "b6307a8f6a0126929f175d8bc0d8b25bff00efbd5fa4f0b80975fc8d0a34ef01"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "eeb1fa0f0f45f4d16bcce1cb164b3c87fabc0c2ec874c03a776bf9388ffee8e6"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "bdc999716b2cd41a96ea0d66a216f73c93ea3d7cf506e009b48d3104ffe55ede"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-01-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-01-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "466f196c262060a544ff88dfa3ecdae733db97d84b822bb3d30e5bf59f8fd6ca"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "a0c649fe1d8cc7c7fb412d7265ecd978a7d50c38f3a81fd83ca683be5c138486"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "bb88eefa1f9542767ee38eb0887e37f0e2c79a1ad707543949cd1ff7969997c7"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-01-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-01-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "5252d835f136a5db0feb902dc5c2b71488c346315e313cd96e6fb59a8d364882"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "42ee10f762ec52efc6da93e087e9f7bea1003bfc325aafac41fb6a25ae6e1762"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "3ff5fc9c7d388bf11d8666ecacae9439f38ca6ef0dd44168608ed66d5b1a6640"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-01-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-01-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "f1396015131fca1c18d8d9afc9fd7ef17b8a6686e1a5910f40c1895bafe392df"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "c1c5d03bbab8514aed21e647fb6866be63b25f0e0f49f12b41b0107fd13d6209"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-01-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "2636ee61842c45d50b8347bf8c86aa7fe16544806d716bdd741ac87ab7d94351"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-02-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-02-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "5ce9a087baec552ca18d89fe6e13b754227caeca39add1a39952e6836fb86e10"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "b8559d104297d0fe80e4903ca9fb832a9091bbefcf5c5383da995ea51065055d"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "477ca7fcc5f840bd5d6deaa9efd121b3a6d307cba0851f93cef949259e081eee"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-02-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-02-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "db2f82225f54ee5fb811e06725a72fdbe894308ff595708e25863fe63f21ec49"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "5de491ce7dc977fd118a6a20f945a35fc9aa24e4aedc495960db00b25734653e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "edd50654a1f6c592e19e76bf354f6a6c0907aaf93e8fe6e266b21c2e4102e7bf"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-02-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-02-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "6a34b5e530524e7f3e5302da7cfe6266e064bc0d9c1f0f04c2510e8d5c7b4132"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "8f9033bc7154722c30bfd51a538df1de99748cfc5652953227f33ee9b8aa06dd"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "c58fdfa13379be04bed88ed8e714ba28fd4efc0b7969673eace16bc14cb2b7aa"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-02-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-02-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "4865a1950ef4348e66514c3fb9f529e6362c1ae4507ac4260b47789a700e9dc3"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "137f70f786fa335551b785532104a918dad407536aae0413b40e70668a1140b5"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "007bb0e208891d1211ddfa2dea64660db6d8e01b8924015f850d5e686eae6f4d"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-02-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-02-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "0d99d03905ea2c53e014d7d5919d4571dddc4685ef0597ffbf78faf2730a8883"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "4b105615671074d0b609addf14450d5525713955fc342fdbcde4b60b299b7c84"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-02-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "dbc28c9ea4517ac414a9edf2bff5fda859389185eb96d66903cdeb4cdbe53e2c"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-03-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-03-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "48cef1b9dddfbd836ec63e0b2ce0c0992b782dcfcd51a49f1f3db9f0374ca20e"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "4bdb92cb520411c3f676455cb4579166cf56c4c21d9a23bc2b371708a15370ce"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "c2f9d8b3bff0c7865915d1d979e4e8b6dc44226b04383de3e3c979428ec81650"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-03-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-03-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "8b4c872bb7ee24be2d534aca7b8e1dfbce10ecf98d506a5695223179b8a3052d"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "09297b71c61f67cdf740073a240bf5498967f4463142ef029e521509cd05b739"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "9156d73686f03c88c06dab5bd4b5457e2235fa3d74e415ba4d221f33e50b4a2a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-03-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-03-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "f29c586dec8ccf83652d247257d583866b1bd5e9fe77421e371c4b9a220e9b74"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "f5ecced07f75bcdaf17165a87c0b7fbb241698d4421a094cd41e80730eb9cf4d"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "0b8c3003fa6e91e442c9e73a0727c98d008f3b3293c9b00a8f0de4ce26ea8855"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-03-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-03-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "abb5e8affa7ee7858b21c7e43fc6cb4bae068187c4ffd651571562f3035d7a12"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "a2b7915d19f949614721693651baf8b105e934de5fb3cac3df9d01a50315e9bd"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "a64e47f27069e6d33b75edd60b01fa026d511ad2efbf931dfc23919924a3a60f"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-03-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-03-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "1abf5e8434df732059f363e0f5d08995ac1837bdfd72008cd57b70d32e630cd6"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "7ad6db21e4448688e0504f675ce3cb1af82376b462b02b962dcae2ca0892b982"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-03-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "69bbc0c20771e4adafc1436ac2799b640519f697853a2026a051654200435de8"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-04-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-04-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "683d81a5ffa3f00c28ba6b265f337e9d09ad94c0e6e1aada29893adeeb7be325"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "98ab84708aca7d1faeafa93916baf787240fd5030086074fd355197d6b31374b"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "abbc01b3d3b39a67f301237b08db6dec9e5feb97d0da2701110ee4b434f0977a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-04-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-04-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "4406d0ba80f51009c1ff663bfd9140266fa07339ffa7a93cb42340275ac575c0"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "633223e65ccba03cf138358f2b0a32e95f69c02fa419e7c603e0b8c0a6761ce9"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "47a66231603e573c466e68ef27a49e9ece369f4f558ebd202b3277180b530b2a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-04-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-04-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "2868c01dde4947bcbb2f428bd62103803be7c7111d13e4a89765d52d6c23f396"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "511602e27de9ca4f9d735f206eab77cc2cb856816682b27126676eca2567a28d"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "4b7b023f0c515de5bcf1498d4ac79c781315f50ff327c9f03ec10d5f3538ebee"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-04-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-04-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "017619806391c7ebaebdc22970e1d113204f9cda288f4a865f816dc0af83a122"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "982b6a4c9ae1548d29b171bb01b1ed7d0ebf611220d81b0695e046a6e687f91a"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "624e207328594d60b12ebf36bd3d88012f300971de96fa98aaa26173763c0a1d"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-04-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-04-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "ca635ee87850112304af20a882b6462b7ed4c6f3082fab1708356bd788e9bb96"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "4076f106a861f3efc631f825e3e24106688341093e5553dae0bf5016eef82c7f"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-04-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "077cfebe7abf15a3b2ab6ad1f2f3f2d0ca4c0c1ebc38319c82ebb75561de8bd6"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-05-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-05-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "c3b87ae75e4edf3810a985b91e62649ce414177bf03352e1e936c23fcc064929"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "c74ecb33174e404162e6dd04257c3e1f6c189c517dfe8ab64a0d822c8f6f9789"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "db789015096512193c233723facbc34e496f9f40c16b1a22496592556f8e045a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-05-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-05-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "21786a97e220bd0e66d6b1acbe5a29db025220ae208a997a3c09ad8c00717324"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "920eabc3db1f6454786afa7fafe6b2942aa2dca84568d6b072b331c13b2f4d7e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "afcd7771096c55967bf2319a47e0032f881cd8f3c132454ccaaeb62b43e53058"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-05-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-05-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "5f0db5929a68b5cddc1d910fcc34eb6db3d9493656245e4e46d3d81d6ca6f421"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "7d2798e8eaca2c1d937aacffabb9101814f01bce3288a034c17d19318790ee4f"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "b51d656433b7f793049e9116774a242ef9bf8c608d370ceac9ff3f2add418eef"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-05-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-05-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "439320c43207548144fbd9be2a8282864b34834af12af0f618ab93065446b2dd"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "be8c6cf478ef8d77abc893b890a98a30deef5ea3ec3ed8cb0e0c01314aa01139"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "cdb97e8612d269c43177012e7032c62787ef4f39f0ee871a5e6f6b636d028be2"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-05-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-05-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "4308e93c2bf4d3fc9d6f45ea5d28da81dc46808c3475a7aeaef1e819caa39af1"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "2b73b3edf320eccc3dc04aad0f1ac4841c4efe2779ff0cf4784fe3440d24d989"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-05-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "ab2c3fee3614793e8880dc665ca5c778bd71e260ce7162fa08772053c1b629dc"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-06-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-06-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "82f8c7423b6250cd39141855dcd8af7441dfb5f7dbaccafcb362bd4806705356"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "597c5f9bf9f33ea8ce8fe1e29b19efa392c66e6ee2a8f938be9cd7812bd9ae9b"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "72d514e5cf5ba609bfe1ad5128031ccbb05bcd34eb041d3a1a3b162724675739"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-06-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-06-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "3de5503134db4fa0e0cb5654b336796a01d224cc8073490be6311aa88de41f7e"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "30d4863ef662b9f9d41fec18a970705304a5539ab6c4c63c068b27250486bfdc"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "10bee6c9f21ecfd33bfd4e6a53e6759e64492a2310443f01f54280579839bd36"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-06-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-06-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "2b46a655c33cf3778c362c439c9dce1d9eecd048ec4807c6ce235b4dd1c8a281"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "0c335d2b2eb850b093ae6de409281851a431e0860bf6b723f52424c2e21ed2ea"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "000da8e97d583da56ae86b729d9eadf787ee9f9b44cc32d82e382d0a52f325f6"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-06-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-06-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "6daae103cfecf69c98af7e9fdaeda743836d07888080ac40cbc540e4dbecb29c"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "ce973f810745b971b52ceda5ef18148fb092b87fe05d0faa6c35344d5f559d3a"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "ddfb91b0708fe14f30faaab1420e28276d96d4cf29fd8c0a1efad1097479699c"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-06-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-06-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "d2b7df797f2bc91f9edcb0c2be26fd6a8520d3e558c399ae2877678ac410d219"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "e4923fc54efcfb7ac10791a0798105b2d118b10c6ad6b97534ef949badabcb53"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-06-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "0cf58f71a1f588f7ed285c6ae9b6bd4447eb9041e7841713459de4db0547cb64"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-07-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-07-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "bfe3d78f79aa4b5fe57136e97b8d13ffc6004653ea02ec4dad72b31af2ea592d"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "77f2341e493ed90a938849b9d6b9a306d835c90d4c8af598f8841da18edf997e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "4ca3e4f08b1015a66bff7bbc9789342ee0ede16e43b92a440e36a31f2b6ce5ef"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-07-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-07-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "a8d86d72fd6032c5ba1048499cdba8d834407162055e3d1323a39c3b374cb2ff"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "41df3e21a99ab971bea4c338671a738d73ef9a0da21e036b06c2e5ce7c022b80"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "e63f0267787b9fd7fd8cb0b93ffe36a8368177ed998bcceeb4518b347b972db1"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-07-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-07-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "a3f29bcd112a62ebc54961980fe246a105df1905f6d9c8e968547cb26b35053e"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "5593c9ce154cbfa8604ebffd4f2021c5f8c580a0f727fee713c22bf0381b01f0"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "c0ab9b2eeb849a566da04c25eb488ee0b5d00df04e28c362e22c4af55a30fde3"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-07-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-07-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "4ca555fdb787e4d2c59e7ac68d6afdba81b456ca6c84f492d6d4e71fc4d4baa9"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "4e0918435c11e4c42cef93bf943829d6e4e7d7b855e4fc79b454ad7d762bdd54"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "b3b037ba6f5766cb3c84becee2a9f235972803a79b705185caf48d8ac0811180"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-07-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-07-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "f7977e112d4499d6f16d8570c942fcd57b2e53509f99a8272ae3f793118f2955"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "2e72fa6bf8a88c303494f0c46dc3e024bc67a372e355a8581f8081009a861194"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-07-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "3df8b13442c2587ba1a1f8956621da591375cc1d963f09f6014105f886a53c30"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-08-HLC_MONOTONIC_REFERENCE",
+      "effective_run_id": "R2A-HLC-08-HLC_MONOTONIC_REFERENCE",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_MONOTONIC_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "3629bf875a88c6baa2d434f5c88583e7a6ba1807ee8355378e417c1973d3cd60"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_MONOTONIC_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "623c3ffda65eaa5d2fa430d19e2bef8cee28e1fa1707d059001cc39c3d4e4658"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_MONOTONIC_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "76134dadb4364eec5a6972e57a25e9339b94573d3ca7cbba62c925cb5b94a53c"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-08-HLC_HESITATION_CENTER",
+      "effective_run_id": "R2A-HLC-08-HLC_HESITATION_CENTER",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_HESITATION_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "2baf61f46ba8917e66fb94d4e91a0822f64cecc47c4031c4cedd48ee7372a819"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_HESITATION_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "4f9b5c73b2bcaf977dce3cc7daac29e784ccb3d811574035b7d812257ebcad7b"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_HESITATION_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "3f0dfad64946e308d6f78a27c6ef7573678253ae9ea56b4613f5053879de537c"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-08-HLC_RETREAT_DEPTH_HIGH",
+      "effective_run_id": "R2A-HLC-08-HLC_RETREAT_DEPTH_HIGH",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RETREAT_DEPTH_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "8251b5c49954e8af9a69c3483b0216b7d165e63d74e1fada68aa5e1ee05fc6e2"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RETREAT_DEPTH_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "b44717671691da636c287d7869da9c977da257cb0b647b72612c1f1bae4c6cd1"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RETREAT_DEPTH_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "7bb349d29977fa23fc0a1198b95d38cf345e8c5b592a3c4747460bf7e56d1bd2"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-08-HLC_RETREAT_DURATION_LONG",
+      "effective_run_id": "R2A-HLC-08-HLC_RETREAT_DURATION_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RETREAT_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "c7f5bc91d648bb633e3cd1cc61bc5b72b1752009855bb448b3e3a1bc4426d954"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RETREAT_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "9f23d7f3b480e3b055b6bb4ce4367f54d4e52f5496524a21a43e098f3579f72a"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RETREAT_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "efb634deffc018590f43535a0e0354b315393467240ff044e3a0dec7f47a027d"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-HLC-08-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "effective_run_id": "R2A-HLC-08-HLC_RECOMMIT_FAST_SETTLE_LONG",
+      "family": "R-HLC",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RECOMMIT_FAST_SETTLE_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "fffb682efdcb6ca4d5e3f9c2962d398e5aa0163fe0a6853b38e1eb4e131c6c14"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "be0a1b2f6960b99075bbe5a510847423d6f28e2b691c1f28b0f8114ddebbb2c0"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-HLC-08-HLC_RECOMMIT_FAST_SETTLE_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "14a3b798f9c588852a860e876181448dd8f89cfa6a17109c328f97b5e2e9b6f3"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-01-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-01-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "7a50edb940724f8b10c522b0d8136fcb3f243a6ef07a1a3770355ff487dea8f8"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "1ebc12b831a4b5c999b56f47285d469b0c43e3d7fe8e345bebb597e676e363bf"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "53dc25aad7e225fca3b9ade90f6297d1a117934a5fd8a3b68d2cc994050c80e0"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-01-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-01-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "25a55821a3596c716df4c4a9a55d97107dbdf9cb28a571841650bf268e62deb4"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "c50bf036b958783667969b1ea747b3ca1dd65bb6c13ff9b78de3d28b75053dec"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "6e86d5daa509d3c41d35e3d53d1afc5b5e491aa60b6ca0a7c46542e2aed24bed"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-01-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-01-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "213b925a15c0d9ece229cde7ff6a5fef5643487718abf5d86a5c6349359ee81a"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "86082000678678a57dbd4f3b6b785c208157d46d2963a97614faf8d02ceb539b"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "0e640b6e667e45ea1437d92d7d9ee268f368a3e78009f79b430a89b1f8362bdb"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-01-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-01-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "559dd6e442817f0f532954e0c91f255547d4ebaa6bef10940b44df5ee488618d"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "d6a7ed8f9ce3f8220899da09d44fd9ac363353cdb72c0bf4180006f539dcb187"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "8f4867ccb943e6ae9b225b2fdc6d80b9e84bd4faa3af853e2e64e1f1f4b4dd0b"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-01-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-01-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "5f5fe2129b807b374ad59f4a6cc4ae506c4a29e48320e698bc7363cbeea770de"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "01963b40fe333a0e0b9399b1150edb605e48a6d1fa377ccdbd66e2dee4d1f234"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-01-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "4d95da172868c539fa7bda074df1079ad6854c07ca922e7e29c31b52dd291982"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-02-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-02-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "ac60419470bac7e7babeebd334463f2c13e04d46b8fe71ce87d9c9293d5e2ebf"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "ce9e0de2f81d281b5a9ca1b33a8933df4a7fc1beefbf7b9f3261dbbee1a22138"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "bfce385f525a1fe036574b1d50fcb20502751ab8e075961b7d052c4fdacc8244"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-02-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-02-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "f3bdad8db51b1bcfb39dda76a04ea0409180fe9f38cb71b5bbe8e97bf7d0f9f8"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "2bd997f4430c1558a812ece2998c165f98940bd9b5ce166bd0e271acf10f91ae"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "005fd0b94754f41b311d3d41b496b21b121b6a9d4b755ecedb7abfbbe14c03bd"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-02-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-02-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "4b02af8636a160ca4b93b40e0dba582fafeecaea7158181c00232facc04e5997"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "dab3222635941c0ac989eed2bbd3ea6e673e9f6315e6a27fb176461a59e83e95"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "5f317996eb879f65132e6e34f4cf2b2b9f534e0ec2fb75e14c7a88f836a104dd"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-02-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-02-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "af0425eddbc23af09fda53789de37fe5892b52254050cd1d19d5768044043520"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "822633894bb46997959ae05624870302e62dd689f06f4d14bfd5f45a0dc2b8f5"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "58adc8e486f998a82719eab89876293c99c6fb9ca53d426913cc208ddf60bb3c"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-02-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-02-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "f6dd40d558b4abe230509bfc49454799c6599cd56611983f39e5959e3441debe"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "ca1cba3600b562edf490b631ec7cbc304cd7b3ebfa6ac788c7532d92a98a8a1e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-02-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "776caade263a648c9b6d11a260e73cfde5ad065d11e50f6fa2df08e665241632"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-03-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-03-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "b50f6f24c19e9adf4502c5bbd8057da9365cc860a84392547bc0233ae9ba9447"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "60c737dbb222b1aeb8dc85ba2999a2f28f81b2813e75049e485e62cbb1cf1341"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "0f1b7c7baad1d23736b37a9f888764eed437053afd172d200e80dc7346371fc4"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-03-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-03-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "f57ee1f7ace1567bbb0a8ba6cb3471688c2bb58cd519960f29898b308e3bc55c"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "249e124e7cac0359f21a3603ea3ccf03edfac2af981eff340daeead7aa7bbe3e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "73b78c1e808ae784586525e126b095d083d89507eecbd44fdc08c69965302c47"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-03-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-03-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "7473bbd3b71dc3e045b848d0c0f5a6611e6be7c8596dd50a228f39b6420f262b"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "ab3b1108a0b09b77ca539b754d4582b1b6d2e86e975db4c5b8319403413d3eb6"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "cca1a532dcc90cf5bf45fe685e8b32df7a72c540a8648f2a42c206dba7ecb4eb"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-03-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-03-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "625b1f525e94adc13f7659eaf99d57e0ad3cf2a637828245001ba4ee345ab01e"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "66b93a9e2dfc97f69d8609fb0f033b8856bf1539cbd968e80da2a4ff7b4a5e16"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt3/R2A-TSB-03-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "2d268ebfa0bbebc48232fe0715e2af45fc2ae572d0a187bf01341c4abdaed450"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-03-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-03-TSB_RELEASE_STRONG_LONG-TECHRERUN01",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-03-TSB_RELEASE_STRONG_LONG-TECHRERUN01/trace/realized_current_ego.jsonl",
+          "sha256": "78f034546267fb4667c33dfa232dceb31387447ca56d2734d90a60bdaf86d52c"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-03-TSB_RELEASE_STRONG_LONG-TECHRERUN01/telemetry/planner_transfer.jsonl",
+          "sha256": "df49a07eb943e714cc25cc5633991e60989aec3b8727bd8e76ddf78d1e222b40"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-03-TSB_RELEASE_STRONG_LONG-TECHRERUN01/telemetry/controller_commands.jsonl",
+          "sha256": "9c6aecc28a7443e8577a4bc116c573ae762c10fcf9de263e0094f0b37c4129bf"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-04-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-04-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "c445f3abf8afa14a989cd803f8c9d6ea0728617bb2528ae965df0f9ea777d692"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "7a73c66200470ab8d2e9d777dc43040d0a1d5218e64167d0be22d94639aecf7e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "1bf3dbe39508fb14f930b5364f2a93864f6c7554393f0bf9645b0074fb368f02"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-04-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-04-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "a2817d46445221e737b6deac672e8a20ef10bfc8bc7abaffacbbba41ef42bab1"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "3d9a086ebb6bc9e81f981e4827d9c90e9f1d535fd87b283b22d33adb3cbab499"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "8c73c1000ab3820d39c54b0e333a41f485dfe3c3ec757859a9c097abe75105bf"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-04-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-04-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "7f6b3b7a69d86a470870fd02e7432e8e9624d8977dabd68cec3443d3e1887dc3"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "06818f6f9bd39b96a74cac4cf28ca145e9f0701f2d5682ad290b86d3d03e909d"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "f214685dc081ec6f1ab6aab7e36a62fbab9312c635822f3019d193a7f36247ea"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-04-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-04-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "fa99fabdd72536c2194eb608c57407643893d1cc5d1fc6e0957844e686a4ae3b"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "4cb24ee009ed467d94f1a5be8e2644f34252bcdf44a5b2b9e24bdd1d462e041d"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "6bd8ed68f6779029fc0817e10eb87e77562b82fbbaf78d38460183c2ed227ee9"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-04-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-04-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "420c7774d2a58be101f4cd8a436ed8bb307cba4ffbc309c2ab2a975a6fea40b8"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "0241af70d00862c37dc88fc2cda15897a1a3336fc7b978df6141ce74651b7dec"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-04-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "e7b7c7d9515bc0b46387487567109e9499735153c4a0429f080696630753def7"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-05-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-05-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "3aef5eea328a9c5251b4426aa2706f28fa9da8ce6a20bce60921679a723e70f3"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "09c4ffd87f28e2216099e83881ab1e925e5866449f77b3e7b47d501cd334f3a0"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "20370f2b096b002563d8297f170871c2692a1a7799ba4a29000fa11f8af74dc9"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-05-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-05-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "cc783f7dc599756d0708e4c96609ece67ebc299bc3d39855eb01f1ff10fde602"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "0d405b61f4a6206d4ca7253363b86ca0b485ab0f62085ffa20bd716303d4b491"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "747bc76e7a542faac66c4dcca68fdf468fe6dd4171b2eaceed3184a4465035bf"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-05-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-05-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "36418a1d402633b98c164b2788692493fa50fecd9f8a3eaedb990191ea8ec46d"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "889f8421c7b8e2b5a230c421a83c6a87e68a1fa78902cbe958c2d3efb6a26f1f"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "ba6ebdc07dd0d1988caa0c18b1fbbe0d6233e8a17191d75930a21800c2d41913"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-05-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-05-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "ee44ea10a98094e22ecd8376f94f9bf0efd2c7afc1a4c741cb8d09c583eb57ac"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "d778ea0d943a692449a2c0d295f19479560830aa3546e85d5e7b40c8f1f74621"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "aaa72a38bf81e2bb03ea88004f44ea8e75f882068f19068ffa8bbda99ea890b5"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-05-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-05-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "e4df98ed6f979eb50d59fb0dca732831b9449b78c08531eb3f2296756d037740"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "c4da3369cec2363c595163ad0b8a0bc1b10e891dcbc9f06319774befc3a4f25e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-05-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "7d8e6efcdcca10acf6595f9ff85941017f5eb4f9f58ba3ab1abcc76af25aec3a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-06-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-06-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "20e1624b3fe943cd2ac4b02cc7540303fb8a30ad1dced615edb741ab098347e7"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "79f4030f3adb2377e6d4e9fd4235d00a81184a4b0cb2dd26a4daed442b02e7e4"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "8817d868a6a891af1519796554c60e8ddb1a9cf0397bfce80fe579d8de89008a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-06-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-06-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "a28f19c861c653e92071d5adbd74563fd7fcc7960de02a7d67733de7de1621f9"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "c441af4c7fd3569329951c9275266b63ae14ea7eaee52352651611d09d8342b1"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "ac2118fb5dfa3663ecd91a28927c841c9b8b79fb6d0e95ba90aa870b3c55c146"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-06-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-06-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "e13ba877e349bf28abe3233a9ff7f8aa3a04cf6687b4810f2ed6a37420863aa2"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "51f59b688d05ee736cae85f59ec789f1622eb4ab550a3151e741cda3e2e3f1e1"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "50fc920db585c34aa437a2dab12d5a6b171acdbc5588048a6830d50f5192837d"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-06-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-06-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "6435bbb90822ab767197ffce9d877ba15f1a96debb31202806ff15a53a0c4018"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "141c3e3b2118c3d09f543b0ed675b2151925028c799cf8285033a6965ce5980b"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "790e156377e0337bab83dad0740f59fcab8e10ee08ed656bac206daa35da34cd"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-06-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-06-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "5b76af5640051f31db7dbcf278acd35a43bba4b325f6c4c931a5a8418b2557eb"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "650baa481e270826855340e90e3870e11fd0d22e8221fc5986d661c0273800f5"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-06-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "186863ba9d3c57dd8aabcef6ae3e29f9238ebe0b3519b9a01fbc94fbc4baadee"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-07-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-07-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "e8b6f40520d7fe7cd5e8e1b71f00bae01d3806df0e2f2543e1f927ca6ccd2387"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "24c1d1662c3de4cd77be9a5c914d19d24ddb151b6a4ae6bf9e395ef1004a40ac"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "bbac4f1261340ecd795b0db36f18851acb9d0171f66a8f92d82a994fd5552c56"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-07-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-07-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "c689683518cc99c825a7c5fe5ebb157046f10082306b2190335b11cc43e61071"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "5f22a3c091c2f84577453390ca3fb85b664ddaab6a89542104bfcb2756551096"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "46019813c3c5ba846040f7ed92c5aba30f653a9d7e2e2a17ba5a015e06218f7f"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-07-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-07-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "69c7ffe33fc095aff4e69a103932a1c47025ec94da685fdeeb8f7d460c8956b1"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "63f24d142dcd922dc95a78fd11552d59ed4193d8167b412d2e74278f45362777"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "e974a7fc81cfc3e966eb53ef088e0e1e5ec576a30f5a000ed285b77b6bb5d208"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-07-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-07-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "10ccb7b33b7f7a0cde706735c57f2fa6d5e2fb742a41ec394020b143543d5d5e"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "49d9debed5029a69fd88c926a2ad18f53af5bf0a45ec74bac55e657b1aa431ab"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "1261f5c4dc86812faf8c5a95bf98fbfc28332a95705dd227c5e1b7a1307abd5d"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-07-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-07-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "cab7a1eb88b30cae28484fc44f88fea394fb8ab6d037a5f347f9d01cdb5ae0cb"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "3333df9276bd4fe5a8284638ff2feb33fbd2590c012ad72c6dcfa1cbdb2099ba"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-07-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "063937786e74a0fbc87330f2d8cfec791c22c6ed4af3e300edac2e37ba441807"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-08-TSB_SINGLE_BRAKE_REFERENCE",
+      "effective_run_id": "R2A-TSB-08-TSB_SINGLE_BRAKE_REFERENCE",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_SINGLE_BRAKE_REFERENCE/trace/realized_current_ego.jsonl",
+          "sha256": "8a92dccd88e54d8c107a7df3f4b3208edab1ce71afd8988fd5fa47d7ff2945b5"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_SINGLE_BRAKE_REFERENCE/telemetry/planner_transfer.jsonl",
+          "sha256": "a69826089fd59e8d7213126957e377f95d738f98b3a33e625acba1a526828681"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_SINGLE_BRAKE_REFERENCE/telemetry/controller_commands.jsonl",
+          "sha256": "054faaf6ce3a33f269d608c9510b73bac78f4b9d9d34c062c687601b95357611"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-08-TSB_TWO_PULSE_CENTER",
+      "effective_run_id": "R2A-TSB-08-TSB_TWO_PULSE_CENTER",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_TWO_PULSE_CENTER/trace/realized_current_ego.jsonl",
+          "sha256": "67274e4e2fd3e872fcfc74fb25c03b2a7ec0847854962e633dbc482798e5f948"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_TWO_PULSE_CENTER/telemetry/planner_transfer.jsonl",
+          "sha256": "c0b1298d6bd91f30b06a349b3e3cef32adf075b60c8e9bcf7a8ca70b4166510e"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_TWO_PULSE_CENTER/telemetry/controller_commands.jsonl",
+          "sha256": "5b0a60b11c650327313ec81cfb56090eefd7b0aa8758288cb491122b513532cb"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-08-TSB_BRAKE_AMPLITUDE_HIGH",
+      "effective_run_id": "R2A-TSB-08-TSB_BRAKE_AMPLITUDE_HIGH",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_BRAKE_AMPLITUDE_HIGH/trace/realized_current_ego.jsonl",
+          "sha256": "ea2e82d20750e32404231322542996f085f76ba263ef52bed1806885759957fe"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/planner_transfer.jsonl",
+          "sha256": "59142bc0d01fa378b93f78f2e78c5364242f7abe1091f2c1d3782b956b218524"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_BRAKE_AMPLITUDE_HIGH/telemetry/controller_commands.jsonl",
+          "sha256": "7cdb30e9bb7beaf8fef43041ff92d7d2739994d94040e3ccc4f7ef9f05f2f10a"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-08-TSB_BRAKE_DURATION_LONG",
+      "effective_run_id": "R2A-TSB-08-TSB_BRAKE_DURATION_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_BRAKE_DURATION_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "d3dc6e1e29aa956baa41187fa8989abd448019781d2c330cf4561dbdfcaf4087"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_BRAKE_DURATION_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "f9ce4dd7e5a82bc81632fa31302fa5f950be7ab213caf44d9fedb7c1d605c773"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_BRAKE_DURATION_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "afa1ed122ce25e5b51398deb305b1ab512fbb0928f4830525db1ad003b46bc64"
+        }
+      ]
+    },
+    {
+      "frozen_run_id": "R2A-TSB-08-TSB_RELEASE_STRONG_LONG",
+      "effective_run_id": "R2A-TSB-08-TSB_RELEASE_STRONG_LONG",
+      "family": "R-TSB",
+      "files": [
+        {
+          "role": "trace_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_RELEASE_STRONG_LONG/trace/realized_current_ego.jsonl",
+          "sha256": "31cc7c71a78d40bbaf57d1dce4db0428d79eec1c5cbbe1fb4ec8ae6333347335"
+        },
+        {
+          "role": "planner_telemetry_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_RELEASE_STRONG_LONG/telemetry/planner_transfer.jsonl",
+          "sha256": "3007947a14362e19d0d7e9ae69dc5b34abfbcbbb22b0e211f04364bec2a1515a"
+        },
+        {
+          "role": "controller_command_path",
+          "path": "outputs/r2_a_controller_transfer_dev_v1_attempt4/R2A-TSB-08-TSB_RELEASE_STRONG_LONG/telemetry/controller_commands.jsonl",
+          "sha256": "2f7926a8f6db1bb499d7e0742126af690cb667eb4030816ad752a5f45d1c2a84"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "fresh_DEV_identities": 16,
+    "frozen_effective_runs": 80,
+    "technical_reruns": 4,
+    "actual_engineering_runs": 84,
+    "bound_effective_telemetry_sets": 80
+  },
+  "scientific_threshold_changed": false,
+  "final_R2_generator_implemented": false,
+  "R2_confirmatory_roster_selected": false,
+  "RBR_started": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}
