@@ -1,0 +1,57 @@
+{
+  "schema_version": "r2_bh_hlc_v1_reanchor_invariant_audit_v1",
+  "status": "V1_REANCHOR_DIAGNOSIS_SUPPORTED",
+  "equation": "xy_v1(s)=source(s)*(1-p(s))+target(s)*p(s)+current_xy-xy_before(0)",
+  "progress_fixed_for_test": 1.0,
+  "native_parallel_reference_separation_m": 3.5,
+  "cases": [
+    {
+      "current_target_frame_lateral_offset_m": 0.0,
+      "constant_reanchor_translation_xy_m": [
+        0.0,
+        0.0
+      ],
+      "planned_terminal_target_offset_m": 0.0,
+      "offset_preserved_exactly": true
+    },
+    {
+      "current_target_frame_lateral_offset_m": 0.25,
+      "constant_reanchor_translation_xy_m": [
+        0.0,
+        0.25
+      ],
+      "planned_terminal_target_offset_m": 0.25,
+      "offset_preserved_exactly": true
+    },
+    {
+      "current_target_frame_lateral_offset_m": 0.5,
+      "constant_reanchor_translation_xy_m": [
+        0.0,
+        0.5
+      ],
+      "planned_terminal_target_offset_m": 0.5,
+      "offset_preserved_exactly": true
+    },
+    {
+      "current_target_frame_lateral_offset_m": -0.25,
+      "constant_reanchor_translation_xy_m": [
+        0.0,
+        -0.25
+      ],
+      "planned_terminal_target_offset_m": -0.25,
+      "offset_preserved_exactly": true
+    },
+    {
+      "current_target_frame_lateral_offset_m": -0.5,
+      "constant_reanchor_translation_xy_m": [
+        0.0,
+        -0.5
+      ],
+      "planned_terminal_target_offset_m": -0.5,
+      "offset_preserved_exactly": true
+    }
+  ],
+  "invariant": "terminal_target_offset_equals_current_target_frame_offset",
+  "diagnosis_pass": true,
+  "simulation_calls": 0
+}

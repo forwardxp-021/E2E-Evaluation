@@ -1,0 +1,6 @@
+r2_bh_hlc_target_capture_dev_v2:
+  _target_: tools.r2_bh_execute_hlc_target_capture_development.build_planner_from_environment
+  run_id: ${oc.env:R2_BH_RUN_ID}
+  trace_dir: ${oc.env:R2_BH_TRACE_DIR}
+  telemetry_dir: ${oc.env:R2_BH_TELEMETRY_DIR}
+  parameter_file: ${oc.env:R2_BH_PARAMETER_FILE}

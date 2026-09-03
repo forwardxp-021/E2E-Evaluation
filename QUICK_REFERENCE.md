@@ -10822,3 +10822,35 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - TSB 第 0 轮达到 measurement、one/two-phase mechanism、F_match、safety 全部 8/8。
 - 因 HLC 未收敛，整体必须为 `R2_B_DEVELOPMENT_NOT_CONVERGED`；不得生成 `r2_b_selected_generator_parameters_v1.0.json`，不得进入 R2-C。
 - protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BH HLC Target-Capture Architecture Development
+
+### 1. 命令
+
+R2-BH 已完成冻结的 3 轮 HLC DEV-ARCH 工程执行。**不得再次运行带 `--execute` 的命令**。只允许运行以下离线核验：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bh_hlc_target_capture_architecture.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 只读验证 V1 constant re-anchor invariant、V2 fixed absolute-time quintic target capture、三轮结果与数据防火墙。
+- V2 每次 trajectory 的 state0 精确等于 current ego；state1+ residual command 在固定 capture end 归零，不随 replanning 重启 settling horizon。
+- TSB family candidate 只做机械冻结，不重跑 TSB；raw DEV output 只以 SHA provenance 固化，不提交 Git。
+- 不执行 Round 4，不选择 R2-C identities，不运行 confirmatory smoke，不训练 RBR。
+
+### 3. 通过标准
+
+- V1 合成 offset `0、±0.25、±0.50 m` 的 terminal residual 5/5 原样保留，支持 architecture diagnosis。
+- 新 roster 为 8 个 fresh HLC DEV-ARCH identities，与 historical/R1/R2-A/R2-B 重叠为 0；最终永久排除账本为 109 个 identities。
+- V2 planner command 在每轮 capture end 后 16/16 归零，但最终 realized mechanism 0/8、endpoint 0/8，因此状态必须为 `R2_BH_DEVELOPMENT_NOT_CONVERGED`。
+- 最终 F_match 8/8、engineering 8/8、safety 4/8；不得据此降低 mechanism、endpoint 或 safety 定义。
+- 不生成 HLC selected-parameter 或 complete G_R2 candidate manifest；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

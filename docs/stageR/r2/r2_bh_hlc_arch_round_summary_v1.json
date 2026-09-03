@@ -1,0 +1,572 @@
+{
+  "schema_version": "r2_bh_hlc_arch_round_summary_v1",
+  "status": "R2_BH_DEVELOPMENT_NOT_CONVERGED",
+  "rounds_executed": 3,
+  "round4_executed": false,
+  "rounds": [
+    {
+      "round_index": 0,
+      "parameters": {
+        "morphology": {
+          "baseline_transition_duration_s": 2.6,
+          "advance_duration_s": 1.1,
+          "advance_progress": 0.44,
+          "hold_duration_s": 0.5,
+          "retreat_depth": 0.3,
+          "retreat_duration_s": 1.3,
+          "recommit_duration_s": 1.4,
+          "lag_precompensation_s": 0.3
+        },
+        "capture": {
+          "capture_start_abs_s": 5.4,
+          "capture_duration_s": 1.4,
+          "lateral_offset_decay_shape": "QUINTIC_C2",
+          "heading_error_decay_shape": "QUINTIC_C2"
+        }
+      },
+      "parameter_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_0_parameters_v2.0.json",
+      "parameter_sha256": "451c96f410c8202737585aec559db633f1d7a645a0afdf3dfb110407ce33a209",
+      "result_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_0_results_v1.0.json",
+      "result_sha256": "a21fc20f0069c5ac54db85dd098dfc293f09426914d33d19422a2d8c5f7c6bb2",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 0,
+          "endpoint_pass": 0,
+          "endpoint_offset_pass": 0,
+          "heading_pass": 8,
+          "lateral_velocity_pass": 7,
+          "route_progress_pass": 7,
+          "F_match_pass": 8,
+          "engineering_pass": 8,
+          "safety_pass": 4
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "n": 8,
+            "min": -1.0,
+            "p25": -1.0,
+            "median": -1.0,
+            "p75": -1.0,
+            "max": -1.0
+          },
+          "latency_delta_minus_0p5_s": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          }
+        },
+        "absolute_terminal_target_offset_distributions_m": {
+          "baseline": {
+            "n": 8,
+            "min": 0.011486,
+            "p25": 0.154653,
+            "median": 0.541963,
+            "p75": 0.908677,
+            "max": 3.304588
+          },
+          "treatment": {
+            "n": 8,
+            "min": 4.743458,
+            "p25": 5.066073,
+            "median": 5.339568,
+            "p75": 6.305376,
+            "max": 9.239536
+          }
+        },
+        "capture_end_zero_command_16_of_16": true,
+        "development_success": false
+      }
+    },
+    {
+      "round_index": 1,
+      "parameters": {
+        "morphology": {
+          "baseline_transition_duration_s": 2.6,
+          "advance_duration_s": 1.1,
+          "advance_progress": 0.44,
+          "hold_duration_s": 0.5,
+          "retreat_depth": 0.36,
+          "retreat_duration_s": 1.45,
+          "recommit_duration_s": 1.4,
+          "lag_precompensation_s": 0.3
+        },
+        "capture": {
+          "capture_start_abs_s": 5.2,
+          "capture_duration_s": 1.2,
+          "lateral_offset_decay_shape": "QUINTIC_C2",
+          "heading_error_decay_shape": "QUINTIC_C2"
+        }
+      },
+      "parameter_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_1_parameters_v2.0.json",
+      "parameter_sha256": "30e52dea43d58ff1e89bd9191c93b379c763eb439dc574b9f294d41c51618a0b",
+      "result_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_1_results_v1.0.json",
+      "result_sha256": "9fd44fe827026735ee17ae070b292e07d132fa3d64f6fde7b631b900afeccc05",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 0,
+          "endpoint_pass": 0,
+          "endpoint_offset_pass": 0,
+          "heading_pass": 8,
+          "lateral_velocity_pass": 7,
+          "route_progress_pass": 7,
+          "F_match_pass": 7,
+          "engineering_pass": 8,
+          "safety_pass": 4
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "n": 8,
+            "min": -1.0,
+            "p25": -1.0,
+            "median": -1.0,
+            "p75": -1.0,
+            "max": -1.0
+          },
+          "latency_delta_minus_0p5_s": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          }
+        },
+        "absolute_terminal_target_offset_distributions_m": {
+          "baseline": {
+            "n": 8,
+            "min": 0.027293,
+            "p25": 0.171068,
+            "median": 0.460657,
+            "p75": 0.889552,
+            "max": 3.090367
+          },
+          "treatment": {
+            "n": 8,
+            "min": 4.556101,
+            "p25": 4.879696,
+            "median": 5.143066,
+            "p75": 6.037368,
+            "max": 8.687421
+          }
+        },
+        "capture_end_zero_command_16_of_16": true,
+        "development_success": false
+      }
+    },
+    {
+      "round_index": 2,
+      "parameters": {
+        "morphology": {
+          "baseline_transition_duration_s": 2.6,
+          "advance_duration_s": 1.1,
+          "advance_progress": 0.44,
+          "hold_duration_s": 0.5,
+          "retreat_depth": 0.42,
+          "retreat_duration_s": 1.6,
+          "recommit_duration_s": 1.4,
+          "lag_precompensation_s": 0.3
+        },
+        "capture": {
+          "capture_start_abs_s": 5.0,
+          "capture_duration_s": 1.0,
+          "lateral_offset_decay_shape": "QUINTIC_C2",
+          "heading_error_decay_shape": "QUINTIC_C2"
+        }
+      },
+      "parameter_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_2_parameters_v2.0.json",
+      "parameter_sha256": "24d96c07a9e758cbcbca39377a7845b0bf268bbdf9dd9c85386711ab2c1d453e",
+      "result_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_2_results_v1.0.json",
+      "result_sha256": "b7d2b84900e3e1e02ae5e3cc391489caaddcca11bd421d05a79be097f33a2e38",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 0,
+          "endpoint_pass": 0,
+          "endpoint_offset_pass": 0,
+          "heading_pass": 8,
+          "lateral_velocity_pass": 8,
+          "route_progress_pass": 7,
+          "F_match_pass": 8,
+          "engineering_pass": 8,
+          "safety_pass": 4
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "n": 8,
+            "min": -1.0,
+            "p25": -1.0,
+            "median": -1.0,
+            "p75": -1.0,
+            "max": -1.0
+          },
+          "latency_delta_minus_0p5_s": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          }
+        },
+        "absolute_terminal_target_offset_distributions_m": {
+          "baseline": {
+            "n": 8,
+            "min": 0.041511,
+            "p25": 0.191657,
+            "median": 0.38091,
+            "p75": 0.873382,
+            "max": 2.898613
+          },
+          "treatment": {
+            "n": 8,
+            "min": 4.094948,
+            "p25": 4.43319,
+            "median": 4.658622,
+            "p75": 5.511358,
+            "max": 7.883494
+          }
+        },
+        "capture_end_zero_command_16_of_16": true,
+        "development_success": false
+      }
+    }
+  ],
+  "final_counts": {
+    "pairs": 8,
+    "mechanism_pass": 0,
+    "endpoint_pass": 0,
+    "endpoint_offset_pass": 0,
+    "heading_pass": 8,
+    "lateral_velocity_pass": 8,
+    "route_progress_pass": 7,
+    "F_match_pass": 8,
+    "engineering_pass": 8,
+    "safety_pass": 4
+  },
+  "final_mechanism_margin_distributions": {
+    "treatment_retreat_count_minus_1": {
+      "n": 8,
+      "min": -1.0,
+      "p25": -1.0,
+      "median": -1.0,
+      "p75": -1.0,
+      "max": -1.0
+    },
+    "latency_delta_minus_0p5_s": {
+      "n": 0,
+      "min": null,
+      "p25": null,
+      "median": null,
+      "p75": null,
+      "max": null
+    },
+    "monotonic_delta_beyond_minus_0p10": {
+      "n": 0,
+      "min": null,
+      "p25": null,
+      "median": null,
+      "p75": null,
+      "max": null
+    }
+  },
+  "final_terminal_offset_distributions_m": {
+    "baseline": {
+      "n": 8,
+      "min": 0.041511,
+      "p25": 0.191657,
+      "median": 0.38091,
+      "p75": 0.873382,
+      "max": 2.898613
+    },
+    "treatment": {
+      "n": 8,
+      "min": 4.094948,
+      "p25": 4.43319,
+      "median": 4.658622,
+      "p75": 5.511358,
+      "max": 7.883494
+    }
+  },
+  "selected_HLC_V2_candidate_frozen": false,
+  "complete_G_R2_candidate_frozen": false,
+  "selected_parameter_sha256": null,
+  "actual_HLC_engineering_runs": 48,
+  "TSB_simulation_calls": 0,
+  "scientific_simulation_calls": 0,
+  "raw_output_provenance": {
+    "run_count": 48,
+    "aggregate_tree_sha256": "b9f0191d52f012165ad085da18f5901dbf864be5142d28204927e8267722765c",
+    "runs": [
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "95779b01c4adedd79946446c37932be6c0223463ffa892668575ef556bab090f"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "c91693fa9fc79b4ffc30fcb19a91b31f4f7f8321b4024ee9e13c7af259d57c3a"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "5b55fc871627f1979bf351f3053811f5ced8fff913f654097549efaf3a011419"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "26edbe5cf0ddcacb91f297f04fb0e5c3bd923b445ae7360f2f311f1107a8b76c"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "9f2229c12916de1e48fbca8125e6a42238373e635711ca4ed5fa18c8b009faa3"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "b25f8eba8acbe2cc60be72ee96520474b7ff64c42aab6319c5d9671aaf142a02"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "22936306fa1cc7a9569fdb3eafad2cb6a9c20a4829d8e6a48cca5b6e234fda52"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "179ddf325f5ea850cefe2eb4339c6b0bdd47cf39ed433ce269394702183a5279"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "04a6dab4cfefc473b2ebddbbb33998cef911f8bdb5634898a902eb553a2aa5ba"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "d670411f869179e905353c356136933c034ed8aeb3b08f89929f0782c7922fb5"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "2a46508b987d3f8de7d7d687fff0c2af5cedb2f32678f42ce85a06e7b3c0684c"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "499e21ee3e0b90b5e6682c6c6985178ba03205be9fa7089562c782b953da2898"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "4f7a6208aa0686d60fe3a6c7612afa3bb23220660aa843d9c2385de61cee9ab3"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "dc855fe586e1c431802b77cc95ba861b2acd5d7586d2bcc7b93c7d1c324f0e1a"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "5f4ba37de33b982c9a97876c09026c3b40c04c4d727f8f5480bb503736767217"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_0/R2BH-HLC-R0-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "471516a3108d362db2bfd706c2b177bb04d888a42ea019d9866951477361b86f"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "256583b6643be47fb0885ed46dea680b85c95e616095dd51f31b3bfd3212b916"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "80e7bd131723e84ac2a8e4c3e2364b62ffda05235567c9d54ad1032af65cefc7"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "2b1e1ed16161a9a445d1a63ea5a0d705e2fbb0f940dc00cdf0d68a2044b113f8"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "728b56085a7a950b51cb69a8f7a1a973ebb4e091bbb17916cb611741012d9a94"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "1a8100f3a79da654cc1493db252e86ea799eb736729a15d7ee05501d5c9ff323"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "7881e60e085359019e9e90aadd5f79a9630a462ed14fb92e511ae60997e09cba"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "390f596abc5b9440451c328881ea8fd1e90b73dff5600d62fbf008ea440fc107"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "ef55a9e4cf5982c87e509813a981e30aeea7246f0ac92bcdc9803395fb59f886"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "dd1dc99761fa02dafc154f9551fa0b04f67a9c745dd48e8a0b83ab8bba5b1fd9"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "d63c8ba2c55a3bab3ebd2405635084fbcde6ced008fde720d7a36f3535021e2c"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "db0a7f373baa3a1878ab8ab7167f5e9ae762b11c3a1c272e0358009636fa9553"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "2537111fe937c53664caf728e7d92b5179e331babc75694040175ee411cb02c6"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "fbe91335c8261069d9b4e7404a454b1c8da54d8067d70495d3997b860efc965d"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "5bff0c6c6ffbe07d7c8785af15520890d77047fc923435089a8c69d94eba73cf"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "62f0c455cc400f26844ecaaff32a67c8a5ad76def91daf3cdd52608bbf2fa51c"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_1/R2BH-HLC-R1-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "f58d55284e2aba0e59571ff18adf0848ea8dcf51aba3fbc1a600ac1813d32b1e"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-01-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "42d6fb13b3bab6c8845ed0008232e23f568c84641b6fe8679a400e8c7d3d47e2"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-01-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "9cc4b6048bcd6ff22afaa334728137af9f1dd60a588cb717774537e5bc93d58a"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-02-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "fafba5ec2b3cf7061d504a38b338f29b7a1ed05e4e1e11a49be694d3f2a3c5af"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-02-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "90ee3ddc5448b9ed24586d55aca1e167c2e20bdfd56aa3d845a3392fd6265a8b"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-03-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "69d0af0b47dc611cfd96c43e3f1ed48df230d42f7a5adeb7c8a2c610a2f0ac12"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-03-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "d6db4e344d667023761ab3aa00e11374be2d52949d66b2b28f738669a8d203b1"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-04-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "c933d59361b0fb3ab022882b2ad79219f39a4452ff576fd4e29b68137b571099"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-04-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "a2bbe3b73485b016f4117acf213539fbf76799b6c0f40ffe97614ee9e2d6ab44"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-05-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "cb4963f04f93a6b1650b958af183890b7673d27d917d630688386bdaf15d46d1"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-05-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "d513ceb68e2fe7d0079f6a7835e3f96871d0bfdf6441bcff02aba1b0d004ab01"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-06-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "599285015846f65892f1cc9f5351941b24a37de2ccc22774df384ba907a5e844"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-06-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "f883dad1bc9f0064c763d0f48a6fc479ce52f8ee7ab58ce5661df00fb1466c67"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-07-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "0eb90f9fa3f9cb7c8d5079bb7d9e818eff4b5d8c0b8c0ccadeaa6eefbb7b6125"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-07-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "67122c2458dd0ae5a125cc529c44b0ebc17bf52e09050dd98aa6e1f6e2bf9b75"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-08-BASELINE",
+        "file_count": 23,
+        "tree_sha256": "08bc4c897a9c6f1a396ff069484c06bc670a4b8830341f8ddf398401786e7f4d"
+      },
+      {
+        "run_root": "outputs/r2_bh_hlc_target_capture_dev_v1/round_2/R2BH-HLC-R2-08-TREATMENT",
+        "file_count": 23,
+        "tree_sha256": "1db6911a8bc315ee75f1d2c4aeb74ef655d4118debdacde30fc2cc714529735e"
+      }
+    ]
+  },
+  "raw_outputs_committed": false
+}

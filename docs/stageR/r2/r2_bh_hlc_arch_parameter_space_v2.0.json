@@ -1,0 +1,92 @@
+{
+  "schema_version": "r2_bh_hlc_arch_parameter_space_v2.0",
+  "status": "FROZEN_BEFORE_FIRST_R2_BH_SIMULATION",
+  "maximum_rounds": 3,
+  "round0_is_new_target_capture_architecture": true,
+  "initialization": {
+    "morphology": "PRE_OUTCOME_R2_A_SURROGATE_INITIALIZATION_REUSED_AS_ARCHITECTURE_START_ONLY",
+    "capture": "STRUCTURAL_V1_REANCHOR_FORENSIC_AND_FIXED_PRIMARY80_TIME_BUDGET",
+    "R2B_HLC_pair_outcomes_used_for_numerical_calibration": false
+  },
+  "bounds": {
+    "morphology": {
+      "baseline_transition_duration_s": [
+        2.2,
+        3.0
+      ],
+      "advance_duration_s": [
+        0.9,
+        1.3
+      ],
+      "advance_progress": [
+        0.4,
+        0.5
+      ],
+      "hold_duration_s": [
+        0.3,
+        0.7
+      ],
+      "retreat_depth": [
+        0.28,
+        0.46
+      ],
+      "retreat_duration_s": [
+        1.1,
+        1.7
+      ],
+      "recommit_duration_s": [
+        1.2,
+        1.7
+      ],
+      "lag_precompensation_s": [
+        0.2,
+        0.4
+      ]
+    },
+    "capture": {
+      "capture_start_abs_s": [
+        5.0,
+        5.5
+      ],
+      "capture_duration_s": [
+        1.0,
+        1.6
+      ]
+    }
+  },
+  "round0": {
+    "morphology": {
+      "baseline_transition_duration_s": 2.6,
+      "advance_duration_s": 1.1,
+      "advance_progress": 0.44,
+      "hold_duration_s": 0.5,
+      "retreat_depth": 0.3,
+      "retreat_duration_s": 1.3,
+      "recommit_duration_s": 1.4,
+      "lag_precompensation_s": 0.3
+    },
+    "capture": {
+      "capture_start_abs_s": 5.4,
+      "capture_duration_s": 1.4,
+      "lateral_offset_decay_shape": "QUINTIC_C2",
+      "heading_error_decay_shape": "QUINTIC_C2"
+    }
+  },
+  "deterministic_aggregate_update": {
+    "mechanism_not_all": {
+      "retreat_depth_add": 0.06,
+      "retreat_duration_add_s": 0.15
+    },
+    "endpoint_not_all": {
+      "capture_duration_subtract_s": 0.2
+    },
+    "endpoint_offset_not_all": {
+      "capture_start_abs_s_subtract": 0.2
+    },
+    "engineering_not_all": {
+      "recommit_duration_add_s": 0.1
+    },
+    "clip_all_to_frozen_bounds": true,
+    "identity_specific_update": false
+  }
+}

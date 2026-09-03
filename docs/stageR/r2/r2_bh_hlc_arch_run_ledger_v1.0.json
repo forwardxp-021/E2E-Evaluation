@@ -1,0 +1,229 @@
+{
+  "schema_version": "r2_bh_hlc_arch_run_ledger_v1.0",
+  "status": "R2_BH_ENGINEERING_EXECUTION_COMPLETE",
+  "roster_canonical_sha256": "ed9a777862ef8bd8f2a092f3963c9b85b2708ae14ea62151c3ab3096057a5f17",
+  "pair_binding_canonical_sha256": "8459c1d4feacea5777fe520009a29c45c98971a24324130e2395560db531c57a",
+  "architecture_contract_canonical_sha256": "854328465ade04fc908c4fe8735b3ffb1fefe1ac2b6a84d94124d53b25b80319",
+  "parameter_space_canonical_sha256": "b0fec7e351200e1b1ee7ad9b7bceef4368ec3f956fae91b88221b27ac28245da",
+  "rounds": [
+    {
+      "round_index": 0,
+      "parameter_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_0_parameters_v2.0.json",
+      "parameter_sha256": "451c96f410c8202737585aec559db633f1d7a645a0afdf3dfb110407ce33a209",
+      "result_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_0_results_v1.0.json",
+      "result_sha256": "a21fc20f0069c5ac54db85dd098dfc293f09426914d33d19422a2d8c5f7c6bb2",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 0,
+          "endpoint_pass": 0,
+          "endpoint_offset_pass": 0,
+          "heading_pass": 8,
+          "lateral_velocity_pass": 7,
+          "route_progress_pass": 7,
+          "F_match_pass": 8,
+          "engineering_pass": 8,
+          "safety_pass": 4
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "n": 8,
+            "min": -1.0,
+            "p25": -1.0,
+            "median": -1.0,
+            "p75": -1.0,
+            "max": -1.0
+          },
+          "latency_delta_minus_0p5_s": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          }
+        },
+        "absolute_terminal_target_offset_distributions_m": {
+          "baseline": {
+            "n": 8,
+            "min": 0.011486,
+            "p25": 0.154653,
+            "median": 0.541963,
+            "p75": 0.908677,
+            "max": 3.304588
+          },
+          "treatment": {
+            "n": 8,
+            "min": 4.743458,
+            "p25": 5.066073,
+            "median": 5.339568,
+            "p75": 6.305376,
+            "max": 9.239536
+          }
+        },
+        "capture_end_zero_command_16_of_16": true,
+        "development_success": false
+      }
+    },
+    {
+      "round_index": 1,
+      "parameter_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_1_parameters_v2.0.json",
+      "parameter_sha256": "30e52dea43d58ff1e89bd9191c93b379c763eb439dc574b9f294d41c51618a0b",
+      "result_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_1_results_v1.0.json",
+      "result_sha256": "9fd44fe827026735ee17ae070b292e07d132fa3d64f6fde7b631b900afeccc05",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 0,
+          "endpoint_pass": 0,
+          "endpoint_offset_pass": 0,
+          "heading_pass": 8,
+          "lateral_velocity_pass": 7,
+          "route_progress_pass": 7,
+          "F_match_pass": 7,
+          "engineering_pass": 8,
+          "safety_pass": 4
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "n": 8,
+            "min": -1.0,
+            "p25": -1.0,
+            "median": -1.0,
+            "p75": -1.0,
+            "max": -1.0
+          },
+          "latency_delta_minus_0p5_s": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          }
+        },
+        "absolute_terminal_target_offset_distributions_m": {
+          "baseline": {
+            "n": 8,
+            "min": 0.027293,
+            "p25": 0.171068,
+            "median": 0.460657,
+            "p75": 0.889552,
+            "max": 3.090367
+          },
+          "treatment": {
+            "n": 8,
+            "min": 4.556101,
+            "p25": 4.879696,
+            "median": 5.143066,
+            "p75": 6.037368,
+            "max": 8.687421
+          }
+        },
+        "capture_end_zero_command_16_of_16": true,
+        "development_success": false
+      }
+    },
+    {
+      "round_index": 2,
+      "parameter_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_2_parameters_v2.0.json",
+      "parameter_sha256": "24d96c07a9e758cbcbca39377a7845b0bf268bbdf9dd9c85386711ab2c1d453e",
+      "result_file": "docs/stageR/r2/r2_bh_hlc_arch_rounds/r2_bh_hlc_arch_round_2_results_v1.0.json",
+      "result_sha256": "b7d2b84900e3e1e02ae5e3cc391489caaddcca11bd421d05a79be097f33a2e38",
+      "summary": {
+        "counts": {
+          "pairs": 8,
+          "mechanism_pass": 0,
+          "endpoint_pass": 0,
+          "endpoint_offset_pass": 0,
+          "heading_pass": 8,
+          "lateral_velocity_pass": 8,
+          "route_progress_pass": 7,
+          "F_match_pass": 8,
+          "engineering_pass": 8,
+          "safety_pass": 4
+        },
+        "mechanism_margin_distributions": {
+          "treatment_retreat_count_minus_1": {
+            "n": 8,
+            "min": -1.0,
+            "p25": -1.0,
+            "median": -1.0,
+            "p75": -1.0,
+            "max": -1.0
+          },
+          "latency_delta_minus_0p5_s": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "monotonic_delta_beyond_minus_0p10": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          }
+        },
+        "absolute_terminal_target_offset_distributions_m": {
+          "baseline": {
+            "n": 8,
+            "min": 0.041511,
+            "p25": 0.191657,
+            "median": 0.38091,
+            "p75": 0.873382,
+            "max": 2.898613
+          },
+          "treatment": {
+            "n": 8,
+            "min": 4.094948,
+            "p25": 4.43319,
+            "median": 4.658622,
+            "p75": 5.511358,
+            "max": 7.883494
+          }
+        },
+        "capture_end_zero_command_16_of_16": true,
+        "development_success": false
+      }
+    }
+  ],
+  "technical_failures": [
+    {
+      "scope": "R2_BH_HLC_ROUND_0_ALL_16_RUNS",
+      "status": "POST_RUN_NULLABLE_MECHANISM_MARGIN_DIAGNOSTIC_FAILURE",
+      "runner_run_calls_completed": 16,
+      "raw_outputs_preserved": true,
+      "authorized_recovery": "POSTPROCESS_EXISTING_COMPLETE_ARTIFACTS_ONLY",
+      "additional_runner_run_calls_authorized": 0
+    }
+  ],
+  "maximum_rounds": 3,
+  "technical_rerun_policy": "FRESH_RUN_ID_AND_ROOT_TECHNICAL_FAILURE_ONLY",
+  "identity_replacement": false,
+  "R2C_identities_selected": false,
+  "scientific_simulation": false,
+  "TSB_simulation_calls": 0,
+  "RBR_started": false,
+  "actual_engineering_runs": 48
+}

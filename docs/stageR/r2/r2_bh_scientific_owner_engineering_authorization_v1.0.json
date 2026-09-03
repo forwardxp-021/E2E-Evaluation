@@ -1,0 +1,9 @@
+{
+  "schema_version": "r2_bh_scientific_owner_engineering_authorization_v1.0",
+  "R2_BH_ENGINEERING_ONLY_HLC_SIMULATION_AUTHORIZED": true,
+  "scope": "FRESH_FROZEN_R2_BH_HLC_DEV_ARCH_IDENTITIES_ONLY_MAX_3_ROUNDS",
+  "TSB_simulation_authorized": false,
+  "old_identity_rerun_authorized": false,
+  "R2C_or_confirmatory_authorized": false,
+  "RBR_authorized": false
+}

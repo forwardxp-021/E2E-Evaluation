@@ -1,0 +1,39 @@
+{
+  "schema_version": "r2_bh_hlc_architecture_contract_v2.0",
+  "status": "FROZEN_BEFORE_R2_BH_ENGINEERING_SIMULATION",
+  "architecture": "BEHAVIOR_MORPHOLOGY_PLUS_FIXED_ABSOLUTE_TARGET_CAPTURE",
+  "behavior_morphology": {
+    "scientific_measurement": "FROZEN_REALIZED_NATIVE_SOURCE_TARGET_PROGRESS_P_OF_T",
+    "stages": [
+      "advance",
+      "hold",
+      "retreat",
+      "recommit"
+    ],
+    "thresholds_modified": false
+  },
+  "target_capture": {
+    "scientific_measurement": false,
+    "frame": "OFFICIAL_NATIVE_TARGET_REFERENCE_FRAME",
+    "clock": "ABSOLUTE_EPISODE_TIME",
+    "lateral_rule": "e_y_future=e_y_current*w_abs(t_future)/w_abs(t_current); state0 exact; w_abs(capture_end)=0",
+    "heading_rule": "e_heading_future=e_heading_current*w_abs(t_future)/w_abs(t_current); state0 exact; w_abs(capture_end)=0",
+    "shape": "QUINTIC_C2",
+    "after_capture_end": "STATE0_EXACT_CURRENT_EGO_AND_STATE1_PLUS_ZERO_TARGET_FRAME_RESIDUAL_COMMAND"
+  },
+  "geometry": {
+    "source": "ROUTE_CONTINUOUS_V2_3_OFFICIAL_NATIVE_CORRIDOR",
+    "no_extrapolation": true,
+    "manual_centerline": false,
+    "same_route_progression_invariant": true
+  },
+  "state0_exact_current_ego": true,
+  "pre_divergence": {
+    "t_lt_s": 1.1,
+    "baseline_treatment_full_trajectory_identical": true
+  },
+  "global_parameters_only": true,
+  "scenario_token_or_log_lookup_forbidden": true,
+  "maximum_rounds": 3,
+  "R2B_round5": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "r2_bh_generator_data_firewall_audit_v1",
+  "status": "PASS",
+  "fresh_DEV_ARCH_identity_count": 8,
+  "overlap_historical_R1_R2A_R2B": 0,
+  "R2B_HLC_old_identities_rerun": 0,
+  "TSB_new_simulation_calls": 0,
+  "scenario_or_log_specific_adaptation": false,
+  "scientific_thresholds_modified": false,
+  "numerical_calibration_source": "FRESH_R2_BH_HLC_DEV_ARCH_ONLY",
+  "R2C_identities_selected": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

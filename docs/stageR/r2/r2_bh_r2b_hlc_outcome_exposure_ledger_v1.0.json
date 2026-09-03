@@ -1,0 +1,92 @@
+{
+  "schema_version": "r2_bh_r2b_hlc_outcome_exposure_ledger_v1.0",
+  "status": "R2_B_HLC_DEV_CAL_FROZEN_ARCHITECTURE_DIAGNOSTIC_ONLY",
+  "source_roster": {
+    "path": "docs/stageR/r2/r2_b_generator_calibration_roster_v1.0.json",
+    "sha256": "2b6c0d8459fadd6fb9b80a6623de31d11c36710bbf2e4666c999f27e87d68dcc"
+  },
+  "identity_count": 8,
+  "identities": [
+    {
+      "scenario_token": "ee8aa6fdf3105ab2",
+      "log_id": "2021.09.07.13.06.36_veh-42_00266_00935",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "e21c48c9d41d577d",
+      "log_id": "2021.08.20.17.54.47_veh-45_01855_02076",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "2d5bf667b6245057",
+      "log_id": "2021.08.20.12.28.52_veh-42_00290_00447",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "dca82fc3d2de5b2b",
+      "log_id": "2021.08.30.14.36.46_veh-08_00213_00449",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "e8d42bcee4115470",
+      "log_id": "2021.09.03.17.02.10_veh-42_00363_00477",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "dd1367366ff35ad9",
+      "log_id": "2021.10.01.18.57.27_veh-44_00240_00661",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "88df35d6785b5475",
+      "log_id": "2021.09.28.18.22.59_veh-44_00236_00685",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    },
+    {
+      "scenario_token": "3e7e8685e0845c2f",
+      "log_id": "2021.09.20.12.58.53_veh-42_00371_00667",
+      "R2B_HLC_CALIBRATION_HISTORY_ONLY": true,
+      "R2BH_USE_FORBIDDEN": true,
+      "R2C_USE_FORBIDDEN": true,
+      "R2D_CONFIRMATORY_USE_FORBIDDEN": true,
+      "RBR_SCIENTIFIC_USE_FORBIDDEN": true,
+      "allowed_use": "READ_ONLY_ARCHITECTURE_DIAGNOSTIC"
+    }
+  ],
+  "R2B_HLC_resimulation_calls": 0
+}

@@ -1,0 +1,482 @@
+{
+  "schema_version": "r2_bh_hlc_target_capture_audit_v1",
+  "status": "PLANNER_TARGET_CENTER_COMMAND_ATTRACTION_PROVEN_REALIZED_TRANSFER_NOT_CONVERGED",
+  "architecture_rule": "FIXED_ABSOLUTE_TIME_QUINTIC_C2_RESIDUAL_DECAY",
+  "state0_exact_current_ego": true,
+  "no_geometry_extrapolation": true,
+  "scientific_progress_measurement_changed": false,
+  "rounds": [
+    {
+      "round_index": 0,
+      "landmarks": {
+        "baseline": {
+          "capture_start": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": -0.381431,
+              "p25": -0.139151,
+              "median": 0.156196,
+              "p75": 0.902053,
+              "max": 2.58845
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.382681,
+              "p25": -0.139607,
+              "median": 0.156708,
+              "p75": 0.905009,
+              "max": 2.596947
+            }
+          },
+          "capture_midpoint": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": -0.392272,
+              "p25": -0.169857,
+              "median": 0.055953,
+              "p75": 0.688749,
+              "max": 2.218791
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.533149,
+              "p25": -0.230858,
+              "median": 0.076048,
+              "p75": 0.936099,
+              "max": 3.015639
+            }
+          },
+          "capture_end": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": -0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.603038,
+              "p25": -0.274136,
+              "median": 0.05311,
+              "p75": 0.901593,
+              "max": 3.289404
+            }
+          },
+          "Primary_terminal": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": -0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.596037,
+              "p25": -0.217371,
+              "median": 0.07616,
+              "p75": 0.908677,
+              "max": 3.304588
+            }
+          }
+        },
+        "treatment": {
+          "capture_start": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 3.950513,
+              "p25": 4.220487,
+              "median": 4.461432,
+              "p75": 5.31523,
+              "max": 7.527299
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 3.963454,
+              "p25": 4.234314,
+              "median": 4.476048,
+              "p75": 5.332645,
+              "max": 7.551992
+            }
+          },
+          "capture_midpoint": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 3.261402,
+              "p25": 3.477167,
+              "median": 3.67238,
+              "p75": 4.404189,
+              "max": 6.411924
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.43267,
+              "p25": 4.725923,
+              "median": 4.991241,
+              "p75": 5.985868,
+              "max": 8.714684
+            }
+          },
+          "capture_end": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.733647,
+              "p25": 5.046613,
+              "median": 5.337929,
+              "p75": 6.330199,
+              "max": 9.376257
+            }
+          },
+          "Primary_terminal": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.743458,
+              "p25": 5.066073,
+              "median": 5.339568,
+              "p75": 6.305376,
+              "max": 9.239536
+            }
+          }
+        }
+      },
+      "capture_end_zero_state1_command_16_of_16": true
+    },
+    {
+      "round_index": 1,
+      "landmarks": {
+        "baseline": {
+          "capture_start": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": -0.321185,
+              "p25": -0.111156,
+              "median": 0.17885,
+              "p75": 0.881921,
+              "max": 2.469994
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.322828,
+              "p25": -0.111725,
+              "median": 0.179765,
+              "p75": 0.886432,
+              "max": 2.482636
+            }
+          },
+          "capture_midpoint": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": -0.327468,
+              "p25": -0.128198,
+              "median": 0.079877,
+              "p75": 0.645508,
+              "max": 1.94
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.472374,
+              "p25": -0.184927,
+              "median": 0.115223,
+              "p75": 0.931149,
+              "max": 2.798474
+            }
+          },
+          "capture_end": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.511266,
+              "p25": -0.22485,
+              "median": 0.0767,
+              "p75": 0.909954,
+              "max": 3.040576
+            }
+          },
+          "Primary_terminal": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.507409,
+              "p25": -0.167148,
+              "median": 0.113543,
+              "p75": 0.889552,
+              "max": 3.090367
+            }
+          }
+        },
+        "treatment": {
+          "capture_start": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 3.971856,
+              "p25": 4.232618,
+              "median": 4.465928,
+              "p75": 5.261744,
+              "max": 7.336063
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 3.993366,
+              "p25": 4.255456,
+              "median": 4.489958,
+              "p75": 5.289821,
+              "max": 7.374939
+            }
+          },
+          "capture_midpoint": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 2.903039,
+              "p25": 3.099367,
+              "median": 3.284111,
+              "p75": 3.934011,
+              "max": 5.601134
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.187647,
+              "p25": 4.470851,
+              "median": 4.737346,
+              "p75": 5.674831,
+              "max": 8.079685
+            }
+          },
+          "capture_end": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.452557,
+              "p25": 4.773928,
+              "median": 5.039298,
+              "p75": 6.004442,
+              "max": 8.670278
+            }
+          },
+          "Primary_terminal": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.556101,
+              "p25": 4.879696,
+              "median": 5.143066,
+              "p75": 6.037368,
+              "max": 8.687421
+            }
+          }
+        }
+      },
+      "capture_end_zero_state1_command_16_of_16": true
+    },
+    {
+      "round_index": 2,
+      "landmarks": {
+        "baseline": {
+          "capture_start": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": -0.265942,
+              "p25": -0.084543,
+              "median": 0.197507,
+              "p75": 0.863905,
+              "max": 2.354478
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.268239,
+              "p25": -0.085273,
+              "median": 0.199212,
+              "p75": 0.871364,
+              "max": 2.374807
+            }
+          },
+          "capture_midpoint": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": -0.248738,
+              "p25": -0.085995,
+              "median": 0.097775,
+              "p75": 0.580077,
+              "max": 1.6496
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.391788,
+              "p25": -0.135451,
+              "median": 0.154006,
+              "p75": 0.913681,
+              "max": 2.598305
+            }
+          },
+          "capture_end": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.447406,
+              "p25": -0.172245,
+              "median": 0.115107,
+              "p75": 0.92438,
+              "max": 2.793203
+            }
+          },
+          "Primary_terminal": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": -0.424683,
+              "p25": -0.115418,
+              "median": 0.147999,
+              "p75": 0.873382,
+              "max": 2.898613
+            }
+          }
+        },
+        "treatment": {
+          "capture_start": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 3.755454,
+              "p25": 4.009835,
+              "median": 4.206986,
+              "p75": 4.945316,
+              "max": 6.723704
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.278835,
+              "p25": 4.523127,
+              "median": 4.733944,
+              "p75": 5.474354,
+              "max": 7.454443
+            }
+          },
+          "capture_midpoint": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 2.514044,
+              "p25": 2.69119,
+              "median": 2.850298,
+              "p75": 3.403214,
+              "max": 4.776443
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 3.959874,
+              "p25": 4.238897,
+              "median": 4.489509,
+              "p75": 5.360408,
+              "max": 7.523411
+            }
+          },
+          "capture_end": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 3.89731,
+              "p25": 4.197707,
+              "median": 4.452662,
+              "p75": 5.395404,
+              "max": 7.692891
+            }
+          },
+          "Primary_terminal": {
+            "planner_state1_commanded_offset_m": {
+              "n": 8,
+              "min": 0.0,
+              "p25": 0.0,
+              "median": 0.0,
+              "p75": 0.0,
+              "max": 0.0
+            },
+            "realized_offset_m": {
+              "n": 8,
+              "min": 4.094948,
+              "p25": 4.43319,
+              "median": 4.658622,
+              "p75": 5.511358,
+              "max": 7.883494
+            }
+          }
+        }
+      },
+      "capture_end_zero_state1_command_16_of_16": true
+    }
+  ],
+  "final_round_capture_end_zero_state1_command_16_of_16": true,
+  "final_round_realized_treatment_terminal_offset_m": {
+    "n": 8,
+    "min": 4.094948,
+    "p25": 4.43319,
+    "median": 4.658622,
+    "p75": 5.511358,
+    "max": 7.883494
+  },
+  "interpretation": "COMMAND_ATTRACTOR_PRESENT_BUT_CLOSED_LOOP_REALIZED_TARGET_CAPTURE_FAILED"
+}

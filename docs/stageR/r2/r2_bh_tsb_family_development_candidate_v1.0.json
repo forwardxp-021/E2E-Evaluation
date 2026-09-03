@@ -1,0 +1,76 @@
+{
+  "schema_version": "r2_bh_tsb_family_development_candidate_v1.0",
+  "status": "TSB_FAMILY_DEVELOPMENT_CANDIDATE_FROZEN",
+  "validation_status": "PENDING_FRESH_R2C_VALIDATION",
+  "parameter_file": {
+    "path": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json",
+    "sha256": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d"
+  },
+  "round_result": {
+    "path": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_results_v1.0.json",
+    "sha256": "6f561df652867aee2204026b2390cacc5e075e8f75c393b880e6cbd21902ca88"
+  },
+  "generator_architecture": {
+    "path": "tools/r2_b_controller_aware_generator_v1.py",
+    "sha256": "d166c4746d0a70668b8e26a532890c641b5166f55661a2d34d7f796a9830e3eb"
+  },
+  "parameters": {
+    "start_s": 1.1,
+    "baseline_brake_mps2": -1.45,
+    "baseline_duration_s": 1.8,
+    "first_brake_mps2": -2.4,
+    "first_brake_duration_s": 0.9,
+    "release_mps2": 1.4,
+    "release_duration_s": 1.3,
+    "second_brake_mps2": -2.4,
+    "second_brake_duration_s": 0.9
+  },
+  "DEV_CAL_result_summary": {
+    "counts": {
+      "pairs": 8,
+      "mechanism_pass": 8,
+      "F_match_pass": 8,
+      "safety_pass": 8,
+      "measurement_OK": 8,
+      "baseline_one_phase": 8,
+      "treatment_two_phase": 8
+    },
+    "mechanism_margin_distributions": {
+      "baseline_exactly_one_phase": {
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 1.0,
+        "n": 8
+      },
+      "treatment_exactly_two_phases": {
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 1.0,
+        "n": 8
+      },
+      "release_fraction_minus_0p15": {
+        "min": 0.588132,
+        "p25": 0.595193,
+        "median": 0.598495,
+        "p75": 0.599631,
+        "max": 0.613469,
+        "n": 8
+      },
+      "second_peak_ratio_minus_0p50": {
+        "min": 0.70024,
+        "p25": 0.705247,
+        "median": 0.709845,
+        "p75": 0.711391,
+        "max": 0.711545,
+        "n": 8
+      }
+    },
+    "development_success": true
+  },
+  "new_TSB_simulation_calls": 0,
+  "TSB_parameters_adjusted": false
+}
