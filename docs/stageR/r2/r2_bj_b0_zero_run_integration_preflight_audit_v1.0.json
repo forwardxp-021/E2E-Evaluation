@@ -1,0 +1,688 @@
+{
+  "schema_version": "r2_bj_b0_zero_run_integration_preflight_audit_v1.0",
+  "status": "R2_BJ_B0_ZERO_RUN_EXECUTION_PACKAGE_FROZEN_READY_FOR_CANARY_OWNER_REVIEW",
+  "A5_APPLICABLE_POOL": 34,
+  "BJ_B_ROSTER": 8,
+  "UNSELECTED_POOL": 26,
+  "ROSTER_TOKEN_UNIQUE": "8/8",
+  "ROSTER_LOG_UNIQUE": "8/8",
+  "history_and_permanent_exclusion_overlap": 0,
+  "PAIR_BINDINGS": 8,
+  "INTENDED_RUNS": 16,
+  "hydra_compositions": 16,
+  "exact_scenario_resolutions": 16,
+  "runner_constructions": 16,
+  "output_path_unique": true,
+  "predivergence_exact_pair_count": 8,
+  "A5_component_provenance_complete": "8/8",
+  "runs": [
+    {
+      "run_order": 1,
+      "run_id": "R2BJB0-HLC-01-BASELINE",
+      "pair_id": "R2BJB0-HLC-01",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 2,
+      "run_id": "R2BJB0-HLC-01-TREATMENT",
+      "pair_id": "R2BJB0-HLC-01",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 3,
+      "run_id": "R2BJB0-HLC-02-BASELINE",
+      "pair_id": "R2BJB0-HLC-02",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 4,
+      "run_id": "R2BJB0-HLC-02-TREATMENT",
+      "pair_id": "R2BJB0-HLC-02",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 5,
+      "run_id": "R2BJB0-HLC-03-BASELINE",
+      "pair_id": "R2BJB0-HLC-03",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 6,
+      "run_id": "R2BJB0-HLC-03-TREATMENT",
+      "pair_id": "R2BJB0-HLC-03",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 7,
+      "run_id": "R2BJB0-HLC-04-BASELINE",
+      "pair_id": "R2BJB0-HLC-04",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 8,
+      "run_id": "R2BJB0-HLC-04-TREATMENT",
+      "pair_id": "R2BJB0-HLC-04",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 9,
+      "run_id": "R2BJB0-HLC-05-BASELINE",
+      "pair_id": "R2BJB0-HLC-05",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 10,
+      "run_id": "R2BJB0-HLC-05-TREATMENT",
+      "pair_id": "R2BJB0-HLC-05",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 11,
+      "run_id": "R2BJB0-HLC-06-BASELINE",
+      "pair_id": "R2BJB0-HLC-06",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 12,
+      "run_id": "R2BJB0-HLC-06-TREATMENT",
+      "pair_id": "R2BJB0-HLC-06",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 13,
+      "run_id": "R2BJB0-HLC-07-BASELINE",
+      "pair_id": "R2BJB0-HLC-07",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 14,
+      "run_id": "R2BJB0-HLC-07-TREATMENT",
+      "pair_id": "R2BJB0-HLC-07",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 15,
+      "run_id": "R2BJB0-HLC-08-BASELINE",
+      "pair_id": "R2BJB0-HLC-08",
+      "arm": "BASELINE",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    },
+    {
+      "run_order": 16,
+      "run_id": "R2BJB0-HLC-08-TREATMENT",
+      "pair_id": "R2BJB0-HLC-08",
+      "arm": "TREATMENT",
+      "exact_scenario_resolution_count": 1,
+      "full_Hydra_composition": "PASS",
+      "pair_binding_lookup": "PASS",
+      "output_path_fresh": true,
+      "planner_class": "R2BJB0HLCV4EngineeringPlanner",
+      "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+      "time_controller_iterations": 81,
+      "runner_count": 1,
+      "simulation_started": false,
+      "runner_run_calls": 0
+    }
+  ],
+  "predivergence": [
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    },
+    {
+      "planner_call_count": 11,
+      "checks": [
+        {
+          "absolute_episode_time_s": 0.0,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.1,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.2,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.3,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.4,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.5,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.6,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.7,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.8,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 0.9,
+          "exact_equal": true
+        },
+        {
+          "absolute_episode_time_s": 1.0,
+          "exact_equal": true
+        }
+      ],
+      "exact_equal": true
+    }
+  ],
+  "RUNNER_RUN": 0,
+  "NEW_RUN_BUDGET": 0,
+  "CANARY_AUTHORIZED": false,
+  "engineering_simulation": 0,
+  "scientific_simulation": 0,
+  "TSB_simulation": 0,
+  "R2_C_STARTED": false,
+  "CONFIRMATORY_SMOKE_STARTED": false,
+  "RBR_STARTED": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

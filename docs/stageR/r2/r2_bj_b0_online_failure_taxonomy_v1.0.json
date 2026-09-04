@@ -1,0 +1,34 @@
+{
+  "schema_version": "r2_bj_b0_online_failure_taxonomy_v1.0",
+  "status": "FROZEN",
+  "ARCHITECTURE_FAILURE": {
+    "codes": [
+      "CURVATURE_LIMIT",
+      "YAW_RATE_LIMIT",
+      "LATERAL_ACCELERATION_LIMIT",
+      "STATE0_POSE_MISMATCH",
+      "STATE0_STEP_EXCESS",
+      "STATE0_TANGENT_MISMATCH",
+      "XY_HEADING_MISMATCH",
+      "TARGET_FRAME_RESIDUAL",
+      "STITCHING_HORIZON",
+      "CONTROLLER_VISIBLE_STEERING_INVALID",
+      "PREDIVERGENCE_TRAJECTORY_MISMATCH"
+    ],
+    "action": [
+      "STOP_CURRENT_RUN",
+      "STOP_REMAINING_SCHEDULE"
+    ]
+  },
+  "INFRASTRUCTURE_FAILURE": {
+    "codes": [
+      "HYDRA_COMPOSITION",
+      "SCENARIO_RESOLUTION",
+      "RUNNER_CONSTRUCTION",
+      "OUTPUT_PATH_COLLISION"
+    ],
+    "technical_rerun_authorized": false
+  },
+  "identity_replacement": "FORBIDDEN",
+  "parameter_update": "FORBIDDEN"
+}

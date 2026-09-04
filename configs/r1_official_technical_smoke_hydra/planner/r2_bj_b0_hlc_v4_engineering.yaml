@@ -1,0 +1,5 @@
+r2_bj_b0_hlc_v4_engineering:
+  _target_: tools.r2_bj_b0_execute_frozen_hlc_v4_engineering.build_planner_from_environment
+  run_id: ${oc.env:R2_BJ_B0_RUN_ID}
+  trace_dir: ${oc.env:R2_BJ_B0_TRACE_DIR}
+  telemetry_dir: ${oc.env:R2_BJ_B0_TELEMETRY_DIR}

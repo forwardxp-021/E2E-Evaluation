@@ -1,0 +1,2246 @@
+{
+  "schema_version": "r2_bj_b0_hlc_v4_engineering_roster_v1.0",
+  "status": "FROZEN_ZERO_RUN",
+  "selection_contract": "docs/stageR/r2/r2_bj_b0_preregistered_roster_selection_contract_v1.0.json",
+  "selection_salt": "R2_BJ_B0_DEV_ROSTER_V1_20260904",
+  "candidate_pool_count": 34,
+  "entry_count": 8,
+  "exact_quota_pass": true,
+  "lexicographically_smallest_selection_rank_tuple": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9
+  ],
+  "history_and_permanent_exclusion_overlap_count": 0,
+  "entries": [
+    {
+      "census_index": 472,
+      "frame_index": 472,
+      "scenario_token": "cc1abd3989065d8d",
+      "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+      "audit_rank_sha256": "0186d26365f65db5e36f2d36fcfcbc08b5226906b743645307cac70055fbf08d",
+      "input_record_canonical_sha256": "cc9f260d111a18cdd2413f6021cc12ee36258f14b588c97906b5e84ce23fbe5b",
+      "v_audit_mps": 5.375734839707134,
+      "v_support_mps": 5.875734839707134,
+      "source_reference_sha256": "7ee80814fddabd9c69041d6e315cad32b0cad6ed0eb32a3dbc115790e25a77db",
+      "target_reference_sha256": "9291ba9152e484d2089faa02e6344e5a3857d4d6e6af7134c20e5dbe31c8a8b3",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 94.83661046737272,
+        "source_total_length_m": 144.85682682147325,
+        "target_total_length_m": 145.62660883141172,
+        "source_current_arc_m": 41.263685668650176,
+        "target_current_arc_m": 41.47047997957477,
+        "source_remaining_margin_m": 8.756530685450358,
+        "target_remaining_margin_m": 9.319518384464217,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20211",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.490312386579166,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20228",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.668039996636473,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "8beca12af7f97eb421137822b99475ffc6d3cfbe8267b31d3664075b1a4280dd",
+      "predicate_result_canonical_sha256": "acf1add788f1175091ca516f7c6fc4c33cb5e0b2e6205605bd1f1205a45be85e",
+      "closure_canonical_sha256": "6fb83ad3f6676ef8259b4c2b65ddbb9d5d4328f5d64414eb0388daff73165322",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "right",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.10.01.16.53.37_veh-44_01126_01602.db",
+      "db_file": "2021.10.01.16.53.37_veh-44_01126_01602.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "8eec3ec9549259e7",
+        "official_simulation_initial_timestamp_us": 1633108443749488,
+        "official_scenario_types": [
+          "medium_magnitude_speed"
+        ],
+        "initial_x": 587695.427583,
+        "initial_y": 4475619.904405,
+        "initial_heading": 2.48311597,
+        "initial_speed_mps": 4.849539,
+        "initial_time_us": 1633108443749488,
+        "initial_state_fingerprint": "4c01d6928629966b3d5f6373b5214d7af9cd729b4b27cb2522042316f5e71493"
+      },
+      "route_roadblock_ids": [
+        "19382",
+        "19086",
+        "19316",
+        "19027",
+        "19519",
+        "19084",
+        "19428",
+        "19025",
+        "19334",
+        "19082",
+        "19710",
+        "19190",
+        "19655",
+        "19189",
+        "19664",
+        "19188",
+        "19677",
+        "19182",
+        "19698",
+        "19196",
+        "19709",
+        "19195",
+        "19700",
+        "14496",
+        "19395",
+        "19104"
+      ],
+      "route_fingerprint": "cdfd904044bcc6c166d2e1eb50200a260f8d2f8b6823d7346d96cefa2ada5caf",
+      "source_lane_id": "19843",
+      "target_lane_id": "19740",
+      "scenario_anchor_timestamp_us": 1633108446748949,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 4.849539,
+        "anchor_requested_timestamp_us": 1633108446748949,
+        "anchor_nearest_timestamp_us": 1633108446748949,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 5.619826587606607,
+        "pre_treatment_window_start_us": 1633108443749488,
+        "pre_treatment_window_end_us": 1633108444749488,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1633108443749488,
+            "speed_mps": 4.849538529672138
+          },
+          {
+            "timestamp_us": 1633108443799482,
+            "speed_mps": 4.894001161739885
+          },
+          {
+            "timestamp_us": 1633108443849473,
+            "speed_mps": 4.942595999519624
+          },
+          {
+            "timestamp_us": 1633108443899465,
+            "speed_mps": 4.98826414201088
+          },
+          {
+            "timestamp_us": 1633108443949460,
+            "speed_mps": 5.033809998643352
+          },
+          {
+            "timestamp_us": 1633108443999457,
+            "speed_mps": 5.073226632446288
+          },
+          {
+            "timestamp_us": 1633108444049459,
+            "speed_mps": 5.11110093056753
+          },
+          {
+            "timestamp_us": 1633108444099467,
+            "speed_mps": 5.141801026824341
+          },
+          {
+            "timestamp_us": 1633108444149482,
+            "speed_mps": 5.173628291591998
+          },
+          {
+            "timestamp_us": 1633108444199501,
+            "speed_mps": 5.202201229613945
+          },
+          {
+            "timestamp_us": 1633108444249522,
+            "speed_mps": 5.228375958072662
+          },
+          {
+            "timestamp_us": 1633108444299542,
+            "speed_mps": 5.255823815980268
+          },
+          {
+            "timestamp_us": 1633108444349556,
+            "speed_mps": 5.280873725493211
+          },
+          {
+            "timestamp_us": 1633108444399561,
+            "speed_mps": 5.30026972060019
+          },
+          {
+            "timestamp_us": 1633108444449560,
+            "speed_mps": 5.31494752088438
+          },
+          {
+            "timestamp_us": 1633108444499552,
+            "speed_mps": 5.325797521993793
+          },
+          {
+            "timestamp_us": 1633108444549544,
+            "speed_mps": 5.335412125655784
+          },
+          {
+            "timestamp_us": 1633108444599533,
+            "speed_mps": 5.347496048839214
+          },
+          {
+            "timestamp_us": 1633108444649518,
+            "speed_mps": 5.36014460296088
+          },
+          {
+            "timestamp_us": 1633108444699499,
+            "speed_mps": 5.367813639874237
+          },
+          {
+            "timestamp_us": 1633108444749475,
+            "speed_mps": 5.375734839707134
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 4.849538529672138,
+          "p25": 5.073226632446288,
+          "median": 5.228375958072662,
+          "p75": 5.325797521993793,
+          "p95": 5.367813639874237,
+          "p99": 5.374150599740554,
+          "max": 5.375734839707134
+        },
+        "v_audit_mps": 5.375734839707134,
+        "v_support_mps": 5.875734839707134,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9994609999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010003159921848869,
+          "robust_max_abs_curvature_inv_m": 0.0009951749133980184,
+          "speed_mps": 5.375734839707134
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.0010000021346432933,
+          "speed_mps": 5.375734839707134
+        }
+      },
+      "selection_hash_sha256": "0709d5826e3fc7cbb97ff36eb71c4577d53c41fb5da2f6a2e4285f9a66fa739a",
+      "speed_band": "[3.0,6.0)",
+      "selection_rank": 1,
+      "roster_index": 1,
+      "pair_id": "R2BJB0-HLC-01",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 414,
+      "frame_index": 414,
+      "scenario_token": "1ec5332f171f5872",
+      "log_id": "2021.09.21.16.42.24_veh-08_02115_02448",
+      "audit_rank_sha256": "00cd32b30b3113a86d623e5decf7de141ac0e96c85e3b7eedf39a19a79b8c8fe",
+      "input_record_canonical_sha256": "0c50ebad87c82f47a1be1d67f47b44c771f327bebd46b56702b4d468640cc6e8",
+      "v_audit_mps": 8.947916286329255,
+      "v_support_mps": 9.447916286329255,
+      "source_reference_sha256": "a96d2232e9c34416fdc1a1f695c32db99a628a67ef7b64d92292373f08114604",
+      "target_reference_sha256": "709f65bae26b05d8d8834431fe818e07ac115ffdc147e0f5c8385867928206cf",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 151.27707732400222,
+        "source_total_length_m": 186.60817087562694,
+        "target_total_length_m": 187.98225176086422,
+        "source_current_arc_m": 21.00119565107742,
+        "target_current_arc_m": 21.212772313423393,
+        "source_remaining_margin_m": 14.329897900547309,
+        "target_remaining_margin_m": 15.492402123438609,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20211",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.490312386579166,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20228",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.668039996636473,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "78690a78af14a5a2e2fc117f08f68efcbea2cfe3ac2297cd59abbaea45cc1934",
+      "predicate_result_canonical_sha256": "6cd3f357b00697febbffae4b81ab7670ceb785a00c260e1191ca61b11ba5618d",
+      "closure_canonical_sha256": "8bd8ca55fba53b9f64f873c260e89a2433600bfab60a0b6bdae241fe23e31c3d",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "right",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.21.16.42.24_veh-08_02115_02448.db",
+      "db_file": "2021.09.21.16.42.24_veh-08_02115_02448.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "ae272ebdae5c5aef",
+        "official_simulation_initial_timestamp_us": 1632244932099908,
+        "official_scenario_types": [
+          "high_magnitude_speed",
+          "near_multiple_vehicles"
+        ],
+        "initial_x": 587710.959083,
+        "initial_y": 4475606.891814,
+        "initial_heading": 2.42964951,
+        "initial_speed_mps": 8.417475,
+        "initial_time_us": 1632244932099908,
+        "initial_state_fingerprint": "a4dbfc91c9598a0024815eb4c7ef63f7abe0a9d410222261173cbc47abbb0897"
+      },
+      "route_roadblock_ids": [
+        "19551",
+        "19086",
+        "19316",
+        "19027",
+        "19519",
+        "19084",
+        "19428",
+        "19025",
+        "19334",
+        "19082",
+        "19710",
+        "19190",
+        "19655",
+        "19189",
+        "19664",
+        "19188",
+        "19677",
+        "19182",
+        "19683",
+        "19165",
+        "19616",
+        "19164"
+      ],
+      "route_fingerprint": "9fc5f884abba3c2120e89c876ed4620057cf1bb228a18d1229d3487396ec63eb",
+      "source_lane_id": "19843",
+      "target_lane_id": "19740",
+      "scenario_anchor_timestamp_us": 1632244935099824,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 8.417475,
+        "anchor_requested_timestamp_us": 1632244935099824,
+        "anchor_nearest_timestamp_us": 1632244935099824,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.509693293035529,
+        "pre_treatment_window_start_us": 1632244932099908,
+        "pre_treatment_window_end_us": 1632244933099908,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632244932099908,
+            "speed_mps": 8.417475195929285
+          },
+          {
+            "timestamp_us": 1632244932149917,
+            "speed_mps": 8.452282989901684
+          },
+          {
+            "timestamp_us": 1632244932199922,
+            "speed_mps": 8.488077644719375
+          },
+          {
+            "timestamp_us": 1632244932249926,
+            "speed_mps": 8.52092875018163
+          },
+          {
+            "timestamp_us": 1632244932299926,
+            "speed_mps": 8.55470072619357
+          },
+          {
+            "timestamp_us": 1632244932349920,
+            "speed_mps": 8.58253331522895
+          },
+          {
+            "timestamp_us": 1632244932399913,
+            "speed_mps": 8.611177939137795
+          },
+          {
+            "timestamp_us": 1632244932449902,
+            "speed_mps": 8.639227520871435
+          },
+          {
+            "timestamp_us": 1632244932499887,
+            "speed_mps": 8.670317422403077
+          },
+          {
+            "timestamp_us": 1632244932549868,
+            "speed_mps": 8.700342779430606
+          },
+          {
+            "timestamp_us": 1632244932599847,
+            "speed_mps": 8.726805335603421
+          },
+          {
+            "timestamp_us": 1632244932649825,
+            "speed_mps": 8.749177710967887
+          },
+          {
+            "timestamp_us": 1632244932699807,
+            "speed_mps": 8.774645056224527
+          },
+          {
+            "timestamp_us": 1632244932749793,
+            "speed_mps": 8.797058448905743
+          },
+          {
+            "timestamp_us": 1632244932799784,
+            "speed_mps": 8.817710806628632
+          },
+          {
+            "timestamp_us": 1632244932849774,
+            "speed_mps": 8.841518003518434
+          },
+          {
+            "timestamp_us": 1632244932899764,
+            "speed_mps": 8.864835754345032
+          },
+          {
+            "timestamp_us": 1632244932949755,
+            "speed_mps": 8.886732320676623
+          },
+          {
+            "timestamp_us": 1632244932999750,
+            "speed_mps": 8.90750912214316
+          },
+          {
+            "timestamp_us": 1632244933049746,
+            "speed_mps": 8.927216741652646
+          },
+          {
+            "timestamp_us": 1632244933099743,
+            "speed_mps": 8.947916286329255
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 8.417475195929285,
+          "p25": 8.58253331522895,
+          "median": 8.726805335603421,
+          "p75": 8.841518003518434,
+          "p95": 8.927216741652646,
+          "p99": 8.943776377393933,
+          "max": 8.947916286329255
+        },
+        "v_audit_mps": 8.947916286329255,
+        "v_support_mps": 9.447916286329255,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.999916,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010004702162536726,
+          "robust_max_abs_curvature_inv_m": 0.0010000750166568328,
+          "speed_mps": 8.947916286329255
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.0010000015640482312,
+          "speed_mps": 8.947916286329255
+        }
+      },
+      "selection_hash_sha256": "070f271ffacd3cd894cbe294cccf0c5e30b14f591e60af29506d45df0cee807e",
+      "speed_band": "[6.0,9.0)",
+      "selection_rank": 2,
+      "roster_index": 2,
+      "pair_id": "R2BJB0-HLC-02",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 528,
+      "frame_index": 528,
+      "scenario_token": "5735883e91ef57e4",
+      "log_id": "2021.08.19.17.14.40_veh-45_01683_02036",
+      "audit_rank_sha256": "0588ac1a92b29a070ccc2c8f49e492f372fc09fdb486d14ab09432bf916307dd",
+      "input_record_canonical_sha256": "8bdc848042118eff9febf2ffc9b4658a41ab1fd3120e04aeebc43e61e025f8d2",
+      "v_audit_mps": 6.0021190605191395,
+      "v_support_mps": 6.5021190605191395,
+      "source_reference_sha256": "b2aa46ef35576372f849bb52a32b95b49096e8367275418483f3ed68e15a8243",
+      "target_reference_sha256": "40831d34332d1e84bd43c61e95944734d77f8881d41d54c90dce2510fe87a4b4",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 104.7334811562024,
+        "source_total_length_m": 120.36651443489409,
+        "target_total_length_m": 120.95856883477516,
+        "source_current_arc_m": 4.200277545640399,
+        "target_current_arc_m": 4.411596010173051,
+        "source_remaining_margin_m": 11.43275573305128,
+        "target_remaining_margin_m": 11.813491668399706,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "67884041f8ba299395cababaa409d38d9611eb351b4694dea9e94e69c0d89a65",
+      "predicate_result_canonical_sha256": "0f88fe4ed82d9653ecef64474e180d9ca22ce069c1413b9490cfa765440d0082",
+      "closure_canonical_sha256": "9341008ea6d38d7338e4e1fe67ff919834bed9747db9c20818a8c6334d59eb74",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "right",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.19.17.14.40_veh-45_01683_02036.db",
+      "db_file": "2021.08.19.17.14.40_veh-45_01683_02036.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "72bdb15fcee150fe",
+        "official_simulation_initial_timestamp_us": 1629395231799671,
+        "official_scenario_types": [
+          "medium_magnitude_speed"
+        ],
+        "initial_x": 587723.835348,
+        "initial_y": 4475596.098346,
+        "initial_heading": 2.5078502,
+        "initial_speed_mps": 5.53025,
+        "initial_time_us": 1629395231799671,
+        "initial_state_fingerprint": "43876e2a685d22d6de3cd979fdfdf2d1e553bbeae374faf2547a35d90749e717"
+      },
+      "route_roadblock_ids": [
+        "19551",
+        "19086",
+        "19316",
+        "19027",
+        "19520",
+        "14518",
+        "19620",
+        "19159",
+        "19684",
+        "19202",
+        "19680",
+        "19203",
+        "19203",
+        "19209",
+        "19651",
+        "19206",
+        "19654",
+        "19204",
+        "19711"
+      ],
+      "route_fingerprint": "51e79d6bf13013ffbbd11251874a97bf79996d0e0b9f7d8649e9b45954b8a3e4",
+      "source_lane_id": "19843",
+      "target_lane_id": "19740",
+      "scenario_anchor_timestamp_us": 1629395234749900,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 5.53025,
+        "anchor_requested_timestamp_us": 1629395234749900,
+        "anchor_nearest_timestamp_us": 1629395234749900,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 6.159806709888409,
+        "pre_treatment_window_start_us": 1629395231799671,
+        "pre_treatment_window_end_us": 1629395232799671,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629395231799671,
+            "speed_mps": 5.530250033544827
+          },
+          {
+            "timestamp_us": 1629395231849729,
+            "speed_mps": 5.544324585262185
+          },
+          {
+            "timestamp_us": 1629395231899788,
+            "speed_mps": 5.5637730704155866
+          },
+          {
+            "timestamp_us": 1629395231949846,
+            "speed_mps": 5.578346246878443
+          },
+          {
+            "timestamp_us": 1629395231999904,
+            "speed_mps": 5.60854254075787
+          },
+          {
+            "timestamp_us": 1629395232049961,
+            "speed_mps": 5.628164572230252
+          },
+          {
+            "timestamp_us": 1629395232100014,
+            "speed_mps": 5.661202900402242
+          },
+          {
+            "timestamp_us": 1629395232150065,
+            "speed_mps": 5.690401025782685
+          },
+          {
+            "timestamp_us": 1629395232200112,
+            "speed_mps": 5.716693296650154
+          },
+          {
+            "timestamp_us": 1629395232250158,
+            "speed_mps": 5.747064975550882
+          },
+          {
+            "timestamp_us": 1629395232300201,
+            "speed_mps": 5.775545194469374
+          },
+          {
+            "timestamp_us": 1629395232350241,
+            "speed_mps": 5.799715445482851
+          },
+          {
+            "timestamp_us": 1629395232400280,
+            "speed_mps": 5.825021221131502
+          },
+          {
+            "timestamp_us": 1629395232450318,
+            "speed_mps": 5.851166469978799
+          },
+          {
+            "timestamp_us": 1629395232500356,
+            "speed_mps": 5.880150436329094
+          },
+          {
+            "timestamp_us": 1629395232550396,
+            "speed_mps": 5.9081831134649905
+          },
+          {
+            "timestamp_us": 1629395232600435,
+            "speed_mps": 5.9353403074441236
+          },
+          {
+            "timestamp_us": 1629395232650473,
+            "speed_mps": 5.961416727408144
+          },
+          {
+            "timestamp_us": 1629395232700510,
+            "speed_mps": 5.981114221251852
+          },
+          {
+            "timestamp_us": 1629395232750546,
+            "speed_mps": 6.0021190605191395
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 5.530250033544827,
+          "p25": 5.6232590643621565,
+          "median": 5.761305085010128,
+          "p75": 5.8871586056130685,
+          "p95": 5.982164463215216,
+          "p99": 5.998128141058355,
+          "max": 6.0021190605191395
+        },
+        "v_audit_mps": 6.0021190605191395,
+        "v_support_mps": 6.5021190605191395,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9502289999999998,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010003159921848869,
+          "robust_max_abs_curvature_inv_m": 0.0010000013015783872,
+          "speed_mps": 6.0021190605191395
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.001000001273152771,
+          "speed_mps": 6.0021190605191395
+        }
+      },
+      "selection_hash_sha256": "0f15057cdce67c8de4eb151699fb680b67307e708dc62838f0b05c301f202498",
+      "speed_band": "[6.0,9.0)",
+      "selection_rank": 3,
+      "roster_index": 3,
+      "pair_id": "R2BJB0-HLC-03",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 292,
+      "frame_index": 292,
+      "scenario_token": "7188743b78cb5631",
+      "log_id": "2021.06.09.14.03.17_veh-12_02584_02970",
+      "audit_rank_sha256": "004845a89666d3889deaa000a66bc79f35a75f833b1fde4194e8654a999a8c79",
+      "input_record_canonical_sha256": "f3841fef9df2733de8e8e75c48561831cf31080b96ba8d6a1b759dd91230d460",
+      "v_audit_mps": 8.598138612738433,
+      "v_support_mps": 9.098138612738433,
+      "source_reference_sha256": "812c4dc7825738c17b7aed97979b4c736da2bba711caa2f449d70c70546cf364",
+      "target_reference_sha256": "a789194504aecc742e045166f6715cbc2241866a096cf71f7d4acd9f3ee0b5c4",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 145.75059008126723,
+        "source_total_length_m": 188.97988177861282,
+        "target_total_length_m": 188.97791964833274,
+        "source_current_arc_m": 2.3939116530235545,
+        "target_current_arc_m": 2.3824097185223767,
+        "source_remaining_margin_m": 40.83538004432202,
+        "target_remaining_margin_m": 40.84491984854313,
+        "source_components": [
+          {
+            "edge_id": "63125",
+            "roadblock_id": "65481",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 8.060640998395192,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70551",
+            "roadblock_id": "60208",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 97.62398164344425,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68529",
+            "roadblock_id": "48680",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 27.37757460837538,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68606",
+            "roadblock_id": "66191",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 55.917684528397984,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "63126",
+            "roadblock_id": "65481",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 8.034881587284053,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69945",
+            "roadblock_id": "60208",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 97.64911396265012,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68506",
+            "roadblock_id": "48680",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 27.861369165525772,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69632",
+            "roadblock_id": "66191",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 55.43255493287282,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "dd07eec3fdcd51edf7e1381a86605d4f69d50e4ce5c09f7a15ec1a0a121fd110",
+      "predicate_result_canonical_sha256": "12a7f656e591aa15ef3eaf4befc6562854c42d2dbc76b08d061d64087ea420b8",
+      "closure_canonical_sha256": "c723a25d18838d4780a3409998dde2aff2c680a588e32852b9eae0212faa4f90",
+      "map_name": "us-nv-las-vegas-strip",
+      "direction": "left",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.09.14.03.17_veh-12_02584_02970.db",
+      "db_file": "2021.06.09.14.03.17_veh-12_02584_02970.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "84c7a0fb8e5a5cf3",
+        "official_simulation_initial_timestamp_us": 1623264817599947,
+        "official_scenario_types": [
+          "on_intersection",
+          "on_traffic_light_intersection",
+          "traversing_intersection",
+          "traversing_traffic_light_intersection"
+        ],
+        "initial_x": 664430.725828,
+        "initial_y": 3997612.934727,
+        "initial_heading": -1.55521601,
+        "initial_speed_mps": 7.907381,
+        "initial_time_us": 1623264817599947,
+        "initial_state_fingerprint": "eda730c41864ad69f020657de94f1a3cd230adad9f8712c8d83c12e5cddcc938"
+      },
+      "route_roadblock_ids": [
+        "65481",
+        "60208",
+        "48680",
+        "66191",
+        "66141",
+        "67094",
+        "65488",
+        "66310",
+        "65554",
+        "60178",
+        "46864",
+        "66971",
+        "65571",
+        "66917",
+        "65694",
+        "66221",
+        "65723",
+        "66336",
+        "65668",
+        "66237",
+        "65724",
+        "60251",
+        "47577",
+        "66296",
+        "65686",
+        "66799",
+        "65685"
+      ],
+      "route_fingerprint": "f06644f8340d02a027a638ec9d55bbf7510fe6439aee0e53dfc12a7d5f8f904f",
+      "source_lane_id": "63125",
+      "target_lane_id": "63126",
+      "scenario_anchor_timestamp_us": 1623264820599671,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 7.907381,
+        "anchor_requested_timestamp_us": 1623264820599671,
+        "anchor_nearest_timestamp_us": 1623264820599671,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.816757133384806,
+        "pre_treatment_window_start_us": 1623264817599947,
+        "pre_treatment_window_end_us": 1623264818599947,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1623264817599947,
+            "speed_mps": 7.907381087347776
+          },
+          {
+            "timestamp_us": 1623264817649968,
+            "speed_mps": 7.944229268575465
+          },
+          {
+            "timestamp_us": 1623264817699986,
+            "speed_mps": 7.98849338240946
+          },
+          {
+            "timestamp_us": 1623264817750004,
+            "speed_mps": 8.017057710403114
+          },
+          {
+            "timestamp_us": 1623264817800021,
+            "speed_mps": 8.054361086178519
+          },
+          {
+            "timestamp_us": 1623264817850033,
+            "speed_mps": 8.093118641411001
+          },
+          {
+            "timestamp_us": 1623264817900042,
+            "speed_mps": 8.127832189991896
+          },
+          {
+            "timestamp_us": 1623264817950049,
+            "speed_mps": 8.168292202606684
+          },
+          {
+            "timestamp_us": 1623264818000055,
+            "speed_mps": 8.203667293879558
+          },
+          {
+            "timestamp_us": 1623264818050059,
+            "speed_mps": 8.243128474232458
+          },
+          {
+            "timestamp_us": 1623264818100060,
+            "speed_mps": 8.280915889222037
+          },
+          {
+            "timestamp_us": 1623264818150062,
+            "speed_mps": 8.317046173388079
+          },
+          {
+            "timestamp_us": 1623264818200064,
+            "speed_mps": 8.352656207630018
+          },
+          {
+            "timestamp_us": 1623264818250064,
+            "speed_mps": 8.393945329009199
+          },
+          {
+            "timestamp_us": 1623264818300064,
+            "speed_mps": 8.424072020162411
+          },
+          {
+            "timestamp_us": 1623264818350065,
+            "speed_mps": 8.456669192248748
+          },
+          {
+            "timestamp_us": 1623264818400066,
+            "speed_mps": 8.492376632408174
+          },
+          {
+            "timestamp_us": 1623264818450068,
+            "speed_mps": 8.529510565101429
+          },
+          {
+            "timestamp_us": 1623264818500071,
+            "speed_mps": 8.562664414552328
+          },
+          {
+            "timestamp_us": 1623264818550074,
+            "speed_mps": 8.598138612738433
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.907381087347776,
+          "p25": 8.08342925260288,
+          "median": 8.262022181727247,
+          "p75": 8.432221313183994,
+          "p95": 8.564438124461633,
+          "p99": 8.591398515083073,
+          "max": 8.598138612738433
+        },
+        "v_audit_mps": 8.598138612738433,
+        "v_support_mps": 9.098138612738433,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.999724,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000512187087686,
+          "robust_max_abs_curvature_inv_m": 0.0008762369713067689,
+          "speed_mps": 8.598138612738433
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.00142257518086085,
+          "robust_max_abs_curvature_inv_m": 0.0013041092151730074,
+          "speed_mps": 8.598138612738433
+        }
+      },
+      "selection_hash_sha256": "160ba817451e996f925164eecc824e2f8b59994e43e65ff2b21b9685834026d4",
+      "speed_band": "[6.0,9.0)",
+      "selection_rank": 4,
+      "roster_index": 4,
+      "pair_id": "R2BJB0-HLC-04",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 378,
+      "frame_index": 378,
+      "scenario_token": "57e7cbc7cc465554",
+      "log_id": "2021.09.17.12.58.10_veh-45_01935_02062",
+      "audit_rank_sha256": "008cb56e9bd9f1ed7f88fc007e890bf58b64d2c8a8f387583e652fe0127156e2",
+      "input_record_canonical_sha256": "3c3f6034a809943fec0be0459642c5f2f294e4f2d2af97b52c1ab3dd20112ad2",
+      "v_audit_mps": 9.331809,
+      "v_support_mps": 9.831809,
+      "source_reference_sha256": "307dc3a083b881ba581759049d8a097f2b1f4d688f207f8bb35f6c46ac4953c0",
+      "target_reference_sha256": "dfc4bfea928fa1ee8098e53d4d3b7fc3589910c58b1286ea9cbbd1bd791a1b70",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 157.3425822,
+        "source_total_length_m": 205.81873518464806,
+        "target_total_length_m": 206.00632791010085,
+        "source_current_arc_m": 40.70129638128041,
+        "target_current_arc_m": 40.7391365231713,
+        "source_remaining_margin_m": 7.7748566033676525,
+        "target_remaining_margin_m": 7.92460918692953,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20142",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.850456497587057,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20143",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.888335354297446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "7bb9b572b5e1582730c7727258931f3fc447f5a7b1394aee9e018f6d115d033c",
+      "predicate_result_canonical_sha256": "d9ff90c2e892acb0e22dc267a024f638869f5d9ae04ab8a271c1ab6eb4f387de",
+      "closure_canonical_sha256": "6099f1d1079791c4fd2026ca044bec4f663ce6a26aba4a485f30d05399c65a64",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "right",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.17.12.58.10_veh-45_01935_02062.db",
+      "db_file": "2021.09.17.12.58.10_veh-45_01935_02062.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "f71fa8d1e8a3540c",
+        "official_simulation_initial_timestamp_us": 1631885556699468,
+        "official_scenario_types": [
+          "high_magnitude_speed"
+        ],
+        "initial_x": 587877.40485,
+        "initial_y": 4475535.208324,
+        "initial_heading": 0.86610394,
+        "initial_speed_mps": 9.331809,
+        "initial_time_us": 1631885556699468,
+        "initial_state_fingerprint": "17abcdee9d661fe772311704a4a754f036849eb46803ec33bdf1a29c084f169d"
+      },
+      "route_roadblock_ids": [
+        "19724",
+        "14340",
+        "19479",
+        "19022",
+        "19447",
+        "19001",
+        "19340"
+      ],
+      "route_fingerprint": "eb4daf9a99f4e60c0524229438ce5cb0b00a90e15c0ebc4139be560d81ea22e7",
+      "source_lane_id": "18556",
+      "target_lane_id": "18557",
+      "scenario_anchor_timestamp_us": 1631885559650051,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 9.331809,
+        "anchor_requested_timestamp_us": 1631885559650051,
+        "anchor_nearest_timestamp_us": 1631885559650051,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.64864805108953,
+        "pre_treatment_window_start_us": 1631885556699468,
+        "pre_treatment_window_end_us": 1631885557699468,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1631885556699468,
+            "speed_mps": 9.331808606231883
+          },
+          {
+            "timestamp_us": 1631885556749456,
+            "speed_mps": 9.328990336416668
+          },
+          {
+            "timestamp_us": 1631885556799443,
+            "speed_mps": 9.326159836413089
+          },
+          {
+            "timestamp_us": 1631885556849432,
+            "speed_mps": 9.320058001837715
+          },
+          {
+            "timestamp_us": 1631885556899422,
+            "speed_mps": 9.317674134522246
+          },
+          {
+            "timestamp_us": 1631885556949414,
+            "speed_mps": 9.313779045787797
+          },
+          {
+            "timestamp_us": 1631885556999406,
+            "speed_mps": 9.310311759410805
+          },
+          {
+            "timestamp_us": 1631885557049398,
+            "speed_mps": 9.306676589494655
+          },
+          {
+            "timestamp_us": 1631885557099389,
+            "speed_mps": 9.299017592976613
+          },
+          {
+            "timestamp_us": 1631885557149380,
+            "speed_mps": 9.287529936443812
+          },
+          {
+            "timestamp_us": 1631885557199375,
+            "speed_mps": 9.285536019331701
+          },
+          {
+            "timestamp_us": 1631885557249374,
+            "speed_mps": 9.282435146409581
+          },
+          {
+            "timestamp_us": 1631885557299379,
+            "speed_mps": 9.279817927906244
+          },
+          {
+            "timestamp_us": 1631885557349388,
+            "speed_mps": 9.277716414567914
+          },
+          {
+            "timestamp_us": 1631885557399405,
+            "speed_mps": 9.271343529343776
+          },
+          {
+            "timestamp_us": 1631885557449427,
+            "speed_mps": 9.271450314794079
+          },
+          {
+            "timestamp_us": 1631885557499454,
+            "speed_mps": 9.269873100695719
+          },
+          {
+            "timestamp_us": 1631885557549484,
+            "speed_mps": 9.271829391441205
+          },
+          {
+            "timestamp_us": 1631885557599514,
+            "speed_mps": 9.264382798117529
+          },
+          {
+            "timestamp_us": 1631885557649542,
+            "speed_mps": 9.262252799388301
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 9.262252799388301,
+          "p25": 9.271734622279423,
+          "median": 9.286532977887756,
+          "p75": 9.31475281797141,
+          "p95": 9.329131249907428,
+          "p99": 9.331273134966992,
+          "max": 9.331808606231883
+        },
+        "v_audit_mps": 9.331809,
+        "v_support_mps": 9.831809,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.950583,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000052667527234,
+          "robust_max_abs_curvature_inv_m": 0.0010000262170216307,
+          "speed_mps": 9.331809
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.005643329373896908,
+          "robust_max_abs_curvature_inv_m": 0.00479341198568792,
+          "speed_mps": 9.331809
+        }
+      },
+      "selection_hash_sha256": "1913f71f1ee7fac1b8c447f337c9c0296333be8fb52f4fc151b6f97674324261",
+      "speed_band": "[9.0,12.0)",
+      "selection_rank": 5,
+      "roster_index": 5,
+      "pair_id": "R2BJB0-HLC-05",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 23,
+      "frame_index": 23,
+      "scenario_token": "6408758176c25fb4",
+      "log_id": "2021.10.01.18.24.31_veh-44_00925_01112",
+      "audit_rank_sha256": "00028e125b05f094e79750b27d09f95e88bb9f48e1618e84dd4236e4b54dc70b",
+      "input_record_canonical_sha256": "6b9f8fcf7195e6f2c4db8cf16ced8e2c282d327d8a8b8b453fc279183a4634e2",
+      "v_audit_mps": 9.67162937805449,
+      "v_support_mps": 10.17162937805449,
+      "source_reference_sha256": "7bffa6aeb81c0fcd57e0979b04baaa14bc1c38f4f61191248839e55379449607",
+      "target_reference_sha256": "6abdbe2eff2d7fa6fdb1a30c40fa1d383e7a2f0878f1a906f2f9a1a5aa23336d",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 162.71174417326094,
+        "source_total_length_m": 184.53469079911378,
+        "target_total_length_m": 185.011474042814,
+        "source_current_arc_m": 10.2203101449055,
+        "target_current_arc_m": 10.529449188652055,
+        "source_remaining_margin_m": 11.602636480947325,
+        "target_remaining_margin_m": 11.77028068090101,
+        "source_components": [
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20121",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 35.01266046558885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18514",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.839114079400336,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19949",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.05097380386642,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19835",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 62.88059839610438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20229",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.42332186335746,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18513",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.40744603433657,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20230",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.48456584795533,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19739",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 63.340497367712175,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "48df6a3dab16b8b7c79d9edb443c6c7995d23ec15c174c33e1deb48f6ef715f8",
+      "predicate_result_canonical_sha256": "838697827279dddb9512018426fb62bc4ffcf8f02f1f78de40e58523fd1e20d5",
+      "closure_canonical_sha256": "b208339484355bbc912f3bacdf8bdf0d544e7a821c97e73573c0297bff669c8b",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "right",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.10.01.18.24.31_veh-44_00925_01112.db",
+      "db_file": "2021.10.01.18.24.31_veh-44_00925_01112.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "895d9569c40e5222",
+        "official_simulation_initial_timestamp_us": 1633113710649301,
+        "official_scenario_types": [
+          "high_magnitude_speed"
+        ],
+        "initial_x": 587603.020889,
+        "initial_y": 4475684.274839,
+        "initial_heading": 2.80817708,
+        "initial_speed_mps": 9.37639,
+        "initial_time_us": 1633113710649301,
+        "initial_state_fingerprint": "c484728eb8d10b6789957212264a51216fe4c5cbd5cae71c37474f01ee01bb95"
+      },
+      "route_roadblock_ids": [
+        "19084",
+        "19428",
+        "19025",
+        "19334",
+        "19082",
+        "19710",
+        "19190",
+        "19655",
+        "19189",
+        "19664",
+        "19188",
+        "19677",
+        "19182",
+        "19683",
+        "19165",
+        "19616",
+        "19164",
+        "19623",
+        "19150"
+      ],
+      "route_fingerprint": "09f549d460ecbfa5e8b3c9cb9ae50194a1b48045716bc1a5f87a909e6298b14c",
+      "source_lane_id": "19810",
+      "target_lane_id": "19738",
+      "scenario_anchor_timestamp_us": 1633113713599412,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 9.37639,
+        "anchor_requested_timestamp_us": 1633113713599412,
+        "anchor_nearest_timestamp_us": 1633113713599412,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.819961966880811,
+        "pre_treatment_window_start_us": 1633113710649301,
+        "pre_treatment_window_end_us": 1633113711649301,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1633113710649301,
+            "speed_mps": 9.37638985616584
+          },
+          {
+            "timestamp_us": 1633113710699303,
+            "speed_mps": 9.394104735508696
+          },
+          {
+            "timestamp_us": 1633113710749302,
+            "speed_mps": 9.409173049047148
+          },
+          {
+            "timestamp_us": 1633113710799299,
+            "speed_mps": 9.423461634270401
+          },
+          {
+            "timestamp_us": 1633113710849295,
+            "speed_mps": 9.434452976735164
+          },
+          {
+            "timestamp_us": 1633113710899291,
+            "speed_mps": 9.451455375456279
+          },
+          {
+            "timestamp_us": 1633113710949285,
+            "speed_mps": 9.469040893666794
+          },
+          {
+            "timestamp_us": 1633113710999279,
+            "speed_mps": 9.486266051198902
+          },
+          {
+            "timestamp_us": 1633113711049273,
+            "speed_mps": 9.502108929194316
+          },
+          {
+            "timestamp_us": 1633113711099267,
+            "speed_mps": 9.51750937577239
+          },
+          {
+            "timestamp_us": 1633113711149259,
+            "speed_mps": 9.528574877774904
+          },
+          {
+            "timestamp_us": 1633113711199252,
+            "speed_mps": 9.541540722857762
+          },
+          {
+            "timestamp_us": 1633113711249247,
+            "speed_mps": 9.556695703122509
+          },
+          {
+            "timestamp_us": 1633113711299246,
+            "speed_mps": 9.571994974803829
+          },
+          {
+            "timestamp_us": 1633113711349247,
+            "speed_mps": 9.58680307297046
+          },
+          {
+            "timestamp_us": 1633113711399250,
+            "speed_mps": 9.601704586809618
+          },
+          {
+            "timestamp_us": 1633113711449256,
+            "speed_mps": 9.614084266164438
+          },
+          {
+            "timestamp_us": 1633113711499265,
+            "speed_mps": 9.629672827139029
+          },
+          {
+            "timestamp_us": 1633113711549274,
+            "speed_mps": 9.642986740051834
+          },
+          {
+            "timestamp_us": 1633113711599283,
+            "speed_mps": 9.655520131995095
+          },
+          {
+            "timestamp_us": 1633113711649291,
+            "speed_mps": 9.67162937805449
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 9.37638985616584,
+          "p25": 9.451455375456279,
+          "median": 9.528574877774904,
+          "p75": 9.601704586809618,
+          "p95": 9.655520131995095,
+          "p99": 9.66840752884261,
+          "max": 9.67162937805449
+        },
+        "v_audit_mps": 9.67162937805449,
+        "v_support_mps": 10.17162937805449,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9501109999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000888215895851,
+          "robust_max_abs_curvature_inv_m": 0.0009115707850664963,
+          "speed_mps": 9.67162937805449
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000933102575402,
+          "robust_max_abs_curvature_inv_m": 0.0009640495233428743,
+          "speed_mps": 9.67162937805449
+        }
+      },
+      "selection_hash_sha256": "1e7d0e36acf4b114bbfdad2a8f2068fd58b76eff9b31fb4d109f9248352ecb65",
+      "speed_band": "[9.0,12.0)",
+      "selection_rank": 6,
+      "roster_index": 6,
+      "pair_id": "R2BJB0-HLC-06",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 424,
+      "frame_index": 424,
+      "scenario_token": "c5a22460be1c59c2",
+      "log_id": "2021.08.20.16.54.30_veh-08_02083_02192",
+      "audit_rank_sha256": "00da523b637d9c7916b95b118d04eb77c6d7743f81b4778347f91c4f22c4db5c",
+      "input_record_canonical_sha256": "8962564108aa7a60b79e6954a2d8915d41a09491bef3b4926a2be370a59bbe04",
+      "v_audit_mps": 11.828635645846314,
+      "v_support_mps": 12.42006742813863,
+      "source_reference_sha256": "89d5ed2193534109ab6069eb4012938e02f3ebf5a52d3f576df4cb8554f82f38",
+      "target_reference_sha256": "7af4d150c62c804eb95b7fe89bd7a73e458f4db454f9b37be897d50bc6bea354",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 198.23706536459036,
+        "source_total_length_m": 211.5894001847018,
+        "target_total_length_m": 211.5734818498277,
+        "source_current_arc_m": 8.53774751250659,
+        "target_current_arc_m": 8.512843818910524,
+        "source_remaining_margin_m": 4.814587307604825,
+        "target_remaining_margin_m": 4.823572666326811,
+        "source_components": [
+          {
+            "edge_id": "18862",
+            "roadblock_id": "19216",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.588638208871394,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20391",
+            "roadblock_id": "19723",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 31.86470746547494,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19925",
+            "roadblock_id": "19088",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.49214628517497,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19946",
+            "roadblock_id": "19712",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.643908225180425,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18861",
+            "roadblock_id": "19216",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.57879373595335,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20392",
+            "roadblock_id": "19723",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 37.38213873489513,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19822",
+            "roadblock_id": "19088",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 119.96282064864887,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19945",
+            "roadblock_id": "19712",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.649728730330295,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "d2f4dbc0fe9b2402c0d3bb37816f749a41f4e0a1372b30a0677a613b26cab494",
+      "predicate_result_canonical_sha256": "3f99a5f8f91af72749f244e83f9a873cb5757f1ff1f322cc70e690ef3516ce76",
+      "closure_canonical_sha256": "aba507447c687e39c346e5f4b16c6da73a48d0a47e05dbcadeaf4bade8e18533",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "left",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.20.16.54.30_veh-08_02083_02192.db",
+      "db_file": "2021.08.20.16.54.30_veh-08_02083_02192.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "67f3b9d75cf95296",
+        "official_simulation_initial_timestamp_us": 1629480732449508,
+        "official_scenario_types": [
+          "high_magnitude_speed",
+          "on_intersection",
+          "on_traffic_light_intersection",
+          "traversing_intersection",
+          "traversing_traffic_light_intersection"
+        ],
+        "initial_x": 587811.639044,
+        "initial_y": 4475508.141869,
+        "initial_heading": -0.71412344,
+        "initial_speed_mps": 11.469037,
+        "initial_time_us": 1629480732449508,
+        "initial_state_fingerprint": "d4ef29a1f0ed376cab949185a4207ee43b39cd9f0d53fc0df8b4789e25ad6977"
+      },
+      "route_roadblock_ids": [
+        "19384",
+        "19029",
+        "19720",
+        "19215",
+        "19718",
+        "19216",
+        "19723",
+        "19088",
+        "19712",
+        "19031",
+        "19318",
+        "19039",
+        "19648",
+        "19148",
+        "19161",
+        "19625",
+        "19079",
+        "19386",
+        "19108"
+      ],
+      "route_fingerprint": "61ae7f4236e73659cad2049a0ff60d516a393103c75500b089efa127d69f57a9",
+      "source_lane_id": "18862",
+      "target_lane_id": "18861",
+      "scenario_anchor_timestamp_us": 1629480735399733,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 11.469037,
+        "anchor_requested_timestamp_us": 1629480735399733,
+        "anchor_nearest_timestamp_us": 1629480735399733,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 11.613545880780986,
+        "pre_treatment_window_start_us": 1629480732449508,
+        "pre_treatment_window_end_us": 1629480733449508,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629480732449508,
+            "speed_mps": 11.469037023707596
+          },
+          {
+            "timestamp_us": 1629480732499504,
+            "speed_mps": 11.490162636024634
+          },
+          {
+            "timestamp_us": 1629480732549501,
+            "speed_mps": 11.50226966414956
+          },
+          {
+            "timestamp_us": 1629480732599502,
+            "speed_mps": 11.520826389030317
+          },
+          {
+            "timestamp_us": 1629480732649503,
+            "speed_mps": 11.53596907538192
+          },
+          {
+            "timestamp_us": 1629480732699508,
+            "speed_mps": 11.551812870282186
+          },
+          {
+            "timestamp_us": 1629480732749516,
+            "speed_mps": 11.571722571067854
+          },
+          {
+            "timestamp_us": 1629480732799528,
+            "speed_mps": 11.590748806547742
+          },
+          {
+            "timestamp_us": 1629480732849537,
+            "speed_mps": 11.609625392179089
+          },
+          {
+            "timestamp_us": 1629480732899545,
+            "speed_mps": 11.626164490019725
+          },
+          {
+            "timestamp_us": 1629480732949553,
+            "speed_mps": 11.642364957643872
+          },
+          {
+            "timestamp_us": 1629480732999561,
+            "speed_mps": 11.659913737800633
+          },
+          {
+            "timestamp_us": 1629480733049573,
+            "speed_mps": 11.68180523801589
+          },
+          {
+            "timestamp_us": 1629480733099589,
+            "speed_mps": 11.706292701463328
+          },
+          {
+            "timestamp_us": 1629480733149604,
+            "speed_mps": 11.72845748745392
+          },
+          {
+            "timestamp_us": 1629480733199621,
+            "speed_mps": 11.748587947286309
+          },
+          {
+            "timestamp_us": 1629480733249637,
+            "speed_mps": 11.768962122665426
+          },
+          {
+            "timestamp_us": 1629480733299655,
+            "speed_mps": 11.787374793590283
+          },
+          {
+            "timestamp_us": 1629480733349671,
+            "speed_mps": 11.807215432034019
+          },
+          {
+            "timestamp_us": 1629480733399686,
+            "speed_mps": 11.828635645846314
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 11.469037023707596,
+          "p25": 11.54785192155712,
+          "median": 11.634264723831798,
+          "p75": 11.733490102412016,
+          "p95": 11.808286442724633,
+          "p99": 11.824565805221978,
+          "max": 11.828635645846314
+        },
+        "v_audit_mps": 11.828635645846314,
+        "v_support_mps": 12.42006742813863,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9502249999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000127965473094,
+          "robust_max_abs_curvature_inv_m": 0.0010000015127898708,
+          "speed_mps": 11.828635645846314
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000532495886862,
+          "robust_max_abs_curvature_inv_m": 0.0009968303263903722,
+          "speed_mps": 11.828635645846314
+        }
+      },
+      "selection_hash_sha256": "2bb23956491dcec48398aa18d76838136692991f7977f1a006b9d02225ea92d1",
+      "speed_band": "[9.0,12.0)",
+      "selection_rank": 7,
+      "roster_index": 7,
+      "pair_id": "R2BJB0-HLC-07",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    },
+    {
+      "census_index": 172,
+      "frame_index": 172,
+      "scenario_token": "74801411f6d15a0d",
+      "log_id": "2021.08.30.13.47.20_veh-08_00359_00489",
+      "audit_rank_sha256": "0020ceaec9173b4f33338e286ae2d6a0cc04f883e5be5c213e2390edabe95c33",
+      "input_record_canonical_sha256": "cbbcaa4a416573790cd806a5fac0b016a050cddaf014b7c00fd822edbe610add",
+      "v_audit_mps": 14.134407283842949,
+      "v_support_mps": 14.841127648035096,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 236.48981683895454,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 19.71251136818682,
+        "target_current_arc_m": 19.850758991945796,
+        "source_remaining_margin_m": 25.866811669219715,
+        "target_remaining_margin_m": 17.948597572850815,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "273d83c8e73e91fb54339bd0f3ad070935c75945ac1a7517b7ad3741bc214366",
+      "predicate_result_canonical_sha256": "542debcefa91fda22634d951a22a002d95c443fe1cf78a6fed4e68f1649eec25",
+      "closure_canonical_sha256": "a615241ab52974a694c0f9306842402a0684a27cb401302cd73ae5397f16faa5",
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "direction": "right",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.30.13.47.20_veh-08_00359_00489.db",
+      "db_file": "2021.08.30.13.47.20_veh-08_00359_00489.db",
+      "initial_state": {
+        "official_simulation_initial_lidar_token": "f28a45a0ff6456df",
+        "official_simulation_initial_timestamp_us": 1630331726899651,
+        "official_scenario_types": [
+          "following_lane_without_lead",
+          "high_magnitude_speed"
+        ],
+        "initial_x": 588587.875366,
+        "initial_y": 4475782.573856,
+        "initial_heading": 2.23390966,
+        "initial_speed_mps": 13.787439,
+        "initial_time_us": 1630331726899651,
+        "initial_state_fingerprint": "b72cf7793235363ea2cbcebe7d829539a998d0ae2a034af36155ba5f883fa95a"
+      },
+      "route_roadblock_ids": [
+        "19486",
+        "19094",
+        "19516",
+        "19045",
+        "19463",
+        "19074",
+        "19404",
+        "14541",
+        "19445",
+        "19000",
+        "19512"
+      ],
+      "route_fingerprint": "d35b146216ccda8dd80bd7e34e871fdeea1fe3f14ef268439c25a678891a8f26",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "scenario_anchor_timestamp_us": 1630331729850114,
+      "pre_treatment_speed_information": {
+        "official_initial_speed_mps": 13.787439,
+        "anchor_requested_timestamp_us": 1630331729850114,
+        "anchor_nearest_timestamp_us": 1630331729850114,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 14.467426261311354,
+        "pre_treatment_window_start_us": 1630331726899651,
+        "pre_treatment_window_end_us": 1630331727899651,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1630331726899651,
+            "speed_mps": 13.787439260584259
+          },
+          {
+            "timestamp_us": 1630331726949636,
+            "speed_mps": 13.80558149324213
+          },
+          {
+            "timestamp_us": 1630331726999625,
+            "speed_mps": 13.828349962116507
+          },
+          {
+            "timestamp_us": 1630331727049615,
+            "speed_mps": 13.84783370234634
+          },
+          {
+            "timestamp_us": 1630331727099603,
+            "speed_mps": 13.865647375458364
+          },
+          {
+            "timestamp_us": 1630331727149589,
+            "speed_mps": 13.883329456462953
+          },
+          {
+            "timestamp_us": 1630331727199575,
+            "speed_mps": 13.901541062983046
+          },
+          {
+            "timestamp_us": 1630331727249560,
+            "speed_mps": 13.920710198329253
+          },
+          {
+            "timestamp_us": 1630331727299547,
+            "speed_mps": 13.936762755460979
+          },
+          {
+            "timestamp_us": 1630331727349539,
+            "speed_mps": 13.953836353062181
+          },
+          {
+            "timestamp_us": 1630331727399534,
+            "speed_mps": 13.971893812454269
+          },
+          {
+            "timestamp_us": 1630331727449531,
+            "speed_mps": 13.992913307253438
+          },
+          {
+            "timestamp_us": 1630331727499531,
+            "speed_mps": 14.007045370183024
+          },
+          {
+            "timestamp_us": 1630331727549533,
+            "speed_mps": 14.030188101287226
+          },
+          {
+            "timestamp_us": 1630331727599537,
+            "speed_mps": 14.049715840824652
+          },
+          {
+            "timestamp_us": 1630331727649544,
+            "speed_mps": 14.06529085351498
+          },
+          {
+            "timestamp_us": 1630331727699554,
+            "speed_mps": 14.083069724722774
+          },
+          {
+            "timestamp_us": 1630331727749565,
+            "speed_mps": 14.099296684689012
+          },
+          {
+            "timestamp_us": 1630331727799579,
+            "speed_mps": 14.10730483803165
+          },
+          {
+            "timestamp_us": 1630331727849597,
+            "speed_mps": 14.120350172313945
+          },
+          {
+            "timestamp_us": 1630331727899618,
+            "speed_mps": 14.134407283842949
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 13.787439260584259,
+          "p25": 13.883329456462953,
+          "median": 13.971893812454269,
+          "p75": 14.06529085351498,
+          "p95": 14.120350172313945,
+          "p99": 14.131595861537148,
+          "max": 14.134407283842949
+        },
+        "v_audit_mps": 14.134407283842949,
+        "v_support_mps": 14.841127648035096,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.950463,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000609393944183,
+          "robust_max_abs_curvature_inv_m": 0.0010000013176744793,
+          "speed_mps": 14.134407283842949
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.01509747467078189,
+          "robust_max_abs_curvature_inv_m": 0.0025147394876946436,
+          "speed_mps": 14.134407283842949
+        }
+      },
+      "selection_hash_sha256": "3bfeaccbba8e27647a5bb39829f37344888ea61bce646e091a70634fe66d73cd",
+      "speed_band": "[12.0,+inf)",
+      "selection_rank": 9,
+      "roster_index": 8,
+      "pair_id": "R2BJB0-HLC-08",
+      "disposition": "PERMANENT_ENGINEERING_ONLY",
+      "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED",
+      "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true
+    }
+  ],
+  "selected_compact_canonical_sha256": "ac31cbe2166ba36cbabebd0e6a71dd2fafb5efb59e7119c0f3c378b6eb1e1451"
+}

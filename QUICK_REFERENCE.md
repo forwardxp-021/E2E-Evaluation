@@ -11047,3 +11047,34 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - `A5_MOVING_REGIME_COMPONENT_FAILURES = 0`；native、generated increment、composite、continuity、terminal settling 均无失败，curvature 未定义类别为 0，passing provenance closure 为 100%。
 - 状态为 `R2_BJ_A5_CENSUS_COMPLETE_READY_FOR_BJ_B_OWNER_REVIEW`，仅请求 Owner 审阅；`BJ_B_ROSTER_SELECTED = FALSE`。
 - `runner.run=0`，engineering/scientific/TSB simulation 均为 0；R2-C、confirmatory smoke、RBR 均未启动；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BJ-B0 HLC V4 Engineering Freeze
+
+### 1. 命令
+
+B0 已冻结 8 条 engineering-only roster 与 16-run intended schedule。不得重新生成 roster；日常只读复核使用：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_b0_hlc_v4_engineering_freeze.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 冻结内容
+
+- 唯一候选输入为 A5 的 34 条 `MOVING_REGIME_V4_APPLICABLE`；使用预注册 salt 和 NUL 分隔 SHA256 排名，选择字典序最小的满足精确方向、地图和速度带配额的 8 元子集。
+- 冻结选择 rank tuple 为 `(1,2,3,4,5,6,7,9)`；8 条均为 `PERMANENT_ENGINEERING_ONLY`、尚未 outcome exposed；其余 26 条保持未选择且 outcome-unexposed，不建立 reserve/replacement 顺序。
+- 8 个 pair、16 个 intended runs 按 selection rank、每 pair baseline 后 treatment 排序。两 arm 的 token/log、初始状态、route/reference、pre-treatment context、控制器、配置、seed 和 Primary80 完全共享；`t<1.1 s` trajectory construction exact equal。
+- 未来 planner 每次调用检查 curvature、yaw-rate、lateral acceleration、state0/step/tangent/XY-heading continuity、terminal target residual、rolling stitching horizon、controller-visible steering 和 pre-divergence equality。架构失败将停止当前和剩余 schedule，禁止 replacement 或参数更新。
+
+### 3. 零运行状态
+
+- 16/16 full Hydra composition、exact scenario resolution、pair lookup、V4 planner construction、Primary80 controller 和 SimulationRunner construction 均通过。
+- 当前授权门保持关闭：`BJ_B_ENGINEERING_SIMULATION_AUTHORIZED=false`、`CANARY_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RUNNER_RUN=0`。
+- 下一次仅向 Owner 申请 selection rank 1 的一对 baseline→treatment canary（2 runs）；本阶段未执行该 canary。
+- 未启动 R2-C、confirmatory smoke、TSB 或 RBR；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

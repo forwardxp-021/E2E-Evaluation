@@ -1,0 +1,26 @@
+{
+  "schema_version": "r2_bj_b0_execution_authorization_gate_v1.0",
+  "status": "DENY_BEFORE_SIMULATOR_START",
+  "BJ_B_ENGINEERING_SIMULATION_AUTHORIZED": false,
+  "NEW_RUN_BUDGET": 0,
+  "RUNNER_RUN": 0,
+  "required_future_owner_binding": [
+    "authorized_component_manifest_sha256",
+    "authorized_schedule_sha256",
+    "authorized_pair_binding_sha256",
+    "positive_run_budget"
+  ],
+  "future_canary": {
+    "CANARY_IDENTITIES": 1,
+    "CANARY_PAIRS": 1,
+    "INTENDED_RUNS": 2,
+    "ORDER": "BASELINE_THEN_TREATMENT",
+    "identity_selection_rank": 1,
+    "scenario_token": "cc1abd3989065d8d",
+    "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+    "CANARY_AUTHORIZED": false,
+    "NEW_RUN_BUDGET": 0
+  },
+  "schedule_mismatch_action": "HARD_FAIL_BEFORE_SIMULATOR_START",
+  "SHA_mismatch_action": "HARD_FAIL_BEFORE_SIMULATOR_START"
+}

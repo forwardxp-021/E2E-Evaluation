@@ -1,5 +1,6 @@
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -111,4 +112,8 @@ def test_current_a5_manifest_binds_all_components():
     assert manifest["BJ_B_ROSTER_SELECTED"] is False
     assert manifest["RUNNER_RUN"] == manifest["simulation_calls"] == 0
     for row in manifest["components"]:
-        assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+        historical = subprocess.run(
+            ["git", "show", f"c99551c022cbb595e1afb6e51ffb32003fc419c0:{row['path']}"],
+            cwd=ROOT, check=True, capture_output=True,
+        ).stdout
+        assert hashlib.sha256(historical).hexdigest() == row["sha256"]

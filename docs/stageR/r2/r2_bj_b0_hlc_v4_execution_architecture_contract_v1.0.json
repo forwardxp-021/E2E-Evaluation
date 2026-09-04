@@ -1,0 +1,38 @@
+{
+  "schema_version": "r2_bj_b0_hlc_v4_execution_architecture_contract_v1.0",
+  "status": "FROZEN_ZERO_RUN",
+  "planner_class": "tools.r2_bj_b0_hlc_v4_engineering_planner.R2BJB0HLCV4EngineeringPlanner",
+  "immutable_V4_generator": {
+    "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+    "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+  },
+  "immutable_V4_states": {
+    "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+    "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+  },
+  "immutable_parameters": {
+    "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+    "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"
+  },
+  "online_per_planner_call_gates": [
+    "curvature",
+    "yaw_rate",
+    "lateral_acceleration",
+    "state0_exact_current_pose",
+    "state0_to_state1_distance_excess",
+    "state0_tangent_mismatch",
+    "XY_heading_consistency",
+    "target_frame_residual",
+    "rolling_stitching_horizon",
+    "controller_visible_steering",
+    "baseline_treatment_pre_divergence_equality"
+  ],
+  "threshold_source": "IMMUTABLE_V4_AND_EXISTING_FROZEN_SCIENTIFIC_ENGINEERING_CONTRACTS",
+  "architecture_violation_action": [
+    "STOP_CURRENT_RUN",
+    "STOP_REMAINING_SCHEDULE"
+  ],
+  "IDENTITY_REPLACEMENT": "FORBIDDEN",
+  "PARAMETER_UPDATE": "FORBIDDEN",
+  "technical_rerun_authorized": false
+}

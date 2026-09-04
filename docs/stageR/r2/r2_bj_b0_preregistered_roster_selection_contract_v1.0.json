@@ -1,0 +1,53 @@
+{
+  "schema_version": "r2_bj_b0_preregistered_roster_selection_contract_v1.0",
+  "status": "PREREGISTERED_BEFORE_BJ_B0_ROSTER_SELECTION",
+  "stage": "R2-BJ-B0_HLC_V4_ENGINEERING_ROSTER_AND_ZERO_RUN_EXECUTION_FREEZE",
+  "baseline": {
+    "remote_commit": "80afa7e4a1416c7e527fbd6ab6b2889ee9198be7",
+    "local_commit": "c99551c022cbb595e1afb6e51ffb32003fc419c0",
+    "tree": "0b22031bb4923b91b5b145e0658382f56ba0903f"
+  },
+  "candidate_pool": {
+    "source": "A5_APPLICABLE_POOL_PROVENANCE_EXACT_34_RECORDS",
+    "count": 34,
+    "allowed_selection_attributes": ["map", "lane_change_direction", "v_audit_speed_band", "selection_hash"],
+    "forbidden_selection_attributes": [
+      "V4_component_margin", "curvature_yaw_rate_lateral_acceleration_margin",
+      "route_coverage_margin", "scenario_specific_offline_difficulty",
+      "historical_or_future_closed_loop_outcome", "manual_trajectory_review"
+    ]
+  },
+  "selection": {
+    "salt": "R2_BJ_B0_DEV_ROSTER_V1_20260904",
+    "hash_rule": "SHA256(UTF8(salt)+0x00+UTF8(scenario_token)+0x00+UTF8(log_id))",
+    "rank_order": ["selection_hash_ASC", "scenario_token_ASC", "log_id_ASC"],
+    "subset_rule": "LEXICOGRAPHICALLY_SMALLEST_ASCENDING_SELECTION_RANK_TUPLE_AMONG_ALL_EXACT_QUOTA_8_SUBSETS",
+    "roster_size": 8,
+    "quotas": {
+      "direction": {"left": 2, "right": 6},
+      "map": {"us-nv-las-vegas-strip": 1, "us-pa-pittsburgh-hazelwood": 7},
+      "v_audit_speed_band": {"[3.0,6.0)": 1, "[6.0,9.0)": 3, "[9.0,12.0)": 3, "[12.0,+inf)": 1}
+    }
+  },
+  "selected_disposition": {
+    "PERMANENT_ENGINEERING_ONLY": true,
+    "R2_C_CONFIRMATORY_RBR_USE_FORBIDDEN": true,
+    "outcome_state": "ROSTER_FROZEN_NOT_YET_OUTCOME_EXPOSED"
+  },
+  "unselected_disposition": "UNSELECTED_OUTCOME_UNEXPOSED_POOL",
+  "reserve_or_replacement_order": "NONE",
+  "schedule": {
+    "pairs": 8,
+    "intended_runs": 16,
+    "order": "SELECTION_RANK_THEN_BASELINE_BEFORE_TREATMENT",
+    "family": "R-HLC_ONLY",
+    "arms": ["BASELINE", "TREATMENT"]
+  },
+  "zero_run": {
+    "RUNNER_RUN": 0,
+    "NEW_RUN_BUDGET": 0,
+    "BJ_B_ENGINEERING_SIMULATION_AUTHORIZED": false,
+    "CANARY_AUTHORIZED": false,
+    "future_canary": {"identities": 1, "pairs": 1, "intended_runs": 2, "order": "BASELINE_THEN_TREATMENT", "identity": "SELECTION_RANK_FIRST"}
+  }
+}
