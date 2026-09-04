@@ -1,0 +1,58 @@
+{
+  "schema_version": "r2_bj_a3_joint_support_envelope_v1.0",
+  "audit_frame_count": 256,
+  "applicable_count": 17,
+  "not_a_full_source_universe_census": true,
+  "speed_joint_support_mps": {
+    "v_audit": {
+      "min": 4.318354299292398,
+      "p25": 7.3358102686851865,
+      "median": 9.054265812945406,
+      "p75": 10.977725087548004,
+      "p95": 13.791517989021479,
+      "p99": 13.835393270599226,
+      "max": 13.846362090993663
+    },
+    "v_support": {
+      "min": 4.818354299292398,
+      "p25": 7.8358102686851865,
+      "median": 9.554265812945406,
+      "p75": 11.526611341925404,
+      "p95": 14.481093888472552,
+      "p99": 14.527162934129187,
+      "max": 14.538680195543346
+    }
+  },
+  "lane_separation_joint_support_m": {
+    "min": 0.6693987037479908,
+    "max": 5.964349144291602
+  },
+  "source_raw_curvature_abs_max_inv_m": {
+    "min": 6.24928820157699e-08,
+    "p25": 0.0010000666666877735,
+    "median": 0.001208952072832192,
+    "p75": 0.004191476496945754,
+    "p95": 0.029391842398495717,
+    "p99": 0.08040107786505521,
+    "max": 0.09315338673169508
+  },
+  "target_raw_curvature_abs_max_inv_m": {
+    "min": 0.0010000355868230043,
+    "p25": 0.001000127965473094,
+    "median": 0.0018347227074411155,
+    "p75": 0.01509747467078189,
+    "p95": 0.0977280593745463,
+    "p99": 0.0977280593745463,
+    "max": 0.0977280593745463
+  },
+  "provenance_geometry_speed_component_closure_percent": 100.0,
+  "BJ_A_cartesian_envelope_role": "ADVERSARIAL_STRESS_APPENDIX_NOT_ACTUAL_DOMAIN_DECIDER",
+  "roster_selected": false,
+  "runner_run_calls": 0,
+  "simulation_calls": 0,
+  "status": "JOINT_SUPPORT_EXTRACTION_INCOMPLETE",
+  "blocking_categories": [
+    "JOINT_SUPPORT_EXTRACTION_INCOMPLETE",
+    "V4_GENERATED_INCREMENT_INFEASIBLE"
+  ]
+}

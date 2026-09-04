@@ -1,0 +1,26 @@
+{
+  "schema_version": "r2_bj_a3_data_firewall_audit_v1.0",
+  "status": "PASS_NO_OUTCOME_LEAKAGE",
+  "allowed_inputs": [
+    "frozen_source_universe",
+    "official_DB_pretreatment_only",
+    "official_map",
+    "frozen_V2_3",
+    "frozen_V4"
+  ],
+  "outcome_files_opened": 0,
+  "mechanism_endpoint_F_match_safety_outcomes_used": false,
+  "scenario_specific_tuning": false,
+  "V4_parameters_changed": false,
+  "thresholds_changed": false,
+  "A2_historical_files_rewritten": false,
+  "BJ_B_roster_selected": false,
+  "runner_run_calls": 0,
+  "engineering_simulation_calls": 0,
+  "scientific_simulation_calls": 0,
+  "TSB_simulation_calls": 0,
+  "R2_C_started": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

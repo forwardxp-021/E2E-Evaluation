@@ -10949,3 +10949,38 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - 因冻结 eligibility 管线没有持久化全 source universe 的全部 eligibility-pass population，A2 必须为 `JOINT_SUPPORT_EXTRACTION_INCOMPLETE` 并 withholding Owner readiness，不得声称包络已闭合。
 - native-only infeasible 记录不得自动排除；任何 curvature representation、generated increment 或 terminal settling 未闭合项都必须附加相应 fail-closed blocker。
 - protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BJ-A3 HLC Prospective Applicability Predicate
+
+### 1. 命令
+
+A3 的固定审计框和版本化结果已经生成，不得再次运行 `freeze-frame` 或 `evaluate`。日常只读复核使用：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_a3_prospective_applicability.py \
+  tests/test_r2_bj_a_offline_morphology_feasibility.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- 只读核验在任何新候选 V4 结果前冻结的 hash seed、排序、256 条 frame、token/log 去重、永久排除和左右方向规则。
+- 主速度严格使用 `max(official initial, pre-treatment 0–1.0 s max)`；裕量速度使用 `v_audit + max(0.5, 0.05*v_audit)`。anchor timestamp 只作 provenance，不参与选择或 eligibility。
+- 对 47 条 A2 完整记录、10 条 A2 extraction failure 和固定 256 条 fresh audit-frame candidates 使用同一 V2.3/V4 predicate；全部为纯离线 `_states` 审计。
+- raw 与 robust curvature 同时保留。历史 `0.082281 1/m` 继续作为 terminal short-segment gradient artifact 留在 adversarial appendix，不进入 actual joint support。
+- 历史 BJ-A manifest 按其绑定 commit/tree 校验；当前活文档 `QUICK_REFERENCE.md` 由 A3 manifest 绑定。
+- 不选择 BJ-B roster，不构造 simulator、不调用 `runner.run`，不运行 engineering/scientific/TSB simulation，也不启动 R2-C、confirmatory smoke 或 RBR。
+
+### 3. 通过标准
+
+- 固定 frame 必须 256/256 审完且不得在获得足够通过者时提前停止；不能把它称为完整 source-universe census。
+- 当前结果为 17/256 通过同一 predicate，低于 32 条 readiness 要求；47 条历史完整记录在修正速度包络下为 46/47，因此 A3 必须保持 `JOINT_SUPPORT_EXTRACTION_INCOMPLETE`，不得进入 BJ-B。
+- 10/10 历史 extraction failure 均获得统一技术处置，且不形成 outcome blacklist；所有 17 条通过者的 provenance、reference geometry、速度与组件 closure 为 100%。
+- full V4 component stage 共覆盖 28 条、26,880 个离线 planner-state cases；17 条全门通过、11 条 generated increment/composite 不可行，禁止利用正负曲率抵消。
+- `runner.run=0`、所有 simulation count 为 0、roster selected 为 false；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

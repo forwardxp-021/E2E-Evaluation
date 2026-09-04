@@ -1,5 +1,6 @@
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +16,7 @@ from tools.r2_bj_a_hlc_morphology_feasible_generator_v4 import (
 
 ROOT = Path(__file__).resolve().parents[1]
 R2 = ROOT / "docs/stageR/r2"
+BJ_A_BOUND_COMMIT = "5c991b32c1d26dc5887016e3760a58b0fec64aeb"
 ANALYTIC = json.loads((R2 / "r2_bj_a_hlc_morphology_analytic_feasibility_audit_v1.0.json").read_text())
 ENVELOPE = json.loads((R2 / "r2_bj_a_expanded_zero_run_feasibility_envelope_v1.0.json").read_text())
 SPACE = json.loads((R2 / "r2_bj_a_hlc_global_parameter_space_v4.0.json").read_text())
@@ -94,7 +96,13 @@ def test_firewall_request_and_manifest_are_fail_closed():
     assert manifest["readiness_request_issued"] is False
     assert manifest["component_SHA_closure"] == "PASS"
     for row in manifest["components"]:
-        assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+        # BJ-A is an immutable historical manifest.  Living documents such as
+        # QUICK_REFERENCE.md may legitimately change in later phases, so every
+        # historical component is verified against the tree that BJ-A bound.
+        historical = subprocess.check_output(
+            ["git", "show", f"{BJ_A_BOUND_COMMIT}:{row['path']}"], cwd=ROOT,
+        )
+        assert hashlib.sha256(historical).hexdigest() == row["sha256"]
 
 
 def test_scenario_specific_parameter_is_rejected():

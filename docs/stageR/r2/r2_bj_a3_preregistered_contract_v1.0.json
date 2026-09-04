@@ -1,0 +1,92 @@
+{
+  "schema_version": "r2_bj_a3_preregistered_contract_v1.0",
+  "status": "PREREGISTERED_BEFORE_A3_FRESH_CANDIDATE_EVALUATION",
+  "frozen_baseline": {
+    "local_commit": "a04f8c4ec5e2448559fb4600ad0c1c830b3fd8ed",
+    "remote_equivalent_commit": "fb8a29ac93dd801d7bb76285cd9193ae1429799d",
+    "tree": "a98af5bc70b3ffb0a2419a3ecf7e950b27e58a6e"
+  },
+  "historical_A2_disposition": {
+    "JOINT_SUPPORT_EXTRACTION_INCOMPLETE": "FROZEN_NOT_REWRITTEN",
+    "CURVATURE_REPRESENTATION_UNRESOLVED": "FROZEN_NOT_REWRITTEN",
+    "manifest_path": "docs/stageR/r2/r2_bj_a2_component_sha_binding_manifest_v1.0.json",
+    "manifest_sha256": "3ef9ed9251fdc3ebc7cb922d85368579ba2d0f6f456fd89d476d67f69e4fad47"
+  },
+  "audit_frame": {
+    "size": 256,
+    "rank_seed": 2026082701,
+    "rank_salt": "R2_BJ_A3_HLC_PROSPECTIVE_AUDIT_FRAME_V1",
+    "rank_rule": "SHA256(salt|seed|scenario_token|log_id)",
+    "sort_order": ["rank_sha256_ASC", "scenario_token_ASC", "log_id_ASC", "anchor_timestamp_us_ASC"],
+    "source_scan": "COMPLETE_FROZEN_SOURCE_UNIVERSE_SCAN",
+    "rank_prefix_capacity": 65536,
+    "frame_definition": "FIRST_256_HASH_RANKED_CANDIDATES_PASSING_ONLY_BASIC_HLC_FAMILY_CONDITIONS_AFTER_GLOBAL_TOKEN_LOG_EXCLUSION",
+    "early_stop_after_enough_applicable_candidates": false,
+    "global_deduplication": "ONE_SCENARIO_TOKEN_AND_ONE_LOG_PER_FRAME",
+    "historical_exclusion": "EXCLUDE_IF_SCENARIO_TOKEN_OR_LOG_ID_MATCHES_FROZEN_ADDITIVE_LEDGER",
+    "direction_rule": "LEXICAL_LEFT_BEFORE_RIGHT_THEN_TARGET_ID_ASC_WITHIN_SAME_SOURCE_ROADBLOCK",
+    "candidate_role": "AUDIT_FRAME_ONLY_NOT_BJ_B_ROSTER"
+  },
+  "basic_HLC_family_conditions": [
+    "EXACT_SINGLE_OFFICIAL_SCENARIO_RESOLUTION",
+    "OFFICIAL_INITIAL_STATE_AND_ROUTE_AVAILABLE",
+    "SOURCE_LANE_CONTAINS_OFFICIAL_INITIAL_EGO_AND_SOURCE_ROADBLOCK_ON_ROUTE",
+    "SAME_ROADBLOCK_ADJACENT_TARGET_EXISTS",
+    "FINITE_NONDUPLICATE_NONSIMPLE_REFERENCE_REJECTED",
+    "SOURCE_TARGET_TRAVEL_DIRECTION_CONCORDANT"
+  ],
+  "corrected_speed_semantics": {
+    "v_audit": "max(v_official_initial,max(v_pre_treatment_0_to_1p0s))",
+    "v_support_margin": "v_audit+max(0.5,0.05*v_audit)",
+    "route_reconstruction_forward_m": "15.8*v_support_margin+2.0",
+    "V4_speed_cases": ["v_audit", "v_support_margin"],
+    "scenario_anchor_timestamp_role": "PROVENANCE_AND_DESCRIPTION_ONLY_NEVER_SELECTION_OR_ELIGIBILITY"
+  },
+  "curvature_representation": {
+    "raw": "TURNING_ANGLE_OVER_ADJACENT_NATIVE_SEGMENT_SUPPORT",
+    "robust": "UNIFORM_0P25M_RESAMPLE_PLUS_GLOBAL_5P0M_LOCAL_HEADING_REGRESSION",
+    "algorithm_frozen_before_new_candidate_results": true,
+    "manual_point_deletion": false,
+    "identity_specific_smoothing": false,
+    "new_disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+    "new_disposition_rule": "RAW_AND_ROBUST_BOTH_RETAINED_AND_BOTH_PASS_FROZEN_CURVATURE_YAW_RATE_LATERAL_ACCEL_LIMITS_AT_V_AUDIT",
+    "historical_0p082281_disposition": "TERMINAL_SHORT_SEGMENT_GRADIENT_ARTIFACT_ADVERSARIAL_APPENDIX_ONLY"
+  },
+  "frozen_V4": {
+    "parameter_space_path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+    "parameter_space_sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+    "generator_sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9",
+    "planner_sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b",
+    "route_builder_v2_3_sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49",
+    "parameters_or_thresholds_changed": false,
+    "arms": ["BASELINE", "TREATMENT"],
+    "normal_residual_cases_m": [-0.25, 0.0, 0.25],
+    "absolute_episode_times_s": "0.0_TO_7.9_STEP_0.1",
+    "limits": {
+      "curvature_inv_m_max": 0.5,
+      "yaw_rate_radps_max": 1.0,
+      "lateral_accel_mps2_max": 6.0,
+      "state0_to_state1_distance_excess_m_max": 0.35,
+      "state0_tangent_mismatch_rad_max": 0.2,
+      "heading_xy_consistency_rad_max": 1e-10,
+      "terminal_target_frame_offset_abs_m_max": 1e-6
+    }
+  },
+  "readiness_gate": {
+    "historical_complete_records_required_pass": 47,
+    "legacy_extraction_failures_required_disposition": 10,
+    "audit_frame_required_complete": 256,
+    "fresh_applicable_minimum": 32,
+    "pass_status": "R2_BJ_A3_PROSPECTIVE_APPLICABILITY_READY_FOR_OWNER_REVIEW",
+    "fail_closed": true
+  },
+  "execution": {
+    "offline_only": true,
+    "runner_run_authorized": 0,
+    "engineering_simulation_authorized": 0,
+    "scientific_simulation_authorized": 0,
+    "TSB_simulation_authorized": 0,
+    "BJ_B_roster_selection_authorized": false,
+    "R2_C_confirmatory_RBR_authorized": false
+  }
+}

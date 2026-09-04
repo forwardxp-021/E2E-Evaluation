@@ -1,0 +1,4547 @@
+{
+  "schema_version": "r2_bj_a3_hlc_joint_support_provenance_manifest_v1.0",
+  "status": "PASSING_JOINT_SUPPORT_PROVENANCE_CLOSURE_100_PERCENT",
+  "source_universe": {
+    "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+    "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+    "source_root_fingerprint_sha256": "5b53ad42497fe6926c73936970658a3717d1c2cc51077812d5284a57fd242489"
+  },
+  "map_root_fingerprint_sha256": "a85e17eba18e5fdd65148705844b8f189bb4d4373a1d82805e1f8ffd4ae8afb3",
+  "DB_inventory": {
+    "path": "docs/stageR/r1/r1_official_nuplan_db_inventory_rows_v0.1.json",
+    "sha256": "300e9edcbe21d148860d97afb235ddb5dfc2b99bc6c14f95aad85cbacd283a60"
+  },
+  "audit_frame": {
+    "path": "docs/stageR/r2/r2_bj_a3_hash_ranked_audit_frame_manifest_v1.0.json",
+    "sha256": "4acc21287ecbb6946101dd6b5effd581690d127976ae706a04ef4396530cd6e6"
+  },
+  "passing_joint_record_count": 17,
+  "closure_percent": 100.0,
+  "full_source_universe_census_claimed": false,
+  "records": [
+    {
+      "frame_index": 5,
+      "scenario_token": "fb4a496f42d057c7",
+      "log_id": "2021.09.15.14.30.33_veh-42_02562_02982",
+      "scenario_anchor_timestamp_us": 1631719059799848,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "00004c3b3cc0a1ed393f4930f3a9d37810bfe647f70d4fcb93e538742dabe84a",
+      "route_fingerprint": "b3dc8647381220ab627104ae93a0ac9a84d6818168497e12e1077f8098a7d525",
+      "source_lane_id": "18309",
+      "target_lane_id": "18308",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 7.33581,
+        "anchor_requested_timestamp_us": 1631719059799848,
+        "anchor_nearest_timestamp_us": 1631719059799848,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 6.955332122119133,
+        "pre_treatment_window_start_us": 1631719056799905,
+        "pre_treatment_window_end_us": 1631719057799905,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1631719056799905,
+            "speed_mps": 7.3358102686851865
+          },
+          {
+            "timestamp_us": 1631719056849896,
+            "speed_mps": 7.333502402770553
+          },
+          {
+            "timestamp_us": 1631719056899886,
+            "speed_mps": 7.327338196363071
+          },
+          {
+            "timestamp_us": 1631719056949874,
+            "speed_mps": 7.325733794609202
+          },
+          {
+            "timestamp_us": 1631719056999858,
+            "speed_mps": 7.323957723705313
+          },
+          {
+            "timestamp_us": 1631719057049843,
+            "speed_mps": 7.318062548727241
+          },
+          {
+            "timestamp_us": 1631719057099824,
+            "speed_mps": 7.309611262685082
+          },
+          {
+            "timestamp_us": 1631719057149799,
+            "speed_mps": 7.301180030237649
+          },
+          {
+            "timestamp_us": 1631719057199769,
+            "speed_mps": 7.284097281082577
+          },
+          {
+            "timestamp_us": 1631719057249737,
+            "speed_mps": 7.265660654170779
+          },
+          {
+            "timestamp_us": 1631719057299703,
+            "speed_mps": 7.254403966213548
+          },
+          {
+            "timestamp_us": 1631719057349669,
+            "speed_mps": 7.241864189096958
+          },
+          {
+            "timestamp_us": 1631719057399638,
+            "speed_mps": 7.224619438776474
+          },
+          {
+            "timestamp_us": 1631719057449608,
+            "speed_mps": 7.211861632859837
+          },
+          {
+            "timestamp_us": 1631719057499583,
+            "speed_mps": 7.19582311335401
+          },
+          {
+            "timestamp_us": 1631719057549564,
+            "speed_mps": 7.178510942769851
+          },
+          {
+            "timestamp_us": 1631719057599548,
+            "speed_mps": 7.161701409696885
+          },
+          {
+            "timestamp_us": 1631719057649533,
+            "speed_mps": 7.148197414448198
+          },
+          {
+            "timestamp_us": 1631719057699522,
+            "speed_mps": 7.130877363725447
+          },
+          {
+            "timestamp_us": 1631719057749509,
+            "speed_mps": 7.122174284866949
+          },
+          {
+            "timestamp_us": 1631719057799493,
+            "speed_mps": 7.111793337847076
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.111793337847076,
+          "p25": 7.178510942769851,
+          "median": 7.254403966213548,
+          "p75": 7.318062548727241,
+          "p95": 7.333502402770553,
+          "p99": 7.33534869550226,
+          "max": 7.3358102686851865
+        },
+        "v_audit_mps": 7.3358102686851865,
+        "v_support_mps": 7.8358102686851865,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.999943,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 125.80580224522595,
+        "source_total_length_m": 139.10028057029638,
+        "target_total_length_m": 136.52029066588196,
+        "source_current_arc_m": 5.523166095144989,
+        "target_current_arc_m": 2.2736561857750415,
+        "source_remaining_margin_m": 7.771312229925428,
+        "target_remaining_margin_m": 8.440832234880958,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+        "target": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0045796560009154965,
+          "robust_max_abs_curvature_inv_m": 0.004576851292131037,
+          "speed_mps": 7.3358102686851865
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.0977280053139307,
+          "speed_mps": 7.3358102686851865
+        }
+      },
+      "component_audit_canonical_sha256": "75e04fa60f98e12e02449ca87ded2fcce1c28051b3e540d74b035741d0c9a5be",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.15.14.30.33_veh-42_02562_02982.db",
+        "db_file": "2021.09.15.14.30.33_veh-42_02562_02982.db",
+        "size_bytes": 53325824,
+        "mtime_utc": "2022-09-23T05:50:40+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "3b4d56221341cf19e3247b7abe57508095da5bcff4609d12ccfb5ffddad01b3c",
+        "scenario_tag_count": 9387,
+        "unique_scenario_token_count": 5139,
+        "token_set_sha256": "d9dcb742d790f942c5635b9224c25875d1db8542e5d9c4a9a0f6b1d571f361cb",
+        "log_count": 1,
+        "log_ids": "2021.09.15.14.30.33_veh-42_02562_02982",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "12a8a5b5e21d89e6555cc33eb924436185d984621eae30c76d60143760edf5c4"
+    },
+    {
+      "frame_index": 41,
+      "scenario_token": "dc61fba3f4ed5838",
+      "log_id": "2021.08.25.18.29.43_veh-42_00016_00243",
+      "scenario_anchor_timestamp_us": 1629916426100313,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "000347d70ac67e2618e898cd4473ef807b63fa0b5a55e28dcb034e400f5c6681",
+      "route_fingerprint": "e764e7df534965e3ecb00778979b26d43e11cf7d0f1ff9d090bc8bddef48de27",
+      "source_lane_id": "18556",
+      "target_lane_id": "18557",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 7.705722,
+        "anchor_requested_timestamp_us": 1629916426100313,
+        "anchor_nearest_timestamp_us": 1629916426100313,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 8.776272616176497,
+        "pre_treatment_window_start_us": 1629916423149643,
+        "pre_treatment_window_end_us": 1629916424149643,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629916423149643,
+            "speed_mps": 7.705722199969743
+          },
+          {
+            "timestamp_us": 1629916423199670,
+            "speed_mps": 7.724684668790443
+          },
+          {
+            "timestamp_us": 1629916423249697,
+            "speed_mps": 7.745315591208402
+          },
+          {
+            "timestamp_us": 1629916423299726,
+            "speed_mps": 7.756201162479623
+          },
+          {
+            "timestamp_us": 1629916423349756,
+            "speed_mps": 7.774370796160192
+          },
+          {
+            "timestamp_us": 1629916423399790,
+            "speed_mps": 7.794778075880162
+          },
+          {
+            "timestamp_us": 1629916423449829,
+            "speed_mps": 7.810149455935739
+          },
+          {
+            "timestamp_us": 1629916423499872,
+            "speed_mps": 7.830121871321788
+          },
+          {
+            "timestamp_us": 1629916423549917,
+            "speed_mps": 7.845643930625651
+          },
+          {
+            "timestamp_us": 1629916423599961,
+            "speed_mps": 7.86396873263005
+          },
+          {
+            "timestamp_us": 1629916423650004,
+            "speed_mps": 7.883404214126038
+          },
+          {
+            "timestamp_us": 1629916423700044,
+            "speed_mps": 7.901876186765469
+          },
+          {
+            "timestamp_us": 1629916423750083,
+            "speed_mps": 7.918603220562871
+          },
+          {
+            "timestamp_us": 1629916423800122,
+            "speed_mps": 7.937729549696269
+          },
+          {
+            "timestamp_us": 1629916423850163,
+            "speed_mps": 7.955448753313252
+          },
+          {
+            "timestamp_us": 1629916423900204,
+            "speed_mps": 7.970403451261387
+          },
+          {
+            "timestamp_us": 1629916423950245,
+            "speed_mps": 7.98901675256161
+          },
+          {
+            "timestamp_us": 1629916424000283,
+            "speed_mps": 8.010000049301409
+          },
+          {
+            "timestamp_us": 1629916424050319,
+            "speed_mps": 8.02821022182094
+          },
+          {
+            "timestamp_us": 1629916424100350,
+            "speed_mps": 8.044727967872785
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.705722199969743,
+          "p25": 7.7896762559501695,
+          "median": 7.873686473378044,
+          "p75": 7.959187427800286,
+          "p95": 8.029036109123533,
+          "p99": 8.041589596122934,
+          "max": 8.044727967872785
+        },
+        "v_audit_mps": 8.044727967872785,
+        "v_support_mps": 8.544727967872785,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9506699999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 137.00670189239,
+        "source_total_length_m": 230.8235346172629,
+        "target_total_length_m": 229.44740771026878,
+        "source_current_arc_m": 77.34170439618178,
+        "target_current_arc_m": 77.3833450752944,
+        "source_remaining_margin_m": 16.475128328691113,
+        "target_remaining_margin_m": 15.057360742584393,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20142",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.850456497587057,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18546",
+            "roadblock_id": "19001",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.004799432614774,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20143",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.888335354297446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18547",
+            "roadblock_id": "19001",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 23.44107980016799,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "22a8635cdc618c256b4165742a2af8e4858a83a9cbe6623f3a26f2215a4ad3c7",
+        "target": "4533b1b5c8a328643a0709e6659f117ea65bbfcea3541a60a46ab8b4a92534a3"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000052667527234,
+          "robust_max_abs_curvature_inv_m": 0.0010012185313726413,
+          "speed_mps": 8.044727967872785
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.005643329373896908,
+          "robust_max_abs_curvature_inv_m": 0.004780748112050588,
+          "speed_mps": 8.044727967872785
+        }
+      },
+      "component_audit_canonical_sha256": "22449b267b95ca68a17200f7be79f5ed541f6c8e70051a115aef94f6fdcc470e",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.18.29.43_veh-42_00016_00243.db",
+        "db_file": "2021.08.25.18.29.43_veh-42_00016_00243.db",
+        "size_bytes": 30326784,
+        "mtime_utc": "2022-09-23T05:50:01+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "ef300509ecdf3a2e5b0c8c254a19324e524339b94de76b5807c4a4786a063d8f",
+        "scenario_tag_count": 4144,
+        "unique_scenario_token_count": 2579,
+        "token_set_sha256": "8d34eb2260ea05620e26344f005953ca66c11b6b906fc1a575a0fa0072d43091",
+        "log_count": 1,
+        "log_ids": "2021.08.25.18.29.43_veh-42_00016_00243",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "1abcc6d79a6e48857bfaef3f4ba0b90beba090068db6b81727901894e4ebeb74"
+    },
+    {
+      "frame_index": 72,
+      "scenario_token": "e5580122f41954be",
+      "log_id": "2021.09.17.13.27.08_veh-42_00434_01037",
+      "scenario_anchor_timestamp_us": 1631885817049445,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "0005a071aa16b621102a72d256cfab048303df132a536aca9cccf4445c17c975",
+      "route_fingerprint": "d35b146216ccda8dd80bd7e34e871fdeea1fe3f14ef268439c25a678891a8f26",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 13.446932,
+        "anchor_requested_timestamp_us": 1631885817049445,
+        "anchor_nearest_timestamp_us": 1631885817049445,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 14.68364373260729,
+        "pre_treatment_window_start_us": 1631885814050005,
+        "pre_treatment_window_end_us": 1631885815050005,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1631885814050005,
+            "speed_mps": 13.44693227497135
+          },
+          {
+            "timestamp_us": 1631885814100002,
+            "speed_mps": 13.462502975340755
+          },
+          {
+            "timestamp_us": 1631885814150002,
+            "speed_mps": 13.481520804662724
+          },
+          {
+            "timestamp_us": 1631885814200001,
+            "speed_mps": 13.501943346080262
+          },
+          {
+            "timestamp_us": 1631885814249999,
+            "speed_mps": 13.520124184045889
+          },
+          {
+            "timestamp_us": 1631885814299995,
+            "speed_mps": 13.537975765166554
+          },
+          {
+            "timestamp_us": 1631885814349991,
+            "speed_mps": 13.552318604920343
+          },
+          {
+            "timestamp_us": 1631885814399986,
+            "speed_mps": 13.569277231366407
+          },
+          {
+            "timestamp_us": 1631885814449984,
+            "speed_mps": 13.585197517488847
+          },
+          {
+            "timestamp_us": 1631885814499983,
+            "speed_mps": 13.599268366312085
+          },
+          {
+            "timestamp_us": 1631885814549983,
+            "speed_mps": 13.613026826373478
+          },
+          {
+            "timestamp_us": 1631885814599981,
+            "speed_mps": 13.632401653312623
+          },
+          {
+            "timestamp_us": 1631885814649974,
+            "speed_mps": 13.651453680293084
+          },
+          {
+            "timestamp_us": 1631885814699965,
+            "speed_mps": 13.667982918720643
+          },
+          {
+            "timestamp_us": 1631885814749957,
+            "speed_mps": 13.684275173558389
+          },
+          {
+            "timestamp_us": 1631885814799946,
+            "speed_mps": 13.702124616566119
+          },
+          {
+            "timestamp_us": 1631885814849936,
+            "speed_mps": 13.714962579178126
+          },
+          {
+            "timestamp_us": 1631885814899925,
+            "speed_mps": 13.731342188081879
+          },
+          {
+            "timestamp_us": 1631885814949912,
+            "speed_mps": 13.744763114735262
+          },
+          {
+            "timestamp_us": 1631885814999898,
+            "speed_mps": 13.762294709027111
+          },
+          {
+            "timestamp_us": 1631885815049884,
+            "speed_mps": 13.777806963528432
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 13.44693227497135,
+          "p25": 13.537975765166554,
+          "median": 13.613026826373478,
+          "p75": 13.702124616566119,
+          "p95": 13.762294709027111,
+          "p99": 13.774704512628167,
+          "max": 13.777806963528432
+        },
+        "v_audit_mps": 13.777806963528432,
+        "v_support_mps": 14.466697311704854,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.99944,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 230.57381752493671,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 34.36338040798213,
+        "target_current_arc_m": 34.522138510906686,
+        "source_remaining_margin_m": 17.13194194344223,
+        "target_remaining_margin_m": 9.193217367907721,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+        "target": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000666666877735,
+          "robust_max_abs_curvature_inv_m": 0.0010000016476153885,
+          "speed_mps": 13.777806963528432
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.01509747467078189,
+          "robust_max_abs_curvature_inv_m": 0.002516978648502579,
+          "speed_mps": 13.777806963528432
+        }
+      },
+      "component_audit_canonical_sha256": "6ea9c952215905a7c9587c5dfa537b845f8148a114f9a2939bcd07179e954a34",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.17.13.27.08_veh-42_00434_01037.db",
+        "db_file": "2021.09.17.13.27.08_veh-42_00434_01037.db",
+        "size_bytes": 77684736,
+        "mtime_utc": "2022-09-23T05:50:44+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "8048ab159e71d3ee7c030adf20ce9f3cdb93ded0493c19a48f767063ebae220d",
+        "scenario_tag_count": 13779,
+        "unique_scenario_token_count": 8183,
+        "token_set_sha256": "4cfb0e884556c70de67f19d1b381cbc38b436419dbbf77f9fea2c3ba393471e2",
+        "log_count": 1,
+        "log_ids": "2021.09.17.13.27.08_veh-42_00434_01037",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "b20cd62063b2b3f1ae554fde93e690dbcb419587f9293a038101c351b10ceea8"
+    },
+    {
+      "frame_index": 89,
+      "scenario_token": "44c355a8ab765540",
+      "log_id": "2021.06.28.16.29.11_veh-38_01415_01821",
+      "scenario_anchor_timestamp_us": 1624899670599528,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "0006b9caff29ae4c49602e7ae2e9302a4f9bc71b93231fceb0dda1c3b5da2d1f",
+      "route_fingerprint": "2c0c657c74a636c42a56fab55a826903e4d88c97f623070b2241d51c98dab005",
+      "source_lane_id": "67361",
+      "target_lane_id": "67511",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 13.846362,
+        "anchor_requested_timestamp_us": 1624899670599528,
+        "anchor_nearest_timestamp_us": 1624899670599528,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 12.87240744213203,
+        "pre_treatment_window_start_us": 1624899667599984,
+        "pre_treatment_window_end_us": 1624899668599984,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1624899667599984,
+            "speed_mps": 13.846362090993663
+          },
+          {
+            "timestamp_us": 1624899667650014,
+            "speed_mps": 13.831565730374448
+          },
+          {
+            "timestamp_us": 1624899667700044,
+            "speed_mps": 13.807661276485632
+          },
+          {
+            "timestamp_us": 1624899667750073,
+            "speed_mps": 13.782861975216099
+          },
+          {
+            "timestamp_us": 1624899667800102,
+            "speed_mps": 13.759570418971935
+          },
+          {
+            "timestamp_us": 1624899667850129,
+            "speed_mps": 13.73752573630329
+          },
+          {
+            "timestamp_us": 1624899667900156,
+            "speed_mps": 13.716641986152775
+          },
+          {
+            "timestamp_us": 1624899667950183,
+            "speed_mps": 13.692171267671913
+          },
+          {
+            "timestamp_us": 1624899668000210,
+            "speed_mps": 13.670966260092785
+          },
+          {
+            "timestamp_us": 1624899668050234,
+            "speed_mps": 13.65819777842998
+          },
+          {
+            "timestamp_us": 1624899668100252,
+            "speed_mps": 13.637139413171067
+          },
+          {
+            "timestamp_us": 1624899668150267,
+            "speed_mps": 13.61625983476424
+          },
+          {
+            "timestamp_us": 1624899668200277,
+            "speed_mps": 13.598516294497133
+          },
+          {
+            "timestamp_us": 1624899668250281,
+            "speed_mps": 13.574267477485426
+          },
+          {
+            "timestamp_us": 1624899668300279,
+            "speed_mps": 13.547243067218172
+          },
+          {
+            "timestamp_us": 1624899668350272,
+            "speed_mps": 13.528503541314866
+          },
+          {
+            "timestamp_us": 1624899668400258,
+            "speed_mps": 13.517793179954017
+          },
+          {
+            "timestamp_us": 1624899668450240,
+            "speed_mps": 13.496661414794877
+          },
+          {
+            "timestamp_us": 1624899668500219,
+            "speed_mps": 13.477142380397549
+          },
+          {
+            "timestamp_us": 1624899668550197,
+            "speed_mps": 13.455352855588735
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 13.455352855588735,
+          "p25": 13.542558185742346,
+          "median": 13.647668595800523,
+          "p75": 13.74303690697045,
+          "p95": 13.83230554840541,
+          "p99": 13.843550782476013,
+          "max": 13.846362090993663
+        },
+        "v_audit_mps": 13.846362090993663,
+        "v_support_mps": 14.538680195543346,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9995439999999998,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 231.71114708958487,
+        "source_total_length_m": 296.9006480484936,
+        "target_total_length_m": 297.0289887543478,
+        "source_current_arc_m": 53.03689171262712,
+        "target_current_arc_m": 53.54090798851808,
+        "source_remaining_margin_m": 12.152609246281628,
+        "target_remaining_margin_m": 11.776933676244823,
+        "source_components": [
+          {
+            "edge_id": "67361",
+            "roadblock_id": "65566",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.77883381362487,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70189",
+            "roadblock_id": "66199",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.75649429103875,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63238",
+            "roadblock_id": "65473",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 77.30904721863632,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69311",
+            "roadblock_id": "60228",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 31.926052874492047,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67515",
+            "roadblock_id": "65568",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 5.50593814131811,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70088",
+            "roadblock_id": "66896",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 41.509669968273435,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67296",
+            "roadblock_id": "65476",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 39.11461174110944,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "67511",
+            "roadblock_id": "65566",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.3381878997534,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68834",
+            "roadblock_id": "66199",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 33.59977737726821,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63237",
+            "roadblock_id": "65473",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 77.14739081925623,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70412",
+            "roadblock_id": "60228",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 31.790637510443577,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67251",
+            "roadblock_id": "65568",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 5.500730756581481,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68973",
+            "roadblock_id": "66896",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 41.51525863564744,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67495",
+            "roadblock_id": "65476",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 39.13700575539751,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "da9b056acbd41f56ead46231a228cd1f410ea7e2b5b5b4987a0a560eac5e99f5",
+        "target": "ec4408a921a9401325f3b3cf33b7eeee9c403d990311551d909f8fca9c95e6e8"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.004035071514206544,
+          "robust_max_abs_curvature_inv_m": 0.003951963804364813,
+          "speed_mps": 13.846362090993663
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.00542517599160728,
+          "robust_max_abs_curvature_inv_m": 0.0020772931373898434,
+          "speed_mps": 13.846362090993663
+        }
+      },
+      "component_audit_canonical_sha256": "ef6d99af47d33bea29326a2fe8d6d31c539cf6a9f5e70112a8c5b17c4f32ed7b",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.28.16.29.11_veh-38_01415_01821.db",
+        "db_file": "2021.06.28.16.29.11_veh-38_01415_01821.db",
+        "size_bytes": 275554304,
+        "mtime_utc": "2022-09-23T05:48:16+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "8301cf667d7e08d394ba9832d51c3308a9d9b0627181a01dad7cf08053795c0d",
+        "scenario_tag_count": 13076,
+        "unique_scenario_token_count": 6484,
+        "token_set_sha256": "407a3192614a5695f72e47c07d7020100d055de8696129cc1377336035443e0e",
+        "log_count": 1,
+        "log_ids": "2021.06.28.16.29.11_veh-38_01415_01821",
+        "locations": "las_vegas",
+        "map_versions": "us-nv-las-vegas-strip",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "138cc139e48c2108986df425b6cf503713c15e9b52739ce2ae19889687ebadb1"
+    },
+    {
+      "frame_index": 103,
+      "scenario_token": "6ee4c92c25dd5233",
+      "log_id": "2021.08.25.20.03.37_veh-45_00540_00920",
+      "scenario_anchor_timestamp_us": 1629922567349968,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "00078264bc573ce030adbc18b5f5c7145f886f2c5b5ed3ba36c91e6ec452652c",
+      "route_fingerprint": "397e98c05fc9a99d09a3d16b626ef42d4e083507756253eee034b4a1f6953635",
+      "source_lane_id": "18309",
+      "target_lane_id": "18308",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 6.867463,
+        "anchor_requested_timestamp_us": 1629922567349968,
+        "anchor_nearest_timestamp_us": 1629922567349968,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 5.8928945889103845,
+        "pre_treatment_window_start_us": 1629922564399463,
+        "pre_treatment_window_end_us": 1629922565399463,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629922564399463,
+            "speed_mps": 6.867463126801197
+          },
+          {
+            "timestamp_us": 1629922564449475,
+            "speed_mps": 6.844591643791996
+          },
+          {
+            "timestamp_us": 1629922564499496,
+            "speed_mps": 6.829026496452988
+          },
+          {
+            "timestamp_us": 1629922564549522,
+            "speed_mps": 6.811938891983056
+          },
+          {
+            "timestamp_us": 1629922564599548,
+            "speed_mps": 6.795831187019476
+          },
+          {
+            "timestamp_us": 1629922564649573,
+            "speed_mps": 6.780688018446879
+          },
+          {
+            "timestamp_us": 1629922564699600,
+            "speed_mps": 6.767116883511604
+          },
+          {
+            "timestamp_us": 1629922564749630,
+            "speed_mps": 6.7473411390065285
+          },
+          {
+            "timestamp_us": 1629922564799662,
+            "speed_mps": 6.732562686233821
+          },
+          {
+            "timestamp_us": 1629922564849697,
+            "speed_mps": 6.715065544601139
+          },
+          {
+            "timestamp_us": 1629922564899732,
+            "speed_mps": 6.700041584117552
+          },
+          {
+            "timestamp_us": 1629922564949766,
+            "speed_mps": 6.686890650463848
+          },
+          {
+            "timestamp_us": 1629922564999802,
+            "speed_mps": 6.671761842874634
+          },
+          {
+            "timestamp_us": 1629922565049838,
+            "speed_mps": 6.658342101815978
+          },
+          {
+            "timestamp_us": 1629922565099872,
+            "speed_mps": 6.644307726450752
+          },
+          {
+            "timestamp_us": 1629922565149907,
+            "speed_mps": 6.625374002711984
+          },
+          {
+            "timestamp_us": 1629922565199942,
+            "speed_mps": 6.608555314655502
+          },
+          {
+            "timestamp_us": 1629922565249979,
+            "speed_mps": 6.5944363397705015
+          },
+          {
+            "timestamp_us": 1629922565300017,
+            "speed_mps": 6.578585549240062
+          },
+          {
+            "timestamp_us": 1629922565350056,
+            "speed_mps": 6.55975904293084
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 6.55975904293084,
+          "p25": 6.63957429551606,
+          "median": 6.707553564359346,
+          "p75": 6.784473810590028,
+          "p95": 6.845735217942456,
+          "p99": 6.863117545029449,
+          "max": 6.867463126801197
+        },
+        "v_audit_mps": 6.867463126801197,
+        "v_support_mps": 7.367463126801197,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9505049999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 118.40591740345891,
+        "source_total_length_m": 139.10028057029638,
+        "target_total_length_m": 136.52029066588196,
+        "source_current_arc_m": 3.7420493513956714,
+        "target_current_arc_m": 0.4925622049336679,
+        "source_remaining_margin_m": 16.952313815441784,
+        "target_remaining_margin_m": 17.621811057489367,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+        "target": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0045796560009154965,
+          "robust_max_abs_curvature_inv_m": 0.004576701112378213,
+          "speed_mps": 6.867463126801197
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800512711952,
+          "speed_mps": 6.867463126801197
+        }
+      },
+      "component_audit_canonical_sha256": "1bebc6a329598799c1ecd196ad8fbf75f104a32906900920914b1e5e1e38eb46",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.20.03.37_veh-45_00540_00920.db",
+        "db_file": "2021.08.25.20.03.37_veh-45_00540_00920.db",
+        "size_bytes": 54448128,
+        "mtime_utc": "2022-09-23T05:50:02+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "53e5fab7dd7f54b6656362bd17fb7852920adf683256f739ba8791d49d1b7ef7",
+        "scenario_tag_count": 9566,
+        "unique_scenario_token_count": 5021,
+        "token_set_sha256": "81b5ffe98aee5b83f1b68b58cc12327b037033e0cc84eff244316a76a737f818",
+        "log_count": 1,
+        "log_ids": "2021.08.25.20.03.37_veh-45_00540_00920",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "55372cfd8c1e8c4966e2a5e5a7734c85aa2168b9092b73aeb26799a8de48745e"
+    },
+    {
+      "frame_index": 131,
+      "scenario_token": "c5eadbef7bb35880",
+      "log_id": "2021.06.09.17.23.18_veh-38_02526_03027",
+      "scenario_anchor_timestamp_us": 1623276789200122,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "000991f0e2a88ed60864a7b87887260071643f3b4de96b580eecd9416b4f9654",
+      "route_fingerprint": "1eaab40f812ef26af3db10d874cabcfc45432bd0c68eb2211b52dbcfeb23ca28",
+      "source_lane_id": "67767",
+      "target_lane_id": "67820",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 12.298679,
+        "anchor_requested_timestamp_us": 1623276789200122,
+        "anchor_nearest_timestamp_us": 1623276789200122,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 13.646246252067218,
+        "pre_treatment_window_start_us": 1623276786249941,
+        "pre_treatment_window_end_us": 1623276787249941,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1623276786249941,
+            "speed_mps": 12.298678910225117
+          },
+          {
+            "timestamp_us": 1623276786299918,
+            "speed_mps": 12.322961097658467
+          },
+          {
+            "timestamp_us": 1623276786349892,
+            "speed_mps": 12.347932727109722
+          },
+          {
+            "timestamp_us": 1623276786399866,
+            "speed_mps": 12.374030435616259
+          },
+          {
+            "timestamp_us": 1623276786449839,
+            "speed_mps": 12.40743951516026
+          },
+          {
+            "timestamp_us": 1623276786499812,
+            "speed_mps": 12.437547757827518
+          },
+          {
+            "timestamp_us": 1623276786549784,
+            "speed_mps": 12.472726135800984
+          },
+          {
+            "timestamp_us": 1623276786599758,
+            "speed_mps": 12.506008527835746
+          },
+          {
+            "timestamp_us": 1623276786649731,
+            "speed_mps": 12.547367001354692
+          },
+          {
+            "timestamp_us": 1623276786699703,
+            "speed_mps": 12.575984441816814
+          },
+          {
+            "timestamp_us": 1623276786749675,
+            "speed_mps": 12.599554925024648
+          },
+          {
+            "timestamp_us": 1623276786799648,
+            "speed_mps": 12.628860384919015
+          },
+          {
+            "timestamp_us": 1623276786849622,
+            "speed_mps": 12.647507074617753
+          },
+          {
+            "timestamp_us": 1623276786899596,
+            "speed_mps": 12.675860099822131
+          },
+          {
+            "timestamp_us": 1623276786949568,
+            "speed_mps": 12.703580597665084
+          },
+          {
+            "timestamp_us": 1623276786999543,
+            "speed_mps": 12.721501631430492
+          },
+          {
+            "timestamp_us": 1623276787049520,
+            "speed_mps": 12.745918431463165
+          },
+          {
+            "timestamp_us": 1623276787099501,
+            "speed_mps": 12.778446852729461
+          },
+          {
+            "timestamp_us": 1623276787149488,
+            "speed_mps": 12.797354157251132
+          },
+          {
+            "timestamp_us": 1623276787199480,
+            "speed_mps": 12.826481247778556
+          },
+          {
+            "timestamp_us": 1623276787249480,
+            "speed_mps": 12.865986003661844
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 12.298678910225117,
+          "p25": 12.437547757827518,
+          "median": 12.599554925024648,
+          "p75": 12.721501631430492,
+          "p95": 12.826481247778556,
+          "p99": 12.858085052485187,
+          "max": 12.865986003661844
+        },
+        "v_audit_mps": 12.865986003661844,
+        "v_support_mps": 13.509285303844935,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9501809999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 215.44670780074998,
+        "source_total_length_m": 271.24191655470355,
+        "target_total_length_m": 271.212569982144,
+        "source_current_arc_m": 3.659646539777468,
+        "target_current_arc_m": 3.6526412120791165,
+        "source_remaining_margin_m": 52.13556221417613,
+        "target_remaining_margin_m": 52.11322096931488,
+        "source_components": [
+          {
+            "edge_id": "67767",
+            "roadblock_id": "65645",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 6.458350204475552,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70238",
+            "roadblock_id": "66727",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 66.55055929122443,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68025",
+            "roadblock_id": "65674",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 33.87680095437234,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69169",
+            "roadblock_id": "66684",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 21.859819910970614,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67800",
+            "roadblock_id": "65692",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.67985609013122,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69222",
+            "roadblock_id": "66846",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.434893262960188,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67653",
+            "roadblock_id": "65732",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 38.35849384868138,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69131",
+            "roadblock_id": "66943",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 58.02314299188798,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "67820",
+            "roadblock_id": "65645",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 6.473600468935169,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69722",
+            "roadblock_id": "66727",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 66.45287559927249,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67835",
+            "roadblock_id": "65674",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 36.76127864819974,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69599",
+            "roadblock_id": "66684",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.7529144421526,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67596",
+            "roadblock_id": "65692",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 27.9670695111119,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69678",
+            "roadblock_id": "66846",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.362867279424414,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67743",
+            "roadblock_id": "65732",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.43679670658468,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68685",
+            "roadblock_id": "66943",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 58.005167326463024,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "97ea33a97a78bbe93cb943b036c4e9d36e4c4dc55680287a1f41eaf8d2fb99aa",
+        "target": "7466dcd1fc62a53015553d347587b821518102ee384002bdcd9fc96e91b0f481"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.004191476496945754,
+          "robust_max_abs_curvature_inv_m": 0.00418130668431454,
+          "speed_mps": 12.865986003661844
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000562287094626,
+          "robust_max_abs_curvature_inv_m": 0.0010000013125092072,
+          "speed_mps": 12.865986003661844
+        }
+      },
+      "component_audit_canonical_sha256": "f6040f54f0263b16cdf144280fa1ec98385486019170f5484282f69b40be5aef",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.09.17.23.18_veh-38_02526_03027.db",
+        "db_file": "2021.06.09.17.23.18_veh-38_02526_03027.db",
+        "size_bytes": 367718400,
+        "mtime_utc": "2022-09-23T05:47:18+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "56869b46373f63190d657af45459112c5d9b162bd9137d33f5a923ea3938952d",
+        "scenario_tag_count": 18698,
+        "unique_scenario_token_count": 8679,
+        "token_set_sha256": "67ca689bf8cf1b307a7e763c696a1bb5141560c5c0052bfa4ea5213683623b57",
+        "log_count": 1,
+        "log_ids": "2021.06.09.17.23.18_veh-38_02526_03027",
+        "locations": "las_vegas",
+        "map_versions": "us-nv-las-vegas-strip",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "36916fd00c958bd9a3874b37b6a17a1f9bf8bea495e07fb272327d8aa59b7fc1"
+    },
+    {
+      "frame_index": 142,
+      "scenario_token": "bcb329b994745fbe",
+      "log_id": "2021.06.08.14.35.24_veh-26_02555_03004",
+      "scenario_anchor_timestamp_us": 1623180366619156,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "000a337386bb0c47ea868f54eb8294251509a3b61f1812b9e141506e20a1962f",
+      "route_fingerprint": "9fe4662336e5694a3980766cdee5d5101f68f86574ece357c0337fda84bd1260",
+      "source_lane_id": "67389",
+      "target_lane_id": "67448",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 9.954055,
+        "anchor_requested_timestamp_us": 1623180366619156,
+        "anchor_nearest_timestamp_us": 1623180366619156,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.379773837398027,
+        "pre_treatment_window_start_us": 1623180363623684,
+        "pre_treatment_window_end_us": 1623180364623684,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1623180363623684,
+            "speed_mps": 9.954054672349313
+          },
+          {
+            "timestamp_us": 1623180363673609,
+            "speed_mps": 9.946850436931385
+          },
+          {
+            "timestamp_us": 1623180363723536,
+            "speed_mps": 9.94010561235966
+          },
+          {
+            "timestamp_us": 1623180363773462,
+            "speed_mps": 9.931472499755348
+          },
+          {
+            "timestamp_us": 1623180363823390,
+            "speed_mps": 9.923264924523847
+          },
+          {
+            "timestamp_us": 1623180363873323,
+            "speed_mps": 9.91623411643222
+          },
+          {
+            "timestamp_us": 1623180363923258,
+            "speed_mps": 9.909484280965891
+          },
+          {
+            "timestamp_us": 1623180363973194,
+            "speed_mps": 9.900315582205309
+          },
+          {
+            "timestamp_us": 1623180364023130,
+            "speed_mps": 9.89310195350987
+          },
+          {
+            "timestamp_us": 1623180364073066,
+            "speed_mps": 9.88748814014741
+          },
+          {
+            "timestamp_us": 1623180364123001,
+            "speed_mps": 9.878605207089143
+          },
+          {
+            "timestamp_us": 1623180364172937,
+            "speed_mps": 9.869518794482676
+          },
+          {
+            "timestamp_us": 1623180364222872,
+            "speed_mps": 9.863445306754459
+          },
+          {
+            "timestamp_us": 1623180364272809,
+            "speed_mps": 9.855259052375088
+          },
+          {
+            "timestamp_us": 1623180364322746,
+            "speed_mps": 9.8411606544798
+          },
+          {
+            "timestamp_us": 1623180364372680,
+            "speed_mps": 9.831668625131977
+          },
+          {
+            "timestamp_us": 1623180364422610,
+            "speed_mps": 9.824960904102436
+          },
+          {
+            "timestamp_us": 1623180364472540,
+            "speed_mps": 9.812620587547496
+          },
+          {
+            "timestamp_us": 1623180364522467,
+            "speed_mps": 9.799756220979283
+          },
+          {
+            "timestamp_us": 1623180364572393,
+            "speed_mps": 9.79076025573208
+          },
+          {
+            "timestamp_us": 1623180364622321,
+            "speed_mps": 9.779262748079946
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 9.779262748079946,
+          "p25": 9.831668625131977,
+          "median": 9.878605207089143,
+          "p75": 9.91623411643222,
+          "p95": 9.946850436931385,
+          "p99": 9.952613825265727,
+          "max": 9.954054672349313
+        },
+        "v_audit_mps": 9.954055,
+        "v_support_mps": 10.454055,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.995472,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 167.174069,
+        "source_total_length_m": 216.64135706995003,
+        "target_total_length_m": 216.57554637296278,
+        "source_current_arc_m": 6.864485334346872,
+        "target_current_arc_m": 6.817318577259561,
+        "source_remaining_margin_m": 42.60280273560315,
+        "target_remaining_margin_m": 42.58415879570322,
+        "source_components": [
+          {
+            "edge_id": "67389",
+            "roadblock_id": "65542",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.6819569065572,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68911",
+            "roadblock_id": "66340",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 55.20936465251825,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63260",
+            "roadblock_id": "65560",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 39.13205550181406,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70193",
+            "roadblock_id": "60216",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 104.61798000906035,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "67448",
+            "roadblock_id": "65542",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.795426721451157,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68893",
+            "roadblock_id": "66340",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 55.00337650598211,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63263",
+            "roadblock_id": "65560",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 39.740612493820656,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69990",
+            "roadblock_id": "60216",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 104.03613065170885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "9dc6d23180370fffed74db98ea725f70217fca339de659fff5529ddcb5b12389",
+        "target": "41d925963ce77a3c92b5e7210db2c9f54519f51a6874f327908acab188e0dae3"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000076328812781,
+          "robust_max_abs_curvature_inv_m": 0.0010000012903711951,
+          "speed_mps": 9.954055
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0018347227074411155,
+          "robust_max_abs_curvature_inv_m": 0.0017963515648582225,
+          "speed_mps": 9.954055
+        }
+      },
+      "component_audit_canonical_sha256": "fbfa037b885912d047246ed6d26e9e9c1c414abdc426c07bed9178cf158d4b50",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.08.14.35.24_veh-26_02555_03004.db",
+        "db_file": "2021.06.08.14.35.24_veh-26_02555_03004.db",
+        "size_bytes": 188420096,
+        "mtime_utc": "2022-09-23T05:47:10+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "3a3c8e3a5b840cd833d1981b70fe16ff70f7a2028306cfbb27c85752de0eb0ca",
+        "scenario_tag_count": 16110,
+        "unique_scenario_token_count": 7393,
+        "token_set_sha256": "23e288183ff8cbb9a743fd98f9cf9d3e4e5d0645e35656144381f92c9d272281",
+        "log_count": 1,
+        "log_ids": "2021.06.08.14.35.24_veh-26_02555_03004",
+        "locations": "las_vegas",
+        "map_versions": "us-nv-las-vegas-strip",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "ff8b518d5bd5301502f30d43bc9117c276237ed57bc0d2d6bfb5b27aa0023466"
+    },
+    {
+      "frame_index": 148,
+      "scenario_token": "5947eab4b7585a50",
+      "log_id": "2021.08.30.14.54.34_veh-40_00439_00835",
+      "scenario_anchor_timestamp_us": 1630335824900592,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "000a608b91ab19ce5521e4d7cd622657ccdadae038c64a39e4297c78cc6b33c8",
+      "route_fingerprint": "2458af697a6a4743a48e8f85eccf8c2a10963829fed82b898819a2a141941a14",
+      "source_lane_id": "48641",
+      "target_lane_id": "48640",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 9.160148,
+        "anchor_requested_timestamp_us": 1630335824900592,
+        "anchor_nearest_timestamp_us": 1630335824900592,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.317454488139859,
+        "pre_treatment_window_start_us": 1630335821950173,
+        "pre_treatment_window_end_us": 1630335822950173,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1630335821950173,
+            "speed_mps": 9.160148495263943
+          },
+          {
+            "timestamp_us": 1630335822000146,
+            "speed_mps": 9.184320918468664
+          },
+          {
+            "timestamp_us": 1630335822050123,
+            "speed_mps": 9.201148235521897
+          },
+          {
+            "timestamp_us": 1630335822100106,
+            "speed_mps": 9.213655078301315
+          },
+          {
+            "timestamp_us": 1630335822150095,
+            "speed_mps": 9.229989631185132
+          },
+          {
+            "timestamp_us": 1630335822200088,
+            "speed_mps": 9.245676836571656
+          },
+          {
+            "timestamp_us": 1630335822250083,
+            "speed_mps": 9.262835061030675
+          },
+          {
+            "timestamp_us": 1630335822300077,
+            "speed_mps": 9.279189276579377
+          },
+          {
+            "timestamp_us": 1630335822350070,
+            "speed_mps": 9.291803954596388
+          },
+          {
+            "timestamp_us": 1630335822400062,
+            "speed_mps": 9.306084429281606
+          },
+          {
+            "timestamp_us": 1630335822450053,
+            "speed_mps": 9.321083291960294
+          },
+          {
+            "timestamp_us": 1630335822500045,
+            "speed_mps": 9.337711933179339
+          },
+          {
+            "timestamp_us": 1630335822550041,
+            "speed_mps": 9.344309097030663
+          },
+          {
+            "timestamp_us": 1630335822600039,
+            "speed_mps": 9.350654379985992
+          },
+          {
+            "timestamp_us": 1630335822650040,
+            "speed_mps": 9.360205850200806
+          },
+          {
+            "timestamp_us": 1630335822700044,
+            "speed_mps": 9.365005941804684
+          },
+          {
+            "timestamp_us": 1630335822750051,
+            "speed_mps": 9.37016569679394
+          },
+          {
+            "timestamp_us": 1630335822800061,
+            "speed_mps": 9.371344347355162
+          },
+          {
+            "timestamp_us": 1630335822850074,
+            "speed_mps": 9.369292178164837
+          },
+          {
+            "timestamp_us": 1630335822900089,
+            "speed_mps": 9.373731074816687
+          },
+          {
+            "timestamp_us": 1630335822950102,
+            "speed_mps": 9.373557838212827
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 9.160148495263943,
+          "p25": 9.245676836571656,
+          "median": 9.321083291960294,
+          "p75": 9.365005941804684,
+          "p95": 9.373557838212827,
+          "p99": 9.373696427495915,
+          "max": 9.373731074816687
+        },
+        "v_audit_mps": 9.373731074816687,
+        "v_support_mps": 9.873731074816687,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9504189999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 158.00495098210368,
+        "source_total_length_m": 222.91782572827478,
+        "target_total_length_m": 221.77646220912544,
+        "source_current_arc_m": 4.98392362559976,
+        "target_current_arc_m": 4.3912160372935825,
+        "source_remaining_margin_m": 59.92895112057133,
+        "target_remaining_margin_m": 59.38029518972817,
+        "source_components": [
+          {
+            "edge_id": "48641",
+            "roadblock_id": "49441",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 53.844351559257994,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "52134",
+            "roadblock_id": "50872",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.450357961314683,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "47985",
+            "roadblock_id": "49067",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 31.427872074944254,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "52732",
+            "roadblock_id": "50964",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 40.78286115094902,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "47815",
+            "roadblock_id": "36353",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 73.41238298180883,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "48640",
+            "roadblock_id": "49441",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 62.31351537157279,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "53176",
+            "roadblock_id": "50872",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 14.537382060549879,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "47986",
+            "roadblock_id": "49067",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 31.16873572679171,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "52879",
+            "roadblock_id": "50964",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 39.899836501277406,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "47814",
+            "roadblock_id": "36353",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 73.8569925489332,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "5c43681a4c600cc49c5389dd380425edafb2e9bc88e5404c6bdc1fa59f370971",
+        "target": "7cc4cddc56e85b39576f25607bad09a116b45605fa922355df30404b8109c21f"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001217371397231636,
+          "robust_max_abs_curvature_inv_m": 0.0010000014731881325,
+          "speed_mps": 9.373731074816687
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010003128531459425,
+          "robust_max_abs_curvature_inv_m": 0.0010003606529127654,
+          "speed_mps": 9.373731074816687
+        }
+      },
+      "component_audit_canonical_sha256": "26ef0c9b014ac18824c9430b703723568e0f43449aa86c10bf9097338b36f8e2",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.08.30.14.54.34_veh-40_00439_00835.db",
+        "db_file": "2021.08.30.14.54.34_veh-40_00439_00835.db",
+        "size_bytes": 112365568,
+        "mtime_utc": "2022-09-23T05:50:07+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "65a1db1775309b913266607709c92ca5b03ab90f26e036ce67ff8446c1319c36",
+        "scenario_tag_count": 12611,
+        "unique_scenario_token_count": 5908,
+        "token_set_sha256": "52bbccf58e801b41e458af7c552de504b47c3921a87af723ac54ed269a270c2e",
+        "log_count": 1,
+        "log_ids": "2021.08.30.14.54.34_veh-40_00439_00835",
+        "locations": "us-ma-boston",
+        "map_versions": "us-ma-boston",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "35a4f54c2475e03574598e4ef2e8001a40f1c8621d4ac0e0d57f9b2cc929571c"
+    },
+    {
+      "frame_index": 205,
+      "scenario_token": "213a513a616d5422",
+      "log_id": "2021.05.12.23.36.44_veh-35_02035_02387",
+      "scenario_anchor_timestamp_us": 1620864828800257,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "00102f0816818d11fdb2570763642fbcd09b9a1460a27b5c7a260473a9ee8a4c",
+      "route_fingerprint": "636180cc3ea66e61418f54e55407b97e3ecd1e8bb1da2a570c0fe3f843c5ee7f",
+      "source_lane_id": "63338",
+      "target_lane_id": "63337",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 12.150323,
+        "anchor_requested_timestamp_us": 1620864828800257,
+        "anchor_nearest_timestamp_us": 1620864828800257,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 12.517087313630192,
+        "pre_treatment_window_start_us": 1620864825801312,
+        "pre_treatment_window_end_us": 1620864826801312,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1620864825801312,
+            "speed_mps": 12.150322885773756
+          },
+          {
+            "timestamp_us": 1620864825851269,
+            "speed_mps": 12.140622801199264
+          },
+          {
+            "timestamp_us": 1620864825901224,
+            "speed_mps": 12.142949610343129
+          },
+          {
+            "timestamp_us": 1620864825951176,
+            "speed_mps": 12.156261384190682
+          },
+          {
+            "timestamp_us": 1620864826001126,
+            "speed_mps": 12.159848718760976
+          },
+          {
+            "timestamp_us": 1620864826051077,
+            "speed_mps": 12.162231749712763
+          },
+          {
+            "timestamp_us": 1620864826101025,
+            "speed_mps": 12.17138183867696
+          },
+          {
+            "timestamp_us": 1620864826150970,
+            "speed_mps": 12.17936207966689
+          },
+          {
+            "timestamp_us": 1620864826200914,
+            "speed_mps": 12.184100231466726
+          },
+          {
+            "timestamp_us": 1620864826250858,
+            "speed_mps": 12.191034713833812
+          },
+          {
+            "timestamp_us": 1620864826300805,
+            "speed_mps": 12.204882090193788
+          },
+          {
+            "timestamp_us": 1620864826350755,
+            "speed_mps": 12.219652696887495
+          },
+          {
+            "timestamp_us": 1620864826400708,
+            "speed_mps": 12.233297567184593
+          },
+          {
+            "timestamp_us": 1620864826450664,
+            "speed_mps": 12.243565723834317
+          },
+          {
+            "timestamp_us": 1620864826500620,
+            "speed_mps": 12.254207004169178
+          },
+          {
+            "timestamp_us": 1620864826550575,
+            "speed_mps": 12.26316335630563
+          },
+          {
+            "timestamp_us": 1620864826600525,
+            "speed_mps": 12.275969475553213
+          },
+          {
+            "timestamp_us": 1620864826650474,
+            "speed_mps": 12.290012312857229
+          },
+          {
+            "timestamp_us": 1620864826700421,
+            "speed_mps": 12.29678812388333
+          },
+          {
+            "timestamp_us": 1620864826750365,
+            "speed_mps": 12.303829692305019
+          },
+          {
+            "timestamp_us": 1620864826800308,
+            "speed_mps": 12.321110923276109
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 12.140622801199264,
+          "p25": 12.162231749712763,
+          "median": 12.204882090193788,
+          "p75": 12.26316335630563,
+          "p95": 12.303829692305019,
+          "p99": 12.31765467708189,
+          "max": 12.321110923276109
+        },
+        "v_audit_mps": 12.321110923276109,
+        "v_support_mps": 12.937166469439914,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.998945,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 206.40723021715064,
+        "source_total_length_m": 296.8731325133468,
+        "target_total_length_m": 296.12316632076255,
+        "source_current_arc_m": 59.34408388047132,
+        "target_current_arc_m": 59.24256881826795,
+        "source_remaining_margin_m": 31.121818415724817,
+        "target_remaining_margin_m": 30.473367285343954,
+        "source_components": [
+          {
+            "edge_id": "63338",
+            "roadblock_id": "65506",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 61.703456439255184,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70584",
+            "roadblock_id": "60159",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 46.43529565611875,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67421",
+            "roadblock_id": "46814",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 5.133252391627667,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69758",
+            "roadblock_id": "66813",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 13.571374604372554,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67404",
+            "roadblock_id": "65551",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 60.8541864229691,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70418",
+            "roadblock_id": "66157",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.640238894339929,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67361",
+            "roadblock_id": "65566",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.77883381362487,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70189",
+            "roadblock_id": "66199",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.75649429103875,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "63337",
+            "roadblock_id": "65506",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 61.49203165256438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70472",
+            "roadblock_id": "60159",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 46.308355671267655,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67447",
+            "roadblock_id": "46814",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 5.38314910229154,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68906",
+            "roadblock_id": "66813",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.736583553032885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67218",
+            "roadblock_id": "65551",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 61.077310344851945,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70446",
+            "roadblock_id": "66157",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.1877707197321445,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67511",
+            "roadblock_id": "65566",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.3381878997534,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68834",
+            "roadblock_id": "66199",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 33.59977737726821,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "cef129db59be9cc358456b210f57a5ad2918ee1ae89084a4406940b698590c6c",
+        "target": "454c205919d20a63e27443cfa54313ef8a74873a8d6936e2292d10d16e6a59ba"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.013451456315195945,
+          "robust_max_abs_curvature_inv_m": 0.007257447248311991,
+          "speed_mps": 12.321110923276109
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.029560416373528638,
+          "robust_max_abs_curvature_inv_m": 0.011502379319747194,
+          "speed_mps": 12.321110923276109
+        }
+      },
+      "component_audit_canonical_sha256": "054176c91068367647d2bf95b5aa37b92a2cc567b3773f514a111b7bf9c35dda",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.05.12.23.36.44_veh-35_02035_02387.db",
+        "db_file": "2021.05.12.23.36.44_veh-35_02035_02387.db",
+        "size_bytes": 257826816,
+        "mtime_utc": "2022-09-23T05:45:47+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "462df859f4dbec963b538da914efc7b8ab2ede829912f2e69781581d6fde9f8f",
+        "scenario_tag_count": 10481,
+        "unique_scenario_token_count": 4591,
+        "token_set_sha256": "c87513d3f3746560dcd1497d37295e9a1ef66031cda917d2ce8473c018029336",
+        "log_count": 1,
+        "log_ids": "2021.05.12.23.36.44_veh-35_02035_02387",
+        "locations": "las_vegas",
+        "map_versions": "us-nv-las-vegas-strip",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "6dc4c93896923b5d8674ac7ca20ed5eb78553db281e6816318d3c5ff7cc9bc6a"
+    },
+    {
+      "frame_index": 214,
+      "scenario_token": "c931df68adff5e67",
+      "log_id": "2021.09.13.14.24.27_veh-45_00131_00396",
+      "scenario_anchor_timestamp_us": 1631543398799427,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "00112b375e31ce892560e80619ab5dcd1ca828709b9b86be3b593415f3f2817f",
+      "route_fingerprint": "f2decbb437e67b7e3964836b7e14bed844739363a670d62d5fb653d2dbb1068a",
+      "source_lane_id": "19822",
+      "target_lane_id": "19925",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 10.878229,
+        "anchor_requested_timestamp_us": 1631543398799427,
+        "anchor_nearest_timestamp_us": 1631543398799427,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 11.437112171246767,
+        "pre_treatment_window_start_us": 1631543395799699,
+        "pre_treatment_window_end_us": 1631543396799699,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1631543395799699,
+            "speed_mps": 10.87822898460701
+          },
+          {
+            "timestamp_us": 1631543395849739,
+            "speed_mps": 10.88207262147544
+          },
+          {
+            "timestamp_us": 1631543395899781,
+            "speed_mps": 10.888733076665831
+          },
+          {
+            "timestamp_us": 1631543395949821,
+            "speed_mps": 10.898037263196603
+          },
+          {
+            "timestamp_us": 1631543395999860,
+            "speed_mps": 10.901331261918845
+          },
+          {
+            "timestamp_us": 1631543396049895,
+            "speed_mps": 10.910456222494235
+          },
+          {
+            "timestamp_us": 1631543396099928,
+            "speed_mps": 10.916333498986987
+          },
+          {
+            "timestamp_us": 1631543396149961,
+            "speed_mps": 10.920270904454453
+          },
+          {
+            "timestamp_us": 1631543396199992,
+            "speed_mps": 10.926933936462007
+          },
+          {
+            "timestamp_us": 1631543396250020,
+            "speed_mps": 10.93475097472733
+          },
+          {
+            "timestamp_us": 1631543396300047,
+            "speed_mps": 10.936754588798275
+          },
+          {
+            "timestamp_us": 1631543396350076,
+            "speed_mps": 10.95041941945234
+          },
+          {
+            "timestamp_us": 1631543396400103,
+            "speed_mps": 10.948807949173272
+          },
+          {
+            "timestamp_us": 1631543396450128,
+            "speed_mps": 10.952467758777601
+          },
+          {
+            "timestamp_us": 1631543396500148,
+            "speed_mps": 10.958178154773758
+          },
+          {
+            "timestamp_us": 1631543396550166,
+            "speed_mps": 10.972352460519746
+          },
+          {
+            "timestamp_us": 1631543396600182,
+            "speed_mps": 10.977725087548004
+          },
+          {
+            "timestamp_us": 1631543396650198,
+            "speed_mps": 10.974829875920337
+          },
+          {
+            "timestamp_us": 1631543396700212,
+            "speed_mps": 10.965262429640347
+          },
+          {
+            "timestamp_us": 1631543396750226,
+            "speed_mps": 10.955577646823452
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 10.87822898460701,
+          "p25": 10.908174982350387,
+          "median": 10.935752781762801,
+          "p75": 10.956227773811028,
+          "p95": 10.97497463650172,
+          "p99": 10.977174997338746,
+          "max": 10.977725087548004
+        },
+        "v_audit_mps": 10.977725087548004,
+        "v_support_mps": 11.526611341925404,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9997279999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 184.1204592024214,
+        "source_total_length_m": 196.0952539252325,
+        "target_total_length_m": 201.476778849156,
+        "source_current_arc_m": 9.985814617924978,
+        "target_current_arc_m": 15.491050821134028,
+        "source_remaining_margin_m": 1.9889801048861386,
+        "target_remaining_margin_m": 1.8652688256005945,
+        "source_components": [
+          {
+            "edge_id": "19822",
+            "roadblock_id": "19088",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 119.96282064864887,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19945",
+            "roadblock_id": "19712",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.649728730330295,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19920",
+            "roadblock_id": "19031",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.198818148004523,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20079",
+            "roadblock_id": "19317",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 18.283886398248693,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19925",
+            "roadblock_id": "19088",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.49214628517497,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19946",
+            "roadblock_id": "19712",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.643908225180425,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19800",
+            "roadblock_id": "19031",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.213306821351626,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20080",
+            "roadblock_id": "19317",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 18.127417517448784,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "ea957b0555f0c1438bdc348cb8f30e6a32afcf561a6606511141e8e1c7070ba6",
+        "target": "fd3f9854ba1dab8c9f24e13cb15cf4234d2dc88f04d9cc8d5563f97ced0ee6a3"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 6.24928820157699e-08,
+          "robust_max_abs_curvature_inv_m": 9.92001126153919e-10,
+          "speed_mps": 10.977725087548004
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000127965473094,
+          "robust_max_abs_curvature_inv_m": 0.001000001479299014,
+          "speed_mps": 10.977725087548004
+        }
+      },
+      "component_audit_canonical_sha256": "9ee69d8da5f54dd2538047b55b707f966d5fd47625249459c7e99187fa974b16",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.13.14.24.27_veh-45_00131_00396.db",
+        "db_file": "2021.09.13.14.24.27_veh-45_00131_00396.db",
+        "size_bytes": 41791488,
+        "mtime_utc": "2022-09-23T05:50:31+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "b326793ebe9d61846ac731a3c6bc3a166f4241b6979547a293a540b4028f037d",
+        "scenario_tag_count": 8058,
+        "unique_scenario_token_count": 3449,
+        "token_set_sha256": "6b475fc2ac6cd4cca82312a4ebb4a67215b0fa606b22b9513f6fc1c4277cad6d",
+        "log_count": 1,
+        "log_ids": "2021.09.13.14.24.27_veh-45_00131_00396",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "6f775c49bc409f512f885b1e1dfef18415ef0ef09eebe1c23cd5eead5c3e9495"
+    },
+    {
+      "frame_index": 219,
+      "scenario_token": "86bc678ada61581c",
+      "log_id": "2021.06.28.16.29.11_veh-38_03263_03766",
+      "scenario_anchor_timestamp_us": 1624901557149956,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "0011a528d21c699b0f2d337c2e45f7b7738919136d3f10ba2c359c6de9098330",
+      "route_fingerprint": "a6b4e1714b41126c0749fccc5ea0ea9a66a58c182e0424b0a4d85e95ffc0ca73",
+      "source_lane_id": "67124",
+      "target_lane_id": "67129",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 5.061562,
+        "anchor_requested_timestamp_us": 1624901557149956,
+        "anchor_nearest_timestamp_us": 1624901557149956,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 4.858219145938604,
+        "pre_treatment_window_start_us": 1624901554150298,
+        "pre_treatment_window_end_us": 1624901555150298,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1624901554150298,
+            "speed_mps": 5.0615619241892205
+          },
+          {
+            "timestamp_us": 1624901554200305,
+            "speed_mps": 5.049687902721973
+          },
+          {
+            "timestamp_us": 1624901554250306,
+            "speed_mps": 5.042645579136393
+          },
+          {
+            "timestamp_us": 1624901554300301,
+            "speed_mps": 5.0326884286358355
+          },
+          {
+            "timestamp_us": 1624901554350290,
+            "speed_mps": 5.027123066658334
+          },
+          {
+            "timestamp_us": 1624901554400272,
+            "speed_mps": 5.015176662800629
+          },
+          {
+            "timestamp_us": 1624901554450251,
+            "speed_mps": 5.00733979388829
+          },
+          {
+            "timestamp_us": 1624901554500225,
+            "speed_mps": 4.997985083241056
+          },
+          {
+            "timestamp_us": 1624901554550198,
+            "speed_mps": 4.987636921368437
+          },
+          {
+            "timestamp_us": 1624901554600171,
+            "speed_mps": 4.97916465716779
+          },
+          {
+            "timestamp_us": 1624901554650143,
+            "speed_mps": 4.965703738304914
+          },
+          {
+            "timestamp_us": 1624901554700114,
+            "speed_mps": 4.957622634592805
+          },
+          {
+            "timestamp_us": 1624901554750083,
+            "speed_mps": 4.947869094463455
+          },
+          {
+            "timestamp_us": 1624901554800052,
+            "speed_mps": 4.9376126470318935
+          },
+          {
+            "timestamp_us": 1624901554850021,
+            "speed_mps": 4.927206740109705
+          },
+          {
+            "timestamp_us": 1624901554899992,
+            "speed_mps": 4.916052956743922
+          },
+          {
+            "timestamp_us": 1624901554949966,
+            "speed_mps": 4.9050260867464255
+          },
+          {
+            "timestamp_us": 1624901554999941,
+            "speed_mps": 4.8915899514152885
+          },
+          {
+            "timestamp_us": 1624901555049918,
+            "speed_mps": 4.876968123884396
+          },
+          {
+            "timestamp_us": 1624901555099897,
+            "speed_mps": 4.865286162999833
+          },
+          {
+            "timestamp_us": 1624901555149880,
+            "speed_mps": 4.856656431640559
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 4.856656431640559,
+          "p25": 4.916052956743922,
+          "median": 4.965703738304914,
+          "p75": 5.015176662800629,
+          "p95": 5.049687902721973,
+          "p99": 5.059187119895771,
+          "max": 5.0615619241892205
+        },
+        "v_audit_mps": 5.061562,
+        "v_support_mps": 5.561562,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9996579999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 89.87267960000001,
+        "source_total_length_m": 142.7021769213969,
+        "target_total_length_m": 132.72366488848834,
+        "source_current_arc_m": 40.86719623589435,
+        "target_current_arc_m": 36.16561315999061,
+        "source_remaining_margin_m": 11.962301085502546,
+        "target_remaining_margin_m": 6.685372128497718,
+        "source_components": [
+          {
+            "edge_id": "67124",
+            "roadblock_id": "65423",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 56.83681236174036,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "65387",
+            "roadblock_id": "66997",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 17.88364184957932,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68574",
+            "roadblock_id": "65519",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 5.86236183969354,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69684",
+            "roadblock_id": "66569",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 21.291556807611403,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68542",
+            "roadblock_id": "65596",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.825439085712778,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68708",
+            "roadblock_id": "66386",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 30.0023649770595,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "67129",
+            "roadblock_id": "65423",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 50.29405048694952,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "65389",
+            "roadblock_id": "66997",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 15.052314441413808,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68550",
+            "roadblock_id": "65519",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 5.197260638797812,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70210",
+            "roadblock_id": "66569",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 19.62862457206457,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68547",
+            "roadblock_id": "65596",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.318175116989607,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70125",
+            "roadblock_id": "66386",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.23323963227316,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "21c1f923777feae51077ba437fc054261be0574ce9a311913bcaf37738fa7016",
+        "target": "351e76291ce2aafbb813aa6a07487dc46433843ed7c535cf8d6bb2b652f0a8b7"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.09315338673169508,
+          "robust_max_abs_curvature_inv_m": 0.044688138749704114,
+          "speed_mps": 5.061562
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.043599856331929476,
+          "robust_max_abs_curvature_inv_m": 0.043599794070623026,
+          "speed_mps": 5.061562
+        }
+      },
+      "component_audit_canonical_sha256": "f5e41a44b00bedb3db835b290d7c6670fd2c2c56842c04058066361bf2740baa",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.28.16.29.11_veh-38_03263_03766.db",
+        "db_file": "2021.06.28.16.29.11_veh-38_03263_03766.db",
+        "size_bytes": 260046848,
+        "mtime_utc": "2022-09-23T05:48:17+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "a7af99eb740d02570852bfce71ffd4de51988a20ca42a4b63af59a9e72b7b804",
+        "scenario_tag_count": 17083,
+        "unique_scenario_token_count": 8213,
+        "token_set_sha256": "9752db7f766019da7472c639fc11acc6fca5513c7422c9a7f142a4aee7e57ad1",
+        "log_count": 1,
+        "log_ids": "2021.06.28.16.29.11_veh-38_03263_03766",
+        "locations": "las_vegas",
+        "map_versions": "us-nv-las-vegas-strip",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "fcd2fdd3fe59eb580f932181b74cc2589d39cd14d8879d8e1d5d610ecf33c48c"
+    },
+    {
+      "frame_index": 223,
+      "scenario_token": "19e9beb939455be3",
+      "log_id": "2021.08.20.14.28.03_veh-45_00239_00641",
+      "scenario_anchor_timestamp_us": 1629470095950204,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "0012cec2a17a5d0e0fcd2b87b7a5419bcddf49d329a5918efbfd3f86c28ae87c",
+      "route_fingerprint": "60c3e721bd71ddf5a71519ed1410d7e1240d348fda17a2093f6a020dd4fe3a4e",
+      "source_lane_id": "18524",
+      "target_lane_id": "18525",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 10.636294,
+        "anchor_requested_timestamp_us": 1629470095950204,
+        "anchor_nearest_timestamp_us": 1629470095950204,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 11.615792459191344,
+        "pre_treatment_window_start_us": 1629470092999812,
+        "pre_treatment_window_end_us": 1629470093999812,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629470092999812,
+            "speed_mps": 10.636294230709446
+          },
+          {
+            "timestamp_us": 1629470093049794,
+            "speed_mps": 10.652524339616784
+          },
+          {
+            "timestamp_us": 1629470093099779,
+            "speed_mps": 10.667858749236833
+          },
+          {
+            "timestamp_us": 1629470093149770,
+            "speed_mps": 10.685822286580109
+          },
+          {
+            "timestamp_us": 1629470093199765,
+            "speed_mps": 10.698663532319825
+          },
+          {
+            "timestamp_us": 1629470093249759,
+            "speed_mps": 10.713602825056142
+          },
+          {
+            "timestamp_us": 1629470093299756,
+            "speed_mps": 10.730228740752116
+          },
+          {
+            "timestamp_us": 1629470093349756,
+            "speed_mps": 10.750171398113178
+          },
+          {
+            "timestamp_us": 1629470093399759,
+            "speed_mps": 10.766097737559194
+          },
+          {
+            "timestamp_us": 1629470093449766,
+            "speed_mps": 10.784681852914062
+          },
+          {
+            "timestamp_us": 1629470093499778,
+            "speed_mps": 10.800447222403474
+          },
+          {
+            "timestamp_us": 1629470093549792,
+            "speed_mps": 10.8111474158906
+          },
+          {
+            "timestamp_us": 1629470093599811,
+            "speed_mps": 10.829318796299138
+          },
+          {
+            "timestamp_us": 1629470093649835,
+            "speed_mps": 10.844286821804298
+          },
+          {
+            "timestamp_us": 1629470093699867,
+            "speed_mps": 10.859088893605394
+          },
+          {
+            "timestamp_us": 1629470093749902,
+            "speed_mps": 10.874271732388353
+          },
+          {
+            "timestamp_us": 1629470093799939,
+            "speed_mps": 10.88834638221371
+          },
+          {
+            "timestamp_us": 1629470093849973,
+            "speed_mps": 10.901544771548336
+          },
+          {
+            "timestamp_us": 1629470093900006,
+            "speed_mps": 10.917437228898587
+          },
+          {
+            "timestamp_us": 1629470093950036,
+            "speed_mps": 10.935835634373584
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 10.636294230709446,
+          "p25": 10.709868001872064,
+          "median": 10.792564537658768,
+          "p75": 10.862884603301133,
+          "p95": 10.918357149172337,
+          "p99": 10.932339937333335,
+          "max": 10.935835634373584
+        },
+        "v_audit_mps": 10.935835634373584,
+        "v_support_mps": 11.482627416092264,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.950392,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 183.4255131742578,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 4.519716794925335,
+        "target_current_arc_m": 4.66390582011599,
+        "source_remaining_margin_m": 94.12390990717796,
+        "target_remaining_margin_m": 86.19975440937736,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+        "target": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0014959783706273832,
+          "robust_max_abs_curvature_inv_m": 0.001495935824177073,
+          "speed_mps": 10.935835634373584
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.002429731146599985,
+          "robust_max_abs_curvature_inv_m": 0.002428574874790274,
+          "speed_mps": 10.935835634373584
+        }
+      },
+      "component_audit_canonical_sha256": "c2a7fc96e59001e5081107d09cef1b6b98fbd3d31c8f3d71aabf7c6443a419d5",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.20.14.28.03_veh-45_00239_00641.db",
+        "db_file": "2021.08.20.14.28.03_veh-45_00239_00641.db",
+        "size_bytes": 55103488,
+        "mtime_utc": "2022-09-23T05:49:52+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "8f6fbba44b29d57d31c30d1b0f77b2f6671801f343e019a477e3018ffce4830e",
+        "scenario_tag_count": 9066,
+        "unique_scenario_token_count": 5118,
+        "token_set_sha256": "d44096c121fe2d4ba2f286d3d2c416d1868c7decac8dceed3e84efb96e96018f",
+        "log_count": 1,
+        "log_ids": "2021.08.20.14.28.03_veh-45_00239_00641",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "b527285cabd4c8a9c1ef4a7573a0990e00919e6d4cbc01bbab9959486ea31d7d"
+    },
+    {
+      "frame_index": 230,
+      "scenario_token": "c58fb34878ff5bbd",
+      "log_id": "2021.09.23.17.57.13_veh-45_01039_01679",
+      "scenario_anchor_timestamp_us": 1632421058049890,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "001443b43ba4148468199745155a8a7d01ba11a897aace3b3002dd28f5cfd6ec",
+      "route_fingerprint": "1de8b0978f63a342111e6d3e1a6d03294863e630290b80bb228c112d186081e2",
+      "source_lane_id": "19810",
+      "target_lane_id": "19738",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 2.409107,
+        "anchor_requested_timestamp_us": 1632421058049890,
+        "anchor_nearest_timestamp_us": 1632421058049890,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 5.969646421114527,
+        "pre_treatment_window_start_us": 1632421055099579,
+        "pre_treatment_window_end_us": 1632421056099579,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632421055099579,
+            "speed_mps": 2.4091068707954886
+          },
+          {
+            "timestamp_us": 1632421055149574,
+            "speed_mps": 2.512384756511593
+          },
+          {
+            "timestamp_us": 1632421055199569,
+            "speed_mps": 2.6158878681645716
+          },
+          {
+            "timestamp_us": 1632421055249570,
+            "speed_mps": 2.7187603324470353
+          },
+          {
+            "timestamp_us": 1632421055299576,
+            "speed_mps": 2.8176742564994366
+          },
+          {
+            "timestamp_us": 1632421055349589,
+            "speed_mps": 2.9209681797993294
+          },
+          {
+            "timestamp_us": 1632421055399607,
+            "speed_mps": 3.0235751588064224
+          },
+          {
+            "timestamp_us": 1632421055449629,
+            "speed_mps": 3.1269229298935586
+          },
+          {
+            "timestamp_us": 1632421055499656,
+            "speed_mps": 3.231786946722627
+          },
+          {
+            "timestamp_us": 1632421055549685,
+            "speed_mps": 3.3333469338367494
+          },
+          {
+            "timestamp_us": 1632421055599717,
+            "speed_mps": 3.4359513303647717
+          },
+          {
+            "timestamp_us": 1632421055649747,
+            "speed_mps": 3.538707799123516
+          },
+          {
+            "timestamp_us": 1632421055699778,
+            "speed_mps": 3.6372687578500993
+          },
+          {
+            "timestamp_us": 1632421055749808,
+            "speed_mps": 3.738437093910356
+          },
+          {
+            "timestamp_us": 1632421055799840,
+            "speed_mps": 3.8391609806538445
+          },
+          {
+            "timestamp_us": 1632421055849872,
+            "speed_mps": 3.9385430478287065
+          },
+          {
+            "timestamp_us": 1632421055899904,
+            "speed_mps": 4.033293750582955
+          },
+          {
+            "timestamp_us": 1632421055949935,
+            "speed_mps": 4.127926556856194
+          },
+          {
+            "timestamp_us": 1632421055999964,
+            "speed_mps": 4.225699968910018
+          },
+          {
+            "timestamp_us": 1632421056049988,
+            "speed_mps": 4.318354299292398
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 2.4091068707954886,
+          "p25": 2.8951446989743563,
+          "median": 3.3846491321007606,
+          "p75": 3.86400649744756,
+          "p95": 4.230332685429136,
+          "p99": 4.300749976519746,
+          "max": 4.318354299292398
+        },
+        "v_audit_mps": 4.318354299292398,
+        "v_support_mps": 4.818354299292398,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9503109999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 78.12999792881989,
+        "source_total_length_m": 121.65409240300939,
+        "target_total_length_m": 121.67097667510183,
+        "source_current_arc_m": 24.912445145414733,
+        "target_current_arc_m": 25.221875409267042,
+        "source_remaining_margin_m": 18.61164932877476,
+        "target_remaining_margin_m": 18.319103337014894,
+        "source_components": [
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20121",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 35.01266046558885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18514",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.839114079400336,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19949",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.05097380386642,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20229",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.42332186335746,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18513",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.40744603433657,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20230",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.48456584795533,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "b2f37fef00af658de8c984deea05b2194414ad03ca078059f9ab9232d9080dfc",
+        "target": "a053f5d978e39732ef143e6064941aac68000821d449d983a9bef7e2bb043907"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000269519886632,
+          "robust_max_abs_curvature_inv_m": 0.000715043871890533,
+          "speed_mps": 4.318354299292398
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000933102575402,
+          "robust_max_abs_curvature_inv_m": 0.0009612103365648549,
+          "speed_mps": 4.318354299292398
+        }
+      },
+      "component_audit_canonical_sha256": "040733642414d795cdb18ddb736b04d5925526ae123defb240d282a724f4e0d9",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.23.17.57.13_veh-45_01039_01679.db",
+        "db_file": "2021.09.23.17.57.13_veh-45_01039_01679.db",
+        "size_bytes": 123146240,
+        "mtime_utc": "2022-09-23T05:51:00+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "257fb9cdf4196441a05e05da376a3d7f3f072fc8040d4a29edc70ed5e96a52a9",
+        "scenario_tag_count": 13982,
+        "unique_scenario_token_count": 8202,
+        "token_set_sha256": "61ea45709710f86af68552d34ee1c508c5e0cf47bcd6b79b8feadee9f62f1f73",
+        "log_count": 1,
+        "log_ids": "2021.09.23.17.57.13_veh-45_01039_01679",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "95585e637292f2bacf3522537cf7a13eda83d2b5c3511e6c98f954b5cacbc665"
+    },
+    {
+      "frame_index": 241,
+      "scenario_token": "220edc604260542e",
+      "log_id": "2021.09.23.17.03.56_veh-45_01512_01822",
+      "scenario_anchor_timestamp_us": 1632418224600408,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "0015c08fd1cad04acd9580421c3a10cb24b1309ee8bc7c7a309cedc7ec4b37cc",
+      "route_fingerprint": "d81d73c58761e828c9d836c8d90e8aba2c49432371cdf9f0f02f832e0a832778",
+      "source_lane_id": "19843",
+      "target_lane_id": "19740",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 7.323913,
+        "anchor_requested_timestamp_us": 1632418224600408,
+        "anchor_nearest_timestamp_us": 1632418224600408,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 8.705499689898902,
+        "pre_treatment_window_start_us": 1632418221600462,
+        "pre_treatment_window_end_us": 1632418222600462,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632418221600462,
+            "speed_mps": 7.323913037866277
+          },
+          {
+            "timestamp_us": 1632418221650432,
+            "speed_mps": 7.3489571334508925
+          },
+          {
+            "timestamp_us": 1632418221700401,
+            "speed_mps": 7.375707145941757
+          },
+          {
+            "timestamp_us": 1632418221750368,
+            "speed_mps": 7.408061427805661
+          },
+          {
+            "timestamp_us": 1632418221800335,
+            "speed_mps": 7.431623813776346
+          },
+          {
+            "timestamp_us": 1632418221850299,
+            "speed_mps": 7.455079332011394
+          },
+          {
+            "timestamp_us": 1632418221900262,
+            "speed_mps": 7.480419521883369
+          },
+          {
+            "timestamp_us": 1632418221950226,
+            "speed_mps": 7.502642329401787
+          },
+          {
+            "timestamp_us": 1632418222000192,
+            "speed_mps": 7.532184114051895
+          },
+          {
+            "timestamp_us": 1632418222050159,
+            "speed_mps": 7.557189454448019
+          },
+          {
+            "timestamp_us": 1632418222100127,
+            "speed_mps": 7.580521321320537
+          },
+          {
+            "timestamp_us": 1632418222150096,
+            "speed_mps": 7.60480280557777
+          },
+          {
+            "timestamp_us": 1632418222200066,
+            "speed_mps": 7.631624614446914
+          },
+          {
+            "timestamp_us": 1632418222250037,
+            "speed_mps": 7.654887946733551
+          },
+          {
+            "timestamp_us": 1632418222300010,
+            "speed_mps": 7.680709413014273
+          },
+          {
+            "timestamp_us": 1632418222349982,
+            "speed_mps": 7.710028237389854
+          },
+          {
+            "timestamp_us": 1632418222399954,
+            "speed_mps": 7.731194421900025
+          },
+          {
+            "timestamp_us": 1632418222449925,
+            "speed_mps": 7.7573401540499525
+          },
+          {
+            "timestamp_us": 1632418222499897,
+            "speed_mps": 7.784107499019053
+          },
+          {
+            "timestamp_us": 1632418222549869,
+            "speed_mps": 7.809902626313545
+          },
+          {
+            "timestamp_us": 1632418222599843,
+            "speed_mps": 7.839186014885211
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.323913037866277,
+          "p25": 7.455079332011394,
+          "median": 7.580521321320537,
+          "p75": 7.710028237389854,
+          "p95": 7.809902626313545,
+          "p99": 7.833329337170878,
+          "max": 7.839186014885211
+        },
+        "v_audit_mps": 7.839186014885211,
+        "v_support_mps": 8.339186014885211,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.999946,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 133.75913903518634,
+        "source_total_length_m": 144.85682682147325,
+        "target_total_length_m": 145.62660883141172,
+        "source_current_arc_m": 1.360266735328359,
+        "target_current_arc_m": 1.571829022913224,
+        "source_remaining_margin_m": 9.737421050958545,
+        "target_remaining_margin_m": 10.295640773312158,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20211",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.490312386579166,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20228",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.668039996636473,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "7ee80814fddabd9c69041d6e315cad32b0cad6ed0eb32a3dbc115790e25a77db",
+        "target": "9291ba9152e484d2089faa02e6344e5a3857d4d6e6af7134c20e5dbe31c8a8b3"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010003159921848869,
+          "robust_max_abs_curvature_inv_m": 0.001000001693294607,
+          "speed_mps": 7.839186014885211
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.0010000016673645821,
+          "speed_mps": 7.839186014885211
+        }
+      },
+      "component_audit_canonical_sha256": "8a5915d40d663f02f46dffee38addebca1e40ef8f1e6959ed9b63a92572cd83d",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.23.17.03.56_veh-45_01512_01822.db",
+        "db_file": "2021.09.23.17.03.56_veh-45_01512_01822.db",
+        "size_bytes": 58081280,
+        "mtime_utc": "2022-09-23T05:51:00+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "8c40a7e8223561dca32cd778a5117b1806a3d741012aa256d4638c4fed6f555a",
+        "scenario_tag_count": 7204,
+        "unique_scenario_token_count": 4317,
+        "token_set_sha256": "80ce90a3c9cbd85106876909302fa3fc4e265fce32a6ad3df18c07652c461969",
+        "log_count": 1,
+        "log_ids": "2021.09.23.17.03.56_veh-45_01512_01822",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "caf9463576ebaf62b6a33a483c81f3013826d0ee615d70387a58301684416aea"
+    },
+    {
+      "frame_index": 247,
+      "scenario_token": "0799b3c270c85038",
+      "log_id": "2021.09.30.15.05.51_veh-44_00016_00731",
+      "scenario_anchor_timestamp_us": 1633014773349331,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "00166920ed2985e68367e1f71aade473358773d595da388cdc1b4d8dfe41ed95",
+      "route_fingerprint": "a9f9029ca804fda03c0a407c6f443b95ddd88a408210a357e523edf216033353",
+      "source_lane_id": "18556",
+      "target_lane_id": "18557",
+      "direction": "right",
+      "speed_information": {
+        "official_initial_speed_mps": 7.332118,
+        "anchor_requested_timestamp_us": 1633014773349331,
+        "anchor_nearest_timestamp_us": 1633014773349331,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 6.850758227968968,
+        "pre_treatment_window_start_us": 1633014770399270,
+        "pre_treatment_window_end_us": 1633014771399270,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1633014770399270,
+            "speed_mps": 7.332118485551803
+          },
+          {
+            "timestamp_us": 1633014770449284,
+            "speed_mps": 7.3276141303848465
+          },
+          {
+            "timestamp_us": 1633014770499298,
+            "speed_mps": 7.320360956432251
+          },
+          {
+            "timestamp_us": 1633014770549312,
+            "speed_mps": 7.318718380496082
+          },
+          {
+            "timestamp_us": 1633014770599323,
+            "speed_mps": 7.315956580544417
+          },
+          {
+            "timestamp_us": 1633014770649330,
+            "speed_mps": 7.312973095414564
+          },
+          {
+            "timestamp_us": 1633014770699335,
+            "speed_mps": 7.302565604858574
+          },
+          {
+            "timestamp_us": 1633014770749337,
+            "speed_mps": 7.296581739763806
+          },
+          {
+            "timestamp_us": 1633014770799334,
+            "speed_mps": 7.291525882865484
+          },
+          {
+            "timestamp_us": 1633014770849329,
+            "speed_mps": 7.288896979851013
+          },
+          {
+            "timestamp_us": 1633014770899324,
+            "speed_mps": 7.28196491545519
+          },
+          {
+            "timestamp_us": 1633014770949322,
+            "speed_mps": 7.278527720460152
+          },
+          {
+            "timestamp_us": 1633014770999323,
+            "speed_mps": 7.26952216801798
+          },
+          {
+            "timestamp_us": 1633014771049326,
+            "speed_mps": 7.259467596206211
+          },
+          {
+            "timestamp_us": 1633014771099331,
+            "speed_mps": 7.246567073523843
+          },
+          {
+            "timestamp_us": 1633014771149339,
+            "speed_mps": 7.24082264164106
+          },
+          {
+            "timestamp_us": 1633014771199346,
+            "speed_mps": 7.232013088630994
+          },
+          {
+            "timestamp_us": 1633014771249353,
+            "speed_mps": 7.228313330128019
+          },
+          {
+            "timestamp_us": 1633014771299361,
+            "speed_mps": 7.219711978491533
+          },
+          {
+            "timestamp_us": 1633014771349369,
+            "speed_mps": 7.212976649560676
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.212976649560676,
+          "p25": 7.245130965553147,
+          "median": 7.285430947653102,
+          "p75": 7.313718966697027,
+          "p95": 7.327839348143194,
+          "p99": 7.331262658070081,
+          "max": 7.332118485551803
+        },
+        "v_audit_mps": 7.332118485551803,
+        "v_support_mps": 7.832118485551803,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.950061,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 125.74747207171849,
+        "source_total_length_m": 188.96827868706097,
+        "target_total_length_m": 189.1179925558034,
+        "source_current_arc_m": 23.415711536429477,
+        "target_current_arc_m": 23.45359220319264,
+        "source_remaining_margin_m": 39.805095078913,
+        "target_remaining_margin_m": 39.916928280892265,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "eaadb9ee09a38fe23ffdef1700bfa5d3651a7404c167c95c85c91c4db81fa17c",
+        "target": "3c9f2bd4d94ab5e32dfa64f9ac85f279fb816d627e3585872ab461684c3e32d1"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000334699555359,
+          "robust_max_abs_curvature_inv_m": 0.0010000808147943383,
+          "speed_mps": 7.332118485551803
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000355868230043,
+          "robust_max_abs_curvature_inv_m": 0.0009677969823657652,
+          "speed_mps": 7.332118485551803
+        }
+      },
+      "component_audit_canonical_sha256": "4e4fce184397b83e59438e67e95655761bf270461cecdac938c4b796f5b2545e",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.30.15.05.51_veh-44_00016_00731.db",
+        "db_file": "2021.09.30.15.05.51_veh-44_00016_00731.db",
+        "size_bytes": 119451648,
+        "mtime_utc": "2022-09-23T05:51:24+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "c6437dae8aaf7c98bd35fa570aac1d6bd07c0a89c72457e36b79272dbc2b97e7",
+        "scenario_tag_count": 17670,
+        "unique_scenario_token_count": 9337,
+        "token_set_sha256": "73e77b1df49d3f13430fc75a6d0d68b8b226c423445830afd45265b31f26a051",
+        "log_count": 1,
+        "log_ids": "2021.09.30.15.05.51_veh-44_00016_00731",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "e40022e48925b10dc659c691de6a4265b76aab3f8c283c1140be5a5756416d3c"
+    },
+    {
+      "frame_index": 249,
+      "scenario_token": "4b3811ae0e1a5bd5",
+      "log_id": "2021.06.09.12.39.51_veh-26_05620_06003",
+      "scenario_anchor_timestamp_us": 1623262918999924,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "0016f0ba3d49aeeb2bcd53fd4bc906bf74b90b8301c32174746fcdb7a94e0d0b",
+      "route_fingerprint": "f06644f8340d02a027a638ec9d55bbf7510fe6439aee0e53dfc12a7d5f8f904f",
+      "source_lane_id": "68531",
+      "target_lane_id": "68505",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 8.04732,
+        "anchor_requested_timestamp_us": 1623262918999924,
+        "anchor_nearest_timestamp_us": 1623262918999924,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 6.560762629459336,
+        "pre_treatment_window_start_us": 1623262916049682,
+        "pre_treatment_window_end_us": 1623262917049682,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1623262916049682,
+            "speed_mps": 8.047319928947104
+          },
+          {
+            "timestamp_us": 1623262916099667,
+            "speed_mps": 8.031458591005308
+          },
+          {
+            "timestamp_us": 1623262916149651,
+            "speed_mps": 8.018606474056208
+          },
+          {
+            "timestamp_us": 1623262916199634,
+            "speed_mps": 8.003875923201914
+          },
+          {
+            "timestamp_us": 1623262916249618,
+            "speed_mps": 7.990997366137567
+          },
+          {
+            "timestamp_us": 1623262916299601,
+            "speed_mps": 7.978746775764835
+          },
+          {
+            "timestamp_us": 1623262916349587,
+            "speed_mps": 7.964433600148731
+          },
+          {
+            "timestamp_us": 1623262916399579,
+            "speed_mps": 7.952423345086477
+          },
+          {
+            "timestamp_us": 1623262916449578,
+            "speed_mps": 7.940387810075112
+          },
+          {
+            "timestamp_us": 1623262916499581,
+            "speed_mps": 7.92609610315621
+          },
+          {
+            "timestamp_us": 1623262916549582,
+            "speed_mps": 7.9158438776779665
+          },
+          {
+            "timestamp_us": 1623262916599582,
+            "speed_mps": 7.9015611885004695
+          },
+          {
+            "timestamp_us": 1623262916649579,
+            "speed_mps": 7.887361228110006
+          },
+          {
+            "timestamp_us": 1623262916699572,
+            "speed_mps": 7.874389543883371
+          },
+          {
+            "timestamp_us": 1623262916749563,
+            "speed_mps": 7.862619739808351
+          },
+          {
+            "timestamp_us": 1623262916799552,
+            "speed_mps": 7.850169670563672
+          },
+          {
+            "timestamp_us": 1623262916849544,
+            "speed_mps": 7.835871324772936
+          },
+          {
+            "timestamp_us": 1623262916899540,
+            "speed_mps": 7.822986712729417
+          },
+          {
+            "timestamp_us": 1623262916949537,
+            "speed_mps": 7.807434585653294
+          },
+          {
+            "timestamp_us": 1623262916999535,
+            "speed_mps": 7.7919830398862215
+          },
+          {
+            "timestamp_us": 1623262917049533,
+            "speed_mps": 7.777221665628411
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.777221665628411,
+          "p25": 7.850169670563672,
+          "median": 7.9158438776779665,
+          "p75": 7.978746775764835,
+          "p95": 8.031458591005308,
+          "p99": 8.044147661358744,
+          "max": 8.047319928947104
+        },
+        "v_audit_mps": 8.04732,
+        "v_support_mps": 8.54732,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.950242,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 137.047656,
+        "source_total_length_m": 144.15239703695983,
+        "target_total_length_m": 146.81297651895056,
+        "source_current_arc_m": 5.075027553378096,
+        "target_current_arc_m": 4.713561666750518,
+        "source_remaining_margin_m": 2.0297134835817303,
+        "target_remaining_margin_m": 5.0517588522000665,
+        "source_components": [
+          {
+            "edge_id": "68531",
+            "roadblock_id": "66141",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.449868742016044,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69393",
+            "roadblock_id": "67094",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 29.163793236731557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67281",
+            "roadblock_id": "65488",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 23.383888663648992,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69320",
+            "roadblock_id": "66310",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 14.049819413517813,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63186",
+            "roadblock_id": "65554",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 7.334188444177039,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69471",
+            "roadblock_id": "60178",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 48.77083853686833,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "68505",
+            "roadblock_id": "66141",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.11156375890257,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69891",
+            "roadblock_id": "67094",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 29.15568431520875,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67323",
+            "roadblock_id": "65488",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 23.40324872428153,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69946",
+            "roadblock_id": "66310",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 14.038055942360648,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63190",
+            "roadblock_id": "65554",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 7.354180433138496,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70595",
+            "roadblock_id": "60178",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 51.75024334505867,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "f7cd89ea7ffc28c5830bec692eb24df01c9c95515ca57e5d40d40a92970001a7",
+        "target": "781be33108b857739eba369abf70c19f77f7ecfe9c62d6c21b81f41cfa039d33"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001169214136545247,
+          "robust_max_abs_curvature_inv_m": 0.0011691557894523358,
+          "speed_mps": 8.04732
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010529430519490735,
+          "robust_max_abs_curvature_inv_m": 0.0010528804722843485,
+          "speed_mps": 8.04732
+        }
+      },
+      "component_audit_canonical_sha256": "85c5253d95dffab5b5baa7720f46ed33757071351e57ce60877a128de567d203",
+      "DB_inventory_row": {
+        "source_partition": "mini",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.09.12.39.51_veh-26_05620_06003.db",
+        "db_file": "2021.06.09.12.39.51_veh-26_05620_06003.db",
+        "size_bytes": 273944576,
+        "mtime_utc": "2022-09-23T05:29:50+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "8b55c48aa7d6bb9a6e33afee1b20d1cfc97fdc573daac82e8be7b6ac36f20566",
+        "scenario_tag_count": 18103,
+        "unique_scenario_token_count": 6692,
+        "token_set_sha256": "190564e4e177cba40843b22daba03bb3a970b0d9567dead4df8d387455b76018",
+        "log_count": 1,
+        "log_ids": "2021.06.09.12.39.51_veh-26_05620_06003",
+        "locations": "las_vegas",
+        "map_versions": "us-nv-las-vegas-strip",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "5a6a60c8c39ea1f78b4c5f477f3efb95bd21182afda80cf813340a9ec01178b5"
+    },
+    {
+      "frame_index": 250,
+      "scenario_token": "5f665101b76e5210",
+      "log_id": "2021.09.23.13.07.52_veh-45_00951_01100",
+      "scenario_anchor_timestamp_us": 1632403634549607,
+      "anchor_timestamp_used_for_eligibility": false,
+      "audit_rank_sha256": "001709d8bf42c6af5610c9b3be807f13a1412a590022840f6d2d817687593939",
+      "route_fingerprint": "127b33fe8642c6254c6450480e8b765d10b3d310002d39b7476a278dc2ac17eb",
+      "source_lane_id": "19924",
+      "target_lane_id": "19922",
+      "direction": "left",
+      "speed_information": {
+        "official_initial_speed_mps": 8.433258,
+        "anchor_requested_timestamp_us": 1632403634549607,
+        "anchor_nearest_timestamp_us": 1632403634549607,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 9.576262760498325,
+        "pre_treatment_window_start_us": 1632403631599391,
+        "pre_treatment_window_end_us": 1632403632599391,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632403631599391,
+            "speed_mps": 8.433258166296898
+          },
+          {
+            "timestamp_us": 1632403631649428,
+            "speed_mps": 8.473290322354934
+          },
+          {
+            "timestamp_us": 1632403631699470,
+            "speed_mps": 8.508934182524802
+          },
+          {
+            "timestamp_us": 1632403631749516,
+            "speed_mps": 8.540309198322854
+          },
+          {
+            "timestamp_us": 1632403631799563,
+            "speed_mps": 8.570570183890895
+          },
+          {
+            "timestamp_us": 1632403631849610,
+            "speed_mps": 8.606350610874193
+          },
+          {
+            "timestamp_us": 1632403631899654,
+            "speed_mps": 8.650723865437332
+          },
+          {
+            "timestamp_us": 1632403631949695,
+            "speed_mps": 8.687196391905978
+          },
+          {
+            "timestamp_us": 1632403631999733,
+            "speed_mps": 8.726619813396072
+          },
+          {
+            "timestamp_us": 1632403632049764,
+            "speed_mps": 8.76402155999227
+          },
+          {
+            "timestamp_us": 1632403632099791,
+            "speed_mps": 8.789860278737448
+          },
+          {
+            "timestamp_us": 1632403632149815,
+            "speed_mps": 8.815605142719198
+          },
+          {
+            "timestamp_us": 1632403632199839,
+            "speed_mps": 8.842242062508085
+          },
+          {
+            "timestamp_us": 1632403632249864,
+            "speed_mps": 8.872244963008956
+          },
+          {
+            "timestamp_us": 1632403632299887,
+            "speed_mps": 8.901988896987021
+          },
+          {
+            "timestamp_us": 1632403632349910,
+            "speed_mps": 8.93270072565326
+          },
+          {
+            "timestamp_us": 1632403632399930,
+            "speed_mps": 8.962145128250672
+          },
+          {
+            "timestamp_us": 1632403632449952,
+            "speed_mps": 8.993283063223831
+          },
+          {
+            "timestamp_us": 1632403632499972,
+            "speed_mps": 9.025345200597886
+          },
+          {
+            "timestamp_us": 1632403632549989,
+            "speed_mps": 9.054265812945406
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 8.433258166296898,
+          "p25": 8.597405504128368,
+          "median": 8.77694091936486,
+          "p75": 8.909666854153581,
+          "p95": 9.026791231215263,
+          "p99": 9.048770896599377,
+          "max": 9.054265812945406
+        },
+        "v_audit_mps": 9.054265812945406,
+        "v_support_mps": 9.554265812945406,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9502159999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "route_coverage": {
+        "required_reconstruction_forward_m": 152.95739984453743,
+        "source_total_length_m": 183.25290053945398,
+        "target_total_length_m": 183.26762639368062,
+        "source_current_arc_m": 5.812169808899812,
+        "target_current_arc_m": 5.801445860795283,
+        "source_remaining_margin_m": 24.483330886016716,
+        "target_remaining_margin_m": 24.508780688347912,
+        "source_components": [
+          {
+            "edge_id": "19924",
+            "roadblock_id": "19089",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.178955596241934,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19948",
+            "roadblock_id": "19332",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.659350556299515,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18271",
+            "roadblock_id": "19030",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.41459438691248,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19922",
+            "roadblock_id": "19089",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.193093447167318,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19947",
+            "roadblock_id": "19332",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.654054637406055,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18272",
+            "roadblock_id": "19030",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.42047830910714,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "reference_geometry_sha256": {
+        "source": "624ba4563578c56f62101edb7f2b0a6076dd15e048cddee576cc40612065729f",
+        "target": "245ffb88112f46f2c84a342b950eb62ee12cae8bfb1663d75e346f47eba5dbdd"
+      },
+      "curvature_disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001208952072832192,
+          "robust_max_abs_curvature_inv_m": 0.0012086601778180917,
+          "speed_mps": 9.054265812945406
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000714703381644,
+          "robust_max_abs_curvature_inv_m": 0.0010000013066381447,
+          "speed_mps": 9.054265812945406
+        }
+      },
+      "component_audit_canonical_sha256": "b354fc70cfc4649112a8acb733f45e5966c488524f3a157c9bb2e34cfa32877e",
+      "DB_inventory_row": {
+        "source_partition": "train_pittsburgh",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.23.13.07.52_veh-45_00951_01100.db",
+        "db_file": "2021.09.23.13.07.52_veh-45_00951_01100.db",
+        "size_bytes": 18018304,
+        "mtime_utc": "2022-09-23T05:51:00+00:00",
+        "sqlite_readable": true,
+        "schema_sha256": "bb9292e2ba0ac6dd0635e44292adac8a3830c7282c2f1f8cd8eb399f76931bd2",
+        "db_fingerprint_sha256": "9ba90666e1a9afb45d95ba47750a0df700f2c59e598db123d56d47c3d49c139a",
+        "scenario_tag_count": 5603,
+        "unique_scenario_token_count": 2066,
+        "token_set_sha256": "7b4d071c7882630bff4b1c778378d2d4ca500dbfd8332b77563130485413605b",
+        "log_count": 1,
+        "log_ids": "2021.09.23.13.07.52_veh-45_00951_01100",
+        "locations": "us-pa-pittsburgh-hazelwood",
+        "map_versions": "us-pa-pittsburgh-hazelwood",
+        "map_compatible": true,
+        "status": "READY",
+        "error": ""
+      },
+      "closure_canonical_sha256": "78e82578b27d5cc0c99b1f1d511689d506285e08d8f7e8b3c4b15f5b440f4301"
+    }
+  ],
+  "runner_run_calls": 0,
+  "simulation_calls": 0
+}

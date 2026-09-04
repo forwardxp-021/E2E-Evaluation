@@ -1,0 +1,1468 @@
+{
+  "schema_version": "r2_bj_a3_native_generated_composite_component_audit_v1.0",
+  "status": "COMPLETE_FOR_ALL_28_CANDIDATES_REACHING_FULL_V4_COMPONENT_STAGE",
+  "fixed_frame_count": 256,
+  "opportunities_reaching_full_component_stage": 28,
+  "planner_state_case_count": 26880,
+  "opportunities_full_gate_pass": 17,
+  "native_only_infeasible_opportunities": 0,
+  "generated_increment_infeasible_opportunities": 11,
+  "composite_infeasible_opportunities": 11,
+  "terminal_settling_infeasible_opportunities": 0,
+  "negative_native_generated_cancellation_accepted": false,
+  "earlier_stage_failures_accounted_in_eligibility_ledger": 228,
+  "opportunities": [
+    {
+      "frame_index": 5,
+      "scenario_token": "fb4a496f42d057c7",
+      "log_id": "2021.09.15.14.30.33_veh-42_02562_02982",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        7.3358102686851865,
+        7.8358102686851865
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.02759639815955548,
+            "max_abs_yaw_rate_radps": 0.20244194099759208,
+            "max_abs_lateral_acceleration_mps2": 1.4850756695826968
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.049030674449512465,
+            "max_abs_yaw_rate_radps": 0.35967972510729396,
+            "max_abs_lateral_acceleration_mps2": 2.6385422208799523
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.03188143044029497,
+            "max_abs_yaw_rate_radps": 0.23387612480428832,
+            "max_abs_lateral_acceleration_mps2": 1.7156708779395966
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.04961208379968035,
+            "max_abs_yaw_rate_radps": 0.3639448337885651,
+            "max_abs_lateral_acceleration_mps2": 2.6698302489410795
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.05414782417467812,
+            "max_abs_yaw_rate_radps": 0.39721816460756376,
+            "max_abs_lateral_acceleration_mps2": 2.913917090836449
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 19,
+      "scenario_token": "9be12b9fcbf85b6e",
+      "log_id": "2021.08.30.14.36.46_veh-08_00873_01639",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        0.31613359107574573,
+        0.8161335910757457
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0024876987058748547,
+            "max_abs_yaw_rate_radps": 0.0020302944783401303,
+            "max_abs_lateral_acceleration_mps2": 0.0016569915235489885
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 6.427036078742001,
+            "max_abs_yaw_rate_radps": 2.031801995546088,
+            "max_abs_lateral_acceleration_mps2": 0.9174769615817996
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 37.16797343804042,
+            "max_abs_yaw_rate_radps": 11.75004491597565,
+            "max_abs_lateral_acceleration_mps2": 3.714583894588691
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 36.51792701641799,
+            "max_abs_yaw_rate_radps": 11.544543406342212,
+            "max_abs_lateral_acceleration_mps2": 3.649617964376786
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 36.51792694083955,
+            "max_abs_yaw_rate_radps": 11.54454338244933,
+            "max_abs_lateral_acceleration_mps2": 3.649617956823443
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 835,
+        "composite_infeasible_cases": 835,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 835
+        },
+        "frozen_full_V4_gate_failures": 835,
+        "V4_non_native_infeasible_cases": 835,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 24
+      }
+    },
+    {
+      "frame_index": 41,
+      "scenario_token": "dc61fba3f4ed5838",
+      "log_id": "2021.08.25.18.29.43_veh-42_00016_00243",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        8.044727967872785,
+        8.544727967872785
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0017120096945483208,
+            "max_abs_yaw_rate_radps": 0.013772652271002219,
+            "max_abs_lateral_acceleration_mps2": 0.11594179572386035
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.027196725725677887,
+            "max_abs_yaw_rate_radps": 0.21879026007992616,
+            "max_abs_lateral_acceleration_mps2": 1.7601081243631425
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.038434167569184954,
+            "max_abs_yaw_rate_radps": 0.30919242276573133,
+            "max_abs_lateral_acceleration_mps2": 2.519507963216091
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.03706205488561434,
+            "max_abs_yaw_rate_radps": 0.29815414948513785,
+            "max_abs_lateral_acceleration_mps2": 2.4061811688687706
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.03606664069846426,
+            "max_abs_yaw_rate_radps": 0.2901463131341543,
+            "max_abs_lateral_acceleration_mps2": 2.4010075814445555
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 59,
+      "scenario_token": "6e24892b4ed25608",
+      "log_id": "2021.07.24.20.37.45_veh-17_00015_00375",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        1.931235288228532,
+        2.4312352882285317
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0013061317024086348,
+            "max_abs_yaw_rate_radps": 0.002522447634765563,
+            "max_abs_lateral_acceleration_mps2": 0.006047025176032884
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.4282155880454792,
+            "max_abs_yaw_rate_radps": 0.8269850546029613,
+            "max_abs_lateral_acceleration_mps2": 1.6722523122270267
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.6331049048612235,
+            "max_abs_yaw_rate_radps": 1.2226745334185622,
+            "max_abs_lateral_acceleration_mps2": 2.386260373270329
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.5618848089250367,
+            "max_abs_yaw_rate_radps": 1.0851317709155768,
+            "max_abs_lateral_acceleration_mps2": 2.208634455427937
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.5631360761644078,
+            "max_abs_yaw_rate_radps": 1.0875482623632546,
+            "max_abs_lateral_acceleration_mps2": 2.214568084092301
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 13,
+        "composite_infeasible_cases": 13,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 14
+        },
+        "frozen_full_V4_gate_failures": 14,
+        "V4_non_native_infeasible_cases": 14,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 67,
+      "scenario_token": "14c25667c27c5d64",
+      "log_id": "2021.09.20.20.32.00_veh-08_00746_01631",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        0.5965595788531776,
+        1.0965595788531775
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 6.571500667219266e-07,
+            "max_abs_yaw_rate_radps": 3.9202916704697003e-07,
+            "max_abs_lateral_acceleration_mps2": 3.2067719348823394e-07
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 2.9343348765118717,
+            "max_abs_yaw_rate_radps": 1.750505578146113,
+            "max_abs_lateral_acceleration_mps2": 1.289487990593806
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 9.200169879540171,
+            "max_abs_yaw_rate_radps": 5.488449468716174,
+            "max_abs_lateral_acceleration_mps2": 3.274187103614267
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 8.939291747583585,
+            "max_abs_yaw_rate_radps": 5.33282012018415,
+            "max_abs_lateral_acceleration_mps2": 3.1813449249968078
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 8.939291603445216,
+            "max_abs_yaw_rate_radps": 5.332820034197025,
+            "max_abs_lateral_acceleration_mps2": 3.181344873700365
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 735,
+        "composite_infeasible_cases": 735,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 736
+        },
+        "frozen_full_V4_gate_failures": 736,
+        "V4_non_native_infeasible_cases": 736,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 72,
+      "scenario_token": "e5580122f41954be",
+      "log_id": "2021.09.17.13.27.08_veh-42_00434_01037",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        13.777806963528432,
+        14.466697311704854
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0028998965023608807,
+            "max_abs_yaw_rate_radps": 0.04195192493492646,
+            "max_abs_lateral_acceleration_mps2": 0.6069057996769445
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.010040840294554525,
+            "max_abs_yaw_rate_radps": 0.14050882328648587,
+            "max_abs_lateral_acceleration_mps2": 2.0326986161094176
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.012310996734139601,
+            "max_abs_yaw_rate_radps": 0.16961853653160439,
+            "max_abs_lateral_acceleration_mps2": 2.3369714537686406
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.011625653308470504,
+            "max_abs_yaw_rate_radps": 0.16146458953899068,
+            "max_abs_lateral_acceleration_mps2": 2.335859343419244
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.011870427495994894,
+            "max_abs_yaw_rate_radps": 0.1653717334568997,
+            "max_abs_lateral_acceleration_mps2": 2.3923828118329022
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 89,
+      "scenario_token": "44c355a8ab765540",
+      "log_id": "2021.06.28.16.29.11_veh-38_01415_01821",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        13.846362090993663,
+        14.538680195543346
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.01591940043152207,
+            "max_abs_yaw_rate_radps": 0.23144707177869409,
+            "max_abs_lateral_acceleration_mps2": 3.364934958785399
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.011040478304255572,
+            "max_abs_yaw_rate_radps": 0.16029873216780566,
+            "max_abs_lateral_acceleration_mps2": 2.3305320027387832
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.014683588393206961,
+            "max_abs_yaw_rate_radps": 0.2033142816874554,
+            "max_abs_lateral_acceleration_mps2": 2.81516316251479
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.01265974265623015,
+            "max_abs_yaw_rate_radps": 0.17529138079696058,
+            "max_abs_lateral_acceleration_mps2": 2.4790366697411605
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.02162977158609046,
+            "max_abs_yaw_rate_radps": 0.3144683317928196,
+            "max_abs_lateral_acceleration_mps2": 4.57195450756182
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 103,
+      "scenario_token": "6ee4c92c25dd5233",
+      "log_id": "2021.08.25.20.03.37_veh-45_00540_00920",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        6.867463126801197,
+        7.367463126801197
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.04393945291446335,
+            "max_abs_yaw_rate_radps": 0.30175257270189443,
+            "max_abs_lateral_acceleration_mps2": 2.0722746664476572
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.05112793136162663,
+            "max_abs_yaw_rate_radps": 0.3542587051588249,
+            "max_abs_lateral_acceleration_mps2": 2.6099879476059793
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.041196314668318954,
+            "max_abs_yaw_rate_radps": 0.2829141719447797,
+            "max_abs_lateral_acceleration_mps2": 1.9429026438802681
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.051771529929119375,
+            "max_abs_yaw_rate_radps": 0.3584619885891833,
+            "max_abs_lateral_acceleration_mps2": 2.6409554832906394
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.05585838871687772,
+            "max_abs_yaw_rate_radps": 0.3921911383546793,
+            "max_abs_lateral_acceleration_mps2": 2.8894537504862865
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 131,
+      "scenario_token": "c5eadbef7bb35880",
+      "log_id": "2021.06.09.17.23.18_veh-38_02526_03027",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        12.865986003661844,
+        13.509285303844935
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0042145968440800066,
+            "max_abs_yaw_rate_radps": 0.05693619120736128,
+            "max_abs_lateral_acceleration_mps2": 0.7691672511345109
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.010367167288826116,
+            "max_abs_yaw_rate_radps": 0.1333838292356577,
+            "max_abs_lateral_acceleration_mps2": 1.7180061108709215
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.014904201249608725,
+            "max_abs_yaw_rate_radps": 0.19175724467322522,
+            "max_abs_lateral_acceleration_mps2": 2.469960976348073
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.014212210345333523,
+            "max_abs_yaw_rate_radps": 0.18285409938415917,
+            "max_abs_lateral_acceleration_mps2": 2.354903494994696
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.014748713758565492,
+            "max_abs_yaw_rate_radps": 0.1897567447897185,
+            "max_abs_lateral_acceleration_mps2": 2.531904883070931
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 140,
+      "scenario_token": "ed6fa57887c852ec",
+      "log_id": "2021.09.17.18.42.25_veh-08_01484_01749",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        1.5476344230606323,
+        2.0476344230606323
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0003199816901976061,
+            "max_abs_yaw_rate_radps": 0.000495214678498938,
+            "max_abs_lateral_acceleration_mps2": 0.0007664112832498606
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.4643841989695822,
+            "max_abs_yaw_rate_radps": 0.7186969718507632,
+            "max_abs_lateral_acceleration_mps2": 1.1610833746764346
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.6855551150185526,
+            "max_abs_yaw_rate_radps": 1.060988694908003,
+            "max_abs_lateral_acceleration_mps2": 1.674904832163509
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.6257327744137032,
+            "max_abs_yaw_rate_radps": 0.9684055813198803,
+            "max_abs_lateral_acceleration_mps2": 1.592839164233652
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.6257327760065925,
+            "max_abs_yaw_rate_radps": 0.9684055837850906,
+            "max_abs_lateral_acceleration_mps2": 1.5928390571686322
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 45,
+        "composite_infeasible_cases": 45,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 44
+        },
+        "frozen_full_V4_gate_failures": 44,
+        "V4_non_native_infeasible_cases": 46,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 142,
+      "scenario_token": "bcb329b994745fbe",
+      "log_id": "2021.06.08.14.35.24_veh-26_02555_03004",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        9.954055,
+        10.454055
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0010071656987361956,
+            "max_abs_yaw_rate_radps": 0.01052896560870162,
+            "max_abs_lateral_acceleration_mps2": 0.1100703855664752
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.019144359068044528,
+            "max_abs_yaw_rate_radps": 0.19056400310306398,
+            "max_abs_lateral_acceleration_mps2": 1.8968845679080697
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.026592771837842186,
+            "max_abs_yaw_rate_radps": 0.2647059134763322,
+            "max_abs_lateral_acceleration_mps2": 2.6423603930322797
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.02545772959382933,
+            "max_abs_yaw_rate_radps": 0.25340764055210485,
+            "max_abs_lateral_acceleration_mps2": 2.530067384690529
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.025457730416122686,
+            "max_abs_yaw_rate_radps": 0.25340764873725813,
+            "max_abs_lateral_acceleration_mps2": 2.5300673497724473
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 148,
+      "scenario_token": "5947eab4b7585a50",
+      "log_id": "2021.08.30.14.54.34_veh-40_00439_00835",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        9.373731074816687,
+        9.873731074816687
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0012307218459533976,
+            "max_abs_yaw_rate_radps": 0.012032603690413757,
+            "max_abs_lateral_acceleration_mps2": 0.11880669296899225
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.019090335274818456,
+            "max_abs_yaw_rate_radps": 0.17894766899423492,
+            "max_abs_lateral_acceleration_mps2": 1.7533446439260265
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.026678773142411204,
+            "max_abs_yaw_rate_radps": 0.25007964484300477,
+            "max_abs_lateral_acceleration_mps2": 2.436336986759869
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.026224182086407078,
+            "max_abs_yaw_rate_radps": 0.24581843053500513,
+            "max_abs_lateral_acceleration_mps2": 2.3072045671571764
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.026865352833827988,
+            "max_abs_yaw_rate_radps": 0.25182859269436797,
+            "max_abs_lateral_acceleration_mps2": 2.4042552886898294
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 149,
+      "scenario_token": "05338730330e5e4b",
+      "log_id": "2021.05.12.22.28.35_veh-35_00620_01164",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        0.1621578262570138,
+        0.6621578262570138
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.018834717833023953,
+            "max_abs_yaw_rate_radps": 0.003206229961093786,
+            "max_abs_lateral_acceleration_mps2": 0.002123030261517971
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 20.016545857740493,
+            "max_abs_yaw_rate_radps": 3.2458395654650323,
+            "max_abs_lateral_acceleration_mps2": 1.0115062641382788
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 261.4154406824134,
+            "max_abs_yaw_rate_radps": 42.390559611079496,
+            "max_abs_lateral_acceleration_mps2": 6.873961000351016
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 261.4154406834434,
+            "max_abs_yaw_rate_radps": 42.390559611246516,
+            "max_abs_lateral_acceleration_mps2": 6.8739610003781
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 261.4154411321763,
+            "max_abs_yaw_rate_radps": 42.39055968401206,
+            "max_abs_lateral_acceleration_mps2": 6.8739610121776025
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 850,
+        "composite_infeasible_cases": 850,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 850
+        },
+        "frozen_full_V4_gate_failures": 850,
+        "V4_non_native_infeasible_cases": 850,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 24
+      }
+    },
+    {
+      "frame_index": 152,
+      "scenario_token": "e5263fe137af5f57",
+      "log_id": "2021.08.26.18.17.33_veh-08_00016_00313",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        1.295754,
+        1.795754
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 1.6503629737993701e-07,
+            "max_abs_yaw_rate_radps": 2.138464424752429e-07,
+            "max_abs_lateral_acceleration_mps2": 3.211516457546211e-07
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.8261096040967664,
+            "max_abs_yaw_rate_radps": 1.0704348239468016,
+            "max_abs_lateral_acceleration_mps2": 1.5141106411176304
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 1.3443036710772809,
+            "max_abs_yaw_rate_radps": 1.7418868590130712,
+            "max_abs_lateral_acceleration_mps2": 2.258655720157652
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 1.132254422115458,
+            "max_abs_yaw_rate_radps": 1.4671231964737932,
+            "max_abs_lateral_acceleration_mps2": 1.990474742921092
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 1.132254422115458,
+            "max_abs_yaw_rate_radps": 1.4671231964737932,
+            "max_abs_lateral_acceleration_mps2": 1.9904746825786765
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 243,
+        "composite_infeasible_cases": 243,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 241
+        },
+        "frozen_full_V4_gate_failures": 241,
+        "V4_non_native_infeasible_cases": 247,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 156,
+      "scenario_token": "019d3e0fc75953c3",
+      "log_id": "2021.07.16.18.06.21_veh-38_03231_03712",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        0.582886,
+        1.082886
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 2.365351675854418e-07,
+            "max_abs_yaw_rate_radps": 1.3787303769320783e-07,
+            "max_abs_lateral_acceleration_mps2": 1.2581517824958858e-07
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 3.355734712023504,
+            "max_abs_yaw_rate_radps": 1.9560107833525322,
+            "max_abs_lateral_acceleration_mps2": 1.4372239997532896
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 12.751131403201198,
+            "max_abs_yaw_rate_radps": 7.432455979086334,
+            "max_abs_lateral_acceleration_mps2": 4.332274535825717
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 12.427400443959879,
+            "max_abs_yaw_rate_radps": 7.243757735177998,
+            "max_abs_lateral_acceleration_mps2": 4.222284971226963
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 12.427400412886378,
+            "max_abs_yaw_rate_radps": 7.24375771706569,
+            "max_abs_lateral_acceleration_mps2": 4.222284960669551
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 776,
+        "composite_infeasible_cases": 776,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 775
+        },
+        "frozen_full_V4_gate_failures": 775,
+        "V4_non_native_infeasible_cases": 776,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 157,
+      "scenario_token": "29bfee301adb5fd0",
+      "log_id": "2021.08.17.18.11.12_veh-08_00234_00611",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        1.7408382391002442,
+        2.240838239100244
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.006943073209284797,
+            "max_abs_yaw_rate_radps": 0.01232976975002502,
+            "max_abs_lateral_acceleration_mps2": 0.027629019535157524
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.500329146397732,
+            "max_abs_yaw_rate_radps": 0.870992110185556,
+            "max_abs_lateral_acceleration_mps2": 1.5712897006017787
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.7465341563726101,
+            "max_abs_yaw_rate_radps": 1.2995952062078808,
+            "max_abs_lateral_acceleration_mps2": 2.262385030318046
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.6515778827985191,
+            "max_abs_yaw_rate_radps": 1.1342916941276393,
+            "max_abs_lateral_acceleration_mps2": 2.0753391514603368
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.6515779567335238,
+            "max_abs_yaw_rate_radps": 1.1342918228365226,
+            "max_abs_lateral_acceleration_mps2": 2.075339159208698
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 101,
+        "composite_infeasible_cases": 101,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 98
+        },
+        "frozen_full_V4_gate_failures": 98,
+        "V4_non_native_infeasible_cases": 103,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 170,
+      "scenario_token": "8677265737315395",
+      "log_id": "2021.09.10.19.22.47_veh-42_01062_02421",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        1.4972542265696365,
+        1.9972542265696365
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0016209832519321064,
+            "max_abs_yaw_rate_radps": 0.00242702402515394,
+            "max_abs_lateral_acceleration_mps2": 0.004758039393483031
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.48781540945557944,
+            "max_abs_yaw_rate_radps": 0.7303836835931641,
+            "max_abs_lateral_acceleration_mps2": 1.1420020306946694
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.7225582120003113,
+            "max_abs_yaw_rate_radps": 1.0818533368600656,
+            "max_abs_lateral_acceleration_mps2": 1.651717770850908
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.6541707858143396,
+            "max_abs_yaw_rate_radps": 0.9794599739589004,
+            "max_abs_lateral_acceleration_mps2": 1.5668957708600757
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.6540771712166713,
+            "max_abs_yaw_rate_radps": 0.9793198091068729,
+            "max_abs_lateral_acceleration_mps2": 1.5640528048371132
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 77,
+        "composite_infeasible_cases": 78,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 74
+        },
+        "frozen_full_V4_gate_failures": 74,
+        "V4_non_native_infeasible_cases": 79,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 178,
+      "scenario_token": "30a6f4a736325563",
+      "log_id": "2021.06.23.15.56.12_veh-16_00839_01285",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        0.2582056328979765,
+        0.7582056328979765
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.009464199370035724,
+            "max_abs_yaw_rate_radps": 0.002450753700352129,
+            "max_abs_lateral_acceleration_mps2": 0.0018581752604525438
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 10.812208746445362,
+            "max_abs_yaw_rate_radps": 2.791773202400962,
+            "max_abs_lateral_acceleration_mps2": 1.0821830606102352
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 74.79954678210102,
+            "max_abs_yaw_rate_radps": 19.313664317354196,
+            "max_abs_lateral_acceleration_mps2": 4.986896918641505
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 74.7995464689805,
+            "max_abs_yaw_rate_radps": 19.31366423650471,
+            "max_abs_lateral_acceleration_mps2": 4.986896897765712
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 74.79954692472629,
+            "max_abs_yaw_rate_radps": 19.31366435418084,
+            "max_abs_lateral_acceleration_mps2": 4.986896928150353
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 847,
+        "composite_infeasible_cases": 847,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 847
+        },
+        "frozen_full_V4_gate_failures": 847,
+        "V4_non_native_infeasible_cases": 847,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 24
+      }
+    },
+    {
+      "frame_index": 205,
+      "scenario_token": "213a513a616d5422",
+      "log_id": "2021.05.12.23.36.44_veh-35_02035_02387",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        12.321110923276109,
+        12.937166469439914
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.016136455438244175,
+            "max_abs_yaw_rate_radps": 0.19881905736310848,
+            "max_abs_lateral_acceleration_mps2": 2.4634292420304336
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.01953478605796314,
+            "max_abs_yaw_rate_radps": 0.24069026588263148,
+            "max_abs_lateral_acceleration_mps2": 2.9655714640927213
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.020920534230084695,
+            "max_abs_yaw_rate_radps": 0.26703372784839513,
+            "max_abs_lateral_acceleration_mps2": 3.454659790129801
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.019564794551152696,
+            "max_abs_yaw_rate_radps": 0.24106000385586038,
+            "max_abs_lateral_acceleration_mps2": 2.970127046673422
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.022923696597164006,
+            "max_abs_yaw_rate_radps": 0.2824454085451848,
+            "max_abs_lateral_acceleration_mps2": 3.519500791501203
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 212,
+      "scenario_token": "d48dcb44dda05e24",
+      "log_id": "2021.09.20.14.38.07_veh-42_00379_00742",
+      "predicate_status": "FAIL",
+      "speed_cases_mps": [
+        0.6095684158948701,
+        1.10956841589487
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.20042668630819008,
+            "max_abs_yaw_rate_radps": 0.2223871208300365,
+            "max_abs_lateral_acceleration_mps2": 0.24675372537480464
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 2.887542477245008,
+            "max_abs_yaw_rate_radps": 1.7601546936833883,
+            "max_abs_lateral_acceleration_mps2": 1.3230034110401405
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 9.07042419074441,
+            "max_abs_yaw_rate_radps": 5.529044105446578,
+            "max_abs_lateral_acceleration_mps2": 3.37033065676994
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 8.813302200413276,
+            "max_abs_yaw_rate_radps": 5.372310661108694,
+            "max_abs_lateral_acceleration_mps2": 3.274790899387148
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 8.813302009481538,
+            "max_abs_yaw_rate_radps": 5.372310544722736,
+            "max_abs_lateral_acceleration_mps2": 3.2747908284419447
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 734,
+        "composite_infeasible_cases": 734,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {
+          "R2_BJ_A_FROZEN_KINEMATIC_FEASIBILITY_GATE_FAIL": 738
+        },
+        "frozen_full_V4_gate_failures": 738,
+        "V4_non_native_infeasible_cases": 738,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 214,
+      "scenario_token": "c931df68adff5e67",
+      "log_id": "2021.09.13.14.24.27_veh-45_00131_00396",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        10.977725087548004,
+        11.526611341925404
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0017758917307747746,
+            "max_abs_yaw_rate_radps": 0.020470013765980052,
+            "max_abs_lateral_acceleration_mps2": 0.23594989284431486
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.01532301920774101,
+            "max_abs_yaw_rate_radps": 0.16821189237379844,
+            "max_abs_lateral_acceleration_mps2": 1.8465839109357716
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.02205184580486021,
+            "max_abs_yaw_rate_radps": 0.24207910091875415,
+            "max_abs_lateral_acceleration_mps2": 2.657477819326872
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.020885004335662614,
+            "max_abs_yaw_rate_radps": 0.22926983604915233,
+            "max_abs_lateral_acceleration_mps2": 2.516861231014797
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.020885004148204357,
+            "max_abs_yaw_rate_radps": 0.22926983399128711,
+            "max_abs_lateral_acceleration_mps2": 2.5168612084241184
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 219,
+      "scenario_token": "86bc678ada61581c",
+      "log_id": "2021.06.28.16.29.11_veh-38_03263_03766",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        5.061562,
+        5.561562
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0909146073495195,
+            "max_abs_yaw_rate_radps": 0.5040893076841424,
+            "max_abs_lateral_acceleration_mps2": 2.8035239382224346
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.10446702073936295,
+            "max_abs_yaw_rate_radps": 0.5287663024275715,
+            "max_abs_lateral_acceleration_mps2": 2.676383423247904
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.08010853229069358,
+            "max_abs_yaw_rate_radps": 0.4054743029183476,
+            "max_abs_lateral_acceleration_mps2": 2.096759852302703
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.10970157318736988,
+            "max_abs_yaw_rate_radps": 0.5552613141854102,
+            "max_abs_lateral_acceleration_mps2": 2.810489567950934
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.10342849308309246,
+            "max_abs_yaw_rate_radps": 0.5263265486121798,
+            "max_abs_lateral_acceleration_mps2": 2.9271977323526523
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 223,
+      "scenario_token": "19e9beb939455be3",
+      "log_id": "2021.08.20.14.28.03_veh-45_00239_00641",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        10.935835634373584,
+        11.482627416092264
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.003596239623457368,
+            "max_abs_yaw_rate_radps": 0.040748249471909734,
+            "max_abs_lateral_acceleration_mps2": 0.4678969665439178
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.015059302604153738,
+            "max_abs_yaw_rate_radps": 0.16468605804731934,
+            "max_abs_lateral_acceleration_mps2": 1.8581238893463803
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.018660770818861916,
+            "max_abs_yaw_rate_radps": 0.20407112248578888,
+            "max_abs_lateral_acceleration_mps2": 2.2685250423633403
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.018208376651704813,
+            "max_abs_yaw_rate_radps": 0.19912381423180947,
+            "max_abs_lateral_acceleration_mps2": 2.239568199904205
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.018484792078825984,
+            "max_abs_yaw_rate_radps": 0.20214664790961176,
+            "max_abs_lateral_acceleration_mps2": 2.2756632759699174
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 230,
+      "scenario_token": "c58fb34878ff5bbd",
+      "log_id": "2021.09.23.17.57.13_veh-45_01039_01679",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        4.318354299292398,
+        4.818354299292398
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0020454117696934184,
+            "max_abs_yaw_rate_radps": 0.009855518594325555,
+            "max_abs_lateral_acceleration_mps2": 0.04748738039072471
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.06571549916821104,
+            "max_abs_yaw_rate_radps": 0.28378280836319014,
+            "max_abs_lateral_acceleration_mps2": 1.2308302190233515
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.0942337906427993,
+            "max_abs_yaw_rate_radps": 0.4069348949609521,
+            "max_abs_lateral_acceleration_mps2": 1.7671955227077154
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.09143221374830299,
+            "max_abs_yaw_rate_radps": 0.3948366933338057,
+            "max_abs_lateral_acceleration_mps2": 1.714363850987481
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.09143220882259868,
+            "max_abs_yaw_rate_radps": 0.3948366720628694,
+            "max_abs_lateral_acceleration_mps2": 1.7143637780625225
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 241,
+      "scenario_token": "220edc604260542e",
+      "log_id": "2021.09.23.17.03.56_veh-45_01512_01822",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        7.839186014885211,
+        8.339186014885211
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.03967484199979758,
+            "max_abs_yaw_rate_radps": 0.3308558875474924,
+            "max_abs_lateral_acceleration_mps2": 2.7590687903784823
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.02218372127657422,
+            "max_abs_yaw_rate_radps": 0.17390231758943211,
+            "max_abs_lateral_acceleration_mps2": 1.3821856913390511
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.030139431233686908,
+            "max_abs_yaw_rate_radps": 0.23626860782371292,
+            "max_abs_lateral_acceleration_mps2": 1.8753251115946632
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.029586112307888567,
+            "max_abs_yaw_rate_radps": 0.23193103783882327,
+            "max_abs_lateral_acceleration_mps2": 1.8724252808686772
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.03948074839666877,
+            "max_abs_yaw_rate_radps": 0.32923730488670194,
+            "max_abs_lateral_acceleration_mps2": 2.745571128489683
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 247,
+      "scenario_token": "0799b3c270c85038",
+      "log_id": "2021.09.30.15.05.51_veh-44_00016_00731",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        7.332118485551803,
+        7.832118485551803
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.005667927338998282,
+            "max_abs_yaw_rate_radps": 0.044391878486532886,
+            "max_abs_lateral_acceleration_mps2": 0.3476824521027436
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.03261896836457205,
+            "max_abs_yaw_rate_radps": 0.2391661409255082,
+            "max_abs_lateral_acceleration_mps2": 1.756381047122356
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.04681617120499775,
+            "max_abs_yaw_rate_radps": 0.34326171431492203,
+            "max_abs_lateral_acceleration_mps2": 2.519623238163278
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.04445706256717279,
+            "max_abs_yaw_rate_radps": 0.32596445026210075,
+            "max_abs_lateral_acceleration_mps2": 2.392040403230314
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.04445706207224293,
+            "max_abs_yaw_rate_radps": 0.32596444663321633,
+            "max_abs_lateral_acceleration_mps2": 2.3920405167715715
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 249,
+      "scenario_token": "4b3811ae0e1a5bd5",
+      "log_id": "2021.06.09.12.39.51_veh-26_05620_06003",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        8.04732,
+        8.54732
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.004954813976316742,
+            "max_abs_yaw_rate_radps": 0.04235038059605161,
+            "max_abs_lateral_acceleration_mps2": 0.3619822550762438
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.028317736424222723,
+            "max_abs_yaw_rate_radps": 0.22788188668137596,
+            "max_abs_lateral_acceleration_mps2": 1.8365184624672877
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.039984221565069186,
+            "max_abs_yaw_rate_radps": 0.3217658258850125,
+            "max_abs_lateral_acceleration_mps2": 2.615361054279827
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.03863635831973047,
+            "max_abs_yaw_rate_radps": 0.31091913903353335,
+            "max_abs_lateral_acceleration_mps2": 2.518682413495404
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.0375906964533146,
+            "max_abs_yaw_rate_radps": 0.3025043633826876,
+            "max_abs_lateral_acceleration_mps2": 2.5549861354447208
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    },
+    {
+      "frame_index": 250,
+      "scenario_token": "5f665101b76e5210",
+      "log_id": "2021.09.23.13.07.52_veh-45_00951_01100",
+      "predicate_status": "PASS",
+      "speed_cases_mps": [
+        9.054265812945406,
+        9.554265812945406
+      ],
+      "summary": {
+        "planner_call_cases": 960,
+        "component_maxima": {
+          "native": {
+            "max_abs_curvature_inv_m": 0.0012236120765696517,
+            "max_abs_yaw_rate_radps": 0.01158630308485295,
+            "max_abs_lateral_acceleration_mps2": 0.11069861946203442
+          },
+          "morphology_increment": {
+            "max_abs_curvature_inv_m": 0.021625274085002272,
+            "max_abs_yaw_rate_radps": 0.19580097984341033,
+            "max_abs_lateral_acceleration_mps2": 1.7743447683724256
+          },
+          "stitching_capture_increment": {
+            "max_abs_curvature_inv_m": 0.031019179117682975,
+            "max_abs_yaw_rate_radps": 0.280855893030867,
+            "max_abs_lateral_acceleration_mps2": 2.5429439106336313
+          },
+          "generated_increment": {
+            "max_abs_curvature_inv_m": 0.029392323809253426,
+            "max_abs_yaw_rate_radps": 0.2661259126291446,
+            "max_abs_lateral_acceleration_mps2": 2.4254458985202336
+          },
+          "composite": {
+            "max_abs_curvature_inv_m": 0.02953040472737361,
+            "max_abs_yaw_rate_radps": 0.26737613396550025,
+            "max_abs_lateral_acceleration_mps2": 2.4380575698063156
+          }
+        },
+        "native_only_infeasible_cases": 0,
+        "generated_increment_infeasible_without_cancellation_cases": 0,
+        "composite_infeasible_cases": 0,
+        "state0_continuity_failures": 0,
+        "terminal_capture_failures": 0,
+        "construction_failure_counts": {},
+        "frozen_full_V4_gate_failures": 0,
+        "V4_non_native_infeasible_cases": 0,
+        "post_recommit_settling_cases": 72,
+        "post_recommit_terminal_capture_failures": 0,
+        "post_recommit_composite_failures": 0
+      }
+    }
+  ],
+  "runner_run_calls": 0,
+  "simulation_calls": 0
+}

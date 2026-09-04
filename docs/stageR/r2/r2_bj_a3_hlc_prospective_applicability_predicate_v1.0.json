@@ -1,0 +1,51 @@
+{
+  "schema_version": "r2_bj_a3_hlc_prospective_applicability_predicate_v1.0",
+  "status": "FROZEN_OUTCOME_BLIND_PROSPECTIVE_PREDICATE",
+  "preregistered_contract": "docs/stageR/r2/r2_bj_a3_preregistered_contract_v1.0.json",
+  "predicate_order": [
+    "P01_EXACT_SINGLE_OFFICIAL_SCENARIO_RESOLUTION",
+    "P02_NOT_HISTORICALLY_OR_PERMANENTLY_EXCLUDED_BY_TOKEN_OR_LOG",
+    "P03_V2_3_SOURCE_TARGET_ROUTE_CONTINUOUS_RECONSTRUCTION",
+    "P04_NO_DUPLICATE_SHORT_OR_SELF_INTERSECTING_SEGMENT_AND_DIRECTION_CONCORDANT",
+    "P05_PRIMARY80_REFERENCE_COVERAGE_AT_CORRECTED_MARGIN_SPEED_WITHOUT_EXTRAPOLATION",
+    "P06_RAW_AND_ROBUST_CURVATURE_DISPOSITION_COMPLETE",
+    "P07_NATIVE_COMPONENT_GATES_PASS",
+    "P08_GENERATED_INCREMENT_GATES_PASS_WITHOUT_SIGN_CANCELLATION",
+    "P09_COMPOSITE_AND_STATE0_CONTINUITY_GATES_PASS",
+    "P10_POST_RECOMMIT_TERMINAL_SETTLING_GATE_PASS",
+    "P11_GLOBAL_FROZEN_PARAMETERS_NO_SCENARIO_SPECIFIC_TUNING"
+  ],
+  "speed": {
+    "v_audit_mps": "max(official_initial_speed_mps,max_pre_treatment_speed_mps_from_0_to_1p0s_inclusive)",
+    "v_support_mps": "v_audit_mps+max(0.5,0.05*v_audit_mps)",
+    "route_forward_m": "15.8*v_support_mps+2.0",
+    "anchor_timestamp_used_by_predicate": false
+  },
+  "curvature_dispositions": {
+    "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT": "BOTH_REPRESENTATIONS_RETAINED_AND_PASS_AT_V_AUDIT",
+    "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT": "RAW_LOCALIZED_BY_FIXED_RULE_AND_BOTH_PASS_AT_V_AUDIT",
+    "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE": "SUSTAINED_BY_FIXED_RULE_AND_BOTH_PASS_AT_V_AUDIT",
+    "RAW_CURVATURE_FEASIBILITY_FAIL": "RAW_FAILS_FROZEN_LIMIT",
+    "ROBUST_CURVATURE_FEASIBILITY_FAIL": "ROBUST_FAILS_FROZEN_LIMIT",
+    "DUPLICATE_SHORT_OR_INSUFFICIENT_REFERENCE": "CURVATURE_UNAVAILABLE_FAIL_CLOSED"
+  },
+  "component_grid": {
+    "speed_cases": ["v_audit_mps", "v_support_mps"],
+    "arms": ["BASELINE", "TREATMENT"],
+    "normal_residual_m": [-0.25, 0.0, 0.25],
+    "absolute_episode_time_s": {"start": 0.0, "stop_inclusive": 7.9, "step": 0.1},
+    "case_count_per_reconstructed_opportunity": 960
+  },
+  "forbidden_inputs": [
+    "baseline_or_treatment_rollout_outcome",
+    "mechanism_result",
+    "endpoint_result",
+    "F_match_result",
+    "safety_result",
+    "BDD_or_representation",
+    "manual_candidate_choice"
+  ],
+  "scenario_specific_parameters_allowed": false,
+  "threshold_change_allowed": false,
+  "simulator_or_runner_callable": false
+}

@@ -1,10 +1,12 @@
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 R2 = ROOT / "docs/stageR/r2"
+A2_BOUND_COMMIT = "a04f8c4ec5e2448559fb4600ad0c1c830b3fd8ed"
 
 
 def load(name):
@@ -101,4 +103,7 @@ def test_request_withheld_and_sha_manifest_closes():
     assert manifest["component_SHA_closure"] == "PASS"
     assert manifest["runner_run_calls"] == manifest["simulation_calls"] == 0
     for row in manifest["components"]:
-        assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+        historical = subprocess.check_output(
+            ["git", "show", f"{A2_BOUND_COMMIT}:{row['path']}"], cwd=ROOT,
+        )
+        assert hashlib.sha256(historical).hexdigest() == row["sha256"]

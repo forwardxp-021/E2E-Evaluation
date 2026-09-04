@@ -1,0 +1,1190 @@
+{
+  "schema_version": "r2_bj_a3_legacy_technical_disposition_ledger_v1.0",
+  "status": "COMPLETE",
+  "entry_count": 10,
+  "uniform_V2_3_replay": true,
+  "entries": [
+    {
+      "scenario_token": "14f06b5194ff5c85",
+      "log_id": "2021.09.17.14.16.24_veh-45_01972_02284",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18514:target=18512:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 6.149887,
+        "anchor_requested_timestamp_us": 1631890327799372,
+        "anchor_nearest_timestamp_us": 1631890327799372,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 8.401290090698772,
+        "pre_treatment_window_start_us": 1631890324800077,
+        "pre_treatment_window_end_us": 1631890325800077,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1631890324800077,
+            "speed_mps": 6.149887317267948
+          },
+          {
+            "timestamp_us": 1631890324850104,
+            "speed_mps": 6.206451997635532
+          },
+          {
+            "timestamp_us": 1631890324900132,
+            "speed_mps": 6.2739868512131505
+          },
+          {
+            "timestamp_us": 1631890324950159,
+            "speed_mps": 6.327614774315507
+          },
+          {
+            "timestamp_us": 1631890325000182,
+            "speed_mps": 6.388472401316444
+          },
+          {
+            "timestamp_us": 1631890325050205,
+            "speed_mps": 6.44746848089988
+          },
+          {
+            "timestamp_us": 1631890325100223,
+            "speed_mps": 6.512140974123188
+          },
+          {
+            "timestamp_us": 1631890325150236,
+            "speed_mps": 6.567006008278451
+          },
+          {
+            "timestamp_us": 1631890325200247,
+            "speed_mps": 6.632174808632011
+          },
+          {
+            "timestamp_us": 1631890325250251,
+            "speed_mps": 6.683683877423956
+          },
+          {
+            "timestamp_us": 1631890325300251,
+            "speed_mps": 6.749443350155664
+          },
+          {
+            "timestamp_us": 1631890325350243,
+            "speed_mps": 6.804235103050156
+          },
+          {
+            "timestamp_us": 1631890325400227,
+            "speed_mps": 6.863847814082426
+          },
+          {
+            "timestamp_us": 1631890325450206,
+            "speed_mps": 6.923229050196913
+          },
+          {
+            "timestamp_us": 1631890325500184,
+            "speed_mps": 6.983973704374684
+          },
+          {
+            "timestamp_us": 1631890325550159,
+            "speed_mps": 7.040932171461949
+          },
+          {
+            "timestamp_us": 1631890325600132,
+            "speed_mps": 7.095062771740861
+          },
+          {
+            "timestamp_us": 1631890325650105,
+            "speed_mps": 7.154821422187652
+          },
+          {
+            "timestamp_us": 1631890325700079,
+            "speed_mps": 7.211210082556015
+          },
+          {
+            "timestamp_us": 1631890325750053,
+            "speed_mps": 7.272017076632963
+          },
+          {
+            "timestamp_us": 1631890325800030,
+            "speed_mps": 7.32934511282663
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 6.149887317267948,
+          "p25": 6.44746848089988,
+          "median": 6.749443350155664,
+          "p75": 7.040932171461949,
+          "p95": 7.272017076632963,
+          "p99": 7.3178795055878965,
+          "max": 7.32934511282663
+        },
+        "v_audit_mps": 7.32934511282663,
+        "v_support_mps": 7.82934511282663,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.999295,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18514:target=18512:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "40816601b19a5ca5",
+      "log_id": "2021.09.28.19.55.30_veh-44_00395_01217",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18745:target=18744:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 0.002114,
+        "anchor_requested_timestamp_us": 1632859425999876,
+        "anchor_nearest_timestamp_us": 1632859425999876,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 0.0023470789530200572,
+        "pre_treatment_window_start_us": 1632859423001020,
+        "pre_treatment_window_end_us": 1632859424001020,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632859423001020,
+            "speed_mps": 0.0021135306426550253
+          },
+          {
+            "timestamp_us": 1632859423051027,
+            "speed_mps": 0.002445606251438311
+          },
+          {
+            "timestamp_us": 1632859423101032,
+            "speed_mps": 0.003041096228003704
+          },
+          {
+            "timestamp_us": 1632859423151034,
+            "speed_mps": 0.002569373844900441
+          },
+          {
+            "timestamp_us": 1632859423201035,
+            "speed_mps": 0.0015847119666980486
+          },
+          {
+            "timestamp_us": 1632859423251035,
+            "speed_mps": 0.002185693890427001
+          },
+          {
+            "timestamp_us": 1632859423301037,
+            "speed_mps": 0.0027074693664107473
+          },
+          {
+            "timestamp_us": 1632859423351038,
+            "speed_mps": 0.0023757522386528202
+          },
+          {
+            "timestamp_us": 1632859423401033,
+            "speed_mps": 0.002051388967157263
+          },
+          {
+            "timestamp_us": 1632859423451020,
+            "speed_mps": 0.00310417559578094
+          },
+          {
+            "timestamp_us": 1632859423501001,
+            "speed_mps": 0.003985699105795654
+          },
+          {
+            "timestamp_us": 1632859423550978,
+            "speed_mps": 0.003199308536344284
+          },
+          {
+            "timestamp_us": 1632859423600951,
+            "speed_mps": 0.002120893439473582
+          },
+          {
+            "timestamp_us": 1632859423650921,
+            "speed_mps": 0.0022171111522200633
+          },
+          {
+            "timestamp_us": 1632859423700892,
+            "speed_mps": 0.0023651420204517967
+          },
+          {
+            "timestamp_us": 1632859423750864,
+            "speed_mps": 0.0018935685637475681
+          },
+          {
+            "timestamp_us": 1632859423800840,
+            "speed_mps": 0.0016824833436278738
+          },
+          {
+            "timestamp_us": 1632859423850818,
+            "speed_mps": 0.002459309839512357
+          },
+          {
+            "timestamp_us": 1632859423900796,
+            "speed_mps": 0.0036148693727661198
+          },
+          {
+            "timestamp_us": 1632859423950774,
+            "speed_mps": 0.003906392283636912
+          },
+          {
+            "timestamp_us": 1632859424000754,
+            "speed_mps": 0.003316793790192123
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 0.0015847119666980486,
+          "p25": 0.002120893439473582,
+          "median": 0.002445606251438311,
+          "p75": 0.00310417559578094,
+          "p95": 0.003906392283636912,
+          "p99": 0.0039698377413639055,
+          "max": 0.003985699105795654
+        },
+        "v_audit_mps": 0.003985699105795654,
+        "v_support_mps": 0.5039856991057956,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.998856,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18745:target=18744:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "578993bfc973525e",
+      "log_id": "2021.08.17.16.48.45_veh-43_02070_02652",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 8.697269,
+        "anchor_requested_timestamp_us": 1629221354499873,
+        "anchor_nearest_timestamp_us": 1629221354499873,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 8.697269161467055,
+        "pre_treatment_window_start_us": 1629221354499873,
+        "pre_treatment_window_end_us": 1629221355499873,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629221354499873,
+            "speed_mps": 8.697269161467055
+          },
+          {
+            "timestamp_us": 1629221354549894,
+            "speed_mps": 8.644576894661446
+          },
+          {
+            "timestamp_us": 1629221354599918,
+            "speed_mps": 8.596297026283583
+          },
+          {
+            "timestamp_us": 1629221354649941,
+            "speed_mps": 8.543770233211047
+          },
+          {
+            "timestamp_us": 1629221354699965,
+            "speed_mps": 8.488783474499183
+          },
+          {
+            "timestamp_us": 1629221354749986,
+            "speed_mps": 8.433483798311757
+          },
+          {
+            "timestamp_us": 1629221354800009,
+            "speed_mps": 8.378581159721062
+          },
+          {
+            "timestamp_us": 1629221354850033,
+            "speed_mps": 8.32506330406
+          },
+          {
+            "timestamp_us": 1629221354900055,
+            "speed_mps": 8.273199188950551
+          },
+          {
+            "timestamp_us": 1629221354950077,
+            "speed_mps": 8.219787028628273
+          },
+          {
+            "timestamp_us": 1629221355000098,
+            "speed_mps": 8.150897355691349
+          },
+          {
+            "timestamp_us": 1629221355050117,
+            "speed_mps": 8.100098823460167
+          },
+          {
+            "timestamp_us": 1629221355100133,
+            "speed_mps": 8.036238219557076
+          },
+          {
+            "timestamp_us": 1629221355150146,
+            "speed_mps": 7.972553512498235
+          },
+          {
+            "timestamp_us": 1629221355200157,
+            "speed_mps": 7.903550486375924
+          },
+          {
+            "timestamp_us": 1629221355250163,
+            "speed_mps": 7.8510992046749815
+          },
+          {
+            "timestamp_us": 1629221355300166,
+            "speed_mps": 7.774552454602823
+          },
+          {
+            "timestamp_us": 1629221355350165,
+            "speed_mps": 7.711913383493813
+          },
+          {
+            "timestamp_us": 1629221355400161,
+            "speed_mps": 7.6600669426281005
+          },
+          {
+            "timestamp_us": 1629221355450155,
+            "speed_mps": 7.586780490298422
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 7.586780490298422,
+          "p25": 7.890437665950688,
+          "median": 8.185342192159812,
+          "p75": 8.447308717358613,
+          "p95": 8.647211508001726,
+          "p99": 8.68725763077399,
+          "max": 8.697269161467055
+        },
+        "v_audit_mps": 8.697269161467055,
+        "v_support_mps": 9.197269161467055,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 0.0,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "5d3f971cd6ff5a3a",
+      "log_id": "2021.08.19.17.14.40_veh-45_02585_02856",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18546:target=18547:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 8.37618,
+        "anchor_requested_timestamp_us": 1629396125899597,
+        "anchor_nearest_timestamp_us": 1629396125899597,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 8.376179724039707,
+        "pre_treatment_window_start_us": 1629396125899597,
+        "pre_treatment_window_end_us": 1629396126899597,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629396125899597,
+            "speed_mps": 8.376179724039707
+          },
+          {
+            "timestamp_us": 1629396125949640,
+            "speed_mps": 8.3585499912482
+          },
+          {
+            "timestamp_us": 1629396125999685,
+            "speed_mps": 8.342071583688229
+          },
+          {
+            "timestamp_us": 1629396126049728,
+            "speed_mps": 8.329961653490647
+          },
+          {
+            "timestamp_us": 1629396126099768,
+            "speed_mps": 8.31360837142021
+          },
+          {
+            "timestamp_us": 1629396126149810,
+            "speed_mps": 8.297578721583434
+          },
+          {
+            "timestamp_us": 1629396126199850,
+            "speed_mps": 8.277182408134255
+          },
+          {
+            "timestamp_us": 1629396126249890,
+            "speed_mps": 8.260278712426926
+          },
+          {
+            "timestamp_us": 1629396126299934,
+            "speed_mps": 8.238750659322946
+          },
+          {
+            "timestamp_us": 1629396126349978,
+            "speed_mps": 8.220765375408215
+          },
+          {
+            "timestamp_us": 1629396126400025,
+            "speed_mps": 8.200792260252767
+          },
+          {
+            "timestamp_us": 1629396126450069,
+            "speed_mps": 8.185596426770537
+          },
+          {
+            "timestamp_us": 1629396126500110,
+            "speed_mps": 8.174146057748057
+          },
+          {
+            "timestamp_us": 1629396126550148,
+            "speed_mps": 8.162039611914162
+          },
+          {
+            "timestamp_us": 1629396126600186,
+            "speed_mps": 8.146557473879328
+          },
+          {
+            "timestamp_us": 1629396126650223,
+            "speed_mps": 8.132417877298593
+          },
+          {
+            "timestamp_us": 1629396126700262,
+            "speed_mps": 8.117195916913927
+          },
+          {
+            "timestamp_us": 1629396126750302,
+            "speed_mps": 8.101310675418988
+          },
+          {
+            "timestamp_us": 1629396126800343,
+            "speed_mps": 8.087562139814718
+          },
+          {
+            "timestamp_us": 1629396126850384,
+            "speed_mps": 8.077568609843409
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 8.077568609843409,
+          "p25": 8.143022574734145,
+          "median": 8.21077881783049,
+          "p75": 8.301586134042628,
+          "p95": 8.359431477887775,
+          "p99": 8.37283007480932,
+          "max": 8.376179724039707
+        },
+        "v_audit_mps": 8.37618,
+        "v_support_mps": 8.87618,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 0.0,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18546:target=18547:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "bb5bcc610f3853b7",
+      "log_id": "2021.08.19.17.14.40_veh-45_00298_00804",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 15.313079,
+        "anchor_requested_timestamp_us": 1629393803649731,
+        "anchor_nearest_timestamp_us": 1629393803649731,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 14.45819695574872,
+        "pre_treatment_window_start_us": 1629393800650292,
+        "pre_treatment_window_end_us": 1629393801650292,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629393800650292,
+            "speed_mps": 15.313079025425061
+          },
+          {
+            "timestamp_us": 1629393800700313,
+            "speed_mps": 15.307136813932306
+          },
+          {
+            "timestamp_us": 1629393800750338,
+            "speed_mps": 15.298825665858905
+          },
+          {
+            "timestamp_us": 1629393800800366,
+            "speed_mps": 15.283127707846962
+          },
+          {
+            "timestamp_us": 1629393800850394,
+            "speed_mps": 15.27027539177026
+          },
+          {
+            "timestamp_us": 1629393800900421,
+            "speed_mps": 15.25191550052779
+          },
+          {
+            "timestamp_us": 1629393800950449,
+            "speed_mps": 15.240111593220544
+          },
+          {
+            "timestamp_us": 1629393801000479,
+            "speed_mps": 15.227012582670572
+          },
+          {
+            "timestamp_us": 1629393801050507,
+            "speed_mps": 15.2223135040383
+          },
+          {
+            "timestamp_us": 1629393801100532,
+            "speed_mps": 15.21643493506054
+          },
+          {
+            "timestamp_us": 1629393801150551,
+            "speed_mps": 15.209960458740554
+          },
+          {
+            "timestamp_us": 1629393801200564,
+            "speed_mps": 15.204278986864194
+          },
+          {
+            "timestamp_us": 1629393801250571,
+            "speed_mps": 15.193957437322865
+          },
+          {
+            "timestamp_us": 1629393801300574,
+            "speed_mps": 15.179334761644046
+          },
+          {
+            "timestamp_us": 1629393801350570,
+            "speed_mps": 15.16882927480216
+          },
+          {
+            "timestamp_us": 1629393801400560,
+            "speed_mps": 15.148815174308632
+          },
+          {
+            "timestamp_us": 1629393801450544,
+            "speed_mps": 15.136337537739031
+          },
+          {
+            "timestamp_us": 1629393801500525,
+            "speed_mps": 15.125632322788572
+          },
+          {
+            "timestamp_us": 1629393801550503,
+            "speed_mps": 15.11919112916324
+          },
+          {
+            "timestamp_us": 1629393801600477,
+            "speed_mps": 15.109267012632966
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 15.109267012632966,
+          "p25": 15.163825749678779,
+          "median": 15.213197696900547,
+          "p75": 15.256505473338407,
+          "p95": 15.307433924506944,
+          "p99": 15.311950005241437,
+          "max": 15.313079025425061
+        },
+        "v_audit_mps": 15.313079025425061,
+        "v_support_mps": 16.078732976696315,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.9994389999999997,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "be449a2b6ad959d8",
+      "log_id": "2021.09.27.17.06.43_veh-44_01765_01929",
+      "historical_A2_reason": "ValueError:A2_CURVATURE_DUPLICATE_OR_SHORT_SEGMENT",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 0.000434,
+        "anchor_requested_timestamp_us": 1632764326999087,
+        "anchor_nearest_timestamp_us": 1632764326999087,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 0.0008780577259853878,
+        "pre_treatment_window_start_us": 1632764323999247,
+        "pre_treatment_window_end_us": 1632764324999247,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632764323999247,
+            "speed_mps": 0.00043428636020789935
+          },
+          {
+            "timestamp_us": 1632764324049240,
+            "speed_mps": 0.0006218135762852956
+          },
+          {
+            "timestamp_us": 1632764324099235,
+            "speed_mps": 0.0007835083555111146
+          },
+          {
+            "timestamp_us": 1632764324149231,
+            "speed_mps": 0.0011085660296222698
+          },
+          {
+            "timestamp_us": 1632764324199228,
+            "speed_mps": 0.0009960555526761826
+          },
+          {
+            "timestamp_us": 1632764324249228,
+            "speed_mps": 0.0007825518962825691
+          },
+          {
+            "timestamp_us": 1632764324299229,
+            "speed_mps": 0.0005678302560712765
+          },
+          {
+            "timestamp_us": 1632764324349232,
+            "speed_mps": 0.0005392177585192202
+          },
+          {
+            "timestamp_us": 1632764324399237,
+            "speed_mps": 0.00041913408770758944
+          },
+          {
+            "timestamp_us": 1632764324449241,
+            "speed_mps": 0.0007069925078605574
+          },
+          {
+            "timestamp_us": 1632764324499248,
+            "speed_mps": 0.0006902459641103733
+          },
+          {
+            "timestamp_us": 1632764324549256,
+            "speed_mps": 0.0007247634125607784
+          },
+          {
+            "timestamp_us": 1632764324599262,
+            "speed_mps": 0.0007093270986507186
+          },
+          {
+            "timestamp_us": 1632764324649269,
+            "speed_mps": 0.0006288099812005116
+          },
+          {
+            "timestamp_us": 1632764324699277,
+            "speed_mps": 0.0005346938491347383
+          },
+          {
+            "timestamp_us": 1632764324749287,
+            "speed_mps": 0.0008132804940213897
+          },
+          {
+            "timestamp_us": 1632764324799295,
+            "speed_mps": 0.0008372100904784239
+          },
+          {
+            "timestamp_us": 1632764324849302,
+            "speed_mps": 0.0007724361462388422
+          },
+          {
+            "timestamp_us": 1632764324899307,
+            "speed_mps": 0.0005796638976142868
+          },
+          {
+            "timestamp_us": 1632764324949312,
+            "speed_mps": 0.0006166583074562436
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 0.00041913408770758944,
+          "p25": 0.0005767054872285343,
+          "median": 0.0006986192359854653,
+          "p75": 0.0007827910110897055,
+          "p95": 0.0010016810765234871,
+          "p99": 0.0010871890390025131,
+          "max": 0.0011085660296222698
+        },
+        "v_audit_mps": 0.0011085660296222698,
+        "v_support_mps": 0.5011085660296223,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.99984,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": null,
+      "technical_disposition": "LEGACY_OPPORTUNITY_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "bfdbb19e4ff85027",
+      "log_id": "2021.09.15.17.01.41_veh-45_00425_01226",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18503:target=18502:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 0.000346,
+        "anchor_requested_timestamp_us": 1631726180950405,
+        "anchor_nearest_timestamp_us": 1631726180950405,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 0.0009066434958927195,
+        "pre_treatment_window_start_us": 1631726178000165,
+        "pre_treatment_window_end_us": 1631726179000165,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1631726178000165,
+            "speed_mps": 0.0003461944735311686
+          },
+          {
+            "timestamp_us": 1631726178050140,
+            "speed_mps": 0.00025662224997362673
+          },
+          {
+            "timestamp_us": 1631726178100115,
+            "speed_mps": 0.000425783524879115
+          },
+          {
+            "timestamp_us": 1631726178150091,
+            "speed_mps": 0.0005075533137066407
+          },
+          {
+            "timestamp_us": 1631726178200069,
+            "speed_mps": 0.0002422632983208204
+          },
+          {
+            "timestamp_us": 1631726178250045,
+            "speed_mps": 0.00027626620943661356
+          },
+          {
+            "timestamp_us": 1631726178300021,
+            "speed_mps": 0.00023107825230870413
+          },
+          {
+            "timestamp_us": 1631726178349999,
+            "speed_mps": 0.0004516078570223349
+          },
+          {
+            "timestamp_us": 1631726178399975,
+            "speed_mps": 0.0003648745918050088
+          },
+          {
+            "timestamp_us": 1631726178449950,
+            "speed_mps": 0.0006297344015210993
+          },
+          {
+            "timestamp_us": 1631726178499924,
+            "speed_mps": 0.0006947581908498042
+          },
+          {
+            "timestamp_us": 1631726178549900,
+            "speed_mps": 0.0008007803583292961
+          },
+          {
+            "timestamp_us": 1631726178599877,
+            "speed_mps": 0.0009172497284039048
+          },
+          {
+            "timestamp_us": 1631726178649856,
+            "speed_mps": 0.0007728868367732924
+          },
+          {
+            "timestamp_us": 1631726178699833,
+            "speed_mps": 0.0005402675535764267
+          },
+          {
+            "timestamp_us": 1631726178749814,
+            "speed_mps": 0.0008442720473137051
+          },
+          {
+            "timestamp_us": 1631726178799797,
+            "speed_mps": 0.0008667082113915459
+          },
+          {
+            "timestamp_us": 1631726178849779,
+            "speed_mps": 0.0006998266206454756
+          },
+          {
+            "timestamp_us": 1631726178899761,
+            "speed_mps": 0.0007120438184009268
+          },
+          {
+            "timestamp_us": 1631726178949741,
+            "speed_mps": 0.0006377240779061086
+          },
+          {
+            "timestamp_us": 1631726178999720,
+            "speed_mps": 0.0005830677534971513
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 0.00023107825230870413,
+          "p25": 0.0003648745918050088,
+          "median": 0.0005830677534971513,
+          "p75": 0.0007120438184009268,
+          "p95": 0.0008667082113915459,
+          "p99": 0.000907141425001433,
+          "max": 0.0009172497284039048
+        },
+        "v_audit_mps": 0.0009172497284039048,
+        "v_support_mps": 0.5009172497284039,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.95024,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18503:target=18502:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "d42842ff6aca5f6f",
+      "log_id": "2021.09.23.17.03.56_veh-45_02539_02937",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18255:target=18253:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 1.001634,
+        "anchor_requested_timestamp_us": 1632419405200807,
+        "anchor_nearest_timestamp_us": 1632419405200807,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 1.0016339917244126,
+        "pre_treatment_window_start_us": 1632419405200807,
+        "pre_treatment_window_end_us": 1632419406200807,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1632419405200807,
+            "speed_mps": 1.0016339917244126
+          },
+          {
+            "timestamp_us": 1632419405250814,
+            "speed_mps": 1.0929036815113737
+          },
+          {
+            "timestamp_us": 1632419405300814,
+            "speed_mps": 1.179247418591991
+          },
+          {
+            "timestamp_us": 1632419405350808,
+            "speed_mps": 1.2671134959826287
+          },
+          {
+            "timestamp_us": 1632419405400797,
+            "speed_mps": 1.3534789714479685
+          },
+          {
+            "timestamp_us": 1632419405450780,
+            "speed_mps": 1.444517573734258
+          },
+          {
+            "timestamp_us": 1632419405500757,
+            "speed_mps": 1.5299371140821612
+          },
+          {
+            "timestamp_us": 1632419405550728,
+            "speed_mps": 1.6201352457069944
+          },
+          {
+            "timestamp_us": 1632419405600696,
+            "speed_mps": 1.6973414908046074
+          },
+          {
+            "timestamp_us": 1632419405650662,
+            "speed_mps": 1.7802718857742617
+          },
+          {
+            "timestamp_us": 1632419405700627,
+            "speed_mps": 1.8687801297602753
+          },
+          {
+            "timestamp_us": 1632419405750592,
+            "speed_mps": 1.9541347315920403
+          },
+          {
+            "timestamp_us": 1632419405800555,
+            "speed_mps": 2.03628913122606
+          },
+          {
+            "timestamp_us": 1632419405850517,
+            "speed_mps": 2.1188662485030036
+          },
+          {
+            "timestamp_us": 1632419405900479,
+            "speed_mps": 2.1939596167382303
+          },
+          {
+            "timestamp_us": 1632419405950442,
+            "speed_mps": 2.2704915496622347
+          },
+          {
+            "timestamp_us": 1632419406000403,
+            "speed_mps": 2.3515715304161215
+          },
+          {
+            "timestamp_us": 1632419406050365,
+            "speed_mps": 2.4295910405730474
+          },
+          {
+            "timestamp_us": 1632419406100330,
+            "speed_mps": 2.496161534772443
+          },
+          {
+            "timestamp_us": 1632419406150299,
+            "speed_mps": 2.572471663886918
+          },
+          {
+            "timestamp_us": 1632419406200270,
+            "speed_mps": 2.646955690018797
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 1.0016339917244126,
+          "p25": 1.444517573734258,
+          "median": 1.8687801297602753,
+          "p75": 2.2704915496622347,
+          "p95": 2.572471663886918,
+          "p99": 2.6320588847924213,
+          "max": 2.646955690018797
+        },
+        "v_audit_mps": 2.646955690018797,
+        "v_support_mps": 3.146955690018797,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 0.0,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18255:target=18253:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "f967188819ef539f",
+      "log_id": "2021.06.23.17.31.36_veh-16_00016_00377",
+      "historical_A2_reason": "ValueError:A2_CURVATURE_DUPLICATE_OR_SHORT_SEGMENT",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 0.00166,
+        "anchor_requested_timestamp_us": 1624469940849937,
+        "anchor_nearest_timestamp_us": 1624469940849937,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 0.003299775307373286,
+        "pre_treatment_window_start_us": 1624469937899725,
+        "pre_treatment_window_end_us": 1624469938899725,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1624469937899725,
+            "speed_mps": 0.0016602295843257504
+          },
+          {
+            "timestamp_us": 1624469937949764,
+            "speed_mps": 0.0022920975280986467
+          },
+          {
+            "timestamp_us": 1624469937999804,
+            "speed_mps": 0.002802605004858992
+          },
+          {
+            "timestamp_us": 1624469938049844,
+            "speed_mps": 0.0032605596377891515
+          },
+          {
+            "timestamp_us": 1624469938099886,
+            "speed_mps": 0.0038552266778961453
+          },
+          {
+            "timestamp_us": 1624469938149926,
+            "speed_mps": 0.003693227134319532
+          },
+          {
+            "timestamp_us": 1624469938199966,
+            "speed_mps": 0.002812840691655719
+          },
+          {
+            "timestamp_us": 1624469938250007,
+            "speed_mps": 0.0023734291473135704
+          },
+          {
+            "timestamp_us": 1624469938300047,
+            "speed_mps": 0.0021019494633530388
+          },
+          {
+            "timestamp_us": 1624469938350085,
+            "speed_mps": 0.001897286707137505
+          },
+          {
+            "timestamp_us": 1624469938400122,
+            "speed_mps": 0.001882392189509596
+          },
+          {
+            "timestamp_us": 1624469938450161,
+            "speed_mps": 0.002250249096918626
+          },
+          {
+            "timestamp_us": 1624469938500199,
+            "speed_mps": 0.0025490210148698136
+          },
+          {
+            "timestamp_us": 1624469938550236,
+            "speed_mps": 0.003002207110014396
+          },
+          {
+            "timestamp_us": 1624469938600273,
+            "speed_mps": 0.003502571172100213
+          },
+          {
+            "timestamp_us": 1624469938650310,
+            "speed_mps": 0.0032668304321539173
+          },
+          {
+            "timestamp_us": 1624469938700345,
+            "speed_mps": 0.0028448681784624184
+          },
+          {
+            "timestamp_us": 1624469938750378,
+            "speed_mps": 0.0032135981889709507
+          },
+          {
+            "timestamp_us": 1624469938800413,
+            "speed_mps": 0.0030617372901468225
+          },
+          {
+            "timestamp_us": 1624469938850451,
+            "speed_mps": 0.0024057015257887204
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 0.0016602295843257504,
+          "p25": 0.0022816354203036415,
+          "median": 0.0028077228482573553,
+          "p75": 0.003225338551175501,
+          "p95": 0.0037013271114983625,
+          "p99": 0.0038244467646165884,
+          "max": 0.0038552266778961453
+        },
+        "v_audit_mps": 0.0038552266778961453,
+        "v_support_mps": 0.5038552266778962,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.950212,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": null,
+      "technical_disposition": "LEGACY_OPPORTUNITY_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    },
+    {
+      "scenario_token": "fd93956a3f9052dc",
+      "log_id": "2021.08.23.15.14.44_veh-08_00917_01175",
+      "historical_A2_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18510:target=18509:candidates=0",
+      "A3_corrected_speed_information": {
+        "official_initial_speed_mps": 0.001256,
+        "anchor_requested_timestamp_us": 1629732844199826,
+        "anchor_nearest_timestamp_us": 1629732844199826,
+        "anchor_timestamp_abs_error_us": 0,
+        "anchor_speed_mps": 0.00127616013511141,
+        "pre_treatment_window_start_us": 1629732841200100,
+        "pre_treatment_window_end_us": 1629732842200100,
+        "pre_treatment_samples": [
+          {
+            "timestamp_us": 1629732841200100,
+            "speed_mps": 0.001256264505462267
+          },
+          {
+            "timestamp_us": 1629732841250091,
+            "speed_mps": 0.0012120578123435445
+          },
+          {
+            "timestamp_us": 1629732841300083,
+            "speed_mps": 0.0011807470455914239
+          },
+          {
+            "timestamp_us": 1629732841350078,
+            "speed_mps": 0.0016452554020099537
+          },
+          {
+            "timestamp_us": 1629732841400071,
+            "speed_mps": 0.001751332470751495
+          },
+          {
+            "timestamp_us": 1629732841450066,
+            "speed_mps": 0.001742351335078736
+          },
+          {
+            "timestamp_us": 1629732841500062,
+            "speed_mps": 0.001731099249594572
+          },
+          {
+            "timestamp_us": 1629732841550060,
+            "speed_mps": 0.0016869678390835521
+          },
+          {
+            "timestamp_us": 1629732841600058,
+            "speed_mps": 0.001539977674685268
+          },
+          {
+            "timestamp_us": 1629732841650056,
+            "speed_mps": 0.001665921788963725
+          },
+          {
+            "timestamp_us": 1629732841700055,
+            "speed_mps": 0.0014171970326702762
+          },
+          {
+            "timestamp_us": 1629732841750053,
+            "speed_mps": 0.0016933760036659767
+          },
+          {
+            "timestamp_us": 1629732841800051,
+            "speed_mps": 0.0016038924883102672
+          },
+          {
+            "timestamp_us": 1629732841850048,
+            "speed_mps": 0.001578009847460467
+          },
+          {
+            "timestamp_us": 1629732841900046,
+            "speed_mps": 0.0017268372699113489
+          },
+          {
+            "timestamp_us": 1629732841950044,
+            "speed_mps": 0.0018089014545985909
+          },
+          {
+            "timestamp_us": 1629732842000040,
+            "speed_mps": 0.0016863796848177307
+          },
+          {
+            "timestamp_us": 1629732842050036,
+            "speed_mps": 0.001486007235924416
+          },
+          {
+            "timestamp_us": 1629732842100032,
+            "speed_mps": 0.0013655693696921186
+          },
+          {
+            "timestamp_us": 1629732842150027,
+            "speed_mps": 0.0011503002273150584
+          },
+          {
+            "timestamp_us": 1629732842200021,
+            "speed_mps": 0.0011262114956684993
+          }
+        ],
+        "pre_treatment_speed_distribution_mps": {
+          "min": 0.0011262114956684993,
+          "p25": 0.0013655693696921186,
+          "median": 0.0016038924883102672,
+          "p75": 0.0016933760036659767,
+          "p95": 0.001751332470751495,
+          "p99": 0.0017973876578291717,
+          "max": 0.0018089014545985909
+        },
+        "v_audit_mps": 0.0018089014545985909,
+        "v_support_mps": 0.5018089014545986,
+        "v_audit_formula": "max(official_initial,max_pre_treatment_0_to_1p0s)",
+        "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+        "anchor_relative_to_official_initial_s": 2.999726,
+        "anchor_used_for_selection_or_eligibility": false
+      },
+      "A3_replay_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18510:target=18509:candidates=0",
+      "technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_exclusion": false,
+      "added_to_blacklist": false,
+      "historical_scientific_result_changed": false
+    }
+  ],
+  "outcome_exclusion_created": false,
+  "historical_files_rewritten": false
+}
