@@ -1,0 +1,96 @@
+{
+  "schema_version": "r2_bj_a5_component_sha_binding_manifest_v1.0",
+  "status": "R2_BJ_A5_CENSUS_COMPLETE_READY_FOR_BJ_B_OWNER_REVIEW",
+  "components": [
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_preregistered_finite_frame_census_contract_v1.0.json",
+      "sha256": "af0d1759e83b89867a0413f9aea24ab4b2f0108d7355047da8b739dd4b3a78aa"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_a4_frozen_frame_binding_audit_v1.0.json",
+      "sha256": "b95e914b09f464bedeca5a787106883ff603679d6c5b2efaf2ed9e3ec0cb19c4"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_hash_ranked_audit_frame_manifest_v1.0.json",
+      "sha256": "bf5f84acc8034136720f372ed2b56dd6fe6944cc09e95b7545457d27830ae1a5"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_hlc_moving_regime_applicability_predicate_v1.0.json",
+      "sha256": "fe02f8e5c26f1269503471891c40295e30a268af4f38e35584d4e328928631e1"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+      "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+      "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_557_entry_eligibility_census_ledger_v1.0.json",
+      "sha256": "bae7ef8333acd2a8a45acfbe3ddcc2281b242b8a569104edc98b3201eb450adb"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_curvature_disposition_audit_v1.0.json",
+      "sha256": "d0a6fae961f9dd8f0c43b5835084d6d3d02150e88734f68288894c268da16788"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_native_generated_composite_component_audit_v1.0.json",
+      "sha256": "7f18266d20242f0fa16f6dfbe31edd0edfa77ff8febc3cffae9042ffbaa2c19f"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_applicable_pool_provenance_manifest_v1.0.json",
+      "sha256": "55fb83d9c41a1f0e4d43caaebee8ed2a47cf697cc3177aff17b2554c0802f97f"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_finite_frame_census_envelope_v1.0.json",
+      "sha256": "44ccc1ca910250e25ad6d0a7697ccf36c1a90140bdd18578fb0be1d2d5f81d9d"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a5_data_firewall_audit_v1.0.json",
+      "sha256": "74466a58f1cb60a215296bcab10ffcd26102a661b896b25edc5cc43037436806"
+    },
+    {
+      "path": "docs/stageR/r2/R2_BJ_A5_Scientific_Owner_Readiness_Request_v0.1.md",
+      "sha256": "116bc88a877a4d649e9bed312178531fecd983b06cedb16ecb24dbaf7da012b5"
+    },
+    {
+      "path": "tools/r2_bj_a5_finite_frame_applicability_census.py",
+      "sha256": "993478d04c5803a3369589436b32d80bd452e7bad25e68aead0b6c67ec87cd25"
+    },
+    {
+      "path": "tools/r2_bj_a4_hlc_moving_regime_applicability.py",
+      "sha256": "e2f167e77057a22c1a3174fad27fcbd1509a22e45db23665f96250ad0c6414bf"
+    },
+    {
+      "path": "tools/r2_bj_a2_joint_support_applicability_audit.py",
+      "sha256": "5ce00e89ce7aadf09d9cb3497f7507037b570c057663a18dbfa5e35ccef4b1c9"
+    },
+    {
+      "path": "tools/r1_closed_loop_benchmark_v2_3.py",
+      "sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+      "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"
+    },
+    {
+      "path": "tests/test_r2_bj_a5_finite_frame_applicability_census.py",
+      "sha256": "ed39f5dd1a437ba0bdba9fbd009571af3a075bce400a86499a9a8ad96c12d675"
+    },
+    {
+      "path": "QUICK_REFERENCE.md",
+      "sha256": "0f06ebcf45d103bbde11a2ddec50b4b243ed68571e64d4d8bc6447f017eae107"
+    }
+  ],
+  "component_SHA_closure": "PASS",
+  "A4_FRAME_CAPACITY": 557,
+  "A5_CENSUS_EVALUATED": 557,
+  "A5_APPLICABLE_POOL": 34,
+  "A5_COMPONENT_STAGE_COUNT": 34,
+  "A5_MOVING_REGIME_COMPONENT_FAILURES": 0,
+  "BJ_B_ROSTER_SELECTED": false,
+  "RUNNER_RUN": 0,
+  "simulation_calls": 0,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

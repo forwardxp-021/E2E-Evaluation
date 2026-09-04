@@ -1,0 +1,78 @@
+{
+  "schema_version": "r2_bj_a5_preregistered_finite_frame_census_contract_v1.0",
+  "status": "PREREGISTERED_BEFORE_ANY_A5_PREDICATE_OUTCOME",
+  "stage": "R2-BJ-A5_FROZEN_557_LOG_FINITE_FRAME_APPLICABILITY_CENSUS",
+  "baseline": {
+    "remote_commit": "5b62c673c6d671b4a63cd75222f1b794c8da6565",
+    "local_commit": "39922a8af72de382de21eb4bf98326f3639f73d4",
+    "tree": "09743dd529f5b4219416ba3b99eb4c1325b0cd47"
+  },
+  "frozen_inputs": {
+    "A4_frame": {
+      "path": "docs/stageR/r2/r2_bj_a4_hash_ranked_audit_frame_manifest_v1.0.json",
+      "sha256": "bf5f84acc8034136720f372ed2b56dd6fe6944cc09e95b7545457d27830ae1a5"
+    },
+    "A4_predicate": {
+      "path": "docs/stageR/r2/r2_bj_a4_hlc_moving_regime_applicability_predicate_v1.0.json",
+      "sha256": "fe02f8e5c26f1269503471891c40295e30a268af4f38e35584d4e328928631e1"
+    },
+    "V4_generator": {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+      "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+    },
+    "V4_planner": {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+      "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+    }
+  },
+  "FRAME_SOURCE": "EXACT_A4_FROZEN_557_ENTRIES",
+  "CENSUS_TARGET": 557,
+  "SELECTION": "NONE",
+  "RERANK": false,
+  "RESCAN_SOURCE_UNIVERSE": false,
+  "REPLACEMENT": false,
+  "EARLY_STOP": false,
+  "GLOBAL_TOKEN_DEDUP": true,
+  "GLOBAL_LOG_DEDUP": true,
+  "SPEED_FLOOR_MPS": 3.0,
+  "REQUIRED_APPLICABLE_POOL": 32,
+  "predicate_execution": {
+    "order": [
+      "exact_official_scenario_resolution",
+      "historical_permanent_exclusion_integrity",
+      "moving_regime_speed_gate",
+      "V2_3_route_continuous_reconstruction",
+      "duplicate_short_self_intersection_gate",
+      "Primary80_reference_coverage_at_v_support",
+      "raw_robust_curvature_disposition",
+      "native_component_gates",
+      "generated_increment_gates_without_cancellation",
+      "composite_and_state0_continuity",
+      "post_recommit_terminal_settling",
+      "global_parameters_no_scenario_specific_tuning"
+    ],
+    "component_cases_per_reached_opportunity": 960,
+    "component_case_formula": "2 arms * 2 speed cases * 3 residual cases * 80 Primary iterations",
+    "negative_native_generated_cancellation_allowed": false
+  },
+  "decision_priority": [
+    "CENSUS_EVALUATION_INCOMPLETE",
+    "CENSUS_INPUT_INTEGRITY_FAILURE",
+    "CURVATURE_REPRESENTATION_UNRESOLVED",
+    "R2_BJ_A5_MOVING_REGIME_ARCHITECTURE_NOT_READY",
+    "APPLICABLE_POOL_INSUFFICIENT",
+    "R2_BJ_A5_CENSUS_COMPLETE_READY_FOR_BJ_B_OWNER_REVIEW"
+  ],
+  "governance": {
+    "A4_history_rewritten": false,
+    "A4_APPLICABLE_POOL_INSUFFICIENT_reinterpreted_as_pool_below_32": false,
+    "V4_or_threshold_change_authorized": false,
+    "A5_failure_creates_scientific_outcome_blacklist": false,
+    "BJ_B_roster_selection_authorized": false,
+    "runner_run_authorized": 0,
+    "engineering_simulation_authorized": 0,
+    "scientific_simulation_authorized": 0,
+    "TSB_simulation_authorized": 0,
+    "R2_C_confirmatory_RBR_authorized": false
+  }
+}

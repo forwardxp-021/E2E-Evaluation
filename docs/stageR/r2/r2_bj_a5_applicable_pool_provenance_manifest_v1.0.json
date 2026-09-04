@@ -1,0 +1,3876 @@
+{
+  "schema_version": "r2_bj_a5_applicable_pool_provenance_manifest_v1.0",
+  "status": "APPLICABLE_POOL_PROVENANCE_CLOSURE_100_PERCENT",
+  "applicable_pool_count": 34,
+  "closure_percent": 100.0,
+  "A4_frame_sha256": "bf5f84acc8034136720f372ed2b56dd6fe6944cc09e95b7545457d27830ae1a5",
+  "A4_predicate_sha256": "fe02f8e5c26f1269503471891c40295e30a268af4f38e35584d4e328928631e1",
+  "records": [
+    {
+      "census_index": 8,
+      "frame_index": 8,
+      "scenario_token": "cb64c96358045c20",
+      "log_id": "2021.08.17.18.44.32_veh-08_00873_01540",
+      "audit_rank_sha256": "0000d7eee65aa8f662e651a4bb0e23ecb91a03b71ae2a9def9ba03d71f986c8c",
+      "input_record_canonical_sha256": "6d6d49715e36482a1068d89304ce8584b0f9f52719249365972e9a446f62fd56",
+      "v_audit_mps": 3.948947,
+      "v_support_mps": 4.448947,
+      "source_reference_sha256": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+      "target_reference_sha256": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 72.29336260000001,
+        "source_total_length_m": 139.10028057029638,
+        "target_total_length_m": 136.52029066588196,
+        "source_current_arc_m": 10.680981561827021,
+        "target_current_arc_m": 7.432037443675914,
+        "source_remaining_margin_m": 56.12593640846934,
+        "target_remaining_margin_m": 56.79489062220604,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "70e305109d396062c248b37e8691332336826738ab8c44c536cc0c218e961cc1",
+      "predicate_result_canonical_sha256": "767ca72a3960b28a8cc2efb22aefe928c9b6c91e9c00e49f65a9d04ed2b34e65",
+      "closure_canonical_sha256": "492b9548edf27ec07f8352c89279ebfff05c5ffbe10a91c4a7b1acdc47a5a144"
+    },
+    {
+      "census_index": 17,
+      "frame_index": 17,
+      "scenario_token": "92e4dec2c9bc59e7",
+      "log_id": "2021.09.24.14.23.05_veh-45_00212_00576",
+      "audit_rank_sha256": "00021df39d2826a9d59c2894f5c5f414a66bb4716d5de6976117086db92dc9ff",
+      "input_record_canonical_sha256": "c03f693fd1cba6e8d0601451aab4dda88a2bbf3293ff817d41056e4eab2ec84a",
+      "v_audit_mps": 8.191927,
+      "v_support_mps": 8.691927,
+      "source_reference_sha256": "429ce9e29d1906cab1168442c264c66e50a1015ddebd1cc5b95dd44f9ee91300",
+      "target_reference_sha256": "08ae28ea467e5af22529e509757d81460e62c91d3573f6b132e3a9f01191f471",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 139.3324466,
+        "source_total_length_m": 188.83476611805207,
+        "target_total_length_m": 188.89298051063537,
+        "source_current_arc_m": 17.275061747705557,
+        "target_current_arc_m": 17.38694350281801,
+        "source_remaining_margin_m": 32.22725777034651,
+        "target_remaining_margin_m": 32.17359040781736,
+        "source_components": [
+          {
+            "edge_id": "18554",
+            "roadblock_id": "19066",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.59353619989983,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20175",
+            "roadblock_id": "19482",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 25.107407040727953,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18503",
+            "roadblock_id": "14328",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.13382287742431,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18553",
+            "roadblock_id": "19066",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 64.24536446231696,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20174",
+            "roadblock_id": "19482",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 27.863987296434196,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18502",
+            "roadblock_id": "14328",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7836287518843,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "dbc8df5c0fa9a09452a8bd52a074ab17076c392c3e084f4d2741c884a0f20a6e",
+      "predicate_result_canonical_sha256": "5e2d9ed134ed6f1f0c28d46eea7a877ea91c65db8dfffd32aea889395b63ddbf",
+      "closure_canonical_sha256": "06d6d4888f86de462fd71f30eb618c19d7e48f8111a9e6368bd53052e1149ef2"
+    },
+    {
+      "census_index": 23,
+      "frame_index": 23,
+      "scenario_token": "6408758176c25fb4",
+      "log_id": "2021.10.01.18.24.31_veh-44_00925_01112",
+      "audit_rank_sha256": "00028e125b05f094e79750b27d09f95e88bb9f48e1618e84dd4236e4b54dc70b",
+      "input_record_canonical_sha256": "6b9f8fcf7195e6f2c4db8cf16ced8e2c282d327d8a8b8b453fc279183a4634e2",
+      "v_audit_mps": 9.67162937805449,
+      "v_support_mps": 10.17162937805449,
+      "source_reference_sha256": "7bffa6aeb81c0fcd57e0979b04baaa14bc1c38f4f61191248839e55379449607",
+      "target_reference_sha256": "6abdbe2eff2d7fa6fdb1a30c40fa1d383e7a2f0878f1a906f2f9a1a5aa23336d",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 162.71174417326094,
+        "source_total_length_m": 184.53469079911378,
+        "target_total_length_m": 185.011474042814,
+        "source_current_arc_m": 10.2203101449055,
+        "target_current_arc_m": 10.529449188652055,
+        "source_remaining_margin_m": 11.602636480947325,
+        "target_remaining_margin_m": 11.77028068090101,
+        "source_components": [
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20121",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 35.01266046558885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18514",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.839114079400336,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19949",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.05097380386642,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19835",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 62.88059839610438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20229",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.42332186335746,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18513",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.40744603433657,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20230",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.48456584795533,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19739",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 63.340497367712175,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "48df6a3dab16b8b7c79d9edb443c6c7995d23ec15c174c33e1deb48f6ef715f8",
+      "predicate_result_canonical_sha256": "838697827279dddb9512018426fb62bc4ffcf8f02f1f78de40e58523fd1e20d5",
+      "closure_canonical_sha256": "b208339484355bbc912f3bacdf8bdf0d544e7a821c97e73573c0297bff669c8b"
+    },
+    {
+      "census_index": 57,
+      "frame_index": 57,
+      "scenario_token": "3de5f733454855aa",
+      "log_id": "2021.06.09.14.58.55_veh-35_01095_01484",
+      "audit_rank_sha256": "00080532b6d74f60fccc4336cb95f7dce474f69482ad0bb892fb8818e4a7c0af",
+      "input_record_canonical_sha256": "6482797122279b648058c93bed973b471cc5907ff5c2b994e0da09615630ce44",
+      "v_audit_mps": 7.271504425026801,
+      "v_support_mps": 7.771504425026801,
+      "source_reference_sha256": "28307bd8a899b4a18c616b38b396c4800e544427d5238d9f38647ef16b285d7f",
+      "target_reference_sha256": "1cd0838de793a3e052ba9c860cd2ec936dfa8d829d6df89e4e053b3847864840",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 124.78976991542345,
+        "source_total_length_m": 173.0363839225642,
+        "target_total_length_m": 173.047577827044,
+        "source_current_arc_m": 29.009618876441362,
+        "target_current_arc_m": 29.02357985557319,
+        "source_remaining_margin_m": 19.2369951306994,
+        "target_remaining_margin_m": 19.234228056047357,
+        "source_components": [
+          {
+            "edge_id": "63486",
+            "roadblock_id": "65717",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 45.76325451441849,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69661",
+            "roadblock_id": "60259",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 49.658582048426396,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67597",
+            "roadblock_id": "47568",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 14.776413330301763,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69546",
+            "roadblock_id": "66669",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.40931554805184,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67720",
+            "roadblock_id": "65675",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.728690318675365,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69050",
+            "roadblock_id": "66173",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.700128162690437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "63488",
+            "roadblock_id": "65717",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 45.81451208915041,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69529",
+            "roadblock_id": "60259",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 49.592550035694934,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67705",
+            "roadblock_id": "47568",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 14.819797833039376,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70221",
+            "roadblock_id": "66669",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.429437983814104,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67832",
+            "roadblock_id": "65675",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.70017306224141,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69959",
+            "roadblock_id": "66173",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.691106823103578,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "ae9d298b2e579d195ff3c154eeef6129e12c18d91b7af9186858e0426ddc44dd",
+      "predicate_result_canonical_sha256": "e8aeddee8f7f93b67f7636f78f9fd7b70dd49f62eb39fc6ccde716fe415c4ca6",
+      "closure_canonical_sha256": "e6e26a0f144aa92d47cfffd15405b705ed8de69e5f0ca611160c1855de0b5353"
+    },
+    {
+      "census_index": 59,
+      "frame_index": 59,
+      "scenario_token": "3101d924be915d92",
+      "log_id": "2021.08.23.19.12.30_veh-45_01983_02145",
+      "audit_rank_sha256": "0008dc67fb720d6f0bbe1afefe9d2b4baf6067fbd9141c084926296f6d5c13b0",
+      "input_record_canonical_sha256": "9ca5ee9e7403d458d7d9461ccb35368cbc12732aaf620b4df7dd59cf10e4b581",
+      "v_audit_mps": 15.197354873541453,
+      "v_support_mps": 15.957222617218527,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 254.12411735205274,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 13.628902658696937,
+        "target_current_arc_m": 13.74166134098962,
+        "source_remaining_margin_m": 14.316119865611427,
+        "target_remaining_margin_m": 6.423394710708806,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "5b5a762399a95b606ad2259f71d22f71ed8f6e6d471742863919e0ae0588e63d",
+      "predicate_result_canonical_sha256": "8685898a004052e78afea4089bfb4964274b3b6e6b06e8fb7093e1c258c8c915",
+      "closure_canonical_sha256": "609273ee4e49402e2703056b95ebf61463c099c2979e34da9d08503c62f951fb"
+    },
+    {
+      "census_index": 66,
+      "frame_index": 66,
+      "scenario_token": "b2a0220ba349567d",
+      "log_id": "2021.06.14.18.42.45_veh-12_03445_03902",
+      "audit_rank_sha256": "0009b1af0f068b17a4319e51599b58453440488841456490796355b787145653",
+      "input_record_canonical_sha256": "106d1fc3a89b59d6514bc1b74e274fa424fc29b6353321e8d4554894cda0baaa",
+      "v_audit_mps": 10.778105621281405,
+      "v_support_mps": 11.317010902345475,
+      "source_reference_sha256": "1cb3e87c6048060fbef9e053b9df8866076eb0d7cab0afa1a59f89853c48150b",
+      "target_reference_sha256": "695979081c68b401d14904d80d5363ac05be8197ffada9682a25a8afab4839d6",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 180.8087722570585,
+        "source_total_length_m": 255.29569094296875,
+        "target_total_length_m": 255.30864424722603,
+        "source_current_arc_m": 13.599590901746078,
+        "target_current_arc_m": 13.562656243005042,
+        "source_remaining_margin_m": 60.88732778416417,
+        "target_remaining_margin_m": 60.93721574716247,
+        "source_components": [
+          {
+            "edge_id": "67720",
+            "roadblock_id": "65675",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.728690318675365,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69050",
+            "roadblock_id": "66173",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.700128162690437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67575",
+            "roadblock_id": "65631",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 2.306228093573027,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69648",
+            "roadblock_id": "66738",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 41.04853018552402,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67804",
+            "roadblock_id": "65731",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.52893296862005,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69665",
+            "roadblock_id": "66692",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 19.414195971441966,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67215",
+            "roadblock_id": "65629",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.043628585096634,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69799",
+            "roadblock_id": "67030",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.95152131025042,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63296",
+            "roadblock_id": "65487",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 2.5138646752076115,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70427",
+            "roadblock_id": "60182",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 81.05997067189008,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "67832",
+            "roadblock_id": "65675",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.70017306224141,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69959",
+            "roadblock_id": "66173",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.691106823103578,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67787",
+            "roadblock_id": "65631",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 2.3122963399686736,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70564",
+            "roadblock_id": "66738",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 41.061869140575446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67833",
+            "roadblock_id": "65731",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.54030261136913,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69091",
+            "roadblock_id": "66692",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 19.40243360792778,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67309",
+            "roadblock_id": "65629",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.025553415044477,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69900",
+            "roadblock_id": "67030",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.971788043042665,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "63295",
+            "roadblock_id": "65487",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 2.507593937559162,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69312",
+            "roadblock_id": "60182",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 81.09552726639355,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "e465e3f1c24dd39387d9765ca64c90381fdd67e2659ee2bd85603dad74c95c9e",
+      "predicate_result_canonical_sha256": "e874994a67c96ad0238b3ef720d58abac17dc4c382ac505f8b047c785ee93d5b",
+      "closure_canonical_sha256": "5a97fc6a5a361dbe41cb94cfd7f28713490646743afabe6a810552d51e961d1d"
+    },
+    {
+      "census_index": 86,
+      "frame_index": 86,
+      "scenario_token": "ffe88e950f7c571c",
+      "log_id": "2021.07.16.18.19.22_veh-35_00440_00858",
+      "audit_rank_sha256": "000dbcb1a46123892b15c2e4027ba3598094930276bbbf89a414df19e42aa645",
+      "input_record_canonical_sha256": "2209241348676a9a858582ea0ca6d0281ba87e278829d50ad4445b36ecfc96ec",
+      "v_audit_mps": 9.626640066937666,
+      "v_support_mps": 10.126640066937666,
+      "source_reference_sha256": "c9d2df12a94b8fb9038b02d06277f1318fc60ef809c250811fa6dcc04f66657e",
+      "target_reference_sha256": "77f9efda3d94f17a33d8397f23d24a2045a605cf1fdd5876431a4bd69a7391fa",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 162.00091305761512,
+        "source_total_length_m": 216.39114220166124,
+        "target_total_length_m": 216.42174330758814,
+        "source_current_arc_m": 44.43902123553595,
+        "target_current_arc_m": 44.4672888280735,
+        "source_remaining_margin_m": 9.951207908510156,
+        "target_remaining_margin_m": 9.95354142189953,
+        "source_components": [
+          {
+            "edge_id": "63486",
+            "roadblock_id": "65717",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 45.76325451441849,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69661",
+            "roadblock_id": "60259",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 49.658582048426396,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67597",
+            "roadblock_id": "47568",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 14.776413330301763,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69546",
+            "roadblock_id": "66669",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.40931554805184,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67720",
+            "roadblock_id": "65675",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.728690318675365,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69050",
+            "roadblock_id": "66173",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.700128162690437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67575",
+            "roadblock_id": "65631",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 2.306228093573027,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69648",
+            "roadblock_id": "66738",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 41.04853018552402,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "63488",
+            "roadblock_id": "65717",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 45.81451208915041,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69529",
+            "roadblock_id": "60259",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 49.592550035694934,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67705",
+            "roadblock_id": "47568",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 14.819797833039376,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70221",
+            "roadblock_id": "66669",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.429437983814104,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67832",
+            "roadblock_id": "65675",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 17.70017306224141,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69959",
+            "roadblock_id": "66173",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.691106823103578,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "67787",
+            "roadblock_id": "65631",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 2.3122963399686736,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70564",
+            "roadblock_id": "66738",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 41.061869140575446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "e2ffba8ef0ebb9b3ae4aa446d3124acb5f2d4885454190b500eab8e2002f1b7a",
+      "predicate_result_canonical_sha256": "6bd1f7682c515ec8b156d65d76e8b727d86c81176efbec19b19b6b6c05952eb4",
+      "closure_canonical_sha256": "d394ac47a7cd3577f6faab3837a559057d3aae8b67fa48f63c8a9c4cfb655150"
+    },
+    {
+      "census_index": 91,
+      "frame_index": 91,
+      "scenario_token": "7bc9ccd5b6105b0b",
+      "log_id": "2021.08.27.13.08.25_veh-42_00112_00352",
+      "audit_rank_sha256": "000e4ac140b28c0cd1cdc2f0d5bb675a99a695d3f89413f0d01109dc844265ac",
+      "input_record_canonical_sha256": "610771ded6d9e78e8de8baee45458beaaf07c3a3be242bc16b75d5672fea310d",
+      "v_audit_mps": 11.138643154681187,
+      "v_support_mps": 11.695575312415247,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 186.7900899361609,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 58.28609007108586,
+        "target_current_arc_m": 58.4643023123382,
+        "source_remaining_margin_m": 36.992959869114316,
+        "target_remaining_margin_m": 29.034781155252034,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "21216b66d31ddd01639359486978d7bd4ae895dfaa6d71c7b98cde1078f5a607",
+      "predicate_result_canonical_sha256": "af64c17122a7937638a75adb8b6a1bc6abcd2a218759bdb84519b48897690dcc",
+      "closure_canonical_sha256": "f1fad126b79e26d2f09c419c7133f29b744b736957b10369e716581be34a5254"
+    },
+    {
+      "census_index": 106,
+      "frame_index": 106,
+      "scenario_token": "ead5612b37ac591b",
+      "log_id": "2021.08.20.13.00.37_veh-08_01079_01449",
+      "audit_rank_sha256": "0010c95512f521e638653d552836cbb8451cca6db026dc83547a550483e9678a",
+      "input_record_canonical_sha256": "43a404b11f0aa221d7677c6ede91e19079bf013cca922049014ee4fc1aca86bb",
+      "v_audit_mps": 10.144576843462044,
+      "v_support_mps": 10.651805685635146,
+      "source_reference_sha256": "8891bb35c6a7fdcab396fa2743ad3d9ed1ed6fc74f85a668ea9204c7c063077d",
+      "target_reference_sha256": "26457bed83877779d9a7dd0a65a3d8a2403ce906e9c6ff3e6f476e4261763741",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 170.29852983303533,
+        "source_total_length_m": 178.15730390569632,
+        "target_total_length_m": 178.9652132702016,
+        "source_current_arc_m": 6.953690577683054,
+        "target_current_arc_m": 7.678370377990619,
+        "source_remaining_margin_m": 0.9050834949779301,
+        "target_remaining_margin_m": 0.9883130591756242,
+        "source_components": [
+          {
+            "edge_id": "19819",
+            "roadblock_id": "19085",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 28.409837365277774,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20075",
+            "roadblock_id": "19315",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.15895883571496,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18250",
+            "roadblock_id": "19028",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.09781428902525,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19989",
+            "roadblock_id": "19380",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.726298954814066,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19811",
+            "roadblock_id": "19029",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 9.178332267872522,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20390",
+            "roadblock_id": "19720",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 26.586062192991644,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19838",
+            "roadblock_id": "19085",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.194910413679352,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20074",
+            "roadblock_id": "19315",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.149612915789994,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18249",
+            "roadblock_id": "19028",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.96562458110539,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19988",
+            "roadblock_id": "19380",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.878635669034846,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19817",
+            "roadblock_id": "19029",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 3.9260892180790647,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20394",
+            "roadblock_id": "19720",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 31.850340472512936,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "0d9891869503230d46fca27b6cd730be55496d07e77317248d9631ed39e66656",
+      "predicate_result_canonical_sha256": "cf2efd083e8948df59639029b353db4bc6cc67d35486bea68be9d92f5514890c",
+      "closure_canonical_sha256": "c841424480865d383a6b546427acaa19d99e1f529bcdfdcc9cf5ab2ae26d8b7c"
+    },
+    {
+      "census_index": 113,
+      "frame_index": 113,
+      "scenario_token": "4d6cfa152a535552",
+      "log_id": "2021.10.01.12.54.53_veh-44_00858_01311",
+      "audit_rank_sha256": "0011b3e2ed8898fb5f62ffbe4a6e561bc4b4b2210df2728ca920ade571c3e195",
+      "input_record_canonical_sha256": "297dd48c070a0ad5a28e15e5ee03fb118c5dd6db6ce697d02d0fe5bad4490709",
+      "v_audit_mps": 9.754449323536756,
+      "v_support_mps": 10.254449323536756,
+      "source_reference_sha256": "7bffa6aeb81c0fcd57e0979b04baaa14bc1c38f4f61191248839e55379449607",
+      "target_reference_sha256": "6abdbe2eff2d7fa6fdb1a30c40fa1d383e7a2f0878f1a906f2f9a1a5aa23336d",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 164.02029931188073,
+        "source_total_length_m": 184.53469079911378,
+        "target_total_length_m": 185.011474042814,
+        "source_current_arc_m": 7.034941604599066,
+        "target_current_arc_m": 7.344358948919648,
+        "source_remaining_margin_m": 13.479449882633986,
+        "target_remaining_margin_m": 13.646815782013618,
+        "source_components": [
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20121",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 35.01266046558885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18514",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.839114079400336,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19949",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.05097380386642,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19835",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 62.88059839610438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20229",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.42332186335746,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18513",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.40744603433657,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20230",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.48456584795533,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19739",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 63.340497367712175,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "372afee2e4518b7caabc622f09fc526aeb8b5285ef2290e3b4cf003741e75634",
+      "predicate_result_canonical_sha256": "bea3104370e28c98a867f67fc98ce760ff02f10d7d9c41b968f7aa0bc3e722e7",
+      "closure_canonical_sha256": "6f44f5437b5076222bf202ffcfea110ddd316d45a03da555b6490101534deec8"
+    },
+    {
+      "census_index": 172,
+      "frame_index": 172,
+      "scenario_token": "74801411f6d15a0d",
+      "log_id": "2021.08.30.13.47.20_veh-08_00359_00489",
+      "audit_rank_sha256": "0020ceaec9173b4f33338e286ae2d6a0cc04f883e5be5c213e2390edabe95c33",
+      "input_record_canonical_sha256": "cbbcaa4a416573790cd806a5fac0b016a050cddaf014b7c00fd822edbe610add",
+      "v_audit_mps": 14.134407283842949,
+      "v_support_mps": 14.841127648035096,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 236.48981683895454,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 19.71251136818682,
+        "target_current_arc_m": 19.850758991945796,
+        "source_remaining_margin_m": 25.866811669219715,
+        "target_remaining_margin_m": 17.948597572850815,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "273d83c8e73e91fb54339bd0f3ad070935c75945ac1a7517b7ad3741bc214366",
+      "predicate_result_canonical_sha256": "542debcefa91fda22634d951a22a002d95c443fe1cf78a6fed4e68f1649eec25",
+      "closure_canonical_sha256": "a615241ab52974a694c0f9306842402a0684a27cb401302cd73ae5397f16faa5"
+    },
+    {
+      "census_index": 254,
+      "frame_index": 254,
+      "scenario_token": "d7da06f357e35232",
+      "log_id": "2021.08.19.19.03.27_veh-45_02080_02443",
+      "audit_rank_sha256": "0038b340c25c8a439eca164a79a2968a1a2992a7b85a701f0ae522015778ace5",
+      "input_record_canonical_sha256": "14255ddf13f915263878fec091e19e684d7e845f72dac178c0cb0b16c04daa22",
+      "v_audit_mps": 11.608082869443752,
+      "v_support_mps": 12.188487012915939,
+      "source_reference_sha256": "28e1d820c648f89aa21ee3d2cf8c0ca5961507a72f9eb895aacf610d9acddba8",
+      "target_reference_sha256": "df485b2611c6c2624d1a26f086b64af0851ffad5b9c4f5459c2c2905ca9e6f81",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 194.57809480407184,
+        "source_total_length_m": 218.25020940200866,
+        "target_total_length_m": 218.6445572661018,
+        "source_current_arc_m": 21.850093154950038,
+        "target_current_arc_m": 21.86196336115273,
+        "source_remaining_margin_m": 1.8220214429867951,
+        "target_remaining_margin_m": 2.2044991008772286,
+        "source_components": [
+          {
+            "edge_id": "19936",
+            "roadblock_id": "19218",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 38.9064885669765,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20397",
+            "roadblock_id": "19726",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 26.712561072251454,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18537",
+            "roadblock_id": "19087",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 9.15622996788642,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19990",
+            "roadblock_id": "19382",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.1084153600003,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19937",
+            "roadblock_id": "19218",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 39.00792818698397,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20396",
+            "roadblock_id": "19726",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 26.325101238303034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18538",
+            "roadblock_id": "19087",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 9.73724229531023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20225",
+            "roadblock_id": "19382",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 22.615716710729515,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "87bdc30497b07ba499aa5d32ebbf986d5d9d271a65b348a204855bb723007187",
+      "predicate_result_canonical_sha256": "ec918fa84df0ef0f7ca8713a39f4e66acdd135ac59da451641b089a9c83251c3",
+      "closure_canonical_sha256": "8a6a250427f6a558df179c62c5d619453401af35d9913e127ea3beaa9689f40f"
+    },
+    {
+      "census_index": 272,
+      "frame_index": 272,
+      "scenario_token": "0026d9994bc3508d",
+      "log_id": "2021.09.15.13.26.07_veh-45_00278_00999",
+      "audit_rank_sha256": "003f1970766c8a80a21b9d263778a4821f7177352ebac97847097312350e7bd7",
+      "input_record_canonical_sha256": "9b4c17190da06e37419d19383a1a326879e8ba1e4feab9dc44d691283449b0f0",
+      "v_audit_mps": 11.56026508202203,
+      "v_support_mps": 12.13827833612313,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 193.78479771074547,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 20.687714861601677,
+        "target_current_arc_m": 20.834403564852646,
+        "source_remaining_margin_m": 67.59662730401396,
+        "target_remaining_margin_m": 59.669972128153034,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "0053c596c271565a91a0dfad6313b619706e6bd9444c9fc15c2267c39ea299a4",
+      "predicate_result_canonical_sha256": "c3bd2202649c153ef0dcbd9d3020662b69b650737f75615757a698c8db0d3450",
+      "closure_canonical_sha256": "d2a57ca1845689fbe03599182e67e57dccc51ec13dd87b2e04e784c0b1742864"
+    },
+    {
+      "census_index": 283,
+      "frame_index": 283,
+      "scenario_token": "5d90a793b38650f7",
+      "log_id": "2021.08.19.14.06.23_veh-45_02467_02637",
+      "audit_rank_sha256": "004296639a4c9c744fd784b1c1560eeaf0cd3da03e227a2d89b09e3ae5991fdf",
+      "input_record_canonical_sha256": "b82f0972db46779b96dfa1fdf688f99d59efe078bce1ba1cd919a8cfbb67bad4",
+      "v_audit_mps": 6.048410299342629,
+      "v_support_mps": 6.548410299342629,
+      "source_reference_sha256": "a63e5e39ea357b83273e24d4367d48d4d933ad2c8f9795f777473b9e03ed4525",
+      "target_reference_sha256": "9cd39b424c4453ef8ffae2fdafe6bbf314a5a35850b76f2ad0b4496a2cf3ccbf",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 105.46488272961355,
+        "source_total_length_m": 152.07803953330955,
+        "target_total_length_m": 148.7052223759,
+        "source_current_arc_m": 3.3967451952430667,
+        "target_current_arc_m": 3.9357852182803823,
+        "source_remaining_margin_m": 43.216411608452944,
+        "target_remaining_margin_m": 39.30455442800607,
+        "source_components": [
+          {
+            "edge_id": "18520",
+            "roadblock_id": "18999",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 15.539607164135298,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19952",
+            "roadblock_id": "19337",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 31.7367765884108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19804",
+            "roadblock_id": "19067",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.304083748972474,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20145",
+            "roadblock_id": "19449",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.904035831891637,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18554",
+            "roadblock_id": "19066",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.59353619989983,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18519",
+            "roadblock_id": "18999",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 15.933966352959771,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19951",
+            "roadblock_id": "19337",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 26.779044329190317,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19833",
+            "roadblock_id": "19067",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 24.86299782313878,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20144",
+            "roadblock_id": "19449",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.883849408294363,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18553",
+            "roadblock_id": "19066",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 64.24536446231696,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "fb6b0cf471dbb52916a7edf913c4abc8787c9263c468a634abe1d667b395650f",
+      "predicate_result_canonical_sha256": "9d85fcf721a0bfa5d386fb57087358bba511e977ed79a50bef1dd38b4a6b8543",
+      "closure_canonical_sha256": "b042b979366ce7eff2f5a7d9bb311147eb22ed0875a73521e3f2cc0202331439"
+    },
+    {
+      "census_index": 292,
+      "frame_index": 292,
+      "scenario_token": "7188743b78cb5631",
+      "log_id": "2021.06.09.14.03.17_veh-12_02584_02970",
+      "audit_rank_sha256": "004845a89666d3889deaa000a66bc79f35a75f833b1fde4194e8654a999a8c79",
+      "input_record_canonical_sha256": "f3841fef9df2733de8e8e75c48561831cf31080b96ba8d6a1b759dd91230d460",
+      "v_audit_mps": 8.598138612738433,
+      "v_support_mps": 9.098138612738433,
+      "source_reference_sha256": "812c4dc7825738c17b7aed97979b4c736da2bba711caa2f449d70c70546cf364",
+      "target_reference_sha256": "a789194504aecc742e045166f6715cbc2241866a096cf71f7d4acd9f3ee0b5c4",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 145.75059008126723,
+        "source_total_length_m": 188.97988177861282,
+        "target_total_length_m": 188.97791964833274,
+        "source_current_arc_m": 2.3939116530235545,
+        "target_current_arc_m": 2.3824097185223767,
+        "source_remaining_margin_m": 40.83538004432202,
+        "target_remaining_margin_m": 40.84491984854313,
+        "source_components": [
+          {
+            "edge_id": "63125",
+            "roadblock_id": "65481",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 8.060640998395192,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "70551",
+            "roadblock_id": "60208",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 97.62398164344425,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68529",
+            "roadblock_id": "48680",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 27.37757460837538,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68606",
+            "roadblock_id": "66191",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 55.917684528397984,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "63126",
+            "roadblock_id": "65481",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 8.034881587284053,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69945",
+            "roadblock_id": "60208",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 97.64911396265012,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "68506",
+            "roadblock_id": "48680",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 27.861369165525772,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "69632",
+            "roadblock_id": "66191",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 55.43255493287282,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "dd07eec3fdcd51edf7e1381a86605d4f69d50e4ce5c09f7a15ec1a0a121fd110",
+      "predicate_result_canonical_sha256": "12a7f656e591aa15ef3eaf4befc6562854c42d2dbc76b08d061d64087ea420b8",
+      "closure_canonical_sha256": "c723a25d18838d4780a3409998dde2aff2c680a588e32852b9eae0212faa4f90"
+    },
+    {
+      "census_index": 316,
+      "frame_index": 316,
+      "scenario_token": "a97ff1f8f09c5557",
+      "log_id": "2021.10.01.14.16.29_veh-44_01169_01773",
+      "audit_rank_sha256": "0056a4e8473d68d9e72f1e8b11c10ac56c0cf7cec9a2b5e44d510f330851c49a",
+      "input_record_canonical_sha256": "cf9319e9cb0b0159fcc1f108d658a6d22c9f65dbf72b4f353e76c6f212248c4b",
+      "v_audit_mps": 8.734354457168928,
+      "v_support_mps": 9.234354457168928,
+      "source_reference_sha256": "a96d2232e9c34416fdc1a1f695c32db99a628a67ef7b64d92292373f08114604",
+      "target_reference_sha256": "709f65bae26b05d8d8834431fe818e07ac115ffdc147e0f5c8385867928206cf",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 147.90280042326907,
+        "source_total_length_m": 186.60817087562694,
+        "target_total_length_m": 187.98225176086422,
+        "source_current_arc_m": 29.59290295009686,
+        "target_current_arc_m": 29.803598180512065,
+        "source_remaining_margin_m": 9.112467502261012,
+        "target_remaining_margin_m": 10.275853157083077,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20211",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.490312386579166,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20228",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.668039996636473,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "23ec25901b510a7e2f3b43cdc86b45760f24ec37d2e648ff5bee182a3b80a9ee",
+      "predicate_result_canonical_sha256": "8475bfdabd143c2c40d91a9ab9df81966da7146b259b3fc4306fc66486d48707",
+      "closure_canonical_sha256": "b1ea7f1926f9028e9f2a7f4cafcc8e0af42b205efb657c4412d559969fb7110d"
+    },
+    {
+      "census_index": 337,
+      "frame_index": 337,
+      "scenario_token": "13de53e314f25de2",
+      "log_id": "2021.08.30.13.08.03_veh-08_00207_00494",
+      "audit_rank_sha256": "00647705ff7a647cb2b1e0200458d8a8f106d884dbb756be35238a95bd80c945",
+      "input_record_canonical_sha256": "06c3fe110db1d9a57b441a1a48d060e8592fa4b7283e30920d3367b333bb8f96",
+      "v_audit_mps": 4.5325849892122765,
+      "v_support_mps": 5.0325849892122765,
+      "source_reference_sha256": "123886b61a8fc39cfd33edffe00deaef82699ae018fa4eac0a8a8d488057479b",
+      "target_reference_sha256": "eb6ff511e732aaafcc17e3591f76f014de892f098c225c96da76382472e52bc0",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 81.51484282955397,
+        "source_total_length_m": 157.12434796289702,
+        "target_total_length_m": 154.5443580584827,
+        "source_current_arc_m": 12.397551341407608,
+        "target_current_arc_m": 9.152673181621642,
+        "source_remaining_margin_m": 63.21195379193543,
+        "target_remaining_margin_m": 63.876842047307065,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18607",
+            "roadblock_id": "19412",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.975490887431665,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18265",
+            "roadblock_id": "19095",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.221621407933702,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20114",
+            "roadblock_id": "19423",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.60118531291682,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18317",
+            "roadblock_id": "19099",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 63.53034250722943,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18607",
+            "roadblock_id": "19412",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.975490887431665,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18265",
+            "roadblock_id": "19095",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.221621407933702,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20114",
+            "roadblock_id": "19423",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.60118531291682,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18317",
+            "roadblock_id": "19099",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 63.53034250722943,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "7c9de0053f7e4b6e3a58d2ae07a133fb087eedbd6d480e33086ccc46ede1cd6e",
+      "predicate_result_canonical_sha256": "b57e687ae448278869c7a05c3f6565cc95b456a0b6b9da6d306ef29c7dc05d74",
+      "closure_canonical_sha256": "94eccde0c8bc51c39ef0bf51eddab67f8f45b51a71b92af065cc6295e84690cc"
+    },
+    {
+      "census_index": 342,
+      "frame_index": 342,
+      "scenario_token": "ac6fec0006ae58cf",
+      "log_id": "2021.08.30.14.29.08_veh-45_00905_01077",
+      "audit_rank_sha256": "00680f9c4721e172386b77e34b37bf0e446057e55b6b497d82c74341eda6faab",
+      "input_record_canonical_sha256": "1708b480c7ad883ac7ffcbf2cf31a27518cd33e9be81079e09540f121b08aac9",
+      "v_audit_mps": 3.9630579223162976,
+      "v_support_mps": 4.463057922316297,
+      "source_reference_sha256": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c",
+      "target_reference_sha256": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 72.5163151725975,
+        "source_total_length_m": 136.52029066588196,
+        "target_total_length_m": 139.10028057029638,
+        "source_current_arc_m": 2.6944400703818006,
+        "target_current_arc_m": 5.936491555823555,
+        "source_remaining_margin_m": 61.309535422902655,
+        "target_remaining_margin_m": 60.647473841875325,
+        "source_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "7f2f82f3b41f82eec41938e6a2f4dc64ff6841041c443461198c4ebf45bb211b",
+      "predicate_result_canonical_sha256": "ea7c51b8beb8e59b2bde033a8ffafff88a7361a94fdacb477eb56c30bf61aa01",
+      "closure_canonical_sha256": "e144ca7d7c58fc331658f0479283fa6014ca1811c625bb67254db237e020bf70"
+    },
+    {
+      "census_index": 364,
+      "frame_index": 364,
+      "scenario_token": "cf087ec343c555bb",
+      "log_id": "2021.09.20.18.15.46_veh-08_00796_01182",
+      "audit_rank_sha256": "007ec6275e793dcd02ce80ba1ea0e8d8691a9c50a2bd42a869a38a990e9e043c",
+      "input_record_canonical_sha256": "dc14955e3a5b3a53a692993d969c9c2fb2cc08f3dbc80d7c03af5b4a3b90bf58",
+      "v_audit_mps": 11.073987480975743,
+      "v_support_mps": 11.62768685502453,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 185.7174523093876,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 1.168318783691841,
+        "target_current_arc_m": 1.3347839605372378,
+        "source_remaining_margin_m": 95.18336878328162,
+        "target_remaining_margin_m": 87.23693713382627,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "7fddd66d55d2bc813c803d580d4845f6fa3b5198dd7d16b3743ed6709f1b6a3f",
+      "predicate_result_canonical_sha256": "0db371a977c7ee9ccca43e2b30e44db8dd71038b750210c5e583d91d93a16f4b",
+      "closure_canonical_sha256": "e9a4df6da2efdb1e0abbe05130d3a1aace483f9a53a818e43c151f4655a8c070"
+    },
+    {
+      "census_index": 378,
+      "frame_index": 378,
+      "scenario_token": "57e7cbc7cc465554",
+      "log_id": "2021.09.17.12.58.10_veh-45_01935_02062",
+      "audit_rank_sha256": "008cb56e9bd9f1ed7f88fc007e890bf58b64d2c8a8f387583e652fe0127156e2",
+      "input_record_canonical_sha256": "3c3f6034a809943fec0be0459642c5f2f294e4f2d2af97b52c1ab3dd20112ad2",
+      "v_audit_mps": 9.331809,
+      "v_support_mps": 9.831809,
+      "source_reference_sha256": "307dc3a083b881ba581759049d8a097f2b1f4d688f207f8bb35f6c46ac4953c0",
+      "target_reference_sha256": "dfc4bfea928fa1ee8098e53d4d3b7fc3589910c58b1286ea9cbbd1bd791a1b70",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 157.3425822,
+        "source_total_length_m": 205.81873518464806,
+        "target_total_length_m": 206.00632791010085,
+        "source_current_arc_m": 40.70129638128041,
+        "target_current_arc_m": 40.7391365231713,
+        "source_remaining_margin_m": 7.7748566033676525,
+        "target_remaining_margin_m": 7.92460918692953,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20142",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.850456497587057,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20143",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.888335354297446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "7bb9b572b5e1582730c7727258931f3fc447f5a7b1394aee9e018f6d115d033c",
+      "predicate_result_canonical_sha256": "d9ff90c2e892acb0e22dc267a024f638869f5d9ae04ab8a271c1ab6eb4f387de",
+      "closure_canonical_sha256": "6099f1d1079791c4fd2026ca044bec4f663ce6a26aba4a485f30d05399c65a64"
+    },
+    {
+      "census_index": 406,
+      "frame_index": 406,
+      "scenario_token": "f7ab8008295052c2",
+      "log_id": "2021.08.25.14.12.46_veh-08_01978_02109",
+      "audit_rank_sha256": "00c399c4ef93f9a68c0da3a1dd1c0b79df25489115aca1011cf0017105fd0b76",
+      "input_record_canonical_sha256": "4d2dee85143c7cd20844cbff11dae98582d1e640df9ea4f5b43def628bdc73cc",
+      "v_audit_mps": 7.912059745631789,
+      "v_support_mps": 8.41205974563179,
+      "source_reference_sha256": "22a8635cdc618c256b4165742a2af8e4858a83a9cbe6623f3a26f2215a4ad3c7",
+      "target_reference_sha256": "4533b1b5c8a328643a0709e6659f117ea65bbfcea3541a60a46ab8b4a92534a3",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 134.91054398098228,
+        "source_total_length_m": 230.8235346172629,
+        "target_total_length_m": 229.44740771026878,
+        "source_current_arc_m": 94.1401664225449,
+        "target_current_arc_m": 94.21946931781197,
+        "source_remaining_margin_m": 1.7728242137357313,
+        "target_remaining_margin_m": 0.31739441147450975,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20142",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.850456497587057,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18546",
+            "roadblock_id": "19001",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.004799432614774,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20143",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.888335354297446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18547",
+            "roadblock_id": "19001",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 23.44107980016799,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "41980d868010a8d61c24e51eb531e01bc917e54bfad7f6fcbc532afe5c1dd916",
+      "predicate_result_canonical_sha256": "2500bab77364831de099ad5717119755e08984e2c015af2ae4fd74705577a65c",
+      "closure_canonical_sha256": "52648defda9f03f2b3913dc27fb134fbe3acf3136002bc3dcde1923b979fa66b"
+    },
+    {
+      "census_index": 408,
+      "frame_index": 408,
+      "scenario_token": "6b35b01f73435064",
+      "log_id": "2021.08.27.14.14.40_veh-45_01590_01703",
+      "audit_rank_sha256": "00c542d4f8e7733dc8932312d70197a8d0922999c58a4573e684d3203e0ed8d7",
+      "input_record_canonical_sha256": "223b87511e0533022a7c622f8f6b2388512197d5b9ba4b7ae30736c31aeb2160",
+      "v_audit_mps": 7.974376181946472,
+      "v_support_mps": 8.474376181946472,
+      "source_reference_sha256": "eaadb9ee09a38fe23ffdef1700bfa5d3651a7404c167c95c85c91c4db81fa17c",
+      "target_reference_sha256": "3c9f2bd4d94ab5e32dfa64f9ac85f279fb816d627e3585872ab461684c3e32d1",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 135.89514367475425,
+        "source_total_length_m": 188.96827868706097,
+        "target_total_length_m": 189.1179925558034,
+        "source_current_arc_m": 4.5242027486254335,
+        "target_current_arc_m": 4.56126571033722,
+        "source_remaining_margin_m": 48.54893226368128,
+        "target_remaining_margin_m": 48.661583170711936,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "74667aa0397a4888edbc299e8f0465089de63fa7167e50c7b434d231d0d21e1e",
+      "predicate_result_canonical_sha256": "d27cec85ab0dc8acbf356f9fa65e6f14a859a179d1653d32ea044104716e487b",
+      "closure_canonical_sha256": "b59710ee03f6704179e7a7ddd5fe7c324443e133206fdfd4ff00a39653d8950d"
+    },
+    {
+      "census_index": 412,
+      "frame_index": 412,
+      "scenario_token": "4262009f322f5671",
+      "log_id": "2021.08.19.17.42.11_veh-08_00726_01062",
+      "audit_rank_sha256": "00cb7eafa5f8258c57264d6576e57fb1ad7a0708dc07c2c0de978f4982bcdd83",
+      "input_record_canonical_sha256": "d2f9b2519e2f48653e1e4a932229587ac883f79a75fb9100bb7ab58f8a10f67e",
+      "v_audit_mps": 7.813886417402944,
+      "v_support_mps": 8.313886417402944,
+      "source_reference_sha256": "d8001ab2d482199ecf2e1218f304c3db10f6bde5296ee9e474eb4981fa78131c",
+      "target_reference_sha256": "978a4b24c57c4cc73b45743fbe176296fa325f0c9ac7d3f03157fa32a1df592e",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 133.35940539496653,
+        "source_total_length_m": 157.4110056259125,
+        "target_total_length_m": 154.8310157214981,
+        "source_current_arc_m": 9.209988075660462,
+        "target_current_arc_m": 5.9613194642223135,
+        "source_remaining_margin_m": 14.841612155285532,
+        "target_remaining_margin_m": 15.510290862309262,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20185",
+            "roadblock_id": "19493",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 18.310725055616153,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20185",
+            "roadblock_id": "19493",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 18.310725055616153,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "509a9deb6b9ebc4e9e6c327510ba296ade84317f3db063cc61fcc2980183424d",
+      "predicate_result_canonical_sha256": "dc714c3b14d4a5b5475dbdb4318b3f242ca6d5f00d4d50dd177694ac2d1896e9",
+      "closure_canonical_sha256": "8be5e3d0e3396da5b2f372395c78b4e0566b06228a4fc7fa495fbd31262dc768"
+    },
+    {
+      "census_index": 414,
+      "frame_index": 414,
+      "scenario_token": "1ec5332f171f5872",
+      "log_id": "2021.09.21.16.42.24_veh-08_02115_02448",
+      "audit_rank_sha256": "00cd32b30b3113a86d623e5decf7de141ac0e96c85e3b7eedf39a19a79b8c8fe",
+      "input_record_canonical_sha256": "0c50ebad87c82f47a1be1d67f47b44c771f327bebd46b56702b4d468640cc6e8",
+      "v_audit_mps": 8.947916286329255,
+      "v_support_mps": 9.447916286329255,
+      "source_reference_sha256": "a96d2232e9c34416fdc1a1f695c32db99a628a67ef7b64d92292373f08114604",
+      "target_reference_sha256": "709f65bae26b05d8d8834431fe818e07ac115ffdc147e0f5c8385867928206cf",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 151.27707732400222,
+        "source_total_length_m": 186.60817087562694,
+        "target_total_length_m": 187.98225176086422,
+        "source_current_arc_m": 21.00119565107742,
+        "target_current_arc_m": 21.212772313423393,
+        "source_remaining_margin_m": 14.329897900547309,
+        "target_remaining_margin_m": 15.492402123438609,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20211",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.490312386579166,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20228",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.668039996636473,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "78690a78af14a5a2e2fc117f08f68efcbea2cfe3ac2297cd59abbaea45cc1934",
+      "predicate_result_canonical_sha256": "6cd3f357b00697febbffae4b81ab7670ceb785a00c260e1191ca61b11ba5618d",
+      "closure_canonical_sha256": "8bd8ca55fba53b9f64f873c260e89a2433600bfab60a0b6bdae241fe23e31c3d"
+    },
+    {
+      "census_index": 424,
+      "frame_index": 424,
+      "scenario_token": "c5a22460be1c59c2",
+      "log_id": "2021.08.20.16.54.30_veh-08_02083_02192",
+      "audit_rank_sha256": "00da523b637d9c7916b95b118d04eb77c6d7743f81b4778347f91c4f22c4db5c",
+      "input_record_canonical_sha256": "8962564108aa7a60b79e6954a2d8915d41a09491bef3b4926a2be370a59bbe04",
+      "v_audit_mps": 11.828635645846314,
+      "v_support_mps": 12.42006742813863,
+      "source_reference_sha256": "89d5ed2193534109ab6069eb4012938e02f3ebf5a52d3f576df4cb8554f82f38",
+      "target_reference_sha256": "7af4d150c62c804eb95b7fe89bd7a73e458f4db454f9b37be897d50bc6bea354",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 198.23706536459036,
+        "source_total_length_m": 211.5894001847018,
+        "target_total_length_m": 211.5734818498277,
+        "source_current_arc_m": 8.53774751250659,
+        "target_current_arc_m": 8.512843818910524,
+        "source_remaining_margin_m": 4.814587307604825,
+        "target_remaining_margin_m": 4.823572666326811,
+        "source_components": [
+          {
+            "edge_id": "18862",
+            "roadblock_id": "19216",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.588638208871394,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20391",
+            "roadblock_id": "19723",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 31.86470746547494,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19925",
+            "roadblock_id": "19088",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.49214628517497,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19946",
+            "roadblock_id": "19712",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.643908225180425,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18861",
+            "roadblock_id": "19216",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.57879373595335,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20392",
+            "roadblock_id": "19723",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 37.38213873489513,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19822",
+            "roadblock_id": "19088",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 119.96282064864887,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19945",
+            "roadblock_id": "19712",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.649728730330295,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "d2f4dbc0fe9b2402c0d3bb37816f749a41f4e0a1372b30a0677a613b26cab494",
+      "predicate_result_canonical_sha256": "3f99a5f8f91af72749f244e83f9a873cb5757f1ff1f322cc70e690ef3516ce76",
+      "closure_canonical_sha256": "aba507447c687e39c346e5f4b16c6da73a48d0a47e05dbcadeaf4bade8e18533"
+    },
+    {
+      "census_index": 442,
+      "frame_index": 442,
+      "scenario_token": "f34bd802dc3a546f",
+      "log_id": "2021.08.17.18.13.38_veh-45_00410_00618",
+      "audit_rank_sha256": "011846f832a37c62cc2f021a1a00ad7d51c1ba6c42ee8fa3e7a186a666581a22",
+      "input_record_canonical_sha256": "88bab6e18b47aa598357f0b5ae38ce0dc9aabe8ee9111ce92ea6770b6895d4ee",
+      "v_audit_mps": 7.080263,
+      "v_support_mps": 7.580263,
+      "source_reference_sha256": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+      "target_reference_sha256": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 121.76815540000001,
+        "source_total_length_m": 139.10028057029638,
+        "target_total_length_m": 136.52029066588196,
+        "source_current_arc_m": 10.106731547771707,
+        "target_current_arc_m": 6.858587712391703,
+        "source_remaining_margin_m": 7.225393622524649,
+        "target_remaining_margin_m": 7.893547553490237,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "6422cca23c5f97494d81d38f7644c81f44dfa154220a6eae9778f9180e733551",
+      "predicate_result_canonical_sha256": "860c286bc8e224c7e421bd96eb99156af6c6c560712b7655f912541a8a7eb280",
+      "closure_canonical_sha256": "7071a43d5f44c004faffa265140e2d3cafb70b8c97f9a376657f23381904f5de"
+    },
+    {
+      "census_index": 472,
+      "frame_index": 472,
+      "scenario_token": "cc1abd3989065d8d",
+      "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+      "audit_rank_sha256": "0186d26365f65db5e36f2d36fcfcbc08b5226906b743645307cac70055fbf08d",
+      "input_record_canonical_sha256": "cc9f260d111a18cdd2413f6021cc12ee36258f14b588c97906b5e84ce23fbe5b",
+      "v_audit_mps": 5.375734839707134,
+      "v_support_mps": 5.875734839707134,
+      "source_reference_sha256": "7ee80814fddabd9c69041d6e315cad32b0cad6ed0eb32a3dbc115790e25a77db",
+      "target_reference_sha256": "9291ba9152e484d2089faa02e6344e5a3857d4d6e6af7134c20e5dbe31c8a8b3",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 94.83661046737272,
+        "source_total_length_m": 144.85682682147325,
+        "target_total_length_m": 145.62660883141172,
+        "source_current_arc_m": 41.263685668650176,
+        "target_current_arc_m": 41.47047997957477,
+        "source_remaining_margin_m": 8.756530685450358,
+        "target_remaining_margin_m": 9.319518384464217,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20211",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.490312386579166,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20228",
+            "roadblock_id": "19519",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.668039996636473,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "8beca12af7f97eb421137822b99475ffc6d3cfbe8267b31d3664075b1a4280dd",
+      "predicate_result_canonical_sha256": "acf1add788f1175091ca516f7c6fc4c33cb5e0b2e6205605bd1f1205a45be85e",
+      "closure_canonical_sha256": "6fb83ad3f6676ef8259b4c2b65ddbb9d5d4328f5d64414eb0388daff73165322"
+    },
+    {
+      "census_index": 474,
+      "frame_index": 474,
+      "scenario_token": "0b210f7b63065e70",
+      "log_id": "2021.10.01.14.16.29_veh-44_00675_00866",
+      "audit_rank_sha256": "0187f8b4041a57c0e69f578f7fe8477d45da0dd97df54b4a209d9c87988675f1",
+      "input_record_canonical_sha256": "604b21eaa065df5d3dba5db9488d08227de365235ddee100c6731d0750da4262",
+      "v_audit_mps": 9.379257859261184,
+      "v_support_mps": 9.879257859261184,
+      "source_reference_sha256": "7bffa6aeb81c0fcd57e0979b04baaa14bc1c38f4f61191248839e55379449607",
+      "target_reference_sha256": "6abdbe2eff2d7fa6fdb1a30c40fa1d383e7a2f0878f1a906f2f9a1a5aa23336d",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 158.09227417632673,
+        "source_total_length_m": 184.53469079911378,
+        "target_total_length_m": 185.011474042814,
+        "source_current_arc_m": 14.257189734801681,
+        "target_current_arc_m": 14.566582789822492,
+        "source_remaining_margin_m": 12.18522688798538,
+        "target_remaining_margin_m": 12.352617076664785,
+        "source_components": [
+          {
+            "edge_id": "19810",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 41.75134405415383,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20121",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 35.01266046558885,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18514",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 20.839114079400336,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19949",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.05097380386642,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19835",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 62.88059839610438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19738",
+            "roadblock_id": "19084",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 42.35564292945241,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20229",
+            "roadblock_id": "19428",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 34.42332186335746,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18513",
+            "roadblock_id": "19025",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 21.40744603433657,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20230",
+            "roadblock_id": "19334",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 23.48456584795533,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19739",
+            "roadblock_id": "19082",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 63.340497367712175,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "67db7048cc0e5a4e2ad2d9e5fe3bc9da7840fda45d508890f58971d89dd4915a",
+      "predicate_result_canonical_sha256": "d12e9a1b2d5348ca4e4a6efdadf3f8652f8dba357289be2c3cc9f3e396101643",
+      "closure_canonical_sha256": "563b114129ff5352c4fa2bc7a4e2de0460bcecaf4f20ea50114bb42aa06fa329"
+    },
+    {
+      "census_index": 489,
+      "frame_index": 489,
+      "scenario_token": "7c3ea3125f935c8e",
+      "log_id": "2021.08.25.18.07.15_veh-45_01930_02011",
+      "audit_rank_sha256": "01f3771da8708b634ae2e44b8a5db0547073d77b7a36c30ffdedf29e803e9d49",
+      "input_record_canonical_sha256": "772aa4eabbb237e6f7c3a09b7e37af415618e53ebfdfedbd44a862821174d73e",
+      "v_audit_mps": 9.281108760278483,
+      "v_support_mps": 9.781108760278483,
+      "source_reference_sha256": "624ba4563578c56f62101edb7f2b0a6076dd15e048cddee576cc40612065729f",
+      "target_reference_sha256": "245ffb88112f46f2c84a342b950eb62ee12cae8bfb1663d75e346f47eba5dbdd",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 156.54151841240005,
+        "source_total_length_m": 183.25290053945398,
+        "target_total_length_m": 183.26762639368062,
+        "source_current_arc_m": 11.960826409924234,
+        "target_current_arc_m": 11.949967630503002,
+        "source_remaining_margin_m": 14.750555717129686,
+        "target_remaining_margin_m": 14.776140350777553,
+        "source_components": [
+          {
+            "edge_id": "19924",
+            "roadblock_id": "19089",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.178955596241934,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19948",
+            "roadblock_id": "19332",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.659350556299515,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18271",
+            "roadblock_id": "19030",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.41459438691248,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19922",
+            "roadblock_id": "19089",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 25.193093447167318,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19947",
+            "roadblock_id": "19332",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 32.654054637406055,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18272",
+            "roadblock_id": "19030",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 125.42047830910714,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "e097b6f08b3f211c795628ed4099ca66754cb8f5178de2be86fcccc99b3eef3f",
+      "predicate_result_canonical_sha256": "e0f763dcf35f681dc5eaefe3abc5af77856de438313da57ef575768a8cf5cba9",
+      "closure_canonical_sha256": "28d002aea9f7ba14e30cf120c35d6dc6895e7196fcdab64bd8423dd93889545f"
+    },
+    {
+      "census_index": 507,
+      "frame_index": 507,
+      "scenario_token": "5c324338fdf254b4",
+      "log_id": "2021.09.20.18.15.46_veh-08_01534_01667",
+      "audit_rank_sha256": "033156d0f1537fe26236ec84dc9ce91341922f2e20ecb4b68042dc4ad1c3f93d",
+      "input_record_canonical_sha256": "acf9635e934fa7b7f66b0fee5d46a9a55ae806aff54f981ed87c339b2136ef91",
+      "v_audit_mps": 8.134813759969859,
+      "v_support_mps": 8.634813759969859,
+      "source_reference_sha256": "307dc3a083b881ba581759049d8a097f2b1f4d688f207f8bb35f6c46ac4953c0",
+      "target_reference_sha256": "dfc4bfea928fa1ee8098e53d4d3b7fc3589910c58b1286ea9cbbd1bd791a1b70",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 138.43005740752378,
+        "source_total_length_m": 205.81873518464806,
+        "target_total_length_m": 206.00632791010085,
+        "source_current_arc_m": 62.32011627962633,
+        "target_current_arc_m": 62.36215523065224,
+        "source_remaining_margin_m": 5.068561497497939,
+        "target_remaining_margin_m": 5.21411527192484,
+        "source_components": [
+          {
+            "edge_id": "18556",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.7756937530023,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20171",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.290756148023146,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19807",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 67.90182878603557,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20142",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.850456497587057,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18557",
+            "roadblock_id": "14340",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 96.83971101340082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20172",
+            "roadblock_id": "19479",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.224321874403437,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19828",
+            "roadblock_id": "19022",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 68.05395966799912,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20143",
+            "roadblock_id": "19447",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 16.888335354297446,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "29b8094c750118fc684e19a04b3f743d49d06bdae033398a82cb52747ddd240b",
+      "predicate_result_canonical_sha256": "26a171d1a9c060dbd0307d608ce10ae5b6b2c46f3df3517018e224c7fd454224",
+      "closure_canonical_sha256": "952ee1888ebc08c249b58562c60ee781ce031e181b323b77b34aff9b1695259a"
+    },
+    {
+      "census_index": 516,
+      "frame_index": 516,
+      "scenario_token": "88018798d2365ed9",
+      "log_id": "2021.08.26.15.12.21_veh-42_00210_00292",
+      "audit_rank_sha256": "03c19b0d902c76dc0c4ec56a3662e7c790547a1a60dd20cc723c12366f20d410",
+      "input_record_canonical_sha256": "9169155333b9555599f945d00126cd225311525efc045e6982b220798ca0573b",
+      "v_audit_mps": 12.657253157384682,
+      "v_support_mps": 13.290115815253916,
+      "source_reference_sha256": "77a4e9931b24a4b78f421c9029fc58e3290bdd5fec9dab6558b9c41c22058d81",
+      "target_reference_sha256": "447bba08fa7348edb5201acb60271e4c461c8ea259bc2adebefe17f5a0d7efa9",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 211.98382988101187,
+        "source_total_length_m": 282.0691398763611,
+        "target_total_length_m": 274.28917340375114,
+        "source_current_arc_m": 38.97835009323301,
+        "target_current_arc_m": 39.13711998847743,
+        "source_remaining_margin_m": 31.106959902116188,
+        "target_remaining_margin_m": 23.16822353426184,
+        "source_components": [
+          {
+            "edge_id": "18524",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.38099317720324,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20156",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.030033898879804,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18516",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 112.65811280027839,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18525",
+            "roadblock_id": "19045",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 145.55582470498388,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20157",
+            "roadblock_id": "19463",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 24.00929728186685,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18517",
+            "roadblock_id": "19074",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 104.72405141690082,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "ef3ac090253667ca52d4cd3a238dbcd3515d58d9ad2efbc47b177a3bcb1e3f48",
+      "predicate_result_canonical_sha256": "adb5619f0aa311699d333e60a057a03fcc7e5134131692c5886a007fb11e8c27",
+      "closure_canonical_sha256": "af2056938237828163bfb6953f8c4a6104b883cf9bfacf5735deccf345aaeb54"
+    },
+    {
+      "census_index": 528,
+      "frame_index": 528,
+      "scenario_token": "5735883e91ef57e4",
+      "log_id": "2021.08.19.17.14.40_veh-45_01683_02036",
+      "audit_rank_sha256": "0588ac1a92b29a070ccc2c8f49e492f372fc09fdb486d14ab09432bf916307dd",
+      "input_record_canonical_sha256": "8bdc848042118eff9febf2ffc9b4658a41ab1fd3120e04aeebc43e61e025f8d2",
+      "v_audit_mps": 6.0021190605191395,
+      "v_support_mps": 6.5021190605191395,
+      "source_reference_sha256": "b2aa46ef35576372f849bb52a32b95b49096e8367275418483f3ed68e15a8243",
+      "target_reference_sha256": "40831d34332d1e84bd43c61e95944734d77f8881d41d54c90dce2510fe87a4b4",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 104.7334811562024,
+        "source_total_length_m": 120.36651443489409,
+        "target_total_length_m": 120.95856883477516,
+        "source_current_arc_m": 4.200277545640399,
+        "target_current_arc_m": 4.411596010173051,
+        "source_remaining_margin_m": 11.43275573305128,
+        "target_remaining_margin_m": 11.813491668399706,
+        "source_components": [
+          {
+            "edge_id": "19843",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 46.606168162154596,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20077",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 44.277798890958444,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18233",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 29.482547381780922,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "19740",
+            "roadblock_id": "19086",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 47.11257009601438,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20226",
+            "roadblock_id": "19316",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 43.686611686366874,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18234",
+            "roadblock_id": "19027",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 30.159387052393853,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "67884041f8ba299395cababaa409d38d9611eb351b4694dea9e94e69c0d89a65",
+      "predicate_result_canonical_sha256": "0f88fe4ed82d9653ecef64474e180d9ca22ce069c1413b9490cfa765440d0082",
+      "closure_canonical_sha256": "9341008ea6d38d7338e4e1fe67ff919834bed9747db9c20818a8c6334d59eb74"
+    },
+    {
+      "census_index": 540,
+      "frame_index": 540,
+      "scenario_token": "29173a2bbb1b5add",
+      "log_id": "2021.08.17.17.17.01_veh-45_01443_01678",
+      "audit_rank_sha256": "0774a2ce8b2a6818e18be951d255f2b7ddc239e107486b76c7f79db3d06d417d",
+      "input_record_canonical_sha256": "811c85712132b9197336b4dc833352ddae62dab5436bc003eaa301802949896d",
+      "v_audit_mps": 6.725459,
+      "v_support_mps": 7.225459,
+      "source_reference_sha256": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+      "target_reference_sha256": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 116.1622522,
+        "source_total_length_m": 139.10028057029638,
+        "target_total_length_m": 136.52029066588196,
+        "source_current_arc_m": 5.299594139862825,
+        "target_current_arc_m": 2.0509720224659453,
+        "source_remaining_margin_m": 17.63843423043356,
+        "target_remaining_margin_m": 18.30706644341602,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "da9991b109331d2843c16a2dca28c53acd00e6297b8aa2e606f0a6497d4fb929",
+      "predicate_result_canonical_sha256": "dedfe8537995d3a8e90ccc70c7f0a5c23f4713630f56f2cdd12cc93663773c4a",
+      "closure_canonical_sha256": "fde42541ef052bca6cda019850082287489a769134af9176275b296f1d0315e9"
+    },
+    {
+      "census_index": 554,
+      "frame_index": 554,
+      "scenario_token": "1942ebe824565f14",
+      "log_id": "2021.09.13.13.20.43_veh-45_02418_02734",
+      "audit_rank_sha256": "11837bd8453348667b349c1fd62ea8c8ba425eb65ab3b279b760245dc3299fb2",
+      "input_record_canonical_sha256": "b26b15fb3ce3c80f57d5609284f077496bb84647ff9982a4b3b7e03b33334fd8",
+      "v_audit_mps": 6.6484691467167565,
+      "v_support_mps": 7.1484691467167565,
+      "source_reference_sha256": "8ac091d8a8c8bdbf2880d0752c9febc9220e99f3f62605609033c710e0444c03",
+      "target_reference_sha256": "d3fba4f4628934ffb5c21cd1784113a1fab15041eaccda8664a9c303a356713c",
+      "route_coverage": {
+        "required_reconstruction_forward_m": 114.94581251812475,
+        "source_total_length_m": 139.10028057029638,
+        "target_total_length_m": 136.52029066588196,
+        "source_current_arc_m": 15.872504892201539,
+        "target_current_arc_m": 12.62302673826173,
+        "source_remaining_margin_m": 8.28196315997009,
+        "target_remaining_margin_m": 8.951451409495476,
+        "source_components": [
+          {
+            "edge_id": "18309",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 19.861441421428314,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18105",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 7.980453439954108,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "target_components": [
+          {
+            "edge_id": "18308",
+            "roadblock_id": "19051",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 13.24574376606202,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18106",
+            "roadblock_id": "19469",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 12.016161190906034,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "19830",
+            "roadblock_id": "19052",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 10.953812986003056,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "20105",
+            "roadblock_id": "19411",
+            "edge_type": "NuPlanLaneConnector",
+            "native_length_m": 20.08677760922972,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          },
+          {
+            "edge_id": "18230",
+            "roadblock_id": "19097",
+            "edge_type": "NuPlanLane",
+            "native_length_m": 80.21779511368116,
+            "join_gap_m": 0.0,
+            "join_gap_threshold_m": "UNKNOWN_NOT_PREDEFINED",
+            "join_rule": "EXACT_NATIVE_ENDPOINT_IDENTITY_NO_NUMERIC_TOLERANCE"
+          }
+        ],
+        "extrapolation_used": false
+      },
+      "component_output_canonical_sha256": "2180c657d4e2ed5b515a195f9bc677eb1c7d3d81d0df4622cf05e50dcf7f3fa8",
+      "predicate_result_canonical_sha256": "9d6a45b7e2e1af1ba92f32e8d990842da07adbf159ba530ddd42448dec4fe960",
+      "closure_canonical_sha256": "858ea505bbf27586a81a8765f55d3ba6e38febfdee628ce320399b3b62f9c5a7"
+    }
+  ]
+}

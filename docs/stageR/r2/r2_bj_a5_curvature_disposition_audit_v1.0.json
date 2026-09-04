@@ -1,0 +1,4330 @@
+{
+  "schema_version": "r2_bj_a5_curvature_disposition_audit_v1.0",
+  "status": "DEFINED_FOR_ALL_REACHED_RECORDS",
+  "records_reaching_curvature_disposition": 34,
+  "undefined_category_count": 0,
+  "undefined_categories": [],
+  "raw_and_robust_retained": true,
+  "manual_point_deletion": false,
+  "identity_specific_smoothing": false,
+  "records": [
+    {
+      "census_index": 8,
+      "frame_index": 8,
+      "scenario_token": "cb64c96358045c20",
+      "log_id": "2021.08.17.18.44.32_veh-08_00873_01540",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.9154367788256357e-09,
+            "p25": 0.0009999920866674413,
+            "median": 0.002197365285094125,
+            "p75": 0.0030544043387399195,
+            "p95": 0.004579630244331627,
+            "p99": 0.0045796524519179605,
+            "max": 0.0045796560009154965
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0045796560009154965,
+          "raw_abs_max_location_arc_m": 21.86144131324554,
+          "raw_max_point_adjacent_support_m": 0.24999998681227387,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18072071708433335,
+            "p25": 0.24999998708419288,
+            "median": 0.2499999970597252,
+            "p75": 0.24999999934032346,
+            "p95": 0.2500000001674628,
+            "p99": 0.25000000067739414,
+            "max": 0.25000000071769657
+          },
+          "raw_native_point_count": 128,
+          "robust_abs_curvature_inv_m": {
+            "min": 4.528949620702562e-11,
+            "p25": 0.0009266570615195548,
+            "median": 0.0016737332218285438,
+            "p75": 0.002411578007071064,
+            "p95": 0.004340275010419877,
+            "p99": 0.0045690185785109165,
+            "max": 0.004576406083555028
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.4178508133103685e-09,
+            "p25": 0.0010000219693063637,
+            "median": 0.0021974013387658937,
+            "p75": 0.09772798700337124,
+            "p95": 0.09772803772713642,
+            "p99": 0.09772805428614835,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.24999378238380165,
+            "median": 0.249999996508465,
+            "p75": 0.2499999977953012,
+            "p95": 0.25000000005685996,
+            "p99": 0.25000000049441484,
+            "max": 0.2500000005818937
+          },
+          "raw_native_point_count": 128,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.2969429451961048e-11,
+            "p25": 0.0015494508512637188,
+            "median": 0.006877790318999196,
+            "p75": 0.06921957338524838,
+            "p95": 0.09754763026305056,
+            "p99": 0.09772800532720485,
+            "max": 0.09772800545206495
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 5.997725963507862,
+              "robust_longest": 6.75
+            },
+            "0.05": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.0
+            },
+            "0.08": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 3.25
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0045796560009154965,
+          "robust_max_abs_curvature_inv_m": 0.004576406083555028,
+          "speed_mps": 3.948947
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800545206495,
+          "speed_mps": 3.948947
+        }
+      },
+      "curvature_output_canonical_sha256": "5e06baa38249f8f4ee137096943d5e547ec4c5a1e8775d478127731475a857b3"
+    },
+    {
+      "census_index": 17,
+      "frame_index": 17,
+      "scenario_token": "92e4dec2c9bc59e7",
+      "log_id": "2021.09.24.14.23.05_veh-45_00212_00576",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.948574724155881e-10,
+            "p25": 5.384714905513034e-09,
+            "median": 1.3897423637097727e-08,
+            "p75": 2.354847163152933e-08,
+            "p95": 4.756349893790448e-08,
+            "p99": 0.00080365530518111,
+            "max": 0.0010000155233262859
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000155233262859,
+          "raw_abs_max_location_arc_m": 67.84353619919025,
+          "raw_max_point_adjacent_support_m": 0.24999999890572716,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.17176812966357424,
+            "p25": 0.24999999947750415,
+            "median": 0.249999999771663,
+            "p75": 0.25000000005128953,
+            "p95": 0.250000000391304,
+            "p99": 0.2500000007737678,
+            "max": 0.25000000107732295
+          },
+          "raw_native_point_count": 261,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.82934088479045e-13,
+            "p25": 5.088428725993515e-11,
+            "median": 1.1133627007344421e-10,
+            "p75": 2.0246641708065566e-10,
+            "p95": 0.00014722661545511255,
+            "p99": 0.00023773282130537006,
+            "max": 0.00024240836461305055
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.38111752382135e-10,
+            "p25": 8.506088266085972e-09,
+            "median": 1.6748115776847955e-08,
+            "p75": 2.8960389596877163e-08,
+            "p95": 5.915570071393558e-08,
+            "p99": 0.0010000211836998145,
+            "max": 0.00100003109424378
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.00100003109424378,
+          "raw_abs_max_location_arc_m": 65.99536445815716,
+          "raw_max_point_adjacent_support_m": 0.25000000021741947,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.24768223563279287,
+            "p25": 0.24999999964106018,
+            "median": 0.24999999995808392,
+            "p75": 0.25000000031562164,
+            "p95": 0.25000000068360234,
+            "p99": 0.25000000101857417,
+            "max": 0.25000000119547283
+          },
+          "raw_native_point_count": 261,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.6240217176392363e-13,
+            "p25": 5.362913922470266e-11,
+            "median": 1.1807582655641429e-10,
+            "p75": 2.1887535247436937e-10,
+            "p95": 0.00031441225155097387,
+            "p99": 0.0005453323420360823,
+            "max": 0.0005592590361217708
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000155233262859,
+          "robust_max_abs_curvature_inv_m": 0.00024240836461305055,
+          "speed_mps": 8.191927
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.00100003109424378,
+          "robust_max_abs_curvature_inv_m": 0.0005592590361217708,
+          "speed_mps": 8.191927
+        }
+      },
+      "curvature_output_canonical_sha256": "00bfd698b4e6e03a681369f8fe35a11c3ca7f98001e716f3f0258a21bdb8b711"
+    },
+    {
+      "census_index": 23,
+      "frame_index": 23,
+      "scenario_token": "6408758176c25fb4",
+      "log_id": "2021.10.01.18.24.31_veh-44_00925_01112",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 8.640384408764288e-09,
+            "median": 2.212610804918375e-08,
+            "p75": 3.636891496009294e-08,
+            "p95": 0.0009999860213447446,
+            "p99": 0.0010000343662160298,
+            "max": 0.001000888215895851
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.001000888215895851,
+          "raw_abs_max_location_arc_m": 76.751344036205,
+          "raw_max_point_adjacent_support_m": 0.13133024081371958,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12567202752683643,
+            "p25": 0.24999999963575453,
+            "median": 0.24999999993485003,
+            "p75": 0.2500000001693033,
+            "p95": 0.2500000005727454,
+            "p99": 0.2500000007595168,
+            "max": 0.25000001224720736
+          },
+          "raw_native_point_count": 310,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.585802196628235e-12,
+            "p25": 9.071596230336135e-11,
+            "median": 1.9931418593499413e-10,
+            "p75": 5.326710448019507e-10,
+            "p95": 0.0006771147957818536,
+            "p99": 0.0008796625884221833,
+            "max": 0.0009115707850664963
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 1.3470735642007994e-08,
+            "median": 2.3886358650294247e-08,
+            "p75": 3.912536874197e-08,
+            "p95": 0.0010000000905025829,
+            "p99": 0.00100004015822873,
+            "max": 0.0010000933102575402
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000933102575402,
+          "raw_abs_max_location_arc_m": 42.24999997329083,
+          "raw_max_point_adjacent_support_m": 0.1778214778934463,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.17782147757258407,
+            "p25": 0.2499999995960987,
+            "median": 0.2499999999175136,
+            "p75": 0.250000000172231,
+            "p95": 0.250000000560049,
+            "p99": 0.25000000086789814,
+            "max": 0.25000000460942967
+          },
+          "raw_native_point_count": 308,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.460435400747253e-17,
+            "p25": 9.063759036238978e-11,
+            "median": 1.8691521058206655e-10,
+            "p75": 1.0850143660394747e-06,
+            "p95": 0.0005855110718450631,
+            "p99": 0.000907960371490046,
+            "max": 0.0009640495233428743
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000888215895851,
+          "robust_max_abs_curvature_inv_m": 0.0009115707850664963,
+          "speed_mps": 9.67162937805449
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000933102575402,
+          "robust_max_abs_curvature_inv_m": 0.0009640495233428743,
+          "speed_mps": 9.67162937805449
+        }
+      },
+      "curvature_output_canonical_sha256": "b7d3d500e6451b47d7b09355d092e95b757545dece0c5e574a0ba331da1722bb"
+    },
+    {
+      "census_index": 57,
+      "frame_index": 57,
+      "scenario_token": "3de5f733454855aa",
+      "log_id": "2021.06.09.14.58.55_veh-35_01095_01484",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.382965009970912e-10,
+            "p25": 3.1961455584758073e-09,
+            "median": 3.182595514997743e-08,
+            "p75": 3.749702408540811e-08,
+            "p95": 0.0005307974692836142,
+            "p99": 0.0010000135346155915,
+            "max": 0.0010000503310093412
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000503310093412,
+          "raw_abs_max_location_arc_m": 84.76325451153468,
+          "raw_max_point_adjacent_support_m": 0.24999999869236683,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13162726387049384,
+            "p25": 0.24999999989677346,
+            "median": 0.250000000206122,
+            "p75": 0.2500000004565677,
+            "p95": 0.25000000091431224,
+            "p99": 0.25000000136778844,
+            "max": 0.2500000013832071
+          },
+          "raw_native_point_count": 232,
+          "robust_abs_curvature_inv_m": {
+            "min": 8.787002871356242e-13,
+            "p25": 1.0040873579209906e-10,
+            "median": 1.9171233143557497e-10,
+            "p75": 3.5677188649273165e-10,
+            "p95": 0.00025998533410775547,
+            "p99": 0.000542098900370462,
+            "max": 0.0007005613996284168
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 3.724251134503403e-09,
+            "median": 3.443954184656496e-08,
+            "p75": 4.288396878309309e-08,
+            "p95": 0.001000017656513783,
+            "p99": 0.0010000403169939296,
+            "max": 0.0010000572832351488
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000572832351488,
+          "raw_abs_max_location_arc_m": 50.06451207815194,
+          "raw_max_point_adjacent_support_m": 0.24999999999028794,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.15725605659054198,
+            "p25": 0.24999999934414502,
+            "median": 0.2499999998056689,
+            "p75": 0.2500000001492577,
+            "p95": 0.25000000072374085,
+            "p99": 0.25000000099094627,
+            "max": 0.2500000011995137
+          },
+          "raw_native_point_count": 232,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.875394583329521e-12,
+            "p25": 1.0595014043590933e-10,
+            "median": 2.3104706601099353e-10,
+            "p75": 0.00018979798730810158,
+            "p95": 0.0009930621426095085,
+            "p99": 0.0010000009856913526,
+            "max": 0.0010000011461877064
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000503310093412,
+          "robust_max_abs_curvature_inv_m": 0.0007005613996284168,
+          "speed_mps": 7.271504425026801
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000572832351488,
+          "robust_max_abs_curvature_inv_m": 0.0010000011461877064,
+          "speed_mps": 7.271504425026801
+        }
+      },
+      "curvature_output_canonical_sha256": "01d7dc23f5d053e0b5ee754d061a61c680c42ce9cb272bff8f1eaf4a2cac3e9c"
+    },
+    {
+      "census_index": 59,
+      "frame_index": 59,
+      "scenario_token": "3101d924be915d92",
+      "log_id": "2021.08.23.19.12.30_veh-45_01983_02145",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.525411060342113e-10,
+            "p25": 1.0132609419636813e-08,
+            "median": 2.0588229772716367e-08,
+            "p75": 3.8964019558752656e-08,
+            "p95": 0.0010000228037150374,
+            "p99": 0.0014959473188075,
+            "max": 0.0014959700669317216
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0014959700669317216,
+          "raw_abs_max_location_arc_m": 16.499999903986115,
+          "raw_max_point_adjacent_support_m": 0.2499999978021034,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2041521170094312,
+            "p25": 0.24999999947344254,
+            "median": 0.24999999994186306,
+            "p75": 0.25000000028260067,
+            "p95": 0.2500000007259995,
+            "p99": 0.25000000098823777,
+            "max": 0.2500000013815953
+          },
+          "raw_native_point_count": 483,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.3491880879250797e-12,
+            "p25": 6.70266122546672e-11,
+            "median": 1.6447889630375382e-10,
+            "p75": 5.7339723960587985e-05,
+            "p95": 0.0010000011080316354,
+            "p99": 0.0014947916557991293,
+            "max": 0.0014959354412573678
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.1249669495151386e-11,
+            "p25": 2.5864576272949337e-08,
+            "median": 0.0016813200181006083,
+            "p75": 0.002039843460970142,
+            "p95": 0.0024285460634644747,
+            "p99": 0.002428609394335144,
+            "max": 0.01509747467078189
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.01509747467078189,
+          "raw_abs_max_location_arc_m": 119.04047037519555,
+          "raw_max_point_adjacent_support_m": 0.1659572064723634,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1279572406848066,
+            "p25": 0.24999999735087453,
+            "median": 0.24999999844039084,
+            "p75": 0.24999999979071533,
+            "p95": 0.25000000040612363,
+            "p99": 0.25000000084860646,
+            "max": 0.25000000118182375
+          },
+          "raw_native_point_count": 487,
+          "robust_abs_curvature_inv_m": {
+            "min": 7.207094949695004e-13,
+            "p25": 4.069834967515354e-05,
+            "median": 0.0012061353621088205,
+            "p75": 0.0016813535138761864,
+            "p95": 0.002099104752580671,
+            "p99": 0.0024324260586062233,
+            "max": 0.0025162678813480137
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0014959700669317216,
+          "robust_max_abs_curvature_inv_m": 0.0014959354412573678,
+          "speed_mps": 15.197354873541453
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.01509747467078189,
+          "robust_max_abs_curvature_inv_m": 0.0025162678813480137,
+          "speed_mps": 15.197354873541453
+        }
+      },
+      "curvature_output_canonical_sha256": "8b14e15be995fa07d3785910126d28a40a2c769cc4c0883c2d8f31b65b6b70d8"
+    },
+    {
+      "census_index": 66,
+      "frame_index": 66,
+      "scenario_token": "b2a0220ba349567d",
+      "log_id": "2021.06.14.18.42.45_veh-12_03445_03902",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 3.1569019388333596e-08,
+            "median": 0.0009999620529464834,
+            "p75": 0.0011116733863153756,
+            "p95": 0.0011117369641975305,
+            "p99": 0.0011117650651506317,
+            "max": 0.0011117732402012488
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0011117732402012488,
+          "raw_abs_max_location_arc_m": 35.97869025759796,
+          "raw_max_point_adjacent_support_m": 0.24999999973143333,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13946648376784848,
+            "p25": 0.24999999910273618,
+            "median": 0.24999999954881486,
+            "p75": 0.25000000006022194,
+            "p95": 0.25000000058376914,
+            "p99": 0.25000000112114457,
+            "max": 0.25000000323324784
+          },
+          "raw_native_point_count": 345,
+          "robust_abs_curvature_inv_m": {
+            "min": 4.4262890611066255e-13,
+            "p25": 2.5303391190526077e-10,
+            "median": 0.0005074337344383672,
+            "p75": 0.0010000009896756193,
+            "p95": 0.0011117183927716846,
+            "p99": 0.0011117185262912552,
+            "max": 0.0011117186929147742
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.5271339751537806e-10,
+            "p25": 5.434049655657695e-09,
+            "median": 3.523011223407861e-08,
+            "p75": 0.0015535261992693393,
+            "p95": 0.0015536091393437478,
+            "p99": 0.001553625479721136,
+            "max": 0.0015536358886476102
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0015536358886476102,
+          "raw_abs_max_location_arc_m": 37.7001729363643,
+          "raw_max_point_adjacent_support_m": 0.24999999921884558,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.14515130049305203,
+            "p25": 0.2499999989008102,
+            "median": 0.24999999993664992,
+            "p75": 0.25000000020219126,
+            "p95": 0.2500000008779179,
+            "p99": 0.2500000011269969,
+            "max": 0.25000000140343115
+          },
+          "raw_native_point_count": 345,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.0381305955889543e-17,
+            "p25": 1.1120194981290238e-10,
+            "median": 1.1393115735851882e-06,
+            "p75": 0.0007855230392873969,
+            "p95": 0.0015535796265571304,
+            "p99": 0.0015535797936888573,
+            "max": 0.0015535799695138544
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0011117732402012488,
+          "robust_max_abs_curvature_inv_m": 0.0011117186929147742,
+          "speed_mps": 10.778105621281405
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0015536358886476102,
+          "robust_max_abs_curvature_inv_m": 0.0015535799695138544,
+          "speed_mps": 10.778105621281405
+        }
+      },
+      "curvature_output_canonical_sha256": "0cd5a22d2f1c6d87be0f9992330789c2f7ce311c194fb56e1dab58f62e976e62"
+    },
+    {
+      "census_index": 86,
+      "frame_index": 86,
+      "scenario_token": "ffe88e950f7c571c",
+      "log_id": "2021.07.16.18.19.22_veh-35_00440_00858",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.382965009970912e-10,
+            "p25": 4.5700723124708715e-09,
+            "median": 3.318067234316936e-08,
+            "p75": 7.81629832273833e-06,
+            "p95": 0.0010000220685500666,
+            "p99": 0.0010000451806325172,
+            "max": 0.0010000555550881759
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000555550881759,
+          "raw_abs_max_location_arc_m": 114.1982498832953,
+          "raw_max_point_adjacent_support_m": 0.2499999997195231,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13162726387049384,
+            "p25": 0.24999999951363713,
+            "median": 0.24999999997417066,
+            "p75": 0.25000000025316815,
+            "p95": 0.2500000008922436,
+            "p99": 0.25000000135582834,
+            "max": 0.25000000150066876
+          },
+          "raw_native_point_count": 309,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.979048382603554e-12,
+            "p25": 9.464696126404867e-11,
+            "median": 2.927133871508006e-10,
+            "p75": 0.000378060516486419,
+            "p95": 0.0010000009333775016,
+            "p99": 0.0010000012444622414,
+            "max": 0.0010000013404781994
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 4.55647075724746e-09,
+            "median": 3.422210441444082e-08,
+            "p75": 1.583807161565538e-05,
+            "p95": 0.0010000177769067934,
+            "p99": 0.00100004342442473,
+            "max": 0.0010000572832351488
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000572832351488,
+          "raw_abs_max_location_arc_m": 50.06451207815194,
+          "raw_max_point_adjacent_support_m": 0.24999999999028794,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.15725605659054198,
+            "p25": 0.24999999935525907,
+            "median": 0.2499999996699166,
+            "p75": 0.250000000127234,
+            "p95": 0.2500000007295833,
+            "p99": 0.25000000118116095,
+            "max": 0.25000001385932363
+          },
+          "raw_native_point_count": 309,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.7327738089977495e-12,
+            "p25": 9.522953277311971e-11,
+            "median": 2.3946368409112537e-10,
+            "p75": 0.0003646890833084631,
+            "p95": 0.0009834055916670753,
+            "p99": 0.0010000009226137888,
+            "max": 0.0010000010199945875
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000555550881759,
+          "robust_max_abs_curvature_inv_m": 0.0010000013404781994,
+          "speed_mps": 9.626640066937666
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000572832351488,
+          "robust_max_abs_curvature_inv_m": 0.0010000010199945875,
+          "speed_mps": 9.626640066937666
+        }
+      },
+      "curvature_output_canonical_sha256": "eb02355abe78eda2249ed11b18a1b2b295551687cb0306a5ec997d811e0b0996"
+    },
+    {
+      "census_index": 91,
+      "frame_index": 91,
+      "scenario_token": "7bc9ccd5b6105b0b",
+      "log_id": "2021.08.27.13.08.25_veh-42_00112_00352",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.525411060342113e-10,
+            "p25": 1.2275013054403263e-08,
+            "median": 2.3138596810037814e-08,
+            "p75": 0.0006953461891262002,
+            "p95": 0.0010000195985741672,
+            "p99": 0.0010000476179312272,
+            "max": 0.0010000666666877735
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000666666877735,
+          "raw_abs_max_location_arc_m": 141.4053378593902,
+          "raw_max_point_adjacent_support_m": 0.24999999908475368,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2041521170094312,
+            "p25": 0.24999999934566888,
+            "median": 0.24999999985266957,
+            "p75": 0.2500000002530455,
+            "p95": 0.25000000079911605,
+            "p99": 0.25000000105018017,
+            "max": 0.25000001380358283
+          },
+          "raw_native_point_count": 354,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.3069569371503367e-17,
+            "p25": 9.574787715929207e-11,
+            "median": 1.9767715775964012e-10,
+            "p75": 0.00039589382014566197,
+            "p95": 0.0010000009389019922,
+            "p99": 0.0010000012542845129,
+            "max": 0.0010000013102013437
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.1249669495151386e-11,
+            "p25": 0.0012061200455227886,
+            "median": 0.0016813445343758354,
+            "p75": 0.002039842764421454,
+            "p95": 0.0022924421024445975,
+            "p99": 0.0022927909718780917,
+            "max": 0.01509747467078189
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.01509747467078189,
+          "raw_abs_max_location_arc_m": 119.04047037519555,
+          "raw_max_point_adjacent_support_m": 0.1659572064723634,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1393860245593653,
+            "p25": 0.2499999972415865,
+            "median": 0.2499999982279269,
+            "p75": 0.24999999921381907,
+            "p95": 0.250000000182371,
+            "p99": 0.25000000085775304,
+            "max": 0.25000000091095886
+          },
+          "raw_native_point_count": 357,
+          "robust_abs_curvature_inv_m": {
+            "min": 6.62756891214683e-12,
+            "p25": 0.0006305921416698148,
+            "median": 0.0016032893607571513,
+            "p75": 0.0016929974243933606,
+            "p95": 0.002277700931752021,
+            "p99": 0.0024486861561695637,
+            "max": 0.0025156297803022704
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000666666877735,
+          "robust_max_abs_curvature_inv_m": 0.0010000013102013437,
+          "speed_mps": 11.138643154681187
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.01509747467078189,
+          "robust_max_abs_curvature_inv_m": 0.0025156297803022704,
+          "speed_mps": 11.138643154681187
+        }
+      },
+      "curvature_output_canonical_sha256": "f7404ea42690bfc9fd9d637cb7b969b66653a35e8357c9ddeeb12c35cc4df010"
+    },
+    {
+      "census_index": 106,
+      "frame_index": 106,
+      "scenario_token": "ead5612b37ac591b",
+      "log_id": "2021.08.20.13.00.37_veh-08_01079_01449",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.3797817029466878e-09,
+            "p25": 2.994808315079635e-08,
+            "median": 0.0011353487046944807,
+            "p75": 0.0011353833558918574,
+            "p95": 0.0011354114145795714,
+            "p99": 0.0011354274314314052,
+            "max": 0.0011354458903936767
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0011354458903936767,
+          "raw_abs_max_location_arc_m": 64.40983724363487,
+          "raw_max_point_adjacent_support_m": 0.24999999887064145,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.20447949215838324,
+            "p25": 0.2499999990290523,
+            "median": 0.2499999993379477,
+            "p75": 0.2499999997285783,
+            "p95": 0.2500000003646241,
+            "p99": 0.2500000006670931,
+            "max": 0.25000001475505945
+          },
+          "raw_native_point_count": 324,
+          "robust_abs_curvature_inv_m": {
+            "min": 5.643906698415103e-13,
+            "p25": 4.1411922116593615e-10,
+            "median": 0.0009915376903971845,
+            "p75": 0.0011353810362607084,
+            "p95": 0.0011353813472069424,
+            "p99": 0.0011353815135260613,
+            "max": 0.0011353816508460589
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.370715184602649e-09,
+            "p25": 1.5646696349553805e-08,
+            "median": 4.112827958073543e-08,
+            "p75": 0.0009999967288628502,
+            "p95": 0.001000026382936304,
+            "p99": 0.0010000466369835437,
+            "max": 0.0010000590435479684
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000590435479684,
+          "raw_abs_max_location_arc_m": 39.19491038683241,
+          "raw_max_point_adjacent_support_m": 0.24999999931530342,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1998065017338576,
+            "p25": 0.2499999993275307,
+            "median": 0.24999999978820872,
+            "p75": 0.25000000017934676,
+            "p95": 0.25000000056854776,
+            "p99": 0.2500000008915434,
+            "max": 0.250000001141692
+          },
+          "raw_native_point_count": 323,
+          "robust_abs_curvature_inv_m": {
+            "min": 5.401814334184522e-13,
+            "p25": 1.7972806749360254e-10,
+            "median": 0.00012987180347648735,
+            "p75": 0.0010000007683210967,
+            "p95": 0.0010000011558502294,
+            "p99": 0.001000001361687627,
+            "max": 0.001000001496168756
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0011354458903936767,
+          "robust_max_abs_curvature_inv_m": 0.0011353816508460589,
+          "speed_mps": 10.144576843462044
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000590435479684,
+          "robust_max_abs_curvature_inv_m": 0.001000001496168756,
+          "speed_mps": 10.144576843462044
+        }
+      },
+      "curvature_output_canonical_sha256": "8632e7c2fab411334ce24b38ba7be08e2c54aff7673230106ba294a08994ef5e"
+    },
+    {
+      "census_index": 113,
+      "frame_index": 113,
+      "scenario_token": "4d6cfa152a535552",
+      "log_id": "2021.10.01.12.54.53_veh-44_00858_01311",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 8.773187953881616e-09,
+            "median": 2.2088330322257574e-08,
+            "p75": 3.6671748277855955e-08,
+            "p95": 0.0009999855652164371,
+            "p99": 0.00100003420677028,
+            "max": 0.001000888215895851
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.001000888215895851,
+          "raw_abs_max_location_arc_m": 76.751344036205,
+          "raw_max_point_adjacent_support_m": 0.13133024081371958,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12567202752683643,
+            "p25": 0.24999999962570274,
+            "median": 0.24999999994719255,
+            "p75": 0.2500000001723246,
+            "p95": 0.25000000056341654,
+            "p99": 0.25000000075907125,
+            "max": 0.25000001224720736
+          },
+          "raw_native_point_count": 312,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.1534784684988671e-17,
+            "p25": 8.585335155640236e-11,
+            "median": 1.8240265171292394e-10,
+            "p75": 5.49300716046175e-10,
+            "p95": 0.0006654818639990233,
+            "p99": 0.0008861810581392943,
+            "max": 0.0009095585137244466
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 1.3470391023655152e-08,
+            "median": 2.2720497475910574e-08,
+            "p75": 3.909450889027887e-08,
+            "p95": 0.0009999995330034126,
+            "p99": 0.0010000400156770764,
+            "max": 0.0010000933102575402
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000933102575402,
+          "raw_abs_max_location_arc_m": 42.24999997329083,
+          "raw_max_point_adjacent_support_m": 0.1778214778934463,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.17782147757258407,
+            "p25": 0.2499999995872968,
+            "median": 0.2499999999175136,
+            "p75": 0.25000000017440804,
+            "p95": 0.250000000611043,
+            "p99": 0.2500000010808908,
+            "max": 0.25000000460942967
+          },
+          "raw_native_point_count": 311,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.4604354007199584e-17,
+            "p25": 8.422663951571925e-11,
+            "median": 1.9427658327674188e-10,
+            "p75": 7.014737238019543e-07,
+            "p95": 0.0005877172411244449,
+            "p99": 0.0009108767834233885,
+            "max": 0.0009642814338022023
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000888215895851,
+          "robust_max_abs_curvature_inv_m": 0.0009095585137244466,
+          "speed_mps": 9.754449323536756
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000933102575402,
+          "robust_max_abs_curvature_inv_m": 0.0009642814338022023,
+          "speed_mps": 9.754449323536756
+        }
+      },
+      "curvature_output_canonical_sha256": "96e18516229d6bf7875a9f84eb095403ba948de2d4d61652e79434b83fa01074"
+    },
+    {
+      "census_index": 172,
+      "frame_index": 172,
+      "scenario_token": "74801411f6d15a0d",
+      "log_id": "2021.08.30.13.47.20_veh-08_00359_00489",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.525411060342113e-10,
+            "p25": 9.731860668774613e-09,
+            "median": 1.9534242721870554e-08,
+            "p75": 3.528110780189614e-08,
+            "p95": 0.0010000103281110019,
+            "p99": 0.0010000292080789936,
+            "max": 0.0010000609393944183
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000609393944183,
+          "raw_abs_max_location_arc_m": 98.24703366491373,
+          "raw_max_point_adjacent_support_m": 0.24999999833007708,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2041521170094312,
+            "p25": 0.24999999953822824,
+            "median": 0.24999999996273334,
+            "p75": 0.25000000029053127,
+            "p95": 0.2500000007509231,
+            "p99": 0.25000000100016917,
+            "max": 0.2500000013815953
+          },
+          "raw_native_point_count": 449,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.588913210794479e-13,
+            "p25": 7.993330788034561e-11,
+            "median": 1.7452299345947794e-10,
+            "p75": 9.900575336755888e-10,
+            "p95": 0.001000000802562382,
+            "p99": 0.0010000012362129662,
+            "max": 0.0010000013176744793
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.1249669495151386e-11,
+            "p25": 2.4453967738145156e-08,
+            "median": 0.0016813066029965087,
+            "p75": 0.002039809212485841,
+            "p95": 0.002096515602841958,
+            "p99": 0.0024286111021312906,
+            "max": 0.01509747467078189
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.01509747467078189,
+          "raw_abs_max_location_arc_m": 119.04047037519555,
+          "raw_max_point_adjacent_support_m": 0.1659572064723634,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1279572406848066,
+            "p25": 0.24999999751262134,
+            "median": 0.2499999985371114,
+            "p75": 0.24999999979071535,
+            "p95": 0.25000000040612363,
+            "p99": 0.25000000082546664,
+            "max": 0.25000000091095886
+          },
+          "raw_native_point_count": 452,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.8828379798779874e-12,
+            "p25": 4.5071730358914463e-08,
+            "median": 0.0011813303304524891,
+            "p75": 0.0016813532910019606,
+            "p95": 0.002096495313868685,
+            "p99": 0.0024125205702487575,
+            "max": 0.0025147394876946436
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000609393944183,
+          "robust_max_abs_curvature_inv_m": 0.0010000013176744793,
+          "speed_mps": 14.134407283842949
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.01509747467078189,
+          "robust_max_abs_curvature_inv_m": 0.0025147394876946436,
+          "speed_mps": 14.134407283842949
+        }
+      },
+      "curvature_output_canonical_sha256": "c076b10b1b5ba6cc97f8800bc10e994f57db49b583f7dbd8d0a71e0778e96754"
+    },
+    {
+      "census_index": 254,
+      "frame_index": 254,
+      "scenario_token": "d7da06f357e35232",
+      "log_id": "2021.08.19.19.03.27_veh-45_02080_02443",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.8721717429763187e-09,
+            "p25": 9.415889845324873e-09,
+            "median": 2.6308097051091844e-08,
+            "p75": 0.00032845138372206503,
+            "p95": 0.0010000165773526558,
+            "p99": 0.001000041968667278,
+            "max": 0.0010000715555652485
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000715555652485,
+          "raw_abs_max_location_arc_m": 95.77527960231667,
+          "raw_max_point_adjacent_support_m": 0.24999999895760372,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1792076849705369,
+            "p25": 0.24999999944039164,
+            "median": 0.24999999986303892,
+            "p75": 0.2500000001940266,
+            "p95": 0.250000000729384,
+            "p99": 0.250000002713343,
+            "max": 0.25000000687126056
+          },
+          "raw_native_point_count": 370,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.6148698528667725e-17,
+            "p25": 1.2020446972909358e-10,
+            "median": 7.075851215719088e-07,
+            "p75": 0.0003676050492674792,
+            "p95": 0.0008707081351274727,
+            "p99": 0.0010000011107316577,
+            "max": 0.0010000012201641572
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 7.439400207440091e-10,
+            "p25": 1.4174446485163869e-08,
+            "median": 3.639464725776213e-08,
+            "p75": 0.0009999952991050509,
+            "p95": 0.0012704521927229184,
+            "p99": 0.0012704932909879093,
+            "max": 0.001270524934244531
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.001270524934244531,
+          "raw_abs_max_location_arc_m": 69.83302940609711,
+          "raw_max_point_adjacent_support_m": 0.24999999896378622,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12896409833779596,
+            "p25": 0.2499999993107117,
+            "median": 0.24999999976294401,
+            "p75": 0.25000000022458563,
+            "p95": 0.25000000080690676,
+            "p99": 0.25000000133828754,
+            "max": 0.2500000037698415
+          },
+          "raw_native_point_count": 371,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.2925464450556508e-12,
+            "p25": 1.2061423663585893e-10,
+            "median": 1.832038741826857e-05,
+            "p75": 0.0006141743352890564,
+            "p95": 0.0010621081356225125,
+            "p99": 0.0012489638092810819,
+            "max": 0.0012684016954867803
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000715555652485,
+          "robust_max_abs_curvature_inv_m": 0.0010000012201641572,
+          "speed_mps": 11.608082869443752
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001270524934244531,
+          "robust_max_abs_curvature_inv_m": 0.0012684016954867803,
+          "speed_mps": 11.608082869443752
+        }
+      },
+      "curvature_output_canonical_sha256": "1d30aed02089f82d8f7cf75fb7a80e358420d660a8b0ef3e6c7b4706cbb13844"
+    },
+    {
+      "census_index": 272,
+      "frame_index": 272,
+      "scenario_token": "0026d9994bc3508d",
+      "log_id": "2021.09.15.13.26.07_veh-45_00278_00999",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.525411060342113e-10,
+            "p25": 1.0156138598448172e-08,
+            "median": 2.1931354548097014e-08,
+            "p75": 4.0058082639178527e-08,
+            "p95": 0.0010000148555913521,
+            "p99": 0.0010000310718713782,
+            "max": 0.0010000609393944183
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000609393944183,
+          "raw_abs_max_location_arc_m": 98.24703366491373,
+          "raw_max_point_adjacent_support_m": 0.24999999833007708,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2041521170094312,
+            "p25": 0.2499999995626566,
+            "median": 0.2499999999992892,
+            "p75": 0.25000000032562353,
+            "p95": 0.25000000078980444,
+            "p99": 0.2500000009584093,
+            "max": 0.2500000013815953
+          },
+          "raw_native_point_count": 368,
+          "robust_abs_curvature_inv_m": {
+            "min": 9.157004159261438e-13,
+            "p25": 6.456517052601592e-11,
+            "median": 1.4941749655732068e-10,
+            "p75": 2.0854898590270028e-05,
+            "p95": 0.0010000010059230196,
+            "p99": 0.0010000012874781933,
+            "max": 0.0010000014131382466
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 5.549463110307103e-10,
+            "p25": 2.3937005046664715e-08,
+            "median": 0.001206161564796256,
+            "p75": 0.0016813716494953187,
+            "p95": 0.002096512027477726,
+            "p99": 0.0024285696428977908,
+            "max": 0.002429731146599985
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.002429731146599985,
+          "raw_abs_max_location_arc_m": 22.373818202013126,
+          "raw_max_point_adjacent_support_m": 0.1279572406848066,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1279572406848066,
+            "p25": 0.24999999781154217,
+            "median": 0.24999999872839695,
+            "p75": 0.24999999979071535,
+            "p95": 0.2500000004061237,
+            "p99": 0.25000000080645957,
+            "max": 0.2500000008742168
+          },
+          "raw_native_point_count": 370,
+          "robust_abs_curvature_inv_m": {
+            "min": 6.3441315692866086e-18,
+            "p25": 3.2230244101300066e-10,
+            "median": 0.001094504193056294,
+            "p75": 0.0016813531363068133,
+            "p95": 0.002084743664862277,
+            "p99": 0.002096495554302896,
+            "max": 0.0020964957150476195
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000609393944183,
+          "robust_max_abs_curvature_inv_m": 0.0010000014131382466,
+          "speed_mps": 11.56026508202203
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.002429731146599985,
+          "robust_max_abs_curvature_inv_m": 0.0020964957150476195,
+          "speed_mps": 11.56026508202203
+        }
+      },
+      "curvature_output_canonical_sha256": "81e247182c6dc8654c601b9b49615b39fa8fc333f44edc2db96b5e1d64eb538d"
+    },
+    {
+      "census_index": 283,
+      "frame_index": 283,
+      "scenario_token": "5d90a793b38650f7",
+      "log_id": "2021.08.19.14.06.23_veh-45_02467_02637",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.5645796620192067e-10,
+            "p25": 1.7621300818054993e-06,
+            "median": 0.003984046955967478,
+            "p75": 0.003984076824809952,
+            "p95": 0.003984103699932561,
+            "p99": 0.0039841217424625855,
+            "max": 0.003984211816793343
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.003984211816793343,
+          "raw_abs_max_location_arc_m": 47.03960590491759,
+          "raw_max_point_adjacent_support_m": 0.24338891850200364,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.14480368041212446,
+            "p25": 0.2499999893834826,
+            "median": 0.2499999899424387,
+            "p75": 0.24999999942134093,
+            "p95": 0.25000000055654203,
+            "p99": 0.25000000090708274,
+            "max": 0.2500000013092337
+          },
+          "raw_native_point_count": 194,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.39748423134437e-12,
+            "p25": 0.0012246035432987227,
+            "median": 0.003984067664929765,
+            "p75": 0.003984067971785701,
+            "p95": 0.003984068189057652,
+            "p99": 0.0039840683205248605,
+            "max": 0.003984068482899374
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.2271570387510644e-09,
+            "p25": 2.7892800872110952e-08,
+            "median": 0.004990321298365934,
+            "p75": 0.004990361912829523,
+            "p95": 0.004990393985286649,
+            "p99": 0.004990403302174221,
+            "max": 0.0049904135881789794
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0049904135881789794,
+          "raw_abs_max_location_arc_m": 31.6839653602054,
+          "raw_max_point_adjacent_support_m": 0.24999998319066413,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13952301036473913,
+            "p25": 0.24999998367318513,
+            "median": 0.2499999843775194,
+            "p75": 0.24999999989257746,
+            "p95": 0.2500000006091267,
+            "p99": 0.2500000009598959,
+            "max": 0.2500000021747878
+          },
+          "raw_native_point_count": 195,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.5604107578713716e-12,
+            "p25": 2.6812985712506883e-09,
+            "median": 0.004225520833220074,
+            "p75": 0.004990357014582019,
+            "p95": 0.004990357310524737,
+            "p99": 0.004990357462505099,
+            "max": 0.004990357594028646
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.003984211816793343,
+          "robust_max_abs_curvature_inv_m": 0.003984068482899374,
+          "speed_mps": 6.048410299342629
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0049904135881789794,
+          "robust_max_abs_curvature_inv_m": 0.004990357594028646,
+          "speed_mps": 6.048410299342629
+        }
+      },
+      "curvature_output_canonical_sha256": "33acbb8c7a3722b5825083b8e2d6d3a15746127d43ce2212529498ee6228427a"
+    },
+    {
+      "census_index": 292,
+      "frame_index": 292,
+      "scenario_token": "7188743b78cb5631",
+      "log_id": "2021.06.09.14.03.17_veh-12_02584_02970",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.1966961601832594e-10,
+            "p25": 5.367660088895258e-09,
+            "median": 2.957941455227237e-08,
+            "p75": 3.757836004587218e-08,
+            "p95": 0.0009999790496384184,
+            "p99": 0.0010000253311511962,
+            "max": 0.0010000512187087686
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000512187087686,
+          "raw_abs_max_location_arc_m": 2.4999999945546465,
+          "raw_max_point_adjacent_support_m": 0.24999999937252182,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1553205071610822,
+            "p25": 0.24999999954256813,
+            "median": 0.24999999978223814,
+            "p75": 0.25000000002705663,
+            "p95": 0.2500000004955848,
+            "p99": 0.25000000072190304,
+            "max": 0.25000000141616596
+          },
+          "raw_native_point_count": 275,
+          "robust_abs_curvature_inv_m": {
+            "min": 7.132257266746748e-13,
+            "p25": 5.584536527298095e-11,
+            "median": 1.2335660343126903e-10,
+            "p75": 2.560316247613169e-10,
+            "p95": 0.0005588960180530134,
+            "p99": 0.0008552472380750494,
+            "max": 0.0008762369713067689
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.5301573355430085e-09,
+            "p25": 5.365796695699772e-09,
+            "median": 2.946674728930231e-08,
+            "p75": 3.5386346362506736e-08,
+            "p95": 0.0014225280169511596,
+            "p99": 0.0014225660349503418,
+            "max": 0.00142257518086085
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.00142257518086085,
+          "raw_abs_max_location_arc_m": 7.749999962236166,
+          "raw_max_point_adjacent_support_m": 0.24999999895112138,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.14244081252394325,
+            "p25": 0.24999999954510005,
+            "median": 0.25000000000724865,
+            "p75": 0.25000000024524544,
+            "p95": 0.25000000080380413,
+            "p99": 0.2500000009464984,
+            "max": 0.25000000140321277
+          },
+          "raw_native_point_count": 275,
+          "robust_abs_curvature_inv_m": {
+            "min": 8.07434925525107e-18,
+            "p25": 5.2996778682706487e-11,
+            "median": 1.2093761720781865e-10,
+            "p75": 2.1285020557060413e-10,
+            "p95": 0.000775012032952698,
+            "p99": 0.0012390297741168507,
+            "max": 0.0013041092151730074
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000512187087686,
+          "robust_max_abs_curvature_inv_m": 0.0008762369713067689,
+          "speed_mps": 8.598138612738433
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.00142257518086085,
+          "robust_max_abs_curvature_inv_m": 0.0013041092151730074,
+          "speed_mps": 8.598138612738433
+        }
+      },
+      "curvature_output_canonical_sha256": "8cf4e2f709ec66f9186b15785a9f1bce5d058576b853163dc4477631d1f7f109"
+    },
+    {
+      "census_index": 316,
+      "frame_index": 316,
+      "scenario_token": "a97ff1f8f09c5557",
+      "log_id": "2021.10.01.14.16.29_veh-44_01169_01773",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.2183890351598264e-09,
+            "p25": 7.78853515650255e-09,
+            "median": 2.582740067003588e-08,
+            "p75": 0.0009999511871121684,
+            "p95": 0.0010000297928609543,
+            "p99": 0.0010000630858539826,
+            "max": 0.0010004702162536726
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010004702162536726,
+          "raw_abs_max_location_arc_m": 90.85616812762049,
+          "raw_max_point_adjacent_support_m": 0.1388994622446194,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12597705720751914,
+            "p25": 0.24999999952630955,
+            "median": 0.24999999992781696,
+            "p75": 0.2500000002781857,
+            "p95": 0.25000000074946194,
+            "p99": 0.2500000009143053,
+            "max": 0.2500000011917053
+          },
+          "raw_native_point_count": 280,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.5658677817593318e-12,
+            "p25": 1.1505977815539614e-10,
+            "median": 3.4985611362105366e-10,
+            "p75": 0.0005302704813364756,
+            "p95": 0.0010000007501898306,
+            "p99": 0.0010001142603830546,
+            "max": 0.0010005664931836196
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.9421744175299423e-09,
+            "p25": 1.427216746793789e-08,
+            "median": 3.765470249864555e-08,
+            "p75": 0.0009999880681108594,
+            "p95": 0.0010000260644884877,
+            "p99": 0.001000037947578517,
+            "max": 0.0010001954985213368
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010001954985213368,
+          "raw_abs_max_location_arc_m": 46.999999978370525,
+          "raw_max_point_adjacent_support_m": 0.18128505847410606,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18128505797651812,
+            "p25": 0.24999999939210732,
+            "median": 0.2499999997941401,
+            "p75": 0.2500000001828916,
+            "p95": 0.2500000007142234,
+            "p99": 0.2500000013182247,
+            "max": 0.25000001005393735
+          },
+          "raw_native_point_count": 279,
+          "robust_abs_curvature_inv_m": {
+            "min": 6.998107721017825e-13,
+            "p25": 1.340271691609794e-10,
+            "median": 3.545407906125767e-05,
+            "p75": 0.0008592879241681659,
+            "p95": 0.0010000010256807886,
+            "p99": 0.0010000013040236601,
+            "max": 0.001000001655050339
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010004702162536726,
+          "robust_max_abs_curvature_inv_m": 0.0010005664931836196,
+          "speed_mps": 8.734354457168928
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.001000001655050339,
+          "speed_mps": 8.734354457168928
+        }
+      },
+      "curvature_output_canonical_sha256": "040eed34ffe49bf718227eaf13ec5ea09d21159425b787b0e0f9852c9f7ffa15"
+    },
+    {
+      "census_index": 337,
+      "frame_index": 337,
+      "scenario_token": "13de53e314f25de2",
+      "log_id": "2021.08.30.13.08.03_veh-08_00207_00494",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.9154367788256357e-09,
+            "p25": 0.0021973528491050767,
+            "median": 0.0021974370323301785,
+            "p75": 0.08075965581476424,
+            "p95": 0.08075974623300315,
+            "p99": 0.08075977521999872,
+            "max": 0.0807597827945806
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0807597827945806,
+          "raw_abs_max_location_arc_m": 44.54561018930447,
+          "raw_max_point_adjacent_support_m": 0.24999575363750481,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18072071708433335,
+            "p25": 0.24999575445059202,
+            "median": 0.2499999883823538,
+            "p75": 0.24999999726513747,
+            "p95": 0.249999999706152,
+            "p99": 0.2500000004358077,
+            "max": 0.25000000071769657
+          },
+          "raw_native_point_count": 146,
+          "robust_abs_curvature_inv_m": {
+            "min": 5.4564590981564495e-05,
+            "p25": 0.001301887540880212,
+            "median": 0.002781671799958639,
+            "p75": 0.0492986127603545,
+            "p95": 0.08075972490841794,
+            "p99": 0.08075972506932969,
+            "max": 0.08075972507830469
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 9.47674733560787,
+              "robust_longest": 10.25
+            },
+            "0.05": {
+              "raw_longest": 9.249842897665541,
+              "robust_longest": 9.0
+            },
+            "0.08": {
+              "raw_longest": 9.249842897665541,
+              "robust_longest": 7.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.4178508133103685e-09,
+            "p25": 0.002197379959621307,
+            "median": 0.08075970414081486,
+            "p75": 0.09772797787180668,
+            "p95": 0.09772802903955644,
+            "p99": 0.09772805392175081,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.24999378260423982,
+            "median": 0.24999575402380067,
+            "p75": 0.24999999684580373,
+            "p95": 0.249999999751702,
+            "p99": 0.2500000001589716,
+            "max": 0.2500000005818937
+          },
+          "raw_native_point_count": 146,
+          "robust_abs_curvature_inv_m": {
+            "min": 4.965940103573985e-10,
+            "p25": 0.004492697177319527,
+            "median": 0.05388913098861235,
+            "p75": 0.08075972470663537,
+            "p95": 0.09738032973306623,
+            "p99": 0.09772800528478919,
+            "max": 0.09772800546434059
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 8.726760073070473,
+              "robust_longest": 9.75
+            },
+            "0.05": {
+              "raw_longest": 8.499855635128144,
+              "robust_longest": 8.25
+            },
+            "0.08": {
+              "raw_longest": 8.499855635128144,
+              "robust_longest": 6.25
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0807597827945806,
+          "robust_max_abs_curvature_inv_m": 0.08075972507830469,
+          "speed_mps": 4.5325849892122765
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800546434059,
+          "speed_mps": 4.5325849892122765
+        }
+      },
+      "curvature_output_canonical_sha256": "b98a03ef10d4510ce6cb838cdfa1670b6a0040c89b853237ed2a321933e5d35f"
+    },
+    {
+      "census_index": 342,
+      "frame_index": 342,
+      "scenario_token": "ac6fec0006ae58cf",
+      "log_id": "2021.08.30.14.29.08_veh-45_00905_01077",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.4178508133103685e-09,
+            "p25": 3.2115809563012454e-08,
+            "median": 0.0021973956738343854,
+            "p75": 0.09772798700337124,
+            "p95": 0.09772803772713642,
+            "p99": 0.09772805428614835,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.24999378242960424,
+            "median": 0.24999999671564155,
+            "p75": 0.2499999995058143,
+            "p95": 0.25000000016036517,
+            "p99": 0.25000000049441484,
+            "max": 0.2500000005818937
+          },
+          "raw_native_point_count": 128,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.9638365392745674e-11,
+            "p25": 3.4662290926401172e-06,
+            "median": 0.005369118780618376,
+            "p75": 0.068408898917739,
+            "p95": 0.09757818474025287,
+            "p99": 0.09772800521300998,
+            "max": 0.09772800533591182
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 5.997725963507862,
+              "robust_longest": 6.75
+            },
+            "0.05": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.0
+            },
+            "0.08": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 3.25
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.4118040914103873e-09,
+            "p25": 5.025061387690455e-08,
+            "median": 0.0021973623160168494,
+            "p75": 0.003054404013664245,
+            "p95": 0.004579630244331627,
+            "p99": 0.0045796524519179605,
+            "max": 0.0045796560009154965
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0045796560009154965,
+          "raw_abs_max_location_arc_m": 21.86144131324554,
+          "raw_max_point_adjacent_support_m": 0.24999998681227387,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18072071708433335,
+            "p25": 0.24999998741183316,
+            "median": 0.24999999722503466,
+            "p75": 0.24999999955693197,
+            "p95": 0.2500000004956498,
+            "p99": 0.25000000077744455,
+            "max": 0.25000000084172286
+          },
+          "raw_native_point_count": 128,
+          "robust_abs_curvature_inv_m": {
+            "min": 4.137284339076832e-11,
+            "p25": 0.0002731275690174405,
+            "median": 0.0013910830373527637,
+            "p75": 0.002387076684231036,
+            "p95": 0.004341680359981405,
+            "p99": 0.004568166928741874,
+            "max": 0.00457643281878505
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800533591182,
+          "speed_mps": 3.9630579223162976
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0045796560009154965,
+          "robust_max_abs_curvature_inv_m": 0.00457643281878505,
+          "speed_mps": 3.9630579223162976
+        }
+      },
+      "curvature_output_canonical_sha256": "07d0d8fd1e12152200605b935fe9114b53a00b83e824bd00e1fa36a8df109b7f"
+    },
+    {
+      "census_index": 364,
+      "frame_index": 364,
+      "scenario_token": "cf087ec343c555bb",
+      "log_id": "2021.09.20.18.15.46_veh-08_00796_01182",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.525411060342113e-10,
+            "p25": 9.826366396495266e-09,
+            "median": 2.2383577669125368e-08,
+            "p75": 4.443471772978306e-08,
+            "p95": 0.001495943886981533,
+            "p99": 0.0014959640726568476,
+            "max": 0.0014959783706273832
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0014959783706273832,
+          "raw_abs_max_location_arc_m": 4.749999973209521,
+          "raw_max_point_adjacent_support_m": 0.24999999903611786,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.24851689263231058,
+            "p25": 0.24999999939634585,
+            "median": 0.24999999995786892,
+            "p75": 0.25000000029053127,
+            "p95": 0.25000000079923573,
+            "p99": 0.2500000009640241,
+            "max": 0.2500000013815953
+          },
+          "raw_native_point_count": 352,
+          "robust_abs_curvature_inv_m": {
+            "min": 7.167622916549354e-13,
+            "p25": 7.617226906950825e-11,
+            "median": 1.7074030731824776e-10,
+            "p75": 0.00010239619408558551,
+            "p95": 0.0014959354195816354,
+            "p99": 0.0014959356792364892,
+            "max": 0.0014959358403190573
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.6849455998931993e-10,
+            "p25": 3.7288536322175144e-08,
+            "median": 0.0016813270687362175,
+            "p75": 0.001681390817612905,
+            "p95": 0.0024285549329746024,
+            "p99": 0.002428602542823923,
+            "max": 0.002429731146599985
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.002429731146599985,
+          "raw_abs_max_location_arc_m": 22.373818202013126,
+          "raw_max_point_adjacent_support_m": 0.1279572406848066,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1279572406848066,
+            "p25": 0.24999999748947338,
+            "median": 0.24999999843412143,
+            "p75": 0.2499999995691554,
+            "p95": 0.25000000037157605,
+            "p99": 0.25000000066072553,
+            "max": 0.25000000118182375
+          },
+          "raw_native_point_count": 354,
+          "robust_abs_curvature_inv_m": {
+            "min": 8.993902304007729e-13,
+            "p25": 0.00027907312830159614,
+            "median": 0.0011530589933027911,
+            "p75": 0.0016813532770146846,
+            "p95": 0.0020964955834973163,
+            "p99": 0.00242801624734907,
+            "max": 0.002428574824155937
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0014959783706273832,
+          "robust_max_abs_curvature_inv_m": 0.0014959358403190573,
+          "speed_mps": 11.073987480975743
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.002429731146599985,
+          "robust_max_abs_curvature_inv_m": 0.002428574824155937,
+          "speed_mps": 11.073987480975743
+        }
+      },
+      "curvature_output_canonical_sha256": "3a179bd769b40114461bc97eabef2710f159ecdfcfa6f0f085447b846084b17c"
+    },
+    {
+      "census_index": 378,
+      "frame_index": 378,
+      "scenario_token": "57e7cbc7cc465554",
+      "log_id": "2021.09.17.12.58.10_veh-45_01935_02062",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.6264500899101714e-10,
+            "p25": 7.189781657344781e-09,
+            "median": 1.957568951154721e-08,
+            "p75": 0.0009999526971814386,
+            "p95": 0.0010000226850158949,
+            "p99": 0.001000033705479208,
+            "max": 0.001000052667527234
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.001000052667527234,
+          "raw_abs_max_location_arc_m": 88.8399488032639,
+          "raw_max_point_adjacent_support_m": 0.24999999946342855,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.16997441558144766,
+            "p25": 0.24999999939341502,
+            "median": 0.24999999976865045,
+            "p75": 0.2500000001913371,
+            "p95": 0.2500000006912835,
+            "p99": 0.2500000010093926,
+            "max": 0.25000000849411586
+          },
+          "raw_native_point_count": 298,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.4828998058351612e-12,
+            "p25": 9.040367949191877e-11,
+            "median": 2.0687726828742188e-10,
+            "p75": 0.0006097360169122609,
+            "p95": 0.0010000009045134652,
+            "p99": 0.0010000012638594347,
+            "max": 0.0010000262170216307
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.851567785919206e-10,
+            "p25": 1.3093618596923967e-08,
+            "median": 2.495684367547158e-08,
+            "p75": 0.0009999882924312201,
+            "p95": 0.005643208130441284,
+            "p99": 0.005643239622045157,
+            "max": 0.005643329373896908
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.005643329373896908,
+          "raw_abs_max_location_arc_m": 96.77713908385417,
+          "raw_max_point_adjacent_support_m": 0.15628595486407734,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.15628595486407734,
+            "p25": 0.24999999935299633,
+            "median": 0.24999999988033572,
+            "p75": 0.2500000002265336,
+            "p95": 0.2500000008329028,
+            "p99": 0.2500000010867311,
+            "max": 0.2500000084292406
+          },
+          "raw_native_point_count": 299,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.8353145842913107e-12,
+            "p25": 9.558917337324847e-11,
+            "median": 3.023622474163556e-10,
+            "p75": 0.0006550061733050396,
+            "p95": 0.0031683017014089636,
+            "p99": 0.004557414235213482,
+            "max": 0.00479341198568792
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000052667527234,
+          "robust_max_abs_curvature_inv_m": 0.0010000262170216307,
+          "speed_mps": 9.331809
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.005643329373896908,
+          "robust_max_abs_curvature_inv_m": 0.00479341198568792,
+          "speed_mps": 9.331809
+        }
+      },
+      "curvature_output_canonical_sha256": "c2c6f762d55606b57962d46da1941d7a1b12dee29da91a55f2fbf769ff5f0c42"
+    },
+    {
+      "census_index": 406,
+      "frame_index": 406,
+      "scenario_token": "f7ab8008295052c2",
+      "log_id": "2021.08.25.14.12.46_veh-08_01978_02109",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.6264500899101714e-10,
+            "p25": 8.513719500371772e-09,
+            "median": 1.9585920441394876e-08,
+            "p75": 4.3579323223691174e-08,
+            "p95": 0.0010000144627241095,
+            "p99": 0.0010000354983219937,
+            "max": 0.0010000439665561727
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000439665561727,
+          "raw_abs_max_location_arc_m": 96.7756937530023,
+          "raw_max_point_adjacent_support_m": 0.2178724844572778,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.14537808328073698,
+            "p25": 0.24999999956529628,
+            "median": 0.2499999999201225,
+            "p75": 0.25000000019944485,
+            "p95": 0.25000000065520683,
+            "p99": 0.25000000088238433,
+            "max": 0.25000000797016814
+          },
+          "raw_native_point_count": 253,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.3454797373938393e-13,
+            "p25": 7.916369796342483e-11,
+            "median": 1.8172198723557665e-10,
+            "p75": 0.0001060117270659397,
+            "p95": 0.0009977180324366858,
+            "p99": 0.0010009514004629084,
+            "max": 0.00100222963065133
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.851567785919206e-10,
+            "p25": 9.12930442183159e-09,
+            "median": 1.8371496350255336e-08,
+            "p75": 3.7632334566915244e-08,
+            "p95": 0.0010000277887036214,
+            "p99": 0.005643232700459639,
+            "max": 0.005643329373896908
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.005643329373896908,
+          "raw_abs_max_location_arc_m": 96.77713908385417,
+          "raw_max_point_adjacent_support_m": 0.15628595486407734,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.15628595486407734,
+            "p25": 0.24999999936876904,
+            "median": 0.2499999997127413,
+            "p75": 0.2500000000649832,
+            "p95": 0.2500000006269819,
+            "p99": 0.2500000008484343,
+            "max": 0.2500000012667867
+          },
+          "raw_native_point_count": 253,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.337209296781887e-13,
+            "p25": 7.460707664939172e-11,
+            "median": 1.752050620025374e-10,
+            "p75": 9.284324971593442e-05,
+            "p95": 0.0025203089312041947,
+            "p99": 0.005047362635564875,
+            "max": 0.005597701981240293
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000439665561727,
+          "robust_max_abs_curvature_inv_m": 0.00100222963065133,
+          "speed_mps": 7.912059745631789
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.005643329373896908,
+          "robust_max_abs_curvature_inv_m": 0.005597701981240293,
+          "speed_mps": 7.912059745631789
+        }
+      },
+      "curvature_output_canonical_sha256": "633108d489ba11318ed5a218f6b4bb4a61ecbd024d6a95794929e5213aa0ac57"
+    },
+    {
+      "census_index": 408,
+      "frame_index": 408,
+      "scenario_token": "6b35b01f73435064",
+      "log_id": "2021.08.27.14.14.40_veh-45_01590_01703",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.7697133473441725e-10,
+            "p25": 6.600831422176495e-09,
+            "median": 1.391106604467344e-08,
+            "p75": 2.4707553336538477e-08,
+            "p95": 5.354205612347673e-08,
+            "p99": 0.001000008266043688,
+            "max": 0.0010000299052181569
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000299052181569,
+          "raw_abs_max_location_arc_m": 67.339948824642,
+          "raw_max_point_adjacent_support_m": 0.24999999948643484,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.16997441558144766,
+            "p25": 0.2499999998310277,
+            "median": 0.2500000001857286,
+            "p75": 0.25000000050271604,
+            "p95": 0.25000000080442397,
+            "p99": 0.2500000010004784,
+            "max": 0.25000000121211785
+          },
+          "raw_native_point_count": 254,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.5970014845466713e-13,
+            "p25": 4.644679849965181e-11,
+            "median": 1.0322981200009272e-10,
+            "p75": 2.0380553987090262e-10,
+            "p95": 5.291836876813744e-05,
+            "p99": 0.0003535514870546654,
+            "max": 0.0004873957430141054
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.81918487900703e-10,
+            "p25": 9.933735631413067e-09,
+            "median": 2.0863701001312843e-08,
+            "p75": 3.995439705442838e-08,
+            "p95": 0.0010000049806960217,
+            "p99": 0.001000024638443742,
+            "max": 0.0010000355868230043
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000355868230043,
+          "raw_abs_max_location_arc_m": 47.99999998014658,
+          "raw_max_point_adjacent_support_m": 0.24999999888685687,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18010144886863197,
+            "p25": 0.2499999995290393,
+            "median": 0.2499999999228083,
+            "p75": 0.25000000016021323,
+            "p95": 0.25000000070360473,
+            "p99": 0.2500000011084212,
+            "max": 0.2500000084292406
+          },
+          "raw_native_point_count": 254,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.692662748781453e-12,
+            "p25": 8.674814373326349e-11,
+            "median": 1.773182420519534e-10,
+            "p75": 2.694810146379185e-06,
+            "p95": 0.0007258232946130265,
+            "p99": 0.0009336089024083853,
+            "max": 0.0009667342455610804
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000299052181569,
+          "robust_max_abs_curvature_inv_m": 0.0004873957430141054,
+          "speed_mps": 7.974376181946472
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000355868230043,
+          "robust_max_abs_curvature_inv_m": 0.0009667342455610804,
+          "speed_mps": 7.974376181946472
+        }
+      },
+      "curvature_output_canonical_sha256": "40d854b43d0ea50271f2235d0bca80485efa80afb13c099c90f0a64838b5769c"
+    },
+    {
+      "census_index": 412,
+      "frame_index": 412,
+      "scenario_token": "4262009f322f5671",
+      "log_id": "2021.08.19.17.42.11_veh-08_00726_01062",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 2.9976760606253516e-08,
+            "median": 0.0010000130592334555,
+            "p75": 0.0021974253837366764,
+            "p95": 0.015720213096729177,
+            "p99": 0.015720233338436057,
+            "max": 0.015720251840674694
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.015720251840674694,
+          "raw_abs_max_location_arc_m": 68.88248272194014,
+          "raw_max_point_adjacent_support_m": 0.24999983922682578,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.16838881563874641,
+            "p25": 0.2499999882148619,
+            "median": 0.24999999914401744,
+            "p75": 0.2499999997922676,
+            "p95": 0.2500000004794428,
+            "p99": 0.2500000010510183,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 251,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.0827084106613138e-11,
+            "p25": 9.865996081960964e-05,
+            "median": 0.0010000011081063287,
+            "p75": 0.0023576781072202607,
+            "p95": 0.015720184093873966,
+            "p99": 0.015720213518695316,
+            "max": 0.015720214255852967
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 2.6438920420898246e-08,
+            "median": 0.0010000165065609835,
+            "p75": 0.01572020792020123,
+            "p95": 0.09772801701472941,
+            "p99": 0.0977280501919484,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.24999983884914506,
+            "median": 0.24999999888159516,
+            "p75": 0.249999999767669,
+            "p95": 0.2500000004298725,
+            "p99": 0.2500000010510183,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 251,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.5480800730576178e-12,
+            "p25": 8.617753696725489e-05,
+            "median": 0.0013311896746048889,
+            "p75": 0.01572021306410116,
+            "p95": 0.09548158361745518,
+            "p99": 0.09772800490796768,
+            "max": 0.09772800534170037
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 5.997725963507862,
+              "robust_longest": 6.75
+            },
+            "0.05": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.0
+            },
+            "0.08": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 3.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.015720251840674694,
+          "robust_max_abs_curvature_inv_m": 0.015720214255852967,
+          "speed_mps": 7.813886417402944
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800534170037,
+          "speed_mps": 7.813886417402944
+        }
+      },
+      "curvature_output_canonical_sha256": "bc6207732056881f47b03fcef789dd3f3d977347c6dc11cbd9601f0397c68156"
+    },
+    {
+      "census_index": 414,
+      "frame_index": 414,
+      "scenario_token": "1ec5332f171f5872",
+      "log_id": "2021.09.21.16.42.24_veh-08_02115_02448",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.2183890351598264e-09,
+            "p25": 1.3064060032158079e-08,
+            "median": 2.874212854008644e-08,
+            "p75": 0.0009999753609721928,
+            "p95": 0.0010000328376328891,
+            "p99": 0.001000063032012043,
+            "max": 0.0010004702162536726
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010004702162536726,
+          "raw_abs_max_location_arc_m": 90.85616812762049,
+          "raw_max_point_adjacent_support_m": 0.1388994622446194,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12597705720751914,
+            "p25": 0.24999999948080706,
+            "median": 0.24999999989484606,
+            "p75": 0.2500000002430751,
+            "p95": 0.25000000071284034,
+            "p99": 0.2500000009048748,
+            "max": 0.2500000011917053
+          },
+          "raw_native_point_count": 287,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.566239201825493e-12,
+            "p25": 1.1805049866934908e-10,
+            "median": 3.125875432321077e-08,
+            "p75": 0.0007592518728394172,
+            "p95": 0.0010000012731443105,
+            "p99": 0.001000056668259086,
+            "max": 0.0010000750166568328
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.9421744175299423e-09,
+            "p25": 1.3833732386444825e-08,
+            "median": 3.4483183360848325e-08,
+            "p75": 0.0009999878660427975,
+            "p95": 0.0010000258167795425,
+            "p99": 0.0010000372755980217,
+            "max": 0.0010001954985213368
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010001954985213368,
+          "raw_abs_max_location_arc_m": 46.999999978370525,
+          "raw_max_point_adjacent_support_m": 0.18128505847410606,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18128505797651812,
+            "p25": 0.24999999941503187,
+            "median": 0.24999999981126586,
+            "p75": 0.2500000001828916,
+            "p95": 0.2500000007040714,
+            "p99": 0.2500000013142479,
+            "max": 0.25000001005393735
+          },
+          "raw_native_point_count": 286,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.5042858733552288e-12,
+            "p25": 1.1435031738243821e-10,
+            "median": 5.909721551718288e-07,
+            "p75": 0.0008706062258150601,
+            "p95": 0.0010000010296526698,
+            "p99": 0.0010000013557508222,
+            "max": 0.0010000015640482312
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010004702162536726,
+          "robust_max_abs_curvature_inv_m": 0.0010000750166568328,
+          "speed_mps": 8.947916286329255
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.0010000015640482312,
+          "speed_mps": 8.947916286329255
+        }
+      },
+      "curvature_output_canonical_sha256": "c7dc7ea2ffb2afc24ba78efc2bc6acd1d55915e12ed092ef217f3a968a7624a7"
+    },
+    {
+      "census_index": 424,
+      "frame_index": 424,
+      "scenario_token": "c5a22460be1c59c2",
+      "log_id": "2021.08.20.16.54.30_veh-08_02083_02192",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.9694876848812776e-09,
+            "p25": 1.4475656299906049e-08,
+            "median": 2.992266880422609e-08,
+            "p75": 0.0009999716554225345,
+            "p95": 0.0010000283677367922,
+            "p99": 0.0010000531473516538,
+            "max": 0.001000127965473094
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.001000127965473094,
+          "raw_abs_max_location_arc_m": 80.45334561614449,
+          "raw_max_point_adjacent_support_m": 0.1373938119786112,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13739381163948103,
+            "p25": 0.24999999940577722,
+            "median": 0.24999999983302798,
+            "p75": 0.250000000099644,
+            "p95": 0.25000000057343436,
+            "p99": 0.2500000009045714,
+            "max": 0.2500000061421748
+          },
+          "raw_native_point_count": 378,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.702834698643789e-12,
+            "p25": 1.1040566671572274e-10,
+            "median": 4.697588396196239e-10,
+            "p75": 0.0005779464657173368,
+            "p95": 0.0010000010764790869,
+            "p99": 0.0010000012602875091,
+            "max": 0.0010000015127898708
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.6129604283270055e-09,
+            "p25": 8.43576588124912e-09,
+            "median": 1.979793750601038e-08,
+            "p75": 3.949372515104663e-08,
+            "p95": 0.0009999996822279175,
+            "p99": 0.0010000191985034142,
+            "max": 0.0010000532495886862
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000532495886862,
+          "raw_abs_max_location_arc_m": 21.499999989970192,
+          "raw_max_point_adjacent_support_m": 0.1643968728540227,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1643968728540227,
+            "p25": 0.24999999960530528,
+            "median": 0.2500000000264203,
+            "p75": 0.250000000336721,
+            "p95": 0.2500000006797246,
+            "p99": 0.25000000094712493,
+            "max": 0.2500000012584652
+          },
+          "raw_native_point_count": 376,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.7895082241433528e-12,
+            "p25": 1.0262181638375762e-10,
+            "median": 1.9071204182973933e-10,
+            "p75": 4.470785565711611e-10,
+            "p95": 0.0008467930052261831,
+            "p99": 0.0009860016260167244,
+            "max": 0.0009968303263903722
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000127965473094,
+          "robust_max_abs_curvature_inv_m": 0.0010000015127898708,
+          "speed_mps": 11.828635645846314
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000532495886862,
+          "robust_max_abs_curvature_inv_m": 0.0009968303263903722,
+          "speed_mps": 11.828635645846314
+        }
+      },
+      "curvature_output_canonical_sha256": "469e1761d5161d3be6cd49e425e60860056a86286b32485070a588ac4e6ac16c"
+    },
+    {
+      "census_index": 442,
+      "frame_index": 442,
+      "scenario_token": "f34bd802dc3a546f",
+      "log_id": "2021.08.17.18.13.38_veh-45_00410_00618",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 2.7537112078807856e-08,
+            "median": 0.0010000001761823263,
+            "p75": 0.002197392339180591,
+            "p95": 0.0045796323893794065,
+            "p99": 0.015720206671384223,
+            "max": 0.015720234782493545
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.015720234782493545,
+          "raw_abs_max_location_arc_m": 65.13248513575688,
+          "raw_max_point_adjacent_support_m": 0.24999983945615847,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.16838881563874641,
+            "p25": 0.24999999664303774,
+            "median": 0.24999999921354432,
+            "p75": 0.2499999998559972,
+            "p95": 0.25000000051999677,
+            "p99": 0.2500000010556463,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 227,
+          "robust_abs_curvature_inv_m": {
+            "min": 6.974862822948149e-12,
+            "p25": 8.938843020900975e-05,
+            "median": 0.0010000008596297231,
+            "p75": 0.002128209824486255,
+            "p95": 0.004279065879276179,
+            "p99": 0.004864003454660698,
+            "max": 0.006488524174363772
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 2.6299103294487795e-08,
+            "median": 0.0010000117131701155,
+            "p75": 0.0021974300755577716,
+            "p95": 0.09772802311953137,
+            "p99": 0.09772805147988681,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.24999983945615847,
+            "median": 0.24999999915735935,
+            "p75": 0.24999999986197413,
+            "p95": 0.2500000004535579,
+            "p99": 0.2500000010556463,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 227,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.0216128087792297e-13,
+            "p25": 8.226434255842924e-05,
+            "median": 0.0010000010991306836,
+            "p75": 0.015298038823008744,
+            "p95": 0.09593601617825055,
+            "p99": 0.09772800502781208,
+            "max": 0.09772800546973782
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 5.997725963507862,
+              "robust_longest": 6.75
+            },
+            "0.05": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.25
+            },
+            "0.08": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 3.25
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.015720234782493545,
+          "robust_max_abs_curvature_inv_m": 0.006488524174363772,
+          "speed_mps": 7.080263
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800546973782,
+          "speed_mps": 7.080263
+        }
+      },
+      "curvature_output_canonical_sha256": "fd11172d359792e2a2b03f63a89fa999c5ec957db052761b2e6740d98840439d"
+    },
+    {
+      "census_index": 472,
+      "frame_index": 472,
+      "scenario_token": "cc1abd3989065d8d",
+      "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.412010138492367e-09,
+            "p25": 7.738035975643555e-09,
+            "median": 2.462210870860466e-08,
+            "p75": 0.0009995312149487928,
+            "p95": 0.001000031179722226,
+            "p99": 0.0010000564459720104,
+            "max": 0.0010003159921848869
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010003159921848869,
+          "raw_abs_max_location_arc_m": 46.604214046788094,
+          "raw_max_point_adjacent_support_m": 0.12597705813867446,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12597705720751914,
+            "p25": 0.24999999958172403,
+            "median": 0.25000000000301253,
+            "p75": 0.25000000032254527,
+            "p95": 0.2500000007747972,
+            "p99": 0.2500000009372683,
+            "max": 0.2500000011917053
+          },
+          "raw_native_point_count": 173,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.8455655474288317e-17,
+            "p25": 7.93536088210274e-11,
+            "median": 2.4328421067020944e-10,
+            "p75": 0.00029972704784729867,
+            "p95": 0.0009805077048897115,
+            "p99": 0.0009916588880594134,
+            "max": 0.0009951749133980184
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.397110063818315e-09,
+            "p25": 1.500208225088415e-08,
+            "median": 4.98407466375654e-08,
+            "p75": 0.0009999996761352711,
+            "p95": 0.0010000293906413554,
+            "p99": 0.001000047405566545,
+            "max": 0.0010001954985213368
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010001954985213368,
+          "raw_abs_max_location_arc_m": 46.999999978370525,
+          "raw_max_point_adjacent_support_m": 0.18128505847410606,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18128505797651812,
+            "p25": 0.24999999936634,
+            "median": 0.2499999998891125,
+            "p75": 0.2500000002335756,
+            "p95": 0.2500000007944247,
+            "p99": 0.2500000011969896,
+            "max": 0.2500000013614015
+          },
+          "raw_native_point_count": 173,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.5042697246566864e-12,
+            "p25": 1.1529047961621708e-10,
+            "median": 6.041967377459687e-05,
+            "p75": 0.0010000007683090592,
+            "p95": 0.0010000012523260905,
+            "p99": 0.0010000017731587644,
+            "max": 0.0010000021346432933
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010003159921848869,
+          "robust_max_abs_curvature_inv_m": 0.0009951749133980184,
+          "speed_mps": 5.375734839707134
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.0010000021346432933,
+          "speed_mps": 5.375734839707134
+        }
+      },
+      "curvature_output_canonical_sha256": "14889fa47d5bc925ab41e93e2eab88ea8185e6aaeb7ec3bd5ebc722e64ecdbdf"
+    },
+    {
+      "census_index": 474,
+      "frame_index": 474,
+      "scenario_token": "0b210f7b63065e70",
+      "log_id": "2021.10.01.14.16.29_veh-44_00675_00866",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 8.640384394493045e-09,
+            "median": 2.2088330289393318e-08,
+            "p75": 3.426122500849553e-08,
+            "p95": 0.0009999876771588589,
+            "p99": 0.001000035305653392,
+            "max": 0.001000888215895851
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.001000888215895851,
+          "raw_abs_max_location_arc_m": 76.751344036205,
+          "raw_max_point_adjacent_support_m": 0.13133024081371958,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12567202752683643,
+            "p25": 0.24999999965180675,
+            "median": 0.2499999999533638,
+            "p75": 0.25000000016722473,
+            "p95": 0.25000000057110894,
+            "p99": 0.25000000076355045,
+            "max": 0.25000001224720736
+          },
+          "raw_native_point_count": 300,
+          "robust_abs_curvature_inv_m": {
+            "min": 7.465589474181578e-13,
+            "p25": 9.459655569688259e-11,
+            "median": 2.0345617485134705e-10,
+            "p75": 6.16494182110997e-10,
+            "p95": 0.0006762336214038996,
+            "p99": 0.0008867526254393094,
+            "max": 0.0009115103450091345
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 0.0,
+            "p25": 1.3482806010255617e-08,
+            "median": 2.5005260163216305e-08,
+            "p75": 3.970095357014143e-08,
+            "p95": 0.001000002309755072,
+            "p99": 0.0010000405290539324,
+            "max": 0.0010000933102575402
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010000933102575402,
+          "raw_abs_max_location_arc_m": 42.24999997329083,
+          "raw_max_point_adjacent_support_m": 0.1778214778934463,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.17782147757258407,
+            "p25": 0.24999999956940216,
+            "median": 0.24999999990401642,
+            "p75": 0.25000000017440804,
+            "p95": 0.2500000005503668,
+            "p99": 0.2500000008803895,
+            "max": 0.25000000460942967
+          },
+          "raw_native_point_count": 299,
+          "robust_abs_curvature_inv_m": {
+            "min": 8.581495295611513e-27,
+            "p25": 7.55450605390854e-11,
+            "median": 1.8634500349705446e-10,
+            "p75": 6.6920892730594255e-06,
+            "p95": 0.0005948067410351754,
+            "p99": 0.0009096497504263366,
+            "max": 0.0009641821814232852
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000888215895851,
+          "robust_max_abs_curvature_inv_m": 0.0009115103450091345,
+          "speed_mps": 9.379257859261184
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000933102575402,
+          "robust_max_abs_curvature_inv_m": 0.0009641821814232852,
+          "speed_mps": 9.379257859261184
+        }
+      },
+      "curvature_output_canonical_sha256": "86f8f51b1882e28888986da0a185f7eb3b0435a886057a180b611aec59cb4fd4"
+    },
+    {
+      "census_index": 489,
+      "frame_index": 489,
+      "scenario_token": "7c3ea3125f935c8e",
+      "log_id": "2021.08.25.18.07.15_veh-45_01930_02011",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7456507365626157e-09,
+            "p25": 7.76294762881869e-09,
+            "median": 1.909698533645707e-08,
+            "p75": 3.598317822255712e-08,
+            "p95": 0.0012088857754503652,
+            "p99": 0.0012089051616994007,
+            "max": 0.001208952072832192
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.001208952072832192,
+          "raw_abs_max_location_arc_m": 29.678955579606416,
+          "raw_max_point_adjacent_support_m": 0.24999999861056607,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2046752930825111,
+            "p25": 0.24999999968788622,
+            "median": 0.25000000004263134,
+            "p75": 0.25000000038061976,
+            "p95": 0.25000000081153323,
+            "p99": 0.25000000109216475,
+            "max": 0.250000001375994
+          },
+          "raw_native_point_count": 296,
+          "robust_abs_curvature_inv_m": {
+            "min": 6.920870802858119e-18,
+            "p25": 8.706035834529166e-11,
+            "median": 1.8468033913110616e-10,
+            "p75": 4.834892082654236e-10,
+            "p95": 0.0008803796695539481,
+            "p99": 0.0011942072679471613,
+            "max": 0.0012088395104640304
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.397971600898883e-09,
+            "p25": 1.3415940361737239e-08,
+            "median": 2.6133916329998736e-08,
+            "p75": 6.36270253683821e-08,
+            "p95": 0.0010000135907275276,
+            "p99": 0.0010000424433094192,
+            "max": 0.0010000714703381644
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000714703381644,
+          "raw_abs_max_location_arc_m": 26.69309344474344,
+          "raw_max_point_adjacent_support_m": 0.2499999984258817,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2020273342045577,
+            "p25": 0.2499999995982874,
+            "median": 0.2500000000231385,
+            "p75": 0.25000000031482095,
+            "p95": 0.25000000085228846,
+            "p99": 0.25000000125030275,
+            "max": 0.2500000018092683
+          },
+          "raw_native_point_count": 296,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.2207736371349873e-12,
+            "p25": 9.814886681169813e-11,
+            "median": 2.178580663633204e-10,
+            "p75": 0.00029431861217522155,
+            "p95": 0.0009918645514930707,
+            "p99": 0.0010000010393040307,
+            "max": 0.0010000015456248755
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001208952072832192,
+          "robust_max_abs_curvature_inv_m": 0.0012088395104640304,
+          "speed_mps": 9.281108760278483
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000714703381644,
+          "robust_max_abs_curvature_inv_m": 0.0010000015456248755,
+          "speed_mps": 9.281108760278483
+        }
+      },
+      "curvature_output_canonical_sha256": "2f57c7fcfe25d52fe55f47af49f718bd09b84f3ce9b3974f9bf5838b107193d3"
+    },
+    {
+      "census_index": 507,
+      "frame_index": 507,
+      "scenario_token": "5c324338fdf254b4",
+      "log_id": "2021.09.20.18.15.46_veh-08_01534_01667",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.6264500899101714e-10,
+            "p25": 9.962124459323003e-09,
+            "median": 2.964803880894529e-08,
+            "p75": 0.0009999928953276522,
+            "p95": 0.001000030035242633,
+            "p99": 0.001000039606341941,
+            "max": 0.001000052667527234
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.001000052667527234,
+          "raw_abs_max_location_arc_m": 88.8399488032639,
+          "raw_max_point_adjacent_support_m": 0.24999999946342855,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.14537808328073698,
+            "p25": 0.2499999993184657,
+            "median": 0.2499999995842479,
+            "p75": 0.2499999999751696,
+            "p95": 0.25000000045427584,
+            "p99": 0.25000000734446187,
+            "max": 0.25000000849411586
+          },
+          "raw_native_point_count": 261,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.8537298680192903e-12,
+            "p25": 1.727059407462784e-10,
+            "median": 0.00022287173334296697,
+            "p75": 0.0009035971271683655,
+            "p95": 0.0010000014464262234,
+            "p99": 0.0010005754088518914,
+            "max": 0.0010008703420860048
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.851567785919206e-10,
+            "p25": 1.0826726165940202e-08,
+            "median": 2.236328992678891e-08,
+            "p75": 0.0009999817770771002,
+            "p95": 0.005643212325547389,
+            "p99": 0.005643244277322092,
+            "max": 0.005643329373896908
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.005643329373896908,
+          "raw_abs_max_location_arc_m": 96.77713908385417,
+          "raw_max_point_adjacent_support_m": 0.15628595486407734,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.15628595486407734,
+            "p25": 0.24999999928509462,
+            "median": 0.24999999986025595,
+            "p75": 0.2500000002652001,
+            "p95": 0.2500000008111776,
+            "p99": 0.25000000096953795,
+            "max": 0.2500000012469963
+          },
+          "raw_native_point_count": 260,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.8911003461381404e-12,
+            "p25": 1.2610826610964583e-10,
+            "median": 3.9477764318745983e-10,
+            "p75": 0.0006884043168891354,
+            "p95": 0.003258844384748476,
+            "p99": 0.004596452551962524,
+            "max": 0.004786012257496869
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.001000052667527234,
+          "robust_max_abs_curvature_inv_m": 0.0010008703420860048,
+          "speed_mps": 8.134813759969859
+        },
+        "target": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.005643329373896908,
+          "robust_max_abs_curvature_inv_m": 0.004786012257496869,
+          "speed_mps": 8.134813759969859
+        }
+      },
+      "curvature_output_canonical_sha256": "0f64dfea180dc78e78caf224fa6f484043365ade746834e606cd13c3ed7b7c2a"
+    },
+    {
+      "census_index": 516,
+      "frame_index": 516,
+      "scenario_token": "88018798d2365ed9",
+      "log_id": "2021.08.26.15.12.21_veh-42_00210_00292",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.525411060342113e-10,
+            "p25": 9.8418926342377e-09,
+            "median": 1.9131881750807732e-08,
+            "p75": 3.398533908140649e-08,
+            "p95": 0.001000013310038651,
+            "p99": 0.00100003050150875,
+            "max": 0.0010000609393944183
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010000609393944183,
+          "raw_abs_max_location_arc_m": 98.24703366491373,
+          "raw_max_point_adjacent_support_m": 0.24999999833007708,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.2041521170094312,
+            "p25": 0.24999999952606838,
+            "median": 0.24999999996402222,
+            "p75": 0.2500000003252997,
+            "p95": 0.25000000076348516,
+            "p99": 0.25000000101631165,
+            "max": 0.2500000013815953
+          },
+          "raw_native_point_count": 403,
+          "robust_abs_curvature_inv_m": {
+            "min": 7.16771519482685e-13,
+            "p25": 8.013613766350673e-11,
+            "median": 1.6219916838216316e-10,
+            "p75": 3.666231425229922e-10,
+            "p95": 0.0010000008501245172,
+            "p99": 0.0010000012715021475,
+            "max": 0.0010000013837826302
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 3.1249669495151386e-11,
+            "p25": 0.0012061119988943446,
+            "median": 0.0016813480355309118,
+            "p75": 0.0020398599695123083,
+            "p95": 0.0022924152603945665,
+            "p99": 0.002292465744746444,
+            "max": 0.01509747467078189
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.01509747467078189,
+          "raw_abs_max_location_arc_m": 119.04047037519555,
+          "raw_max_point_adjacent_support_m": 0.1659572064723634,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.1659572064723634,
+            "p25": 0.2499999972941718,
+            "median": 0.2499999981948685,
+            "p75": 0.24999999941435871,
+            "p95": 0.2500000001880462,
+            "p99": 0.2500000008433556,
+            "max": 0.25000000091095886
+          },
+          "raw_native_point_count": 404,
+          "robust_abs_curvature_inv_m": {
+            "min": 2.7533738636827946e-12,
+            "p25": 0.0005345112837670376,
+            "median": 0.0015750119801052535,
+            "p75": 0.001896549410235298,
+            "p95": 0.0022844738585390332,
+            "p99": 0.00242312348857471,
+            "max": 0.002513829526286465
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "LOCALIZED_POINTWISE_SPIKE"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010000609393944183,
+          "robust_max_abs_curvature_inv_m": 0.0010000013837826302,
+          "speed_mps": 12.657253157384682
+        },
+        "target": {
+          "disposition": "LOCALIZED_POINTWISE_SPIKE_RAW_AND_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.01509747467078189,
+          "robust_max_abs_curvature_inv_m": 0.002513829526286465,
+          "speed_mps": 12.657253157384682
+        }
+      },
+      "curvature_output_canonical_sha256": "a84f4bb9c994b37f7c42f4fdacdda15d25a1dff0cecfc84724f034b1b637452d"
+    },
+    {
+      "census_index": 528,
+      "frame_index": 528,
+      "scenario_token": "5735883e91ef57e4",
+      "log_id": "2021.08.19.17.14.40_veh-45_01683_02036",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 2.212209079687177e-09,
+            "p25": 2.050925560889084e-08,
+            "median": 0.0009999528152019768,
+            "p75": 0.0010000038839890345,
+            "p95": 0.0010000406245933328,
+            "p99": 0.0010000545070801877,
+            "max": 0.0010003159921848869
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0010003159921848869,
+          "raw_abs_max_location_arc_m": 46.604214046788094,
+          "raw_max_point_adjacent_support_m": 0.12597705813867446,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.12597705720751914,
+            "p25": 0.24999999927320643,
+            "median": 0.24999999964987832,
+            "p75": 0.24999999998600908,
+            "p95": 0.2500000006725842,
+            "p99": 0.2500000008459408,
+            "max": 0.2500000011995196
+          },
+          "raw_native_point_count": 194,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.304150438435144e-12,
+            "p25": 2.8149360071015976e-06,
+            "median": 0.000423298599026674,
+            "p75": 0.0008703752495224729,
+            "p95": 0.0010000009237275207,
+            "p99": 0.0010000012067379839,
+            "max": 0.0010000013015783872
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.9421744175299423e-09,
+            "p25": 1.3404292787372156e-08,
+            "median": 2.5339859086237e-08,
+            "p75": 0.0005101037499411864,
+            "p95": 0.0010000202068470515,
+            "p99": 0.001000037492421331,
+            "max": 0.0010001954985213368
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": -0.0010001954985213368,
+          "raw_abs_max_location_arc_m": 46.999999978370525,
+          "raw_max_point_adjacent_support_m": 0.18128505847410606,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18128505797651812,
+            "p25": 0.24999999947411447,
+            "median": 0.2499999997304146,
+            "p75": 0.2500000000488232,
+            "p95": 0.2500000005324536,
+            "p99": 0.2500000017639271,
+            "max": 0.25000001005393735
+          },
+          "raw_native_point_count": 192,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.2297187799073264e-12,
+            "p25": 7.65219229972533e-11,
+            "median": 1.7841720712673923e-10,
+            "p75": 0.00024097154433524125,
+            "p95": 0.0010000008471595465,
+            "p99": 0.001000001094771481,
+            "max": 0.001000001273152771
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010003159921848869,
+          "robust_max_abs_curvature_inv_m": 0.0010000013015783872,
+          "speed_mps": 6.0021190605191395
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0010001954985213368,
+          "robust_max_abs_curvature_inv_m": 0.001000001273152771,
+          "speed_mps": 6.0021190605191395
+        }
+      },
+      "curvature_output_canonical_sha256": "387e33a15e868da14b72a8f01dc4a3eb750c6771d68865b7949799e78a0020e1"
+    },
+    {
+      "census_index": 540,
+      "frame_index": 540,
+      "scenario_token": "29173a2bbb1b5add",
+      "log_id": "2021.08.17.17.17.01_veh-45_01443_01678",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 2.63701096170883e-08,
+            "median": 0.0010000001761823263,
+            "p75": 0.00219738174769876,
+            "p95": 0.004579611801796356,
+            "p99": 0.004579650471585613,
+            "max": 0.0045796560009154965
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0045796560009154965,
+          "raw_abs_max_location_arc_m": 21.86144131324554,
+          "raw_max_point_adjacent_support_m": 0.24999998681227387,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.18072071708433335,
+            "p25": 0.24999999678755574,
+            "median": 0.2499999992328243,
+            "p75": 0.24999999988118743,
+            "p95": 0.2500000005285281,
+            "p99": 0.2500000008363994,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 215,
+          "robust_abs_curvature_inv_m": {
+            "min": 3.1322223314312346e-12,
+            "p25": 1.112739588956394e-06,
+            "median": 0.0009999846389564533,
+            "p75": 0.0019459298371001718,
+            "p95": 0.003938340142708137,
+            "p99": 0.0045511577930894605,
+            "max": 0.004576979016327789
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 2.6370109645226185e-08,
+            "median": 0.0010000130592334555,
+            "p75": 0.0021974300755577716,
+            "p95": 0.09772802458929548,
+            "p99": 0.09772805212385602,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.2499999957871012,
+            "median": 0.24999999915735935,
+            "p75": 0.24999999980804555,
+            "p95": 0.25000000042799203,
+            "p99": 0.2500000006654651,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 215,
+          "robust_abs_curvature_inv_m": {
+            "min": 1.5613207696415812e-12,
+            "p25": 4.397718202030287e-10,
+            "median": 0.001000001208930682,
+            "p75": 0.021664255872685147,
+            "p95": 0.09616647226951755,
+            "p99": 0.0977280049160413,
+            "max": 0.0977280053491456
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 5.997725963507862,
+              "robust_longest": 7.0
+            },
+            "0.05": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.25
+            },
+            "0.08": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 3.25
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0045796560009154965,
+          "robust_max_abs_curvature_inv_m": 0.004576979016327789,
+          "speed_mps": 6.725459
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.0977280053491456,
+          "speed_mps": 6.725459
+        }
+      },
+      "curvature_output_canonical_sha256": "7832cc7225d5961dc1811db0a4bbd96f7e8e99f49ed24d448ad505b9a020cab1"
+    },
+    {
+      "census_index": 554,
+      "frame_index": 554,
+      "scenario_token": "1942ebe824565f14",
+      "log_id": "2021.09.13.13.20.43_veh-45_02418_02734",
+      "quality": {
+        "source": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 3.1077865590630365e-08,
+            "median": 0.0010000162132979828,
+            "p75": 0.0021974244782027824,
+            "p95": 0.015720196117822906,
+            "p99": 0.015720231367965378,
+            "max": 0.015720247550251525
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.015720247550251525,
+          "raw_abs_max_location_arc_m": 68.13248320416925,
+          "raw_max_point_adjacent_support_m": 0.24999983839168483,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.16838881563874641,
+            "p25": 0.24999998846609972,
+            "median": 0.24999999902257458,
+            "p75": 0.2499999997593973,
+            "p95": 0.2500000004116058,
+            "p99": 0.2500000010581531,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 214,
+          "robust_abs_curvature_inv_m": {
+            "min": 9.470085898727485e-12,
+            "p25": 0.00023748731785736997,
+            "median": 0.0010299281425465716,
+            "p75": 0.002354765784929631,
+            "p95": 0.012096451178084678,
+            "p99": 0.015720211805427143,
+            "max": 0.015720214526291743
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.05": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            },
+            "0.08": {
+              "raw_longest": 0.0,
+              "robust_longest": 0.0
+            }
+          },
+          "classification": "MIXED_CURVATURE_REPRESENTATION_UNRESOLVED"
+        },
+        "target": {
+          "raw_pointwise_abs_curvature_inv_m": {
+            "min": 1.7639933965611117e-09,
+            "p25": 3.0538537090569495e-08,
+            "median": 0.0012689177601778508,
+            "p75": 0.015720218987435166,
+            "p95": 0.0977280245923208,
+            "p99": 0.09772805217752012,
+            "max": 0.0977280593745463
+          },
+          "raw_pointwise_signed_curvature_at_abs_max_inv_m": 0.0977280593745463,
+          "raw_abs_max_location_arc_m": 17.99562563182882,
+          "raw_max_point_adjacent_support_m": 0.24999378265309147,
+          "raw_adjacent_point_support_distribution_m": {
+            "min": 0.13322651988917442,
+            "p25": 0.24999392454014388,
+            "median": 0.24999999740413117,
+            "p75": 0.24999999976217108,
+            "p95": 0.2500000004116058,
+            "p99": 0.2500000010581531,
+            "max": 0.2500000012274489
+          },
+          "raw_native_point_count": 214,
+          "robust_abs_curvature_inv_m": {
+            "min": 6.8727015420702356e-12,
+            "p25": 0.000301139329635936,
+            "median": 0.0014280577058670913,
+            "p75": 0.01801104409621924,
+            "p95": 0.09624898130872048,
+            "p99": 0.09772800506696533,
+            "max": 0.09772800548743016
+          },
+          "robust_resample_step_m": 0.25,
+          "robust_window_m": 5.0,
+          "continuous_support_m": {
+            "0.02": {
+              "raw_longest": 5.997725963507862,
+              "robust_longest": 6.75
+            },
+            "0.05": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.75
+            },
+            "0.08": {
+              "raw_longest": 5.883083514218161,
+              "robust_longest": 5.0
+            }
+          },
+          "classification": "RAW_ROBUST_CONCORDANT_SUSTAINED"
+        }
+      },
+      "disposition": {
+        "source": {
+          "disposition": "LOW_MAGNITUDE_RAW_ROBUST_FEASIBILITY_CONCORDANT",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.015720247550251525,
+          "robust_max_abs_curvature_inv_m": 0.015720214526291743,
+          "speed_mps": 6.6484691467167565
+        },
+        "target": {
+          "disposition": "RAW_ROBUST_CONCORDANT_SUSTAINED_FEASIBLE",
+          "raw_pass": true,
+          "robust_pass": true,
+          "raw_max_abs_curvature_inv_m": 0.0977280593745463,
+          "robust_max_abs_curvature_inv_m": 0.09772800548743016,
+          "speed_mps": 6.6484691467167565
+        }
+      },
+      "curvature_output_canonical_sha256": "dd5d39ccd27234723ffb7198eb5dde492bcdf6850a422fa5633c363fee3ba1f3"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "r2_bj_a5_finite_frame_census_envelope_v1.0",
+  "status": "R2_BJ_A5_CENSUS_COMPLETE_READY_FOR_BJ_B_OWNER_REVIEW",
+  "A4_historical_status_preserved": "APPLICABLE_POOL_INSUFFICIENT",
+  "A4_historical_interpretation": "FRAME_CAPACITY_557_NOT_EVIDENCE_THAT_APPLICABLE_POOL_IS_BELOW_32",
+  "A4_FRAME_CAPACITY": 557,
+  "A5_CENSUS_EVALUATED": 557,
+  "A5_APPLICABLE_POOL": 34,
+  "A5_COMPONENT_STAGE_COUNT": 34,
+  "A5_MOVING_REGIME_COMPONENT_FAILURES": 0,
+  "required_applicable_pool": 32,
+  "curvature_undefined_category_count": 0,
+  "input_integrity": "PASS",
+  "BJ_B_ROSTER_SELECTED": false,
+  "RUNNER_RUN": 0,
+  "engineering_simulation": 0,
+  "scientific_simulation": 0,
+  "TSB_simulation": 0,
+  "R2_C_started": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false
+}

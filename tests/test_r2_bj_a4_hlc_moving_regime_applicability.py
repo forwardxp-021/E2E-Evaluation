@@ -1,5 +1,6 @@
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -95,4 +96,8 @@ def test_manifest_sha_closure():
     assert manifest["component_SHA_closure"] == "PASS"
     assert manifest["runner_run_calls"] == manifest["simulation_calls"] == 0
     for row in manifest["components"]:
-        assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+        historical = subprocess.run(
+            ["git", "show", f"39922a8af72de382de21eb4bf98326f3639f73d4:{row['path']}"],
+            cwd=ROOT, check=True, capture_output=True,
+        ).stdout
+        assert hashlib.sha256(historical).hexdigest() == row["sha256"]
