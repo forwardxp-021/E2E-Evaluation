@@ -1,5 +1,6 @@
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -103,10 +104,14 @@ def test_a3_is_not_ready_and_governance_is_zero_run():
     assert "请求暂缓" in request
 
 
-def test_current_manifest_binds_current_quick_reference_and_all_components():
+def test_historical_manifest_binds_historical_quick_reference_and_immutable_components():
     manifest = load("r2_bj_a3_component_sha_binding_manifest_v1.0.json")
     assert manifest["component_SHA_closure"] == "PASS"
     assert manifest["current_QUICK_REFERENCE_bound_here"] is True
     assert manifest["runner_run_calls"] == manifest["simulation_calls"] == 0
     for row in manifest["components"]:
-        assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+        historical = subprocess.run(
+            ["git", "show", f"020fa104a58956b8e6b3010a807fe5003585ef1a:{row['path']}"],
+            cwd=ROOT, check=True, capture_output=True,
+        ).stdout
+        assert hashlib.sha256(historical).hexdigest() == row["sha256"]

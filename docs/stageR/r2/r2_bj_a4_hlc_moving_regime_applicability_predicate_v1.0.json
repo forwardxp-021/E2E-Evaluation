@@ -1,0 +1,40 @@
+{
+  "schema_version": "r2_bj_a4_hlc_moving_regime_applicability_predicate_v1.0",
+  "status": "FROZEN_OUTCOME_BLIND_MOVING_REGIME_PREDICATE",
+  "preregistered_contract": "docs/stageR/r2/r2_bj_a4_preregistered_contract_v1.0.json",
+  "estimand": "MOVING_VEHICLE_HESITANT_LANE_CHANGE",
+  "speed_gate": {
+    "formula": "max(official_initial_speed_mps,max_pre_treatment_speed_mps_0_to_1p0s_inclusive)>=3.0",
+    "threshold_mps": 3.0,
+    "executed_before_topology_curvature_or_V4": true,
+    "same_for_both_arms": true,
+    "anchor_speed_used": false,
+    "outcome_used": false
+  },
+  "ordered_predicate": [
+    "P01_EXACT_SINGLE_OFFICIAL_SCENARIO_RESOLUTION",
+    "P02_EXCLUSION_CLOSURE_PASS",
+    "P03_MOVING_REGIME_SPEED_PASS",
+    "P04_V2_3_ROUTE_CONTINUOUS_RECONSTRUCTION_PASS",
+    "P05_REFERENCE_SEGMENT_QUALITY_PASS",
+    "P06_PRIMARY80_NO_EXTRAPOLATION_AT_V_SUPPORT_PASS",
+    "P07_RAW_ROBUST_CURVATURE_DISPOSITION_DEFINED_AND_FEASIBLE",
+    "P08_NATIVE_COMPONENT_PASS",
+    "P09_GENERATED_INCREMENT_PASS_WITHOUT_CANCELLATION",
+    "P10_COMPOSITE_AND_STATE0_CONTINUITY_PASS",
+    "P11_POST_RECOMMIT_TERMINAL_SETTLING_PASS",
+    "P12_GLOBAL_FROZEN_PARAMETER_PASS"
+  ],
+  "component_grid": {
+    "arms": 2,
+    "speed_cases": 2,
+    "residual_cases": 3,
+    "iterations": 80,
+    "cases_per_opportunity": 960
+  },
+  "parameters": "GLOBAL_V4_ONLY",
+  "scenario_specific_tuning": false,
+  "threshold_change": false,
+  "runner_or_simulator_callable": false,
+  "roster_selection": false
+}

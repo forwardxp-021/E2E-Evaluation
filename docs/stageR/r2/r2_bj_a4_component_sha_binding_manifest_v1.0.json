@@ -1,0 +1,140 @@
+{
+  "schema_version": "r2_bj_a4_component_sha_binding_manifest_v1.0",
+  "status": "APPLICABLE_POOL_INSUFFICIENT",
+  "components": [
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_preregistered_contract_v1.0.json",
+      "sha256": "8283073304be87934119be5284abaa724983bf906abd2b65ffed062ed46d21e0"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_hlc_moving_regime_applicability_predicate_v1.0.json",
+      "sha256": "fe02f8e5c26f1269503471891c40295e30a268af4f38e35584d4e328928631e1"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_hash_ranked_audit_frame_manifest_v1.0.json",
+      "sha256": "bf5f84acc8034136720f372ed2b56dd6fe6944cc09e95b7545457d27830ae1a5"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_effective_audit_exclusion_closure_v1.0.json",
+      "sha256": "ca35af5885d720a771208055ab83f9055f4622eb6b9850231917df05fc9444a6"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_a3_and_historical_applicability_disposition_v1.0.json",
+      "sha256": "8589d72ca504f7e8d07dda4067f5eddf368c7baebb41028c0a28e7cc59bee225"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_fresh_candidate_eligibility_ledger_v1.0.json",
+      "sha256": "e9e502deaba213b4b58241198e4fcf30eecd060510ab7c0c14626e135067dcd6"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_native_generated_composite_component_audit_v1.0.json",
+      "sha256": "95af1a4bc1bc0b291fe3e6a287b691d43637c099a7e15da5dce626d7f090e5f1"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_curvature_disposition_audit_v1.0.json",
+      "sha256": "377305921d9a5c11699e2264b4baedf97b57ff043bffaaf08d081ca3305bcca0"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_passing_candidate_provenance_manifest_v1.0.json",
+      "sha256": "b1a283aa83d3ea1b70b0c81f767bf3a3611df3c56cde4b654d20b1e4a5fc17c0"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_moving_regime_candidate_pool_envelope_v1.0.json",
+      "sha256": "5fa77836cd3dac708a14c7e60f8392ff82e6f37145e864d803653cc533bbc755"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a4_data_firewall_audit_v1.0.json",
+      "sha256": "42018cfee7a23d02318e082621b51d6506623a1f8451c1bba901f03d12895889"
+    },
+    {
+      "path": "docs/stageR/r2/R2_BJ_A4_Scientific_Owner_Readiness_Request_v0.1.md",
+      "sha256": "2a291fddd860087ad39d9510a29dac89eb2bf4e91a57447f90ef74b58605acae"
+    },
+    {
+      "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+      "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e"
+    },
+    {
+      "path": "docs/stageR/r1/r1_b2_7_enumeration_summary_v1.0.json",
+      "sha256": "f1cd6aed6139485c3804d9acac1d81cf4c8a8df1f29d0debe428141aaba0de3a"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_permanent_exclusion_ledger_v1.0.json",
+      "sha256": "f56d9d5395a5a051ba23f0624b739779c9c41eb67b3b82d304f671ad9f49bbb7"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_r2bi_outcome_exposure_ledger_v1.0.json",
+      "sha256": "540a2b293fddd6f75214c23d5e732d266d8f5572c311e331ca592cd691670d7e"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_hlc_joint_support_provenance_manifest_v1.0.json",
+      "sha256": "7782abba6e402caf233b0e2d16b3f0beb0e66aef21a61e643b1ecb034f8733fe"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a3_hash_ranked_audit_frame_manifest_v1.0.json",
+      "sha256": "4acc21287ecbb6946101dd6b5effd581690d127976ae706a04ef4396530cd6e6"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a3_fresh_candidate_eligibility_ledger_v1.0.json",
+      "sha256": "bda5c97dc4826f03b93fb6bf514a290114cac8bdc852ae71f25f162197baa1b0"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a3_native_generated_composite_component_audit_v1.0.json",
+      "sha256": "d14a024dfbb79360b7cae3c1c98b35cfd7eb55843a7c6235e78a00daf187dbfc"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a3_corrected_speed_envelope_review_v1.0.json",
+      "sha256": "c90e2411bd907eff824f6a1625998855b58daab02d31bf8d2991f2eec6bb6b95"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a3_legacy_technical_disposition_ledger_v1.0.json",
+      "sha256": "61ef4d1f6218e66d5dc462bf91001c50c8c8be31a2696bbbd53130de08cf2bf8"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+      "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"
+    },
+    {
+      "path": "tools/r2_bj_a4_hlc_moving_regime_applicability.py",
+      "sha256": "e2f167e77057a22c1a3174fad27fcbd1509a22e45db23665f96250ad0c6414bf"
+    },
+    {
+      "path": "tools/r2_bj_a3_hlc_prospective_applicability.py",
+      "sha256": "ff6c9987711de339103525dd497f7bfdcc35d048c6f8fd3a4ec211fcf0140779"
+    },
+    {
+      "path": "tools/r2_bj_a2_joint_support_applicability_audit.py",
+      "sha256": "5ce00e89ce7aadf09d9cb3497f7507037b570c057663a18dbfa5e35ccef4b1c9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+      "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+      "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+    },
+    {
+      "path": "tools/r1_closed_loop_benchmark_v2_3.py",
+      "sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49"
+    },
+    {
+      "path": "tests/test_r2_bj_a4_hlc_moving_regime_applicability.py",
+      "sha256": "861e83139b262977792e5271930188d06df32378e5db9fad91b65ba402aa856c"
+    },
+    {
+      "path": "QUICK_REFERENCE.md",
+      "sha256": "703298d279de57b222dbfbd8b541b6c49decf55f815e97751dcff884c4761c48"
+    }
+  ],
+  "component_SHA_closure": "PASS",
+  "frame_target_count": 768,
+  "frame_count": 557,
+  "frame_freeze_complete": false,
+  "applicable_pool_count": null,
+  "V4_or_threshold_changed": false,
+  "BJ_B_roster_selected": false,
+  "runner_run_calls": 0,
+  "simulation_calls": 0,
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

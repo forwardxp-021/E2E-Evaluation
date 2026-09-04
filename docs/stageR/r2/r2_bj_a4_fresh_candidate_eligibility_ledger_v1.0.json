@@ -1,0 +1,15 @@
+{
+  "schema_version": "r2_bj_a4_fresh_candidate_eligibility_ledger_v1.0",
+  "status": "APPLICABLE_POOL_INSUFFICIENT",
+  "audit_frame_sha256": "bf5f84acc8034136720f372ed2b56dd6fe6944cc09e95b7545457d27830ae1a5",
+  "frame_freeze_complete": false,
+  "frame_target_count": 768,
+  "available_unique_log_basic_HLC_count": 557,
+  "frame_cardinality_shortfall": 211,
+  "A4_predicate_evaluated_count": 0,
+  "reason": "FROZEN_SOURCE_UNIVERSE_HAS_FEWER_THAN_768_BASIC_HLC_RECORDS_UNDER_GLOBAL_LOG_DEDUP",
+  "EARLY_STOP": false,
+  "exhaustive_canonical_log_scan_complete": true,
+  "candidate_role": "FRAME_CONSTRUCTION_SUPPORT_ONLY_NOT_BJ_B_ROSTER",
+  "entries": []
+}

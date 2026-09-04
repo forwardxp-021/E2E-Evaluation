@@ -1,0 +1,242 @@
+{
+  "schema_version": "r2_bj_a4_a3_and_historical_applicability_disposition_v1.0",
+  "status": "COMPLETE_NON_BLACKLIST_APPLICABILITY_DISPOSITION",
+  "A3_generated_composite_failure_count": 11,
+  "A3_failure_all_11_below_speed_floor": true,
+  "A3_failures": [
+    {
+      "scenario_token": "9be12b9fcbf85b6e",
+      "log_id": "2021.08.30.14.36.46_veh-08_00873_01639",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 0.31613359107574573,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "6e24892b4ed25608",
+      "log_id": "2021.07.24.20.37.45_veh-17_00015_00375",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 1.931235288228532,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "14c25667c27c5d64",
+      "log_id": "2021.09.20.20.32.00_veh-08_00746_01631",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 0.5965595788531776,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "ed6fa57887c852ec",
+      "log_id": "2021.09.17.18.42.25_veh-08_01484_01749",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 1.5476344230606323,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "05338730330e5e4b",
+      "log_id": "2021.05.12.22.28.35_veh-35_00620_01164",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 0.1621578262570138,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "e5263fe137af5f57",
+      "log_id": "2021.08.26.18.17.33_veh-08_00016_00313",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 1.295754,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "019d3e0fc75953c3",
+      "log_id": "2021.07.16.18.06.21_veh-38_03231_03712",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 0.582886,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "29bfee301adb5fd0",
+      "log_id": "2021.08.17.18.11.12_veh-08_00234_00611",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 1.7408382391002442,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "8677265737315395",
+      "log_id": "2021.09.10.19.22.47_veh-42_01062_02421",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 1.4972542265696365,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "30a6f4a736325563",
+      "log_id": "2021.06.23.15.56.12_veh-16_00839_01285",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 0.2582056328979765,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    },
+    {
+      "scenario_token": "d48dcb44dda05e24",
+      "log_id": "2021.09.20.14.38.07_veh-42_00379_00742",
+      "A3_original_failure": "ValueError:P08_V4_GENERATED_INCREMENT_INFEASIBLE",
+      "v_audit_mps": 0.6095684158948701,
+      "v_audit_below_3p0": true,
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "A3_failure_result_changed": false,
+      "moving_regime_V4_failure_counted": false,
+      "outcome_blacklist_addition": false,
+      "technical_rerun": false
+    }
+  ],
+  "A2_corrected_speed_topology_failure": {
+    "scenario_token": "3feb5f93f24e5b77",
+    "log_id": "2021.09.28.16.50.03_veh-44_00782_01293",
+    "failure_reason": "ValueError:ROUTE_CONTINUOUS_TOPOLOGY_AMBIGUITY_FAIL_CLOSED:source=18516:target=18517:candidates=0",
+    "A4_disposition": "HISTORICAL_OPPORTUNITY_NOT_APPLICABLE_UNDER_CURRENT_V2_3",
+    "topology_builder_modified": false,
+    "historical_result_changed": false
+  },
+  "legacy_10": [
+    {
+      "scenario_token": "14f06b5194ff5c85",
+      "log_id": "2021.09.17.14.16.24_veh-45_01972_02284",
+      "v_audit_mps": 7.32934511282663,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "40816601b19a5ca5",
+      "log_id": "2021.09.28.19.55.30_veh-44_00395_01217",
+      "v_audit_mps": 0.003985699105795654,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "578993bfc973525e",
+      "log_id": "2021.08.17.16.48.45_veh-43_02070_02652",
+      "v_audit_mps": 8.697269161467055,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "5d3f971cd6ff5a3a",
+      "log_id": "2021.08.19.17.14.40_veh-45_02585_02856",
+      "v_audit_mps": 8.37618,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "bb5bcc610f3853b7",
+      "log_id": "2021.08.19.17.14.40_veh-45_00298_00804",
+      "v_audit_mps": 15.313079025425061,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "be449a2b6ad959d8",
+      "log_id": "2021.09.27.17.06.43_veh-44_01765_01929",
+      "v_audit_mps": 0.0011085660296222698,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "bfdbb19e4ff85027",
+      "log_id": "2021.09.15.17.01.41_veh-45_00425_01226",
+      "v_audit_mps": 0.0009172497284039048,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "d42842ff6aca5f6f",
+      "log_id": "2021.09.23.17.03.56_veh-45_02539_02937",
+      "v_audit_mps": 2.646955690018797,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "f967188819ef539f",
+      "log_id": "2021.06.23.17.31.36_veh-16_00016_00377",
+      "v_audit_mps": 0.0038552266778961453,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LOW_SPEED_OUTSIDE_V4_APPLICABILITY",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    },
+    {
+      "scenario_token": "fd93956a3f9052dc",
+      "log_id": "2021.08.23.15.14.44_veh-08_00917_01175",
+      "v_audit_mps": 0.0018089014545985909,
+      "A3_technical_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "A4_disposition": "LEGACY_OPPORTUNITY_NOT_APPLICABLE_UNDER_V2_3",
+      "outcome_blacklist_addition": false,
+      "historical_result_changed": false
+    }
+  ],
+  "legacy_reconstructable_but_low_speed_count": 2,
+  "outcome_blacklist_entries_created": 0
+}

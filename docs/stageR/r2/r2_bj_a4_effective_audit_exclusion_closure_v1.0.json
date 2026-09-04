@@ -1,0 +1,2710 @@
+{
+  "schema_version": "r2_bj_a4_effective_audit_exclusion_closure_v1.0",
+  "status": "FROZEN_ADDITIVE_TOKEN_LOG_EXCLUSION_CLOSURE",
+  "match_rule": "EXCLUDE_IF_SCENARIO_TOKEN_OR_LOG_ID_MATCHES",
+  "source_ledgers": [
+    {
+      "path": "docs/stageR/r2/r2_bi_hlc_dev_kin_permanent_exclusion_ledger_v1.0.json",
+      "sha256": "f56d9d5395a5a051ba23f0624b739779c9c41eb67b3b82d304f671ad9f49bbb7",
+      "entry_count": 117
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_r2bi_outcome_exposure_ledger_v1.0.json",
+      "sha256": "540a2b293fddd6f75214c23d5e732d266d8f5572c311e331ca592cd691670d7e",
+      "entry_count": 8
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a2_hlc_joint_support_provenance_manifest_v1.0.json",
+      "sha256": "7782abba6e402caf233b0e2d16b3f0beb0e66aef21a61e643b1ecb034f8733fe",
+      "entry_count": 57
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a3_hash_ranked_audit_frame_manifest_v1.0.json",
+      "sha256": "4acc21287ecbb6946101dd6b5effd581690d127976ae706a04ef4396530cd6e6",
+      "entry_count": 256
+    }
+  ],
+  "entry_count": 373,
+  "unique_token_count": 373,
+  "unique_log_count": 373,
+  "A3_frame_entries_included": 256,
+  "entries": [
+    {
+      "scenario_token": "004f7ee01e7d5308",
+      "log_id": "2021.08.17.13.10.50_veh-08_00122_00295",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "005015103d3a5a92",
+      "log_id": "2021.08.27.14.37.47_veh-08_02300_02620",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0092310f762e5b37",
+      "log_id": "2021.09.09.13.32.12_veh-43_00175_00627",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "00aacb90199b5801",
+      "log_id": "2021.09.21.19.41.31_veh-45_01828_02370",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "012b091807395766",
+      "log_id": "2021.10.01.14.49.24_veh-44_00005_00686",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0198af1831f65977",
+      "log_id": "2021.09.28.13.24.06_veh-44_02759_02879",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "019d3e0fc75953c3",
+      "log_id": "2021.07.16.18.06.21_veh-38_03231_03712",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "01b2c253f6e05c24",
+      "log_id": "2021.08.23.16.51.29_veh-42_01737_02472",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "01bc3d31165d59f5",
+      "log_id": "2021.09.17.14.49.23_veh-42_00135_00310",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "042b9dfca2095efd",
+      "log_id": "2021.08.23.17.20.10_veh-45_00180_00324",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "04aa6b32e2be5124",
+      "log_id": "2021.08.17.16.57.11_veh-08_00206_00331",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "04df2e81dbbf5f0f",
+      "log_id": "2021.09.27.17.52.47_veh-44_00016_00742",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "05338730330e5e4b",
+      "log_id": "2021.05.12.22.28.35_veh-35_00620_01164",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0552f4e3554352a8",
+      "log_id": "2021.09.10.19.22.47_veh-42_00173_00921",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "057c831f5acf5c76",
+      "log_id": "2021.09.28.18.57.35_veh-44_01064_01998",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "06839d65babe588e",
+      "log_id": "2021.09.02.15.07.50_veh-08_00016_00379",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "069c18b3fe02515d",
+      "log_id": "2021.09.21.18.54.31_veh-45_00236_00572",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "06d1bd71103556ea",
+      "log_id": "2021.09.10.20.06.13_veh-42_00032_01034",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0705eb6f4a5c5949",
+      "log_id": "2021.09.13.19.54.06_veh-45_01864_02254",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "07593a7e8d9a533e",
+      "log_id": "2021.09.13.18.55.23_veh-45_02099_02822",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "0799b3c270c85038",
+      "log_id": "2021.09.30.15.05.51_veh-44_00016_00731",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "07ab1414998b5f5e",
+      "log_id": "2021.09.09.14.34.34_veh-43_00889_01053",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "07c73a20844c5c28",
+      "log_id": "2021.09.03.16.38.35_veh-08_01900_02526",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "08fe3645ddcb5c8a",
+      "log_id": "2021.08.17.16.48.45_veh-43_00451_00871",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "095db0df20635617",
+      "log_id": "2021.08.30.14.29.08_veh-45_02192_02406",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "099ecafb63315461",
+      "log_id": "2021.08.17.16.57.11_veh-08_01200_01636",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "099ff5614e085125",
+      "log_id": "2021.09.09.13.32.12_veh-43_02295_02890",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "09d98fc113db5e44",
+      "log_id": "2021.09.17.19.38.59_veh-08_00199_01050",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0b87141bddba5432",
+      "log_id": "2021.08.23.12.33.24_veh-42_02142_02317",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "0bb3c03a3fd85097",
+      "log_id": "2021.09.10.15.00.33_veh-45_00264_00358",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0c338bbe6bda5ba5",
+      "log_id": "2021.09.23.13.54.40_veh-45_00929_01047",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0cbbcae7174650d7",
+      "log_id": "2021.09.21.19.41.31_veh-45_00608_01295",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0db46fe5930858bb",
+      "log_id": "2021.10.01.17.28.18_veh-44_00609_01551",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0ec585fdf4d35271",
+      "log_id": "2021.08.19.18.08.28_veh-45_01456_02210",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0f14f21802145a2b",
+      "log_id": "2021.06.07.18.53.26_veh-26_00005_00427",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "0f67192c7dd45664",
+      "log_id": "2021.09.10.15.00.33_veh-45_01265_01432",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "0fcaa3e04f185eb1",
+      "log_id": "2021.09.10.17.09.03_veh-42_00818_01092",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "10058cf1ff385848",
+      "log_id": "2021.08.25.19.06.07_veh-42_01126_01421",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "110ff89752675146",
+      "log_id": "2021.09.17.16.35.20_veh-45_02564_02920",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "114d7819ff55581f",
+      "log_id": "2021.09.28.18.22.59_veh-44_00696_00971",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "118dae215aa257e2",
+      "log_id": "2021.09.17.18.16.32_veh-45_01447_01769",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "13795027ce145b73",
+      "log_id": "2021.09.09.18.47.17_veh-45_00740_01166",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "13b1eb0a13d85d73",
+      "log_id": "2021.09.03.16.38.35_veh-08_01127_01862",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "13d5c9908ea45df9",
+      "log_id": "2021.06.28.16.57.59_veh-26_00016_00484",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "14372c30387f5a4e",
+      "log_id": "2021.09.09.13.32.12_veh-43_00646_01672",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "14878b597812531c",
+      "log_id": "2021.09.20.19.38.32_veh-08_00236_01202",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "14a6c5a13c4a5d85",
+      "log_id": "2021.08.20.13.02.56_veh-42_01204_01440",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "14ad58ce42995a7b",
+      "log_id": "2021.08.25.19.15.01_veh-45_01455_01721",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "14c25667c27c5d64",
+      "log_id": "2021.09.20.20.32.00_veh-08_00746_01631",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "14f06b5194ff5c85",
+      "log_id": "2021.09.17.14.16.24_veh-45_01972_02284",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "1510420e297e5579",
+      "log_id": "2021.08.17.16.48.45_veh-43_03384_03788",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "16893f5e66dd5071",
+      "log_id": "2021.09.20.14.04.18_veh-08_01165_02197",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "168d9edc4c7750f1",
+      "log_id": "2021.05.12.22.00.38_veh-35_01008_01518",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "16facbeedddc5425",
+      "log_id": "2021.08.31.14.55.32_veh-08_01493_01713",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "19e9beb939455be3",
+      "log_id": "2021.08.20.14.28.03_veh-45_00239_00641",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "1ac5efbd2c7a505b",
+      "log_id": "2021.09.03.16.38.35_veh-08_00026_00837",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "1e12f52783275ff3",
+      "log_id": "2021.09.28.18.57.35_veh-44_02305_02462",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "213a513a616d5422",
+      "log_id": "2021.05.12.23.36.44_veh-35_02035_02387",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "21c8517ae1655dfc",
+      "log_id": "2021.09.27.14.45.42_veh-44_02609_03216",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "21d7ae213ca459f6",
+      "log_id": "2021.09.28.19.55.30_veh-44_02530_03148",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "220edc604260542e",
+      "log_id": "2021.09.23.17.03.56_veh-45_01512_01822",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "22b8cdc78d79502d",
+      "log_id": "2021.08.30.13.08.03_veh-08_01302_01607",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "24673047dc545b13",
+      "log_id": "2021.08.23.16.53.37_veh-08_00672_00981",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "25944935eadb52f1",
+      "log_id": "2021.09.10.17.09.03_veh-42_01128_02369",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "269fcdd0c8135c8b",
+      "log_id": "2021.09.23.17.57.13_veh-45_01746_02191",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "274c17ab39845401",
+      "log_id": "2021.09.23.18.57.19_veh-45_00853_01131",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "28b077d4bc2e5ea0",
+      "log_id": "2021.08.20.16.54.30_veh-08_02218_02541",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "290d9e1662b65c62",
+      "log_id": "2021.08.23.19.12.30_veh-45_01055_01285",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "29bfee301adb5fd0",
+      "log_id": "2021.08.17.18.11.12_veh-08_00234_00611",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "29e56f67753651c7",
+      "log_id": "2021.08.25.19.30.22_veh-08_01138_01710",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "2ad103f283b15452",
+      "log_id": "2021.09.30.18.01.05_veh-44_01000_01443",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "2b8c769f31e5553d",
+      "log_id": "2021.09.03.14.16.10_veh-08_00122_00566",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "2c70dfdf24c55774",
+      "log_id": "2021.09.27.17.52.47_veh-44_02062_02160",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "2d5bf667b6245057",
+      "log_id": "2021.08.20.12.28.52_veh-42_00290_00447",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "2ee138a839775576",
+      "log_id": "2021.08.27.13.48.56_veh-08_02322_02550",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "2f8d8ffcdac05f81",
+      "log_id": "2021.08.30.17.40.28_veh-45_01374_01488",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "30a6f4a736325563",
+      "log_id": "2021.06.23.15.56.12_veh-16_00839_01285",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3426f7a84e8f544f",
+      "log_id": "2021.08.23.13.17.08_veh-42_01464_01720",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3606b3c7132f5f96",
+      "log_id": "2021.09.02.12.54.17_veh-08_02291_02457",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "3620924e36535eae",
+      "log_id": "2021.08.25.18.07.15_veh-45_02049_02366",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "36a4f8ea878d5541",
+      "log_id": "2021.08.30.14.29.08_veh-45_01748_01919",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "36c027843b295dc5",
+      "log_id": "2021.08.25.17.17.57_veh-42_00327_01003",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "36e11496a48954b4",
+      "log_id": "2021.09.17.16.35.20_veh-45_03025_03426",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "372a0adc27a15ac4",
+      "log_id": "2021.07.16.00.51.05_veh-17_01352_01901",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "391dcde01666529c",
+      "log_id": "2021.09.17.19.38.59_veh-08_01524_02752",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3a477baa13a65f07",
+      "log_id": "2021.08.23.13.26.46_veh-45_01481_02501",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3bad3649d9695f81",
+      "log_id": "2021.09.02.12.54.17_veh-08_00942_01042",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3e7e8685e0845c2f",
+      "log_id": "2021.09.20.12.58.53_veh-42_00371_00667",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "3e825cc1c15050ba",
+      "log_id": "2021.08.23.19.08.29_veh-42_00159_00870",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3edcce9e7e19573f",
+      "log_id": "2021.09.30.17.20.14_veh-44_00422_00647",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "3fa06d8b779e5b0c",
+      "log_id": "2021.09.21.18.54.31_veh-45_00894_01246",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "3feb5f93f24e5b77",
+      "log_id": "2021.09.28.16.50.03_veh-44_00782_01293",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "40816601b19a5ca5",
+      "log_id": "2021.09.28.19.55.30_veh-44_00395_01217",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "410fba69f5025ddd",
+      "log_id": "2021.09.10.18.03.24_veh-42_02833_03385",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "420583abff495416",
+      "log_id": "2021.08.25.14.12.46_veh-08_00569_00995",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "42f388b697a75cb0",
+      "log_id": "2021.08.17.18.13.38_veh-45_00946_01854",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "438d50296203555b",
+      "log_id": "2021.09.09.17.29.55_veh-42_00858_01275",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "443fb6aac76551d6",
+      "log_id": "2021.09.17.12.58.10_veh-45_01150_01912",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4491bb0de99c5ec5",
+      "log_id": "2021.10.01.19.16.42_veh-28_03307_03808",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "44c355a8ab765540",
+      "log_id": "2021.06.28.16.29.11_veh-38_01415_01821",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "45e12a1cd7475252",
+      "log_id": "2021.08.17.13.15.12_veh-45_01679_01816",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "460fe7fbc1cf5a36",
+      "log_id": "2021.09.21.18.07.37_veh-45_01141_01324",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "489d03fef37a5720",
+      "log_id": "2021.08.17.17.55.18_veh-43_00122_00325",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "49276baa21e15d38",
+      "log_id": "2021.08.19.15.03.05_veh-45_01749_02365",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "4ab6b45b2b455ee8",
+      "log_id": "2021.09.03.16.38.35_veh-08_00856_01045",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4b3811ae0e1a5bd5",
+      "log_id": "2021.06.09.12.39.51_veh-26_05620_06003",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4b60dbf3ba745c6c",
+      "log_id": "2021.08.25.20.03.09_veh-08_00016_00999",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4bf3f328266954d2",
+      "log_id": "2021.08.19.19.22.25_veh-08_01427_01614",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4c8108ea837e5e8c",
+      "log_id": "2021.08.19.17.42.11_veh-08_01521_01775",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4c8eb49ed58b52ff",
+      "log_id": "2021.08.17.16.48.45_veh-43_01060_01405",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4e070e3f6bc95462",
+      "log_id": "2021.09.21.18.07.37_veh-45_00914_01090",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4e8d5c77f1c75519",
+      "log_id": "2021.09.21.20.04.35_veh-08_01935_02511",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4f4d33cd741755f3",
+      "log_id": "2021.09.13.21.07.09_veh-45_00503_00734",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "4fa52d891cb057f3",
+      "log_id": "2021.10.01.17.28.18_veh-44_00212_00444",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "4fb9bf05c5605ee8",
+      "log_id": "2021.08.23.16.32.43_veh-45_01957_02241",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "512198168cbc55af",
+      "log_id": "2021.09.17.14.49.23_veh-42_00690_00846",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "5292d0ee192e5b51",
+      "log_id": "2021.08.25.13.09.17_veh-08_00425_00803",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "52e8149e4ca559d9",
+      "log_id": "2021.09.20.12.58.53_veh-42_00998_01463",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "54dd637158855bee",
+      "log_id": "2021.09.17.18.42.25_veh-08_00029_00784",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "563c16c0e6f05a8c",
+      "log_id": "2021.09.28.13.24.06_veh-44_00043_00707",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "568ad8e3838553f7",
+      "log_id": "2021.09.03.17.02.10_veh-42_01034_01107",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "56a068c39f9e5146",
+      "log_id": "2021.08.31.14.55.32_veh-08_01213_01374",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "56cc8049dee85334",
+      "log_id": "2021.09.17.16.35.20_veh-45_02008_02115",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "578993bfc973525e",
+      "log_id": "2021.08.17.16.48.45_veh-43_02070_02652",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "579cad0c3e8550cd",
+      "log_id": "2021.09.23.18.57.19_veh-45_00428_00826",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "57c31880394d576a",
+      "log_id": "2021.08.19.18.08.28_veh-45_00419_00852",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "5813eb87cff753c8",
+      "log_id": "2021.06.09.17.37.09_veh-12_00404_00864",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "583740c950175d7d",
+      "log_id": "2021.08.27.14.14.40_veh-45_00582_01089",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "583a6ea0bcdc591c",
+      "log_id": "2021.10.01.12.54.53_veh-44_02651_03095",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "58cbfa8197955af6",
+      "log_id": "2021.08.19.18.08.28_veh-45_02541_02749",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5947eab4b7585a50",
+      "log_id": "2021.08.30.14.54.34_veh-40_00439_00835",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "59b00ead71d6527b",
+      "log_id": "2021.05.25.14.16.10_veh-35_01690_02183",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5a73a69b20f65ff8",
+      "log_id": "2021.09.17.14.49.23_veh-42_00333_00624",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5ab20ff9cc3c5d29",
+      "log_id": "2021.08.20.17.54.47_veh-45_02642_02801",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "5ab430b670765dd5",
+      "log_id": "2021.08.31.14.55.32_veh-08_00305_00531",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5c04df4c02975a77",
+      "log_id": "2021.09.20.18.55.11_veh-08_00069_00483",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "5d3f971cd6ff5a3a",
+      "log_id": "2021.08.19.17.14.40_veh-45_02585_02856",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "5d4bf8eb056455ba",
+      "log_id": "2021.08.17.13.10.50_veh-08_01060_01340",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5dbc010911935f73",
+      "log_id": "2021.06.14.16.48.02_veh-12_04057_04438",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5ef7c532500f5b3b",
+      "log_id": "2021.09.10.13.58.49_veh-42_01475_01743",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "5f665101b76e5210",
+      "log_id": "2021.09.23.13.07.52_veh-45_00951_01100",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "60690c6b8ec5508f",
+      "log_id": "2021.09.10.14.44.55_veh-42_00694_00971",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "60d34a7432465344",
+      "log_id": "2021.08.20.14.28.03_veh-45_01060_01883",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "62ddaf764b685173",
+      "log_id": "2021.08.27.14.37.47_veh-08_00986_01258",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "63f974504fa15b7d",
+      "log_id": "2021.08.30.16.39.44_veh-45_00866_01142",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "642176db00155d5c",
+      "log_id": "2021.09.24.14.23.05_veh-45_01175_01453",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6464ad553b205b77",
+      "log_id": "2021.09.13.19.54.06_veh-45_01097_01852",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "657fa6adcde25322",
+      "log_id": "2021.09.09.19.47.56_veh-45_02121_02426",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6648a118463f5406",
+      "log_id": "2021.08.17.13.15.12_veh-45_02304_02650",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "66b8a52dc3a25642",
+      "log_id": "2021.06.28.15.02.02_veh-38_02398_02848",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "66d41b0cfcd45c59",
+      "log_id": "2021.09.28.15.17.00_veh-44_01916_02112",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "67edbeb7a3d35da6",
+      "log_id": "2021.08.30.17.40.28_veh-45_00015_00344",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "68b3edead77a5ca0",
+      "log_id": "2021.08.30.19.47.46_veh-45_02658_02788",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "695d2e5b1ca45390",
+      "log_id": "2021.08.25.20.20.58_veh-42_00403_00851",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "696cd216c0dc50ef",
+      "log_id": "2021.08.17.18.54.02_veh-45_01261_02086",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6a130a6951e15b47",
+      "log_id": "2021.09.21.20.37.06_veh-45_00155_00357",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "6a53f26b89485c0d",
+      "log_id": "2021.08.20.18.44.47_veh-08_01382_01958",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6bef38e7fc375076",
+      "log_id": "2021.08.17.16.48.45_veh-43_02693_03062",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6ce25c38f5ff5672",
+      "log_id": "2021.10.01.14.16.29_veh-44_00532_00631",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6d00bfcfba265551",
+      "log_id": "2021.09.28.19.55.30_veh-44_01975_02507",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6e24892b4ed25608",
+      "log_id": "2021.07.24.20.37.45_veh-17_00015_00375",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6e6214c781135b1e",
+      "log_id": "2021.08.17.17.55.18_veh-43_01240_01704",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "6ee4c92c25dd5233",
+      "log_id": "2021.08.25.20.03.37_veh-45_00540_00920",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7076785575e952a1",
+      "log_id": "2021.10.01.14.16.29_veh-44_00885_01146",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7176d7e077925838",
+      "log_id": "2021.09.23.17.03.56_veh-45_01854_02115",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "720f0657ad1c5980",
+      "log_id": "2021.09.28.14.23.32_veh-44_00437_00870",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "739dc27f85db509b",
+      "log_id": "2021.08.20.16.40.09_veh-45_01463_01693",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "74458088a69a5c94",
+      "log_id": "2021.08.17.17.17.01_veh-45_00207_00594",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "75827fc4c6035cb0",
+      "log_id": "2021.08.17.14.45.12_veh-42_00092_00301",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "75922399b7445799",
+      "log_id": "2021.08.23.17.20.10_veh-45_00810_01031",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "75c3c6eb3b0758ae",
+      "log_id": "2021.09.27.18.51.35_veh-44_02009_02370",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "75ccfab926d352d0",
+      "log_id": "2021.09.03.17.40.20_veh-42_00950_01784",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "769b403670cc5e3e",
+      "log_id": "2021.08.23.17.20.10_veh-45_00379_00544",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "76b84ca7c5605298",
+      "log_id": "2021.08.19.14.06.23_veh-45_01977_02108",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "7739b89eb70b5f27",
+      "log_id": "2021.09.09.14.34.34_veh-43_01759_02430",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7b54920491db5fa7",
+      "log_id": "2021.09.28.16.09.49_veh-44_01006_01236",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7b827b8d8a635d80",
+      "log_id": "2021.08.26.15.22.00_veh-08_00766_00899",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7c3fef609ed1533d",
+      "log_id": "2021.08.25.20.03.37_veh-45_01501_01800",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "7c6bf27185ca5c7a",
+      "log_id": "2021.09.28.14.23.32_veh-44_01850_03029",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7de4d6bea74351ba",
+      "log_id": "2021.08.25.18.07.15_veh-45_00805_01036",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7ed952de829c5223",
+      "log_id": "2021.08.19.14.06.23_veh-45_01563_01875",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "7f1a7ee67d895017",
+      "log_id": "2021.09.23.18.57.19_veh-45_01155_01723",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8218788ebad85e01",
+      "log_id": "2021.09.02.14.10.27_veh-08_02190_02633",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8444b0831d3d5151",
+      "log_id": "2021.09.17.14.49.23_veh-42_01352_01463",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8494670cfa8f5e09",
+      "log_id": "2021.08.19.19.22.25_veh-08_00186_00866",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "84cd23d18b58550f",
+      "log_id": "2021.06.23.16.54.19_veh-35_00808_01256",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "858fa76e65ed5a77",
+      "log_id": "2021.08.23.19.47.22_veh-42_00590_01217",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8677265737315395",
+      "log_id": "2021.09.10.19.22.47_veh-42_01062_02421",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "86bc678ada61581c",
+      "log_id": "2021.06.28.16.29.11_veh-38_03263_03766",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "86eb22d3fb9d5878",
+      "log_id": "2021.08.25.14.46.50_veh-45_00369_00789",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "87dc430b0397561c",
+      "log_id": "2021.08.23.13.17.08_veh-42_00276_00400",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "88df35d6785b5475",
+      "log_id": "2021.09.28.18.22.59_veh-44_00236_00685",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "8a61fb4909ee52ab",
+      "log_id": "2021.10.01.18.24.31_veh-44_00344_00756",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8a739d8358225a9a",
+      "log_id": "2021.09.15.14.18.26_veh-45_00987_01261",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8a9802c7a8755477",
+      "log_id": "2021.09.24.14.23.05_veh-45_02144_02442",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "8adf940cdc825195",
+      "log_id": "2021.09.27.18.51.35_veh-44_00369_01255",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8b8a7e8ffe2c5891",
+      "log_id": "2021.08.26.14.34.54_veh-08_00422_00617",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8c223edd967d5902",
+      "log_id": "2021.08.27.14.24.38_veh-42_00262_00839",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "8cb7b447e8c759a8",
+      "log_id": "2021.09.09.18.47.17_veh-45_03246_03438",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8cd3b282db46565d",
+      "log_id": "2021.09.20.20.32.00_veh-08_02014_02781",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "8e39a64c0e655afb",
+      "log_id": "2021.10.01.19.16.42_veh-28_02011_02410",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "8f9cfb40abb85265",
+      "log_id": "2021.09.23.17.03.56_veh-45_00277_00348",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "90550298804e57de",
+      "log_id": "2021.08.25.19.30.22_veh-08_00028_00107",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "908acbf821965ab4",
+      "log_id": "2021.06.09.17.23.18_veh-38_00773_01140",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "92231d3845e054d0",
+      "log_id": "2021.10.01.18.57.27_veh-44_00790_01658",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "922670273e7d5670",
+      "log_id": "2021.09.21.20.04.35_veh-08_00344_00719",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "92780de8d0a05c69",
+      "log_id": "2021.08.23.12.37.38_veh-45_00887_01034",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "9280c045b2e95377",
+      "log_id": "2021.09.09.18.47.17_veh-45_01201_01645",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "92f1a8a7d00a5632",
+      "log_id": "2021.08.23.14.27.31_veh-45_00895_01001",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "9340fe0982655cc1",
+      "log_id": "2021.08.25.19.30.22_veh-08_00219_00371",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "97670aeac3475880",
+      "log_id": "2021.06.09.12.39.51_veh-26_01943_02303",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "97a59b771417586f",
+      "log_id": "2021.09.21.18.07.37_veh-45_00286_00391",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "97c8d9bd277c5497",
+      "log_id": "2021.08.23.14.27.31_veh-45_00205_00471",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "99ea9b859d84536e",
+      "log_id": "2021.09.13.18.55.23_veh-45_00424_00626",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "9b334172cc8e542a",
+      "log_id": "2021.09.20.14.50.11_veh-08_00016_01146",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "9bc2ceaef39b51cb",
+      "log_id": "2021.09.30.15.05.51_veh-44_01655_02241",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "9be12b9fcbf85b6e",
+      "log_id": "2021.08.30.14.36.46_veh-08_00873_01639",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a090bc2ea0fd523d",
+      "log_id": "2021.09.10.17.09.03_veh-42_00116_00277",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "a1d0060fe176565b",
+      "log_id": "2021.09.27.19.43.19_veh-44_00770_01582",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a281cfdad04c5f1b",
+      "log_id": "2021.08.27.16.43.13_veh-08_00565_00794",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a3aa862c91de5d14",
+      "log_id": "2021.08.25.17.54.16_veh-42_00820_01292",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a4cd73fc076c5be3",
+      "log_id": "2021.09.23.17.03.56_veh-45_00891_01489",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a50f166b46095d11",
+      "log_id": "2021.08.17.18.11.12_veh-08_00629_01599",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a586ea8bf7ab5f9d",
+      "log_id": "2021.08.19.17.06.41_veh-08_00058_00421",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "a5ce3be4a11e5f83",
+      "log_id": "2021.08.25.17.54.16_veh-42_01305_01423",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a5fcd8090d835ccb",
+      "log_id": "2021.06.08.12.54.54_veh-26_04262_04732",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a6159c3a627256fa",
+      "log_id": "2021.08.17.16.48.45_veh-43_01439_01665",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a673418e9d1d5eaa",
+      "log_id": "2021.08.30.15.12.56_veh-08_00418_01021",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a6e0468e028357de",
+      "log_id": "2021.08.27.14.14.40_veh-45_01790_02016",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "a7f13e5a9f0d563f",
+      "log_id": "2021.09.21.17.53.12_veh-08_00458_00526",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a879e20bb13e5fef",
+      "log_id": "2021.09.17.19.20.02_veh-45_00890_01067",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "a9512ae8a7ce5ad4",
+      "log_id": "2021.08.23.17.36.45_veh-42_00023_01720",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "a99149d402545c4b",
+      "log_id": "2021.09.02.14.10.27_veh-08_00168_00649",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "aa9bf57d93f7548d",
+      "log_id": "2021.09.10.15.00.33_veh-45_00596_00800",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ab13bd144be4527b",
+      "log_id": "2021.09.15.14.57.57_veh-45_00346_01183",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ab305a8baa3651f5",
+      "log_id": "2021.09.09.19.17.35_veh-42_00016_00998",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "abf62ba9f71e5bb6",
+      "log_id": "2021.09.24.14.23.05_veh-45_02839_03207",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ac5793c33ec157f3",
+      "log_id": "2021.07.16.20.45.29_veh-35_00600_01084",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "acb58177a1535b4b",
+      "log_id": "2021.08.17.18.44.32_veh-08_00586_00848",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "aeafae7b8cf3557e",
+      "log_id": "2021.06.03.13.55.17_veh-35_00073_00426",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "af42cd6355775771",
+      "log_id": "2021.09.13.14.24.27_veh-45_02264_02424",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "af48186d9f985d55",
+      "log_id": "2021.09.30.13.54.09_veh-44_01902_02192",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "af92cd8f9fa05757",
+      "log_id": "2021.06.09.14.58.55_veh-35_01894_02311",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "b1be12bca092597a",
+      "log_id": "2021.09.23.13.07.52_veh-45_00355_00848",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "b1f30cb92e7c55e4",
+      "log_id": "2021.09.24.14.23.05_veh-45_00811_01131",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "b486f9cf33a85455",
+      "log_id": "2021.05.12.23.36.44_veh-35_00152_00504",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "b4907277097e5a1a",
+      "log_id": "2021.09.23.20.37.33_veh-45_00487_01007",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "b4f04492bc1f5a2a",
+      "log_id": "2021.09.09.19.47.56_veh-45_01379_01541",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "b501014f74205892",
+      "log_id": "2021.09.10.18.03.24_veh-42_02099_02417",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "b7ba23671d6d554c",
+      "log_id": "2021.09.02.14.10.27_veh-08_00671_00939",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "b8dfc6ec48ef509c",
+      "log_id": "2021.08.20.19.10.41_veh-45_00197_00454",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "b9430d13fefa562b",
+      "log_id": "2021.08.19.17.06.41_veh-08_00708_00885",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "b99ef1ae2d4c50f5",
+      "log_id": "2021.09.03.16.38.35_veh-08_02555_02938",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "b9a01b2c5fcd5f02",
+      "log_id": "2021.08.23.16.51.29_veh-42_00291_01035",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bb05801bdda85e5a",
+      "log_id": "2021.08.30.17.40.28_veh-45_01511_02028",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bb5670893b7954be",
+      "log_id": "2021.09.09.18.12.06_veh-42_00446_01239",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "bb5bcc610f3853b7",
+      "log_id": "2021.08.19.17.14.40_veh-45_00298_00804",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "bbc52a06f63a57d1",
+      "log_id": "2021.07.16.18.06.21_veh-38_04471_04922",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bc32dc9928c45096",
+      "log_id": "2021.08.27.14.14.40_veh-45_02267_02937",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "bca4e7dd8ec4511c",
+      "log_id": "2021.08.27.16.46.47_veh-45_00958_01474",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bcb329b994745fbe",
+      "log_id": "2021.06.08.14.35.24_veh-26_02555_03004",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bd57b58eddb55436",
+      "log_id": "2021.08.20.13.00.37_veh-08_02328_02673",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "be449a2b6ad959d8",
+      "log_id": "2021.09.27.17.06.43_veh-44_01765_01929",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "be7a9d8376ea5457",
+      "log_id": "2021.08.17.16.48.45_veh-43_00114_00415",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bee9447c15c25adc",
+      "log_id": "2021.08.27.13.48.56_veh-08_01391_01765",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "bfdbb19e4ff85027",
+      "log_id": "2021.09.15.17.01.41_veh-45_00425_01226",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "c0157d7290f15eb3",
+      "log_id": "2021.08.20.18.44.47_veh-08_00181_00718",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "c028cb14ea385ddf",
+      "log_id": "2021.09.10.18.03.24_veh-42_01572_02075",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "c2b33a38a8b95276",
+      "log_id": "2021.09.17.16.35.20_veh-45_01041_01191",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c3456520e7b15761",
+      "log_id": "2021.08.23.13.28.21_veh-08_01254_01911",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c3b3bd63f58b5b3a",
+      "log_id": "2021.09.02.14.10.27_veh-08_02653_02840",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c3cf8a493cd15ae6",
+      "log_id": "2021.08.26.15.22.00_veh-08_00274_00485",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c3d9d69d8f3b5c9a",
+      "log_id": "2021.09.10.18.03.24_veh-42_00067_01025",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c43ade6026d656f3",
+      "log_id": "2021.09.28.16.09.49_veh-44_00738_00987",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c48ab67fb74c5115",
+      "log_id": "2021.08.30.18.54.11_veh-45_00392_00764",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c58fb34878ff5bbd",
+      "log_id": "2021.09.23.17.57.13_veh-45_01039_01679",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c5eadbef7bb35880",
+      "log_id": "2021.06.09.17.23.18_veh-38_02526_03027",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c65b2410cc6c538e",
+      "log_id": "2021.09.20.17.01.23_veh-08_00974_01766",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c6a059bbb74a5185",
+      "log_id": "2021.09.21.20.04.35_veh-08_01047_01447",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c7fb37980951504b",
+      "log_id": "2021.08.20.14.28.03_veh-45_00686_00863",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c8898db55c745609",
+      "log_id": "2021.09.28.13.24.06_veh-44_01102_01289",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c931df68adff5e67",
+      "log_id": "2021.09.13.14.24.27_veh-45_00131_00396",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "c96c43f22a9452b4",
+      "log_id": "2021.08.17.14.45.12_veh-42_01119_01535",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ca355f958c195b35",
+      "log_id": "2021.09.10.15.00.33_veh-45_00040_00245",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ca9979d28b285248",
+      "log_id": "2021.09.28.13.24.06_veh-44_01995_02739",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "cbdabbf280ff532e",
+      "log_id": "2021.08.23.20.15.12_veh-45_00349_00611",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "cd6c4c8177d65a39",
+      "log_id": "2021.08.23.14.02.02_veh-42_01242_01339",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ce7d288fe2565a9d",
+      "log_id": "2021.08.23.13.17.08_veh-42_02282_02392",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "cf0d4b3019155255",
+      "log_id": "2021.09.13.14.24.27_veh-45_01126_01780",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "cf56ddebd44f5372",
+      "log_id": "2021.09.28.19.55.30_veh-44_01744_01819",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "d0161e1e56015ad4",
+      "log_id": "2021.09.20.17.42.50_veh-08_00322_00551",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "d0fbbbd27a6c5882",
+      "log_id": "2021.09.21.17.53.12_veh-08_02449_02583",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "d132f6948d225663",
+      "log_id": "2021.08.17.16.57.11_veh-08_00354_01167",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d1a65b17145f5472",
+      "log_id": "2021.08.27.14.37.47_veh-08_01291_01597",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "d20c63d94c1e5b89",
+      "log_id": "2021.09.17.20.30.55_veh-08_00701_01555",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d3000f97c6fa5153",
+      "log_id": "2021.06.14.16.48.02_veh-12_04978_05337",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d40db07f39035974",
+      "log_id": "2021.08.23.12.37.38_veh-45_01839_01949",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d42842ff6aca5f6f",
+      "log_id": "2021.09.23.17.03.56_veh-45_02539_02937",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "d47d40ec1de155a3",
+      "log_id": "2021.09.15.14.30.33_veh-42_03011_03336",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d48dcb44dda05e24",
+      "log_id": "2021.09.20.14.38.07_veh-42_00379_00742",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d4fbab393e9b5c26",
+      "log_id": "2021.08.26.14.34.54_veh-08_02393_02538",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d5ed7f439ea951bc",
+      "log_id": "2021.09.17.18.16.32_veh-45_03240_03442",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "d6349d35017c5e1e",
+      "log_id": "2021.08.27.16.46.47_veh-45_00098_00785",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "d75f24f9824a5e49",
+      "log_id": "2021.09.27.14.45.42_veh-44_00016_01082",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "da0832ecfc2f5319",
+      "log_id": "2021.08.25.18.29.43_veh-42_01203_01483",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "da50d1f12b4b54e9",
+      "log_id": "2021.09.23.17.03.56_veh-45_02200_02471",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "da67f98fd87c51aa",
+      "log_id": "2021.07.09.20.59.12_veh-38_01208_01692",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "daa37bcc644a571a",
+      "log_id": "2021.08.25.18.07.15_veh-45_01074_01672",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "dadb6799c70750fe",
+      "log_id": "2021.08.17.17.55.18_veh-43_00358_00673",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "db98a507b9eb5738",
+      "log_id": "2021.09.28.14.23.32_veh-44_01423_01838",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "dc074058a3815a3f",
+      "log_id": "2021.08.23.17.33.08_veh-08_00115_00764",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "dc61fba3f4ed5838",
+      "log_id": "2021.08.25.18.29.43_veh-42_00016_00243",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "dca82fc3d2de5b2b",
+      "log_id": "2021.08.30.14.36.46_veh-08_00213_00449",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "dd1367366ff35ad9",
+      "log_id": "2021.10.01.18.57.27_veh-44_00240_00661",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "dd6bcde94ebc5048",
+      "log_id": "2021.08.19.19.03.27_veh-45_01734_02055",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ddaf8318a0d85750",
+      "log_id": "2021.08.23.16.53.37_veh-08_00016_00648",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "de0504ab3cd55bb6",
+      "log_id": "2021.09.21.20.04.35_veh-08_02530_03191",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "df3a6140e7e55546",
+      "log_id": "2021.08.23.14.27.31_veh-45_00574_00876",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "dfeffcca2ef05c96",
+      "log_id": "2021.09.20.18.15.46_veh-08_00078_00230",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "e1343153105a5b11",
+      "log_id": "2021.09.21.17.53.12_veh-08_00363_00445",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "e135794d38c1565c",
+      "log_id": "2021.08.23.12.33.24_veh-42_00864_01009",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "e21c48c9d41d577d",
+      "log_id": "2021.08.20.17.54.47_veh-45_01855_02076",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "e32fd372f8be5fc8",
+      "log_id": "2021.09.09.17.29.55_veh-42_00187_00531",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "e4384f3ce0935dcd",
+      "log_id": "2021.09.27.17.52.47_veh-44_01631_02044",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "e5263fe137af5f57",
+      "log_id": "2021.08.26.18.17.33_veh-08_00016_00313",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e5580122f41954be",
+      "log_id": "2021.09.17.13.27.08_veh-42_00434_01037",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e55ae758baec5f77",
+      "log_id": "2021.08.25.19.45.41_veh-42_01035_01564",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e5fd7e5544b05c90",
+      "log_id": "2021.08.25.14.46.50_veh-45_00813_00965",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e60cbfce0bb757b4",
+      "log_id": "2021.09.10.14.44.55_veh-42_00243_00683",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e6b0cedf219c58f4",
+      "log_id": "2021.08.23.13.17.08_veh-42_00936_01423",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e8692ae5893758ea",
+      "log_id": "2021.09.15.13.26.07_veh-45_01436_01641",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e8c79a5797685a4c",
+      "log_id": "2021.08.19.17.14.40_veh-45_00860_01021",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e8cebefb9c2f5fb6",
+      "log_id": "2021.09.17.19.38.59_veh-08_01073_01512",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "e8d42bcee4115470",
+      "log_id": "2021.09.03.17.02.10_veh-42_00363_00477",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "e9022744ac9c58bb",
+      "log_id": "2021.08.25.19.15.01_veh-45_00179_00590",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "R2_BI_HISTORY_ONLY",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "e99850f4d97a5c42",
+      "log_id": "2021.08.23.18.16.02_veh-42_00251_01022",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ea98c8486e7c5fdf",
+      "log_id": "2021.09.30.13.54.09_veh-44_00104_01877",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "eaf78ce4802451c4",
+      "log_id": "2021.08.20.19.10.41_veh-45_02095_02240",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ebfcf1114f3157af",
+      "log_id": "2021.09.15.14.30.33_veh-42_00643_00919",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ecfb04c049115581",
+      "log_id": "2021.06.14.19.22.11_veh-38_01480_01860",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ed6fa57887c852ec",
+      "log_id": "2021.09.17.18.42.25_veh-08_01484_01749",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ee8aa6fdf3105ab2",
+      "log_id": "2021.09.07.13.06.36_veh-42_00266_00935",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "ef3172a208cc5dd7",
+      "log_id": "2021.08.26.17.14.36_veh-08_02322_02631",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "ef47fe3ed1885b85",
+      "log_id": "2021.09.02.12.54.17_veh-08_02556_03025",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "ef95bc7d18095d38",
+      "log_id": "2021.09.13.14.24.27_veh-45_00963_01115",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "f0a7ceb3268a5ce0",
+      "log_id": "2021.08.25.19.15.01_veh-45_00626_00943",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f12f1fbcd2585456",
+      "log_id": "2021.09.23.14.44.24_veh-45_00353_01052",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "f1de731253495bed",
+      "log_id": "2021.06.07.12.54.00_veh-35_01843_02314",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f3f99a991a875f2b",
+      "log_id": "2021.08.19.18.08.28_veh-45_01089_01386",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f440f01174b655f4",
+      "log_id": "2021.09.20.19.38.32_veh-08_01727_02198",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f459252afbd15920",
+      "log_id": "2021.09.03.16.25.50_veh-42_00016_00340",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "f464a2a451d85356",
+      "log_id": "2021.08.27.13.08.25_veh-42_00375_01720",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "f4ca9ca6844d5c74",
+      "log_id": "2021.09.20.14.38.07_veh-42_01816_02113",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f51f5efab6885eaf",
+      "log_id": "2021.08.30.14.29.08_veh-45_00408_00692",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f52b69619b04507e",
+      "log_id": "2021.08.19.19.03.27_veh-45_00214_00561",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "f5c321c583f95ac5",
+      "log_id": "2021.09.24.14.23.05_veh-45_03426_03612",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "f5f5831fd0c05819",
+      "log_id": "2021.09.21.18.54.31_veh-45_01637_02127",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "f603f5b88813572b",
+      "log_id": "2021.09.20.20.32.00_veh-08_00211_00332",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "f643ee00d6295a52",
+      "log_id": "2021.08.30.14.29.08_veh-45_02418_02502",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f6520ab244b35d7f",
+      "log_id": "2021.08.20.14.28.03_veh-45_02828_03042",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f6dcceee048b5241",
+      "log_id": "2021.08.20.16.40.09_veh-45_01765_02019",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f73bdf0ef7885854",
+      "log_id": "2021.09.30.13.08.26_veh-44_00797_01137",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f7f476ce98b156c0",
+      "log_id": "2021.08.23.14.02.02_veh-42_00908_00996",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "f967188819ef539f",
+      "log_id": "2021.06.23.17.31.36_veh-16_00016_00377",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "f99ed568b8735fc8",
+      "log_id": "2021.09.03.16.25.50_veh-42_00979_01436",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "fb4a496f42d057c7",
+      "log_id": "2021.09.15.14.30.33_veh-42_02562_02982",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "fd8359a2564057ee",
+      "log_id": "2021.08.20.17.54.47_veh-45_01116_01203",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "fd93956a3f9052dc",
+      "log_id": "2021.08.23.15.14.44_veh-08_00917_01175",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "fd9e67bd43975205",
+      "log_id": "2021.08.26.18.17.33_veh-08_00324_00678",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    },
+    {
+      "scenario_token": "fe8dd8b82a8153b4",
+      "log_id": "2021.10.05.07.10.04_veh-52_01442_01802",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION",
+        "A2_AUDITED_OPPORTUNITY"
+      ]
+    },
+    {
+      "scenario_token": "ff152a4cf9c4503b",
+      "log_id": "2021.08.25.17.17.57_veh-42_01356_01819",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "ff7ef3a7f7f15e43",
+      "log_id": "2021.05.12.23.36.44_veh-35_01133_01535",
+      "reasons": [
+        "HISTORICAL_OR_PERMANENT_R1_R2_EXCLUSION"
+      ]
+    },
+    {
+      "scenario_token": "ffcc521d57f05d17",
+      "log_id": "2021.09.15.14.57.57_veh-45_01461_01971",
+      "reasons": [
+        "A3_FIXED_FRAME"
+      ]
+    }
+  ],
+  "outcome_based_selection": false
+}

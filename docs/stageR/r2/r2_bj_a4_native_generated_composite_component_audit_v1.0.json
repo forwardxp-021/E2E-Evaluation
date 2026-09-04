@@ -1,0 +1,12 @@
+{
+  "schema_version": "r2_bj_a4_native_generated_composite_component_audit_v1.0",
+  "status": "NOT_EXECUTED_FRAME_FREEZE_FAILED_CLOSED",
+  "opportunities_reaching_component_stage": 0,
+  "planner_state_case_count": 0,
+  "saved_failure_case_count": 0,
+  "reason": "FROZEN_SOURCE_UNIVERSE_HAS_FEWER_THAN_768_BASIC_HLC_RECORDS_UNDER_GLOBAL_LOG_DEDUP",
+  "negative_native_generated_cancellation_accepted": false,
+  "opportunities": [],
+  "runner_run_calls": 0,
+  "simulation_calls": 0
+}

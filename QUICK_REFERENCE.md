@@ -10984,3 +10984,34 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - 10/10 历史 extraction failure 均获得统一技术处置，且不形成 outcome blacklist；所有 17 条通过者的 provenance、reference geometry、速度与组件 closure 为 100%。
 - full V4 component stage 共覆盖 28 条、26,880 个离线 planner-state cases；17 条全门通过、11 条 generated increment/composite 不可行，禁止利用正负曲率抵消。
 - `runner.run=0`、所有 simulation count 为 0、roster selected 为 false；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BJ-A4 HLC Moving-Regime Applicability
+
+### 1. 命令
+
+A4 已在 frame 冻结阶段 fail-closed。不得重新运行 frame 生成或对 557 条不完整 frame 做部分 predicate；日常只读复核使用：
+
+```bash
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_a4_hlc_moving_regime_applicability.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+- estimand 固定为 `MOVING_VEHICLE_HESITANT_LANE_CHANGE`，在 topology/curvature/V4 前执行 `v_audit >= 3.0 m/s`；主速度只取 official initial 与 0–1.0 s pre-treatment 最大速度。
+- frame 固定目标为 768，使用新 salt/seed、SHA256 排序、全局 token/log 去重，并排除全部历史、A2、A3 与永久 exclusion；不读取 outcome。
+- 构造采用对全部 canonical logs 的穷尽式“每 log 首个 hash-ranked 基础 HLC pass，再全局 hash 排序”，不受有限 rank-prefix 容量影响。
+- A3 的 11 条 V4 failure 均保持原结果，新增 `LOW_SPEED_OUTSIDE_V4_APPLICABILITY` 处置；A2 token `3feb5f93f24e5b77` 保持当前 V2.3 topology 不适用，不新增 outcome blacklist。
+
+### 3. 通过标准与当前处置
+
+- 冻结 source universe 的 1,621 个 canonical logs、5,386,575 条 source rows 已穷尽；在严格全局 log 去重与基础 HLC 条件下仅能形成 557 条记录，距 768 缺 211。
+- 因预注册 frame 无法完成，A4 状态为 `APPLICABLE_POOL_INSUFFICIENT`；A4 speed/topology/curvature/V4 predicate 评估数为 0，不把 557 条部分 frame 当作候选池。
+- 未修改 V4、morphology/capture 参数、topology builder 或任何阈值；未选择 BJ-B roster。
+- `runner.run=0`，engineering/scientific/TSB simulation 均为 0；R2-C、confirmatory smoke、RBR 均未启动；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。

@@ -1,0 +1,117 @@
+{
+  "schema_version": "r2_bj_a4_preregistered_contract_v1.0",
+  "status": "PREREGISTERED_BEFORE_A4_FRAME_FREEZE_AND_CANDIDATE_RESULTS",
+  "frozen_baseline": {
+    "local_commit": "020fa104a58956b8e6b3010a807fe5003585ef1a",
+    "remote_equivalent_commit": "1e7f9f78028af11964906192f037b4baa4379fbb",
+    "tree": "4cb16f4aa22d2c7e63d27ac221e08c4172c7401c"
+  },
+  "estimand": {
+    "name": "MOVING_VEHICLE_HESITANT_LANE_CHANGE",
+    "family": "R-HLC",
+    "v_audit_formula": "max(official_initial_speed_mps,max_pre_treatment_speed_mps_0_to_1p0s_inclusive)",
+    "R_HLC_APPLICABILITY_SPEED_FLOOR_MPS": 3.0,
+    "speed_gate_order": "BEFORE_TOPOLOGY_CURVATURE_AND_V4_COMPONENT_AUDIT",
+    "arm_symmetric": true,
+    "anchor_speed_or_anchor_timestamp_used": false,
+    "scientific_or_kinematic_threshold_modified": false,
+    "outside_scope": ["STOPPED", "STARTUP", "LOW_SPEED_CREEP"]
+  },
+  "audit_frame": {
+    "size": 768,
+    "rank_seed": 2026090401,
+    "rank_salt": "R2_BJ_A4_HLC_MOVING_REGIME_AUDIT_FRAME_V1",
+    "rank_rule": "SHA256(salt|seed|scenario_token|log_id)",
+    "sort_order": ["rank_sha256_ASC", "scenario_token_ASC", "log_id_ASC", "anchor_timestamp_us_ASC"],
+    "source_scan": "COMPLETE_FROZEN_SOURCE_UNIVERSE_SCAN",
+    "rank_prefix_capacity": null,
+    "frame_construction_strategy": "EXHAUSTIVE_PER_CANONICAL_LOG_FIRST_HASH_RANKED_BASIC_HLC_PASS_THEN_GLOBAL_HASH_RANK",
+    "pre_result_operational_correction": {
+      "attempted_capacities": [65536, 262144],
+      "observed_basic_HLC_records": [526, 554],
+      "disposition": "OUTCOME_BLIND_PREFIX_CAPACITY_REMOVED_BEFORE_ANY_A4_PREDICATE_OR_V4_RESULT; EXHAUSTIVE_CANONICAL_LOG_SCAN",
+      "selection_semantics_changed": false,
+      "seed_salt_rank_frame_size_and_gates_changed": false
+    },
+    "frame_definition": "FIRST_768_HASH_RANKED_CANDIDATES_PASSING_ONLY_BASIC_HLC_FAMILY_CONDITIONS_AFTER_ALL_HISTORICAL_A2_A3_AND_PERMANENT_TOKEN_LOG_EXCLUSIONS",
+    "EARLY_STOP": false,
+    "GLOBAL_TOKEN_DEDUP": true,
+    "GLOBAL_LOG_DEDUP": true,
+    "direction_rule": "LEXICAL_LEFT_BEFORE_RIGHT_THEN_TARGET_ID_ASC_WITHIN_SAME_SOURCE_ROADBLOCK",
+    "candidate_role": "A4_AUDIT_POOL_ONLY_NOT_BJ_B_ROSTER"
+  },
+  "exclusion_closure": {
+    "match_rule": "EXCLUDE_IF_SCENARIO_TOKEN_OR_LOG_ID_MATCHES",
+    "sources": [
+      "docs/stageR/r2/r2_bi_hlc_dev_kin_permanent_exclusion_ledger_v1.0.json",
+      "docs/stageR/r2/r2_bj_a_r2bi_outcome_exposure_ledger_v1.0.json",
+      "docs/stageR/r2/r2_bj_a2_hlc_joint_support_provenance_manifest_v1.0.json",
+      "docs/stageR/r2/r2_bj_a3_hash_ranked_audit_frame_manifest_v1.0.json"
+    ],
+    "A3_frame_all_256_excluded": true,
+    "outcome_based_selection": false
+  },
+  "predicate_order": [
+    "P01_EXACT_SINGLE_OFFICIAL_SCENARIO_RESOLUTION",
+    "P02_HISTORICAL_PERMANENT_TOKEN_LOG_EXCLUSION",
+    "P03_V_AUDIT_AT_LEAST_3P0_MPS",
+    "P04_V2_3_SOURCE_TARGET_ROUTE_CONTINUOUS_RECONSTRUCTION",
+    "P05_NO_DUPLICATE_SHORT_OR_SELF_INTERSECTING_SEGMENT",
+    "P06_PRIMARY80_REFERENCE_COVERAGE_AT_V_SUPPORT_WITHOUT_EXTRAPOLATION",
+    "P07_RAW_ROBUST_CURVATURE_DISPOSITION",
+    "P08_NATIVE_COMPONENT_GATES",
+    "P09_GENERATED_INCREMENT_GATES_WITHOUT_CANCELLATION",
+    "P10_COMPOSITE_AND_STATE0_CONTINUITY",
+    "P11_POST_RECOMMIT_TERMINAL_SETTLING",
+    "P12_GLOBAL_PARAMETERS_NO_SCENARIO_SPECIFIC_TUNING"
+  ],
+  "speed_support": {
+    "v_support_formula": "v_audit+max(0.5,0.05*v_audit)",
+    "route_reconstruction_forward_m": "15.8*v_support+2.0",
+    "V4_speed_cases": ["v_audit", "v_support"]
+  },
+  "full_component_audit": {
+    "arms": ["BASELINE", "TREATMENT"],
+    "speed_cases": ["v_audit", "v_support"],
+    "residual_cases_m": [-0.25, 0.0, 0.25],
+    "Primary80_iterations": 80,
+    "cases_per_opportunity": 960,
+    "failure_detail_fields": [
+      "absolute_episode_time_s", "arm", "speed_mps", "normal_residual_m",
+      "violated_curvature_gate", "violated_yaw_rate_gate", "violated_lateral_acceleration_gate",
+      "morphology_increment", "stitching_capture_increment", "generated_increment", "composite"
+    ],
+    "negative_native_generated_cancellation_allowed": false
+  },
+  "curvature": {
+    "inherits_A3_preregistered_raw_robust_algorithm": true,
+    "undefined_catch_all_allowed": false,
+    "manual_point_deletion": false,
+    "identity_specific_smoothing": false
+  },
+  "readiness_gate": {
+    "frame_complete_required": 768,
+    "fresh_applicable_minimum": 32,
+    "all_moving_regime_component_stage_generated_composite_terminal_required_pass": true,
+    "passing_provenance_closure_required_percent": 100.0,
+    "pass_status": "R2_BJ_A4_MOVING_REGIME_READY_FOR_OWNER_REVIEW",
+    "insufficient_pool_status": "APPLICABLE_POOL_INSUFFICIENT",
+    "component_failure_status": "R2_BJ_A4_MOVING_REGIME_ARCHITECTURE_NOT_READY"
+  },
+  "frozen_V4": {
+    "parameter_space_sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+    "generator_sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9",
+    "planner_sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b",
+    "route_builder_v2_3_sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49",
+    "parameters_or_thresholds_changed": false
+  },
+  "execution": {
+    "offline_only": true,
+    "runner_run_authorized": 0,
+    "engineering_simulation_authorized": 0,
+    "scientific_simulation_authorized": 0,
+    "TSB_simulation_authorized": 0,
+    "BJ_B_roster_selection_authorized": false,
+    "R2_C_confirmatory_RBR_authorized": false
+  }
+}
