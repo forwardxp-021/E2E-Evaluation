@@ -1,0 +1,51 @@
+{
+  "schema_version": "r2_bk_tsb_r2c_prospective_eligible_capacity_census_v1.0",
+  "status": "FAIL_CLOSED_ELIGIBLE_CAPACITY_NOT_MATERIALIZED_WITHIN_AUTHORIZED_INPUTS",
+  "source_universe": {
+    "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+    "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+    "eligible_universe_tokens": 5338021,
+    "eligible_universe_logs": 1564,
+    "per_token_family_eligibility_records_materialized": false,
+    "TSB_total_eligible_count_materialized": false
+  },
+  "frozen_history_evidence": {
+    "B2_7_total_eligible_count": "NOT_EXHAUSTIVELY_COUNTED_BY_DESIGN",
+    "historical_development_scale_is_confirmatory_sample_size": false
+  },
+  "governance_exclusion_capacity_audit": {
+    "permanent_historical_engineering_unique_identities": 125,
+    "permanent_logs_present_in_frozen_eligible_log_universe": 113,
+    "A5_unselected_HLC_role_reserved_outcome_unexposed": 26,
+    "stage_reserved_logs_present_in_frozen_eligible_log_universe": 26,
+    "overlap_between_permanent_and_stage_reserved_logs": 0,
+    "post_governance_structural_log_upper_bound": 1425,
+    "upper_bound_is_TSB_eligible_capacity": false
+  },
+  "eligible_pool_capacity": {
+    "unique_logs": null,
+    "unique_tokens": null,
+    "complete_census": false,
+    "reason": "FROZEN_SOURCE_UNIVERSE_BINDS_ONLY_AGGREGATE_TOKEN_SET_HASH_AND_LOG_LIST; EXACT_TSB_PREDICATE POPULATION IS NOT MATERIALIZED"
+  },
+  "blocking_condition": {
+    "code": "TSB_R2C_ELIGIBLE_CAPACITY_CENSUS_REQUIRES_OWNER_AUTHORIZED_OFFLINE_MATERIALIZATION",
+    "required_action": "ONE_TIME_READ_ONLY_EVALUATION_OF_FROZEN_SOURCE_UNIVERSE_UNDER_THE_PREREGISTERED_TSB_PREDICATE",
+    "conflict_in_current_scope": "RESCAN_SOURCE_UNIVERSE_FALSE",
+    "partial_audit_extrapolated_to_population": false,
+    "eligibility_or_sample_size_claim_permitted": false
+  },
+  "sample_size_options": [
+    {"pairs": 12, "runs": 24, "capacity_feasible": "NOT_EVALUABLE"},
+    {"pairs": 20, "runs": 40, "capacity_feasible": "NOT_EVALUABLE"},
+    {"pairs": 32, "runs": 64, "capacity_feasible": "NOT_EVALUABLE"}
+  ],
+  "decision": "TSB_R2C_SAMPLE_SIZE_REQUIRES_OWNER_DECISION",
+  "roster_selected": false,
+  "reserve_order_created": false,
+  "run_schedule_created": false,
+  "result_based_blacklist_created": false,
+  "runner_run": 0,
+  "simulation": 0,
+  "offline_recovery_analyzer_invocations": 0
+}

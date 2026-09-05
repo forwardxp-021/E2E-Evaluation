@@ -1,0 +1,96 @@
+{
+  "schema_version": "r2_bk_tsb_only_r2c_protocol_amendment_draft_v0.1",
+  "status": "TSB_R2C_SAMPLE_SIZE_REQUIRES_OWNER_DECISION",
+  "scope": "TSB_ONLY_FRESH_PROSPECTIVE_VALIDATION",
+  "not_a_claim": [
+    "COMPLETE_G_R2_PREREGISTRATION_SUCCESS",
+    "HLC_VALIDATION",
+    "CROSS_FAMILY_CONFIRMATION"
+  ],
+  "source_universe": {
+    "path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json",
+    "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+    "rescan_or_expansion_allowed": false
+  },
+  "eligibility_predicate": {
+    "version": "R2_BK_TSB_R2C_PROSPECTIVE_ELIGIBILITY_V1",
+    "ordered_gates": [
+      "FROZEN_SOURCE_UNIVERSE_MEMBERSHIP",
+      "HISTORICAL_PERMANENT_ENGINEERING_OUTCOME_EXPOSURE_TOKEN_OR_LOG_EXCLUSION",
+      "GLOBAL_TOKEN_UNIQUENESS",
+      "GLOBAL_LOG_UNIQUENESS",
+      "OFFICIAL_EXACT_SINGLE_SCENARIO_RESOLUTION_UNDER_BOUND_NUPLAN_1_2_2",
+      "OFFICIAL_SCENARIO_CONTROLLER_ITERATIONS_AT_LEAST_81_NO_PADDING_NO_EXTENSION",
+      "TSB_FROZEN_INITIAL_SPEED_AT_LEAST_2P0_MPS",
+      "COMPLETE_PRIMARY80_REPLAY_OBSERVATION_NO_EXTRAPOLATION",
+      "FROZEN_NATIVE_ROUTE_REFERENCE_CONSTRUCTION",
+      "FROZEN_PRETREATMENT_CONTEXT_CONSTRUCTION",
+      "FROZEN_TECHNICAL_RUNTIME_APPLICABILITY"
+    ],
+    "selection_outcomes_used": false,
+    "mechanism_F_match_safety_BDD_representation_used": false,
+    "scenario_specific_tuning": false
+  },
+  "capacity_census": {
+    "unit": "UNIQUE_LOG_WITH_AT_LEAST_ONE_ELIGIBLE_SCENARIO_TOKEN",
+    "representative_rule": "lowest SHA256(census_salt|R-TSB|scenario_token|log_id), then token and anchor timestamp",
+    "all_bound_source_logs_audited": true,
+    "stop_after_required_count": false,
+    "roster_selection": false,
+    "reserve_order": false,
+    "run_schedule": false
+  },
+  "paired_design": {
+    "arm_order": ["BASELINE", "TREATMENT"],
+    "pair_is_indivisible": true,
+    "all_pair_joint_success_required": true,
+    "majority_rule_allowed": false,
+    "cross_family_pooling_allowed": false,
+    "replacement_allowed": false
+  },
+  "frozen_post_run_gates": [
+    "MEASUREMENT_VALIDITY",
+    "BASELINE_EXACTLY_ONE_BRAKE_PHASE",
+    "TREATMENT_EXACTLY_TWO_BRAKE_PHASES",
+    "RELEASE_FRACTION_AT_LEAST_0P15",
+    "SECOND_PEAK_RATIO_AT_LEAST_0P50",
+    "F_MATCH_ALL_FROZEN_CALIPERS",
+    "OFFICIAL_SAFETY_BOTH_ARMS",
+    "TECHNICAL_COMPLETENESS"
+  ],
+  "sample_size_history_audit": {
+    "historically_frozen_TSB_R2C_sample_size_found": false,
+    "historical_R1_development_scale_proposal_is_confirmatory_preregistration": false,
+    "owner_decision_required": true
+  },
+  "owner_options_not_yet_selected": [
+    {
+      "label": "MINIMAL",
+      "pairs": 12,
+      "runs": 24,
+      "tradeoff": "最低预算；全 pair 通过规则下对跨 identity 稳定性的覆盖最弱。"
+    },
+    {
+      "label": "RECOMMENDED",
+      "pairs": 20,
+      "runs": 40,
+      "tradeoff": "覆盖与预算折中；仍需 Owner 明确批准后才能冻结。"
+    },
+    {
+      "label": "ROBUST",
+      "pairs": 32,
+      "runs": 64,
+      "tradeoff": "覆盖更强、预算最高；不得在容量不足时降门或替换。"
+    }
+  ],
+  "forbidden_this_stage": {
+    "roster": true,
+    "reserve_order": true,
+    "schedule": true,
+    "runner_run": true,
+    "simulation": true,
+    "offline_recovery_analysis": true,
+    "parameter_or_threshold_change": true,
+    "RBR": true
+  }
+}

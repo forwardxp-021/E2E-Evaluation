@@ -1,0 +1,53 @@
+{
+  "schema_version": "r2_bk_component_sha_binding_manifest_v1.0",
+  "status": "R2_BK_ZERO_RUN_FREEZE_COMPLETE_CAPACITY_FAIL_CLOSED",
+  "baseline": {
+    "remote_commit": "2f21b437a105067cfb19932ba7799fc4f4a40eca",
+    "content_tree": "0f2173f63b96a670663387bbf9f2d49547c0e545"
+  },
+  "self_reference": false,
+  "components": [
+    {"path": "docs/stageR/r2/r2_bj_b1_1_offline_recovery_analyzer_complete_result_v1.0.json", "sha256": "761532070a61dc744e742c212c72c24e3d36bc8fee12b44805f63e41824e16ed", "bytes": 235028},
+    {"path": "docs/stageR/r2/r2_bj_b1_1_post_recovery_sha_binding_manifest_v1.0.json", "sha256": "78d480e4ec76b3b00d01d1e17fe8c634131d1c3cab8cfae1c801a7f0bd1ef3ab", "bytes": 4086},
+    {"path": "docs/stageR/r2/r2_bh_tsb_family_development_candidate_v1.0.json", "sha256": "7c37fdd2d939e9282adafcd98a76571c0ce9c0812e618c758b004098e5e09538", "bytes": 2148},
+    {"path": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json", "sha256": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d", "bytes": 4794},
+    {"path": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_results_v1.0.json", "sha256": "6f561df652867aee2204026b2390cacc5e075e8f75c393b880e6cbd21902ca88", "bytes": 143233},
+    {"path": "tools/r2_b_controller_aware_generator_v1.py", "sha256": "d166c4746d0a70668b8e26a532890c641b5166f55661a2d34d7f796a9830e3eb", "bytes": 4959},
+    {"path": "docs/stageR/r2/r2_b_generator_binding_manifest_v1.0.json", "sha256": "fc2cbe9823bb91c486b6def490e4ce48a82601b9244f3aaad3fd5b29e8b8f1b0", "bytes": 28619},
+    {"path": "docs/stageR/r2/r2_bh_hlc_arch_development_binding_manifest_v1.0.json", "sha256": "dbcf129b379c18ccf18aaa78f8cce3ad36af0c59c1f7458a6d018710292253bc", "bytes": 18499},
+    {"path": "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json", "sha256": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e", "bytes": 158098},
+    {"path": "docs/stageR/r2/r2_bi_hlc_dev_kin_permanent_exclusion_ledger_v1.0.json", "sha256": "f56d9d5395a5a051ba23f0624b739779c9c41eb67b3b82d304f671ad9f49bbb7", "bytes": 52381},
+    {"path": "docs/stageR/r2/r2_bj_b0_permanent_engineering_exclusion_ledger_v1.0.json", "sha256": "26e9e521ba48add969c8ddd284dc8915393cdcc3b35a4346fb51047821116a60", "bytes": 2732},
+    {"path": "docs/stageR/r2/r2_bj_a5_applicable_pool_provenance_manifest_v1.0.json", "sha256": "55fb83d9c41a1f0e4d43caaebee8ed2a47cf697cc3177aff17b2554c0802f97f", "bytes": 166806},
+    {"path": "docs/stageR/r2/r2_bj_b0_hlc_v4_engineering_roster_v1.0.json", "sha256": "9efce9f4dbc699ef0c9ad683976d03d01c72b065a1106c70177f3585f78f272b", "bytes": 83902},
+    {"path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv", "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8", "bytes": 134},
+    {"path": "docs/stageR/r2/r2_bk_family_scope_bifurcation_contract_v1.0.json", "sha256": "c0518b5c14ad3b918aed48d946df23371b96cedb852c6c6e858dc2abd3bd5dc8", "bytes": 1411},
+    {"path": "docs/stageR/r2/r2_bk_hlc_bj_identity_exposure_disposition_v1.0.json", "sha256": "d8e4af277ad58a2603c162d65ace1bef0f1e408122e8757c3166a7f58121e13e", "bytes": 2570},
+    {"path": "docs/stageR/r2/r2_bk_hlc_stage_r_final_closure_disposition_v1.0.json", "sha256": "ece5c2cc4f848710583301244485724e087ea6ec03b414c972f285de94c3e5a4", "bytes": 2658},
+    {"path": "docs/stageR/r2/r2_bk_frozen_tsb_candidate_integrity_audit_v1.0.json", "sha256": "64a6e2e542263398f59d40e573dddf3ad7d5be273f0aa8b45aacca0332a1a087", "bytes": 2126},
+    {"path": "docs/stageR/r2/r2_bk_tsb_only_r2c_protocol_amendment_draft_v0.1.json", "sha256": "6b3aeadd0a6b6faef64546f027bd44e43e3da6b2d6116e7d276468c5c4dc79f2", "bytes": 3393},
+    {"path": "docs/stageR/r2/r2_bk_tsb_r2c_prospective_eligible_capacity_census_v1.0.json", "sha256": "5d6787d8c44e7918be364b752eabf29fc190ead5639e9efa8240ad28194d7efb", "bytes": 2398},
+    {"path": "docs/stageR/r2/r2_bk_data_firewall_audit_v1.0.json", "sha256": "6777409511314166d4d34408dbc2dd6b1e75e651194c156343f42c5d66ff04bf", "bytes": 757},
+    {"path": "docs/stageR/r2/R2_BK_HLC_Stage_R_Final_Closure_Report_v1.md", "sha256": "3149ac81e4f45166e1e50effc0c701227757fda5cf8dbad259a64b538b4933aa", "bytes": 2693},
+    {"path": "docs/stageR/r2/R2_BK_Scientific_Owner_Readiness_Request_v0.1.md", "sha256": "41e591c4a96bb942a0fa7176271cde801d63454d24caf6723db96f80ff98940b", "bytes": 2413},
+    {"path": "tools/r2_bk_verify_family_scope_freeze.py", "sha256": "5eca37626169b1fc93570bbe3d5a86b5a4cd51c526da8b7f742364b4249ccf27", "bytes": 6132},
+    {"path": "tests/test_r2_bk_tsb_r2c_design.py", "sha256": "b3bfce2aa303180fd65afb300e6b9d89f6830ebb5b0fceee2dfe28fe40777b7b", "bytes": 2197},
+    {"path": "QUICK_REFERENCE.md", "sha256": "406f1907e95198710960723ab623883d39ff27fdb0afded491404ade2178d156", "bytes": 571826}
+  ],
+  "closure": {
+    "frozen_input_SHA_closure": "PASS",
+    "TSB_candidate_transitive_component_SHA_closure": "PASS_39_R2B_PLUS_33_R2BH",
+    "new_R2_BK_artifact_SHA_closure": "PASS",
+    "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "eligible_capacity": "FAIL_CLOSED_NOT_MATERIALIZED"
+  },
+  "execution": {
+    "runner_run": 0,
+    "offline_recovery_analyzer_invocations": 0,
+    "simulation": 0,
+    "roster_selected": false,
+    "R2_C_started": false,
+    "confirmatory_smoke_started": false,
+    "RBR_started": false
+  }
+}

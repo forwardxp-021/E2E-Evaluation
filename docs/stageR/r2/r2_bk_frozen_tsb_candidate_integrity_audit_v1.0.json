@@ -1,0 +1,55 @@
+{
+  "schema_version": "r2_bk_frozen_tsb_candidate_integrity_audit_v1.0",
+  "status": "PASS_TSB_CANDIDATE_SHA_AND_DEVELOPMENT_PROVENANCE_CLOSURE",
+  "candidate": {
+    "path": "docs/stageR/r2/r2_bh_tsb_family_development_candidate_v1.0.json",
+    "sha256": "7c37fdd2d939e9282adafcd98a76571c0ce9c0812e618c758b004098e5e09538",
+    "frozen_status": "TSB_FAMILY_DEVELOPMENT_CANDIDATE_FROZEN",
+    "validation_status": "PENDING_FRESH_R2C_VALIDATION"
+  },
+  "direct_bindings": [
+    {
+      "path": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json",
+      "sha256": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d"
+    },
+    {
+      "path": "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_results_v1.0.json",
+      "sha256": "6f561df652867aee2204026b2390cacc5e075e8f75c393b880e6cbd21902ca88"
+    },
+    {
+      "path": "tools/r2_b_controller_aware_generator_v1.py",
+      "sha256": "d166c4746d0a70668b8e26a532890c641b5166f55661a2d34d7f796a9830e3eb"
+    },
+    {
+      "path": "docs/stageR/r2/r2_b_generator_binding_manifest_v1.0.json",
+      "sha256": "fc2cbe9823bb91c486b6def490e4ce48a82601b9244f3aaad3fd5b29e8b8f1b0",
+      "bound_component_count": 39
+    },
+    {
+      "path": "docs/stageR/r2/r2_bh_hlc_arch_development_binding_manifest_v1.0.json",
+      "sha256": "dbcf129b379c18ccf18aaa78f8cce3ad36af0c59c1f7458a6d018710292253bc",
+      "bound_component_count": 33
+    }
+  ],
+  "DEV_CAL_frozen_results": {
+    "pairs": 8,
+    "measurement_OK": "8/8",
+    "baseline_exactly_one_brake_phase": "8/8",
+    "treatment_exactly_two_brake_phases": "8/8",
+    "mechanism": "8/8",
+    "F_match": "8/8",
+    "official_safety": "8/8"
+  },
+  "frozen_thresholds_and_margins": {
+    "brake_phase_threshold_mps2": -0.8,
+    "release_fraction_threshold": 0.15,
+    "release_fraction_minus_threshold_min": 0.588132,
+    "release_fraction_observed_min": 0.738132,
+    "second_peak_ratio_threshold": 0.5,
+    "second_peak_ratio_minus_threshold_min": 0.70024,
+    "second_peak_ratio_observed_min": 1.20024
+  },
+  "TSB_parameter_changes": 0,
+  "TSB_reruns": 0,
+  "integrity_failure": false
+}

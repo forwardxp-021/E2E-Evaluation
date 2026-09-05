@@ -1,0 +1,21 @@
+{
+  "schema_version": "r2_bk_data_firewall_audit_v1.0",
+  "status": "PASS_ZERO_RUN_NO_OUTCOME_LEAKAGE_AND_FAIL_CLOSED_CAPACITY",
+  "historical_R1_R2_outcome_artifacts_used_for_TSB_candidate_selection": false,
+  "B1_1_recovery_analyzer_invoked": false,
+  "new_simulation_output_read": false,
+  "A5_unselected_new_runtime_outcome_read": false,
+  "HLC_or_TSB_parameter_changed": false,
+  "scientific_threshold_changed": false,
+  "roster_selected": false,
+  "reserve_order_created": false,
+  "schedule_created": false,
+  "result_based_source_blacklist_created": false,
+  "runner_run": 0,
+  "engineering_simulation": 0,
+  "scientific_simulation": 0,
+  "TSB_simulation": 0,
+  "R2_C_started": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false
+}

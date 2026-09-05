@@ -1,0 +1,34 @@
+{
+  "schema_version": "r2_bk_family_scope_bifurcation_contract_v1.0",
+  "status": "FROZEN_ZERO_RUN_FAMILY_SCOPE_BIFURCATION",
+  "baseline": {
+    "remote_commit": "2f21b437a105067cfb19932ba7799fc4f4a40eca",
+    "content_tree": "0f2173f63b96a670663387bbf9f2d49547c0e545",
+    "B1_1_recovery_result_sha256": "761532070a61dc744e742c212c72c24e3d36bc8fee12b44805f63e41824e16ed",
+    "B1_1_post_recovery_manifest_sha256": "78d480e4ec76b3b00d01d1e17fe8c634131d1c3cab8cfae1c801a7f0bd1ef3ab"
+  },
+  "claims": {
+    "COMBINED_G_R2_CLAIM": "NOT_AVAILABLE",
+    "HLC_CLAIM": "DEVELOPMENT_NONCONVERGENCE_NEGATIVE_RESULT",
+    "TSB_CLAIM": "INDEPENDENT_FAMILY_CANDIDATE_PENDING_FRESH_VALIDATION",
+    "CROSS_FAMILY_POOLING": "PROHIBITED"
+  },
+  "scope_amendment": {
+    "classification": "DISCLOSED_POST_DEVELOPMENT_FAMILY_SCOPE_AMENDMENT",
+    "TSB_only_future_validation": "PROSPECTIVE_PENDING_OWNER_SAMPLE_SIZE_AND_ROSTER_DECISIONS",
+    "backwrite_complete_G_R2_preregistration_as_success": false,
+    "HLC_negative_result_retained": true,
+    "cross_family_evidence_substitution_allowed": false
+  },
+  "execution_control": {
+    "RUNNER_RUN": 0,
+    "OFFLINE_RECOVERY_ANALYZER_INVOCATIONS": 0,
+    "HLC_PARAMETER_CHANGES": 0,
+    "TSB_PARAMETER_CHANGES": 0,
+    "ROSTER_SELECTION": false,
+    "REPLACEMENT_ORDER": false,
+    "R2_C_STARTED": false,
+    "CONFIRMATORY_SMOKE_STARTED": false,
+    "RBR_STARTED": false
+  }
+}

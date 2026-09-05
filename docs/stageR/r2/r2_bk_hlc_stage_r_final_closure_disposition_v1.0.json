@@ -1,0 +1,74 @@
+{
+  "schema_version": "r2_bk_hlc_stage_r_final_closure_disposition_v1.0",
+  "status": "HLC_STAGE_R_FINAL_CLOSED_VALID_NEGATIVE_ENGINEERING_RESULT",
+  "source": {
+    "B1_1_recovery_result": {
+      "path": "docs/stageR/r2/r2_bj_b1_1_offline_recovery_analyzer_complete_result_v1.0.json",
+      "sha256": "761532070a61dc744e742c212c72c24e3d36bc8fee12b44805f63e41824e16ed"
+    },
+    "B1_1_post_recovery_manifest": {
+      "path": "docs/stageR/r2/r2_bj_b1_1_post_recovery_sha_binding_manifest_v1.0.json",
+      "sha256": "78d480e4ec76b3b00d01d1e17fe8c634131d1c3cab8cfae1c801a7f0bd1ef3ab"
+    }
+  },
+  "owner_disposition": {
+    "HLC_V4_CANARY": "VALID_NEGATIVE_ENGINEERING_RESULT",
+    "HLC_STAGE_R_GENERATOR_DEVELOPMENT": "CLOSED",
+    "HLC_V5_AUTHORIZED": false,
+    "REMAINING_14_BJ_B_RUNS_AUTHORIZED": false,
+    "COMPLETE_G_R2_CANDIDATE_CREATED": false
+  },
+  "frozen_gates": {
+    "mechanism": {
+      "pass": false,
+      "treatment_detectable_retreat": false,
+      "reasons": ["TREATMENT_RETREAT_LT_ONE", "MONOTONIC_PENALTY_LT_0P1"],
+      "delta_commit_latency_s": 1.899923,
+      "delta_monotonic_fraction": 0.0
+    },
+    "endpoint": {
+      "pass": false,
+      "baseline": {
+        "pass": true,
+        "terminal_lateral_offset_m": 0.021593,
+        "terminal_heading_error_rad": 0.033338,
+        "terminal_lateral_velocity_mps": 0.172622
+      },
+      "treatment": {
+        "pass": false,
+        "terminal_lateral_offset_m": 0.342582,
+        "terminal_heading_error_rad": 0.052064,
+        "terminal_lateral_velocity_mps": 0.275049,
+        "failed_gates": ["offset", "heading", "lateral_velocity"]
+      },
+      "paired_route_progress_delta_m": 0.03152,
+      "paired_route_progress_pass": true
+    },
+    "F_match": {
+      "pass": true,
+      "absolute_delta": {
+        "mean_speed": 0.00275,
+        "end_minus_start_speed": 0.106555,
+        "path_length": 0.011338
+      }
+    },
+    "engineering": {
+      "pass": true,
+      "baseline_max_abs_lateral_accel_mps2": 0.520186,
+      "treatment_max_abs_lateral_accel_mps2": 0.805108
+    },
+    "target_offset_decline": "PASS",
+    "post_deadline_hard_jump_absent": "PASS",
+    "actual_shadow_observability": "PASS",
+    "official_safety": {
+      "pass": false,
+      "baseline_at_fault_collisions": 2,
+      "treatment_at_fault_collisions": 1,
+      "baseline_drivable_area_compliance": true,
+      "treatment_drivable_area_compliance": true,
+      "between_arm_safety_direction_interpretation": "PROHIBITED_SINGLE_ENGINEERING_CANARY_NOT_COMPARATIVE_SAFETY_EVIDENCE"
+    }
+  },
+  "historical_gate_reclassified_deleted_or_relaxed": false,
+  "parameter_or_threshold_changed": false
+}

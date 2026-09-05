@@ -1,0 +1,75 @@
+{
+  "schema_version": "r2_bk_hlc_bj_identity_exposure_disposition_v1.0",
+  "status": "FROZEN_ADDITIVE_GOVERNANCE_DISPOSITION",
+  "source_roster": {
+    "path": "docs/stageR/r2/r2_bj_b0_hlc_v4_engineering_roster_v1.0.json",
+    "entry_count": 8
+  },
+  "B1_canary_identity": {
+    "scenario_token": "cc1abd3989065d8d",
+    "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+    "disposition": "OUTCOME_EXPOSED_PERMANENT_ENGINEERING_ONLY",
+    "R2_C_USE_FORBIDDEN": true,
+    "CONFIRMATORY_SMOKE_USE_FORBIDDEN": true,
+    "RBR_USE_FORBIDDEN": true
+  },
+  "remaining_B0_identities": {
+    "count": 7,
+    "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY",
+    "remaining_14_runs_authorized": false,
+    "rerun_allowed": false,
+    "replacement_allowed": false,
+    "reordering_allowed": false
+  },
+  "entries": [
+    {
+      "scenario_token": "cc1abd3989065d8d",
+      "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+      "disposition": "OUTCOME_EXPOSED_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "1ec5332f171f5872",
+      "log_id": "2021.09.21.16.42.24_veh-08_02115_02448",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "5735883e91ef57e4",
+      "log_id": "2021.08.19.17.14.40_veh-45_01683_02036",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "7188743b78cb5631",
+      "log_id": "2021.06.09.14.03.17_veh-12_02584_02970",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "57e7cbc7cc465554",
+      "log_id": "2021.09.17.12.58.10_veh-45_01935_02062",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "6408758176c25fb4",
+      "log_id": "2021.10.01.18.24.31_veh-44_00925_01112",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "c5a22460be1c59c2",
+      "log_id": "2021.08.20.16.54.30_veh-08_02083_02192",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    },
+    {
+      "scenario_token": "74801411f6d15a0d",
+      "log_id": "2021.08.30.13.47.20_veh-08_00359_00489",
+      "disposition": "FROZEN_UNRUN_PERMANENT_ENGINEERING_ONLY"
+    }
+  ],
+  "A5_unselected_pool": {
+    "count": 26,
+    "outcome_exposed": false,
+    "new_runtime_outcome_read": false,
+    "automatic_confirmatory_roster_conversion_allowed": false,
+    "scientific_outcome_blacklist_addition": false
+  },
+  "historical_ledgers_modified": false,
+  "result_based_source_blacklist_created": false
+}

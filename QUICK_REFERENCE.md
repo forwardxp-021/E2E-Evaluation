@@ -1,5 +1,34 @@
 # E2E-Evaluation 项目快速参考
 
+## StageR / R2-BK — Family scope 分叉与 TSB-only R2-C 设计冻结
+
+### 1. 命令
+
+以下命令只校验冻结 SHA、HLC 关闭处置、TSB candidate integrity 和 zero-run 治理边界；不会运行 simulator，也不会再次调用 B1.1 recovery analyzer：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r2_bk_verify_family_scope_freeze.py
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bk_tsb_r2c_design.py
+```
+
+### 2. 期望行为
+
+- 只读核验 B1.1 recovery、HLC negative result、TSB candidate 与传递 component SHA；
+- 保持 HLC/B0 identities 的冻结与暴露边界，禁止跨 family pooling；
+- 报告 frozen source universe 未物化完整 TSB eligibility population，容量结论 fail-closed；
+- 不选择 TSB R2-C roster、reserve 或 schedule，不改变参数、阈值和 protected CSV。
+
+### 3. 通过标准
+
+- HLC closure、identity disposition、family bifurcation 和 TSB candidate SHA closure 全部通过；
+- 容量不得用 `1,425` 个结构性 log 上界冒充 eligible pool，状态明确为需 Owner 授权离线 materialization；
+- `runner.run=0`、offline recovery invocation `=0`、simulation `=0`；
+- `ROSTER_SELECTION=FALSE`、`R2_C_STARTED=FALSE`、`CONFIRMATORY_SMOKE_STARTED=FALSE`、`RBR_STARTED=FALSE`。
+
 ## StageR / R1 B2.8-R3.2 — Pair binding 与 48-run orchestrator 冻结
 
 ### 1. 命令
