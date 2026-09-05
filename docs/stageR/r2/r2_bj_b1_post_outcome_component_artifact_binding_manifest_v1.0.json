@@ -1,0 +1,95 @@
+{
+  "schema_version": "r2_bj_b1_post_outcome_component_artifact_binding_manifest_v1.0",
+  "status": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+  "stage": "R2-BJ-B1_EXACT_TWO_RUN_HLC_V4_ENGINEERING_CANARY",
+  "self_reference": false,
+  "frozen_baseline": {
+    "remote_commit": "39a0a536067c5e19060db997b22bf5ae4e79b8f7",
+    "local_commit": "e1442aa2b3966e8ab52d26f61f46513ff5e67c4d",
+    "tree": "8e7ff9040132bd0e5578f8393acbbda1ca73dc97"
+  },
+  "pre_outcome_authorization_commit": {
+    "remote_commit": "c0785b4292c7533dd07d4ff4a36bf076530bd8e2",
+    "local_commit": "312cb7c94545957c653b6161afd7699785bb447f",
+    "tree": "4757635bb94948b6b079b1ea42f159e0a29e0ead"
+  },
+  "frozen_components": [
+    {"path": "docs/stageR/r2/r2_bj_b0_component_sha_binding_manifest_v1.0.json", "sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9"},
+    {"path": "docs/stageR/r2/r2_bj_b0_hlc_v4_pair_schedule_v1.0.json", "sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d"},
+    {"path": "docs/stageR/r2/r2_bj_b0_exact_pair_binding_manifest_v1.0.json", "sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950"},
+    {"path": "docs/stageR/r2/r2_bj_b0_1_execution_component_sha_manifest_v1.0.json", "sha256": "f768033497a43f23cb1abdb674bf742737655e9d59b62d421eb5fa8dbf573568"},
+    {"path": "docs/stageR/r2/r2_bj_b0_2_execution_observability_sha_manifest_v1.0.json", "sha256": "dac808cb1f75c26c15223226d9b3c296de0256ff007427a86a2a7d14f6b5b62c"},
+    {"path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json", "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"},
+    {"path": "tools/r2_bj_b0_2_frozen_canary_pair_analyzer.py", "sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6"}
+  ],
+  "authorization_binding": {
+    "path": "docs/stageR/r2/r2_bj_b1_scientific_owner_exact_two_run_canary_authorization_v1.0.json",
+    "file_sha256": "152836a99372cee8469ed62898ba4e3da378b33902b6db55d0947ec38702b31e",
+    "canonical_authorization_sha256": "74fb6ad290c7b833e730b6eb5ca836307b167549394bc55f4bdef5ad63f45770",
+    "authorization_consumed": true
+  },
+  "local_raw_output_inventory": {
+    "committed_to_git": false,
+    "production_output_root": {
+      "path": "outputs/r2_bj_b0_1_canary_once_v1",
+      "file_count": 50,
+      "total_bytes": 5434490,
+      "canonical_inventory_sha256": "7eb128ac9e487747f748a20628930b82612fadccfedb6b77ead9003fe142cd1b"
+    },
+    "production_control_root": {
+      "path": "outputs/r2_bj_b0_1_canary_once_control_v1",
+      "file_count": 2,
+      "total_bytes": 1163,
+      "canonical_inventory_sha256": "6aad44874315810363de38dc4e608733455578d9241e61a99f51ce37cdfc0051"
+    },
+    "canonical_inventory_algorithm": "SHA256(concatenated sorted UTF-8 records: relative_path + NUL + byte_size + NUL + file_sha256 + newline)"
+  },
+  "control_artifacts": [
+    {"path": "outputs/r2_bj_b0_1_canary_once_control_v1/canary_attempt_ledger.json", "sha256": "db3f6cf60ecbfef3c19e516661c2184c84b21f8c28e8a1e40a4f029029190bcf"},
+    {"path": "outputs/r2_bj_b0_1_canary_once_control_v1/canary_pair_analysis.json", "sha256": "c50d861ebe09db3e00ce2e5bfffb636123393110af9da5d6b6927bcb735b2b57"}
+  ],
+  "run_artifacts": {
+    "R2BJB0-HLC-01-BASELINE": [
+      {"path": "trace/realized_current_ego.jsonl", "sha256": "2160b475f5e14274f557cbd2cb873a96b4a24c1ed02203a61934ef068de8e636"},
+      {"path": "telemetry/planner_v4_online_gate.jsonl", "sha256": "e0f7dbf24e4b23ef91b6753729c60c8e42c75db9e3e9194182ec6c4c2d64e6f2"},
+      {"path": "telemetry/controller_visible_telemetry.jsonl", "sha256": "80a148540a3daefb4714954b6b9afb2550dec0054b1bf4302f097d385999e15d"},
+      {"path": "telemetry/actual_lqr_controller_telemetry.jsonl", "sha256": "a8838465d9c38c8714f8cd202a45f22adc9de5b79150e90e590b6cf79e1e140b"},
+      {"path": "raw/runner_report.parquet", "sha256": "ed8f5b68d00c6efb35bef95384d4abbb23aa0fb8d060df20de9e114950ab4e4f"},
+      {"path": "raw/metrics/no_ego_at_fault_collisions.parquet", "sha256": "e92e5ea25fb28f66d833fe815fd268af00f22d3dda315101c40b20c269b6de1a"},
+      {"path": "raw/metrics/drivable_area_compliance.parquet", "sha256": "45e5fd2a5734384246efec05b2cfec8fd514ff9e29da83eed7bbe4370718b558"}
+    ],
+    "R2BJB0-HLC-01-TREATMENT": [
+      {"path": "trace/realized_current_ego.jsonl", "sha256": "f18a0e073724c0cc6a76d862cfc6ac020001f93909f2fb18493037a049e4ded9"},
+      {"path": "telemetry/planner_v4_online_gate.jsonl", "sha256": "cf6fe99955c6e5d7e1f948028bf2197fd7d90a7a5d6fa69302c0dc2023228162"},
+      {"path": "telemetry/controller_visible_telemetry.jsonl", "sha256": "2e7dca3a2d860f1f1bbea1385cce0a8cf7a350afecae3c50b4392fe43a2a1e4e"},
+      {"path": "telemetry/actual_lqr_controller_telemetry.jsonl", "sha256": "71e4b9ec91d6a11b42277508db6ae34267db86a5d3676942cc4c50e98da23e21"},
+      {"path": "raw/runner_report.parquet", "sha256": "b52d320b7cff98de2698f0720f15894908fbbad68f49f65a1beda8935fae53cc"},
+      {"path": "raw/metrics/no_ego_at_fault_collisions.parquet", "sha256": "e3e5df12076fcb6e253b147337b92af140a594ca4f1e9da55a48a1ad66006061"},
+      {"path": "raw/metrics/drivable_area_compliance.parquet", "sha256": "c09e8e0d175deeddc743c7700f975c18c9856e811bfafb594bced5f31d3e3cff"}
+    ]
+  },
+  "committed_result_artifacts": [
+    {"path": "docs/stageR/r2/r2_bj_b1_exact_two_run_execution_technical_ledger_v1.0.json", "sha256": "3c00614330b7da49b4788fec301cf95fcd036e504a3c2d4b47e05acc0b1c703f"},
+    {"path": "docs/stageR/r2/r2_bj_b1_actual_lqr_telemetry_integrity_audit_v1.0.json", "sha256": "5a7e645ac9a18ca765b8acf70365988cc92e23ac68152c847a3a7841fc7431b2"},
+    {"path": "docs/stageR/r2/r2_bj_b1_frozen_pair_analyzer_result_v1.0.json", "sha256": "7ad14f7a318ef83b371d11de225c02f386a005e3761b3a1ae9f78eb1db17408a"},
+    {"path": "docs/stageR/r2/r2_bj_b1_infrastructure_failure_audit_v1.0.json", "sha256": "858b79cb57ad650c991e6500ce26aa0523b7098e5b23eb6565db4c42e7793d81"},
+    {"path": "docs/stageR/r2/R2_BJ_B1_Exact_Two_Run_Canary_Result_Report_v1.md", "sha256": "e5893abe1fcb14ad4f181a6cbc75b77c62f253efc6f79007ba44770600012798"},
+    {"path": "docs/stageR/r1/QUICK_REFERENCE.md", "sha256": "331c0a3f83b09befe8ad4f556241b3acfd080017df8acd60f9d780c56bac2016"}
+  ],
+  "execution_summary": {
+    "runner_run_attempt_count": 2,
+    "consumed_budget": 2,
+    "remaining_budget": 0,
+    "baseline_runner_status": "TECHNICAL_COMPLETE",
+    "treatment_runner_status": "TECHNICAL_COMPLETE",
+    "architecture_failure_audit_present": false,
+    "frozen_analyzer_status": "INFRASTRUCTURE_FAILURE",
+    "scientific_mechanism_or_endpoint_adjudicated": false,
+    "remaining_14_runs_authorized": false
+  },
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "TSB_started": false,
+  "R2_C_started": false,
+  "confirmatory_smoke_started": false,
+  "RBR_started": false
+}

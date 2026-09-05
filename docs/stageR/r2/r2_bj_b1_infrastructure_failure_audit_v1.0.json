@@ -1,0 +1,30 @@
+{
+  "schema_version": "r2_bj_b1_infrastructure_failure_audit_v1.0",
+  "classification": "POST_RUN_FROZEN_ANALYZER_SCHEMA_KEY_MISMATCH",
+  "result_state": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+  "architecture_failure": false,
+  "architecture_failure_audit_present": false,
+  "runner_attempts_before_failure": 2,
+  "baseline_runner_technical_complete": true,
+  "treatment_runner_technical_complete": true,
+  "failure_stage": "FROZEN_POST_RUN_PAIR_ANALYSIS",
+  "exception": "KeyError:'capture_end_abs_s'",
+  "evidence": {
+    "analyzer_path": "tools/r2_bj_b0_2_frozen_canary_pair_analyzer.py",
+    "analyzer_sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6",
+    "analyzer_lookup": "global_parameters.capture.capture_end_abs_s",
+    "parameter_path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+    "parameter_sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+    "available_nominal_key": "global_parameters.capture.nominal_capture_end_abs_s",
+    "automatic_result_sha256": "c50d861ebe09db3e00ce2e5bfffb636123393110af9da5d6b6927bcb735b2b57"
+  },
+  "disposition": [
+    "STOP_REMAINING_SCHEDULE",
+    "NO_RERUN",
+    "NO_IDENTITY_REPLACEMENT",
+    "NO_PARAMETER_UPDATE",
+    "NO_MANUAL_SCIENTIFIC_RECOMPUTATION",
+    "WAIT_FOR_SCIENTIFIC_OWNER"
+  ],
+  "v4_scientific_inference": "NOT_SUPPORTED_OR_REJECTED_FROM_THIS_INFRASTRUCTURE_FAILURE"
+}

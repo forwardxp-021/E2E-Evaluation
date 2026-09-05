@@ -55,3 +55,11 @@ B2.8-R1 使用版本化 V2.2 planner：仅在 planner 调用入口被动记录�
 - v1.1 预检仅保留两项 fail-closed 缺口：realized-current-ego trace writer 未绑定，以及 Hydra 的 per-run frozen roster-row 参数未绑定。
 - B2.8-R1 的 48/48 Hydra composition、80-row trace 与 fail-closed 测试均通过，`PRE_RUN_INTEGRITY=PASS_COMPLETE_EXECUTION_PATH_ZERO_RUN`。
 - 该通过不构成 run 授权：`OFFICIAL_SMOKE_AUTHORIZED=false`、`NEW_EXECUTION_RUN_BUDGET=0`、RBR 仍未授权。
+
+## R2-BJ-B1 唯一 HLC V4 canary（已消耗，禁止重跑）
+
+- 一次性授权已在 outcome 暴露前独立提交并由 attempt ledger 记录 canonical SHA。
+- 生产入口已且仅已调用 `runner.run()` 两次，顺序为 baseline → treatment；两臂 runner 均为 `TECHNICAL_COMPLETE`，预算已由 2 降为 0。
+- 两臂各有 80 行 realized/planner telemetry 和 79 行 actual LQR telemetry；actual-shadow 为 79/79 exact agreement。
+- 冻结 analyzer 因 `KeyError:'capture_end_abs_s'` fail-closed；冻结状态为 `R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED`。
+- 不得再次执行生产命令，不得补跑、替换 identity、手工重算 scientific gate 或执行剩余 14 runs。

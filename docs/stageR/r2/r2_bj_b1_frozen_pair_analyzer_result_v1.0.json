@@ -1,0 +1,27 @@
+{
+  "schema_version": "r2_bj_b1_frozen_pair_analyzer_result_v1.0",
+  "source_schema_version": "r2_bj_b0_2_frozen_canary_pair_analysis_v1.0",
+  "source_path": "outputs/r2_bj_b0_1_canary_once_control_v1/canary_pair_analysis.json",
+  "source_sha256": "c50d861ebe09db3e00ce2e5bfffb636123393110af9da5d6b6927bcb735b2b57",
+  "result_state": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+  "technical_complete_as_reported_by_analyzer": false,
+  "reason": "KeyError:'capture_end_abs_s'",
+  "frozen_analyzer_sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6",
+  "frozen_parameter_file_sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+  "diagnostic": {
+    "analyzer_requested_key": "global_parameters.capture.capture_end_abs_s",
+    "frozen_parameter_key_present_instead": "global_parameters.capture.nominal_capture_end_abs_s",
+    "analyzer_modified": false,
+    "analyzer_reexecuted": false,
+    "manual_scientific_recalculation_performed": false
+  },
+  "scientific_gates": {
+    "mechanism": "NOT_EVALUATED",
+    "endpoint": "NOT_EVALUATED",
+    "F_match": "NOT_EVALUATED",
+    "engineering": "NOT_EVALUATED_BY_FROZEN_PAIR_ANALYZER",
+    "official_safety": "NOT_EVALUATED_BY_FROZEN_PAIR_ANALYZER"
+  },
+  "remaining_14_runs_automatically_authorized": false,
+  "technical_rerun_authorized": false
+}

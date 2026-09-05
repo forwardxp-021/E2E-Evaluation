@@ -1,0 +1,35 @@
+{
+  "schema_version": "r2_bj_b1_actual_lqr_telemetry_integrity_audit_v1.0",
+  "status": "PASSIVE_OBSERVABILITY_INTEGRITY_PASS",
+  "scientific_mechanism_recomputed": false,
+  "frozen_pair_analyzer_reinvoked": false,
+  "expected_contract": {
+    "primary80_rows": 80,
+    "planner_gate_rows": 80,
+    "controller_visible_rows": 80,
+    "actual_lqr_rows": 79,
+    "actual_lqr_iterations": "0...78",
+    "actual_shadow_absolute_tolerance": 1e-12
+  },
+  "runs": [
+    {
+      "run_id": "R2BJB0-HLC-01-BASELINE",
+      "arm": "BASELINE",
+      "realized_trace": {"rows": 80, "iteration_min": 0, "iteration_max": 79, "contiguous_unique": true, "sha256": "2160b475f5e14274f557cbd2cb873a96b4a24c1ed02203a61934ef068de8e636"},
+      "planner_v4_online_gate": {"rows": 80, "iteration_min": 0, "iteration_max": 79, "online_gate_pass_rows": 80, "failure_code_rows": 0, "sha256": "e0f7dbf24e4b23ef91b6753729c60c8e42c75db9e3e9194182ec6c4c2d64e6f2"},
+      "controller_visible": {"rows": 80, "iteration_min": 0, "iteration_max": 79, "semantic_role": "PLANNER_REFERENCE_STEERING__NOT_ACTUAL_CONTROLLER_COMMAND", "sha256": "80a148540a3daefb4714954b6b9afb2550dec0054b1bf4302f097d385999e15d"},
+      "actual_lqr": {"rows": 79, "iteration_min": 0, "iteration_max": 78, "contiguous_unique": true, "acceleration_direction_agreement": "79/79", "steering_direction_agreement": "79/79", "max_abs_acceleration_shadow_difference_mps2": 0.0, "max_abs_steering_rate_shadow_difference_radps": 0.0, "behavior_changed": false, "sha256": "a8838465d9c38c8714f8cd202a45f22adc9de5b79150e90e590b6cf79e1e140b"}
+    },
+    {
+      "run_id": "R2BJB0-HLC-01-TREATMENT",
+      "arm": "TREATMENT",
+      "realized_trace": {"rows": 80, "iteration_min": 0, "iteration_max": 79, "contiguous_unique": true, "sha256": "f18a0e073724c0cc6a76d862cfc6ac020001f93909f2fb18493037a049e4ded9"},
+      "planner_v4_online_gate": {"rows": 80, "iteration_min": 0, "iteration_max": 79, "online_gate_pass_rows": 80, "failure_code_rows": 0, "sha256": "cf6fe99955c6e5d7e1f948028bf2197fd7d90a7a5d6fa69302c0dc2023228162"},
+      "controller_visible": {"rows": 80, "iteration_min": 0, "iteration_max": 79, "semantic_role": "PLANNER_REFERENCE_STEERING__NOT_ACTUAL_CONTROLLER_COMMAND", "sha256": "2e7dca3a2d860f1f1bbea1385cce0a8cf7a350afecae3c50b4392fe43a2a1e4e"},
+      "actual_lqr": {"rows": 79, "iteration_min": 0, "iteration_max": 78, "contiguous_unique": true, "acceleration_direction_agreement": "79/79", "steering_direction_agreement": "79/79", "max_abs_acceleration_shadow_difference_mps2": 0.0, "max_abs_steering_rate_shadow_difference_radps": 0.0, "behavior_changed": false, "sha256": "71e4b9ec91d6a11b42277508db6ae34267db86a5d3676942cc4c50e98da23e21"}
+    }
+  ],
+  "actual_shadow_audit": "PASS_EXACT_WITHIN_FROZEN_TOLERANCE",
+  "architecture_failure_audit_present": false,
+  "interpretation_boundary": "TELEMETRY_INTEGRITY_ONLY__NOT_A_MECHANISM_ENDPOINT_OR_SAFETY_ADJUDICATION"
+}
