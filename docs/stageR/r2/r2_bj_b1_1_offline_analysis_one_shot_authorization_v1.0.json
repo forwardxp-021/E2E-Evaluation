@@ -1,0 +1,19 @@
+{
+  "schema_version": "r2_bj_b1_1_offline_analysis_one_shot_authorization_v1.0",
+  "status": "AUTHORIZED_ONCE_PRE_RECOVERY_UNCONSUMED",
+  "OFFLINE_EXISTING_ARTIFACT_ANALYSIS_AUTHORIZED": true,
+  "OFFLINE_ANALYZER_INVOCATION_BUDGET": 1,
+  "OFFLINE_ANALYZER_INVOCATIONS": 0,
+  "REMAINING_OFFLINE_ANALYZER_BUDGET": 1,
+  "AUTHORIZATION_CONSUMED": false,
+  "AUTHORIZED_OUTPUT_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b1_1_offline_analyzer_recovery_once_v1",
+  "AUTHORIZED_RAW_INPUT_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_v1",
+  "B1_POST_OUTCOME_MANIFEST_SHA256": "34aebc06b24784a4382f196d25c77ebef4263eb9adab467d1af731834889745c",
+  "NEW_RUN_BUDGET": 0,
+  "RUNNER_RUN_AUTHORIZED": false,
+  "TECHNICAL_RERUN_AUTHORIZED": false,
+  "REMAINING_14_RUNS_AUTHORIZED": false,
+  "R2_C_AUTHORIZED": false,
+  "CONFIRMATORY_SMOKE_AUTHORIZED": false,
+  "RBR_AUTHORIZED": false
+}

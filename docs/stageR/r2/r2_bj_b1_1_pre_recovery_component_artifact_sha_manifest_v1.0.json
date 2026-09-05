@@ -1,0 +1,48 @@
+{
+  "schema_version": "r2_bj_b1_1_pre_recovery_component_artifact_sha_manifest_v1.0",
+  "status": "FROZEN_PRE_RECOVERY_NO_ANALYSIS_INVOKED",
+  "stage": "R2-BJ-B1.1_OFFLINE_ANALYZER_SCHEMA_RECOVERY",
+  "self_reference": false,
+  "baseline": {
+    "local_commit": "13e926e6d76ae5762b4ad1cf3a9314cef89ef807",
+    "remote_commit": "5e8c5b31c8a67c7c13a22b6f01ca78a44dfc2730",
+    "common_tree": "0f521eaea39a3aef4006351b038d03f52b784cf4"
+  },
+  "historical_B1_state": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+  "historical_B1_result_superseded": false,
+  "frozen_input_closure": {
+    "status": "PASS",
+    "B1_post_outcome_manifest_sha256": "34aebc06b24784a4382f196d25c77ebef4263eb9adab467d1af731834889745c",
+    "original_analyzer_sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6",
+    "V4_parameter_sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+    "B0_2_observability_manifest_sha256": "dac808cb1f75c26c15223226d9b3c296de0256ff007427a86a2a7d14f6b5b62c",
+    "B1_raw_output_inventory_sha256": "7eb128ac9e487747f748a20628930b82612fadccfedb6b77ead9003fe142cd1b",
+    "B1_control_output_inventory_sha256": "6aad44874315810363de38dc4e608733455578d9241e61a99f51ce37cdfc0051",
+    "all_B1_manifest_listed_artifacts_verified": true
+  },
+  "components": [
+    {"path": "docs/stageR/r2/r2_bj_b1_1_offline_recovery_contract_v1.0.json", "sha256": "f31aa4b069575666f228d273bb0affdcb69fb1d3360841b2490dd0d17a409a4a"},
+    {"path": "docs/stageR/r2/r2_bj_b1_1_capture_schema_mapping_contract_v1.0.json", "sha256": "8e8b349f922d34ca98e9d72307a789ec5f9fe7e1900f1a664da65067e5fc4f04"},
+    {"path": "docs/stageR/r2/r2_bj_b1_1_offline_analysis_one_shot_authorization_v1.0.json", "sha256": "8c11862e9c580e50166af7d689336313db8d3d1a1479d1843715d9e6bfa85e29"},
+    {"path": "docs/stageR/r2/r2_bj_b1_1_exact_one_line_diff_proof_v1.0.json", "sha256": "35724bd9f2e8a3d07e99e1f3fc70d3c3d5d51e64d8ff6bc8a73f129322013c27"},
+    {"path": "tools/r2_bj_b1_1_offline_recovery_analyzer_v1.py", "sha256": "e7becddeeb6baea998aee9129e838c36808c2bc73e66a3dd7a9be733964c6788"},
+    {"path": "tools/r2_bj_b1_1_offline_recovery_launcher.py", "sha256": "183f5ec2c4b42cdaf015645055f3397e3397e19939ec98f51a0bdc200111c00a"},
+    {"path": "tests/test_r2_bj_b1_1_offline_analyzer_schema_recovery.py", "sha256": "3a9c61197bdaabad01ef5e826b4e0bbcc63e211ce39a9373888f75977e096b5a"},
+    {"path": "docs/stageR/r2/r2_bj_b1_post_outcome_component_artifact_binding_manifest_v1.0.json", "sha256": "34aebc06b24784a4382f196d25c77ebef4263eb9adab467d1af731834889745c"},
+    {"path": "tools/r2_bj_b0_2_frozen_canary_pair_analyzer.py", "sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6"},
+    {"path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json", "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"},
+    {"path": "docs/stageR/r2/r2_bj_b0_2_execution_observability_sha_manifest_v1.0.json", "sha256": "dac808cb1f75c26c15223226d9b3c296de0256ff007427a86a2a7d14f6b5b62c"}
+  ],
+  "exact_one_line_diff": true,
+  "recovery_output_root_exists": false,
+  "offline_analyzer_invocations": 0,
+  "remaining_offline_analyzer_budget": 1,
+  "runner_run": 0,
+  "engineering_simulation": 0,
+  "scientific_simulation": 0,
+  "TSB_simulation": 0,
+  "remaining_14_runs_authorized": false,
+  "R2_C_authorized": false,
+  "confirmatory_smoke_authorized": false,
+  "RBR_authorized": false
+}

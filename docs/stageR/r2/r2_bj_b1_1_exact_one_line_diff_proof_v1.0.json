@@ -1,0 +1,18 @@
+{
+  "schema_version": "r2_bj_b1_1_exact_one_line_diff_proof_v1.0",
+  "status": "PASS_EXACT_SINGLE_SOURCE_LINE_CHANGED",
+  "original": {
+    "path": "tools/r2_bj_b0_2_frozen_canary_pair_analyzer.py",
+    "sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6"
+  },
+  "recovery": {
+    "path": "tools/r2_bj_b1_1_offline_recovery_analyzer_v1.py",
+    "sha256": "e7becddeeb6baea998aee9129e838c36808c2bc73e66a3dd7a9be733964c6788"
+  },
+  "removed_line": "    start_s, deadline_s = float(capture[\"capture_start_abs_s\"]), float(capture[\"capture_end_abs_s\"])",
+  "added_line": "    start_s, deadline_s = float(capture[\"capture_start_abs_s\"]), float(capture[\"nominal_capture_end_abs_s\"])",
+  "removed_line_count": 1,
+  "added_line_count": 1,
+  "other_source_differences": 0,
+  "mechanical_equivalence": "recovery_source == original_source.replace(old_lookup, new_lookup, 1)"
+}

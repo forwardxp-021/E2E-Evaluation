@@ -1,0 +1,27 @@
+{
+  "schema_version": "r2_bj_b1_1_capture_schema_mapping_contract_v1.0",
+  "status": "FROZEN_EXACT_ONE_FIELD_REWIRE",
+  "source_analyzer": {
+    "path": "tools/r2_bj_b0_2_frozen_canary_pair_analyzer.py",
+    "sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6",
+    "old_lookup": "capture[\"capture_end_abs_s\"]",
+    "old_lookup_exact_occurrences": 1
+  },
+  "recovery_analyzer_path": "tools/r2_bj_b1_1_offline_recovery_analyzer_v1.py",
+  "replacement": {
+    "from": "capture[\"capture_end_abs_s\"]",
+    "to": "capture[\"nominal_capture_end_abs_s\"]",
+    "exact_replacement_count": 1
+  },
+  "parameter_schema": {
+    "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+    "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+    "capture_start_abs_s": 1.1,
+    "nominal_capture_end_abs_s": 7.4,
+    "capture_end_abs_s_present": false
+  },
+  "multiple_field_acceptance": false,
+  "fallback": false,
+  "telemetry_inference": false,
+  "threshold_or_gate_change": false
+}

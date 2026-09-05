@@ -1,0 +1,45 @@
+{
+  "schema_version": "r2_bj_b1_1_offline_recovery_contract_v1.0",
+  "stage": "R2-BJ-B1.1_OFFLINE_ANALYZER_SCHEMA_RECOVERY",
+  "status": "PREREGISTERED_PRE_RECOVERY",
+  "historical_state": {
+    "HISTORICAL_B1_STATE": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+    "HISTORICAL_B1_RESULT_SUPERSEDED": false,
+    "HISTORICAL_ANALYZER_RESULT_OVERWRITTEN": false,
+    "HISTORICAL_CONTROL_ARTIFACTS_MODIFIED": false
+  },
+  "authorization": {
+    "OFFLINE_EXISTING_ARTIFACT_ANALYSIS_AUTHORIZED": true,
+    "OFFLINE_ANALYZER_INVOCATION_BUDGET": 1,
+    "NEW_RUN_BUDGET": 0,
+    "RUNNER_RUN_AUTHORIZED": false,
+    "TECHNICAL_RERUN_AUTHORIZED": false,
+    "IDENTITY_REPLACEMENT_AUTHORIZED": false,
+    "PARAMETER_CHANGE_AUTHORIZED": false,
+    "THRESHOLD_CHANGE_AUTHORIZED": false,
+    "REMAINING_14_RUNS_AUTHORIZED": false
+  },
+  "immutable_input_bindings": {
+    "B1_post_outcome_manifest_sha256": "34aebc06b24784a4382f196d25c77ebef4263eb9adab467d1af731834889745c",
+    "original_frozen_analyzer_sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6",
+    "V4_parameter_sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158",
+    "B0_2_observability_manifest_sha256": "dac808cb1f75c26c15223226d9b3c296de0256ff007427a86a2a7d14f6b5b62c"
+  },
+  "only_source_change": {
+    "old_lookup": "capture[\"capture_end_abs_s\"]",
+    "new_lookup": "capture[\"nominal_capture_end_abs_s\"]",
+    "semantic_assignment": "deadline_s",
+    "fallback_allowed": false,
+    "deadline_seconds": 7.4,
+    "hard_jump_threshold_m": 0.25
+  },
+  "output_root": "outputs/r2_bj_b1_1_offline_analyzer_recovery_once_v1",
+  "output_root_must_be_absent": true,
+  "deterministic_double_evaluation_preserved": true,
+  "scientific_gate_add_delete_or_reorder_allowed": false,
+  "raw_artifact_mutation_allowed": false,
+  "RUNNER_RUN": 0,
+  "ENGINEERING_SIMULATION": 0,
+  "SCIENTIFIC_SIMULATION": 0,
+  "TSB_SIMULATION": 0
+}
