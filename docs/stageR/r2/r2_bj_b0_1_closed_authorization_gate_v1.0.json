@@ -1,0 +1,40 @@
+{
+  "schema_version": "r2_bj_b0_1_closed_authorization_gate_v1.0",
+  "status": "DENY_BEFORE_SIMULATOR_START",
+  "BJ_B_ENGINEERING_SIMULATION_AUTHORIZED": false,
+  "CANARY_AUTHORIZED": false,
+  "AUTHORIZED_RUN_ORDERS": [],
+  "AUTHORIZED_RUN_IDS": [],
+  "NEW_RUN_BUDGET": 0,
+  "AUTHORIZATION_CONSUMED": false,
+  "RUNNER_RUN": 0,
+  "AUTHORIZED_OUTPUT_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_v1",
+  "AUTHORIZED_CONTROL_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_control_v1",
+  "AUTHORIZED_B0_1_EXECUTION_COMPONENT_MANIFEST_SHA256": "f768033497a43f23cb1abdb674bf742737655e9d59b62d421eb5fa8dbf573568",
+  "authorized": {
+    "B0_component_manifest_sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9",
+    "B0_schedule_sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d",
+    "B0_pair_binding_sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950"
+  },
+  "future_owner_authorization_requirements": {
+    "separate_record_required": true,
+    "exact_run_orders": [1, 2],
+    "exact_run_ids": [
+      "R2BJB0-HLC-01-BASELINE",
+      "R2BJB0-HLC-01-TREATMENT"
+    ],
+    "exact_budget": 2,
+    "required_SHA_bindings": [
+      "B0_component_manifest_sha256",
+      "B0_schedule_sha256",
+      "B0_pair_binding_sha256",
+      "AUTHORIZED_B0_1_EXECUTION_COMPONENT_MANIFEST_SHA256"
+    ],
+    "required_lifecycle_bindings": [
+      "AUTHORIZED_OUTPUT_ROOT",
+      "AUTHORIZED_CONTROL_ROOT"
+    ]
+  },
+  "manifest_reference_direction": "OWNER_AUTHORIZATION_REFERENCES_EXECUTION_MANIFEST_ONLY",
+  "execution_manifest_contains_authorization": false
+}

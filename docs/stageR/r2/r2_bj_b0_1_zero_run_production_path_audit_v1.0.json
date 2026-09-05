@@ -1,0 +1,101 @@
+{
+  "schema_version": "r2_bj_b0_1_zero_run_production_path_audit_v1.0",
+  "status": "R2_BJ_B0_1_PRODUCTION_PATH_READY_FOR_OWNER_CANARY_AUTHORIZATION",
+  "scope": "ZERO_RUN_PRODUCTION_CONTROL_PLANE_ONLY",
+  "B0_ROSTER_CHANGED": false,
+  "B0_SCHEDULE_CHANGED": false,
+  "B0_PAIR_BINDINGS_CHANGED": false,
+  "V4_CHANGED": false,
+  "immutable_binding_audit": {
+    "B0_component_manifest_sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9",
+    "B0_schedule_sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d",
+    "B0_pair_binding_sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950",
+    "B0_zero_run_executor_sha256": "7af447896c0be9f32f78faae4cc1e6b601a63331097deb740d51e3fb49b581ad",
+    "B0_runtime_planner_sha256": "3b837c00bfc55453237437cabda75fa58e5be948fa1f6276963387685e24d3b6",
+    "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "all_match": true
+  },
+  "execution_component_manifest": {
+    "path": "docs/stageR/r2/r2_bj_b0_1_execution_component_sha_manifest_v1.0.json",
+    "sha256": "f768033497a43f23cb1abdb674bf742737655e9d59b62d421eb5fa8dbf573568",
+    "component_SHA_closure": "PASS",
+    "self_reference": false,
+    "owner_authorization_included": false
+  },
+  "exact_canary_slice": {
+    "CANARY_RUN_IDS": 2,
+    "run_orders": [1, 2],
+    "run_ids": [
+      "R2BJB0-HLC-01-BASELINE",
+      "R2BJB0-HLC-01-TREATMENT"
+    ],
+    "scenario_token": "cc1abd3989065d8d",
+    "log_id": "2021.10.01.16.53.37_veh-44_01126_01602",
+    "access_to_run_orders_3_to_16": "FORBIDDEN"
+  },
+  "production_control_plane": {
+    "PRODUCTION_PATH_AUTH_GATE": "ENFORCED",
+    "authorization_and_SHA_checks_dominate_runner_construction": true,
+    "authorization_and_budget_claim_dominate_runner_run": true,
+    "sole_production_runner_run_call_site": "tools/r2_bj_b0_1_production_canary_launcher.py::_run_one",
+    "baseline_completion_dominates_treatment_construction": true,
+    "owner_bound_output_and_control_roots": true,
+    "authorization_byte_SHA_persisted": true,
+    "budget_transition": "2_TO_1_TO_0",
+    "maximum_runner_run_attempts": 2,
+    "third_attempt": "HARD_FAIL",
+    "reused_authorization": "HARD_FAIL",
+    "STOP_REMAINING_SCHEDULE": "MECHANICALLY_TESTED",
+    "NO_RERUN": true,
+    "NO_REPLACEMENT": true,
+    "NO_PARAMETER_UPDATE": true
+  },
+  "failure_handling": {
+    "architecture_and_infrastructure_classifications_separate": true,
+    "baseline_architecture_failure_attempts": 1,
+    "baseline_architecture_failure_treatment_started": false,
+    "treatment_architecture_failure_attempts": 2,
+    "third_run_started": false,
+    "baseline_infrastructure_failure_attempts": 1,
+    "baseline_infrastructure_failure_treatment_started": false,
+    "incomplete_baseline_telemetry_treatment_constructed": false,
+    "runner_construction_failure_authorization_consumed": true,
+    "authorization_ledger_serialization_failure_runner_constructed": false,
+    "FAILURE_AUDIT_PERSISTENCE": "PASS",
+    "failure_audit_write": "TEMPORARY_FILE_FSYNC_ATOMIC_RENAME_BEFORE_RERAISE",
+    "failure_audit_independent_of_normal_planner_telemetry": true,
+    "normal_wrapper_trajectory_object_parity": "EXACT_IDENTICAL"
+  },
+  "focused_mutation_tests": {
+    "pre_audit_tests_passed": 18,
+    "pre_audit_tests_failed": 0,
+    "final_tests_passed_including_manifest_audit": 23,
+    "final_tests_failed": 0,
+    "real_runner_used": false,
+    "mock_runner_only": true,
+    "authorization_false_runner_calls": 0,
+    "budget_zero_runner_calls": 0,
+    "SHA_mismatch_runner_calls": 0,
+    "schedule_mismatch_runner_calls": 0,
+    "output_collision_runner_calls": 0,
+    "valid_temporary_authorization_mock_runner_calls": 2
+  },
+  "formal_state": {
+    "BJ_B_ENGINEERING_SIMULATION_AUTHORIZED": false,
+    "CANARY_AUTHORIZED": false,
+    "AUTHORIZED_RUN_ORDERS": [],
+    "NEW_RUN_BUDGET": 0,
+    "AUTHORIZATION_CONSUMED": false
+  },
+  "CANARY_AUTHORIZED": false,
+  "NEW_RUN_BUDGET": 0,
+  "STOP_REMAINING_SCHEDULE": "MECHANICALLY_TESTED",
+  "FAILURE_AUDIT_PERSISTENCE": "PASS",
+  "RUNNER_RUN": 0,
+  "engineering_simulation": 0,
+  "scientific_simulation": 0,
+  "TSB_simulation": 0,
+  "R2_C_STARTED": false,
+  "CONFIRMATORY_SMOKE_STARTED": false,
+  "RBR_STARTED": false
+}

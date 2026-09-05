@@ -11078,3 +11078,43 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - 当前授权门保持关闭：`BJ_B_ENGINEERING_SIMULATION_AUTHORIZED=false`、`CANARY_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RUNNER_RUN=0`。
 - 下一次仅向 Owner 申请 selection rank 1 的一对 baseline→treatment canary（2 runs）；本阶段未执行该 canary。
 - 未启动 R2-C、confirmatory smoke、TSB 或 RBR；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## StageR / R2 Phase BJ-B0.1 Canary Production Execution Path Closure
+
+### 1. 命令
+
+B0.1 正式授权门保持关闭。以下命令只显示零运行状态，不构造或启动 simulator：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r2_bj_b0_1_production_canary_launcher.py
+
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_b0_1_production_execution_path.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/check_no_tmp_dependencies.py
+```
+
+不得使用 `--execute`，除非下一阶段 Scientific Owner 提供同时绑定 B0 component/schedule/pair-binding SHA、B0.1 execution manifest SHA、exact run IDs 和 budget 2 的独立授权记录。
+
+### 2. 期望行为
+
+- production launcher 在同一真实控制流中先核验 protected CSV、全部 B0/B0.1 SHA、授权、预算、exact `[1,2]` schedule 和 fresh output roots，再认领一次性授权与 run attempt，最后才可能到达唯一的 `runner.run()` 调用点。
+- future Owner record 还必须绑定固定 output/control roots；attempt ledger 记录授权文件字节 SHA，不能通过更换 ledger 路径重复消费同一授权。
+- baseline technical complete 是 treatment runner construction 的必要前提。任何 architecture 或 infrastructure failure 都停止当前及剩余 schedule，不重试、不替换 identity、不更新参数。
+- B0.1 wrapper 正常路径原样返回 B0 planner 轨迹；捕获 architecture failure 时，在重新抛出前用同目录临时文件和原子 rename 写入独立 JSON failure audit。
+- 当前关闭门、全部 mutation tests 和 mock-runner scheduler tests 均不启动 simulator。
+
+### 3. 通过标准
+
+- 正式 gate 为 `CANARY_AUTHORIZED=false`、`AUTHORIZED_RUN_ORDERS=[]`、`NEW_RUN_BUDGET=0`、`AUTHORIZATION_CONSUMED=false`。
+- authorization false、budget 0、SHA/schedule/order/output collision 均产生 0 次 mock runner 调用。
+- 临时内存授权下，成功路径严格调用 baseline、treatment 各一次；预算 `2→1→0`，第三次及重复消费均 fail-closed。
+- baseline architecture/infrastructure failure 后 treatment 不启动；treatment failure 后不存在第三次调用；architecture 分类不会降级为 infrastructure。
+- `RUNNER_RUN=0`，未执行 canary、R2-C、confirmatory smoke 或 RBR。

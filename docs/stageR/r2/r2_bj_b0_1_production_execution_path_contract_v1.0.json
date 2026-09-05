@@ -1,0 +1,69 @@
+{
+  "schema_version": "r2_bj_b0_1_production_execution_path_contract_v1.0",
+  "status": "FROZEN_ZERO_RUN_NOT_AUTHORIZED",
+  "stage": "R2-BJ-B0.1_CANARY_PRODUCTION_EXECUTION_PATH_CLOSURE",
+  "baseline": {
+    "remote_commit": "a1c85948e580c8e06b0c3ee309e2c5cd7b4f844d",
+    "local_commit": "45e0be360322e6a1711c8755b354606279100b56",
+    "tree": "865a5fe8e436ef342245c068aee08cab5b018ec7"
+  },
+  "immutable_B0": {
+    "roster_changed": false,
+    "schedule_changed": false,
+    "pair_bindings_changed": false,
+    "V4_changed": false,
+    "component_manifest_sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9",
+    "schedule_sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d",
+    "pair_binding_sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950",
+    "zero_run_executor_sha256": "7af447896c0be9f32f78faae4cc1e6b601a63331097deb740d51e3fb49b581ad",
+    "runtime_planner_sha256": "3b837c00bfc55453237437cabda75fa58e5be948fa1f6276963387685e24d3b6"
+  },
+  "production_control_flow": [
+    "VERIFY_PROTECTED_CSV",
+    "VERIFY_B0_COMPONENT_SCHEDULE_PAIR_BINDING_SHA",
+    "VERIFY_B0_1_EXECUTION_COMPONENT_MANIFEST_SHA",
+    "VERIFY_OWNER_AUTHORIZATION",
+    "VERIFY_EXACT_POSITIVE_BUDGET_2",
+    "VERIFY_EXACT_RUN_ORDERS_1_2_AND_RUN_IDS",
+    "VERIFY_OWNER_BOUND_OUTPUT_AND_CONTROL_ROOTS",
+    "VERIFY_FRESH_OUTPUT_ROOTS",
+    "CLAIM_ONE_SHOT_AUTHORIZATION",
+    "CONSTRUCT_BASELINE_RUNNER",
+    "DECREMENT_BUDGET_AND_PERSIST_ATTEMPT_BEFORE_BASELINE_RUNNER_RUN",
+    "VALIDATE_BASELINE_TECHNICAL_COMPLETION",
+    "CONSTRUCT_TREATMENT_RUNNER_ONLY_AFTER_BASELINE_COMPLETE",
+    "DECREMENT_BUDGET_AND_PERSIST_ATTEMPT_BEFORE_TREATMENT_RUNNER_RUN",
+    "VALIDATE_TREATMENT_TECHNICAL_COMPLETION",
+    "ASSERT_ZERO_REMAINING_BUDGET_AND_EXACT_TWO_ATTEMPTS"
+  ],
+  "single_runner_run_call_site": "tools/r2_bj_b0_1_production_canary_launcher.py::_run_one",
+  "authorization_checks_dominate_runner_construction_and_runner_run": true,
+  "one_shot_reuse_protection": {
+    "owner_binds_output_root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_v1",
+    "owner_binds_control_root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_control_v1",
+    "authorization_file_byte_sha_recorded_in_attempt_ledger": true,
+    "changing_control_root_to_reconsume_authorization": "FORBIDDEN"
+  },
+  "architecture_failure": {
+    "persistence": "ATOMIC_TEMPORARY_FILE_PLUS_OS_REPLACE_BEFORE_RERAISE",
+    "actions": ["PERSIST_FAILURE_AUDIT", "STOP_CURRENT_RUN", "STOP_REMAINING_SCHEDULE", "NO_RERUN", "NO_REPLACEMENT", "NO_PARAMETER_UPDATE"]
+  },
+  "infrastructure_failure": {
+    "separate_from_architecture_failure": true,
+    "actions": ["STOP_CURRENT_RUN", "STOP_REMAINING_SCHEDULE", "NO_AUTOMATIC_RETRY"]
+  },
+  "technical_completion": {
+    "runner_report_succeeded": true,
+    "realized_trace_rows": 80,
+    "planner_telemetry_rows": 80,
+    "controller_visible_telemetry_rows": 80,
+    "official_safety_metrics_exactly_one_each": true,
+    "runner_report_exactly_one": true,
+    "unexpected_iteration_or_planner_call_count": "INFRASTRUCTURE_FAILURE_STOP_ALL"
+  },
+  "current_state": {
+    "CANARY_AUTHORIZED": false,
+    "NEW_RUN_BUDGET": 0,
+    "RUNNER_RUN": 0
+  }
+}

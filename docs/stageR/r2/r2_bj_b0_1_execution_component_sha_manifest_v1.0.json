@@ -1,0 +1,139 @@
+{
+  "schema_version": "r2_bj_b0_1_execution_component_sha_manifest_v1.0",
+  "status": "FROZEN_ZERO_RUN_READY_FOR_OWNER_CANARY_AUTHORIZATION",
+  "stage": "R2-BJ-B0.1_CANARY_PRODUCTION_EXECUTION_PATH_CLOSURE",
+  "baseline": {
+    "remote_commit": "a1c85948e580c8e06b0c3ee309e2c5cd7b4f844d",
+    "local_commit": "45e0be360322e6a1711c8755b354606279100b56",
+    "tree": "865a5fe8e436ef342245c068aee08cab5b018ec7"
+  },
+  "self_reference": false,
+  "owner_authorization_included": false,
+  "component_SHA_closure": "PASS",
+  "inherited_B0_component_manifest_sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9",
+  "components": [
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_component_sha_binding_manifest_v1.0.json",
+      "sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_hlc_v4_pair_schedule_v1.0.json",
+      "sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_exact_pair_binding_manifest_v1.0.json",
+      "sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_hlc_v4_engineering_roster_v1.0.json",
+      "sha256": "9efce9f4dbc699ef0c9ad683976d03d01c72b065a1106c70177f3585f78f272b"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json",
+      "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_hlc_v4_execution_architecture_contract_v1.0.json",
+      "sha256": "927131f0664c5f5160a669a3916f17432ee5ecd0b05082b35af9cd5c90825f46"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_online_failure_taxonomy_v1.0.json",
+      "sha256": "36e419f9438ee5758212ad60e0b3c82c5d71d74a0e3cd553494a1f165851611c"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_1_production_execution_path_contract_v1.0.json",
+      "sha256": "885776ba1c1eb8767f422ebfeaa0ca7665f8bb2f69a0662afb075c0470b92487"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_1_exact_two_run_canary_slice_v1.0.json",
+      "sha256": "34e1a8f8bcf7599e01eae4eeb259d00039834cb7eded80bfb381596d71cfb8d6"
+    },
+    {
+      "path": "docs/stageR/r2/r2_bj_b0_1_execution_failure_attempt_ledger_schema_v1.0.json",
+      "sha256": "a28995c7c80859ecaab610cc59c0417afc08a5b75afb62d10dbb30282542315c"
+    },
+    {
+      "path": "configs/r1_official_technical_smoke_hydra/planner/r2_bj_b0_hlc_v4_engineering.yaml",
+      "sha256": "ccc7ad4d9bebc9ad6d88c4ecc68a49d5e53da822de38d4b65203bc324e08b825"
+    },
+    {
+      "path": "tools/r2_bj_b0_execute_frozen_hlc_v4_engineering.py",
+      "sha256": "7af447896c0be9f32f78faae4cc1e6b601a63331097deb740d51e3fb49b581ad"
+    },
+    {
+      "path": "tools/r2_bj_b0_hlc_v4_engineering_planner.py",
+      "sha256": "3b837c00bfc55453237437cabda75fa58e5be948fa1f6276963387685e24d3b6"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py",
+      "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"
+    },
+    {
+      "path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py",
+      "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"
+    },
+    {
+      "path": "tools/r1_closed_loop_benchmark_v2_3.py",
+      "sha256": "f0013ea412010b2ef61fe2b3afef1abaab0fb3bdefab7f081f071eb58a4ced49"
+    },
+    {
+      "path": "tools/r1_official_technical_smoke_planner_v3_1.py",
+      "sha256": "8f47f1b1a16e1faa242cc6e9e7cbccf3481f7062f1c32d020c814a68b3929f42"
+    },
+    {
+      "path": "tools/r1_primary80_scientific_time_controller_v1.py",
+      "sha256": "3b78f87593c01ea80e37d5a639a99355ff25a002b2e317409a029766c005f4d1"
+    },
+    {
+      "path": "tools/r1_b2_8_r3_prospective_selector.py",
+      "sha256": "8171d1009149ef3a039a0304e7f30bdfde566265d1e72ec55571ada3f0f05465"
+    },
+    {
+      "path": "tools/r2_bj_b0_1_failure_persisting_telemetry_wrapper.py",
+      "sha256": "dadc31f9591b5bc7c38895ef687c4f60e9c1c07a33489651995542ab3e3510de"
+    },
+    {
+      "path": "tools/r2_bj_b0_1_production_canary_launcher.py",
+      "sha256": "d16f215d73b7ce292ea33bb978e506bc399d1fbf13040ad8fb68c27c317fd0d0"
+    }
+  ],
+  "external_bound_nuplan_1_2_2_runtime_components": [
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/simulation/default_simulation.yaml",
+      "sha256": "3ff40b31dd1731694ed43899cd8055f4f6b2ad093131779bd1737e76b2bbad0c"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/experiments/simulation/closed_loop_nonreactive_agents.yaml",
+      "sha256": "16eed4f6cd3362f4d9b4843b58fcdc8dadac974bb75f7c6036f6bfe9281b8a46"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/common/scenario_builder/nuplan_mini.yaml",
+      "sha256": "08901ced89ff4e190816e597fbb7d79bf5179f6b8a3b5fb6839181fceb8bb14f"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/common/scenario_filter/all_scenarios.yaml",
+      "sha256": "1c888193b54bfdee0724baf039b99f8fcce308fd5f9da5b6fbd79fad8d111439"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/simulation/observation/idm_agents_observation.yaml",
+      "sha256": "1114a37e036d243e66c922442acc37634820a65e31956b917a74bc8a3bec24f9"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/simulation/ego_controller/two_stage_controller.yaml",
+      "sha256": "b876fc8be316a50860eefaf39f1e6b422816d51c72518868e4034e68ccbb24d7"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/common/simulation_metric/default_metrics.yaml",
+      "sha256": "0029c509885834d433551e7da44639d92e0c50bb3a0505f551237acf99776634"
+    },
+    {
+      "absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/config/common/worker/sequential.yaml",
+      "sha256": "0cfee6da66aa60af20f4745a6d601067e374ac436822bf28a3a50f1bd1b6044c"
+    }
+  ],
+  "formal_authorization_state": {
+    "CANARY_AUTHORIZED": false,
+    "NEW_RUN_BUDGET": 0,
+    "RUNNER_RUN": 0
+  }
+}

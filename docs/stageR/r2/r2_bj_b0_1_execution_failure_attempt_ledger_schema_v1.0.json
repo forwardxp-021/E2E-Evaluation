@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "r2_bj_b0_1_execution_failure_attempt_ledger_schema_v1.0",
+  "title": "R2-BJ-B0.1 one-shot canary attempt ledger",
+  "type": "object",
+  "required": ["schema_version", "authorization_record_sha256", "AUTHORIZATION_CONSUMED", "initial_budget", "remaining_budget", "runner_run_attempt_count", "attempts", "retry_authorized", "replacement_authorized"],
+  "properties": {
+    "schema_version": {"const": "r2_bj_b0_1_execution_attempt_ledger_v1.0"},
+    "authorization_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "AUTHORIZATION_CONSUMED": {"const": true},
+    "initial_budget": {"const": 2},
+    "remaining_budget": {"type": "integer", "minimum": 0, "maximum": 2},
+    "runner_run_attempt_count": {"type": "integer", "minimum": 0, "maximum": 2},
+    "attempts": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["attempt_number", "run_order", "run_id", "pair_id", "arm", "status", "budget_remaining_after_claim"],
+        "properties": {
+          "attempt_number": {"type": "integer", "minimum": 1, "maximum": 2},
+          "run_order": {"enum": [1, 2]},
+          "run_id": {"enum": ["R2BJB0-HLC-01-BASELINE", "R2BJB0-HLC-01-TREATMENT"]},
+          "pair_id": {"const": "R2BJB0-HLC-01"},
+          "arm": {"enum": ["BASELINE", "TREATMENT"]},
+          "status": {"enum": ["ATTEMPT_CLAIMED_BEFORE_RUNNER_RUN", "TECHNICAL_COMPLETE", "ARCHITECTURE_FAILURE_STOP_ALL", "INFRASTRUCTURE_FAILURE_STOP_ALL"]},
+          "budget_remaining_after_claim": {"type": "integer", "minimum": 0, "maximum": 1},
+          "reason": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "retry_authorized": {"const": false},
+    "replacement_authorized": {"const": false}
+  },
+  "additionalProperties": false
+}
