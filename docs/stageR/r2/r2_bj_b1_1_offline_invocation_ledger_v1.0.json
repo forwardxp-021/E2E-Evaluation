@@ -1,0 +1,11 @@
+{
+  "schema_version": "r2_bj_b1_1_offline_invocation_ledger_v1.0",
+  "status": "COMPLETED",
+  "authorization_sha256": "8c11862e9c580e50166af7d689336313db8d3d1a1479d1843715d9e6bfa85e29",
+  "pre_recovery_manifest_sha256": "204a439b790e9fe06678fc438b4d7ffafee056019c7917ed537a0351ec29a444",
+  "offline_analyzer_invocations": 1,
+  "initial_budget": 1,
+  "remaining_budget": 0,
+  "runner_run": 0,
+  "result_sha256": "761532070a61dc744e742c212c72c24e3d36bc8fee12b44805f63e41824e16ed"
+}

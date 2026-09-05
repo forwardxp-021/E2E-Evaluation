@@ -1,0 +1,76 @@
+{
+  "schema_version": "r2_bj_b1_1_post_recovery_sha_binding_manifest_v1.0",
+  "status": "CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL",
+  "stage": "R2-BJ-B1.1_OFFLINE_ANALYZER_SCHEMA_RECOVERY",
+  "self_reference": false,
+  "pre_recovery_freeze": {
+    "local_commit": "27bbe910865e79000bfba16ea512b896109cbfcf",
+    "remote_commit": "c88554ea2adb87ee10342ae40ba8de984859564b",
+    "common_tree": "4feee85345cf6eb4450dba81f512f3e34ef70426",
+    "manifest_path": "docs/stageR/r2/r2_bj_b1_1_pre_recovery_component_artifact_sha_manifest_v1.0.json",
+    "manifest_sha256": "204a439b790e9fe06678fc438b4d7ffafee056019c7917ed537a0351ec29a444"
+  },
+  "historical_immutable_state": {
+    "HISTORICAL_B1_STATE": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+    "HISTORICAL_B1_RESULT_SUPERSEDED": false,
+    "HISTORICAL_ANALYZER_RESULT_OVERWRITTEN": false,
+    "HISTORICAL_CONTROL_ARTIFACTS_MODIFIED": false,
+    "historical_pair_analysis_sha256": "c50d861ebe09db3e00ce2e5bfffb636123393110af9da5d6b6927bcb735b2b57"
+  },
+  "recovery_binding": {
+    "recovery_analyzer_path": "tools/r2_bj_b1_1_offline_recovery_analyzer_v1.py",
+    "recovery_analyzer_sha256": "e7becddeeb6baea998aee9129e838c36808c2bc73e66a3dd7a9be733964c6788",
+    "exact_one_line_diff_proof_sha256": "35724bd9f2e8a3d07e99e1f3fc70d3c3d5d51e64d8ff6bc8a73f129322013c27",
+    "input_artifact_SHA_closure": "PASS",
+    "B1_post_outcome_manifest_sha256": "34aebc06b24784a4382f196d25c77ebef4263eb9adab467d1af731834889745c"
+  },
+  "immutable_B1_artifact_recheck": {
+    "raw_output_file_count": 50,
+    "raw_output_total_bytes": 5434490,
+    "raw_output_canonical_inventory_sha256": "7eb128ac9e487747f748a20628930b82612fadccfedb6b77ead9003fe142cd1b",
+    "control_output_file_count": 2,
+    "control_output_total_bytes": 1163,
+    "control_output_canonical_inventory_sha256": "6aad44874315810363de38dc4e608733455578d9241e61a99f51ce37cdfc0051",
+    "historical_artifacts_modified": false
+  },
+  "recovery_artifacts": [
+    {"path": "docs/stageR/r2/r2_bj_b1_1_offline_invocation_ledger_v1.0.json", "sha256": "3a3309d5801e1d192b919e4edae5880d72af8070cde6fd771fdab669f248f192"},
+    {"path": "docs/stageR/r2/r2_bj_b1_1_offline_recovery_analyzer_complete_result_v1.0.json", "sha256": "761532070a61dc744e742c212c72c24e3d36bc8fee12b44805f63e41824e16ed"},
+    {"path": "docs/stageR/r2/r2_bj_b1_1_historical_and_recovered_dual_state_disposition_v1.0.json", "sha256": "ee4f8bd8eaede2ce5e1e0ac8450e62020efb1b73123bf6a0afc04a15c7c64e10"},
+    {"path": "docs/stageR/r2/R2_BJ_B1_1_Offline_Analyzer_Schema_Recovery_Report_v1.md", "sha256": "be23abbd7af47189e4f649424bbd97abdf03e2fbe58171d14b152e283ca0a12d"},
+    {"path": "docs/stageR/r1/QUICK_REFERENCE.md", "sha256": "96c5102baca230b5f221cf267a1557e39faadb9734393f577ca175fb7af69941"}
+  ],
+  "local_output_provenance": {
+    "output_root": "outputs/r2_bj_b1_1_offline_analyzer_recovery_once_v1",
+    "recovery_analyzer_result_sha256": "761532070a61dc744e742c212c72c24e3d36bc8fee12b44805f63e41824e16ed",
+    "offline_invocation_ledger_sha256": "3a3309d5801e1d192b919e4edae5880d72af8070cde6fd771fdab669f248f192",
+    "committed_raw_output": false
+  },
+  "recovery_result": {
+    "R2_BJ_B1_1_OFFLINE_RECOVERY": "CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL",
+    "mechanism_pass": false,
+    "endpoint_pass": false,
+    "F_match_pass": true,
+    "engineering_pass": true,
+    "official_safety_pass": false,
+    "actual_shadow_observability_pass": true,
+    "treatment_target_offset_declines": true,
+    "post_deadline_hard_jump_absent": true,
+    "deterministic_repeat_output": true
+  },
+  "invocation_control": {
+    "offline_analyzer_invocations": 1,
+    "remaining_offline_analyzer_budget": 0,
+    "runner_run": 0,
+    "engineering_simulation": 0,
+    "scientific_simulation": 0,
+    "TSB_simulation": 0
+  },
+  "future_authorization": {
+    "remaining_14_runs_authorized": false,
+    "R2_C_authorized": false,
+    "confirmatory_smoke_authorized": false,
+    "RBR_authorized": false
+  },
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

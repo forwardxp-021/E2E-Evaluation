@@ -63,3 +63,11 @@ B2.8-R1 使用版本化 V2.2 planner：仅在 planner 调用入口被动记录�
 - 两臂各有 80 行 realized/planner telemetry 和 79 行 actual LQR telemetry；actual-shadow 为 79/79 exact agreement。
 - 冻结 analyzer 因 `KeyError:'capture_end_abs_s'` fail-closed；冻结状态为 `R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED`。
 - 不得再次执行生产命令，不得补跑、替换 identity、手工重算 scientific gate 或执行剩余 14 runs。
+
+## R2-BJ-B1.1 离线 schema recovery（已消耗，禁止再次调用）
+
+- 历史 B1 状态继续是 `R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED`，不被覆盖或 supersede。
+- 新 recovery analyzer 只把 deadline 字段接到冻结 V4 的 `nominal_capture_end_abs_s`，其余源码逐字不变。
+- 唯一一次 offline invocation 已完成，预算 `1 → 0`；B1.1 的 `runner.run()` 与全部 simulation count 均为 0。
+- 恢复 disposition 为 `CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL`：mechanism、endpoint、official safety FAIL；F_match、engineering 和 actual-shadow observability PASS。
+- 剩余 14 runs、R2-C、confirmatory smoke、RBR 继续未授权。

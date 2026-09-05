@@ -1,0 +1,59 @@
+{
+  "schema_version": "r2_bj_b1_1_historical_and_recovered_dual_state_disposition_v1.0",
+  "historical_B1": {
+    "state": "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+    "result_superseded": false,
+    "analyzer_result_overwritten": false,
+    "control_artifacts_modified": false
+  },
+  "offline_recovery": {
+    "state": "CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL",
+    "source_frozen_result_state": "R2_BJ_B1_CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL",
+    "technical_complete": true,
+    "deterministic_double_evaluation": true,
+    "gates": {
+      "mechanism_pass": false,
+      "endpoint_pass": false,
+      "F_match_pass": true,
+      "engineering_pass": true,
+      "official_safety_pass": false,
+      "actual_shadow_observability_pass": true,
+      "treatment_target_offset_declines": true,
+      "post_deadline_hard_jump_absent": true
+    },
+    "mechanism": {
+      "status": "HLC_MECHANISM_PAIR_FAIL",
+      "reasons": ["TREATMENT_RETREAT_LT_ONE", "MONOTONIC_PENALTY_LT_0P1"],
+      "delta_commit_latency_s": 1.899923,
+      "delta_monotonic_fraction": 0.0
+    },
+    "endpoint": {
+      "baseline_pass": true,
+      "treatment_pass": false,
+      "treatment_failed_gates": ["offset", "heading", "lateral_velocity"],
+      "paired_route_progress_delta_pass": true
+    },
+    "official_safety": {
+      "baseline_pass": false,
+      "treatment_pass": false,
+      "baseline_at_fault_collisions": 2,
+      "treatment_at_fault_collisions": 1,
+      "baseline_drivable_area_compliance": true,
+      "treatment_drivable_area_compliance": true
+    }
+  },
+  "invocation_control": {
+    "offline_analyzer_invocations": 1,
+    "remaining_offline_analyzer_budget": 0,
+    "runner_run": 0,
+    "engineering_simulation": 0,
+    "scientific_simulation": 0,
+    "TSB_simulation": 0
+  },
+  "future_authorization": {
+    "remaining_14_runs_authorized": false,
+    "R2_C_authorized": false,
+    "confirmatory_smoke_authorized": false,
+    "RBR_authorized": false
+  }
+}
