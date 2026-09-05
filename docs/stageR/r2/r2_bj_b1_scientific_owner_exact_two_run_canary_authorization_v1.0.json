@@ -1,0 +1,32 @@
+{
+  "schema_version": "r2_bj_b1_scientific_owner_exact_two_run_canary_authorization_v1.0",
+  "status": "AUTHORIZED_ONCE",
+  "OWNER_DECISION": "R2_BJ_B1_EXACT_TWO_RUN_ENGINEERING_CANARY_APPROVED",
+  "BJ_B_ENGINEERING_SIMULATION_AUTHORIZED": true,
+  "CANARY_AUTHORIZED": true,
+  "AUTHORIZED_RUN_ORDERS": [1, 2],
+  "AUTHORIZED_RUN_IDS": [
+    "R2BJB0-HLC-01-BASELINE",
+    "R2BJB0-HLC-01-TREATMENT"
+  ],
+  "NEW_RUN_BUDGET": 2,
+  "AUTHORIZATION_CONSUMED": false,
+  "AUTHORIZED_OUTPUT_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_v1",
+  "AUTHORIZED_CONTROL_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_control_v1",
+  "AUTHORIZED_B0_1_EXECUTION_COMPONENT_MANIFEST_SHA256": "f768033497a43f23cb1abdb674bf742737655e9d59b62d421eb5fa8dbf573568",
+  "AUTHORIZED_B0_2_EXECUTION_OBSERVABILITY_MANIFEST_SHA256": "dac808cb1f75c26c15223226d9b3c296de0256ff007427a86a2a7d14f6b5b62c",
+  "authorized": {
+    "B0_component_manifest_sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9",
+    "B0_schedule_sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d",
+    "B0_pair_binding_sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950",
+    "B0_1_execution_component_manifest_sha256": "f768033497a43f23cb1abdb674bf742737655e9d59b62d421eb5fa8dbf573568"
+  },
+  "TECHNICAL_RERUN_AUTHORIZED": false,
+  "IDENTITY_REPLACEMENT_AUTHORIZED": false,
+  "PARAMETER_UPDATE_AUTHORIZED": false,
+  "REMAINING_14_RUNS_AUTHORIZED": false,
+  "R2_C_AUTHORIZED": false,
+  "CONFIRMATORY_SMOKE_AUTHORIZED": false,
+  "RBR_AUTHORIZED": false,
+  "RUNNER_RUN": 0
+}
