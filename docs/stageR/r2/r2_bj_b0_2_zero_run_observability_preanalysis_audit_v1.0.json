@@ -1,0 +1,74 @@
+{
+  "schema_version": "r2_bj_b0_2_zero_run_observability_preanalysis_audit_v1.0",
+  "status": "FROZEN_PRE_OUTCOME_OBSERVABILITY_AND_ANALYSIS_READY_FOR_OWNER_REVIEW",
+  "execution_observability_manifest_sha256": "dac808cb1f75c26c15223226d9b3c296de0256ff007427a86a2a7d14f6b5b62c",
+  "frozen_history": {
+    "B0_CHANGED": false,
+    "B0_1_CHANGED": false,
+    "V4_CHANGED": false
+  },
+  "production_path": {
+    "unique_runner_run_call_site": "tools/r2_bj_b0_1_production_canary_launcher.py:_run_one",
+    "B0_2_adapter_contains_runner_run_call": false,
+    "authorization_schedule_SHA_and_budget_dominate_run": true,
+    "recorder_installability_validated_before_budget_claim": true,
+    "recorder_installed_before_runner_run": true,
+    "baseline_technical_complete_gates_treatment": true,
+    "architecture_failure_priority_preserved": true,
+    "no_retry_no_replacement_no_parameter_update": true
+  },
+  "zero_run_construction": {
+    "runner_constructions": 2,
+    "recorder_installations": 2,
+    "runs": [
+      {
+        "run_order": 1,
+        "run_id": "R2BJB0-HLC-01-BASELINE",
+        "arm": "BASELINE",
+        "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+        "time_controller_iterations": 81,
+        "ego_controller_class": "TwoStageController",
+        "tracker_class": "LQRTracker",
+        "recorder_installed": true,
+        "runner_run_calls": 0
+      },
+      {
+        "run_order": 2,
+        "run_id": "R2BJB0-HLC-01-TREATMENT",
+        "arm": "TREATMENT",
+        "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+        "time_controller_iterations": 81,
+        "ego_controller_class": "TwoStageController",
+        "tracker_class": "LQRTracker",
+        "recorder_installed": true,
+        "runner_run_calls": 0
+      }
+    ]
+  },
+  "telemetry_and_analysis": {
+    "ACTUAL_CONTROLLER_TELEMETRY": "INSTALLED",
+    "ACTUAL_CONTROLLER_EXPECTED_ROWS_PER_RUN": 79,
+    "PLANNER_REFERENCE_STEERING_ROWS_PER_RUN": 80,
+    "planner_reference_semantic_label": "PLANNER_REFERENCE_STEERING__NOT_ACTUAL_CONTROLLER_COMMAND",
+    "actual_and_shadow_acceleration_bound": true,
+    "actual_and_shadow_steering_rate_bound": true,
+    "normal_path_result_object_identity_preserved": true,
+    "POST_RUN_ANALYZER": "FROZEN_PRE_OUTCOME",
+    "deterministic_repeat_required": true,
+    "remaining_14_runs_automatically_authorized": false
+  },
+  "formal_state": {
+    "PRODUCTION_OUTPUT_ROOT_EXISTS": false,
+    "PRODUCTION_CONTROL_ROOT_EXISTS": false,
+    "CANARY_AUTHORIZED": false,
+    "NEW_RUN_BUDGET": 0,
+    "RUNNER_RUN": 0,
+    "engineering_simulation": 0,
+    "scientific_simulation": 0,
+    "TSB_simulation": 0,
+    "R2_C_STARTED": false,
+    "CONFIRMATORY_SMOKE_STARTED": false,
+    "RBR_STARTED": false
+  },
+  "protected_CSV_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+}

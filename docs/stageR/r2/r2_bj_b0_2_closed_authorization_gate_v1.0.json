@@ -1,0 +1,27 @@
+{
+  "schema_version": "r2_bj_b0_2_closed_authorization_gate_v1.0",
+  "status": "CLOSED_ZERO_RUN",
+  "BJ_B_ENGINEERING_SIMULATION_AUTHORIZED": false,
+  "CANARY_AUTHORIZED": false,
+  "AUTHORIZED_RUN_ORDERS": [],
+  "AUTHORIZED_RUN_IDS": [],
+  "NEW_RUN_BUDGET": 0,
+  "AUTHORIZATION_CONSUMED": false,
+  "AUTHORIZED_OUTPUT_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_v1",
+  "AUTHORIZED_CONTROL_ROOT": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/r2_bj_b0_1_canary_once_control_v1",
+  "AUTHORIZED_B0_1_EXECUTION_COMPONENT_MANIFEST_SHA256": null,
+  "AUTHORIZED_B0_2_EXECUTION_OBSERVABILITY_MANIFEST_SHA256": null,
+  "authorized": {},
+  "future_owner_record_must_bind": [
+    "B0 component manifest SHA256",
+    "B0 schedule SHA256",
+    "B0 pair-binding SHA256",
+    "B0.1 execution-component manifest SHA256",
+    "B0.2 execution-observability manifest SHA256",
+    "exact run IDs and run orders 1,2",
+    "budget exactly 2"
+  ],
+  "manifest_self_reference": false,
+  "owner_authorization_in_observability_manifest": false,
+  "RUNNER_RUN": 0
+}

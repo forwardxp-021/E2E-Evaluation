@@ -1,0 +1,51 @@
+{
+  "schema_version": "r2_bj_b0_2_execution_observability_sha_manifest_v1.0",
+  "status": "FROZEN_PRE_OUTCOME_ZERO_RUN_READY_FOR_OWNER_CANARY_AUTHORIZATION",
+  "stage": "R2-BJ-B0.2_PASSIVE_ACTUAL_LQR_TELEMETRY_AND_CANARY_ANALYSIS_FREEZE",
+  "baseline": {
+    "remote_commit": "c1df69025f1b1fa6fcb8e804a54fac3650732f89",
+    "local_commit": "c6ea9c48b048ad26d27222ceef75e74d1d0f20a5",
+    "tree": "28e5e80dcb0ad9581ecef6b0ab655f7034da6162"
+  },
+  "self_reference": false,
+  "owner_authorization_included": false,
+  "component_SHA_closure": "PASS",
+  "components": [
+    {"path": "docs/stageR/r2/r2_bj_b0_component_sha_binding_manifest_v1.0.json", "sha256": "35a1282328b461f0b1edbbd39a4284870382ad52a83bd2975d9a91bc0ece1cf9"},
+    {"path": "docs/stageR/r2/r2_bj_b0_hlc_v4_pair_schedule_v1.0.json", "sha256": "5493c5b402a3bc954d83d0914451c1f3dd38cddcfad8244291cf0a846d88918d"},
+    {"path": "docs/stageR/r2/r2_bj_b0_exact_pair_binding_manifest_v1.0.json", "sha256": "4e4eee55b816c8fa79cdc41ed0f8f99d9bd778e14c747ee13704998f71366950"},
+    {"path": "docs/stageR/r2/r2_bj_b0_1_execution_component_sha_manifest_v1.0.json", "sha256": "f768033497a43f23cb1abdb674bf742737655e9d59b62d421eb5fa8dbf573568"},
+    {"path": "docs/stageR/r2/r2_bj_b0_1_exact_two_run_canary_slice_v1.0.json", "sha256": "34e1a8f8bcf7599e01eae4eeb259d00039834cb7eded80bfb381596d71cfb8d6"},
+    {"path": "docs/stageR/r2/r2_bj_b0_2_technical_completion_contract_v1.0.json", "sha256": "29435005720f82e806bcf08e0bac09dd61b0311c29d681abe1fa8ed7437c809a"},
+    {"path": "docs/stageR/r2/r2_bj_b0_2_canary_result_state_contract_v1.0.json", "sha256": "718014ad06220444f60aca3330d77f7cc3ae8c4b2282deccf6469828074c9f4a"},
+    {"path": "docs/stageR/r2/r2_bj_a5_557_entry_eligibility_census_ledger_v1.0.json", "sha256": "bae7ef8333acd2a8a45acfbe3ddcc2281b242b8a569104edc98b3201eb450adb"},
+    {"path": "docs/stageR/r2/r2_bj_a_hlc_global_parameter_space_v4.0.json", "sha256": "95b6b726a42f9501f6f5401e8b2e5e179cadb489b74087a09667889efd31a158"},
+    {"path": "tools/r2_bj_b0_1_production_canary_launcher.py", "sha256": "d16f215d73b7ce292ea33bb978e506bc399d1fbf13040ad8fb68c27c317fd0d0"},
+    {"path": "tools/r2_bj_b0_2_passive_actual_lqr_recorder.py", "sha256": "07f6ac5baec4ddf13dae53b379cb838e1374a38a1446eea4549fd17ea4c684b9"},
+    {"path": "tools/r2_bj_b0_2_production_launcher_adapter.py", "sha256": "6c7bbc132a336179ffdead29e68775330c3641f826f3110a0c6691a019dd18bc"},
+    {"path": "tools/r2_bj_b0_2_frozen_canary_pair_analyzer.py", "sha256": "b0a3daf7cc2234c5c77ad3800e0d15feecc377aca87ffff3141bbb51e8423da6"},
+    {"path": "tools/r2_bi_execute_hlc_kinematic_target_capture_development.py", "sha256": "e4fe4dd7ff8cbc975f888bc3311d71859493b83edc2e7208200e7c871cb3d0ab"},
+    {"path": "tools/r1_b2_8_r3_2_post_run_evaluator_dispatcher.py", "sha256": "82870a4b42c9343eb1ec22b20901566f3787964bfa7464ae48ea67e9b23396e1"},
+    {"path": "tools/r1_b2_8_r3_1_official_safety_adapter.py", "sha256": "7f2e0c1f72b6545ca7de5843528e9dfd6c36d099bf9072f5430b66ae982195db"},
+    {"path": "tools/r1_official_metric_canonicalizer.py", "sha256": "78f34dddc49cab2960b05fdfae57e812b20e35b83c43bde9a29a837c7f519985"},
+    {"path": "tools/r1_official_technical_smoke_evaluator_v2_1.py", "sha256": "a633aa169a993c954eb890c98da22c5bb8751d9e9fabada6eb9033ab2465ca60"},
+    {"path": "tools/r1_closed_loop_benchmark_v2_1.py", "sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd"},
+    {"path": "tools/r1_hlc_measurement_conformance_v1.py", "sha256": "40775ffa696abe1a89013c246c96ef48e09dd395b5adb29756a5ea81779bb464"},
+    {"path": "tools/r1_context_mechanism_core.py", "sha256": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e"},
+    {"path": "tools/r1_primary80_scientific_time_controller_v1.py", "sha256": "3b78f87593c01ea80e37d5a639a99355ff25a002b2e317409a029766c005f4d1"},
+    {"path": "tools/r2_bj_b0_hlc_v4_engineering_planner.py", "sha256": "3b837c00bfc55453237437cabda75fa58e5be948fa1f6276963387685e24d3b6"},
+    {"path": "tools/r2_bj_a_hlc_morphology_feasible_generator_v4.py", "sha256": "907e118014e1f83ed0004d5a194d75fa389a2e7fc21619c3a3a44dc3c69abae9"},
+    {"path": "tools/r2_bj_a_hlc_morphology_feasible_planner_v4.py", "sha256": "066a1fd2dd2eb3fdc25ed4308c115d3a186e8a16e1e8944cbcf1d08d46613b8b"}
+  ],
+  "external_bound_nuplan_1_2_2_runtime_components": [
+    {"absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/two_stage_controller.py", "sha256": "22797e59f0f13a61ced983a62f8750bb22febac549e1e7ab80f82547c6cadbdd"},
+    {"absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py", "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b"},
+    {"absolute_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/simulation.py", "sha256": "115a96a9f12d55ca4fc5d1201e6833a3f509ebac393fad32cdb9ed275cd04da3"}
+  ],
+  "frozen_analysis_before_outcome": true,
+  "formal_authorization_state": {
+    "CANARY_AUTHORIZED": false,
+    "NEW_RUN_BUDGET": 0,
+    "RUNNER_RUN": 0
+  }
+}

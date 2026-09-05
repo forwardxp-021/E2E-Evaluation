@@ -1,0 +1,42 @@
+{
+  "schema_version": "r2_bj_b0_2_canary_result_state_contract_v1.0",
+  "status": "FROZEN_PRE_OUTCOME_ZERO_RUN",
+  "allowed_states": [
+    "R2_BJ_B1_CANARY_ARCHITECTURE_FAILURE_STOPPED",
+    "R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED",
+    "R2_BJ_B1_CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL",
+    "R2_BJ_B1_CANARY_COMPLETE_READY_FOR_REMAINING_COHORT_OWNER_REVIEW"
+  ],
+  "architecture_failure_is_never_ordinary_failure": true,
+  "ready_requires": [
+    "both arms technical complete",
+    "no architecture audit",
+    "79 actual LQR rows per arm",
+    "79/79 actual-shadow direction agreement per arm",
+    "actual-shadow absolute difference <= 1e-12",
+    "frozen HLC Option-B mechanism pass",
+    "frozen four-gate endpoint pass",
+    "frozen F_match pass",
+    "frozen engineering gates pass",
+    "official safety pass",
+    "treatment target-frame offset declines from capture start to terminal",
+    "no post-deadline hard jump"
+  ],
+  "post_deadline_hard_jump_absolute_lateral_step_m": 0.25,
+  "post_deadline_hard_jump_rule_source": "R2-BI frozen development diagnostic; reused unchanged, not selected from canary outcome",
+  "analysis_pipeline": [
+    "timestamp-aware realized extraction",
+    "native HLC progress",
+    "HLC Option-B V2",
+    "evaluate_frozen_pair",
+    "frozen F_match",
+    "frozen four-gate endpoint",
+    "frozen engineering gates",
+    "official safety adapter",
+    "actual-versus-shadow LQR audit",
+    "realized target-frame offset capture-start to terminal",
+    "post-deadline hard-jump audit"
+  ],
+  "deterministic_repeat_output_required": true,
+  "remaining_14_runs_automatically_authorized": false
+}

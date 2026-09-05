@@ -1,0 +1,52 @@
+{
+  "schema_version": "r2_bj_b0_2_technical_completion_contract_v1.0",
+  "status": "FROZEN_PRE_OUTCOME_ZERO_RUN",
+  "primary80": {
+    "time_controller_class": "R1Primary80ScientificTimeControllerV1",
+    "controller_iterations": 81,
+    "planner_calls": 80,
+    "realized_current_ego_rows": 80,
+    "planner_gate_rows": 80,
+    "planner_reference_steering_rows": 80,
+    "actual_controller_transitions": 79,
+    "actual_lqr_rows": 79,
+    "actual_lqr_iterations": "0...78"
+  },
+  "controller_binding": {
+    "ego_controller_class": "TwoStageController",
+    "tracker_class": "LQRTracker",
+    "installation_point": "after unique production runner construction and before B0.1 sole runner.run call",
+    "installability_validation_precedes_budget_claim": true,
+    "actual_return_object_identity_preserved": true,
+    "arguments_parameters_and_return_values_modified": false
+  },
+  "telemetry_semantics": {
+    "controller_visible_telemetry.jsonl": {
+      "rows": 80,
+      "role": "PLANNER_REFERENCE_STEERING",
+      "disposition": "NOT_ACTUAL_CONTROLLER_COMMAND"
+    },
+    "actual_lqr_controller_telemetry.jsonl": {
+      "rows": 79,
+      "role": "ACTUAL_TWOSTAGE_LQR_COMMAND_AND_INDEPENDENT_FROZEN_SHADOW",
+      "finite_required": true,
+      "shadow_exact_absolute_tolerance": 1e-12,
+      "write_failure_classification": "INFRASTRUCTURE_FAILURE_STOP_ALL"
+    }
+  },
+  "technical_completion": {
+    "runner_report": "exactly one and succeeded",
+    "official_safety_files": [
+      "no_ego_at_fault_collisions.parquet",
+      "drivable_area_compliance.parquet"
+    ],
+    "architecture_failure_audit": "must be absent",
+    "missing_or_extra_actual_lqr_row": "INFRASTRUCTURE_FAILURE_STOP_ALL",
+    "architecture_classification_priority": true,
+    "retry": false,
+    "replacement": false
+  },
+  "RUNNER_RUN": 0,
+  "CANARY_AUTHORIZED": false,
+  "NEW_RUN_BUDGET": 0
+}

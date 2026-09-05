@@ -11118,3 +11118,42 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - 临时内存授权下，成功路径严格调用 baseline、treatment 各一次；预算 `2→1→0`，第三次及重复消费均 fail-closed。
 - baseline architecture/infrastructure failure 后 treatment 不启动；treatment failure 后不存在第三次调用；architecture 分类不会降级为 infrastructure。
 - `RUNNER_RUN=0`，未执行 canary、R2-C、confirmatory smoke 或 RBR。
+
+## StageR / R2 Phase BJ-B0.2 Passive Actual-LQR Telemetry and Canary Analysis Freeze
+
+### 1. 命令
+
+B0.2 正式授权门保持关闭。以下默认命令只读取关闭门并显示零运行状态，不构造或启动 simulator：
+
+```bash
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/r2_bj_b0_2_production_launcher_adapter.py
+
+PYTHONWARNINGS=ignore \
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 -m pytest -q \
+  tests/test_r2_bj_b0_1_production_execution_path.py \
+  tests/test_r2_bj_b0_2_passive_lqr_and_preanalysis_freeze.py
+
+PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python3.9 \
+  tools/check_no_tmp_dependencies.py
+```
+
+不得使用 `--execute`。只有 Scientific Owner 提供同时绑定 B0、B0.1、B0.2 manifests、exact `[1,2]` run slice 和 budget 2 的独立授权记录后，才能进入生产路径。
+
+### 2. 期望行为
+
+- B0.2 不修改 B0/B0.1/V4；在实际 runner 构造后验证 Primary80=81、`TwoStageController`、`LQRTracker`，在预算认领前完成可安装性验证，并在 B0.1 唯一 `runner.run()` 调用点之前安装被动 recorder。
+- recorder 原样返回 actual LQR 结果对象，同时独立重算冻结 acceleration/steering shadow；未来每 arm 必须恰好写 79 行 controller-transition telemetry。
+- 既有 80 行 `controller_visible_telemetry.jsonl` 明确仅是 `PLANNER_REFERENCE_STEERING`，不是 actual controller command。
+- pair analyzer 已在 outcome 前冻结，自动读取两 arm 固定产物并执行 frozen mechanism、F-match、endpoint、engineering、safety、actual/shadow、target-offset 与 hard-jump 审计；不允许人工拼装，也不自动授权剩余 14 runs。
+
+### 3. 通过标准
+
+- 2/2 zero-run runner construction、Primary80、TwoStageController、LQRTracker 和 recorder installation 通过。
+- mock mutation tests 覆盖同一返回对象、命令不变、79/80 cardinality、非有限值、方向不一致只记录、写入失败停止、错误 controller/tracker、baseline gating 与 architecture 分类优先。
+- 正式 output/control roots 均不存在；`CANARY_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RUNNER_RUN=0`。
+- 未启动 R2-C、confirmatory smoke 或 RBR；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
