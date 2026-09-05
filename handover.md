@@ -1,291 +1,1254 @@
 # E2E-Evaluation 博士研究项目权威交接
 
-> **状态：`CURRENT_RESEARCH_HANDOVER_UPDATED_FOR_THESIS_CLOSURE`**  
-> 更新时间：2026-08-20 17:56（Asia/Shanghai）
+> **状态：`CURRENT_STAGE_R_R2_HANDOVER_UPDATED_FOR_INDEPENDENT_REVIEW`**  
+> 更新时间：2026-09-05（Asia/Shanghai）  
 > 仓库：`forwardxp-021/E2E-Evaluation`  
-> 分支：`20260611_stage7_conclusion`  
-> E3本地提交：`2e77d3b6d3b993cce64a41c75826e702176c58e6`
-> 当前已知远端提交：`a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`（本地已包含E3及本次handover更新；GitHub 443超时，尚待重推）
-> 本文件更新提交：运行 `git log -1 --format='%H %s' -- handover.md` 获取（Git提交无法在自身内容中稳定保存自己的最终SHA）  
-> 当前阶段：Stage6/Stage7/Stage7L研究证据、模型与BDD报告体系全部冻结；只进入论文写作、图表和claim cleanup。
-> 核心状态：`STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS`
-> 实验状态：`RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING`
-> 交接状态：`E3_COMPLETE_LOCAL_COMMIT_PENDING_REMOTE_SYNC`
-
-本文件是当前项目状态、科学结论、冻结协议、关键资产和后续工作的**总入口**。旧的
-Windows→Mac迁移记录、Pittsburgh下载过程和Stage5/6/7早期研发流水已经降级到末尾的历史背景，
-不得再把其中的旧实时状态当作当前任务。
+> 当前研发分支：`20260825_stageR_new`  
+> 当前已知远端 HEAD：`2f21b437a105067cfb19932ba7799fc4f4a40eca`  
+> 当前内容 tree：`0f2173f63b96a670663387bbf9f2d49547c0e545`  
+> 当前阶段：**Stage R / R2 — Residual Benchmark Enablement 与 RBR 前置验证**  
+> 当前核心状态：**RBR 正式训练仍未授权；TSB family development candidate 已冻结；HLC V4 fresh canary 为有效负结果；HLC 后续路线等待独立 Scientific Owner review。**  
+> 本文件替代 2026-08-20 的旧 thesis-closure handover 作为当前实时入口；旧文件只保留为历史快照，不再代表当前执行状态。
 
 ---
 
-## 0. 给下一个 conversation / Work session 的启动指令
+## 0. 给下一个 conversation / Work / Astra session 的启动指令
 
-### 0.1 推荐阅读顺序
+### 0.1 第一原则
+
+当前不是“继续 Stage7L”或“只写论文”的阶段。2026-08-20 之后项目重新打开了 **Stage R**，目标是解释 learned64 在 Stage7L pure-lateral prospective benchmark 中失败的根因，并建立一个能够真正验证 **Residual Behavior Representation (RBR-64)** 的 prospective residual benchmark。
+
+下一个 session 在任何写操作前，必须先理解：
+
+1. Stage6/Stage7/Stage7L 证据仍然冻结；
+2. Stage R 是在这些冻结证据之上的**新研究分支**；
+3. RBR 尚未正式训练；
+4. 当前真正的 blocker 是：**residual benchmark 必须先在 closed-loop realized behavior 层产生可验证的 residual mechanism**；
+5. HLC 与 TSB 两个 residual family 的当前状态不同，不能混写；
+6. HLC 当前只有一个 fresh V4 canary pair 的正式 closed-loop evidence，不能把“当前 candidate 失败”升级成“整个 HLC scientific construct 已证明不可能”。
+
+### 0.2 推荐阅读顺序
 
 1. `AGENTS.md`
 2. `handover.md`
-3. `docs/stage7l_e_prospective_representation_bdd_report_zh.md`
-4. `docs/stage7l_e_prospective_bdd_manifest_v1.json`
-5. `outputs/final_standardized_bdd_style_report_card_v2_stage7l/final_standardized_bdd_style_report_card_zh.md`
-6. `docs/phd_thesis_research_closure_blueprint_zh.md`
-7. `docs/stage6v_one_time_blind_evaluation_report_zh.md`
-8. `outputs/stage6w_stage6s_v3_final_v1/stage6w_stage6s_v3_report_zh.md`
-9. `docs/unified_bdd_evaluation_matrix_style_report_card_zh.md`
-10. `configs/unified_bdd_reporting_schema_v2.json`
-11. `configs/standardized_fixed_dimension_bdd_protocol_v2.json`
-12. `README.md`
-13. `QUICK_REFERENCE.md`
+3. `docs/stageR/r1/` 下 R0/R1 closure、B3 root-cause 与 outcome-exposure 文件
+4. `docs/stageR/r2/R2_A_Controller_Transfer_Identification_Report_v1.md`
+5. `docs/stageR/r2/R2_A_TSB_Replanning_Transfer_Audit_v1.md`
+6. `docs/stageR/r2/R2_A_R2B_Generator_Architecture_Decision_v1.md`
+7. `docs/stageR/r2/R2_B_Controller_Aware_Generator_Development_Report_v1.md`
+8. `docs/stageR/r2/R2_BH_HLC_Target_Capture_Development_Report_v1.md`
+9. `docs/stageR/r2/` 中 R2-BI / BJ-A / A2 / A3 / B0 / B0.1 / B0.2 / B1 / B1.1 的当前报告与 manifest
+10. `docs/stageR/r2/r2_bh_tsb_family_development_candidate_v1.0.json`
+11. `tools/r2_b_controller_aware_generator_v1.py`
+12. HLC V4 generator/planner 与 frozen HLC evaluator
+13. nuPlan `TwoStageController` / `LQRTracker` 实现
+14. `docs/stage7l_e_prospective_representation_bdd_report_zh.md`
+15. `outputs/final_standardized_bdd_style_report_card_v2_stage7l/final_standardized_bdd_style_report_card_zh.md`
 
-Stage7L-E完整报告和manifest是prospective lateral结果的当前权威来源；Stage7L-A/B/C/D文档继续作为设计与执行溯源。
-
-启动时先执行：
+启动时先核对：
 
 ```bash
 git status --short --branch
 git rev-parse HEAD
 git log -1 --oneline
+git rev-parse origin/20260825_stageR_new
 ```
 
-> Stage6、Stage7、Stage7L、A/B/C checkpoint和BDD reporting schema均保持冻结；不得重新训练、
-> 重新选择场景、修改统计门槛、补齐N/A行为维度或因Stage7L Primary失败返工representation。
-> 新session只应在既有claim boundary内推进论文写作、图表和复现索引。
+### 0.3 当前默认权限
 
-工作树长期包含大量未跟踪实验输出和一个既有tracked数据文件修改。不要运行`git reset --hard`、
-`git clean`或批量删除outputs；先区分用户资产与当前任务修改。
-
-### 0.2 新conversation首先处理的唯一工程事项
-
-E3已经完成、测试并提交，不得重新生成或重算。新conversation启动后先核对：
-
-```bash
-git rev-parse HEAD
-git rev-parse origin/20260611_stage7_conclusion
-git status --short --branch
-```
-
-E3提交为`2e77d3b6d3b993cce64a41c75826e702176c58e6`。2026-08-20 17:20前后两次执行
-`git push origin HEAD:20260611_stage7_conclusion`均因无法连接`github.com:443`约75秒后超时；这不是认证、
-代码或分支冲突。网络恢复后只需重试同一push并核对远端SHA，不要重新commit E3。
-
-必须保留的用户工作树修改：
+除非 Scientific Owner 明确授权，默认：
 
 ```text
-outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/
-  behavior_events_v2/behavior_event_metrics_v2.csv
+RUNNER_RUN = 0
+NEW_SIMULATION = NOT_AUTHORIZED
+R2_C = NOT_AUTHORIZED
+CONFIRMATORY_SMOKE = NOT_AUTHORIZED
+RBR_TRAINING = NOT_AUTHORIZED
+RBR_A/B/C = NOT_AUTHORIZED
+THRESHOLD_CHANGE = FORBIDDEN
+OUTCOME_EXPOSED_IDENTITY_REUSE = FORBIDDEN
 ```
 
-该CSV不属于E3，未被stage或提交。大量其他未跟踪outputs同样不得批量删除或加入提交。
+下一个 Astra/Reviewer session 推荐先做 **read-only independent scientific review**，不要直接改代码或设计 HLC V5。
 
 ---
 
-## 1. 一分钟项目摘要
+# 1. 一分钟项目摘要
 
-### 1.1 论文当前定位
+## 1.1 论文基础主线
+
+原论文主线已经建立：
 
 > **Task-conditioned trajectory-level behavior drift evaluation framework for closed-loop planning policies**
 
-论文不再定位为“提出一个新的GRU embedding模型”。核心问题是：
+核心目标是：
 
-> 如何判断两个E2E/planning policy版本的驾驶行为是否发生漂移、漂移发生在哪些行为维度，
-> 并区分controlled same-scenario attribution与production-style unpaired release monitoring。
+> 如何判断两个 E2E/planning policy release 的驾驶行为是否发生漂移、漂移发生在哪些行为维度，并区分 controlled same-scenario attribution 与 production-style unpaired release monitoring。
 
-研究对象和方法包括：
+Stage6/Stage7/Stage7L 已经形成冻结证据链：
 
-- **trajectory-level**：以完整时间窗轨迹而非单帧指标描述行为；
-- **planning policy behavior**：比较planner/software release的可观测闭环行为；
-- **behavior drift**：判断Target相对Behavior Reference发生了哪些分布变化；
-- **learned representation**：将83D ego-neighbor上下文编码为64D行为表示；
-- **BDD**：在固定task、representation与null下估计行为分布差异；
-- **paired / unpaired**：分别回答同场景归因和异场景release监控问题；
-- **task-conditioned evaluation**：按纵向、跟车、变道、interaction等固定维度报告；
-- **Style Report Card**：把统计显著性与semantic delta方向并列输出。
+- official nuPlan controlled same-scenario confirmation；
+- pure longitudinal treatment；
+- interaction treatment；
+- prospective pure-lateral treatment；
+- paired 与 unpaired BDD；
+- old64 / A / B / C / ego13 representation qualification；
+- standardized BDD Style Report Card。
 
-### 1.2 当前一句话结论
+这些结果仍然有效，不因 Stage R 重新解释或覆盖。
 
-项目已经建立并验证一套task-conditioned trajectory-level behavior drift评估框架：它能在official
-nuPlan closed-loop同场景实验中确认受控planner行为变化，并能在异场景release条件下用A/A标定监控
-版本漂移；新训练的learned64显著增强了release-level检出，但没有通过全部联合门禁，也没有证明
-interaction context具有独立增量价值。
+## 1.2 Stage R 为什么重新打开研究
 
-### 1.3 当前最终模型决策
+Stage7L prospective pure-lateral benchmark 中：
 
-```text
-NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE
-```
-
-B可以作为当前最简单、最强的learned release-level engineering candidate讨论，但不是
-universal/final validated representation。当前研究状态为：
+- planner-level pure-lateral mechanism确认成功；
+- ego13 对该 treatment 高度敏感；
+- old64 / A / B / C learned representation 均未可靠检出；
+- Primary B-3407 为：
 
 ```text
-RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
+BDD/null-q95 = 0.435802×
+Z_BDD = -0.065037
+p = 0.411906
+FAIL
 ```
 
-Stage7L现已在不重新打开Stage6模型研发的前提下完成并冻结；该收口判断继续有效。
+这暴露出一个关键问题：
 
-### 1.4 Stage7L最终结果：planner机制确认、Candidate B Primary未检出
+> learned64 能解码已知 handcrafted semantics，但其 latent geometry / measurement sensitivity 可能不足以表达更细粒度的 temporal / interaction residual behavior。
 
-**名称**：`Prospective Controlled Pure-Lateral Lane-Change Execution Benchmark`
+因此 Stage R 正式提出：
 
-**科学问题**：在相同scenario、相同lane-change intent、相同target lane、相同initial state以及固定
-canonical longitudinal progress生成规则下，仅改变横向execution profile时，BDD是否能够可靠检测已知
-pure-lateral behavior drift？
+# Residual Behavior Representation（RBR-64）
 
-最终状态为：
+核心假设：
+
+> Real driving behavior contains latent degrees of freedom beyond finite handcrafted features. A representation trained directly from raw temporal/contextual trajectories should preserve known semantics while also capturing additional temporal/interaction residual information.
+
+形式化：
 
 ```text
-STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED
-STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE
-STAGE7L_E_PRIMARY_BDD_FAILED
-STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS
+z_i = f(e_i | c_i)
 ```
 
-80个冻结场景（15 left / 65 right，79 logs）×5剂量共400条official rollout全部成功。dose100−dose0的
-换道时长、RMS lateral acceleration与peak yaw rate按预注册方向变化，纵向nuisance、安全/有效性与canonical
-identity门禁均通过，证明planner-level pure-lateral treatment成立。
+其中 `z_i` 表示在给定 context 下 ego 实际选择的 response。
 
-随后按冻结的old64/A/B/C/ego13、100,000次same-scenario pair-label swap和39-test Holm协议执行一次性
-representation evaluation。Primary B-3407 dose100 vs dose0 `LAT.LANE_CHANGE`为raw MMD²=`0.001075041`、
-null q95=`0.002466807`、ratio=`0.435802×`、`Z=-0.065037`、raw p=`0.411906`，未检出。dose100下
-old64/A/B/C均未检出，ego13为`13.087068× / Z=40.201025 / p=9.9999e-06`。
+未来 release-level drift 比较：
 
-正式定义：**Pure-lateral means that the treatment parameterization affects only the lateral
-trajectory-generation channel, while canonical longitudinal route progress, initial state, scenario,
-source lane, target lane, trigger and all longitudinal controller parameters are held fixed.**
+```text
+P_r(z | task, context stratum)
+```
 
-closed-loop realized behavior存在小量纵向副作用，因此本实验使用预冻结longitudinal nuisance gate；
-pure-lateral不意味着所有纵向指标在数学上完全为零差异。
+RBR 目标不是复刻 ego13，而是：
 
-旧Stage7 changing-lane slice继续属于`POST_HOC_STANDARDIZED_DESCRIPTIVE_EVALUATION`并保留为历史证据；
-Stage7L是独立prospective证据。论文可以写“pure-lateral planner mechanism得到前瞻确认”，但不能写
-“Candidate B或learned64通过prospective lateral BDD confirmation”，更不能用ego13结果改写Primary结论。
+```text
+known semantic retention
++
+residual temporal / interaction sensitivity
++
+context robustness
+```
+
+## 1.3 当前最重要的科学前置条件
+
+在训练 RBR 之前，必须先有一个可靠 residual benchmark：
+
+```text
+F_handcrafted(baseline) ≈ F_handcrafted(treatment)
+```
+
+同时：
+
+```text
+M_residual(baseline) != M_residual(treatment)
+```
+
+而且这个 residual mechanism 必须存在于：
+
+> **closed-loop realized ego behavior**
+
+不能只存在于 planner trajectory intent。
+
+因此：
+
+```text
+RBR_FORMAL_TRAINING = NOT_AUTHORIZED
+```
+
+直到 residual benchmark prospective qualification 成立。
 
 ---
 
-## 2. 正式研究贡献
+# 2. R0：D0–D5 诊断框架与结论
 
-论文贡献应写成框架贡献，而不是某个64D网络“全面胜出”：
+最初 Stage R 使用 D0–D5 诊断 Gen-1 representation。
 
-1. **问题定义**：定义closed-loop planning policy的trajectory-level behavior/style drift问题，明确
-   Behavior Reference、Target、task、representation和evaluation mode。
-2. **统一行为表示接口**：构建共享的`[N,150,83]` ego-neighbor trajectory context与64D learned
-   behavior representation，使Waymo训练域与nuPlan闭环验证域使用一致输入合同。
-3. **双评估协议**：提出task-conditioned BDD，并严格区分same-scenario paired attribution与
-   production-style unpaired release monitoring两个estimand。
-4. **发布监控方法**：建立log-disjoint、A/A-calibrated unpaired drift monitoring，联合报告
-   detection、A/A FPR、双方向稳定性和样本量依赖。
-5. **标准化报告与能力边界**：冻结13维Standardized BDD Evaluation Matrix与两层Style Report Card，
-   系统呈现正结果和负结果，证明单一representation不必在所有estimand上统一最优。
+## 2.1 D0 Temporal Information Loss
 
-最终贡献不是“某个64D模型在所有任务上全面胜出”，而是完整的behavior drift evaluation framework、
-可审计的统计协议，以及该框架经过系统验证后的适用边界。
-
----
-
-## 3. BDD必须如何理解
-
-### 3.1 三个不同概念
-
-#### Behavior Drift Profile
-
-回答：**Target相对Behavior Reference在哪里发生了行为变化？**
-
-#### BDD Statistic
-
-统一写作：
+结论：
 
 ```text
-BDD(Target | Reference, task, representation, evaluation_mode)
+D0 = MIXED_NOT_GENERALIZED
 ```
 
-每个BDD必须同时绑定Behavior Reference、Null Reference、representation和task。当前实现用kernel
-Maximum Mean Discrepancy估计BDD，报告数值通常为biased `MMD²`。
+历史 Gen-1 learned representation：
 
-#### Representation Evaluation
+- Waymo T=80；
+- Stage7L T=150；
+- final GRU hidden；
+- 无 mask / valid-length aware pooling；
+- Stage7L full150；
+- learned 83D 未标准化并包含历史 sentinel 999 风险。
 
-回答：**old64/A/B/C/ego13中，哪个representation更可靠地检测某个已知behavior treatment？**
+允许的结论是：
 
-它评价测量器，不评价planner本身，也不直接给出“更激进/更保守”的方向。
+> temporal contract / masking / pooling / readout 存在风险。
 
-### 3.2 三类Reference
+禁止声称：
 
-- **Behavior Reference**：哪个planner/version/release作为比较起点；semantic delta固定为
-  `Target − Behavior Reference`。
-- **Null Reference**：paired使用该representation自己的pair-label-swap/randomization q95；
-  unpaired使用该representation自己的A/A calibration q95。`BDD/null-q95=1.0×`只是统计背景线。
-- **Representation Baseline**：old64历史baseline，只用于比较检测能力，不定义行为方向。
+> Stage7L 失败是由 80→150 长度变化单独造成。
 
-禁止再使用模糊术语“reference BDD”。
+## 2.2 D1 Information & Geometry
 
-### 3.3 不能如何解释BDD
+9 个 CORE known semantic targets 在 in-domain probe 中可从 learned representation 解码。
 
-- raw MMD²受embedding尺度、kernel bandwidth、样本量和实验设计影响；不得跨representation直接排序。
-- BDD显著表示“分布差异相对null异常”，不表示Target更安全、更好或更差。
-- 行为方向必须来自`Δspeed`、`Δfront gap`、`Δfinite THW`、`ΔRMS accel`等semantic delta。
-- paired null与unpaired A/A calibration回答不同问题，不能混用。
-- 不存在已验证的、跨ODD/任务/representation通用OEM BDD报警阈值。
+正式结论：
+
+```text
+KNOWN_SEMANTICS_DECODABLE = YES
+D1_INFORMATION_RETENTION = SUPPORTED
+```
+
+但：
+
+> “可以 probe 出来”不等于 latent geometry 适合 BDD。
+
+## 2.3 D2 Context / Response Leakage
+
+neighbor-zero / interaction diagnostic 不能建立干净 causal conclusion。
+
+正式状态：
+
+```text
+D2_CONTEXT_RESPONSE_SEPARATION = INCONCLUSIVE
+```
+
+不能写 `CONTEXT_LEAKAGE = YES`，也不能写 `CONTEXT_LEAKAGE = NO`。
+
+## 2.4 D3 Measurement Readout
+
+task projection / restricted readout 没有救活 Stage7L learned BDD。
+
+正式结论：
+
+```text
+D3_SIMPLE_FULL64_DILUTION_HYPOTHESIS = NOT_SUPPORTED
+TASK_PROJECTION_RESCUE = NO
+```
+
+## 2.5 D4 Residual Benchmark
+
+R0 时历史资产无法构造满足：
+
+```text
+handcrafted semantics matched
++
+residual temporal/interaction mechanism different
+```
+
+的 executable prospective benchmark。
+
+正式状态：
+
+```text
+R0_D4 = NOT_EVALUABLE_WITH_EXISTING_HISTORICAL_ASSETS
+```
+
+这直接触发 R1。
+
+## 2.6 D5 External Assets
+
+Person2Drive / StyleDrive / 外部个性化驾驶资产仍可作为未来 external validation 参考，但不是当前 blocker。
 
 ---
 
-## 4. 当前冻结证据链
+# 3. R1：第一次 Prospective Residual Benchmark Enablement
 
-### 4.1 Stage7 M6.5：official nuPlan controlled confirmation
+R1 设计两个 residual family。
 
-M6.5使用新的log/scenario-disjoint确认集，最终得到：
+## 3.1 HLC — Hesitant Lane Change
+
+目标行为：
+
+```text
+advance
+→ hold
+→ retreat
+→ recommit
+```
+
+冻结 realized mechanism：
+
+```text
+baseline retreat = 0
+treatment retreat >= 1
+commit latency delta >= 0.5 s
+treatment monotonic fraction <= baseline - 0.10
+```
+
+F_match Primary：
+
+```text
+mean_speed
+end_minus_start_speed
+path_length
+```
+
+endpoint：
+
+```text
+terminal offset <= 0.25 m
+heading error <= 0.05 rad
+lateral velocity <= 0.25 m/s
+paired route progress delta <= 1.5 m
+```
+
+engineering：
+
+```text
+lateral acceleration <= 6.0 m/s²
+yaw rate <= 1.0 rad/s
+curvature <= 0.5 1/m
+```
+
+## 3.2 TSB — Two-Stage Braking
+
+baseline：
+
+```text
+one braking phase
+```
+
+treatment：
+
+```text
+brake
+→ release
+→ brake
+```
+
+冻结 mechanism：
+
+```text
+baseline exactly 1 brake phase
+treatment exactly 2 brake phases
+release fraction >= 0.15
+second peak ratio >= 0.50
+```
+
+brake phase threshold：
+
+```text
+acceleration <= -0.80 m/s²
+```
+
+## 3.3 R1 official B2.9-E
+
+最终完整执行：
+
+```text
+48/48 technical complete
+24 pairs
+Primary80 exact traces
+run_runners lifecycle complete
+metric callbacks complete
+safety adapter complete
+retry = 0
+replacement = 0
+```
+
+HLC：
+
+```text
+context        12/12 PASS
+F_match        12/12 PASS
+engineering    12/12 PASS
+mechanism       0/12 PASS
+endpoint        6/12 PASS
+safety         11/12 PASS
+```
+
+12/12 mechanism failure 唯一 reason：
+
+```text
+MONOTONIC_PENALTY_LT_0P1
+```
+
+TSB：
+
+```text
+context          12/12 PASS
+F_match          12/12 PASS
+measurement       0/12 OK
+mechanism         0/12 PASS
+safety           11/12 PASS
+```
+
+R1 结论：
+
+```text
+R1_EXECUTION = COMPLETE
+R1_TECHNICAL_RUNTIME_VALIDITY = PASS
+R1_CONTEXT_CONTROL = PASS
+R1_F_MATCH_CONTROL = PASS
+R1_HLC_REALIZED_MECHANISM = FAIL
+R1_TSB_REALIZED_MECHANISM = FAIL
+R1_RESIDUAL_BENCHMARK_ENABLEMENT =
+FAILED_UNDER_FROZEN_R1_CONTRACT
+```
+
+注意：
+
+> 这不是 infrastructure failure。F_match 成功，说明 residual-pair nuisance matching 思路有效。失败发生在 intended residual mechanism 没有可靠穿过 closed-loop transfer。
+
+---
+
+# 4. R1-B3：Realized Mechanism Transfer Forensic
+
+B3 是 0 simulation、只读 forensic。
+
+## 4.1 HLC
+
+realized baseline monotonic：
+
+```text
+1.0 / 1.0 / 1.0 / 1.0 / 1.0
+```
+
+treatment：
+
+```text
+0.905146 / 0.913578 / 0.927766 / 0.932607 / 0.950015
+```
+
+realized delta：
+
+```text
+-0.094854 / -0.086422 / -0.072234 / -0.067393 / -0.049985
+```
+
+ideal generator delta：
+
+```text
+-0.127303
+```
+
+frozen gate：
+
+```text
+<= -0.10
+```
+
+HLC transfer ratio：
+
+```text
+0.392646 / 0.529392 / 0.567418 / 0.678869 / 0.745104
+```
+
+retreat：
+
+```text
+baseline = 0 for 12/12
+treatment >=1 for 12/12
+```
+
+latency：
+
+```text
+12/12 PASS
+median delta ≈ 3.10 s
+```
+
+正式解释：
+
+```text
+GENERATOR_INTENT = VALID
+REALIZED_TRANSFER = ATTENUATED
+MEASUREMENT_ERROR = NOT_SUPPORTED
+```
+
+## 4.2 TSB
+
+baseline / treatment：
+
+```text
+NO_BRAKE_PHASE = 12/12
+```
+
+intended-window realized decel medians：
+
+```text
+baseline ≈ 0.768 m/s²
+treatment first ≈ 0.249 m/s²
+treatment second ≈ 0.334 m/s²
+```
+
+ideal generator：
+
+```text
+baseline 1 phase
+treatment 2 phases
+release fraction ≈ 0.333
+second peak ratio ≈ 1.0
+```
+
+主导根因：
+
+```text
+BRAKE_AMPLITUDE_ATTENUATION = 12/12
+REALIZED_TRANSFER = COLLAPSED
+```
+
+## 4.3 R1 数据防火墙
+
+R1 official 24 identities：
+
+```text
+OUTCOME_EXPOSED = TRUE
+R1_SCIENTIFIC_HISTORY_ONLY = TRUE
+R2_DEVELOPMENT_USE_FORBIDDEN = TRUE
+R2_CONFIRMATORY_USE_FORBIDDEN = TRUE
+```
+
+---
+
+# 5. R2-A：Controller Transfer Identification
+
+使用 fresh engineering-only：
+
+```text
+HLC 8 identities
+TSB 8 identities
+overlap with R1/historical blacklist = 0
+```
+
+总有效工程运行：
+
+```text
+HLC 40
+TSB 40
+80 effective runs
+4 technical reruns
+84 actual runner.run engineering calls
+scientific simulation = 0
+```
+
+## 5.1 HLC transfer
+
+retreat gain：
+
+```text
+0.526 / 0.765 / 0.869 / 0.996 / 1.238
+```
+
+tracking lag：
+
+```text
+0.2 / 0.3 / 0.3 / 0.4 / 0.4 s
+```
+
+settling delay：
+
+```text
+0.10 / 0.25 / 0.40 / 0.45 / 4.40 s
+```
+
+说明：
+
+> 不能用一个静态 gain 同时补偿 retreat、recommit 与 settling。
+
+## 5.2 TSB transfer
+
+generator→LQR gain 中位数：
+
+```text
+0.454706
+```
+
+LQR→realized gain 中位数：
+
+```text
+0.830694
+```
+
+主要 attenuation 发生在：
+
+> repeated replanning / future trajectory processing → LQR command
+
+32/32 two-pulse runs：
+
+```text
+two distinct phases = 0
+phase loss = 32
+phase merge = 0
+```
+
+R2-A surrogate：
+
+```text
+small deterministic linear model
+no ML
+engineering-only
+```
+
+LOIO：
+
+```text
+HLC retreat MAE median = 0.006514
+TSB peak decel MAE median = 0.012151 m/s²
+TSB timing MAE median = 0.028099 s
+```
+
+推荐：
+
+```text
+CONTROLLER_AWARE_PRECOMPENSATION
++
+DEV_ONLY_OFFLINE_FEEDBACK_CALIBRATION
+```
+
+---
+
+# 6. R2-B：Controller-Aware Generator Development
+
+fresh DEV-CAL：
+
+```text
+HLC 8
+TSB 8
+overlap with R1/R2-A/historical blacklist = 0
+```
+
+## 6.1 TSB
+
+仅 1 轮达到：
+
+```text
+measurement OK = 8/8
+baseline one-phase = 8/8
+treatment two-phase = 8/8
+mechanism = 8/8
+F_match = 8/8
+safety = 8/8
+```
+
+冻结 candidate：
+
+```text
+TSB_FAMILY_DEVELOPMENT_CANDIDATE_FROZEN
+validation_status = PENDING_FRESH_R2C_VALIDATION
+```
+
+candidate SHA256：
+
+```text
+7c37fdd2d939e9282adafcd98a76571c0ce9c0812e618c758b004098e5e09538
+```
+
+参数：
+
+```text
+baseline:
+-1.45 m/s² × 1.8 s
+
+treatment:
+first  -2.4 m/s² × 0.9 s
+release +1.4 m/s² × 1.3 s
+second -2.4 m/s² × 0.9 s
+```
+
+注意：这是 DEV-CAL candidate，不是 fresh scientifically validated benchmark。
+
+## 6.2 HLC R2-B
+
+4 轮达到冻结上限，最终：
+
+```text
+mechanism = 6/8
+F_match = 8/8
+endpoint = 0/8
+engineering = 8/8
+safety = 8/8
+```
+
+endpoint 主导 failure：
+
+```text
+treatment terminal offset
+```
+
+所以：
+
+```text
+R2_B_DEVELOPMENT_NOT_CONVERGED
+```
+
+---
+
+# 7. HLC Architecture Development Chain
+
+## 7.1 R2-BH — Target Capture V2
+
+V1 旧 re-anchor：
+
+```text
+xy = source*(1-progress)+target*progress
+xy += current_ego_xy - xy[0]
+```
+
+synthetic forensic 证明 current residual target-lane offset 会被整个未来 trajectory 原样平移，不能形成真正 target-center attractor。
+
+BH V2 尝试：
+
+```text
+BEHAVIOR_MORPHOLOGY
++
+TARGET_CAPTURE
+```
+
+但产生新的 controller-interface 缺陷：
+
+- capture 修改 final `xy`；
+- heading 没有从 final `xy` 重算；
+- `(x,y,heading)` 不是同一条运动学曲线；
+- LQR lateral demand 主要通过 heading/curvature 进入 controller；
+- state0 exact current ego 时 initial lateral/heading error为0；
+- capture 的未来横向位置变化没有形成一致的 controller-visible curvature；
+- fixed deadline 后 residual 未收敛时出现 state0→state1 几何 hard jump。
+
+BH fresh DEV-ARCH：
+
+```text
+mechanism = 0/8
+endpoint = 0/8
+F_match = 8/8
+engineering = 8/8
+safety = 4/8
+```
+
+正式结论：
+
+```text
+V1_CONSTANT_REANCHOR_DIAGNOSIS = SUPPORTED
+V2_BEHAVIOR_CAPTURE_SEPARATION_PRINCIPLE = RETAIN
+V2_IMPLEMENTATION = REJECTED
+```
+
+## 7.2 R2-BI — Kinematically Consistent V3
+
+V3 修复：
+
+```text
+final XY
+→ tangent heading
+→ curvature
+```
+
+并保证：
+
+- state0 exact；
+- controller-visible curvature；
+- exact frozen LQR shadow 与 actual return一致；
+- fail-closed feasibility gate。
+
+第一次 treatment 在 `t=1.1 s` fail-closed：
+
+```text
+max lateral acceleration = 7.391761 m/s²
+frozen limit = 6.0 m/s²
+```
+
+解析发现原 frozen morphology 的 advance / recommit 时间尺度对普通 lane width 本身过激。
+
+正式状态：
+
+```text
+V3_KINEMATIC_CONTROLLER_INTERFACE = PASS
+PRIMARY_FAILURE =
+TREATMENT_MORPHOLOGY_TIME_SCALE_INFEASIBLE
+```
+
+## 7.3 R2-BJ-A — V4 Offline Morphology Redesign
+
+V4：
+
+- 保留 XY→heading→curvature；
+- 保留 controller observability；
+- 去除破坏 divergence C2 continuity 的正 lag shift；
+- 放缓 morphology；
+- common→treatment at `1.1 s` 保证 P/V/A 连续。
+
+intrinsic lateral acceleration：
+
+```text
+advance ≈ 2.057 m/s²
+retreat ≈ 1.668 m/s²
+recommit ≈ 2.815 m/s²
+```
+
+最初 Cartesian envelope 把全数据库独立的速度极值与曲率极值做笛卡尔组合，导致大量失败。后来判定该 Cartesian edge 是 adversarial stress test，不能直接作为真实 HLC joint-support applicability model。
+
+## 7.4 A2 — Joint Support Audit
+
+历史 outcome-blind HLC opportunity：
+
+```text
+57 audited
+47 complete joint records
+10 extraction failures
+```
+
+47 条完整记录：
+
+```text
+45,120 offline V4 cases
+45,120 PASS
+native-only infeasible = 0
+generated increment infeasible = 0
+composite infeasible = 0
+terminal settling infeasible = 0
+```
+
+历史 `0.082281 1/m` 曲率极值被识别为 terminal short-segment gradient artifact。
+
+## 7.5 A3 — Prospective Applicability Audit
+
+完整扫描冻结 source universe：
+
+```text
+5,386,575 deduplicated tokens
+```
+
+预冻结 hash-ranked frame：
+
+```text
+256
+EARLY_STOP = FALSE
+```
+
+256/256：
+
+```text
+topology ambiguity          147
+duplicate / short segment    74
+reference too short           4
+route occurrence ambiguity    3
+full V4 component stage      28
+V4 generated/composite fail  11
+complete PASS                17
+```
+
+11 个 V4 failure 全部集中在：
+
+```text
+v_audit ≈ 0.162 – 1.931 m/s
+```
+
+17 个 pass 最低：
+
+```text
+4.318 m/s
+```
+
+提示 V4 更像 moving-regime HLC architecture，而不是 near-stop/crawl lane-change architecture。
+
+注意：`3.0 m/s` moving-regime floor 是 **development-stage estimand revision**，不能伪装成 outcome-independent 原始 scientific threshold。
+
+---
+
+# 8. R2-BJ-B0/B1：Fresh HLC V4 Engineering Canary
+
+进入真实 canary 前已经完成：
+
+- frozen exact baseline→treatment `[1,2]` slice；
+- unique `runner.run()` call point；
+- exact run budget；
+- architecture failure 原子持久化；
+- actual LQR passive recorder；
+- exact frozen shadow；
+- 80 planner calls / 79 controller transitions contract；
+- post-run analyzer outcome 前冻结；
+- no rerun / no replacement / no parameter update。
+
+## 8.1 B1 真实 canary
+
+唯一一次执行：
+
+```text
+runner.run actual calls = 2
+budget 2 → 0
+
+baseline = TECHNICAL_COMPLETE
+treatment = TECHNICAL_COMPLETE
+
+realized trace = 80 each
+planner gate = 80/80 PASS each
+actual LQR rows = 79 each
+actual-shadow = 79/79 exact agreement
+max command difference = 0
+architecture failure audit = absent
+```
+
+但 frozen analyzer 发生：
+
+```text
+KeyError: capture_end_abs_s
+```
+
+所以历史 B1 状态永久保留：
+
+```text
+R2_BJ_B1_CANARY_INFRASTRUCTURE_FAILURE_STOPPED
+```
+
+不重跑。
+
+## 8.2 B1.1 Offline Analyzer Schema Recovery
+
+唯一允许修复：
+
+```text
+capture["capture_end_abs_s"]
+→
+capture["nominal_capture_end_abs_s"]
+```
+
+其它 analyzer 源码、阈值、gate 不变。
+
+offline invocation：
+
+```text
+1
+budget 1 → 0
+runner.run = 0
+```
+
+恢复结果：
+
+```text
+CANARY_TECHNICAL_COMPLETE_MECHANISM_OR_ENDPOINT_FAIL
+```
+
+### Mechanism
+
+```text
+FAIL
+TREATMENT_RETREAT_LT_ONE
+MONOTONIC_PENALTY_LT_0P1
+
+commit latency delta = +1.899923 s
+monotonic delta = 0.0
+```
+
+当前 treatment 实现了更晚 commit，但没有形成 frozen Option-B 所要求的 detectable retreat。
+
+### Endpoint
+
+baseline：
+
+```text
+PASS
+offset = 0.021593 m
+heading error = 0.033338 rad
+lateral velocity = 0.172622 m/s
+```
+
+treatment：
+
+```text
+FAIL
+offset = 0.342582 m
+heading error = 0.052064 rad
+lateral velocity = 0.275049 m/s
+route progress delta = 0.031520 m PASS
+```
+
+### F_match
+
+```text
+PASS
+```
+
+absolute deltas：
+
+```text
+mean speed = 0.002750
+end-minus-start speed = 0.106555
+path length = 0.011338
+```
+
+### Engineering
+
+```text
+PASS
+```
+
+treatment maxima：
+
+```text
+lateral acceleration = 0.805108 m/s²
+yaw rate = 0.156025 rad/s
+curvature = 0.030235 1/m
+```
+
+### Target capture
+
+```text
+capture-start offset = 2.536799 m
+terminal offset = 0.342582 m
+decline = PASS
+post-deadline hard jump absent = PASS
+```
+
+因此：
+
+> V4 target-center attraction 在方向上有效，但 frozen Primary80 horizon 内最终 settling 不足。
+
+### Official safety
+
+```text
+FAIL
+
+baseline at-fault collisions = 2
+treatment at-fault collisions = 1
+both drivable-area compliance = true
+```
+
+禁止解释成 treatment 更安全或更危险。
+
+当前还应做的一个只读解释性检查：
+
+> 将 collision timestamp 与 departure / retreat / recommit / capture window 对齐，判断 collision 是否会干扰对 mechanism failure 的 causal interpretation。
+
+这不会改变 frozen safety FAIL，也不会重新开放 HLC canary。
+
+---
+
+# 9. 当前 HLC 科学状态：必须严格区分四个层次
+
+## 9.1 已经成立
+
+```text
+HLC_V4_FRESH_CANARY = VALID_NEGATIVE_ENGINEERING_RESULT
+HLC_V4_CURRENT_CANDIDATE = REJECTED
+REMAINING_14_BJ_B_RUNS = NOT_AUTHORIZED
+```
+
+## 9.2 很有支持，但不能写成一般定理
+
+开发链显示明显 tension：
+
+```text
+detectable retreat
++
+controller/kinematic feasibility
++
+Primary80 endpoint settling
+```
+
+但正式状态只能是：
+
+```text
+THREE_WAY_TENSION =
+SUPPORTED_AS_WORKING_EXPLANATION
+```
+
+不能写：
+
+```text
+HLC_STRUCTURAL_IMPOSSIBILITY = PROVEN
+```
+
+原因：不同 architecture 版本使用不同 outcome-exposed development cohorts，未做 same-identity controlled architecture ablation。
+
+## 9.3 不能声称
+
+```text
+HLC_SCIENTIFIC_CONSTRUCT = FAILED
+HLC_IS_PHYSICALLY_IMPOSSIBLE
+```
+
+当前最多可以说：
+
+> current HLC generator branch 经多轮治理约束开发后，在 fresh V4 canary 上仍未通过 frozen mechanism + endpoint 联合门禁。
+
+## 9.4 当前项目决策建议
+
+为了博士 scope 和避免继续基于 outcome-exposed development evidence 迭代：
+
+```text
+HLC_CURRENT_GENERATOR_BRANCH =
+CLOSED_BY_SCOPE_AFTER_FRESH_CANARY_FAILURE
+```
+
+比写 `HLC_IS_IMPOSSIBLE` 更科学。
+
+是否真正完全关闭 HLC，还是只允许“一次 fundamentally different final attempt”，应交给独立 Astra review。
+
+---
+
+# 10. TSB 当前状态
+
+TSB 必须与 HLC 分开。
+
+当前：
+
+```text
+TSB_FAMILY_DEVELOPMENT_CANDIDATE_FROZEN
+PENDING_FRESH_R2C_VALIDATION
+```
+
+已有 DEV-CAL：
+
+```text
+8/8 measurement OK
+8/8 baseline one-phase
+8/8 treatment two-phase
+8/8 mechanism
+8/8 F_match
+8/8 safety
+```
+
+禁止：
+
+- 重新调 TSB 参数；
+- 重跑 TSB DEV-CAL identities；
+- 把 DEV-CAL 8/8 写成 fresh scientific confirmation。
+
+未来合理路线：
+
+```text
+TSB candidate
+→ fresh TSB-only R2-C
+→ if PASS:
+   TSB-specific residual benchmark confirmed
+```
+
+但 TSB-only 只能支持 longitudinal temporal residual claim。
+
+不能自动恢复：
+
+```text
+FULL_RBR_GENERAL_RESIDUAL_BEHAVIOR_QUALIFICATION
+```
+
+未来应区分：
+
+```text
+TSB_SPECIFIC_RBR_QUALIFICATION
+```
+
+与：
+
+```text
+FULL_RBR_QUALIFICATION
+```
+
+如果论文希望声称广义 residual behavior，仍建议至少有第二个 independent residual family，或者明确缩小 claim。
+
+---
+
+# 11. RBR 正式方法：当前冻结原则
+
+## 11.1 命名
+
+正式名称：
+
+```text
+Residual Behavior Representation (RBR-64)
+```
+
+禁止 formalize 为 DriveDNA。
+
+## 11.2 Representation 原则
+
+RBR 不是：
+
+```text
+4 × 16 hard semantic blocks
+```
+
+而是：
+
+```text
+shared z64
++
+frozen low-capacity task projections/readouts
+```
+
+handcrafted features是 semantic anchors，不是 latent geometry definition。
+
+## 11.3 训练方向
+
+candidate architecture 尚未冻结，但合理方向包括：
+
+```text
+raw temporal ego stream
++
+interaction/context stream
++
+multiscale temporal modeling
++
+conditional fusion
++
+attentive / mask-aware pooling
+→ 64D
+```
+
+可考虑：
+
+- TCN / temporal conv；
+- Transformer / attention；
+- ego/context dual stream；
+- mask-aware pooling；
+- valid-length aware representation。
+
+但在 residual benchmark 未被 fresh confirmation 前：
+
+```text
+RBR_FORMAL_TRAINING = NOT_AUTHORIZED
+```
+
+---
+
+# 12. Stage6 / Stage7 / Stage7L 冻结证据摘要
+
+这些历史结果仍是论文基础，不要因为 Stage R 覆盖。
+
+## 12.1 Stage7 M6.5
 
 ```text
 310 complete scenario pairs
-620 official closed-loop rollouts
+620 official rollouts
 overall MMD² = 0.0044693963
 paired p ≈ 1e-5
-5/5 pre-treatment tasks pass Holm correction
+5/5 pre-treatment tasks pass Holm
 ```
 
-五个task为following interaction、lane-change scenario slice、stop-go control、high-motion dynamics和
-dense/vulnerable interaction。该结果支持：
-
-> official nuPlan closed-loop controlled same-scenario validation已经成立；Waymo训练的表示能够检出
-> 新log/scenario上的planner-conditioned behavior shift。
-
-45-pair Balanced50数据只保留为method-development历史，不再作为当前主要确认性证据。M6.6发现
-lane-assignment fallback与embedding pair distance有关，因此M6.5保留`PASS_WITH_QUALITY_LIMITATIONS`；
-post-treatment质量不能用于删样本或修改310-pair primary。
-
-### 4.2 Stage6J/K：纯纵向controlled treatment与dose curve
-
-Stage6J固定两个planner的横向参数相同，只改变纵向IDM参数；183个相同场景、156个log、366条
-official rollout全部成功。实现运动学差异为：
+## 12.2 Stage6J/K longitudinal
 
 ```text
+183 same-scenario pairs
+366 rollouts
 Δ mean speed ≈ +0.915 m/s
-Δ RMS acceleration ≈ +0.182 m/s²
-old64 overall dose100 Z_BDD ≈ 9.23
+Δ RMS accel ≈ +0.182 m/s²
+old64 dose100 Z ≈ 9.23
+25/50/75/100% realized gates pass
 ```
 
-Stage6K已经完成，不是“正在运行”：25/50/75/100%四档realized kinematic gate均通过，四档overall
-BDD经统一Holm均显著。本冻结协议内overall最小可检出**名义剂量**为25%，但这不是通用BDD或物理阈值；
-task-level结果存在明显异质性。
+## 12.3 Stage6P unpaired
 
-Stage6J/K构成后续old64/A/B/C/ego13 paired representation evaluation的冻结基础。
-
-### 4.3 Stage6L / Stage6M / Stage6P：representation与release结果
-
-#### Stage6L paired representation ablation
-
-- ego13在纯纵向controlled treatment中具有最高within-null标准化敏感度；
-- old64仍能显著检测纵向变化；
-- neighbor-zero结果证明更高Z不能自动解释为“包含更多interaction信息”；
-- ego13强不等于neighbor/context无用，因为当前treatment大量直接作用于ego运动学。
-
-#### Stage6M context balancing
-
-coarse map/scenario-type context balancing没有证明是n=400误差的主要来源。不能据此写成
-“scenario heterogeneity整体不重要”；Stage6W显示log/scenario异质性仍然占重要背景成分。
-
-#### Stage6P unpaired release monitoring
-
-在原800-pair / 489-log / 2400 split框架中，n=400 context-balanced结果为：
-
-| Representation | A/B detection | A/A FPR | 双方向最小检出率 |
+| Representation | A/B detection | A/A FPR | min bidirectional detection |
 |---|---:|---:|---:|
 | old64 | 66.5% | 5.0% | 62% |
 | A | 90.5% | 3.0% | 90% |
@@ -293,613 +1256,352 @@ coarse map/scenario-type context balancing没有证明是n=400误差的主要来
 | C | 99.5% | 6.5% | 99% |
 | ego13 | 100.0% | 2.0% | 100% |
 
-当前工程解释：
+## 12.4 Stage6W
 
-> B是当前最简单、最强的learned release-level engineering candidate。
-
-同时必须写：
-
-> B不是universal/final validated representation，也没有通过全部Waymo、paired与联合门禁。
-
-### 4.4 Dynamic Interaction Builder v2与A/B/C训练
-
-Dynamic Builder v2修复旧Stage5D builder的参考帧静态slot分配与整窗高有效率过滤，使用逐帧semantic
-slot assignment、track-id时间序列、identity switch防跨agent导数以及strict lane topology。最终full51：
+paired median Z：
 
 ```text
-source TFRecords: 51
-scenarios: 24,872
-windows: 168,700
-train / val / test: 135,046 / 16,870 / 16,784
-scenario split overlap: 0
-intermittent-following train windows: 63,415
+old64 ≈ 13.50
+B ≈ 28.29
+C ≈ 25.37
 ```
 
-lead entry/exit、intermittent following、front identity switch和following/free-flow transition均得到恢复；
-acceleration/jerk监督采用平滑、winsorization和train-only robust normalization，物理噪声明显改善。
-Stage6O-v2数据门禁已通过；旧Stage6O-v1永久保持blocked历史记录。
-
-A/B/C定义：
-
-- **A — Dynamic-data only**：Dynamic-v2数据 + legacy single-GRU topology/objective；
-- **B — Longitudinal recovery**：同single-GRU topology + clean longitudinal objectives/ranking/sampling；
-- **C — Interaction-aware dual branch**：与B相同数据、loss、sampling和预算，encoder改为ego/context双分支。
-
-三者均输入83D、输出64D；primary seed在解盲前固定为`3407`，3408/3409只用于seed stability，
-不得用secondary seed更好的结果替换primary。Stage6U共9个正式任务已经9/9完成并锁定：
+context-balanced unpaired signal：
 
 ```text
-LOCKED_9_OF_9_READY_FOR_BLIND_EVALUATION_UNLOCK
+B ≈ 2.59× old64
+C ≈ 2.64× old64
 ```
 
-### 4.5 Stage6V：一次性盲测
-
-最终状态：
+## 12.5 Stage6S-v3 interaction
 
 ```text
-FROZEN_STAGE6V_ONE_TIME_BLIND_EVALUATION_COMPLETE
-NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE
+80/80 rollout
+interaction mechanism PASS
+C full Z ≈ 28.95
+C neighbor-zero Z ≈ 36.81
+ΔZ ≈ -7.85
+95% CI ≈ [-33.39, 29.22]
 ```
 
-#### Waymo test
+正式解释：
 
-- A primary longitudinal能力退化；
-- B/C有正改善；
-- A/B/C primary seed均满足综合非劣性，但均未通过完整预冻结Waymo primary门禁；
-- secondary seed结果不得替代primary 3407。
+> interaction mechanism positive confirmation + no demonstrated incremental context benefit for C under this frozen experiment。
 
-#### Stage6J/K paired
-
-| Representation | overall dose | task×dose | 冻结paired门禁 |
-|---|---:|---:|---|
-| old64 | 4/4 | 7/12 | 未通过完整门禁 |
-| A | 4/4 | 7/12 | 未通过 |
-| B | 3/4 | 2/12 | 未通过 |
-| C | 3/4 | 2/12 | 未通过 |
-| ego13 | 4/4 | 12/12 | 通过 |
-
-因此B/C没有恢复controlled narrow longitudinal task的完整paired sensitivity。
-
-#### Stage6P unpaired
-
-B/C达到100%/99.5% n=400 detection，是新learned64最强正结果之一，且跨seed稳定。
-
-#### Stage6S-v2
-
-冻结80-pair roster只完成61对，19个token被nuPlan official `valid_scenes`边界排除。这是
-**confirmation roster construction / runnability failure**，不是模型机制失败；机制和embedding均未解锁，
-不能把Stage6S-v2写成interaction negative result，也不能用61个complete cases事后重定义confirmation。
-
-### 4.6 Stage6W-A：paired/unpaired分离机制
-
-在相同Stage6P pool和相同n=400下：
+## 12.6 Stage7L prospective pure-lateral
 
 ```text
-old64 paired median Z ≈ 13.50
-B paired median Z ≈ 28.29
-C paired median Z ≈ 25.37
+80 scenarios
+79 logs
+400/400 rollouts
+
+planner mechanism PASS
+B Primary BDD FAIL
+ego13 highly sensitive
 ```
 
-这证明历史Stage6J/K中B/C较弱，不是paired statistic天然压低B/C，而主要来自treatment、task、
-scenario pool和estimand不同。
-
-context-balanced unpaired signal decomposition：
+Primary B：
 
 ```text
-B standardized signal ≈ 2.59× old64
-C standardized signal ≈ 2.64× old64
-B增益中signal贡献 ≈ 86%
-C增益中signal贡献 ≈ 93%
+0.435802×
+Z=-0.065037
+p=0.411906
 ```
 
-结论：B/C接近100%的unpaired检出主要由更强、更一致的planner signal驱动；null variance下降只是次要因素。
-
-### 4.7 Stage6S-v3：prospective interaction confirmation
-
-Stage6S-v3只修复v2已知的pre-treatment official-runnability遗漏，其余planner、metrics、mechanism gates、
-bootstrap和representation endpoint保持冻结。最终：
+ego13：
 
 ```text
-official rollout: 80/80 succeeded
-Δ mean speed: +0.289 m/s
-Δ RMS acceleration: +0.150 m/s²
-Δ median front gap: -4.202 m
-Δ median finite THW: -2.670 s
-front-gap / finite-THW / closing-accel / following-accel: 4/4 gates pass
+13.087068×
+Z=40.201025
 ```
-
-机制通过后才解锁representation：
-
-```text
-C full Z_BDD ≈ 28.95
-C neighbor-zero Z_BDD ≈ 36.81
-ΔZ (full - neighbor-zero) ≈ -7.85
-log-cluster bootstrap 95% CI ≈ [-33.39, 29.22]
-```
-
-正式结论：
-
-> **interaction mechanism positive confirmation + C incremental context negative evidence**：planner-level
-> interaction mechanism confirmation为positive；负结果仅是C full-context相对C neighbor-zero没有证明
-> 显著incremental interaction sensitivity。
-
-不能把它扩大解释为“interaction context整体无价值”。这只是当前模型、当前数据、当前冻结interaction
-treatment下没有获得C的独立增量证据；不能写成interaction失败、context无价值或C完全没有interaction能力。
-
-### 4.8 Stage7L-A：pure-lateral technical feasibility audit（历史设计门禁）
-
-Stage7L-A是技术可行性审计，不是实验结果。审计确认当前PDM的横向path、leading-agent识别、IDM纵向推进、
-proposal simulation/scoring和argmax相互耦合；修改`lateral_offsets`或对最终trajectory做warp，都不能构造
-论文级、因果解释洁净的pure-lateral treatment。因此Stage7L-A停止于technical audit，没有运行新仿真、
-训练、embedding或BDD，冻结状态为：
-
-```text
-PURE_LATERAL_TREATMENT_IMPLEMENTATION_NOT_YET_CLEAN
-```
-
-这不是横向BDD实验失败，而是技术洁净性审计拒绝了一个因果解释不充分的实现方案。
-
-后续A2按该审计建议实现了external `PureLateralExecutionPlanner`：使用canonical route/Frenet progress
-`s_route(t)`，固定source lane、target lane、direction与trigger，以quintic/minimum-jerk `d(s_route)`生成
-five-dose lateral execution。核心原则是dose只能进入lateral trajectory-generation channel，不能通过
-PDM总aggressiveness或`lateral_offsets`间接改变整个planner。该历史门禁随后由B/B2/C/D/E完整执行链闭环。
-
-最终实验逻辑为：
-
-```text
-Pure longitudinal treatment
-  → Stage6J/K
-  → controlled longitudinal BDD
-
-Pure lateral execution treatment
-  → Stage7L [prospective / complete]
-  → planner mechanism PASS；B Primary BDD FAIL；ego13 sensitive
-
-Interaction/headway treatment
-  → Stage6S-v3
-  → controlled interaction BDD
-
-Unpaired release emulation
-  → Stage6P/W
-  → production release monitoring
-```
-
-Stage7L现在是独立prospective evidence；旧Stage7 changing-lane post-hoc结果仍需单独标记，不能与Stage7L混写。
-
-### 4.9 Stage7L-D/E：prospective pure-lateral最终证据
-
-- roster：80 scenarios / 79 logs / 15 left / 65 right；五剂量完整，400/400 official success；
-- planner mechanism：duration median Δ=`−0.200160 s`、RMS lateral accel Δ=`+0.055832 m/s²`、
-  peak yaw rate Δ=`+0.014404 rad/s`，三项门禁通过；
-- Primary representation：B-3407；Behavior Reference=`dose0`，Target=`dose100`，paired null为各representation
-  自身100,000次within-pair label swap；
-- Primary BDD：`0.435802× / Z=-0.065037 / p=0.411906`，结论为FAIL；
-- ego13：`13.087068× / Z=40.201025 / p=9.9999e-06`，只说明该运动学直接处置下标准化敏感度最高；
-- Stage6V联合结论不变，禁止因该结果重新训练或重开Stage7L。
 
 ---
 
-## 5. old64 / A / B / C / ego13如何定位
+# 13. Git / provenance / 关键提交
 
-| ID | 定义 | 论文中的定位 | 不能声称 |
-|---|---|---|---|
-| old64 | Stage5D-balanced-v2历史64D checkpoint | 冻结Representation Baseline；能检出controlled shift，但release可靠性有限 | 不是当前唯一主模型；raw MMD²不能跨表示比较 |
-| A | Dynamic-v2数据 + legacy topology/objective | 隔离“修数据”贡献；unpaired显著提升 | 未通过联合门禁 |
-| B | Dynamic-v2 + single-GRU + longitudinal recovery objective | 最简单、最强的learned release-level工程候选 | 不是universal/final validated representation |
-| C | Dynamic-v2 + ego/context dual branch | 检验dual-branch额外价值 | 不能称已验证interaction-aware主模型 |
-| ego13 | ego kinematic 13D reference | controlled longitudinal sensitivity参考上界/诊断基线 | 不能称全局最佳style representation，不能证明context无价值 |
+当前 Stage R 分支：
 
-primary A/B/C均使用seed 3407；任何未来论文表格不得按test或nuPlan结果换seed、换epoch或改checkpoint。
+```text
+20260825_stageR_new
+```
+
+当前已知 remote HEAD：
+
+```text
+2f21b437a105067cfb19932ba7799fc4f4a40eca
+stageR: record B1.1 offline recovery result
+```
+
+当前 tree：
+
+```text
+0f2173f63b96a670663387bbf9f2d49547c0e545
+```
+
+近期关键节点：
+
+```text
+1a626e98...  B2.9-E official R1 scientific smoke result
+78f3a94c...  R1-B3 forensic
+0007d51d...  R2-A controller transfer identification
+16a93163...  R2-B controller-aware generator development
+72941e78...  R2-BH target-capture V2 negative development
+accbbb1a...  R2-BI kinematic V3 fail-closed
+d745d770...  BJ-A offline V4 feasibility envelope
+fb8a29ac...  A2 joint-support audit
+1e7f9f78...  A3 prospective applicability audit
+c1df6902...  B0.1 production execution path
+39a0a536...  B0.2 actual-LQR observability freeze
+5e8c5b31...  B1 canary infrastructure-stop result
+2f21b437...  B1.1 offline recovery result
+```
 
 ---
 
-## 6. 最终统一BDD报告体系
+# 14. 受保护资产与永久限制
 
-最终状态：
-
-```text
-FINAL_STANDARDIZED_BDD_REPORTING_SYSTEM_FROZEN
-```
-
-控制定义：
+## 14.1 Protected CSV
 
 ```text
-unified_bdd_reporting_schema_v2_final
-standardized_fixed_dimension_bdd_protocol_v2_final_render_only
-```
-
-固定13维taxonomy覆盖overall、纵向、横向和interaction。报告固定为两层。
-
-### 6.1 第一层：Behavior Drift / Style Report Card
-
-当前`Primary Representation = B`。B只是用于测量Behavior Reference→Target漂移的representation，
-不是被评价的planner/version。当前摘要：
-
-| Behavior dimension | BDD/null-q95 | Z_BDD | 证据身份 |
-|---|---:|---:|---|
-| Longitudinal acceleration/deceleration | 2.74× | 10.33 | Stage6J/K confirmatory |
-| Car-following | 1.72× | 5.25 | Stage6J/K confirmatory；60 scenario / 52 log |
-| Lane-change pure-lateral | 0.436× | −0.065 | Stage7L prospective Primary；80 pair / 79 log；B FAIL |
-| Interaction | 7.39× † | 30.60 | Stage6S-v3 confirmatory；80 pair / 11 log |
-
-`†`表示Closing response、Front-gap/THW interaction和Longitudinal following interaction共享同一个
-parent task-level BDD，不是三次独立BDD检验。
-
-Stage7L的planner-level mechanism PASS与B Primary BDD FAIL必须并列展示。旧Stage7 changing-lane 60场景
-结果仍以post-hoc描述性证据保留在历史审计表，不得替代或覆盖Stage7L prospective结论。
-
-### 6.2 第二层：Representation Qualification Matrix
-
-old64/A/B/C/ego13只能按各自null下的standardized sensitivity、detection/FPR、task coverage和门禁比较，
-禁止跨representation比较raw MMD²。
-
-ego13在多个controlled treatment中Z最高，但这些treatment大量直接作用于ego kinematics，因此不能把
-ego13解释为全局最佳behavior representation。learned64的最强正结果仍包括production-style unpaired
-release monitoring，representation能力必须按deployment/evaluation task解释。
-
-### 6.3 当前N/A维度
-
-- free-flow speed；
-- lane keeping；
-- lateral gap interaction。
-
-N/A表示没有符合冻结协议的证据，不表示没有行为差异。不要为了填满N/A继续实验。
-
-权威报告：
-
-```text
-outputs/final_standardized_bdd_style_report_card_v2_stage7l/
-  final_standardized_bdd_style_report_card_zh.md
-  final_behavior_style_report_card.csv
-  final_fixed_dimension_primary_matrix.csv
-  final_representation_qualification_matrix.csv
-  final_shared_parent_bdd_audit.csv
-  final_standardized_bdd_reporting_manifest.json
-```
-
-新增mapping addendum为`configs/unified_bdd_stage7l_evidence_mapping_v1.csv`；固定13维taxonomy及既有统计值未改变。
-
----
-
-## 7. 当前论文claim boundary
-
-### 7.1 当前可以写什么
-
-- task-conditioned trajectory-level behavior drift evaluation框架成立；
-- controlled paired attribution与production unpaired monitoring是不同estimand，不要求单一representation统一最优；
-- official nuPlan closed-loop新log/scenario confirmation确认了planner-conditioned behavior shift；
-- Waymo训练的表示可以检出经运动学确认的典型纯纵向nuPlan behavior treatment；
-- Dynamic Builder v2与新训练目标显著增强learned64的release-level unpaired detectability；
-- Stage6P n=400中old64 66.5%，A/B/C 90.5%/100%/99.5%，A/A FPR受控；
-- Stage6W证明B/C提升主要来自signal增强，而不是主要依赖null variance下降；
-- standardized BDD matrix能够按纵向、跟车、变道场景slice、interaction等固定维度输出可读报告；
-- negative results明确了paired、Waymo与interaction context增量的representation能力边界。
-- Stage7L在80个独立冻结场景中前瞻确认了pure-lateral planner mechanism与纵向nuisance门禁；
-- 同一Stage7L prospective benchmark中，B Primary未检出而ego13显著，进一步证明representation能力依赖task/treatment。
-
-### 7.2 当前不能写什么
-
-- 不能写C是已验证的interaction-aware论文主模型；
-- 不能写A/B/C通过全部预冻结joint gates；
-- 不能写64D全面优于ego13，或ego13是全局最佳representation；
-- 不能写neighbor/context无价值；
-- 不能写BDD代表安全性、质量或planner优劣；
-- 不能写BDD越大planner越差；
-- 不能跨representation直接比较raw MMD²；
-- 不能把Stage7 post-hoc lane-change矩阵写成原预注册confirmation，或写成ego已确认执行换道；
-- 不能写Stage6S-v2是模型interaction失败；
-- 不能写Candidate B、learned64或“横向BDD整体”已经通过Stage7L prospective confirmation；
-- 不能写现有PDM的`lateral_offsets`代表lane-change execution style；
-- 不能用Stage7 changing-lane post-hoc slice替代Stage7L prospective evidence，也不能反向用Stage7L覆盖历史slice；
-- 不能因为Stage7L Primary失败而重新训练B/C、换representation Primary或修改门槛；
-- 不能声称存在通用OEM BDD报警阈值；
-- 不能声称已经完成真实整车厂版本验证或达到任意ODD下的单次release可靠性保证。
-
----
-
-## 8. 关键冻结状态清单
-
-| Item | Status |
-|---|---|
-| Stage7 controlled confirmation | Frozen complete：310 pairs / 620 rollouts |
-| Stage6J/K longitudinal dose | Frozen complete |
-| Dynamic Builder v2 | Frozen；Stage6O-v2 readiness passed |
-| A/B/C training | 9/9 locked；primary seed 3407 |
-| Stage6V blind evaluation | Complete |
-| Stage6W paired/unpaired diagnostic | Complete |
-| Stage6S-v2 | Frozen execution failure due to roster runnability omission |
-| Stage6S-v3 interaction confirmation | Complete；80/80；mechanism passed；C increment failed |
-| Stage7L pure-lateral validation | Complete；400/400 official；planner mechanism/nuisance/safety gates passed |
-| Stage7L scientific result | Prospective B Primary FAIL；ego13 highly sensitive；40-cell matrix frozen |
-| Stage7L-E reporting integration | `STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS` |
-| Unified fixed-dimension BDD matrix | Complete |
-| Final BDD reporting system | Frozen；13维Stage7L addendum已整合，历史post-hoc证据保留 |
-| Stage6V joint candidate decision | `NO_ABC_CANDIDATE_QUALIFIES_UNDER_PRE_FROZEN_RULE` |
-| New model training | Not planned / not authorized |
-| Thesis writing | **Current priority** |
-
----
-
-## 9. Persistent Technical Invariants / Do Not Break
-
-这些约束具有长期工程与科研价值，不因论文进入写作阶段而失效：
-
-1. **Stage5D context合同**：共享context shape为`[N,150,83]`，learned embedding为`[N,64]`。
-2. **固定五邻车语义**：front / left_front / left_rear / right_front / right_rear；Dynamic-v2逐帧分配，
-   semantic correctness优先于track continuity。
-3. **identity switch导数**：不同agent之间不得计算accel、yaw-rate、closing derivative；必须reset/invalidate。
-4. **rollout validity mask**：smoothing、导数、事件、轨迹指标和物理诊断前必须消费`ego_seq_mask.npy`。
-5. **non-contiguous scenario axis**：成功场景轴不能假定连续；必须读取alignment/index manifest。
-6. **lane cache作用域**：局部LaneInfo cache至少绑定canonical map与original scenario index，不能只按map复用。
-7. **strict Waymo lane topology**：Dynamic-v2 semantic slots依赖严格拓扑与可审计fallback。
-8. **pre-treatment selection**：paired roster必须在任何planner outcome、embedding、BDD之前冻结。
-9. **禁止post-treatment过滤**：realized quality只能做描述性诊断，不能用于选择或删除primary pair。
-10. **null不可混用**：paired label-swap/randomization null与unpaired A/A calibration不能互换。
-11. **raw MMD²不可跨representation排序**：跨表示只能比较各自null标准化统计或检测能力。
-12. **primary seed不可事后更换**：A/B/C primary固定3407，secondary seed只评价稳定性。
-13. **大资产保护**：large outputs、checkpoint、nuPlan DB、maps和Waymo数据不得随意删除或提交Git。
-14. **不覆盖冻结资产**：新研究若启动，必须新建协议、版本、checkpoint和confirmation，不得覆盖Stage5D、
-    Dynamic-v2、Stage6V/W/S-v3或最终BDD报告。
-
----
-
-## 10. 环境与数据资产（2026-08-19实际核验）
-
-### 10.1 硬件与Python环境
-
-```text
-machine: MacBook Air, Apple M5, 10 cores, 16 GB RAM
-architecture: arm64
-waymo_dev: E2E-Evaluation/waymo_dev/bin/python
-Python: 3.10.20（训练ledger记录）
-PyTorch: 2.5.1
-MPS: available
-nuPlan Python: /Users/liuqing/miniconda3/envs/nuplan/bin/python
-nuPlan Python version: 3.9.19
-```
-
-外部仓库已实际核验：
-
-```text
-nuPlan devkit: e9241677997dd86bfc0bcd44817ab04fe631405b
-tuPlan Garage: b51d5d04fac1bd4389653b9ab2ff73ea88f435a3
-```
-
-### 10.2 Pittsburgh / nuPlan数据
-
-Pittsburgh DB-only archive曾完整下载并用于解压；当前ZIP已从本机删除以释放空间，不能再写成“仍在下载”。
-实际存在的可用资产为：
-
-```text
-nuplan/dataset/data/cache/train_pittsburgh/       1560 .db files
-nuplan/dataset/data/cache/locked_pool_expanded_v1/ 1621 flat symlinks
-```
-
-因此一般分析/复现不需要重新下载ZIP。只有解压DB损坏或必须从archive重建时，才重新获取
-`nuplan-v1.1_train_pittsburgh.zip`。不要把DB、maps或ZIP提交Git。
-
-### 10.3 关键checkpoint
-
-```text
-old64:
 outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/
-  context_gru_stage5d_balanced_v2/best_model.pt
-SHA256 909022f5df03a3f01c2149da6c9b44c613e955a4d816e8ec4d5862f39f8bf0cc
-
-A primary seed 3407:
-outputs/stage6t_candidates_v1/candidate_A_dynamic_data_legacy/seed_3407/best_model.pt
-SHA256 353982753f208d27d677c6863a681997b8e28b728573a52fa407807f6fd0298d
-
-B primary seed 3407:
-outputs/stage6t_candidates_v1/candidate_B_single_gru_recovery/seed_3407/best_model.pt
-SHA256 d8e0de6e74ee29076082aabef27a425b47678e1372c630e4f4a04106ff34265f
-
-C primary seed 3407:
-outputs/stage6t_candidates_v1/candidate_C_dual_branch/seed_3407/best_model.pt
-SHA256 cc6bf3c427534f66f74904c8948bf427cfe9f1152bba4bca0e8342f3fa47433d
+  behavior_events_v2/behavior_event_metrics_v2.csv
 ```
 
-完整9-checkpoint ledger：
+SHA256：
 
 ```text
-outputs/stage6u_abc_formal_training_v1/checkpoint_lock/
-  stage6u_formal_checkpoint_ledger.json
-  stage6u_formal_checkpoint_ledger.csv
+e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8
 ```
 
-### 10.4 关键冻结结果路径
+不得覆盖、提交或清理。
+
+## 14.2 永久禁止操作
+
+禁止：
 
 ```text
-Dynamic-v2 data:
-outputs/stage6r_dynamic_full51_semantic_strict_v1/
-
-Stage6O-v2 readiness:
-outputs/stage6o_v2_dynamic_training_readiness_v1/
-
-Stage6V blind evaluation:
-outputs/stage6v_one_time_blind_evaluation_final_v1/
-
-Stage6W + Stage6S-v3 final:
-outputs/stage6w_stage6s_v3_final_v1/
-
-Final BDD reporting system:
-outputs/final_standardized_bdd_style_report_card_v1/
-
-Stage7L prospective integrated BDD reporting:
-outputs/final_standardized_bdd_style_report_card_v2_stage7l/
+git reset --hard
+git clean
+bulk delete outputs
+blind git add .
 ```
 
-这些目录以及对应rollout/context/checkpoint是科研provenance的一部分。磁盘清理前必须先确认是否可由Git或其他
-资产恢复；不要把“未被Git跟踪”误解为“可以删除”。
+禁止：
+
+- 重训 old64/A/B/C；
+- 事后换 primary seed；
+- 用 outcome 调 MMD threshold；
+- 重跑 R1 official；
+- 重跑 R2-A / R2-B / BH / BI / B1 outcome-exposed identities；
+- 重新选择 HLC canary identity；
+- 调整 frozen HLC / TSB scientific thresholds；
+- 因 failure 删除 unsafe / mechanism-fail identity；
+- 将 engineering canary 结果写成 confirmatory science；
+- 在 benchmark 未确认前启动 RBR formal training。
+
+Unknown 必须写：
+
+```text
+UNKNOWN
+NOT_FOUND
+AMBIGUOUS
+BLOCKED
+```
+
+不能猜。
 
 ---
 
-## 11. Git与provenance
+# 15. Outcome-exposed / data firewall 原则
+
+所有已经用于：
+
+- R1 official；
+- R1 B3 forensic；
+- R2-A identification；
+- R2-B calibration；
+- R2-BH；
+- R2-BI；
+- BJ engineering canary；
+
+的 identity，一旦 outcome 被观察：
 
 ```text
-branch: 20260611_stage7_conclusion
-local E3 commit: 2e77d3b6d3b993cce64a41c75826e702176c58e6
-last known remote commit: a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa
-sync status: LOCAL_CONTAINS_E3_AND_HANDOVER_UPDATE_REMOTE_STILL_E2_GITHUB_443_TIMEOUT
-remote: origin/20260611_stage7_conclusion
-PR: #265, OPEN DRAFT, large historical development PR
+PERMANENT_ENGINEERING_ONLY / HISTORY_ONLY
 ```
 
-PR #265用于当前长期研发分支归档，不应被当作一份小而独立的单实验PR。
-
-本handover的权威重构历史版本由`c901fb53316b06791fc628cd8415f888bb8cba60`纳入仓库；E2机器结果冻结基线为
-`a4c8cd2f58f6ebd73c4c368a679cf245f2e1c5aa`。E3只提交明确列出的报告、映射、工具、测试与文档，
-不得顺带提交大型outputs、日志、数据或既有工作树修改。E3本地提交已经形成；当前仅因GitHub网络不可达
-尚未同步。不得把“远端仍为E2”误解为E3需要重做。
-
-E3提交前验证结果：
+禁止进入：
 
 ```text
-py_compile: PASS
-check_no_tmp_dependencies: PASS
-pytest: 24 passed, 14 dependency deprecation warnings
-E3 reproducibility/hash comparison: PASS
-prospective rows: 40
-fixed behavior dimensions: 13
-historical Stage7 post-hoc rows preserved: 10
+future generator tuning
+R2-C validation
+confirmatory smoke
+RBR scientific evidence
 ```
 
-关键provenance SHA：
-
-```text
-Dynamic-v2 content signature:
-e760605cd8fb57d4dfee68b8044d2ad31ec71e7e7b2f544d039172d001053905
-
-Stage6S-v3 freeze:
-7105940bd822f02d643ed4f5cb9a8321b3827ca6117be289914057e3fe8a26c6
-
-Final BDD protocol:
-fac9f04d479185b1ef3548c08bc782d2a3114de8595da482a1f418e58f698762
-
-Final BDD schema:
-1c0325dc6e25bbeb40bbbc69c0b90504a792f19dfd3624c715e8d1d4a908d33d
-
-Stage7L prospective representation BDD manifest:
-4fae0ede5bb77e86eec7f9aa1222b6605248b746dec8767ba3bd75fed6947a8b
-
-Stage7L-integrated standardized reporting manifest:
-284cac2a37cdf521d08f6352a9c3dcec3eac9c780d9473d8b7790c3a77250ec6
-```
+未运行但已被冻结为 engineering roster 的 identity，也不能自动回收进 future scientific roster；当前默认从严处理。
 
 ---
 
-## 12. 当前下一步：只进入论文写作
+# 16. 当前最重要的未决科学问题
 
-### Track 0 — 完成E3远端同步
+下一个独立 reviewer 不应默认接受已有 Sol/Work 结论，应重新审视：
 
-若`origin/20260611_stage7_conclusion`仍指向`a4c8cd2...`，网络恢复后执行：
+1. Residual benchmark construct 本身是否 scientifically well-posed？
+2. HLC `advance → retreat → recommit` 是否是合理 residual construct，还是过度人工？
+3. 当前 fresh V4 canary 真正证明了什么、没有证明什么？
+4. 一个 fresh canary pair 是否足以终止 HLC development？
+5. 如果 HLC 停止：TSB-only 是否足以进入 RBR？是否应找第二 residual family？是否应缩小 thesis claim？
+6. 如果 HLC 继续：最多只应考虑一个 fundamentally different final architecture attempt，不能继续 retreat/capture 参数微调。
+7. 是否存在 post-selection / moving-goalpost risk，特别是 moving-regime speed floor、applicability narrowing、多 cohort development 与 TSB-only scope amendment。
 
-```bash
-git push origin HEAD:20260611_stage7_conclusion
-git ls-remote origin refs/heads/20260611_stage7_conclusion
-```
+---
 
-远端必须包含E3提交`2e77d3b6...`或其后的handover-only提交。同步成功前不要创建另一份E3结果提交。
+# 17. 当前推荐的独立 Astra Review 任务
 
-### Track A — Thesis writing
-
-1. Method；
-2. Results；
-3. figures/tables；
-4. Discussion；
-5. Limitations；
-6. standardized BDD matrix整理。
-
-### Track B — Stage7L（已完成并停止）
-
-Stage7L-A/A2、B/B2、C/C1/C2、D、E1/E2/E3全部完成。roster为80场景、15 left/65 right、79 logs，
-SHA为`90ec9b427636cefc59e6d7ace2507ac8364747e2a38964124be08fdc2a10acf9`；`LAT.LANE_CHANGE=80`、
-`LAT.DYNAMICS=38`，secondary family为排除唯一Primary后的39-test Holm family。
-
-当前状态：
+下一个 Astra Work conversation 应先做：
 
 ```text
-STAGE7L_C2_TASK_POPULATION_CONSISTENCY_AMENDMENT_FROZEN
-STAGE7L_C1_PROTOCOL_CONSISTENCY_AMENDMENT_FROZEN
-STAGE7L_C_PROSPECTIVE_PROTOCOL_FROZEN
-STAGE7L_C_CONFIRMATION_ROSTER_FROZEN
-STAGE7L_D_ONE_TIME_CONFIRMATION_AUTHORIZED
-STAGE7L_D_PLANNER_LEVEL_CONFIRMATION_PASSED
-STAGE7L_E_REPRESENTATION_EVALUATION_UNLOCKED
-STAGE7L_E_PROSPECTIVE_REPRESENTATION_EVALUATION_COMPLETE
-STAGE7L_E_PRIMARY_BDD_FAILED
-STAGE7L_E_PROSPECTIVE_EVIDENCE_INTEGRATED_FOR_THESIS
+READ_ONLY_INDEPENDENT_SCIENTIFIC_REVIEW
 ```
 
-Stage7L-D冻结80场景×5档共400格全部official成功，三项横向机制、四项纵向nuisance、scenario-level
-safety/validity与canonical identity均通过。Stage7L-E随后一次性完成40格representation BDD；B Primary为
-`0.435802× / Z=-0.065037 / p=0.411906`，结论FAIL，ego13为`13.087068× / Z=40.201025`。
-E3已把结果整合进13维Style Report Card，统计没有重算，旧Stage7 post-hoc evidence保持独立。
-
-首轮D执行的结果前基础设施失败attempt与runtime adapter审计永久保留；它们没有改变源manifest、roster、
-几何、dose、planner或gate。当前不得重新打开Stage6/Stage7L模型训练，不得为了让BDD更显著而调representation，
-也不得补齐全部N/A。
-
-最终研究收口判断为：
+不要：
 
 ```text
-RESEARCH_EXPERIMENTS_CAN_BE_FROZEN_FOR_THESIS_WRITING
+edit code
+run simulator
+run runner.run
+implement V5
+select roster
+change threshold
+train RBR
+```
+
+Reviewer 重点回答：
+
+1. R0→R1→R2 scientific strategy 是否成立；
+2. residual benchmark construct 是否合理；
+3. HLC Option-B 是否合理；
+4. B1.1 canary 的证据强度与解释边界；
+5. 一个 fresh canary pair 是否足以终止 HLC；
+6. 当前 HLC failure 更像 implementation、controller incompatibility、horizon tension 还是 construct problem；
+7. 如果继续，只提出一个 fundamentally different architecture；
+8. 如果停止，TSB-only / second family / claim reduction 三条路线如何选；
+9. TSB-only 能授权多大的 RBR claim；
+10. data governance / post-selection / overfitting 风险；
+11. 到 RBR training 与 thesis closure 的最短可靠路线。
+
+每个主要结论应分类：
+
+```text
+SUPPORTED
+PLAUSIBLE
+NOT_ESTABLISHED
+CONTRADICTED
 ```
 
 ---
 
-## 13. Historical Background / Archived Development History
+# 18. 当前 Scientific Owner 暂定状态
 
-以下内容只用于理解项目演进，不是当前执行入口：
+在 Astra independent review 前，推荐暂时冻结为：
 
-- 项目最初在Windows 11 + WSL Ubuntu上开发，2026-08迁移到MacBook Air M5；
-- 迁移阶段曾处理Waymo outputs、nuPlan mini/maps、Pittsburgh DB下载、Mac arm64环境兼容和绝对路径；
-- Stage7 M1–M2修复non-contiguous scenario axis、rollout validity mask、lane cache和地图投影；
-- M3的45-pair Balanced50达到最低开发规模，M4/M5/M6完成统计、representation mechanism与paired BDD方法开发；
-- M6.4通过扩展Pittsburgh inventory完成锁定采集，M6.5形成310-pair正式确认；
-- Stage6D–I建立公开数据上的unpaired release emulation；
-- Stage6J/K完成纯纵向确认与剂量曲线；
-- Stage6Q/R修复Dynamic Builder，Stage6T/U完成A/B/C协议、训练和checkpoint锁定；
-- Stage6V完成一次性盲测；Stage6W解释paired/unpaired分离；Stage6S-v3完成prospective interaction确认；
-- 最终工作从“模型开发”转向“task-conditioned behavior drift framework与claim boundary”。
+```text
+R1_RESIDUAL_BENCHMARK_ENABLEMENT =
+FAILED_UNDER_FROZEN_R1_CONTRACT
 
-下列旧状态已明确归档，不得恢复成当前任务：
+R2_A_CONTROLLER_TRANSFER_IDENTIFICATION =
+COMPLETE
 
-- “Stage6K正在运行/等待完成”；
-- “Pittsburgh仍在下载”；
-- “M6.4尚未启动”；
-- “Stage5D-only是唯一当前主模型”；
-- “下一步应马上扩大Waymo或训练v3”；
-- Windows旧机仍需继续迁移；
-- 任何已经结束的后台下载、rollout或训练ETA。
+TSB_FAMILY_DEVELOPMENT_CANDIDATE =
+FROZEN_PENDING_FRESH_R2C
 
-若需要考古完整迁移过程，旧文件仍保留在`/Users/liuqing/Downloads/handover.md`；它不是当前权威状态。
+HLC_V4_FRESH_CANARY =
+VALID_NEGATIVE_ENGINEERING_RESULT
+
+HLC_V4_CANDIDATE =
+REJECTED
+
+HLC_CURRENT_GENERATOR_BRANCH =
+PAUSED_PENDING_INDEPENDENT_REVIEW
+
+HLC_GENERAL_STRUCTURAL_IMPOSSIBILITY =
+NOT_ESTABLISHED
+
+REMAINING_14_HLC_RUNS =
+NOT_AUTHORIZED
+
+HLC_V5 =
+NOT_AUTHORIZED
+
+COMBINED_G_R2 =
+NOT_AVAILABLE
+
+TSB_ONLY_R2C =
+DESIGN_ELIGIBLE_BUT_NOT_EXECUTION_AUTHORIZED
+
+FULL_RBR_QUALIFICATION =
+NOT_AUTHORIZED
+
+TSB_SPECIFIC_RBR_QUALIFICATION =
+PENDING_FRESH_TSB_R2C
+
+RBR_FORMAL_TRAINING =
+NOT_AUTHORIZED
+```
 
 ---
 
-## 14. 最后检查清单
+# 19. 当前下一步
 
-新的session在采取任何写操作前，应能回答：
+推荐顺序：
 
-1. 论文主线是behavior drift evaluation framework，而不是新GRU模型吗？
-2. Behavior Reference、Null Reference和Representation Baseline是否分开？
-3. 当前结论来自paired还是unpaired estimand？
-4. old64/A/B/C/ego13的角色是否清楚？
-5. Stage6V为何没有候选通过联合门禁？
-6. Stage6S-v2为何是runnability failure，而Stage6S-v3应写成interaction mechanism positive confirmation
-   + C incremental context negative evidence？
-7. 为什么ego13高Z不等于全局最佳representation？
-8. 为什么B是release工程候选但不是最终主模型？
-9. 哪些实验、checkpoint、场景和门槛绝对不能事后修改？
-10. 下一步是否以论文写作为主，且没有默认重开冻结实验？
-11. 是否明确Stage7L已经完成，当前没有开放的新实验？
-12. 是否同时保留Stage7L-D planner mechanism PASS与Stage7L-E B Primary FAIL，而不混成一个结论？
-13. 是否明确Primary为B-3407 dose100 vs dose0 `LAT.LANE_CHANGE`，且不能事后换成ego13？
-14. 是否区分Stage7 post-hoc lane-change slice与Stage7L prospective confirmation？
-15. 是否明确Stage7L失败结果不能重新打开模型训练、场景选择或门槛？
-16. 是否核对E3本地提交与远端SHA，并在网络恢复后只补做一次push而不是重做E3？
-17. 是否保留用户已有`behavior_event_metrics_v2.csv`修改及其他未跟踪实验资产？
+```text
+更新 handover
+    ↓
+新开 Astra Work conversation
+    ↓
+read-only independent review
+    ↓
+回到 Scientific Owner 决策
+    ↓
+三选一：
+A. HLC current branch正式归档 + TSB-only
+B. HLC归档 + 新第二 residual family
+C. HLC仅再允许一次 fundamentally different final attempt
+    ↓
+再决定是否授权 TSB R2-C / 第二 family / RBR
+```
 
-若以上任一问题不清楚，先回到本文件和第0节权威文档，不要启动训练、仿真或BDD重算。
+---
 
-`CURRENT_RESEARCH_HANDOVER_UPDATED_FOR_THESIS_CLOSURE`
+# 20. 最后检查清单
+
+新的 session 在任何写操作前，应能回答：
+
+1. Stage7L 为什么是 Stage R 的直接动机？
+2. 为什么“known semantics decodable”不等于 representation 适合 BDD？
+3. 为什么 residual benchmark 必须在 realized closed-loop behavior 层成立？
+4. R1 为什么不是 infrastructure failure？
+5. HLC R1 是 ATTENUATED，TSB R1 是 COLLAPSED，有什么区别？
+6. R2-A 为什么证明 TSB attenuation主要在 generator/replanning→LQR，而非 LQR→vehicle？
+7. TSB 当前为什么只能称 development candidate？
+8. HLC R2-B 为什么是 mechanism 6/8 但 endpoint 0/8？
+9. BH V2 为什么是 XY-heading/curvature interface bug？
+10. BI V3 为什么 fail-closed？
+11. V4 offline joint-support 为什么不能替代 fresh closed-loop canary？
+12. B1 为什么技术 rollout有效但历史 scientific adjudication无效？
+13. B1.1 为什么可以离线恢复而不能重跑？
+14. B1.1 当前 frozen gate 的原始结果是什么？
+15. 为什么当前 V4 canary可以否决 V4 candidate，但不能证明 HLC impossible？
+16. 为什么剩余14 HLC runs仍然不应执行？
+17. TSB-only若 fresh validation成功，能支持什么 RBR claim、不能支持什么？
+18. 哪些 identity 已 outcome-exposed，绝对不能进入 confirmatory science？
+19. protected CSV SHA 是否仍保持不变？
+20. 当前是否仍然禁止 RBR formal training？
+
+如果这些问题任一不清楚，先读本文件和 StageR 权威报告，不要启动 simulation、roster selection 或 RBR。
+
+---
+
+`CURRENT_STAGE_R_R2_HANDOVER_UPDATED_FOR_INDEPENDENT_REVIEW`
