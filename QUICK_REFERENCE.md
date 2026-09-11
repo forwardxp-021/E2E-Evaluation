@@ -11186,3 +11186,24 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 - mock mutation tests 覆盖同一返回对象、命令不变、79/80 cardinality、非有限值、方向不一致只记录、写入失败停止、错误 controller/tracker、baseline gating 与 architecture 分类优先。
 - 正式 output/control roots 均不存在；`CANARY_AUTHORIZED=false`、`NEW_RUN_BUDGET=0`、`RUNNER_RUN=0`。
 - 未启动 R2-C、confirmatory smoke 或 RBR；protected CSV SHA 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## Stage S1：协议草案与零仿真 schema 检查（2026-09-11）
+
+### 1. 命令
+
+在仓库根目录执行：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q tests/test_s1_protocol_schema.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s1_protocol_schema.py --development-audit
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m py_compile tools/s1_protocol_schema.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+读取 `docs/stageR/s1/` 草案及已暴露的 16 条 TSB DEV-CAL 历史 trace；审计命令仅向终端输出 JSON。测试使用合成状态、真实序列化路径、passive recorder 和冻结科学 evaluator/safety parser，不调用仿真、runner.run 或训练。不会选择新 roster，不改写历史输出。
+
+### 3. 通过标准
+
+schema 测试全部通过；错误字段/单位/嵌套、80/79 数量错误、重复身份和预算越界须拒绝；LOW_SPEED_ENDSTOP、机制、F_match、安全失败须保留为失败。开发审计应为 8 个历史日志、16 条 trace，H 为有限 30 列。测试通过只证明草案的零运行数据路径，不能授权 S2。Owner 决策与未闭合项见 `docs/stageR/s1/S1_Protocol_Design_Report_v0.1.md`。

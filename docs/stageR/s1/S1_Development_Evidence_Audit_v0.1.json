@@ -1,0 +1,306 @@
+{
+  "status": "DEVELOPMENT_ONLY_NOT_FRESH_QUALIFICATION",
+  "source_sha256": "6f561df652867aee2204026b2390cacc5e075e8f75c393b880e6cbd21902ca88",
+  "runs": [
+    {
+      "historical_run_id": "R2B-TSB-R0-01-BASELINE",
+      "initial_speed_mps": 11.996494148177204,
+      "minimum_speed_mps": 9.482126100105079,
+      "dt_min_s": 0.09993600000000002,
+      "dt_max_s": 0.10006800000000005,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-01-TREATMENT",
+      "initial_speed_mps": 11.996494148177204,
+      "minimum_speed_mps": 10.020158919638533,
+      "dt_min_s": 0.09993600000000002,
+      "dt_max_s": 0.10006800000000005,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.748462,
+      "second_peak_ratio": 1.211347,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-02-BASELINE",
+      "initial_speed_mps": 12.203153965733161,
+      "minimum_speed_mps": 9.709756515598501,
+      "dt_min_s": 0.09991799999999973,
+      "dt_max_s": 0.10007100000000002,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-02-TREATMENT",
+      "initial_speed_mps": 12.203153965733161,
+      "minimum_speed_mps": 10.250018005727833,
+      "dt_min_s": 0.09991799999999973,
+      "dt_max_s": 0.10007100000000002,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.745761,
+      "second_peak_ratio": 1.20885,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-03-BASELINE",
+      "initial_speed_mps": 4.123176480772855,
+      "minimum_speed_mps": 1.2421862696051547,
+      "dt_min_s": 0.09996100000000041,
+      "dt_max_s": 0.10003799999999963,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-03-TREATMENT",
+      "initial_speed_mps": 4.123176480772855,
+      "minimum_speed_mps": 1.7810601477870907,
+      "dt_min_s": 0.09996100000000041,
+      "dt_max_s": 0.10003799999999963,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.738132,
+      "second_peak_ratio": 1.20024,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-04-BASELINE",
+      "initial_speed_mps": 12.70630368289314,
+      "minimum_speed_mps": 10.181557108692214,
+      "dt_min_s": 0.09994099999999939,
+      "dt_max_s": 0.10006400000000015,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-04-TREATMENT",
+      "initial_speed_mps": 12.70630368289314,
+      "minimum_speed_mps": 10.718893661768252,
+      "dt_min_s": 0.09994099999999939,
+      "dt_max_s": 0.10006400000000015,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.749377,
+      "second_peak_ratio": 1.211521,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-05-BASELINE",
+      "initial_speed_mps": 12.465298557002463,
+      "minimum_speed_mps": 9.883400471615355,
+      "dt_min_s": 0.09995200000000004,
+      "dt_max_s": 0.10002400000000033,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-05-TREATMENT",
+      "initial_speed_mps": 12.465298557002463,
+      "minimum_speed_mps": 10.413734141558283,
+      "dt_min_s": 0.09995200000000004,
+      "dt_max_s": 0.10002400000000033,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.743491,
+      "second_peak_ratio": 1.201587,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-06-BASELINE",
+      "initial_speed_mps": 12.233656510703252,
+      "minimum_speed_mps": 9.722290815189941,
+      "dt_min_s": 0.0999270000000001,
+      "dt_max_s": 0.10005900000000034,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-06-TREATMENT",
+      "initial_speed_mps": 12.233656510703252,
+      "minimum_speed_mps": 10.282657863095775,
+      "dt_min_s": 0.0999270000000001,
+      "dt_max_s": 0.10005900000000034,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.763469,
+      "second_peak_ratio": 1.206467,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-07-BASELINE",
+      "initial_speed_mps": 12.072003933937504,
+      "minimum_speed_mps": 9.552407950184314,
+      "dt_min_s": 0.09992000000000001,
+      "dt_max_s": 0.10008799999999951,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-07-TREATMENT",
+      "initial_speed_mps": 12.072003933937504,
+      "minimum_speed_mps": 10.092893748808526,
+      "dt_min_s": 0.09992000000000001,
+      "dt_max_s": 0.10008799999999951,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.750393,
+      "second_peak_ratio": 1.211545,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-08-BASELINE",
+      "initial_speed_mps": 13.0717708720982,
+      "minimum_speed_mps": 10.532205743149252,
+      "dt_min_s": 0.0999620000000001,
+      "dt_max_s": 0.100033,
+      "measurement": "OK",
+      "phase_count": 1,
+      "release_fraction": null,
+      "second_peak_ratio": null,
+      "H_status": "FINITE_30"
+    },
+    {
+      "historical_run_id": "R2B-TSB-R0-08-TREATMENT",
+      "initial_speed_mps": 13.0717708720982,
+      "minimum_speed_mps": 11.069839180961191,
+      "dt_min_s": 0.0999620000000001,
+      "dt_max_s": 0.100033,
+      "measurement": "OK",
+      "phase_count": 2,
+      "release_fraction": 0.748529,
+      "second_peak_ratio": 1.21084,
+      "H_status": "FINITE_30"
+    }
+  ],
+  "trace_sha256": {
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-01-BASELINE/trace/realized_current_ego.jsonl": "dc7a677a30ad321e561c63deb0e5da8c7010758e66c70e5d4d88c539905fef9b",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-01-TREATMENT/trace/realized_current_ego.jsonl": "333928e5cbc819cadaa23641b4ed3c4f5f80052a384b5c16934b35340a82e1cb",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-02-BASELINE/trace/realized_current_ego.jsonl": "f7714a5a91e074d4366a6cc46ef2b9cd4c8188ee24f563d6e9d829ea4293f26e",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-02-TREATMENT/trace/realized_current_ego.jsonl": "e63829f161677e14ec12c5df17d5d8f9f72825c526b58ba11a66675b8f4762d0",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-03-BASELINE/trace/realized_current_ego.jsonl": "071dde8cec535f579619acca5c8b0731fa3ec1a62b073dae04e08127927a3279",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-03-TREATMENT/trace/realized_current_ego.jsonl": "6ec3633b466b93e25433c6dc5cd7af90095f7dab355a866a9a5b85516af4c3a4",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-04-BASELINE/trace/realized_current_ego.jsonl": "2974dd6d457cec2e4d22720edd90b7d37a0dc15ead121fbe1aa55f704b28ef00",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-04-TREATMENT/trace/realized_current_ego.jsonl": "29c06d1495a6f91e84f16ee5a434fd65e0c2347c3fee975335f78a997b8dddb4",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-05-BASELINE/trace/realized_current_ego.jsonl": "238f964d26a73b6b955567b334f5f57030390486c2e186aef9e0a7442c38830d",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-05-TREATMENT/trace/realized_current_ego.jsonl": "3eb774dc52339f1f33842327f60023de07e56b489e747cb3d69e9296a282fa57",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-06-BASELINE/trace/realized_current_ego.jsonl": "a58f24050aeea2d2c790b8e795ddf983408245f409e058c8d882eb3ce06a101b",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-06-TREATMENT/trace/realized_current_ego.jsonl": "0c8a0aa979cf0ed64c0f1ea9b014b398108fb0444e04a254f0200a66e4e44c81",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-07-BASELINE/trace/realized_current_ego.jsonl": "c35d0e795de08792a25ae042d4c373dbc35ed0b318677c7ccff9a78c44ae4234",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-07-TREATMENT/trace/realized_current_ego.jsonl": "9cc61938581cd3b394dc12279c570c8da14a0f5b6cd4a46d2947b0eec6829c1f",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-08-BASELINE/trace/realized_current_ego.jsonl": "da333748c75a8638d08bd3c58e615bdf861602b44c4859557c054c601512d77e",
+    "outputs/r2_b_controller_aware_calibration_v1_attempt2/tsb/round_0/R2B-TSB-R0-08-TREATMENT/trace/realized_current_ego.jsonl": "fe9cd6515cdd8942fae5fb73721608b553e986b37776920aec55392d60f6fc28"
+  },
+  "signed_F_deltas": {
+    "mean_speed": {
+      "values": [
+        0.6499349999999993,
+        0.6514429999999987,
+        0.6505759999999998,
+        0.649642,
+        0.6487850000000002,
+        0.6545439999999996,
+        0.6516939999999991,
+        0.6499410000000001
+      ],
+      "mean": 0.6508199999999996,
+      "sd_ddof1": 0.0017794257500663353,
+      "min": 0.6487850000000002,
+      "max": 0.6545439999999996
+    },
+    "end_minus_start_speed": {
+      "values": [
+        0.5380330000000002,
+        0.5400630000000002,
+        0.5388069999999998,
+        0.5373370000000002,
+        0.5303339999999999,
+        0.540224,
+        0.5404869999999999,
+        0.537633
+      ],
+      "mean": 0.53786475,
+      "sd_ddof1": 0.0032783951975667754,
+      "min": 0.5303339999999999,
+      "max": 0.5404869999999999
+    },
+    "path_length": {
+      "values": [
+        5.144421999999992,
+        5.156397999999996,
+        5.150511999999999,
+        5.144170000000003,
+        5.137333999999996,
+        5.182879,
+        5.159862999999987,
+        5.145237000000009
+      ],
+      "mean": 5.1526018749999976,
+      "sd_ddof1": 0.014210472189173288,
+      "min": 5.137333999999996,
+      "max": 5.182879
+    },
+    "mean_abs_accel": {
+      "values": [
+        0.10201699999999997,
+        0.10222500000000001,
+        0.102265,
+        0.10240099999999996,
+        0.103184,
+        0.09949999999999998,
+        0.10245199999999999,
+        0.10241099999999997
+      ],
+      "mean": 0.10205687499999999,
+      "sd_ddof1": 0.001087667417326774,
+      "min": 0.09949999999999998,
+      "max": 0.103184
+    }
+  },
+  "nominal_command_arithmetic": {
+    "BASELINE": {
+      "total_speed_change_mps": -2.61,
+      "maximum_cumulative_speed_loss_mps": 2.61,
+      "nonzero_command_samples": 18,
+      "interpretation": "UNCLAMPED_FIXED_SCHEDULE_ARITHMETIC_NOT_CLOSED_LOOP_OR_APPLICABILITY_GUARANTEE"
+    },
+    "TREATMENT": {
+      "total_speed_change_mps": -2.500000000000001,
+      "maximum_cumulative_speed_loss_mps": 2.500000000000001,
+      "nonzero_command_samples": 31,
+      "interpretation": "UNCLAMPED_FIXED_SCHEDULE_ARITHMETIC_NOT_CLOSED_LOOP_OR_APPLICABILITY_GUARANTEE"
+    }
+  },
+  "unresolved": [
+    "initial full acceleration/steering/controller state not in current_ego payload",
+    "conservative controller/replanning reachable envelope not established",
+    "fresh eligible capacity not materialized",
+    "RBR effect and independent release variance not estimable from these 8 development logs"
+  ],
+  "simulation": 0,
+  "runner_run": 0,
+  "new_scientific_identities_exposed": 0,
+  "RBR_training": 0
+}

@@ -1,0 +1,17 @@
+{
+  "status": "DRAFT_FOR_SCIENTIFIC_OWNER_REVIEW",
+  "instance_version": "s1_tsb_pair_v0.1",
+  "contract_keys": ["schema_version", "pair_id", "log_id", "scenario_token", "family", "units", "planner_calls", "runner_report_succeeded", "baseline_context", "treatment_context", "pretreatment_clearance"],
+  "trace_keys": ["iteration_index", "primary_measurement_source", "current_ego"],
+  "state_keys": ["rear_axle", "speed_mps", "time_us"],
+  "units": {"position": "m", "speed": "m/s", "heading": "rad", "timestamp": "us", "acceleration": "m/s^2", "steering_rate": "rad/s"},
+  "cardinality": {"states": 80, "planner_calls": 80, "controller_transitions": 79, "time_controller_iterations": 81},
+  "serializer": "tools/s1_protocol_schema.py::serialize_trace",
+  "analyzer": "tools/s1_protocol_schema.py::analyze_pair -> tools/r1_b2_8_r3_2_post_run_evaluator_dispatcher.py::evaluate_frozen_pair",
+  "passive_recorder": "tools/r2_bj_b0_2_passive_actual_lqr_recorder.py::PassiveActualLQRRecorderV1",
+  "executor": "DESIGN_ONLY: one future TSB executor using frozen official full lifecycle; no S1 executable simulator path",
+  "production_projection": "retain iteration_index, primary_measurement_source and current_ego from production trace; current_ego from inherited R1OfficialTechnicalSmokePlannerV2_1._payload unchanged",
+  "timestamp_policy": "strictly increasing integer physical microseconds; preserve irregularity for frozen science; no interpolation or padding",
+  "safety": "actual parquet artifacts parsed by frozen official canonicalizer; missing or malformed is infrastructure failure",
+  "limits": ["units metadata detects declared mismatches, not dishonestly mislabeled numeric values", "synthetic schema parity does not qualify a future runtime", "runner/planner completion must later be derived from artifact provenance, not trusted supplied booleans"]
+}

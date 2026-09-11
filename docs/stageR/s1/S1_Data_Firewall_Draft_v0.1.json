@@ -1,0 +1,35 @@
+{
+  "status": "DRAFT_FOR_SCIENTIFIC_OWNER_REVIEW",
+  "roles": {
+    "U": "encoder training/validation; architecture, objective, checkpoint and seed selection solely under U frozen objective",
+    "Q": "fresh TSB qualification only; no encoder selection",
+    "D": "historical explicitly permitted development plus Q after registered transition; readout/scaler/kernel/calibration-development/power only",
+    "E": "locked final primary and preregistered secondary; no construction or access in S1"
+  },
+  "Q_to_D_preregistration": {
+    "timing": "Owner signs this transition BEFORE any Q run",
+    "trigger": "Q closed under fixed whole-roster adjudication with full exposure/failure ledger",
+    "if_pass": "entire Q becomes D; no filtering or reclassification as untouched; allow fixed H scaler, frozen-capacity readouts, kernel/calibration-development and power estimation",
+    "if_fail_or_incomplete": "exposed Q retained for failure diagnosis only; no BDD/training continuation absent separate Owner decision; never recycle as Q or E",
+    "unrun_members": "retain frozen Q reservation and failure ledger; no automatic reassignment",
+    "encoder_use": "FORBIDDEN"
+  },
+  "independence": "U/Q/D/E source-disjoint at log and token level when same data source; retain dataset/driver/session grouping where available; no windows from same source group crossing roles",
+  "D_partitions": [
+    "D_fit",
+    "D_calibration_development",
+    "D_FPR_evaluation_development",
+    "D_AA_final_calibration: separately reserved independent logs, numerically freeze threshold before E; never encoder selection"
+  ],
+  "E_partitions": [
+    "E_AA_FPR_evaluation",
+    "E_AB_evaluation"
+  ],
+  "E_lock_condition": "encoder+H+normalization+kernel+null+numeric threshold from independent D_AA_final_calibration+operating point+E size+SAP frozen before E construction/unblinding; no E calibration",
+  "exclusions": "union of all historical outcome-exposed log/token ledgers, engineering reservations, prior Stage6/7/7L/R0/R1/R2 exposures, U and D; missing provenance fails closed",
+  "reserved_not_exposed": "HLC unrun engineering and A5 unselected reservations retain historical roles; do not falsely call them outcome-exposed",
+  "S1_new_identity_access": false,
+  "S1_training": false,
+  "S1_E_access": false,
+  "D_partition_rule": "On passing Q, use frozen Q roster order: first floor(0.6N) logs D_fit, next floor(0.2N) D_calibration_development, rest D_FPR_evaluation_development. Historical additions require predeclared role/source bindings. Small partitions do not establish m=20 null calibration; report insufficient capacity, never borrow E or move logs after results."
+}
