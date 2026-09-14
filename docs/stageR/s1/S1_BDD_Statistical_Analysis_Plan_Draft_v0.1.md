@@ -1,16 +1,20 @@
 # PRIMARY BDD SAP — Draft v0.1
 
-**DRAFT_FOR_SCIENTIFIC_OWNER_REVIEW.** Exactly one recommended Primary metric and operating point. These are design choices requiring Owner approval, not empirically optimized values or permission to execute.
+**S1_PROTOCOL_READY_FOR_OWNER_FREEZE.** Exactly one recommended Primary metric and operating point. Scientific Owner approved these design choices in S1.1; they are not empirically optimized values or permission to execute.
 
 ## Estimand and decision
 
 Primary: **ΔBDD = P(alarm_RBR) − P(alarm_H)** at nominal FPR α=.05, **m=20 independent logs per release arm**, drift fraction **π=.50** (10 treatment logs and 10 baseline logs in target), fixed eligible TSB domain and frozen nonreactive replay setting. One contrast: RBR versus H. Direction baseline reference→mixed target is fixed. No raw MMD² comparison across representations, no switching to sample efficiency, Z, best dose, task or seed.
 
+S1.1 operating-point semantics: π=.50 is a prospectively frozen **SYNTHETIC MODERATE-DRIFT BENCHMARK** prevalence for fair representation comparison. It is not an estimate of real-fleet prevalence, not an assertion that 50% of production scenarios change, and not an ODD population estimate. Claims are conditional on this operating point. The no-dose-search/no-operating-point-switch rule remains unchanged.
+
+Primary RBR-BDD consumes frozen shared z64 directly under the existing scaler/kernel budget, not the training semantic head's predictions. See RBR_TRAINING_ARCHITECTURE_BOUNDARY in the Scope contract. H remains the sole Primary handcrafted comparator; F0_project=ego13 is an explicitly reported Secondary historical baseline, distinct from the four matching descriptors F_match.
+
 This is the probability of detection under the specified release-construction distribution over independent eligible logs. Report finite-study-pool conditional probability separately from the inferred source-domain probability. Repeated release draws from a fixed pool do not constitute fresh independent releases from a fleet.
 
 Minimum useful gain **δ*=.10** is a proposed scientific utility requirement, not estimated from TSB effect. Use a two-sided 95% log-aware interval [L,U]. Success: valid Q/E mechanism and measurement contracts, valid independent FPR gate for both pipelines, L>0 AND point Δ≥.10. Fail: valid analysis with U<.10 (rules applied after success, so no overlap); otherwise INCONCLUSIVE. A negative or imprecise result is retained; do not enlarge E. This distinguishes statistical superiority from a practical point-estimate criterion; a stronger rule L>.10 is an Owner alternative requiring repowering before execution.
 
-FPR gate: both representations' one-sided simultaneous 95% upper bounds ≤.075 (Bonferroni .025 tail per representation). Nominal calibration remains .05; .025 is proposed evaluation tolerance. If lower confidence bound >.075, calibration validity FAIL; if neither, FPR qualification INCONCLUSIVE. Neither permits a superiority claim. No E threshold readjustment. Owner must approve α, m, π, δ*, tolerance and design before Q; do not choose the operating point on D to manufacture a gap.
+FPR gate: both representations' one-sided simultaneous 95% upper bounds ≤.075 (Bonferroni .025 tail per representation). Nominal calibration remains .05; .025 is proposed evaluation tolerance. If lower confidence bound >.075, calibration validity FAIL; if neither, FPR qualification INCONCLUSIVE. Neither permits a superiority claim. No E threshold readjustment. Owner approval of α, m, π, δ*, tolerance and design is recorded in S1.1; do not choose the operating point on D to manufacture a gap.
 
 ## Preferred unpaired design and fallback
 

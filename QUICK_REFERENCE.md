@@ -11207,3 +11207,13 @@ PYTHONPATH=/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation \
 ### 3. 通过标准
 
 schema 测试全部通过；错误字段/单位/嵌套、80/79 数量错误、重复身份和预算越界须拒绝；LOW_SPEED_ENDSTOP、机制、F_match、安全失败须保留为失败。开发审计应为 8 个历史日志、16 条 trace，H 为有限 30 列。测试通过只证明草案的零运行数据路径，不能授权 S2。Owner 决策与未闭合项见 `docs/stageR/s1/S1_Protocol_Design_Report_v0.1.md`。
+
+
+### S1.1 Scientific Owner 语义修订（2026-09-14）
+
+沿用上述零运行测试命令。F0_project 固定为 ego13，四项 F_match 仅作匹配描述符；
+TSB 使用 ≥3.61 m/s 名义可测量性筛选，不保证闭环成功。Q20/max40 固定，Q12 仅可在
+metadata-only census 后、任何 Q 运行或结果暴露前由 Owner 选择。Human Semantic Head
+仅使用 U 监督并反传至 z64；Primary BDD 直接使用冻结 z64。π=.50 是合成中等漂移基准比例。
+通过标准仍是零运行测试通过及 manifest 哈希一致；最终状态为
+`S1_PROTOCOL_READY_FOR_OWNER_FREEZE / S2_NOT_AUTHORIZED / RBR_TRAINING_NOT_AUTHORIZED`。

@@ -1,27 +1,36 @@
 # S1 Protocol Design Report v0.1
 
-**REVIEW PACKAGE COMPLETE; SCIENTIFIC FREEZE NOT CLAIMED; FRESH SIMULATION NOT AUTHORIZED.**
+**S1_PROTOCOL_READY_FOR_OWNER_FREEZE; S2_NOT_AUTHORIZED; RBR_TRAINING_NOT_AUTHORIZED.**
 
 S1-A through I are covered by six normative Markdown contracts, the firewall and canonical schema, this report, one primary design manifest and one deterministic historical audit output. Q sample size is combined with Q protocol, avoiding a duplicate manifest. Only one new zero-run tool and one fixture test file were added. QUICK_REFERENCE contains the reproduction commands.
 
-## Recommendations and Owner decisions
+## S1.1 Scientific Owner closure repair
 
-| Item | Recommendation | Unresolved before Q authorization |
-|---|---|---|
-| Scope | Level 1 framework; conditional TSB-specific Level 2 BDD utility | Approve scope and formal interpretation corrections |
-| Applicability | Keep inherited ≥2.0 legacy floor; require conservative candidate/controller feasibility certificate | R2 speed/acceleration/curvature/reference and cadence support are not fully established; no replacement numeric floor invented |
-| Q | 20 independent logs/pairs, cap 40 entries; minimum 12/24; bounded larger option 32/64 | Choose one budget; authorize metadata-only eligible census separately; no roster exists |
-| Whole roster | Every frozen pair jointly passes; stop irrevocably on first scientific failure | Accept stringency, no survivor qualification, no rerun/replacement |
-| Primary | RBR−H detection probability at α=.05, m=20, π=.50 | Approve operating point, useful gain .10 and FPR evaluation tolerance .025 |
-| Design | Unpaired release emulation if capacity and power pass; pre-E paired fallback | Census is missing; 1,425 logs is an upper bound, not eligibility evidence |
-| H | Fixed development-informed 30-column implementation | Approve exact H and the proposed F0 interpretation as current routine set |
-| E size | D-only full-pipeline variance/power/coverage rule, smallest valid cost envelope | No final N justified; validate source-log interval method and capacity before E; never look at E then extend |
-| Firewall | U-only encoder selection; Q→D registered before Q | Sign transition/role rules and complete exclusion ledger provenance |
-| Technical simplification | One future executor, existing passive recorder, canonical serializer and existing scientific dispatcher | Before any Q execution, bind full production lifecycle/reset/config hashes and schema-faithful integration; schema fixtures are not live-runtime qualification |
+Final repair status: **S1_PROTOCOL_READY_FOR_OWNER_FREEZE**;
+**S2_NOT_AUTHORIZED**; **RBR_TRAINING_NOT_AUTHORIZED**.
+Scientific Owner has approved scope/claims, BDD Primary, H+RBR Secondary,
+unpaired-preferred/paired-fallback, ΔBDD, α=.05, m=20, π=.50, δ*=.10,
+FPR qualification, Q20/max40, all-pass/first-scientific-failure-stop,
+no survivors, Q→D preregistration, U-only selection and the 30D H structure.
+This repair records those approvals without reopening the approved SAP.
 
-Current Owner outcome remains **NOT_AUTHORIZED pending review and closure of blockers**. This package does not assert that a single signature can cure missing applicability/capacity evidence. S1 ends here; it does not authorize S2, future E or RBR.
+| Repair | Normative result |
+|---|---|
+| F0 / matching | F_match is the four existing TSB descriptors; F0_project is existing ego13, both project-standard predefined/routine representation and explicitly reported historical baseline. It is not a corporate KPI inventory. H stays the sole Primary handcrafted comparator; O stays mechanism positive control. Wording is Residual-to-F0_project. |
+| Applicability | initial_speed ≥3.61 m/s, derived from 1.0 + maximum exact nominal cumulative loss 2.61. POST_DEVELOPMENT_PROSPECTIVE_SCOPE_AMENDMENT / NOMINAL_MEASURABILITY_SCREEN / NOT_A_CLOSED_LOOP_GUARANTEE. R1 ≥2.0 is historical only. Post-selection LOW_SPEED_ENDSTOP remains scientific failure; no post-Q increase. |
+| Training boundary | shared z64 receives backpropagation from a U-only Human Semantic Head and generic representation/temporal heads; no TSB/O/Q/D/E supervision or handcrafted-distance/ego13-geometry alignment. BDD uses frozen z64 directly. Post-hoc probes stay Secondary. Exact layers, weights and SSL objective remain for future pre-training protocol. Stage6T provides auxiliary-head precedent. |
+| Operating point | π=.50 is a prospectively frozen SYNTHETIC MODERATE-DRIFT BENCHMARK prevalence, not real-fleet prevalence, production-change share or ODD estimate. No operating-point/dose search. |
+| Q20 / Q12 | Q_TARGET=20 independent logs/pairs, MAX_RUNS=40. Q12 is an Owner fallback only after metadata-only census and before any Q rollout/outcome exposure. Q20 cannot become Q12 after starting; 12/12 early success is not qualification success. |
 
-## Deterministic development evidence
+All supported pre-outcome technical/reference/reset/independence requirements
+remain. No numeric acceleration or curvature limit is invented. Final protocol
+freeze and separate S2 execution authorization are still required; metadata-only
+eligible census, runtime bindings and production integration remain future
+execution prerequisites, not reasons to reopen approved scientific choices.
+E sample-size/power/coverage and no-extension rules remain unchanged. No roster
+is selected, no new data role is instantiated and no training is authorized.
+
+## Preserved S1 deterministic development evidence
 
 Read only the 16 trace paths in the frozen TSB round-0 results, covering 8 already exposed independent logs. No scientific identities were newly queried. Reproduction: `python tools/s1_protocol_schema.py --development-audit` in the nuPlan environment. `S1_Development_Evidence_Audit_v0.1.json` contains exact input hashes and aggregate/per-historical-run values.
 
@@ -29,7 +38,7 @@ Read only the 16 trace paths in the frozen TSB round-0 results, covering 8 alrea
 - Physical sample spacing .099918–.100088 s. Preserve actual timestamps. No new numerical cadence exclusion threshold has been introduced.
 - Mechanism remeasurement: baseline one phase / treatment two phases, all 16 status OK. H produces finite 30 columns for all 16 traces.
 - Signed treatment−baseline F deltas (mean, sample SD): mean speed **+.650820, .001779 m/s**; end−start speed **+.537865, .003278 m/s**; path length **+5.152602, .014210 m**; mean absolute acceleration **+.102057, .001088 m/s²**. These are development descriptive values, not independent scientific effect confirmation. All are positive across the 8 pairs despite frozen F_match pass. Thus matching does not eliminate existing low-order monitoring signals.
-- Exact nominal command arithmetic gives baseline loss 2.61 m/s over 18 active samples; treatment net loss 2.50 over 31 nonzero samples. This is fixed-profile arithmetic, not a new rollout, controller surrogate validation or a safe speed threshold.
+- Exact nominal command arithmetic gives baseline loss 2.61 m/s over 18 active samples; treatment net loss 2.50 over 31 nonzero samples. This is fixed-profile arithmetic, not a rollout or controller surrogate validation. S1.1 now uses the resulting 3.61 m/s nominal screen prospectively, without calling it a safe closed-loop speed threshold.
 - Missing from the production current_ego trace payload: full initial acceleration/steering/controller internal state. Deriving a conservative realized bound requires bound runtime/config and additional already-exposed telemetry evidence; no numeric acceleration or curvature restriction is invented.
 
 The narrow F-delta SDs from eight calibrated logs must not be used as the variance of future RBR detection gain. Q=20 provides useful development scale, not independent AA tail evaluation or unpaired release replication.
@@ -70,3 +79,23 @@ Work began at local HEAD `20b3f594a20584f00c72e0951644016c381ebe3e`, committed t
 Pre-existing dirty state: protected CSV modified, many untracked historical output directories/files. The single manifest records a baseline status digest/count and protected CSV hash. The protected CSV is excluded from all staging, edits and cleanup. No historical output path is written. S1 artifacts and the narrow QUICK_REFERENCE addition are the only intentional changes.
 
 **Actual actions: simulation=0; runner.run=0; new scientific identities exposed=0; RBR training=0; E construction/unblinding=0.**
+
+
+## S1.1 provenance and validation
+
+Requested and actual repair base: `d7b2f711c0a3ba8081dbc47a0d6e04d8b7c4ba29`.
+The prior local S1 commit `4e8b7eb48716d1d24eb07911256ff0ab7d7dfa3a`
+and this remote base have the identical tree
+`dcd23565b75373e9943b960210d4b10aacf15226`. Prior local history was preserved
+on `s1-pre-s11-local-history-4e8b7eb`; aligning the active branch to the specified
+base changed no index/worktree bytes. The S1 provenance above remains historical.
+
+S1.1 changes only these normative documents, firewall/manifest metadata and the
+narrow QUICK_REFERENCE note. Canonical schema, H implementation, tests, candidate,
+all frozen evaluators and historical outputs remain byte-identical. Unit and
+static validation results are recorded in the updated manifest; nominal schedule
+validation reads frozen parameters/code only, never Q/E or simulator state.
+
+Actual S1.1: simulation=0; runner.run=0; new scientific identities exposed=0;
+RBR training=0; E access=0. Final commit and remote SHA are returned externally
+so the manifest has no self-referential commit hash.

@@ -1,5 +1,5 @@
 {
-  "status": "DRAFT_FOR_SCIENTIFIC_OWNER_REVIEW",
+  "status": "S1_PROTOCOL_READY_FOR_OWNER_FREEZE",
   "roles": {
     "U": "encoder training/validation; architecture, objective, checkpoint and seed selection solely under U frozen objective",
     "Q": "fresh TSB qualification only; no encoder selection",
@@ -7,7 +7,7 @@
     "E": "locked final primary and preregistered secondary; no construction or access in S1"
   },
   "Q_to_D_preregistration": {
-    "timing": "Owner signs this transition BEFORE any Q run",
+    "timing": "Scientific Owner approved Q-to-D preregistration in S1.1, before any Q run; execution remains separately unauthorized",
     "trigger": "Q closed under fixed whole-roster adjudication with full exposure/failure ledger",
     "if_pass": "entire Q becomes D; no filtering or reclassification as untouched; allow fixed H scaler, frozen-capacity readouts, kernel/calibration-development and power estimation",
     "if_fail_or_incomplete": "exposed Q retained for failure diagnosis only; no BDD/training continuation absent separate Owner decision; never recycle as Q or E",
@@ -31,5 +31,33 @@
   "S1_new_identity_access": false,
   "S1_training": false,
   "S1_E_access": false,
-  "D_partition_rule": "On passing Q, use frozen Q roster order: first floor(0.6N) logs D_fit, next floor(0.2N) D_calibration_development, rest D_FPR_evaluation_development. Historical additions require predeclared role/source bindings. Small partitions do not establish m=20 null calibration; report insufficient capacity, never borrow E or move logs after results."
+  "D_partition_rule": "On passing Q, use frozen Q roster order: first floor(0.6N) logs D_fit, next floor(0.2N) D_calibration_development, rest D_FPR_evaluation_development. Historical additions require predeclared role/source bindings. Small partitions do not establish m=20 null calibration; report insufficient capacity, never borrow E or move logs after results.",
+  "RBR_TRAINING_ARCHITECTURE_BOUNDARY": {
+    "conceptual_flow": "trajectory/context X -> temporal encoder / GRU -> shared z64",
+    "training_heads": [
+      "Human Semantic Head h_sem(z): pre-frozen human-defined behavior semantics",
+      "Generic representation / temporal objective head(s)"
+    ],
+    "conceptual_loss": "lambda_repr * L_repr + lambda_sem * L_sem + optional pre-frozen auxiliary terms",
+    "semantic_head_backpropagates_through_z64_into_encoder": true,
+    "semantic_targets_source": "U_AUTHORIZED_TRAINING_DATA_ONLY",
+    "forbidden_supervision": [
+      "TSB treatment/mechanism labels",
+      "O labels",
+      "Q/D/E outcomes",
+      "handcrafted feature-distance loss",
+      "ego13 geometry alignment loss"
+    ],
+    "primary_BDD_input": "FROZEN_Z64_DIRECTLY_WITH_APPROVED_SCALER_KERNEL",
+    "posthoc_semantic_probes": "DISTINCT_SECONDARY_DIAGNOSTICS",
+    "encoder_selection": "U_ONLY",
+    "future_pretraining_protocol_must_define": [
+      "exact network layers",
+      "loss weights",
+      "SSL objective",
+      "optional auxiliary terms"
+    ],
+    "precedent": "docs/stage6t_training_evaluation_protocol_zh.md sections 2, 3 and 4.1",
+    "training_authorized": false
+  }
 }

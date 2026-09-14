@@ -1,10 +1,12 @@
 # Handcrafted Comparison — Draft v0.1
 
-**DRAFT_FOR_SCIENTIFIC_OWNER_REVIEW.** One implemented H proposal, fixed before E and explicitly **DEVELOPMENT_INFORMED_HANDCRAFTED_CHALLENGER**. No mechanism-label-specific phase count enters H. No post-E feature expansion or performance-driven weakening.
+**S1_PROTOCOL_READY_FOR_OWNER_FREEZE.** One implemented H proposal, fixed before E and explicitly **DEVELOPMENT_INFORMED_HANDCRAFTED_CHALLENGER**. No mechanism-label-specific phase count enters H. No post-E feature expansion or performance-driven weakening.
 
 ## Exact repository audit and roles
 
-**F0 recommendation:** current TSB monitoring subset of the repository's frozen F summaries, in order mean_speed, end_minus_start_speed, path_length, mean_abs_accel. Owner must confirm that this is the intended routine monitoring set; repository code establishes a matching set, not organizational routine-monitoring practice. Do not claim that a historical “F0” identifier already existed. F0 BDD is secondary; H is the sole Primary comparator.
+**F_match:** the existing four TSB matching descriptors, in order mean_speed, end_minus_start_speed, path_length, mean_abs_accel. This is the matching contract, not F0_project.
+
+**F0_project = ego13:** the project's predefined/routine handcrafted behavior representation. ego13 serves both as F0_project and as an explicitly reported historical baseline. It is not a corporate production KPI inventory. F0_project/ego13 BDD remains Secondary; H remains DEVELOPMENT_INFORMED_HANDCRAFTED_CHALLENGER and the sole Primary handcrafted BDD comparator. O remains the mechanism positive control.
 
 Frozen production F implementation: `r1_closed_loop_benchmark_v2_1.trajectory_descriptors_timestamp_aware`, used by `R1OfficialTechnicalSmokeEvaluatorV2_1`. Arithmetic mean speed; end−start speed; sum of Euclidean rear-axle steps; mean absolute `np.gradient(raw_speed, physical_time, edge_order=2)`. Descriptors rounded to six decimals. Fifth output heading_change_abs_total sums absolute differences of unwrapped stored heading; it is not a TSB Primary caliper. Calipers in `r1_prospective_generator_contract_v2`: 0.708203939 m/s, 0.978755681 m/s, 5.38423459 m, 0.11777666 m/s² respectively. Absolute deltas rounded to six decimals then compared with tolerance 1e−12. Historical alternative `trajectory_descriptors` functions use different derivatives; do not substitute them.
 
@@ -36,6 +38,6 @@ All 80 states must be finite and ordered. Preserve historical ego13 nominal-dt s
 
 H and RBR BDD preprocessing: separately fit D_fit baseline mean and population SD per column; zero/SD≤1e−12 columns use scale 1. No winsorizing, feature removal, whitening or projection. Reject missing/nonfinite input, never impute selected E failures. RBR checkpoint input preprocessing stays separately U-frozen. H has no fitting except its scaler; no model-dependent feature searches.
 
-**O:** frozen Option-A brake phase count, interstage release fraction, second-brake peak ratio and status/validity flags. Used only for mechanism confirmation and interpretation. A perfect O classifier neither invalidates residual-to-F0 nor sets a requirement for RBR to beat O.
+**O:** frozen Option-A brake phase count, interstage release fraction, second-brake peak ratio and status/validity flags. Used only for mechanism confirmation and interpretation. A perfect O classifier neither invalidates Residual-to-F0_project nor sets a requirement for RBR to beat O.
 
-H includes generic temporal shape because the development mechanism is known; it is not a mechanism-blind discovery baseline. Its definition is frozen before E, with no expansion after RBR or H performance is seen. The separate F0/ego13/O roles prevent replacing an inconvenient strong challenger with a weak routine set.
+H includes generic temporal shape because the development mechanism is known; it is not a mechanism-blind discovery baseline. Its definition is frozen before E, with no expansion after RBR or H performance is seen. The F0_project=ego13, F_match, H and O roles prevent replacing an inconvenient strong challenger with a weak routine set.
