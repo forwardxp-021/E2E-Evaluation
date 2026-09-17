@@ -11217,3 +11217,26 @@ metadata-only census 后、任何 Q 运行或结果暴露前由 Owner 选择。H
 仅使用 U 监督并反传至 z64；Primary BDD 直接使用冻结 z64。π=.50 是合成中等漂移基准比例。
 通过标准仍是零运行测试通过及 manifest 哈希一致；最终状态为
 `S1_PROTOCOL_READY_FOR_OWNER_FREEZE / S2_NOT_AUTHORIZED / RBR_TRAINING_NOT_AUTHORIZED`。
+
+## S2-PRE 元数据准备审计（2026-09-17，零仿真）
+
+### 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s2_preflight_validate.py --manifest docs/stageR/s2_preflight/S2_Preflight_Manifest_v1.json
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q tests/test_s2_preflight.py tests/test_s1_protocol_schema.py
+```
+
+如需复现全量元数据枚举，使用一个尚不存在的输出目录；默认目录已冻结，重复写入会拒绝：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s2_preflight_metadata_census.py --output-dir docs/stageR/s2_preflight_reproduction_v1
+```
+
+### 期望行为
+
+读取冻结的 mini/train_pittsburgh SQLite 元数据及已有身份账本，校验完整 token 集合和来源指纹，生成每日志压缩 JSON 分母及排除记录。不会创建模拟器、执行 runner.run、训练模型或构造 E。标签 token 速度明确区别于尚未绑定的正式场景起点速度。历史元数据筛查不当作结果暴露。
+
+### 通过标准
+
+静态验证显示 PASS，且 scientific_qualification=false、execution_possible=false；这不表示 S2 已就绪。科学独立单位为 SESSION；已知冲突后仅剩最多 5 个会话，无法提供 Q20。准确资格尚未认证，不把容量上界当作合格数，不生成 Q20/Q12 roster。执行绑定、完整重置和 precontext 仍为 BLOCKED；未来预算上限 40，当前预算 0 且未激活。详见 `docs/stageR/s2_preflight/S2_Preflight_Readiness_Report_v1.md`。

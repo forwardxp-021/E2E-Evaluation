@@ -1,0 +1,88 @@
+{
+  "FULL_ARM_RESET_CONTRACT": "BLOCKED",
+  "scope": "EACH_BASELINE_AND_TREATMENT_ARM",
+  "required_strategy": "fresh process and fresh object graph for each arm; identical bound seed/config/metadata; never reuse mutable arm objects",
+  "states": [
+    {
+      "state": "scenario object",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "simulation instance",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "planner",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "controller",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "LQR tracker",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "motion model",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "history buffer",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "callbacks and metric engines",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "passive recorder",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "RNG state",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "scenario cached_property and other lazy mutable caches",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "filesystem callback and output state",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "planner episode clock",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    },
+    {
+      "state": "treatment generator internal state",
+      "requirement": "fresh construction before each arm or explicit state-level reset proof",
+      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+    }
+  ],
+  "supported_code_findings": [
+    "TwoStageController.reset only clears _current_state; tracker and motion model survive.",
+    "Simulation.reset clears history and setup, but does not prove independent RNG, callbacks, files, map caches or scenario cached_property.",
+    "NuPlanScenario._lidarpc_tokens and _route_roadblock_ids are cached_property. Fresh scenario required.",
+    "Official run_simulation seeds with pl.seed_everything; direct build_simulations path bypasses that entrypoint. A seed config field alone is insufficient.",
+    "R2 planner phase is index*0.1; initialize resets episode clock via inherited initialize, but each arm still requires a fresh planner and native input equality."
+  ],
+  "immutable_sharing": "NOT_ALLOWED_UNTIL_READ_ONLY_NONINTERFERENCE_PROVEN; no shared map/cache permission inferred",
+  "static_constructor_proof": "official builder constructs controller/setup/simulation but accepts reusable pre_built_planners and callback list; absence of a bound TSB caller prevents full-reset proof",
+  "simulation_objects_constructed": 0,
+  "runtime_reset_test": "NOT_RUN_BY_STAGE_BOUNDARY"
+}

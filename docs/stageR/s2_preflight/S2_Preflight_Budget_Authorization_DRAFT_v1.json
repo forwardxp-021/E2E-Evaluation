@@ -1,0 +1,35 @@
+{
+  "stage": "S2_PRE_ONLY_DRAFT",
+  "S2_EXECUTION_AUTHORIZED": false,
+  "RUN_BUDGET_ACTIVE": false,
+  "future_max_simulator_entries": 40,
+  "active_budget": 0,
+  "consumed_entries": 0,
+  "authorization_by_existence": false,
+  "RBR_TRAINING": "NOT_AUTHORIZED",
+  "E_ACCESS": "NOT_AUTHORIZED",
+  "Q_to_D_active": false,
+  "rules": [
+    "20 independent pairs, exactly two arms",
+    "atomic durable entry claim BEFORE simulator entry; cross-process mutual exclusion required",
+    "exception after entry consumes budget; no refund",
+    "no automatic retry, no replacement, no reserve identities",
+    "first scientific failure stops remaining execution",
+    "infrastructure failure stops INCOMPLETE",
+    "only separately Owner-approved offline recovery from existing complete artifacts; no new simulation",
+    "no Q20 to Q12 downgrade after start; Q12 requires separate pre-execution Owner decision"
+  ],
+  "output_root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/s2_q20_qualification_v1_NOT_RUN",
+  "budget_ledger": {
+    "reserved_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/s2_q20_qualification_v1_control/attempt_budget.json",
+    "exists": false,
+    "active": false,
+    "implementation_binding": "BLOCKED"
+  },
+  "activation_requirements": [
+    "Q20 certified independent capacity and frozen roster",
+    "all execution/reset/precontext binding blockers closed",
+    "separate Scientific Owner authorization with exact roster/config/code SHA",
+    "this draft cannot authorize execution, even by editing a boolean"
+  ]
+}

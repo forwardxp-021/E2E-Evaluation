@@ -1,0 +1,88 @@
+{
+  "status": "BLOCKED",
+  "fields": [
+    {
+      "field": "scenario identity",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "same exact DB fingerprint, scenario token, scene resolution count=1, extractor config and initial sampled token",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "initial EgoState",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "canonical exact finite rear axle pose/quaternion conversion, velocity, acceleration, vehicle parameters, time_us; serialize same API fields in both arms",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "map/route",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "same map file SHA/version, route order and native topology; scene.roadblock_ids alone is not official derived route",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "replay observations",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "same sampled tokens and native tracked-object/traffic-light metadata and timestamps; no treatment trace",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "initial speed",
+      "classification": "DIRECTLY_BINDABLE",
+      "future_check": "hypot(vx,vy) at exact first extracted lidar token, not necessarily tagged anchor",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "initial acceleration",
+      "classification": "DIRECTLY_BINDABLE",
+      "future_check": "ego_pose.acceleration_x / acceleration_y at exact sampled token; preserve source coordinates/API semantics",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "raw initial steering",
+      "classification": "NOT_AVAILABLE",
+      "future_check": "DB ego_pose lacks measured tire steering angle; official API hardcodes tire_steering_angle=0.0; may bind code constant but never call it observed steering",
+      "current_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "raw angular rates",
+      "classification": "DIRECTLY_BINDABLE",
+      "future_check": "ego_pose angular_rate_x/y/z exists; current canonical trace does not export them, capture boundary not bound",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "controller config",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "resolved controller/tracker/motion model config and code SHA",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "random seed",
+      "classification": "DIRECTLY_BINDABLE",
+      "future_check": "explicit equal seed plus actual per-arm seed initialization before constructors; numeric S2 seed not yet bound",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "time origin",
+      "classification": "DIRECTLY_BINDABLE",
+      "future_check": "first extracted lidar_pc timestamp, strict increasing physical time, planner index0 clock",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "PRE_CONTEXT rows",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "ordered common actual rows before divergence at index11; compare indices0..10, including preview-consistent baseline trajectory; no new rows created now",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    },
+    {
+      "field": "context hashes",
+      "classification": "HASH_VERIFIABLE",
+      "future_check": "strict canonical JSON key/units/finite numeric contract; compare both pre_context_raw_hash and canonical_context_json_hash",
+      "current_status": "NOT_MATERIALIZED_OR_RUNTIME_NOT_BOUND"
+    }
+  ],
+  "missing_fields_fail_closed": true,
+  "fallback_key_guessing": false,
+  "precontext_hash_equality_sufficient_for_full_reset": false,
+  "numeric_tolerance_invented": false,
+  "new_PRE_CONTEXT_rows": 0
+}
