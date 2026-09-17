@@ -1,0 +1,91 @@
+{
+  "artifacts": {
+    "docs/stageR/s2_capacity_recovery/S2_Capacity_Recovery_Report_v1.md": "e31b52c01f9cf1c9c14a5aba2ad66f29b1350afa671206079af06ffc5aa8e38c",
+    "docs/stageR/s2_capacity_recovery/S2_Fresh_Session_Registry_v1.csv": "94ce0b33238488b4fe50de3f58a2aaffe2791ae589b244844f2db4f3efeafd9f",
+    "docs/stageR/s2_capacity_recovery/S2_Fresh_Source_Inventory_v1.csv": "b905d1b07e9f5174759cf75e33c4a72ab9d1c63a0b20e6e91140d53581b081b9",
+    "docs/stageR/s2_capacity_recovery/S2_Historical_Exposure_Registry_v1.csv": "35acaa02d7504fd83d3fceed42c7ab11102dfcad4d7a3a0e2e2196428bfa5655"
+  },
+  "authoritative_handover": {
+    "path": "handover0917.md",
+    "sha256": "3fbceca20ad96f410f338949d9cdda569a3462ead4ea79d3ae36ffbea6bdf724"
+  },
+  "base_HEAD": "0fb928de457c4fec88beb07dfd2982ce7a995dc9",
+  "branch": "20260825_stageR_new",
+  "capacity": {
+    "Q12": "NOT_AVAILABLE",
+    "Q20": "NOT_AVAILABLE",
+    "combined_q_session_upper_bound": 5,
+    "existing_frozen_remaining_session_upper_bound": 5,
+    "fresh_level_a_raw_sessions": 0,
+    "fresh_level_b_metadata_ready_sessions": 0,
+    "fresh_level_c_prospective_upper_bound_sessions": 0,
+    "post_Q20_future_E_reservoir": "NOT_AVAILABLE_AND_E_NOT_DEFINED"
+  },
+  "counters": {
+    "E_ACCESS": 0,
+    "E_CONSTRUCTION": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN_CALLS": 0,
+    "SIMULATION_RUNS": 0
+  },
+  "date": "2026-09-17",
+  "final_capacity_state": "CAPACITY_RECOVERY_NONE",
+  "frozen_inputs": {
+    "docs/stageR/r0/manifests/r0_nuplan_historical_use_ledger_v0.1.csv": "5bbb2581dfa9435e9a2281b27964f3c752e4a080e200f8b1ecbe35afe2c8e449",
+    "docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json": "414d04cfe9c440125f37d031ff83eb57b9982ba4b9a158ee0dbff995804dfd8e",
+    "docs/stageR/s2_preflight/S2_Preflight_Eligibility_Census_v1.json": "e352ce1b93969618088da242e8b04e1e6a9b5b5b59ba0c1fbd44a5e8fd652c5c",
+    "docs/stageR/s2_preflight/S2_Preflight_Exposure_Exclusion_Ledger_v1.json": "19867a2a7d5479a3ada16d1ff6dd3953c8cdaa2ad04765adbcabca719c3e6926"
+  },
+  "generator": {
+    "path": "tools/s2_capacity_recovery_inventory.py",
+    "sha256": "431041bb6da6af685bc8bdb15025b7592379e42889bf1eb67098612f37629130"
+  },
+  "independence_unit": "SESSION",
+  "prohibitions_observed": {
+    "Q_or_E_roster_created": false,
+    "S1_frozen_files_modified": false,
+    "reset_or_precontext_repair_performed": false,
+    "source_universe_amended": false
+  },
+  "protected_csv": {
+    "expected_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "unchanged": true
+  },
+  "s2_status": "S2_PREFLIGHT_BLOCKED_Q20_CAPACITY",
+  "schema_version": "S2_Capacity_Recovery_Manifest_v1",
+  "source_discovery": {
+    "alias_counts": {
+      "locked_pool_expanded_v1": 1621,
+      "locked_pool_v1": 64,
+      "mini_non_pittsburgh_v1": 61
+    },
+    "alias_targets_all_within_frozen_roots": {
+      "locked_pool_expanded_v1": true,
+      "locked_pool_v1": true,
+      "mini_non_pittsburgh_v1": true
+    },
+    "fresh_session_registry_rows": 0,
+    "frozen_db_path_count": 1624,
+    "frozen_session_name_count": 253,
+    "git_lfs_entries": [
+      "050b8f46e9 - data/uncompressed_scenario_training_training.tfrecord-00000-of-01000",
+      "778c636523 - outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv"
+    ],
+    "historical_exposure_registry_rows": 243,
+    "local_raw_archive_count": 6,
+    "named_git_ref_count": 106,
+    "outcome_payloads_opened": 0,
+    "proposed_source_universe_amendment": "NOT_CREATED_NO_NEW_FRESH_POOL",
+    "reachable_raw_path_names": [
+      "data/uncompressed_scenario_training_training.tfrecord-00000-of-01000"
+    ],
+    "remote_network_downloads": 0,
+    "source_inventory_rows": 10,
+    "visible_volumes": [
+      "Macintosh HD"
+    ]
+  }
+}
