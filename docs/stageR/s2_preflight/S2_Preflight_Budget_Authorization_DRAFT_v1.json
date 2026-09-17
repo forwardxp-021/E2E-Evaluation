@@ -31,5 +31,12 @@
     "all execution/reset/precontext binding blockers closed",
     "separate Scientific Owner authorization with exact roster/config/code SHA",
     "this draft cannot authorize execution, even by editing a boolean"
-  ]
+  ],
+  "zero_run_counters": {
+    "SIMULATION_RUNS": 0,
+    "RUNNER_RUN_CALLS": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "RBR_TRAINING": 0,
+    "E_ACCESS": 0
+  }
 }

@@ -6,72 +6,86 @@
     {
       "state": "scenario object",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "simulation instance",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "planner",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "controller",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "LQR tracker",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "motion model",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "history buffer",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "callbacks and metric engines",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "passive recorder",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "RNG state",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "scenario cached_property and other lazy mutable caches",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "filesystem callback and output state",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "planner episode clock",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     },
     {
       "state": "treatment generator internal state",
       "requirement": "fresh construction before each arm or explicit state-level reset proof",
-      "verification": "BLOCKED_NO_TSB_ARM_FACTORY"
+      "status": "NOT_PROVEN",
+      "evidence": "BLOCKED_NO_TSB_ARM_FACTORY"
     }
   ],
   "supported_code_findings": [
@@ -84,5 +98,20 @@
   "immutable_sharing": "NOT_ALLOWED_UNTIL_READ_ONLY_NONINTERFERENCE_PROVEN; no shared map/cache permission inferred",
   "static_constructor_proof": "official builder constructs controller/setup/simulation but accepts reusable pre_built_planners and callback list; absence of a bound TSB caller prevents full-reset proof",
   "simulation_objects_constructed": 0,
-  "runtime_reset_test": "NOT_RUN_BY_STAGE_BOUNDARY"
+  "runtime_reset_test": "NOT_RUN_BY_STAGE_BOUNDARY",
+  "RESET_CONTRACT": "FAIL",
+  "allowed_item_statuses": [
+    "FRESH_CONSTRUCT",
+    "PROVEN_RESET",
+    "IMMUTABLE_SHARED",
+    "NOT_PROVEN",
+    "AMBIGUOUS"
+  ],
+  "zero_run_counters": {
+    "SIMULATION_RUNS": 0,
+    "RUNNER_RUN_CALLS": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "RBR_TRAINING": 0,
+    "E_ACCESS": 0
+  }
 }

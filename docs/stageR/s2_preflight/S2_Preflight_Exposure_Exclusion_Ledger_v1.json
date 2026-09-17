@@ -313851,5 +313851,12 @@
   ],
   "history_source_hashes_pass": true,
   "role_closure": "BLOCKED_NO_COMPLETE_CURRENT_U_Q_D_E_SOURCE_ALLOCATION_LEDGER",
-  "classification_note": "Use frozen R0 outcome_already_unblinded declaration, exact identity set SHA, and separate frozen reservations. Mere historical metadata screening is NOT outcome exposure and is NOT added as an exclusion. E is not constructed; all history is already declared exposed or reserved."
+  "classification_note": "Use frozen R0 outcome_already_unblinded declaration, exact identity set SHA, and separate frozen reservations. Mere historical metadata screening is NOT outcome exposure and is NOT added as an exclusion. E is not constructed; all history is already declared exposed or reserved.",
+  "zero_run_counters": {
+    "SIMULATION_RUNS": 0,
+    "RUNNER_RUN_CALLS": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "RBR_TRAINING": 0,
+    "E_ACCESS": 0
+  }
 }

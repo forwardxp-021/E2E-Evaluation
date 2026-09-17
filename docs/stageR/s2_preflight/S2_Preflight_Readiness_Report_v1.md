@@ -2,7 +2,24 @@
 
 日期：2026-09-17。基线及 Owner 冻结的 S1.1 提交：`9764ea46a91b6495ec9063616c0ec1ce6b1045f3`。
 
+入口文件审计：任务指定的 `handover0917.md` 在当前仓库、当前分支及可见 Git 历史中均不存在。仓库只有 `handover.md`，其 SHA256 为 `f3905893aa2462346083b261507bcb74fdd8bf05b5ed4a4761a757960bd8bfc4`，与冻结 S1 manifest 绑定一致，但内容日期为 2026-09-05，不能冒充 0917 handover。本报告以任务中明确给出的最新 Scientific Owner 状态、冻结 S1 文件及后续授权提交为准；此缺失被公开记录，不进行猜测或静默修正。
+
 **最终状态：S2_PREFLIGHT_BLOCKED_Q20_CAPACITY。** 全量身份分母已枚举并绑定，完整科学资格仍未认证；已知冲突后的容量上界只有 5 个 SESSION，不能提供 20 对，也不能启动 Q12 fallback。Q20/Q12 roster 均未生成。S2 不启动。
+
+## Owner 要求的 10 个明确答案
+
+| 问题 | 答案 |
+|---|---|
+| 1. frozen source universe candidate 数 | 原始来源 5,386,575 token；冻结早期排除后的 S2-PRE denominator 为 5,338,021 token、1,564 logs、248 sessions |
+| 2. metadata-only funnel | 已声明历史结果暴露排除 5,290,386 token / 242 sessions；暴露与保留冲突并集排除 5,301,514 token / 243 sessions；最多剩 36,507 token / 13 logs / 5 sessions，其他资格仍 UNKNOWN |
+| 3. 最终 eligible independent units | 完整认证的 eligible units 为 0；真实准确数 UNKNOWN；由已知冲突得到的容量上界为 5，不能把 0 或 5 写成已证明的真实 eligible 数 |
+| 4. independence unit 与证据 | `SESSION`；同采集前缀的分段共享数据库 log timestamp、vehicle、date，208/248 sessions 含多个 log chunks；driver ID 不可得，跨 session route dependency 尚未闭合 |
+| 5. Q20 capacity | `Q20_CAPACITY_NOT_AVAILABLE`，因为 independent-unit 上界 5 < 20；同样 <12，但不自动切换 Q12 |
+| 6. Q20 NOT_RUN roster hash | N/A；容量不足，roster 与 reserve order 均未创建 |
+| 7. production execution binding | BLOCKED；组件文件可绑定，但 TSB Q20 executor、resolved config、serializer callback、主结果 manifest 与 active budget ledger 未绑定 |
+| 8. full-arm reset | `RESET_CONTRACT=FAIL`，readiness=BLOCKED；关键 mutable states 均 `NOT_PROVEN` |
+| 9. precontext identity | BLOCKED；字段分类与未来检查已冻结，真实 resolved lifecycle/capture 尚未绑定 |
+| 10. protected CSV | PASS；SHA256=`e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8` |
 
 ## 交付内容与缺口
 
@@ -19,6 +36,8 @@
 | RBR 原则边界 | PRESERVED | 冻结 S1 文件字节不变；不实现或训练 RBR |
 
 执行组件文件 SHA 已绑定，但“文件存在并有 SHA”不等于生产集成 PASS。原有 `zero_run_observability_preflight` 虽不调用 run，却会构造 Simulation；本阶段没有调用它。没有为了证明 reset 而构造模拟器。
+
+组件 binding status 仅使用 `BOUND / UNKNOWN / AMBIGUOUS / BLOCKED / NOT_FOUND`。`BOUND` 只表示该文件、符号及 SHA 被精确绑定；不会把单个组件的 BOUND 推导为整条 production chain PASS。reset 各项仅使用 `FRESH_CONSTRUCT / PROVEN_RESET / IMMUTABLE_SHARED / NOT_PROVEN / AMBIGUOUS`；当前关键可变状态均为 `NOT_PROVEN`，所以 `RESET_CONTRACT=FAIL`，对外 readiness 仍记为 BLOCKED。
 
 ## 执行与重置边界
 
@@ -44,6 +63,12 @@ TSB candidate、参数、机制/F_match/安全 evaluator、S1 SAP、H 与 schema
 - 全量来源 token 数/集合 SHA、每数据库冻结指纹、日志数：PASS。完整压缩账本与索引一致性、最终 manifest 校验另由最终 manifest 记录。
 
 复现/验证命令与通过标准见 QUICK_REFERENCE 的 S2-PRE 段。全量 census 重跑只能写新目录，不覆盖冻结账本。
+
+## 文件与差异范围
+
+相对 S1.1 基线 `9764ea46…`，S2-PRE 包创建 1,564 个 gzip census shards、9 个顶层 preflight artifacts、2 个工具、1 个测试文件，并更新 QUICK_REFERENCE，共 1,577 个文件。完整数据采用现有 v1 convention：`S2_Preflight_Eligibility_Census_v1.json` 索引 + SHA-bound `census/log_*.json.gz` 分片；不再重复生成数 GB 的平铺 CSV。由于 Q20 容量不足，两个 roster 文件按协议不存在。
+
+本轮 Owner 指令复核只修改 package 内的状态词、零运行计数字段、两份报告、manifest、静态验证器及对应测试；未修改 S1、TSB candidate、阈值、历史结果或 census shards。最终 Git diff/commit/remote SHA 在交付回复中报告。
 
 ## 零运行与保留项
 

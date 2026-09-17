@@ -41,6 +41,8 @@ def test_closed_budget_missing_wrong_and_active_reject():
         with pytest.raises(ValueError): validate_draft(bad)
     bad=copy.deepcopy(value); del bad['active_budget']
     with pytest.raises(ValueError,match='EXACT_KEYS'): validate_draft(bad)
+    bad=copy.deepcopy(value); bad['zero_run_counters']['RUNNER_RUN_CALLS']=1
+    with pytest.raises(ValueError,match='ZERO_RUN_COUNTERS'): validate_draft(bad)
 
 def test_output_freshness_and_symlink_rejection(tmp_path):
     validate_fresh_root(tmp_path/'new',tmp_path)

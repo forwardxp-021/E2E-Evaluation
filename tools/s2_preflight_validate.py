@@ -14,13 +14,15 @@ def sha(path):
     return h.hexdigest()
 
 def validate_draft(value):
-    required={'stage','S2_EXECUTION_AUTHORIZED','RUN_BUDGET_ACTIVE','future_max_simulator_entries','active_budget','consumed_entries','authorization_by_existence','RBR_TRAINING','E_ACCESS','Q_to_D_active','rules','output_root','budget_ledger','activation_requirements'}
+    required={'stage','S2_EXECUTION_AUTHORIZED','RUN_BUDGET_ACTIVE','future_max_simulator_entries','active_budget','consumed_entries','authorization_by_existence','RBR_TRAINING','E_ACCESS','Q_to_D_active','rules','output_root','budget_ledger','activation_requirements','zero_run_counters'}
     if set(value)!=required: raise ValueError('AUTHORIZATION_DRAFT_EXACT_KEYS_REQUIRED')
     for key in ('S2_EXECUTION_AUTHORIZED','RUN_BUDGET_ACTIVE','authorization_by_existence','Q_to_D_active'):
         if value[key] is not False: raise ValueError('CLOSED_DRAFT_REQUIRED:'+key)
     for key,want in [('future_max_simulator_entries',40),('active_budget',0),('consumed_entries',0)]:
         if type(value[key]) is not int or value[key]!=want: raise ValueError('BUDGET_DRAFT_VALUE:'+key)
     if value['RBR_TRAINING']!='NOT_AUTHORIZED' or value['E_ACCESS']!='NOT_AUTHORIZED': raise ValueError('FIREWALL_CLOSED_REQUIRED')
+    expected_zero={'SIMULATION_RUNS':0,'RUNNER_RUN_CALLS':0,'NEW_SCIENTIFIC_OUTCOME_EXPOSURE':0,'RBR_TRAINING':0,'E_ACCESS':0}
+    if value['zero_run_counters'] != expected_zero: raise ValueError('ZERO_RUN_COUNTERS_REQUIRED')
     return {'static_validation':'PASS','scientific_qualification':False,'execution_possible':False}
 
 def validate_fresh_root(root, parent):

@@ -56,3 +56,7 @@
 - 完整 replay、正式场景解析、全状态 reset 仍需要执行配置绑定。UNKNOWN 一律不能进入候选合格集，但不记作已观测科学失败。
 
 3.61 m/s 的 inclusive 名义筛选、三项 scope 标签和闭环 LOW_SPEED_ENDSTOP 的 SCIENTIFIC_FAILURE 定义保持冻结。没有使用任何未来机制、安全、F_match 或低速处置结果进行选择。
+
+规范化 exclusion category 映射如下：已声明历史结果暴露=`FAIL_HISTORICAL_EXPOSURE`；冻结保留或工程永久冲突=`FAIL_RESERVATION_CONFLICT`；来源/角色闭合不足=`FAIL_PROVENANCE` 或 `FAIL_METADATA_COMPLETENESS`；正式场景起点速度未绑定=`FAIL_METADATA_COMPLETENESS`，不能把 tag-anchor 速度写成 `FAIL_SPEED`；正式 route/reference 未绑定=`FAIL_ROUTE`/`FAIL_REFERENCE` 的 UNKNOWN，而不是已观测失败；同会话传播的冲突=`FAIL_INDEPENDENCE`。只有所有冻结条件均已直接验证才可写 `ELIGIBLE`，本 census 没有这样的条目。
+
+本阶段计数：SIMULATION_RUNS=0；RUNNER_RUN_CALLS=0；NEW_SCIENTIFIC_OUTCOME_EXPOSURE=0；RBR_TRAINING=0；E_ACCESS=0。

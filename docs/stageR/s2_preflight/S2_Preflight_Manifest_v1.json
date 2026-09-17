@@ -56,7 +56,8 @@
     "frozen_S1_and_candidate_evaluator_schema_hashes": "PASS",
     "RBR_boundary_regression": "NONE",
     "simulation_objects_constructed": 0,
-    "scientific_result_artifacts_from_synthetic_fixtures": 0
+    "scientific_result_artifacts_from_synthetic_fixtures": 0,
+    "protocol_vocabulary_normalization": "PASS"
   },
   "counters": {
     "simulation": 0,
@@ -80,12 +81,12 @@
       "bytes": 575290
     },
     {
-      "path": "RBR-64_\u535a\u58eb\u7814\u7a76\u603b\u4f53\u65b9\u6848_v2.1_\u6a21\u578b\u53d1\u73b0_\u884c\u4e3a\u89e3\u91ca_\u4eba\u7c7b\u786e\u8ba4.md",
+      "path": "RBR-64_博士研究总体方案_v2.1_模型发现_行为解释_人类确认.md",
       "sha256": "1b12e3eab8e41d6d9e9c4ced92469953228da34b2e677d80cdc998357bf51143",
       "bytes": 24929
     },
     {
-      "path": "RBR-64_\u535a\u58eb\u7814\u7a76\u603b\u4f53\u65b9\u6848_v2.2_S1\u6b63\u5f0f\u5165\u53e3\u7248.md",
+      "path": "RBR-64_博士研究总体方案_v2.2_S1正式入口版.md",
       "sha256": "e73528bb7ea2cc69678753255a10e91f94444a108173072fa2a1620902add0e1",
       "bytes": 26016
     },
@@ -326,8 +327,8 @@
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Budget_Authorization_DRAFT_v1.json",
-      "sha256": "76c0450067f6701bf19ec77702e41e22d1d6ac56b4a32b9566c72c04287195a8",
-      "bytes": 1578
+      "sha256": "269e72d6710241b41c431a8542757b54173bf140a12c750ad4896a0cf68500dd",
+      "bytes": 1744
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Eligibility_Census_v1.json",
@@ -336,33 +337,33 @@
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Eligibility_Report_v1.md",
-      "sha256": "f6143006a7c234e72b1d5be0d8f954757756298ca042586e6812fa35570afc13",
-      "bytes": 5431
+      "sha256": "bd01d11985daf34c60c251050765e2ef15daf98b3c037591575a7c3ccc29c8a5",
+      "bytes": 6169
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Execution_Binding_v1.json",
-      "sha256": "d099d32c40a60ee8f12bcde74f8724376754eaec2904831e5517a2fdba8f04f6",
-      "bytes": 12403
+      "sha256": "39a81f2813fe36c7a67330e6015f887a2aa56dd54a070fe5fb28af18d59a42ba",
+      "bytes": 20257
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Exposure_Exclusion_Ledger_v1.json",
-      "sha256": "e383add23a56cbbfaf70e62056b6d5abdbf05d2bcbee88bbb20ebd8ea0ccddf3",
-      "bytes": 9074751
+      "sha256": "19867a2a7d5479a3ada16d1ff6dd3953c8cdaa2ad04765adbcabca719c3e6926",
+      "bytes": 9074917
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Full_Reset_Contract_v1.json",
-      "sha256": "c7b18f0c567e19fdb33937b84f7c1005525a94861706585865098872e6cfff04",
-      "bytes": 4156
+      "sha256": "4c9fba79a91a44ff1fdf4a4f72973988f6a0e25aef4ccab7d27b417fe2583aed",
+      "bytes": 4849
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Precontext_Identity_Contract_v1.json",
-      "sha256": "becdb063575f75e6536a335eb0f347ed0dbc1c765cc1c60158316863e177aec8",
-      "bytes": 4038
+      "sha256": "833b3b855e3de43e4affe8c8d51b4eafd435887231d1ff88d7606805dae42e52",
+      "bytes": 4376
     },
     {
       "path": "docs/stageR/s2_preflight/S2_Preflight_Readiness_Report_v1.md",
-      "sha256": "51a23b3bfcb1bd74207ae0361a643d1c415a8e485d239e4858c28c9dfed6d771",
-      "bytes": 5702
+      "sha256": "7bdc4fbf370b69cfe4272b5fb57bfcaf48c2c2b1d397e59aa9975935bef080de",
+      "bytes": 9054
     },
     {
       "path": "docs/stageR/s2_preflight/census/log_0001.json.gz",
@@ -31891,8 +31892,8 @@
     },
     {
       "path": "tests/test_s2_preflight.py",
-      "sha256": "cd37d8831c297ce8402de481a4581809b15e2bdc118ceb03b6bb677b8c0c4b83",
-      "bytes": 3282
+      "sha256": "588d6b899ae9e31b22f4559c23df9fab69ae54cd63b558ccbb6d3412391793d4",
+      "bytes": 3441
     },
     {
       "path": "tools/r1_b2_8_r3_1_official_safety_adapter.py",
@@ -31976,8 +31977,8 @@
     },
     {
       "path": "tools/s2_preflight_validate.py",
-      "sha256": "7102745c74522e09baf341ba7be4c79f787f014bf80ffe3249507aac8617b479",
-      "bytes": 3979
+      "sha256": "f159f4a45a96d9529bb2b2402a9a8ff7391a3bc85c1c4e80153c1650a5a7b043",
+      "bytes": 4225
     },
     {
       "path": "tools/stage6l_prepare_context_representation_ablation.py",
@@ -32084,5 +32085,17 @@
       "sha256": "cb378f5b705cd2965017248a7e3a9efe0a386a298a98a60137325b3debdc47c9",
       "bytes": 2356
     }
-  ]
+  ],
+  "protocol_compliance_review": {
+    "date": "2026-09-17",
+    "requested_handover0917": "NOT_FOUND",
+    "fallback_handover_path": "handover.md",
+    "fallback_handover_sha256": "f3905893aa2462346083b261507bcb74fdd8bf05b5ed4a4761a757960bd8bfc4",
+    "conflict_disposition": "REPORTED_NOT_GUESSED; explicit latest Owner state and frozen S1 govern",
+    "production_binding_vocabulary": "PASS",
+    "reset_item_vocabulary": "PASS",
+    "precontext_classification_vocabulary": "PASS",
+    "census_serialisation": "Existing frozen convention: v1 JSON index plus 1564 SHA-bound gzip JSON log shards; no duplicate multi-gigabyte CSV projection",
+    "q_roster": "NOT_CREATED_Q20_CAPACITY_UNAVAILABLE"
+  }
 }

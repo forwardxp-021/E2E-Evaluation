@@ -84,5 +84,19 @@
   "fallback_key_guessing": false,
   "precontext_hash_equality_sufficient_for_full_reset": false,
   "numeric_tolerance_invented": false,
-  "new_PRE_CONTEXT_rows": 0
+  "new_PRE_CONTEXT_rows": 0,
+  "PRECONTEXT_IDENTITY_CONTRACT": "BLOCKED",
+  "allowed_field_classifications": [
+    "DIRECTLY_BINDABLE",
+    "HASH_VERIFIABLE",
+    "NOT_AVAILABLE",
+    "AMBIGUOUS"
+  ],
+  "zero_run_counters": {
+    "SIMULATION_RUNS": 0,
+    "RUNNER_RUN_CALLS": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "RBR_TRAINING": 0,
+    "E_ACCESS": 0
+  }
 }
