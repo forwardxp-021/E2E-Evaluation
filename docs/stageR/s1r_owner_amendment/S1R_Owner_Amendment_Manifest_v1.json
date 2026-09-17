@@ -1,0 +1,118 @@
+{
+  "OWNER_DECISION": "PENDING",
+  "PRIMARY_EVALUATION_AUTHORIZED": false,
+  "RBR_TRAINING_AUTHORIZED": false,
+  "S1_PROTOCOL_AMENDED": false,
+  "S2R_AUTHORIZED": false,
+  "SIMULATION_AUTHORIZED": false,
+  "allowed_owner_decisions": [
+    "APPROVED",
+    "REJECTED",
+    "DEFERRED_PENDING_EVIDENCE"
+  ],
+  "artifacts": {
+    "docs/stageR/s1r_owner_amendment/S1R_Data_Role_Contract_UBVC_v1.md": "473597fdde0c84b4d7096014eb80fa884843d93b61e700485d3ece8351be87ed",
+    "docs/stageR/s1r_owner_amendment/S1R_E3_E4_Reaudit_v1.md": "ff0703fc1a318dad080de19877da0c8c1b9d83a4f88d42e26f471d1c743d68e9",
+    "docs/stageR/s1r_owner_amendment/S1R_E3_Session_Overrides_v1.csv": "2fe74bacdec08bb18483f5fb92026606bf43fb1edb205b99898c6a1fdb7d8d18",
+    "docs/stageR/s1r_owner_amendment/S1R_Exposure_Policy_v1.md": "7d8aabfa51fa464d9bd2ecab8d29d6ecf0136aa8ed25a77cc0aa2178d0ba45eb",
+    "docs/stageR/s1r_owner_amendment/S1R_Old_to_New_Contract_Mapping_v1.csv": "dec5fd3407b4b9e3e884bcc7eb50334c341cc1fe97af847a86d92896a20f494e",
+    "docs/stageR/s1r_owner_amendment/S1R_Owner_Amendment_v1.md": "1656ea18ae50bc92f60e57db679fb35e29ad90c0c20c11d6e02cef9611d8fe96",
+    "docs/stageR/s1r_owner_amendment/S1R_Primary_Freeze_Point_v1.md": "3ac558962bdbd1980a6b68cafd87e3ffb26835e3a3c6f1b04da324b81634fe0a"
+  },
+  "base_HEAD": "0255b7f4036e6e8bc88d9c417151442d37c058e7",
+  "branch": "20260825_stageR_new",
+  "date": "2026-09-17",
+  "frozen_S1_inputs": {
+    "docs/stageR/s1/S1_BDD_Statistical_Analysis_Plan_Draft_v0.1.md": "86dd7d909be8d66249201fbbc5ac2dd9acd1eb8e1b73ed69737cd138370f145e",
+    "docs/stageR/s1/S1_Canonical_Schema_Draft_v0.1.json": "def49ff110c57137d88b63fb74741f5f08c498bd61058ef9fc9f47530e18a9cb",
+    "docs/stageR/s1/S1_Data_Firewall_Draft_v0.1.json": "aa5b0deaadaa6fb73dbc896b092584b601df42fb8f1d1b1e5c8052e9a1add6f6",
+    "docs/stageR/s1/S1_Development_Evidence_Audit_v0.1.json": "5a84d324ae38f439d7c0d6f894375a1491174542362dd83e6c3703497a390321",
+    "docs/stageR/s1/S1_Handcrafted_Challenger_Contract_Draft_v0.1.md": "5d9f50fccdcb2e81dc3c25720d6a966d796e187a2aad86c41d3815c975acedec",
+    "docs/stageR/s1/S1_Protocol_Design_Manifest_v0.1.json": "a7579e95553555392472f7bb69c3ce9677ae233e92f8b6b4a7595aa093d6f2d2",
+    "docs/stageR/s1/S1_Protocol_Design_Report_v0.1.md": "58ec0d8ff58307b5e1a2f36e0b91a575e15b862632b85b353b441d8b84e6b5b7",
+    "docs/stageR/s1/S1_Scope_and_Claim_Freeze_Draft_v0.1.md": "285fb59cb99c8a9b240b981fa81710804b228c3617330575f8f723bd3e504b50",
+    "docs/stageR/s1/S1_Secondary_Diagnostics_SAP_Draft_v0.1.md": "0dce5471598243ed1783769b5572c418808b5c731f1aed2314f4b6c13ed0f890",
+    "docs/stageR/s1/S1_TSB_Applicability_Contract_Draft_v0.1.md": "79b48aff400f1dfbee0e07d01b4de4c39b72d63418c2b9bebfdbd429b51cbe56",
+    "docs/stageR/s1/S1_TSB_Fresh_Qualification_Protocol_Draft_v0.1.md": "ad69ca200147756ac5b429150d8ef7abf28ac05abca64af88b5cd293c5b11306"
+  },
+  "generator": {
+    "path": "tools/s1r_owner_amendment_package.py",
+    "sha256": "95277a86d5b20f50e403178a6a80850fbfb383eb6444888dd480deb3015352c9"
+  },
+  "governing_inputs": {
+    "AGENTS": "93b7d13b3378ae7905cf7c2a97f27b7181c1b4ae2df34f5a7b6a8ace3be7fdc2",
+    "handover0917": "3fbceca20ad96f410f338949d9cdda569a3462ead4ea79d3ae36ffbea6bdf724",
+    "s1r_manifest": "73d0aa9859d336bc8736d22e0b1cb5aecb8e5a628e7f5e4d1ca3f0cd4655859b",
+    "v2_2": "e73528bb7ea2cc69678753255a10e91f94444a108173072fa2a1620902add0e1",
+    "v2_3": "85c9cde84e2ea9ef6c1636dc87a8e083dfac6b338ef29a622c87ba0948297fa9"
+  },
+  "historical_capacity": {
+    "capacity_recovery": "CAPACITY_RECOVERY_NONE",
+    "exposure_or_reservation_conflict": 243,
+    "historical_files_modified": false,
+    "label": "S2_STRICT_FIREWALL_PREFLIGHT_HISTORICAL_RESULT",
+    "outcome_exposed": 242,
+    "strict_fresh_remaining": 5
+  },
+  "independent_engineering_blockers": [
+    "PRODUCTION_EXECUTION_BINDING",
+    "FULL_ARM_RESET_CONTRACT",
+    "PRECONTEXT_IDENTITY_CONTRACT"
+  ],
+  "mapping_status_counts": {
+    "PRESERVED": 1,
+    "PRESERVED_REWORDED": 3,
+    "REPLACED": 5,
+    "SUPERSEDED_IF_APPROVED": 1
+  },
+  "prospective_if_approved": {
+    "Primary_evaluation": "NOT_AUTOMATICALLY_AUTHORIZED",
+    "RBR_training": "NOT_AUTOMATICALLY_AUTHORIZED",
+    "next_stage": "ROLE_AWARE_S2R_PREFLIGHT_AUTHORIZABLE_SEPARATELY",
+    "old_capacity_blocker": "HISTORICAL_ONLY",
+    "simulation": "NOT_AUTOMATICALLY_AUTHORIZED"
+  },
+  "protected_csv": {
+    "expected_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "unchanged": true
+  },
+  "reaudit": {
+    "CERTIFIED_V_CAPACITY": 0,
+    "E3_ZERO_CONFIRMED": "NO",
+    "E3_session_override_count": 31,
+    "E4_ZERO_CONFIRMED": "YES_REPOSITORY_EVIDENCE_SCOPE",
+    "THEORETICAL_V_UPPER_BOUND": 217,
+    "evidence": {
+      "docs/stage7l_e_prospective_bdd_manifest_v1.json": "4fae0ede5bb77e86eec7f9aa1222b6605248b746dec8767ba3bd75fed6947a8b",
+      "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_results_v1.0.json": "6f561df652867aee2204026b2390cacc5e075e8f75c393b880e6cbd21902ca88",
+      "docs/stageR/s1/S1_BDD_Statistical_Analysis_Plan_Draft_v0.1.md": "86dd7d909be8d66249201fbbc5ac2dd9acd1eb8e1b73ed69737cd138370f145e",
+      "docs/stageR/s1/S1_Development_Evidence_Audit_v0.1.json": "5a84d324ae38f439d7c0d6f894375a1491174542362dd83e6c3703497a390321",
+      "docs/stageR/s1/S1_Handcrafted_Challenger_Contract_Draft_v0.1.md": "5d9f50fccdcb2e81dc3c25720d6a966d796e187a2aad86c41d3815c975acedec",
+      "docs/stageR/s1/S1_Protocol_Design_Report_v0.1.md": "58ec0d8ff58307b5e1a2f36e0b91a575e15b862632b85b353b441d8b84e6b5b7",
+      "docs/stageR/s1/S1_Scope_and_Claim_Freeze_Draft_v0.1.md": "285fb59cb99c8a9b240b981fa81710804b228c3617330575f8f723bd3e504b50",
+      "outputs/stage7_m6_1_paired_bdd_method_freeze_v1/milestone6_paired_bdd_summary.json": "a0162f3e6140b40d665bbc28194c97428f9443351646bd959c423f3cdeac5034"
+    },
+    "session_counts": {
+      "E0_METADATA_ONLY": 1,
+      "E1_UNRELATED_HISTORICAL_USE": 149,
+      "E2_BENCHMARK_ENGINEERING": 62,
+      "E3_PRIMARY_METHOD_DEVELOPMENT": 31,
+      "E4_PRIMARY_OUTCOME_DRIVEN_ADAPTATION": 0,
+      "E5_UNTOUCHED_CONFIRMATORY": 5,
+      "UNKNOWN": 0
+    }
+  },
+  "schema_version": "S1R_Owner_Amendment_Manifest_v1",
+  "status": "PROPOSED_OWNER_AMENDMENT",
+  "zero_run_counters": {
+    "HLC_ROLLOUT": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN": 0,
+    "SIMULATION": 0,
+    "TSB_ROLLOUT": 0
+  }
+}
