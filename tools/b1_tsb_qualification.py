@@ -173,21 +173,31 @@ def prepare(authorized_source_git_sha: str) -> None:
     old = s2r.read_json(s2r.OLD_CENSUS)
     ranked, candidate_counts = s2r.ranked_candidates(old, roles)
     _, selected, _ = s2r.census_rows(roles, ranked, candidate_counts)
-    eligible_e2 = []
+    eligible_by_class: dict[str, list[tuple[str, str, Mapping[str, Any]]]] = {
+        "E2_BENCHMARK_ENGINEERING": [],
+        "E1_UNRELATED_HISTORICAL_USE": [],
+    }
     for session_id, winner in selected.items():
-        if roles[session_id]["exposure_class"] != "E2_BENCHMARK_ENGINEERING":
+        exposure = roles[session_id]["exposure_class"]
+        if exposure not in eligible_by_class:
             continue
         selection_hash = hashlib.sha256(f"{SALT}|{session_id}|{winner['scenario_token']}".encode()).hexdigest()
-        eligible_e2.append((selection_hash, session_id, winner))
-    eligible_e2.sort(key=lambda item: (item[0], item[1], item[2]["scenario_token"]))
+        eligible_by_class[exposure].append((selection_hash, session_id, winner))
+    for values in eligible_by_class.values():
+        values.sort(key=lambda item: (item[0], item[1], item[2]["scenario_token"]))
     roster_rows: list[dict[str, Any]] = []
     arms: list[dict[str, Any]] = []
     bindings: list[dict[str, Any]] = []
     schedule: list[dict[str, Any]] = []
     selection_audit: list[dict[str, Any]] = []
     map_cache: dict[str, Any] = {}
-    chosen: list[tuple[str, str, Mapping[str, Any], Mapping[str, Any]]] = []
-    for candidate_rank, (selection_hash, session_id, winner) in enumerate(eligible_e2, 1):
+    chosen: list[tuple[str, str, Mapping[str, Any], Mapping[str, Any], str]] = []
+    ordered_candidates = [
+        (exposure, selection_hash, session_id, winner)
+        for exposure in ("E2_BENCHMARK_ENGINEERING", "E1_UNRELATED_HISTORICAL_USE")
+        for selection_hash, session_id, winner in eligible_by_class[exposure]
+    ]
+    for candidate_rank, (exposure, selection_hash, session_id, winner) in enumerate(ordered_candidates, 1):
         try:
             binding = _pair_binding(winner, map_cache)
         except Exception as exc:
@@ -196,6 +206,7 @@ def prepare(authorized_source_git_sha: str) -> None:
                 "selection_hash": selection_hash,
                 "session_id": session_id,
                 "scenario_token": winner["scenario_token"],
+                "exposure_class": exposure,
                 "decision": "STATIC_B1_CONTEXT_INCOMPATIBLE",
                 "reason": f"{type(exc).__name__}:{exc}",
             })
@@ -205,16 +216,18 @@ def prepare(authorized_source_git_sha: str) -> None:
             "selection_hash": selection_hash,
             "session_id": session_id,
             "scenario_token": winner["scenario_token"],
+            "exposure_class": exposure,
             "decision": "SELECTED",
             "reason": "",
         })
-        chosen.append((selection_hash, session_id, winner, binding))
+        chosen.append((selection_hash, session_id, winner, binding, exposure))
         if len(chosen) == TARGET_PAIRS:
             break
     if len(chosen) != TARGET_PAIRS or len({item[1] for item in chosen}) != TARGET_PAIRS:
-        raise RuntimeError("B1_CONTEXT_COMPATIBLE_UNIQUE_E2_SESSION_CAPACITY_BELOW_20")
+        write_csv(SELECTION_AUDIT, selection_audit)
+        raise RuntimeError("B1_CONTEXT_COMPATIBLE_UNIQUE_E2_E1_SESSION_CAPACITY_BELOW_20")
 
-    for pair_index, (selection_hash, session_id, winner, frozen_binding) in enumerate(chosen, 1):
+    for pair_index, (selection_hash, session_id, winner, frozen_binding, exposure) in enumerate(chosen, 1):
         pair_id = f"B1-TSB-{pair_index:02d}"
         baseline_id, treatment_id = f"{pair_id}-BASELINE", f"{pair_id}-TREATMENT"
         order = ["BASELINE", "TREATMENT"] if int(hashlib.sha256(pair_id.encode()).hexdigest(), 16) % 2 == 0 else ["TREATMENT", "BASELINE"]
@@ -225,7 +238,7 @@ def prepare(authorized_source_git_sha: str) -> None:
             "session_id": session_id,
             "log_id": winner["log_id"],
             "scenario_token": winner["scenario_token"],
-            "exposure_class": "E2_BENCHMARK_ENGINEERING",
+            "exposure_class": exposure,
             "role": "B",
             "db_path": winner["db_path"],
             "map_name": winner["map_name"],
@@ -247,7 +260,7 @@ def prepare(authorized_source_git_sha: str) -> None:
             "session_id": session_id,
             "log_id": winner["log_id"],
             "scenario_token": winner["scenario_token"],
-            "exposure_class": "E2_BENCHMARK_ENGINEERING",
+            "exposure_class": exposure,
             "static_eligibility_status": "STATIC_ELIGIBLE",
             "initial_speed_mps": f"{float(winner['initial']['initial_speed_mps']):.6f}",
             "route_id": winner["route_id"],
@@ -272,7 +285,7 @@ def prepare(authorized_source_git_sha: str) -> None:
         "stage": "B1_FROZEN_TSB_QUALIFICATION",
         "authorization_status": "AUTHORIZED",
         "allowed_role": "B",
-        "allowed_exposure_classes": ["E2_BENCHMARK_ENGINEERING"],
+        "allowed_exposure_classes": ["E2_BENCHMARK_ENGINEERING", "E1_UNRELATED_HISTORICAL_USE"],
         "allowed_arms": ["BASELINE", "TREATMENT"],
         "max_scientific_arms": MAX_ARMS,
         "planned_session_pairs": TARGET_PAIRS,
@@ -318,8 +331,8 @@ def prepare(authorized_source_git_sha: str) -> None:
         "planned_pairs": TARGET_PAIRS,
         "planned_arms": MAX_ARMS,
         "all_pairs_not_run": all(row["execution_status"] == "NOT_RUN" for row in roster_rows),
-        "e2_pairs": TARGET_PAIRS,
-        "e1_pairs": 0,
+        "e2_pairs": sum(row["exposure_class"] == "E2_BENCHMARK_ENGINEERING" for row in roster_rows),
+        "e1_pairs": sum(row["exposure_class"] == "E1_UNRELATED_HISTORICAL_USE" for row in roster_rows),
         "e5_pairs": 0,
         "static_b1_context_incompatible_before_roster_freeze": sum(row["decision"] != "SELECTED" for row in selection_audit),
         "scientific_rollout_count": 0,
