@@ -1,0 +1,138 @@
+{
+  "artifacts": {
+    "docs/stageR/s2r_engineering_closure/S2R_C_Static_Capacity_v1.md": "97e78f47626ed59434875e165cee48bdc72f2de52c585fa6098b4b2135834b6d",
+    "docs/stageR/s2r_engineering_closure/S2R_Claim_A_Claim_B_Static_Capacity_v1.md": "2942fd325fe87fbc9c0cbe28efb54a3764b63f134970ccf6575df5c2c1b32eff",
+    "docs/stageR/s2r_engineering_closure/S2R_Engineering_Closure_Report_v1.md": "d07226e0e26d39cae8d0ee7fe957d4a1fc1e246084e0d1869ffc1693ff37f08f",
+    "docs/stageR/s2r_engineering_closure/S2R_Full_Arm_Reset_Proof_v1.md": "9f8857109012dff6a7a509979173ee5cc95a743e9302435001de17a3cea0dae7",
+    "docs/stageR/s2r_engineering_closure/S2R_Precontext_Identity_Implementation_v1.md": "a6893b881d023fb378a3ebfec03fb7548c00d157cbf01d2570a566b0be90e44e",
+    "docs/stageR/s2r_engineering_closure/S2R_Production_Executor_Contract_v1.md": "03ab7304ad8bdddcaa5f4d87937147a3a6ed1fd3ebece6c3ad54d70fb4d922c8",
+    "docs/stageR/s2r_engineering_closure/S2R_Static_Eligibility_Census_v1.csv": "cf5eb251419cd4a531055721d180578444f9e28626c422f58f8b20ba60abc0f4",
+    "docs/stageR/s2r_engineering_closure/S2R_Static_V_Capacity_v1.md": "b4504dc9c9c150c68b56c2bb5e2a1827188aeaa4239c4bf8df81b2591a718da0"
+  },
+  "authorization": {
+    "c_execution": false,
+    "primary_evaluation": false,
+    "rbr_training": false,
+    "simulation": false,
+    "v_execution": false
+  },
+  "branch": "20260825_stageR_new",
+  "capacity": {
+    "ambiguous_candidate_sessions": 3,
+    "by_exposure_class": {
+      "E0_METADATA_ONLY": 1,
+      "E1_UNRELATED_HISTORICAL_USE": 147,
+      "E2_BENCHMARK_ENGINEERING": 62,
+      "E5_UNTOUCHED_CONFIRMATORY": 4
+    },
+    "claim_a_static_candidate_capacity": 152,
+    "claim_b_static_v_capacity": 214,
+    "raw_v_candidates": 217,
+    "static_certified_v_pool": 214,
+    "strict_c_static_capacity": 4,
+    "total_sessions": 248
+  },
+  "code": {
+    "tools/s2r_engineering_closure.py": "9d768608a95abd23c5a7aa47224ae72ed5d32025fcdfe70cc359377b4b6fa8be",
+    "tools/s2r_production_executor.py": "204481aca341672ee20b77d2257e87e6c906ab28237cf0620a743e3c7a7fe5bb"
+  },
+  "contracts": {
+    "full_arm_reset": "PASS",
+    "precontext_identity": "PASS",
+    "production_execution_binding": "PASS"
+  },
+  "date": "2026-09-18",
+  "execution_manifest_schema": {
+    "config_schema_version": "s2r_production_stack_v1",
+    "fields": [
+      "schema_version",
+      "run_id",
+      "pair_id",
+      "arm",
+      "session_id",
+      "log_id",
+      "scenario_token",
+      "exposure_class",
+      "role",
+      "git_sha",
+      "executor_sha",
+      "planner_sha",
+      "config_hash",
+      "schema_hash",
+      "runtime_fingerprint",
+      "precontext_id",
+      "route_id",
+      "arm_instance_id",
+      "planner_instance_id",
+      "controller_instance_id",
+      "recorder_instance_id",
+      "random_state_declaration",
+      "start_timestamp_us",
+      "expected_output_paths",
+      "execution_status"
+    ],
+    "version": "s2r_execution_manifest_v1"
+  },
+  "final_primary_roster_materialized": false,
+  "fixture": {
+    "arm_specific_resolved_config_hashes_bound": true,
+    "execution_manifest_schema_valid": true,
+    "fixture_session_id": "2021.05.12.22.00.38_veh-35",
+    "independent_components": [
+      "callbacks",
+      "controller",
+      "motion_model",
+      "planner",
+      "random_state",
+      "recorder",
+      "runner",
+      "simulation",
+      "tracker"
+    ],
+    "isolated_process_required_for_execution": true,
+    "planner_compute_calls": 0,
+    "precontext_equal": true,
+    "route_equal": true,
+    "runner_run_calls": 0,
+    "shared_non_namespace_override_contract_equal": true,
+    "simulation_advance_calls": 0,
+    "status": "NO_CROSS_ARM_STATE_LEAKAGE_PROVEN_BY_CONSTRUCTION"
+  },
+  "generation_base_git_sha": "0268d4b2bafb6ec8cc7f76d5a385aaa93f7d90f2",
+  "generator_version": "1.0",
+  "governing_remote_git_sha": "39a4f458f01ece8ab6413d9ab525ee0e02e5426e",
+  "inputs": {
+    "RBR-64_博士研究总体方案_v2.3.md": "85c9cde84e2ea9ef6c1636dc87a8e083dfac6b338ef29a622c87ba0948297fa9",
+    "docs/stageR/s1r_owner_amendment/S1R_Owner_Approval_Record_v1.md": "7ab9995ce7294bd623b70365377a22e786cf02edc69f388546cc4f0b7493ebba",
+    "docs/stageR/s2_preflight/S2_Preflight_Eligibility_Census_v1.json": "e352ce1b93969618088da242e8b04e1e6a9b5b5b59ba0c1fbd44a5e8fd652c5c",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Role_Binding_Manifest_v1.json": "a91e16066e65c5d29eb5032ffc3de29c77dd9704030b629c4eb9b95f1b7ea9c8",
+    "docs/stageR/s2r_role_aware_preflight/S2R_V_Eligibility_Census_v1.csv": "62eda74ff6d0352f7da763f9bcd7ba5c6e3f43604a7dfef1f621d9f1fd7d30ee",
+    "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+  },
+  "main_status": "S2R_ENGINEERING_CLOSURE_READY_FOR_OWNER_REVIEW",
+  "protected_asset": {
+    "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "unchanged": true
+  },
+  "sample_size_changed": false,
+  "schema_version": "S2R_Engineering_Closure_Manifest_v1",
+  "selection": {
+    "outcome_fields_used": false,
+    "ranked_prefix_per_session": 256,
+    "replacement_after_execution_allowed": false,
+    "salt_sha256": "3ffee18d459618ea0642d65172d398a20828bab046dfd4a1aef22b86620122d5",
+    "status": "PROPOSED_DETERMINISTIC_STATIC_EVIDENCE_RULE_NOT_FINAL_PRIMARY_ROSTER"
+  },
+  "zero_run_counters": {
+    "C_EXECUTION": 0,
+    "HLC_ROLLOUT": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN": 0,
+    "SIMULATION": 0,
+    "TSB_ROLLOUT": 0,
+    "V_EXECUTION": 0
+  }
+}
