@@ -1,0 +1,71 @@
+{
+  "artifacts": {
+    "docs/stageR/s2r_role_aware_preflight/S2R_C_Robustness_Capacity_v1.md": "b8b72dfc3aa5bcb36d6d9954b97105a72b790e30e0a74c4591e7122299bf4514",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Claim_A_vs_Claim_B_Capacity_v1.md": "cbf6096744f2ade3062641974a7f45445ccef674c5a23f0c554fd91638b5d21a",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Exposure_Stratum_Capacity_v1.csv": "9d195495233f1fd91eb6a9a6c6460727b7f26bf3048d12cacfe661f7dd7dfcf4",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Full_Arm_Reset_Contract_v1.md": "71d7e6bc3692261f2a34961bef560b8bec9291f002fd24d850385637295ed43f",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Precontext_Identity_Contract_v1.md": "33e7d163ab8954bd295471ea72a375cb2597400e01e66f5c9fd53e1a32cfd095",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Preflight_Report_v1.md": "98b9a9134e501ae3872351bf59b5d8db793851cc2708042d4dcfb9e123be2eb5",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Production_Execution_Binding_v1.md": "1678374ce725909ad0451912a40df6c7fdb35e113744f348b90a425f2f95b7b1",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Role_Binding_Manifest_v1.json": "a91e16066e65c5d29eb5032ffc3de29c77dd9704030b629c4eb9b95f1b7ea9c8",
+    "docs/stageR/s2r_role_aware_preflight/S2R_V_Eligibility_Census_v1.csv": "62eda74ff6d0352f7da763f9bcd7ba5c6e3f43604a7dfef1f621d9f1fd7d30ee"
+  },
+  "audited_git_sha": "9ee519fbcb497570b4f2aab13486d4f3cc49ad57",
+  "branch": "20260825_stageR_new",
+  "capacity": {
+    "CERTIFIED_V_ELIGIBLE": 0,
+    "CLAIM_A_CANDIDATE_CAPACITY": "155_RAW_0_CERTIFIED",
+    "CLAIM_B_V_CAPACITY": "217_RAW_0_CERTIFIED",
+    "E3_EXCLUDED": 31,
+    "E4_EXCLUDED": 0,
+    "PROVENANCE_COMPLETE": "0_FULL_V_CONTRACT",
+    "RAW_V_UPPER_BOUND": 217,
+    "SOURCE_AND_ROLE_PROVENANCE_COMPLETE": 217,
+    "STATIC_APPLICABILITY_AMBIGUOUS": 217,
+    "STATIC_APPLICABILITY_ELIGIBLE": "0_CERTIFIED_EXACT_COUNT_UNKNOWN",
+    "STRICT_E5_C_CAPACITY": "0_CERTIFIED_5_RAW_EXACT_STATIC_UNKNOWN",
+    "TECHNICALLY_BINDABLE": 0,
+    "TOTAL_INDEPENDENT_SESSIONS": 248
+  },
+  "contracts": {
+    "full_arm_reset": "BLOCKED",
+    "precontext_identity": "BLOCKED",
+    "production_execution_binding": "BLOCKED"
+  },
+  "date": "2026-09-18",
+  "final_primary_v_roster_materialized": false,
+  "generator": {
+    "path": "tools/s2r_role_aware_preflight.py",
+    "sha256": "786363606e053800702cb859ffabcc27e6c445c8379af5a287e77318a60c85c6"
+  },
+  "historical_artifacts_modified": false,
+  "inputs": {
+    "docs/stageR/s1r_owner_amendment/S1R_E3_Session_Overrides_v1.csv": "2fe74bacdec08bb18483f5fb92026606bf43fb1edb205b99898c6a1fdb7d8d18",
+    "docs/stageR/s1r_owner_amendment/S1R_Owner_Amendment_Manifest_v1.json": "0d909c0de416ebe1551b6ba1d6fcea7bd00ec6be99d4cacd738f812b7917ea62",
+    "docs/stageR/s1r_protocol_correction/S1R_Session_Exposure_Reclassification_v1.csv": "2e91452885ba0eb7806b730315d3183b92d34994bd50d4ce07aee3f5149a23ca",
+    "docs/stageR/s2_preflight/S2_Preflight_Eligibility_Census_v1.json": "e352ce1b93969618088da242e8b04e1e6a9b5b5b59ba0c1fbd44a5e8fd652c5c",
+    "docs/stageR/s2_preflight/S2_Preflight_Execution_Binding_v1.json": "39a81f2813fe36c7a67330e6015f887a2aa56dd54a070fe5fb28af18d59a42ba",
+    "docs/stageR/s2_preflight/S2_Preflight_Full_Reset_Contract_v1.json": "4c9fba79a91a44ff1fdf4a4f72973988f6a0e25aef4ccab7d27b417fe2583aed",
+    "docs/stageR/s2_preflight/S2_Preflight_Precontext_Identity_Contract_v1.json": "833b3b855e3de43e4affe8c8d51b4eafd435887231d1ff88d7606805dae42e52"
+  },
+  "main_status": "S2R_PREFLIGHT_BLOCKED_ENGINEERING",
+  "owner_approval": {
+    "path": "docs/stageR/s1r_owner_amendment/S1R_Owner_Approval_Record_v1.md",
+    "sha256": "7ab9995ce7294bd623b70365377a22e786cf02edc69f388546cc4f0b7493ebba"
+  },
+  "protected_csv": {
+    "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "unchanged": true
+  },
+  "schema_version": "S2R_Preflight_Manifest_v1",
+  "zero_run_counters": {
+    "HLC_ROLLOUT": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN": 0,
+    "SIMULATION": 0,
+    "TSB_ROLLOUT": 0
+  }
+}
