@@ -1,0 +1,33 @@
+{
+  "all_pairs_not_run": true,
+  "artifacts": {
+    "docs/stageR/b1_tsb_qualification/B1_Stop_Policy_Addendum_v1.md": "435530c605412f4452d7d073553878c6a8b1f16cefb537204323586784123f60",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Arm_Specs_v1.json": "06889559956943f94c5be6031db0b0fb974c81225e3cb04a2bfcf6858b568ee7",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Authorization_v1.json": "b2c9b13819bd7cd11e0fe22e835cc408008e50a1d1eac0f0d75b848d418be35c",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Pair_Bindings_v1.json": "220a310184e750e9779b0df4dd29303deada2786c53f4b3ad01314921e1708b6",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Protocol_v1.md": "10a0370e99374610f8b7b24f5554e884be807bd69d9e8d562036077854d549dc",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Roster_v1.csv": "fdc44c7a126892b9dfcaa0b44fce56eeab42b8649f8c98caf355fc63e40b229b",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Selection_Audit_v1.csv": "e2915684ab03422a0739abdb1c8d2312869c21fc18951f44fa35c4258791da27"
+  },
+  "authorized_source_git_sha": "ff6644d0c81a640160e1162c7fa927718a7647cf",
+  "e1_pairs": 3,
+  "e2_pairs": 17,
+  "e5_pairs": 0,
+  "planned_arms": 40,
+  "planned_pairs": 20,
+  "protected_asset_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "schema_version": "B1_TSB_Qualification_PreRun_Manifest_v1",
+  "scientific_rollout_count": 0,
+  "source_file_hashes": {
+    "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d",
+    "tools/b1_tsb_qualification.py": "26a52024b54fd6e6cd57640c44ae50c2756b9b2a04d54e691aeeb571e312f7e4",
+    "tools/b1_tsb_qualification_executor.py": "13d9f7b048bca24450c5da489e8b8628447f5b8bdf9a4924c7a2720c7258c238",
+    "tools/r1_b2_8_r3_2_post_run_evaluator_dispatcher.py": "82870a4b42c9343eb1ec22b20901566f3787964bfa7464ae48ea67e9b23396e1",
+    "tools/r2_b_controller_aware_planner_v1.py": "0b4020703b629e25ea7fde9e8759ae8fa5d03093c27e86a8dd91aba1ca036c7c",
+    "tools/r2_bj_b0_2_passive_actual_lqr_recorder.py": "07f6ac5baec4ddf13dae53b379cb838e1374a38a1446eea4549fd17ea4c684b9",
+    "tools/s1_protocol_schema.py": "6ba7b96b61be2e4c729c1d21e678e34610ef647f1a43b488b750ff42338f17a0",
+    "tools/s2r_production_executor.py": "204481aca341672ee20b77d2257e87e6c906ab28237cf0620a743e3c7a7fe5bb"
+  },
+  "static_b1_context_incompatible_before_roster_freeze": 77,
+  "status": "B1_PRE_RUN_GATE_READY_FOR_COMMIT"
+}
