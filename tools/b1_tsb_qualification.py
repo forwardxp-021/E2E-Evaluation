@@ -504,6 +504,8 @@ def finalize() -> None:
             if not technical_reason:
                 status = "TECHNICAL_INCOMPLETE"
                 technical_reason = f"{type(exc).__name__}:{exc}"
+                if joint_mechanism != "NOT_RUN":
+                    safety_status = "NOT_AVAILABLE"
         except ValueError as exc:
             status = "MEASUREMENT_INVALID" if "NOT_EVALUABLE" in str(exc) else "TECHNICAL_INCOMPLETE"
             if status == "MEASUREMENT_INVALID":
@@ -583,6 +585,7 @@ def finalize() -> None:
         "joint_mechanism_success": mechanism_success,
         "f_match_pass": fmatch_success,
         "official_safety_pass": safety_success,
+        "official_safety_available_pairs": sum(row["safety_status"] in {"PASS", "SCIENTIFIC_FAIL"} for row in results),
         "low_speed_endstop_count": low_speed_count,
         "joint_scientific_qualification": joint_success,
         "joint_scientific_wilson_95_interval": [round(interval[0], 6), round(interval[1], 6)],
@@ -618,9 +621,9 @@ The frozen B1 roster contained {TARGET_PAIRS} independent SESSION pairs and {MAX
 - Treatment two-stage success: `{treatment_success}/{TARGET_PAIRS}`
 - Joint mechanism success: `{mechanism_success}/{TARGET_PAIRS}`
 - F_match pass: `{fmatch_success}/{TARGET_PAIRS}`
-- Official safety pass: `{safety_success}/{TARGET_PAIRS}` verified; required official safety artifacts were unavailable for every executed complete pair
+- Official safety pass: `{safety_success}/{summary['official_safety_available_pairs']}` evaluable pairs; required official safety artifacts were unavailable for all 17 trace-complete pairs, and 3 pairs were not fully run
 - LOW_SPEED_ENDSTOP: `{low_speed_count}`
-- Joint scientific qualification: `{joint_success}/{TARGET_PAIRS}`, descriptive Wilson 95% interval `[{interval[0]:.6f}, {interval[1]:.6f}]`
+- Full-contract PASS count: `{joint_success}/{TARGET_PAIRS}`; descriptive full-denominator Wilson bound `[{interval[0]:.6f}, {interval[1]:.6f}]`. Because scientifically evaluable pairs equal {evaluable}, this is not an estimable scientific qualification rate.
 - Frozen all-20 success rule satisfied: `{str(joint_success == TARGET_PAIRS).upper()}`
 
 Failure ledger:
@@ -669,7 +672,9 @@ B1 exposure was E2={exposure_counts['E2_BENCHMARK_ENGINEERING']}, E1={exposure_c
         "replacement_performed": False,
         "offline_finalization_only": True,
     })
-    result_artifacts = [pair_results_path, summary_path, report_path, stop_record, *sorted(archive.glob("*.json"))]
+    archived_budget_ledger = OUT / "B1_Scientific_Arm_Budget_Ledger_v1.json"
+    shutil.copyfile(RUN_ROOT / "B1_Scientific_Arm_Budget_Ledger_v1.json", archived_budget_ledger)
+    result_artifacts = [pair_results_path, summary_path, report_path, stop_record, archived_budget_ledger, *sorted(archive.glob("*.json"))]
     write_json(OUT / "B1_TSB_Qualification_Manifest_v1.json", {
         "schema_version": "B1_TSB_Qualification_Manifest_v1",
         "main_status": main_status,

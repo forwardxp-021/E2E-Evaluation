@@ -1,0 +1,16 @@
+{
+  "arm": "BASELINE",
+  "execution_status": "NOT_RUN",
+  "exposure_class": "E1_UNRELATED_HISTORICAL_USE",
+  "log_id": "2021.08.30.13.08.03_veh-08_00207_00494",
+  "pair_id": "B1-TSB-18",
+  "precontext_id": "0d07a7ed6268b438f18f7434f51544a5abe643607a020846ae1e7fa94bffd28d",
+  "reason": "NOT_RUN_AFTER_INFRASTRUCTURE_STOP",
+  "role": "B",
+  "route_id": "a8517d980da819435307112670f9e3d613379d82a05b56617fd0e8d5b9bf0f71",
+  "run_id": "B1-TSB-18-BASELINE",
+  "scenario_token": "3c4050eab6365ec7",
+  "schema_version": "b1_tsb_unstarted_arm_record_v1",
+  "session_id": "2021.08.30.13.08.03_veh-08",
+  "stage": "B1_FROZEN_TSB_QUALIFICATION"
+}

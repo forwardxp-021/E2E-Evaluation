@@ -1,0 +1,39 @@
+{
+  "attempted_scientific_arms": 35,
+  "baseline_one_phase_success": 17,
+  "executed_pairs": 18,
+  "f_match_pass": 17,
+  "full_contract_technical_complete_arms": 0,
+  "infrastructure_findings": {
+    "missing_official_safety_metric_arms": 34,
+    "not_run_after_stop_arms": 5,
+    "runner_exception_arms": 1,
+    "runner_exception_reason": "ValueError: NATIVE_ROUTE_FAIL: no native outgoing successor into 19339"
+  },
+  "joint_mechanism_success": 17,
+  "joint_scientific_qualification": 0,
+  "joint_scientific_wilson_95_interval": [
+    0.0,
+    0.161125
+  ],
+  "low_order_nuisance_eliminated": "NOT_ESTABLISHED",
+  "low_speed_endstop_count": 0,
+  "main_status": "B1_TSB_BENCHMARK_QUALIFICATION_INCOMPLETE_INFRASTRUCTURE",
+  "official_safety_available_pairs": 0,
+  "official_safety_pass": 0,
+  "planned_session_pairs": 20,
+  "primary_evaluation_authorized": false,
+  "rbr_h_bdd_inspected": false,
+  "rbr_training_authorized": false,
+  "runner_and_recorder_complete_arms": 34,
+  "schema_version": "B1_TSB_Qualification_Summary_v1",
+  "scientifically_evaluable_pairs": 0,
+  "status_counts": {
+    "TECHNICAL_INCOMPLETE": 20
+  },
+  "success_rule": "ALL_20_PAIRS_PASS_FROZEN_JOINT_QUALIFICATION",
+  "success_rule_satisfied": false,
+  "technical_complete_pairs": 0,
+  "treatment_two_stage_success": 17,
+  "tsb_clean_residual_task": "NOT_ESTABLISHED"
+}

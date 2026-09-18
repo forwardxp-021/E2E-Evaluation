@@ -1,0 +1,14 @@
+{
+  "attempted_scientific_arms": 35,
+  "execution_log_sha256": "b91d7cfb530f83306ae6f477c2d9775a7bad31502d3a7e955e71ffd68e1393f5",
+  "failing_run_id": "B1-TSB-18-TREATMENT",
+  "full_contract_technical_complete_arms": 0,
+  "not_run_arms": 5,
+  "offline_finalization_only": true,
+  "reason": "ValueError: NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+  "replacement_performed": false,
+  "retry_performed": false,
+  "runner_and_recorder_complete_arms": 34,
+  "schema_version": "B1_Infrastructure_Stop_Record_v1",
+  "status": "INFRASTRUCTURE_STOP_NO_RETRY"
+}

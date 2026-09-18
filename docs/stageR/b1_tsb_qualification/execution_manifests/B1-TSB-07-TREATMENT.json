@@ -1,0 +1,61 @@
+{
+  "analyzer_sha": "82870a4b42c9343eb1ec22b20901566f3787964bfa7464ae48ea67e9b23396e1",
+  "arm": "TREATMENT",
+  "arm_instance_id": "a93c8b53ed62ca4dc3250d41e5f77ae65e31f1ddd345815e8717c92effca301f",
+  "authorized_source_git_sha": "ff6644d0c81a640160e1162c7fa927718a7647cf",
+  "callback_instance_id": "13735714240",
+  "config_hash": "09f5c0b787b77625e1fe0f3aeb29b8899d008111f4bdaab5c89f3eedfc69e229",
+  "controller_instance_id": "13699098464",
+  "execution_status": "TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS",
+  "executor_sha": "13d9f7b048bca24450c5da489e8b8628447f5b8bdf9a4924c7a2720c7258c238",
+  "expected_output_paths": {
+    "controller_telemetry": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT/telemetry/actual_lqr_controller_telemetry.jsonl",
+    "manifest": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT/execution_manifest.json",
+    "planner_telemetry": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT/telemetry/planner_transfer.jsonl",
+    "raw": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT/raw",
+    "root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT",
+    "trace": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT/trace/realized_current_ego.jsonl"
+  },
+  "exposure_class": "E2_BENCHMARK_ENGINEERING",
+  "inherited_s2r_schema_version": "s2r_execution_manifest_v1",
+  "log_id": "2021.09.03.17.02.10_veh-42_01804_02024",
+  "motion_model_instance_id": "13699098896",
+  "pair_id": "B1-TSB-07",
+  "planner_instance_id": "4345201328",
+  "planner_sha": "0b4020703b629e25ea7fde9e8759ae8fa5d03093c27e86a8dd91aba1ca036c7c",
+  "precontext_id": "907fb1b06023c94b2f41c242fc78b891569ff2bb537731ca46b2ae80ab1e7c65",
+  "random_state_declaration": {
+    "fresh_process_per_arm": true,
+    "seed": 2026091801
+  },
+  "random_state_instance_id": "13746339344",
+  "recorder_instance_id": "13735794912",
+  "role": "B",
+  "route_id": "5d31b6edae57c5edbb7d58787fdf6a5746bdb0684c93b3b5dcc9b18e21bd27c9",
+  "run_id": "B1-TSB-07-TREATMENT",
+  "runner_instance_id": "13699076352",
+  "runtime_fingerprint": {
+    "executable": "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+    "nuplan_devkit_root": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python_implementation": "CPython",
+    "python_version": "3.9.19",
+    "seed": 2026091801,
+    "thread_limits": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    }
+  },
+  "scenario_token": "0b7c6c51de7e564b",
+  "schema_sha": "6ba7b96b61be2e4c729c1d21e678e34610ef647f1a43b488b750ff42338f17a0",
+  "schema_version": "b1_tsb_arm_execution_manifest_v1",
+  "session_id": "2021.09.03.17.02.10_veh-42",
+  "simulation_instance_id": "13700214736",
+  "stage": "B1_FROZEN_TSB_QUALIFICATION",
+  "start_timestamp_us": 1630690577949827,
+  "tracker_instance_id": "13699098944",
+  "tsb_config_sha": "1833b245e2b2f74bc19aad7013f6339f554d9d700cc3077151ab0474169c716d"
+}

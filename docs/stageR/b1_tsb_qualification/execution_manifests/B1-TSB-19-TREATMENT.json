@@ -1,0 +1,16 @@
+{
+  "arm": "TREATMENT",
+  "execution_status": "NOT_RUN",
+  "exposure_class": "E1_UNRELATED_HISTORICAL_USE",
+  "log_id": "2021.08.17.18.54.02_veh-45_02202_02416",
+  "pair_id": "B1-TSB-19",
+  "precontext_id": "0c102d272d4a3614186584518ea402d535b0c05124fa2ad1fcb14ab9703d757d",
+  "reason": "NOT_RUN_AFTER_INFRASTRUCTURE_STOP",
+  "role": "B",
+  "route_id": "c08a3479d63a19b46b18b34d919ccdbf09b5965e1204dcd3643b36c40c0cee6c",
+  "run_id": "B1-TSB-19-TREATMENT",
+  "scenario_token": "c531088f238856b5",
+  "schema_version": "b1_tsb_unstarted_arm_record_v1",
+  "session_id": "2021.08.17.18.54.02_veh-45",
+  "stage": "B1_FROZEN_TSB_QUALIFICATION"
+}
