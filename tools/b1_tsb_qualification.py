@@ -407,8 +407,11 @@ def finalize() -> None:
     from tools.r1_closed_loop_benchmark_v2_1 import (
         calculate_tsb_option_a_v2_timestamp_aware,
         exact_realized_window_v1_1,
+        prospective_primary_f_match,
         trajectory_arrays_timestamp_aware,
+        trajectory_descriptors_timestamp_aware,
     )
+    from tools.r1_context_mechanism_core import qualify_tsb_pair
 
     specs = read_json(SPECS)
     spec_by_id = {row["run_id"]: row for row in specs["arms"]}
@@ -467,6 +470,14 @@ def finalize() -> None:
                 base_phase, treatment_phase = bm.get("brake_phase_count"), tm.get("brake_phase_count")
                 release, second_peak = tm.get("interstage_release_fraction"), tm.get("second_brake_peak_ratio")
                 low_speed = bm["status"] == "LOW_SPEED_ENDSTOP" or tm["status"] == "LOW_SPEED_ENDSTOP"
+                frozen_mechanism = qualify_tsb_pair(bm, tm)
+                joint_mechanism = "PASS" if frozen_mechanism["pass"] else "SCIENTIFIC_FAIL"
+                frozen_fmatch = prospective_primary_f_match(
+                    trajectory_descriptors_timestamp_aware(baseline_states),
+                    trajectory_descriptors_timestamp_aware(treatment_states),
+                    "R-TSB",
+                )
+                fmatch_status = frozen_fmatch["status"]
                 evaluation = evaluate_frozen_pair(
                     pair_binding=bindings[pair_id], baseline_run_dir=baseline_root, treatment_run_dir=treatment_root
                 )
@@ -499,6 +510,8 @@ def finalize() -> None:
                 scientific_reason = f"ValueError:{exc}"
             else:
                 technical_reason = f"ValueError:{exc}"
+                if joint_mechanism != "NOT_RUN":
+                    safety_status = "NOT_AVAILABLE"
         results.append({
             "pair_id": pair_id,
             "session_id": row["session_id"],
@@ -529,7 +542,7 @@ def finalize() -> None:
     pair_results_path = OUT / "B1_TSB_Qualification_Pair_Results_v1.csv"
     write_csv(pair_results_path, results)
     counts = Counter(row["joint_scientific_status"] for row in results)
-    technical_complete = sum(row["baseline_arm_status"] == row["treatment_arm_status"] == "TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS" for row in results)
+    technical_complete = sum(row["joint_scientific_status"] in {"MEASUREMENT_INVALID", "SCIENTIFIC_FAIL", "PASS"} for row in results)
     evaluable = sum(row["joint_scientific_status"] in {"PASS", "SCIENTIFIC_FAIL"} for row in results)
     baseline_success = sum(row["baseline_measurement_valid"] == "true" and str(row["baseline_phase_count"]) == "1" for row in results)
     treatment_success = sum(row["treatment_measurement_valid"] == "true" and str(row["treatment_phase_count"]) == "2" and float(row["release_fraction"] or -math.inf) >= 0.15 and float(row["second_peak_ratio"] or -math.inf) >= 0.50 for row in results)
@@ -545,12 +558,23 @@ def finalize() -> None:
         main_status = "B1_TSB_BENCHMARK_QUALIFICATION_PASS"
     else:
         main_status = "B1_TSB_BENCHMARK_QUALIFICATION_FAIL"
+    def arm_has_full_official_artifacts(run_id: str) -> bool:
+        root = RUN_ROOT / run_id
+        required = (
+            root / "execution_manifest.json",
+            root / "trace/realized_current_ego.jsonl",
+            root / "raw/metrics/no_ego_at_fault_collisions.parquet",
+            root / "raw/metrics/drivable_area_compliance.parquet",
+        )
+        return arm_budget_status.get(run_id) == "TECHNICAL_COMPLETE" and all(path.is_file() for path in required)
+
     summary = {
         "schema_version": "B1_TSB_Qualification_Summary_v1",
         "main_status": main_status,
         "planned_session_pairs": TARGET_PAIRS,
         "attempted_scientific_arms": sum(value != "NOT_RUN" for value in arm_budget_status.values()),
-        "technical_complete_arms": sum(value == "TECHNICAL_COMPLETE" for value in arm_budget_status.values()),
+        "runner_and_recorder_complete_arms": sum(value == "TECHNICAL_COMPLETE" for value in arm_budget_status.values()),
+        "full_contract_technical_complete_arms": sum(arm_has_full_official_artifacts(run_id) for run_id in arm_budget_status),
         "executed_pairs": sum(row["baseline_arm_status"] != "NOT_RUN" or row["treatment_arm_status"] != "NOT_RUN" for row in results),
         "technical_complete_pairs": technical_complete,
         "scientifically_evaluable_pairs": evaluable,
@@ -570,6 +594,15 @@ def finalize() -> None:
         "rbr_h_bdd_inspected": False,
         "rbr_training_authorized": False,
         "primary_evaluation_authorized": False,
+        "infrastructure_findings": {
+            "missing_official_safety_metric_arms": sum(
+                value == "TECHNICAL_COMPLETE" and not arm_has_full_official_artifacts(run_id)
+                for run_id, value in arm_budget_status.items()
+            ),
+            "runner_exception_arms": sum(value == "TECHNICAL_INCOMPLETE" for value in arm_budget_status.values()),
+            "not_run_after_stop_arms": sum(value == "NOT_RUN" for value in arm_budget_status.values()),
+            "runner_exception_reason": infrastructure_stop_reason,
+        },
     }
     summary_path = OUT / "B1_TSB_Qualification_Summary_v1.json"
     write_json(summary_path, summary)
@@ -579,13 +612,13 @@ def finalize() -> None:
 
 Main status: `{main_status}`.
 
-The frozen B1 roster contained {TARGET_PAIRS} independent SESSION pairs and {MAX_ARMS} authorized arms. Attempted arms: {summary['attempted_scientific_arms']}; technically complete arms: {summary['technical_complete_arms']}. Executed pairs: {summary['executed_pairs']}; technical complete pairs: {technical_complete}; scientifically evaluable pairs: {evaluable}.
+The frozen B1 roster contained {TARGET_PAIRS} independent SESSION pairs and {MAX_ARMS} authorized arms. Attempted arms: {summary['attempted_scientific_arms']}; runner/recorder complete arms: {summary['runner_and_recorder_complete_arms']}; full-contract technical complete arms: {summary['full_contract_technical_complete_arms']}. Executed pairs: {summary['executed_pairs']}; full-contract technical complete pairs: {technical_complete}; scientifically evaluable pairs: {evaluable}.
 
 - Baseline one-phase success: `{baseline_success}/{TARGET_PAIRS}`
 - Treatment two-stage success: `{treatment_success}/{TARGET_PAIRS}`
 - Joint mechanism success: `{mechanism_success}/{TARGET_PAIRS}`
 - F_match pass: `{fmatch_success}/{TARGET_PAIRS}`
-- Official safety pass: `{safety_success}/{TARGET_PAIRS}`
+- Official safety pass: `{safety_success}/{TARGET_PAIRS}` verified; required official safety artifacts were unavailable for every executed complete pair
 - LOW_SPEED_ENDSTOP: `{low_speed_count}`
 - Joint scientific qualification: `{joint_success}/{TARGET_PAIRS}`, descriptive Wilson 95% interval `[{interval[0]:.6f}, {interval[1]:.6f}]`
 - Frozen all-20 success rule satisfied: `{str(joint_success == TARGET_PAIRS).upper()}`
@@ -628,7 +661,8 @@ B1 exposure was E2={exposure_counts['E2_BENCHMARK_ENGINEERING']}, E1={exposure_c
         "failing_run_id": next((run_id for run_id, value in arm_budget_status.items() if value == "TECHNICAL_INCOMPLETE"), None),
         "reason": infrastructure_stop_reason,
         "attempted_scientific_arms": summary["attempted_scientific_arms"],
-        "technical_complete_arms": summary["technical_complete_arms"],
+        "runner_and_recorder_complete_arms": summary["runner_and_recorder_complete_arms"],
+        "full_contract_technical_complete_arms": summary["full_contract_technical_complete_arms"],
         "not_run_arms": sum(value == "NOT_RUN" for value in arm_budget_status.values()),
         "execution_log_sha256": sha(execution_log),
         "retry_performed": False,
