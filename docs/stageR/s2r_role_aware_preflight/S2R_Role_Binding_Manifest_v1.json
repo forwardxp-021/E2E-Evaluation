@@ -1,0 +1,48 @@
+{
+  "S1R_OWNER_AMENDMENT": "APPROVED",
+  "S1_PROTOCOL": "AMENDED_BY_S1R_OWNER_AMENDMENT_V1",
+  "authorization": {
+    "c_execution": false,
+    "primary_evaluation": false,
+    "rbr_training": false,
+    "simulation": false,
+    "v_execution": false
+  },
+  "claim_a_excludes_E2": true,
+  "exposure_counts": {
+    "E0_METADATA_ONLY": 1,
+    "E1_UNRELATED_HISTORICAL_USE": 149,
+    "E2_BENCHMARK_ENGINEERING": 62,
+    "E3_PRIMARY_METHOD_DEVELOPMENT": 31,
+    "E4_PRIMARY_OUTCOME_DRIVEN_ADAPTATION": 0,
+    "E5_UNTOUCHED_CONFIRMATORY": 5,
+    "UNKNOWN": 0
+  },
+  "final_primary_v_roster_materialized": false,
+  "owner_approval": {
+    "path": "docs/stageR/s1r_owner_amendment/S1R_Owner_Approval_Record_v1.md",
+    "sha256": "7ab9995ce7294bd623b70365377a22e786cf02edc69f388546cc4f0b7493ebba"
+  },
+  "primary_freeze_point_reached": false,
+  "roles": {
+    "B": "BENCHMARK_AND_ENGINEERING_DEVELOPMENT",
+    "C": "CONFIRMATORY_ROBUSTNESS",
+    "U": "REPRESENTATION_TRAINING_AND_SELECTION_ONLY",
+    "V": "FROZEN_CONTROLLED_PRIMARY_EVALUATION"
+  },
+  "sample_size_refrozen": false,
+  "schema_version": "S2R_Role_Binding_Manifest_v1",
+  "status": "APPROVED_ROLE_MODEL_ACTIVE_PREFLIGHT_ONLY",
+  "v_identity_metadata_may_influence_u_selection": false,
+  "v_policy_excludes": [
+    "E3_PRIMARY_METHOD_DEVELOPMENT",
+    "E4_PRIMARY_OUTCOME_DRIVEN_ADAPTATION"
+  ],
+  "v_policy_includes": [
+    "E0_METADATA_ONLY",
+    "E1_UNRELATED_HISTORICAL_USE",
+    "E2_BENCHMARK_ENGINEERING",
+    "E5_UNTOUCHED_CONFIRMATORY"
+  ],
+  "v_scientific_outcome_may_influence_u_selection": false
+}
