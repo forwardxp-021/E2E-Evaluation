@@ -39,3 +39,9 @@ def test_budget_claim_is_atomic_and_no_retry(tmp_path: Path):
 def test_b1_status_vocabulary_is_closed():
     allowed = {"NOT_RUN", "TECHNICAL_INCOMPLETE", "MEASUREMENT_INVALID", "SCIENTIFIC_FAIL", "PASS"}
     assert allowed == {"NOT_RUN", "TECHNICAL_INCOMPLETE", "MEASUREMENT_INVALID", "SCIENTIFIC_FAIL", "PASS"}
+
+
+def test_selection_salt_is_frozen():
+    assert b1.SALT == "B1_FROZEN_TSB_QUALIFICATION_V1"
+    assert b1.TARGET_PAIRS == 20
+    assert b1.MAX_ARMS == 40

@@ -28,6 +28,7 @@ SPECS = OUT / "B1_TSB_Qualification_Arm_Specs_v1.json"
 BINDINGS = OUT / "B1_TSB_Qualification_Pair_Bindings_v1.json"
 AUTH = OUT / "B1_TSB_Qualification_Authorization_v1.json"
 PRE_MANIFEST = OUT / "B1_TSB_Qualification_PreRun_Manifest_v1.json"
+SELECTION_AUDIT = OUT / "B1_TSB_Qualification_Selection_Audit_v1.csv"
 PARAMETERS = ROOT / "docs/stageR/r2/r2_b_calibration_rounds/r2_b_tsb_round_0_parameters_v1.0.json"
 EXECUTOR = ROOT / "tools/b1_tsb_qualification_executor.py"
 ANALYZER = ROOT / "tools/r1_b2_8_r3_2_post_run_evaluator_dispatcher.py"
@@ -179,16 +180,41 @@ def prepare(authorized_source_git_sha: str) -> None:
         selection_hash = hashlib.sha256(f"{SALT}|{session_id}|{winner['scenario_token']}".encode()).hexdigest()
         eligible_e2.append((selection_hash, session_id, winner))
     eligible_e2.sort(key=lambda item: (item[0], item[1], item[2]["scenario_token"]))
-    chosen = eligible_e2[:TARGET_PAIRS]
-    if len(chosen) != TARGET_PAIRS or len({item[1] for item in chosen}) != TARGET_PAIRS:
-        raise RuntimeError("B1_UNIQUE_E2_SESSION_CAPACITY_BELOW_20")
-
     roster_rows: list[dict[str, Any]] = []
     arms: list[dict[str, Any]] = []
     bindings: list[dict[str, Any]] = []
     schedule: list[dict[str, Any]] = []
+    selection_audit: list[dict[str, Any]] = []
     map_cache: dict[str, Any] = {}
-    for pair_index, (selection_hash, session_id, winner) in enumerate(chosen, 1):
+    chosen: list[tuple[str, str, Mapping[str, Any], Mapping[str, Any]]] = []
+    for candidate_rank, (selection_hash, session_id, winner) in enumerate(eligible_e2, 1):
+        try:
+            binding = _pair_binding(winner, map_cache)
+        except Exception as exc:
+            selection_audit.append({
+                "candidate_rank": candidate_rank,
+                "selection_hash": selection_hash,
+                "session_id": session_id,
+                "scenario_token": winner["scenario_token"],
+                "decision": "STATIC_B1_CONTEXT_INCOMPATIBLE",
+                "reason": f"{type(exc).__name__}:{exc}",
+            })
+            continue
+        selection_audit.append({
+            "candidate_rank": candidate_rank,
+            "selection_hash": selection_hash,
+            "session_id": session_id,
+            "scenario_token": winner["scenario_token"],
+            "decision": "SELECTED",
+            "reason": "",
+        })
+        chosen.append((selection_hash, session_id, winner, binding))
+        if len(chosen) == TARGET_PAIRS:
+            break
+    if len(chosen) != TARGET_PAIRS or len({item[1] for item in chosen}) != TARGET_PAIRS:
+        raise RuntimeError("B1_CONTEXT_COMPATIBLE_UNIQUE_E2_SESSION_CAPACITY_BELOW_20")
+
+    for pair_index, (selection_hash, session_id, winner, frozen_binding) in enumerate(chosen, 1):
         pair_id = f"B1-TSB-{pair_index:02d}"
         baseline_id, treatment_id = f"{pair_id}-BASELINE", f"{pair_id}-TREATMENT"
         order = ["BASELINE", "TREATMENT"] if int(hashlib.sha256(pair_id.encode()).hexdigest(), 16) % 2 == 0 else ["TREATMENT", "BASELINE"]
@@ -213,7 +239,7 @@ def prepare(authorized_source_git_sha: str) -> None:
             {**common, "run_id": baseline_id, "arm": "BASELINE"},
             {**common, "run_id": treatment_id, "arm": "TREATMENT"},
         ])
-        binding = dict(_pair_binding(winner, map_cache))
+        binding = dict(frozen_binding)
         binding.update({"pair_id": pair_id, "baseline_run_id": baseline_id, "treatment_run_id": treatment_id})
         bindings.append(binding)
         roster_rows.append({
@@ -237,6 +263,7 @@ def prepare(authorized_source_git_sha: str) -> None:
 
     OUT.mkdir(parents=True, exist_ok=True)
     write_csv(ROSTER, roster_rows)
+    write_csv(SELECTION_AUDIT, selection_audit)
     write_json(SPECS, {"schema_version": "b1_tsb_arm_specs_v1", "arms": arms, "schedule": schedule})
     write_json(BINDINGS, {"schema_version": "b1_tsb_pair_bindings_v1", "pairs": bindings})
     source_hashes = {relative: sha(ROOT / relative) for relative in SOURCE_FILES}
@@ -252,6 +279,7 @@ def prepare(authorized_source_git_sha: str) -> None:
         "roster_sha256": sha(ROSTER),
         "arm_specs_sha256": sha(SPECS),
         "pair_bindings_sha256": sha(BINDINGS),
+        "selection_audit_sha256": sha(SELECTION_AUDIT),
         "executor_sha256": sha(EXECUTOR),
         "tsb_config_sha256": sha(PARAMETERS),
         "analyzer_sha256": sha(ANALYZER),
@@ -277,6 +305,7 @@ def prepare(authorized_source_git_sha: str) -> None:
         ROSTER.name,
         SPECS.name,
         BINDINGS.name,
+        SELECTION_AUDIT.name,
         AUTH.name,
     ]
     write_json(PRE_MANIFEST, {
@@ -292,6 +321,7 @@ def prepare(authorized_source_git_sha: str) -> None:
         "e2_pairs": TARGET_PAIRS,
         "e1_pairs": 0,
         "e5_pairs": 0,
+        "static_b1_context_incompatible_before_roster_freeze": sum(row["decision"] != "SELECTED" for row in selection_audit),
         "scientific_rollout_count": 0,
     })
     print(json.dumps({"status": "B1_PRE_RUN_GATE_READY_FOR_COMMIT", "pairs": 20, "arms": 40, "roster_sha256": sha(ROSTER)}, indent=2))
