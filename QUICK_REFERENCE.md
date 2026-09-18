@@ -11269,3 +11269,33 @@ metadata-only census 后、任何 Q 运行或结果暴露前由 Owner 选择。H
 - B1 PASS 要求 20/20 同时通过技术完整性、测量、机制、F_match 和官方安全。
 - 科学失败继续完成冻结 roster；基础设施失败立即停止。
 - 受保护资产 SHA256 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
+
+## B1-IR 基础设施修复与离线指标恢复（零仿真）
+
+### 1. 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_native_route_precheck.py \
+  --specs docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Arm_Specs_v1.json \
+  --output docs/stageR/b1_infrastructure_remediation/B1_IR_Native_Route_Precheck_v1.json
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_offline_metric_finalize.py \
+  --recover-b1 outputs/stageR/b1_tsb_qualification_v1 \
+  --audit-json docs/stageR/b1_infrastructure_remediation/B1_IR_Offline_Finalize_Audit_v1.json
+
+PYTHONPATH=$PWD:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_b1_infrastructure_remediation.py tests/test_b1_tsb_qualification.py
+```
+
+### 2. 期望行为
+
+第一条命令只加载冻结场景元数据和地图，以生产函数 `build_native_route_reference_v1_1` 穷尽遍历 route successor；不推进 simulator、不执行 planner/controller，也不认领 arm 预算。第二条命令只将既有 34 个 `.pickle.temp` 交给官方 nuPlan `MetricFileCallback`，生成 16 类 parquet 并保留原 temp 输入；不会重跑轨迹。B1-18 和其他同拓扑问题会在未来 runner entry 前停止。
+
+### 3. 通过标准
+
+- 34/34 已完成 arm 均有 `no_ego_at_fault_collisions.parquet` 和 `drivable_area_compliance.parquet`，输入与输出 SHA256 写入离线审计。
+- 官方 callback 的在线 fixture 与离线封装输出逐字节一致；重复离线 finalize 逐字节一致。
+- 20 pair/40 arm 均有 route 结果，B1-18 在零运行预检中返回 `INCOMPATIBLE` 和缺失 successor `19339`。
+- 生命周期严格为 runner、recorder、官方指标、serializer、manifest、hash validation；科学失败不可通过技术 retry 补救。
+- 本轮 `SIMULATION=0`、`RUNNER_RUN=0`，B1 resume、RBR training 与 Primary evaluation 继续未授权。

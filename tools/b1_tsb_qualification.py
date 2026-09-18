@@ -452,7 +452,7 @@ def finalize() -> None:
             treatment_manifest = read_json(treatment_root / "execution_manifest.json")
             baseline_status = base_manifest["execution_status"]
             treatment_status = treatment_manifest["execution_status"]
-            if baseline_status != "TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS" or treatment_status != "TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS":
+            if baseline_status not in {"TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS", "ARM_COMPLETE"} or treatment_status not in {"TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS", "ARM_COMPLETE"}:
                 raise RuntimeError("ARM_TECHNICAL_COMPLETENESS_FAILED")
             precontext_match = base_manifest["precontext_id"] == treatment_manifest["precontext_id"]
             route_match = base_manifest["route_id"] == treatment_manifest["route_id"]

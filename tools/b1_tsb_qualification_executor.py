@@ -29,6 +29,8 @@ from tools.s2r_production_executor import (  # noqa: E402
     sha256_file,
     write_manifest,
 )
+from tools.b1_native_route_precheck import precheck_with_production_builder  # noqa: E402
+from tools.b1_offline_metric_finalize import EXPECTED_OFFICIAL_METRICS  # noqa: E402
 
 SCHEMA_VERSION = "b1_tsb_arm_execution_manifest_v1"
 ALLOWED_STAGE = "B1_FROZEN_TSB_QUALIFICATION"
@@ -36,6 +38,107 @@ ALLOWED_STAGE = "B1_FROZEN_TSB_QUALIFICATION"
 
 class B1ExecutionError(RuntimeError):
     pass
+
+
+LIFECYCLE_ORDER = (
+    "RUNNER_COMPLETE",
+    "RECORDER_COMPLETE",
+    "OFFICIAL_METRICS_COMPLETE",
+    "SERIALIZER_COMPLETE",
+    "MANIFEST_COMPLETE",
+    "ARTIFACT_HASHES_VALIDATED",
+)
+RETRY_CONTRACT = {
+    "maximum_total_attempts_per_arm": 2,
+    "authority": "TECHNICAL_RETRY_ALLOWED_IF_OWNER_AUTHORIZED",
+    "eligible_failure_classes": [
+        "INFRASTRUCTURE_FAILURE",
+        "CALLBACK_FINALIZATION_FAILURE",
+        "SERIALIZER_FAILURE",
+        "ARTIFACT_PERSISTENCE_FAILURE",
+        "NATIVE_ROUTE_INFRASTRUCTURE_FAILURE",
+    ],
+    "ineligible_failure_classes": [
+        "SCIENTIFIC_FAIL",
+        "MEASUREMENT_INVALID_REALIZED_BEHAVIOR",
+        "LOW_SPEED_ENDSTOP",
+        "MECHANISM_FAIL",
+        "F_MATCH_FAIL",
+        "OFFICIAL_SAFETY_FAIL",
+    ],
+    "same_identity_required": True,
+    "replacement_forbidden": True,
+    "denominator_rule": "ORIGINAL_PAIR_COUNTS_ONCE;ALL_ATTEMPTS_RETAINED",
+    "authoritative_result_rule": "LATEST_OWNER_AUTHORIZED_TECHNICALLY_COMPLETE_ATTEMPT;PRIOR_ATTEMPTS_RETAINED",
+}
+
+
+def validate_retry_request(attempt_number: int, failure_class: str, owner_authorized: bool) -> None:
+    """Validate a prospective retry without granting authority."""
+    if not owner_authorized:
+        raise B1ExecutionError("B1_TECHNICAL_RETRY_OWNER_AUTHORIZATION_REQUIRED")
+    if attempt_number != 2:
+        raise B1ExecutionError("B1_TECHNICAL_RETRY_MAXIMUM_TOTAL_ATTEMPTS_IS_2")
+    if failure_class not in RETRY_CONTRACT["eligible_failure_classes"]:
+        raise B1ExecutionError(f"B1_TECHNICAL_RETRY_FAILURE_CLASS_INELIGIBLE:{failure_class}")
+
+
+def advance_lifecycle(completed: tuple[str, ...], next_state: str) -> tuple[str, ...]:
+    """Advance the fail-closed post-run lifecycle by exactly one state."""
+    expected = LIFECYCLE_ORDER[len(completed)] if len(completed) < len(LIFECYCLE_ORDER) else None
+    if next_state != expected:
+        raise B1ExecutionError(f"B1_LIFECYCLE_ORDER_VIOLATION:expected={expected}:received={next_state}")
+    return (*completed, next_state)
+
+
+def official_metric_finalizer_bound(arm: Any) -> bool:
+    """Require the official nuPlan MetricFileCallback in the main callback chain."""
+    callbacks = getattr(getattr(arm, "common_builder", None), "multi_main_callback", None)
+    members = getattr(callbacks, "_main_callbacks", [])
+    return any(
+        callback.__class__.__module__ == "nuplan.planning.simulation.main_callback.metric_file_callback"
+        and callback.__class__.__name__ == "MetricFileCallback"
+        for callback in members
+    )
+
+
+def validate_pre_run_lifecycle(arm: Any, spec: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Run all zero-rollout gates that must dominate budget claim and runner entry."""
+    if not official_metric_finalizer_bound(arm):
+        raise B1ExecutionError("B1_OFFICIAL_METRIC_FINALIZER_NOT_BOUND")
+    scenario = getattr(getattr(arm, "simulation", None), "_scenario", None)
+    map_api = getattr(scenario, "map_api", None)
+    if map_api is None:
+        raise B1ExecutionError("B1_NATIVE_ROUTE_MAP_API_NOT_BOUND")
+    route = precheck_with_production_builder(spec, map_api)
+    if route["route_precheck_status"] != "COMPATIBLE":
+        raise B1ExecutionError(f"B1_ROUTE_PRECHECK_NOT_COMPATIBLE:{route['failure_code']}")
+    return route
+
+
+def validate_and_hash_artifacts(arm: Any) -> Mapping[str, str]:
+    """Require official outputs and hash the immutable post-run artifact set."""
+    required = [
+        arm.run_root / "trace/realized_current_ego.jsonl",
+        arm.run_root / "telemetry/planner_transfer.jsonl",
+        arm.run_root / "telemetry/actual_lqr_controller_telemetry.jsonl",
+        arm.common_builder.output_dir / arm.cfg.runner_report_file,
+        *sorted((arm.run_root / "raw/simulation_log").rglob("*.msgpack.xz")),
+    ]
+    metric_dir = arm.run_root / "raw/metrics"
+    required.extend(metric_dir / f"{name}.parquet" for name in sorted(EXPECTED_OFFICIAL_METRICS))
+    missing = [str(path) for path in required if not path.is_file()]
+    if missing:
+        raise B1ExecutionError(f"B1_REQUIRED_POST_RUN_ARTIFACT_MISSING:{missing}")
+    return {str(path.relative_to(arm.run_root)): sha256_file(path) for path in required}
+
+
+def validate_serializer_complete(arm: Any) -> Path:
+    """Require the configured official simulation-log serializer output."""
+    serialized = sorted((arm.run_root / "raw/simulation_log").rglob("*.msgpack.xz"))
+    if len(serialized) != 1 or not serialized[0].is_file() or serialized[0].stat().st_size == 0:
+        raise B1ExecutionError(f"B1_SERIALIZER_OUTPUT_INVALID:expected=1:observed={len(serialized)}")
+    return serialized[0]
 
 
 def load_json(path: Path) -> Any:
@@ -131,7 +234,11 @@ def update_budget_status(ledger_path: Path, run_id: str, status: str) -> None:
         fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
 
-def arm_manifest(spec: Mapping[str, Any], arm: Any, authorization: Mapping[str, Any], status: str) -> Mapping[str, Any]:
+def arm_manifest(
+    spec: Mapping[str, Any], arm: Any, authorization: Mapping[str, Any], status: str,
+    lifecycle: tuple[str, ...] = (), route_precheck: Mapping[str, Any] | None = None,
+    artifact_hashes: Mapping[str, str] | None = None,
+) -> Mapping[str, Any]:
     identities = component_identity(arm)
     return {
         "schema_version": SCHEMA_VERSION,
@@ -176,6 +283,9 @@ def arm_manifest(spec: Mapping[str, Any], arm: Any, authorization: Mapping[str, 
             "manifest": str(arm.run_root / "execution_manifest.json"),
         },
         "execution_status": status,
+        "lifecycle_states_complete": list(lifecycle),
+        "route_precheck": route_precheck,
+        "artifact_hashes": dict(artifact_hashes or {}),
     }
 
 
@@ -191,22 +301,39 @@ def execute(
     spec = spec_by_id[run_id]
     run_root = output_root / run_id
     arm = build_fresh_arm(spec, run_root)
+    route_precheck = validate_pre_run_lifecycle(arm, spec)
     manifest_path = run_root / "execution_manifest.json"
     ledger_path = output_root / "B1_Scientific_Arm_Budget_Ledger_v1.json"
-    write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "READY_BEFORE_RUNNER_RUN"))
+    write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "READY_BEFORE_RUNNER_RUN", route_precheck=route_precheck))
     claim_budget(ledger_path, authorization, run_id)
+    lifecycle: tuple[str, ...] = ()
     try:
         report = arm.runner.run()
         if not bool(getattr(report, "succeeded", False)):
             raise B1ExecutionError("RUNNER_REPORT_NOT_SUCCEEDED")
+        lifecycle = advance_lifecycle(lifecycle, "RUNNER_COMPLETE")
         arm.recorder.validate_complete()
+        lifecycle = advance_lifecycle(lifecycle, "RECORDER_COMPLETE")
+        from nuplan.planning.script.utils import save_runner_reports
+        save_runner_reports([report], arm.common_builder.output_dir, arm.cfg.runner_report_file)
+        arm.common_builder.multi_main_callback.on_run_simulation_end()
+        lifecycle = advance_lifecycle(lifecycle, "OFFICIAL_METRICS_COMPLETE")
+        validate_serializer_complete(arm)
+        lifecycle = advance_lifecycle(lifecycle, "SERIALIZER_COMPLETE")
+        write_manifest(
+            manifest_path,
+            arm_manifest(spec, arm, authorization, "MANIFEST_PENDING_HASH_VALIDATION", lifecycle, route_precheck),
+        )
+        lifecycle = advance_lifecycle(lifecycle, "MANIFEST_COMPLETE")
+        artifact_hashes = validate_and_hash_artifacts(arm)
+        lifecycle = advance_lifecycle(lifecycle, "ARTIFACT_HASHES_VALIDATED")
     except Exception:
-        write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "TECHNICAL_INCOMPLETE"))
+        write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "TECHNICAL_INCOMPLETE", lifecycle, route_precheck))
         update_budget_status(ledger_path, run_id, "TECHNICAL_INCOMPLETE")
         raise
-    write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS"))
-    update_budget_status(ledger_path, run_id, "TECHNICAL_COMPLETE")
-    return {"run_id": run_id, "status": "TECHNICAL_COMPLETE_PENDING_PAIR_ANALYSIS", "manifest": str(manifest_path)}
+    write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "ARM_COMPLETE", lifecycle, route_precheck, artifact_hashes))
+    update_budget_status(ledger_path, run_id, "ARM_COMPLETE")
+    return {"run_id": run_id, "status": "ARM_COMPLETE", "manifest": str(manifest_path)}
 
 
 def main() -> int:

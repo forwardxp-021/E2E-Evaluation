@@ -1,0 +1,105 @@
+{
+  "artifact_sha256": {
+    "B1_IR_B1_Resume_Retry_Contract_v1.md": "f9a98090ce46d16a93442478841e347327a40b8e53890130611273655c9a4f5c",
+    "B1_IR_Lifecycle_Contract_v1.md": "ac370676ca3686cd584cd4725ba35253d9822830c43ff193d067ca659aae3662",
+    "B1_IR_Native_Route_Precheck_v1.json": "6f60dd05f75978e1cc25b3edbb15e8501b6ef8c8688f35729a4ff202c64a32ab",
+    "B1_IR_Native_Route_Precheck_v1.md": "ee0199390c156acf3c3a735d5234f7c58b97d96b646d9a8db655b2795c3c72ad",
+    "B1_IR_Official_Metric_Lifecycle_Fix_v1.md": "17dccc288f496284c6a69d223dc87e9ce23ed8dc9d74d0390cc87f3cb5ef346a",
+    "B1_IR_Offline_Finalize_Audit_v1.json": "74079ae6eef0fbccd94f564e8000dee89f2ad3fb7a5ab76f802cda726e8605f4",
+    "B1_IR_Offline_Finalize_Recovery_v1.csv": "d574d7f06eb78caa7397cf509cbaa927aebf61a3c1174f5fff6d09928cefbfe7",
+    "B1_IR_Remediation_Report_v1.md": "5f1312b74852ef78066dca180a6d9c87cb9d92bc29bc2beb252c40938899bbc4",
+    "B1_IR_Resume_Execution_Plan_v1.csv": "2b78fc56af162a53dfedc93cfd465c89dcaece078b8f8f1366ea2c4db237f4a7"
+  },
+  "authorization": {
+    "B1_RESUME_EXECUTION": "NOT_AUTHORIZED",
+    "PRIMARY_EVALUATION": "NOT_AUTHORIZED",
+    "RBR_TRAINING": "NOT_AUTHORIZED"
+  },
+  "counts": {
+    "attempted_arms": 35,
+    "not_run_arms": 5,
+    "offline_finalized_arms": 34,
+    "offline_recovered_pairs": 17,
+    "planned_arms": 40,
+    "planned_pairs": 20,
+    "prospective_arm_complete_this_round": 0,
+    "route_compatible_pairs": 15,
+    "route_incompatible_pairs": 5,
+    "runner_recorder_complete_arms": 34
+  },
+  "governing_b1_status": "B1_TSB_BENCHMARK_QUALIFICATION_INCOMPLETE_INFRASTRUCTURE",
+  "offline_finalize_binding": {
+    "official_metric_callback_config_sha256": "87a197879830627f5a297b530aea9fa142e1985c1f772454e34147aea16d1109",
+    "official_metric_callback_source_sha256": "70c07e5cfc89081759aeb169dfc534eeeb4a211097148a050ecb03ebb289c814",
+    "official_metric_config_sha256": "0029c509885834d433551e7da44639d92e0c50bb3a0505f551237acf99776634",
+    "offline_finalize_tool_sha256": "69cc51150f6c2ffabe15a8568612a327f7e36a28b5a25a50063ebb409c2d96fb"
+  },
+  "protected_asset": {
+    "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+  },
+  "retry_contract": {
+    "authoritative_result_rule": "LATEST_OWNER_AUTHORIZED_TECHNICALLY_COMPLETE_ATTEMPT;PRIOR_ATTEMPTS_RETAINED",
+    "authority": "TECHNICAL_RETRY_ALLOWED_IF_OWNER_AUTHORIZED",
+    "denominator_rule": "ORIGINAL_PAIR_COUNTS_ONCE;ALL_ATTEMPTS_RETAINED",
+    "eligible_failure_classes": [
+      "INFRASTRUCTURE_FAILURE",
+      "CALLBACK_FINALIZATION_FAILURE",
+      "SERIALIZER_FAILURE",
+      "ARTIFACT_PERSISTENCE_FAILURE",
+      "NATIVE_ROUTE_INFRASTRUCTURE_FAILURE"
+    ],
+    "ineligible_failure_classes": [
+      "SCIENTIFIC_FAIL",
+      "MEASUREMENT_INVALID_REALIZED_BEHAVIOR",
+      "LOW_SPEED_ENDSTOP",
+      "MECHANISM_FAIL",
+      "F_MATCH_FAIL",
+      "OFFICIAL_SAFETY_FAIL"
+    ],
+    "maximum_total_attempts_per_arm": 2,
+    "replacement_forbidden": true,
+    "same_identity_required": true
+  },
+  "route_precheck": {
+    "B1_18_missing_successor_segment": "19339",
+    "B1_18_predetected": true,
+    "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+    "production_equivalence_version": "build_native_route_reference_v1_1"
+  },
+  "schema_version": "B1_IR_Manifest_v1",
+  "scientific_parameters": {
+    "TSB": "UNCHANGED",
+    "analyzer": "UNCHANGED",
+    "roster": "UNCHANGED",
+    "thresholds": "UNCHANGED"
+  },
+  "source_git_sha_before_remediation": "2e522e2635e90c0709409642ef61559f2cde36ed",
+  "source_sha256": {
+    "QUICK_REFERENCE.md": "9685fd2d2b86d5a0000be4d1174f8c1b7a7582d6a2a557fc4313950c61ba9157",
+    "tests/test_b1_infrastructure_remediation.py": "956f124d57857133b387ca829fde3ee01695029a0e9d3c686fc9aa96121c936d",
+    "tools/b1_native_route_precheck.py": "4b096c5be866e58be5ff4ba7fb41f8218d42eb2f72c5fc87a1207b976c59c1b8",
+    "tools/b1_offline_metric_finalize.py": "69cc51150f6c2ffabe15a8568612a327f7e36a28b5a25a50063ebb409c2d96fb",
+    "tools/b1_tsb_qualification.py": "d8b18588b3c8ca481191c539d586873faf23d6be9950766ca769432d0b610214",
+    "tools/b1_tsb_qualification_executor.py": "23038b042f9209e0147684b46e877c5e44b1deff894904fc78bb514a4007b8c0"
+  },
+  "status": "B1_IR_READY_FOR_OWNER_REVIEW",
+  "tests": {
+    "all_tools_python_compile": "BLOCKED_BY_PREEXISTING_COMMITTED_SYNTAX_ERROR:tools/build_unified_bdd_posttraining_report.py:550",
+    "check_no_tmp_dependencies": "PASS",
+    "git_diff_check": "PASS",
+    "modified_python_compile": "PASS",
+    "targeted_pytest": "13 passed"
+  },
+  "zero_run_proof": {
+    "C_EXECUTION": 0,
+    "HLC_ROLLOUT": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN": 0,
+    "SIMULATION": 0,
+    "TSB_ROLLOUT": 0,
+    "V_EXECUTION": 0
+  }
+}
