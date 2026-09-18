@@ -11240,3 +11240,32 @@ metadata-only census 后、任何 Q 运行或结果暴露前由 Owner 选择。H
 ### 通过标准
 
 静态验证显示 PASS，且 scientific_qualification=false、execution_possible=false；这不表示 S2 已就绪。科学独立单位为 SESSION；已知冲突后仅剩最多 5 个会话，无法提供 Q20。准确资格尚未认证，不把容量上界当作合格数，不生成 Q20/Q12 roster。执行绑定、完整重置和 precontext 仍为 BLOCKED；未来预算上限 40，当前预算 0 且未激活。详见 `docs/stageR/s2_preflight/S2_Preflight_Readiness_Report_v1.md`。
+# B1 冻结 TSB 闭环资格验证
+
+## 1. 命令
+
+准备阶段先提交 `tools/b1_tsb_qualification.py`、B1 executor、协议和停止规则，然后用该提交生成冻结 roster 与授权：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_tsb_qualification.py prepare --authorized-source-git-sha <已提交的源码SHA>
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_tsb_qualification.py verify-pre-run
+```
+
+冻结文件再次提交后，执行唯一获授权的 20 个 SESSION、40 个 arm：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_tsb_qualification.py execute
+```
+
+## 2. 期望行为
+
+准备命令只读取 S2R 静态资格证据、冻结 nuPlan 元数据和正式配置，生成 20 对 E2 roster、arm specs、pair bindings、授权和 pre-run manifest，不进入 simulator。执行命令按冻结顺序为每个 arm 启动独立进程，使用唯一 B1 production successor，完成后调用冻结 analyzer 并生成完整分母结果。它不会训练 RBR，也不会读取 H、BDD、z64、MMD 或 Primary 比较结果。
+
+## 3. 通过标准
+
+- 首条 rollout 前 roster 为 20 个唯一 SESSION、40 个 arm，全部是 `NOT_RUN`。
+- roster、executor、TSB config、analyzer、schema、git SHA 和 40-arm budget 均由授权清单哈希绑定。
+- 每个 arm 有独立 execution manifest；任何 arm 不允许重试或替换。
+- B1 PASS 要求 20/20 同时通过技术完整性、测量、机制、F_match 和官方安全。
+- 科学失败继续完成冻结 roster；基础设施失败立即停止。
+- 受保护资产 SHA256 保持 `e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`。
