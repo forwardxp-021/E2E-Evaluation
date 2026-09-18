@@ -415,6 +415,12 @@ def finalize() -> None:
     bindings = {row["pair_id"]: row for row in read_json(BINDINGS)["pairs"]}
     with ROSTER.open(encoding="utf-8", newline="") as handle:
         roster = list(csv.DictReader(handle))
+    budget_ledger = read_json(RUN_ROOT / "B1_Scientific_Arm_Budget_Ledger_v1.json")
+    arm_budget_status = budget_ledger["runs"]
+    execution_log = RUN_ROOT / "B1_execution.log"
+    log_text = execution_log.read_text(encoding="utf-8") if execution_log.is_file() else ""
+    exception_lines = [line.strip() for line in log_text.splitlines() if line.startswith(("ValueError:", "RuntimeError:"))]
+    infrastructure_stop_reason = exception_lines[-1] if exception_lines else "RUNNER_EXCEPTION_SEE_B1_EXECUTION_LOG"
     results: list[dict[str, Any]] = []
     evaluation_dir = RUN_ROOT / "pair_evaluations"
     evaluation_dir.mkdir(parents=True, exist_ok=True)
@@ -432,6 +438,13 @@ def finalize() -> None:
         fmatch_status = safety_status = joint_mechanism = "NOT_RUN"
         low_speed = False
         try:
+            if arm_budget_status.get(baseline_id) != "TECHNICAL_COMPLETE" or arm_budget_status.get(treatment_id) != "TECHNICAL_COMPLETE":
+                baseline_status = "NOT_RUN" if arm_budget_status.get(baseline_id) == "NOT_RUN" else "TECHNICAL_INCOMPLETE"
+                treatment_status = "NOT_RUN" if arm_budget_status.get(treatment_id) == "NOT_RUN" else "TECHNICAL_INCOMPLETE"
+                detail = f"ARM_BUDGET_STATUS:BASELINE={arm_budget_status.get(baseline_id)},TREATMENT={arm_budget_status.get(treatment_id)}"
+                if "TECHNICAL_INCOMPLETE" in {arm_budget_status.get(baseline_id), arm_budget_status.get(treatment_id)}:
+                    detail += f";INFRASTRUCTURE_STOP={infrastructure_stop_reason}"
+                raise RuntimeError(detail)
             base_manifest = read_json(baseline_root / "execution_manifest.json")
             treatment_manifest = read_json(treatment_root / "execution_manifest.json")
             baseline_status = base_manifest["execution_status"]
@@ -482,7 +495,6 @@ def finalize() -> None:
                 technical_reason = f"{type(exc).__name__}:{exc}"
         except ValueError as exc:
             status = "MEASUREMENT_INVALID" if "NOT_EVALUABLE" in str(exc) else "TECHNICAL_INCOMPLETE"
-            (scientific_reason if status == "MEASUREMENT_INVALID" else technical_reason)
             if status == "MEASUREMENT_INVALID":
                 scientific_reason = f"ValueError:{exc}"
             else:
@@ -537,6 +549,8 @@ def finalize() -> None:
         "schema_version": "B1_TSB_Qualification_Summary_v1",
         "main_status": main_status,
         "planned_session_pairs": TARGET_PAIRS,
+        "attempted_scientific_arms": sum(value != "NOT_RUN" for value in arm_budget_status.values()),
+        "technical_complete_arms": sum(value == "TECHNICAL_COMPLETE" for value in arm_budget_status.values()),
         "executed_pairs": sum(row["baseline_arm_status"] != "NOT_RUN" or row["treatment_arm_status"] != "NOT_RUN" for row in results),
         "technical_complete_pairs": technical_complete,
         "scientifically_evaluable_pairs": evaluable,
@@ -560,11 +574,12 @@ def finalize() -> None:
     summary_path = OUT / "B1_TSB_Qualification_Summary_v1.json"
     write_json(summary_path, summary)
     failure_lines = [f"- `{row['pair_id']}` — `{row['joint_scientific_status']}`: {row['technical_failure_reason'] or row['scientific_failure_reason']}" for row in results if row["joint_scientific_status"] != "PASS"]
+    exposure_counts = Counter(row["exposure_class"] for row in roster)
     report = f"""# B1 TSB Qualification Execution Report v1
 
 Main status: `{main_status}`.
 
-The frozen B1 roster contained {TARGET_PAIRS} independent SESSION pairs and {MAX_ARMS} authorized arms. Executed pairs: {summary['executed_pairs']}; technical complete: {technical_complete}; scientifically evaluable: {evaluable}.
+The frozen B1 roster contained {TARGET_PAIRS} independent SESSION pairs and {MAX_ARMS} authorized arms. Attempted arms: {summary['attempted_scientific_arms']}; technically complete arms: {summary['technical_complete_arms']}. Executed pairs: {summary['executed_pairs']}; technical complete pairs: {technical_complete}; scientifically evaluable pairs: {evaluable}.
 
 - Baseline one-phase success: `{baseline_success}/{TARGET_PAIRS}`
 - Treatment two-stage success: `{treatment_success}/{TARGET_PAIRS}`
@@ -578,15 +593,49 @@ The frozen B1 roster contained {TARGET_PAIRS} independent SESSION pairs and {MAX
 Failure ledger:
 {chr(10).join(failure_lines) if failure_lines else '- None.'}
 
-All B1 sessions were E2 benchmark-engineering sessions. E1 and E5 usage was zero. RBR, H, BDD, z64, MMD, detector performance, and Primary comparison were not read or computed. `LOW_ORDER_NUISANCE_ELIMINATED = NOT_ESTABLISHED`; `TSB_CLEAN_RESIDUAL_TASK = NOT_ESTABLISHED`.
+B1 exposure was E2={exposure_counts['E2_BENCHMARK_ENGINEERING']}, E1={exposure_counts['E1_UNRELATED_HISTORICAL_USE']}, E5=0. RBR, H, BDD, z64, MMD, detector performance, and Primary comparison were not read or computed. `LOW_ORDER_NUISANCE_ELIMINATED = NOT_ESTABLISHED`; `TSB_CLEAN_RESIDUAL_TASK = NOT_ESTABLISHED`.
 """
     report_path = OUT / "B1_TSB_Qualification_Execution_Report_v1.md"
     report_path.write_text(report, encoding="utf-8")
     archive = OUT / "execution_manifests"
     archive.mkdir(parents=True, exist_ok=True)
     for row in specs["arms"]:
-        shutil.copyfile(RUN_ROOT / row["run_id"] / "execution_manifest.json", archive / f"{row['run_id']}.json")
-    result_artifacts = [pair_results_path, summary_path, report_path, *sorted(archive.glob("*.json"))]
+        source = RUN_ROOT / row["run_id"] / "execution_manifest.json"
+        target = archive / f"{row['run_id']}.json"
+        if source.is_file():
+            shutil.copyfile(source, target)
+        else:
+            write_json(target, {
+                "schema_version": "b1_tsb_unstarted_arm_record_v1",
+                "stage": "B1_FROZEN_TSB_QUALIFICATION",
+                "run_id": row["run_id"],
+                "pair_id": row["pair_id"],
+                "arm": row["arm"],
+                "session_id": row["session_id"],
+                "log_id": row["log_id"],
+                "scenario_token": row["scenario_token"],
+                "exposure_class": row["exposure_class"],
+                "role": row["role"],
+                "precontext_id": row["precontext_id"],
+                "route_id": row["route_id"],
+                "execution_status": "NOT_RUN",
+                "reason": "NOT_RUN_AFTER_INFRASTRUCTURE_STOP",
+            })
+    stop_record = OUT / "B1_Infrastructure_Stop_Record_v1.json"
+    write_json(stop_record, {
+        "schema_version": "B1_Infrastructure_Stop_Record_v1",
+        "status": "INFRASTRUCTURE_STOP_NO_RETRY",
+        "failing_run_id": next((run_id for run_id, value in arm_budget_status.items() if value == "TECHNICAL_INCOMPLETE"), None),
+        "reason": infrastructure_stop_reason,
+        "attempted_scientific_arms": summary["attempted_scientific_arms"],
+        "technical_complete_arms": summary["technical_complete_arms"],
+        "not_run_arms": sum(value == "NOT_RUN" for value in arm_budget_status.values()),
+        "execution_log_sha256": sha(execution_log),
+        "retry_performed": False,
+        "replacement_performed": False,
+        "offline_finalization_only": True,
+    })
+    result_artifacts = [pair_results_path, summary_path, report_path, stop_record, *sorted(archive.glob("*.json"))]
     write_json(OUT / "B1_TSB_Qualification_Manifest_v1.json", {
         "schema_version": "B1_TSB_Qualification_Manifest_v1",
         "main_status": main_status,
