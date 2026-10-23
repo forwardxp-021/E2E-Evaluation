@@ -11405,3 +11405,24 @@ PYTHONPATH="$PWD:../nuplan-devkit" PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ### 通过标准
 
 真实六项静态预检全PASS，正常配置放行、缺失/错误callback/finalizer/output/lifecycle配置全部BLOCK；旧授权无法执行新源码。全部科学入口及指标计算/收尾调用为0，原35次预算不变、历史17对结论不变、保护资产和科学合同hash不变。该工具没有科学执行选项；即使PASS，B1-R2仍未授权，必须等待Owner另行批准。
+
+## B1-R2 — 原冻结六次正式恢复执行
+
+### 命令
+
+使用nuPlan环境，分阶段执行；源码提交后才创建授权，授权提交后才做最终预检，预检提交后才正式执行：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_resume_execution_r2.py prepare
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_resume_execution_r2.py preflight
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_resume_execution_r2.py execute
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_resume_execution_r2.py finalize
+```
+
+### 期望行为
+
+新增R2版本化授权、独立账本与输出目录，复用原production factory、唯一B1 runner/lifecycle、RP真实callback检查及冻结评估器。原409项绑定保留，额外绑定R2入口和测试。最终预检比较六项真实装配与RP已冻结的解析配置hash；全部通过才以独立进程按18T2、18B1、19T1、19B1、20B1、20T1执行。源码基准commit与授权记录commit分开，后续纯文档提交不触发源码重签。报告在 `docs/stageR/b1_resume_execution_r2/`，raw在 `outputs/stageR/b1_resume_execution_r2_v1/`。
+
+### 通过标准
+
+新增≤6、累计≤41；原17对不重跑不重判、18T1永久保留。官方指标、recorder、serializer、manifest和hash全部完成才ARM_COMPLETE。科学失败继续、基础设施失败立即停止；任何最终预检失败不得修复重试。本轮不授权其他第二次尝试或attempt3，不能重复执行命令自动续跑。原20对分母固定，20/20 full-contract PASS才资格通过。受保护资产与科学参数不变，RBR/H/BDD/Primary/V/C禁止，完成报告和推送后停止。
