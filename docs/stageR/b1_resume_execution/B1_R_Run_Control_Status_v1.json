@@ -1,0 +1,13 @@
+{
+  "stage_verdict": "B1_R_PREFLIGHT_BLOCKED",
+  "terminal_preflight_decision": true,
+  "new_simulator_entries": 0,
+  "new_attempts_consumed": 0,
+  "historical_attempts": 35,
+  "cumulative_attempts": 35,
+  "remaining_unconsumed_authorized_attempts": 6,
+  "current_stage_scientific_entry_allowed": false,
+  "automatic_repair_repreflight_or_hash_rebind_allowed": false,
+  "blocker": "B1_R_PREFLIGHT_CHECK_USES_SHARED_CALLBACK_LIST_INSTEAD_OF_ACTUAL_SIMULATION_CALLBACK_GRAPH",
+  "future_work_requires_new_owner_instruction": true
+}

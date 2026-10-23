@@ -1,0 +1,17 @@
+{
+  "authorization_sha256": "f4944458eb82501f9670f75afba96dff7f42144cbd99695538b4f709b7893669",
+  "failure": "RuntimeError:RECORDER_CALLBACK_NOT_BOUND",
+  "passed_checks": [
+    "01_CLEAN_COMMITTED_EXECUTION_SOURCE",
+    "02_ORIGINAL_ROSTER_IDENTITIES",
+    "03_IR2_17_RESULTS_TRACEABLE_UNCHANGED",
+    "04_ATTEMPT_1_PRESERVED",
+    "05_FIVE_ARMS_NOT_PREVIOUSLY_EXECUTED",
+    "06_IR3_NATIVE_ROUTE_SOURCE_BOUND",
+    "07_ALL_40_ROUTE_PRECONTEXT_IDENTITIES"
+  ],
+  "simulator_entries": 0,
+  "source_git_commit": "d360d86f751a93218c31757d3d7d9151aa8d5279",
+  "verdict": "B1_R_PREFLIGHT_BLOCKED",
+  "zero_run_probes": []
+}

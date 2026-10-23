@@ -12,3 +12,7 @@ git diff --check
 ```
 
 Full tools compilation, forbidden temporary dependency check and whitespace check passed. Third-party deprecation/map cast warnings remain. Formal preflight and postrun results are separately recorded; this document grants no additional execution authority.
+
+正式真实数据 zero-run preflight：BLOCKED；首个factory构建成功，但新增共享callback非空断言不符合官方stateful callback构建方式。未完成六个factory的整体预检；simulator entry=0、attempt consumption=0。该断言保持原样，未在失败后修复或重做预检。Postrun hash audit PASS，910个历史文件、406个源文件、24648个依赖文件和5个关键数据文件保持绑定。
+
+停止后的同一59项定向测试再次通过（59 passed、2 deselected）；全tools编译、临时依赖检查、diff whitespace检查通过。该结果不代表真实六工厂预检通过；正式状态仍为BLOCKED。

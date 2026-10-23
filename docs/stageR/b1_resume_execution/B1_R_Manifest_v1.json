@@ -1,0 +1,81 @@
+{
+  "artifact_sha256": {
+    "docs/stageR/b1_resume_execution/B1_R_Execution_Contract_v1.md": "d5be6fc80c3958be5afda2a366cfd4a6210271938f90ae979d2c22056c8edf19",
+    "docs/stageR/b1_resume_execution/B1_R_Exposure_Update_v1.csv": "14863e3e4732ad3a4341cbdb596d89147d5c09e7beeaa7ad7a95379a84620770",
+    "docs/stageR/b1_resume_execution/B1_R_Final_Pair_Results_v1.csv": "0bb9e9dbe1647845927ba461dbbb033f8b78473d02f99f232b9e944f5c048489",
+    "docs/stageR/b1_resume_execution/B1_R_Final_Qualification_Report_v1.md": "0a584d299db368e49ce34409f3d20d1b097debdbe0049a4207a3015fcf327d67",
+    "docs/stageR/b1_resume_execution/B1_R_Owner_Conditional_Authorization_v1.json": "f4944458eb82501f9670f75afba96dff7f42144cbd99695538b4f709b7893669",
+    "docs/stageR/b1_resume_execution/B1_R_Postrun_Audit_v1.json": "fab242616805c79082bc2924485710c54ddb614cdc4d71e60dace3ed0d4bf7cf",
+    "docs/stageR/b1_resume_execution/B1_R_Preflight_Blocker_Diagnosis_v1.md": "92a7dbc1c0c91fc416016ef1acaa89c900b5787ebc46bbedd08ee1dac40c2470",
+    "docs/stageR/b1_resume_execution/B1_R_Preflight_Evidence_v1.json": "75daadeb78783c8590f2884349448e240d25d988043c3ca2ce5e0497c15f5b2b",
+    "docs/stageR/b1_resume_execution/B1_R_Preflight_Failure_Log_v1.txt": "956963c08e3ac713c035c4ef4bb883efadc4d3c2d84f577fdcaa1533cdca2372",
+    "docs/stageR/b1_resume_execution/B1_R_Preflight_Report_v1.md": "50b3f541bcf9a3c9b5cefbcd3e9cbd5bc441e67d14205ef2ec7b95e0bf378a9f",
+    "docs/stageR/b1_resume_execution/B1_R_Resume_Arm_Results_v1.csv": "71e3c7d6d91c0dde110e03b1ab4fdd7896092a55c017caa41517a8bb0ed07a01",
+    "docs/stageR/b1_resume_execution/B1_R_Resume_Attempt_Ledger_v1.json": "c1508671343c84943108e560bf062523dadf1e2b93f233d17a402e77cb79ad80",
+    "docs/stageR/b1_resume_execution/B1_R_Run_Control_Status_v1.json": "e118ae23d3b1c5ce492217eb3240a3c7d6c226c9c65e28143c8e7ffaf96800c0",
+    "docs/stageR/b1_resume_execution/B1_R_Summary_v1.json": "1255efa1138589ed11d68159137a25575cfb7581ea612aa634b476c046e72527",
+    "docs/stageR/b1_resume_execution/B1_R_Validation_Record_v1.md": "a2ed56446a28d0df723028215cff0f2e31b228305a6177dfcb88f7fc19d29256",
+    "docs/stageR/b1_resume_execution/execution_manifests/B1-TSB-18-BASELINE__ATTEMPT_1.json": "ec981ca87cba059b91eed1842690a73f823c9f1ab42440582fd8c57c8c1dfbf4",
+    "docs/stageR/b1_resume_execution/execution_manifests/B1-TSB-18-TREATMENT__ATTEMPT_2.json": "2db2302f886149dce63460d0608b828f03f362f4f3d2df19d147242bbda22d5a",
+    "docs/stageR/b1_resume_execution/execution_manifests/B1-TSB-19-BASELINE__ATTEMPT_1.json": "e89bdd2b80f40f8054e325e48aad5edf92c3cbf23f6c022cea942f92d5e5c360",
+    "docs/stageR/b1_resume_execution/execution_manifests/B1-TSB-19-TREATMENT__ATTEMPT_1.json": "2634b2d7ff69fd4ea74375fe83339742c2fa9234cfc7610a0e57dfeaba20aeef",
+    "docs/stageR/b1_resume_execution/execution_manifests/B1-TSB-20-BASELINE__ATTEMPT_1.json": "02d3442a5760308fcc2a0cd15021abfe9525935c43944ef67a92d56211de0981",
+    "docs/stageR/b1_resume_execution/execution_manifests/B1-TSB-20-TREATMENT__ATTEMPT_1.json": "f5b3d96a6f655ba333bbaa8842c63a4c502688aabbdb3e87e0da909d150576cb"
+  },
+  "authorization_sha256": "f4944458eb82501f9670f75afba96dff7f42144cbd99695538b4f709b7893669",
+  "budget": {
+    "cumulative_attempts": 35,
+    "historical_attempts": 35,
+    "new_attempts": 0,
+    "pairs_complete": 17,
+    "unique_arms_complete": 34
+  },
+  "formal_preflight_passed": false,
+  "new_simulator_entries": 0,
+  "original_attempt_1_manifest": {
+    "path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_tsb_qualification_v1/B1-TSB-18-TREATMENT/execution_manifest.json",
+    "sha256": "a0308ed2768105581672c0a7f8879f1731f5b9855ca76907cb2d7a6ac0736b67"
+  },
+  "postrun_audit": {
+    "authorization_sha256": "f4944458eb82501f9670f75afba96dff7f42144cbd99695538b4f709b7893669",
+    "firewall": {
+      "BDD": 0,
+      "C_EXECUTION": 0,
+      "H_FEATURE_EVALUATION": 0,
+      "MMD": 0,
+      "PRIMARY_EVALUATION": 0,
+      "RBR_INFERENCE": 0,
+      "RBR_TRAINING": 0,
+      "V_EXECUTION": 0,
+      "Z64_COMPUTATION": 0
+    },
+    "historical_files_unchanged": 910,
+    "isolated_completed_processes": [],
+    "new_attempts_claimed": 0,
+    "original_roster_pairs": 20,
+    "original_unique_arms": 40,
+    "protected_asset_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+    "source_config_data_dependency_hashes_match": true,
+    "status": "PASS"
+  },
+  "prohibitions": {
+    "BDD": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "C_EXECUTION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "H_FEATURE_EVALUATION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "MMD": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "PRIMARY_EVALUATION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "RBR_INFERENCE": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "RBR_TRAINING": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "V_EXECUTION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "Z64_COMPUTATION": "NOT_EXECUTED_NOT_AUTHORIZED"
+  },
+  "raw_artifact_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_execution_v1/zero_run_preflight/B1-TSB-18-TREATMENT__ATTEMPT_2/preflight_failure_record.json": "c185d4d26968f0b000805157be65fe789f84c5a4fcc99d1fe875d088171e61f0",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_execution_v1/zero_run_preflight/B1-TSB-18-TREATMENT__ATTEMPT_2/raw/log.txt": "9c6db02837d822d0ff5d426a8b2787bd0313af52bea44cdb9e756eb94e5a144c",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_execution_v1/zero_run_preflight/B1-TSB-18-TREATMENT__ATTEMPT_2/raw/nuboard_1792736746.nuboard": "de047d49441782a08a406650b0a06d9b00aa2d38e0d2957b00fdb8db19b22d83"
+  },
+  "source_git_commit": "d360d86f751a93218c31757d3d7d9151aa8d5279",
+  "stage": "B1_R",
+  "terminal_preflight_blocker": "NEW_PREFLIGHT_INCORRECTLY_REQUIRES_NONEMPTY_SHARED_CALLBACK_LIST;NO_AUTOMATIC_REPAIR",
+  "verdict": "B1_R_PREFLIGHT_BLOCKED"
+}

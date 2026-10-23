@@ -11386,3 +11386,5 @@ python3 -m py_compile tools/*.py  # 本机 Python 3.14.4
 ### 通过标准
 
 本轮最多6次、累计最多41次；01–17不重跑不重判；18 treatment原失败保留、禁止attempt 3。复用唯一B1 runner及官方callback/serializer/safety适配器；完成六步lifecycle与hash才ARM_COMPLETE。科学失败保留并继续，任何基础设施失败立即终止。最终保留20分母，只有20/20 full-contract PASS才能资格通过。无RBR/H/BDD/Primary/V/C，保护原CSV和历史outputs。历史IR3源码快照回放须在其原commit进行；B1-R共享lifecycle抽取后的新源码由本阶段授权和测试固定。
+
+本轮正式结果：`B1_R_PREFLIGHT_BLOCKED`；新增attempt=0、累计35。新增预检错误检查共享callback列表，详细诊断与停止记录见 `docs/stageR/b1_resume_execution/B1_R_Preflight_Blocker_Diagnosis_v1.md`；按Owner规则未修复后重试。

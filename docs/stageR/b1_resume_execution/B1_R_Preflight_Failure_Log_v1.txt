@@ -1,0 +1,20 @@
+B1-R initial formal preflight failure — preserved diagnostic transcript excerpt
+Source commit: d360d86f751a93218c31757d3d7d9151aa8d5279
+Formal entry command: nuPlan Python -B tools/b1_resume_execution.py preflight
+Exit code: 2
+
+2026-10-23 14:25:46,284 INFO Building AbstractCallback: 0...DONE!
+2026-10-23 14:25:46,453 INFO Building simulations from 1 scenarios...
+2026-10-23 14:25:46,667 INFO Building simulations...DONE!
+
+Traceback (most recent call last):
+  File "tools/b1_resume_execution.py", line 267, in preflight
+    require(arm.recorder is not None and len(arm.callbacks) > 0, 'RECORDER_CALLBACK_NOT_BOUND')
+  File "tools/b1_resume_execution.py", line 61, in require
+    raise RuntimeError(message)
+RuntimeError: RECORDER_CALLBACK_NOT_BOUND
+B1_R_PREFLIGHT_BLOCKED
+
+This excerpt is preserved from the initial tool stdout/stderr, with logger source prefixes shortened.
+No second factory build or preflight was performed to obtain it.
+Simulator entries: 0; new attempts consumed: 0; source/authorization not repaired or rebound.
