@@ -1,0 +1,93 @@
+{
+  "artifact_sha256": {
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Callback_Lifecycle_Contract_v1.md": "de87e14b7015b994ad070daf57619ea6c4539f2e524f9c0004b74f73a60870a2",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Callback_Root_Cause_v1.md": "4f53b6b825e21e62d94798b7ed531175de4fb78be2ca4556a4ec16f0763838d2",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Final_Audit_v1.json": "2635b4f4d2cefa553ca7c27c11b713ca612fbd8064111a2234d0e0f71a634df6",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Historical_Hash_Audit_v1.json": "2ed15bc2da8b740c8c6c5ae4a91d3bc3effb2cb8c4eba1425950d02d8000486c",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Positive_Negative_Test_Matrix_v1.csv": "2d3ca34fea4bdb07bc4a9f47b8f56c9385779f2fa62ed98cbca3569eb4fa93ea",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Preflight_Correction_Report_v1.md": "0341e7ad8bbc1e411fb2dee81544908d31b0378ee86d106fa0f29a5767002059",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Proposed_B1_R2_Authorization_v1.json": "7b611ed52e769c7cb3a2bf7b7ff2b007ca409a64c50bd3e8d12b482108579831",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Real_Preflight_Log_v1.txt": "0d510eb03002411cf7e93be041afba87f234b0159dd100a7f0a017283f0e9d7a",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Real_Production_Preflight_Results_v1.csv": "900715ede08cf9dab94f83861c296921e4a2834a1001be718e7f7a6c72158cf3",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Run_Status_v1.json": "0218f195340cb96e1c29e451333e2bf0a7287e0bcd28fe758f393c37b40ab9a8",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Source_Hash_Transition_v1.json": "42e900fad58855913970dec6785b1e1085eb8bd7a437fed1af99acf81460d911",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Validation_Record_v1.md": "24d0ceace2ea3165f520669080942bedb11c41137e31b22cb15985aebb8b25b7",
+    "docs/stageR/b1_resume_preflight_correction/B1_RP_Zero_Run_Proof_v1.json": "255228c779aa14bfcfad0974f602a19b8988602e0a3017e89e72307e389165d0",
+    "docs/stageR/b1_resume_preflight_correction/zero_run_evidence/01_B1-TSB-18-TREATMENT.json": "769eb605cc3edd07686d4fba85dc7eb3bbc5465eb0cd8b039a0af7fbaa58bd50",
+    "docs/stageR/b1_resume_preflight_correction/zero_run_evidence/02_B1-TSB-18-BASELINE.json": "5e641b1fed824e10368cd2c3c3872bd1ff354d14bf2a31bb0f99cdf7b2a0dae4",
+    "docs/stageR/b1_resume_preflight_correction/zero_run_evidence/03_B1-TSB-19-TREATMENT.json": "e93af4d034aee87b35521b12c1b97816f40c28ff235afaa2281ebf8eae4bb6cc",
+    "docs/stageR/b1_resume_preflight_correction/zero_run_evidence/04_B1-TSB-19-BASELINE.json": "9c4bd729c3b736d27715cf08d7488f1b72814bb6ebd059523e54e6196e37f5a8",
+    "docs/stageR/b1_resume_preflight_correction/zero_run_evidence/05_B1-TSB-20-BASELINE.json": "2cb701556eebb499575716fcf6a5c7866ec30fe317943521902eb27c2781f704",
+    "docs/stageR/b1_resume_preflight_correction/zero_run_evidence/06_B1-TSB-20-TREATMENT.json": "9f78e5b194e8221e00bccc239a328ff6f3f8ed69269a2c5b5f2cffb975c4d348"
+  },
+  "base_git_commit": "448da65ec791b695ccd7b3695aabfa46ba575851",
+  "cumulative_attempts": 35,
+  "draft_status": "PROPOSED_ONLY",
+  "execution_authorizations": {
+    "B1_R2_EXECUTION": "NOT_AUTHORIZED",
+    "B1_RESUME_EXECUTION": "NOT_AUTHORIZED",
+    "BDD": "NOT_AUTHORIZED",
+    "C_EXECUTION": "NOT_AUTHORIZED",
+    "H_EVALUATION": "NOT_AUTHORIZED",
+    "PRIMARY_EVALUATION": "NOT_AUTHORIZED",
+    "RBR_INFERENCE": "NOT_AUTHORIZED",
+    "RBR_TRAINING": "NOT_AUTHORIZED",
+    "V_EXECUTION": "NOT_AUTHORIZED"
+  },
+  "history_files_unchanged": 935,
+  "log_archive": {
+    "normalization": "report copy strips trailing whitespace only; original raw log unchanged",
+    "raw_original_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/formal_preflight.log",
+    "raw_original_sha256": "dd0a76b5fa6758bc99338142b64c3e3fd27995fb6b594c82fd597d305a4bffe1",
+    "report_copy_sha256": "0d510eb03002411cf7e93be041afba87f234b0159dd100a7f0a017283f0e9d7a"
+  },
+  "negative_conditions_blocked": 12,
+  "new_scientific_attempts": 0,
+  "old_authorization_rejected": {
+    "authorization_sha256": "f4944458eb82501f9670f75afba96dff7f42144cbd99695538b4f709b7893669",
+    "budget_claims": 0,
+    "factory_calls": 0,
+    "reason": "HASH_MISMATCH:source_file_hashes:tools/b1_resume_execution.py",
+    "runner_calls": 0,
+    "status": "REJECTED"
+  },
+  "owner_instruction": {
+    "authority": "ZERO_RUN_ENGINEERING_ONLY",
+    "path": "/Users/liuqing/.codex/attachments/03439929-f3eb-4930-9bcc-ce7a051bf0fb/已粘贴的文本.txt",
+    "sha256": "5bfba370f25d3524f8d559753e9368716d9687171391abf57a2e72e98e9c1996"
+  },
+  "positive_conditions_pass": 4,
+  "protected_asset_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "raw_diagnostic_artifact_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/discovery/raw/log.txt": "49e9a71942209fe50065c2b4248250484b92038ee3e56143ece4e0d6ffada6b4",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/discovery/raw/nuboard_1792740347.nuboard": "c64db58af92fe489f2b3ad5bbead45afd41dc363cfdaa30a39ba974ab63b0388",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/formal_preflight.log": "dd0a76b5fa6758bc99338142b64c3e3fd27995fb6b594c82fd597d305a4bffe1",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/negative_config_fixture/raw/log.txt": "e1bce1c84c3ec5385c367a99a8150bab90ded04ccddc456b8990da9ab6baa90c",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/negative_config_fixture/raw/nuboard_1792740782.nuboard": "56b0cce0a4a71cbcde2e1f2a0c4b2daeef0a4953e59cb9db9b81d502a915ca0a",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/01_B1-TSB-18-TREATMENT_static/raw/log.txt": "b8d559a95b05a53869dce995d44547ee1ea6e1008218adf700b11045ad6149ed",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/01_B1-TSB-18-TREATMENT_static/raw/nuboard_1792740780.nuboard": "ce3de5877ddcd00642bfe493160e48fe87f82e123ea4e0a4cf30ec2e8587f130",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/02_B1-TSB-18-BASELINE_static/raw/log.txt": "68f68d74d3b247df69f566daf88e47887f787b67869643fd910814d30adaa5df",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/02_B1-TSB-18-BASELINE_static/raw/nuboard_1792740783.nuboard": "1afbaa8076b5c82a8ade8bf20bc86735eb224c4a60d2afa64e0a3213606ddea3",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/03_B1-TSB-19-TREATMENT_static/raw/log.txt": "089dd6468f8c2dd3c04d9d28211d0d395ec447e468d32baf32e06ed24413bf76",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/03_B1-TSB-19-TREATMENT_static/raw/nuboard_1792740785.nuboard": "570249ce7872bcff113121c5f894e52ba630710b868b2112c9459f1bc45d4953",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/04_B1-TSB-19-BASELINE_static/raw/log.txt": "5ec363ecb9fa946b9ecb3cc1cdf92775fce015725470f700e8f34ad90d77170c",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/04_B1-TSB-19-BASELINE_static/raw/nuboard_1792740786.nuboard": "6c4896c5399887f5b13b2b375383e209cc9630c491eeeff2991bc936ab00bc4f",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/05_B1-TSB-20-BASELINE_static/raw/log.txt": "9e040ca2e61e0836e84ac73a77bc717c948106e7d9d2639be884b9cc91defd45",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/05_B1-TSB-20-BASELINE_static/raw/nuboard_1792740787.nuboard": "1360bc34aaa9039639a18fa9188eac6bc9500dce40c61c4ba5bcd15149db3b80",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/06_B1-TSB-20-TREATMENT_static/raw/log.txt": "968f18f7ef2525e8a2359194e322b524a3a2a43565664cde703adfbabf630c16",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/b1_resume_preflight_correction_v1/real_production_preflight/06_B1-TSB-20-TREATMENT_static/raw/nuboard_1792740789.nuboard": "d7290861fe73f96e83743e25d14b574cc3c4ca5ef923186a90675bd51a893416"
+  },
+  "real_production_preflight_pass": 6,
+  "runtime_metric_finalization": "NOT_EXECUTED_NOT_PROVEN",
+  "scientific_b1_status": "B1_TSB_BENCHMARK_QUALIFICATION_INCOMPLETE_INFRASTRUCTURE",
+  "source_git_commit": "5e5469b2a8a53140ed12de2b275cba0c7af8379f",
+  "source_transition_sha256": "42e900fad58855913970dec6785b1e1085eb8bd7a437fed1af99acf81460d911",
+  "stage": "B1_RP",
+  "status": "B1_RP_PREFLIGHT_PASS_READY_FOR_OWNER_REVIEW",
+  "tests": {
+    "deselected": 0,
+    "pre_source_targeted_passed": 51,
+    "real_factory_tests_passed_again": 8,
+    "skipped": 0
+  }
+}

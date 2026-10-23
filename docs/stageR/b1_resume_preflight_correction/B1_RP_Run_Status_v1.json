@@ -1,0 +1,20 @@
+{
+  "B1_R2_EXECUTION": "NOT_AUTHORIZED",
+  "failure": null,
+  "inputs": {
+    "all_40_identity_hashes_valid": true,
+    "cumulative_attempts": 35,
+    "five_not_run_preserved": true,
+    "historical_attempts": 35,
+    "historical_complete_arms": 34,
+    "historical_complete_pairs": 17,
+    "new_attempts": 0,
+    "original_failure_preserved": true,
+    "roster_pairs": 20,
+    "unique_arms": 40
+  },
+  "matrix_cases": 16,
+  "scientific_b1_status": "B1_TSB_BENCHMARK_QUALIFICATION_INCOMPLETE_INFRASTRUCTURE",
+  "six_item_pass_count": 6,
+  "status": "B1_RP_PREFLIGHT_PASS_READY_FOR_OWNER_REVIEW"
+}

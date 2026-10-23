@@ -1,0 +1,25 @@
+# B1-RP Production Callback Lifecycle Contract v1
+
+## 正式装配和实际运行顺序
+
+- Factory阶段：set_up_common_builder构建主回调链并调用start；build_simulations构建MetricCallback和SimulationLogCallback并绑定到每个Simulation；factory安装原passive LQR recorder。此时history buffer未初始化、history和recorder均为空。
+- 未来获得授权后，SimulationRunner.run才会调用初始化和仿真推进；simulation的MultiCallback在on_simulation_end调用MetricCallback/SimulationLogCallback。当前冻结顺序执行配置让指标计算、.pickle.temp写出和官方msgpack日志序列化同步完成。
+- runner成功后，唯一B1正式executor依次校验recorder、save_runner_reports、common_builder.multi_main_callback.on_run_simulation_end。后者调用MetricFileCallback整合临时指标为官方parquet；之后验证16类parquet和官方安全schema，再校验serializer、manifest及artifact hashes。
+- 六步完成状态仍为RUNNER_COMPLETE → RECORDER_COMPLETE → OFFICIAL_METRICS_COMPLETE → SERIALIZER_COMPLETE → MANIFEST_COMPLETE → ARTIFACT_HASHES_VALIDATED。SERIALIZER_COMPLETE表示验证先前runner callback已经写出的日志，不表示把实际日志生成延后到主finalizer之后。此次不改动任何运行顺序或科学行为。
+
+## 静态预检必须满足
+
+1. runner确实拥有被检查的simulation和planner，simulation.callback是官方MultiCallback，其on_simulation_end正确绑定。
+2. 实际simulation链有且仅有一个官方MetricCallback和SimulationLogCallback，各方法绑定正确；MetricCallback拥有官方MetricsEngine，实例builder名称/具体类型与实际resolved配置精确对应，满足冻结必需指标集合。
+3. common_builder拥有官方MultiMainCallback，其中唯一MetricFileCallback存在，主分派和finalizer实例方法都正确绑定，resolved cfg的_target_对应真实类型。
+4. 正式output_dir、common.output_dir、engine写出路径、finalizer读取/写出路径全部匹配本namespace的raw/metrics；目录可写；run_metric=true、worker=Sequential、callback parallelization关闭，future列表为空。
+5. 官方SimulationLogCallback配置指向raw/simulation_log、msgpack/.msgpack.xz；原recorder安装在实际controller的tracker上，79条预期transition、当前0条；simulation未初始化。
+6. 原六步生命周期、正式executor runner/recorder/report/main-finalizer/output-validator调用序列不变。manifest在内存中验证身份字段，不写出真实attempt execution record。
+
+## 证据范围
+
+本轮证明 STATIC_PREFLIGHT_VALIDATION：对象已经正确装配、输出配置一致、收尾入口和冻结调用合同可用。**未执行 RUNTIME_METRIC_FINALIZATION，不证明未来运行一定生成所有16类指标或一定科学成功。**
+
+六项正式装配、正反测试和缺失配置fixture均在零运行tripwire下；禁止runner.run/_initialize、simulation initialize/propagate、planner初始化/轨迹生成、controller/LQR/motion推进、指标compute/write、MetricCallback/SimulationLogCallback结束、MetricFileCallback/主链finalization和预算入口。工厂构建产生诊断目录及初始化main start状态是允许的装配副作用；不会推进仿真、写科学轨迹/指标或更新科学预算。
+
+未来运行缺失指标、schema/serializer/hash等失败仍为基础设施失败，必须立即停止。静态PASS不豁免任何原规则。B1-R旧授权及失败证据不可覆盖；本轮没有新执行权限。

@@ -1,0 +1,59 @@
+{
+  "budget_hash_audit": "UNCHANGED",
+  "contract_indicators": {
+    "BDD": 0,
+    "C_EXECUTION": 0,
+    "HLC_ROLLOUT": 0,
+    "H_EVALUATION": 0,
+    "NEW_SCIENTIFIC_ATTEMPTS": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_INFERENCE": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN": 0,
+    "SIMULATION": 0,
+    "TSB_ROLLOUT": 0,
+    "V_EXECUTION": 0
+  },
+  "cumulative_attempts": 35,
+  "forbidden_scientific_actions": {
+    "BDD": 0,
+    "C_EXECUTION": 0,
+    "H_FEATURE_EVALUATION": 0,
+    "MMD": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_INFERENCE": 0,
+    "RBR_TRAINING": 0,
+    "V_EXECUTION": 0,
+    "Z64_COMPUTATION": 0
+  },
+  "guarded_calls": {
+    "KinematicBicycleModel.propagate_state": 0,
+    "LQRTracker.track_trajectory": 0,
+    "MetricCallback.on_simulation_end": 0,
+    "MetricFileCallback.on_run_simulation_end": 0,
+    "MetricsEngine.compute": 0,
+    "MetricsEngine.write_to_files": 0,
+    "MultiMainCallback.on_run_simulation_end": 0,
+    "R2BControllerAwarePlannerV1.compute_planner_trajectory": 0,
+    "R2BControllerAwarePlannerV1.compute_trajectory": 0,
+    "R2BControllerAwarePlannerV1.initialize": 0,
+    "Simulation.initialize": 0,
+    "Simulation.propagate": 0,
+    "SimulationLogCallback.on_simulation_end": 0,
+    "SimulationRunner._initialize": 0,
+    "SimulationRunner.run": 0,
+    "TwoStageController.update_state": 0,
+    "tools.b1_resume_execution.update_status": 0,
+    "tools.b1_resume_execution.validate_claim": 0,
+    "tools.b1_tsb_qualification_executor.claim_budget": 0
+  },
+  "historical_attempts": 35,
+  "metric_finalization": 0,
+  "new_diagnostic_scientific_artifact_scan": {
+    "files": [],
+    "result": "NONE"
+  },
+  "new_scientific_attempts": 0,
+  "runner_run": 0,
+  "simulation": 0
+}

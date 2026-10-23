@@ -1,0 +1,47 @@
+{
+  "actual_draft_refusal": "AUTH_STAGE",
+  "draft_authorization_sha256": "7b611ed52e769c7cb3a2bf7b7ff2b007ca409a64c50bd3e8d12b482108579831",
+  "execution_body_proof": {
+    "only_original_preflight_function_changed": true,
+    "runner_and_lifecycle_source_byte_unchanged": true
+  },
+  "history_files_unchanged": 935,
+  "input_check": {
+    "all_40_identity_hashes_valid": true,
+    "cumulative_attempts": 35,
+    "five_not_run_preserved": true,
+    "historical_attempts": 35,
+    "historical_complete_arms": 34,
+    "historical_complete_pairs": 17,
+    "new_attempts": 0,
+    "original_failure_preserved": true,
+    "roster_pairs": 20,
+    "unique_arms": 40
+  },
+  "old_authorization_unchanged_sha256": "f4944458eb82501f9670f75afba96dff7f42144cbd99695538b4f709b7893669",
+  "postpack_guard_calls": {
+    "KinematicBicycleModel.propagate_state": 0,
+    "LQRTracker.track_trajectory": 0,
+    "MetricCallback.on_simulation_end": 0,
+    "MetricFileCallback.on_run_simulation_end": 0,
+    "MetricsEngine.compute": 0,
+    "MetricsEngine.write_to_files": 0,
+    "MultiMainCallback.on_run_simulation_end": 0,
+    "R2BControllerAwarePlannerV1.compute_planner_trajectory": 0,
+    "R2BControllerAwarePlannerV1.compute_trajectory": 0,
+    "R2BControllerAwarePlannerV1.initialize": 0,
+    "Simulation.initialize": 0,
+    "Simulation.propagate": 0,
+    "SimulationLogCallback.on_simulation_end": 0,
+    "SimulationRunner._initialize": 0,
+    "SimulationRunner.run": 0,
+    "TwoStageController.update_state": 0,
+    "tools.b1_resume_execution.update_status": 0,
+    "tools.b1_resume_execution.validate_claim": 0,
+    "tools.b1_tsb_qualification_executor.claim_budget": 0
+  },
+  "protected_asset_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "source_file_count": 409,
+  "source_git_blobs_match": true,
+  "status": "PASS"
+}
