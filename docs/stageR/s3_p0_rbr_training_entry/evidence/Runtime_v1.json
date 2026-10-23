@@ -1,0 +1,15 @@
+{
+  "python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+  "executable": "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "numpy": "1.26.4",
+  "torch": "1.9.0.post2",
+  "pytest": "8.4.2",
+  "cuda_available": false,
+  "mps_available": "MPS_API_UNAVAILABLE",
+  "memory_bytes": 17179869184,
+  "processor": "Apple M5",
+  "no_model_instantiated": true,
+  "no_accelerator_timing_or_training": true
+}

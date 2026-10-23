@@ -1,0 +1,61 @@
+{
+  "status": "PROPOSED_NOT_OWNER_FROZEN",
+  "training_authorized": false,
+  "training_runs_authorized": 0,
+  "input_contract": "canonical83_v1_PROPOSAL",
+  "input_shape": [
+    80,
+    83
+  ],
+  "encoder_internal_inputs": 167,
+  "encoder_internal_input_definition": "83 numerical channels +83 channel-valid bits+normalized physical time",
+  "encoder": {
+    "type": "GRU",
+    "layers": 1,
+    "hidden": 128,
+    "dropout": 0,
+    "z_dim": 64,
+    "projection": [
+      128,
+      128,
+      64
+    ]
+  },
+  "semantic_targets": "S3_P0_Semantic_Target_Definitions_v1.md",
+  "repr_objective": "masked temporal reconstruction",
+  "lambda_repr": 1.0,
+  "lambda_sem": 1.0,
+  "auxiliary_losses": [],
+  "optimizer": {
+    "name": "AdamW",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0001,
+    "gradient_clip_norm": 1.0
+  },
+  "batch_size": 128,
+  "max_epochs_per_run": 30,
+  "early_stop_patience": 5,
+  "minimum_improvement": 1e-06,
+  "checkpoint_tie": "earliest_epoch",
+  "checkpoint_selection": "U_val_total_loss_only",
+  "primary_seed": 3407,
+  "replication_seeds": [
+    3408,
+    3409
+  ],
+  "best_seed_selection": false,
+  "max_runs_proposed": 3,
+  "max_total_device_hours_proposed": 24,
+  "U_manifest": null,
+  "U_source_group_split_seed_proposed": 2026102302,
+  "validation_mask_seed_proposed": 2026102301,
+  "normalizer": null,
+  "checkpoint": null,
+  "primary_bdd_input": "frozen shared z64",
+  "B_V_C_outcomes_for_encoder_selection": false
+}

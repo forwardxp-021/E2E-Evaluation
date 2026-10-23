@@ -1,0 +1,47 @@
+{
+  "status": "FROZEN_B1_CONCLUSION_INHERITED_NOT_REEVALUATED",
+  "B1_PAIRS": "20/20 PASS",
+  "B1_ARMS": "40/40 COMPLETE",
+  "CUMULATIVE_ATTEMPTS": 41,
+  "TECHNICAL_RETRY": 1,
+  "SCIENTIFIC_FAILURES": 0,
+  "LOW_ORDER_NUISANCE_ELIMINATED": "NOT_ESTABLISHED",
+  "TSB_CLEAN_RESIDUAL_TASK": "NOT_ESTABLISHED",
+  "prior_snapshot_counts": {
+    "E1_UNRELATED_HISTORICAL_USE": 149,
+    "E3_PRIMARY_METHOD_DEVELOPMENT": 31,
+    "E5_UNTOUCHED_CONFIRMATORY": 5,
+    "E2_BENCHMARK_ENGINEERING": 62,
+    "E0_METADATA_ONLY": 1
+  },
+  "B1_R2_overlay_sessions": [
+    "2021.08.30.13.08.03_veh-08",
+    "2021.08.17.18.54.02_veh-45",
+    "2021.08.27.16.46.47_veh-45"
+  ],
+  "current_metadata_overlay_counts": {
+    "E1_UNRELATED_HISTORICAL_USE": 146,
+    "E3_PRIMARY_METHOD_DEVELOPMENT": 31,
+    "E5_UNTOUCHED_CONFIRMATORY": 5,
+    "E2_BENCHMARK_ENGINEERING": 65,
+    "E0_METADATA_ONLY": 1
+  },
+  "static_eligible_overlay_counts": {
+    "E1_UNRELATED_HISTORICAL_USE": 144,
+    "E5_UNTOUCHED_CONFIRMATORY": 4,
+    "E2_BENCHMARK_ENGINEERING": 65,
+    "E0_METADATA_ONLY": 1
+  },
+  "Claim_A_static_upper_bound_after_overlay": 149,
+  "Claim_B_static_upper_bound": 214,
+  "strict_C_static_upper_bound": 4,
+  "V_C_membership_materialized": false,
+  "B1_exposure_type": "E2 TSB_BENCHMARK; not detector development and not Primary comparison",
+  "source_sha256": {
+    "docs/stageR/b1_resume_execution_r2/B1_R2_Summary_v1.json": "7721a68f0c633bb1cb26e949f9bbd6ee7bf5fe04f07e7e8223383322aa8adf55",
+    "docs/stageR/b1_resume_execution_r2/B1_R2_Final_Qualification_Report_v1.md": "2c8688c4c78b17cf3839bf2445578bcabeabc94c6ffb2d65eab95ebfce03ef13",
+    "docs/stageR/b1_resume_execution_r2/B1_R2_Final_Pair_Results_v1.csv": "eb4d2f3538e5094e97d121d2b0d496660503cb83b76e84088d5b3402cb725678",
+    "docs/stageR/b1_resume_execution_r2/B1_R2_Exposure_Ledger_Update_v1.csv": "204816465636d1d2756a8745fd3fdb1d22868965fb027a1c3a3d602c9b1df87b",
+    "docs/stageR/s2r_engineering_closure/S2R_Static_Eligibility_Census_v1.csv": "cf5eb251419cd4a531055721d180578444f9e28626c422f58f8b20ba60abc0f4"
+  }
+}

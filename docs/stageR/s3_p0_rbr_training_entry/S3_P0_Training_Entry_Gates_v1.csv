@@ -1,0 +1,13 @@
+gate,requirement,status,evidence,reason,mandatory,training_authorized
+G1,B1资格验证正式PASS,PASS,docs/stageR/b1_resume_execution_r2/B1_R2_Final_Qualification_Report_v1.md; evidence/B1_And_Exposure_Inheritance_v1.json,20/20 pairs;40/40 arms;41 attempts;1 technical retry;0 scientific failures,true,false
+G2,U身份来源划分可追溯,BLOCKED,S3_P0_U_Data_Split_Manifest_v1.json; evidence/U_Raw_Record_Index_v1.csv,Dynamic retained Scenario全部回溯raw record但无原segment/global time映射;旧35分片meta缺失;未来U未指定,true,false
+G3,重叠泄漏处理或阻断,BLOCKED,evidence/U_Local_Duplicate_Raw_Check_v1.json; S3_P0_U_Data_Lineage_And_Overlap_Audit_v1.md,真实跨train/test重复ego80帧;未处理;部分重叠/原segment互斥未建立,true,false
+G4,Waymo/nuPlan83合同明确且可用,BLOCKED,S3_P0_Input83_Parity_Audit_v1.csv; evidence/Input83_Golden_Fixture_Results_v1.json; tools/stage5d_context_core.py:61,83字段已定义;生产time-slot混排/closing/time/yaw/anchor/mask不一致;canonical proposal未实施,true,false
+G5,架构训练目标可冻结规格,PASS,S3_P0_RBR_V2_Training_Architecture_Proposal_v1.md; S3_P0_Semantic_Target_Definitions_v1.md,完整单候选建议可审查;仅规格通过不等于批准或已实现,true,false
+G6,U-only encoder selection可执行,BLOCKED,tools/train_context_behavior_embedding.py:105; tools/stage6u_unified_abc_trainer.py; S3_P0_RBR_V2_Training_Architecture_Proposal_v1.md,历史trainer非本次mask/目标/防火墙规格;无新U/group manifest及可执行冻结trainer/config,true,false
+G7,语义目标无TSB/Primary监督,PASS,S3_P0_Semantic_Target_Definitions_v1.md,仅U物理canonical13;无O/treatment/H/BDD标签及人工距离几何loss,true,false
+G8,z64与未来BDD接口一致,BLOCKED,tools/stage7e_embed_stage6_dataset.py:73; S3_P0_Waymo_NuPlan_Input83_Contract_v1.md,z64原则正确但新canonical/mask/normalizer严格版本export未实现;旧nan_to_num与维度匹配不足认证,true,false
+G9,H/RBR角色和Primary合同一致,PASS,S3_P0_Representation_Roles_Audit_v1.md; S3_P0_Primary_Firewall_Check_v1.md; tools/s1_protocol_schema.py:134,H30保持;Primary不改;未来容量/功效与V/C授权尚未认证,true,false
+G10,资源预算复现计划明确,PASS,S3_P0_RBR_V2_Training_Architecture_Proposal_v1.md; evidence/Runtime_v1.json,CPU可用/torch1.9无CUDA/MPS;提出3seed/90epoch/24设备小时上限;时间仅估算;需Owner批准,true,false
+G11,完整源码配置数据hash绑定,BLOCKED,S3_P0_Manifest_v1.json; S3_P0_U_Data_Split_Manifest_v1.json; evidence/Protected_Baseline_v1.json,审计源码与已读当前数据已hash;未来新U/adapter/trainer/config/normalizer尚不存在故不可完整绑定训练,true,false
+G12,Owner待决事项识别,PASS,S3_P0_Owner_Decision_Items_v1.md,仅O1新输入/O2新U分组/O3具体训练协议/O4预算授权;不重开Primary合同,true,false

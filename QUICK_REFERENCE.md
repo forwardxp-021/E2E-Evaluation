@@ -11428,3 +11428,25 @@ PYTHONPATH="$PWD:../nuplan-devkit" PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 新增≤6、累计≤41；原17对不重跑不重判、18T1永久保留。官方指标、recorder、serializer、manifest和hash全部完成才ARM_COMPLETE。科学失败继续、基础设施失败立即停止；任何最终预检失败不得修复重试。本轮不授权其他第二次尝试或attempt3，不能重复执行命令自动续跑。原20对分母固定，20/20 full-contract PASS才资格通过。受保护资产与科学参数不变，RBR/H/BDD/Primary/V/C禁止，完成报告和推送后停止。
 
 B1-R2正式结论：`B1_TSB_BENCHMARK_QUALIFICATION_PASS`，原20/20对full-contract通过，新增6次、累计41次；原18T1失败保留。正式报告见 `docs/stageR/b1_resume_execution_r2/B1_R2_Final_Qualification_Report_v1.md`。RBR训练/Primary/V/C仍未授权，clean residual与低阶干扰消除仍未建立。
+
+## S3-P0 — RBR-V2训练入口与数据合同审计（零训练）
+
+### 命令
+
+在仓库根目录、现有nuPlan环境运行：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s3_p0_training_entry_audit.py parity
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s3_p0_training_entry_audit.py lineage
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python /Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q tests/test_s3_p0_training_entry_audit.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s3_p0_training_entry_audit.py verify
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/s3_p0_training_entry_audit.py manifest
+```
+
+### 期望行为
+
+读取原始51个Waymo文件（约23GB流式读取）、Dynamic36分片元数据和mmap数组，生成来源/窗口重叠审计；用14种确定性物理fixture调用现有Waymo/nuPlan特征接口。只写`docs/stageR/s3_p0_rbr_training_entry/`，不导出训练数据、不加载模型权重、不训练/推理/仿真/BDD，不生成V/C名单。`snapshot`仅用于新阶段首次建立保护基线，已有文件时明确拒绝覆盖；上述verify沿用本次初始冻结基线。
+
+### 通过标准
+
+4项fixture回归、编译及临时依赖检查通过；2185项历史/源码/config保护hash与CSV不变；83字段及G1–G12完整。审计命令成功不代表训练准入：本次为`S3_P0_BLOCKED_INPUT_CONTRACT`，同时保留`S3_P0_BLOCKED_U_DATA_INDEPENDENCE`与`S3_P0_BLOCKED_TRAINING_PROTOCOL`。时间/槽位混排、closing物理错误和跨train/test重复ego已登记；旧数据/科学代码不改。先审查最小修复建议，全部入口关闭后仍须Owner单独授权训练。

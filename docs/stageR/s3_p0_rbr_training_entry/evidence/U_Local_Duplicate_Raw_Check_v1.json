@@ -1,0 +1,70 @@
+[
+  {
+    "local_sequence_sha256": "1f498b4eb2afa2ca928fd35d0d2dcfa4a02bf13c30edd714627ada14efeb3b8a",
+    "sources": [
+      {
+        "scenario_id": "249bd8c0ba9102c7",
+        "actor_id": "1252",
+        "split": "test",
+        "shard": "outputs/stage6r_dynamic_full51_semantic_strict_part_27_36/shards/shard_000002",
+        "row": 705,
+        "start": 0,
+        "raw_file": "uncompressed_scenario_training_training.tfrecord-00030-of-01000",
+        "offset": "94749254",
+        "payload_bytes": "1247882",
+        "frame_count": "91",
+        "time_start_s": "0.0",
+        "time_end_s": "8.99991",
+        "timestamps_sha256": "60047b9397a901649398ba61eb4b8a96c03e42b7a8ee90e7c8a22ca326896cf2",
+        "raw_segment_id": "NOT_AVAILABLE",
+        "world_track_sha256": "24a23cc0297c365020294864eef52505ed491522f807cc31795a6215b02f1f12"
+      },
+      {
+        "scenario_id": "fd4ef9f02c34f649",
+        "actor_id": "3925",
+        "split": "train",
+        "shard": "outputs/stage6r_dynamic_full51_semantic_strict_part_44_51/shards/shard_000002",
+        "row": 3822,
+        "start": 0,
+        "raw_file": "uncompressed_scenario_training_training.tfrecord-00048-of-01000",
+        "offset": "70657735",
+        "payload_bytes": "1268703",
+        "frame_count": "91",
+        "time_start_s": "0.0",
+        "time_end_s": "8.99991",
+        "timestamps_sha256": "60047b9397a901649398ba61eb4b8a96c03e42b7a8ee90e7c8a22ca326896cf2",
+        "raw_segment_id": "NOT_AVAILABLE",
+        "world_track_sha256": "24a23cc0297c365020294864eef52505ed491522f807cc31795a6215b02f1f12"
+      }
+    ],
+    "raw_world_track_exact_equal": true,
+    "raw_world_valid_frame_counts": [
+      80,
+      80
+    ],
+    "raw_world_path_lengths_m": [
+      19.986427694635932,
+      19.986427694635932
+    ],
+    "full_context_exact_equal": false,
+    "max_abs_world_field_difference": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "origin_xy": [
+      [
+        -3216.7745203292043,
+        -763.011210230745
+      ],
+      [
+        -3216.7745203292043,
+        -763.011210230745
+      ]
+    ],
+    "interpretation": "EXACT_WORLD_TRACK_DUPLICATE"
+  }
+]
