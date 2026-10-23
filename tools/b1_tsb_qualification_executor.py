@@ -119,6 +119,7 @@ def validate_pre_run_lifecycle(arm: Any, spec: Mapping[str, Any]) -> Mapping[str
 def validate_and_hash_artifacts(arm: Any) -> Mapping[str, str]:
     """Require official outputs and hash the immutable post-run artifact set."""
     required = [
+        arm.run_root / "official_safety_adapter.json",
         arm.run_root / "trace/realized_current_ego.jsonl",
         arm.run_root / "telemetry/planner_transfer.jsonl",
         arm.run_root / "telemetry/actual_lqr_controller_telemetry.jsonl",
@@ -131,6 +132,18 @@ def validate_and_hash_artifacts(arm: Any) -> Mapping[str, str]:
     if missing:
         raise B1ExecutionError(f"B1_REQUIRED_POST_RUN_ARTIFACT_MISSING:{missing}")
     return {str(path.relative_to(arm.run_root)): sha256_file(path) for path in required}
+
+
+def validate_official_metric_outputs(arm: Any) -> None:
+    """Validate official parquet persistence and frozen safety schema, not its pass value."""
+    import pandas as pd
+    from tools.r1_b2_8_r3_1_official_safety_adapter import adapt_official_safety
+    for name in sorted(EXPECTED_OFFICIAL_METRICS):
+        path = arm.run_root / "raw/metrics" / f"{name}.parquet"
+        if not path.is_file() or len(pd.read_parquet(path)) != 1:
+            raise B1ExecutionError(f"B1_OFFICIAL_METRIC_SCHEMA_OR_ROW_INVALID:{path}")
+    safety = adapt_official_safety(arm.run_root)
+    write_manifest(arm.run_root / "official_safety_adapter.json", safety)
 
 
 def validate_serializer_complete(arm: Any) -> Path:
@@ -308,6 +321,26 @@ def execute(
     ledger_path = output_root / "B1_Scientific_Arm_Budget_Ledger_v1.json"
     write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "READY_BEFORE_RUNNER_RUN", route_precheck=route_precheck))
     claim_budget(ledger_path, authorization, run_id)
+    return complete_production_arm(
+        arm, spec, authorization, route_precheck,
+        lambda status: update_budget_status(ledger_path, run_id, status),
+    )
+
+
+def complete_production_arm(arm, spec, authorization, route_precheck, on_status, attempt_metadata=None):
+    """Shared official runner and post-run lifecycle for original and resumed B1.
+
+    Callers must validate authorization, build a fresh arm, pass all gates and
+    claim their non-overwriting budget before entering this sole B1 runner site.
+    """
+    manifest_path = arm.run_root / "execution_manifest.json"
+
+    def persist(path, payload):
+        payload = dict(payload)
+        if attempt_metadata is not None:
+            payload.update(attempt_metadata)
+        write_manifest(path, payload)
+
     lifecycle: tuple[str, ...] = ()
     try:
         report = arm.runner.run()
@@ -319,10 +352,11 @@ def execute(
         from nuplan.planning.script.utils import save_runner_reports
         save_runner_reports([report], arm.common_builder.output_dir, arm.cfg.runner_report_file)
         arm.common_builder.multi_main_callback.on_run_simulation_end()
+        validate_official_metric_outputs(arm)
         lifecycle = advance_lifecycle(lifecycle, "OFFICIAL_METRICS_COMPLETE")
         validate_serializer_complete(arm)
         lifecycle = advance_lifecycle(lifecycle, "SERIALIZER_COMPLETE")
-        write_manifest(
+        persist(
             manifest_path,
             arm_manifest(spec, arm, authorization, "MANIFEST_PENDING_HASH_VALIDATION", lifecycle, route_precheck),
         )
@@ -330,12 +364,12 @@ def execute(
         artifact_hashes = validate_and_hash_artifacts(arm)
         lifecycle = advance_lifecycle(lifecycle, "ARTIFACT_HASHES_VALIDATED")
     except Exception:
-        write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "TECHNICAL_INCOMPLETE", lifecycle, route_precheck))
-        update_budget_status(ledger_path, run_id, "TECHNICAL_INCOMPLETE")
+        persist(manifest_path, arm_manifest(spec, arm, authorization, "TECHNICAL_INCOMPLETE", lifecycle, route_precheck))
+        on_status("TECHNICAL_INCOMPLETE")
         raise
-    write_manifest(manifest_path, arm_manifest(spec, arm, authorization, "ARM_COMPLETE", lifecycle, route_precheck, artifact_hashes))
-    update_budget_status(ledger_path, run_id, "ARM_COMPLETE")
-    return {"run_id": run_id, "status": "ARM_COMPLETE", "manifest": str(manifest_path)}
+    persist(manifest_path, arm_manifest(spec, arm, authorization, "ARM_COMPLETE", lifecycle, route_precheck, artifact_hashes))
+    on_status("ARM_COMPLETE")
+    return {"run_id": spec["run_id"], "status": "ARM_COMPLETE", "manifest": str(manifest_path)}
 
 
 def main() -> int:

@@ -11364,3 +11364,25 @@ python3 -m py_compile tools/*.py  # 本机 Python 3.14.4
 - 原20对40 arm的初始有限查询和完整剩余native route suffix通过，20为COMPATIBLE；这不是新闭环结果或对所有未来state的保证。
 - 旧成功、真实分支回溯、不可伪造连接、其他错误保留、身份与源码授权绑定、历史hash和所有报告/CSV/JSON/manifest逐字节复现测试通过。
 - `B1_IR3_READY_FOR_RESUME_OWNER_REVIEW`；原B1仍INCOMPLETE_INFRASTRUCTURE，B1 resume、RBR training、Primary evaluation均NOT_AUTHORIZED。分母20、attempt上限2及NO_RERUN规则不变。
+
+## B1-R — 冻结 B1 的有限恢复执行
+
+### 命令
+
+使用 nuPlan 环境；以下分阶段命令各只允许执行一次，不能重复准备授权或自动恢复失败的尝试：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/b1_resume_execution.py prepare
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/b1_resume_execution.py preflight
+# 仅在授权和全部预检通过、并提交冻结文件之后执行：
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/b1_resume_execution.py execute
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/b1_resume_execution.py finalize
+```
+
+### 期望行为
+
+读取原20对 roster、40 arm specs、原35次账本、IR2科学结果和IR3路由闭合证据。先提交执行代码，再生成绑定该commit的Owner授权；zero-run预检构建6个正式工厂但不进入runner。全部14项通过且授权/预检提交后，依次独立进程执行18 treatment attempt 2、18 baseline、19 treatment、19 baseline、20 baseline、20 treatment。新产物写入 `outputs/stageR/b1_resume_execution_v1/`，报告写入 `docs/stageR/b1_resume_execution/`。
+
+### 通过标准
+
+本轮最多6次、累计最多41次；01–17不重跑不重判；18 treatment原失败保留、禁止attempt 3。复用唯一B1 runner及官方callback/serializer/safety适配器；完成六步lifecycle与hash才ARM_COMPLETE。科学失败保留并继续，任何基础设施失败立即终止。最终保留20分母，只有20/20 full-contract PASS才能资格通过。无RBR/H/BDD/Primary/V/C，保护原CSV和历史outputs。历史IR3源码快照回放须在其原commit进行；B1-R共享lifecycle抽取后的新源码由本阶段授权和测试固定。
