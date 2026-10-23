@@ -1,0 +1,59 @@
+{
+  "normalization": "Report copies strip trailing whitespace only; all raw originals preserved verbatim",
+  "logs": [
+    {
+      "raw_path": "docs/stageR/b1_resume_execution_r2/execution_logs/B1-TSB-18-BASELINE__ATTEMPT_1.log",
+      "raw_sha256": "a3ff3c2787970b012de12eab7fa1c5b889cbb4ebae1b1816311c6b6962b433f0",
+      "raw_archive_path": "outputs/stageR/b1_resume_execution_r2_v1/execution_logs/B1-TSB-18-BASELINE__ATTEMPT_1.log",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/execution_log_archive/B1-TSB-18-BASELINE__ATTEMPT_1.txt",
+      "report_copy_sha256": "9b34620868110fa4a7a0da2d56e8103dee93a67e99b8eff44d907be2e05f4507"
+    },
+    {
+      "raw_path": "docs/stageR/b1_resume_execution_r2/execution_logs/B1-TSB-18-TREATMENT__ATTEMPT_2.log",
+      "raw_sha256": "07851db4fce7d8d232af405e4ea354c70dc4e7316178abafa8f635dab3629d8d",
+      "raw_archive_path": "outputs/stageR/b1_resume_execution_r2_v1/execution_logs/B1-TSB-18-TREATMENT__ATTEMPT_2.log",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/execution_log_archive/B1-TSB-18-TREATMENT__ATTEMPT_2.txt",
+      "report_copy_sha256": "d510917a50bfcdd60a25387d5855cf30a94c42745bdd82073fd0e63c3a2ac330"
+    },
+    {
+      "raw_path": "docs/stageR/b1_resume_execution_r2/execution_logs/B1-TSB-19-BASELINE__ATTEMPT_1.log",
+      "raw_sha256": "a8eab03918f5f338cfbcb075e1be29d986865288ba59ff0ed173f52a2c359bf0",
+      "raw_archive_path": "outputs/stageR/b1_resume_execution_r2_v1/execution_logs/B1-TSB-19-BASELINE__ATTEMPT_1.log",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/execution_log_archive/B1-TSB-19-BASELINE__ATTEMPT_1.txt",
+      "report_copy_sha256": "143b5d67e6eb12a64cd08b1695cb6cfddcfda1416d7e16ba0924f6dda7942199"
+    },
+    {
+      "raw_path": "docs/stageR/b1_resume_execution_r2/execution_logs/B1-TSB-19-TREATMENT__ATTEMPT_1.log",
+      "raw_sha256": "1d50950be08896be7804b5280a1899b6683fe419bed9706405b602008f643286",
+      "raw_archive_path": "outputs/stageR/b1_resume_execution_r2_v1/execution_logs/B1-TSB-19-TREATMENT__ATTEMPT_1.log",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/execution_log_archive/B1-TSB-19-TREATMENT__ATTEMPT_1.txt",
+      "report_copy_sha256": "65c1e548aedb75b7cbf61d9079876bf6d2b5eea5303feceecf8ff05dc7de3b14"
+    },
+    {
+      "raw_path": "docs/stageR/b1_resume_execution_r2/execution_logs/B1-TSB-20-BASELINE__ATTEMPT_1.log",
+      "raw_sha256": "700e5dc25abce0745e69065c1d842e8926355c9cd064d12c862d41fa9c9fc277",
+      "raw_archive_path": "outputs/stageR/b1_resume_execution_r2_v1/execution_logs/B1-TSB-20-BASELINE__ATTEMPT_1.log",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/execution_log_archive/B1-TSB-20-BASELINE__ATTEMPT_1.txt",
+      "report_copy_sha256": "789cdb992dda7aecf2ac47a9bdf66df0dc7ced505ccc7234fa161944b3c3dcb8"
+    },
+    {
+      "raw_path": "docs/stageR/b1_resume_execution_r2/execution_logs/B1-TSB-20-TREATMENT__ATTEMPT_1.log",
+      "raw_sha256": "203895b6ed9e53ac6bc062308b246d7fd6f8fd0083b0cb4501f8bab42c4f4220",
+      "raw_archive_path": "outputs/stageR/b1_resume_execution_r2_v1/execution_logs/B1-TSB-20-TREATMENT__ATTEMPT_1.log",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/execution_log_archive/B1-TSB-20-TREATMENT__ATTEMPT_1.txt",
+      "report_copy_sha256": "1c173168c116289e2d9e38991f1d7bdc5c6654b0503e46b65b21e8ddfddfbe4b"
+    },
+    {
+      "raw_path": "outputs/stageR/b1_resume_execution_r2_v1/R2_execution.log",
+      "raw_sha256": "e1b7a2266c0a6edd8c497d12ebd3af8e4dfed78b0d8a3462aa0025bf13de4b9a",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/B1_R2_Execution_Sequence_Log_v1.txt",
+      "report_copy_sha256": "e1b7a2266c0a6edd8c497d12ebd3af8e4dfed78b0d8a3462aa0025bf13de4b9a"
+    },
+    {
+      "raw_path": "outputs/stageR/b1_resume_execution_r2_v1/final_preflight.log",
+      "raw_sha256": "bdb51f48835010a5aeb93760d8f1ad4895b0ccd5f3d2d73dc7e2a16c5b4917c4",
+      "report_copy": "docs/stageR/b1_resume_execution_r2/B1_R2_Final_Preflight_Log_v1.txt",
+      "report_copy_sha256": "6029068b6399c26d67797f80f0f4eb479f2731c92521820ef43a7a2c6bc4dbf1"
+    }
+  ]
+}

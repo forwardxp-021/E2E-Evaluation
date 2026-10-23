@@ -11426,3 +11426,5 @@ PYTHONPATH="$PWD:../nuplan-devkit" PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ### 通过标准
 
 新增≤6、累计≤41；原17对不重跑不重判、18T1永久保留。官方指标、recorder、serializer、manifest和hash全部完成才ARM_COMPLETE。科学失败继续、基础设施失败立即停止；任何最终预检失败不得修复重试。本轮不授权其他第二次尝试或attempt3，不能重复执行命令自动续跑。原20对分母固定，20/20 full-contract PASS才资格通过。受保护资产与科学参数不变，RBR/H/BDD/Primary/V/C禁止，完成报告和推送后停止。
+
+B1-R2正式结论：`B1_TSB_BENCHMARK_QUALIFICATION_PASS`，原20/20对full-contract通过，新增6次、累计41次；原18T1失败保留。正式报告见 `docs/stageR/b1_resume_execution_r2/B1_R2_Final_Qualification_Report_v1.md`。RBR训练/Primary/V/C仍未授权，clean residual与低阶干扰消除仍未建立。

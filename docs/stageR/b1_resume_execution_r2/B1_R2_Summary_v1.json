@@ -1,0 +1,109 @@
+{
+  "LOW_ORDER_NUISANCE_ELIMINATED": "NOT_ESTABLISHED",
+  "TSB_CLEAN_RESIDUAL_TASK": "NOT_ESTABLISHED",
+  "counts": {
+    "F_match": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "baseline_one_phase": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "full_contract_qualification": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "joint_mechanism": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "measurement_validity": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "no_LOW_SPEED_ENDSTOP": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "official_safety": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "technical_completeness": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    },
+    "treatment_two_phase": {
+      "evaluable_denominator": 20,
+      "n": 20,
+      "planned_denominator": 20,
+      "wilson95_full_denominator": [
+        0.8388748419471806,
+        1.0
+      ]
+    }
+  },
+  "cumulative_attempts": 41,
+  "full_contract_wilson95": [
+    0.8388748419471806,
+    1.0
+  ],
+  "historical_attempts": 35,
+  "low_speed_endstop_count": 0,
+  "new_attempts": 6,
+  "pairs_complete": 20,
+  "prohibitions": {
+    "BDD": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "C_EXECUTION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "H_FEATURE_EVALUATION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "MMD": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "PRIMARY_EVALUATION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "RBR_INFERENCE": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "RBR_TRAINING": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "V_EXECUTION": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "Z64_COMPUTATION": "NOT_EXECUTED_NOT_AUTHORIZED"
+  },
+  "unique_arms_complete": 40,
+  "verdict": "B1_TSB_BENCHMARK_QUALIFICATION_PASS"
+}

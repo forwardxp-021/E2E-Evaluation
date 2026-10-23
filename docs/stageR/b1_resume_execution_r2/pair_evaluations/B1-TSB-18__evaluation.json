@@ -1,0 +1,137 @@
+{
+  "dispatch_status": "EVALUATED_NO_POSTHOC_PAIR_DELETION",
+  "evaluation": {
+    "context_identity": {
+      "fields": {
+        "canonical_context_json_hash": true,
+        "pre_context_raw_hash": true
+      },
+      "pair_context_identity_pass": true
+    },
+    "endpoint": null,
+    "engineering": null,
+    "f_match": {
+      "absolute_delta": {
+        "end_minus_start_speed": 0.53632,
+        "mean_abs_accel": 0.102289,
+        "mean_speed": 0.649548,
+        "path_length": 5.142297
+      },
+      "calipers": {
+        "end_minus_start_speed": 0.978755681,
+        "mean_abs_accel": 0.11777666,
+        "mean_speed": 0.708203939,
+        "path_length": 5.38423459
+      },
+      "heading_change_abs_total": "SECONDARY_MECHANISM_PROXIMAL_AUDIT",
+      "pass": true,
+      "pass_by_feature": {
+        "end_minus_start_speed": true,
+        "mean_abs_accel": true,
+        "mean_speed": true,
+        "path_length": true
+      },
+      "primary_features": [
+        "mean_speed",
+        "end_minus_start_speed",
+        "path_length",
+        "mean_abs_accel"
+      ],
+      "status": "F_MATCH_PASS"
+    },
+    "frozen_scientific_numerics_modified": false,
+    "mechanism": {
+      "pass": true,
+      "reasons": [],
+      "status": "TSB_MECHANISM_PAIR_PASS"
+    },
+    "native_hlc_progress": null,
+    "native_route_progress": null,
+    "official_safety": {
+      "baseline": {
+        "canonical_payload": {
+          "collision": {
+            "number_of_all_at_fault_collisions_stat_value": 0
+          },
+          "drivable_area": {
+            "drivable_area_compliance_stat_value": true
+          }
+        },
+        "canonical_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+        "frozen_arm_safety_pass": true,
+        "frozen_pair_pass_semantics": "each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment",
+        "historical_canonical_schema_version": "r1_official_metric_canonical_payload_v1.0",
+        "posthoc_eligibility_applied": false,
+        "raw_metric_artifact_provenance": {
+          "collision": {
+            "artifact_provenance_sha256": "5a0127c9f4f66fd8b36fcba54767bc9af0b68c32124cc78fce6c6cc92f222e2d",
+            "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet"
+          },
+          "drivable_area": {
+            "artifact_provenance_sha256": "69dfb8867f538f60a5001890f1c06be8f8e10bb528fa8e415f16efe0ff97ab9f",
+            "relative_path": "raw/metrics/drivable_area_compliance.parquet"
+          }
+        },
+        "raw_metric_source": "actual_nuPlan_metric_engine_parquet_output",
+        "representation_bdd_rbr_read": false,
+        "schema_version": "r1_b2_8_r3_1_official_safety_adapter_v1.0",
+        "threshold_or_metric_changed": false
+      },
+      "baseline_safety_pass": true,
+      "frozen_pair_pass_semantics": "each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment",
+      "pair_safety_pass": true,
+      "posthoc_eligibility_applied": false,
+      "schema_version": "r1_b2_8_r3_1_official_safety_adapter_v1.0",
+      "threshold_or_metric_changed": false,
+      "treatment": {
+        "canonical_payload": {
+          "collision": {
+            "number_of_all_at_fault_collisions_stat_value": 0
+          },
+          "drivable_area": {
+            "drivable_area_compliance_stat_value": true
+          }
+        },
+        "canonical_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+        "frozen_arm_safety_pass": true,
+        "frozen_pair_pass_semantics": "each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment",
+        "historical_canonical_schema_version": "r1_official_metric_canonical_payload_v1.0",
+        "posthoc_eligibility_applied": false,
+        "raw_metric_artifact_provenance": {
+          "collision": {
+            "artifact_provenance_sha256": "b221444ac70085a54fa2163a00131c7f49ec9a9c6942a35ce78c7bdd11a18b5a",
+            "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet"
+          },
+          "drivable_area": {
+            "artifact_provenance_sha256": "1d869e02bb507cd4b8df327e3c2d3647f46852d946cb7be825ff63991917e624",
+            "relative_path": "raw/metrics/drivable_area_compliance.parquet"
+          }
+        },
+        "raw_metric_source": "actual_nuPlan_metric_engine_parquet_output",
+        "representation_bdd_rbr_read": false,
+        "schema_version": "r1_b2_8_r3_1_official_safety_adapter_v1.0",
+        "threshold_or_metric_changed": false
+      },
+      "treatment_safety_pass": true
+    },
+    "pipeline": [
+      "REALIZED_CURRENT_EGO_ITERATIONS_0_79",
+      "NATIVE_HLC_REALIZED_PROGRESS",
+      "TIMESTAMP_AWARE_MECHANISM",
+      "PROSPECTIVE_PRIMARY_F_MATCH",
+      "HLC_TIMESTAMP_AWARE_ENDPOINT_WITH_NATIVE_ROUTE_PROGRESS",
+      "TIMESTAMP_AWARE_ENGINEERING",
+      "OFFICIAL_SAFETY_CANONICALIZER"
+    ],
+    "planned_trajectory_role": "SECONDARY_GENERATOR_INTENT_ONLY",
+    "posthoc_eligibility_deletion_allowed": false,
+    "pretreatment_clearance_ledger_entry": null,
+    "primary_measurement_source": "REALIZED_CURRENT_EGO",
+    "status": "EVALUATED_REALIZED_FIRST_NATIVE_CONFORMANT"
+  },
+  "manual_pair_splicing_performed": false,
+  "official_safety_pair_pass": true,
+  "pair_id": "B1-TSB-18",
+  "posthoc_eligibility_deletion_allowed": false,
+  "schema_version": "r1_b2_8_r3_2_post_run_evaluator_dispatcher_v1.0"
+}
