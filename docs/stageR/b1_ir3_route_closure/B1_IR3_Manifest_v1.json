@@ -1,0 +1,122 @@
+{
+  "B1_01_TO_17_RERUN": "FORBIDDEN",
+  "B1_18_original_failure_input": "FIXED_BY_EXISTING_NATIVE_SUCCESSOR_BACKTRACKING",
+  "B1_20_route_status": "COMPATIBLE",
+  "artifact_sha256": {
+    "B1_IR3_B1_18_Root_Cause_v1.md": "d7036ed73c1cd77b8f84e351c16620c520345bd389f160471fda0f3f8d36e2bf",
+    "B1_IR3_B1_20_Compatibility_v1.md": "74803e0137840518d2c06a8d7bec579f131a73fd7f076de9b24cbec473ad1a71",
+    "B1_IR3_Pre_Post_Equivalence_Audit_v1.csv": "185780b12bba3d8ee6085570734bbbcd9d17da2258366d9c1c513d9410c814ed",
+    "B1_IR3_Production_Route_Gate_v1.md": "eb8df1a072114a8b23d5107dff117eb5a84a2ecfe295af2e6f4ea3106c1d7a02",
+    "B1_IR3_Resume_Execution_Plan_v3.csv": "23803441337947b9ee411ac09aea328c3f54dce3708e0894dcc031265481367d",
+    "B1_IR3_Route_Closure_Report_v1.md": "f587f4a054c6e6e758ffc1d4f534cafa7cef3f88ca496fe3cc4c97bb45c7c2be",
+    "B1_IR3_Route_Fix_Design_v1.md": "ccf99e8373a814473c33ee24f75bdd7eebdac23cd5b5233c393285b12777df1a",
+    "B1_IR3_Static_Evidence_v1.json": "2ca3db1eef500a1aca304fb623aea87e7e1588e68b37abafff13f89adc44281e"
+  },
+  "authorization": {
+    "B1_RESUME_EXECUTION": "NOT_AUTHORIZED",
+    "PRIMARY_EVALUATION": "NOT_AUTHORIZED",
+    "RBR_TRAINING": "NOT_AUTHORIZED"
+  },
+  "existing17_scientific_pass_preserved": true,
+  "governing_b1_status": "B1_TSB_BENCHMARK_QUALIFICATION_INCOMPLETE_INFRASTRUCTURE",
+  "governing_input_sha256": {
+    "RBR-64_博士研究总体方案_v2.3.md": "85c9cde84e2ea9ef6c1636dc87a8e083dfac6b338ef29a622c87ba0948297fa9",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_B1_Resume_Retry_Contract_v1.md": "f9a98090ce46d16a93442478841e347327a40b8e53890130611273655c9a4f5c",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_Lifecycle_Contract_v1.md": "ac370676ca3686cd584cd4725ba35253d9822830c43ff193d067ca659aae3662",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_Manifest_v1.json": "529fa6af85cca0e6ff40d878b1817cc7e56bdcba82e7ac774fd20acd0df80e0e",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_Native_Route_Precheck_v1.md": "ee0199390c156acf3c3a735d5234f7c58b97d96b646d9a8db655b2795c3c72ad",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_Official_Metric_Lifecycle_Fix_v1.md": "17dccc288f496284c6a69d223dc87e9ce23ed8dc9d74d0390cc87f3cb5ef346a",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_Offline_Finalize_Audit_v1.json": "74079ae6eef0fbccd94f564e8000dee89f2ad3fb7a5ab76f802cda726e8605f4",
+    "docs/stageR/b1_infrastructure_remediation/B1_IR_Remediation_Report_v1.md": "5f1312b74852ef78066dca180a6d9c87cb9d92bc29bc2beb252c40938899bbc4",
+    "docs/stageR/b1_ir2_adjudication/B1_IR2_Manifest_v1.json": "79646f4602e60bf43863ff65b6ba8c36630b5540a7469d635dca31568f29e04f",
+    "docs/stageR/b1_tsb_qualification/B1_Infrastructure_Stop_Record_v1.json": "89b9b493c54896aa7dcbba39d02754c6fb2c55497114d174ded9169c8892c3bc",
+    "docs/stageR/b1_tsb_qualification/B1_PostStop_Offline_Finalization_Addendum_v1.md": "89ab5ece205105753aac19e74d59895104d0047c475c9b75e7f3a0b8ecccf39d",
+    "docs/stageR/b1_tsb_qualification/B1_Scientific_Arm_Budget_Ledger_v1.json": "ec28ca9d17b95163f77e940fc46e13ecc7a908686a9fb297820cfb98d719015c",
+    "docs/stageR/b1_tsb_qualification/B1_Stop_Policy_Addendum_v1.md": "435530c605412f4452d7d073553878c6a8b1f16cefb537204323586784123f60",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Arm_Specs_v1.json": "06889559956943f94c5be6031db0b0fb974c81225e3cb04a2bfcf6858b568ee7",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Authorization_v1.json": "b2c9b13819bd7cd11e0fe22e835cc408008e50a1d1eac0f0d75b848d418be35c",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Execution_Report_v1.md": "ad3288411e7a945333a6b28544253e051ceeb85a7a87a7d86523f5ee08acefed",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Pair_Results_v1.csv": "99baf6475d9c61b2900465a11c834cc305f7f60f35b96b35812402b268e692cc",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Protocol_v1.md": "10a0370e99374610f8b7b24f5554e884be807bd69d9e8d562036077854d549dc",
+    "docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Roster_v1.csv": "fdc44c7a126892b9dfcaa0b44fce56eeab42b8649f8c98caf355fc63e40b229b",
+    "docs/stageR/s1r_owner_amendment/S1R_Data_Role_Contract_UBVC_v1.md": "473597fdde0c84b4d7096014eb80fa884843d93b61e700485d3ece8351be87ed",
+    "docs/stageR/s1r_owner_amendment/S1R_E3_E4_Reaudit_v1.md": "ff0703fc1a318dad080de19877da0c8c1b9d83a4f88d42e26f471d1c743d68e9",
+    "docs/stageR/s1r_owner_amendment/S1R_Exposure_Policy_v1.md": "7d8aabfa51fa464d9bd2ecab8d29d6ecf0136aa8ed25a77cc0aa2178d0ba45eb",
+    "docs/stageR/s1r_owner_amendment/S1R_Owner_Amendment_v1.md": "1656ea18ae50bc92f60e57db679fb35e29ad90c0c20c11d6e02cef9611d8fe96",
+    "docs/stageR/s1r_owner_amendment/S1R_Owner_Approval_Record_v1.md": "7ab9995ce7294bd623b70365377a22e786cf02edc69f388546cc4f0b7493ebba",
+    "docs/stageR/s1r_owner_amendment/S1R_Primary_Freeze_Point_v1.md": "3ac558962bdbd1980a6b68cafd87e3ffb26835e3a3c6f1b04da324b81634fe0a",
+    "docs/stageR/s2r_engineering_closure/S2R_C_Static_Capacity_v1.md": "97e78f47626ed59434875e165cee48bdc72f2de52c585fa6098b4b2135834b6d",
+    "docs/stageR/s2r_engineering_closure/S2R_Claim_A_Claim_B_Static_Capacity_v1.md": "2942fd325fe87fbc9c0cbe28efb54a3764b63f134970ccf6575df5c2c1b32eff",
+    "docs/stageR/s2r_engineering_closure/S2R_Engineering_Closure_Report_v1.md": "d07226e0e26d39cae8d0ee7fe957d4a1fc1e246084e0d1869ffc1693ff37f08f",
+    "docs/stageR/s2r_engineering_closure/S2R_Full_Arm_Reset_Proof_v1.md": "9f8857109012dff6a7a509979173ee5cc95a743e9302435001de17a3cea0dae7",
+    "docs/stageR/s2r_engineering_closure/S2R_Precontext_Identity_Implementation_v1.md": "a6893b881d023fb378a3ebfec03fb7548c00d157cbf01d2570a566b0be90e44e",
+    "docs/stageR/s2r_engineering_closure/S2R_Production_Executor_Contract_v1.md": "03ab7304ad8bdddcaa5f4d87937147a3a6ed1fd3ebece6c3ad54d70fb4d922c8",
+    "docs/stageR/s2r_engineering_closure/S2R_Static_V_Capacity_v1.md": "b4504dc9c9c150c68b56c2bb5e2a1827188aeaa4239c4bf8df81b2591a718da0",
+    "docs/stageR/s2r_role_aware_preflight/S2R_C_Robustness_Capacity_v1.md": "b8b72dfc3aa5bcb36d6d9954b97105a72b790e30e0a74c4591e7122299bf4514",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Claim_A_vs_Claim_B_Capacity_v1.md": "cbf6096744f2ade3062641974a7f45445ccef674c5a23f0c554fd91638b5d21a",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Full_Arm_Reset_Contract_v1.md": "71d7e6bc3692261f2a34961bef560b8bec9291f002fd24d850385637295ed43f",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Precontext_Identity_Contract_v1.md": "33e7d163ab8954bd295471ea72a375cb2597400e01e66f5c9fd53e1a32cfd095",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Preflight_Report_v1.md": "98b9a9134e501ae3872351bf59b5d8db793851cc2708042d4dcfb9e123be2eb5",
+    "docs/stageR/s2r_role_aware_preflight/S2R_Production_Execution_Binding_v1.md": "1678374ce725909ad0451912a40df6c7fdb35e113744f348b90a425f2f95b7b1"
+  },
+  "max_total_technical_attempts_per_arm": 2,
+  "planned_arms": 40,
+  "planned_pairs": 20,
+  "protected_asset": {
+    "path": "outputs/waymo_5neighbor_context_laneaware_clean_v1_full51_merged/behavior_events_v2/behavior_event_metrics_v2.csv",
+    "sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8"
+  },
+  "remaining_uncertainties": [
+    "No new full closed-loop execution; no claim of success for all theoretical future ego states",
+    "Actual off-route, route-end coverage or other runtime failures still stop and remain in denominator",
+    "New Owner authorization must bind commit, source hashes, original identities, remaining budgets and new attempt namespaces"
+  ],
+  "runtime_evidence_scope": "INITIAL_PRODUCTION_QUERY_AND_COMPLETE_NATIVE_SUFFIX;NO_NEW_CLOSED_LOOP_RESULT",
+  "schema_version": "B1_IR3_Manifest_v1",
+  "scientific_contract_change_required": false,
+  "source_git_sha_before_ir3": "b8673502ae9b69c752ba197dc9c2480cf11afe49",
+  "source_sha256": {
+    "tests/test_b1_ir3_route_closure.py": "8d713d32b0f7b8f86d3002195a90de7d01963a85bfe08656a2b36a775a477224",
+    "tools/b1_ir3_report_templates_v1.json": "dae91e4992ad76de49726b01f1a9b59502ba26c94e3f93fee1f3e776aa3e75fe",
+    "tools/b1_ir3_route_closure.py": "2e2606a3c35fce3558cb6cbab503852abd73d69747408cd5c8700ed12f1bd7ed",
+    "tools/b1_native_route_infrastructure.py": "c956e035cf145f60dab679954129a97c4f1e89b01d43baaeb0b9d610ce0e9582",
+    "tools/b1_tsb_qualification_executor.py": "2dcb37d3c6468751b2db0a86a0b53b3f7a513218317e724943182d6dad8e4748",
+    "tools/r2_b_controller_aware_planner_v1.py": "cad23a65430cfbe098bf722a9ea728ab7504034205f24046ddc38193108043a0"
+  },
+  "source_successor_version": "build_native_route_reference_v1_2_native_successor_backtracking",
+  "status": "B1_IR3_READY_FOR_RESUME_OWNER_REVIEW",
+  "summary": {
+    "existing17_reference_queries": 2720,
+    "focus_06_10_14_queries": 480,
+    "new_simulations": 0,
+    "old_failure_repaired": 1,
+    "old_success_byte_identical": 2773,
+    "static_compatible_arms": 40
+  },
+  "validation": {
+    "additional_checks": [
+      "tools/check_no_tmp_dependencies.py",
+      "git diff --check",
+      "historical asset hashes before/after"
+    ],
+    "compile_commands": [
+      "python3 -m py_compile tools/*.py",
+      "nuplan Python -m py_compile modified tools/tests"
+    ],
+    "deterministic_regeneration": "Generate to a new directory and compare every report/CSV/JSON/manifest byte",
+    "equivalence_rule": "dtype,shape,ndarray bytes and all returned metadata byte equality; no rounding/tolerance",
+    "runtime_guard": "runner.run, planner trajectory generation, controller update, LQR track and motion-model propagation forbidden in tests",
+    "suite": "tests/test_b1_ir3_route_closure.py plus B1-IR2, B1-IR and B1 regression suites"
+  },
+  "zero_run_proof": {
+    "C_EXECUTION": 0,
+    "HLC_ROLLOUT": 0,
+    "NEW_SCIENTIFIC_OUTCOME_EXPOSURE": 0,
+    "PRIMARY_EVALUATION": 0,
+    "RBR_TRAINING": 0,
+    "RUNNER_RUN": 0,
+    "SIMULATION": 0,
+    "TSB_ROLLOUT": 0,
+    "V_EXECUTION": 0
+  }
+}

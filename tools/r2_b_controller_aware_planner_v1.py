@@ -15,8 +15,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tools.r1_closed_loop_benchmark_v2_1 import (  # noqa: E402
     DT_SECONDS, WINDOW_FRAMES, _headings_from_xy, _offset_preserving_route_xy,
-    _state, build_native_route_reference_v1_1,
+    _state,
 )
+from tools.b1_native_route_infrastructure import build_native_route_reference_v1_2 as build_native_route_reference_v1_1  # noqa: E402
 from tools.r1_closed_loop_benchmark_v2_3 import build_hlc_route_continuous_reference_v2_3  # noqa: E402
 from tools.r1_official_technical_smoke_planner_v3_1 import R1OfficialTechnicalSmokePlannerV3_1  # noqa: E402
 from tools.r1_prospective_generator_contract_v2 import (  # noqa: E402

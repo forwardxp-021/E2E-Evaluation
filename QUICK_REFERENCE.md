@@ -11333,3 +11333,34 @@ python3 -m py_compile tools/*.py  # 全仓库需 Python 3.12+；本机 Python 3.
 - 新工具区分初始有限查询与全 topology 风险；五个 tail-defect pair 为 AMBIGUOUS，其余 15 对通过静态检查。20 保持 ROUTE_AMBIGUOUS，当前 gate 阻止 entry。
 - `B1_IR2_BLOCKED_ROUTE_ADJUDICATION`：18/20 的未来完整闭环兼容性尚未证明；分母仍为 20，01–17 NO_RERUN，19 只在 Owner 授权后首次执行。
 - `SIMULATION=0; RUNNER_RUN=0`；B1 resume、RBR training 和 Primary evaluation 均 NOT_AUTHORIZED。旧 B1-IR v1 文件和所有科学参数保持原样。
+
+## B1-IR3：Native Route Infrastructure Closure（零科学执行）
+
+### 1. 命令
+
+```bash
+# 必须使用一个不存在或为空的目录，完整生成报告、证据、恢复计划和 manifest：
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_ir3_route_closure.py \
+  --output-dir docs/stageR/b1_ir3_route_closure_reproduction_v1
+
+PYTHONPATH=$PWD:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_b1_ir3_route_closure.py tests/test_b1_ir2_adjudication.py \
+  tests/test_b1_infrastructure_remediation.py tests/test_b1_tsb_qualification.py
+
+python3 -m py_compile tools/*.py  # 本机 Python 3.14.4
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+只读官方地图及原 B1 call-entry inputs，使用同一个 v1.2 production successor 比较旧/新 native reference。旧函数成功时原样返回，只有 missing-successor 才按冻结 roadblock sequence 回溯地图中已有分支。生产 planner import 和 executor pre-run gate 绑定同一实现；旧 v1.1/IR2 工具保留复现历史故障。不会调用 planner trajectory generation、controller、simulator、runner，也不重跑01～17或更新原预算账本。
+
+### 3. 通过标准
+
+- 前17对2720个成功查询及18失败前53个成功查询：完整返回逐字节一致，无数值容差。
+- 18原iteration 53输入成功解析`19812→20203→18520→19953`；原生邻接存在且接点gap=0，required distance不变。
+- 原20对40 arm的初始有限查询和完整剩余native route suffix通过，20为COMPATIBLE；这不是新闭环结果或对所有未来state的保证。
+- 旧成功、真实分支回溯、不可伪造连接、其他错误保留、身份与源码授权绑定、历史hash和所有报告/CSV/JSON/manifest逐字节复现测试通过。
+- `B1_IR3_READY_FOR_RESUME_OWNER_REVIEW`；原B1仍INCOMPLETE_INFRASTRUCTURE，B1 resume、RBR training、Primary evaluation均NOT_AUTHORIZED。分母20、attempt上限2及NO_RERUN规则不变。

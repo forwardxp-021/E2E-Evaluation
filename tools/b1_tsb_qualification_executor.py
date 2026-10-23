@@ -29,7 +29,7 @@ from tools.s2r_production_executor import (  # noqa: E402
     sha256_file,
     write_manifest,
 )
-from tools.b1_native_route_precheck import precheck_with_production_builder  # noqa: E402
+from tools.b1_native_route_infrastructure import production_route_precheck_v1_2 as precheck_with_production_builder  # noqa: E402
 from tools.b1_offline_metric_finalize import EXPECTED_OFFICIAL_METRICS  # noqa: E402
 
 SCHEMA_VERSION = "b1_tsb_arm_execution_manifest_v1"
@@ -180,6 +180,8 @@ def validate_authorization(
     frozen_files = authorization.get("source_file_hashes", {})
     if not frozen_commit or not frozen_files:
         raise B1ExecutionError("B1_FROZEN_SOURCE_BINDING_MISSING")
+    if not {"tools/b1_native_route_infrastructure.py", "tools/r1_closed_loop_benchmark_v2_1.py"}.issubset(frozen_files):
+        raise B1ExecutionError("B1_ROUTE_INFRASTRUCTURE_SOURCE_BINDING_MISSING")
     for relative, expected in frozen_files.items():
         path = ROOT / str(relative)
         if not path.is_file() or sha256_file(path) != expected:
