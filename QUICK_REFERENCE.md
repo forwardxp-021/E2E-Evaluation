@@ -11299,3 +11299,37 @@ PYTHONPATH=$PWD:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
 - 20 pair/40 arm 均有 route 结果，B1-18 在零运行预检中返回 `INCOMPATIBLE` 和缺失 successor `19339`。
 - 生命周期严格为 runner、recorder、官方指标、serializer、manifest、hash validation；科学失败不可通过技术 retry 补救。
 - 本轮 `SIMULATION=0`、`RUNNER_RUN=0`，B1 resume、RBR training 与 Primary evaluation 继续未授权。
+
+## B1-IR2：已恢复官方安全与路由兼容性判定（零科学执行）
+
+### 1. 命令
+
+```bash
+# 正式 v1 目录有 manifest 后拒绝覆盖。复现必须使用一个新目录：
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_ir2_adjudication.py \
+  --output-dir docs/stageR/b1_ir2_reproduction_v1
+
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_native_route_precheck.py \
+  --specs docs/stageR/b1_tsb_qualification/B1_TSB_Qualification_Arm_Specs_v1.json \
+  --output docs/stageR/b1_ir2_route_reproduction_v2.json
+
+PYTHONPATH=$PWD:/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit \
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python \
+  /Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q \
+  tests/test_b1_ir2_adjudication.py tests/test_b1_infrastructure_remediation.py tests/test_b1_tsb_qualification.py
+
+python3 -m py_compile tools/*.py  # 全仓库需 Python 3.12+；本机 Python 3.14.4
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/check_no_tmp_dependencies.py
+```
+
+### 2. 期望行为
+
+使用原冻结 safety adapter 读取 34 个 arm 已恢复的官方 collision/drivable parquet，核验 B1-IR 原始输入和输出 hash，生成 34-arm、17-pair safety、17-pair full-contract、10-arm route case 和 40-arm resume CSV，以及详细 JSON。机制与 F_match 直接继承旧结果，不重新计算。路由工具只调用生产 route 函数和已有距离函数，不执行 planner/controller/runner。复现命令生成机器可读表，不自动生成或批准 Owner 授权。
+
+### 3. 通过标准
+
+- 34/34 arm official safety PASS、17/17 pair safety PASS、17/17 原始 full-contract scientific PASS；科学失败测试必须保留失败。
+- 06/10/14 各两 arm 的 480 个有限 production 查询全部通过，历史有效；18 treatment 的既有 iteration 53 输入复现缺失 successor 19339。
+- 新工具区分初始有限查询与全 topology 风险；五个 tail-defect pair 为 AMBIGUOUS，其余 15 对通过静态检查。20 保持 ROUTE_AMBIGUOUS，当前 gate 阻止 entry。
+- `B1_IR2_BLOCKED_ROUTE_ADJUDICATION`：18/20 的未来完整闭环兼容性尚未证明；分母仍为 20，01–17 NO_RERUN，19 只在 Owner 授权后首次执行。
+- `SIMULATION=0; RUNNER_RUN=0`；B1 resume、RBR training 和 Primary evaluation 均 NOT_AUTHORIZED。旧 B1-IR v1 文件和所有科学参数保持原样。

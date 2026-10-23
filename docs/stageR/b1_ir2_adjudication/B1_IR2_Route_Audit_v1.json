@@ -1,0 +1,5983 @@
+{
+  "cases": {
+    "B1-TSB-06-BASELINE": {
+      "frozen_route_id": "556987306721a1be103c29691a6e8cf4805ed38410886a4b1314e23b14da44f9",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 292.0545230153948,
+        "max_resolvable_forward_m_upper_bound": 292.05453756731004
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": -2.48077238,
+          "x": 588246.425485,
+          "y": 4475881.233236
+        },
+        "speed_mps": 14.385815,
+        "time_us": 1632848812799533
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 98.24893850100011,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 193.54726828169078,
+          "max_resolvable_forward_m_upper_bound": 193.547282833606
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          4
+        ],
+        "realized_trace_last_nominal_time_s": 7.9,
+        "route_segment_sequence": [
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339",
+          "19062",
+          "19540",
+          "19111",
+          "19536",
+          "19109",
+          "19537",
+          "19005",
+          "19510",
+          "19051",
+          "19469",
+          "19052",
+          "19412",
+          "19095",
+          "19421",
+          "19015",
+          "19497",
+          "19081"
+        ],
+        "runtime_cursor_max": 1,
+        "runtime_cursor_min": 1,
+        "runtime_max_required_route_index": 1,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.24893481308338,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.06594966168609,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.84194468757102,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.55482703425989,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.4160452258378,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.74261970787651,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.20045913470265,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 95.5611646086362,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.82221829415765,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.1338593244028,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.0398990278791,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.99491403300581,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.99943781246178,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.94961812069114,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.8683427175308,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.77059717851662,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.66578518456987,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.56026948430595,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.46004477062102,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.37471257958084,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 90.31375696930205,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.29462754057054,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.35211924627409,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.50621573328934,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.7651014100161,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.0535658542233,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 92.58059527520804,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.1538357712627,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.85088490027036,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.66997195541897,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.45716486251982,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.3152756039434,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.22066930127201,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.15759431290992,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.11554327468933,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.08750894097028,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.06881987741971,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.05636121541602,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.04805606495003,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.04251976077087,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03882916023397,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03636905252054,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03472919829781,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03363613319752,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03290753866885,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03242191357756,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03209820605785,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03188241528186,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03173856812052,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03164268825262,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03157878211447,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03153619174685,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03150780797644,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 53,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03148889146145,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 54,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03147628328148,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 55,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03146788050906,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 56,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03146228315299,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 57,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145855700792,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 58,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145607598515,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 59,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145442472483,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 60,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145332605891,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 61,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145259344127,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 62,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145210011084,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 63,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145176140836,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 64,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145152821675,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 65,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145139537989,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 66,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.0314514151701,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 67,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145167912744,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 68,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145220412921,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 69,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145260365821,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 70,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03145152172178,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 71,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03144620828927,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 72,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03143358276601,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 73,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03141553580276,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 74,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03141154890086,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 75,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.0314767435153,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 76,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03170586456233,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 77,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03216806795581,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 78,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.0326778230965,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 79,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.03281252211833,
+            "route_cursor": 1
+          }
+        ],
+        "successful_production_route_calls": 80,
+        "successor_traversal_native_edge_ids": [
+          "19812"
+        ],
+        "trace_available": true,
+        "trace_rows": 80,
+        "trace_sha256": "e6ee52f5c09cd96dedba5fdb780ce41f09174a7417eacacab2e45d878532e734"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 98.24893850100011,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "556987306721a1be103c29691a6e8cf4805ed38410886a4b1314e23b14da44f9",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-06-TREATMENT": {
+      "frozen_route_id": "556987306721a1be103c29691a6e8cf4805ed38410886a4b1314e23b14da44f9",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 292.0545230153948,
+        "max_resolvable_forward_m_upper_bound": 292.05453756731004
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": -2.48077238,
+          "x": 588246.425485,
+          "y": 4475881.233236
+        },
+        "speed_mps": 14.385815,
+        "time_us": 1632848812799533
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 98.24893850100011,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 188.39977565221488,
+          "max_resolvable_forward_m_upper_bound": 188.3997902041301
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          4
+        ],
+        "realized_trace_last_nominal_time_s": 7.9,
+        "route_segment_sequence": [
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339",
+          "19062",
+          "19540",
+          "19111",
+          "19536",
+          "19109",
+          "19537",
+          "19005",
+          "19510",
+          "19051",
+          "19469",
+          "19052",
+          "19412",
+          "19095",
+          "19421",
+          "19015",
+          "19497",
+          "19081"
+        ],
+        "runtime_cursor_max": 1,
+        "runtime_cursor_min": 1,
+        "runtime_max_required_route_index": 1,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.24893481308338,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.06594966168609,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.84194468757102,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.55482703425989,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.4160452258378,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.74261970787651,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.20045913470265,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 95.5611646086362,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.82221829415765,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.1338593244028,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.0398990278791,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.38991403300577,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 95.05483049601389,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 95.69303542870628,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.4147132394954,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.2932477207596,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.37632208729799,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 99.69509929530297,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 101.2703410592975,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 103.1165681527395,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 105.24453460634557,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 104.64042261263745,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 104.19662231041744,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 103.83800554921392,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 103.48606575365557,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 103.06007306670287,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 102.4913753813081,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 101.72945545317707,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 100.74022189573788,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 99.50135486185506,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.99870325011331,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.22599337590786,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.18837712251865,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 91.90726422607491,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 92.43584138326284,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 92.9128410442049,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 93.42232048323282,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.02032098771812,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 94.74353154033177,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 95.61590565576374,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 96.6531723868257,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 97.8658164778913,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 99.2608211453656,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.93486882251185,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.71759626103831,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.57277396998968,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.47623383511184,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.41187375845129,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.36896748056645,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.3403658789521,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.32129955059519,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.3085903660721,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.3001184296015,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 53,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.29447061009108,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 54,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.29070526424563,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 55,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.288194669026,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 56,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28652091912001,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 57,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28540519625457,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 58,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28466136366154,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 59,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2841653946427,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 60,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2838346832588,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 61,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2836142359697,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 62,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28346743887242,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 63,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2833698730867,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 64,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2833050613539,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 65,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28326132111437,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 66,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28322940718986,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 67,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28320147494597,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 68,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28317312795083,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 69,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28315145342708,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 70,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28317011775216,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 71,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2833021978707,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 72,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28363563471827,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 73,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2841371899709,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 74,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28443947762577,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 75,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28431760440964,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 76,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28396538951483,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 77,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28360199234235,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 78,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.2833258000907,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 79,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 98.28314587997949,
+            "route_cursor": 1
+          }
+        ],
+        "successful_production_route_calls": 80,
+        "successor_traversal_native_edge_ids": [
+          "19812"
+        ],
+        "trace_available": true,
+        "trace_rows": 80,
+        "trace_sha256": "1552af417ae7ea8743ed0fcde0cebfb08461eb43c3892cbc07bf72b7d20b6659"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 98.24893850100011,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "556987306721a1be103c29691a6e8cf4805ed38410886a4b1314e23b14da44f9",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-10-BASELINE": {
+      "frozen_route_id": "4663007d9e79ec447591ff71ce8df8fad1dcc35a3fecd10d2b453d224e923ff0",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "18524",
+          "20156",
+          "18516",
+          "18409",
+          "19802",
+          "20141",
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 769.721606047824,
+        "max_resolvable_forward_m_upper_bound": 769.7216205997393
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": 2.24053338,
+          "x": 588583.033263,
+          "y": 4475789.040302
+        },
+        "speed_mps": 13.793643,
+        "time_us": 1630686597599415
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 93.57077970099999,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "18524",
+            "20156",
+            "18516",
+            "18409",
+            "19802",
+            "20141",
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 675.6938673788682,
+          "max_resolvable_forward_m_upper_bound": 675.6938819307834
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          11
+        ],
+        "realized_trace_last_nominal_time_s": 7.9,
+        "route_segment_sequence": [
+          "19094",
+          "19516",
+          "19045",
+          "19463",
+          "19074",
+          "19404",
+          "14541",
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339"
+        ],
+        "runtime_cursor_max": 2,
+        "runtime_cursor_min": 2,
+        "runtime_max_required_route_index": 4,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.57077947704859,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.45922397810428,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.28153800349523,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.02529941511737,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.90708481399291,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 92.24730906862364,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.71415928602144,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.08074387359957,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 90.34557714058288,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 88.65966465892515,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 88.56728691200418,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.52318506179357,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.52815489829429,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.47843739893935,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.3970451776594,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.29907033553374,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.19416344184476,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.08882942634183,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 86.98875931842926,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 86.90335772058275,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 85.84232287627424,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 86.82316973641377,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 86.88071095721622,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 87.03483121737604,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 87.29375814070707,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 86.58230744470806,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 88.10948924810683,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 88.68280208564113,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.37985635283958,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 90.19892233813394,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.98612035882479,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.84424161114674,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.74964642154528,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.68657296028591,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.64451579618023,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.61647392129174,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.5977786796921,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.58531384023512,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.57700260903445,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.57146104122691,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.56776649520671,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.5653047545495,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.5636678388022,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56258410168289,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56186743159482,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56137570533286,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56097765896608,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56054468602429,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56001547906665,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.55948517957903,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.55914464335214,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.55912797405617,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.5594233471709,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 53,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.55996276952183,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 54,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.560662558739,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 55,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56146988403918,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 56,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56234437111227,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 57,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56327228721432,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 58,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56422471262371,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 59,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.5651576197483,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 60,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56601393862447,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 61,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56674723915222,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 62,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56730974607648,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 63,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56770053860987,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 64,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.5679549974538,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 65,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56811617716453,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 66,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56821893253753,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 67,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56828634119097,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 68,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.5683324982387,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 69,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56836540606723,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 70,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56839042126889,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 71,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56841071905048,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 72,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56842851343862,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 73,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56844335320856,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 74,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.5684552830717,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 75,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56846454419806,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 76,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56847141468293,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 77,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56847620341118,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 78,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56847949117918,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 79,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 89.56848268890226,
+            "route_cursor": 2
+          }
+        ],
+        "successful_production_route_calls": 80,
+        "successor_traversal_native_edge_ids": [
+          "18516",
+          "18524",
+          "20156"
+        ],
+        "trace_available": true,
+        "trace_rows": 80,
+        "trace_sha256": "4ffb9608c28146cc6855effe9a1d7d03cd449c8f5049d6b83ec48fa5abb302ca"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 93.57077970099999,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "4663007d9e79ec447591ff71ce8df8fad1dcc35a3fecd10d2b453d224e923ff0",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-10-TREATMENT": {
+      "frozen_route_id": "4663007d9e79ec447591ff71ce8df8fad1dcc35a3fecd10d2b453d224e923ff0",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "18524",
+          "20156",
+          "18516",
+          "18409",
+          "19802",
+          "20141",
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 769.721606047824,
+        "max_resolvable_forward_m_upper_bound": 769.7216205997393
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": 2.24053338,
+          "x": 588583.033263,
+          "y": 4475789.040302
+        },
+        "speed_mps": 13.793643,
+        "time_us": 1630686597599415
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 93.57077970099999,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "18524",
+            "20156",
+            "18516",
+            "18409",
+            "19802",
+            "20141",
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 670.544191962108,
+          "max_resolvable_forward_m_upper_bound": 670.5442065140232
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          11
+        ],
+        "realized_trace_last_nominal_time_s": 7.9,
+        "route_segment_sequence": [
+          "19094",
+          "19516",
+          "19045",
+          "19463",
+          "19074",
+          "19404",
+          "14541",
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339"
+        ],
+        "runtime_cursor_max": 2,
+        "runtime_cursor_min": 2,
+        "runtime_max_required_route_index": 4,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.57077947704859,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.45922397810428,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.28153800349523,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.02529941511737,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.90708481399291,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 92.24730906862364,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.71415928602144,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.08074387359957,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 90.34557714058288,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 88.65966465892515,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 88.56728691200418,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 89.91818506179334,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 90.58348940857978,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.22175143164861,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 91.94334214849407,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 92.82178158726157,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "18524"
+            ],
+            "required_forward_m": 93.90490981795749,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 95.22384549525017,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 96.79917201922441,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 98.64546060791952,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 100.77351176429339,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 100.16946654875439,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 99.72566299556927,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 99.3670455786422,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 99.01507368459315,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 98.58899171130089,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 98.02015559807316,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 97.25819268888911,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 96.2689799727827,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 95.03013296880145,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 93.52752998257682,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 91.7549766203033,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.71774016583156,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 87.4371749516691,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 87.96634523672839,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 88.44395339992535,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 88.95413243890792,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 89.55277588553638,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 3,
+            "native_edge_ids": [
+              "18524",
+              "20156"
+            ],
+            "required_forward_m": 90.27648226708078,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 91.14924324967745,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 92.18681112308708,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.39962459738928,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 94.7946704700545,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 94.46859053830408,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 94.25100948589454,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 94.10571418000752,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 94.00871284237046,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.94415578204438,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.90140563879461,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.87326685389573,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.85487649793173,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.84298419100693,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.83542521447983,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 53,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.83075215314199,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 54,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82799719678847,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 55,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82649790101128,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 56,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82577662924415,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 57,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82546803714253,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 58,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82533894523387,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 59,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.8252692007415,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 60,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82521581710003,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 61,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82517093719274,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 62,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82513572888828,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 63,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82511097178863,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 64,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82509561463081,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 65,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82508745152802,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 66,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82508497739332,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 67,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82508733162955,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 68,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82509352268283,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 69,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82510082177096,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 70,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82510776293752,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 71,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82511358587429,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 72,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82511799573669,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 73,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82512127858494,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 74,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82512482099453,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 75,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82513172155748,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 76,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82514624673746,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 77,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82516927144839,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 78,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.8251857332913,
+            "route_cursor": 2
+          },
+          {
+            "iteration": 79,
+            "max_required_route_index": 4,
+            "native_edge_ids": [
+              "18524",
+              "20156",
+              "18516"
+            ],
+            "required_forward_m": 93.82514349231613,
+            "route_cursor": 2
+          }
+        ],
+        "successful_production_route_calls": 80,
+        "successor_traversal_native_edge_ids": [
+          "18516",
+          "18524",
+          "20156"
+        ],
+        "trace_available": true,
+        "trace_rows": 80,
+        "trace_sha256": "e3e12d472d10e8063d50ef486c0d2a61cec0734a350751888a120c2534ebc677"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 93.57077970099999,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "4663007d9e79ec447591ff71ce8df8fad1dcc35a3fecd10d2b453d224e923ff0",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-14-BASELINE": {
+      "frozen_route_id": "9813a7f59c4e59e78c7d48db8e4dc654559e4272daf58e151b906d0275988f58",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 199.5957863982767,
+        "max_resolvable_forward_m_upper_bound": 199.59580095019192
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": -2.48276069,
+          "x": 588173.138294,
+          "y": 4475824.862493
+        },
+        "speed_mps": 10.557375,
+        "time_us": 1630680911250581
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 68.00426250100013,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 131.0264051426202,
+          "max_resolvable_forward_m_upper_bound": 131.02641969453543
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          4
+        ],
+        "realized_trace_last_nominal_time_s": 7.9,
+        "route_segment_sequence": [
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339",
+          "19062",
+          "19540",
+          "19111",
+          "19536",
+          "19109",
+          "19537",
+          "19005",
+          "19510",
+          "19051",
+          "19469",
+          "19052",
+          "19411",
+          "19097",
+          "19493",
+          "19101",
+          "19352",
+          "19011"
+        ],
+        "runtime_cursor_max": 1,
+        "runtime_cursor_min": 1,
+        "runtime_max_required_route_index": 1,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.00425926313257,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.93253121386984,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.77980827447907,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.54023662496684,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.43322083464533,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.78102313052727,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.25306327998798,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 65.62327580577427,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.89080993195583,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.20701765897955,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.11637940376859,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 62.07382016730016,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 62.08021074265063,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 62.031926808447075,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.95196867796441,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.85529954873131,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.75133349896047,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.646523740814175,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.54695503450972,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.46217823374844,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 60.40168203696771,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.382798038152465,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.44056499115502,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.595005391937626,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.85415711426425,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.14281349396811,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 62.670026094918164,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.243297310763445,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.940281358606,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.75928439284489,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.54644173145846,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.40454993476644,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.30995162060593,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.2468881805898,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.20484770915733,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1768225037068,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.15813965677971,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.14568392812383,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.13738046910936,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.13184543914738,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12815575183669,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12569599358133,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1240563245873,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12296327786711,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12223458999334,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1217488373076,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12142504675799,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12120921410852,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12106535477972,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12096946657086,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12090554984758,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12086294081455,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12083453432457,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 53,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1208155962299,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 54,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12080297101714,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 55,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12079455318006,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 56,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1207889414972,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 57,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1207852008834,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 58,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12078270724638,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 59,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12078104488046,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 60,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077993687731,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 61,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1207791982503,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 62,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077870576441,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 63,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077837736625,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 64,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077815869404,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 65,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1207780129018,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 66,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077791557353,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 67,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077785061942,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 68,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077780733826,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 69,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077777836976,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 70,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.1207777591364,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 71,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077774634749,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 72,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077773764187,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 73,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077773214072,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 74,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077772845963,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 75,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077772599386,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 76,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077772423736,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 77,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077772325384,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 78,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077772279235,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 79,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.12077772291255,
+            "route_cursor": 1
+          }
+        ],
+        "successful_production_route_calls": 80,
+        "successor_traversal_native_edge_ids": [
+          "19812"
+        ],
+        "trace_available": true,
+        "trace_rows": 80,
+        "trace_sha256": "4b1a728be5e41060aa9bb3313b6cb85194fbdb7a76946b60f2ff79bda5380e74"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 68.00426250100013,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "9813a7f59c4e59e78c7d48db8e4dc654559e4272daf58e151b906d0275988f58",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-14-TREATMENT": {
+      "frozen_route_id": "9813a7f59c4e59e78c7d48db8e4dc654559e4272daf58e151b906d0275988f58",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 199.5957863982767,
+        "max_resolvable_forward_m_upper_bound": 199.59580095019192
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": -2.48276069,
+          "x": 588173.138294,
+          "y": 4475824.862493
+        },
+        "speed_mps": 10.557375,
+        "time_us": 1630680911250581
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 68.00426250100013,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 125.88390382006764,
+          "max_resolvable_forward_m_upper_bound": 125.88391837198287
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          4
+        ],
+        "realized_trace_last_nominal_time_s": 7.9,
+        "route_segment_sequence": [
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339",
+          "19062",
+          "19540",
+          "19111",
+          "19536",
+          "19109",
+          "19537",
+          "19005",
+          "19510",
+          "19051",
+          "19469",
+          "19052",
+          "19411",
+          "19097",
+          "19493",
+          "19101",
+          "19352",
+          "19011"
+        ],
+        "runtime_cursor_max": 1,
+        "runtime_cursor_min": 1,
+        "runtime_max_required_route_index": 1,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.00425926313257,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.93253121386984,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.77980827447907,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.54023662496684,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.43322083464533,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.78102313052727,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.25306327998798,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 65.62327580577427,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.89080993195583,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.20701765897955,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.11637940376859,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.46882016730028,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 65.13570728027844,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 65.77552386219203,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.49847203869798,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.37787951332334,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.46146964436608,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 69.7805077459216,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 71.3558139008153,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 73.20193124738923,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 75.32965881038717,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 74.72531356887514,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 74.28120463004328,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 73.92215783725514,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 73.56983391760639,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 73.14354815038295,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 72.57462890950306,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 71.81266676718467,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 70.82345806495198,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 69.58454896558084,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.08175036813934,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.30884894141542,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.27102839815257,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 61.9897570333471,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 62.51824760663336,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 62.99530299538273,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 63.50490867007437,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.10293977853846,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 64.82615955366947,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 65.6985940662813,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 66.73596366353586,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 67.94864576185181,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 69.34368243311795,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 69.01772644009884,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.80042534821652,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.65556954496576,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.55901220624067,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.49464880053368,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.45174844296616,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.42315344717646,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.40409272201157,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.39138612335702,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.38291477555856,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 53,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.37726707893378,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 54,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.3735019104905,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 55,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.37099150565638,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 56,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36931783536812,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 57,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36820218923657,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 58,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36745843030795,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 59,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36696260945176,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 60,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36663207441235,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 61,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36641170608158,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 62,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36626478317929,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 63,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36616683346081,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 64,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36610153214227,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 65,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.366057995931,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 66,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36602896968454,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 67,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36600961634868,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 68,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.3659967132211,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 69,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36598811059825,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 70,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36598237540353,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 71,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597855140647,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 72,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597600153024,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 73,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597430147977,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 74,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597316806494,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 75,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597241201797,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 76,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597190795821,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 77,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597157146785,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 78,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597134726476,
+            "route_cursor": 1
+          },
+          {
+            "iteration": 79,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 68.36597119757806,
+            "route_cursor": 1
+          }
+        ],
+        "successful_production_route_calls": 80,
+        "successor_traversal_native_edge_ids": [
+          "19812"
+        ],
+        "trace_available": true,
+        "trace_rows": 80,
+        "trace_sha256": "d098575546a8f0c719e6e7d38dc88a9260129b54b081ee1e3ff83459f7e34124"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 68.00426250100013,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "9813a7f59c4e59e78c7d48db8e4dc654559e4272daf58e151b906d0275988f58",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-18-BASELINE": {
+      "frozen_route_id": "a8517d980da819435307112670f9e3d613379d82a05b56617fd0e8d5b9bf0f71",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 142.15744158718735,
+        "max_resolvable_forward_m_upper_bound": 142.15745613910258
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": -2.48478249,
+          "x": 588127.818812,
+          "y": 4475789.573073
+        },
+        "speed_mps": 12.415472,
+        "time_us": 1630329264750161
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 82.68322880100018,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": null,
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          3
+        ],
+        "realized_trace_last_nominal_time_s": null,
+        "route_segment_sequence": [
+          "19000",
+          "19512",
+          "18999",
+          "19339",
+          "19062",
+          "19540",
+          "19111",
+          "19536",
+          "19109",
+          "19537",
+          "19005",
+          "19510",
+          "19051",
+          "19469",
+          "19052",
+          "19412",
+          "19095",
+          "19423",
+          "19099",
+          "19330",
+          "19100",
+          "19349",
+          "19011",
+          "19523",
+          "19016",
+          "19389",
+          "19023",
+          "19701"
+        ],
+        "runtime_cursor_max": null,
+        "runtime_cursor_min": null,
+        "runtime_max_required_route_index": null,
+        "successful_calls": [],
+        "successful_production_route_calls": 0,
+        "successor_traversal_native_edge_ids": [],
+        "trace_available": false,
+        "trace_rows": 0,
+        "trace_sha256": null
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 82.68322880100018,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "a8517d980da819435307112670f9e3d613379d82a05b56617fd0e8d5b9bf0f71",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-18-TREATMENT": {
+      "frozen_route_id": "a8517d980da819435307112670f9e3d613379d82a05b56617fd0e8d5b9bf0f71",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 142.15744158718735,
+        "max_resolvable_forward_m_upper_bound": 142.15745613910258
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": -2.48478249,
+          "x": 588127.818812,
+          "y": 4475789.573073
+        },
+        "speed_mps": 12.415472,
+        "time_us": 1630329264750161
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 82.68322880100018,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 1,
+        "first_failure": {
+          "current_ego": {
+            "rear_axle": {
+              "heading": -2.479414586631137,
+              "x": 588079.9128488203,
+              "y": 4475752.550421184
+            },
+            "speed_mps": 10.409060120214438,
+            "time_us": 1630329270049697
+          },
+          "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+          "iteration": 53,
+          "required_forward_m": 82.231574950694
+        },
+        "last_recorded_input_capacity": {
+          "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+          "last_resolvable_native_edge_ids": [
+            "19812",
+            "20202",
+            "18519"
+          ],
+          "max_resolvable_forward_m_lower_bound": 81.6119572846219,
+          "max_resolvable_forward_m_upper_bound": 81.61197183653712
+        },
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          3
+        ],
+        "realized_trace_last_nominal_time_s": 5.300000000000001,
+        "route_segment_sequence": [
+          "19000",
+          "19512",
+          "18999",
+          "19339",
+          "19062",
+          "19540",
+          "19111",
+          "19536",
+          "19109",
+          "19537",
+          "19005",
+          "19510",
+          "19051",
+          "19469",
+          "19052",
+          "19412",
+          "19095",
+          "19423",
+          "19099",
+          "19330",
+          "19100",
+          "19349",
+          "19011",
+          "19523",
+          "19016",
+          "19389",
+          "19023",
+          "19701"
+        ],
+        "runtime_cursor_max": 0,
+        "runtime_cursor_min": 0,
+        "runtime_max_required_route_index": 2,
+        "successful_calls": [
+          {
+            "iteration": 0,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 82.68323129144878,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 1,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 82.33911899017302,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 2,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 82.00538525853091,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 3,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 81.64510560029238,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 4,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 80.45751653277772,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 5,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 80.7515009607129,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 6,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 80.18761897543703,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 7,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 79.5338963409973,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 8,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 78.78543791755177,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 9,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 77.09087632959184,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 10,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 76.99292219210281,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 11,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 78.34048516773879,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 12,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 79.00414735734668,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 13,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 79.64183646251497,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 14,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 80.36332626797284,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 15,
+            "max_required_route_index": 0,
+            "native_edge_ids": [
+              "19812"
+            ],
+            "required_forward_m": 81.24167238586938,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 16,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 82.32467880192863,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 17,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 83.64333844136402,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 18,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 85.21835310950135,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 19,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 87.06428825498085,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 20,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 89.19187596919504,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 21,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 88.58733719868735,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 22,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 88.14307869854922,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 23,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 87.78395767513665,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 24,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 87.43156968697582,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 25,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 87.00525065193358,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 26,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 86.43639884510274,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 27,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 85.67443093708413,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 28,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 84.68519554098592,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 29,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 83.44631114700123,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 30,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 81.94364645835817,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 31,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 80.17095382802333,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 32,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 78.13349007148035,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 33,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 75.85255307311269,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 34,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 76.38125017824565,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 35,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 76.85838561504484,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 36,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 77.36800973508932,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 37,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 77.9660934225169,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 38,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 78.68930315110359,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 39,
+            "max_required_route_index": 1,
+            "native_edge_ids": [
+              "19812",
+              "20202"
+            ],
+            "required_forward_m": 79.56154326658321,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 40,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 80.59851054371737,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 41,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 81.8106103258328,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 42,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 83.20484575709415,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 43,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.87797318897329,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 44,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.65970332666343,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 45,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.51383209197137,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 46,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.4162016605779,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 47,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.35072884197353,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 48,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.30673254948243,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 49,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.27720200544347,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 50,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.25760274867648,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 51,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.24481476028596,
+            "route_cursor": 0
+          },
+          {
+            "iteration": 52,
+            "max_required_route_index": 2,
+            "native_edge_ids": [
+              "19812",
+              "20202",
+              "18519"
+            ],
+            "required_forward_m": 82.23664581189198,
+            "route_cursor": 0
+          }
+        ],
+        "successful_production_route_calls": 53,
+        "successor_traversal_native_edge_ids": [
+          "18519",
+          "19812",
+          "20202"
+        ],
+        "trace_available": true,
+        "trace_rows": 54,
+        "trace_sha256": "63b7e5785868ba479a4788317fffedef6065289436ee79b51c4ccc4cdcd6933d"
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 82.68322880100018,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "a8517d980da819435307112670f9e3d613379d82a05b56617fd0e8d5b9bf0f71",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-20-BASELINE": {
+      "frozen_route_id": "40a1a6b2c62fe56f004f9b828bedeb8ca53c3002ae6c01eac47c060976bfd148",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "18524",
+          "20156",
+          "18516",
+          "18409",
+          "19802",
+          "20141",
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 715.1751924538985,
+        "max_resolvable_forward_m_upper_bound": 715.1752070058137
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": 2.24306626,
+          "x": 588548.980797,
+          "y": 4475831.651899
+        },
+        "speed_mps": 12.723047,
+        "time_us": 1630085206049576
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 85.11307130100005,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": null,
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          10
+        ],
+        "realized_trace_last_nominal_time_s": null,
+        "route_segment_sequence": [
+          "19516",
+          "19045",
+          "19463",
+          "19074",
+          "19404",
+          "14541",
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339"
+        ],
+        "runtime_cursor_max": null,
+        "runtime_cursor_min": null,
+        "runtime_max_required_route_index": null,
+        "successful_calls": [],
+        "successful_production_route_calls": 0,
+        "successor_traversal_native_edge_ids": [],
+        "trace_available": false,
+        "trace_rows": 0,
+        "trace_sha256": null
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 85.11307130100005,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "40a1a6b2c62fe56f004f9b828bedeb8ca53c3002ae6c01eac47c060976bfd148",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    },
+    "B1-TSB-20-TREATMENT": {
+      "frozen_route_id": "40a1a6b2c62fe56f004f9b828bedeb8ca53c3002ae6c01eac47c060976bfd148",
+      "initial_forward_capacity": {
+        "boundary_probe_method": "36_BISECTIONS_OF_EXACT_PRODUCTION_BUILDER;NO_TRAJECTORY_GENERATION",
+        "last_resolvable_native_edge_ids": [
+          "18524",
+          "20156",
+          "18516",
+          "18409",
+          "19802",
+          "20141",
+          "19812",
+          "20202",
+          "18519"
+        ],
+        "max_resolvable_forward_m_lower_bound": 715.1751924538985,
+        "max_resolvable_forward_m_upper_bound": 715.1752070058137
+      },
+      "initial_production_and_precheck_current_ego": {
+        "rear_axle": {
+          "heading": 2.24306626,
+          "x": 588548.980797,
+          "y": 4475831.651899
+        },
+        "speed_mps": 12.723047,
+        "time_us": 1630085206049576
+      },
+      "map_name": "us-pa-pittsburgh-hazelwood",
+      "old_precheck_required_forward_m": "POSITIVE_INFINITY",
+      "production_and_precheck_initial_required_forward_m": 85.11307130100005,
+      "retrospective_production_replay": {
+        "failed_production_route_calls": 0,
+        "first_failure": null,
+        "last_recorded_input_capacity": null,
+        "planning_horizon_s": 7.9,
+        "problematic_successor_route_indices": [
+          10
+        ],
+        "realized_trace_last_nominal_time_s": null,
+        "route_segment_sequence": [
+          "19516",
+          "19045",
+          "19463",
+          "19074",
+          "19404",
+          "14541",
+          "19445",
+          "19000",
+          "19512",
+          "18999",
+          "19339"
+        ],
+        "runtime_cursor_max": null,
+        "runtime_cursor_min": null,
+        "runtime_max_required_route_index": null,
+        "successful_calls": [],
+        "successful_production_route_calls": 0,
+        "successor_traversal_native_edge_ids": [],
+        "trace_available": false,
+        "trace_rows": 0,
+        "trace_sha256": null
+      },
+      "static_precheck": {
+        "compatibility_scope": "INITIAL_PRODUCTION_QUERY;FUTURE_REALIZED_INPUTS_NOT_KNOWN",
+        "failure_code": "NATIVE_ROUTE_FAIL: no native outgoing successor into 19339",
+        "initial_production_probe_status": "PASS",
+        "initial_production_required_forward_m": 85.11307130100005,
+        "latent_full_route_topology_status": "MISSING_SUCCESSOR",
+        "missing_successor_segment": "19339",
+        "native_route_resolution_status": "INITIAL_REQUIREMENT_PASS_WITH_LATENT_RUNTIME_RISK",
+        "precheck_contract_version": "B1_IR2_PRODUCTION_INPUT_AND_LATENT_RISK_V2",
+        "production_equivalence_hash": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+        "production_equivalence_version": "build_native_route_reference_v1_1",
+        "route_id": "40a1a6b2c62fe56f004f9b828bedeb8ca53c3002ae6c01eac47c060976bfd148",
+        "route_precheck_status": "AMBIGUOUS"
+      }
+    }
+  },
+  "planner_step_count": 0,
+  "production_route_builder_sha256": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+  "runner_run_count": 0,
+  "schema_version": "B1_IR2_Route_Audit_v1",
+  "simulation_count": 0
+}

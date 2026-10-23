@@ -1,0 +1,18 @@
+pair_id,baseline_safety,treatment_safety,pair_safety,adjudication_rule
+B1-TSB-01,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-02,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-03,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-04,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-05,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-06,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-07,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-08,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-09,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-10,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-11,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-12,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-13,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-14,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-15,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-16,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment
+B1-TSB-17,PASS,PASS,PAIR_SAFETY_PASS,each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment

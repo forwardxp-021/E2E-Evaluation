@@ -75,7 +75,9 @@ def test_b1_18_is_predetected_by_exact_production_route_builder(tmp_path: Path):
     by_pair = {row["pair_id"]: row for row in result["pairs"]}
     assert result["pair_count"] == 20
     assert result["arm_count"] == 40
-    assert by_pair["B1-TSB-18"]["route_precheck_status"] == "INCOMPATIBLE"
+    assert by_pair["B1-TSB-18"]["route_precheck_status"] == "AMBIGUOUS"
+    assert by_pair["B1-TSB-18"]["initial_production_probe_status"] == "PASS"
+    assert by_pair["B1-TSB-18"]["latent_full_route_topology_status"] == "MISSING_SUCCESSOR"
     assert by_pair["B1-TSB-18"]["missing_successor_segment"] == "19339"
     assert "no native outgoing successor into 19339" in by_pair["B1-TSB-18"]["failure_code"]
     assert all(row["production_equivalence_version"] == "build_native_route_reference_v1_1" for row in result["pairs"])
