@@ -1,0 +1,37 @@
+{
+  "schema_version": "TSB_COAST_C2_P1_PARAMETER_CONTRACT_v1",
+  "status": "OWNER_VALUES_RETAINED_NO_EXECUTION_BINDING",
+  "candidate": "TSB_COAST_C2_P1",
+  "units": {
+    "time": "s",
+    "acceleration": "m/s^2"
+  },
+  "baseline": [
+    [
+      2.1,
+      3.9,
+      -1.45
+    ]
+  ],
+  "treatment": [
+    [
+      1.1,
+      2.1,
+      -1.305
+    ],
+    [
+      2.1,
+      3.9,
+      0.0
+    ],
+    [
+      3.9,
+      4.9,
+      -1.305
+    ]
+  ],
+  "signed_impulse_mps": -2.61,
+  "braking_time_centroid_s": 3.0,
+  "smoothing_selection": "NOT_REACHED_BEFORE_GATE_FAILURE; NO_CLOSED_LOOP_GENERATOR_IMPLEMENTED",
+  "per_session_parameters": false
+}

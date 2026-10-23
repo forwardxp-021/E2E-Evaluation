@@ -1,0 +1,23 @@
+{
+  "schema_version": "TSB_COAST_P1_OWNER_AUTHORIZATION_v1",
+  "owner_decision": "UNIQUE_C2_P1_DEVELOPMENT_CONDITIONALLY_AUTHORIZED",
+  "source_instruction_copy": "evidence/Owner_Instruction_v1.txt",
+  "source_instruction_sha256": "445bf112d06ed701e006f59a8ec9e550ffc6690663df1f5403ac608c213681c5",
+  "source_instruction_original": "/Users/liuqing/.codex/attachments/c5c03523-c81b-45a6-ba15-1fb240bf7d31/已粘贴的文本.txt",
+  "base_git_head": "8258a1bebdad980989821697670bb1173e942180",
+  "candidate": "TSB_COAST_C2_P1",
+  "role": "B_DEVELOPMENT",
+  "authorized_initial_arm_ceiling": 6,
+  "cumulative_attempt_ceiling": 8,
+  "extra_technical_retry_requires_new_explicit_owner_permission": true,
+  "execution_activation_status": "NOT_ACTIVATED_PREFLIGHT_BLOCKED",
+  "scientific_execution_authorized_now": false,
+  "blocking_evidence": "evidence/Measurement_Resolution_Audit_iteration1_v1.json",
+  "frozen_run_ids": [],
+  "full_stack_hash_binding_completed": false,
+  "TSB_COAST_P2": "NOT_AUTHORIZED",
+  "PRIMARY_PROTOCOL_AMENDMENT": "NOT_AUTHORIZED",
+  "RBR_TRAINING": "NOT_AUTHORIZED",
+  "V_EXECUTION": "NOT_AUTHORIZED",
+  "C_EXECUTION": "NOT_AUTHORIZED"
+}

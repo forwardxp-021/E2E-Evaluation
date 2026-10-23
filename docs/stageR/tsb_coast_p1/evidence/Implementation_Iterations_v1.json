@@ -1,0 +1,21 @@
+{
+  "maximum_zero_run_iterations": 2,
+  "iterations": [
+    {
+      "iteration": 1,
+      "scope": "Implement and test measurement/kinematic preconditions before planner binding or roster materialization",
+      "runner_calls": 0,
+      "tests_passed": 19
+    },
+    {
+      "iteration": 2,
+      "scope": "Complete pure boundary coverage: shallow pulses, short coast, single brake, half-sample timing; no measurement threshold or analyzer modification",
+      "tests_passed": 22,
+      "runner_calls": 0,
+      "analyzer_sha256": "d7eeedf8773a3f544afaf66ad23d10692fe585fc5ddd8718f3a9775d81ba4cdc"
+    }
+  ],
+  "scientific_code_frozen_after_first_arm": false,
+  "first_arm_started": false,
+  "stopped_at": "MEASUREMENT_RESOLUTION_GATE"
+}

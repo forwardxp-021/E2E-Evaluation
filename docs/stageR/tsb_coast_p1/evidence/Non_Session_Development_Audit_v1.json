@@ -1,0 +1,14 @@
+{
+  "stage": "TSB_COAST_P1",
+  "event_type": "PURE_FIXTURE_MEASUREMENT_PRECISION_REVIEW",
+  "new_SESSION_identities_selected": 0,
+  "new_SESSION_outcomes_observed": 0,
+  "new_ledger_SESSION_events": 0,
+  "role_if_future_data": "B_DEVELOPMENT_ONLY",
+  "old_ledgers_modified": false,
+  "decisions_influenced": [
+    "stop_before_activation_due_to_fixed_error_budget_resolution"
+  ],
+  "encoder_or_H_selection": false,
+  "V_C_data_access": false
+}

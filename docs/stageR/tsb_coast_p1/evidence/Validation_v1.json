@@ -1,0 +1,51 @@
+{
+  "stage": "TSB_COAST_P1",
+  "status": "VALIDATION_PASS_SCIENTIFIC_PREFLIGHT_BLOCKED",
+  "pytest": {
+    "passed": 22,
+    "failed": 0,
+    "command": "/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q tests/test_tsb_coast_p1_measurement.py"
+  },
+  "compile": "PASS tools/tsb_coast_p1_measurement.py tests/test_tsb_coast_p1_measurement.py",
+  "temporary_dependency_check": "PASS",
+  "git_diff_check": "PASS",
+  "resolution_fixture_process_reproduction": "BYTE_IDENTICAL",
+  "existing_output_overwrite": "REFUSED",
+  "protected_file_count": 3259,
+  "protected_changes": [],
+  "scientific_execution_counts": {
+    "SIMULATION": 0,
+    "RUNNER_RUN": 0,
+    "NEW_TSB_ROLLOUT": 0,
+    "HLC_ROLLOUT": 0,
+    "RBR_TRAINING": 0,
+    "H30_FEATURES": 0,
+    "RBR64_FEATURES": 0,
+    "MMD": 0,
+    "H_BDD": 0,
+    "RBR_BDD": 0,
+    "PRIMARY_EVALUATION": 0,
+    "V_EXECUTION": 0,
+    "C_EXECUTION": 0
+  },
+  "actual_arm_processes_started": 0,
+  "actual_pairs_completed": 0,
+  "actual_scientific_arm_CPU_seconds": 0,
+  "preparation_CPU_seconds": "NOT_FULLY_METERED",
+  "zero_run_implementation_rounds": 2,
+  "source_data_check": "Existing frozen B1 outputs and protected CSV read-only SHA check; no scientific values recomputed",
+  "real_closed_loop_smoke": "NOT_RUN_OWNER_CONDITIONAL_PREFLIGHT_DID_NOT_PASS",
+  "full_production_gate": "NOT_REACHED_NO_EXECUTION_BINDING_CREATED",
+  "source_dependencies": [
+    {
+      "path": "tools/r1_context_mechanism_core.py",
+      "symbol": "median3",
+      "sha256": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e"
+    },
+    {
+      "path": "tools/tsb_coast_p0_kinematics.py",
+      "symbol": "designs, speed_at",
+      "sha256": "d3026ba2a12f619fcec699ac99916dc341b3156e45221bc39af71027bfe879f6"
+    }
+  ]
+}

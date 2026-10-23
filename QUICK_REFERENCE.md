@@ -11487,3 +11487,22 @@ python tools/check_no_tmp_dependencies.py
 ### 通过标准
 
 解析守恒、独立积分对照、旧恢复移除导致剂量不等及非法输入/低速不截断等9项测试通过；编译和临时依赖检查通过。真实闭环、机制classifier及新F_match均未验证，须独立Owner P1授权；旧B1/S1/S1R工件及受保护CSV哈希保持不变。
+
+## TSB-Coast P1：测量误差预检（当前阻断，零科学执行）
+
+### 命令
+
+```bash
+python tools/tsb_coast_p1_measurement.py --resolution-audit 新的测量审查路径.json
+python -m pytest -q tests/test_tsb_coast_p1_measurement.py
+python -m py_compile tools/tsb_coast_p1_measurement.py tests/test_tsb_coast_p1_measurement.py
+python tools/check_no_tmp_dependencies.py
+```
+
+### 期望行为
+
+仅生成±.01m/s固定噪声下的纯测量fixture JSON，不读取科学轨迹，不构建runner。已存在输出拒绝覆盖。报告路径为`docs/stageR/tsb_coast_p1/`，当前预检状态PREFLIGHT_BLOCKED；测试通过不等于P1科学执行获准或闭环PASS。
+
+### 通过标准
+
+22项机制、时间、非法输入、恢复排除、旧F公式一致性及误差反例测试通过；编译及临时依赖检查通过。审查JSON必须如实保留误差预算阻断，不得把CLI正常退出当准入通过。当前无科学执行入口、roster为空、attempt=0；需要Owner先审查测量误差合同，不能自动启动6次首run或技术retry。

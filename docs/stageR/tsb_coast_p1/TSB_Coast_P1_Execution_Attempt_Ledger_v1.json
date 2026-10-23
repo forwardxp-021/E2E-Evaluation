@@ -1,0 +1,30 @@
+{
+  "schema_version": "TSB_COAST_P1_EXECUTION_ATTEMPT_LEDGER_v1",
+  "base_git_head": "8258a1bebdad980989821697670bb1173e942180",
+  "authorization_sha256": "c3cf8f5e038a323ecf79e31aa9e71e97f2fab6c67aaae552f79f60c2c316f4ab",
+  "state": "CLOSED_PREFLIGHT_BLOCKED_NOT_EXECUTABLE",
+  "budgets": {
+    "pairs_max": 3,
+    "initial_arms_max": 6,
+    "cumulative_attempts_max": 8,
+    "zero_run_implementation_iterations_max": 2,
+    "scientific_arm_cpu_seconds_ceiling": 10800,
+    "per_arm_elapsed_seconds_ceiling": 1200
+  },
+  "attempts": [],
+  "cumulative_attempts": 0,
+  "completed_arms": 0,
+  "completed_pairs": 0,
+  "technical_retry_attempts": 0,
+  "scientific_arm_cpu_seconds_consumed": 0,
+  "science_cpu_seconds_remaining": 10800,
+  "zero_run_implementation_iterations_used": 2,
+  "initial_execution_permissions_used": 0,
+  "remaining_initial_permissions": 6,
+  "remaining_total_attempt_capacity": 8,
+  "remaining_extra_retry_permission": "NONE_WITHOUT_NEW_OWNER_APPROVAL",
+  "preparation_cpu_seconds": "NOT_FULLY_METERED_NOT_SCIENTIFIC_ARM_CPU",
+  "execution_budget_enforcer_implemented_and_verified": false,
+  "stop_reason": "MEASUREMENT_RESOLUTION_GATE_BLOCKED",
+  "budget_reset_permitted": false
+}
