@@ -1,0 +1,474 @@
+# TSB-Coast P0 — 两阶段制动新基准的科学定义与可行性设计
+
+## 一、Scientific Owner 正式方向决定
+
+继续博士研究项目：
+
+- Repository：`forwardxp-021/E2E-Evaluation`
+- Branch：`20260825_stageR_new`
+- 最近 TSB-SR 提交：`712bdb5`，以仓库实际完整 SHA 为准。
+
+本轮 Scientific Owner 明确决定：
+
+**不接受“制动—主动正向加速度恢复—再次制动”作为博士论文所要研究的自然两脚制动行为构念。**
+
+选择：
+
+`ROUTE_B = TSB_COAST`
+
+目标行为：
+
+**第一次制动 → 松开制动、近似滑行 → 第二次制动。**
+
+要求两次制动形成可分辨的负加速度阶段，中间为接近零、允许合理小幅波动的纵向加速度，不包含为了恢复速度而人为设计的持续主动正加速度。
+
+本轮只批准新基准的定义、物理可行性分析和协议设计，不批准新仿真或训练。
+
+```text
+OWNER_CONSTRUCT_DECISION = ROUTE_B_SELECTED
+TSB_COAST_DESIGN = AUTHORIZED
+TSB_COAST_SCIENTIFIC_SIMULATION = NOT_AUTHORIZED
+PRIMARY_PROTOCOL_AMENDMENT = NOT_YET_APPROVED
+RBR_TRAINING = NOT_AUTHORIZED
+```
+
+## 二、首先明确历史 B1 的地位
+
+旧 B1 永久保留：
+
+`B1_TSB_BENCHMARK_QUALIFICATION_PASS`
+
+正式20/20、40个完整arm、41次累计执行尝试全部有效。
+
+但它验证的准确行为是：
+
+`BRAKE → POSITIVE_ACCELERATION_RECOVERY → BRAKE`
+
+不是：
+
+`BRAKE → COAST → BRAKE`
+
+因此：
+
+1. 原 B1 结果不得重写或作废。
+2. 原冻结 TSB 参数不得修改。
+3. 原 B1 不能充当新基准的资格验证。
+4. 新基准必须独立命名、独立版本化。
+5. 原 B1 可以作为历史方法学和工程验证证据，但不能冒充 TSB-Coast 的有效性结果。
+
+同时保持：
+
+```text
+LOW_ORDER_NUISANCE_ELIMINATED = NOT_ESTABLISHED
+TSB_CLEAN_RESIDUAL_TASK = NOT_ESTABLISHED
+```
+
+## 三、任务A：从驾驶行为和物理学定义 TSB-Coast
+
+建立新的行为构念。
+
+### 阶段一：第一次制动
+
+要求：
+
+- 形成可识别的连续减速度阶段；
+- 制动具有明确幅度和持续时间；
+- 不能只是瞬时噪声。
+
+### 阶段二：松开制动、近似滑行
+
+要求：
+
+- 纵向加速度从明显负值回升到接近零；
+- 允许正常车辆滑行中的小幅正负波动；
+- 不要求严格恒速；
+- 不要求车辆速度主动回升；
+- 不得把明显持续的正加速度解释为自然滑行；
+- 必须与第一和第二次制动阶段明确分离。
+
+特别区分：
+
+`BRAKE RELEASE INTENT`
+
+与：
+
+`REALIZED NEAR-ZERO LONGITUDINAL ACCELERATION`
+
+如果现有nuPlan控制器不提供真实制动踏板状态，只能验证其加速度行为构念，不能声称已直接验证驾驶员松开踏板动作。
+
+### 阶段三：第二次制动
+
+要求：
+
+- 重新形成明确的连续负加速度；
+- 与第一次制动之间存在有效间隔；
+- 不依赖人为正向加速才能形成第二次制动。
+
+本轮需要给出：
+
+- 行为的正式中文名称；
+- 操作性定义；
+- 可测量条件；
+- 和旧TSB的实质区别；
+- 对真实车辆及当前仿真平台的适用边界。
+
+## 四、任务B：运动学与F_match可行性分析
+
+这是本轮最高优先级。
+
+旧配置：
+
+```text
+Baseline:
+-1.45 × 1.8 = -2.61 m/s
+
+Treatment:
+-2.4 × 0.9
++1.4 × 1.3
+-2.4 × 0.9
+
+Nominal delta-v = -2.50 m/s
+```
+
+如果简单去除中间正向恢复：
+
+```text
+-2.4 × 0.9
++0 × 1.3
+-2.4 × 0.9
+
+Nominal delta-v = -4.32 m/s
+```
+
+会产生明显的整体速度变化差异。
+
+因此必须重新研究：
+
+1. 两次制动强度与持续时间如何分配；
+2. 两次制动总冲量如何与Baseline保持合理一致；
+3. 松刹阶段允许多长时间；
+4. 是否可能保持近似净速度变化；
+5. 平均速度、路径长度和平均绝对加速度是否存在可行的匹配空间；
+6. 当前nuPlan LQR/controller的预瞄效应是否可能把两个制动阶段合并；
+7. 为获得真实两次制动，是否需要控制器感知的预补偿；
+8. 如何保证预补偿不会重新引入主动正加速。
+
+只允许解析计算、既有源码审计和无仿真的运动学分析。
+
+**本轮不通过模拟猜测来确定最终参数。**
+
+允许提出多个有物理依据的候选机制，但不得根据预想的RBR/H检测表现选取参数。
+
+## 五、任务C：设计全新的机制资格合同
+
+新资格定义必须与新的驾驶行为相符。
+
+不能继续照搬旧TSB的：
+
+`interstage_release_fraction ≥ 0.15`
+
+因为该指标要求中间存在一定程度的速度回升，与近似滑行的核心定义不一致。
+
+建议研究以下测量维度：
+
+- 第一次制动实际减速度峰及持续时间；
+- 第二次制动实际减速度峰及持续时间；
+- 两次制动之间有效时间间隔；
+- 中间近零加速度持续时间；
+- 中间速度漂移；
+- 中间持续正加速度的排除规则；
+- 低速失效条件；
+- 测量平滑和时间戳敏感性；
+- 两段制动形态在实际闭环中的可测性。
+
+所有具体阈值必须给出物理或测量学理由。
+
+不得为了追求资格PASS而选择宽松阈值，也不得因为希望H难以检测而专门设计机制。
+
+新合同要明确区分：
+
+`INTENDED_INTERVENTION`
+
+`REALIZED_BEHAVIOR`
+
+`MECHANISM_QUALIFICATION`
+
+`F_MATCH`
+
+`OFFICIAL_SAFETY`
+
+上述条件不能相互替代。
+
+## 六、任务D：评估旧F_match能否沿用
+
+原四项：
+
+```text
+mean_speed
+end_minus_start_speed
+path_length
+mean_abs_accel
+```
+
+逐项判断：
+
+- 是否仍然具有科学意义；
+- 是否适合TSB-Coast；
+- 原容差是否有独立的物理与测量依据；
+- 是否与新的机制条件发生冲突；
+- 是否需要建立新版本的匹配合同。
+
+原四项可作为设计参考，但**不得直接宣称原阈值已批准用于新基准**。
+
+新基准必须确保配对差异不是简单的整体速度变化或制动强度差异所主导。
+
+同时承认：即使全窗指标匹配，也不证明ego13、H30或所有低阶因素无法区分两种行为。
+
+不得以让H检测困难作为F_match调参目标。
+
+## 七、任务E：评估nuPlan真实闭环实现难度
+
+复用已经完成的工程基础设施。
+
+读取：
+
+- 旧TSB generator；
+- controller-aware planner；
+- native route builder；
+- official runner；
+- passive recorder；
+- measurement analyzer；
+- official safety adapter。
+
+分析新的TSB-Coast需要修改哪些组件。
+
+优先考虑最小范围的版本化实现。
+
+不能修改旧冻结TSB的代码、配置或实验结果。
+
+对新基准必须独立：
+
+```text
+generator version
+parameter contract
+mechanism analyzer version
+qualification protocol
+execution authorization
+```
+
+本轮只提出设计，不进行科学仿真。
+
+## 八、任务F：明确与博士Primary的关系
+
+当前原Primary统计合同包括：
+
+```text
+ΔBDD = P(alarm_RBR) - P(alarm_H)
+
+nominal FPR = 0.05
+m = 20 independent logs per release arm
+π = 0.50
+δ* = 0.10
+```
+
+这些已经批准的统计设置不能因本轮行为语义变化而自动修改。
+
+新构念如果要成为未来Primary的被检验干预，必须经过独立Scientific Owner修约。
+
+本轮需分别分析：
+
+1. 新基准是否有必要成为主线被检验对象；
+2. 对现有H30强基线是否需要重新确认适用性；
+3. U-only encoder selection是否可以保持不变；
+4. 新B基准是否需要独立资格样本；
+5. V/C的数据角色、样本规模和统计独立性是否受影响；
+6. 已经观察过旧B1结果，会对新构念设计形成哪些development exposure；
+7. 采用新基准是否需要调整未来Primary的统计功效预算。
+
+不得根据预期RBR是否优于H决定采用哪一种方案。
+
+不能将本轮结果直接视作修改原Primary的授权。
+
+## 九、任务G：控制研究范围
+
+本轮最重要的工程管理要求：
+
+**不要把TSB-Coast变成另一个无限期调试项目。**
+
+提出一个有限的、可审计的后续验证计划：
+
+```text
+P0: 构念定义与运动学可行性
+    ↓
+Owner review
+    ↓
+P1: 有限Development验证（另行授权）
+    ↓
+Owner review
+    ↓
+P2: 独立冻结资格验证（另行授权）
+    ↓
+是否可进入未来BDD Primary
+```
+
+必须预先提出：
+
+- development预算上限的建议；
+- 最大设计迭代次数；
+- 技术失败和科学失败的区别；
+- 停止条件；
+- 设计不可行时的论文收缩路径。
+
+不允许事后无限增加场景、机制参数、阈值或候选版本。
+
+如果分析发现新的两脚制动构念在当前控制器和资源预算下明显不可行，应如实说明，不得为了得到PASS牺牲物理语义。
+
+## 十、v2.4总体方案影响
+
+以《RBR-64 博士研究总体方案 v2.4》为当前待审的研究总控版本。
+
+本轮需提出一份正式的版本修订建议，记录：
+
+- 旧B1已20/20 PASS；
+- 旧TSB的正向加速度恢复语义；
+- Scientific Owner已选择TSB-Coast作为下一步研究构念；
+- 新基准尚未验证；
+- 是否以它替代未来Primary尚未正式批准；
+- 原S1/S1R冻结科学合同依然有效。
+
+如v2.4原文尚未同步到仓库，不得用v2.3重新生成所谓的v2.4，也不得凭空补写原文。
+
+不得覆盖历史版本。
+
+## 十一、执行限制
+
+本轮：
+
+```text
+SIMULATION = 0
+RUNNER_RUN = 0
+NEW_TSB_ROLLOUT = 0
+HLC_ROLLOUT = 0
+
+RBR_TRAINING = 0
+H_BDD = 0
+RBR_BDD = 0
+PRIMARY_EVALUATION = 0
+V_EXECUTION = 0
+C_EXECUTION = 0
+```
+
+允许：
+
+- 源码审查；
+- 现有实验结果只读审查；
+- 运动学解析计算；
+- 不调用runner的纯函数fixture；
+- 新协议和设计文档；
+- 预算、统计角色、后续Owner决策分析。
+
+保护旧20对B1结果、冻结参数和既有S1/S1R合同。
+
+不得新增正式结果暴露。
+
+## 十二、输出
+
+新建：
+
+```text
+docs/stageR/tsb_coast_p0/
+```
+
+至少输出：
+
+```text
+TSB_Coast_P0_Construct_Definition_v1.md
+
+TSB_Coast_P0_Kinematic_Feasibility_v1.md
+
+TSB_Coast_P0_Mechanism_Qualification_Proposal_v1.md
+
+TSB_Coast_P0_FMatch_Feasibility_v1.md
+
+TSB_Coast_P0_NuPlan_Implementation_Design_v1.md
+
+TSB_Coast_P0_Primary_Impact_Assessment_v1.md
+
+TSB_Coast_P0_Development_Budget_Proposal_v1.md
+
+TSB_Coast_P0_Roadmap_v2_4_Change_Proposal_v1.md
+
+TSB_Coast_P0_Owner_Decision_Memo_v1.md
+
+TSB_Coast_P0_Manifest_v1.json
+```
+
+可根据需要增加只读的运动学对照图表，但不得生成或伪装成新的真实闭环结果。
+
+完成测试、哈希审计、Git提交和远端核对。
+
+## 十三、最终反馈
+
+请按以下结构报告：
+
+### A. Overall Verdict
+
+明确TSB-Coast在科学定义和运动学上是否可行。
+
+### B. 用大白话说明
+
+回答：
+
+**能不能在现有nuPlan平台上真正实现“刹车—松开—再次刹车”？需要付出什么代价？**
+
+### C. Construct Definition
+
+定义近似滑行，说明哪些实际行为合格、哪些不合格。
+
+### D. Kinematic Feasibility
+
+说明如何在不主动加速的前提下合理匹配Baseline与Treatment的整体速度变化。
+
+### E. Mechanism Qualification
+
+给出新机制测量方案。
+
+### F. F_match
+
+分析旧合同哪些可以沿用、哪些需要修约。
+
+### G. nuPlan Engineering Feasibility
+
+明确最小改动范围及闭环风险。
+
+### H. Primary Impact
+
+说明新行为构念对强H、RBR、数据角色和已批准Primary的影响。
+
+### I. Budget and Stop Conditions
+
+提出有限的后续验证预算和停止条件。
+
+### J. v2.4 Changes
+
+只提出需要更新的具体内容，不擅自修改已批准合同。
+
+### K. Scientific Firewall
+
+确认零仿真、零训练、零Primary结果访问。
+
+### L. Tests, Hashes and Git
+
+报告审计及提交结果。
+
+### M. Recommended Next Stage
+
+只建议一个下一阶段。
+
+不得自动授权任何科学执行。
+
+## 十四、完成后停止
+
+**本轮目的是证明新的“两脚制动”问题有清晰的行为定义、可行的运动学设计以及有限的实现路径，不是为了再得到一个20/20的漂亮数字。**
+
+完成后停止，等待Scientific Owner审核。

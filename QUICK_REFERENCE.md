@@ -11468,3 +11468,22 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python /Users/liuqing/miniconda3/envs/nup
 ### 通过标准
 
 5项fixture回归、编译、临时依赖和diff检查通过；40条trace匹配冻结SHA；2217项保护文件不变。B1仍20/20 PASS，不重算科学判定，不运行仿真/训练/H特征/BDD/MMD/Primary/V/C。当前TSB准确语义为“制动—正向加速度恢复—再次制动”，不当作near-zero coast或一般未知行为发现证据；路线B仅概念提案，完成审查后停止等待Owner的construct决定。
+
+## TSB-Coast P0：纯解析运动学与零科学执行审查
+
+### 命令
+
+```bash
+python tools/tsb_coast_p0_kinematics.py
+python -m pytest -q tests/test_tsb_coast_p0_kinematics.py
+python -m py_compile tools/tsb_coast_p0_kinematics.py tests/test_tsb_coast_p0_kinematics.py
+python tools/check_no_tmp_dependencies.py
+```
+
+### 期望行为
+
+只向终端输出分段常加速度的解析积分JSON，检验总降速、制动时间重心及理想全窗运动量；不导入或调用planner/controller/runner，不读取未来V/C、不做H/RBR/BDD。可用`--output 新路径.json`保存，已存在路径拒绝覆盖。已提交解析结果及9份待审协议见`docs/stageR/tsb_coast_p0/`；它们不是闭环结果或新资格PASS。
+
+### 通过标准
+
+解析守恒、独立积分对照、旧恢复移除导致剂量不等及非法输入/低速不截断等9项测试通过；编译和临时依赖检查通过。真实闭环、机制classifier及新F_match均未验证，须独立Owner P1授权；旧B1/S1/S1R工件及受保护CSV哈希保持不变。

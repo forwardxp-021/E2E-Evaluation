@@ -1,0 +1,19 @@
+{
+  "stage": "TSB_COAST_P0",
+  "classification": "E2_BENCHMARK_ENGINEERING_DESIGN_INFLUENCE",
+  "new_session_ids_selected": [],
+  "prior_exposure_source": "docs/stageR/tsb_scientific_semantics_review/TSB_SR_20Pair_Acceleration_Characteristics_v1.csv",
+  "historical_population": "original B1-TSB-01 through B1-TSB-20; identities remain in original ledger",
+  "observed": "previously frozen mechanism/acceleration semantics and controller transfer",
+  "decisions_influenced": [
+    "Owner-selected coast construct",
+    "positive recovery exclusion",
+    "nonpositive equal-impulse design",
+    "1s lookahead risk and C2 gap recommendation"
+  ],
+  "H_features_computed": false,
+  "RBR_or_H_BDD_results_accessed": false,
+  "encoder_selection_influenced": false,
+  "future_V_C_identities_materialized": false,
+  "historical_ledgers_modified": false
+}
