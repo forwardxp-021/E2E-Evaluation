@@ -11388,3 +11388,20 @@ python3 -m py_compile tools/*.py  # 本机 Python 3.14.4
 本轮最多6次、累计最多41次；01–17不重跑不重判；18 treatment原失败保留、禁止attempt 3。复用唯一B1 runner及官方callback/serializer/safety适配器；完成六步lifecycle与hash才ARM_COMPLETE。科学失败保留并继续，任何基础设施失败立即终止。最终保留20分母，只有20/20 full-contract PASS才能资格通过。无RBR/H/BDD/Primary/V/C，保护原CSV和历史outputs。历史IR3源码快照回放须在其原commit进行；B1-R共享lifecycle抽取后的新源码由本阶段授权和测试固定。
 
 本轮正式结果：`B1_R_PREFLIGHT_BLOCKED`；新增attempt=0、累计35。新增预检错误检查共享callback列表，详细诊断与停止记录见 `docs/stageR/b1_resume_execution/B1_R_Preflight_Blocker_Diagnosis_v1.md`；按Owner规则未修复后重试。
+
+## B1-RP — 正式 callback 预检修复（仅零运行）
+
+### 命令
+
+```bash
+PYTHONPATH="$PWD:../nuplan-devkit" PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python /Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q --disable-warnings tests/test_b1_preflight_callback_gate.py tests/test_b1_resume_execution.py tests/test_b1_infrastructure_remediation.py tests/test_b1_tsb_qualification.py tests/test_b1_ir2_adjudication.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -B tools/b1_resume_preflight_correction.py
+```
+
+### 期望行为
+
+先提交修复源码，再运行第二条命令，为原18 treatment、18 baseline、19 treatment、19 baseline、20 baseline、20 treatment构建正式工厂。直接检查实际simulation的MetricCallback/SimulationLogCallback和common_builder主链的MetricFileCallback，核验配置、输出路径、recorder及原六步生命周期。零运行证据、正反矩阵及PROPOSED_ONLY授权草案写入 `docs/stageR/b1_resume_preflight_correction/`；使用新的诊断目录，不修改旧B1-R预检、授权或预算。
+
+### 通过标准
+
+真实六项静态预检全PASS，正常配置放行、缺失/错误callback/finalizer/output/lifecycle配置全部BLOCK；旧授权无法执行新源码。全部科学入口及指标计算/收尾调用为0，原35次预算不变、历史17对结论不变、保护资产和科学合同hash不变。该工具没有科学执行选项；即使PASS，B1-R2仍未授权，必须等待Owner另行批准。

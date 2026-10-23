@@ -264,13 +264,15 @@ def preflight():
                 probe_root = RAW / 'zero_run_preflight' / a['attempt_id']
                 arm = build_fresh_arm(by_id[a['run_id']], probe_root)
                 gate = executor.validate_pre_run_lifecycle(arm, by_id[a['run_id']])
-                require(arm.recorder is not None and len(arm.callbacks) > 0, 'RECORDER_CALLBACK_NOT_BOUND')
+                from tools.b1_production_preflight import validate_production_callback_binding
+                callback_binding = validate_production_callback_binding(arm)
                 from omegaconf import OmegaConf
                 cfg = OmegaConf.to_container(arm.cfg, resolve=True)
                 require('simulation_log_callback' in cfg['callback'] and cfg['run_metric'] is True, 'SERIALIZER_METRIC_CONFIG')
                 write_json(probe_root / 'resolved_config.json', cfg)
                 probe = {'attempt_id': a['attempt_id'], 'route_gate': gate, 'config_hash': arm.config_hash,
                          'normalized_config_hash': normalized_config_hash(cfg, arm.run_root),
+                         'callback_binding': callback_binding,
                          'official_finalizer_bound': executor.official_metric_finalizer_bound(arm),
                          'recorder_class': type(arm.recorder).__module__ + '.' + type(arm.recorder).__name__,
                          'serializer_config': cfg['callback']['simulation_log_callback'],
