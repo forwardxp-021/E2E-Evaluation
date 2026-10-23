@@ -11450,3 +11450,21 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python /Users/liuqing/miniconda3/envs/nup
 ### 通过标准
 
 4项fixture回归、编译及临时依赖检查通过；2185项历史/源码/config保护hash与CSV不变；83字段及G1–G12完整。审计命令成功不代表训练准入：本次为`S3_P0_BLOCKED_INPUT_CONTRACT`，同时保留`S3_P0_BLOCKED_U_DATA_INDEPENDENCE`与`S3_P0_BLOCKED_TRAINING_PROTOCOL`。时间/槽位混排、closing物理错误和跨train/test重复ego已登记；旧数据/科学代码不改。先审查最小修复建议，全部入口关闭后仍须Owner单独授权训练。
+
+## TSB-SR — 冻结TSB行为语义审查（仅描述性分析）
+
+### 命令
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_scientific_semantics_review.py analyze
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m pytest -q tests/test_tsb_scientific_semantics_review.py
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_scientific_semantics_review.py manifest
+```
+
+### 期望行为
+
+读取原20对的40条已完成冻结current-ego轨迹及18–20已有measurement数组，写入`docs/stageR/tsb_scientific_semantics_review/`的描述性CSV、20对曲线图和hash证据。01–17仅按原median3/物理时间导数公式描述曲线，不调用资格判定器。18T原失败不作为完整轨迹使用，历史工件不变。`snapshot`只用于首次建立保护基线，重复调用明确拒绝覆盖。
+
+### 通过标准
+
+5项fixture回归、编译、临时依赖和diff检查通过；40条trace匹配冻结SHA；2217项保护文件不变。B1仍20/20 PASS，不重算科学判定，不运行仿真/训练/H特征/BDD/MMD/Primary/V/C。当前TSB准确语义为“制动—正向加速度恢复—再次制动”，不当作near-zero coast或一般未知行为发现证据；路线B仅概念提案，完成审查后停止等待Owner的construct决定。
