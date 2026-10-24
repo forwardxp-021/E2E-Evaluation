@@ -11638,3 +11638,28 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 本轮结论固定为`P1R_D_FIRST_PAIR_SCIENTIFIC_FAIL`：Baseline单段合格；Treatment两次减速起伏的峰值和剂量均不足，合格段0，reason=TWO_BRAKE_PHASES_NOT_REALIZED。滑行18次严格零请求且推进/滤波验证通过不抵消机制失败。pair F_match和额外balance为NOT_EVALUATED_ARM_GATE_FAILED；CSV只列单臂描述和原caliper，不计算联合差值。
 
 新attempt=2、累计Coast attempt=2、科学CPU=15.017957642秒，stopped=true，无retry、DEV02/03、P2或Primary授权。下一步仅Scientific Owner review → C2 scientific feasibility and dissertation scope decision。
+
+
+## TSB-Coast F1：首次失败归因与基准路线收口（纯只读）
+
+### 1. 命令
+
+在仓库根目录复核已有F1数学会计与实际数据一致性（不再运行原科学判定）：
+
+```bash
+/Users/liuqing/miniconda3/envs/nuplan/bin/python -m unittest discover -s tests -p test_tsb_coast_f1_readonly_analysis.py -v
+```
+
+一次性分析入口为`/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_coast_f1_readonly_analysis.py --write-once`，只读已冻结P1R-D数据；本轮已生成结果，入口会拒绝覆盖，不应删除既有F1结果来重跑。环境需NumPy；系统默认Python没有NumPy，使用上述已核对的分析环境。
+
+### 2. 期望行为
+
+读取旧current-ego、最终请求、model telemetry、planner参考、四组曲线CSV及已存review。原判定仅作为历史输入读取，不调用arm/pair analyzer、tracker、model或runner。F1目录保存事后四描述符差值、五窗实际积分、80帧速度差、控制/模型求和恒等式和路线备忘录；旧F_match空白字段不回填。
+
+新差值统一标记`POST_HOC_DESCRIPTIVE_ONLY_NOT_FMATCH_QUALIFICATION`。官方model积分是0.1×Σa_next，资格代理全窗/窗口积分是已存median3梯度的梯形积分，不能互换。路径差的剂量/时间重心分解是离散恒等式，不是干预因果百分比。源码事实、实测、数学推导和未证实推测在报告中分开。
+
+### 3. 通过标准
+
+6项数学fixture/实际一致性测试通过；新工具与测试编译、no_tmp检查通过；冻结输入、原ledger及保护CSV前后hash相同。既有P1R-D FAIL与零请求实现两项结论都保留，正式Pair仍NOT_EVALUATED，新科学attempt=0，旧ledger stopped=true/attempts2/CPU15.017957642秒。
+
+F1首选路线一：建议Owner确认关闭Coast开发，将后续工作限定到S3-P0输入合同/U独立性/零训练入口最小修复。运动学兼容不等于新闭环联合可行性已经建立；不推荐新参数、仿真、训练或自动以旧B1替代Primary。

@@ -1,0 +1,18 @@
+{
+  "stage": "TSB_COAST_F1",
+  "record_type": "CURRENT_OWNER_MESSAGE_SCOPE_SUMMARY_NOT_VERBATIM_TRANSCRIPT",
+  "owner_message_title": "TSB-Coast F1 — C2首次科学失败归因与基准路线收口",
+  "date_asia_shanghai": "2026-10-24",
+  "base_results_commit": "b038ccc4dd19cedbb6c9e345c84d74e5fcba21d2",
+  "accepted_permanent_conclusions": [
+    "P1R_D_FIRST_PAIR_SCIENTIFIC_FAIL",
+    "ZERO_LONGITUDINAL_REQUEST_COAST_IMPLEMENTED_IN_CLOSED_LOOP"
+  ],
+  "authorized": "READ_ONLY_FROZEN_DATA_ATTRIBUTION_POST_HOC_DESCRIPTION_ANALYTIC_REASONING_REPORT_COMMIT_PUSH",
+  "exploratory_label": "POST_HOC_DESCRIPTIVE_ONLY_NOT_FMATCH_QUALIFICATION",
+  "all_new_scientific_execution_authorized": false,
+  "historical_qualification_reexecution_authorized": false,
+  "new_parameter_selection_authorized": false,
+  "route_recommendation_required": true,
+  "broader_Coast_closure_recommendation_is_owner_approval": false
+}

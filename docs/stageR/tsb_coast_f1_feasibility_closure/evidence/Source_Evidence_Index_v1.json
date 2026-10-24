@@ -1,0 +1,215 @@
+{
+  "tools/tsb_coast_p1r_planner.py": {
+    "sha256": "b6aa1c2b2f4844e59c1d260a10cd458edc7b50e9a2748958ca29e1cb8eeaeb24",
+    "line_evidence": {
+      "def reference_profile": [
+        19
+      ],
+      "common=elapsed<1100000": [
+        60
+      ],
+      "states[0]=ego": [
+        68
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "tools/tsb_coast_p0_kinematics.py": {
+    "sha256": "d3026ba2a12f619fcec699ac99916dc341b3156e45221bc39af71027bfe879f6",
+    "line_evidence": {
+      "def moments": [
+        19
+      ],
+      "C2_LONGER_COAST": [
+        77
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "tools/tsb_coast_zero_command_tracker_v1.py": {
+    "sha256": "4962513f1f0a5e9dc864076545fc06c6c8cd488ecf87a69f1c6f47549008252a",
+    "line_evidence": {
+      "def track_trajectory": [
+        70
+      ],
+      "if not coast:": [
+        80
+      ],
+      "rear_axle_acceleration_2d=StateVector2D(0.0, 0.0)": [
+        105
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "tools/tsb_coast_p1r_recorder.py": {
+    "sha256": "1c8c5e7d045229684804f4aa8639794ce4f45e4034a4b4a3d938709e50c16708",
+    "line_evidence": {
+      "def wrapped_track": [
+        48
+      ],
+      "def wrapped_model": [
+        73
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py": {
+    "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b",
+    "line_evidence": {
+      "def _compute_reference_velocity_and_curvature_profile": [
+        208
+      ],
+      "def _longitudinal_lqr_controller": [
+        258
+      ],
+      "def _solve_one_step_lqr": [
+        357
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/tracker_utils.py": {
+    "sha256": "a1e6d3a39201ee6bd6839a058293236e971a68e7f383ac6b3314104ac341b87a",
+    "line_evidence": {
+      "def _fit_initial_velocity_and_acceleration_profile": [
+        90
+      ],
+      "def get_velocity_curvature_profiles_with_derivatives_from_poses": [
+        237
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py": {
+    "sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d",
+    "line_evidence": {
+      "def _update_commands": [
+        54
+      ],
+      "def propagate_state": [
+        94
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "../nuplan-devkit/nuplan/planning/simulation/controller/two_stage_controller.py": {
+    "sha256": "22797e59f0f13a61ced983a62f8750bb22febac549e1e7ab80f82547c6cadbdd",
+    "line_evidence": {
+      "def update_state": [
+        44
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "../nuplan-devkit/nuplan/common/actor_state/dynamic_car_state.py": {
+    "sha256": "e36a40703eee1c2ebe8efd4458defbd8deb57626d1c99ec722a9f52e1b12c43d",
+    "line_evidence": {
+      "def speed": [
+        194
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "tools/tsb_coast_p1_measurement.py": {
+    "sha256": "d7eeedf8773a3f544afaf66ad23d10692fe585fc5ddd8718f3a9775d81ba4cdc",
+    "line_evidence": {
+      "def measure": [
+        51
+      ],
+      "def f_descriptors": [
+        110
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "tools/tsb_coast_p1r_analysis.py": {
+    "sha256": "f8cae010d8540d37556111d60adf917b08b7af46c0c5a866b91dcce7675849f1",
+    "line_evidence": {
+      "SCIENCE_CONTRACT=": [
+        12
+      ],
+      "def analyze_completed_pair": [
+        105
+      ]
+    },
+    "scope": "SOURCE_READ_ONLY_NOT_EXECUTED"
+  },
+  "docs/stageR/tsb_coast_p1r_first_pair/evidence/Owner_Instruction_v1.txt": {
+    "sha256": "4b45ac7e1794b101deebdae1c6132b82b73de34003af54247d52e390e6251a86",
+    "line_evidence": {
+      "## 十、F_match、匹配和安全": [
+        340
+      ],
+      "## 十二、科学失败和基础设施失败的处理": [
+        438
+      ]
+    },
+    "scope": "HISTORICAL_CONTRACT_OR_REPORT_READ_ONLY"
+  },
+  "docs/stageR/tsb_coast_p0/evidence/Owner_Instruction_v1.txt": {
+    "sha256": "fec52b5ad17293601818be92f1aac23c23230e52244c7646cfcfb459e5d48dc6",
+    "line_evidence": {
+      "不接受": [
+        13
+      ],
+      "PRIMARY_PROTOCOL_AMENDMENT": [
+        31
+      ]
+    },
+    "scope": "HISTORICAL_CONTRACT_OR_REPORT_READ_ONLY"
+  },
+  "docs/stageR/tsb_coast_p1r_clock_closure/P1R_C_Owner_Approved_Scientific_Amendment_v1.json": {
+    "sha256": "a61d7402c8357cc6093e17d9a42630243f76611eace85e45a7704f0e7939ec64",
+    "line_evidence": {
+      "\"D1\"": [
+        4
+      ],
+      "\"D2\"": [
+        5
+      ],
+      "\"additional_pair_balance\"": [
+        68
+      ]
+    },
+    "scope": "HISTORICAL_CONTRACT_OR_REPORT_READ_ONLY"
+  },
+  "docs/stageR/s3_p0_rbr_training_entry/S3_P0_Training_Entry_Report_v1.md": {
+    "sha256": "00d27e93e204d45c8577074939fb95eccf77398c4cb98956249c2cdcb06ccc84",
+    "line_evidence": {
+      "S3_P0_BLOCKED_INPUT_CONTRACT": [
+        7
+      ],
+      "## H. Training Entry Gates": [
+        57
+      ]
+    },
+    "scope": "HISTORICAL_CONTRACT_OR_REPORT_READ_ONLY"
+  },
+  "docs/stageR/s1r_owner_amendment/S1R_Owner_Approval_Record_v1.md": {
+    "sha256": "7ab9995ce7294bd623b70365377a22e786cf02edc69f388546cc4f0b7493ebba",
+    "line_evidence": {
+      "ENCODER_SELECTION = U_ONLY": [
+        29
+      ],
+      "NO_POST_PRIMARY_FREEZE_POINT_ADAPTATION": [
+        33
+      ]
+    },
+    "scope": "HISTORICAL_CONTRACT_OR_REPORT_READ_ONLY"
+  },
+  "RBR-64 博士研究总体方案 v2.4.md": {
+    "sha256": "d2df8a26cb342e1e98508f009fef1a8a71f4ee25ca1078e4ebd09b34d7b4cb78",
+    "line_evidence": {
+      "## 3.": [
+        132,
+        134,
+        142,
+        149
+      ],
+      "Primary 科学问题": [
+        134
+      ]
+    },
+    "scope": "HISTORICAL_CONTRACT_OR_REPORT_READ_ONLY"
+  }
+}
