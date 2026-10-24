@@ -1,0 +1,23 @@
+{
+  "status": "ACTUAL_DATA_ONLY",
+  "plot_source_sha256": {
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-BASELINE/trace/realized_current_ego.jsonl": "accc347451b9e1dc787e3a328ded32f9f465b30629a22dec912468558081b6f7",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "7053397328ffa96ff302b6922f8137d713001ab8853f8a44130f5a455934dca3",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-BASELINE/telemetry/planner_transfer.jsonl": "89bd4d697dfd32fe3f2f20a13e6c71c04e28c11e8e459f8a2eb6b8c078aa0a13",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-BASELINE/arm_science_review.json": "7cae201620bf5fefeb1e7e356fda164e5767285a65ede30e1e1deb0a1836afa2",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-BASELINE/execution_manifest.json": "673206ec7ca759998fe71631a88524b34b22a09c4363fbfecdd74c7f05165f7e",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-TREATMENT/trace/realized_current_ego.jsonl": "6a30a8ed18e56d75312baeece112448b63bf98d59c58dd81e1b6c05604fd8149",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-TREATMENT/telemetry/actual_lqr_controller_telemetry.jsonl": "12b12eb2b54fd4ad8dd93524e63603f45dbe12fa958ed63b34ee7acce6d4a7cd",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-TREATMENT/telemetry/planner_transfer.jsonl": "138a46e4a9a990fce381bdc6fff245dcdeb914d4a995d5f5baa92f9790dfb903",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-TREATMENT/arm_science_review.json": "9d7555458109a42f29705974e296e7ada398292de5f3d7901fb3a215ecbc6aa0",
+    "outputs/stageR/tsb_coast_p1r_d_first_pair_v1/P1R-C2-DEV-01-TREATMENT/execution_manifest.json": "50d5708806f3d4c1276635dc9167f32700826a429f35b64e89d9eec41f2bd829"
+  },
+  "executable_source_commit": "73e96f7e6fa1c39bca0f2cd0f9f2947646024c93",
+  "authorization_sha256": "220e637b684a72d18883ea7bd38b7cba36da1dcd4cd5fec696f5d23fc8771a2a",
+  "plot_tool_sha256": "c19886ab67a67ab8a4c3f160393c09f63a272065ea961bc5dd7103f21196810c",
+  "model_time_alignment": "MODEL_TRANSITION_OUTPUT_AT_NEXT_TIME; COMMAND_AT_CURRENT_INTERVAL_START",
+  "final_frame_new_command": false,
+  "shading": "FIXED_REFERENCE_WINDOWS_NOT_QUALIFIED_PHASES",
+  "joint_F_match": "NOT_EVALUATED_ARM_GATE_FAILED",
+  "scientific_reexecution": false
+}

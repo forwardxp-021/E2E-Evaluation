@@ -1,0 +1,46 @@
+{
+  "run_id": "P1R-C2-DEV-01-TREATMENT",
+  "automatic_retry": false,
+  "parent_result": "STOPPED",
+  "error_type": "RuntimeError",
+  "error": "P1R_C arm failed; STOP, no automatic retry/replacement",
+  "budget_after": {
+    "attempts": [
+      {
+        "child_pid": 78222,
+        "claim_token": "f0907ffcd12afe9b671198c1797b1355b5b675e3178c18bfec8aa62ce5e432f4",
+        "cpu_seconds": 7.5519576420000005,
+        "elapsed_s": 8.849630416,
+        "monitor_pid": 78213,
+        "run_id": "P1R-C2-DEV-01-BASELINE",
+        "status": "COMPLETE_REVIEW_REQUIRED",
+        "stop_reason": null
+      },
+      {
+        "child_pid": 78815,
+        "claim_token": "0d07ee2474a541bca3d3471f1db19ae9bdcd14db30cc02ddddbf3a5ee6977950",
+        "cpu_seconds": 7.465999999999999,
+        "elapsed_s": 8.753956083,
+        "monitor_pid": 78806,
+        "run_id": "P1R-C2-DEV-01-TREATMENT",
+        "status": "SCIENTIFIC_FAILURE",
+        "stop_reason": null
+      }
+    ],
+    "automatic_retry_authorized": false,
+    "budget_reset": false,
+    "cpu_seconds_consumed": 15.017957641999999,
+    "historical_P1_zero_run_implementation_iterations": 2,
+    "historical_attempts": 0,
+    "inherited_ledger_path": "docs/stageR/tsb_coast_p1r_entry/P1R_Execution_Budget_Ledger_v1.json",
+    "inherited_ledger_sha256": "8365ed5c00314e3a001eaa929257e156744054bccd4b4e93520d903734863eb0",
+    "limits": {
+      "cumulative_attempts": 8,
+      "development_pairs": 3,
+      "first_attempts": 6,
+      "per_arm_wall_seconds": 1200,
+      "scientific_CPU_seconds": 10800
+    },
+    "stopped": true
+  }
+}

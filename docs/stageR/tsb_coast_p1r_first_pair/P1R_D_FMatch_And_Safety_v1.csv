@@ -1,0 +1,10 @@
+category,metric,unit,baseline_actual,treatment_actual,absolute_pair_delta,frozen_pair_caliper,status,source
+F_SINGLE_ARM_DESCRIPTIVE_ONLY,mean_speed,m/s,12.548806,13.376747,,0.1,NOT_EVALUATED_ARM_GATE_FAILED,actual current-ego trace; frozen f_descriptors; raw gradient; six decimals
+F_SINGLE_ARM_DESCRIPTIVE_ONLY,end_minus_start_speed,m/s,-2.465066,-1.279547,,0.15,NOT_EVALUATED_ARM_GATE_FAILED,actual current-ego trace; frozen f_descriptors; raw gradient; six decimals
+F_SINGLE_ARM_DESCRIPTIVE_ONLY,path_length,m,99.221728,105.726698,,0.8,NOT_EVALUATED_ARM_GATE_FAILED,actual current-ego trace; frozen f_descriptors; raw gradient; six decimals
+F_SINGLE_ARM_DESCRIPTIVE_ONLY,mean_abs_accel,m/s2,0.315375,0.167175,,0.02,NOT_EVALUATED_ARM_GATE_FAILED,actual current-ego trace; frozen f_descriptors; raw gradient; six decimals
+SAFETY_OR_BALANCE,number_of_all_at_fault_collisions_stat_value,count,0,0,,,BOTH_ARM_SAFETY_PASS,official_safety_adapter.json from official no_ego_at_fault_collisions.parquet
+SAFETY_OR_BALANCE,drivable_area_compliance_stat_value,bool,True,True,,,BOTH_ARM_SAFETY_PASS,official drivable_area_compliance.parquet
+SAFETY_OR_BALANCE,minimum_speed,m/s,11.685947555408783,12.871499757943681,,,NO_LOW_SPEED_ENDSTOP,actual current-ego speed
+SAFETY_OR_BALANCE,negative_acceleration_dose_delta,m/s,,,,,NOT_EVALUATED_ARM_GATE_FAILED,pair balance stage not entered
+SAFETY_OR_BALANCE,peak_balance,m/s2,,,,,NOT_EVALUATED_ARM_GATE_FAILED,pair balance stage not entered

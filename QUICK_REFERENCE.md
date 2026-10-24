@@ -11611,3 +11611,30 @@ D1/D2正式批准记录在`docs/stageR/tsb_coast_p1r_clock_closure/`。D3使用�
 96项测试通过；三个原候选六个配置的新clock/观察映射全部PASS，原偏差330/1038/402us及旧P1压力反例不变；G07/G08/G10闭合。G18继续`PROPOSED_ONLY_NOT_AUTHORIZED`，不能用科学修约批准代替执行授权。
 
 预算审计快照从旧0-attempt账本继承；未来工作账本独立位于`outputs/stageR/tsb_coast_p1r_c_execution_state_v1/budget.json`，本轮未claim。3对/6首次arm/8累计attempt/10800CPU秒不扩大，无自动retry。RBR/H/BDD/Primary/V/C均0。本轮结束后仅提交Owner审阅，禁止自动科学执行。
+
+
+## TSB-Coast P1R-D：首对真实结果及只读曲线（科学失败后停止）
+
+### 1. 命令
+
+在仓库根目录，只读现有真实产物并重新导出四组图及绘图CSV：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_coast_p1r_d_results.py --plots
+```
+
+首次执行前的独立预检入口为`tools/tsb_coast_p1r_d_preflight.py`，本轮已有不可覆盖证据且预算已停止，现在不能重跑预检或启动runner。`--audit-arm`只审计现有官方serialized history，一次性写入且拒绝覆盖；两臂证据已经存在，无须再执行。
+
+### 2. 期望行为
+
+结果工具仅读取`outputs/stageR/tsb_coast_p1r_d_first_pair_v1/`的DEV01两个既有arm，检查artifact哈希、80状态/79区间、实际模型时间归属以及冻结测量代理与已存review的一致性，再导出到`docs/stageR/tsb_coast_p1r_first_pair/`。不启动仿真/训练/BDD，不计算pair F_match。四组图分别为实际加速度、参考/命令/响应、实际速度、滑行模式细节，均有PNG/SVG/原始CSV和真实来源SHA。
+
+已发布v1文件由Manifest绑定；此命令用于只读复核/重新导图，若将来工具、依赖或字体不同导致导出文件变化，应另行记录版本与hash，不能冒称既有v1哈希不变。旧B1及冻结科学合同不变。
+
+### 3. 通过标准
+
+读取真实数据的校验通过，参考/最终请求/模型实际a/raw梯度/冻结资格代理明确分层；模型transition输出在next_time而命令在current interval。两臂实际观察各80帧audit PASS，四组图已视觉核对。工具编译及no_tmp检查通过。
+
+本轮结论固定为`P1R_D_FIRST_PAIR_SCIENTIFIC_FAIL`：Baseline单段合格；Treatment两次减速起伏的峰值和剂量均不足，合格段0，reason=TWO_BRAKE_PHASES_NOT_REALIZED。滑行18次严格零请求且推进/滤波验证通过不抵消机制失败。pair F_match和额外balance为NOT_EVALUATED_ARM_GATE_FAILED；CSV只列单臂描述和原caliper，不计算联合差值。
+
+新attempt=2、累计Coast attempt=2、科学CPU=15.017957642秒，stopped=true，无retry、DEV02/03、P2或Primary授权。下一步仅Scientific Owner review → C2 scientific feasibility and dissertation scope decision。

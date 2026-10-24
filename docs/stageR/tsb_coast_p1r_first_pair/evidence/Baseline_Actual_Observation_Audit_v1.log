@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "arm": "BASELINE",
+  "scope": "ACTUAL_OFFICIAL_SERIALIZED_HISTORY_AND_SAME_INDEX_RAW_SOURCE_COMPARISON",
+  "scientific_reexecution": false,
+  "simulation_log_sha256": "cfea6f40a8f12b9dbc3017bfd262a4ae0c5655d389a56133a8d61d32ff4f937b",
+  "execution_manifest_sha256": "673206ec7ca759998fe71631a88524b34b22a09c4363fbfecdd74c7f05165f7e",
+  "changed_artifacts": [],
+  "unexpected_indices": [],
+  "claim": "DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY"
+}

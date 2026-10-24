@@ -1,0 +1,12 @@
+{
+  "executable_source_commit": "73e96f7e6fa1c39bca0f2cd0f9f2947646024c93",
+  "authorization_record_commit": "d3e5e75375440854ebddd554747b6042774bb460",
+  "authorization_sha256": "220e637b684a72d18883ea7bd38b7cba36da1dcd4cd5fec696f5d23fc8771a2a",
+  "owner_instruction_sha256": "4b45ac7e1794b101deebdae1c6132b82b73de34003af54247d52e390e6251a86",
+  "final_pair_preflight_sha256": "86c7086ec28e7d84db59168cf8284b00848c9c04dd9f92660e0483de8cc74d4f",
+  "run_order": [
+    "P1R-C2-DEV-01-BASELINE",
+    "P1R-C2-DEV-01-TREATMENT"
+  ],
+  "scientific_output_root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/tsb_coast_p1r_d_first_pair_v1"
+}

@@ -1,0 +1,138 @@
+{
+  "BASELINE": {
+    "arm_pass": true,
+    "reasons": [],
+    "qualified_phases": [
+      {
+        "dose_mps": 2.050995314714991,
+        "end_s": 3.6,
+        "first_index": 18,
+        "last_index": 36,
+        "peak_decel_mps2": 1.3658502216654398,
+        "start_s": 1.8,
+        "support_s": 1.8
+      }
+    ],
+    "prequalification_candidates": [
+      {
+        "start_s": 1.8,
+        "end_s": 3.6,
+        "support_s": 1.8,
+        "peak_decel_mps2": 1.3658502216654398,
+        "dose_mps": 2.050995314714991,
+        "support_pass": true,
+        "peak_pass": true,
+        "dose_pass": true
+      }
+    ],
+    "F_descriptors_descriptive_only": {
+      "mean_speed": 12.548806,
+      "end_minus_start_speed": -2.465066,
+      "path_length": 99.221728,
+      "mean_abs_accel": 0.315375
+    },
+    "official_safety": {
+      "collision": {
+        "number_of_all_at_fault_collisions_stat_value": 0
+      },
+      "drivable_area": {
+        "drivable_area_compliance_stat_value": true
+      }
+    },
+    "official_safety_pass": true,
+    "minimum_speed_mps": 11.685947555408783,
+    "start_speed_mps": 14.151693646890218,
+    "end_speed_mps": 11.686627195434786,
+    "maximum_model_filter_equation_error_mps2": 0.0,
+    "reference_floor_triggered": false
+  },
+  "TREATMENT": {
+    "arm_pass": false,
+    "reasons": [
+      "TWO_BRAKE_PHASES_NOT_REALIZED"
+    ],
+    "qualified_phases": [],
+    "prequalification_candidates": [
+      {
+        "start_s": 1.3,
+        "end_s": 1.7,
+        "support_s": 0.3999999999999999,
+        "peak_decel_mps2": 0.7568953996876644,
+        "dose_mps": 0.2894520990693997,
+        "support_pass": true,
+        "peak_pass": false,
+        "dose_pass": false
+      },
+      {
+        "start_s": 4.1,
+        "end_s": 4.5,
+        "support_s": 0.40000000000000036,
+        "peak_decel_mps2": 0.7565759011625914,
+        "dose_mps": 0.28930513907675914,
+        "support_pass": true,
+        "peak_pass": false,
+        "dose_pass": false
+      }
+    ],
+    "F_descriptors_descriptive_only": {
+      "mean_speed": 13.376747,
+      "end_minus_start_speed": -1.279547,
+      "path_length": 105.726698,
+      "mean_abs_accel": 0.167175
+    },
+    "official_safety": {
+      "collision": {
+        "number_of_all_at_fault_collisions_stat_value": 0
+      },
+      "drivable_area": {
+        "drivable_area_compliance_stat_value": true
+      }
+    },
+    "official_safety_pass": true,
+    "minimum_speed_mps": 12.871499757943681,
+    "start_speed_mps": 14.151693646890218,
+    "end_speed_mps": 12.872146741367573,
+    "maximum_model_filter_equation_error_mps2": 0.0,
+    "reference_floor_triggered": false,
+    "coast": {
+      "window_s": [
+        2.1,
+        3.9
+      ],
+      "interval_count": 18,
+      "all_requests_exact_zero": true,
+      "command_identity_all": true,
+      "state_propagation_all": true,
+      "min_displacement_m": 1.3524443246190894,
+      "total_displacement_m": 24.36362940179082,
+      "model_acceleration_at_2p1_mps2": -0.3294216340361501,
+      "model_acceleration_at_3p9_mps2": -0.00022289968466993656,
+      "speed_at_2p1_mps": 13.590260703037716,
+      "speed_at_3p9_mps": 13.524420956167418,
+      "speed_drift_mps": -0.06583974687029759,
+      "maximum_zero_request_decay_error_mps2": 2.7755575615628914e-17,
+      "resume_time_s": 3.9,
+      "resume_mode": "BRAKING",
+      "resume_request_mps2": -1.168298181433706,
+      "old_qualified_interbrake_gap": null,
+      "nominal_window_diagnostics": {
+        "scope": "FIXED_REFERENCE_COAST_WINDOW_NOT_A_QUALIFIED_INTERBRAKE_GAP",
+        "near_zero_core": {
+          "start_s": 2.2,
+          "end_s": 3.9,
+          "support_s": 1.6999999999999997,
+          "raw_speed_drift_mps": -0.04387830460122011,
+          "old_drift_limit_mps": 0.38999999999999996
+        },
+        "positive_run_support_s": 0.0,
+        "positive_dose_mps": 0.0,
+        "positive_peak_mps2": -0.0002786246058121833,
+        "old_positive_recovery_excluded": false
+      },
+      "descriptive_model_body_x_peaks_mps2": [
+        0.7655722319055149,
+        0.7651836848344878
+      ]
+    }
+  }
+}

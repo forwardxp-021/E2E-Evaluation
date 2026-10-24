@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "arm": "TREATMENT",
+  "scope": "ACTUAL_OFFICIAL_SERIALIZED_HISTORY_AND_SAME_INDEX_RAW_SOURCE_COMPARISON",
+  "scientific_reexecution": false,
+  "simulation_log_sha256": "38c5866b864bcbcea105cb01b96a40895058ca0d24575e884735d19c58abe2bc",
+  "execution_manifest_sha256": "50d5708806f3d4c1276635dc9167f32700826a429f35b64e89d9eec41f2bd829",
+  "changed_artifacts": [],
+  "unexpected_indices": [],
+  "claim": "DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY"
+}
