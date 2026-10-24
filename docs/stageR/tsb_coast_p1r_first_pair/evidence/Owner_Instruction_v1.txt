@@ -1,0 +1,668 @@
+# TSB-Coast P1R-D — First Development Pair Frozen Closed-Loop Execution
+
+## 一、Scientific Owner 条件执行授权
+
+继续博士研究项目：
+
+- Repository：`forwardxp-021/E2E-Evaluation`
+- Branch：`20260825_stageR_new`
+- 已确认 P1R-C 提交：`73e96f7e6fa1c39bca0f2cd0f9f2947646024c93`
+
+本轮任务名称：
+
+**TSB-Coast P1R-D — First Development Pair Execution**
+
+Scientific Owner 已审查 P1R-C：
+
+`P1R_C_READY_FOR_FIRST_PAIR_OWNER_REVIEW`
+
+现决定对**第一个固定 Development Pair**给予限定范围的条件执行授权。
+
+本指令由 Scientific Owner 正式发送后，授权 Work 在全部执行前检查通过的前提下，完成以下两项真实 nuPlan 闭环实验：
+
+1. `P1R-C2-DEV-01-BASELINE`
+2. `P1R-C2-DEV-01-TREATMENT`
+
+各仅允许一次首次执行。
+
+**不得执行 DEV-02、DEV-03，不得自动技术重试，不得根据实验结果调整 C2。**
+
+如果授权、源码、合同、时间或数据绑定有任何不一致，必须在进入 runner 前停止。
+
+---
+
+## 二、本轮真正要回答的科学问题
+
+不再重复讨论适配器能否构建，也不只看参考加速度曲线。
+
+本轮必须用真实闭环数据回答：
+
+> 在固定 C2 条件下，车辆能否完成第一次制动，随后解除主动纵向控制并持续运动，最后再次形成第二次制动？
+
+还必须回答：
+
+- 两次制动是否在实际轨迹中可区分？
+- 滑行期间最终纵向请求是否严格为0？
+- 零请求是否真正到达官方车辆运动模型？
+- 滑行初期的残余负加速度是否符合官方滤波方程？
+- 滑行结束后是否恢复正常纵向控制？
+- Baseline与Treatment是否满足冻结的F_match？
+- 官方安全是否通过？
+
+**实际机制、匹配和安全结果未知，不预设必须PASS。**
+
+---
+
+## 三、必须读取的科学合同
+
+优先读取最新研究总控 v2.4 原文（如当前工作区可访问），并核查：
+
+```text
+docs/stageR/tsb_coast_p0/
+docs/stageR/tsb_coast_p1/
+docs/stageR/tsb_coast_c0_actuation_review/
+docs/stageR/tsb_coast_zero_command_adapter_v1/
+docs/stageR/tsb_coast_p1r_entry/
+docs/stageR/tsb_coast_p1r_clock_closure/
+docs/stageR/s1r_owner_amendment/
+```
+
+重点文件：
+
+```text
+P1R_C_Final_Entry_Report_v1.md
+
+P1R_C_Owner_Approved_Scientific_Amendment_v1.json
+
+P1R_C_Canonical_Clock_Contract_v1.md
+
+P1R_C_Log_Observation_Time_Mapping_v1.md
+
+P1R_C_Execution_Source_Binding_v1.json
+
+P1R_C_FirstPair_Authorization_PROPOSED_ONLY_v1.json
+
+P1R_C_Production_Entry_Gates_v1.csv
+```
+
+以实际批准的 D1/D2 合同及 D3 时间映射为权威依据，不得重新启用旧P1已失效的近零加速度资格定义。
+
+如果仓库中的v2.4尚未同步，保留同步待办，不得以v2.3重建或覆盖原v2.4。
+
+---
+
+## 四、限定执行身份
+
+本轮只允许：
+
+```text
+PAIR_ID = P1R-C2-DEV-01
+
+SESSION_ID =
+2021.09.17.14.49.23_veh-42
+
+SCENARIO_TOKEN =
+9fe700abf47057f0
+```
+
+准确的 precontext、route、spec及数据文件SHA256，以P1R-C已经冻结的授权草案与来源绑定为准。
+
+必须保持：
+
+```text
+BASELINE_RUN_ID =
+P1R-C2-DEV-01-BASELINE
+
+TREATMENT_RUN_ID =
+P1R-C2-DEV-01-TREATMENT
+```
+
+禁止：
+
+- 替换SESSION或scenario；
+- 修改precontext；
+- 修改route identity；
+- 改变两个arm的运行顺序；
+- 按历史TSB成功情况选择新样本；
+- 在本轮运行DEV-02/03。
+
+DEV-01属于B-development，不得冒充独立P2资格样本或Primary V/C。
+
+---
+
+## 五、正式授权文件
+
+历史草案：
+
+`P1R_C_FirstPair_Authorization_PROPOSED_ONLY_v1.json`
+
+必须永久保留，不直接覆盖它。
+
+根据本条Owner指令，生成独立的新授权记录：
+
+`P1R_D_Owner_FirstPair_Authorization_v1.json`
+
+其授权范围仅包括本轮两个run ID。
+
+授权必须绑定：
+
+- Scientific Owner指令来源；
+- 已批准D1/D2及D3时间映射合同；
+- C2唯一参数；
+- 当前可执行源码commit与逐文件SHA256；
+- production factory、planner、tracker adapter、motion model；
+- 官方callbacks、recorder、metric finalizer、serializer；
+- 规范时钟实现及日志映射证据；
+- DEV-01的固定arm spec和precontext/route身份；
+- 当前预算账本和执行停止规则。
+
+区分可执行源码提交与授权记录提交，避免自引用哈希。
+
+不得为了激活授权而忽略任何source/config/data hash。
+
+**不能仅把旧草案中的 `PROPOSED_ONLY` 改为 `AUTHORIZED` 就直接启动执行。必须完成独立授权记录和新的最终预检。**
+
+---
+
+## 六、最后一次执行前检查
+
+先按新授权重新进行DEV-01双arm的真实生产零运行预检。
+
+必须确认：
+
+1. 实际源码、配置、依赖和数据哈希与授权一致。
+2. Baseline与Treatment的初始状态、precontext和route一致。
+3. 规范10Hz模拟时钟正确绑定。
+4. 原始日志观察仍使用相同index和原始timestamp。
+5. DEV-01时间偏差范围仍为已审查的−330～+323微秒。
+6. 无观察错帧、插值、替换或新增future waypoint查询。
+7. Treatment滑行窗口固定为`[2.1,3.9)`秒。
+8. Baseline未启用coast adapter。
+9. Treatment正式tracker确实包装官方LQR。
+10. 纵向零请求、官方模型与被动记录器的接口绑定有效。
+11. 官方安全、recorder、serializer、metric finalizer配置完整。
+12. 两个arm均有独立、未使用的输出目录。
+13. 原始科学合同及失败停止规则完整。
+14. 累计执行预算与新授权一致。
+15. DEV-02/03被新授权明确拒绝。
+
+还必须确认此前已批准的D1/D2科学修约仍与实际analyzer完全一致。
+
+如任一项失败：
+
+`P1R_D_PREFLIGHT_BLOCKED`
+
+立即停止，不得边修改边重试启动。
+
+---
+
+## 七、执行预算
+
+本轮最多两个新的科学attempt：
+
+```text
+AUTHORIZED_PAIR = DEV-01
+
+AUTHORIZED_ARMS = 2
+
+NEW_ATTEMPTS_MAX = 2
+
+HISTORICAL_COAST_SCIENTIFIC_ATTEMPTS = 0
+
+GLOBAL_P1_ATTEMPTS_MAX = 8
+
+GLOBAL_P1_SCIENTIFIC_CPU_MAX = 10800 seconds
+
+PER_ARM_WALL_TIME_MAX = 1200 seconds
+```
+
+保持原开发项目累计预算，不重置历史账本。
+
+任何技术失败都必须消耗并记录相应attempt。
+
+技术重试：
+
+`NOT_AUTHORIZED`
+
+禁止将8次全局上限解释成自动允许8次尝试。
+
+---
+
+## 八、正式执行顺序
+
+### 第一步：Baseline
+
+运行：
+
+`P1R-C2-DEV-01-BASELINE`
+
+必须使用官方production runner：
+
+- fresh planner；
+- fresh LQRTracker；
+- fresh official motion model；
+- fresh callback与recorder；
+- 独立OS进程；
+- 冻结Baseline参考；
+- 规范模拟时钟。
+
+运行后必须完成正式生命周期：
+
+```text
+RUNNER_COMPLETE
+RECORDER_COMPLETE
+OFFICIAL_METRICS_COMPLETE
+SERIALIZER_COMPLETE
+MANIFEST_COMPLETE
+ARTIFACT_HASHES_VALIDATED
+```
+
+使用已批准的analyzer评价Baseline单阶段制动、低速规则及arm级科学条件。
+
+如果Baseline科学失败或发生基础设施错误，立即停止，不启动Treatment。
+
+### 第二步：Treatment
+
+只有Baseline技术和科学检查通过，才运行：
+
+`P1R-C2-DEV-01-TREATMENT`
+
+必须：
+
+- 完整重新构建独立执行对象；
+- 使用相同冻结SESSION及precontext；
+- 使用固定C2参考；
+- 启用已批准的零纵向请求适配器；
+- 保留官方车辆状态推进和横向控制。
+
+逐步记录：
+
+```text
+episode_time_us
+
+tracking_mode
+
+requested_acceleration_mps2
+
+actual_model_acceleration_mps2
+
+realized_speed_mps
+
+realized_position
+
+model_propagation_evidence
+
+steering_command
+```
+
+滑行期间的最终纵向请求必须严格为0。
+
+不得通过把实际加速度直接置0、重置速度、冻结车辆状态或改变官方motion model来满足合同。
+
+无论是否通过，完整保存真实响应。
+
+---
+
+## 九、真实制动机制判定
+
+必须按照正式D1批准合同执行。
+
+### Treatment
+
+检查：
+
+- 恰好两段有效制动；
+- 每段实际制动幅度、持续时间、峰值和剂量达到冻结Development阈值；
+- 两段之间的有效分离符合合同；
+- 滑行窗口内严格零纵向请求；
+- 同一最终命令实际到达模型；
+- 官方模型继续推进；
+- 残余加速度符合绑定模型的滤波关系；
+- 滑行结束后恢复纵向跟踪；
+- 无未解释的正向主动恢复；
+- 无低速失效。
+
+### Baseline
+
+检查：
+
+- 恰好一个有效制动阶段；
+- 执行时使用原版LQR；
+- 不进入coast mode；
+- 官方模型、轨迹和测量有效。
+
+不得根据运行结果调整制动阈值、分析时间域或支持时长定义。
+
+原近零加速度、漂移和正向恢复指标必须完整计算并报告，但依据新批准合同作为诊断，不擅自重新作为资格门槛。
+
+---
+
+## 十、F_match、匹配和安全
+
+如果两个arm均技术完整并满足arm级条件，才进行pair联合判断。
+
+原四项F_match保持：
+
+```text
+mean_speed ≤ 0.10m/s
+
+end_minus_start_speed ≤ 0.15m/s
+
+path_length ≤ 0.80m
+
+mean_abs_accel ≤ 0.02m/s²
+```
+
+此外保留已批准的负加速度剂量差及峰值平衡要求。
+
+所有计算必须使用冻结版本：
+
+- 实际current-ego轨迹；
+- 实际规范物理时间；
+- raw速度梯度；
+- 六位舍入；
+- 原冻结caliper；
+- 原比较逻辑。
+
+不得使用理想参考轨迹替代真实配对结果。
+
+人工±0.01m/s速度扰动作为独立鲁棒性诊断，完整保留，不把它直接混同正式生产测量误差。
+
+官方安全必须由正式nuPlan指标产物判定：
+
+- collision；
+- drivable-area。
+
+如果安全指标缺失属于基础设施不完整，不能填为零或PASS。
+
+如果正式指标明确显示安全失败，则记录真实科学失败，不得重试。
+
+---
+
+## 十一、必须生成真实曲线
+
+这是本轮我最看重的交付。
+
+必须至少生成四组图：
+
+### 图1：真实加速度对照
+
+同图显示：
+
+- Baseline实际加速度；
+- Treatment实际加速度；
+- 0m/s²参考线；
+- 第一制动阶段；
+- 零纵向请求窗口；
+- 第二制动阶段。
+
+### 图2：参考、命令和实际响应
+
+分别显示：
+
+- planner参考加速度；
+- 最终纵向加速度请求；
+- 官方运动模型实际加速度；
+- 由真实速度差分得到的纵向加速度代理。
+
+不同层次必须分开标识，不能用参考值冒充真实值。
+
+### 图3：真实速度对照
+
+Baseline与Treatment的速度随时间变化。
+
+特别观察中间解除控制后：
+
+- 速度是否仍持续下降；
+- 残余制动是否自然衰减；
+- 是否存在非预期正向速度恢复；
+- 第二次制动是否产生明显的新降速阶段。
+
+### 图4：滑行窗口细节
+
+仅放大 `[1.8,4.2]` 秒，显示：
+
+- 纵向控制模式；
+- 最终加速度请求；
+- 实际模型加速度；
+- 第二次制动恢复边界。
+
+中文标注，统一物理时间轴。
+
+所有图输出PNG/SVG及绘图原始CSV，并绑定真实轨迹和源码哈希。
+
+如果首个arm失败，则只输出已经真实取得的数据，不得伪造Treatment曲线。
+
+---
+
+## 十二、科学失败和基础设施失败的处理
+
+### 科学失败
+
+例如：
+
+```text
+BASELINE_PHASE_FAIL
+TWO_BRAKE_PHASES_NOT_REALIZED
+COAST_COMMAND_NOT_ZERO
+MODEL_RESPONSE_INVALID
+F_MATCH_FAIL
+OFFICIAL_SAFETY_FAIL
+LOW_SPEED_ENDSTOP
+```
+
+按冻结合同保存全部证据。
+
+本轮立即停止，不修改C2、不替换SESSION、不重试。
+
+如果Baseline已通过而Treatment或pair失败，必须保留Baseline结果并完整说明失败原因。
+
+### 基础设施失败
+
+例如：
+
+```text
+ROUTE_RUNTIME_FAILURE
+CALLBACK_FAILURE
+METRIC_MISSING
+RECORDER_FAILURE
+SERIALIZER_FAILURE
+HASH_MISMATCH
+CLOCK_MISMATCH
+```
+
+立即停止，不自动修复并恢复实验。
+
+必须报告attempt消耗、故障位置、是否暴露科学结果及剩余合法预算。
+
+如果官方结果完整、但科学条件未通过，不能将其改报为基础设施失败。
+
+---
+
+## 十三、时间映射证据与研究结论限制
+
+必须保存DEV-01所有实际使用的：
+
+```text
+simulation_time_us
+raw_log_time_us
+raw_minus_sim_us
+observation_index
+lidar_token
+```
+
+承认：
+
+`DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY`
+
+特别指出：
+
+- 日志观察时刻略晚于模拟时刻的情况；
+- 官方安全标签在阈值附近可能受时间偏差影响；
+- 此结果仅用于B-development；
+- 当前C2控制器不消费这些动态观察进行纵向决策。
+
+不得把本轮结果写成严格在线因果验证或真实量产端到端策略评估。
+
+如果执行中发现实际使用了未审计的未来观察通道，必须立即停止并报告，不得使用预检的旧结论豁免。
+
+---
+
+## 十四、交付文件
+
+新建：
+
+```text
+docs/stageR/tsb_coast_p1r_first_pair/
+```
+
+至少包含：
+
+```text
+P1R_D_Owner_FirstPair_Authorization_v1.json
+
+P1R_D_Final_Preflight_Report_v1.md
+
+P1R_D_Execution_Attempt_Ledger_v1.json
+
+P1R_D_Baseline_Arm_Result_v1.md
+
+P1R_D_Treatment_Arm_Result_v1.md
+
+P1R_D_Pair_Qualification_v1.md
+
+P1R_D_FMatch_And_Safety_v1.csv
+
+P1R_D_Clock_And_Observation_Audit_v1.md
+
+P1R_D_Actual_Acceleration_Curves_v1.png
+
+P1R_D_Reference_Command_Realized_v1.png
+
+P1R_D_Realized_Speed_Comparison_v1.png
+
+P1R_D_Coast_Window_Detail_v1.png
+
+P1R_D_Final_Development_Report_v1.md
+
+P1R_D_Manifest_v1.json
+```
+
+未运行的项目标记 `NOT_RUN`，不得生成虚假科学结果。
+
+真实raw outputs、controller telemetry、官方指标、simulation log和manifest全部保留原始文件。
+
+保护旧B1、S1/S1R、旧P1以及已有v2.4文件，不覆盖历史资产和其他工作区修改。
+
+只提交本轮相关文件，推送后核对远端。
+
+---
+
+## 十五、最终反馈格式
+
+### A. Overall Verdict
+
+只允许按照实际结果报告：
+
+```text
+P1R_D_FIRST_PAIR_PASS
+
+P1R_D_FIRST_PAIR_SCIENTIFIC_FAIL
+
+P1R_D_FIRST_PAIR_INFRASTRUCTURE_BLOCKED
+
+P1R_D_PREFLIGHT_BLOCKED
+
+P1R_D_INCONCLUSIVE
+```
+
+### B. 大白话
+
+回答最核心的问题：
+
+**我们现在是否第一次在nuPlan真实闭环中实现了“制动—解除纵向控制—再次制动”？**
+
+### C. Baseline Results
+
+报告实际单次制动及全部相关指标。
+
+### D. Treatment Results
+
+报告双制动形态、零请求记录、滤波残余、控制恢复和实际速度。
+
+### E. Realized Curves
+
+展示真实加速度、速度及控制模式曲线。
+
+### F. F_match
+
+逐项报告Baseline/Treatment差异与冻结caliper。
+
+### G. Official Safety
+
+报告官方collision、drivable-area和低速状态。
+
+### H. Clock Mapping
+
+确认规范时钟与原日志观察映射，以及全部已知限制。
+
+### I. Budget
+
+报告：
+
+```text
+new attempts = ?
+cumulative Coast attempts = ?
+scientific CPU = ?
+```
+
+### J. Scientific Integrity
+
+确认没有替换样本、修改参数、放宽阈值或运行H/RBR/BDD。
+
+### K. Tests and Protected Assets
+
+报告测试、源码哈希、产物完整性及历史资产保护。
+
+### L. Git State
+
+报告提交、推送和未提交文件保护情况。
+
+### M. Recommended Next Stage
+
+如果首对PASS：
+
+`Scientific Owner review → Remaining two Development pairs authorization decision`
+
+如果科学FAIL：
+
+`Scientific Owner review → C2 scientific feasibility and dissertation scope decision`
+
+如果基础设施BLOCKED：
+
+`Scientific Owner review → precise infrastructure blocker`
+
+不得自动开始下一对实验、调整C2或创建新候选。
+
+---
+
+## 十六、完成后停止
+
+本轮只执行DEV-01的两个arm。
+
+无论结果：
+
+```text
+DEV_02_EXECUTION = NOT_AUTHORIZED
+DEV_03_EXECUTION = NOT_AUTHORIZED
+
+TSB_COAST_P2 = NOT_AUTHORIZED
+PRIMARY_PROTOCOL_AMENDMENT = NOT_AUTHORIZED
+
+RBR_TRAINING = NOT_AUTHORIZED
+PRIMARY_EVALUATION = NOT_AUTHORIZED
+V_EXECUTION = NOT_AUTHORIZED
+C_EXECUTION = NOT_AUTHORIZED
+```
+
+**本轮的价值不在于得到PASS，而在于首次获得能够回答真实制动、主动纵向控制释放及再次制动是否成立的闭环实验数据。**
