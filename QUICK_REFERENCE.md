@@ -11525,3 +11525,21 @@ python tools/check_no_tmp_dependencies.py
 ### 通过标准
 
 14项源码绑定、字段/记录器边界、代数恒等式、非法输入及零运行测试通过；编译、临时依赖和保护资产哈希检查通过。能力判定ABSTRACT_COAST_PROXY_ONLY不等于已有coast控制模式或真实零扭矩验证；P1仍PREFLIGHT_BLOCKED，不能凭该命令恢复执行。
+
+## 零纵向请求滑行适配器 v1（仅工程接口测试）
+
+### 命令
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python python -m pytest -q tests/test_tsb_coast_zero_command_tracker_v1.py
+python -m py_compile tools/tsb_coast_zero_command_tracker_v1.py tests/test_tsb_coast_zero_command_tracker_v1.py
+python tools/check_no_tmp_dependencies.py
+```
+
+### 期望行为
+
+验证独立tracker在显式滑行区间绕过纵向LQR/停车控制、保留横向控制、返回零纵向请求，区间外委托原版。使用合成输入和模型测试替身，无runner、无官方车辆传播、无SESSION名单或科学执行入口；详细实现与接入限制见`docs/stageR/tsb_coast_zero_command_adapter_v1/Implementation_Report_v1.md`。
+
+### 通过标准
+
+21项接口测试、编译和临时依赖检查通过；旧官方控制器/模型与冻结资产hash不变。通过不等于真实闭环coast验证，不解除P1误差阻断或恢复授权；旧factory/recorder未自动接入。
