@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "source_authorization": "docs/stageR/b1_resume_execution_r2/B1_R2_Owner_Authorization_v1.json",
+  "source_authorization_sha256": "9189d1ca1f8b4ec2c22cc52771936127fb2bfdca724af34796aa283db9a1caeb",
+  "critical_official_files": [
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py",
+      "frozen_B1_R2_sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d",
+      "current_sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d",
+      "match": true
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py",
+      "frozen_B1_R2_sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b",
+      "current_sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b",
+      "match": true
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/two_stage_controller.py",
+      "frozen_B1_R2_sha256": "22797e59f0f13a61ced983a62f8750bb22febac549e1e7ab80f82547c6cadbdd",
+      "current_sha256": "22797e59f0f13a61ced983a62f8750bb22febac549e1e7ab80f82547c6cadbdd",
+      "match": true
+    }
+  ],
+  "historical_execution_repeated": false
+}

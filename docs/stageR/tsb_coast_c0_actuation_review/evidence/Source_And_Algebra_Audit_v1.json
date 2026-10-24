@@ -1,0 +1,226 @@
+{
+  "stage": "TSB-Coast C0",
+  "capability": "ABSTRACT_COAST_PROXY_ONLY",
+  "evidence_scope": "SOURCE_AST_OLD_RESOLVED_CONFIG_AND_ALGEBRA_ONLY_NO_RUNTIME_MODEL_CALLS",
+  "current_LQR_already_has_coast_mode": false,
+  "future_zero_command_gate": "PROPOSAL_ONLY_NOT_IMPLEMENTED_OR_AUTHORIZED",
+  "physical_drive_brake_channels_observable": false,
+  "code": {
+    "method_inventory": [
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py",
+        "class_name": "KinematicBicycleModel",
+        "symbol": "__init__",
+        "first_line": 17,
+        "last_line": 35,
+        "sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py",
+        "class_name": "KinematicBicycleModel",
+        "symbol": "_update_commands",
+        "first_line": 54,
+        "last_line": 92,
+        "sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py",
+        "class_name": "KinematicBicycleModel",
+        "symbol": "get_state_dot",
+        "first_line": 37,
+        "last_line": 52,
+        "sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py",
+        "class_name": "KinematicBicycleModel",
+        "symbol": "propagate_state",
+        "first_line": 94,
+        "last_line": 149,
+        "sha256": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py",
+        "class_name": "LQRTracker",
+        "symbol": "track_trajectory",
+        "first_line": 132,
+        "last_line": 168,
+        "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py",
+        "class_name": "LQRTracker",
+        "symbol": "_compute_reference_velocity_and_curvature_profile",
+        "first_line": 208,
+        "last_line": 242,
+        "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py",
+        "class_name": "LQRTracker",
+        "symbol": "_longitudinal_lqr_controller",
+        "first_line": 258,
+        "last_line": 286,
+        "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py",
+        "class_name": "LQRTracker",
+        "symbol": "_solve_one_step_lqr",
+        "first_line": 357,
+        "last_line": 388,
+        "sha256": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/planning/simulation/controller/two_stage_controller.py",
+        "class_name": "TwoStageController",
+        "symbol": "update_state",
+        "first_line": 44,
+        "last_line": 60,
+        "sha256": "22797e59f0f13a61ced983a62f8750bb22febac549e1e7ab80f82547c6cadbdd"
+      },
+      {
+        "path": "../nuplan-devkit/nuplan/common/actor_state/dynamic_car_state.py",
+        "class_name": "DynamicCarState",
+        "symbol": "__init__",
+        "first_line": 109,
+        "last_line": 131,
+        "sha256": "e36a40703eee1c2ebe8efd4458defbd8deb57626d1c99ec722a9f52e1b12c43d"
+      },
+      {
+        "path": "tools/r2_bj_b0_2_passive_actual_lqr_recorder.py",
+        "class_name": "PassiveActualLQRRecorderV1",
+        "symbol": "install",
+        "first_line": 94,
+        "last_line": 167,
+        "sha256": "07f6ac5baec4ddf13dae53b379cb838e1374a38a1446eea4549fd17ea4c684b9"
+      }
+    ],
+    "model_constructor_defaults": {
+      "max_steering_angle": {
+        "source_expression_not_executed": "np.pi / 3"
+      },
+      "accel_time_constant": 0.2,
+      "steering_angle_time_constant": 0.05
+    },
+    "dynamic_state_constructor_fields": [
+      "rear_axle_to_center_dist",
+      "rear_axle_velocity_2d",
+      "rear_axle_acceleration_2d",
+      "angular_velocity",
+      "angular_acceleration",
+      "tire_steering_rate"
+    ],
+    "acceleration_filter_source": "dt_control / (dt_control + self._accel_time_constant) * (ideal_accel_x - accel) + accel"
+  },
+  "production_bindings": [
+    {
+      "path": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-18-BASELINE/ATTEMPT_1/resolved_config.json",
+      "sha256": "8d728764e7f6621076080af3b3bb8fd90e367830fc438b8f87118462c15096f5",
+      "controller": "nuplan.planning.simulation.controller.two_stage_controller.TwoStageController",
+      "tracker": "nuplan.planning.simulation.controller.tracker.lqr.LQRTracker",
+      "model": "nuplan.planning.simulation.controller.motion_model.kinematic_bicycle.KinematicBicycleModel",
+      "dt_s": 0.1,
+      "horizon_s": 1.0,
+      "accel_tau_s": 0.2,
+      "tau_origin": "source constructor default",
+      "q": 10.0,
+      "r": 1.0
+    },
+    {
+      "path": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-18-TREATMENT/ATTEMPT_2/resolved_config.json",
+      "sha256": "199d062b87edca5e97d4e442b5ff8d81a3556ae5f856cc48d5b98795659ecac0",
+      "controller": "nuplan.planning.simulation.controller.two_stage_controller.TwoStageController",
+      "tracker": "nuplan.planning.simulation.controller.tracker.lqr.LQRTracker",
+      "model": "nuplan.planning.simulation.controller.motion_model.kinematic_bicycle.KinematicBicycleModel",
+      "dt_s": 0.1,
+      "horizon_s": 1.0,
+      "accel_tau_s": 0.2,
+      "tau_origin": "source constructor default",
+      "q": 10.0,
+      "r": 1.0
+    },
+    {
+      "path": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-19-BASELINE/ATTEMPT_1/resolved_config.json",
+      "sha256": "3a02d1217c175e5945038ae279a2c0568d58e9f1cbacc753aff016a26d0e9917",
+      "controller": "nuplan.planning.simulation.controller.two_stage_controller.TwoStageController",
+      "tracker": "nuplan.planning.simulation.controller.tracker.lqr.LQRTracker",
+      "model": "nuplan.planning.simulation.controller.motion_model.kinematic_bicycle.KinematicBicycleModel",
+      "dt_s": 0.1,
+      "horizon_s": 1.0,
+      "accel_tau_s": 0.2,
+      "tau_origin": "source constructor default",
+      "q": 10.0,
+      "r": 1.0
+    },
+    {
+      "path": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-19-TREATMENT/ATTEMPT_1/resolved_config.json",
+      "sha256": "64c080933fda4193553f04501402c1a385a47810ad5b5b8e0f1d4f4fdace222f",
+      "controller": "nuplan.planning.simulation.controller.two_stage_controller.TwoStageController",
+      "tracker": "nuplan.planning.simulation.controller.tracker.lqr.LQRTracker",
+      "model": "nuplan.planning.simulation.controller.motion_model.kinematic_bicycle.KinematicBicycleModel",
+      "dt_s": 0.1,
+      "horizon_s": 1.0,
+      "accel_tau_s": 0.2,
+      "tau_origin": "source constructor default",
+      "q": 10.0,
+      "r": 1.0
+    },
+    {
+      "path": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-20-BASELINE/ATTEMPT_1/resolved_config.json",
+      "sha256": "69acd4f10711391c70202a130ef2a158d9b212fe5f19b75764d5014f75fe1b1d",
+      "controller": "nuplan.planning.simulation.controller.two_stage_controller.TwoStageController",
+      "tracker": "nuplan.planning.simulation.controller.tracker.lqr.LQRTracker",
+      "model": "nuplan.planning.simulation.controller.motion_model.kinematic_bicycle.KinematicBicycleModel",
+      "dt_s": 0.1,
+      "horizon_s": 1.0,
+      "accel_tau_s": 0.2,
+      "tau_origin": "source constructor default",
+      "q": 10.0,
+      "r": 1.0
+    },
+    {
+      "path": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-20-TREATMENT/ATTEMPT_1/resolved_config.json",
+      "sha256": "4da72e9b0f04a1c29dd6ff4cbe64ac3431a3415a3f543f8a384b35e5023e5a1d",
+      "controller": "nuplan.planning.simulation.controller.two_stage_controller.TwoStageController",
+      "tracker": "nuplan.planning.simulation.controller.tracker.lqr.LQRTracker",
+      "model": "nuplan.planning.simulation.controller.motion_model.kinematic_bicycle.KinematicBicycleModel",
+      "dt_s": 0.1,
+      "horizon_s": 1.0,
+      "accel_tau_s": 0.2,
+      "tau_origin": "source constructor default",
+      "q": 10.0,
+      "r": 1.0
+    }
+  ],
+  "algebra": {
+    "one_step_zero_command": {
+      "filter_ratio": 0.6666666666666666,
+      "acceleration_ratio_to_initial": 0.6666666666666666,
+      "speed_change_per_initial_acceleration_s": 0.06666666666666667
+    },
+    "old_gap_length_only_18_steps": {
+      "filter_ratio": 0.6666666666666666,
+      "acceleration_ratio_to_initial": 0.0006766394845988637,
+      "speed_change_per_initial_acceleration_s": 0.19986467210308023
+    },
+    "positive_unit_velocity_error_command": 0.9090909090909091,
+    "zero_velocity_error_command": 0.0,
+    "note": "normalized analytic checks; unit error is not a new physical candidate; no response trace generated"
+  },
+  "scientific_execution_counts": {
+    "SIMULATION": 0,
+    "RUNNER_RUN": 0,
+    "MODEL_PROPAGATE": 0,
+    "TRACKER_RUNTIME_CALL": 0,
+    "TSB_COAST_ROLLOUT": 0,
+    "RBR_TRAINING": 0,
+    "RBR_INFERENCE": 0,
+    "H_FEATURES": 0,
+    "BDD": 0,
+    "MMD": 0,
+    "PRIMARY": 0,
+    "V": 0,
+    "C": 0
+  }
+}

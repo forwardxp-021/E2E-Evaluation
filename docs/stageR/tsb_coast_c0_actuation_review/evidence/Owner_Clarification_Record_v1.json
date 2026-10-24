@@ -1,0 +1,20 @@
+{
+  "date_Asia_Shanghai": "2026-10-24",
+  "source_type": "CURRENT_USER_CHAT_MESSAGE",
+  "source_title": "TSB-Coast C0 — 自由滑行控制语义与仿真能力审查",
+  "record_type": "DECISION_EXTRACT_NOT_VERBATIM_FULL_REQUEST",
+  "owner_definition": "中间滑行阶段的目标不是强制纵向加速度等于0，而是不主动施加纵向驱动力和制动力，让车辆按照其被动动力学自然运动。",
+  "authorized": [
+    "SOURCE_AUDIT",
+    "MODEL_CAPABILITY_ANALYSIS",
+    "ANALYTIC_DYNAMICS",
+    "ZERO_RUN_TESTS",
+    "PROSPECTIVE_AMENDMENT_PROPOSAL"
+  ],
+  "P1_state": "TSB_COAST_P1_PREFLIGHT_BLOCKED",
+  "P1_execution_authority_restored": false,
+  "official_controller_or_model_modification_authorized": false,
+  "new_scientific_session_roster_authorized": false,
+  "new_brake_amplitude_coast_duration_resistance_coefficient_or_tolerance_selection": false,
+  "all_scientific_execution_prohibited": true
+}

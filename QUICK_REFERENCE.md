@@ -11506,3 +11506,22 @@ python tools/check_no_tmp_dependencies.py
 ### 通过标准
 
 22项机制、时间、非法输入、恢复排除、旧F公式一致性及误差反例测试通过；编译及临时依赖检查通过。审查JSON必须如实保留误差预算阻断，不得把CLI正常退出当准入通过。当前无科学执行入口、roster为空、attempt=0；需要Owner先审查测量误差合同，不能自动启动6次首run或技术retry。
+
+## TSB-Coast C0：自由滑行接口能力与零运行审查
+
+### 命令
+
+```bash
+python tools/tsb_coast_c0_actuation_audit.py --output 新的C0审查证据路径.json
+python -m pytest -q tests/test_tsb_coast_c0_actuation_audit.py
+python -m py_compile tools/tsb_coast_c0_actuation_audit.py tests/test_tsb_coast_c0_actuation_audit.py
+python tools/check_no_tmp_dependencies.py
+```
+
+### 期望行为
+
+只读本地nuPlan源码AST与旧B1-R2六份resolved config，计算归一化滤波/LQR闭式关系；不导入、构建或调用官方控制器/车辆模型/runner，不生成新轨迹或SESSION名单。输出拒绝覆盖。版本化审查文档在`docs/stageR/tsb_coast_c0_actuation_review/`。
+
+### 通过标准
+
+14项源码绑定、字段/记录器边界、代数恒等式、非法输入及零运行测试通过；编译、临时依赖和保护资产哈希检查通过。能力判定ABSTRACT_COAST_PROXY_ONLY不等于已有coast控制模式或真实零扭矩验证；P1仍PREFLIGHT_BLOCKED，不能凭该命令恢复执行。
