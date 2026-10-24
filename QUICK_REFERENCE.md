@@ -11543,3 +11543,38 @@ python tools/check_no_tmp_dependencies.py
 ### 通过标准
 
 21项接口测试、编译和临时依赖检查通过；旧官方控制器/模型与冻结资产hash不变。通过不等于真实闭环coast验证，不解除P1误差阻断或恢复授权；旧factory/recorder未自动接入。
+
+## TSB-Coast P1R：真实模型隔离验证与生产入口审计（零科学运行）
+
+### 1. 命令
+
+在仓库根目录、nuplan环境运行：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit python -m pytest -q tests/test_tsb_coast_p1r.py tests/test_tsb_coast_zero_command_tracker_v1.py
+python -m py_compile tools/tsb_coast_p1r_*.py tests/test_tsb_coast_p1r.py
+python tools/check_no_tmp_dependencies.py
+```
+
+如需复核合成模型与测量证据，使用新的输出文件名/目录，不能覆盖已有审计原件：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit python tools/tsb_coast_p1r_model_fixture.py --output-dir outputs/stageR/p1r_isolated_recheck_v1
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit python tools/tsb_coast_p1r_analysis.py --metrology-audit outputs/stageR/p1r_metrology_recheck_v1.json
+```
+
+`tools/tsb_coast_p1r_prepare.py --prepare`只做一次性元数据名单和未初始化factory构造；已有Arm_Specs时明确拒绝重选，不能通过删文件重抽SESSION。完整入口以新增时钟审计证据为准，初次对象构造PASS不能替代它。本节不提供或授权正式runner启动命令。
+
+全仓`tools/*.py`另用系统Python3.13编译通过。nuplan的Python3.9全仓编译会在未修改的旧`build_unified_bdd_posttraining_report.py:550`遇到f-string语法兼容问题；本轮新文件在Python3.9编译及真实模型测试均通过，不因此修改旧报告工具。
+
+### 2. 期望行为
+
+读取冻结元数据、已有B1速度来源和官方源码；生成纯合成状态上的79条官方model传播记录，及只读F数值精度诊断。测试包括真实未初始化factory故障拒绝、实际日志时钟检查和无仿真子进程的预算monitor fixture。禁止运行科学Coast、RBR、H/BDD/MMD、Primary/V/C。
+
+生产入口为独立C2 planner、既有零请求adapter、新命令到model recorder、官方controller/model/metric/serializer，以及持久化预算/权限校验。参考幅值/时长、原四项F caliper和导数不改。
+
+### 3. 通过标准
+
+单元测试通过、编译及仓库临时依赖检查通过；protected CSV仍为`e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`，历史源码/结果哈希不变。
+
+正式入口当前必须返回`P1R_BLOCKED_PHYSICAL_CLOCK_CONTRACT`，同时保留`P1R_BLOCKED_OWNER_SCIENTIFIC_AMENDMENT`。三对候选存在330/1038/402微秒时钟偏差及滑行跨界控制步，禁止舍入放行或替换SESSION。Owner D1（代理机制）、D2（压力诊断角色）、D3（规范模拟时钟/日志观察映射）尚待决。报告目录：`docs/stageR/tsb_coast_p1r_entry/`；本轮完成后停止，不自动开启下一轮工程或仿真。

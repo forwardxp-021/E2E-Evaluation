@@ -1,0 +1,24 @@
+{
+  "python": "Python 3.9.19",
+  "executable": "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+  "versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "numba": "METADATA_UNAVAILABLE",
+    "hydra-core": "1.1.0rc1",
+    "omegaconf": "2.1.0rc1",
+    "pandas": "2.3.3",
+    "pyarrow": "21.0.0",
+    "shapely": "2.0.7",
+    "matplotlib": "3.9.4",
+    "pytest": "8.4.2",
+    "psutil": "7.0.0",
+    "protobuf": "3.20.2"
+  },
+  "devkit_head": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "devkit_dirty_preserved": " M requirements_torch.txt\n",
+  "runtime_env": {
+    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": "python",
+    "PYTHONPATH": ".:../nuplan-devkit"
+  }
+}

@@ -1,0 +1,19 @@
+gate,requirement,status,scope_and_reason,evidence
+G01,旧B1与历史资产,PASS,旧结论20/20; 40arms; 41attempts; protected hash复核,../b1_resume_execution_r2/B1_R2_Final_Qualification_Report_v1.md; evidence/Protected_Verification_v1.json
+G02,唯一C2及两臂参考,PASS,固定参数; common entire future; 未选C1/C3; fixture检查,tools/tsb_coast_p1r_planner.py; evidence/Tests_v1.xml
+G03,正式factory与适配器,PASS,6真实未初始化runner; Baseline不包装; Treatment精确adapter,evidence/Production_Clock_Preflight_v1.json; tools/tsb_coast_p1r_production.py
+G04,官方模型隔离传播,PASS,合成状态79真实model transitions; 非科学C2结果,evidence/isolated_model/Official_Model_Fixture_v1.json
+G05,命令到模型及79条记录,PASS,隔离fixture完整; 真实候选0条; 不宣称真实curve已验证,tools/tsb_coast_p1r_recorder.py; evidence/isolated_model/official_model_transitions.jsonl
+G06,边界切换与跨步拒绝,PASS,合成边界测试; 跨步仍fail closed; 没有放宽,tests/test_tsb_coast_zero_command_tracker_v1.py; evidence/Tests_v1.xml
+G07,候选实际episode物理时钟,BLOCKED,3pairs有330/1038/402us偏差且跨滑行边界; 需要D3政策及有限修复,evidence/Production_Clock_Preflight_v1.json; P1R_Owner_Decision_Memo_v1.md#d3
+G08,前瞻机制资格合同批准,BLOCKED,D1待批准; 近零/漂移/正恢复与稳定性角色不能静默改变,P1R_Scientific_Amendment_Proposal_v1.json; P1R_Coast_Mechanism_Contract_Proposal_v1.md
+G09,模型内离散F浮点可判定性,PASS,数值预算约1.000016e-6小于.02; 不含物理噪声或时钟通过保证,evidence/FMatch_Metrology_v1.json
+G10,人工压力诊断准入角色批准,BLOCKED,D2待批准; 四项caliper/raw梯度均不变; 旧P1状态不追溯改,P1R_FMatch_Metrology_Adjudication_v1.md; P1R_Scientific_Amendment_Proposal_v1.json
+G11,真实callback metric serializer绑定,PASS,official生产者/正式main finalizer/输出路径绑定; runtime仍NOT_RUN,evidence/Production_Clock_Preflight_v1.json; P1R_Callback_Recorder_Lifecycle_Audit_v1.md
+G12,官方collision/drivable安全adapter,PASS,冻结官方安全链绑定; 没有生成新安全结果,tools/r1_b2_8_r3_1_official_safety_adapter.py; evidence/Source_Binding_v1.json
+G13,native route初始有限查询,PASS,三个初始有限query无外推; 不证明完整future episode,evidence/Metadata_Selection_v1.json; tools/b1_native_route_infrastructure.py
+G14,唯一3对元数据名单及角色,PASS,54条E2静态代表固定hash顺序; 无outcome选择; 候选待冻结,P1R_Development_Candidate_Roster_v1.csv; evidence/Arm_Specs_v1.json
+G15,持久化预算及失败停止,PASS,0科学attempt; 3/6/8上限; parent/child claim; fixture process成功失败验证,P1R_Execution_Budget_Ledger_v1.json; tools/tsb_coast_p1r_production.py; evidence/Tests_v1.xml
+G16,旧授权拒绝与新权限,PASS,旧栈授权不能激活; 待批/当前clock预检拒绝; 新执行未授权,P1R_Authorization_Proposal_NOT_ACTIVE_v1.json; evidence/Tests_v1.xml
+G17,源码配置依赖数据hash,PASS,source/config/runtime/DB/metadata/raw factory configs绑定; 非执行冻结,P1R_Manifest_v1.json; evidence/Source_Binding_v1.json; evidence/Runtime_v1.json
+G18,首对科学执行授权,BLOCKED,当前明确NOT_AUTHORIZED; D1-D3/clock修复前不具备冻结首对条件,P1R_Authorization_Proposal_NOT_ACTIVE_v1.json; P1R_Owner_Decision_Memo_v1.md

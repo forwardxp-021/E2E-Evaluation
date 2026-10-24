@@ -1,0 +1,30 @@
+{
+  "operation": "Only new P1R CSV/log CRLF-to-LF and trailing whitespace/terminal blank-line normalization; no field, measurement, source, status or identity changes. Historical artifacts untouched.",
+  "files": [
+    {
+      "path": "docs/stageR/tsb_coast_p1r_entry/P1R_Production_Entry_Gates_v1.csv",
+      "raw_sha256": "625f1e0356e260dd8b62a9d6c2d3de430985e079d606a82e1c5f01bc3cb3e641",
+      "normalized_sha256": "2105536d8d69f51cb340b96c436003a93a94e6e949e86f2f691f8da841a95175"
+    },
+    {
+      "path": "docs/stageR/tsb_coast_p1r_entry/P1R_Development_Candidate_Roster_v1.csv",
+      "raw_sha256": "07ed902e7f61c0d5fd987c89e8885f29be374e58b0ee1a7eb5ad59d52feb0aed",
+      "normalized_sha256": "4af5434c6b04122ea76e758695cf4b5827d45ec25ac9070a4f7ccaa0f417aa27"
+    },
+    {
+      "path": "docs/stageR/tsb_coast_p1r_entry/evidence/Production_Clock_Preflight_v1.log",
+      "raw_sha256": "973ffd394c2935cea7d5b39df21c5686a805498b995f0429633da4b81dbdf95a",
+      "normalized_sha256": "0898ebdb6e13b4e9e4f6c6ac40005ab08fa75360b7b218705dbbf498be3b8d34"
+    },
+    {
+      "path": "docs/stageR/tsb_coast_p1r_entry/evidence/Compile_v1.log",
+      "raw_sha256": "8296b07f74208f38a9cb25f40268e919d19c7550e0095573cbb98019181b8e99",
+      "normalized_sha256": "fed6bb97c85c9a93e8c657355f33f9e1c411a2e4cf82d0a97a074cd713cd7520"
+    },
+    {
+      "path": "docs/stageR/tsb_coast_p1r_entry/evidence/Production_Preflight_Final_v1.log",
+      "raw_sha256": "d722cba2776141170b8c733be3db7fe8fdad55a366f1757e7d13ec7eb2b4cd16",
+      "normalized_sha256": "8133660156fd0d54859116a22de22d27ae163bde897520f8a45aadab03bb75d1"
+    }
+  ]
+}

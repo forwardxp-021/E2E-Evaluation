@@ -1,0 +1,454 @@
+.................................................                        [100%]
+=============================== warnings summary ===============================
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:64
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+../../../miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_mathtext.py:45
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+tests/test_tsb_coast_p1r.py: 316 warnings
+tests/test_tsb_coast_zero_command_tracker_v1.py: 1 warning
+  /Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py:354: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    return float(steering_rate_cmd)
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:18: DeprecationWarning: Call to deprecated create function FileDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    DESCRIPTOR = _descriptor.FileDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:36: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:43: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:50: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:57: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:64: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:71: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:78: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/histogram_pb2.py:29: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _HISTOGRAMPROTO = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:18: DeprecationWarning: Call to deprecated create function FileDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    DESCRIPTOR = _descriptor.FileDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:36: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:43: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:29: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _TENSORSHAPEPROTO_DIM = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:73: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:80: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_shape_pb2.py:66: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _TENSORSHAPEPROTO = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:19: DeprecationWarning: Call to deprecated create function FileDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    DESCRIPTOR = _descriptor.FileDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:33: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:37: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:41: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:45: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:49: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:53: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:57: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:61: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:65: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:69: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:73: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:77: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:81: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:85: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:89: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:93: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:97: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:101: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:105: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:109: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:113: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:117: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:121: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:125: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:129: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:133: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:137: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:141: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:145: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:149: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:153: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:157: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:161: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:165: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:169: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:173: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:177: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:181: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:185: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:189: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:193: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:197: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:201: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:205: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:209: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:213: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:217: DeprecationWarning: Call to deprecated create function EnumValueDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.EnumValueDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:27: DeprecationWarning: Call to deprecated create function EnumDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _DATATYPE = _descriptor.EnumDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:287: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/types_pb2.py:280: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _SERIALIZEDDTYPE = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:20: DeprecationWarning: Call to deprecated create function FileDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    DESCRIPTOR = _descriptor.FileDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:39: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:46: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:32: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _RESOURCEHANDLEPROTO_DTYPEANDSHAPE = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:76: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:83: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:90: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:97: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:104: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:111: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/resource_handle_pb2.py:69: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _RESOURCEHANDLEPROTO = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:21: DeprecationWarning: Call to deprecated create function FileDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    DESCRIPTOR = _descriptor.FileDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:40: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:47: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:54: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:61: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:68: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:75: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:82: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:89: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:96: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:103: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:110: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:117: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:124: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:131: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:138: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:145: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:152: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:33: DeprecationWarning: Call to deprecated create function Descriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _TENSORPROTO = _descriptor.Descriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:183: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:190: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/tensorboard/compat/proto/tensor_pb2.py:197: DeprecationWarning: Call to deprecated create function FieldDescriptor(). Note: Create unlinked descriptors is going to go away. Please use get/find descriptors from generated code or query the descriptor_pool.
+    _descriptor.FieldDescriptor(
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/torchvision/transforms/functional_pil.py:207: DeprecationWarning: BILINEAR is deprecated and will be removed in Pillow 10 (2023-07-01). Use Resampling.BILINEAR instead.
+    def resize(img, size, interpolation=Image.BILINEAR, max_size=None):
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/torchvision/transforms/functional_pil.py:283: DeprecationWarning: BICUBIC is deprecated and will be removed in Pillow 10 (2023-07-01). Use Resampling.BICUBIC instead.
+    def perspective(img, perspective_coeffs, interpolation=Image.BICUBIC, fill=None):
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/bokeh/core/property/primitive.py:37: DeprecationWarning: `np.bool8` is a deprecated alias for `np.bool_`.  (Deprecated NumPy 1.24)
+    bokeh_bool_types += (np.bool8,)
+
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+tests/test_tsb_coast_p1r.py::test_real_uninitialized_factory_callback_and_recorder_faults_fail_closed
+  /Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/main_callback/metric_summary_callback.py:63: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed in 3.11. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap()`` or ``pyplot.get_cmap()`` instead.
+    color_palette = cmap.get_cmap('Set1').colors + cmap.get_cmap('Set2').colors + cmap.get_cmap('Set3').colors
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/tsb_coast_p1r_entry/evidence/Tests_v1.xml -
+49 passed, 437 warnings in 7.99s

@@ -1,0 +1,506 @@
+{
+  "status": "MODEL_INTERNAL_DISCRETE_F_NUMERICALLY_RESOLVABLE_OWNER_AMENDMENT_PENDING",
+  "scope": "FROZEN_SPEED_PRECISION_ONLY_NO_B1_SCIENTIFIC_RECOMPUTATION",
+  "trace_count": 40,
+  "speed_values": 3200,
+  "all_json_roundtrips_exact": true,
+  "off_0p01_grid_values": 3200,
+  "historical_cadence_min_us": 99385,
+  "historical_cadence_max_us": 100629,
+  "historical_clock_is_not_P1R_clock_proof": true,
+  "source_records": [
+    {
+      "pair_id": "B1-TSB-01",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-01-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "1e705cf7b397d2487d25e0c9d946b522a1e609badfdc778d6cd3aa9909dc1ee7",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-01",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-01-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "d4162dfa0c4148c51c0aa791d3991cf3f33889d30b40daaef379336e241ab4dd",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-02",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-02-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "8671cd969939924c07ef5da6309d16851c5c69c5b1aa63c11a28a1354a44f366",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-02",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-02-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "30e7d7c4359f757ee13a56d88eaf350f8dad509565a9153f42e647fe76a2bc14",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-03",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-03-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "0a5ffdcef14080b22fa1f7dfd6192413f3527372caac9e4487e11bceed53353f",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-03",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-03-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "426862e3897f5240021b062126383a78ab2002ab34698ae9cedbb6c6700f7092",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-04",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-04-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "77335633c2a3351156a3b275d5e3b49ce412be3b9c91d411497086cdfa75de47",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-04",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-04-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "01981a351e05fcd3b43d6955c8302e0afac9fcd94b24a5926a472171ce3dfad4",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-05",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-05-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "2ba18dbd04cfd3dc41149916182a5699b2105f9d652c9c6123d5b60911caf46a",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-05",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-05-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "397b5998aecd283147c019f8eca09d2093dd7d3d7a0282886f36ef043098e658",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-06",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-06-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "e6ee52f5c09cd96dedba5fdb780ce41f09174a7417eacacab2e45d878532e734",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-06",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-06-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "1552af417ae7ea8743ed0fcde0cebfb08461eb43c3892cbc07bf72b7d20b6659",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-07",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "fde5cb3ba004ce3310d62fc7539bf4511e1ebfd479d53fbc8c711ca714f741ae",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-07",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-07-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "47370e29978e17930dbabde47b1b3cc31f4946d6e9f03afa4e2cdc7a4907b329",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-08",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-08-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "b96f6be4966cbd9d442cbc9c0a36c51da4d6dc5a13db8b1d3eed2129445b2fc0",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-08",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-08-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "678546de38341aac8a167e17b111763d2abb2baef1080905b78e555a3d2b4e9a",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-09",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-09-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "a5bce616c69970477d688db51274b568b72b75c690907f67c45f030440d90691",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-09",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-09-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "b74227bb18bd64bde843f376d4eb8c50f34c5f64f9bb64a68eaedbf73df38695",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-10",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-10-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "4ffb9608c28146cc6855effe9a1d7d03cd449c8f5049d6b83ec48fa5abb302ca",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-10",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-10-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "e3e12d472d10e8063d50ef486c0d2a61cec0734a350751888a120c2534ebc677",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-11",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-11-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "9b519c7c29fe25e6aa2bca003cae5b0fe14dddff9978b109229f55ec5d32c9d2",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-11",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-11-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "16db008233e7263478c9fefc727f606678422674d1ff584eccacdb01ccece084",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-12",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-12-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "674d729b56f06477c16dc530cafd0d5de145965526fec8a19f03db251949f9e6",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-12",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-12-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "47a5209c009b87844688d041a8ca5fa7f72dd9bfbee1733ba7b6649fdcc6423e",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-13",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-13-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "d8cdfa9bcbe2f8f6586f2dfeab4d1589e9086950c6aae10af1c824ac47baea60",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-13",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-13-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "3ce28db2768699b873530d4a59474e4ed6fe1a699ca4f6a98c7efd4b03c0b86c",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-14",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-14-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "4b1a728be5e41060aa9bb3313b6cb85194fbdb7a76946b60f2ff79bda5380e74",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-14",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-14-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "d098575546a8f0c719e6e7d38dc88a9260129b54b081ee1e3ff83459f7e34124",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-15",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-15-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "c9ff7bbdc84fe2d8ca2960be8251ed44a6e55635cb6e99eeaa796e19a9e64807",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-15",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-15-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "7917a10cb31ce5f89508ade0073e272a623d524ce548744eb0658575f377c74d",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-16",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-16-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "a5ad12a64c357d569953983f9418cd61c2a16352e8e2b54bcd90fb63bfee3dbb",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-16",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-16-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "72d8179f8b6068293c19d0ec6ce59cd01daedefd80a399513a01f113eb4b005d",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-17",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-17-BASELINE/trace/realized_current_ego.jsonl",
+      "sha256": "cbad8f2310005f680a18e7bea0d90394e9cb05b73ebd6b091aa534a188be329b",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-17",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_tsb_qualification_v1/B1-TSB-17-TREATMENT/trace/realized_current_ego.jsonl",
+      "sha256": "7c4f3816fd1245950cac0ba9dc23830ae160e7b807f7f3365ac3f0e35b31007c",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-18",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-18-BASELINE/ATTEMPT_1/trace/realized_current_ego.jsonl",
+      "sha256": "75b6bc7e32b95869a27746c241881c8a34f1f9af7acb27098d1d7bc799eb35a8",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-18",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-18-TREATMENT/ATTEMPT_2/trace/realized_current_ego.jsonl",
+      "sha256": "4fa07eb51d29882b820512d7e23c4aeab84683c1cccb619684adae27660ec07f",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-19",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-19-BASELINE/ATTEMPT_1/trace/realized_current_ego.jsonl",
+      "sha256": "e9f0615a3cb5608a8841c422b5cb4e947a19e799782cdc4af54f88146c5aa033",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-19",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-19-TREATMENT/ATTEMPT_1/trace/realized_current_ego.jsonl",
+      "sha256": "55eb1e5e2bf1daaa36144690d5c59da23adc151279097c10628954b271007e77",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-20",
+      "arm": "BASELINE",
+      "trace": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-20-BASELINE/ATTEMPT_1/trace/realized_current_ego.jsonl",
+      "sha256": "417c60c723de34edcb9e1e7907d3adc089dec5bbc019a55f3978ce7c2f75c866",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    },
+    {
+      "pair_id": "B1-TSB-20",
+      "arm": "TREATMENT",
+      "trace": "outputs/stageR/b1_resume_execution_r2_v1/B1-TSB-20-TREATMENT/ATTEMPT_1/trace/realized_current_ego.jsonl",
+      "sha256": "8bb3e927b840108a405d85eb5effaf7b1be133d6d7c4e90073d997aca3451dd1",
+      "states": 80,
+      "float64_json_roundtrip_exact": true,
+      "off_centimeter_per_second_grid": 80
+    }
+  ],
+  "source_sha256": {
+    "tools/r1_official_technical_smoke_planner_v2_2.py": "61b23f41d2b0046cdc7983fee38515a1ba9503db9776dfb5cc09ca335a83d9bf",
+    "tools/tsb_coast_p1_measurement.py": "d7eeedf8773a3f544afaf66ad23d10692fe585fc5ddd8718f3a9775d81ba4cdc",
+    "../nuplan-devkit/nuplan/common/actor_state/dynamic_car_state.py": "e36a40703eee1c2ebe8efd4458defbd8deb57626d1c99ec722a9f52e1b12c43d",
+    "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d"
+  },
+  "model_internal_float_bound": {
+    "scope": "MODEL_STATE_FLOAT_SERIALIZATION_AND_DISCRETE_F_NOT_REAL_WORLD_SENSOR_ERROR",
+    "max_gradient_row_L1": 40.0,
+    "conservative_speed_roundoff_bound_mps": 2.0464160492587586e-13,
+    "pair_mean_abs_accel_roundoff_and_rounding_bound_mps2": 1.000016371328394e-06,
+    "F_caliper_unchanged": 0.02,
+    "synthetic_pm_0p01_is_actual_noise_bound": false,
+    "pressure_test_role_proposed": "SEPARATE_ROBUSTNESS_DIAGNOSTIC_PENDING_OWNER_APPROVAL"
+  },
+  "pair_synthetic_pressure_diagnostic": [
+    {
+      "baseline_phase": 0,
+      "treatment_phase": 0,
+      "correlated_same_pattern": true,
+      "absolute_F_pair_difference_mps2": 0.007500000000000007,
+      "pair_difference_change_mps2": 0.007500000000000007
+    },
+    {
+      "baseline_phase": 0,
+      "treatment_phase": 1,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0025000000000000022,
+      "pair_difference_change_mps2": 0.0025000000000000022
+    },
+    {
+      "baseline_phase": 0,
+      "treatment_phase": 2,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0025000000000000022,
+      "pair_difference_change_mps2": 0.0025000000000000022
+    },
+    {
+      "baseline_phase": 0,
+      "treatment_phase": 3,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0025000000000000022,
+      "pair_difference_change_mps2": 0.0025000000000000022
+    },
+    {
+      "baseline_phase": 1,
+      "treatment_phase": 0,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.012500000000000011,
+      "pair_difference_change_mps2": 0.012500000000000011
+    },
+    {
+      "baseline_phase": 1,
+      "treatment_phase": 1,
+      "correlated_same_pattern": true,
+      "absolute_F_pair_difference_mps2": 0.007500000000000007,
+      "pair_difference_change_mps2": 0.007500000000000007
+    },
+    {
+      "baseline_phase": 1,
+      "treatment_phase": 2,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.007500000000000007,
+      "pair_difference_change_mps2": 0.007500000000000007
+    },
+    {
+      "baseline_phase": 1,
+      "treatment_phase": 3,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0025000000000000022,
+      "pair_difference_change_mps2": 0.0025000000000000022
+    },
+    {
+      "baseline_phase": 2,
+      "treatment_phase": 0,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0050000000000000044,
+      "pair_difference_change_mps2": 0.0050000000000000044
+    },
+    {
+      "baseline_phase": 2,
+      "treatment_phase": 1,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0,
+      "pair_difference_change_mps2": 0.0
+    },
+    {
+      "baseline_phase": 2,
+      "treatment_phase": 2,
+      "correlated_same_pattern": true,
+      "absolute_F_pair_difference_mps2": 0.0,
+      "pair_difference_change_mps2": 0.0
+    },
+    {
+      "baseline_phase": 2,
+      "treatment_phase": 3,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0050000000000000044,
+      "pair_difference_change_mps2": 0.0050000000000000044
+    },
+    {
+      "baseline_phase": 3,
+      "treatment_phase": 0,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.010000000000000009,
+      "pair_difference_change_mps2": 0.010000000000000009
+    },
+    {
+      "baseline_phase": 3,
+      "treatment_phase": 1,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0050000000000000044,
+      "pair_difference_change_mps2": 0.0050000000000000044
+    },
+    {
+      "baseline_phase": 3,
+      "treatment_phase": 2,
+      "correlated_same_pattern": false,
+      "absolute_F_pair_difference_mps2": 0.0050000000000000044,
+      "pair_difference_change_mps2": 0.0050000000000000044
+    },
+    {
+      "baseline_phase": 3,
+      "treatment_phase": 3,
+      "correlated_same_pattern": true,
+      "absolute_F_pair_difference_mps2": 0.0,
+      "pair_difference_change_mps2": 0.0
+    }
+  ],
+  "max_synthetic_pair_difference_change_mps2": 0.012500000000000011,
+  "synthetic_pressure_is_proven_production_noise": false,
+  "no_new_F_match_or_derivative_rule": true,
+  "scientific_simulation_calls": 0
+}

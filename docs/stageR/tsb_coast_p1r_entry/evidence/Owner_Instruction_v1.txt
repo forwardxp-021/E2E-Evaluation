@@ -1,0 +1,469 @@
+# TSB-Coast P1R — 零纵向请求适配器集成、测量合同修订与闭环入口准备
+
+## 一、Scientific Owner 决定
+
+继续博士研究项目：
+
+- Repository：`forwardxp-021/E2E-Evaluation`
+- Branch：`20260825_stageR_new`
+- 最新已确认提交：`a6447c285b1c349cbb6d1b31330c88ce87c2ceb2`
+
+本轮名称：
+
+`TSB-Coast P1R — Zero-Command Integration & Scientific Entry Closure`
+
+Scientific Owner 已确认 TSB-Coast 的研究目标：
+
+**第一次制动 → 解除主动纵向控制、车辆继续运动 → 第二次制动。**
+
+中间阶段不要求车辆实际纵向加速度严格等于零，也不要求主动补速维持恒速。
+
+现有 `ZeroLongitudinalRequestTrackerV1` 是这一目标的候选实现。
+
+本轮授权：
+
+1. 将已实现适配器版本化接入新的 TSB-Coast 开发执行链。
+2. 验证官方车辆运动模型收到零纵向请求后的真实状态更新规律。
+3. 前瞻修订滑行机制合同。
+4. 裁定此前 F_match 测量误差阻断。
+5. 完成一次可实际执行的生产入口审计。
+
+**本轮仍为零科学仿真任务。完成后若全部准入通过，下一阶段应当是第一对真实闭环 Development 验证，而不是再次重复概念审查。**
+
+## 二、必须读取的资料
+
+优先读取：
+
+```text
+RBR-64 博士研究总体方案 v2.4.md
+
+docs/stageR/tsb_coast_p0/
+docs/stageR/tsb_coast_p1/
+docs/stageR/tsb_coast_c0_actuation_review/
+docs/stageR/tsb_coast_zero_command_adapter_v1/
+
+docs/stageR/b1_resume_execution_r2/
+docs/stageR/s1r_owner_amendment/
+```
+
+重点源码：
+
+```text
+tools/tsb_coast_zero_command_tracker_v1.py
+tests/test_tsb_coast_zero_command_tracker_v1.py
+
+tools/r2_bj_b0_2_passive_actual_lqr_recorder.py
+tools/r2_b_controller_aware_planner_v1.py
+tools/s2r_production_executor.py
+tools/b1_tsb_qualification_executor.py
+```
+
+以及实际安装的 nuPlan：
+
+```text
+TwoStageController
+LQRTracker
+KinematicBicycleModel
+DynamicCarState
+```
+
+如 v2.4 尚未进入仓库，只报告同步状态；不得自行从 v2.3 重新生成替代文件。已批准的 S1/S1R 合同保持约束力。
+
+## 三、历史状态与新授权边界
+
+旧B1：
+
+```text
+B1_TSB_BENCHMARK_QUALIFICATION_PASS
+20/20 pairs
+40 completed arms
+41 cumulative attempts
+```
+
+完整保留。
+
+旧TSB的正向加速度恢复机制不修改。
+
+新TSB-Coast：
+
+```text
+P0_KINEMATICALLY_FEASIBLE
+P1_PREFLIGHT_BLOCKED
+ZERO_COMMAND_ADAPTER_IMPLEMENTED
+CLOSED_LOOP_BEHAVIOR_NOT_ESTABLISHED
+```
+
+P1此前已消耗两次零运行实现迭代，但没有实际科学尝试。
+
+本轮是 Scientific Owner 新批准的、仅限适配器集成和测量合同闭合的独立工程任务，不构成重置原P1预算，也不允许新增科学候选。
+
+C2仍为唯一候选，禁止C1/C3及参数网格。
+
+## 四、任务A：验证官方车辆运动模型的零请求传播
+
+这是最高优先级。
+
+当前21项测试证明：
+
+- 滑行时绕过纵向LQR；
+- 不调用停车控制器；
+- 纵向请求为0；
+- 转向保持工作；
+- 控制模式可切换；
+- TwoStageController向运动模型传递零请求。
+
+但车辆模型测试使用了替身。
+
+本轮必须增加**真实官方 KinematicBicycleModel 的隔离单步及多步测试**，使用纯合成初始状态，不使用正式SESSION，不进入simulation runner。
+
+至少验证：
+
+1. 制动后的初始负加速度不会被适配器直接清零。
+2. 切换至零纵向请求后，车辆状态仍持续更新。
+3. 模型实际加速度按官方滤波规律变化。
+4. 速度不会因为停止控制而被锁死。
+5. 滑行结束后恢复正常纵向跟踪。
+6. 切换时没有未定义时间状态或重复推进。
+7. 转向请求继续传递，且无非有限值。
+8. 原始模型源码和参数未修改。
+
+需要同时记录：
+
+```text
+longitudinal_requested_acceleration
+model_realized_acceleration
+realized_speed
+time
+tracking_mode
+steering_request
+```
+
+必须区分适配器命令、模型状态、由速度计算的加速度。
+
+这些测试属于隔离模型验证，不是正式科学rollout，不得作为C2的闭环PASS证据。
+
+## 五、任务B：正式集成零纵向请求模式
+
+为TSB-Coast建立独立生产binding。
+
+制动阶段使用原版控制器。
+
+滑行阶段使用：
+
+`ZeroLongitudinalRequestTrackerV1`
+
+要求：
+
+- 不调用纵向LQR和停车控制器；
+- 严格输出零纵向请求；
+- 保持横向控制；
+- 保持官方运动模型推进；
+- 不重置速度和实际加速度；
+- 不修改官方 nuPlan 源码；
+- 不修改旧B1科学执行栈。
+
+滑行区间必须采用显式episode物理时间及整数微秒锚点。
+
+原C2待执行滑行区间为：
+
+`[2.1, 3.9) s`
+
+但时间绑定必须与正式episode时钟一致，不能使用runner启动墙钟时间，也不能由future-lookahead索引错误触发。
+
+明确测试：
+
+- 第一次制动到滑行的切换；
+- 滑行到第二次制动的切换；
+- 控制步刚好落在边界；
+- 控制步跨边界时fail-closed；
+- 同一SESSION双arm时间对齐；
+- 旧baseline完全不启用coast适配器。
+
+滑行期间的横向预测使用恒定当前速度是现有适配器的简化假设，必须核查其与滤波残余减速度的一致性风险。
+
+不得为了让转向或机制合格而暗改LQR gain。
+
+## 六、任务C：适配原正式记录器
+
+原被动LQR记录器直接检查tracker类型。
+
+新生产链必须能够审计被包装的LQR和最终适配器命令。
+
+可以建立新的Coast专用记录器或显式版本化兼容层，但不能删除原LQR身份校验后无条件接受任意tracker。
+
+记录器应能证明：
+
+```text
+MODE = BRAKING / COAST / TRACKING
+
+COAST_COMMAND = 0
+COAST_COMMAND_REACHED_MODEL = TRUE
+
+STATE_PROPAGATION_CONTINUES = TRUE
+```
+
+其中第三项必须由模型调用和状态更新证据支持，不能仅凭tracker返回数据推断。
+
+至少记录79个控制transition预期中的完整数据；正式运行时须与冻结episode时钟核对。
+
+保留既有shadow/actual一致性检查的适用部分。
+
+若shadow在coast期间代表未被采用的原LQR输出，必须明确将其标为反事实诊断，不能拿它替代实际执行命令。
+
+历史B1 recorder不得改写。
+
+## 七、任务D：前瞻修订滑行机制合同
+
+Scientific Owner明确以下科学语义：
+
+**滑行是一个主动纵向控制解除状态，不是实际加速度必须恒为0的状态。**
+
+因此新机制应首先证明：
+
+1. 在指定滑行区间内确实发出了零纵向请求。
+2. 零请求到达实际车辆运动模型。
+3. 车辆状态持续推进。
+4. 两次制动分别真实形成。
+5. 两次制动之间存在足够的有效分离。
+6. 车辆未因停车、时间错误或状态冻结而伪造滑行。
+
+实际加速度曲线、速度变化和残余滤波尾巴仍必须完整评价。
+
+原提案：
+
+`|a|≤0.20m/s²，连续≥0.50秒`
+
+不再自动作为“零主动请求”的定义。
+
+但不能直接删除全部响应约束。
+
+请根据官方运动模型的真实状态方程，提出一份有物理依据的新分层机制合同：
+
+- 必须通过的零请求/时间/状态推进gate；
+- 必须通过的两个制动阶段gate；
+- 滤波尾巴的一致性gate；
+- 纵向响应异常gate；
+- 速度与加速度的描述性指标；
+- 无法解释的正向主动恢复排除规则。
+
+必须清晰注明：
+
+`ABSTRACT_COAST_PROXY_ONLY`
+
+不能写成已经证明零油门、零制动压力或真实车辆自由滑行。
+
+所有变更应采用新的合同版本，不覆盖旧P0/P1规则。
+
+数值阈值必须有独立物理或测量依据；如果证据不足，标记Owner待决，不得为了通过测试自行确定宽松标准。
+
+## 八、任务E：一次性裁定F_match测量阻断
+
+前一轮P1被以下问题阻断：
+
+```text
+mean_abs_accel caliper = 0.02m/s²
+synthetic speed disturbance = ±0.01m/s
+```
+
+人工扰动使单臂平均绝对加速度偏移0.075～0.0825m/s²。
+
+本轮需要明确：
+
+- ±0.01m/s是独立证实的nuPlan生产误差，还是人为压力包络？
+- 原始速度取自何种仿真状态？
+- 是否存在量化、随机测量噪声或数值转换误差？
+- raw梯度的定义是否符合现有F_match科学意图？
+- 单臂扰动与双臂差值不确定性如何区分？
+- 0.02容差能否被可靠判定？
+
+Scientific Owner目前不批准修改四项F_match数值，不批准直接改变导数定义。
+
+但明确要求：
+
+**不能把未经证实的±0.01m/s人工压力测试，自动当作nuPlan实际测量误差上界。**
+
+必须保留其压力诊断结果，同时审计实际生产数据的来源、精度、确定性和两臂差值敏感性。
+
+如果证据证明原合同具有合理的模型内可判定性，可以提出将人工扰动压力测试列为单独鲁棒性诊断的前瞻性合同修订。
+
+若需要改变科学准入规则，必须明确写成Owner待批准修约，而不是偷偷改变原P1 gate。
+
+如无法支持原0.02容差，标记：
+
+`FMATCH_CONTRACT_REQUIRES_OWNER_AMENDMENT`
+
+不得为了尽快仿真而放宽到0.10。
+
+这部分应与适配器集成并行完成，不再单独新开一轮重复性测量讨论。
+
+## 九、任务F：一次性完成生产入口审计
+
+新Coast production stack至少应完成：
+
+- 正式factory绑定；
+- adapter source/hash绑定；
+- 官方运动模型与LQR版本绑定；
+- 新测量analyzer及F_match版本；
+- 真实callback和metric lifecycle；
+- recorder与serializer；
+- 官方collision和drivable-area adapter；
+- native-route有限查询预检；
+- SESSION/precontext/route身份合同；
+- attempt预算监控；
+- 科学执行权限校验；
+- 旧授权拒绝新栈。
+
+在不访问科学结果的情况下，按既有S1R角色规则准备唯一的3对B-development候选名单与排序规则。
+
+不得根据旧B1的曲线形态或未来检测效果选择样本。
+
+若尚有科学阈值或测量合同待Owner批准，名单只能标记为待冻结，不得声称完整ready。
+
+不执行正式runner。
+
+## 十、禁止再次陷入无限工程循环
+
+本轮只允许一次明确范围的适配器集成与审计收口。
+
+允许修复本轮发现的确定性接口错误，但不得：
+
+- 重新设计车辆运动模型；
+- 引入空气阻力/坡度等新车辆动力学；
+- 更换控制器；
+- 调整C2制动强度/时长；
+- 增加科学候选；
+- 根据任何实际Coast结果放宽机制；
+- 扩大P1的3对Development和8attempt预算。
+
+本轮若有无法通过的科学合同gate，必须形成精确Owner决策项并停止，不要再自动进入另一轮大型工程改造。
+
+## 十一、科学防火墙
+
+本轮全部保持：
+
+```text
+SCIENTIFIC_SIMULATION = 0
+TSB_COAST_SCIENTIFIC_ATTEMPTS = 0
+
+RBR_TRAINING = 0
+RBR_INFERENCE = 0
+
+H30_EVALUATION = 0
+MMD = 0
+BDD = 0
+
+PRIMARY_EVALUATION = 0
+V_EXECUTION = 0
+C_EXECUTION = 0
+```
+
+旧B1资格和原Primary统计合同保持不变。
+
+TSB-Coast尚未获批替代未来Primary。
+
+## 十二、输出文件
+
+创建：
+
+```text
+docs/stageR/tsb_coast_p1r_entry/
+```
+
+至少包含：
+
+```text
+P1R_Zero_Command_Production_Integration_v1.md
+P1R_Official_Motion_Model_Response_v1.md
+P1R_Coast_Mechanism_Contract_Proposal_v1.md
+P1R_FMatch_Metrology_Adjudication_v1.md
+P1R_Callback_Recorder_Lifecycle_Audit_v1.md
+P1R_Development_Roster_Preflight_v1.md
+P1R_Production_Entry_Gates_v1.csv
+P1R_Owner_Decision_Memo_v1.md
+P1R_Manifest_v1.json
+```
+
+可以增加模型状态衰减、命令传递和滑行模式切换的非科学测试图。
+
+任何纯fixture图片必须清楚标记为“隔离模型测试，非nuPlan正式闭环实验”。
+
+保持旧B1、P0、P1、C0、S1/S1R、v2.4及全部历史产物不变。
+
+保护已有工作区修改，仅提交本轮文件，推送并核对远端。
+
+## 十三、最终反馈
+
+### A. Overall Verdict
+
+报告：
+
+`P1R_READY_FOR_OWNER_SCIENTIFIC_ENTRY_REVIEW`
+
+或明确的测量、机制、接口、基础设施阻断状态。
+
+### B. 大白话
+
+回答：
+
+**现在是否已经能在正式nuPlan执行链中，让车辆第一次制动后解除纵向控制、继续运动，并在滑行结束后重新制动？**
+
+必须说明这是已通过接口/模型测试，还是已通过正式闭环。不得混淆。
+
+### C. Official Model Test
+
+给出零请求后实际加速度、速度及状态推进的测试证据。
+
+### D. Production Adapter Integration
+
+报告factory、tracker、controller、motion model的版本化集成。
+
+### E. Coast Mechanism
+
+说明新滑行资格应如何判断，以及哪些门槛仍需Owner批准。
+
+### F. F_match Adjudication
+
+报告0.02容差能否得到支持，是否需要修约。
+
+### G. Recorder and Observability
+
+证明最终命令能够被记录并可追溯到模型传播调用。
+
+### H. Scientific Entry Gates
+
+逐项报告是否已经具备冻结第一个Development pair的条件。
+
+### I. Zero-run Proof
+
+确认新科学attempt为0，历史P1预算未重置。
+
+### J. Tests and Protected Assets
+
+报告测试、源码SHA、依赖、历史资产保护结果。
+
+### K. Git State
+
+报告commit、push及工作区状态。
+
+### L. Recommended Next Stage
+
+如果全部科学合同和工程准入具备：
+
+`Scientific Owner review → TSB-Coast P1R First Development Pair Authorization`
+
+如果尚有必要的科学阈值修约：
+
+只提出具体、可审查的Owner决策，不擅自仿真或另起无限工程任务。
+
+## 十四、完成后停止
+
+即使P1R READY：
+
+```text
+TSB_COAST_SCIENTIFIC_EXECUTION = NOT_AUTHORIZED
+TSB_COAST_P2 = NOT_AUTHORIZED
+RBR_TRAINING = NOT_AUTHORIZED
+PRIMARY_EVALUATION = NOT_AUTHORIZED
+```
+
+**本轮目标是把已经实现的零纵向请求适配器真正接入可审计的闭环执行链，并关闭剩余测量和接口问题，为第一次真实TSB-Coast实验做好准备。**

@@ -1,0 +1,74 @@
+{
+  "stage": "TSB_COAST_P1R",
+  "owner_approval": "PENDING",
+  "specification": {
+    "version": "P1R_PROXY_PROPOSAL_v1",
+    "capability": "ABSTRACT_COAST_PROXY_ONLY",
+    "clock": {
+      "frames": 80,
+      "transitions": 79,
+      "step_us": 100000,
+      "physical_integer_anchor": true
+    },
+    "coast": {
+      "interval_us": [
+        2100000,
+        3900000
+      ],
+      "request_exact_zero": true,
+      "same_command_object_reaches_model": true,
+      "state_propagation_required": true,
+      "longitudinal_LQR_and_stopping_calls": 0
+    },
+    "model": {
+      "accel_filter_tau_s": 0.2,
+      "equation": "a_next=a_before+dt/(dt+tau)*(u-a_before)",
+      "velocity_equation": "vx_next=vx_before+dt*a_next",
+      "floating_check_eps_multiplier": 64
+    },
+    "braking": {
+      "speed_processing": "median3_then_gradient_edge2_physical_time",
+      "phase_threshold_mps2": -0.6,
+      "minimum_support_s": 0.4,
+      "minimum_peak_mps2": 0.8,
+      "minimum_dose_mps": 0.35,
+      "valid_domain_s": [
+        1.1,
+        5.5
+      ],
+      "baseline_phase_count": 1,
+      "treatment_phase_count": 2,
+      "minimum_separation_s": 0.7
+    },
+    "low_speed": {
+      "positive_speed_required": true,
+      "threshold_mps": 1.0,
+      "maximum_below_threshold_support_s": 0.5,
+      "reference_floor_rejected": true
+    },
+    "near_zero_acceleration_rule": "DIAGNOSTIC_ONLY_NOT_QUALIFICATION",
+    "positive_response": "NO_POSITIVE_COAST_REQUEST; RESIDUAL_RESPONSE_MUST_MATCH_BOUND_MODEL",
+    "F_match": {
+      "calipers": {
+        "mean_speed": 0.1,
+        "end_minus_start_speed": 0.15,
+        "path_length": 0.8,
+        "mean_abs_accel": 0.02
+      },
+      "speed_processing": "raw_gradient_edge2_physical_time",
+      "descriptor_decimals": 6,
+      "comparison_epsilon": 1e-12,
+      "pm_0p01_pressure_role": "SEPARATE_ROBUSTNESS_DIAGNOSTIC"
+    },
+    "additional_pair_balance": {
+      "negative_dose_delta_max_mps": 0.15,
+      "each_treatment_peak_vs_baseline_max_mps2": 0.2
+    },
+    "official_safety": {
+      "at_fault_collisions": 0,
+      "drivable_area_compliance": true
+    },
+    "failure_policy": "STOP_NO_AUTOMATIC_RETRY_OR_REPLACEMENT"
+  },
+  "clock_policy_decision": "PENDING; raw official timestamps conflict with exact clock; this file does not authorize remapping"
+}

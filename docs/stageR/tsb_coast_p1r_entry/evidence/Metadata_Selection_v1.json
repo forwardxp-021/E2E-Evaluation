@@ -1,0 +1,132 @@
+{
+  "eligible_E2_count": 54,
+  "finite_route_queries": [
+    {
+      "pair_id": "P1R-C2-DEV-01",
+      "queries": [
+        {
+          "arm": "BASELINE",
+          "builder": "build_native_route_reference_v1_1",
+          "extrapolation_used": false,
+          "native_edge_ids": [
+            "18524"
+          ],
+          "required_forward_m": 99.00938260000004
+        },
+        {
+          "arm": "TREATMENT",
+          "builder": "build_native_route_reference_v1_1",
+          "extrapolation_used": false,
+          "native_edge_ids": [
+            "18524"
+          ],
+          "required_forward_m": 99.00938260000004
+        }
+      ],
+      "scope": "INITIAL_FINITE_QUERY_NOT_FULL_FUTURE_EPISODE_PROOF"
+    },
+    {
+      "pair_id": "P1R-C2-DEV-02",
+      "queries": [
+        {
+          "arm": "BASELINE",
+          "builder": "build_native_route_reference_v1_1",
+          "extrapolation_used": false,
+          "native_edge_ids": [
+            "18267",
+            "20089"
+          ],
+          "required_forward_m": 34.66470419999997
+        },
+        {
+          "arm": "TREATMENT",
+          "builder": "build_native_route_reference_v1_1",
+          "extrapolation_used": false,
+          "native_edge_ids": [
+            "18267",
+            "20089"
+          ],
+          "required_forward_m": 34.66470419999997
+        }
+      ],
+      "scope": "INITIAL_FINITE_QUERY_NOT_FULL_FUTURE_EPISODE_PROOF"
+    },
+    {
+      "pair_id": "P1R-C2-DEV-03",
+      "queries": [
+        {
+          "arm": "BASELINE",
+          "builder": "build_native_route_reference_v1_1",
+          "extrapolation_used": false,
+          "native_edge_ids": [
+            "19814",
+            "20072",
+            "19769"
+          ],
+          "required_forward_m": 71.87236120000011
+        },
+        {
+          "arm": "TREATMENT",
+          "builder": "build_native_route_reference_v1_1",
+          "extrapolation_used": false,
+          "native_edge_ids": [
+            "19814",
+            "20072",
+            "19769"
+          ],
+          "required_forward_m": 71.87236120000011
+        }
+      ],
+      "scope": "INITIAL_FINITE_QUERY_NOT_FULL_FUTURE_EPISODE_PROOF"
+    }
+  ],
+  "metadata_sources_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.23.17.20.10_veh-45_02277_02706.db": "7e5cba60b5386888503f3145532345a521875821bc26d0866de330e8f6039758",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.17.14.49.23_veh-42_00135_00310.db": "09bbb6bc31cef64b62c5d7e3a5feae830b7679bf0f144fdc42e61700c2cdd3c2",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.28.13.24.06_veh-44_02970_03103.db": "4d692a25d48dbb68c57b2db07a2bf3387ee249e97e7073f8b7be04a74fa33af3",
+    "docs/stageR/s2_preflight/census/log_0403.json.gz": "b08caa4c57c709ffe5487d21564901d44b357e2f2bf0c6ed52f96e5b95cb50e8",
+    "docs/stageR/s2_preflight/census/log_1105.json.gz": "a332f7c47a2c94956b83932605fa0f377de8fadef6e8fcc95a3dadb168cf86df",
+    "docs/stageR/s2_preflight/census/log_1442.json.gz": "05b768f3b4eebba7f2f7e1d0dc06f6134163a1c7068e046771ee00ead92a941a"
+  },
+  "rows": [
+    {
+      "exposure_class": "E2_BENCHMARK_ENGINEERING",
+      "initial_speed_mps": 14.151694,
+      "log_id": "2021.09.17.14.49.23_veh-42_00135_00310",
+      "pair_id": "P1R-C2-DEV-01",
+      "precontext_id": "17c78f356097e5a8a7acc4dcb0c09a22df787df908417348c485f0f6586fd4b5",
+      "rank_sha256": "06c31308d1cb653895203a049b0f9d1c45c290596cb93e1d54872fde1d8a19e1",
+      "route_id": "c65e8c8269b52a632bf87230412e0ce19bd35ef1dcaef43d6993eaf4fd47778d",
+      "scenario_token": "9fe700abf47057f0",
+      "session_id": "2021.09.17.14.49.23_veh-42",
+      "status": "CANDIDATE_PENDING_OWNER_CONTRACT_FREEZE"
+    },
+    {
+      "exposure_class": "E2_BENCHMARK_ENGINEERING",
+      "initial_speed_mps": 6.006798,
+      "log_id": "2021.08.23.17.20.10_veh-45_02277_02706",
+      "pair_id": "P1R-C2-DEV-02",
+      "precontext_id": "75c41f619aa01af31463e4a8077a9aad768d8b773749e54e6b1a1082c7210081",
+      "rank_sha256": "095606a33955edf838a8d72454d37fe83442629d4493102d1a5d6d3279f3849c",
+      "route_id": "52f2c0765456b8c057618a42dff17f23531f07836e1e8f85d1f66f3df81e4598",
+      "scenario_token": "2dc6aa6afd2d5eff",
+      "session_id": "2021.08.23.17.20.10_veh-45",
+      "status": "CANDIDATE_PENDING_OWNER_CONTRACT_FREEZE"
+    },
+    {
+      "exposure_class": "E2_BENCHMARK_ENGINEERING",
+      "initial_speed_mps": 10.716628,
+      "log_id": "2021.09.28.13.24.06_veh-44_02970_03103",
+      "pair_id": "P1R-C2-DEV-03",
+      "precontext_id": "a115ec736b62dc4d2508daa1854cbc276429ffe80d4ca218ac3760940b7bc275",
+      "rank_sha256": "13934254df50d83e8824704d49fdccae33e9e2fe80f9424f2c91f702c210c7e8",
+      "route_id": "fc51bc7749010ffcc0cca9709636f1d895305bfac8aba180799a57286ab2c133",
+      "scenario_token": "1d5769ba8a5357a8",
+      "session_id": "2021.09.28.13.24.06_veh-44",
+      "status": "CANDIDATE_PENDING_OWNER_CONTRACT_FREEZE"
+    }
+  ],
+  "salt": "TSB_COAST_P1R_BDEV_C2_V1",
+  "scientific_outcomes_used": false,
+  "selection_rule": "rank current static representatives, E2 and initial speed>=5; first three; no fallback replacement"
+}
