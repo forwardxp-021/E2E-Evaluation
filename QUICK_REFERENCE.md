@@ -11578,3 +11578,36 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit pyth
 单元测试通过、编译及仓库临时依赖检查通过；protected CSV仍为`e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8`，历史源码/结果哈希不变。
 
 正式入口当前必须返回`P1R_BLOCKED_PHYSICAL_CLOCK_CONTRACT`，同时保留`P1R_BLOCKED_OWNER_SCIENTIFIC_AMENDMENT`。三对候选存在330/1038/402微秒时钟偏差及滑行跨界控制步，禁止舍入放行或替换SESSION。Owner D1（代理机制）、D2（压力诊断角色）、D3（规范模拟时钟/日志观察映射）尚待决。报告目录：`docs/stageR/tsb_coast_p1r_entry/`；本轮完成后停止，不自动开启下一轮工程或仿真。
+
+## TSB-Coast P1R-C：科学修约批准与规范模拟时钟闭合
+
+### 1. 命令
+
+在nuplan Python3.9环境、仓库根目录运行：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit python -m pytest -q tests/test_tsb_coast_p1r_c.py tests/test_tsb_coast_p1r.py tests/test_tsb_coast_zero_command_tracker_v1.py tests/test_tsb_coast_p1_measurement.py
+python -m py_compile tools/tsb_coast_p1r_c_*.py tests/test_tsb_coast_p1r_c.py
+python tools/check_no_tmp_dependencies.py
+```
+
+如需独立复核模型隔离测试或原三对无执行装配，必须选未存在的输出路径，不能覆盖审计原件：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit python tools/tsb_coast_p1r_c_fixture.py --output-dir outputs/stageR/p1r_c_isolated_recheck_v1
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit python tools/tsb_coast_p1r_c_preflight.py --output-root outputs/stageR/p1r_c_factory_recheck_v1 --evidence-dir outputs/stageR/p1r_c_preflight_evidence_recheck_v1
+```
+
+全仓tools另用系统Python3.13编译；原全仓Python3.9旧报告工具的语法兼容问题保持记录，不改历史工具。
+
+### 2. 期望行为
+
+新Coast clock作为唯一模拟时间权威，t=t0+i×100000微秒；原日志仍按原index读取，保留完整timestamp/token/正负偏差，不插值或换帧。控制实际80帧/79次transition，滑行[2.1,3.9)精确对齐。真实factory仅构建，不初始化/推进SESSION、不运行runner/metric/serializer；真实官方模型传播只用于明确标注的纯合成隔离fixture。
+
+D1/D2正式批准记录在`docs/stageR/tsb_coast_p1r_clock_closure/`。D3使用同index唯一最近帧单元检查；实际观察时标最多晚402us、早1038us，属于已披露的离线回放近似，不宣称严格在线因果或安全标签不变。首对科学执行凭证仍PROPOSED_ONLY。
+
+### 3. 通过标准
+
+96项测试通过；三个原候选六个配置的新clock/观察映射全部PASS，原偏差330/1038/402us及旧P1压力反例不变；G07/G08/G10闭合。G18继续`PROPOSED_ONLY_NOT_AUTHORIZED`，不能用科学修约批准代替执行授权。
+
+预算审计快照从旧0-attempt账本继承；未来工作账本独立位于`outputs/stageR/tsb_coast_p1r_c_execution_state_v1/budget.json`，本轮未claim。3对/6首次arm/8累计attempt/10800CPU秒不扩大，无自动retry。RBR/H/BDD/Primary/V/C均0。本轮结束后仅提交Owner审阅，禁止自动科学执行。

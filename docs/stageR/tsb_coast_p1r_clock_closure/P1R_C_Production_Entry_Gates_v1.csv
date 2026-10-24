@@ -1,0 +1,19 @@
+gate,requirement,status,scope_and_reason,evidence,mandatory_to_prepare_owner_review
+G01,历史B1/受保护资产,PASS,3485历史文件及旧B1结论不改,evidence/Protected_Verification_v1.json,True
+G02,唯一C2及参考参数,PASS,原参数、common future、原三对不变,tools/tsb_coast_p1r_planner.py; evidence/Tests_v1.xml,True
+G03,正式factory与adapter,PASS,六个独立真实对象图；Baseline不启adapter,evidence/production_verified/ThreePair_Preflight_v1.json,True
+G04,官方模型隔离传播,PASS,真实model，纯合成clock scenario；不是科学C2结果,evidence/isolated_model_verified/TREATMENT_Official_Model_Fixture_v1.json,True
+G05,命令/模型/记录器,PASS,合成79完整transition；真实SESSION记录0,evidence/isolated_model_verified/TREATMENT_transitions.jsonl,True
+G06,滑行边界与拒绝跨步,PASS,21/39精确对齐；原跨界拒绝保留,evidence/Tests_v1.xml,True
+G07,三对规范时间与原观察映射,PASS,全部六配置通过；同index且披露最大晚402us/早1038us；非严格事件因果,P1R_C_Log_Observation_Time_Mapping_v1.md; evidence/production_verified/ThreePair_Preflight_v1.json,True
+G08,D1科学机制修约,PASS,Owner正式前瞻批准；保留响应异常gate,P1R_C_Owner_Approved_Scientific_Amendment_v1.json,True
+G09,模型内F数值可判定,PASS,raw导数/物理时间/六位舍入及.02不变；实际C2 F未知,evidence/FMatch_Canonical_Fixture_v1.json,True
+G10,D2压力诊断角色,PASS,Owner正式批准SEPARATE_ROBUSTNESS_DIAGNOSTIC；旧反例仍保留,P1R_C_Owner_Approved_Scientific_Amendment_v1.json; evidence/FMatch_Canonical_Fixture_v1.json,True
+G11,callback/metric/serializer,PASS,正式装配与时间链核对；运行收尾未执行,evidence/production_verified/ThreePair_Preflight_v1.json,True
+G12,官方安全adapter,PASS,绑定既有官方collision/drivable规则；未产生新安全结果,P1R_C_Execution_Source_Binding_v1.json,True
+G13,native-route有限查询,PASS,仅初始有限query；不宣称全episode路由已验证,evidence/production_verified/ThreePair_Preflight_v1.json,True
+G14,固定候选与身份,PASS,原DEV01-03，逐值原81日志时间、paired precontext/route不变,P1R_C_ThreePair_Production_Preflight_v1.csv,True
+G15,累计预算/失败停止,PASS,从旧0继承；3/6/8/10800不扩大；操作账本独立于审计快照,P1R_C_Cumulative_Budget_Ledger_v1.json; tools/tsb_coast_p1r_c_executor.py,True
+G16,旧授权拒绝,PASS,旧凭证/单独修约/PROPOSED_ONLY均在claim和runner前拒绝,evidence/Tests_v1.xml,True
+G17,完整来源绑定,PASS,source/config/数据/合同/实际预检hash绑定,P1R_C_Execution_Source_Binding_v1.json,True
+G18,首对科学执行许可,PROPOSED_ONLY_NOT_AUTHORIZED,可提交Owner审阅；执行前必须新授权，不因READY激活,P1R_C_FirstPair_Authorization_PROPOSED_ONLY_v1.json,False

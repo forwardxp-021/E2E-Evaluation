@@ -1,0 +1,844 @@
+{
+  "scope": "PURE_ANALYTIC_FIXTURES_NOT_SCIENTIFIC_DATA",
+  "F_definition_unchanged": true,
+  "epoch_translation_and_canonical_grid": {
+    "BASELINE": {
+      "source_fixture_F": {
+        "mean_speed": 8.385063,
+        "end_minus_start_speed": -2.61,
+        "path_length": 66.211,
+        "mean_abs_accel": 0.32625
+      },
+      "canonical_clock_F": {
+        "mean_speed": 8.385063,
+        "end_minus_start_speed": -2.61,
+        "path_length": 66.211,
+        "mean_abs_accel": 0.32625
+      },
+      "identical": true
+    },
+    "TREATMENT": {
+      "source_fixture_F": {
+        "mean_speed": 8.385063,
+        "end_minus_start_speed": -2.61,
+        "path_length": 66.211,
+        "mean_abs_accel": 0.32625
+      },
+      "canonical_clock_F": {
+        "mean_speed": 8.385063,
+        "end_minus_start_speed": -2.61,
+        "path_length": 66.211,
+        "mean_abs_accel": 0.32625
+      },
+      "identical": true
+    }
+  },
+  "pressure_role": "SEPARATE_ROBUSTNESS_DIAGNOSTIC",
+  "pressure_is_qualification_gate": false,
+  "historical_pressure_path": "docs/stageR/tsb_coast_p1/evidence/Measurement_Resolution_Audit_iteration1_v1.json",
+  "historical_pressure_sha256": "0105c558ac47d56d0d5f47620c2d983030dbebc2531aa52827512a57f0a6729d",
+  "reproduced_pressure": {
+    "status": "PREFLIGHT_BLOCKED",
+    "evidence_kind": "DETERMINISTIC_MEASUREMENT_FIXTURES_NOT_CLOSED_LOOP",
+    "noise_budget_source": "TSB-Coast P0 Mechanism Proposal: ±.01 m/s",
+    "actual_nuplan_speed_error_bound_established": false,
+    "scientific_implication": "No C2 feasibility verdict; cannot certify fixed measurement budget under the requested stress envelope",
+    "cases": [
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 0,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.59,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40125
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07500000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 0,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.63,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40375
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07750000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 1,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40625
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.08000000000000002
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 1,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40875
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.08250000000000002
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 2,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.63,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40375
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07750000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 2,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.59,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40125
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07500000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 3,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40875
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.08250000000000002
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "BASELINE",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 3,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40625
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.08000000000000002
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 0,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.59,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40125
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07500000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 0,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.63,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.39625
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 1,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40625
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.08000000000000002
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 7.105427357601002e-15,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 1,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40125
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07500000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 2,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.63,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.39625
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 2,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.59,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40125
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.020000000000000018,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07500000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 3,
+        "sign": -1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40125
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.07500000000000001
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      },
+      {
+        "fixture_arm": "TREATMENT",
+        "noise_pattern": "PERIOD4_PLUS_PLUS_MINUS_MINUS",
+        "phase": 3,
+        "sign": 1,
+        "max_abs_speed_error_mps": 0.01,
+        "clean_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.32625
+        },
+        "noisy_F": {
+          "mean_speed": 8.385063,
+          "end_minus_start_speed": -2.61,
+          "path_length": 66.211,
+          "mean_abs_accel": 0.40625
+        },
+        "absolute_measurement_error": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 0.0,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.08000000000000002
+        },
+        "exceeded_F_budgets": [
+          "mean_abs_accel"
+        ],
+        "mechanism_stability": {
+          "status": "STABLE",
+          "reasons": [],
+          "variants": {
+            "raw_edge2": {
+              "peak_difference_mps2": 7.105427357601002e-15,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            },
+            "median3_edge1": {
+              "peak_difference_mps2": 0.0,
+              "duration_difference_s": 0.0,
+              "phase_count_equal": true,
+              "positive_recovery_flip": false,
+              "unstable": false
+            }
+          }
+        }
+      }
+    ],
+    "failed_case_count": 16,
+    "total_case_count": 16,
+    "null_clean_F": {
+      "mean_speed": 10.0,
+      "end_minus_start_speed": 0.0,
+      "path_length": 79.0,
+      "mean_abs_accel": 0.0
+    },
+    "null_noisy_F": {
+      "mean_speed": 10.0,
+      "end_minus_start_speed": -0.02,
+      "path_length": 79.0,
+      "mean_abs_accel": 0.1
+    },
+    "F_limits": {
+      "mean_speed": 0.1,
+      "end_minus_start_speed": 0.15,
+      "path_length": 0.8,
+      "mean_abs_accel": 0.02
+    },
+    "max_F_error": {
+      "mean_speed": 0.0,
+      "end_minus_start_speed": 0.020000000000000018,
+      "path_length": 0.0,
+      "mean_abs_accel": 0.08250000000000002
+    },
+    "runner_calls": 0
+  }
+}

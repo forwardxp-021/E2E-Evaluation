@@ -1,0 +1,56 @@
+{
+  "scientific_attempts": 0,
+  "production_guard_calls": {
+    "KinematicBicycleModel.propagate_state": 0,
+    "LQRTracker.track_trajectory": 0,
+    "MetricCallback.on_simulation_end": 0,
+    "MetricFileCallback.on_run_simulation_end": 0,
+    "MetricsEngine.compute": 0,
+    "MetricsEngine.write_to_files": 0,
+    "MultiMainCallback.on_run_simulation_end": 0,
+    "R2BControllerAwarePlannerV1.compute_planner_trajectory": 0,
+    "R2BControllerAwarePlannerV1.compute_trajectory": 0,
+    "R2BControllerAwarePlannerV1.initialize": 0,
+    "Simulation.initialize": 0,
+    "Simulation.propagate": 0,
+    "SimulationLogCallback.on_simulation_end": 0,
+    "SimulationRunner._initialize": 0,
+    "SimulationRunner.run": 0,
+    "TwoStageController.update_state": 0,
+    "tools.b1_resume_execution.update_status": 0,
+    "tools.b1_resume_execution.validate_claim": 0,
+    "tools.b1_tsb_qualification_executor.claim_budget": 0
+  },
+  "real_history_rows": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "real_recorder_rows": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "persisted_verified_fixture_model_transitions": 158,
+  "fixture_scope": "TWO_SYNTHETIC_SCENARIOS_USING_OFFICIAL_MODEL_NOT_FORMAL_SESSION_UPDATES",
+  "science_budget_ledger_attempts": [],
+  "formal_metrics_computed": false,
+  "formal_serializer_finished": false,
+  "scientific_firewall": {
+    "SCIENTIFIC_SIMULATION": 0,
+    "RBR_TRAINING": 0,
+    "RBR_INFERENCE": 0,
+    "H30_EVALUATION": 0,
+    "MMD": 0,
+    "BDD": 0,
+    "PRIMARY_EVALUATION": 0,
+    "V_EXECUTION": 0,
+    "C_EXECUTION": 0
+  }
+}

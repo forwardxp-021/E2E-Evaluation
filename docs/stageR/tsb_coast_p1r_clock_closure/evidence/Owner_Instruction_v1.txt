@@ -1,0 +1,328 @@
+# TSB-Coast P1R-C — Scientific Amendment Approval & Canonical Clock Closure
+
+## 一、项目与授权
+
+Repository：`forwardxp-021/E2E-Evaluation`
+
+Branch：`20260825_stageR_new`
+
+已知基准提交：`8c6a3ad0bd4ec701b9f05476dbc12ee1fb76067d`
+
+本轮名称：
+
+`TSB-Coast P1R-C — Scientific Contract Approval and Clock Closure`
+
+Scientific Owner 对 P1R 提出的 D1、D2、D3 作出前瞻性决定。
+
+本轮授权范围：
+
+1. 正式记录 D1、D2 科学合同修约。
+2. 有条件批准 D3 规范10Hz模拟时钟方案。
+3. 实施仅针对新Coast执行栈的最小时钟修复。
+4. 完成三对固定Development候选的零运行预检。
+5. 准备第一对Development的正式科学执行授权草案。
+
+**不授权任何新的真实闭环科学执行。**
+
+本轮不得扩大 C2 参数搜索，不得替换现有三对候选，也不得修改历史 B1。
+
+## 二、正式批准 D1：抽象滑行代理机制
+
+批准采用：
+
+`BRAKE → ZERO_LONGITUDINAL_REQUEST_WITH_STATE_PROPAGATION → BRAKE`
+
+能力声明固定为：
+
+`ABSTRACT_COAST_PROXY_ONLY`
+
+滑行阶段核心资格必须同时满足：
+
+- 解除纵向LQR和停车控制；
+- 最终纵向请求严格为0；
+- 同一命令对象进入官方运动模型；
+- 车辆状态持续推进；
+- 官方加速度滤波方程成立；
+- 滑行阶段结束后恢复原纵向控制；
+- 两次实际制动满足既有Development幅值、时长、剂量和间隔要求；
+- 低速、F_match及官方安全规则仍然有效。
+
+原提案中的近零加速度持续时间、速度漂移及正恢复特征继续计算、保存和报告，但在本代理合同中不再作为零请求模式的自动资格条件。
+
+不得删除实际响应异常检查。任何无法由冻结模型解释的纵向状态变化，都必须阻断或判定不合格。
+
+批准依据是本次明确的控制行为构念及已核查的官方模型接口，不是后续检测结果。
+
+不得宣称真实零油门、零制动扭矩或真实动力总成自由滑行已经得到验证。
+
+## 三、正式批准 D2：F_match测量合同
+
+保持以下四项指标及数值：
+
+| Descriptor | Caliper |
+|---|---:|
+| mean_speed | 0.10 m/s |
+| end_minus_start_speed | 0.15 m/s |
+| path_length | 0.80 m |
+| mean_abs_accel | 0.02 m/s² |
+
+严格保留原始raw速度梯度、时间戳处理、六位舍入与比较规则。
+
+批准将此前±0.01m/s人工扰动测试定义为：
+
+`SEPARATE_ROBUSTNESS_DIAGNOSTIC`
+
+不再将该人为扰动直接作为未经证实的生产测量误差上界。
+
+原P1阻断和测量反例永久保留，不作追溯修改。
+
+如果后续发现真实生产记录存在未建模的速度量化、随机误差或数值不稳定，必须重新阻断，不能使用本批准自动豁免。
+
+## 四、有条件批准 D3：规范模拟时钟
+
+同意探索并实现仅适用于新TSB-Coast执行栈的规范模拟时钟。
+
+拟议时间定义：
+
+```text
+simulation_time_us = episode_start_us + iteration * 100000
+```
+
+原则：
+
+- 原始episode起始时间戳不改变；
+- 每个模拟控制步长固定100000微秒；
+- 80个realized states、79个controller transitions；
+- 滑行窗口固定为[2.1,3.9)秒；
+- 制动阶段时间及全部C2参数不改变；
+- 不修改原始日志时间戳或日志文件；
+- 不对日志轨迹进行隐式插值、替换或重采样；
+- 不改变旧B1时间控制器。
+
+### 必须解决时间与观察映射
+
+规范时钟只解决仿真状态推进的时间网格。
+
+Work必须进一步证明：
+
+1. 场景观察对象仍按原始index取得。
+2. 每个index对应的原始日志时间完整保留。
+3. 模拟状态、controller、planner、callback及metric看到的时间关系一致。
+4. 不会出现日志观察重新排序、错帧或漏帧。
+5. 不会因时间映射悄悄使用未来的场景状态而产生未经披露的因果信息。
+6. 模拟时间和日志时间的偏差能够完整量化。
+7. 时间差对80帧时域、车辆运动、F_match及官方指标的影响边界可解释。
+8. 规范时间不会改变Baseline与Treatment的初始身份和共同precontext。
+
+可提出一个前瞻性固定的毫秒级映射上限，但必须有10Hz日志采样、观测时间语义和实际工程误差的依据，不能仅为了让当前三对通过而选取阈值。
+
+原始偏差330、1038、402微秒保留在证据中。
+
+如果无法证明日志观察与新模拟时间的合法对应，保持：
+
+`CLOCK_MAPPING_NOT_ACCEPTABLE`
+
+不得因为控制器不再抛异常就宣布完整时钟合同通过。
+
+### 实现边界
+
+优先新建独立的Coast时间控制器或显式时间适配器。
+
+不得修改官方nuPlan源码、旧R1 Primary80控制器或历史B1配置。
+
+实际仿真时间应从权威控制器传递，不得由planner、recording、motion model各自创建不一致的时间。
+
+所有数值与版本必须绑定source/config SHA256。
+
+## 五、必须完成的零运行验证
+
+使用原始固定候选：
+
+```text
+DEV-01
+DEV-02
+DEV-03
+```
+
+不得替换SESSION。
+
+完成：
+
+- 规范模拟时钟81个iteration的纯接口检查；
+- 80帧及79个控制transition时间一致性；
+- 两个滑行边界恰好对齐控制步；
+- 时间单调性和固定步长；
+- 日志index与原始时间戳的映射；
+- 正负时间偏差和未来观察风险检查；
+- 官方KinematicBicycleModel隔离测试；
+- tracker切换与滤波响应测试；
+- planner完整未来参考的时钟一致性；
+- recorder最终命令与model propagation一致性；
+- callback、官方指标、serializer装配检查；
+- 新时钟下的物理时间F_match纯fixture；
+- 旧时钟或旧授权在新执行栈下被拒绝。
+
+所有测试使用隔离fixture或真实生产对象的无执行构建，不得进入科学runner或正式场景状态推进。
+
+特别注意：只有三对真实生产配置全部通过新时钟预检，才能标记G07为PASS。
+
+## 六、冻结旧科学设计与预算
+
+C2保持唯一候选：
+
+Treatment：
+
+```text
+-1.305 m/s² @ [1.1,2.1)
+0参考加速度 @ [2.1,3.9)
+-1.305 m/s² @ [3.9,4.9)
+```
+
+Baseline：
+
+```text
+-1.45 m/s² @ [2.1,3.9)
+```
+
+其中0参考加速度属于规划意图；Treatment滑行期间最终执行模式必须由零纵向请求适配器实现，不能以a_ref=0代替适配器。
+
+不得调整制动幅值、窗口长度、LQR gain或车辆运动模型。
+
+原P1预算仍然是：
+
+```text
+Development pairs = 3
+First attempts = 6
+Maximum cumulative attempts = 8
+Scientific attempts used = 0
+CPU scientific budget = 10800 seconds
+```
+
+本轮不得重置或扩大预算。
+
+技术重试不是自动授权。
+
+一旦发现现有参数、模型或时钟无法满足已批准合同，应报告阻断，不得扩大候选搜索。
+
+## 七、正式授权状态与防火墙
+
+本轮可生成新的已批准科学合同记录：
+
+`P1R_C_Owner_Approved_Scientific_Amendment_v1.json`
+
+但该文件只能表明D1/D2批准及D3的限定工程授权，不能单独启动runner。
+
+新的科学执行凭证仍应为：
+
+`PROPOSED_ONLY`
+
+必须保持：
+
+```text
+SCIENTIFIC_SIMULATION = NOT_AUTHORIZED
+FIRST_DEVELOPMENT_PAIR = NOT_AUTHORIZED
+TSB_COAST_P2 = NOT_AUTHORIZED
+
+RBR_TRAINING = NOT_AUTHORIZED
+H_BDD = NOT_AUTHORIZED
+RBR_BDD = NOT_AUTHORIZED
+PRIMARY_EVALUATION = NOT_AUTHORIZED
+V_EXECUTION = NOT_AUTHORIZED
+C_EXECUTION = NOT_AUTHORIZED
+```
+
+S1/S1R、H30、U-only训练及Primary原统计合同不变。
+
+TSB-Coast尚未被授权替代原Primary。
+
+## 八、输出要求
+
+新建：
+
+`docs/stageR/tsb_coast_p1r_clock_closure/`
+
+至少生成：
+
+- `P1R_C_Owner_Approved_Scientific_Amendment_v1.json`
+- `P1R_C_Canonical_Clock_Contract_v1.md`
+- `P1R_C_Log_Observation_Time_Mapping_v1.md`
+- `P1R_C_Clock_Integration_Report_v1.md`
+- `P1R_C_ThreePair_Production_Preflight_v1.csv`
+- `P1R_C_Execution_Source_Binding_v1.json`
+- `P1R_C_FirstPair_Authorization_PROPOSED_ONLY_v1.json`
+- `P1R_C_Final_Entry_Report_v1.md`
+- `P1R_C_Manifest_v1.json`
+
+所有报告与科学合同、日志映射、代码及配置绑定实际SHA256。
+
+不得覆盖旧B1、P0、P1、P1R、S1/S1R或历史outputs。
+
+保护当前工作区其他修改，不执行`git reset --hard`、`git clean`或`git add .`。
+
+仅提交本轮有关文件，推送并核对远端。
+
+## 九、最终反馈格式
+
+### A. Overall Verdict
+
+报告：
+
+`P1R_C_READY_FOR_FIRST_PAIR_OWNER_REVIEW`
+
+或具体BLOCKED/INCONCLUSIVE状态。
+
+### B. 大白话
+
+回答现在是否已经解决时钟阻断，是否能够准备第一次真实Coast闭环实验。
+
+### C. Scientific Amendments
+
+报告D1、D2的正式前瞻批准记录，以及D3工程范围和条件。
+
+### D. Canonical Clock
+
+说明规范模拟时钟如何实现，以及为何不会悄悄改变科学行为。
+
+### E. Log Observation Mapping
+
+报告三个候选的完整时间偏差、日志观察映射和潜在因果影响。
+
+### F. Controller and Model
+
+报告零请求、真实模型推进、LQR恢复及时间边界检查。
+
+### G. F_match
+
+说明新时钟下测量合同是否可判定，人工扰动是否仍完整保留。
+
+### H. Production Gates
+
+逐项报告原G01～G18状态，特别是G07/G08/G10/G18。
+
+### I. Budget and Scientific Firewall
+
+确认科学attempt为0、预算不变、没有RBR/H/BDD/Primary。
+
+### J. Tests / Hashes / Git
+
+报告测试、哈希、历史资产保护和commit。
+
+### K. Recommended Next Stage
+
+如果全部通过：
+
+`Scientific Owner review → First Development Pair Execution Authorization`
+
+如果未通过：
+
+只报告实际剩余阻断，不得自行扩展成新的大规模工程项目。
+
+## 十、完成后停止
+
+即使获得：
+
+`P1R_C_READY_FOR_FIRST_PAIR_OWNER_REVIEW`
+
+本轮仍不得启动任何科学闭环仿真。
+
+**核心目标：让新Coast的控制时间、日志观察时间和官方模型时间具有明确、可验证、可审计的一致性，为第一次真实“两次制动—中间释放纵向控制”的闭环实验扫清最后的入口问题。**

@@ -1,0 +1,46 @@
+{
+  "stage": "TSB_COAST_P1R_C_FIRST_PAIR",
+  "authorization_status": "PROPOSED_ONLY",
+  "scientific_owner_approved": false,
+  "disclosed_observation_skew_acknowledged": false,
+  "proposal_scope": "Original DEV-01 Baseline and Treatment only, one first attempt each; no automatic retry or next pair.",
+  "approved_run_ids": [
+    "P1R-C2-DEV-01-BASELINE",
+    "P1R-C2-DEV-01-TREATMENT"
+  ],
+  "approved_spec_sha256": {
+    "P1R-C2-DEV-01-BASELINE": "b699543681a8455d140b8e19019a34f027b12f7a25421974850ac14235971f7b",
+    "P1R-C2-DEV-01-TREATMENT": "a739b3950c4e899289b173a194879b32cde0e7ec4ee7d5dae8a068214951c4c4"
+  },
+  "approved_amendment_path": "docs/stageR/tsb_coast_p1r_clock_closure/P1R_C_Owner_Approved_Scientific_Amendment_v1.json",
+  "approved_amendment_sha256": "a61d7402c8357cc6093e17d9a42630243f76611eace85e45a7704f0e7939ec64",
+  "execution_source_binding_path": "docs/stageR/tsb_coast_p1r_clock_closure/P1R_C_Execution_Source_Binding_v1.json",
+  "execution_source_binding_sha256": "625a7ac68b06e7673a67468e3f8351e0762ddd0b1f450b1ee17821747ab1202f",
+  "production_preflight_path": "docs/stageR/tsb_coast_p1r_clock_closure/evidence/production_verified/ThreePair_Preflight_v1.json",
+  "production_preflight_sha256": "a913b9d80c28c2f6630cd6c542e00fc3299272047f52a7b2efc0c064f2b7c83a",
+  "execution_ledger_path": "outputs/stageR/tsb_coast_p1r_c_execution_state_v1/budget.json",
+  "initial_budget_snapshot_sha256": "460dbb1ba7be7a7f6931b2bdae559c4baee985a992556116fc30810fe5b04920",
+  "observed_mapping_scope": "DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY",
+  "maximum_same_index_log_timestamp_ahead_us": 402,
+  "maximum_same_index_log_timestamp_behind_us": 1038,
+  "timing_risk": "No guarantee that official collision/threshold labels equal an exactly synchronized replay; C2 ego control does not consume these observations.",
+  "global_limits": {
+    "development_pairs": 3,
+    "first_attempts": 6,
+    "maximum_cumulative_attempts": 8,
+    "scientific_CPU_seconds": 10800,
+    "per_arm_wall_seconds": 1200
+  },
+  "first_pair_attempts_allowed_if_separately_authorized": 2,
+  "technical_retry_authorized": false,
+  "factory": "tools.tsb_coast_p1r_c_production.build_canonical_coast_arm",
+  "clock": "tools.tsb_coast_p1r_c_clock.CoastCanonicalTimeControllerV1",
+  "supervisor": "tools.tsb_coast_p1r_c_executor.launch_first_pair_arm",
+  "scientific_execution_authorized": false,
+  "TSB_COAST_P2": "NOT_AUTHORIZED",
+  "RBR_TRAINING": "NOT_AUTHORIZED",
+  "PRIMARY_EVALUATION": "NOT_AUTHORIZED",
+  "V_EXECUTION": "NOT_AUTHORIZED",
+  "C_EXECUTION": "NOT_AUTHORIZED",
+  "notice": "Approved D1/D2 and conditional D3 engineering are not execution authorization. A new explicit Scientific Owner execution decision is required; this historical proposal remains unchanged."
+}

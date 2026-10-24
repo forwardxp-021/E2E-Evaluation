@@ -1,0 +1,119 @@
+{
+  "stage": "TSB_COAST_P1R_C",
+  "record_type": "PROSPECTIVE_SCIENTIFIC_AMENDMENT_NOT_EXECUTION_AUTHORIZATION",
+  "D1": "APPROVED",
+  "D2": "APPROVED",
+  "D3": "CONDITIONAL_ENGINEERING_APPROVAL",
+  "owner_instruction_sha256": "481e9fa07ed66af1b4510a7178f17259acfae2480cc6a68f6652002373780f26",
+  "base_git_head": "8c6a3ad0bd4ec701b9f05476dbc12ee1fb76067d",
+  "approved_mechanism_specification": {
+    "version": "P1R_PROXY_PROPOSAL_v1",
+    "capability": "ABSTRACT_COAST_PROXY_ONLY",
+    "clock": {
+      "frames": 80,
+      "transitions": 79,
+      "step_us": 100000,
+      "physical_integer_anchor": true
+    },
+    "coast": {
+      "interval_us": [
+        2100000,
+        3900000
+      ],
+      "request_exact_zero": true,
+      "same_command_object_reaches_model": true,
+      "state_propagation_required": true,
+      "longitudinal_LQR_and_stopping_calls": 0
+    },
+    "model": {
+      "accel_filter_tau_s": 0.2,
+      "equation": "a_next=a_before+dt/(dt+tau)*(u-a_before)",
+      "velocity_equation": "vx_next=vx_before+dt*a_next",
+      "floating_check_eps_multiplier": 64
+    },
+    "braking": {
+      "speed_processing": "median3_then_gradient_edge2_physical_time",
+      "phase_threshold_mps2": -0.6,
+      "minimum_support_s": 0.4,
+      "minimum_peak_mps2": 0.8,
+      "minimum_dose_mps": 0.35,
+      "valid_domain_s": [
+        1.1,
+        5.5
+      ],
+      "baseline_phase_count": 1,
+      "treatment_phase_count": 2,
+      "minimum_separation_s": 0.7
+    },
+    "low_speed": {
+      "positive_speed_required": true,
+      "threshold_mps": 1.0,
+      "maximum_below_threshold_support_s": 0.5,
+      "reference_floor_rejected": true
+    },
+    "near_zero_acceleration_rule": "DIAGNOSTIC_ONLY_NOT_QUALIFICATION",
+    "positive_response": "NO_POSITIVE_COAST_REQUEST; RESIDUAL_RESPONSE_MUST_MATCH_BOUND_MODEL",
+    "F_match": {
+      "calipers": {
+        "mean_speed": 0.1,
+        "end_minus_start_speed": 0.15,
+        "path_length": 0.8,
+        "mean_abs_accel": 0.02
+      },
+      "speed_processing": "raw_gradient_edge2_physical_time",
+      "descriptor_decimals": 6,
+      "comparison_epsilon": 1e-12,
+      "pm_0p01_pressure_role": "SEPARATE_ROBUSTNESS_DIAGNOSTIC"
+    },
+    "additional_pair_balance": {
+      "negative_dose_delta_max_mps": 0.15,
+      "each_treatment_peak_vs_baseline_max_mps2": 0.2
+    },
+    "official_safety": {
+      "at_fault_collisions": 0,
+      "drivable_area_compliance": true
+    },
+    "failure_policy": "STOP_NO_AUTOMATIC_RETRY_OR_REPLACEMENT"
+  },
+  "approved_contract_version": "P1R_C_APPROVED_ABSTRACT_COAST_PROXY_v1",
+  "historical_P1_and_P1R_unchanged": true,
+  "capability": "ABSTRACT_COAST_PROXY_ONLY",
+  "pressure_test_role": "SEPARATE_ROBUSTNESS_DIAGNOSTIC",
+  "D3_constraints": {
+    "simulation_time": "original_episode_start_us + index * 100000",
+    "frames": 80,
+    "transitions": 79,
+    "coast_interval_us": [
+      2100000,
+      3900000
+    ],
+    "original_scenario_and_observation_index_preserved": true,
+    "log_timestamps_unchanged": true,
+    "no_log_interpolation_or_resampling": true,
+    "require_raw_time_and_future_skew_disclosure": true,
+    "require_three_pair_zero_run_preflight": true
+  },
+  "execution_authority": false,
+  "first_pair_authorization": "PROPOSED_ONLY",
+  "scientific_firewall": {
+    "SCIENTIFIC_SIMULATION": "NOT_AUTHORIZED",
+    "FIRST_DEVELOPMENT_PAIR": "NOT_AUTHORIZED",
+    "TSB_COAST_P2": "NOT_AUTHORIZED",
+    "RBR_TRAINING": "NOT_AUTHORIZED",
+    "H_BDD": "NOT_AUTHORIZED",
+    "RBR_BDD": "NOT_AUTHORIZED",
+    "PRIMARY_EVALUATION": "NOT_AUTHORIZED",
+    "V_EXECUTION": "NOT_AUTHORIZED",
+    "C_EXECUTION": "NOT_AUTHORIZED"
+  },
+  "D3_engineering_implementation": {
+    "clock_source_sha256": "bf12496bf02f0cafd197b9fbbb4693cd809b1ff58ae35b24edaf2d1230c0fb7c",
+    "clock_config_sha256": "6ae6574f65cfc00f8036e1a2beb5bacc71dd3fd1daa844a38319013f92a97c5e",
+    "canonical_clock_contract_sha256": "2eb72d7cb04a2ee95ccc3db47490688427b6da81361f01595a2789a508d1519f",
+    "log_observation_mapping_sha256": "c8ef3ae39e3fb165495880cf1257805dfcb5074c4fc3072d3e8c5380524c05a5",
+    "three_pair_evidence_sha256": "a913b9d80c28c2f6630cd6c542e00fc3299272047f52a7b2efc0c064f2b7c83a",
+    "acceptance_scope": "DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY",
+    "policy": "SAME_INDEX_UNIQUE_NEAREST_CELL_v1",
+    "scientific_execution_authorized": false
+  }
+}

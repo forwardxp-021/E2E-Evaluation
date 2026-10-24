@@ -1,0 +1,18 @@
+{
+  "historical_attempts": 0,
+  "attempts": [],
+  "cpu_seconds_consumed": 0,
+  "stopped": false,
+  "inherited_ledger_path": "docs/stageR/tsb_coast_p1r_entry/P1R_Execution_Budget_Ledger_v1.json",
+  "inherited_ledger_sha256": "8365ed5c00314e3a001eaa929257e156744054bccd4b4e93520d903734863eb0",
+  "historical_P1_zero_run_implementation_iterations": 2,
+  "budget_reset": false,
+  "automatic_retry_authorized": false,
+  "limits": {
+    "development_pairs": 3,
+    "first_attempts": 6,
+    "cumulative_attempts": 8,
+    "scientific_CPU_seconds": 10800,
+    "per_arm_wall_seconds": 1200
+  }
+}
