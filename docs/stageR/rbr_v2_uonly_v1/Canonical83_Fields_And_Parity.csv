@@ -1,0 +1,84 @@
+index,field,unit,definition,valid_frames,waymo_oracle_max_abs,nuplan_oracle_max_abs,waymo_nuplan_max_abs,status
+0,x,m,R(h0)(p-p0).x,80,3.662109378410605e-06,3.662109378410605e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+1,y,m,R(h0)(p-p0).y,80,3.4445668006810592e-06,5.196331138003583e-15,3.4445668006810592e-06,PASS_SYNTHETIC_PHYSICAL_ORACLE
+2,vx,m/s,R(h0)v_world.x,80,3.8146972691777137e-07,3.8146972691777137e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+3,vy,m/s,R(h0)v_world.y,80,5.223511152507854e-07,0.0,5.223511152507854e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+4,heading,rad,wrap(h_world-h0),80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+5,speed,m/s,norm(v_world),80,3.8146972691777137e-07,3.8146972691777137e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+6,accel,m/s^2,backward_diff(speed)/0.1,79,7.62939453125e-06,7.62939453125e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+7,yaw_rate,rad/s,wrap(backward_diff(h_world))/0.1,79,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+8,front.presence,bool,known lane slot occupied,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+9,front.rel_x,m,R(h_ego)(p_n-p_e).x,80,8.850097650281441e-07,8.850097650281441e-07,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+10,front.rel_y,m,R(h_ego)(p_n-p_e).y,80,8.940696716308594e-07,0.0,8.940696716308594e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+11,front.rel_vx,m/s,R(h_ego)(v_n-v_e).x,80,8.392333983309186e-07,8.392333983309186e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+12,front.rel_vy,m/s,R(h_ego)(v_n-v_e).y,80,1.2195476983833942e-07,5.608882240732934e-16,1.2195476983833942e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+13,front.distance,m,norm(p_n-p_e),80,9.347638965095939e-07,9.347638965095939e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+14,front.longitudinal_gap,m,duplicate rel_x,80,8.850097650281441e-07,8.850097650281441e-07,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+15,front.lateral_gap,m,duplicate rel_y,80,8.940696716308594e-07,0.0,8.940696716308594e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+16,front.closing_speed,m/s,"-dot(delta_p,delta_v)/max(distance,1e-6)",80,8.770867170326824e-07,8.770867170326824e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+17,front.ttc,s,"min(distance/closing,999); valid closing>1e-3 & distance>1e-6",80,2.7578594679056323e-06,2.7578594679056323e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+18,front.thw,s,"min(rel_x/ego_forward_speed,999); valid rel_x>0 & ego_forward_speed>1e-3",80,2.1135021865958947e-07,2.1135021865958947e-07,5.960464477539063e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+19,front.speed,m/s,norm(v_n_world),80,4.5776367230132564e-07,4.5776367230132564e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+20,front.accel,m/s^2,backward_diff(speed_n)/0.1 same identity only,79,9.155273437477796e-06,9.155273437477796e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+21,front.heading_relative,rad,wrap(h_n_world-h_e_world),80,1.0299682617898043e-07,7.319450379128511e-08,4.470348358154297e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+22,front.yaw_rate_world,rad/s,wrap(backward_diff(h_n_world))/0.1 same identity only,79,9.346008300777087e-07,9.346008300777087e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+23,left_front.presence,bool,known lane slot occupied,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+24,left_front.rel_x,m,R(h_ego)(p_n-p_e).x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+25,left_front.rel_y,m,R(h_ego)(p_n-p_e).y,80,4.76837158203125e-07,0.0,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+26,left_front.rel_vx,m/s,R(h_ego)(v_n-v_e).x,80,4.76837158203125e-07,4.76837158203125e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+27,left_front.rel_vy,m/s,R(h_ego)(v_n-v_e).y,80,4.371140960302e-08,6.704941286293222e-16,4.371140960302e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+28,left_front.distance,m,norm(p_n-p_e),80,4.542425156017771e-07,4.542425156017771e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+29,left_front.longitudinal_gap,m,duplicate rel_x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+30,left_front.lateral_gap,m,duplicate rel_y,80,4.76837158203125e-07,0.0,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+31,left_front.closing_speed,m/s,"-dot(delta_p,delta_v)/max(distance,1e-6)",80,4.589654862829917e-07,4.589654862829917e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+32,left_front.ttc,s,"min(distance/closing,999); valid closing>1e-3 & distance>1e-6",80,5.6296279744572075e-06,5.6296279744572075e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+33,left_front.thw,s,"min(rel_x/ego_forward_speed,999); valid rel_x>0 & ego_forward_speed>1e-3",80,1.1353265683133884e-07,7.559613468544057e-08,1.1920928955078125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+34,left_front.speed,m/s,norm(v_n_world),80,3.8146972691777137e-07,3.8146972691777137e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+35,left_front.accel,m/s^2,backward_diff(speed_n)/0.1 same identity only,79,7.62939453125e-06,7.62939453125e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+36,left_front.heading_relative,rad,wrap(h_n_world-h_e_world),80,0.0,4.371138828673793e-08,4.371138828673793e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+37,left_front.yaw_rate_world,rad/s,wrap(backward_diff(h_n_world))/0.1 same identity only,79,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+38,left_rear.presence,bool,known lane slot occupied,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+39,left_rear.rel_x,m,R(h_ego)(p_n-p_e).x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+40,left_rear.rel_y,m,R(h_ego)(p_n-p_e).y,80,4.76837158203125e-07,0.0,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+41,left_rear.rel_vx,m/s,R(h_ego)(v_n-v_e).x,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+42,left_rear.rel_vy,m/s,R(h_ego)(v_n-v_e).y,80,4.371138828673793e-08,7.929587874180594e-16,4.371138828673793e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+43,left_rear.distance,m,norm(p_n-p_e),80,4.542425156017771e-07,4.542425156017771e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+44,left_rear.longitudinal_gap,m,duplicate rel_x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+45,left_rear.lateral_gap,m,duplicate rel_y,80,4.76837158203125e-07,0.0,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+46,left_rear.closing_speed,m/s,"-dot(delta_p,delta_v)/max(distance,1e-6)",80,2.9474951479535605e-08,2.9474951479535605e-08,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+47,left_rear.ttc,s,"min(distance/closing,999); valid closing>1e-3 & distance>1e-6",80,4.7451112195062706e-07,4.7451112195062706e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+48,left_rear.thw,s,"min(rel_x/ego_forward_speed,999); valid rel_x>0 & ego_forward_speed>1e-3",0,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+49,left_rear.speed,m/s,norm(v_n_world),80,3.8146972691777137e-07,3.8146972691777137e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+50,left_rear.accel,m/s^2,backward_diff(speed_n)/0.1 same identity only,79,7.62939453125e-06,7.62939453125e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+51,left_rear.heading_relative,rad,wrap(h_n_world-h_e_world),80,0.0,4.371138828673793e-08,4.371138828673793e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+52,left_rear.yaw_rate_world,rad/s,wrap(backward_diff(h_n_world))/0.1 same identity only,79,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+53,right_front.presence,bool,known lane slot occupied,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+54,right_front.rel_x,m,R(h_ego)(p_n-p_e).x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+55,right_front.rel_y,m,R(h_ego)(p_n-p_e).y,80,4.76837158203125e-07,0.0,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+56,right_front.rel_vx,m/s,R(h_ego)(v_n-v_e).x,80,4.76837158203125e-07,4.76837158203125e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+57,right_front.rel_vy,m/s,R(h_ego)(v_n-v_e).y,80,2.1855715459651037e-08,7.011102933265065e-16,2.1855715459651037e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+58,right_front.distance,m,norm(p_n-p_e),80,4.731646576772164e-07,4.731646576772164e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+59,right_front.longitudinal_gap,m,duplicate rel_x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+60,right_front.lateral_gap,m,duplicate rel_y,80,4.76837158203125e-07,0.0,4.76837158203125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+61,right_front.closing_speed,m/s,"-dot(delta_p,delta_v)/max(distance,1e-6)",80,4.5883001298374637e-07,4.5883001298374637e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+62,right_front.ttc,s,"min(distance/closing,999); valid closing>1e-3 & distance>1e-6",80,3.0614865707434546e-05,3.0614865707434546e-05,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+63,right_front.thw,s,"min(rel_x/ego_forward_speed,999); valid rel_x>0 & ego_forward_speed>1e-3",80,1.427568037115634e-07,1.427568037115634e-07,1.1920928955078125e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+64,right_front.speed,m/s,norm(v_n_world),80,3.8146972691777137e-07,3.8146972691777137e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+65,right_front.accel,m/s^2,backward_diff(speed_n)/0.1 same identity only,79,7.62939453125e-06,7.62939453125e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+66,right_front.heading_relative,rad,wrap(h_n_world-h_e_world),80,0.0,4.371138828673793e-08,4.371138828673793e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+67,right_front.yaw_rate_world,rad/s,wrap(backward_diff(h_n_world))/0.1 same identity only,79,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+68,right_rear.presence,bool,known lane slot occupied,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+69,right_rear.rel_x,m,R(h_ego)(p_n-p_e).x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+70,right_rear.rel_y,m,R(h_ego)(p_n-p_e).y,80,7.152557373046875e-07,0.0,7.152557373046875e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+71,right_rear.rel_vx,m/s,R(h_ego)(v_n-v_e).x,80,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+72,right_rear.rel_vy,m/s,R(h_ego)(v_n-v_e).y,80,2.1855694143368964e-08,7.623426227208751e-16,2.1855694143368964e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+73,right_rear.distance,m,norm(p_n-p_e),80,4.731646576772164e-07,4.731646576772164e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+74,right_rear.longitudinal_gap,m,duplicate rel_x,80,5.722045894884786e-07,3.8146972691777137e-07,9.5367431640625e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+75,right_rear.lateral_gap,m,duplicate rel_y,80,7.152557373046875e-07,0.0,7.152557373046875e-07,PASS_SYNTHETIC_PHYSICAL_ORACLE
+76,right_rear.closing_speed,m/s,"-dot(delta_p,delta_v)/max(distance,1e-6)",80,1.460944887288207e-08,1.460944887288207e-08,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+77,right_rear.ttc,s,"min(distance/closing,999); valid closing>1e-3 & distance>1e-6",80,1.8958662693080441e-06,1.8958662693080441e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+78,right_rear.thw,s,"min(rel_x/ego_forward_speed,999); valid rel_x>0 & ego_forward_speed>1e-3",0,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+79,right_rear.speed,m/s,norm(v_n_world),80,3.8146972691777137e-07,3.8146972691777137e-07,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+80,right_rear.accel,m/s^2,backward_diff(speed_n)/0.1 same identity only,79,7.62939453125e-06,7.62939453125e-06,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE
+81,right_rear.heading_relative,rad,wrap(h_n_world-h_e_world),80,0.0,4.371138828673793e-08,4.371138828673793e-08,PASS_SYNTHETIC_PHYSICAL_ORACLE
+82,right_rear.yaw_rate_world,rad/s,wrap(backward_diff(h_n_world))/0.1 same identity only,79,0.0,0.0,0.0,PASS_SYNTHETIC_PHYSICAL_ORACLE

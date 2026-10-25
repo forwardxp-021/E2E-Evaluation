@@ -1,0 +1,50 @@
+{
+  "overall": "RESULT_B_BLOCKED_U_SOURCE_INDEPENDENCE",
+  "gates": [
+    {
+      "gate": "Canonical83 physical oracle and all-slot layout",
+      "status": "PASS",
+      "evidence": "Canonical83_Fields_And_Parity.csv; tests_final_v3.log"
+    },
+    {
+      "gate": "Real raw Waymo processor smoke",
+      "status": "PASS",
+      "evidence": "16 frozen identities, 1 explicitly input-invalid, 0 replacements"
+    },
+    {
+      "gate": "Observed dependency grouping before split",
+      "status": "PASS_LIMITED",
+      "evidence": "candidate_group_cross_split=0; NOT a complete source certificate"
+    },
+    {
+      "gate": "Raw source independence",
+      "status": "BLOCKED",
+      "evidence": "RAW_SEGMENT_DISJOINTNESS_NOT_ESTABLISHED"
+    },
+    {
+      "gate": "Full certified canonical U corpus and train-only scaler",
+      "status": "BLOCKED",
+      "evidence": "Source prerequisite fails; 16 examples are engineering artifacts only"
+    },
+    {
+      "gate": "Shared z64 and two-head gradients",
+      "status": "PASS_ZERO_STEP",
+      "evidence": "tests_final_v3.log; no optimizer steps"
+    },
+    {
+      "gate": "Sole seed3407 executable protocol and rejection firewall",
+      "status": "PASS_ZERO_STEP_ONLY",
+      "evidence": "seed3407.json; entry_gate.log; training not production-certified"
+    },
+    {
+      "gate": "First formal U-only training",
+      "status": "NOT_STARTED_BLOCKED",
+      "evidence": "No run namespace/checkpoint/optimizer step"
+    }
+  ],
+  "training_runs": 0,
+  "optimizer_steps": 0,
+  "device_training_seconds": 0,
+  "checkpoint": null,
+  "normalizer": null
+}

@@ -1,0 +1,24 @@
+{
+  "retained_windows": 168700,
+  "groups_spanning_legacy_splits": 754,
+  "windows_in_these_groups": 11049,
+  "scenarios_in_these_groups": 1607,
+  "windows_changed_candidate_split": 57462,
+  "candidate_group_cross_split": 0,
+  "known_duplicate_scenario_candidate_groups": [
+    {
+      "scenario_id": "249bd8c0ba9102c7",
+      "actor_id": "1252",
+      "legacy_split": "test",
+      "dependency_group": "249bd8c0ba9102c7",
+      "candidate_split": "test"
+    },
+    {
+      "scenario_id": "fd4ef9f02c34f649",
+      "actor_id": "3925",
+      "legacy_split": "train",
+      "dependency_group": "249bd8c0ba9102c7",
+      "candidate_split": "test"
+    }
+  ]
+}

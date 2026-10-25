@@ -1,0 +1,25 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+test_both_heads_have_shared_gradients_no_optimizer (tests.test_rbr_v2_uonly.ModelTests) ... ok
+test_mask_invalid_ego_cannot_update_state (tests.test_rbr_v2_uonly.ModelTests) ... ok
+test_training_firewall_and_selection (tests.test_rbr_v2_uonly.ModelTests) ... ok
+test_co_moving_no_double_subtraction (tests.test_rbr_v2_uonly.PhysicalTests) ... ok
+test_dependency_before_split (tests.test_rbr_v2_uonly.PhysicalTests) ... ok
+test_physical_clock_missing_and_wrap (tests.test_rbr_v2_uonly.PhysicalTests) ... ok
+test_real_source_interfaces_against_independent_oracle (tests.test_rbr_v2_uonly.PhysicalTests) ... /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+  prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+  parse = parser.parseString(pattern)
+/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+  parser.resetCache()
+/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+  ParserElement.enablePackrat()
+In /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+In /Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+ok
+test_world_yaw_and_identity_switch (tests.test_rbr_v2_uonly.PhysicalTests) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.690s
+
+OK

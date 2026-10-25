@@ -1,0 +1,347 @@
+{
+  "schema": "rbr_v2_u_candidate_v1",
+  "training_certified": false,
+  "status": "BLOCKED_U_SOURCE_INDEPENDENCE",
+  "raw_segment_disjointness": "NOT_ESTABLISHED",
+  "source_policy": "No upstream segment/global-object/absolute-time map exists in these inputs",
+  "split_policy": "Observed moving-overlap components BEFORE deterministic group hash split",
+  "overlap_scope": "All vehicle tracks; 8 valid adjacent frames, stride1; >=0.5m displacement; exact + quantized",
+  "residual_risks": [
+    "unidentified common raw segment",
+    "stationary/short overlaps",
+    "near matches straddling quantization bins",
+    "nonoverlapping trajectories from same source segment"
+  ],
+  "counts": {
+    "scenarios": 24872,
+    "vehicle_tracks": 1469220,
+    "camera_frames": 0,
+    "lidar_frames": 0,
+    "zero_start_scenarios": 24872,
+    "retained_actor_tracks": 168700,
+    "moving_overlap_snippets": 19425197,
+    "candidate_train": 134478,
+    "candidate_test": 16539,
+    "candidate_val": 17683
+  },
+  "observed_groups": 22527,
+  "multi_scenario_groups": 2136,
+  "largest_group": 5,
+  "union_edges": {
+    "E": 2335,
+    "Q": 10
+  },
+  "raw_files": [
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00000-of-01000",
+      "sha256": "050b8f46e94351d0ca51213e196d5e550b6b1cecd05dce27f8d8ffff93121652",
+      "records": 496,
+      "bytes": 454771008
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00001-of-01000",
+      "sha256": "5234b563b7dda0203304a960ab82f61fca54cb2b5884cbe98316ad1c3a6acf4a",
+      "records": 494,
+      "bytes": 481162498
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00002-of-01000",
+      "sha256": "9e9035589d2f7236e13a951ccbc0c65f5d090fc9a21ae6e964c2de92023632ad",
+      "records": 540,
+      "bytes": 503552651
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00003-of-01000",
+      "sha256": "5e4ab87a7171ee8f8dc8662cc742dec5b11dde56bad9f97660b3d9cf738569f0",
+      "records": 474,
+      "bytes": 449454935
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00004-of-01000",
+      "sha256": "9906695463347f28a89f1b0457a7235772f57bae9f714fb8f01d2d97aec8e897",
+      "records": 473,
+      "bytes": 444764080
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00005-of-01000",
+      "sha256": "da7766cab5f04c333f0ca1f3be34c48410d43a861ed879fa2781c3acc718c2bd",
+      "records": 495,
+      "bytes": 471872558
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00006-of-01000",
+      "sha256": "37a2f137e00746b89551e63d5e5e50cd1fdb6a5d2907a793c06e6024118674e9",
+      "records": 478,
+      "bytes": 445079149
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00007-of-01000",
+      "sha256": "bdf31786164b63297aadb1181b23ba6e01970062c44d00e62e791b0157ade5c7",
+      "records": 498,
+      "bytes": 462647173
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00008-of-01000",
+      "sha256": "ba2ebe00fcfa9cd7a4b8ad37ec492b4bfdfc44c00dd777427c8cd15b80b4c10d",
+      "records": 482,
+      "bytes": 447484595
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00009-of-01000",
+      "sha256": "76d87e7e8d3bc576489ecfca591af672445d4e5cfd4d1230d470d68f613184b3",
+      "records": 469,
+      "bytes": 434071453
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00010-of-01000",
+      "sha256": "8303b5c9d058cd273569212b5c8a17d778146556a054438c0367f1a54177edab",
+      "records": 507,
+      "bytes": 485036616
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00011-of-01000",
+      "sha256": "4bcff747cd2f6adfefb3af918ccbd098832461bd2d329b1fff9668bf3cde4baf",
+      "records": 528,
+      "bytes": 495939103
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00012-of-01000",
+      "sha256": "48c2016b0a88302236b81c63d33020505ed431495187dca85bf07f0b56c7c139",
+      "records": 484,
+      "bytes": 452036301
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00013-of-01000",
+      "sha256": "710f193ac8b3cdf5b2cd5a0970687f9000468782f18547488c08bab76b737c85",
+      "records": 476,
+      "bytes": 433280915
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00014-of-01000",
+      "sha256": "d3a52ab1fc876889b0222d96564c8c81ada7d01d34b015fe2c9410ec9db41952",
+      "records": 492,
+      "bytes": 462629757
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00015-of-01000",
+      "sha256": "d44fbe5e3c16c8fb76ee6cf6c160175abc598f662b28ea3c937e6e166e6f64ce",
+      "records": 451,
+      "bytes": 416470817
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00016-of-01000",
+      "sha256": "94ed38c4dfd7a8b66891dbc8102a5299909e62d55cecc3791a1c9e7d6b2ceedf",
+      "records": 500,
+      "bytes": 465100467
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00017-of-01000",
+      "sha256": "aced0ab05a050b964de1522fbb1195c16df7a30f68660ea2c636a0ce59f1eb48",
+      "records": 504,
+      "bytes": 469138543
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00018-of-01000",
+      "sha256": "8448e7d39a2eb7bc4d85276641579f9a126ebeef1b4bd4c32134d58b8e0b7341",
+      "records": 480,
+      "bytes": 447756498
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00019-of-01000",
+      "sha256": "16069c71a6e63c84fd4bfed8da6fe14c380db32f77f2803e87a351d1e8648543",
+      "records": 499,
+      "bytes": 464339910
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00020-of-01000",
+      "sha256": "db842678bb81fcf7f2eb3b462fd08a74211bc691037809b2704406abbb815385",
+      "records": 442,
+      "bytes": 412678525
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00021-of-01000",
+      "sha256": "b1f812f6858d286ac8552dba04f240f5c0b19d7b1e425d4a20dff68e83ca5038",
+      "records": 508,
+      "bytes": 471964141
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00022-of-01000",
+      "sha256": "be9730aba7b7db95793fe25f493db655cc08a9cd3df95c7eab508ff11aa2cd78",
+      "records": 520,
+      "bytes": 481756109
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00023-of-01000",
+      "sha256": "b1250b5c5db3a1b9db248e474e3fd5af819dacf76155a8236d17a179ab041abb",
+      "records": 477,
+      "bytes": 441029514
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00024-of-01000",
+      "sha256": "daf919386eedeb3cf1bffa0e383f8971380ca2f23e6b7b541d1afeecba8f2e56",
+      "records": 449,
+      "bytes": 415426486
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00025-of-01000",
+      "sha256": "f7b9e9c1c129044ef6f16c04785594de116e79c05eaccd16da8ea7b8a5c45083",
+      "records": 510,
+      "bytes": 472343343
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00026-of-01000",
+      "sha256": "ff6174484dda9f4f537c067b1f77bcfd24ffde51aee977da0ddada38529ae1a3",
+      "records": 478,
+      "bytes": 439896189
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00027-of-01000",
+      "sha256": "b96a1e464707e044fa311870f1eb4a056406f5cc6d292a2ca37c0596f2fc1c11",
+      "records": 505,
+      "bytes": 470223240
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00028-of-01000",
+      "sha256": "d62040eaca5509b256d44c7482eb40ffe567ae07d90b2297bb6bcff889697353",
+      "records": 461,
+      "bytes": 421852956
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00029-of-01000",
+      "sha256": "958f838b47332292227a2230ba1d8199c870398a2e80fefb674dce07c42d5f42",
+      "records": 502,
+      "bytes": 465934029
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00030-of-01000",
+      "sha256": "60ffc6fbc087957e822b37fe12d454caa7ecacfd8e871670d5fbbd857d2eb88c",
+      "records": 464,
+      "bytes": 437195622
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00031-of-01000",
+      "sha256": "f16fda4dfdfb0d957ce54bd87687695fdc67abc34a5a9cd4ebbd2e56922f2bb3",
+      "records": 488,
+      "bytes": 450171215
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00032-of-01000",
+      "sha256": "a124daa111c574d614a0bf5d3a3b310a93994ec044858d37ef5b31a06b8e8df0",
+      "records": 462,
+      "bytes": 446429830
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00033-of-01000",
+      "sha256": "9717bf2beb91a2c67fe1dc10074b3641185e45a6448bc12b21376bbc91c6f6d0",
+      "records": 474,
+      "bytes": 432297473
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00034-of-01000",
+      "sha256": "8d22791b739c287cf83f59c1bdc3e90fcdd85407d422b9e530dfb8c108b78426",
+      "records": 467,
+      "bytes": 440642783
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00035-of-01000",
+      "sha256": "ccc3348d94d1e2889ad9215b84863f584b0152efe8afbd603ca9191d28560c09",
+      "records": 510,
+      "bytes": 469093907
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00036-of-01000",
+      "sha256": "046d3adf4077edfb3cd2c24f5e07b2c40dbf1f9a29f05b16e1ed9a2a82574baf",
+      "records": 474,
+      "bytes": 439384509
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00037-of-01000",
+      "sha256": "a11bfad1f45f272055359a4bf26c52c7b779df4cba79adf508a2a34595d3f349",
+      "records": 530,
+      "bytes": 496356612
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00038-of-01000",
+      "sha256": "9b638851a89cf100c1f9ac4e86ad682beccd3a68829e910ef21d2795b58ded55",
+      "records": 503,
+      "bytes": 467695749
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00039-of-01000",
+      "sha256": "7b4dc6993b900659615ecadbe50b904c5cf6c1015967bea989c0cba438dff4b1",
+      "records": 461,
+      "bytes": 441007690
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00040-of-01000",
+      "sha256": "19b2b8cffd1cc6d5c0747fc59afe44c52213eaf82ffa5fc1de872b91a53717b9",
+      "records": 487,
+      "bytes": 462137285
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00041-of-01000",
+      "sha256": "355600d39178e2cb87bde0a1d0c65f964acf8c3e7d05b09d51eda7c0fa088dd2",
+      "records": 460,
+      "bytes": 424646629
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00042-of-01000",
+      "sha256": "aa90eab051514bc5f2a10ccfa5c8fe29306601b8f5cf8c380636d8878031697d",
+      "records": 491,
+      "bytes": 455462924
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00043-of-01000",
+      "sha256": "e874cb936b07c4b3c28a0fcb3a218e8318fc50f22cdcddc769a619850ba6bb81",
+      "records": 473,
+      "bytes": 457904753
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00044-of-01000",
+      "sha256": "013e6a451b2aa4a93f33a200ab8a5c4fd28117316b81a20c8ca1ff09439b56a8",
+      "records": 455,
+      "bytes": 436325258
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00045-of-01000",
+      "sha256": "617a433ac382225618da9818dd86131d24c8b2fcb09328b49ad9da002c7b007a",
+      "records": 477,
+      "bytes": 450689330
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00046-of-01000",
+      "sha256": "186833ec41316930bdd58902e9094b1196775cf1b3d5fc6b7d6c37583c5e9311",
+      "records": 485,
+      "bytes": 451633491
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00047-of-01000",
+      "sha256": "38cf793d31b9ae9031986ecb2b64480b9ad14c897ae0a8880747aa2ab65032dc",
+      "records": 511,
+      "bytes": 477628934
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00048-of-01000",
+      "sha256": "2a23f4a518901c16867e24be8070bffc1324ac7da7bac62026a2d659b65967e8",
+      "records": 503,
+      "bytes": 461988725
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00049-of-01000",
+      "sha256": "cbb30f2004624e0a14cf280728858b4a9a04cbd17b311481f9b977ee11128977",
+      "records": 538,
+      "bytes": 508712258
+    },
+    {
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/training/uncompressed_scenario_training_training.tfrecord-00050-of-01000",
+      "sha256": "cd054021ad2454b08bddcc82686262e4716ea345d0d5a0980a3fc1e1b599d3fb",
+      "records": 487,
+      "bytes": 458217731
+    }
+  ],
+  "inherited_selection": "Legacy U identity/eligibility only; physical arrays never reused as canonical truth",
+  "source_index_sha256": "6b0da08c662cd0bb40ba22de2cc1680c542979648601424786a3a1194e842c77",
+  "candidate_split_sha256": "1af94c4cb146da84266dc5e6d00f6b46ab41f85cb2e0b229e90c6e233842715b",
+  "elapsed_seconds": 482.587332542,
+  "crc": "Whole-file SHA256 checked; individual CRC verification not claimed"
+}

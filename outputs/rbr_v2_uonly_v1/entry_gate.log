@@ -1,0 +1,6 @@
+{
+  "status": "TRAINING_ENTRY_BLOCKED",
+  "reason": "TRAINING_ENTRY_BLOCKED: U dataset is not training-certified; RAW_SEGMENT_DISJOINTNESS_NOT_ESTABLISHED; U-only role/input identity missing; Missing upstream segment/object/global-time mapping; No full canonical corpus certified; Frozen config binding missing or mismatched",
+  "training_runs": 0,
+  "optimizer_steps": 0
+}

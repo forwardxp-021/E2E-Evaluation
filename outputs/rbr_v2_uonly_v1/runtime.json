@@ -1,0 +1,34 @@
+{
+  "python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "numpy": "1.26.4",
+  "torch": "1.9.0.post2",
+  "protobuf": "4.25.8",
+  "cuda": false,
+  "nuplan_commit": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "protobuf_install": "Isolated --target outputs/rbr_v2_uonly_v1/runtime_packages; frozen nuplan environment unmodified",
+  "dependency_versions": {
+    "numpy": "1.26.4",
+    "torch": "1.9.0.post2",
+    "protobuf": "4.25.8",
+    "pandas": "2.3.3",
+    "scipy": "1.13.1",
+    "matplotlib": "3.9.4",
+    "shapely": "2.0.7",
+    "geopandas": "1.0.1",
+    "pyquaternion": "0.9.9"
+  },
+  "protobuf_implementation": "upb",
+  "census_function_source_sha256": "59571e907933a95c0d80d668b8f6f828d2c681e2dbd872f95138d31e2db5406f",
+  "census_provenance": "Census function unchanged since execution; later additions quality/verify are separately included in final source hash",
+  "official_nuplan_sources_sha256": {
+    "nuplan/common/actor_state/ego_state.py": "98d9472a1b439649706754716249d376f160c4ccc047430bca33e5aeea053b25",
+    "nuplan/common/actor_state/dynamic_car_state.py": "e36a40703eee1c2ebe8efd4458defbd8deb57626d1c99ec722a9f52e1b12c43d",
+    "nuplan/common/actor_state/agent.py": "e525f5764a9d26a64293215a7991cedf3ef1f46173a2144cab024be28f8daec3",
+    "nuplan/common/maps/nuplan_map/lane.py": "19fd6416a6896ec2fc90ee905fe89eb0dcdcf8f1d627e994a26f6b3f3188146a",
+    "nuplan/common/maps/abstract_map_objects.py": "13e551f9575949e102ee4d35d01db00893035adec0b1655b13e291d033b64c16",
+    "nuplan/common/maps/nuplan_map/polyline_map_object.py": "73d967f6bcf5690cc8fd4eb63f3630894fa34abce16aa04b7a3292ad4b016a5b",
+    "nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d",
+    "requirements_torch.txt": "47052d989efc37357f078956b1c1647eeb5e23ed373f465651e010f3dad8d1ac"
+  }
+}

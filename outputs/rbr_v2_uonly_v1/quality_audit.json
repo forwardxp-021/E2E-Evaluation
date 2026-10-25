@@ -1,0 +1,30 @@
+{
+  "counts": {
+    "windows": 168700,
+    "eligible": 166061,
+    "excluded": 2639,
+    "eligible_train": 132317,
+    "eligible_test": 16314,
+    "eligible_val": 17430
+  },
+  "exclusion_reasons": {
+    "INSUFFICIENT_VALID_PHYSICAL_EGO_SUPPORT": 2639
+  },
+  "exclusion_rate": 0.015643153526970953,
+  "top_level_field_record_counts": {
+    "1": 24872,
+    "2": 24872,
+    "4": 10470,
+    "5": 24872,
+    "6": 24872,
+    "7": 24872,
+    "8": 24872,
+    "10": 24872,
+    "11": 24872
+  },
+  "unknown_top_level_fields": [],
+  "scope": "Full inherited U ego support only; complete context eligibility awaits full canonical materialization",
+  "elapsed_seconds": 90.364365625,
+  "quality_sha256": "b986105517432c96fe997c609955c5be3023499919f30e4c699149be9f1c4968",
+  "training_certified": false
+}

@@ -1,0 +1,92 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+U source census 1/51; scenarios=496 tracks=28922 elapsed=9.5s
+U source census 2/51; scenarios=990 tracks=60072 elapsed=19.0s
+U source census 3/51; scenarios=1530 tracks=91309 elapsed=28.8s
+U source census 4/51; scenarios=2004 tracks=118687 elapsed=37.3s
+U source census 5/51; scenarios=2477 tracks=145671 elapsed=45.7s
+U source census 6/51; scenarios=2972 tracks=175690 elapsed=55.0s
+U source census 7/51; scenarios=3450 tracks=204781 elapsed=63.9s
+U source census 8/51; scenarios=3948 tracks=234088 elapsed=72.9s
+U source census 9/51; scenarios=4430 tracks=261485 elapsed=81.7s
+U source census 10/51; scenarios=4899 tracks=288193 elapsed=90.0s
+U source census 11/51; scenarios=5406 tracks=318649 elapsed=99.3s
+U source census 12/51; scenarios=5934 tracks=351471 elapsed=109.2s
+U source census 13/51; scenarios=6418 tracks=381137 elapsed=118.2s
+U source census 14/51; scenarios=6894 tracks=409233 elapsed=126.9s
+U source census 15/51; scenarios=7386 tracks=437742 elapsed=135.9s
+U source census 16/51; scenarios=7837 tracks=463003 elapsed=143.9s
+U source census 17/51; scenarios=8337 tracks=493361 elapsed=153.1s
+U source census 18/51; scenarios=8841 tracks=522247 elapsed=162.1s
+U source census 19/51; scenarios=9321 tracks=552109 elapsed=171.2s
+U source census 20/51; scenarios=9820 tracks=581235 elapsed=180.2s
+U source census 21/51; scenarios=10262 tracks=607049 elapsed=188.2s
+U source census 22/51; scenarios=10770 tracks=637272 elapsed=197.7s
+U source census 23/51; scenarios=11290 tracks=666541 elapsed=206.9s
+U source census 24/51; scenarios=11767 tracks=694923 elapsed=215.7s
+U source census 25/51; scenarios=12216 tracks=722148 elapsed=223.9s
+U source census 26/51; scenarios=12726 tracks=751427 elapsed=233.1s
+U source census 27/51; scenarios=13204 tracks=779932 elapsed=242.0s
+U source census 28/51; scenarios=13709 tracks=809287 elapsed=251.3s
+U source census 29/51; scenarios=14170 tracks=836779 elapsed=259.9s
+U source census 30/51; scenarios=14672 tracks=866541 elapsed=269.0s
+U source census 31/51; scenarios=15136 tracks=893375 elapsed=277.4s
+U source census 32/51; scenarios=15624 tracks=921088 elapsed=286.0s
+U source census 33/51; scenarios=16086 tracks=950273 elapsed=294.9s
+U source census 34/51; scenarios=16560 tracks=977929 elapsed=303.8s
+U source census 35/51; scenarios=17027 tracks=1005882 elapsed=312.4s
+U source census 36/51; scenarios=17537 tracks=1036062 elapsed=321.7s
+U source census 37/51; scenarios=18011 tracks=1065775 elapsed=330.6s
+U source census 38/51; scenarios=18541 tracks=1094750 elapsed=339.7s
+U source census 39/51; scenarios=19044 tracks=1124554 elapsed=349.2s
+U source census 40/51; scenarios=19505 tracks=1151245 elapsed=357.4s
+U source census 41/51; scenarios=19992 tracks=1179761 elapsed=366.4s
+U source census 42/51; scenarios=20452 tracks=1207104 elapsed=374.8s
+U source census 43/51; scenarios=20943 tracks=1235508 elapsed=383.9s
+U source census 44/51; scenarios=21416 tracks=1263799 elapsed=392.6s
+U source census 45/51; scenarios=21871 tracks=1292036 elapsed=401.1s
+U source census 46/51; scenarios=22348 tracks=1320063 elapsed=409.9s
+U source census 47/51; scenarios=22833 tracks=1349028 elapsed=418.8s
+U source census 48/51; scenarios=23344 tracks=1378808 elapsed=428.1s
+U source census 49/51; scenarios=23847 tracks=1407304 elapsed=437.1s
+U source census 50/51; scenarios=24385 tracks=1440828 elapsed=447.5s
+U source census 51/51; scenarios=24872 tracks=1469220 elapsed=456.2s
+{
+  "schema": "rbr_v2_u_candidate_v1",
+  "training_certified": false,
+  "status": "BLOCKED_U_SOURCE_INDEPENDENCE",
+  "raw_segment_disjointness": "NOT_ESTABLISHED",
+  "source_policy": "No upstream segment/global-object/absolute-time map exists in these inputs",
+  "split_policy": "Observed moving-overlap components BEFORE deterministic group hash split",
+  "overlap_scope": "All vehicle tracks; 8 valid adjacent frames, stride1; >=0.5m displacement; exact + quantized",
+  "residual_risks": [
+    "unidentified common raw segment",
+    "stationary/short overlaps",
+    "near matches straddling quantization bins",
+    "nonoverlapping trajectories from same source segment"
+  ],
+  "counts": {
+    "scenarios": 24872,
+    "vehicle_tracks": 1469220,
+    "camera_frames": 0,
+    "lidar_frames": 0,
+    "zero_start_scenarios": 24872,
+    "retained_actor_tracks": 168700,
+    "moving_overlap_snippets": 19425197,
+    "candidate_train": 134478,
+    "candidate_test": 16539,
+    "candidate_val": 17683
+  },
+  "observed_groups": 22527,
+  "multi_scenario_groups": 2136,
+  "largest_group": 5,
+  "union_edges": {
+    "E": 2335,
+    "Q": 10
+  },
+  "inherited_selection": "Legacy U identity/eligibility only; physical arrays never reused as canonical truth",
+  "source_index_sha256": "6b0da08c662cd0bb40ba22de2cc1680c542979648601424786a3a1194e842c77",
+  "candidate_split_sha256": "1af94c4cb146da84266dc5e6d00f6b46ab41f85cb2e0b229e90c6e233842715b",
+  "elapsed_seconds": 482.587332542,
+  "crc": "Whole-file SHA256 checked; individual CRC verification not claimed"
+}
