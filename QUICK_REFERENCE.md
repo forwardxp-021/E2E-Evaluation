@@ -11710,4 +11710,8 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 
 ### 3. 通过标准
 
-6项测试通过；20个独立SESSION/log来源可追溯且无角色冲突；F2逐文件SHA不变；原20名单的40arm全部零运行预检PASS才可READY_FOR_OWNER_EXECUTION_REVIEW。容量不足或技术阻断如实报告BLOCKED。未来20对/40首次、42累计上限/每arm20分钟/CPU16小时仅待Owner终审，retry当前0授权；所有执行凭据PROPOSED_ONLY，旧B1/C2/F2凭据不能启动P2。本轮不提供科学launcher，完成后停止。
+7项测试通过（含真实DB哈希口径回归）；20个独立SESSION/log来源可追溯且无角色冲突；F2逐文件SHA不变；原20名单的40arm全部零运行预检PASS才可READY_FOR_OWNER_EXECUTION_REVIEW。容量不足或技术阻断如实报告BLOCKED。未来20对/40首次、42累计上限/每arm20分钟/CPU16小时仅待Owner终审，retry当前0授权；所有执行凭据PROPOSED_ONLY，旧B1/C2/F2凭据不能启动P2。本轮不提供科学launcher，完成后停止。
+
+### P2-Q0 实际完成状态（2026-10-25）
+
+`P2_Q0_READY_FOR_OWNER_EXECUTION_REVIEW`。168合法候选固定hash前20，16 E1/4 E2，严格排除旧B1与DEV01/02/03且保护全部E5。原20名单40/40生产预检PASS、guard0、科学attempt0，未读机制/F_match/safety结果。新增准备入口曾混淆metadata fingerprint与file SHA，初次错误保留并仅修新工具，权威身份spec为evidence/P2_Q0_Verified_Arm_Specs_v1.json；原名单SHA/F2科学代码不变，生产预检只一次。旧B1/C2/F2与PROPOSED凭据共200拒绝检查PASS。提案仍PROPOSED_ONLY，42上限不是2次retry授权；完成后停止，等待独立Owner终审。

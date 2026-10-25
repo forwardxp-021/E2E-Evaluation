@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "scientific_root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/tsb_direct_coast_p2_qualification_v1",
+  "ledger_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/tsb_direct_coast_p2_execution_state_v1/budget.json",
+  "scientific_root_exists": false,
+  "active_ledger_exists": false,
+  "all_40_arm_directories_unused": true,
+  "maximum_FIRST_arm_attempts": 40,
+  "cumulative_attempt_ceiling_PROPOSED_ONLY": 42,
+  "technical_retry_authorized": false,
+  "per_arm_wall_seconds": 1200,
+  "total_CPU_seconds_PROPOSED": 57600
+}
