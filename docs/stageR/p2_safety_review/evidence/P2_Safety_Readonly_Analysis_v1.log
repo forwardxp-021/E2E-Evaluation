@@ -1,0 +1,330 @@
+Read frozen history: DIRECTCOAST-P2-01-BASELINE
+Read frozen history: DIRECTCOAST-P2-01-TREATMENT
+Read frozen history: DIRECTCOAST-P2-02-BASELINE
+Read frozen history: DIRECTCOAST-P2-02-TREATMENT
+Read frozen history: DIRECTCOAST-P2-03-BASELINE
+Read frozen history: DIRECTCOAST-P2-03-TREATMENT
+Read frozen history: DIRECTCOAST-P2-04-BASELINE
+Read frozen history: DIRECTCOAST-P2-04-TREATMENT
+Read frozen history: DIRECTCOAST-P2-05-BASELINE
+Read frozen history: DIRECTCOAST-P2-05-TREATMENT
+Read frozen history: DIRECTCOAST-P2-06-BASELINE
+Read frozen history: DIRECTCOAST-P2-06-TREATMENT
+Read frozen history: DIRECTCOAST-P2-07-BASELINE
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+{
+  "collisions": [
+    {
+      "index": 74,
+      "time_us": 1632766462349783,
+      "relative_s": 7.4,
+      "track_token": "7e7c1fcccb0b58ff",
+      "object_token": "af8516ada11a5163",
+      "object_type": "VEHICLE",
+      "collision_type": "STOPPED_TRACK_COLLISION",
+      "at_fault_by_official_definition": true,
+      "common_or_connected_route": false,
+      "delta_v_proxy": 2.4952157028797544,
+      "ego_center": [
+        589069.1807640389,
+        4474648.107262582
+      ],
+      "ego_rear": [
+        589070.6417427344,
+        4474648.115152536
+      ],
+      "ego_speed": 4.990431405759509,
+      "object_center": [
+        589064.7110132631,
+        4474650.157194822
+      ],
+      "object_heading": -0.002994061897780293,
+      "object_speed": 0.0,
+      "object_box": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              589066.9906796388,
+              4474651.0906996485
+            ],
+            [
+              589062.436977668,
+              4474651.104333756
+            ],
+            [
+              589062.4313468874,
+              4474649.223689996
+            ],
+            [
+              589066.9850488582,
+              4474649.210055889
+            ],
+            [
+              589066.9906796388,
+              4474651.0906996485
+            ]
+          ]
+        ]
+      },
+      "ego_box": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              589066.599004113,
+              4474646.944803148
+            ],
+            [
+              589071.7749286358,
+              4474646.97275551
+            ],
+            [
+              589071.7625239649,
+              4474649.269722016
+            ],
+            [
+              589066.5865994421,
+              4474649.241769653
+            ],
+            [
+              589066.599004113,
+              4474646.944803148
+            ]
+          ]
+        ]
+      },
+      "overlap_area_m2": 0.012826553787819264,
+      "overlap_centroid": [
+        589066.7893399256,
+        4474649.226754952
+      ],
+      "source": "READ_ONLY_RECONSTRUCTION_OFFICIAL_HELPERS_NOT_EVENT_PARQUET"
+    }
+  ],
+  "outside": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68
+  ],
+  "far": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66
+  ],
+  "comparison": [
+    {
+      "run_id": "DIRECTCOAST-P2-01-BASELINE",
+      "initial_speed_mps": 7.292414899438508,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-01-TREATMENT",
+      "initial_speed_mps": 7.292414899438508,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-02-BASELINE",
+      "initial_speed_mps": 10.39075943314596,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-02-TREATMENT",
+      "initial_speed_mps": 10.39075943314596,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-03-BASELINE",
+      "initial_speed_mps": 5.388166814534897,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-03-TREATMENT",
+      "initial_speed_mps": 5.388166814534897,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-04-BASELINE",
+      "initial_speed_mps": 6.169140940845194,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-04-TREATMENT",
+      "initial_speed_mps": 6.169140940845194,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-05-BASELINE",
+      "initial_speed_mps": 13.863888844180455,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-05-TREATMENT",
+      "initial_speed_mps": 13.863888844180455,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-06-BASELINE",
+      "initial_speed_mps": 8.225762986224936,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-06-TREATMENT",
+      "initial_speed_mps": 8.225762986224936,
+      "first_corner_outside_s": null,
+      "first_corner_far_s": null,
+      "outside_frames": 0,
+      "far_frames": 0,
+      "max_outside_corner_distance_m": 0,
+      "reconstructed_first_collision_s": null,
+      "official_at_fault_collisions": 0,
+      "official_drivable_compliance": 1.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-07-BASELINE",
+      "initial_speed_mps": 7.886355471662958,
+      "first_corner_outside_s": 4.2,
+      "first_corner_far_s": 4.4,
+      "outside_frames": 27,
+      "far_frames": 22,
+      "max_outside_corner_distance_m": 0.677094921359199,
+      "reconstructed_first_collision_s": 7.4,
+      "official_at_fault_collisions": 1,
+      "official_drivable_compliance": 0.0,
+      "reconstruction_agrees_with_existing_metrics": true
+    }
+  ]
+}

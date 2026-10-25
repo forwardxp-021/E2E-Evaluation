@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "tests": 6,
+  "commands": [
+    {
+      "command": [
+        "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_p2_safety_readonly_review.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "test_actual_clock_and_current_vs_outgoing_command (test_p2_safety_readonly_review.SafetyReviewTests) ... ok\ntest_corner_crossing_and_qualified_violation_are_distinct (test_p2_safety_readonly_review.SafetyReviewTests) ... ok\ntest_discrete_overlap_localization_and_no_double_count (test_p2_safety_readonly_review.SafetyReviewTests) ... ok\ntest_guard_rejects_motion_propagation (test_p2_safety_readonly_review.SafetyReviewTests) ... ok\ntest_official_aggregate_does_not_supply_collision_event_time (test_p2_safety_readonly_review.SafetyReviewTests) ... ok\ntest_original_failed_ledger_remains_stopped (test_p2_safety_readonly_review.SafetyReviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.020s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "py_compile",
+        "tools/p2_safety_readonly_review.py",
+        "tools/p2_safety_review_export.py",
+        "tests/test_p2_safety_readonly_review.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+        "-m",
+        "py_compile",
+        "tools/p2_safety_readonly_review.py",
+        "tools/p2_safety_review_export.py",
+        "tests/test_p2_safety_readonly_review.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "tools/check_no_tmp_dependencies.py"
+      ],
+      "returncode": 0,
+      "stdout": "OK: no forbidden /tmp dependency patterns found in tools/*.py\n",
+      "stderr": ""
+    }
+  ],
+  "scientific_simulation": 0,
+  "readonly_real_data_smoke": "Existing 13 arm histories / original metrics, target raw traffic and map geometry; all parity assertions passed"
+}

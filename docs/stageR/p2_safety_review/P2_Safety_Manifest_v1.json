@@ -1,0 +1,195 @@
+{
+  "stage": "P2_SAFETY_READONLY_REVIEW",
+  "status": "READONLY_REVIEW_COMPLETE",
+  "date_asia_shanghai": "2026-10-25",
+  "base_commit": "9f00c5b61b2a578f58fae1dff1f36e2443887656",
+  "target_run_id": "DIRECTCOAST-P2-07-BASELINE",
+  "session_id": "2021.09.27.17.52.47_veh-44",
+  "original_scientific_verdict": "P2_QUALIFICATION_FAILED",
+  "category": "MULTIFACTOR_OR_UNDETERMINED",
+  "evidence_supported_factors": [
+    "TRAFFIC_INTERACTION_LIMITATION",
+    "LATERAL_ROUTE_OR_DRIVABLE_LIMITATION"
+  ],
+  "unknown": [
+    "EXACT_CONTINUOUS_CONTACT_TIME",
+    "REAL_PHYSICAL_CONTACT_POINT",
+    "PARKING_OR_QUEUE_STATUS",
+    "UNIQUE_CAUSAL_CONTRIBUTION_OF_BRAKE_TIMING_VS_ROUTE_OFFSET_LQR"
+  ],
+  "collision": {
+    "first_sampled_episode_time_s": 7.4,
+    "index_zero_based": 74,
+    "track_token": "7e7c1fcccb0b58ff",
+    "object_type": "VEHICLE",
+    "collision_type": "STOPPED_TRACK_COLLISION",
+    "ego_center_xy": [
+      589069.1807640389,
+      4474648.107262582
+    ],
+    "diagnostic_overlap_centroid_xy": [
+      589066.7893399256,
+      4474649.226754952
+    ],
+    "ego_speed_mps": 4.990431405759509,
+    "request_mps2": 0,
+    "source": "READ_ONLY_RECONSTRUCTION_OFFICIAL_HELPERS_NOT_EVENT_PARQUET"
+  },
+  "drivable": {
+    "first_corner_outside_s": 4.2,
+    "first_corner_beyond_existing_0p3m_s": 4.4,
+    "maximum_outside_corner_m": 0.677094921359199,
+    "all_corners_reentry_s": 6.9,
+    "centers_in_drivable_all_frames": true,
+    "first_far_FR_xy": [
+      589082.2465525327,
+      4474649.038626944
+    ],
+    "first_far_nearest_drivable_distance_m": 0.3755524260963985,
+    "existing_threshold_m": 0.3
+  },
+  "event_relationship": {
+    "simultaneous": false,
+    "same_location": false,
+    "first_far_to_collision_s": 3.0,
+    "ego_center_distance_m": 14.910831390773593,
+    "causal_link": "NOT_ESTABLISHED"
+  },
+  "official_parquet_scope": {
+    "collision": "AGGREGATE_NO_EVENT_TIMESTAMP_OR_OBJECT_ID",
+    "drivable": "AGGREGATE",
+    "corners": "80_FRAME_BINARY_TIME_SERIES"
+  },
+  "map_projection": {
+    "raw_geopackage_srs": [
+      [
+        4326
+      ]
+    ],
+    "official_projectedCoordSystem": [
+      [
+        "projectedCoordSystem",
+        "epsg:32617"
+      ]
+    ],
+    "metadata_read_mode": "SQLITE_URI_MODE_RO",
+    "no_projection_change": true
+  },
+  "observation_disclosure": "DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY",
+  "source_sha256": {
+    "tools/p2_safety_readonly_review.py": "0c901c510629efce181bba31ddb42d8e6d4d0999d63f6098cc15c7c547367bed",
+    "tools/p2_safety_review_export.py": "19b240435cfbb72603744ab4dc9fcb69014f5ef932e8f8769b50af153b27fb64",
+    "tests/test_p2_safety_readonly_review.py": "8d2c1f58c2fa98b514d581bd8c48eaf54df76fa47c356ff5af20c3fae435fb27",
+    "tools/tsb_direct_coast_f2_production.py": "11886d67163503412cc3edbb1d32702ef2d9a4a9be9eca060b4ca286d02ee48b",
+    "tools/tsb_direct_coast_f2_tracker.py": "a55bfceedf9ff4c6fe0ed650a5649b99346bc672d9c127b37f651b14eed62b46",
+    "tools/tsb_coast_p1r_planner.py": "b6aa1c2b2f4844e59c1d260a10cd458edc7b50e9a2748958ca29e1cb8eeaeb24",
+    "tools/b1_native_route_infrastructure.py": "c956e035cf145f60dab679954129a97c4f1e89b01d43baaeb0b9d610ce0e9582",
+    "tools/r1_closed_loop_benchmark_v2_1.py": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+    "tools/tsb_coast_p1r_c_clock.py": "bf12496bf02f0cafd197b9fbbb4693cd809b1ff58ae35b24edaf2d1230c0fb7c",
+    "../nuplan-devkit/nuplan/planning/metrics/evaluation_metrics/common/no_ego_at_fault_collisions.py": "6d1a5a1aef78bc22e3d1bf1fa943bf0a49e20c48d28dc1dd737cee1440f4cb03",
+    "../nuplan-devkit/nuplan/planning/metrics/evaluation_metrics/common/drivable_area_compliance.py": "efb17da44466feacc72bb1f618bbca0c11bc61518ed944a06d115c5ba1a68373",
+    "../nuplan-devkit/nuplan/planning/metrics/evaluation_metrics/common/ego_lane_change.py": "07c01522d17c1f71d0890a51b1c2b20cf1de07007863c62042a569153f2960cc",
+    "../nuplan-devkit/nuplan/planning/metrics/utils/collision_utils.py": "99f130d4fa9e1bf9a8444d94050d443478f033402fdeaf69c1f5836b139c8c3a",
+    "../nuplan-devkit/nuplan/planning/metrics/utils/route_extractor.py": "981e6f1ca04689722f228f7643607bfc4cd5f6d4499029ec2892996bd3f35ad3",
+    "../nuplan-devkit/nuplan/planning/metrics/utils/state_extractors.py": "a7829ea4d70462d901b609f579652e661141acca1cf6e2294353693411a3d8e0",
+    "../nuplan-devkit/nuplan/planning/simulation/observation/idm/utils.py": "f818aebc8637ef5ce5eec82cef8b4992c5620ad57a9013de1c04a78705463fef",
+    "../nuplan-devkit/nuplan/planning/simulation/simulation_log.py": "5025c347cd65557865c87c3ca97948be553bc488329f607ca255b6dc5e598a90",
+    "../nuplan-devkit/nuplan/common/actor_state/oriented_box.py": "f7df804705030ef581f2d6c8ae4026e702454b2759e7e885334e646a1444d009",
+    "../nuplan-devkit/nuplan/common/actor_state/car_footprint.py": "5e89a4ea9fdc6a34f2b0d389b28fad592cc4e26657c5e949df9343ce739b1ecc",
+    "../nuplan-devkit/nuplan/common/maps/nuplan_map/nuplan_map.py": "d6552e031ce786ceebd41ba8bdb99244aafe5c3f75a5ec5dba7e4396c16dcb3f",
+    "../nuplan-devkit/nuplan/database/maps_db/gpkg_mapsdb.py": "f8e200475596b4a4c7ba7a5ada9bf8a26d99024bf1817bb5a86d3d07d82f70e1",
+    "../nuplan-devkit/nuplan/planning/simulation/controller/tracker/lqr.py": "34c2ca40a6111824b6b3865520df145a860f71fda0b416108d7c62a0fa3fad5b",
+    "../nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d"
+  },
+  "runtime": {
+    "executable": "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+    "python": "3.9.19",
+    "dependency_versions": {
+      "numpy": "1.26.4",
+      "pandas": "2.3.3",
+      "shapely": "2.0.7",
+      "matplotlib": "3.9.4",
+      "geopandas": "1.0.1",
+      "pyogrio": "0.11.1",
+      "pyproj": "3.6.1",
+      "pyarrow": "21.0.0"
+    },
+    "devkit_head": "e9241677997dd86bfc0bcd44817ab04fe631405b"
+  },
+  "source_index_sha256": "d3c86d32a72e789f0cb98c07eb287c4462a0a07801d896fea6726a74f9613331",
+  "original_Q1_manifest_sha256": "2e1e180f117cf3a55ed1988a2951fe17276cf95d11198c4bffe13e6db39e1206",
+  "original_stopped_ledger_sha256": "6c32df594cff564297c2da3bae44aa89067e4f6a1bd187b5aeb35f83730b1a1a",
+  "original_raw_artifact_count": 448,
+  "source_data_count": 46,
+  "original_results_and_user_changes_protected": {
+    "status": "PASS",
+    "protected_files": 5999,
+    "changed_protected_files": [],
+    "user_original_Quick_prefix_preserved": true,
+    "frozen_F2_source_config_files_verified": 1075,
+    "frozen_data_sources_verified": 46,
+    "frozen_raw_artifacts_verified": 448,
+    "preexisting_ledger_stopped": true,
+    "preexisting_attempt_count": 13,
+    "new_scientific_attempts": 0,
+    "runner": 0,
+    "model_propagation": 0,
+    "metric_engine_compute": 0,
+    "forbidden_calls": [],
+    "exact_existing_13arm_metric_diagnostic_agreement": true,
+    "collision_parquet_aggregate_only": true,
+    "first_corner_outside_index": 42,
+    "first_far_index": 44,
+    "all_corners_reentry_index": 69,
+    "first_collision_index": 74,
+    "category": "MULTIFACTOR_OR_UNDETERMINED",
+    "existing_P2_status": "P2_QUALIFICATION_FAILED",
+    "tests_passed": 6,
+    "system_and_scientific_compile": "PASS",
+    "no_tmp_dependencies": "PASS",
+    "figure_visually_reviewed": true,
+    "new_Treatment_output": false,
+    "new_SESSION_roster": false,
+    "scientific_parameters_changed": false
+  },
+  "scientific_firewall": {
+    "NEW_RUNNER": 0,
+    "NEW_ROLLOUT": 0,
+    "MODEL_PROPAGATION": 0,
+    "METRIC_ENGINE_COMPUTE": 0,
+    "RETRY": 0,
+    "PARAMETER_CHANGES": 0,
+    "NEW_ROSTER": 0,
+    "NEW_TREATMENT": 0,
+    "RBR_H30_COMPARISON": 0,
+    "TRAINING": 0,
+    "BDD_MMD": 0,
+    "PRIMARY_V_C": 0
+  },
+  "next_stage_only": "OWNER_RESEARCH_SCOPE_DECISION_NO_FURTHER_COAST_SCIENTIFIC_RUN_AUTHORIZED",
+  "quick_reference": {
+    "committed_blob": "4caecd3b3bb1d487487d08f41172fb2bb4f257b5",
+    "committed_sha256": "7b335ed47fff39a51e136fe755283e8dbc6463fe0271c8cd4818f7dbe4f97163",
+    "original_user_prefix_sha256": "f222453703d9b43fb5e519b21010f1168b147bc250be3a72f27b3de89be8605e"
+  },
+  "output_sha256": {
+    "docs/stageR/p2_safety_review/P2_Safety_Failure_Analysis_v1.md": "b13683422a2cbcd9cc44225b8b26820acb55220a297100e90535a4000bddc479",
+    "docs/stageR/p2_safety_review/P2_Safety_Key_Event_Timeline_v1.csv": "d1f51f447420328a8ae7b127d632a495b60afd9810771cd32a5eefa46ac185da",
+    "docs/stageR/p2_safety_review/P2_Safety_Trajectory_And_Events_v1.png": "ce0a7db639f0528807a651536929f850027e12574e6f211b1a5ea25431220a6e",
+    "docs/stageR/p2_safety_review/P2_Safety_Trajectory_And_Events_v1.svg": "f7053dfc2cecc4a92ad8c7d0e8863697492210daf9d0c494062bb8d83bae06b1",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Execution_Guard_v1.json": "08a39e654a62e906b82e17ceb8c6e5af53c05b42c2fec40a8f36fbce6176ac74",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Existing_13Arm_Interface_Comparison_v1.json": "b1822ac725d3d3e6cbdb8c030141c49eddcc94d61a01b49baa04a0df15bd3aa9",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Expert_Reference_And_Object_Diagnostics_v1.json": "9397e2512e2e00480ef9f06c6eb080d79298857c3b642e879c3e68db655498bd",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Export_v1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Figure_And_Timeline_Provenance_v1.json": "f9d8266f8819e74b811b24ecd2246e62a18e6ba3053dbd264f07ed88a2f18281",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Final_Verification_v1.json": "f1adfa47ecb5e712bfe2c8070ee24183b55a4cf33795da5de124701d2c59705a",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Geometric_Margins_v1.json": "ec3077a66d59fd7f9eef99ba3e8d55673fefb52db9b0d9306478539ba5533bc6",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Protected_Baseline_v1.json": "7a5c76a8ee7da2648e7ab12cda0e9ac5432cecbcdb1b88979a2df9c1cc6159d9",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Readonly_Analysis_v1.log": "16f87a1e15d1eb67545bffa667cf8faded0d15533e11b49c96ecedcf1a7406ec",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Readonly_Diagnostics_v1.json": "900f3c37aeda1b0d1fabb0d6e4dc56eca3d872bf04021d0a7be2f8fbcb2024fc",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Readonly_Supplement_v1.log": "8461550bbb6ca542c79290e4ffaaa1b849b8f3065ea636bcdf3e4710747bb57c",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Source_And_Data_Index_v1.json": "d3c86d32a72e789f0cb98c07eb287c4462a0a07801d896fea6726a74f9613331",
+    "docs/stageR/p2_safety_review/evidence/P2_Safety_Tests_v1.json": "6c477452f0112d60d468eb59b05fd8ba4bc878bbdd3e8076befc8c8b2bed306f"
+  },
+  "self_hash_binding": "Final Git commit binds this manifest; its own hash is intentionally not included"
+}

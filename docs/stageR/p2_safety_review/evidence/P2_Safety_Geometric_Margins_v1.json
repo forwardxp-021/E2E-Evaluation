@@ -1,0 +1,119 @@
+[
+  {
+    "run_id": "DIRECTCOAST-P2-01-BASELINE",
+    "minimum_corner_signed_clearance_m": 3.2579135178960303,
+    "minimum_clearance_index": 68,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 0.9495803037858237,
+    "minimum_actor_distance_index": 79,
+    "nearest_track_token": "adcda66c97e75111"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-01-TREATMENT",
+    "minimum_corner_signed_clearance_m": 3.257402737897057,
+    "minimum_clearance_index": 68,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 0.9491302867405161,
+    "minimum_actor_distance_index": 79,
+    "nearest_track_token": "adcda66c97e75111"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-02-BASELINE",
+    "minimum_corner_signed_clearance_m": 0.7132924211631719,
+    "minimum_clearance_index": 70,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 2.611488169080894,
+    "minimum_actor_distance_index": 55,
+    "nearest_track_token": "b91fdde13e745300"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-02-TREATMENT",
+    "minimum_corner_signed_clearance_m": 0.6424254136030793,
+    "minimum_clearance_index": 70,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 2.573774835291763,
+    "minimum_actor_distance_index": 55,
+    "nearest_track_token": "b91fdde13e745300"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-03-BASELINE",
+    "minimum_corner_signed_clearance_m": 0.20454781084167134,
+    "minimum_clearance_index": 4,
+    "corner": "RL",
+    "minimum_any_actor_box_distance_m": 1.649799321664955,
+    "minimum_actor_distance_index": 7,
+    "nearest_track_token": "da129c3ed08358d3"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-03-TREATMENT",
+    "minimum_corner_signed_clearance_m": 0.20454781084167134,
+    "minimum_clearance_index": 4,
+    "corner": "RL",
+    "minimum_any_actor_box_distance_m": 1.649799321664955,
+    "minimum_actor_distance_index": 7,
+    "nearest_track_token": "da129c3ed08358d3"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-04-BASELINE",
+    "minimum_corner_signed_clearance_m": 3.1592605383516266,
+    "minimum_clearance_index": 13,
+    "corner": "RR",
+    "minimum_any_actor_box_distance_m": 0.9260654568074982,
+    "minimum_actor_distance_index": 30,
+    "nearest_track_token": "f57708ab5a6b5f8a"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-04-TREATMENT",
+    "minimum_corner_signed_clearance_m": 3.1592678132140963,
+    "minimum_clearance_index": 13,
+    "corner": "RR",
+    "minimum_any_actor_box_distance_m": 0.9296021947423573,
+    "minimum_actor_distance_index": 35,
+    "nearest_track_token": "f57708ab5a6b5f8a"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-05-BASELINE",
+    "minimum_corner_signed_clearance_m": 4.304013919275941,
+    "minimum_clearance_index": 70,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 1.939508199844917,
+    "minimum_actor_distance_index": 79,
+    "nearest_track_token": "4d247006d4e55c15"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-05-TREATMENT",
+    "minimum_corner_signed_clearance_m": 4.303024118279432,
+    "minimum_clearance_index": 70,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 1.9406304888570365,
+    "minimum_actor_distance_index": 79,
+    "nearest_track_token": "4d247006d4e55c15"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-06-BASELINE",
+    "minimum_corner_signed_clearance_m": 0.6166280129607078,
+    "minimum_clearance_index": 23,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 1.1363671282322363,
+    "minimum_actor_distance_index": 2,
+    "nearest_track_token": "8ad6d23b1c365423"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-06-TREATMENT",
+    "minimum_corner_signed_clearance_m": 0.61914532439457,
+    "minimum_clearance_index": 23,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 1.1363671282322363,
+    "minimum_actor_distance_index": 2,
+    "nearest_track_token": "8ad6d23b1c365423"
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-07-BASELINE",
+    "minimum_corner_signed_clearance_m": -0.677094921359199,
+    "minimum_clearance_index": 51,
+    "corner": "FR",
+    "minimum_any_actor_box_distance_m": 0.0,
+    "minimum_actor_distance_index": 74,
+    "nearest_track_token": "7e7c1fcccb0b58ff"
+  }
+]

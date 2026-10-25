@@ -11738,3 +11738,22 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 零运行权限/重复领取/中断/失败停止测试、compile及依赖检查必须通过。40首次arm全部完整且原20pair机制、四F、额外平衡、安全、时钟和hash全部满足才可P2_QUALIFICATION_PASS_20_OF_20。首个科学失败P2_QUALIFICATION_FAILED，首个技术失败P2_INFRASTRUCTURE_BLOCKED；账本stopped=true，未执行成员NOT_RUN_AFTER_STOP。42是天花板，retry授权0，禁止删除账本/输出后重跑。完成后停止等待Owner。
 
 本轮实际结束：`P2_QUALIFICATION_FAILED`。前6对PASS，第7对Baseline机制PASS但官方责任碰撞1次且drivable-area=false；第7对Treatment及后13对未运行。共13首次arm、CPU133.310757秒，账本stopped=true。正式F_match仅前6对；第7对NOT_EVALUATED_ARM_GATE_FAILED。现有执行命令会拒绝再次初始化，禁止重建账本恢复。本轮结果：docs/stageR/tsb_direct_coast_p2_q1/P2_Q1_Final_Qualification_Report_v1.md。下一步仅Owner审查首个安全失败。
+
+## P2-Safety Review：第7对Baseline只读安全归因
+
+### 1. 命令
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/p2_safety_readonly_review.py
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/p2_safety_readonly_review.py --supplement
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/p2_safety_review_export.py
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python -m unittest discover -s tests -p 'test_p2_safety_readonly_review.py' -v
+```
+
+### 2. 期望行为
+
+只读取已有13个arm的正式simulation log、parquet、命令与地图。按原官方定义定位第7Baseline的事件，区分聚合字段与重建事件，保存中文报告、关键时间表和三面板示意图至docs/stageR/p2_safety_review。已有本轮输出拒绝覆盖，不启动runner/模型或继续P2。
+
+### 3. 通过标准
+
+原安全结果不变，重建与已有parquet一致，guard无科学执行调用；4.2秒首次角点越界、4.4秒首次超0.3m、6.9秒全部角点恢复、7.4秒首次与停驶车辆盒重叠。碰撞时间/ID来自只读重建，不能声称由聚合parquet直接提供；expert是描述参考，不是已执行因果反事实。账本仍stopped=true和13attempt，历史及用户文件hash受保护。完成停止，仅Owner审查科研路线。

@@ -1,0 +1,22 @@
+{
+  "diagnostics_sha256": "900f3c37aeda1b0d1fabb0d6e4dc56eca3d872bf04021d0a7be2f8fbcb2024fc",
+  "export_source_sha256": "19b240435cfbb72603744ab4dc9fcb69014f5ef932e8f8769b50af153b27fb64",
+  "figure_origin": [
+    589060.0,
+    4474620.0
+  ],
+  "polygon_edits": false,
+  "geometry_buffer_or_simplification": false,
+  "intermediate_continuous_collision_time": "UNKNOWN",
+  "first_sampled_overlap_interval_s": [
+    7.3,
+    7.4
+  ],
+  "overlap_centroid_is_physical_contact_point": false,
+  "scientific_simulation": 0,
+  "output_sha256": {
+    "docs/stageR/p2_safety_review/P2_Safety_Trajectory_And_Events_v1.png": "ce0a7db639f0528807a651536929f850027e12574e6f211b1a5ea25431220a6e",
+    "docs/stageR/p2_safety_review/P2_Safety_Trajectory_And_Events_v1.svg": "f7053dfc2cecc4a92ad8c7d0e8863697492210daf9d0c494062bb8d83bae06b1",
+    "docs/stageR/p2_safety_review/P2_Safety_Key_Event_Timeline_v1.csv": "d1f51f447420328a8ae7b127d632a495b60afd9810771cd32a5eefa46ac185da"
+  }
+}
