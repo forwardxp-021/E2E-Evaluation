@@ -1,0 +1,11 @@
+test_duplicate_SESSION_rejected (test_tsb_direct_coast_p2_q0.P2Q0Tests) ... ok
+test_frozen_actual_twenty_ranked_SESSION_and_raw_LOG_identities (test_tsb_direct_coast_p2_q0.P2Q0Tests) ... ok
+test_hash_ranking_permutation_and_forbidden_outcome_independence (test_tsb_direct_coast_p2_q0.P2Q0Tests) ... ok
+test_old_and_proposed_and_manual_authorized_credentials_cannot_run_Q0 (test_tsb_direct_coast_p2_q0.P2Q0Tests) ... ok
+test_session_exclusion_unknown_and_C_source_alias_fail_closed (test_tsb_direct_coast_p2_q0.P2Q0Tests) ... ok
+test_zero_run_tool_has_no_launch_model_or_science_analysis_call_sites (test_tsb_direct_coast_p2_q0.P2Q0Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.005s
+
+OK

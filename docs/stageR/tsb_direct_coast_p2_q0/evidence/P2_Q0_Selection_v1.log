@@ -1,0 +1,75 @@
+Frozen eligible sessions: 168 ; selected: 20
+{
+  "status": "CAPACITY_SUFFICIENT_FROZEN_20_PENDING_PREFLIGHT",
+  "total_SESSION": 248,
+  "static_eligible_before_new_domain": 214,
+  "eligible_count": 168,
+  "selected_count": 20,
+  "all_old_B1_sessions": [
+    "2021.08.17.13.10.50_veh-08",
+    "2021.08.17.16.48.45_veh-43",
+    "2021.08.17.18.54.02_veh-45",
+    "2021.08.19.14.06.23_veh-45",
+    "2021.08.20.17.54.47_veh-45",
+    "2021.08.23.12.33.24_veh-42",
+    "2021.08.25.20.03.37_veh-45",
+    "2021.08.27.16.46.47_veh-45",
+    "2021.08.30.13.08.03_veh-08",
+    "2021.09.02.14.10.27_veh-08",
+    "2021.09.03.14.16.10_veh-08",
+    "2021.09.03.16.25.50_veh-42",
+    "2021.09.03.17.02.10_veh-42",
+    "2021.09.09.19.47.56_veh-45",
+    "2021.09.10.17.09.03_veh-42",
+    "2021.09.17.14.49.23_veh-42",
+    "2021.09.17.19.20.02_veh-45",
+    "2021.09.20.17.42.50_veh-08",
+    "2021.09.28.16.50.03_veh-44",
+    "2021.10.01.17.28.18_veh-44"
+  ],
+  "all_Coast_DEV_sessions": [
+    "2021.08.23.17.20.10_veh-45",
+    "2021.09.17.14.49.23_veh-42",
+    "2021.09.28.13.24.06_veh-44"
+  ],
+  "protected_C_E5_sessions": [
+    "2021.06.09.12.39.51_veh-26",
+    "2021.08.09.17.55.59_veh-28",
+    "2021.08.24.13.12.55_veh-45",
+    "2021.08.27.16.43.13_veh-08",
+    "2021.09.30.20.55.20_veh-44"
+  ],
+  "operative_exposure_counts": {
+    "E1_UNRELATED_HISTORICAL_USE": 146,
+    "E3_PRIMARY_METHOD_DEVELOPMENT": 31,
+    "E5_UNTOUCHED_CONFIRMATORY": 5,
+    "E2_BENCHMARK_ENGINEERING": 65,
+    "E0_METADATA_ONLY": 1
+  },
+  "selected_exposure_counts": {
+    "E1_UNRELATED_HISTORICAL_USE": 16,
+    "E2_BENCHMARK_ENGINEERING": 4
+  },
+  "original_duplicate_aliases": [
+    {
+      "log_id": "2021.08.17.16.57.11_veh-08_01200_01636",
+      "duplicate_source": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.16.57.11_veh-08_01200_01636.db",
+      "token_set_sha256": "7873ced8e3099b8df911640eebdce9db03d6a32070e838fc937388c3b5d1acfa"
+    },
+    {
+      "log_id": "2021.08.17.17.17.01_veh-45_02314_02798",
+      "duplicate_source": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.17.17.01_veh-45_02314_02798.db",
+      "token_set_sha256": "2071f39a9f5f6f8bf28329cc3dc4f3c9fe6f6160d1384b9ad4765eec1d7dc40e"
+    },
+    {
+      "log_id": "2021.08.17.18.54.02_veh-45_00665_01065",
+      "duplicate_source": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.18.54.02_veh-45_00665_01065.db",
+      "token_set_sha256": "2b68400d2f6b61ba6528e53b52b8768e95e90640b08350c3fd350f147060284a"
+    }
+  ],
+  "roster_sha256": "a09b73814c40f15de366c78447260b38d49bd4cacfc2e0d68a3f597cb6d05c24",
+  "selection_rule_sha256": "a12873063dfaa348daafa3880603d5b9c013a006fa51f427aa0f2254a1320b61",
+  "protected_C_policy": "ALL_5_E5_SESSION_AND_THEIR_RAW_LOG_FINGERPRINTS_PROTECTED; NO_NEW_C_ROSTER_CREATED",
+  "explicit_current_C_reservation_evidence": "S2R role manifest has no final V/C roster; all E5 candidate sources conservatively excluded",
+  "scientific_outcomes_read": false
+}

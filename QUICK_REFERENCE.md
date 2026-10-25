@@ -11690,3 +11690,24 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 ### F2 本轮实际结果（2026-10-25）
 
 `TSB_DIRECT_COAST_F2_DEVELOPMENT_PASS`。两臂真实首次执行各一次，Baseline单段/Treatment双段、18次零请求、官方安全、正式四F和额外balance均PASS；两个actual observation audit各80帧PASS。科学CPU15.477921秒，新ledger stopped=true。图/CSV、正式pair结果、执行账本和SHA见docs/stageR/tsb_direct_coast_f2/。只读导图不重跑科学判定。下一步仅Owner决定是否值得独立资格验证；本次已暴露DEV01不能冒充P2，本轮停止。
+
+
+## TSB-DirectCoast P2-Q0：独立20 SESSION冻结与零运行预检
+
+### 1. 命令
+
+仓库根目录运行零运行选择/防火墙回归测试：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python -m unittest discover -s tests -p test_tsb_direct_coast_p2_q0.py -v
+```
+
+`tools/tsb_direct_coast_p2_q0.py select`按已独立提交的规则一次性冻结名单；`metadata`只读原始身份/初态/历史上下文形成spec；`preflight`仅构建40个官方对象图，在guard下禁止runner/model/控制推进。入口均拒绝覆盖既有证据，不能删除名单或失败记录后重新选择。
+
+### 2. 期望行为
+
+冻结F2原科学实现，按全部静态适格SESSION固定hash排名，严格排除B1全部20和DEV01/02/03，保护全部E5/Primary C候选源。选择全框、完整排名、固定20名单和40预检记录独立保存；预检失败保留排名/原因，不找替补。科学runner、model传播、机制/F_match/safety新结果、RBR/H30/BDD/Primary/V/C均0。
+
+### 3. 通过标准
+
+6项测试通过；20个独立SESSION/log来源可追溯且无角色冲突；F2逐文件SHA不变；原20名单的40arm全部零运行预检PASS才可READY_FOR_OWNER_EXECUTION_REVIEW。容量不足或技术阻断如实报告BLOCKED。未来20对/40首次、42累计上限/每arm20分钟/CPU16小时仅待Owner终审，retry当前0授权；所有执行凭据PROPOSED_ONLY，旧B1/C2/F2凭据不能启动P2。本轮不提供科学launcher，完成后停止。
