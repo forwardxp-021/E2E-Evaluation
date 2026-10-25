@@ -1,0 +1,23 @@
+{
+  "initial_sha256": "d2be38102ecf73a9dec922436e41b08642739bc32e321ab3982353d7cbf92c31",
+  "final_sha256": "5ef7aeda1484e633c72bd76c10fe6b99f827d3008ae67c14d3bbaed84bf89a95",
+  "per_parameter_l2": {
+    "gru.weight_ih": 2.2952866554260254,
+    "gru.weight_hh": 2.5878283977508545,
+    "gru.bias_ih": 0.2079479843378067,
+    "gru.bias_hh": 0.20756305754184723,
+    "project.0.weight": 1.9394932985305786,
+    "project.0.bias": 0.14182420074939728,
+    "project.2.weight": 1.3400808572769165,
+    "project.2.bias": 0.08597792685031891,
+    "semantic.0.weight": 0.9154952168464661,
+    "semantic.0.bias": 0.10257914662361145,
+    "semantic.2.weight": 0.38220274448394775,
+    "semantic.2.bias": 0.03730977699160576,
+    "temporal.0.weight": 1.3277697563171387,
+    "temporal.0.bias": 0.13123759627342224,
+    "temporal.2.weight": 1.1874897480010986,
+    "temporal.2.bias": 0.08719726651906967
+  },
+  "total_l2": 4.672315777945749
+}

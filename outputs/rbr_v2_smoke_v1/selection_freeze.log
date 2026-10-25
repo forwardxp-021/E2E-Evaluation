@@ -1,0 +1,37 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+{
+  "state": "RBR_V2_ENGINEERING_SMOKE_ONLY",
+  "training_certified": false,
+  "raw_segment_disjointness": "NOT_ESTABLISHED",
+  "policy_sha256": "065400058aa8682d17f4a72cb32a45aba102692bc6cc79ae88874426e1ef43a3",
+  "candidate_order_sha256": "14297d1d5dc90058fba59d7a3593a469b41649b2894bbf1bee5627fef29f6bd4",
+  "input_metadata_sha256": {
+    "outputs/rbr_v2_uonly_v1/candidate_quality.csv": "b986105517432c96fe997c609955c5be3023499919f30e4c699149be9f1c4968",
+    "outputs/rbr_v2_uonly_v1/candidate_split.csv": "1af94c4cb146da84266dc5e6d00f6b46ab41f85cb2e0b229e90c6e233842715b",
+    "outputs/rbr_v2_uonly_v1/dependency_groups.json": "51cfd324f43e1c9e24d0a21d48b6beb847caf7a7d5c2854eea6c3166a2aa7b51",
+    "outputs/rbr_v2_uonly_v1/source_records.csv": "6b0da08c662cd0bb40ba22de2cc1680c542979648601424786a3a1194e842c77",
+    "outputs/rbr_v2_uonly_v1/data_manifest.json": "1c903d2f84156664c08a23b14280d15f359b391d3f51f7996643f41c465a888d"
+  },
+  "source_sha256": {
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+    "tools/rbr_v2_model.py": "a89a62e43f4e1b0ea5064557b98388c3b170ce0b171fd81222c61361f6c17758",
+    "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+    "tools/rbr_v2_train.py": "15036ffab5d1759a03fe89e0aece5d127c5a31be960c8718afbafb921302b4a1",
+    "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b",
+    "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+    "tools/rbr_v2_smoke_data.py": "472abc83425be92704e153762fbf21624151cfea3d5c55a2994a3d079bfe9409"
+  },
+  "capacity": {
+    "train": 105483,
+    "diagnostic": 11360
+  },
+  "forbidden_groups": 4412,
+  "targets": {
+    "train": 2048,
+    "diagnostic": 256
+  },
+  "materialization_started": false,
+  "selection_basis": "identity/observed dependency groups/physical masks only",
+  "source_risk": "Observed group disjointness is NOT upstream segment disjointness"
+}

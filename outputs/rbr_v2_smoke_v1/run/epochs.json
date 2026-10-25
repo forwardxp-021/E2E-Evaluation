@@ -1,0 +1,34 @@
+[
+  {
+    "epoch": 1,
+    "L_repr": 0.2588696535676718,
+    "L_sem": 0.2280269032344222,
+    "total": 0.48689655400812626,
+    "train_seconds": 10.088924042000144,
+    "diagnostic": {
+      "L_repr": 0.2598307281732559,
+      "L_sem": 0.16314178486038086,
+      "total": 0.4229725130336368,
+      "used_for_selection": false
+    },
+    "diagnostic_seconds": 0.8911860830012301,
+    "total_epoch_seconds": 10.980110417000105,
+    "optimizer_steps": 16
+  },
+  {
+    "epoch": 2,
+    "L_repr": 0.21074428874999285,
+    "L_sem": 0.16458062129095197,
+    "total": 0.37532490864396095,
+    "train_seconds": 9.71010154099713,
+    "diagnostic": {
+      "L_repr": 0.22012892365455627,
+      "L_sem": 0.12549125697736596,
+      "total": 0.34562018063192224,
+      "used_for_selection": false
+    },
+    "diagnostic_seconds": 0.9225104170000122,
+    "total_epoch_seconds": 10.632612290999532,
+    "optimizer_steps": 32
+  }
+]

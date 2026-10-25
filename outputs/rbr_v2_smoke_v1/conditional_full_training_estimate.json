@@ -1,0 +1,17 @@
+{
+  "conditional_candidate_train_windows": 132317,
+  "source_certified": false,
+  "steps_per_epoch": 1034,
+  "measured_mean_step_seconds": 0.6174367525936759,
+  "measured_windows_per_second": 207.30868297409972,
+  "projected_train_seconds_per_epoch": 638.4296021818609,
+  "projected_30_epoch_train_hours": 5.320246684848841,
+  "projected_materialization_hours": 21.757717241558762,
+  "assumptions": [
+    "same hardware/runtime/batch128/source density and IO behavior",
+    "same per-step three-backprop gradient audit; no unmeasured speedup factor",
+    "training estimate excludes future full U_val/checkpoint overhead and early stopping",
+    "current candidate counts may change after upstream source certification",
+    "linear extrapolation is a resource estimate, NOT completed training or authorization"
+  ]
+}

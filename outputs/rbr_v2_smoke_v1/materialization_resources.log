@@ -1,0 +1,28 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+     1364.24 real      5009.02 user        11.93 sys
+           490405888  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              392545  page reclaims
+                  34  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                3566  voluntary context switches
+             1887260  involuntary context switches
+         11863316374  instructions retired
+          4691950662  cycles elapsed
+           331088904  peak memory footprint

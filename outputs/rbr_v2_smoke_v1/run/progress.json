@@ -1,0 +1,20 @@
+{
+  "state": "TRAINING_COMPLETED_AWAITING_RELOAD",
+  "optimizer_steps": 32,
+  "complete_epochs": 2,
+  "training_certified": false,
+  "primary_eligible": false,
+  "device": "mps",
+  "initial_parameter_sha256": "d2be38102ecf73a9dec922436e41b08642739bc32e321ab3982353d7cbf92c31",
+  "process_elapsed_seconds": 23.116175917002693,
+  "resources": {
+    "cpu_process_seconds": 21.094329,
+    "rss_peak_bytes": 483000320,
+    "mps_current_bytes": 19988224,
+    "mps_driver_bytes": 167755776
+  },
+  "checkpoint": "run/epoch2_smoke.pt",
+  "checkpoint_sha256": "fa10f6ddee26b1e46c6e7652b6d697f14e5178fa97221f4fe33dcf876e009cca",
+  "reference_z64_sha256": "6c811de27f0e40daf9502e895c33ef74ca030da34ee8b8633e950e6dd8efa20f",
+  "stopped": true
+}

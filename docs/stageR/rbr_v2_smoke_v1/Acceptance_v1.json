@@ -1,0 +1,23 @@
+{
+  "status": "RBR_V2_SMOKE_TRAINING_PASS",
+  "checks": {
+    "real_data_counts": true,
+    "observed_group_disjoint": true,
+    "actual_32_optimizer_steps": true,
+    "complete_two_epochs": true,
+    "both_shared_loss_gradients": true,
+    "all_parameter_groups_updated": true,
+    "finite_training": true,
+    "parameters_changed": true,
+    "process_budget": true,
+    "fresh_process_reload": true,
+    "actual_z64": true,
+    "smoke_only": true
+  },
+  "state": "RBR_V2_ENGINEERING_SMOKE_ONLY",
+  "checkpoint_label": "SMOKE_ONLY_NOT_PRIMARY_CHECKPOINT",
+  "training_certified": false,
+  "formal_training_runs": 0,
+  "engineering_training_runs": 1,
+  "optimizer_steps": 32
+}

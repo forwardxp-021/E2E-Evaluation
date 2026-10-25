@@ -1,0 +1,16 @@
+{
+  "selected_windows": 2304,
+  "considered_identity_prefix": 2345,
+  "rejected_invalid": 41,
+  "prefix_rejection_rate": 0.017484008528784647,
+  "prior_raw_quality_rejections": 41,
+  "new_materialization_invalid": 0,
+  "valid_ego_frames": {
+    "min": 64,
+    "max": 80,
+    "mean": 77.87803819444444
+  },
+  "valid_channel_cells": 4648975,
+  "present_neighbor_frames": 180935,
+  "source_risk": "RAW_SEGMENT_DISJOINTNESS_NOT_ESTABLISHED"
+}

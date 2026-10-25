@@ -1,0 +1,33 @@
+{
+  "selected_device": "mps",
+  "probes": [
+    {
+      "device": "mps",
+      "status": "PASS",
+      "repr_shared_grad": 0.009297862648963928,
+      "sem_shared_grad": 0.02687659114599228,
+      "optimizer_steps": 0,
+      "resources": {
+        "cpu_process_seconds": 1.490499,
+        "rss_peak_bytes": 301318144,
+        "mps_current_bytes": 11321344,
+        "mps_driver_bytes": 154976256
+      }
+    }
+  ],
+  "torch": "2.9.1",
+  "numpy": "2.2.6",
+  "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:14:06) [Clang 20.1.8 ]",
+  "executable": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_smoke_v1/runtime/bin/python",
+  "cuda_available": false,
+  "mps_available": true,
+  "state": "RBR_V2_ENGINEERING_SMOKE_ONLY",
+  "source_sha256": {
+    "tools/rbr_v2_smoke_train.py": "7ed92e9d3b4fb7677220ca71dc314d4591110313ab8a6257924df87184e1c216",
+    "tools/rbr_v2_smoke_data.py": "472abc83425be92704e153762fbf21624151cfea3d5c55a2994a3d079bfe9409",
+    "tools/rbr_v2_train.py": "15036ffab5d1759a03fe89e0aece5d127c5a31be960c8718afbafb921302b4a1",
+    "tools/rbr_v2_model.py": "a89a62e43f4e1b0ea5064557b98388c3b170ce0b171fd81222c61361f6c17758",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399"
+  },
+  "preflight_optimizer_steps": 0
+}

@@ -1,0 +1,8 @@
+{
+  "device": "mps",
+  "status": "PASS",
+  "grad_norm_before_clip": 0.04574105143547058,
+  "adamw_constructed": true,
+  "optimizer_steps": 0,
+  "parameters_unchanged": true
+}

@@ -1,0 +1,1090 @@
+[
+  {
+    "epoch": 1,
+    "step": 1,
+    "windows": 128,
+    "L_repr": 0.30866575241088867,
+    "L_sem": 0.28124740719795227,
+    "total": 0.5899131298065186,
+    "repr_to_shared_grad_l2": 0.017084086313843727,
+    "sem_to_shared_grad_l2": 0.020303064957261086,
+    "head_gradient_l2": {
+      "shared_encoder": 0.026236286386847496,
+      "semantic_head": 0.036765631288290024,
+      "temporal_head": 0.03382961079478264
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.36293432116508484,
+      "semantic_head": 0.06668341159820557,
+      "temporal_head": 0.12545515596866608
+    },
+    "gradient_norm_before_clip": 0.05643134564161301,
+    "data_seconds": 0.38810320799893816,
+    "device_phase_seconds": 0.7289678750021267,
+    "step_seconds": 1.1207235000001674,
+    "windows_per_second": 114.21193541491803,
+    "cpu_seconds": 0.820716,
+    "batch_identity_sha256": "4f4ab29cfd45fa104e5018fbb3afcc16b0753cb78e1e5e8b43c71989963f9a0d",
+    "resources": {
+      "cpu_process_seconds": 2.05152,
+      "rss_peak_bytes": 467992576,
+      "mps_current_bytes": 21664000,
+      "mps_driver_bytes": 155172864
+    },
+    "process_elapsed_seconds": 2.4779792500012263
+  },
+  {
+    "epoch": 1,
+    "step": 2,
+    "windows": 128,
+    "L_repr": 0.2607749104499817,
+    "L_sem": 0.23551790416240692,
+    "total": 0.4962928295135498,
+    "repr_to_shared_grad_l2": 0.015551311895251274,
+    "sem_to_shared_grad_l2": 0.018443990498781204,
+    "head_gradient_l2": {
+      "shared_encoder": 0.024918006733059883,
+      "semantic_head": 0.031038396060466766,
+      "temporal_head": 0.03295362368226051
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.28597334027290344,
+      "semantic_head": 0.05644436180591583,
+      "temporal_head": 0.10348889976739883
+    },
+    "gradient_norm_before_clip": 0.05167427286505699,
+    "data_seconds": 0.393701583998336,
+    "device_phase_seconds": 0.20401308399959817,
+    "step_seconds": 0.5997841249991325,
+    "windows_per_second": 213.4101165151464,
+    "cpu_seconds": 0.5633139999999996,
+    "batch_identity_sha256": "889a6a55fcfccab4f8ee462b46fabb55ccde42dfda9a969a3f5fcd9618dca871",
+    "resources": {
+      "cpu_process_seconds": 2.615296,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 18650368,
+      "mps_driver_bytes": 155172864
+    },
+    "process_elapsed_seconds": 3.0788817500033474
+  },
+  {
+    "epoch": 1,
+    "step": 3,
+    "windows": 128,
+    "L_repr": 0.2744635045528412,
+    "L_sem": 0.302878201007843,
+    "total": 0.5773416757583618,
+    "repr_to_shared_grad_l2": 0.014765836298465729,
+    "sem_to_shared_grad_l2": 0.019026469439268112,
+    "head_gradient_l2": {
+      "shared_encoder": 0.0227664727717638,
+      "semantic_head": 0.026986662298440933,
+      "temporal_head": 0.027876868844032288
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.2529098093509674,
+      "semantic_head": 0.049350012093782425,
+      "temporal_head": 0.09364555031061172
+    },
+    "gradient_norm_before_clip": 0.044985685497522354,
+    "data_seconds": 0.3873331249997136,
+    "device_phase_seconds": 0.21096983299867134,
+    "step_seconds": 0.601335041999846,
+    "windows_per_second": 212.85970558827466,
+    "cpu_seconds": 0.558592,
+    "batch_identity_sha256": "698a5a82a00649eefee01df9c8e36fcaccad9cf66216d646e7981a0ed6b7125d",
+    "resources": {
+      "cpu_process_seconds": 3.174274,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20983040,
+      "mps_driver_bytes": 159367168
+    },
+    "process_elapsed_seconds": 3.6839933750015916
+  },
+  {
+    "epoch": 1,
+    "step": 4,
+    "windows": 128,
+    "L_repr": 0.2894853353500366,
+    "L_sem": 0.20858368277549744,
+    "total": 0.49806901812553406,
+    "repr_to_shared_grad_l2": 0.012404493056237698,
+    "sem_to_shared_grad_l2": 0.020775774493813515,
+    "head_gradient_l2": {
+      "shared_encoder": 0.023730073124170303,
+      "semantic_head": 0.032753489911556244,
+      "temporal_head": 0.01882108300924301
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.23518210649490356,
+      "semantic_head": 0.04776883125305176,
+      "temporal_head": 0.08983350545167923
+    },
+    "gradient_norm_before_clip": 0.044610992074012756,
+    "data_seconds": 0.42210166700169793,
+    "device_phase_seconds": 0.20170062499892083,
+    "step_seconds": 0.6258759170013946,
+    "windows_per_second": 204.51338120382542,
+    "cpu_seconds": 0.5914359999999999,
+    "batch_identity_sha256": "5e9c261c9771bfd808de06d7fca472a02177801095c95b7a171e21be40c73974",
+    "resources": {
+      "cpu_process_seconds": 3.766074,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 163561472
+    },
+    "process_elapsed_seconds": 4.310902500001248
+  },
+  {
+    "epoch": 1,
+    "step": 5,
+    "windows": 128,
+    "L_repr": 0.2931775450706482,
+    "L_sem": 0.3182399868965149,
+    "total": 0.6114175319671631,
+    "repr_to_shared_grad_l2": 0.01651851460337639,
+    "sem_to_shared_grad_l2": 0.02430773340165615,
+    "head_gradient_l2": {
+      "shared_encoder": 0.028355861082673073,
+      "semantic_head": 0.03218929469585419,
+      "temporal_head": 0.025732185691595078
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.22581623494625092,
+      "semantic_head": 0.04629997909069061,
+      "temporal_head": 0.08850644528865814
+    },
+    "gradient_norm_before_clip": 0.050023503601551056,
+    "data_seconds": 0.37802149999697576,
+    "device_phase_seconds": 0.20083037500080536,
+    "step_seconds": 0.5814586669985147,
+    "windows_per_second": 220.13602559359043,
+    "cpu_seconds": 0.5443219999999998,
+    "batch_identity_sha256": "6b5e08b3aa7b45ddfa69d1e051e2466d96d26022f3a525eae056302c743317f7",
+    "resources": {
+      "cpu_process_seconds": 4.310765,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 4.893147417002183
+  },
+  {
+    "epoch": 1,
+    "step": 6,
+    "windows": 128,
+    "L_repr": 0.25365617871284485,
+    "L_sem": 0.2689470946788788,
+    "total": 0.5226032733917236,
+    "repr_to_shared_grad_l2": 0.012572482228279114,
+    "sem_to_shared_grad_l2": 0.025129009038209915,
+    "head_gradient_l2": {
+      "shared_encoder": 0.028791194781661034,
+      "semantic_head": 0.03411161154508591,
+      "temporal_head": 0.02424279786646366
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.22009216248989105,
+      "semantic_head": 0.046230923384428024,
+      "temporal_head": 0.08644259721040726
+    },
+    "gradient_norm_before_clip": 0.05079614371061325,
+    "data_seconds": 0.3858983749996696,
+    "device_phase_seconds": 0.20295895799790742,
+    "step_seconds": 0.5917380829996546,
+    "windows_per_second": 216.31191852844583,
+    "cpu_seconds": 0.551774,
+    "batch_identity_sha256": "e25340ac7083337962368ec11cd10a80c350f8d1bde636ea5c4226fd7a996f1d",
+    "resources": {
+      "cpu_process_seconds": 4.862907,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 5.4858185420016525
+  },
+  {
+    "epoch": 1,
+    "step": 7,
+    "windows": 128,
+    "L_repr": 0.25437238812446594,
+    "L_sem": 0.2577659785747528,
+    "total": 0.5121383666992188,
+    "repr_to_shared_grad_l2": 0.019643068313598633,
+    "sem_to_shared_grad_l2": 0.026610665023326874,
+    "head_gradient_l2": {
+      "shared_encoder": 0.03624117001891136,
+      "semantic_head": 0.034963592886924744,
+      "temporal_head": 0.027398817241191864
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.21666204929351807,
+      "semantic_head": 0.045905888080596924,
+      "temporal_head": 0.08547767251729965
+    },
+    "gradient_norm_before_clip": 0.057328615337610245,
+    "data_seconds": 0.3782890000002226,
+    "device_phase_seconds": 0.20159524999689893,
+    "step_seconds": 0.5840068340003199,
+    "windows_per_second": 219.17551738774665,
+    "cpu_seconds": 0.5494369999999993,
+    "batch_identity_sha256": "9b576e70ccb1244dfd694618caf31ee1e7c8073205a11301da87ce68052d5bc0",
+    "resources": {
+      "cpu_process_seconds": 5.412721,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 6.070749209000496
+  },
+  {
+    "epoch": 1,
+    "step": 8,
+    "windows": 128,
+    "L_repr": 0.25876402854919434,
+    "L_sem": 0.2294757068157196,
+    "total": 0.48823973536491394,
+    "repr_to_shared_grad_l2": 0.02178025431931019,
+    "sem_to_shared_grad_l2": 0.03065483830869198,
+    "head_gradient_l2": {
+      "shared_encoder": 0.04279511794447899,
+      "semantic_head": 0.036230314522981644,
+      "temporal_head": 0.029775958508253098
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.21463128924369812,
+      "semantic_head": 0.04577476903796196,
+      "temporal_head": 0.08575285971164703
+    },
+    "gradient_norm_before_clip": 0.06348752230405807,
+    "data_seconds": 0.4043942499993136,
+    "device_phase_seconds": 0.2001682920017629,
+    "step_seconds": 0.6075154169993766,
+    "windows_per_second": 210.69424152594195,
+    "cpu_seconds": 0.5750349999999997,
+    "batch_identity_sha256": "456151e409bdcbe0e02402e758f5151dc31ad12948e5684e43756b43bf9b9d22",
+    "resources": {
+      "cpu_process_seconds": 5.988178,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 6.679225334002695
+  },
+  {
+    "epoch": 1,
+    "step": 9,
+    "windows": 128,
+    "L_repr": 0.26542097330093384,
+    "L_sem": 0.20148369669914246,
+    "total": 0.4669046700000763,
+    "repr_to_shared_grad_l2": 0.028638284653425217,
+    "sem_to_shared_grad_l2": 0.031159641221165657,
+    "head_gradient_l2": {
+      "shared_encoder": 0.048471249639987946,
+      "semantic_head": 0.04021498188376427,
+      "temporal_head": 0.038116853684186935
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.21897156536579132,
+      "semantic_head": 0.04677705094218254,
+      "temporal_head": 0.08575966209173203
+    },
+    "gradient_norm_before_clip": 0.07361793518066406,
+    "data_seconds": 0.3726881250004226,
+    "device_phase_seconds": 0.2071038750000298,
+    "step_seconds": 0.5830512080028711,
+    "windows_per_second": 219.5347479656876,
+    "cpu_seconds": 0.5425420000000001,
+    "batch_identity_sha256": "621fd59bb013a87b9c521417e3664fb022eed4091f1d3737cac33f7e66f949b3",
+    "resources": {
+      "cpu_process_seconds": 6.531153,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 7.263233500001661
+  },
+  {
+    "epoch": 1,
+    "step": 10,
+    "windows": 128,
+    "L_repr": 0.241493821144104,
+    "L_sem": 0.18830157816410065,
+    "total": 0.42979538440704346,
+    "repr_to_shared_grad_l2": 0.02568366564810276,
+    "sem_to_shared_grad_l2": 0.040177732706069946,
+    "head_gradient_l2": {
+      "shared_encoder": 0.05441880226135254,
+      "semantic_head": 0.055993158370256424,
+      "temporal_head": 0.033687833696603775
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.22096076607704163,
+      "semantic_head": 0.0473366379737854,
+      "temporal_head": 0.08680905401706696
+    },
+    "gradient_norm_before_clip": 0.08503828197717667,
+    "data_seconds": 0.3887858749985753,
+    "device_phase_seconds": 0.20017916600045282,
+    "step_seconds": 0.5911549579977873,
+    "windows_per_second": 216.52529217301958,
+    "cpu_seconds": 0.5535319999999997,
+    "batch_identity_sha256": "525703265eda10d67cb32d6893e57ab5db72404198e6c78eddb2a96888e94662",
+    "resources": {
+      "cpu_process_seconds": 7.085124,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 7.855407292001473
+  },
+  {
+    "epoch": 1,
+    "step": 11,
+    "windows": 128,
+    "L_repr": 0.254881352186203,
+    "L_sem": 0.19046910107135773,
+    "total": 0.4453504681587219,
+    "repr_to_shared_grad_l2": 0.03148248791694641,
+    "sem_to_shared_grad_l2": 0.04231330007314682,
+    "head_gradient_l2": {
+      "shared_encoder": 0.06095648556947708,
+      "semantic_head": 0.062374088913202286,
+      "temporal_head": 0.0421144999563694
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.22538739442825317,
+      "semantic_head": 0.04880282282829285,
+      "temporal_head": 0.08850134909152985
+    },
+    "gradient_norm_before_clip": 0.09684962779283524,
+    "data_seconds": 0.3759185830022034,
+    "device_phase_seconds": 0.20330720800120616,
+    "step_seconds": 0.5822370830028376,
+    "windows_per_second": 219.84171695119628,
+    "cpu_seconds": 0.5410470000000007,
+    "batch_identity_sha256": "4690894d51043a24742ff1e797739addc327caf6e5318a3dc078184c23ed5c8c",
+    "resources": {
+      "cpu_process_seconds": 7.626606,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 8.438598042001104
+  },
+  {
+    "epoch": 1,
+    "step": 12,
+    "windows": 128,
+    "L_repr": 0.2528982162475586,
+    "L_sem": 0.1941772997379303,
+    "total": 0.4470755159854889,
+    "repr_to_shared_grad_l2": 0.030364681035280228,
+    "sem_to_shared_grad_l2": 0.04688710719347,
+    "head_gradient_l2": {
+      "shared_encoder": 0.06530950218439102,
+      "semantic_head": 0.0686933621764183,
+      "temporal_head": 0.04435307905077934
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.2293175756931305,
+      "semantic_head": 0.04958697780966759,
+      "temporal_head": 0.08814418315887451
+    },
+    "gradient_norm_before_clip": 0.10464848577976227,
+    "data_seconds": 0.3811245409997355,
+    "device_phase_seconds": 0.20105466599852662,
+    "step_seconds": 0.5850722909999604,
+    "windows_per_second": 218.77638365206508,
+    "cpu_seconds": 0.5462549999999995,
+    "batch_identity_sha256": "cc181c21fb8136a374585454e7f10db7bf6cfd5560b3840296983fc6f5630119",
+    "resources": {
+      "cpu_process_seconds": 8.17327,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 163561472
+    },
+    "process_elapsed_seconds": 9.024617584000225
+  },
+  {
+    "epoch": 1,
+    "step": 13,
+    "windows": 128,
+    "L_repr": 0.22770360112190247,
+    "L_sem": 0.23249457776546478,
+    "total": 0.46019816398620605,
+    "repr_to_shared_grad_l2": 0.04265632480382919,
+    "sem_to_shared_grad_l2": 0.04943309724330902,
+    "head_gradient_l2": {
+      "shared_encoder": 0.08000797033309937,
+      "semantic_head": 0.0704825147986412,
+      "temporal_head": 0.046819526702165604
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.2305068075656891,
+      "semantic_head": 0.0500718355178833,
+      "temporal_head": 0.08733242005109787
+    },
+    "gradient_norm_before_clip": 0.11645225435495377,
+    "data_seconds": 0.3962228340024012,
+    "device_phase_seconds": 0.2004486670011829,
+    "step_seconds": 0.600050042001385,
+    "windows_per_second": 213.31554210557752,
+    "cpu_seconds": 0.560352,
+    "batch_identity_sha256": "854e2e26f962574582c060dc608730bb0fd935edd1d138f56e6d6b411bc62760",
+    "resources": {
+      "cpu_process_seconds": 8.73406,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 9.62563429200236
+  },
+  {
+    "epoch": 1,
+    "step": 14,
+    "windows": 128,
+    "L_repr": 0.2331833839416504,
+    "L_sem": 0.2043633759021759,
+    "total": 0.4375467598438263,
+    "repr_to_shared_grad_l2": 0.04845459759235382,
+    "sem_to_shared_grad_l2": 0.048398908227682114,
+    "head_gradient_l2": {
+      "shared_encoder": 0.07904543727636337,
+      "semantic_head": 0.07418439537286758,
+      "temporal_head": 0.04973941296339035
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.23179613053798676,
+      "semantic_head": 0.05105463042855263,
+      "temporal_head": 0.0860767662525177
+    },
+    "gradient_norm_before_clip": 0.11927076429128647,
+    "data_seconds": 0.38072579099753057,
+    "device_phase_seconds": 0.20001416699960828,
+    "step_seconds": 0.5827841659993283,
+    "windows_per_second": 219.63534266671812,
+    "cpu_seconds": 0.5501850000000008,
+    "batch_identity_sha256": "01867d6a31f7c5e27d29ab1502205d2bde8263a0405d47c9b134f88e0007368e",
+    "resources": {
+      "cpu_process_seconds": 9.284707,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 10.21216404200095
+  },
+  {
+    "epoch": 1,
+    "step": 15,
+    "windows": 128,
+    "L_repr": 0.23856815695762634,
+    "L_sem": 0.18812425434589386,
+    "total": 0.4266924262046814,
+    "repr_to_shared_grad_l2": 0.06275160610675812,
+    "sem_to_shared_grad_l2": 0.0676276907324791,
+    "head_gradient_l2": {
+      "shared_encoder": 0.10558459907770157,
+      "semantic_head": 0.12401580810546875,
+      "temporal_head": 0.07492054998874664
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.23386213183403015,
+      "semantic_head": 0.05012965202331543,
+      "temporal_head": 0.08418036252260208
+    },
+    "gradient_norm_before_clip": 0.17927943170070648,
+    "data_seconds": 0.3788759589988331,
+    "device_phase_seconds": 0.25806849999935366,
+    "step_seconds": 0.6412002920005762,
+    "windows_per_second": 199.62561090019744,
+    "cpu_seconds": 0.546716,
+    "batch_identity_sha256": "570ae30197315f5ead9ab9555baff57c42a4e0eff9c84a13940849f904c92016",
+    "resources": {
+      "cpu_process_seconds": 9.831854,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 10.854331334001472
+  },
+  {
+    "epoch": 1,
+    "step": 16,
+    "windows": 128,
+    "L_repr": 0.2344053089618683,
+    "L_sem": 0.1463606059551239,
+    "total": 0.3807659149169922,
+    "repr_to_shared_grad_l2": 0.03928396478295326,
+    "sem_to_shared_grad_l2": 0.07003402709960938,
+    "head_gradient_l2": {
+      "shared_encoder": 0.06979139894247055,
+      "semantic_head": 0.08692777156829834,
+      "temporal_head": 0.054757386445999146
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.2272319346666336,
+      "semantic_head": 0.05027317255735397,
+      "temporal_head": 0.08321262896060944
+    },
+    "gradient_norm_before_clip": 0.12420003116130829,
+    "data_seconds": 0.3875481659997604,
+    "device_phase_seconds": 0.19951824999952805,
+    "step_seconds": 0.5894550830016669,
+    "windows_per_second": 217.14970943704293,
+    "cpu_seconds": 0.5572200000000009,
+    "batch_identity_sha256": "ac9b38c133e4a9394c8990ca0387ae9e435fb2e3db9394a7deaf86c21458a891",
+    "resources": {
+      "cpu_process_seconds": 10.389505,
+      "rss_peak_bytes": 479297536,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 11.444766042000992
+  },
+  {
+    "epoch": 2,
+    "step": 17,
+    "windows": 128,
+    "L_repr": 0.21167616546154022,
+    "L_sem": 0.21872305870056152,
+    "total": 0.43039923906326294,
+    "repr_to_shared_grad_l2": 0.06866959482431412,
+    "sem_to_shared_grad_l2": 0.07836667448282242,
+    "head_gradient_l2": {
+      "shared_encoder": 0.05571658909320831,
+      "semantic_head": 0.09692511707544327,
+      "temporal_head": 0.06594633311033249
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.2106466293334961,
+      "semantic_head": 0.04917061701416969,
+      "temporal_head": 0.08145543932914734
+    },
+    "gradient_norm_before_clip": 0.12979882955551147,
+    "data_seconds": 0.38133045799986576,
+    "device_phase_seconds": 0.19965400000000955,
+    "step_seconds": 0.5830199169977277,
+    "windows_per_second": 219.54653051844002,
+    "cpu_seconds": 0.548464000000001,
+    "batch_identity_sha256": "1e20a4016037f6bca5ced4f0264775bc92c9f92f4ed5b09a14be49f4ac22f8bb",
+    "resources": {
+      "cpu_process_seconds": 11.755048,
+      "rss_peak_bytes": 480231424,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 12.937570125002821
+  },
+  {
+    "epoch": 2,
+    "step": 18,
+    "windows": 128,
+    "L_repr": 0.23201525211334229,
+    "L_sem": 0.140546053647995,
+    "total": 0.3725613057613373,
+    "repr_to_shared_grad_l2": 0.05103684589266777,
+    "sem_to_shared_grad_l2": 0.06467007845640182,
+    "head_gradient_l2": {
+      "shared_encoder": 0.06183071434497833,
+      "semantic_head": 0.09676387906074524,
+      "temporal_head": 0.07432089745998383
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.20471931993961334,
+      "semantic_head": 0.048345956951379776,
+      "temporal_head": 0.08316727727651596
+    },
+    "gradient_norm_before_clip": 0.13678406178951263,
+    "data_seconds": 0.3920324579994485,
+    "device_phase_seconds": 0.20062120800139382,
+    "step_seconds": 0.5949380829988513,
+    "windows_per_second": 215.14843923724268,
+    "cpu_seconds": 0.558662,
+    "batch_identity_sha256": "a78fd352a4648880fbb528755f9b840ede3db2d3b509d17f41b9fd29f3ba1114",
+    "resources": {
+      "cpu_process_seconds": 12.31426,
+      "rss_peak_bytes": 480362496,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 13.536346709002828
+  },
+  {
+    "epoch": 2,
+    "step": 19,
+    "windows": 128,
+    "L_repr": 0.20900863409042358,
+    "L_sem": 0.15641406178474426,
+    "total": 0.36542269587516785,
+    "repr_to_shared_grad_l2": 0.07754006236791611,
+    "sem_to_shared_grad_l2": 0.05768735334277153,
+    "head_gradient_l2": {
+      "shared_encoder": 0.08173231035470963,
+      "semantic_head": 0.11361303180456161,
+      "temporal_head": 0.08270446956157684
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.19864271581172943,
+      "semantic_head": 0.04765112325549126,
+      "temporal_head": 0.08369500935077667
+    },
+    "gradient_norm_before_clip": 0.16256727278232574,
+    "data_seconds": 0.3865646670019487,
+    "device_phase_seconds": 0.19925449999936973,
+    "step_seconds": 0.5879677500015532,
+    "windows_per_second": 217.69901495390158,
+    "cpu_seconds": 0.5531619999999986,
+    "batch_identity_sha256": "3e80086020889cc02e741573d3bd73c02b9d85ee291d4d1122df55e541900dcc",
+    "resources": {
+      "cpu_process_seconds": 12.867863,
+      "rss_peak_bytes": 482541568,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 14.125289375002467
+  },
+  {
+    "epoch": 2,
+    "step": 20,
+    "windows": 128,
+    "L_repr": 0.24391353130340576,
+    "L_sem": 0.17286433279514313,
+    "total": 0.4167778491973877,
+    "repr_to_shared_grad_l2": 0.06906459480524063,
+    "sem_to_shared_grad_l2": 0.07113078236579895,
+    "head_gradient_l2": {
+      "shared_encoder": 0.10010229796171188,
+      "semantic_head": 0.1269054114818573,
+      "temporal_head": 0.08498141169548035
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.19619880616664886,
+      "semantic_head": 0.04571119695901871,
+      "temporal_head": 0.08684143424034119
+    },
+    "gradient_norm_before_clip": 0.18261241912841797,
+    "data_seconds": 0.37915041700034635,
+    "device_phase_seconds": 0.20758337500228663,
+    "step_seconds": 0.5905795420003415,
+    "windows_per_second": 216.73625802623212,
+    "cpu_seconds": 0.5480719999999994,
+    "batch_identity_sha256": "6f0bd8fb4d989bfe68a2299605210151c8e6a5ae714a226ef426eca6b52ce716",
+    "resources": {
+      "cpu_process_seconds": 13.416402,
+      "rss_peak_bytes": 482557952,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 14.716879292001977
+  },
+  {
+    "epoch": 2,
+    "step": 21,
+    "windows": 128,
+    "L_repr": 0.21085712313652039,
+    "L_sem": 0.20641078054904938,
+    "total": 0.41726791858673096,
+    "repr_to_shared_grad_l2": 0.039735812693834305,
+    "sem_to_shared_grad_l2": 0.07938634604215622,
+    "head_gradient_l2": {
+      "shared_encoder": 0.11010441929101944,
+      "semantic_head": 0.10293684154748917,
+      "temporal_head": 0.05083320662379265
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.19054588675498962,
+      "semantic_head": 0.04472144693136215,
+      "temporal_head": 0.08560077846050262
+    },
+    "gradient_norm_before_clip": 0.15906913578510284,
+    "data_seconds": 0.38406024999858346,
+    "device_phase_seconds": 0.19971512499978417,
+    "step_seconds": 0.5860234169995238,
+    "windows_per_second": 218.42130585048622,
+    "cpu_seconds": 0.5524729999999991,
+    "batch_identity_sha256": "059056032af03073263b97ee16b3fd6c140f333ffe56caf336e92616fcb5ffad",
+    "resources": {
+      "cpu_process_seconds": 13.969344,
+      "rss_peak_bytes": 482557952,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 15.303918167002848
+  },
+  {
+    "epoch": 2,
+    "step": 22,
+    "windows": 128,
+    "L_repr": 0.2208046168088913,
+    "L_sem": 0.22984075546264648,
+    "total": 0.450645387172699,
+    "repr_to_shared_grad_l2": 0.05408932641148567,
+    "sem_to_shared_grad_l2": 0.0930212214589119,
+    "head_gradient_l2": {
+      "shared_encoder": 0.13710683584213257,
+      "semantic_head": 0.11078213900327682,
+      "temporal_head": 0.05992387980222702
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.19687364995479584,
+      "semantic_head": 0.043956659734249115,
+      "temporal_head": 0.08473163098096848
+    },
+    "gradient_norm_before_clip": 0.18617691099643707,
+    "data_seconds": 0.3748249999989639,
+    "device_phase_seconds": 0.19981433399880189,
+    "step_seconds": 0.5778032499983965,
+    "windows_per_second": 221.52869510573925,
+    "cpu_seconds": 0.5395719999999997,
+    "batch_identity_sha256": "4788b3bb92edb5db96a6ceae8d9bdd4439d85a9f8c0ed1186b5bf84ed1b82b62",
+    "resources": {
+      "cpu_process_seconds": 14.509398,
+      "rss_peak_bytes": 482557952,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 165658624
+    },
+    "process_elapsed_seconds": 15.88274095900124
+  },
+  {
+    "epoch": 2,
+    "step": 23,
+    "windows": 128,
+    "L_repr": 0.17839550971984863,
+    "L_sem": 0.13682903349399567,
+    "total": 0.3152245283126831,
+    "repr_to_shared_grad_l2": 0.03366263955831528,
+    "sem_to_shared_grad_l2": 0.07635091990232468,
+    "head_gradient_l2": {
+      "shared_encoder": 0.08989080041646957,
+      "semantic_head": 0.0951581597328186,
+      "temporal_head": 0.043691787868738174
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.19948607683181763,
+      "semantic_head": 0.04202132299542427,
+      "temporal_head": 0.08234860748052597
+    },
+    "gradient_norm_before_clip": 0.1380014717578888,
+    "data_seconds": 0.3935195410012966,
+    "device_phase_seconds": 0.20223470899873064,
+    "step_seconds": 0.5979003329994157,
+    "windows_per_second": 214.0825032792298,
+    "cpu_seconds": 0.5673250000000003,
+    "batch_identity_sha256": "5ca5f77192c913c28cc6027c6d281561f477b8a87ef2945ce3b35bdd8186b745",
+    "resources": {
+      "cpu_process_seconds": 15.07718,
+      "rss_peak_bytes": 482885632,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 163561472
+    },
+    "process_elapsed_seconds": 16.48158925000098
+  },
+  {
+    "epoch": 2,
+    "step": 24,
+    "windows": 128,
+    "L_repr": 0.22090966999530792,
+    "L_sem": 0.1419777274131775,
+    "total": 0.3628873825073242,
+    "repr_to_shared_grad_l2": 0.036576852202415466,
+    "sem_to_shared_grad_l2": 0.07428525388240814,
+    "head_gradient_l2": {
+      "shared_encoder": 0.07494782656431198,
+      "semantic_head": 0.07915985584259033,
+      "temporal_head": 0.050631094723939896
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.1991463452577591,
+      "semantic_head": 0.04065665602684021,
+      "temporal_head": 0.08032479137182236
+    },
+    "gradient_norm_before_clip": 0.12019553035497665,
+    "data_seconds": 0.4118531249987427,
+    "device_phase_seconds": 0.2660304580022057,
+    "step_seconds": 0.6806906249985332,
+    "windows_per_second": 188.04431161406964,
+    "cpu_seconds": 0.5877949999999998,
+    "batch_identity_sha256": "5b82bbd742ca73b1c23d27325d9d38e2f6c4efdf5434ec751133940fe327b909",
+    "resources": {
+      "cpu_process_seconds": 15.665474,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 163561472
+    },
+    "process_elapsed_seconds": 17.16333166700133
+  },
+  {
+    "epoch": 2,
+    "step": 25,
+    "windows": 128,
+    "L_repr": 0.22933855652809143,
+    "L_sem": 0.20489320158958435,
+    "total": 0.4342317581176758,
+    "repr_to_shared_grad_l2": 0.04789469391107559,
+    "sem_to_shared_grad_l2": 0.0943986251950264,
+    "head_gradient_l2": {
+      "shared_encoder": 0.0971083790063858,
+      "semantic_head": 0.09489186853170395,
+      "temporal_head": 0.05844031646847725
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.19400805234909058,
+      "semantic_head": 0.038996268063783646,
+      "temporal_head": 0.07692430913448334
+    },
+    "gradient_norm_before_clip": 0.14781668782234192,
+    "data_seconds": 0.3988007080006355,
+    "device_phase_seconds": 0.20167387500259792,
+    "step_seconds": 0.6020325829995272,
+    "windows_per_second": 212.61307712327013,
+    "cpu_seconds": 0.5546990000000012,
+    "batch_identity_sha256": "28d8aedfc62c65b3f9af12d087ed194fdaed705bf89f3625b59a86bc2c569a34",
+    "resources": {
+      "cpu_process_seconds": 16.22069,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 163561472
+    },
+    "process_elapsed_seconds": 17.766434625002148
+  },
+  {
+    "epoch": 2,
+    "step": 26,
+    "windows": 128,
+    "L_repr": 0.20153695344924927,
+    "L_sem": 0.13997003436088562,
+    "total": 0.3415069878101349,
+    "repr_to_shared_grad_l2": 0.03997856751084328,
+    "sem_to_shared_grad_l2": 0.06363372504711151,
+    "head_gradient_l2": {
+      "shared_encoder": 0.0767567977309227,
+      "semantic_head": 0.08496320992708206,
+      "temporal_head": 0.062044888734817505
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.18146072328090668,
+      "semantic_head": 0.03700865060091019,
+      "temporal_head": 0.07469165325164795
+    },
+    "gradient_norm_before_clip": 0.13023024797439575,
+    "data_seconds": 0.3935194580008101,
+    "device_phase_seconds": 0.2683636250003474,
+    "step_seconds": 0.6659369580011116,
+    "windows_per_second": 192.21038637682327,
+    "cpu_seconds": 0.5535839999999972,
+    "batch_identity_sha256": "7e0a3f86df56877e76d90342903d9433f439c81a099cfabc23c16e990b0a8e40",
+    "resources": {
+      "cpu_process_seconds": 16.774799,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 18.43338870900334
+  },
+  {
+    "epoch": 2,
+    "step": 27,
+    "windows": 128,
+    "L_repr": 0.20764625072479248,
+    "L_sem": 0.10711506754159927,
+    "total": 0.31476131081581116,
+    "repr_to_shared_grad_l2": 0.06430764496326447,
+    "sem_to_shared_grad_l2": 0.04468712583184242,
+    "head_gradient_l2": {
+      "shared_encoder": 0.08674047887325287,
+      "semantic_head": 0.08184720575809479,
+      "temporal_head": 0.06821045279502869
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.16771458089351654,
+      "semantic_head": 0.03491634503006935,
+      "temporal_head": 0.07296617329120636
+    },
+    "gradient_norm_before_clip": 0.13738827407360077,
+    "data_seconds": 0.4076980829995591,
+    "device_phase_seconds": 0.20035787500091828,
+    "step_seconds": 0.6103747079978348,
+    "windows_per_second": 209.70724756906878,
+    "cpu_seconds": 0.5695130000000006,
+    "batch_identity_sha256": "b67185cec36f64d7b80312d1f6235ce00e64d9917c74a57595f67413420d59e9",
+    "resources": {
+      "cpu_process_seconds": 17.344823,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 19.04477037500328
+  },
+  {
+    "epoch": 2,
+    "step": 28,
+    "windows": 128,
+    "L_repr": 0.20367512106895447,
+    "L_sem": 0.13291774690151215,
+    "total": 0.3365928530693054,
+    "repr_to_shared_grad_l2": 0.050982821732759476,
+    "sem_to_shared_grad_l2": 0.051373157650232315,
+    "head_gradient_l2": {
+      "shared_encoder": 0.0925285592675209,
+      "semantic_head": 0.0885457918047905,
+      "temporal_head": 0.06404706835746765
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.16132554411888123,
+      "semantic_head": 0.03264400362968445,
+      "temporal_head": 0.07210399210453033
+    },
+    "gradient_norm_before_clip": 0.1431918889284134,
+    "data_seconds": 0.3885235840025416,
+    "device_phase_seconds": 0.1993421250008396,
+    "step_seconds": 0.5908868340011395,
+    "windows_per_second": 216.6235438573897,
+    "cpu_seconds": 0.5442309999999999,
+    "batch_identity_sha256": "3433df50f43442c97f141b57f7cba69a43ae294264c4d3f735f04e757cb04204",
+    "resources": {
+      "cpu_process_seconds": 17.889634,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 19.636785667000368
+  },
+  {
+    "epoch": 2,
+    "step": 29,
+    "windows": 128,
+    "L_repr": 0.22429779171943665,
+    "L_sem": 0.16928309202194214,
+    "total": 0.3935808837413788,
+    "repr_to_shared_grad_l2": 0.041637204587459564,
+    "sem_to_shared_grad_l2": 0.050686027854681015,
+    "head_gradient_l2": {
+      "shared_encoder": 0.06577342003583908,
+      "semantic_head": 0.07723525911569595,
+      "temporal_head": 0.060690704733133316
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.15811604261398315,
+      "semantic_head": 0.033148907124996185,
+      "temporal_head": 0.07170765101909637
+    },
+    "gradient_norm_before_clip": 0.11821500957012177,
+    "data_seconds": 0.3975388329999987,
+    "device_phase_seconds": 0.19959995899989735,
+    "step_seconds": 0.5993546669997158,
+    "windows_per_second": 213.5630321204468,
+    "cpu_seconds": 0.5515659999999976,
+    "batch_identity_sha256": "d1a1040afad4559465dad5789915dbe25241e531c4eea7105cb26b2292bb16e3",
+    "resources": {
+      "cpu_process_seconds": 18.44176,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 20.23724525000216
+  },
+  {
+    "epoch": 2,
+    "step": 30,
+    "windows": 128,
+    "L_repr": 0.18769975006580353,
+    "L_sem": 0.14492148160934448,
+    "total": 0.3326212167739868,
+    "repr_to_shared_grad_l2": 0.05706745386123657,
+    "sem_to_shared_grad_l2": 0.07427068799734116,
+    "head_gradient_l2": {
+      "shared_encoder": 0.11798831820487976,
+      "semantic_head": 0.08153028786182404,
+      "temporal_head": 0.055157776921987534
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.15198318660259247,
+      "semantic_head": 0.033834442496299744,
+      "temporal_head": 0.0688088983297348
+    },
+    "gradient_norm_before_clip": 0.15365810692310333,
+    "data_seconds": 0.41235562499787193,
+    "device_phase_seconds": 0.20085049999761395,
+    "step_seconds": 0.6147994999992079,
+    "windows_per_second": 208.19795722046766,
+    "cpu_seconds": 0.5687379999999997,
+    "batch_identity_sha256": "27373b85cca99622dc07c28ebb9ef3c2009cfdec576c85f8e564cb4c266f37fc",
+    "resources": {
+      "cpu_process_seconds": 19.011029,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 20.85313029200188
+  },
+  {
+    "epoch": 2,
+    "step": 31,
+    "windows": 128,
+    "L_repr": 0.18268634378910065,
+    "L_sem": 0.15269775688648224,
+    "total": 0.3353841006755829,
+    "repr_to_shared_grad_l2": 0.04881885647773743,
+    "sem_to_shared_grad_l2": 0.045229602605104446,
+    "head_gradient_l2": {
+      "shared_encoder": 0.0756087601184845,
+      "semantic_head": 0.07633998245000839,
+      "temporal_head": 0.06222209334373474
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.14330662786960602,
+      "semantic_head": 0.0325143001973629,
+      "temporal_head": 0.0656200721859932
+    },
+    "gradient_norm_before_clip": 0.12416145205497742,
+    "data_seconds": 0.4144831660014461,
+    "device_phase_seconds": 0.20321987500210525,
+    "step_seconds": 0.6198084999996354,
+    "windows_per_second": 206.51539951464895,
+    "cpu_seconds": 0.5777770000000011,
+    "batch_identity_sha256": "87f1d466d7aafe770aa24507f21b5e557013e90d341c261fa8e41019cd69399a",
+    "resources": {
+      "cpu_process_seconds": 19.589334,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 20782848,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 21.474014417002763
+  },
+  {
+    "epoch": 2,
+    "step": 32,
+    "windows": 128,
+    "L_repr": 0.207447350025177,
+    "L_sem": 0.1778857558965683,
+    "total": 0.3853331208229065,
+    "repr_to_shared_grad_l2": 0.04186104238033295,
+    "sem_to_shared_grad_l2": 0.06404099613428116,
+    "head_gradient_l2": {
+      "shared_encoder": 0.09174662083387375,
+      "semantic_head": 0.06654214859008789,
+      "temporal_head": 0.051084768027067184
+    },
+    "parameter_delta_l2": {
+      "shared_encoder": 0.14771056175231934,
+      "semantic_head": 0.03139548748731613,
+      "temporal_head": 0.06281344592571259
+    },
+    "gradient_norm_before_clip": 0.1243179440498352,
+    "data_seconds": 0.38467516700256965,
+    "device_phase_seconds": 0.2003602500008128,
+    "step_seconds": 0.5884167080002953,
+    "windows_per_second": 217.53291206669093,
+    "cpu_seconds": 0.5435539999999968,
+    "batch_identity_sha256": "bac02de100b760d7a9d6e34d027d31f5d20f39ecf4e331bdf95a91bd92fcd1f0",
+    "resources": {
+      "cpu_process_seconds": 20.133434,
+      "rss_peak_bytes": 483000320,
+      "mps_current_bytes": 19988224,
+      "mps_driver_bytes": 167755776
+    },
+    "process_elapsed_seconds": 22.063480542001344
+  }
+]

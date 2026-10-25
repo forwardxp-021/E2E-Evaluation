@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Package actual smoke-run evidence, independently verify train-only moments."""
 import os
 import sys
@@ -59,6 +60,17 @@ def main():
     steps=json.loads((OUT/'run/steps.json').read_text());reload=json.loads((OUT/'export/manifest.json').read_text())
     change=json.loads((OUT/'run/parameter_changes.json').read_text());probe=json.loads((OUT/'runtime_probe.json').read_text())
     norm=normalizer_check(data);rejected=json.loads((OUT/'materialization_rejections.json').read_text())
+    stats=dict(selected_windows=len(data['rows']),considered_identity_prefix=len(data['rows'])+len(rejected),
+        rejected_invalid=len(rejected),prefix_rejection_rate=len(rejected)/(len(data['rows'])+len(rejected)),
+        prior_raw_quality_rejections=sum(r['stage']=='prior_complete_raw_physical_quality_check' for r in rejected),
+        new_materialization_invalid=sum(r['stage']=='new_real_canonical_materialization' for r in rejected),
+        valid_ego_frames=dict(min=min(r['valid_ego_frames'] for r in data['rows']),
+                              max=max(r['valid_ego_frames'] for r in data['rows']),
+                              mean=float(np.mean([r['valid_ego_frames'] for r in data['rows']]))),
+        valid_channel_cells=sum(r['valid_channel_cells'] for r in data['rows']),
+        present_neighbor_frames=sum(r['present_neighbor_frames'] for r in data['rows']),
+        source_risk='RAW_SEGMENT_DISJOINTNESS_NOT_ESTABLISHED')
+    write(OUT/'materialization_statistics.json',stats)
     checks=dict(real_data_counts=data['counts']=={'train':2048,'diagnostic':256},
         observed_group_disjoint=data['observed_groups']['intersection']==0,
         actual_32_optimizer_steps=len(steps)==32 and [s['step'] for s in steps]==list(range(1,33)) and progress['optimizer_steps']==32,
@@ -143,7 +155,10 @@ def main():
 
 使用上一轮既有source record索引与观察依赖图，没有重新扫描51份TFRecord，也没有读取旧错误83维数组。抽样前冻结protocol、完整可复算身份排序及处理代码hash。仅取candidate train；排除任何连接到candidate test或legacy test的观察依赖组。再按组固定哈希90%/10%分为smoke train/diagnostic，在各侧按窗口身份hash排名，跳过预定物理规则无效的窗口并记录原因，不以loss或模型输出替换。
 
-实际物化训练2048、工程诊断256，观察依赖组分别{data['observed_groups']['train']}和{data['observed_groups']['diagnostic']}，交集0；共保留{len(rejected)}个物理输入排除记录，没有访问正式U_test数值样本。选中样本全部重新读取真实Waymo原始payload并验证SHA，通过既有`from_waymo → canonical83_v1`生产接口生成80×83、channel-valid、presence、邻车身份、时间与13项目标，未改Canonical83定义。
+实际物化训练2048、工程诊断256，观察依赖组分别{data['observed_groups']['train']}和{data['observed_groups']['diagnostic']}，交集0。固定排序前缀共检查{stats['considered_identity_prefix']}个身份，保留{len(rejected)}个物理输入排除记录，前缀排除率{stats['prefix_rejection_rate']:.4%}。
+其中先验真实原始质量预检排除{stats['prior_raw_quality_rejections']}个、新物化不合格{stats['new_materialization_invalid']}个，不把预检跳过项伪称为已重新物化。没有访问正式U_test数值样本。
+选中样本全部重新读取真实Waymo原始payload并验证SHA，通过既有`from_waymo → canonical83_v1`生产接口生成80×83、channel-valid、presence、邻车身份、时间与13项目标，未改Canonical83定义。
+有效ego帧数范围{stats['valid_ego_frames']['min']}～{stats['valid_ego_frames']['max']}/80，均值{stats['valid_ego_frames']['mean']:.3f}；保留{stats['present_neighbor_frames']:,}个邻车存在的slot-frame，不是仅用自车或全零邻车占位。
 
 完整样本身份见`selected_samples.csv`，完整mask和时钟在每个NPZ中，数据manifest逐文件绑定SHA。2048训练窗口有效字段拟合normalizer；256诊断窗口从不参与拟合。另用独立sum/sum-of-squares算法逐字段复核训练统计和有效计数，输入与13目标均通过。缺失值、TTC/THW sentinel由mask排除。观察图分组互斥不能证明上游原始采集segment独立。
 
@@ -152,6 +167,8 @@ def main():
 直接复用原GRU128共享z64及Semantic13/Generic Temporal两个Head，没有架构搜索或新监督。seed3407、batch128、epoch2、AdamW lr0.001/weight_decay0.0001、clip1、两loss权重1:1均冻结。全部2048训练行每epoch固定seed打乱一次，16个完整batch；最后完整epoch2是唯一Smoke交付checkpoint，无best-epoch搜索、无early stopping。诊断仅做数值记录。
 
 每个真实step分别以两个loss对共享GRU+projection计算autograd梯度，再对总loss执行backward、clip与一次optimizer.step。32步两种共享梯度均非零且有限，GRU/projection及两Head每步均有真实参数变化；初末参数hash不同，总参数变化L2为{change['total_l2']:.8f}。完整分组梯度、逐参数变化、NaN/Inf检查和每batch身份hash见`run/steps.json`及`run/parameter_changes.json`。
+
+L_repr到共享encoder梯度L2范围：{min(s['repr_to_shared_grad_l2'] for s in steps):.8f}～{max(s['repr_to_shared_grad_l2'] for s in steps):.8f}；L_sem对应范围：{min(s['sem_to_shared_grad_l2'] for s in steps):.8f}～{max(s['sem_to_shared_grad_l2'] for s in steps):.8f}。这些是实际训练batch的梯度，不是沿用合成fixture的结果。
 
 | Epoch | L_repr | L_sem | Train total | 工程诊断total | 训练秒数 |
 |---|---:|---:|---:|---:|---:|

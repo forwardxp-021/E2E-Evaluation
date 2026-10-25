@@ -1,0 +1,21 @@
+{
+  "state": "RBR_V2_ENGINEERING_SMOKE_ONLY",
+  "checkpoint_label": "SMOKE_ONLY_NOT_PRIMARY_CHECKPOINT",
+  "training_certified": false,
+  "config_sha256": "065400058aa8682d17f4a72cb32a45aba102692bc6cc79ae88874426e1ef43a3",
+  "data_sha256": "d21542a9b5276a8d49ed72c77b287c81dd641ce8a326fcc6adb050dcf5b82f12",
+  "normalizer_sha256": "c50ee884e2ddd99c4017991350fb5f4ebd59b44f0a525ee0c8d7a997807e8fae",
+  "probe_sha256": "ed8a00c9beb49877e4fa3fd2368b2ebf739e4672d8a1cfd6c0a6ba630c53b201",
+  "device": "mps",
+  "source_sha256": {
+    "tools/rbr_v2_smoke_train.py": "7ed92e9d3b4fb7677220ca71dc314d4591110313ab8a6257924df87184e1c216",
+    "tools/rbr_v2_smoke_data.py": "472abc83425be92704e153762fbf21624151cfea3d5c55a2994a3d079bfe9409",
+    "tools/rbr_v2_train.py": "15036ffab5d1759a03fe89e0aece5d127c5a31be960c8718afbafb921302b4a1",
+    "tools/rbr_v2_model.py": "a89a62e43f4e1b0ea5064557b98388c3b170ce0b171fd81222c61361f6c17758",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399"
+  },
+  "planned_optimizer_steps": 32,
+  "checkpoint_selection": "LAST_COMPLETE_EPOCH_2_ONLY",
+  "diagnostic_selection": false,
+  "ready": true
+}

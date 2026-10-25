@@ -1,0 +1,95 @@
+train materialized 32/2048; rejected=1 elapsed=19.0s
+train materialized 64/2048; rejected=2 elapsed=39.3s
+train materialized 96/2048; rejected=2 elapsed=55.6s
+train materialized 128/2048; rejected=2 elapsed=71.3s
+train materialized 160/2048; rejected=2 elapsed=87.8s
+train materialized 192/2048; rejected=5 elapsed=109.7s
+train materialized 224/2048; rejected=5 elapsed=129.5s
+train materialized 256/2048; rejected=5 elapsed=148.5s
+train materialized 288/2048; rejected=6 elapsed=167.1s
+train materialized 320/2048; rejected=7 elapsed=188.5s
+train materialized 352/2048; rejected=9 elapsed=205.5s
+train materialized 384/2048; rejected=9 elapsed=229.5s
+train materialized 416/2048; rejected=10 elapsed=247.4s
+train materialized 448/2048; rejected=10 elapsed=266.9s
+train materialized 480/2048; rejected=11 elapsed=285.9s
+train materialized 512/2048; rejected=11 elapsed=309.6s
+train materialized 544/2048; rejected=11 elapsed=327.3s
+train materialized 576/2048; rejected=11 elapsed=347.2s
+train materialized 608/2048; rejected=14 elapsed=369.5s
+train materialized 640/2048; rejected=15 elapsed=391.5s
+train materialized 672/2048; rejected=15 elapsed=405.5s
+train materialized 704/2048; rejected=15 elapsed=426.1s
+train materialized 736/2048; rejected=15 elapsed=443.9s
+train materialized 768/2048; rejected=16 elapsed=461.8s
+train materialized 800/2048; rejected=16 elapsed=476.3s
+train materialized 832/2048; rejected=17 elapsed=502.8s
+train materialized 864/2048; rejected=19 elapsed=523.4s
+train materialized 896/2048; rejected=19 elapsed=540.9s
+train materialized 928/2048; rejected=20 elapsed=560.7s
+train materialized 960/2048; rejected=20 elapsed=579.0s
+train materialized 992/2048; rejected=22 elapsed=600.4s
+train materialized 1024/2048; rejected=22 elapsed=616.3s
+train materialized 1056/2048; rejected=22 elapsed=638.4s
+train materialized 1088/2048; rejected=22 elapsed=659.3s
+train materialized 1120/2048; rejected=23 elapsed=676.8s
+train materialized 1152/2048; rejected=23 elapsed=698.6s
+train materialized 1184/2048; rejected=24 elapsed=715.0s
+train materialized 1216/2048; rejected=25 elapsed=734.1s
+train materialized 1248/2048; rejected=26 elapsed=755.1s
+train materialized 1280/2048; rejected=26 elapsed=769.7s
+train materialized 1312/2048; rejected=27 elapsed=786.2s
+train materialized 1344/2048; rejected=27 elapsed=804.5s
+train materialized 1376/2048; rejected=28 elapsed=824.2s
+train materialized 1408/2048; rejected=28 elapsed=841.5s
+train materialized 1440/2048; rejected=28 elapsed=864.5s
+train materialized 1472/2048; rejected=30 elapsed=886.8s
+train materialized 1504/2048; rejected=30 elapsed=904.1s
+train materialized 1536/2048; rejected=30 elapsed=925.4s
+train materialized 1568/2048; rejected=31 elapsed=945.3s
+train materialized 1600/2048; rejected=31 elapsed=962.3s
+train materialized 1632/2048; rejected=33 elapsed=984.5s
+train materialized 1664/2048; rejected=33 elapsed=998.4s
+train materialized 1696/2048; rejected=33 elapsed=1017.7s
+train materialized 1728/2048; rejected=33 elapsed=1037.3s
+train materialized 1760/2048; rejected=33 elapsed=1053.6s
+train materialized 1792/2048; rejected=33 elapsed=1075.3s
+train materialized 1824/2048; rejected=34 elapsed=1093.1s
+train materialized 1856/2048; rejected=34 elapsed=1112.8s
+train materialized 1888/2048; rejected=34 elapsed=1130.9s
+train materialized 1920/2048; rejected=35 elapsed=1148.5s
+train materialized 1952/2048; rejected=36 elapsed=1168.0s
+train materialized 1984/2048; rejected=36 elapsed=1185.9s
+train materialized 2016/2048; rejected=37 elapsed=1207.2s
+train materialized 2048/2048; rejected=37 elapsed=1223.6s
+diagnostic materialized 32/256; rejected=37 elapsed=1241.3s
+diagnostic materialized 64/256; rejected=38 elapsed=1258.0s
+diagnostic materialized 96/256; rejected=38 elapsed=1276.9s
+diagnostic materialized 128/256; rejected=38 elapsed=1296.0s
+diagnostic materialized 160/256; rejected=39 elapsed=1312.7s
+diagnostic materialized 192/256; rejected=39 elapsed=1328.0s
+diagnostic materialized 224/256; rejected=40 elapsed=1345.5s
+diagnostic materialized 256/256; rejected=41 elapsed=1363.8s
+{
+  "state": "RBR_V2_ENGINEERING_SMOKE_ONLY",
+  "checkpoint_label": "SMOKE_ONLY_NOT_PRIMARY_CHECKPOINT",
+  "training_certified": false,
+  "primary_encoder_eligible": false,
+  "raw_segment_disjointness": "NOT_ESTABLISHED",
+  "input_contract": "canonical83_v1",
+  "counts": {
+    "train": 2048,
+    "diagnostic": 256
+  },
+  "observed_groups": {
+    "train": 1860,
+    "diagnostic": 231,
+    "intersection": 0
+  },
+  "excluded_invalid": 41,
+  "rejection_sha256": "a3451caa39d89cb1a1842ba147d7e7d9a5d955d7aceceab119820d224305b6c5",
+  "elapsed_seconds": 1363.900405,
+  "selection_freeze_sha256": "0c044517a05ea124278c0b5969249bdca0c42f87ab282c008e5bfbd7ed1ff690",
+  "policy_sha256": "065400058aa8682d17f4a72cb32a45aba102692bc6cc79ae88874426e1ef43a3",
+  "use": "Engineering numerical checks only; diagnostics are NOT U_val/generalization evidence"
+}

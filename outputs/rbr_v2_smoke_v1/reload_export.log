@@ -1,0 +1,26 @@
+z64 eval 128/256
+z64 eval 256/256
+z64 eval 128/256
+z64 eval 256/256
+{
+  "status": "PASS",
+  "state": "RBR_V2_ENGINEERING_SMOKE_ONLY",
+  "checkpoint_label": "SMOKE_ONLY_NOT_PRIMARY_CHECKPOINT",
+  "training_certified": false,
+  "primary_encoder_eligible": false,
+  "shape": [
+    256,
+    64
+  ],
+  "finite": true,
+  "new_process_pid": 76493,
+  "training_process_pid": 75597,
+  "max_abs_reference_difference": 0.0,
+  "max_abs_repeat_difference": 0.0,
+  "bitwise_reference_equal": true,
+  "bitwise_repeat_equal": true,
+  "checkpoint_sha256": "fa10f6ddee26b1e46c6e7652b6d697f14e5178fa97221f4fe33dcf876e009cca",
+  "normalizer_sha256": "c50ee884e2ddd99c4017991350fb5f4ebd59b44f0a525ee0c8d7a997807e8fae",
+  "data_manifest_sha256": "d21542a9b5276a8d49ed72c77b287c81dd641ce8a326fcc6adb050dcf5b82f12",
+  "z64_sha256": "6c811de27f0e40daf9502e895c33ef74ca030da34ee8b8633e950e6dd8efa20f"
+}
