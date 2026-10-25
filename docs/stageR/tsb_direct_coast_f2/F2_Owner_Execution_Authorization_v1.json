@@ -1,0 +1,26 @@
+{
+  "stage": "TSB_DIRECT_COAST_F2",
+  "authorization_status": "AUTHORIZED",
+  "scientific_owner_approved": true,
+  "source_commit": "afe038a10c6d1a40e1919351f3846b69d69489a8",
+  "approved_run_ids": [
+    "F2-DEV-01-BASELINE",
+    "F2-DEV-01-TREATMENT"
+  ],
+  "approved_spec_sha256": {
+    "F2-DEV-01-BASELINE": "7155a8fafdaf40231372500daa458ff285e0c3f2a1499a63c3f4a9b23fefba5e",
+    "F2-DEV-01-TREATMENT": "8216c6bf4ac90458459c3d87267df0e0fd912f3f1ab624823583754415f99051"
+  },
+  "binding_sha256": "12813b9b22f9be096d94682e088af7bab61d4f28cb58d6301cbd1c281d1b9772",
+  "protocol_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+  "maximum_new_attempts": 2,
+  "execution_ledger_path": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/tsb_direct_coast_f2_execution_state_v1/budget.json",
+  "scientific_output_root": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/tsb_direct_coast_f2_dev01_v1",
+  "initial_ledger_sha256": "9022ecba94a087b9919520997fd3b04cce7b3b60d38489b608356b0781bcaad2",
+  "budget": {
+    "cpu_seconds": 3600,
+    "per_arm_wall_seconds": 1200
+  },
+  "technical_retry_authorized": false,
+  "disclosed_observation_skew_acknowledged": true
+}

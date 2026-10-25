@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "exact_two_allowed_credential_checks": "PASSED_DURING_FREEZE",
+  "rejected": [
+    "F2-DEV-02-BASELINE",
+    "F2-DEV-03-TREATMENT",
+    "P1R-C2-DEV-01-BASELINE"
+  ],
+  "new_ledger": {
+    "stage": "TSB_DIRECT_COAST_F2",
+    "attempts": [],
+    "cpu_seconds_consumed": 0.0,
+    "stopped": false,
+    "maximum_new_attempts": 2,
+    "scientific_CPU_seconds_max": 3600,
+    "per_arm_wall_seconds_max": 1200,
+    "automatic_retry_authorized": false,
+    "old_C2_ledger_not_reused": true
+  },
+  "auth_source_commit": "afe038a10c6d1a40e1919351f3846b69d69489a8"
+}

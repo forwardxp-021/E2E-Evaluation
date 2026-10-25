@@ -1,0 +1,11 @@
+{
+  "stage": "TSB_DIRECT_COAST_F2",
+  "attempts": [],
+  "cpu_seconds_consumed": 0.0,
+  "stopped": false,
+  "maximum_new_attempts": 2,
+  "scientific_CPU_seconds_max": 3600,
+  "per_arm_wall_seconds_max": 1200,
+  "automatic_retry_authorized": false,
+  "old_C2_ledger_not_reused": true
+}
