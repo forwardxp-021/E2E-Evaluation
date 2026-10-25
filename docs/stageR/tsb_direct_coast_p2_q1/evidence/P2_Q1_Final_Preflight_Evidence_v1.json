@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "protected_files": 5450,
+  "changed_protected_files": [],
+  "F2_source_config_files": 1075,
+  "Q0_data_files": 43,
+  "F2_data_files": 3,
+  "Q0_output_files": 26,
+  "Q0_preflight_config_artifacts": 120,
+  "frozen_arms": 40,
+  "independent_SESSION": 20,
+  "Q0_production_preflight_pass_arms": 40,
+  "repeated_Q0_factory_preflight": 0,
+  "scientific_attempts": 0,
+  "new_budget_ledger_exists": false,
+  "new_science_namespace_exists": false,
+  "per_SESSION_clock_mapping_exactly_bound": true,
+  "source_config_data_proofs_verified": true,
+  "legacy_credentials_rejected": 200,
+  "tests_passed": 10
+}

@@ -1,0 +1,504 @@
+# TSB-DirectCoast P2-Q1 — 20个独立SESSION正式资格验证
+
+## 一、Scientific Owner最终批准
+
+项目：
+
+Repository：`forwardxp-021/E2E-Evaluation`
+
+Branch：`20260825_stageR_new`
+
+最新已确认提交：
+
+`ad684593b9c62b88d5b435a42e2a9b04456241a9`
+
+Scientific Owner已审查并接受：
+
+`P2_Q0_READY_FOR_OWNER_EXECUTION_REVIEW`
+
+现正式批准：
+
+`TSB_DIRECT_COAST_P2_SCIENTIFIC_EXECUTION`
+
+授权范围为已经冻结的20个独立SESSION、40个首次arm。
+
+**本轮不再增加新的科学设计阶段，不再重新选择SESSION，也不再重复制定F2方案。**
+
+本次授权以P2-Q0冻结名单、F2批准合同、真实源码和数据哈希全部验证通过为生效条件。
+
+如果任何前置条件不符合，必须在第一次科学attempt之前停止，不能靠本条授权绕过既有保护。
+
+## 二、研究目标
+
+本轮只回答：
+
+**冻结的TSB-DirectCoast干预，是否能够在20个独立nuPlan SESSION中稳定形成合格的双阶段制动行为，同时维持整体运动匹配和官方安全？**
+
+不评估RBR检测能力。
+
+不进行模型训练。
+
+不改变H30。
+
+不执行Primary、V或C。
+
+本次评价属于：
+
+`B_BENCHMARK_QUALIFICATION`
+
+不是独立的端到端驾驶策略版本性能比较，也不声称真实轮端零扭矩滑行。
+
+## 三、必须读取并冻结的依据
+
+以以下文件为执行依据：
+
+```text
+docs/stageR/tsb_direct_coast_f2/
+docs/stageR/tsb_direct_coast_p2_q0/
+docs/stageR/s1r_owner_amendment/
+```
+
+关键合同：
+
+```text
+P2_Q0_Frozen_Qualification_Protocol_v1.md
+
+P2_Q0_Independent_Session_Roster_v1.csv
+
+P2_Q0_Execution_Authorization_PROPOSED_ONLY_v1.json
+
+P2_Q0_40Arm_Production_Preflight_v1.csv
+
+P2_Q0_Manifest_v1.json
+
+F2_Owner_Protocol_v1.json
+
+F2_Execution_Source_Binding_v1.json
+```
+
+历史 `PROPOSED_ONLY` 授权草案永久保留，不直接覆盖。
+
+根据本次Owner指令创建独立P2正式授权凭据，绑定实际授权指令、冻结名单、全部40个run ID、代码、配置、科学合同和来源SHA256。
+
+授权凭据和可执行代码的冻结顺序必须避免循环哈希。
+
+执行入口必须在领取科学attempt之前独立验证新的授权凭据，并拒绝B1、C2、F2及Q0旧凭据。
+
+## 四、40个arm全部固定
+
+严格执行原Q0排名顺序：
+
+```text
+DIRECTCOAST-P2-01
+...
+DIRECTCOAST-P2-20
+```
+
+每对：
+
+```text
+BASELINE
+TREATMENT
+```
+
+同一对必须使用相同SESSION、scenario token、初始状态、precontext和route。
+
+全部身份取自原冻结名单。
+
+禁止：
+
+- 增删SESSION；
+- 替换scenario；
+- 更改固定排序；
+- 修改selection salt；
+- 根据运行结果跳过困难SESSION；
+- 使用未在冻结名单中的样本；
+- 将E1/E2重新标记成E5。
+
+每个SESSION只能作为一个独立资格统计单位。
+
+DEV-01/02/03、旧B1及Primary C保护样本不进入本次名单。
+
+## 五、F2科学合同不允许更改
+
+Baseline：
+
+```text
+[2.1, 3.9) s
+u = -1.45 m/s²
+```
+
+Treatment：
+
+```text
+[1.1, 2.1) s
+u = -1.305 m/s²
+
+[2.1, 3.9) s
+u = 0
+
+[3.9, 4.9) s
+u = -1.305 m/s²
+```
+
+其余时间u=0。
+
+两臂使用相同的 `ScriptedLongitudinalRequestTrackerV1`。
+
+纵向LQR与停车控制器不得介入；横向LQR保持工作。
+
+原KinematicBicycleModel、加速度滤波、规范10Hz时钟、测量、地图和安全链均保持冻结。
+
+不能根据SESSION调整减速度幅值、制动时长或切换边界。
+
+实际车辆状态必须由官方模型推进，不能直接赋值实现目标速度或目标加速度。
+
+## 六、正式机制资格
+
+对Baseline要求：
+
+- 恰好一段合格制动；
+- 实际峰值≥0.80m/s²；
+- 有效支持时长≥0.40秒；
+- 门槛内制动剂量≥0.35m/s。
+
+对Treatment要求：
+
+- 恰好两段合格制动；
+- 每段峰值≥0.80m/s²；
+- 每段有效支持时长≥0.40秒；
+- 每段剂量≥0.35m/s；
+- 两段有效分离≥0.70秒；
+- 中间18个控制步最终纵向请求严格为0；
+- 请求实际到达官方模型；
+- 车辆状态持续推进；
+- 模型加速度滤波关系符合冻结方程；
+- 无未解释的主动正向恢复。
+
+资格计算必须使用冻结的median3真实速度、physical-time gradient及有效域规则。
+
+低速、参考速度floor及时间有效性检查不得取消。
+
+旧近零加速度、速度漂移及正恢复数值作为已批准的诊断指标保留。
+
+不允许根据某个SESSION实际曲线重新选择测量区间或改变机制门槛。
+
+## 七、F_match与额外平衡
+
+只有两arm均通过技术、机制和安全检查，才进行正式配对判断。
+
+四项容差保持：
+
+```text
+mean_speed ≤ 0.10m/s
+
+end_minus_start_speed ≤ 0.15m/s
+
+path_length ≤ 0.80m
+
+mean_abs_accel ≤ 0.02m/s²
+```
+
+全部使用冻结的raw速度、规范物理时间、导数、舍入和比较方法。
+
+额外要求：
+
+```text
+negative_dose_delta ≤ 0.15m/s
+
+each_Treatment_peak_vs_Baseline_peak
+≤ 0.20m/s²
+```
+
+不允许用参考曲线代替实际轨迹。
+
+如果arm级条件失败，正式F_match应标记：
+
+`NOT_EVALUATED_ARM_GATE_FAILED`
+
+允许保存已观察到的单臂描述符，但不得把描述性差值伪报为正式资格PASS或FAIL。
+
+若两个arm全部完整，F_match正式FAIL即为该pair的科学FAIL，不得重新运行寻找合格结果。
+
+## 八、官方安全与时钟
+
+每个arm必须拥有：
+
+- 80个真实current-ego状态；
+- 79个controller transition；
+- 80个planner记录；
+- 完整官方metric产物；
+- 正式simulation log；
+- serializer、callback及finalizer完整收尾；
+- 完整可验证artifact hashes。
+
+官方安全继续要求：
+
+```text
+at_fault_collisions = 0
+
+drivable_area_compliance = true
+```
+
+必须保留每个SESSION原始日志与规范时钟的映射。
+
+本次Q0已观察的时间偏差范围为−1014～+1443微秒；各SESSION应使用各自冻结的完整映射，不得统一替换成DEV-01的时间表。
+
+保留：
+
+`DISCLOSED_OFFLINE_SAME_INDEX_REPLAY_NOT_STRICT_EVENT_TIME_CAUSALITY`
+
+任何涉及日志观察时间、官方碰撞和TTC的结论，必须明确该离线回放限制。
+
+## 九、执行器与授权实现
+
+Q0目前只包含准备入口，没有正式P2 launcher。
+
+允许新建**最小P2执行调度层**，但必须直接复用F2冻结的tracker、planner、官方模型、recorder、analyzer和正式生命周期。
+
+允许的新增工程只限于：
+
+- 正式授权验证；
+- 20对身份调度；
+- 持久化预算与进程监督；
+- 失败立即停止；
+- 结果读取和汇总；
+- execution exposure ledger；
+- artifact完整性检查。
+
+不能借新增调度器之名复制并修改F2科学测量逻辑。
+
+首次runner之前必须对调度层做零运行权限和故障注入测试，确认未授权无法执行、重复启动无法重复领取预算、失败后不会继续下一arm。
+
+如调度器必须改变F2科学源码，必须停止并报告Owner，不得继续科学执行。
+
+## 十、执行预算及停止规则
+
+批准：
+
+```text
+PAIRS = 20
+
+INITIAL_ARMS_MAX = 40
+
+GLOBAL_ATTEMPTS_CEILING = 42
+
+TECHNICAL_RETRY_AUTHORIZED = 0
+
+SCIENTIFIC_CPU_BUDGET = 57600 seconds
+
+PER_ARM_WALL_LIMIT = 1200 seconds
+```
+
+42是累计预算天花板，不是当前42次均获授权。
+
+此次正式授权仅覆盖原40个arm各一次首次执行。
+
+科学attempt在子进程启动前持久化领取。
+
+每个arm采用独立新进程与全新runner、planner、tracker、model和回调实例。
+
+累计CPU必须包含实际子进程和可计量的后代进程，预算账本不可重置。
+
+中断、异常退出、重复输出目录或无法确定已消耗预算时，fail closed。
+
+禁止通过删除运行账本、改run ID或重新创建目录获得额外attempt。
+
+### 首次科学失败
+
+立即停止整个P2。
+
+报告：
+
+`P2_QUALIFICATION_FAILED`
+
+记录失败pair、arm、首次失败条件及全部已完成结果。
+
+后续原定成员保留在冻结分母中，标记NOT_RUN_AFTER_STOP。
+
+不执行剩余名单，不替换失败SESSION。
+
+### 首次技术失败
+
+立即停止整个P2。
+
+报告：
+
+`P2_INFRASTRUCTURE_BLOCKED`
+
+保留真实attempt、原始日志、错误位置和已暴露科学结果。
+
+不自动retry。
+
+只有Owner后续独立批准技术修复/重试，才能考虑恢复。
+
+## 十一、全部成功才可宣布资格通过
+
+只有原冻结20对全部实际完成，且每对同时满足：
+
+- 技术生命周期完整；
+- 双臂机制资格；
+- F_match；
+- 额外剂量与峰值平衡；
+- 官方安全；
+- 时间映射和身份有效性；
+- artifact哈希一致；
+
+才能报告：
+
+`P2_QUALIFICATION_PASS_20_OF_20`
+
+不得仅用已完成成功子集声明资格通过。
+
+如果因失败停止，则必须报告：
+
+- 原计划分母20；
+- 实际已启动pair数；
+- 完整完成pair数；
+- 成功pair数；
+- 失败pair数；
+- 未运行pair数及原因。
+
+不要将提前停止的“已执行成功率”解释为20SESSION总体通过率估计。
+
+## 十二、结果汇总
+
+每一个完成的pair输出：
+
+```text
+pair_id
+session_id
+baseline_technical_status
+treatment_technical_status
+baseline_mechanism
+treatment_mechanism
+coast_zero_request_count
+f_match_four_values
+extra_balance
+official_safety
+overall_pair_status
+cpu_seconds
+artifact_hashes
+```
+
+必须保留原始未舍入值和冻结六位结果。
+
+生成20对资格状态矩阵。
+
+只有实际执行过的pair才写入科学指标；其他全部NOT_RUN。
+
+额外生成全局概要：
+
+- 20对完整性；
+- 双制动机制通过情况；
+- F_match四项分布；
+- 额外平衡的最大值和最小余量；
+- 官方安全与低速结果；
+- 观察时钟偏差分布；
+- CPU与attempt总量；
+- 失败类型及停止点。
+
+所有图表只根据实际完成的运行生成。
+
+不得补全未执行SESSION的曲线或统计量。
+
+## 十三、数据角色和历史保护
+
+本轮仅为Benchmark资格验证。
+
+已批准S1R数据角色与E0–E5规则保持。
+
+按实际运行更新E2工程暴露。
+
+不得利用本次资格结果：
+
+- 选择RBR encoder；
+- 调整训练loss；
+- 修改checkpoint或seed规则；
+- 改变H30；
+- 修改BDD/MMD统计量；
+- 修改Primary成功标准；
+- 筛选未来V/C的有利SESSION。
+
+旧B1继续保持20/20 PASS。
+
+旧C2科学FAIL保持。
+
+F2 Development PASS保持。
+
+保护已有全部文件与用户未提交改动。
+
+## 十四、交付文件
+
+创建：
+
+```text
+docs/stageR/tsb_direct_coast_p2_q1/
+```
+
+至少输出：
+
+```text
+P2_Q1_Owner_Authorization_v1.json
+P2_Q1_Final_Execution_Preflight_v1.md
+P2_Q1_Execution_Ledger_v1.json
+P2_Q1_Pair_Results_v1.csv
+P2_Q1_Mechanism_Matrix_v1.csv
+P2_Q1_FMatch_Results_v1.csv
+P2_Q1_Safety_Results_v1.csv
+P2_Q1_Exposure_Update_v1.csv
+P2_Q1_Final_Qualification_Report_v1.md
+P2_Q1_Manifest_v1.json
+```
+
+若提前失败，仅输出真实已经获得的指标，并保留全部原始失败证据。
+
+原始runner、recorder、model telemetry、官方metrics和simulation log保留在独立科学输出目录。
+
+源码、配置、数据、授权、原始结果及最终报告以SHA256建立可追溯关系。
+
+只提交本轮新增执行调度、测试、科学结果和文档。
+
+不得覆盖历史文件或清理用户工作区。
+
+## 十五、最终反馈格式
+
+A. Overall Verdict
+
+B. 用大白话回答20对是否全部通过
+
+C. 执行完成对数、成功对数、失败对数、未运行对数
+
+D. 双制动机制统计
+
+E. 零纵向请求与模型响应
+
+F. 四项F_match和额外平衡
+
+G. 官方安全与时钟限制
+
+H. 发生的首个科学或技术失败及停止原因
+
+I. CPU、attempt与预算账本
+
+J. 样本暴露更新与Primary防火墙
+
+K. 测试、哈希、原始产物与Git
+
+L. 唯一下一阶段建议
+
+## 十六、完成后停止
+
+无论20/20 PASS或提前失败，本轮均不得自动进行：
+
+```text
+RBR_TRAINING
+H30_RBR_BDD_COMPARISON
+PRIMARY_EVALUATION
+V_EXECUTION
+C_EXECUTION
+NEW_COAST_PARAMETER_SEARCH
+F3_DESIGN
+```
+
+**本轮目标是完成一次真正独立、固定名单、固定控制干预、固定科学规则的资格验证，而不是通过重复试验寻找成功样本。**

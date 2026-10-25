@@ -11715,3 +11715,24 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 ### P2-Q0 实际完成状态（2026-10-25）
 
 `P2_Q0_READY_FOR_OWNER_EXECUTION_REVIEW`。168合法候选固定hash前20，16 E1/4 E2，严格排除旧B1与DEV01/02/03且保护全部E5。原20名单40/40生产预检PASS、guard0、科学attempt0，未读机制/F_match/safety结果。新增准备入口曾混淆metadata fingerprint与file SHA，初次错误保留并仅修新工具，权威身份spec为evidence/P2_Q0_Verified_Arm_Specs_v1.json；原名单SHA/F2科学代码不变，生产预检只一次。旧B1/C2/F2与PROPOSED凭据共200拒绝检查PASS。提案仍PROPOSED_ONLY，42上限不是2次retry授权；完成后停止，等待独立Owner终审。
+
+## TSB-DirectCoast P2-Q1：固定20 SESSION正式资格执行
+
+### 1. 命令
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python -m unittest discover -s tests -p 'test_tsb_direct_coast_p2_q1.py' -v
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_direct_coast_p2_q1.py --validate
+# 仅首次Owner授权执行，已有state目录即拒绝；本轮完成后禁止重启：
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_direct_coast_p2_q1.py --execute
+# 仅停止后的真实结果只读导出，一次性文件不覆盖：
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/tsb_direct_coast_p2_q1_report.py
+```
+
+### 2. 期望行为
+
+授权检查绑定本轮独立正式Owner凭据、原Q0名单40个run ID、F2科学源码/合同/配置/来源哈希，拒绝旧B1/C2/F2/Q0凭据。调度按原20排名，每对Baseline后Treatment，各独立进程且attempt先持久化。只有arm技术/机制/安全/观察完整才进入下一arm，双臂完整才执行原F2正式pair analyzer。报告固定分母20，未运行科学字段空白，不替换样本、不调参数、不训练/运行Primary。产物分别在docs/stageR/tsb_direct_coast_p2_q1和outputs/stageR/tsb_direct_coast_p2_qualification_v1。
+
+### 3. 通过标准
+
+零运行权限/重复领取/中断/失败停止测试、compile及依赖检查必须通过。40首次arm全部完整且原20pair机制、四F、额外平衡、安全、时钟和hash全部满足才可P2_QUALIFICATION_PASS_20_OF_20。首个科学失败P2_QUALIFICATION_FAILED，首个技术失败P2_INFRASTRUCTURE_BLOCKED；账本stopped=true，未执行成员NOT_RUN_AFTER_STOP。42是天花板，retry授权0，禁止删除账本/输出后重跑。完成后停止等待Owner。
