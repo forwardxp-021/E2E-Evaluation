@@ -50,6 +50,13 @@ class SDCV1Tests(unittest.TestCase):
         result=e.temporal(self.root/'B',self.root/'T');self.assertFalse(result['pass_gate']);self.assertFalse(result['actual_trace_hash_distinct'])
         self.assertFalse(result['request_sequences_distinct'])
 
+    def test_final_qualification_roster_has_twenty_official_runnable_identities(self):
+        from tools.r1_b2_8_r3_prospective_selector import official_count
+        from tools.sdc_v1_execution import specs_path
+        arms=e.read(specs_path('QUALIFICATION'))['arms']
+        self.assertEqual(len(arms),40);self.assertEqual(len({s['session_id'] for s in arms}),20)
+        for spec in arms[::2]:self.assertEqual(official_count(spec['db_path'],spec['scenario_token']),1)
+
     def test_historical_credential_cannot_authorize_new_version(self):
         old=e.read(e.ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Owner_Execution_Authorization_v1.json')
         with patch.object(e,'read',return_value=old):
