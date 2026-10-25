@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "scope": "FIXED_SYNTHETIC_INITIAL_STATE_OFFICIAL_MODEL_INTERFACE_ONLY_NOT_SCIENTIFIC_QUALIFICATION",
+  "scientific_attempts": 0,
+  "model_fixture_motion_comparison_not_formal_Fmatch": {
+    "version": "P1R_UNCHANGED_FOUR_F_v1",
+    "baseline": {
+      "mean_speed": 12.450312,
+      "end_minus_start_speed": -2.61,
+      "path_length": 98.4635,
+      "mean_abs_accel": 0.32625
+    },
+    "treatment": {
+      "mean_speed": 12.450312,
+      "end_minus_start_speed": -2.609999,
+      "path_length": 98.4635,
+      "mean_abs_accel": 0.32625
+    },
+    "calipers": {
+      "mean_speed": 0.1,
+      "end_minus_start_speed": 0.15,
+      "path_length": 0.8,
+      "mean_abs_accel": 0.02
+    },
+    "absolute_delta": {
+      "mean_speed": 0.0,
+      "end_minus_start_speed": 1e-06,
+      "path_length": 0.0,
+      "mean_abs_accel": 0.0
+    },
+    "pass": true
+  }
+}

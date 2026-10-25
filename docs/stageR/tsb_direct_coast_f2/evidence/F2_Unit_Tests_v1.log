@@ -1,0 +1,10 @@
+test_both_arms_bypass_all_longitudinal_solvers_keep_lateral_and_state (test_tsb_direct_coast_f2.DirectCoastF2Tests) ... ok
+test_clock_mismatch_rejected (test_tsb_direct_coast_f2.DirectCoastF2Tests) ... ok
+test_command_impulse_and_midinterval_centroid (test_tsb_direct_coast_f2.DirectCoastF2Tests) ... ok
+test_integer_boundaries (test_tsb_direct_coast_f2.DirectCoastF2Tests) ... ok
+test_owner_schedule_and_inherited_qualification_exact (test_tsb_direct_coast_f2.DirectCoastF2Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+OK

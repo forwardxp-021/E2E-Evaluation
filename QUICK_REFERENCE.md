@@ -11663,3 +11663,26 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 6项数学fixture/实际一致性测试通过；新工具与测试编译、no_tmp检查通过；冻结输入、原ledger及保护CSV前后hash相同。既有P1R-D FAIL与零请求实现两项结论都保留，正式Pair仍NOT_EVALUATED，新科学attempt=0，旧ledger stopped=true/attempts2/CPU15.017957642秒。
 
 F1首选路线一：建议Owner确认关闭Coast开发，将后续工作限定到S3-P0输入合同/U独立性/零训练入口最小修复。运动学兼容不等于新闭环联合可行性已经建立；不推荐新参数、仿真、训练或自动以旧B1替代Primary。
+
+
+## TSB-DirectCoast F2：固定直接请求与独立DEV01验证
+
+### 1. 命令
+
+在仓库根目录运行接口单元测试（无科学执行）：
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python -m unittest discover -s tests -p test_tsb_direct_coast_f2.py -v
+```
+
+`tools/tsb_direct_coast_f2_prepare.py isolate/preflight/freeze`分别为一次性隔离model验证、零运行生产预检和源码提交后授权绑定入口；证据已存在时拒绝覆盖。`tools/tsb_direct_coast_f2_executor.py --launch F2-DEV-01-BASELINE`及TREATMENT仅在新授权校验通过后、按顺序各一次使用，禁止重跑或自动执行下一arm。完成后账本停止，命令不再产生新执行权限。
+
+### 2. 期望行为
+
+两臂全程用同一ScriptedLongitudinalRequestTrackerV1按整数微秒发固定非正请求，全部绕过纵向LQR/停车控制，官方横向LQR和KinematicBicycleModel保留。隔离model158更新仅作实现预检；真实B-development仅固定DEV01两首次attempt。原C2账本只读，新F2预算独立为2attempt/3600CPU秒/每arm1200wall秒，无retry或调参。命令、实际model状态与planner参考分别记录。
+
+`tools/tsb_direct_coast_f2_results.py --export`只读已执行F2产物，生成两组中文PNG/SVG/CSV及实际结果JSON；不启动runner。实际技术/机制条件不满足时不能生成虚假的pair PASS。原四F、机制阈值、额外balance和官方安全保持；旧B1/S1/S1R及历史C2 FAIL保护。
+
+### 3. 通过标准
+
+5项接口测试通过，隔离固定state及生产零运行预检PASS，来源/参数/资格/身份/依赖及新授权哈希一致，方能执行。最终PASS必须来自真实两臂完整机制、安全和正式四F/额外balance联合检查；隔离PASS不是科学PASS。若任何步骤失败立即停止，不修改参数或技术重试，不做P2、DEV02/03、RBR/H30/BDD、Primary/V/C。

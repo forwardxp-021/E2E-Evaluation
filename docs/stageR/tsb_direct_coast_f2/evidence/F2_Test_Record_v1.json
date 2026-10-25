@@ -1,0 +1,24 @@
+{
+  "unit_tests": 5,
+  "unit_result": "PASS",
+  "system_all_tools_py_compile": "PASS",
+  "scientific_runtime_new_source_compile": {
+    "command": [
+      "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+      "-m",
+      "py_compile",
+      "tools/tsb_direct_coast_f2_results.py",
+      "tools/tsb_direct_coast_f2_production.py",
+      "tools/tsb_direct_coast_f2_prepare.py",
+      "tools/tsb_direct_coast_f2_executor.py",
+      "tools/tsb_direct_coast_f2_tracker.py",
+      "tests/test_tsb_direct_coast_f2.py"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  },
+  "no_tmp": "PASS",
+  "isolated_validation": "PASS_ONE_FIXED_TWO_ARM_PREFLIGHT",
+  "production_preflight": "PASS_ZERO_RUN_GUARD_CALLS_0",
+  "scientific_attempts": 0
+}
