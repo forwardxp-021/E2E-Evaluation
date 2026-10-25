@@ -1,0 +1,12 @@
+{
+  "action": "Preserve and move abandoned empty Git index lock, no Git data/index changed",
+  "original": ".git/index.lock",
+  "preserved": "docs/stageR/tsb_direct_coast_p2_q1/evidence/P2_Q1_Stale_Empty_Index_Lock_v1.preserved",
+  "bytes": 0,
+  "mtime_unix": 1792916863.718762,
+  "age_seconds_at_review": 514.0073411464691,
+  "lsof_exit": 1,
+  "no_open_file_owner": true,
+  "no_live_git_process": true,
+  "scientific_attempts_after_stop": 0
+}

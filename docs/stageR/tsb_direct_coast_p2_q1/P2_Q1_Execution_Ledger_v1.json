@@ -1,0 +1,635 @@
+{
+  "stage": "TSB_DIRECT_COAST_P2_Q1",
+  "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca",
+  "binding_sha256": "dbc34d1eef90cc7a893b044670a68532caec1d87e3426507ffa02fa52e9bd2cd",
+  "budget": {
+    "initial_arms": 40,
+    "cumulative_attempts_ceiling": 42,
+    "technical_retry_authorized": 0,
+    "cpu_seconds": 57600,
+    "per_arm_wall_seconds": 1200
+  },
+  "approved_run_ids": [
+    "DIRECTCOAST-P2-01-BASELINE",
+    "DIRECTCOAST-P2-01-TREATMENT",
+    "DIRECTCOAST-P2-02-BASELINE",
+    "DIRECTCOAST-P2-02-TREATMENT",
+    "DIRECTCOAST-P2-03-BASELINE",
+    "DIRECTCOAST-P2-03-TREATMENT",
+    "DIRECTCOAST-P2-04-BASELINE",
+    "DIRECTCOAST-P2-04-TREATMENT",
+    "DIRECTCOAST-P2-05-BASELINE",
+    "DIRECTCOAST-P2-05-TREATMENT",
+    "DIRECTCOAST-P2-06-BASELINE",
+    "DIRECTCOAST-P2-06-TREATMENT",
+    "DIRECTCOAST-P2-07-BASELINE",
+    "DIRECTCOAST-P2-07-TREATMENT",
+    "DIRECTCOAST-P2-08-BASELINE",
+    "DIRECTCOAST-P2-08-TREATMENT",
+    "DIRECTCOAST-P2-09-BASELINE",
+    "DIRECTCOAST-P2-09-TREATMENT",
+    "DIRECTCOAST-P2-10-BASELINE",
+    "DIRECTCOAST-P2-10-TREATMENT",
+    "DIRECTCOAST-P2-11-BASELINE",
+    "DIRECTCOAST-P2-11-TREATMENT",
+    "DIRECTCOAST-P2-12-BASELINE",
+    "DIRECTCOAST-P2-12-TREATMENT",
+    "DIRECTCOAST-P2-13-BASELINE",
+    "DIRECTCOAST-P2-13-TREATMENT",
+    "DIRECTCOAST-P2-14-BASELINE",
+    "DIRECTCOAST-P2-14-TREATMENT",
+    "DIRECTCOAST-P2-15-BASELINE",
+    "DIRECTCOAST-P2-15-TREATMENT",
+    "DIRECTCOAST-P2-16-BASELINE",
+    "DIRECTCOAST-P2-16-TREATMENT",
+    "DIRECTCOAST-P2-17-BASELINE",
+    "DIRECTCOAST-P2-17-TREATMENT",
+    "DIRECTCOAST-P2-18-BASELINE",
+    "DIRECTCOAST-P2-18-TREATMENT",
+    "DIRECTCOAST-P2-19-BASELINE",
+    "DIRECTCOAST-P2-19-TREATMENT",
+    "DIRECTCOAST-P2-20-BASELINE",
+    "DIRECTCOAST-P2-20-TREATMENT"
+  ],
+  "attempts": [
+    {
+      "run_id": "DIRECTCOAST-P2-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "claim_token": "c641e4a832c87032bb14abf94dfead769fda5649094f826d17d3b83026bf6827",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:27:11Z",
+      "child_pid": 2565,
+      "cpu_seconds": 10.68909,
+      "wall_seconds": 12.456264916999999,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 10.68909,
+        "observed_per_pid_cpu_seconds": {
+          "(2565, 1792916831.153413)": 10.60771136,
+          "(2568, 1792916831.911987)": 0.004603958,
+          "(2581, 1792916837.884948)": 0.025512207999999998
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57600.0,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "claim_token": "abd3d761b14f04f08561a13d65aab84506f677212e25d5e933b9fe067bccb824",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:27:25Z",
+      "child_pid": 2604,
+      "cpu_seconds": 11.532837,
+      "wall_seconds": 12.808866666,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 11.532837,
+        "observed_per_pid_cpu_seconds": {
+          "(2604, 1792916845.18806)": 11.457998975999999,
+          "(2607, 1792916846.224379)": 0.007792083,
+          "(2610, 1792916851.599358)": 0.029611707
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57589.31091,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "claim_token": "359f7579ac46d490b475e3131380d61f4b7e014e8472bcb8300cae96412a8a5d",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:27:39Z",
+      "child_pid": 2717,
+      "cpu_seconds": 10.9618,
+      "wall_seconds": 12.321434666999998,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 10.9618,
+        "observed_per_pid_cpu_seconds": {
+          "(2717, 1792916859.749663)": 10.841662464,
+          "(2781, 1792916860.870332)": 0.003512416,
+          "(2785, 1792916860.974648)": 0.007092124,
+          "(2848, 1792916866.67767)": 0.025012957000000002
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57577.778073,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "claim_token": "34deb19dd3d94094c6f54ad274afcd53000244ce63fe037055a9c9b672770a38",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:27:53Z",
+      "child_pid": 3043,
+      "cpu_seconds": 9.622382,
+      "wall_seconds": 10.717643708000004,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.622382,
+        "observed_per_pid_cpu_seconds": {
+          "(3043, 1792916873.694224)": 9.520126464,
+          "(3137, 1792916879.546427)": 0.024689499
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57566.816273,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "claim_token": "2260d878155885988baefa2c6b77dd2d6f582c28b707e20253717ee3b49fa0c6",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:28:05Z",
+      "child_pid": 3326,
+      "cpu_seconds": 9.992299,
+      "wall_seconds": 11.086204666,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.992299,
+        "observed_per_pid_cpu_seconds": {
+          "(3326, 1792916885.949057)": 9.927227135999999,
+          "(3335, 1792916886.887027)": 0.0050743739999999996,
+          "(3428, 1792916891.980798)": 0.023545083
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57557.193891,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "claim_token": "c8d7c162156bb0707d2a05592267b2d62aa989275442e9930983ef65f1f5ab31",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:28:18Z",
+      "child_pid": 3661,
+      "cpu_seconds": 9.776126999999999,
+      "wall_seconds": 10.86207537499999,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.776126999999999,
+        "observed_per_pid_cpu_seconds": {
+          "(3661, 1792916898.572241)": 9.718013824,
+          "(3665, 1792916899.509228)": 0.005976708,
+          "(3755, 1792916904.392247)": 0.024336666
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57547.201592,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-04-BASELINE",
+      "status": "COMPLETE_PASS",
+      "claim_token": "89fe3c8d3863100375cef1b6b03712827755bc1cce4ea8b435845badc1b53c0c",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:28:30Z",
+      "child_pid": 3994,
+      "cpu_seconds": 9.630153,
+      "wall_seconds": 10.691728708,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.630153,
+        "observed_per_pid_cpu_seconds": {
+          "(3994, 1792916910.988698)": 9.540812928000001,
+          "(3997, 1792916911.928195)": 0.004800833,
+          "(4088, 1792916916.830877)": 0.024054040999999998
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57537.425465,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-04-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "claim_token": "4da4b8fcb18c812236a1afff57ce0698e8ae15538be2a7e2d5b8473a85218649",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:28:43Z",
+      "child_pid": 4320,
+      "cpu_seconds": 9.917718,
+      "wall_seconds": 10.977625833000005,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.917718,
+        "observed_per_pid_cpu_seconds": {
+          "(4320, 1792916923.206345)": 9.819990144,
+          "(4322, 1792916924.205385)": 0.008587874,
+          "(4421, 1792916929.101876)": 0.022122708
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57527.795312,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-05-BASELINE",
+      "status": "COMPLETE_PASS",
+      "claim_token": "eb0671d084bc9d6b93fdcdba5e27da7fc92dceed490b0130b2668206e97c3f31",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:28:55Z",
+      "child_pid": 4652,
+      "cpu_seconds": 11.188089999999999,
+      "wall_seconds": 12.196180041999995,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 11.188089999999999,
+        "observed_per_pid_cpu_seconds": {
+          "(4652, 1792916935.742566)": 11.09661312,
+          "(4747, 1792916941.483368)": 0.023979166
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57517.877594,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-05-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "claim_token": "90a2468e668ea36e7aecc76600ccf54e03f237b93f40d96812eee38eb7e7063e",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:29:09Z",
+      "child_pid": 4978,
+      "cpu_seconds": 11.241553,
+      "wall_seconds": 12.342033,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 11.241553,
+        "observed_per_pid_cpu_seconds": {
+          "(4978, 1792916949.456746)": 11.116024064,
+          "(4981, 1792916950.394054)": 0.002869332,
+          "(5073, 1792916955.317187)": 0.024173374
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57506.689504,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-06-BASELINE",
+      "status": "COMPLETE_PASS",
+      "claim_token": "d89579bb810206c30a4cdf4bd682dd3e62ec7b37bf7973d25b60659ab5907d65",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:29:23Z",
+      "child_pid": 5304,
+      "cpu_seconds": 9.597396,
+      "wall_seconds": 10.54417991699998,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.597396,
+        "observed_per_pid_cpu_seconds": {
+          "(5304, 1792916963.283455)": 9.501786752,
+          "(5306, 1792916964.215205)": 0.004242625,
+          "(5398, 1792916969.087778)": 0.022835499000000002
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57495.447951,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-06-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "claim_token": "86e8d0bad81b3976a4ab3a8b5dc24f3c92330c6af5adb2b53060ea9a5d6fbc48",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:29:35Z",
+      "child_pid": 5585,
+      "cpu_seconds": 9.576166,
+      "wall_seconds": 10.57573987500001,
+      "returncode": 0,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.576166,
+        "observed_per_pid_cpu_seconds": {
+          "(5585, 1792916975.338528)": 9.507489472,
+          "(5679, 1792916981.217168)": 0.024589416
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57485.850555,
+        "certain": true
+      }
+    },
+    {
+      "run_id": "DIRECTCOAST-P2-07-BASELINE",
+      "status": "SCIENTIFIC_FAILURE",
+      "claim_token": "c04d5ff882a81c7fdd1560af9c225b9e016e4cffd8a6265daf92ebc5d3cb972e",
+      "monitor_pid": 2546,
+      "claim_time_utc": "2026-10-25T08:29:47Z",
+      "child_pid": 5873,
+      "cpu_seconds": 9.585146,
+      "wall_seconds": 10.486950292000017,
+      "returncode": 20,
+      "stop_reason": null,
+      "cpu_accounting": {
+        "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+        "wait4_cpu_seconds": 9.585146,
+        "observed_per_pid_cpu_seconds": {
+          "(5873, 1792916987.470145)": 9.479949247999999,
+          "(5969, 1792916993.289228)": 0.024625082
+        },
+        "surviving_descendant_check": true,
+        "remaining_budget_at_start": 57476.274389,
+        "certain": true
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.733446,
+          "end_minus_start_speed": -2.619613,
+          "path_length": 45.400172,
+          "mean_abs_accel": 0.327831
+        },
+        "treatment": {
+          "mean_speed": 5.733446,
+          "end_minus_start_speed": -2.619612,
+          "path_length": 45.400172,
+          "mean_abs_accel": 0.327831
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009439526245e-06,
+        "peak_differences_mps2": [
+          0.17205136816465227,
+          0.17204315956394112
+        ],
+        "pass": true
+      },
+      "pair_pass": true,
+      "pair_id": "DIRECTCOAST-P2-01",
+      "session_id": "2021.10.01.18.24.31_veh-44",
+      "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+      "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+      "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+    },
+    {
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.838639,
+          "end_minus_start_speed": -2.612519,
+          "path_length": 69.931253,
+          "mean_abs_accel": 0.326669
+        },
+        "treatment": {
+          "mean_speed": 8.838639,
+          "end_minus_start_speed": -2.612517,
+          "path_length": 69.931252,
+          "mean_abs_accel": 0.326669
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009381794648e-06,
+        "peak_differences_mps2": [
+          0.17205925003483458,
+          0.1720431543196952
+        ],
+        "pass": true
+      },
+      "pair_pass": true,
+      "pair_id": "DIRECTCOAST-P2-02",
+      "session_id": "2021.08.25.20.20.58_veh-42",
+      "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+      "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+      "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+    },
+    {
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 3.876366,
+          "end_minus_start_speed": -2.57062,
+          "path_length": 30.729109,
+          "mean_abs_accel": 0.332201
+        },
+        "treatment": {
+          "mean_speed": 3.876366,
+          "end_minus_start_speed": -2.570619,
+          "path_length": 30.729109,
+          "mean_abs_accel": 0.332059
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000142
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0006834406353655176,
+        "peak_differences_mps2": [
+          0.17211207965433495,
+          0.17204311916920112
+        ],
+        "pass": true
+      },
+      "pair_pass": true,
+      "pair_id": "DIRECTCOAST-P2-03",
+      "session_id": "2021.08.27.13.08.25_veh-42",
+      "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+      "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+      "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+    },
+    {
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 4.738327,
+          "end_minus_start_speed": -2.486493,
+          "path_length": 37.538338,
+          "mean_abs_accel": 0.345102
+        },
+        "treatment": {
+          "mean_speed": 4.738327,
+          "end_minus_start_speed": -2.486492,
+          "path_length": 37.538338,
+          "mean_abs_accel": 0.344663
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000439
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.002107693112954667,
+        "peak_differences_mps2": [
+          0.172216736246515,
+          0.17204304953534333
+        ],
+        "pass": true
+      },
+      "pair_pass": true,
+      "pair_id": "DIRECTCOAST-P2-04",
+      "session_id": "2021.08.23.19.33.55_veh-08",
+      "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+      "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+      "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+    },
+    {
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 12.281043,
+          "end_minus_start_speed": -2.644382,
+          "path_length": 97.126133,
+          "mean_abs_accel": 0.331759
+        },
+        "treatment": {
+          "mean_speed": 12.281043,
+          "end_minus_start_speed": -2.64438,
+          "path_length": 97.126133,
+          "mean_abs_accel": 0.331758
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 1e-06
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009403999108e-06,
+        "peak_differences_mps2": [
+          0.1720222037431256,
+          0.17204317896864296
+        ],
+        "pass": true
+      },
+      "pair_pass": true,
+      "pair_id": "DIRECTCOAST-P2-05",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+      "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+      "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+    },
+    {
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.782803,
+          "end_minus_start_speed": -2.499114,
+          "path_length": 53.689755,
+          "mean_abs_accel": 0.343182
+        },
+        "treatment": {
+          "mean_speed": 6.782803,
+          "end_minus_start_speed": -2.499113,
+          "path_length": 53.689755,
+          "mean_abs_accel": 0.342789
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000393
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.001891248399593426,
+        "peak_differences_mps2": [
+          0.17220083150598597,
+          0.1720430601176517
+        ],
+        "pass": true
+      },
+      "pair_pass": true,
+      "pair_id": "DIRECTCOAST-P2-06",
+      "session_id": "2021.09.15.14.57.57_veh-45",
+      "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+      "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+      "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+    }
+  ],
+  "stopped": true,
+  "status": "P2_QUALIFICATION_FAILED",
+  "cpu_seconds_consumed": 133.31075700000002,
+  "cpu_accounting_certain": true
+}

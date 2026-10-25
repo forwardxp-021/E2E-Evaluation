@@ -1,0 +1,44 @@
+{
+  "F_match": {
+    "version": "P1R_UNCHANGED_FOUR_F_v1",
+    "baseline": {
+      "mean_speed": 8.838639,
+      "end_minus_start_speed": -2.612519,
+      "path_length": 69.931253,
+      "mean_abs_accel": 0.326669
+    },
+    "treatment": {
+      "mean_speed": 8.838639,
+      "end_minus_start_speed": -2.612517,
+      "path_length": 69.931252,
+      "mean_abs_accel": 0.326669
+    },
+    "calipers": {
+      "mean_speed": 0.1,
+      "end_minus_start_speed": 0.15,
+      "path_length": 0.8,
+      "mean_abs_accel": 0.02
+    },
+    "absolute_delta": {
+      "mean_speed": 0.0,
+      "end_minus_start_speed": 2e-06,
+      "path_length": 1e-06,
+      "mean_abs_accel": 0.0
+    },
+    "pass": true
+  },
+  "retained_P1_balance_review": {
+    "negative_dose_delta_mps": 1.3933009381794648e-06,
+    "peak_differences_mps2": [
+      0.17205925003483458,
+      0.1720431543196952
+    ],
+    "pass": true
+  },
+  "pair_pass": true,
+  "pair_id": "DIRECTCOAST-P2-02",
+  "session_id": "2021.08.25.20.20.58_veh-42",
+  "scope": "FORMAL_FROZEN_P2_PAIR_QUALIFICATION",
+  "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+  "authorization_sha256": "6874268ee15f3d547dbe56397d318680932e6fc0f4e3e9c61f99b5aaad9ac6ca"
+}

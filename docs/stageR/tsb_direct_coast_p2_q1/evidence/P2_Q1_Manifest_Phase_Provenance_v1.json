@@ -1,0 +1,80 @@
+[
+  {
+    "run_id": "DIRECTCOAST-P2-01-BASELINE",
+    "pre_audit_manifest_sha256": "6a11a9fa741c600c825f9b39eed8755b3131023ff5d3765803679e129e9f5915",
+    "final_manifest_sha256": "e8bacba2c913ea3ae3300e08885dac4d959aa525a21fe9885b11a54c46409b2f",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-01-TREATMENT",
+    "pre_audit_manifest_sha256": "d1e98101f9ba9975906bf2487c531c9a3e40fab8af2baf1cdb1c607d15e62d6e",
+    "final_manifest_sha256": "f38cc52ac55f1497a964dd431b0b09176121c2b30661bf2f2b389e2b5d039d2d",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-02-BASELINE",
+    "pre_audit_manifest_sha256": "266900682cf495ee679f5ba64dcd4e202c7a3d2f8c75ca8d1a5b84e297b62a74",
+    "final_manifest_sha256": "229e14bd4a51b1cced0f2ae9a1cafb348f0727ba258f77ecb5238540973df43e",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-02-TREATMENT",
+    "pre_audit_manifest_sha256": "b4909d2a953b243f3759d6fb97adb4a674588f46d280fd7a9c00645b4336a3a4",
+    "final_manifest_sha256": "0a5850a5968a08ad98ef97b0582fcbe984dffe53788a6cc0108485c8aa39e935",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-03-BASELINE",
+    "pre_audit_manifest_sha256": "8b12d0ca6d9b72f5fa77cca389e682256211f40f0699a9889dce83a1c23b5894",
+    "final_manifest_sha256": "868ead8a2cd47581815b74ff36f7325803cf3019f5118ee214371da2997ac44e",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-03-TREATMENT",
+    "pre_audit_manifest_sha256": "d2b27f84393a69b32c69ab6a9c4a7154b015e5e5bae48e6fdeb0958c8deef037",
+    "final_manifest_sha256": "064aee06e3bcc765598688d8d682fa05b37b66098d07c3ece88346e2af3b3f3f",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-04-BASELINE",
+    "pre_audit_manifest_sha256": "2cf4e2d13a2baf7d262712027ff557e4d60ef3524428c344b9262a5c7008f08f",
+    "final_manifest_sha256": "ad41df1fe08d35cd09cbfbbe75c1671ce1cfa2ebaad33cfa6956b120136e618f",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-04-TREATMENT",
+    "pre_audit_manifest_sha256": "873256e4483139504042942658d5d97486ebbe35275c8cb6319833ad06bdb609",
+    "final_manifest_sha256": "963ad6b5c76e0a7b8f678e1a308b2f8906f259e38ace887539a795a7bb9da6e8",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-05-BASELINE",
+    "pre_audit_manifest_sha256": "de14f865be13bf6ca62137ada8ab20a0c9c25b818dfbac2fd872158d59da2c30",
+    "final_manifest_sha256": "0920dd303b0be2bd6f6a0db6995677f6fa7b83c7744bb29674868734d17d1008",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-05-TREATMENT",
+    "pre_audit_manifest_sha256": "d650da423cbbbfcafff51e8538c81d910087de751e53cf70d60e440c597d0e8e",
+    "final_manifest_sha256": "edca9f038fa843f460db8f0092a642e3a2d5badbefb146480e2c2041c5acd073",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-06-BASELINE",
+    "pre_audit_manifest_sha256": "e2a22f1b71a0b400f4746eb8d8850342aac0f06375a118aebe4641c0e94bc7e0",
+    "final_manifest_sha256": "5670421f14662d8bc577d12221a93d0c475192a652d83ca3996d642423d63af2",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-06-TREATMENT",
+    "pre_audit_manifest_sha256": "a2a204229d4db3c35782ee648deb762627b83aa1b4c224b4e45889bd38e9ad0e",
+    "final_manifest_sha256": "6abb83e419c18e03fc22b989186183c21be3db71a52f346f872441907a6b575f",
+    "exact_prior_version_reconstructed": true
+  },
+  {
+    "run_id": "DIRECTCOAST-P2-07-BASELINE",
+    "pre_audit_manifest_sha256": "5f70d8458d8da2ac572fdea417a2e63d4be1ea30a9b7c2b3517f89c6fa6ae65a",
+    "final_manifest_sha256": "bf831e4c67db93bd8a0b23e1ca844d3d74cf1788d0893fe008e0197f81cd3c0d",
+    "exact_prior_version_reconstructed": true
+  }
+]

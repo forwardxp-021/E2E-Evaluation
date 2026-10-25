@@ -1,0 +1,140 @@
+{
+  "status": "P2_QUALIFICATION_FAILED",
+  "planned_pairs": 20,
+  "started_pairs": 7,
+  "both_arms_technically_complete_pairs": 6,
+  "formally_judged_pairs": 6,
+  "successful_pairs": 6,
+  "failed_pairs": 1,
+  "infrastructure_blocked_pairs": 0,
+  "not_run_pairs": 13,
+  "attempts": 13,
+  "cpu_seconds": 133.31075700000002,
+  "treatment_coast": [
+    {
+      "pair_id": "DIRECTCOAST-P2-01",
+      "run_id": "DIRECTCOAST-P2-01-TREATMENT",
+      "coast_control_count": 18,
+      "zero_count": 18,
+      "all_commands_reach_model": true,
+      "all_states_advance": true,
+      "maximum_model_filter_residual": 0.0,
+      "first_coast_acceleration": -0.8549185226358994,
+      "last_coast_acceleration": -0.0008677074427955671
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-02",
+      "run_id": "DIRECTCOAST-P2-02-TREATMENT",
+      "coast_control_count": 18,
+      "zero_count": 18,
+      "all_commands_reach_model": true,
+      "all_states_advance": true,
+      "maximum_model_filter_residual": 0.0,
+      "first_coast_acceleration": -0.8549143161255008,
+      "last_coast_acceleration": -0.0008677031733590251
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-03",
+      "run_id": "DIRECTCOAST-P2-03-TREATMENT",
+      "coast_control_count": 18,
+      "zero_count": 18,
+      "all_commands_reach_model": true,
+      "all_states_advance": true,
+      "maximum_model_filter_residual": 0.0,
+      "first_coast_acceleration": -0.8548861212506749,
+      "last_coast_acceleration": -0.000867674556710669
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-04",
+      "run_id": "DIRECTCOAST-P2-04-TREATMENT",
+      "coast_control_count": 18,
+      "zero_count": 18,
+      "all_commands_reach_model": true,
+      "all_states_advance": true,
+      "maximum_model_filter_residual": 0.0,
+      "first_coast_acceleration": -0.8548302666080574,
+      "last_coast_acceleration": -0.0008676178665257792
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-05",
+      "run_id": "DIRECTCOAST-P2-05-TREATMENT",
+      "coast_control_count": 18,
+      "zero_count": 18,
+      "all_commands_reach_model": true,
+      "all_states_advance": true,
+      "maximum_model_filter_residual": 0.0,
+      "first_coast_acceleration": -0.8549340875258612,
+      "last_coast_acceleration": -0.0008677232405242495
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-06",
+      "run_id": "DIRECTCOAST-P2-06-TREATMENT",
+      "coast_control_count": 18,
+      "zero_count": 18,
+      "all_commands_reach_model": true,
+      "all_states_advance": true,
+      "maximum_model_filter_residual": 0.0,
+      "first_coast_acceleration": -0.8548387548798357,
+      "last_coast_acceleration": -0.0008676264817755414
+    }
+  ],
+  "observed_clock_skew_min_us": -1014,
+  "observed_clock_skew_max_us": 580,
+  "complete_arms": 13,
+  "mechanism_pass_arms": 13,
+  "official_safety_pass_arms": 12,
+  "first_stop": {
+    "run_id": "DIRECTCOAST-P2-07-BASELINE",
+    "status": "SCIENTIFIC_FAILURE",
+    "claim_token": "c04d5ff882a81c7fdd1560af9c225b9e016e4cffd8a6265daf92ebc5d3cb972e",
+    "monitor_pid": 2546,
+    "claim_time_utc": "2026-10-25T08:29:47Z",
+    "child_pid": 5873,
+    "cpu_seconds": 9.585146,
+    "wall_seconds": 10.486950292000017,
+    "returncode": 20,
+    "stop_reason": null,
+    "cpu_accounting": {
+      "method": "MAX_WAIT4_CHILD_AND_REAPED_DESCENDANTS_VS_SUM_LIVE_PER_PID_MAXIMA",
+      "wait4_cpu_seconds": 9.585146,
+      "observed_per_pid_cpu_seconds": {
+        "(5873, 1792916987.470145)": 9.479949247999999,
+        "(5969, 1792916993.289228)": 0.024625082
+      },
+      "surviving_descendant_check": true,
+      "remaining_budget_at_start": 57476.274389,
+      "certain": true
+    }
+  },
+  "formal_fmatch_distributions": {
+    "mean_speed": {
+      "min": 0.0,
+      "max": 0.0,
+      "minimum_margin": 0.1
+    },
+    "end_minus_start_speed": {
+      "min": 1e-06,
+      "max": 2e-06,
+      "minimum_margin": 0.149998
+    },
+    "path_length": {
+      "min": 0.0,
+      "max": 1e-06,
+      "minimum_margin": 0.799999
+    },
+    "mean_abs_accel": {
+      "min": 0.0,
+      "max": 0.000439,
+      "minimum_margin": 0.019561000000000002
+    }
+  },
+  "extra_balance": {
+    "max_negative_dose_delta": 0.002107693112954667,
+    "minimum_negative_dose_margin": 0.14789230688704533,
+    "max_peak_difference": 0.172216736246515,
+    "minimum_peak_margin": 0.027783263753485
+  },
+  "raw_artifact_count": 448,
+  "original_denominator_preserved": true,
+  "scientific_reexecution": 0
+}

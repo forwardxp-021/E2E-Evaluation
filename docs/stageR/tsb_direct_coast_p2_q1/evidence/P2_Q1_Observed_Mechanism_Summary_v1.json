@@ -1,0 +1,58 @@
+{
+  "BASELINE": {
+    "observed_arms": 7,
+    "qualified_phases": 7,
+    "ranges": {
+      "start_s": {
+        "min": 2.2,
+        "max": 2.2
+      },
+      "end_s": {
+        "min": 4.0,
+        "max": 4.0
+      },
+      "peak_decel_mps2": {
+        "min": 1.4487734861366235,
+        "max": 1.448773832840839
+      },
+      "support_s": {
+        "min": 1.7999999999999998,
+        "max": 1.7999999999999998
+      },
+      "dose_mps": {
+        "min": 2.352338195125605,
+        "max": 2.3523981865633368
+      }
+    }
+  },
+  "TREATMENT": {
+    "observed_arms": 6,
+    "qualified_phases": 12,
+    "ranges": {
+      "start_s": {
+        "min": 1.3,
+        "max": 4.1
+      },
+      "end_s": {
+        "min": 2.2,
+        "max": 5.0
+      },
+      "peak_decel_mps2": {
+        "min": 1.2765567498901085,
+        "max": 1.2767514141109828
+      },
+      "support_s": {
+        "min": 0.9000000000000001,
+        "max": 0.9000000000000004
+      },
+      "dose_mps": {
+        "min": 1.005415462704697,
+        "max": 1.0062253385246944
+      }
+    }
+  },
+  "minimum_actual_speed_mps": 2.8175464476629806,
+  "observed_states": 1040,
+  "observed_transitions": 1027,
+  "scope": "EXACT_STORED_PHASE_RECORDS_DESCRIPTIVE_SUMMARY_NO_REQUALIFICATION"
+}

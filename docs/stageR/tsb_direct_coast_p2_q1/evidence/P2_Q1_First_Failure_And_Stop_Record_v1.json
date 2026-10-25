@@ -1,0 +1,27 @@
+{
+  "status": "P2_QUALIFICATION_FAILED",
+  "first_failed_run_id": "DIRECTCOAST-P2-07-BASELINE",
+  "session_id": "2021.09.27.17.52.47_veh-44",
+  "technical_status": "PASS",
+  "mechanism_status": "PASS",
+  "actual_observation_audit": "PASS",
+  "first_unsatisfied_gate": "OFFICIAL_SAFETY",
+  "at_fault_collisions": 1,
+  "drivable_area_compliance": false,
+  "formal_pair_F_match": "NOT_EVALUATED_ARM_GATE_FAILED",
+  "further_scientific_attempts_after_failure": 0,
+  "technical_retry": 0,
+  "planned_denominator": 20,
+  "not_run_arms": 27,
+  "monitor_stop_reason_null_meaning": "No wall/CPU/monitor error; scientific failure established by stored arm review and child exit 20",
+  "failure_causal_attribution": "NOT_PERFORMED_OR_AUTHORIZED_IN_THIS_STAGE",
+  "evidence_sha256": {
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/arm_science_review.json": "54ff551c0c7962af5933fe8e1b9a3a2b2e8e0f8715b590da0660913bd756c93a",
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/official_safety_adapter.json": "0ac7f5a6dc2e7e9543cf30eb769e497201fcc2c9f3508c13a6586d57e87d3f91",
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/P2_Q1_Child_Completion.json": "0c3d9fda3438f517cbee1dabd415b346e545aeff045d5c178c8042ec64aee348",
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/actual_observation_audit.json": "9e9b93adbe4bb2493c3d56715d9c9356db9412151411f32bed1e7d850d73d5a2",
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/execution_manifest.json": "bf831e4c67db93bd8a0b23e1ca844d3d74cf1788d0893fe008e0197f81cd3c0d",
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/raw/metrics/no_ego_at_fault_collisions.parquet": "ee1e1c0e314fc997c5ac49492b2b20fe0fe481c43dc7a728f4d8adc2b22e9202",
+    "outputs/stageR/tsb_direct_coast_p2_qualification_v1/DIRECTCOAST-P2-07-BASELINE/raw/metrics/drivable_area_compliance.parquet": "1ffc985c008606841df9dee9a30511f23c9bb04b1c2a517c7bfc8b75a1752334"
+  }
+}
