@@ -1,0 +1,26 @@
+{
+  "stage": "E2E_SCOPED_DIRECT_COAST_V1",
+  "human_authority": "2026-10-25 current human instruction: E2E Behavior Benchmark — 目标驱动自主工程任务",
+  "approved": true,
+  "role": "B_BENCHMARK",
+  "autonomous_development_and_qualification": true,
+  "budget": {
+    "development_attempts_max": 60,
+    "qualification_first_arms_max": 40,
+    "qualification_technical_retry": 0,
+    "total_scientific_CPU_seconds": 10800,
+    "per_arm_wall_seconds": 1200
+  },
+  "qualification_science_failure_policy": "CONTINUE_ORIGINAL_FULL_20_DENOMINATOR_NO_SCIENTIFIC_RETRY",
+  "qualification_technical_failure_policy": "PAUSE_AND_FIX_INFRA_ONLY; NO_RETRY_AUTHORIZED; SCIENCE_CHANGE_ENDS_VALIDATION",
+  "forbidden": [
+    "RBR_TRAINING",
+    "CHECKPOINT_SELECTION",
+    "H30_RBR_COMPARISON",
+    "MMD_BDD_PRIMARY",
+    "V_C",
+    "PRIMARY_STATISTICAL_CHANGE",
+    "READ_OR_CONSUME_PRIMARY_C"
+  ],
+  "historical_assets": "READ_ONLY"
+}
