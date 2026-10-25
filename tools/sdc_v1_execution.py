@@ -13,6 +13,8 @@ BUDGET=dict(development_attempts=60,qualification_attempts=40,total_cpu_seconds=
 
 def binding_path(phase):return OUT/(phase+'_Execution_Binding_v1.json')
 
+def specs_path(phase):return OUT/(phase+'_Arm_Specs_v'+('2' if phase=='QUALIFICATION' else '1')+'.json')
+
 
 def validate(phase,run_id):
     auth=read(binding_path(phase))
@@ -30,7 +32,7 @@ def validate(phase,run_id):
     if sys.executable!=runtime['scientific_runtime_executable'] or sys.version.split()[0]!=runtime['scientific_runtime_python']:raise PermissionError('Wrong scientific Python')
     for name,version in runtime['dependency_versions'].items():
         if importlib.metadata.version(name)!=version:raise PermissionError('Dependency changed: '+name)
-    spec=next(x for x in read(OUT/(phase+'_Arm_Specs_v1.json'))['arms'] if x['run_id']==run_id)
+    spec=next(x for x in read(specs_path(phase))['arms'] if x['run_id']==run_id)
     if canon(spec)!=auth['spec_sha256'][run_id]:raise PermissionError('Spec identity changed')
     from tools.r1_b2_8_r3_prospective_selector import official_env
     official_env();return auth,spec
@@ -41,12 +43,12 @@ def preflight(phase):
     official_env()
     from tools.b1_production_preflight import zero_run_guard
     from tools.tsb_direct_coast_f2_production import build_f2_arm,validate_f2_production
-    arms=read(OUT/(phase+'_Arm_Specs_v1.json'))['arms'];proof=[];held=[]
+    arms=read(specs_path(phase))['arms'];proof=[];held=[]
     with zero_run_guard() as calls:
         for spec in arms:
-            a=build_f2_arm(spec,ROOT/'outputs/stageR/e2e_sdc_v1_preflight_r2'/phase/spec['run_id']);held.append(a)
+            a=build_f2_arm(spec,ROOT/('outputs/stageR/e2e_sdc_v1_preflight_r3' if phase=='QUALIFICATION' else 'outputs/stageR/e2e_sdc_v1_preflight_r2')/phase/spec['run_id']);held.append(a)
             p=validate_f2_production(a)
-            expected=read(OUT/read(OUT/(phase+'_Arm_Specs_v1.json'))['applicability_path'])
+            expected=read(OUT/read(specs_path(phase))['applicability_path'])
             static=next(x for x in expected['rows'] if x['session_id']==spec['session_id'])
             if {k:v for k,v in p['clock'].items() if k not in ['observer','shared_original_scenario']}!=static['evidence']['clock']:raise ValueError('Static/official factory mapping mismatch')
             proof.append(dict(run_id=spec['run_id'],status='PASS',clock=p['clock'],config_path=str(a.run_root/'resolved_config.json'),config_sha256=sha(a.run_root/'resolved_config.json')))

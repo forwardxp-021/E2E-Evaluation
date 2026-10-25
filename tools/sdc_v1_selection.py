@@ -84,6 +84,8 @@ def assess(row,rule):
     from tools.b1_native_route_infrastructure import build_native_route_reference_v1_2
     from tools.tsb_coast_p1r_c_clock import CoastCanonicalTimeControllerV1
     from nuplan.common.maps.maps_datatypes import SemanticMapLayer as Layer
+    from tools.r1_b2_8_r3_prospective_selector import official_count
+    if official_count(row['log']['source_file'],row['static']['representative_scenario_token'])!=1:raise ValueError('OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED')
     spec,scenario,sources=source_spec(row);ego=scenario.get_ego_state_at_iteration(0);api=scenario.map_api
     clock=CoastCanonicalTimeControllerV1(scenario).require_mapping();domain=rule['physical_domain'];vp=ego.car_footprint.vehicle_parameters
     v=ego.dynamic_car_state.speed;a=ego.dynamic_car_state.rear_axle_acceleration_2d.x
@@ -171,6 +173,15 @@ def census(pool,rule_path,revision=1):
             trials.append(item)
             if item['status']=='ELIGIBLE':chosen=item;break
         item=dict(chosen) if chosen else dict(session_id=row['session_id'],status='EXCLUDED',reasons=['NO_STATIC_ELIGIBLE_ANCHOR_IN_FIXED_FRAME'],sources_opened=bool(candidates))
+        if revision>=2 and pool=='QUALIFICATION':
+            import copy
+            compact=[]
+            for trial in trials:
+                tr=copy.deepcopy(trial)
+                if 'evidence' in tr and 'clock' in tr['evidence']:
+                    clock=tr['evidence']['clock'];tr['evidence']['clock']={k:v for k,v in clock.items() if k!='rows'};tr['evidence']['clock_rows_sha256']=canon(clock['rows'])
+                compact.append(tr)
+            trials=compact
         item['anchor_trials']=trials;item['predeclared_anchor_count']=len(candidates)
         rows.append(item);print(pool,i+1,'/248',row['session_id'],item['status'],len(trials),'static anchors',flush=True)
         write(OUT/'evidence'/(pool+'_Applicability_Progress.json'),dict(rows=rows,rule_sha256=sha(rule_path)))
@@ -180,7 +191,8 @@ def census(pool,rule_path,revision=1):
 
 if __name__=='__main__':
     import argparse
-    p=argparse.ArgumentParser();p.add_argument('mode',choices=['catalog','development','development-v2','development-v3','development-v4','qualification']);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['catalog','development','development-v2','development-v3','development-v4','qualification','qualification-v2']);a=p.parse_args()
     if a.mode=='catalog':write(OUT/'Pool_Split_v1.json',catalog(),exclusive=True)
     elif a.mode.startswith('development-v'):census('DEVELOPMENT',OUT/('Development_Design_v'+a.mode.rsplit('v',1)[1]+'.json'),int(a.mode.rsplit('v',1)[1]))
+    elif a.mode=='qualification-v2':census('QUALIFICATION',OUT/'Frozen_Qualification_Protocol_v1.json',2)
     else:census(a.mode.upper(),OUT/('Development_Design_v1.json' if a.mode=='development' else 'Frozen_Qualification_Protocol_v1.json'))

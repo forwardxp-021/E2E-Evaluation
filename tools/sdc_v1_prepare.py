@@ -5,11 +5,11 @@ import argparse,copy,os,sys,subprocess
 from pathlib import Path
 sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools.sdc_v1_selection import OUT,ROOT,read,write,sha,canon
-from tools.sdc_v1_execution import BUDGET
+from tools.sdc_v1_execution import BUDGET,specs_path
 
 
 def identities(phase):
-    source='evidence/DEVELOPMENT_Applicability_v4.json' if phase=='DEVELOPMENT' else 'evidence/QUALIFICATION_Applicability_v1.json'
+    source='evidence/DEVELOPMENT_Applicability_v4.json' if phase=='DEVELOPMENT' else 'evidence/QUALIFICATION_Applicability_v2.json'
     census=read(OUT/source);rule=read(OUT/('Development_Design_v4.json' if phase=='DEVELOPMENT' else 'Frozen_Qualification_Protocol_v1.json'))
     eligible=[x for x in census['rows'] if x['status']=='ELIGIBLE'];eligible.sort(key=lambda x:(__import__('hashlib').sha256((rule['selection_salt']+'|'+x['session_id']).encode()).hexdigest(),x['session_id']))
     count=3 if phase=='DEVELOPMENT' else 20;chosen=eligible[:count]
@@ -26,13 +26,13 @@ def identities(phase):
     if phase=='QUALIFICATION':
         dev=set(read(OUT/'Pool_Split_v1.json')['development_SESSION']);hist=set(read(OUT/'Pool_Split_v1.json')['historical_excluded'])
         if any(x['session_id'] in dev|hist for x in roster):raise ValueError('Qualification overlaps development/history')
-    write(OUT/(phase+'_Arm_Specs_v1.json'),dict(arms=arms,applicability_path=source,applicability_sha256=sha(OUT/source)),exclusive=True)
-    write(OUT/(phase+'_Frozen_Roster_v1.json'),dict(roster=roster,eligible_SESSION=len(eligible),selection_rule_sha256=sha(OUT/('Development_Design_v4.json' if phase=='DEVELOPMENT' else 'Frozen_Qualification_Protocol_v1.json'))),exclusive=True)
+    write(specs_path(phase),dict(arms=arms,applicability_path=source,applicability_sha256=sha(OUT/source)),exclusive=True)
+    write(OUT/(phase+'_Frozen_Roster_v'+('2' if phase=='QUALIFICATION' else '1')+'.json'),dict(roster=roster,eligible_SESSION=len(eligible),selection_rule_sha256=sha(OUT/('Development_Design_v4.json' if phase=='DEVELOPMENT' else 'Frozen_Qualification_Protocol_v1.json'))),exclusive=True)
     print(phase,'frozen',len(roster),'pairs; eligible',len(eligible))
 
 
 def bind(phase):
-    specfile=OUT/(phase+'_Arm_Specs_v1.json');specs=read(specfile)['arms'];pre=OUT/'evidence'/(phase+'_Production_Preflight_v1.json')
+    specfile=specs_path(phase);specs=read(specfile)['arms'];pre=OUT/'evidence'/(phase+'_Production_Preflight_v1.json')
     if read(pre)['status']!='PASS':raise ValueError('Production preflight not PASS')
     paths=['tools/sdc_v1_selection.py','tools/sdc_v1_execution.py','tools/sdc_v1_prepare.py','tests/test_sdc_v1.py']
     sourcecommit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
@@ -40,8 +40,8 @@ def bind(phase):
     for p,h in sources.items():
         blob=subprocess.check_output(['git','show',sourcecommit+':'+p])
         if __import__('hashlib').sha256(blob).hexdigest()!=h:raise ValueError('Commit all source before binding')
-    proofs=[OUT/'Owner_Task_Authority_v1.json',OUT/'Development_Design_v4.json',OUT/'Pool_Split_v1.json',specfile,pre,OUT/(phase+'_Frozen_Roster_v1.json'),OUT/read(specfile)['applicability_path'],ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Execution_Source_Binding_v1.json',ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Owner_Protocol_v1.json']
-    if phase=='QUALIFICATION':proofs += [OUT/'Frozen_Qualification_Protocol_v1.json',OUT/'DEVELOPMENT_Execution_Binding_v1.json',OUT/'evidence/Development_Results_Freeze_v1.json']
+    proofs=[OUT/'Owner_Task_Authority_v1.json',OUT/'Development_Design_v4.json',OUT/'Pool_Split_v1.json',specfile,pre,OUT/(phase+'_Frozen_Roster_v'+('2' if phase=='QUALIFICATION' else '1')+'.json'),OUT/read(specfile)['applicability_path'],ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Execution_Source_Binding_v1.json',ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Owner_Protocol_v1.json']
+    if phase=='QUALIFICATION':proofs += [OUT/'Qualification_PreExecution_Metadata_Closure_v1.json',OUT/'Frozen_Qualification_Protocol_v1.json',OUT/'DEVELOPMENT_Execution_Binding_v1.json',OUT/'evidence/Development_Results_Freeze_v1.json']
     data={}
     census=read(OUT/read(specfile)['applicability_path'])
     for spec in specs:

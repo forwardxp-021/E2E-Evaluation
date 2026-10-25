@@ -17,7 +17,7 @@ def export():
     import numpy as np
     ledger=read(STATE);attempts={x['run_id']:x for x in ledger['attempts']};pairs={x['pair_id']:x for x in ledger['pairs']}
     rows=[];arms=[];fm=[];exposure=[];coverage=[];rejections=[]
-    for phase,revision in [('DEVELOPMENT',4),('QUALIFICATION',1)]:
+    for phase,revision in [('DEVELOPMENT',4),('QUALIFICATION',2)]:
         census_path=OUT/'evidence'/(phase+f'_Applicability_v{revision}.json')
         if census_path.exists():
             census=read(census_path)
@@ -28,7 +28,7 @@ def export():
                     for reason in trial['reasons']:rejections.append(dict(phase=phase,session_id=x['session_id'],anchor_rank=trial['anchor_rank'],reason=reason))
                 if x.get('sources_opened'):
                     exposure.append(dict(phase=phase,event='OFFLINE_APPLICABILITY_SOURCE_ACCESS',session_id=x['session_id'],run_id='',added_exposure='E2_BENCHMARK_ENGINEERING',primary_comparison=False,E5=False))
-        roster_path=OUT/(phase+'_Frozen_Roster_v1.json')
+        roster_path=OUT/(phase+'_Frozen_Roster_v'+('2' if phase=='QUALIFICATION' else '1')+'.json')
         if not roster_path.exists():continue
         for item in read(roster_path)['roster']:
             pid=item['pair_id'];pair=pairs.get(pid);arm_reviews=[]
