@@ -1,0 +1,328 @@
+DEVELOPMENT 1 / 6 SDC-DEV-01-BASELINE
+DEVELOPMENT 2 / 6 SDC-DEV-01-TREATMENT
+DEVELOPMENT 3 / 6 SDC-DEV-02-BASELINE
+DEVELOPMENT 4 / 6 SDC-DEV-02-TREATMENT
+DEVELOPMENT 5 / 6 SDC-DEV-03-BASELINE
+DEVELOPMENT 6 / 6 SDC-DEV-03-TREATMENT
+{
+  "stage": "E2E_SCOPED_DIRECT_COAST_V1",
+  "budget": {
+    "development_attempts": 60,
+    "qualification_attempts": 40,
+    "total_cpu_seconds": 10800,
+    "per_arm_wall_seconds": 1200,
+    "qualification_retry": 0
+  },
+  "cpu_seconds": 51.71653736,
+  "cpu_certain": true,
+  "stopped": false,
+  "attempts": [
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "d8a8f6f9da4d5e45d61fd0145da4f625eb295a5c0f2176416b87de1bfcb744f4",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:40Z",
+      "child_pid": 9730,
+      "returncode": 0,
+      "cpu_seconds": 7.971337,
+      "wall_seconds": 8.843932375,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 7.971337,
+        "observed_per_pid": {
+          "(9730, 1792923520.360524)": 7.947948544,
+          "(9732, 1792923524.883362)": 0.022984582
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "56646c364a2e97c4a0092b4554275a65ed88ff6abaa3c06b4ac2abfb124f0167",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:49Z",
+      "child_pid": 9747,
+      "returncode": 0,
+      "cpu_seconds": 7.792662,
+      "wall_seconds": 8.130866166999999,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 7.792662,
+        "observed_per_pid": {
+          "(9747, 1792923529.678016)": 7.770338432,
+          "(9751, 1792923533.762232)": 0.019941791
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "e57ab048d62d09c04356ded9123346b9bab041a73c3526319481a0b5a666f095",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:58Z",
+      "child_pid": 9756,
+      "returncode": 0,
+      "cpu_seconds": 8.333960359999999,
+      "wall_seconds": 8.689621333000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 8.333506,
+        "observed_per_pid": {
+          "(9756, 1792923538.313651)": 8.314169152,
+          "(9762, 1792923542.464019)": 0.019791207999999998
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "5fd770edd3077abf6f1f3a164fcfaa10dd13350737c4d8f9c4c3888522b504ae",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:07Z",
+      "child_pid": 9776,
+      "returncode": 0,
+      "cpu_seconds": 8.314823,
+      "wall_seconds": 8.647534583000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 8.314823,
+        "observed_per_pid": {
+          "(9776, 1792923547.502326)": 8.293933504,
+          "(9780, 1792923551.649708)": 0.019820208
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "f283504eda2382cb046249e9a8a19b758dec470a47e037fa492f02b5939c818b",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:16Z",
+      "child_pid": 9788,
+      "returncode": 0,
+      "cpu_seconds": 9.667425,
+      "wall_seconds": 9.912313834000003,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.667425,
+        "observed_per_pid": {
+          "(9788, 1792923556.654713)": 9.619741376,
+          "(9792, 1792923560.689935)": 0.019326291
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "1479e9c8b435525a62051d0880c55fcaf5f7bb2a5ee5a68a51df3c93258b0f81",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:27Z",
+      "child_pid": 9799,
+      "returncode": 0,
+      "cpu_seconds": 9.63633,
+      "wall_seconds": 9.848295582999995,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.63633,
+        "observed_per_pid": {
+          "(9799, 1792923567.064666)": 9.568179264,
+          "(9803, 1792923571.103134)": 0.021027416
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "SDC-DEV-01",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.3962903492858736,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565704,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33293
+        },
+        "treatment": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565703,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33277
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.00016
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0007710539333110056,
+        "peak_differences_mps2": [
+          0.1721185176344946,
+          0.17204311488564628
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-DEV-02",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.08.25.17.17.57_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720208,
+        "absolute_speed_difference_integral_m": 2.396290349285845,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.724654,
+          "end_minus_start_speed": -2.461745,
+          "path_length": 45.330192,
+          "mean_abs_accel": 0.348841
+        },
+        "treatment": {
+          "mean_speed": 5.724654,
+          "end_minus_start_speed": -2.461744,
+          "path_length": 45.330192,
+          "mean_abs_accel": 0.348312
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000529
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0025365796899587956,
+        "peak_differences_mps2": [
+          0.17224825159108548,
+          0.17204302856642784
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-DEV-03",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858674,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.334077,
+          "end_minus_start_speed": -2.647831,
+          "path_length": 73.845238,
+          "mean_abs_accel": 0.332164
+        },
+        "treatment": {
+          "mean_speed": 9.334077,
+          "end_minus_start_speed": -2.64783,
+          "path_length": 73.845238,
+          "mean_abs_accel": 0.332164
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009528344087e-06,
+        "peak_differences_mps2": [
+          0.17201632150489843,
+          0.17204318288243314
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    }
+  ],
+  "phases": {
+    "DEVELOPMENT": {
+      "status": "COMPLETE",
+      "binding_sha256": "f424ca423024f9f3b57abf385fc5d95ed084b8bae9ca001489bc2d71a61e4473",
+      "run_ids": [
+        "SDC-DEV-01-BASELINE",
+        "SDC-DEV-01-TREATMENT",
+        "SDC-DEV-02-BASELINE",
+        "SDC-DEV-02-TREATMENT",
+        "SDC-DEV-03-BASELINE",
+        "SDC-DEV-03-TREATMENT"
+      ]
+    }
+  }
+}

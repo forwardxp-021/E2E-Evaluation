@@ -1,0 +1,145 @@
+{
+  "version": "E2E_SCOPED_DIRECT_COAST_V1_FROZEN_QUALIFICATION",
+  "source_frame": "Original canonical representative raw LOG per admissible SESSION; first16 metadata-supported tagged anchors by fixed SHA256 rank, first physically eligible anchor only; no simulation outcomes",
+  "split_salt": "E2E_SDC_V1_PROSPECTIVE_DEV_SPLIT_20261025",
+  "selection_salt": "E2E_SDC_V1_QUALIFICATION_SESSION_ORDER_20261025",
+  "development_pool": "Original three Coast DEV + seven actually run old P2 SESSION + first ten otherwise-eligible new SESSION by split hash",
+  "qualification_exclusions": "All original B1 twenty, all old P2 twenty (including unrun), all original DEV, all new development-pool SESSION; E3/E4/UNKNOWN; all E5 and raw-source aliases protected",
+  "physical_domain": {
+    "min_initial_speed_mps": 5.0,
+    "maximum_initial_heading_error_rad": 0.1,
+    "maximum_initial_centerline_offset_m": 0.4,
+    "maximum_route_heading_range_rad": 0.15,
+    "corridor_lateral_margin_beyond_half_vehicle_width_m": 1.0,
+    "episode_s": 7.9,
+    "model_positive_initial_accel_speed_bound": "v_bound=v0+tau*max(a0,0), tau=0.2",
+    "forward_coverage": "7.9*v_bound+front_length+1m; rear projection includes rear_length+1m",
+    "drivable_requirement": "unchanged DRIVABLE_AREA union covers entire buffered centerline corridor and actual initial footprint",
+    "traffic_requirement": "At each 0.1s raw index: conservative longitudinal reachable interval [t*(v0-2.61-0.2*abs(a0)),t*(v0+0.2*max(a0,0))], padded rear/front+1m; entire lateral corridor; no object convex hull from adjacent i-1/i/i+1 intersects. Offline future selection, no ego simulation.",
+    "corridor_longitudinal_margin_m": 1.0,
+    "traffic_time_indexed": true
+  },
+  "clock": "Original canonical 80-state/79-transition 10Hz clock; 81 metadata tokens required; same-index unique-nearest-cell mapping",
+  "scientific_contract": "Unchanged F2 requests/model/lateral/controller/median3 mechanism/F_match/extra balance/official safety",
+  "added_temporal_gate": {
+    "max_abs_actual_speed_difference_min_mps": 0.5,
+    "nonidentical_actual_trace_hash_required": true,
+    "distinct_request_arrays_required": true
+  },
+  "development_rule_changes": "Only before qualification rule/source/cohort freeze, versioned and logged, no qualification outcomes accessed",
+  "qualification_coverage": "Report all 248 policy exclusions, complete assessable frame, geometric/traffic rejections and selected 20; no replacement",
+  "maximum_static_anchors_per_SESSION": 16,
+  "anchor_order_salt": "E2E_SDC_V1_STATIC_ANCHOR_ORDER_20261025",
+  "phase": "QUALIFICATION",
+  "frozen_before_qualification_source_applicability_inspection": true,
+  "unchanged_F2_science_binding_sha256": "12813b9b22f9be096d94682e088af7bab61d4f28cb58d6301cbd1c281d1b9772",
+  "unchanged_F2_protocol_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+  "exact_requests": {
+    "BASELINE": [
+      [
+        2100000,
+        3900000,
+        -1.45
+      ]
+    ],
+    "TREATMENT": [
+      [
+        1100000,
+        2100000,
+        -1.305
+      ],
+      [
+        3900000,
+        4900000,
+        -1.305
+      ]
+    ],
+    "other_times": 0
+  },
+  "qualification": {
+    "pairs": 20,
+    "first_arms": 40,
+    "science_failure_continue_full_original_denominator": true,
+    "scientific_retry": 0,
+    "technical_retry": 0,
+    "output_replacement": false
+  },
+  "combined_budget": {
+    "development_total_attempts_max": 60,
+    "qualification_first_attempts_max": 40,
+    "scientific_CPU_seconds_max": 10800,
+    "per_arm_wall_seconds": 1200
+  },
+  "mechanism_and_Fmatch": {
+    "version": "F2_DIRECT_REQUEST_APPROVED_v1",
+    "capability": "ABSTRACT_COAST_PROXY_ONLY",
+    "clock": {
+      "frames": 80,
+      "transitions": 79,
+      "step_us": 100000,
+      "physical_integer_anchor": true
+    },
+    "coast": {
+      "interval_us": [
+        2100000,
+        3900000
+      ],
+      "request_exact_zero": true,
+      "same_command_object_reaches_model": true,
+      "state_propagation_required": true,
+      "longitudinal_LQR_and_stopping_calls": 0
+    },
+    "model": {
+      "accel_filter_tau_s": 0.2,
+      "equation": "a_next=a_before+dt/(dt+tau)*(u-a_before)",
+      "velocity_equation": "vx_next=vx_before+dt*a_next",
+      "floating_check_eps_multiplier": 64
+    },
+    "braking": {
+      "speed_processing": "median3_then_gradient_edge2_physical_time",
+      "phase_threshold_mps2": -0.6,
+      "minimum_support_s": 0.4,
+      "minimum_peak_mps2": 0.8,
+      "minimum_dose_mps": 0.35,
+      "valid_domain_s": [
+        1.1,
+        5.5
+      ],
+      "baseline_phase_count": 1,
+      "treatment_phase_count": 2,
+      "minimum_separation_s": 0.7
+    },
+    "low_speed": {
+      "positive_speed_required": true,
+      "threshold_mps": 1.0,
+      "maximum_below_threshold_support_s": 0.5,
+      "reference_floor_rejected": true
+    },
+    "near_zero_acceleration_rule": "DIAGNOSTIC_ONLY_NOT_QUALIFICATION",
+    "positive_response": "NO_POSITIVE_COAST_REQUEST; RESIDUAL_RESPONSE_MUST_MATCH_BOUND_MODEL",
+    "F_match": {
+      "calipers": {
+        "mean_speed": 0.1,
+        "end_minus_start_speed": 0.15,
+        "path_length": 0.8,
+        "mean_abs_accel": 0.02
+      },
+      "speed_processing": "raw_gradient_edge2_physical_time",
+      "descriptor_decimals": 6,
+      "comparison_epsilon": 1e-12,
+      "pm_0p01_pressure_role": "SEPARATE_ROBUSTNESS_DIAGNOSTIC"
+    },
+    "additional_pair_balance": {
+      "negative_dose_delta_max_mps": 0.15,
+      "each_treatment_peak_vs_baseline_max_mps2": 0.2
+    },
+    "official_safety": {
+      "at_fault_collisions": 0,
+      "drivable_area_compliance": true
+    },
+    "failure_policy": "STOP_NO_AUTOMATIC_RETRY_OR_REPLACEMENT"
+  },
+  "source_freeze_commit": "afe83dcad29a35ba4f83cff136b5785bb849cfce",
+  "temporal_gate": "max_abs_actual_v_T_minus_v_B >=0.5m/s AND distinct actual trace hashes AND distinct longitudinal request arrays; actual common prefix and timestamps must match",
+  "interpretation": "Offline traffic-cleared low-curvature corridor benchmark; no online deployment or all-traffic safety claim; B role only; H30/Primary/U-only contracts unchanged"
+}

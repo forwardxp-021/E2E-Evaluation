@@ -1,0 +1,509 @@
+{
+  "status": "DEVELOPMENT_MATURE_THREE_OF_THREE_PASS",
+  "attempts": [
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "d8a8f6f9da4d5e45d61fd0145da4f625eb295a5c0f2176416b87de1bfcb744f4",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:40Z",
+      "child_pid": 9730,
+      "returncode": 0,
+      "cpu_seconds": 7.971337,
+      "wall_seconds": 8.843932375,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 7.971337,
+        "observed_per_pid": {
+          "(9730, 1792923520.360524)": 7.947948544,
+          "(9732, 1792923524.883362)": 0.022984582
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "56646c364a2e97c4a0092b4554275a65ed88ff6abaa3c06b4ac2abfb124f0167",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:49Z",
+      "child_pid": 9747,
+      "returncode": 0,
+      "cpu_seconds": 7.792662,
+      "wall_seconds": 8.130866166999999,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 7.792662,
+        "observed_per_pid": {
+          "(9747, 1792923529.678016)": 7.770338432,
+          "(9751, 1792923533.762232)": 0.019941791
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "e57ab048d62d09c04356ded9123346b9bab041a73c3526319481a0b5a666f095",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:58Z",
+      "child_pid": 9756,
+      "returncode": 0,
+      "cpu_seconds": 8.333960359999999,
+      "wall_seconds": 8.689621333000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 8.333506,
+        "observed_per_pid": {
+          "(9756, 1792923538.313651)": 8.314169152,
+          "(9762, 1792923542.464019)": 0.019791207999999998
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "5fd770edd3077abf6f1f3a164fcfaa10dd13350737c4d8f9c4c3888522b504ae",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:07Z",
+      "child_pid": 9776,
+      "returncode": 0,
+      "cpu_seconds": 8.314823,
+      "wall_seconds": 8.647534583000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 8.314823,
+        "observed_per_pid": {
+          "(9776, 1792923547.502326)": 8.293933504,
+          "(9780, 1792923551.649708)": 0.019820208
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "f283504eda2382cb046249e9a8a19b758dec470a47e037fa492f02b5939c818b",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:16Z",
+      "child_pid": 9788,
+      "returncode": 0,
+      "cpu_seconds": 9.667425,
+      "wall_seconds": 9.912313834000003,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.667425,
+        "observed_per_pid": {
+          "(9788, 1792923556.654713)": 9.619741376,
+          "(9792, 1792923560.689935)": 0.019326291
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "1479e9c8b435525a62051d0880c55fcaf5f7bb2a5ee5a68a51df3c93258b0f81",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:27Z",
+      "child_pid": 9799,
+      "returncode": 0,
+      "cpu_seconds": 9.63633,
+      "wall_seconds": 9.848295582999995,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.63633,
+        "observed_per_pid": {
+          "(9799, 1792923567.064666)": 9.568179264,
+          "(9803, 1792923571.103134)": 0.021027416
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "SDC-DEV-01",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.3962903492858736,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565704,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33293
+        },
+        "treatment": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565703,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33277
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.00016
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0007710539333110056,
+        "peak_differences_mps2": [
+          0.1721185176344946,
+          0.17204311488564628
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-DEV-02",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.08.25.17.17.57_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720208,
+        "absolute_speed_difference_integral_m": 2.396290349285845,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.724654,
+          "end_minus_start_speed": -2.461745,
+          "path_length": 45.330192,
+          "mean_abs_accel": 0.348841
+        },
+        "treatment": {
+          "mean_speed": 5.724654,
+          "end_minus_start_speed": -2.461744,
+          "path_length": 45.330192,
+          "mean_abs_accel": 0.348312
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000529
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0025365796899587956,
+        "peak_differences_mps2": [
+          0.17224825159108548,
+          0.17204302856642784
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-DEV-03",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858674,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.334077,
+          "end_minus_start_speed": -2.647831,
+          "path_length": 73.845238,
+          "mean_abs_accel": 0.332164
+        },
+        "treatment": {
+          "mean_speed": 9.334077,
+          "end_minus_start_speed": -2.64783,
+          "path_length": 73.845238,
+          "mean_abs_accel": 0.332164
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009528344087e-06,
+        "peak_differences_mps2": [
+          0.17201632150489843,
+          0.17204318288243314
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    }
+  ],
+  "cpu_seconds": 51.71653736,
+  "source_binding_sha256": "f424ca423024f9f3b57abf385fc5d95ed084b8bae9ca001489bc2d71a61e4473",
+  "result_files_sha256": {
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/actual_observation_audit.json": "b2e3fe91b64b1f86f2e289e7c3ec43613ce5694b1fb60d12223609509429dd03",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/arm_science_review.json": "43070ae0604029f74f154a733727a27050e9eb5297ee25ea7c9a04f75dfcabc8",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/canonical_clock_mapping.json": "91daea5138f417ec57cdc80fdcf7aca3df23e18703f9a39f21dd5e42d4ffb797",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/coast_binding.json": "2d23b231bcf07afb4d1faa8f72fd939dacfec20202ab5f2c3d5e73f645d284df",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/completion.json": "94e935c447ee323f26fc6de0dd9ca2f1e07eed4b94f99d8ab79d1770f3ccbf5b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/execution_manifest.json": "00c005d9a2478d611c67dd7c93261a3225570602301d5eb483a2053ffc21b91c",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/observation_review/evidence/F2_BASELINE_Actual_Observation_Audit_v1.json": "b2e3fe91b64b1f86f2e289e7c3ec43613ce5694b1fb60d12223609509429dd03",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/official_safety_adapter.json": "9286dbf75da2a448240be05bd1588b50ed8935171671468a9df366979e53e397",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/log.txt": "d9c363cc56426a171d79c808b0a475f5ee6e040f7c2e33ccb231c39309b7e037",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/corners_in_drivable_area.parquet": "67c12810147d9e090082339fea2b329edf049ebe78080532d6501b9d9a6103fc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/drivable_area_compliance.parquet": "49cf19c8d4e29e40aac936227485a0b46bca7c8b2b9140ac3492400c2a338e98",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/driving_direction_compliance.parquet": "c043714d06ecfd797975b15b4e9c91ff29f3d41889c0a60abcc22ce787cfd94e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_is_comfortable.parquet": "593cf14c55839ed34c072f58d9eb8462407072b15191477cb515c17e0091c859",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_is_making_progress.parquet": "e8cad7e19136232bc64b3aed88f94e638fdd39b8a89a48cd16ef012f91bdbecd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_jerk.parquet": "95a1a2e23f85b4c2845a2aea9000ac2a5e1c10f8fb69e47282a3ce9ab82111b0",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_lane_change.parquet": "25878ea7c37d9f90ef77d13c6cd1fe17f992834a847d545125ce0808c939ab34",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_lat_acceleration.parquet": "b83b71328640937b575f35c5556c073fd1ee5d44eee8d85fd3445f67611d19a1",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_lon_acceleration.parquet": "1fd594cc9b7c25f3520ef4bcf311c897b40b887072d1a33f3efdca0fd680638c",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_lon_jerk.parquet": "c39b4c2ea3865b438b74295f0fb070cd6c9fdeb88b90d1ce9fd0d211567df4f4",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_progress_along_expert_route.parquet": "46a068fdd03d1edf42ea1aa02418695e6868e7fbba0595f86579584f333c0721",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_yaw_acceleration.parquet": "a740b7226fee6aa984ca97e712e93ad9598c0bbfdf34301a78adb8d561c9cd81",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/ego_yaw_rate.parquet": "092a6bec1dab0d192e03080d5d2cc0246a6686c22832396f037b90c828942231",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/no_ego_at_fault_collisions.parquet": "0e112853372007231d47495373d93b0e814624453a1c30a6914f20fae4c21012",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/speed_limit_compliance.parquet": "3977f004cd80217ca9dbe2d8bd22e74b4b7c52bb976d8d3d2755bc4d76213afa",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/metrics/time_to_collision_within_bound.parquet": "92bf29f2ab24ed24b32a805ed942e99819c84c78859b1c6a08379cb91c2410cf",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/nuboard_1792923524.nuboard": "93ee7b5a64d7e74764d165ff29359235785b8dc4d80e9c56f3223c0717a57eff",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/runner_report.parquet": "3a99dbc8a6b288d0823c582362bff97d81ac6c7d34789c9198a7054d368ad259",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/simulation_log/TSB_DIRECT_COAST_F2_BASELINE/traversing_traffic_light_intersection/2021.09.20.13.46.45_veh-42_00401_00526/2d04941c562e568b/2d04941c562e568b.msgpack.xz": "0e914be7091f1330b4240ce735cb6584e5b93def1d43309ec19ebea6f8fff57b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/raw/summary/summary.pdf": "a576337e65e68674e5f794bd0309d214775d2258a614e64cc509c1a704faaaf9",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/resolved_config.json": "1388601af21fd055aa6cf759047bb393d0dec110f366d127c5f0b73700d8e4ea",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "45b86104e03c1937f35ce002b483f3d75ab36e66589d0ec0264da21c4f8a5a6e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/telemetry/planner_transfer.jsonl": "b3df27f881f7836a333b0555eaacebefa20a6ebd123137cb508d2afd5257cdcd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE/trace/realized_current_ego.jsonl": "735f106ba4264249fcdea8d56ce30b92e8f80e1c0c9a4613fe7381c1a76253ca",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE.process.log": "8036addb01f72545092f6c943be52003b4b0d4065baf153047cd8de312cf31f5",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/actual_observation_audit.json": "cb9f461784d3f1662991bf1c39c4631f25b22dbba72387dde5975ff0fa39e738",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/arm_science_review.json": "51176d984dd304bbf0be208ab5cf4cc359fc9fde9e8529e179600e0d73ace8b0",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/canonical_clock_mapping.json": "91daea5138f417ec57cdc80fdcf7aca3df23e18703f9a39f21dd5e42d4ffb797",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/coast_binding.json": "9c52077611f7df2a79cd3cde9f3fbd126246385320bd1515064944633e4e78f7",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/completion.json": "8996c77f8614a3ee97d25156cfb9c7c531ad8a4a73dfe03b9657b1031dc0a9fd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/execution_manifest.json": "5d90dd09801ff3acdc8b3eca5eaeca20996c5fb1ca9f867d2cd42f68c9e658e1",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/observation_review/evidence/F2_TREATMENT_Actual_Observation_Audit_v1.json": "cb9f461784d3f1662991bf1c39c4631f25b22dbba72387dde5975ff0fa39e738",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/official_safety_adapter.json": "f0747f06f9d0c17b8b0164fd9f5e2fcc4c9a4265f6fe9efc85f15cf3feeccb82",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/log.txt": "341d440ddec1e9a4c7128d13fdc229ea37724980f0a63ecc497ff9fcd96e419e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/corners_in_drivable_area.parquet": "bb465af6c482996565fb493f2d32904baac6f3fbc45b7f539f0e43d860becd62",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/drivable_area_compliance.parquet": "0dd30d1d8e4240f4d729310ff5339007dc7f4d16776dc014d30c391012a82160",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/driving_direction_compliance.parquet": "943c6a82bfdf1424e83cb6d51e9b410b2cc84c6816c1b3589f8b998b5557cd49",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_is_comfortable.parquet": "bc0ff9200ff6087672e0a04b0ce4a70f7dc91fec0b303a6ddbd252ee333eb77d",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_is_making_progress.parquet": "728cbcf7d8c5c61711f5167eca497209454f7f732cc16a828a82f8a008a26ebb",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_jerk.parquet": "3837f962e002cbc7c22e6140d04822d83aaa5b33487e944e29e47d8b246b9d32",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_lane_change.parquet": "89c65dda6efff5dd2ec18fbc98153af1321177e12cbbf738069be08c1d8dfe11",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_lat_acceleration.parquet": "866e7c3342f396652f223bfa3baacf19d4194abe5464ffcd3aed280bcadfa1e3",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_lon_acceleration.parquet": "aa4a64c3022494ce6f00d99826c176cd6d333963185c4264c2efa4c15db3a61d",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_lon_jerk.parquet": "160755b73fc80114e1d90a2bcfa13986cb86c55e6714d768b8a4442c3dfc2197",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_progress_along_expert_route.parquet": "5b4d9f9ebf4943fb2bb501a3b2edfa7c720c61922b332f2ee4d96804dacd2a8a",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_yaw_acceleration.parquet": "95b441c3637ddf420c72bf03e3327bc6f1504f7e21b8d7251c99378bcc7f43ab",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/ego_yaw_rate.parquet": "75daee8a76483d79260191128167ddc6b6bd07a298ea0c7e4f3bbaf02e40b034",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/no_ego_at_fault_collisions.parquet": "b03adacf5252b2d457cd5860a8fdacb6f21d6df8165cc92d32b6c921b67b85cc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/speed_limit_compliance.parquet": "b1d903fda5e178fba641523e420dadfdb793950bc2543cfee21508caddf03a09",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/metrics/time_to_collision_within_bound.parquet": "0b80088af824c2f6156941cf6cb1a1031a5c15c92f8bca0d1d2cdafdd9f74a5f",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/nuboard_1792923533.nuboard": "b9cbfd1be8370005088769bc50aa9b787525068f1548c332357d47adcd208a23",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/runner_report.parquet": "c87d8cff3237475ae6cd381047a00ef3e064e497481a164f584972e733992552",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/simulation_log/TSB_DIRECT_COAST_F2_TREATMENT/traversing_traffic_light_intersection/2021.09.20.13.46.45_veh-42_00401_00526/2d04941c562e568b/2d04941c562e568b.msgpack.xz": "c9bd36a91e4ba780069365f7e559dd0714d556706bd3aee1df91817edc80c3e2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/raw/summary/summary.pdf": "8f89b71bb76a349175d34b9bc9faeea65bc61e5866fd5ea72c3d1ab73a322cdc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/resolved_config.json": "0bbac77eb69f8eaa7e08e9b68f229acbee29b5e70518f06154dd5b2a32a927f4",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/telemetry/actual_lqr_controller_telemetry.jsonl": "be72dd28c510c0d47e3b4200291436f9e1c621951b88cc53622738e1f745d56c",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/telemetry/planner_transfer.jsonl": "6d9be40719a4bc56544a89a5a83aa6505e8f5e501caadd4bfa30a34c30ff49bd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT/trace/realized_current_ego.jsonl": "ba1a9920af5b2522271e5b8997f6589d13aa5529e9868816d4e8921b73a36fc9",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT.process.log": "976dca078b9753cecb1e7e1ac20aeb7beef877a368c86db37c8fc0a358b84cc6",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-pair_review.json": "c228b441abfadaba330df60f9d6d9dac52ad1a8784a66bce15349f95aece29dc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/actual_observation_audit.json": "452e1ab9b686dd64adf1ec40dccc26b8eff503038bc7545fe3a22a1c4f6d3de1",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/arm_science_review.json": "2eca758c7660c7abb1c60110c5605da0b0ce4f05e3a539c87bf551a854f30a01",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/canonical_clock_mapping.json": "35de727e873937ddbd72b960de616faca53b13b869a0a7c2e639d69bb5502dba",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/coast_binding.json": "849cef119d545f68fea68d0d5c67ef08b84bbdd5a4e7f86feca1335454cf6adc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/completion.json": "650fadf3757e218e3346a167df9f206d90217ada79c1f07ea8f726e6a042c7d2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/execution_manifest.json": "4a7351328f27ca48e8d79f3ec01ce5087230334a9d9695aea2f66d4d037219b3",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/observation_review/evidence/F2_BASELINE_Actual_Observation_Audit_v1.json": "452e1ab9b686dd64adf1ec40dccc26b8eff503038bc7545fe3a22a1c4f6d3de1",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/official_safety_adapter.json": "7249c064bf9fe3639e1e194e3ebd9bacf91c48e486f48570cb441f7d73955956",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/log.txt": "6b8833e66a23f62f713e2942aae78d06be8d70a2e80ab877467d55267edfe580",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/corners_in_drivable_area.parquet": "6bb8e059f426eb79e569cd114283db92599bfa55a8619846e6ddf6bbcd8fad3e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/drivable_area_compliance.parquet": "7f381c29a797a9fdd0754f18a81f26f2ef62ec283dbf513c59f28a33351a3a83",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/driving_direction_compliance.parquet": "6aa9b0bd38f954416b4068cf87cd42586e9ab11ee1a2ad085354e10d7440abcc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_is_comfortable.parquet": "4ed298c045901f4104abe7b97d049442fadf23cf43ed5871ab03d2d4f9ef16ef",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_is_making_progress.parquet": "a7d7adddac0f9505b7e68562c86c6019d6f212954eeca1e518bbd87cdc510576",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_jerk.parquet": "c2e8c83e3048663be022311e1ecd7fd169a05b1df65f33d8849523088c504e82",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_lane_change.parquet": "5ae70b070fd75c7d5ece363e2abc67cbdccd08ab2e66b7bbf28fb461116f258e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_lat_acceleration.parquet": "7273844dabc64aef7b93c5837206fb38cc628cb9832b7e400f98d4e6c7daae4f",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_lon_acceleration.parquet": "51198f02e2c36ce40d7b4f1d51d06de632c96410e7de3cfc8ae48d7d6944b6ae",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_lon_jerk.parquet": "47554e8048e88935ca7a7ed7d7c6a5a5bbc1bab2dc3b2d9c9844a77f2153dbd3",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_progress_along_expert_route.parquet": "6c7b412d7af2b9a84884af90da6b475719b3b1facd9c1d73014e1151c848ca18",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_yaw_acceleration.parquet": "c2a5c31c82d1a04fdc3a298322f162c787ad27a48d84ee9b9a46293da3a0d7d3",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/ego_yaw_rate.parquet": "4fe5f42bbd57b594b831d72c31fa018f2c9d69edcdcd1aace2dcdc3ee10bbcb2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/no_ego_at_fault_collisions.parquet": "0c0d45581be48c245966b015057dc041232d3c03036855aa2848cff3552647c9",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/speed_limit_compliance.parquet": "a11fbf0fbc8772b17c7b5c5661f78750cdefacfdca295d4b492742e9abe40c51",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/metrics/time_to_collision_within_bound.parquet": "24bb11bbd6b113b67402b948478cc4672b714faabc7b33d0e6581f0f459920f8",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/nuboard_1792923542.nuboard": "e423783e9e070e1b61820f58c232192b7aa22178eb2acec62139016937dbf2aa",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/runner_report.parquet": "cd109d1b177056281ffe3d3a2f536dca678ee05f539a201c5c3975ac611194af",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/simulation_log/TSB_DIRECT_COAST_F2_BASELINE/near_multiple_vehicles/2021.08.25.17.17.57_veh-42_00327_01003/e0c5ef0c18ce5790/e0c5ef0c18ce5790.msgpack.xz": "1304e2c25ba6bc5a9432d3d02a0711dee044b5f8fa74c197f9b2b85c120d5fa7",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/raw/summary/summary.pdf": "4183cf6cb41ff1c1bb3379170890096fbce5db153876aacea2f07b52ffb76c3a",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/resolved_config.json": "3133db1548baa77424ffec50f7d26e007055b616ee6a6fe4699dd9cde2f594c4",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "b8be1dc2a44419f9e6f0870d24dbbf40e6f9f37cecedab2969d190666e94e936",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/telemetry/planner_transfer.jsonl": "2d852ead1a84d7147a333c7cb64bd4a1d8636d648abaac55d75a73e71bbc3ef0",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE/trace/realized_current_ego.jsonl": "c8e973f5ea95e3d598e4bd8d5adcccdffa50985e387179c5352e51f27f2df05b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE.process.log": "f7b1bd862c2fdc6fe47ee131f9e6b07d5e18859847a8f3aaf8162e549d7737dd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/actual_observation_audit.json": "8d291fd12eae479191baad9092482bbcf81cd5da3cb2240c0c679179e939f407",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/arm_science_review.json": "37fe492309887165c52ecf5c1f34f46a179bb766edf6ced25a8199dcf494f0b6",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/canonical_clock_mapping.json": "35de727e873937ddbd72b960de616faca53b13b869a0a7c2e639d69bb5502dba",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/coast_binding.json": "d715eaa4ef60c7829367fbb5c105982c4fa8c8af132958e104e41c83d6629b4b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/completion.json": "70b720c9bd2c9cbbd4834fc2a60b6ea532f8c96cb750f3032c2c8b46a271a40f",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/execution_manifest.json": "b9bc0311a17ab5c2ec7db858641b50fd94efc6920b5466687e3ef4d9b27c7804",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/observation_review/evidence/F2_TREATMENT_Actual_Observation_Audit_v1.json": "8d291fd12eae479191baad9092482bbcf81cd5da3cb2240c0c679179e939f407",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/official_safety_adapter.json": "e6363a5c1eb8903a49d5a5fc0293c34130444787ae246997d6bb2f97eed8a579",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/log.txt": "1a10406108505ab41515fd0b18128568262b94e173f084a4eb60490bb88cace1",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/corners_in_drivable_area.parquet": "ab400f7c2169b4db6cfb88e0070ff5bfcd592573c89d2aeb2c63c020ebb84380",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/drivable_area_compliance.parquet": "67a37bc49acfa1306eacaa3e21060c586af4489325470e2aee69fe725c8a7202",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/driving_direction_compliance.parquet": "13c2bc1cf2eae284b974c564d7fae17af4dd98ea104b64de4f68b1c3a0e903ad",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_is_comfortable.parquet": "8f20c1481ba84e0ef9fa69f80597f69955b71bbc4a8ab269bae15fe5cf131ac8",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_is_making_progress.parquet": "f20292e3a84dd77d4388665c1dbaaf99870128ed31bf4d8fba4292abc284ed9c",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_jerk.parquet": "84def90ba2e9f85045004c4dd10a35d9733817abdff656a61d9a199d9a29c92a",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_lane_change.parquet": "714d6dd3c5cb535c6f0ea7a7248d0a5409393499118ae4a2c5d9047b1822434c",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_lat_acceleration.parquet": "9afa211a15703f1246adb0b1611bd8134c8b72ce8c53e14d45898939d6928b8b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_lon_acceleration.parquet": "53fed2b83297cab3ea1f5011a182f7a26ad8f905fbb5c36241f15ea923f52b5a",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_lon_jerk.parquet": "1fc53e2f7685be85694e941d576dc807a80c0df20f3c8db19f83b32052b5f66d",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_progress_along_expert_route.parquet": "a54a596eca614b69a9bf2c508a4aa7452199e524e9f84bda931d9c5c66b5d7fb",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_yaw_acceleration.parquet": "8568a7d2d3072b57bbf17975c4c36158052865bc9a1a3cc325339431de2f1189",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/ego_yaw_rate.parquet": "634e66e5fa11100ce7453a62148f41f38a9ba320e6471d7e18512fc21b607512",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/no_ego_at_fault_collisions.parquet": "a507c83f0e6903b0eccf54f747e9d18402a5c0595387bf1365ea7351189d1aef",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/speed_limit_compliance.parquet": "0af192074a9b6e09fc9de5a82ecf4556db4d9ffecd24e1d07183dbfb387e40c3",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/metrics/time_to_collision_within_bound.parquet": "508655b3362addc489228ce8a5fbfc13a645b3712ac2d16b5c5d8851f337b690",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/nuboard_1792923551.nuboard": "fcf7d12edb74c3ea38843db8e482b0ab80ae832591a7f57f9001796d6e9a5d3d",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/runner_report.parquet": "7a803186be3303d3de00d09cb586e77c9bc5068e554770355fe8aedbe82f6517",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/simulation_log/TSB_DIRECT_COAST_F2_TREATMENT/near_multiple_vehicles/2021.08.25.17.17.57_veh-42_00327_01003/e0c5ef0c18ce5790/e0c5ef0c18ce5790.msgpack.xz": "96ccf72eb2c71fb994af2d89ae21dfcb6a91e7d630acb100e817f207dd340e9b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/raw/summary/summary.pdf": "531c47afda65a96a268dbff804114d70d94f209c751c419c803ae80fe6c14bd4",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/resolved_config.json": "efdabeb2475314629212580fb6da9a464bc843dc05ebd337df034e90fe87e88e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/telemetry/actual_lqr_controller_telemetry.jsonl": "f358b2a05756307e6cb757f6174d9235ee3cd98550548861ff44f24be6a4eaa2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/telemetry/planner_transfer.jsonl": "455652393b36bd93bbd8d6eeeaeb9730e185185248bd3839c48b984ec455a394",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT/trace/realized_current_ego.jsonl": "0a2e5b314e4abb3c2e1db36788f4b4cd92bcc2b7bde8ebab1214cd3c8569e918",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT.process.log": "ee00630d9195030212b3ab875ddf5484a82bec105d3401d1f92881893bb58643",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-pair_review.json": "790c62c82fb31e2329c7c98c333165b418930ad87f49344a9e14788036290b53",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/actual_observation_audit.json": "912bced125459d553c6ae3c4f56999228f284a4412ca323bad0a31348b9a4dfc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/arm_science_review.json": "9cd6d0dc7a7037303e115df6e6853f20595bbe953e5c518f26a716a931acc842",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/canonical_clock_mapping.json": "53f4b3568980cde63a3a4fed645343674a87ccf6ed622f9e9853d4e916e87cba",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/coast_binding.json": "d047f4b2ba6fe49dca1afa20bc9a989543e3a616add07034345b3b0185f9866e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/completion.json": "a9182cd1f76f646dc3bb177fbf6f31babd5152e1d0e43918b9b79c5f669cf530",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/execution_manifest.json": "5205e35cd761b7b789cb2f8c2a27bbe63deaac072d4dcd6d314eaf1da326d9ed",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/observation_review/evidence/F2_BASELINE_Actual_Observation_Audit_v1.json": "912bced125459d553c6ae3c4f56999228f284a4412ca323bad0a31348b9a4dfc",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/official_safety_adapter.json": "db152be1c3e54dbf0caf4c9b1256e74c333290c532a7fbfde90046b8c42d4718",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/log.txt": "354c70f47033660abfa673f719f2f7a1c4d64b049e4dc1e310f0f6dc3f6e24ec",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/corners_in_drivable_area.parquet": "27ed684d9c43113334c78adc89f44db8e2fd51c5652a26868b8836f4280aa3d7",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/drivable_area_compliance.parquet": "d3894dee9dc2dceacaac73b612909938ae5851c727579177b6eb4de1fb411310",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/driving_direction_compliance.parquet": "fc53ac3d8fe59fdeb3949b072167dd934244769eb0f733cbbb1e350539247a8a",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_is_comfortable.parquet": "af2c55bd1472f0f53d5400f74d6c57c0425a842a57f80d71838c150f4ab0ae28",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_is_making_progress.parquet": "af3feb718420a6653ece9c4bdfc2bd447b4bb8002290ba8ef32100c5b1ce3c2e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_jerk.parquet": "058c0b14c7fc5e7245a069ea8b1eec0e9a54dbe767ce4450f949aa96e86f5b6b",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_lane_change.parquet": "d906e3693e3bfa9b40c54b5b31cedbd8272bc033bc5acee81418c28fb49f2480",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_lat_acceleration.parquet": "4007d155c1e8a4cd592a213870d8d9f348cf8533b456a4a4df98b2277c6f3864",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_lon_acceleration.parquet": "254b30d15c991f541061506e4fb858c510cd6d7390ba12d952d6ef644fa119a6",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_lon_jerk.parquet": "afca8a951b0a35722d6590096fdd911b82d8aa4bd0ef49526c523e62109a0d62",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_progress_along_expert_route.parquet": "6059d2ac5ef14e9fa8788578f25e2c37f21ef0e8f24c40c3893da6a7a3ad2e24",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_yaw_acceleration.parquet": "f669d8c5ca9766b3c66d747207f30dcb2416412a75280f3dea2259b913a484e2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/ego_yaw_rate.parquet": "690c6441933dfb10d44228ff689189fb01c37ca35893cf14ad16827a6dfbca48",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/no_ego_at_fault_collisions.parquet": "59c47fa5ce88864ff2253b3a8623891718c765701605d8be2c06ac763515443e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/speed_limit_compliance.parquet": "87a5c56340b1da626430aca7ff1cc68f846a0e62e26ec3564e9ac6c7416ace92",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/metrics/time_to_collision_within_bound.parquet": "d2e9061f04283a45878fb5ec86947b3007786009b040d5434d096526fb4ed8ee",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/nuboard_1792923560.nuboard": "cb6a62a8213f47e5d1fe61c5000cb772e56521f51917e571cd9cc44527ed2361",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/runner_report.parquet": "b3837ce816201ba702e446ecac7a9eae0f0c25507c3a77b919372640427faa46",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/simulation_log/TSB_DIRECT_COAST_F2_BASELINE/high_magnitude_speed/2021.07.09.17.06.37_veh-35_00258_00748/e144c3399a4f50d0/e144c3399a4f50d0.msgpack.xz": "abd7101e09909f212dcc27cc6969fb4aeb09f4a190c468e823008c39c67be92f",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/raw/summary/summary.pdf": "6dc7259c04a51ee40761322b4e187a1912dd4b6f1b9bd76ca83513c1248de5ca",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/resolved_config.json": "7429da60923255c38bf5e287b7bd0986d04507c88d7eedb9961e798ac61e2903",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "30cd5218df78a2c5a83646bc7228156887de2d338ba722469ba120459c26e571",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/telemetry/planner_transfer.jsonl": "140b950d397ab6187031f820d22fff508770acd138416ba7e0544dde690139ad",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE/trace/realized_current_ego.jsonl": "147efbde15610dbbea19a87679cfca122da0ccaa2d04bc2ec9ad86f74c543a55",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE.process.log": "4fd0a4d9a1bb917bcca4d45d04f843d9b065ae3c7dcd1dc46373ae631c4a2e9d",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/actual_observation_audit.json": "0455e141028b2cdb30ab61a72683261db500186b14c1fedcee60725408134f75",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/arm_science_review.json": "68d8e7a972d726eb7dddecea15164f9c27e9adb18c714762a4e862f1c6b01faf",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/canonical_clock_mapping.json": "53f4b3568980cde63a3a4fed645343674a87ccf6ed622f9e9853d4e916e87cba",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/coast_binding.json": "d1a9712d89c611a11853d52e44164eece2bd2a723c163d23abc7a287c6b3fe78",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/completion.json": "38e02f32151c74af0eebeea1ab34dd2ef5ff05f1dc7b2b94ee714831bd4b2193",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/execution_manifest.json": "817248eed29662825a6fd2ba5209819ab43cf1f16750b81a6b4c074c5701c56f",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/observation_review/evidence/F2_TREATMENT_Actual_Observation_Audit_v1.json": "0455e141028b2cdb30ab61a72683261db500186b14c1fedcee60725408134f75",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/official_safety_adapter.json": "47fe2d520a8942a9b54b258baf0a21c5b145279703e48c5de7f186ed03bb2a83",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/log.txt": "6c3b1bbd999d0386fb818c38ea7997fc2e58f0f85811f4f69934d3866a3a993c",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/corners_in_drivable_area.parquet": "02b72aea63dd6d1888c9e9864635cb95ef844ec9e63ee12a205c9e6e18018482",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/drivable_area_compliance.parquet": "f2959322487a624c9e372df12069f3b5d269ea11785da73600e2adbdda644a64",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/driving_direction_compliance.parquet": "e6e5174f261b994681efd31aeccec888aa52f193578f54122dae8d3edf19893e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_is_comfortable.parquet": "4631ae09277c28b559728364a2a0a309d5fd1661c6f94f74e54171cf44c4ae8e",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_is_making_progress.parquet": "375279fc9f68fbb39b884e0d35077cc61ef3d7e402c2c01aa774b9f3f15539c2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_jerk.parquet": "3e493c7f1d981c17f513b344b593a5ac96a5c233f2f782f1bdf92514e3b7c6fd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_lane_change.parquet": "f774a32bb0e4201e5afad7bc02d2b4955daed728528807451e6bf20c5d06ae46",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_lat_acceleration.parquet": "395d5a9edeff51fb26959856e32d91ee4bc9d4ef1f642efaefeaa72f7553d147",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_lon_acceleration.parquet": "97429e61de1da2add7b7bd112e6f26dca7569d848d74fa525245eaae8c7e8147",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_lon_jerk.parquet": "d7146464eda901a3f50e14fc5a4edf76e9cc28afe7fcfa2e724c3c38236fd6a2",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_progress_along_expert_route.parquet": "9773215a10d4c297edb42d8c9e15f01a5cbfa3822044caa52863c32e39c47e2d",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_yaw_acceleration.parquet": "2fa212a5ef7c612b757d907ebfa7858919ddd2e19521e3601ce26e0306e32824",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/ego_yaw_rate.parquet": "70c524dc9b8eeec9f266a32ab0ffb56aa33d1a61ad1ed3fcb6c6eafad49bba70",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/no_ego_at_fault_collisions.parquet": "97f6e358bc8c5ccccc869aa9bd255d9fa7fab83eb4f643efe596c89120d7cf90",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/speed_limit_compliance.parquet": "57a1911e800e0c957e0a88041d8067bdfb8102e55d58db4784bb7131e8f21c29",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/metrics/time_to_collision_within_bound.parquet": "4e8dfc0ec66e7918a99e75726d30e6bbf05c2f9e85b0cef7bd0daa16e943e8c6",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/nuboard_1792923571.nuboard": "f150ed61f1a21cd69055c7d35a1cc241c2f718c13c39e0b20bd9d886d2ee802f",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/runner_report.parquet": "064f09ff7b9252dca3c925de497de37d611cd794b315d9862efd59f534a5b826",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/simulation_log/TSB_DIRECT_COAST_F2_TREATMENT/high_magnitude_speed/2021.07.09.17.06.37_veh-35_00258_00748/e144c3399a4f50d0/e144c3399a4f50d0.msgpack.xz": "f8dc1a5e06852705f1c9d9edf72e9bb669241262f9ead859d3e88e316a9c9671",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/raw/summary/summary.pdf": "cf29e09843f0e95661bc165543e0d41e483446a0528886b59747101428f29fac",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/resolved_config.json": "3a77af955e35d3e3c6bebc1da94958083723666007cb1b5ddc9f600e202c8406",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/telemetry/actual_lqr_controller_telemetry.jsonl": "4cfe2da4d00144dc0ecc4b9f17a0ba2cac3c9b5b00352945c7215b2d06dc42a1",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/telemetry/planner_transfer.jsonl": "727f5c86328f95af9caa0c7ef66de2d8cece069b3757eedcb395cdac509103fd",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT/trace/realized_current_ego.jsonl": "d43f16e43779ae70198f4abf9067d79dc7ae6470e61922591dacca1815b63dde",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT.process.log": "16e0d67256b6599958cfb3017037f10da0badde692a3ccf53874c96356a81049",
+    "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-pair_review.json": "c0819a90b92a1ce11187719e9ec91e656e50941c03377ecb061ceec889bd74d7"
+  }
+}
