@@ -1,0 +1,326 @@
+{
+  "roster": [
+    {
+      "pair_id": "SDC-QUAL-01",
+      "session_id": "2021.09.09.14.34.34_veh-43",
+      "log_id": "2021.09.09.14.34.34_veh-43_00093_00870",
+      "scenario_token": "4048b760f46c5bff",
+      "anchor_rank": 12,
+      "anchor_rank_hash": "0025be0e786af1ce91615ca803e7b489c3585936354b985f19a2caa3b491d825",
+      "session_rank_hash": "00932d174de395c3679d51e76d7fec01981c885323fca4673def0af48d127b07",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.14.34.34_veh-43_00093_00870.db",
+        "db_sha256": "395cf5ea5babd9dc9cd73d6f8c47129cef3786a6471d3faf9da1599f634c2e9b",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0844.json.gz",
+        "metadata_shard_sha256": "c0ab104adb1eaf919c267b20f7d90748bb6ebcbde9559ab6f1efbfc9ea017372"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-02",
+      "session_id": "2021.08.17.14.45.12_veh-42",
+      "log_id": "2021.08.17.14.45.12_veh-42_01119_01535",
+      "scenario_token": "c4920a40d39d5e0e",
+      "anchor_rank": 2,
+      "anchor_rank_hash": "0008b3851189df8d3be8d19849faaf87af40fbc1edc06174fb19a8d0a4de110d",
+      "session_rank_hash": "07f81fe6305d9408c464cb114e5d16a6652ad3465fb509ad8306e95e3a10f103",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.17.14.45.12_veh-42_01119_01535.db",
+        "db_sha256": "dd081c648f52c3c78ec18aff458cf2cc0307278b746a53a999e842cd0e4195fe",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0090.json.gz",
+        "metadata_shard_sha256": "bfc06acfb3d3e9b61bd06fb17340ac605c211d4e29a7c7d30f44918dafc834be"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-03",
+      "session_id": "2021.09.02.12.54.17_veh-08",
+      "log_id": "2021.09.02.12.54.17_veh-08_00341_00924",
+      "scenario_token": "4f70bea5d7055a4f",
+      "anchor_rank": 2,
+      "anchor_rank_hash": "00155735c78eddfb199506672f5a22fb03637a500e4d01e00ec27c90c30a09d0",
+      "session_rank_hash": "1d2f7998e8fc62d7c9bda17b5d69ff5bbfefa1212107f21ba7b69bd9beeaeb4f",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.02.12.54.17_veh-08_00341_00924.db",
+        "db_sha256": "dd00412b1861140684fd28f351bbfad5486499cb54b5ed676cc27718d6a83f03",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0756.json.gz",
+        "metadata_shard_sha256": "2ea2f248b05872e78ca470af07717a7195ee0b1e983b74b7334fc7c01101fcd0"
+      },
+      "exposure_class": "E2_BENCHMARK_ENGINEERING"
+    },
+    {
+      "pair_id": "SDC-QUAL-04",
+      "session_id": "2021.08.25.17.10.24_veh-45",
+      "log_id": "2021.08.25.17.10.24_veh-45_00154_00509",
+      "scenario_token": "df0d75cbd0aa52c7",
+      "anchor_rank": 5,
+      "anchor_rank_hash": "004a01a33da0ffb6b84dea909c9c85cd9c7225abc4caf6730ddd5bf39fcf8bef",
+      "session_rank_hash": "200c1c7d402f92da08dde5bce9d10b80fc8891960eb56af1d9dca57fbb577e11",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.17.10.24_veh-45_00154_00509.db",
+        "db_sha256": "e67572de24cdaa144bef014ab769b59d13801f06f09e0f48e10d519dc4cf2104",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0500.json.gz",
+        "metadata_shard_sha256": "3f652b89826d09d498d3262fd17549670f0b2e40a8dc6b918aeb48de9799f2b1"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-05",
+      "session_id": "2021.09.15.13.26.07_veh-45",
+      "log_id": "2021.09.15.13.26.07_veh-45_00278_00999",
+      "scenario_token": "7e3208cedab95aad",
+      "anchor_rank": 10,
+      "anchor_rank_hash": "0051ba1403bae90f8f5380b00daf37f6f611925f023f4255f009395a16bcee96",
+      "session_rank_hash": "2e5f424dcb24a55dc7e229e60b9d2319dc9b2b1311afc7002d0bb07054dd83a3",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.15.13.26.07_veh-45_00278_00999.db",
+        "db_sha256": "e28a7c5ef21f3a4457edb59abd096641e4d2ad7924eae597046b1e8e922a760b",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1029.json.gz",
+        "metadata_shard_sha256": "36b1d043785669bdf633c8749e0ec1801a4d6dd1ac337a764ef937ccd8243053"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-06",
+      "session_id": "2021.08.20.14.28.03_veh-45",
+      "log_id": "2021.08.20.14.28.03_veh-45_00239_00641",
+      "scenario_token": "d210e721837c5f7c",
+      "anchor_rank": 5,
+      "anchor_rank_hash": "0024143aca4df34837290f682d1fe2d210dbbd152259eb98127356e7de0e8e35",
+      "session_rank_hash": "327379e7ffd2f5a6e4848f3adb84ba7fe8132cc47d70497bd5a4c6bc72fcb17c",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.20.14.28.03_veh-45_00239_00641.db",
+        "db_sha256": "25f0cff763cce876137d569892171ed6ca42f7035e5a5d50e74d12835b2b4c07",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0229.json.gz",
+        "metadata_shard_sha256": "814f3e67081bf6274b2fc364e9831c08a6efb07a13b4d5adb50a7da50e5a6885"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-07",
+      "session_id": "2021.08.20.18.44.47_veh-08",
+      "log_id": "2021.08.20.18.44.47_veh-08_01382_01958",
+      "scenario_token": "e7b57f72acd55be3",
+      "anchor_rank": 16,
+      "anchor_rank_hash": "0071bc150da79566b1d0a26acb78d45a6e075dbe8fa09cb843088540cbd23711",
+      "session_rank_hash": "37cbe4c00cc5e1af51c01496f8f1ca1175424f7a848bb9f7a2d9d839b2c4999c",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.20.18.44.47_veh-08_01382_01958.db",
+        "db_sha256": "c653627c9d6b1ab4097b1f82d695288b618eb1a57f8390007c9df49825e0aa59",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0288.json.gz",
+        "metadata_shard_sha256": "4de81c5df35c0d0fe765317125da4dd311ac7e060274091763bdb8df84be174c"
+      },
+      "exposure_class": "E2_BENCHMARK_ENGINEERING"
+    },
+    {
+      "pair_id": "SDC-QUAL-08",
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "log_id": "2021.07.24.20.37.45_veh-17_00015_00375",
+      "scenario_token": "3f0b0f20ab56514b",
+      "anchor_rank": 4,
+      "anchor_rank_hash": "0034bcd11af83e66d6575b3c0fb26f12646a7e8215accd1faeec345cbe9778e4",
+      "session_rank_hash": "3f717b481de0def0e0b186cc17b602ab3eb182aba1b9c1723ec41e50e41199b9",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.24.20.37.45_veh-17_00015_00375.db",
+        "db_sha256": "125570b448ef412833b5b4fe1e78012daf827476ecf945cbfc094d54a84bba0b",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0046.json.gz",
+        "metadata_shard_sha256": "4b1284677e0da7db5fcd8a5ae6a12723f24de08a841f35bead348489aaf74259"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-09",
+      "session_id": "2021.08.25.20.03.09_veh-08",
+      "log_id": "2021.08.25.20.03.09_veh-08_00016_00999",
+      "scenario_token": "5630d36111e05b10",
+      "anchor_rank": 10,
+      "anchor_rank_hash": "0022d0a16392e93ac975c17c3f11938aa9aa067e19a9a5e964df7358064e08ed",
+      "session_rank_hash": "4466352958d97c234f6edbcccfa6e765dd63589fe450ba706b836dce988b8c66",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.20.03.09_veh-08_00016_00999.db",
+        "db_sha256": "476900fa39c60486001855f8a025bc16ebb8b7dd4a07cdbf727d25522b33204d",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0560.json.gz",
+        "metadata_shard_sha256": "08745e07a17cc63d436d0893cde41391b091c5d0fa525b2ce52b7b928f347f2a"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-10",
+      "session_id": "2021.09.09.17.29.55_veh-42",
+      "log_id": "2021.09.09.17.29.55_veh-42_00016_00151",
+      "scenario_token": "9d72c6272f2153f2",
+      "anchor_rank": 2,
+      "anchor_rank_hash": "00218ec69df1ca8fcedc1f9567cf18cc6ba144be4e18466c419c6805269c000e",
+      "session_rank_hash": "4618ca5ce7706f3da712f2be641e1b6593d00c762b86ab88c24f0e1edab5ac82",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.17.29.55_veh-42_00016_00151.db",
+        "db_sha256": "a556e3087f035504f8259c02d94b27ac5a05744f4854be847d1969ff6d70409a",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0854.json.gz",
+        "metadata_shard_sha256": "2e15160fa2809b1bc22c5774b413f3f12f3d192a8ff8863bfd97e9f1dc54dd0c"
+      },
+      "exposure_class": "E2_BENCHMARK_ENGINEERING"
+    },
+    {
+      "pair_id": "SDC-QUAL-11",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "log_id": "2021.07.16.18.19.22_veh-35_00440_00858",
+      "scenario_token": "ff8ab848c13754c8",
+      "anchor_rank": 1,
+      "anchor_rank_hash": "00051b13d8833059800d150b2405acba1189f65c5db942f5bb4dbe9699197024",
+      "session_rank_hash": "4ef04c5badc2c9b84d82e39ee2e4a25893f475028126ef9b21ac4712fe98447e",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.16.18.19.22_veh-35_00440_00858.db",
+        "db_sha256": "b524a31afc8984d2b2a4203999eebf40567dedf4c3750e9241c7334bebab243b",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0043.json.gz",
+        "metadata_shard_sha256": "db4a1929485e5ff36bc9763d66aafc744626e9bd5dd20a96af9d126935f5a0f2"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-12",
+      "session_id": "2021.09.20.14.04.18_veh-08",
+      "log_id": "2021.09.20.14.04.18_veh-08_01165_02197",
+      "scenario_token": "035f68ca631c5e2f",
+      "anchor_rank": 2,
+      "anchor_rank_hash": "000d995c3dd0fb23bd201f6fe65e2c16b7011d24563c4bec820522ad4b5e5e88",
+      "session_rank_hash": "5628d982874c302cd86bac9a6313827265a063efaa0e893a5b923e06ea14505f",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.20.14.04.18_veh-08_01165_02197.db",
+        "db_sha256": "9781ef937883196531c3a276f030d1c57d42ba241d12c2c93e7fdd060dc914ab",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1204.json.gz",
+        "metadata_shard_sha256": "c03c2555c8a5863ff5a439600c0f90522ab49f329eba90fb1e222216073732e6"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-13",
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "log_id": "2021.09.17.13.27.08_veh-42_00434_01037",
+      "scenario_token": "08a88e1ec57d5ae4",
+      "anchor_rank": 15,
+      "anchor_rank_hash": "00471e95884670d9d0b954988842e34505feab185e8da3f5700c89a4fc9264ff",
+      "session_rank_hash": "5a685db4c83020e2721073630b239dd0bdc1deb14b9d5e226ccbb582ec9ebcf1",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.17.13.27.08_veh-42_00434_01037.db",
+        "db_sha256": "fd13921f06889bf7a73e116369d99236694092eabbd442142cbad1e017e7c401",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1087.json.gz",
+        "metadata_shard_sha256": "0be0cb0feea2f183849d2573e942fab16ec01b0b18db25b996b402a54d3ac20b"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-14",
+      "session_id": "2021.08.25.18.29.43_veh-42",
+      "log_id": "2021.08.25.18.29.43_veh-42_01494_01818",
+      "scenario_token": "797eddc6b55f5427",
+      "anchor_rank": 11,
+      "anchor_rank_hash": "00c48119f83570442df2648cfd7a2a9e476addff5b50452150290f889c121673",
+      "session_rank_hash": "5b21a7a1f8487469f989af18e4d6d699c356c0242dbc80fe534e046c877c836e",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.18.29.43_veh-42_01494_01818.db",
+        "db_sha256": "f7961d40c30e2d7e727259636fb9a1f5dc151c72c37bca57536100b93b5b6564",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0534.json.gz",
+        "metadata_shard_sha256": "5a25cb641c6d9f1295941c7be4f3ad6b9d5031f2950475d93d2920b0c198f7f2"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-15",
+      "session_id": "2021.09.15.13.06.21_veh-42",
+      "log_id": "2021.09.15.13.06.21_veh-42_00169_00749",
+      "scenario_token": "cdf818ce70dd57d5",
+      "anchor_rank": 3,
+      "anchor_rank_hash": "002615bd4da95e6d92a36801004f385e8fcd5ec8a7a7f853448c90b49b825d66",
+      "session_rank_hash": "6401fffc53c463d930ed2022cac2ed6a988a7213d45736c6958a2b55be781fde",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.15.13.06.21_veh-42_00169_00749.db",
+        "db_sha256": "34e072a054b0fe60dd27d57b9910c82c56f9483c4cc6684fd4f298219710fe29",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1016.json.gz",
+        "metadata_shard_sha256": "0cd2c2662d61b6a93acb3e05be8a7f1088b063d519875d3b4c958c7c5cbff04c"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-16",
+      "session_id": "2021.09.17.17.36.45_veh-45",
+      "log_id": "2021.09.17.17.36.45_veh-45_00338_00529",
+      "scenario_token": "2ab869d879625b56",
+      "anchor_rank": 1,
+      "anchor_rank_hash": "000ce3e3e20300dc0ba8903b38fef1b791ac2c4c390409cd46b91e276d3f26b9",
+      "session_rank_hash": "68509400939cf1426752a9d2c1609f001437eb97c34be0fe20e98d807215b43b",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.17.17.36.45_veh-45_00338_00529.db",
+        "db_sha256": "da5a231bec58b4de6262aa118f5a8e3564155be23aea5c7428ac1cbfcb0fff62",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1132.json.gz",
+        "metadata_shard_sha256": "7753b7524f6f60b87a6e76459e08e4f353901e872b6e36be193f2bf6c66d521a"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-17",
+      "session_id": "2021.09.10.20.06.13_veh-42",
+      "log_id": "2021.09.10.20.06.13_veh-42_01090_01664",
+      "scenario_token": "95a53d704b0d5f97",
+      "anchor_rank": 8,
+      "anchor_rank_hash": "0035e98107308c32be4a314218622c3ad125f174a520a4b0358bd875620fef3e",
+      "session_rank_hash": "6cf227770fda5fc574969be6b5aa0a7d33cbb901309a9319a6d8c63b7974e7d2",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.10.20.06.13_veh-42_01090_01664.db",
+        "db_sha256": "8450c6b74270252fc6d89434386efd9e4a763f96cdeefb8c89a9e4b44820432e",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0952.json.gz",
+        "metadata_shard_sha256": "2358268e7c6533117b2823fbc384bde9a43738ee1f4a03c0986d4f5a86fecdaf"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-18",
+      "session_id": "2021.09.09.18.12.06_veh-42",
+      "log_id": "2021.09.09.18.12.06_veh-42_00036_00389",
+      "scenario_token": "abab8b8b8cdc5b38",
+      "anchor_rank": 4,
+      "anchor_rank_hash": "002532408cbd5093716ca55ceddf12932542e63974ba64f9d2cfb0d972d46057",
+      "session_rank_hash": "6dcc52fe989bdaa54c459f09e1334c9d38331ee40c352a5f0e0fde854dec6979",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.18.12.06_veh-42_00036_00389.db",
+        "db_sha256": "15e31799e6869ab54440bbc6ca3c397e754323e89149d73e701c87c23a1c6799",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0860.json.gz",
+        "metadata_shard_sha256": "88fa48a93cf967f40055ed3394b423f4ecc1aa00dbcc93a1818dc8e284ea9ac6"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-19",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "log_id": "2021.09.09.16.51.32_veh-42_00161_00562",
+      "scenario_token": "83d4e59dbe595aef",
+      "anchor_rank": 1,
+      "anchor_rank_hash": "0018068ace6e35785d1ed8af8073ae0ea0673b8cc8ede886fc102f60d5a26f61",
+      "session_rank_hash": "88aa32cf42b64d9506b0e1870e7a3d9cb3a3d708c5ee9ae7a716f28152546141",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.09.16.51.32_veh-42_00161_00562.db",
+        "db_sha256": "d9e97bb6e5f2e79869b41fb804654e0a5f0491b127f913676d519810e8176085",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0850.json.gz",
+        "metadata_shard_sha256": "5fe087e1c59df461d154a66197379f6ace367c5bcc54ee0d716752cb7ae87f28"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-QUAL-20",
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "log_id": "2021.09.17.18.42.25_veh-08_01760_02084",
+      "scenario_token": "7b06beff90d852c2",
+      "anchor_rank": 7,
+      "anchor_rank_hash": "00749b7ef533cec541f05733867998d335692ec4e8ca933967355bab856d9d77",
+      "session_rank_hash": "8a1fa313c7a2f5b4218ac288b6bb03ea3a4d3fe8d26bbe360e34247ef1df00df",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.17.18.42.25_veh-08_01760_02084.db",
+        "db_sha256": "e59945f670937953d6e1634fb27fb9e00bd984aafe7d40b9f108be9abbc2167d",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1148.json.gz",
+        "metadata_shard_sha256": "84c294a80d416d89cadd6cf79621c992c312e92bebd1c11ef52e0adeb4a09266"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    }
+  ],
+  "eligible_SESSION": 47,
+  "selection_rule_sha256": "646f29dfb46a080d2e8ced08ff6526f569b229c9651f33c24c7b3205b9846263"
+}
