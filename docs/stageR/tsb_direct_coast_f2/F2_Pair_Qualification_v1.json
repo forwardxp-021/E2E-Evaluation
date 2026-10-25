@@ -1,0 +1,41 @@
+{
+  "F_match": {
+    "absolute_delta": {
+      "end_minus_start_speed": 2e-06,
+      "mean_abs_accel": 9.2e-05,
+      "mean_speed": 0.0,
+      "path_length": 1e-06
+    },
+    "baseline": {
+      "end_minus_start_speed": -2.584888,
+      "mean_abs_accel": 0.330027,
+      "mean_speed": 12.626162,
+      "path_length": 99.852555
+    },
+    "calipers": {
+      "end_minus_start_speed": 0.15,
+      "mean_abs_accel": 0.02,
+      "mean_speed": 0.1,
+      "path_length": 0.8
+    },
+    "pass": true,
+    "treatment": {
+      "end_minus_start_speed": -2.584886,
+      "mean_abs_accel": 0.329935,
+      "mean_speed": 12.626162,
+      "path_length": 99.852554
+    },
+    "version": "P1R_UNCHANGED_FOUR_F_v1"
+  },
+  "pair_pass": true,
+  "qualification_contract_sha256": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+  "retained_P1_balance_review": {
+    "negative_dose_delta_mps": 0.0004395393129956737,
+    "pass": true,
+    "peak_differences_mps2": [
+      0.17209415735359102,
+      0.17204313109389346
+    ]
+  },
+  "status": "TSB_DIRECT_COAST_F2_DEVELOPMENT_PASS"
+}

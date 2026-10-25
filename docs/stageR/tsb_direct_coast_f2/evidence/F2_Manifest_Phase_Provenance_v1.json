@@ -1,0 +1,16 @@
+[
+  {
+    "arm": "BASELINE",
+    "pre_observation_manifest_sha256": "d56722f3b63be53d0f25254efa4d9d486111c44f374aaa09c46a54319cc4aadf",
+    "final_execution_manifest_sha256": "fd2f3200bde3aa85b34eeaf09e27aec22c362fbcc30efb9601112dc003643a23",
+    "difference": "ONLY_FINAL_ARTIFACTS_MAP_ADDS_actual_observation_audit.json",
+    "exact_pre_audit_version_reconstructed_and_sha256_verified": true
+  },
+  {
+    "arm": "TREATMENT",
+    "pre_observation_manifest_sha256": "bc00a44dbf6d803a18c6aa22ce8fc3a9910c8c9d858f66ed480cddda33102468",
+    "final_execution_manifest_sha256": "c45369dc66563a33b8ae8f598bd9c09001b7cdafe36f8a7872a96b176b9b97bf",
+    "difference": "ONLY_FINAL_ARTIFACTS_MAP_ADDS_actual_observation_audit.json",
+    "exact_pre_audit_version_reconstructed_and_sha256_verified": true
+  }
+]

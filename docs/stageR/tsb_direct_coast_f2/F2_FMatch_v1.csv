@@ -1,0 +1,5 @@
+metric,baseline,treatment,absolute_delta,caliper,pass,scope
+end_minus_start_speed,-2.584888,-2.584886,2e-06,0.15,True,FORMAL_F2_DEVELOPMENT_PAIR_FMATCH
+mean_abs_accel,0.330027,0.329935,9.2e-05,0.02,True,FORMAL_F2_DEVELOPMENT_PAIR_FMATCH
+mean_speed,12.626162,12.626162,0.0,0.1,True,FORMAL_F2_DEVELOPMENT_PAIR_FMATCH
+path_length,99.852555,99.852554,1e-06,0.8,True,FORMAL_F2_DEVELOPMENT_PAIR_FMATCH

@@ -1,0 +1,34 @@
+{
+  "attempts": [
+    {
+      "child_pid": 88668,
+      "claim_token": "910744f93ee1ce353e4a80e266cad7813fc28e54af0fa1dce8d68844b98cb38a",
+      "cpu_seconds": 7.8091610000000005,
+      "elapsed_s": 8.924807458,
+      "monitor_pid": 88661,
+      "returncode": 0,
+      "run_id": "F2-DEV-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "stop_reason": null
+    },
+    {
+      "child_pid": 88716,
+      "claim_token": "f0e6dbb0f6f1a5c8576470a70fdf14ac01b13e0b1da30eeaf039730148522019",
+      "cpu_seconds": 7.66876,
+      "elapsed_s": 8.156705083,
+      "monitor_pid": 88708,
+      "returncode": 0,
+      "run_id": "F2-DEV-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "stop_reason": null
+    }
+  ],
+  "automatic_retry_authorized": false,
+  "cpu_seconds_consumed": 15.477921,
+  "maximum_new_attempts": 2,
+  "old_C2_ledger_not_reused": true,
+  "per_arm_wall_seconds_max": 1200,
+  "scientific_CPU_seconds_max": 3600,
+  "stage": "TSB_DIRECT_COAST_F2",
+  "stopped": true
+}

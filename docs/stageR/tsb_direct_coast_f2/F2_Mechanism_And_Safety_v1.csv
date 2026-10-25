@@ -1,0 +1,4 @@
+arm,phase,start_s,end_s,support_s,peak_decel_mps2,dose_mps,arm_pass,at_fault_collisions,drivable_area,source
+BASELINE,1,2.2,4.0,1.7999999999999998,1.4487735691344952,2.3523542682404126,True,0,True,outputs/stageR/tsb_direct_coast_f2_dev01_v1/F2-DEV-01-BASELINE/arm_science_review.json
+TREATMENT,1,1.3,2.2,0.9000000000000001,1.2766794117809042,1.0059257819556437,True,0,True,outputs/stageR/tsb_direct_coast_f2_dev01_v1/F2-DEV-01-TREATMENT/arm_science_review.json
+TREATMENT,2,4.1,5.0,0.9000000000000004,1.2767304380406017,1.006138070242234,True,0,True,outputs/stageR/tsb_direct_coast_f2_dev01_v1/F2-DEV-01-TREATMENT/arm_science_review.json

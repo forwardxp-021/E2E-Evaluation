@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "protected_files_verified": 5373,
+  "changed_protected_files": [],
+  "frozen_source_config_files_verified": 1075,
+  "frozen_data_files_verified": 3,
+  "actual_checks": [
+    "BASELINE: full actual artifacts, 80 observation rows, 79 direct/lateral/model transitions, 16 official parquets, both plotting CSV layers PASS",
+    "TREATMENT: full actual artifacts, 80 observation rows, 79 direct/lateral/model transitions, 16 official parquets, both plotting CSV layers PASS"
+  ],
+  "graphs_visual_review": "BOTH_PNG_GROUPS_INSPECTED",
+  "new_source_frozen_unchanged": true,
+  "old_C2_ledger_unchanged": true,
+  "protected_csv_sha256": "e8deb93312e82183b6c2c0db30fd18cbf9c32d32d566038419a5be65b389d9d8",
+  "F2_ledger_sha256": "65a30e6958a9e7b1f0b2f9a7f211c4cf96330b8db0fd2e4ccc5ce1f7ec5b87d8",
+  "scientific_attempts": 2,
+  "unit_tests": 5,
+  "unit_tests_result": "PASS_BEFORE_FREEZE",
+  "model_isolation_reexecuted": false,
+  "scientific_analyzer_reexecuted_for_delivery": false
+}

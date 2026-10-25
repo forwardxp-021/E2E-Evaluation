@@ -11686,3 +11686,7 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 ### 3. 通过标准
 
 5项接口测试通过，隔离固定state及生产零运行预检PASS，来源/参数/资格/身份/依赖及新授权哈希一致，方能执行。最终PASS必须来自真实两臂完整机制、安全和正式四F/额外balance联合检查；隔离PASS不是科学PASS。若任何步骤失败立即停止，不修改参数或技术重试，不做P2、DEV02/03、RBR/H30/BDD、Primary/V/C。
+
+### F2 本轮实际结果（2026-10-25）
+
+`TSB_DIRECT_COAST_F2_DEVELOPMENT_PASS`。两臂真实首次执行各一次，Baseline单段/Treatment双段、18次零请求、官方安全、正式四F和额外balance均PASS；两个actual observation audit各80帧PASS。科学CPU15.477921秒，新ledger stopped=true。图/CSV、正式pair结果、执行账本和SHA见docs/stageR/tsb_direct_coast_f2/。只读导图不重跑科学判定。下一步仅Owner决定是否值得独立资格验证；本次已暴露DEV01不能冒充P2，本轮停止。
