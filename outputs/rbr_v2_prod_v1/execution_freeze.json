@@ -1,0 +1,29 @@
+{
+  "state": "OWNER_AUTHORIZED_FORMAL_U_ONLY_WITH_DISCLOSED_SOURCE_RISK",
+  "source_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "selection": "FIXED_EPOCH_30_NO_U_VAL_CHECKPOINT_SELECTION",
+  "epochs": 30,
+  "seed": 3407,
+  "batch_size": 128,
+  "rows": 116843,
+  "steps_per_epoch": 913,
+  "expected_committed_steps": 27390,
+  "device": "mps",
+  "device_budget_seconds": 86400,
+  "cfg_sha256": "996d33ec2f8ffaf7c98f0758383dd35bfb04d622f35886582daeda0f0640448b",
+  "data_manifest_sha256": "1377c0f644d94829c0fcb3ec85c7f40221f0cd354bda7d84fe1f592e8110c830",
+  "normalizer_sha256": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+  "actual_training_manifest_sha256": "ca01b5235441ef8e285451a8be57eb29113517b1bb1b67a2480c1c86631336ab",
+  "source_sha256": {
+    "tools/rbr_v2_prod_train.py": "99032306e682fbe95fad3f2741cd1ce9a1af11f2767eff96bee77de3228abefd",
+    "tools/rbr_v2_prod_runtime.py": "a8c12814f1b2c2e720db4b7a908bc89719eab55e1b8f252340f7f23eefb1d518",
+    "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+    "tools/rbr_v2_model.py": "a89a62e43f4e1b0ea5064557b98388c3b170ce0b171fd81222c61361f6c17758",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399"
+  },
+  "gradient_proof_sha256": "cf8e7839a6d34ebbb717835e2fd497870adfee5717525b9ea5f5c27b914149e9",
+  "torch": "2.9.1",
+  "numpy": "2.2.6",
+  "budget_reference_hours": 4.697664625983552,
+  "smoke_checkpoint_loaded": false
+}

@@ -1,0 +1,14 @@
+{
+  "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:14:06) [Clang 20.1.8 ]",
+  "executable": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_smoke_v1/runtime/bin/python",
+  "torch": "2.9.1",
+  "numpy": "2.2.6",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "cpu": "Apple M5",
+  "cpu_cores": 10,
+  "memory_bytes": 17179869184,
+  "mps_available": true,
+  "source_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "runtime_reused_only": true,
+  "smoke_checkpoint_or_normalizer_loaded": false
+}

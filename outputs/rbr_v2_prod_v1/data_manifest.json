@@ -1,0 +1,2328 @@
+{
+  "schema": "RBR_V2_PROD_CANONICAL83_V1",
+  "authorization": "OWNER_AUTHORIZED_U_ONLY_WITH_DISCLOSED_SOURCE_RISK",
+  "raw_segment_disjointness": "NOT_ESTABLISHED",
+  "U_source_complete_independence": false,
+  "owner_authorized_training": true,
+  "independent_validation_certified": false,
+  "selection": "FIXED_EPOCH_30_NO_U_VAL_CHECKPOINT_SELECTION",
+  "rows": 116843,
+  "candidates": 118738,
+  "excluded": 1895,
+  "observed_train_groups": 15829,
+  "diagnostic_identities": [
+    "101e7d9653f832a3:7:0:80",
+    "12c4604478212e7f:3:0:80",
+    "12c4604478212e7f:7:0:80",
+    "13337f97f2a79418:3579:0:80",
+    "168147d49e8269cb:667:0:80",
+    "16cf76f1e0b37b17:1047:0:80",
+    "1894e8fd957866b8:1943:0:80",
+    "18a4b5444b23e2c9:1830:0:80",
+    "18a848b3d1a5614f:623:0:80",
+    "18c6a9fe9ec96a98:640:0:80",
+    "1a8ba81e2f4eee5b:1115:0:80",
+    "1bbcd3c398041d85:525:0:80",
+    "1bca84c9d437aa53:645:0:80",
+    "1c89af3b8d5ea2f2:3032:0:80",
+    "1d98f3ddcc5acf23:22:0:80",
+    "1f37fb0ae653971:2104:0:80",
+    "218fe07ff7c23bc1:1401:0:80",
+    "2348c6b4c478cce1:566:0:80",
+    "24cbff2d0c531f40:1377:0:80",
+    "25eb760017aeccee:1648:0:80",
+    "2683b61a043dad43:865:0:80",
+    "2736d0664d54d51d:2344:0:80",
+    "27acd69b11989f19:5:0:80",
+    "27ce396463f2f31f:932:0:80",
+    "27f51422dd0d7471:4513:0:80",
+    "282634355310c0e5:60:0:80",
+    "2a4e2cbed6f77f71:458:0:80",
+    "2a7d896230aea5ff:757:0:80",
+    "2b04873a5c384f04:384:0:80",
+    "2be11c7e83fe04ca:6327:0:80",
+    "2e36d6fb386c67cb:2395:0:80",
+    "2fdc2447284863bc:547:0:80",
+    "2fdc2447284863bc:556:0:80",
+    "3269d75c4341e75:1986:0:80",
+    "3332895d8ed9ca8e:23:0:80",
+    "345100eaa431521f:2677:0:80",
+    "346e526b08c73738:1877:0:80",
+    "3565b7d1e311b41b:142:0:80",
+    "36292fe6254dd258:362:0:80",
+    "37f2f980fe01119c:3:0:80",
+    "3809f8bdc857fcaa:764:0:80",
+    "399cb552cd54fdf:1155:0:80",
+    "3b57ef3b1df20a34:639:0:80",
+    "3c48fb7502ce3f0c:2979:0:80",
+    "3cd4e28fd179f009:799:0:80",
+    "3d1a9f24460923c0:929:0:80",
+    "3f120e44162cc44a:67:0:80",
+    "40f49992065ab6ee:5212:0:80",
+    "41a1ecabb0e20c31:1884:0:80",
+    "41e5d0a14afc65fe:18:0:80",
+    "44186372980ffa99:3752:0:80",
+    "44b6c9920be96756:5184:0:80",
+    "45d84105e9f746a1:3199:0:80",
+    "468eca37d061f1b3:43:0:80",
+    "4714817887230bd0:1593:0:80",
+    "471533a167a2e0f3:1360:0:80",
+    "484736a099c17133:19:0:80",
+    "48aa028e9db9b07c:132:0:80",
+    "49202b87402d7574:58:0:80",
+    "492c15bf7202f0e3:12:0:80",
+    "49f5e46e240873cf:27:0:80",
+    "4ad9274d124cd62f:1379:0:80",
+    "4d52e876c4785200:1614:0:80",
+    "4e52ea8cc332128c:2287:0:80",
+    "5135cb8e384200d:2891:0:80",
+    "51ca33b75d13a400:4:0:80",
+    "52177c834ef227b0:520:0:80",
+    "5398699f476dc929:2666:0:80",
+    "54aa3e5d07314809:0:0:80",
+    "551ddd57c620daea:263:0:80",
+    "565ff0eee361f448:148:0:80",
+    "56db83541ad5c6ee:879:0:80",
+    "56eff21349cd74d7:6:0:80",
+    "573009332fc23049:37:0:80",
+    "5790d9fbf605be9b:11:0:80",
+    "58733b60e70f1422:48:0:80",
+    "58bf9ee401d7ea32:1716:0:80",
+    "5af55da7d7983ab5:786:0:80",
+    "5bdaf898f3c730c3:0:0:80",
+    "5c8b9d42d679737b:1801:0:80",
+    "5d5617317867d490:1443:0:80",
+    "5e32d5bcb35ba229:2960:0:80",
+    "5e3ec4974cb6ed87:53:0:80",
+    "5e5a1f61669bd76c:1121:0:80",
+    "607f4b6491df1086:900:0:80",
+    "60851580a23b4cf3:779:0:80",
+    "60ec2028b5a9e444:412:0:80",
+    "6350f269f3235c5:3192:0:80",
+    "636f52c3f3d92ea9:1151:0:80",
+    "63dae1a61b5facab:1579:0:80",
+    "656efecafdeeaeb3:41:0:80",
+    "66635f331a0d5420:835:0:80",
+    "6a78b68d767f383a:3136:0:80",
+    "6b0ecc77b26b3118:78:0:80",
+    "6e1d8d82540fd5b6:733:0:80",
+    "6f927fedad23fc37:1450:0:80",
+    "70591f6f5e143c5d:1183:0:80",
+    "70b30dee109f3740:21:0:80",
+    "70b5122fce924b1d:932:0:80",
+    "729cb77943669562:64:0:80",
+    "731ff643944b14c4:719:0:80",
+    "7423e401bca76a7f:1801:0:80",
+    "7471fc80e4a51c7e:2052:0:80",
+    "75ac4b77a4d3d98d:42:0:80",
+    "76e7601b2dbf4f46:1678:0:80",
+    "776855eabd54866b:2680:0:80",
+    "777dafa1309bf949:149:0:80",
+    "789935d86db8bac:1236:0:80",
+    "7a12cdaaae66f9c:2604:0:80",
+    "7ae4b0661a825cbe:1793:0:80",
+    "7ce7deb3e4bddca2:9:0:80",
+    "7e74129a783e2858:4776:0:80",
+    "82b37968b218cc2d:3767:0:80",
+    "83161b1bdee9c1d2:1502:0:80",
+    "83980730e046fe61:2083:0:80",
+    "851e0d0ee361dad6:391:0:80",
+    "857a3d6fdf92267:1596:0:80",
+    "85a2be3cfbfef0de:51:0:80",
+    "86647c9f99dc2eb5:1768:0:80",
+    "872694d957f66a6f:65:0:80",
+    "888d2ac2b622078b:2206:0:80",
+    "8932ff93d3859215:89:0:80",
+    "893bd10191f354b3:734:0:80",
+    "8bd94375ad61633:18:0:80",
+    "8cbb1eac8bd101d:1467:0:80",
+    "8e1563974ac020a1:977:0:80",
+    "8e561ae75fe0b9f1:472:0:80",
+    "90978b45542e7f5d:212:0:80",
+    "92516c723cbf5bb2:1770:0:80",
+    "92a1eddb9fb0f443:2887:0:80",
+    "93085f3ef731a3f1:910:0:80",
+    "94b2d821b87b4fa7:978:0:80",
+    "94bc72237a97a5d0:450:0:80",
+    "94e06f00d6dd9e8d:1174:0:80",
+    "968af7f51d176a08:1116:0:80",
+    "96ee0c1548a295c:54:0:80",
+    "99f7df6c02024fa1:23:0:80",
+    "9b0aa4ba65b1e2ba:4:0:80",
+    "9c16d800ddf6c311:8:0:80",
+    "9cd5ed6260b126c:1557:0:80",
+    "9d851b2f3ee496c:2259:0:80",
+    "9f7bf98df56de430:272:0:80",
+    "9fba10b8a0c60bb:2459:0:80",
+    "a177a7718e20bab6:2:0:80",
+    "a1b8c52d2c813d2e:1095:0:80",
+    "a1e958c57971ed31:2718:0:80",
+    "a2867a7337422185:10:0:80",
+    "a2b009c7a1b5e3c2:0:0:80",
+    "a2bb74a93cd11877:1494:0:80",
+    "a2d7193024abaa94:32:0:80",
+    "a38a1cbf8683fdd3:475:0:80",
+    "a4af16861d4fd284:893:0:80",
+    "a5aef69a9ff5fc71:1338:0:80",
+    "a6c8483b61ae0662:733:0:80",
+    "a774c160e1272d0f:78:0:80",
+    "a7e5f023164a309a:902:0:80",
+    "aaa132e46e59d6a7:2293:0:80",
+    "ab694fa4b6c0e265:333:0:80",
+    "ac1a1a010c6b3f8:1729:0:80",
+    "ac70a9da972cc41d:0:0:80",
+    "ad0d966f84756df5:1206:0:80",
+    "ad671fffc4cd42fe:1543:0:80",
+    "adc787d3e398a8bd:591:0:80",
+    "b0d96b52c02a30:72:0:80",
+    "b37fcb39891f157f:3534:0:80",
+    "b596a200deb162f8:2002:0:80",
+    "b5ca3faede1f33b8:460:0:80",
+    "b63f3b7e62a67afc:1434:0:80",
+    "b65a402949fb31f:2055:0:80",
+    "b6ae3ceefdf80d11:1934:0:80",
+    "b6f3bae1e633d1a3:1219:0:80",
+    "b82bb852b1225046:1896:0:80",
+    "b96ead03882a01d3:2702:0:80",
+    "b9f2687b0048ff22:2926:0:80",
+    "baec20f25a21a447:754:0:80",
+    "bc74a8c69d003af8:305:0:80",
+    "beba03e6e9e2a470:14:0:80",
+    "c2cdab5707479998:27:0:80",
+    "c46a6ed66ecfdc66:3313:0:80",
+    "c50fecf3506af4a0:3613:0:80",
+    "c6d5b99f6755ebb4:1078:0:80",
+    "c6e3dc5516764b47:1353:0:80",
+    "c7d2e750a196fcf4:3851:0:80",
+    "c9d3bc9f2d66d6a5:3883:0:80",
+    "c9ea9ca9ce4496c3:6:0:80",
+    "ca7a8d59cbfbe76b:427:0:80",
+    "cace56fb19e19f97:2046:0:80",
+    "cb4c3b29bc55e62e:596:0:80",
+    "cc51a2db9ab359a8:1393:0:80",
+    "cc68fdea2244df13:1136:0:80",
+    "cdef54cbb077a879:3364:0:80",
+    "ce0b2e2b09219a95:8:0:80",
+    "cf46d2fdd83eb1f2:989:0:80",
+    "d1b2700dc9e4c426:375:0:80",
+    "d1d1590ab1506c7c:545:0:80",
+    "d1d1590ab1506c7c:550:0:80",
+    "d1f92fb843e5b7c7:1395:0:80",
+    "d2164410537edd6c:678:0:80",
+    "d2ff96a64b3452a7:1960:0:80",
+    "d37cdd65c73c3012:822:0:80",
+    "d3ca6e3794d275c7:2777:0:80",
+    "d3e1cfaa64e1fb5f:16:0:80",
+    "d6cf8c6a54851fca:856:0:80",
+    "d8761585592479be:1218:0:80",
+    "d8c0fa480f0f22a8:1786:0:80",
+    "d8dc4047798282ff:1002:0:80",
+    "d9a8cc717ba3a8e5:102:0:80",
+    "d9ee0dcd7e88d31b:1048:0:80",
+    "dac4ef61f7b931fc:264:0:80",
+    "dc10d742e053e5b4:1039:0:80",
+    "dd320a7c016f312a:988:0:80",
+    "e0530c36cd2dae58:1558:0:80",
+    "e1fe7786a8b288b5:132:0:80",
+    "e3b67da420ff0936:30:0:80",
+    "e3c1728005a297d0:969:0:80",
+    "e4d6e7b238e19160:502:0:80",
+    "e6990efa63a4a5c1:3:0:80",
+    "e799583b93085066:137:0:80",
+    "e7a39dc68b82d5b6:1461:0:80",
+    "e8fd059d801a59da:188:0:80",
+    "e9745554762a160e:529:0:80",
+    "ea15a674026d9f77:2882:0:80",
+    "ea7602c81876b009:2:0:80",
+    "eac0866a5ab658f2:379:0:80",
+    "eb8cf96dd6bb115a:671:0:80",
+    "ebd2562235e73625:1692:0:80",
+    "ec1646cf1a84389d:1116:0:80",
+    "ec4bbab78ca300f3:1060:0:80",
+    "ec4ef77ef9726595:1575:0:80",
+    "ec7f5af0196635bd:1281:0:80",
+    "ecfdca415d22d7c1:805:0:80",
+    "ed0f55f4f9b96465:1267:0:80",
+    "edb69ec95e4df7cf:607:0:80",
+    "ee975a72c9755642:195:0:80",
+    "ee9a9abc3642d716:253:0:80",
+    "ee9f929b07b7b373:456:0:80",
+    "eee0e6b230fbb595:1383:0:80",
+    "ef3b48a86248e418:666:0:80",
+    "f0e751a60b0c9bf8:1863:0:80",
+    "f21c5f9da450ec73:945:0:80",
+    "f2c1db6215f5d4f4:1091:0:80",
+    "f3a12cce0c87db63:2:0:80",
+    "f523a93f4bf13832:588:0:80",
+    "f595f915afaf80c1:2380:0:80",
+    "f693132ce082109f:2804:0:80",
+    "f6aab3eaf0a4b34d:1643:0:80",
+    "f87561161df7a145:1967:0:80",
+    "f8d7f87a6a71b06d:43:0:80",
+    "f8f61198d9cd584b:69:0:80",
+    "f964c38fda4f9870:2389:0:80",
+    "fa5f41e5e0bac93a:1442:0:80",
+    "fa867e8ca4e06b75:267:0:80",
+    "fd9d4ce88a7f19a4:762:0:80",
+    "ff2d75858a266ade:1246:0:80",
+    "ff32d9f5da4b0946:373:0:80",
+    "fff2f7ac4f022330:551:0:80"
+  ],
+  "diagnostic_role": "IN_SAMPLE_NUMERICAL_ONLY",
+  "shards": [
+    {
+      "shard_id": "file00000",
+      "rows": 2341,
+      "candidates": 2380,
+      "excluded": 39,
+      "global_start": 0,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00000-of-01000",
+      "raw_source_sha256": "050b8f46e94351d0ca51213e196d5e550b6b1cecd05dce27f8d8ffff93121652",
+      "elapsed_seconds": 144.907861958,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "28fe360951cf98d6:0:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 358,
+      "valid_ego_frames": 182496,
+      "valid_channel_cells": 4890717,
+      "neighbor_present_frames": 195976,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "e97e147e90b31df715a866ea23422d0faca1af443ed9c67a6dc7c55ce34887d0",
+        "ego_valid.npy": "1307f72b0a0dbecc4d4e72b054451606d163892f3781ccd07296504471d6d163",
+        "excluded.json": "7ed2b6702ba37332780572e7655a43071cae1dd2eee4b80f42badb04bb208785",
+        "rows.csv": "c420a2fb4931057441e785fb89e299efb83d2b35d67ce3640482d9d7f49df99c",
+        "semantic.npy": "7e66d02000008d4579c7452bb32ffe7b7af5d9ddc6c7cf629348176a2997f68e",
+        "semantic_valid.npy": "979ae96ee35d940314996ec38b0d7da44d27e6df954fc3c38acd17c1f53e24b7",
+        "slot_ids.npy": "dc478114179352ebe93006d3df4f97da19c160350ff10b0f27140f60bba5a3db",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "65699acbbd374393e33a3a086d8feae9e2a570b04bfb2c3c8467e8eb7b22a2dc"
+      }
+    },
+    {
+      "shard_id": "file00001",
+      "rows": 2333,
+      "candidates": 2368,
+      "excluded": 35,
+      "global_start": 2341,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00001-of-01000",
+      "raw_source_sha256": "5234b563b7dda0203304a960ab82f61fca54cb2b5884cbe98316ad1c3a6acf4a",
+      "elapsed_seconds": 146.353787291,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "610c7fcfe8e7eb4d:736:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 347,
+      "valid_ego_frames": 181988,
+      "valid_channel_cells": 4931084,
+      "neighbor_present_frames": 199389,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "b6de90053b6e75a0d6c0c90ea5969b84f76fc1bcfbe899d4bc28554dcf67e35a",
+        "ego_valid.npy": "97af97fb9235afc78ce5cdb57d8cff64ab9e1caaa860664cf1f4543a74922c73",
+        "excluded.json": "ffe61147491e3fb9f6c6113eeb9c86c463e392d070393a28adaa667404648cf5",
+        "rows.csv": "59d18185f22f293c9d6e5d4f33b1377b816add93dfa64f2ff645d5ac3ebf83e6",
+        "semantic.npy": "40c7183df50854911d71a37dde8483be2feda1a425f9a58844a71f3119019ea4",
+        "semantic_valid.npy": "6ecf36105ea44d78b5a744273731a898ec900e345ea9dc97cda83e1c120523d6",
+        "slot_ids.npy": "6d5b5f21eb2170d9e797887a6500e8b1e5377bac957ac4d9b11a9aa493d2737a",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "8e24e02851fa3de92e436271dbca3a74d43156029b9cc66565ab40d754867c3c"
+      }
+    },
+    {
+      "shard_id": "file00002",
+      "rows": 2713,
+      "candidates": 2758,
+      "excluded": 45,
+      "global_start": 4674,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00002-of-01000",
+      "raw_source_sha256": "9e9035589d2f7236e13a951ccbc0c65f5d090fc9a21ae6e964c2de92023632ad",
+      "elapsed_seconds": 157.36869650000003,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "bcafb1298382d410:2977:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 381,
+      "valid_ego_frames": 211643,
+      "valid_channel_cells": 5711214,
+      "neighbor_present_frames": 230825,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "a8c6bf6da75d8e3ca9914bca9be62740adb4ccc6fb8cfb8f13da752779b343b7",
+        "ego_valid.npy": "fe25479d835f7a1c106fe1a43d56fd6151623671ee3c4f888c3b2e8aa69d8726",
+        "excluded.json": "582b7ed83948a49a97dffc9cc731165428ab165628e7fb762a1ed76f13516d7d",
+        "rows.csv": "31141a7aae5bcf63595190535faa99ae3c14c446aac84f49bfe70fc4e18ef04c",
+        "semantic.npy": "cc3c65e2a2aa6687f5a479c94269ed92c369d07c24e49b57662cfbae3dbbdcc1",
+        "semantic_valid.npy": "23e4b3d131352f5d1c7a35e4bdf01b96038b46cd14594472c6d2aaca03d0df30",
+        "slot_ids.npy": "0ff9cd14c7a429f7abca7bce33f0f8af115d927fc7e0c8c17900cf20f5243c4d",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "afb6c71693196d931b52c99dda13b99e86569fa4a8f052273266989ad199c9e7"
+      }
+    },
+    {
+      "shard_id": "file00003",
+      "rows": 2114,
+      "candidates": 2141,
+      "excluded": 27,
+      "global_start": 7387,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00003-of-01000",
+      "raw_source_sha256": "5e4ab87a7171ee8f8dc8662cc742dec5b11dde56bad9f97660b3d9cf738569f0",
+      "elapsed_seconds": 127.81678516699999,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "bce9167fc4acc6c8:1188:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 317,
+      "valid_ego_frames": 165032,
+      "valid_channel_cells": 4191820,
+      "neighbor_present_frames": 159449,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "7e30bb0e2f16b2bb10d00611f7ad729f40d0289ccf8f550c2ab3c86c80c81bf5",
+        "ego_valid.npy": "8dd1bb778626f43b326c57e46b77d11fb242085fb764271f3d4bf6b45f962a5e",
+        "excluded.json": "386a68cacc98a67bbe990d99bbc60e58f64d7b6947adc2d350858f855926333e",
+        "rows.csv": "8240b50fc8205723c412fa751ebb12f7b43840eaca91c12c0d41d5c9147f7fe5",
+        "semantic.npy": "a77b9ac8e2c7a1d3d2b5e9c2a8ebc41c786608fdedb0e552fbf430e48457fb49",
+        "semantic_valid.npy": "375ad535b44c064b32aa210f100df1cb30a7d40d15ef645c84b9a76388228322",
+        "slot_ids.npy": "6da4dd9d77e1953ac7a90b1da489b656847a114ba1ec921010c5cc92c56581ab",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "e8612fc52ae2764d8ceba0687064e346489a5838c9895424bb01e7d22f54404a"
+      }
+    },
+    {
+      "shard_id": "file00004",
+      "rows": 2294,
+      "candidates": 2343,
+      "excluded": 49,
+      "global_start": 9501,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00004-of-01000",
+      "raw_source_sha256": "9906695463347f28a89f1b0457a7235772f57bae9f714fb8f01d2d97aec8e897",
+      "elapsed_seconds": 140.393512541,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "2a0be260c6478180:0:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 332,
+      "valid_ego_frames": 179065,
+      "valid_channel_cells": 4733487,
+      "neighbor_present_frames": 187641,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "3e24d88ec10a0032b491ae53814215776b0f6c04927aa01441ab02153913adb0",
+        "ego_valid.npy": "51301e3203336f77c0604b0080401ae09b6e9498f6859da9adcc6f19274d67bd",
+        "excluded.json": "349edf72aed680fdd0c9614f5463ac76eeb7db998b55b468659eee28168a9cba",
+        "rows.csv": "37ce0700ded382d386c22f20974b241aae955242c0de7ee6fefdc3f1d098c1cf",
+        "semantic.npy": "de7e2774780eae25cd775a69925971822c6248ce34af1143234519f35b6a5c5e",
+        "semantic_valid.npy": "11e790a16f85ffee3569ceee4be67f0c02f6895e212cc6368cc047aa92215ff2",
+        "slot_ids.npy": "616e4aa0f94d9d53a3037967133f278abecd0cd49b977d13c66f524411a563d1",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "7a098dfb05796d3005cf324995f9ca245d4a339c55cb7692c2e5f56e75270ca7"
+      }
+    },
+    {
+      "shard_id": "file00005",
+      "rows": 2400,
+      "candidates": 2442,
+      "excluded": 42,
+      "global_start": 11795,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00005-of-01000",
+      "raw_source_sha256": "da7766cab5f04c333f0ca1f3be34c48410d43a861ed879fa2781c3acc718c2bd",
+      "elapsed_seconds": 147.046739667,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "513839e92b4135ac:1:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 344,
+      "valid_ego_frames": 187221,
+      "valid_channel_cells": 4857523,
+      "neighbor_present_frames": 189813,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "056737b58a9d3be8c7951c248318cc0271b41905912d254fc027f61c387dd068",
+        "ego_valid.npy": "076a6fe290d536c712fc132c919caf847c1d6b85a52e87edfb82409e3723c8d8",
+        "excluded.json": "34fc2e056d09e699c098609ac5cbf6ce1d46648719435c04c4ecb139be66720b",
+        "rows.csv": "61eeb8e7284d75d3faf4dedfa808546f6e658d8a19abc3902ba28440912acb20",
+        "semantic.npy": "6a490d5e67997ead650ddb8b86856b2486dec386f7800aab598850cb0b395dfe",
+        "semantic_valid.npy": "ce76b5bf7600b5603a54199233f4324a0c3ff682ebccb9e52db87f61a23ba907",
+        "slot_ids.npy": "78fa598d1f22a617d024cf0e43ccffc8349a0ca7f0b00591b5fd4c2b86f83380",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "648b57eac7ccd3a94afa2a6cb0c8ed2c4cc7d525ed502bec038bf60fe4381264"
+      }
+    },
+    {
+      "shard_id": "file00006",
+      "rows": 2451,
+      "candidates": 2489,
+      "excluded": 38,
+      "global_start": 14195,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00006-of-01000",
+      "raw_source_sha256": "37a2f137e00746b89551e63d5e5e50cd1fdb6a5d2907a793c06e6024118674e9",
+      "elapsed_seconds": 152.409109334,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "60a27325c48c4943:3016:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 349,
+      "valid_ego_frames": 191378,
+      "valid_channel_cells": 4977652,
+      "neighbor_present_frames": 194378,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "3ad19002454d5cc6e79c7e34c4b7acd033155b6d31cdd84b4370f950f6682929",
+        "ego_valid.npy": "0e5afd29c62766f908714dddb3d2415a42023f766c3af0e6e34bd4bc1df05b86",
+        "excluded.json": "b89d70db4ce7e8954e37c6d46093e1ffccf98ab0e0b8c82de909b687a9b7fdf7",
+        "rows.csv": "2dd4db8bef776d2fb8be86dd8ca88520a85cb3fa1deaab77725eaa2e485e6945",
+        "semantic.npy": "0aacf2a393c4e46f74564e89469d92f4e4c4c1a7442a543fd8ebee0c022423d8",
+        "semantic_valid.npy": "065907eb872acb970d8953079f6de3a7358caacad219ba87b277a85279b64093",
+        "slot_ids.npy": "a09d23a34ba922df56cbba74d5db6d0fa077bbbc41be42aca682d419cb133408",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "25f8d8dd0da89aed64657efe4126f8493887d2770b8c903dabd6b99960c9f6f7"
+      }
+    },
+    {
+      "shard_id": "file00007",
+      "rows": 2306,
+      "candidates": 2348,
+      "excluded": 42,
+      "global_start": 16646,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00007-of-01000",
+      "raw_source_sha256": "bdf31786164b63297aadb1181b23ba6e01970062c44d00e62e791b0157ade5c7",
+      "elapsed_seconds": 143.061476166,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "12267f78d85ad1f2:3067:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 338,
+      "valid_ego_frames": 179702,
+      "valid_channel_cells": 4613922,
+      "neighbor_present_frames": 178629,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "9678a49a31bf01a2466d0997aa592ddd52b90cbdd7e383e62c94766b0b1b9a58",
+        "ego_valid.npy": "cca88f3003e252903ee839674b1fb91f3fd57285056cba714c9aa445565540b9",
+        "excluded.json": "c4b028dcc313b0c064cfadf2e05b5a569c97ecd45207605a7da2229bcaebf4b8",
+        "rows.csv": "1c3d58822f1ef93a8c64d5df6243b27ce5959f48fd7d6e65e5e736caebc2420a",
+        "semantic.npy": "d16b6bc3c2df49c7eb01d18789bd60ae90e896edae0ebc90b4755cb94e5e4c31",
+        "semantic_valid.npy": "ddc14a6f0687365f07466e8e58f2a37045bb2dad466b1cf565e7ce79d750ffbe",
+        "slot_ids.npy": "246aec3d4531390cbdfb0481d8e1974410df0674efddb8afa2858550139d91fd",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "72b753406df647b4aa4e437056998c4ddaeba6bfa41a511e8e745058354db529"
+      }
+    },
+    {
+      "shard_id": "file00008",
+      "rows": 2150,
+      "candidates": 2183,
+      "excluded": 33,
+      "global_start": 18952,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00008-of-01000",
+      "raw_source_sha256": "ba2ebe00fcfa9cd7a4b8ad37ec492b4bfdfc44c00dd777427c8cd15b80b4c10d",
+      "elapsed_seconds": 134.85131454100002,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "c8471f0536f71838:230:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 340,
+      "valid_ego_frames": 168051,
+      "valid_channel_cells": 4232965,
+      "neighbor_present_frames": 160637,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "e3749053b2682ecf4ea25ccfce65b4c73743476eb461dc65230565bb7d216192",
+        "ego_valid.npy": "24209a5e7072a4ba11b53dbcf7473ea72818bb7c228ddb5ba106b566f8966e33",
+        "excluded.json": "6cd59fb8c963545adb156fe6842493d78f158d452ee1e1859b44d9092ff65f24",
+        "rows.csv": "efa67c8f4b491c3de863ef1be4413a43d12705c89f150135dd84a1c79bc7225f",
+        "semantic.npy": "8bc733ca375a2d16c8d237d01bd207b6ef3f03fbfb2372ad12deb5287b855d54",
+        "semantic_valid.npy": "71526012189cba373a29f0c3abd14dd588dcd4a2b5b514ae03892dcd06ca835c",
+        "slot_ids.npy": "9f59bc9ee523fe7e20d63d05fc1135773ff764acb3bba179ed8391e98d5cf8e2",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "170880b4f447118cf607d6e1be0744feb98a152ad522f454000b0bc28690dc50"
+      }
+    },
+    {
+      "shard_id": "file00009",
+      "rows": 2191,
+      "candidates": 2218,
+      "excluded": 27,
+      "global_start": 21102,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00009-of-01000",
+      "raw_source_sha256": "76d87e7e8d3bc576489ecfca591af672445d4e5cfd4d1230d470d68f613184b3",
+      "elapsed_seconds": 130.45530108299997,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "cf0c254a696bee08:377:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 311,
+      "valid_ego_frames": 171110,
+      "valid_channel_cells": 4435490,
+      "neighbor_present_frames": 172918,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "68028232460a11f0b416988f1c4a5c4f5e245e9f19f9080ffac770b4a73e43a1",
+        "ego_valid.npy": "a012a96cb5b0afad5fc7fa6361ad9007fb1d8f10e8fd6a9b0edece2b98d11832",
+        "excluded.json": "d8dcb59761fb1c6684dc29e379e70c3643ef0996d652cc48459e8aa337121cd2",
+        "rows.csv": "06f739c4a107d06f4c580ccdf2dd234bb73953420c09a0a9ca3b4d0acf6d34bb",
+        "semantic.npy": "5a7408341b24b35bb2cbf19b6fea68aa7829741833176c0034ea9e15f14fa091",
+        "semantic_valid.npy": "226335de781ae988e816644bf3eac26852e624a02c5e766d21c15c402f09e840",
+        "slot_ids.npy": "7440d0d32749a642a41f0f859bfb9a2086431ae56eaf0f22b01e38988b537258",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "70def4df8921d96e012c59dc25a770c1412bf6ef4d486199a4b4d67e866cff73"
+      }
+    },
+    {
+      "shard_id": "file00010",
+      "rows": 2160,
+      "candidates": 2204,
+      "excluded": 44,
+      "global_start": 23293,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00010-of-01000",
+      "raw_source_sha256": "8303b5c9d058cd273569212b5c8a17d778146556a054438c0367f1a54177edab",
+      "elapsed_seconds": 141.378420167,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "bd464a51c088ab8f:1901:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 330,
+      "valid_ego_frames": 168372,
+      "valid_channel_cells": 4134374,
+      "neighbor_present_frames": 151800,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "3471efbfff8e2f7b75d562ad13eab783dbaf3a26af610eae226f159ecf5d2ff6",
+        "ego_valid.npy": "ed828a6bd14c0c63103bb5b4c0d5a063c5237a49cb2db751de00e87700adc60b",
+        "excluded.json": "122e4593f06f544f940a92f42cfe97a607b230bd5938dba9e9ba182134575606",
+        "rows.csv": "7cce86fb75a53d0c54c023b253d7cad8d7efedb7c8723c92c097483840fdee4a",
+        "semantic.npy": "362436c5a9a2db0140306b79d84528e82f59f3f2bf047decedb707628fb94a89",
+        "semantic_valid.npy": "0afdc6864d47b4bbd612d2058b4d79570de3695640a525a24581a32429ca5cd5",
+        "slot_ids.npy": "90526e8e1c5a711daeb4b6e19c2b6ca1c08abcc08665be621c8d208329b14a96",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "d19fdc69bed8d6be84abaa917424824d33e764c9e10b21c4bcb06569456026d7"
+      }
+    },
+    {
+      "shard_id": "file00011",
+      "rows": 2447,
+      "candidates": 2473,
+      "excluded": 26,
+      "global_start": 25453,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00011-of-01000",
+      "raw_source_sha256": "4bcff747cd2f6adfefb3af918ccbd098832461bd2d329b1fff9668bf3cde4baf",
+      "elapsed_seconds": 155.60803945799998,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "7f8f166925ae8cb:1217:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 368,
+      "valid_ego_frames": 190801,
+      "valid_channel_cells": 5021285,
+      "neighbor_present_frames": 198291,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "1ee7be282ed401a1824c50151c3fcb2ad0ca7ac4f1c2527f030eb978967527f0",
+        "ego_valid.npy": "216adbc63d98207a106c51d0bb6f24fe6e95ccc3b2283d6f2d5ebb0cdf7bae59",
+        "excluded.json": "8fe6f45a2895bb6fd71de143a72675fc5411f610c2d1175dfbe315870a66d408",
+        "rows.csv": "c3bbf95cb45bfcbfe11108fb35b0fb7be405034027125cb0b382bcf75f8272c7",
+        "semantic.npy": "9f9d800ea23c4a9ea97798561a8b4eda4bdc908c2eadaf8d070e0f12996bda47",
+        "semantic_valid.npy": "d74f1e40b9bc3aff3aeb2efbe39e319de4dc464c67be3b2b3d3b031f0b165593",
+        "slot_ids.npy": "6c6f0982b78f49cfe664694a36f0b92a1f0491e500898c77af9bf0d3f9e44c0f",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "63a1c26b2f2272a86e64ab52bcbc4146d9d850ba2aec766f699ba8bbb824302f"
+      }
+    },
+    {
+      "shard_id": "file00012",
+      "rows": 2297,
+      "candidates": 2340,
+      "excluded": 43,
+      "global_start": 27900,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00012-of-01000",
+      "raw_source_sha256": "48c2016b0a88302236b81c63d33020505ed431495187dca85bf07f0b56c7c139",
+      "elapsed_seconds": 149.44296825000004,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "b3c8f8042a777e5b:202:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 336,
+      "valid_ego_frames": 179064,
+      "valid_channel_cells": 4605574,
+      "neighbor_present_frames": 178723,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "a309d58b028ee4bba3eb7083e1db575222a1e8192f8b4242e9d7d83ce39e161f",
+        "ego_valid.npy": "be6b501f92c1ff0f3a6789be569377ed71740ac3f9cdb019317dd41295b6e550",
+        "excluded.json": "94694f2e52fd43fb03a4e973c33c0992aae0a17d0be29a49aa5088b2e81b35f9",
+        "rows.csv": "4017e72a25a19df507aee6db1a943db739252b703a1e87bb4ca9e084c5dea03a",
+        "semantic.npy": "0f1e5ff456f7b4f1f450c34374009031e45b9c711f100d7cb89b953e61ccfaae",
+        "semantic_valid.npy": "a1f00187f52e90342479aaaaa49ab7d14f0c7d088693fd84079d895a620eea61",
+        "slot_ids.npy": "6409e9661d368ac3c7f9788d7f939847808ea836fb9eb85fedae2552ba5393ff",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "0b731cdf162aef689d5d4aa2c0103927d01db2ca2c307bc88a4868af7572bb57"
+      }
+    },
+    {
+      "shard_id": "file00013",
+      "rows": 2355,
+      "candidates": 2386,
+      "excluded": 31,
+      "global_start": 30197,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00013-of-01000",
+      "raw_source_sha256": "710f193ac8b3cdf5b2cd5a0970687f9000468782f18547488c08bab76b737c85",
+      "elapsed_seconds": 138.52870870799995,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "a89770f0673e618a:0:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 335,
+      "valid_ego_frames": 183500,
+      "valid_channel_cells": 4780868,
+      "neighbor_present_frames": 187253,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "b853d92f6fbb44ef05f012d4ee5055597bfbca8871c76a8a3e10b14856314e6b",
+        "ego_valid.npy": "6cd5703766b4c5b1fcd2ba076b73fec7376a68ac735f01ee41a6ec13241447c7",
+        "excluded.json": "46dc104ae2c4e97759772bfdf36859337c5972c428dbbf38b07f70d04bbadd8c",
+        "rows.csv": "7ee4211db998e430e5685077354136609f02eb401015cfe0033a6a421524df0a",
+        "semantic.npy": "e233f1d6ac93f8f17d3346838b4d8d0ad34ec5ac4ed7fd693d1c9312b82e78dd",
+        "semantic_valid.npy": "466e6d0ef15ac2e82d7039e0f472f5a47af8ad65b405f7188132f2342f101ff4",
+        "slot_ids.npy": "15506b04addc67364fc72b732c1b843655b11b70b906a9376ce067afe5e1a870",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "7a9cbaf613674fa1504cfbfb9f87af2e040e37ee1337474d41178b5a40e4c9dd"
+      }
+    },
+    {
+      "shard_id": "file00014",
+      "rows": 2310,
+      "candidates": 2356,
+      "excluded": 46,
+      "global_start": 32552,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00014-of-01000",
+      "raw_source_sha256": "d3a52ab1fc876889b0222d96564c8c81ada7d01d34b015fe2c9410ec9db41952",
+      "elapsed_seconds": 155.088032542,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "e7f8687e5f8b13b4:885:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 356,
+      "valid_ego_frames": 180232,
+      "valid_channel_cells": 4474127,
+      "neighbor_present_frames": 166781,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "8f32ef127e2e9d3c73724d462df7a68a5322a4e31da764874bae9eecc29352ec",
+        "ego_valid.npy": "dc18c8721a0190403ec04d24e6c8ea54c80756543705ef0572864a0efacb9f80",
+        "excluded.json": "705c7334f38883c7cef7a1df83deebc8ac70e74928721db2a741b932149404be",
+        "rows.csv": "777e77088093320c1d6eb01c2d84738afe2ee6bbc05d1437861e5404543a5589",
+        "semantic.npy": "257061ea2729f9f3102402e9d61122b46fa28542f61394d6e192624ff42af034",
+        "semantic_valid.npy": "4c7d268279d22788669ca0be5b0f4471e6d667488554d1b2a3da147edbf3fd37",
+        "slot_ids.npy": "4241ff207102f3b77ebfd9598deb19566c0962bd44a06a8a2f897c64c493470b",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "551edb7b2bd811b998c6829f67a55a6b256d0ae6f4cc1b113c03579dc81cdc2a"
+      }
+    },
+    {
+      "shard_id": "file00015",
+      "rows": 2168,
+      "candidates": 2201,
+      "excluded": 33,
+      "global_start": 34862,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00015-of-01000",
+      "raw_source_sha256": "d44fbe5e3c16c8fb76ee6cf6c160175abc598f662b28ea3c937e6e166e6f64ce",
+      "elapsed_seconds": 131.352203459,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "8277b8f35513bf8e:419:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 317,
+      "valid_ego_frames": 169127,
+      "valid_channel_cells": 4432370,
+      "neighbor_present_frames": 174463,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "49e26575f89a0e6fe5a7510d1d04c617aaeb11dc2afd9a232ed2bcb192bddb6d",
+        "ego_valid.npy": "f0327c78fcb96ef14afc2546f7f1e0825c77f558dea44904e8c1ca4562719619",
+        "excluded.json": "45a86bc45461b2ba2198d2757b660a0b86962110ad4f5f940bee4470ef938346",
+        "rows.csv": "6267afb564588e92a58bf393cf5be7f732dfbdcc2ceff3075392d3775148b5a3",
+        "semantic.npy": "83c2725d6c3019e656884bdd143f1853da30b08df3553d84944f03970d6d6054",
+        "semantic_valid.npy": "4a10c5e1082b3abff72cf41e23c6675c6fe8959f55d4a7ce2de18f05891248eb",
+        "slot_ids.npy": "89ea82089d110176d2bbbbf50273642f3a1164cbb501ea229466c625ee6919f9",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "cb174f8f1103d152c21e64237a368c20ce3d211197dfb56ce4850435aeb0adc2"
+      }
+    },
+    {
+      "shard_id": "file00016",
+      "rows": 2191,
+      "candidates": 2220,
+      "excluded": 29,
+      "global_start": 37030,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00016-of-01000",
+      "raw_source_sha256": "94ed38c4dfd7a8b66891dbc8102a5299909e62d55cecc3791a1c9e7d6b2ceedf",
+      "elapsed_seconds": 147.58049341599997,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "550ffc63cc6e38ee:1058:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 348,
+      "valid_ego_frames": 170909,
+      "valid_channel_cells": 4225104,
+      "neighbor_present_frames": 156445,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "9c0c5afb1eb1c2d50637c01161d58e2531573f36bf1a280d512db442860489c8",
+        "ego_valid.npy": "1a318d3f25788148d1ede74ba52455371255df5be1f367624ea3cab63dccbca5",
+        "excluded.json": "d527982d7c43f6bf91018f46995f2c1228a9cf0ca4cf1eda1a72e4fd189bdf89",
+        "rows.csv": "84cee7fbcf43ea5bba2453f12a94b09c85d984871da777c366bf861385d3b261",
+        "semantic.npy": "40ce54d6f8701497829cf50b6c94467d6eeec724de77f570b583ce1b332350ec",
+        "semantic_valid.npy": "bb33bd0204e26eb6216593959832b7adcb81adefbd228981738bf0a45f93e0dc",
+        "slot_ids.npy": "529a0cff7a091792f3dbec28de3cb9b84740b49eba9ed1398e82cd877c10707f",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "17da0e55f6671f26c2794421e1509b2dbcc0232e240adcd96824d279bcf718f0"
+      }
+    },
+    {
+      "shard_id": "file00017",
+      "rows": 2536,
+      "candidates": 2562,
+      "excluded": 26,
+      "global_start": 39221,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00017-of-01000",
+      "raw_source_sha256": "aced0ab05a050b964de1522fbb1195c16df7a30f68660ea2c636a0ce59f1eb48",
+      "elapsed_seconds": 150.435800083,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "7f10f7163f8aa08a:563:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 351,
+      "valid_ego_frames": 198430,
+      "valid_channel_cells": 5263650,
+      "neighbor_present_frames": 209470,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "9dc7523672badfeb1c1f40ec5d8df40021b153fa4b8cd17b5fd92adf20c2bfb2",
+        "ego_valid.npy": "a0581e8536050f3bb4a7efcab6aee0788c947bb9237091510bfee9a09275d065",
+        "excluded.json": "ec4438f2f9755711b4fe6fb1d89792248f0f76b883767f679d0f47d986d7308f",
+        "rows.csv": "f75b3980e23efc100714f823835637b63e3618012c06783323c94a5c6a7abc97",
+        "semantic.npy": "113d434ab4748e6716272f16c9da5b70299675ea4b7085b7a10bcf669cb3eacc",
+        "semantic_valid.npy": "3cd804ba3e6c4d1f4e74c8314f1a2bab89549b2ef48b957dc1f5a33a9e7c0468",
+        "slot_ids.npy": "365d31a348ee59cc70b5074b9f3285cbf844b1d0f79f4dbcd9e8a8610c598521",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "528fbe1cd0dc238084e9e0fe5975fee8a43785e384e2612d52627bbcce079553"
+      }
+    },
+    {
+      "shard_id": "file00018",
+      "rows": 2119,
+      "candidates": 2154,
+      "excluded": 35,
+      "global_start": 41757,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00018-of-01000",
+      "raw_source_sha256": "8448e7d39a2eb7bc4d85276641579f9a126ebeef1b4bd4c32134d58b8e0b7341",
+      "elapsed_seconds": 147.24323970800003,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "15b1d646c5e23aea:426:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 328,
+      "valid_ego_frames": 165235,
+      "valid_channel_cells": 4170424,
+      "neighbor_present_frames": 158458,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "b9f89e62d7e47af2ae1dcaea15c10890552a4e812f11eae14f237bbaa5d7dc0e",
+        "ego_valid.npy": "15a3ac9dc5f4f6bce4cec2e7b20aa17af93a8154468641e80d881cc580f2a150",
+        "excluded.json": "32dd3e0f5dc82c7c7de3fafb7dac53777bb5d242425eec0a526c1ecd297c2dd0",
+        "rows.csv": "2be21dd340b1c002cec1f4feb36e1628e8aaadfb2098d3f4e992fb9cb09e58f5",
+        "semantic.npy": "6ece4c6cdafea7a7c69e7fa80e079337210dd62d6f52600d76e6da3d4ba0d4f9",
+        "semantic_valid.npy": "b40ede2a1d2411d946fc7633276f64a42e3287fb064f33ac3b4884df411f328e",
+        "slot_ids.npy": "2f8b6c42d31eb301b0744e00279290181153512bf5db18c33f82ad9710ce4963",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "438a7ef59002514ac716c60d8a97548f97dbf6f40c80021813f89e825956ca2b"
+      }
+    },
+    {
+      "shard_id": "file00019",
+      "rows": 2461,
+      "candidates": 2502,
+      "excluded": 41,
+      "global_start": 43876,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00019-of-01000",
+      "raw_source_sha256": "16069c71a6e63c84fd4bfed8da6fe14c380db32f77f2803e87a351d1e8648543",
+      "elapsed_seconds": 151.64574279099998,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "430b14fa7005c903:2306:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 354,
+      "valid_ego_frames": 191787,
+      "valid_channel_cells": 4955703,
+      "neighbor_present_frames": 192482,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "19ba4e3e8489c0a62be95174312631efe49599a76cede1aaa0a936f37f032a3e",
+        "ego_valid.npy": "5eb17c631eb4b3f9ce8aa313f22475eb6b3df883a11e402e33a0215d360e5d30",
+        "excluded.json": "cc792414ea372b16a4f86138ff546b124f783c7d5498098aae66fe3041508297",
+        "rows.csv": "a127e2b90782b317fc03244790baca7528d41d3b06969b0664fc7071c295bc5e",
+        "semantic.npy": "245768963238aa82ac1b422b487802c1b0d1067bace35209daf97af03c20b1fb",
+        "semantic_valid.npy": "fa327d2bd3d5fd808ec20809621a211ac079d6fb02b22772d05c958f46fa1bbe",
+        "slot_ids.npy": "403b4a2f612f83e3e341f564c427a99e24300372c39520f79a7aae557ec22487",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "b3de396511879f4cfd29c35fb61e2c77ca9eb2d1c0323655fe73f18d371953d6"
+      }
+    },
+    {
+      "shard_id": "file00020",
+      "rows": 1946,
+      "candidates": 1979,
+      "excluded": 33,
+      "global_start": 46337,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00020-of-01000",
+      "raw_source_sha256": "db842678bb81fcf7f2eb3b462fd08a74211bc691037809b2704406abbb815385",
+      "elapsed_seconds": 131.00604020800006,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "9172ef63fb26fbc3:3018:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 305,
+      "valid_ego_frames": 151892,
+      "valid_channel_cells": 3755279,
+      "neighbor_present_frames": 139598,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "2116138b29f2947d9eaa6ee3085e90094e325f163d88a59b5fc26ace764d9c17",
+        "ego_valid.npy": "f4f9730ee2e8189d1c439a0982523a9e8aa05d6672fdc2fb6429113a8d9358e7",
+        "excluded.json": "2b5e7c823cca21bf9708777e564f35c27a6451badf91425858246efa64f0e667",
+        "rows.csv": "a1240b2a0dc38d2a937968261e5daa99dc434efb88877e2b0d42d54681b24445",
+        "semantic.npy": "006a24d812e1a44c6aed4333ecb00ed11fd1bed48dc821ee6e70319b2ea5bf13",
+        "semantic_valid.npy": "989aa4e713caa478591b0b0bab13684f584241559a04825139680572a59d2a8f",
+        "slot_ids.npy": "1ce7cb8cf3d90e451b61f0d966ef647501ccedfe0563b5e1355e2682be9dda65",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "bdb2dac998bbcb4c3467bca7a647772f4283f77c6b17ea5b3ace53f3dc5e16a7"
+      }
+    },
+    {
+      "shard_id": "file00021",
+      "rows": 2502,
+      "candidates": 2536,
+      "excluded": 34,
+      "global_start": 48283,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00021-of-01000",
+      "raw_source_sha256": "b1f812f6858d286ac8552dba04f240f5c0b19d7b1e425d4a20dff68e83ca5038",
+      "elapsed_seconds": 158.70517620899994,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "dfd56bcc7277be4a:1:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 357,
+      "valid_ego_frames": 195011,
+      "valid_channel_cells": 5028716,
+      "neighbor_present_frames": 195122,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "58bdd97e66b2f4de6003623a6c1b93fe5ca9b9ceafb6364bb04ba6743b0ec55b",
+        "ego_valid.npy": "de6d1da6ffcba957c133da85d1ea1e550be6946b08ef7c50da6dfdcd8224bcfd",
+        "excluded.json": "6cd857a653d96e1b5fb5a67176f0d189886f46dc23f04555d42927eaf46a1b62",
+        "rows.csv": "2bc05266daba37c9478390c04af53def4111addd36a53683ecad434677a2a9ac",
+        "semantic.npy": "6d2aefe2f5116906a7e0d3ab1fe1799919dfbdcbc4cf8c9b447d89a29e507628",
+        "semantic_valid.npy": "27b6ddb3fbe81b9d48c198dee41fab1bf333a6b0353dd24a727feec46e4cc002",
+        "slot_ids.npy": "a8dd65cfeca93a7b6f55ef27ae5ce657a8e3a4e58866808664f31fe3167b7880",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "0f46f0294d2e2de1abe77c99f2845feb7f1038712649771d44f711e931baf836"
+      }
+    },
+    {
+      "shard_id": "file00022",
+      "rows": 2526,
+      "candidates": 2566,
+      "excluded": 40,
+      "global_start": 50785,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00022-of-01000",
+      "raw_source_sha256": "be9730aba7b7db95793fe25f493db655cc08a9cd3df95c7eab508ff11aa2cd78",
+      "elapsed_seconds": 154.86920349999997,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "9cde153864f66526:1587:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 374,
+      "valid_ego_frames": 196793,
+      "valid_channel_cells": 5122329,
+      "neighbor_present_frames": 199898,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "0f70e1077495613adfc30e5b76b84abbd947328d3274d2a719af60f2a451fa5d",
+        "ego_valid.npy": "f9d348094e4d6a3f7f2c86eadf3a6529b7b6b093d75c9d40970d340a540bde7a",
+        "excluded.json": "aa53c51284f5f23751a9d0a19e65b1431f5805498941b58cd45de5e464095c96",
+        "rows.csv": "ef7b0a72bc08abd213ea72ec5c95dc18dccf694d6877e25b3f9b193efa2258c9",
+        "semantic.npy": "96b479c9d4abf5ea15d77b6f6ea224f4ba9d75886ec18b2a16c4dbf0545552ae",
+        "semantic_valid.npy": "f31a1062e013e5f6ba748ceb10d4c2a2bde705f5c421a19718c02231229ebff9",
+        "slot_ids.npy": "4fd0ed8682d2f53457066eedbe18263a32b050b7058916998a75d3d6ca6030a7",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "ea4a134f3f55d0a5d025a10c885a4aed0c0b84e4ddd72576e0fc5c0fcd3147a2"
+      }
+    },
+    {
+      "shard_id": "file00023",
+      "rows": 2148,
+      "candidates": 2185,
+      "excluded": 37,
+      "global_start": 53311,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00023-of-01000",
+      "raw_source_sha256": "b1250b5c5db3a1b9db248e474e3fd5af819dacf76155a8236d17a179ab041abb",
+      "elapsed_seconds": 126.39164395800003,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "824b18d1de290eaa:0:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 306,
+      "valid_ego_frames": 167843,
+      "valid_channel_cells": 4300416,
+      "neighbor_present_frames": 165406,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "7451343352a65cc2d49ac81c035e71526faee9acc1451cd2c6a8f1bebe1a80d2",
+        "ego_valid.npy": "06b565a05d4211e521aab3b11a36dcaf081f1d14e259c08b874cbcd4958b85cb",
+        "excluded.json": "e7b94cadbbfd56306a0f2bdd9c16428a1c441a2330741fd13edd64a0d4059ee2",
+        "rows.csv": "cb1bb74a632c555ee170dac2adfe5a07fc4dbd5b9585c57110b393eb505635c3",
+        "semantic.npy": "0ec9b5364f3a0d4c8b383844ad9b82467ee1be071bc9146ac098ae1d0e770f2b",
+        "semantic_valid.npy": "7d7c35c0f7c4f66948adcd9ce3ddbd7d0f481c22f6fdcbb9c7f749df0aa505a9",
+        "slot_ids.npy": "123cbfb52926d3c958e8b4ac882d5344b5e4e4f3fccf866280cd963c43209d69",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "7eb0fc93c6cff53d3028f0ede4778fa9d38dc5238a1fc7ae29e7faa28f157af8"
+      }
+    },
+    {
+      "shard_id": "file00024",
+      "rows": 2035,
+      "candidates": 2068,
+      "excluded": 33,
+      "global_start": 55459,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00024-of-01000",
+      "raw_source_sha256": "daf919386eedeb3cf1bffa0e383f8971380ca2f23e6b7b541d1afeecba8f2e56",
+      "elapsed_seconds": 125.683898667,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "fdf41eae28f6d2d5:1742:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 290,
+      "valid_ego_frames": 158799,
+      "valid_channel_cells": 4074409,
+      "neighbor_present_frames": 158245,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "9886b56a8b28339492ea3922006ae2bc3c285b98f8ba5d0e6ed095f9f1bf5582",
+        "ego_valid.npy": "06797cbfc02a8775ba73963ef8928eb3f182ebaa26544847f429d52cf14031e5",
+        "excluded.json": "30255cdaf3a1cf15e548890a3d4332e94e5654b76a37929871225d6e6799ffee",
+        "rows.csv": "dcae0315d3e8986d78c71caa3afc475754d6c7af551c31643d0929873d49673a",
+        "semantic.npy": "309e316bd6dfb3afc6fb41e7c6cf885c23b28c8245bd4aa6b0e399cdcb6f16eb",
+        "semantic_valid.npy": "df6ff6b5123cc48cf1c23e953e7719beb8734d99f31bd191613f34290ea97f9b",
+        "slot_ids.npy": "da45245066c06ebdff629f41a7405a21bc9a00bd15e9be6b99d14bc35ba54bf7",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "fdcd68c8bab90a3d420780880072354ef6cd27ec509155750be374accd1d1bdf"
+      }
+    },
+    {
+      "shard_id": "file00025",
+      "rows": 2343,
+      "candidates": 2395,
+      "excluded": 52,
+      "global_start": 57494,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00025-of-01000",
+      "raw_source_sha256": "f7b9e9c1c129044ef6f16c04785594de116e79c05eaccd16da8ea7b8a5c45083",
+      "elapsed_seconds": 150.21747195900002,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "1d845db74d1ea988:729:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 346,
+      "valid_ego_frames": 182782,
+      "valid_channel_cells": 4487133,
+      "neighbor_present_frames": 165212,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "e9008128f8548355b57cb248842713e9713af27d870473effd69d7c397435a40",
+        "ego_valid.npy": "ff5d8549a503048b8064963508c65efee65ea336551461fc4b0a3eea310ab452",
+        "excluded.json": "dd022a1970c15b0a832ffa65b0488b88a754806d37b4d1fdcb686401cd7bb8d4",
+        "rows.csv": "68f71414dd80f7b5fb08444a0c20e030b0dcc9cf2baf4a641ea3aa70f68d2915",
+        "semantic.npy": "9345b31db5761690ab3a8c1db9c6c47e21624dab6a86d46a9068b10cc8c1f89a",
+        "semantic_valid.npy": "ac05d53561dc6c12fa1be17df21301c677f5e91099fe84227fe4546477f99cdb",
+        "slot_ids.npy": "c29bb0e1cda8e61b63894c2d073289480a3ab202dae8836d614286afd58aa3c1",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "0c568000801434fdf317d88744551c1aceff3f95ca28424f9b8e45d5542f2b12"
+      }
+    },
+    {
+      "shard_id": "file00026",
+      "rows": 2119,
+      "candidates": 2154,
+      "excluded": 35,
+      "global_start": 59837,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00026-of-01000",
+      "raw_source_sha256": "ff6174484dda9f4f537c067b1f77bcfd24ffde51aee977da0ddada38529ae1a3",
+      "elapsed_seconds": 132.01145037499998,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "c23aeeeb50a80d64:558:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 313,
+      "valid_ego_frames": 165373,
+      "valid_channel_cells": 4215870,
+      "neighbor_present_frames": 161400,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "b17bcea734a1502c7ce9e63f2c925b4f8e0ab9f0055f2124bd04acc6fc84df52",
+        "ego_valid.npy": "3e19564c3f3c100d668a0ade2feb0dcce10b0ce1a26060c502e007b5c157bac5",
+        "excluded.json": "c9e6574851c1e68e97d123ece1ce86956af13699e6cb9678f3dadc63721eb9f6",
+        "rows.csv": "429acd073e4148f0b67f27fedfe003009c688647a0f49045e81f303e7258b33a",
+        "semantic.npy": "7aafbc513832abdb2950fcb787f99ccef0b161f7e4885bd13e34e379779f8382",
+        "semantic_valid.npy": "ed1ad1639e72debf2369428563fef8747d2b1c2153255eda402751459e35cab9",
+        "slot_ids.npy": "ebf3d522667d9bc00b6fab81c50ccd2dc221b7504cbf168d4156e47b37bd6b1e",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "7c305040b01794e96475d32831210060f0dd9b1bb7bc5be0426355a02c2f35db"
+      }
+    },
+    {
+      "shard_id": "file00027",
+      "rows": 2391,
+      "candidates": 2429,
+      "excluded": 38,
+      "global_start": 61956,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00027-of-01000",
+      "raw_source_sha256": "b96a1e464707e044fa311870f1eb4a056406f5cc6d292a2ca37c0596f2fc1c11",
+      "elapsed_seconds": 146.25170520799998,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "c79aa735a03b6f67:3700:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 346,
+      "valid_ego_frames": 186330,
+      "valid_channel_cells": 4711310,
+      "neighbor_present_frames": 179430,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "b5a23c03a5a443316125555fc0202e6cdbc9a005c21fb2ad9d57be44dd47b42b",
+        "ego_valid.npy": "ae73e39338a72bd55112687d92c9e72fea9d17a12eeccec76dae932257f810d3",
+        "excluded.json": "b8e8cb0ba263d753c6cbeebf163e643c435aca7e3bc1371dfde66197760bbd7c",
+        "rows.csv": "c5562781fbfe9ee02df51d9be08bab2844b455e5c18400cef19a1245bffa01e2",
+        "semantic.npy": "7a62cf2c4e3df2d3d013ae0c51bdc5f0b357853a84a5805215168b1fba15cc4a",
+        "semantic_valid.npy": "bdf203077bddb1c7b469324faa2e0266647f6fa1329786da6e5bc229b1fac055",
+        "slot_ids.npy": "9bdf6c4b4bffd410e1d8a5ed70295e221c83671661eb986dfd3e163cf113e235",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "3b0e59078b6bb717984a93c14acc21818072e1eeb187b1ec226c5f91a39f1e62"
+      }
+    },
+    {
+      "shard_id": "file00028",
+      "rows": 2209,
+      "candidates": 2242,
+      "excluded": 33,
+      "global_start": 64347,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00028-of-01000",
+      "raw_source_sha256": "d62040eaca5509b256d44c7482eb40ffe567ae07d90b2297bb6bcff889697353",
+      "elapsed_seconds": 141.07601450000004,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "a8ea8ec79718d54d:0:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 311,
+      "valid_ego_frames": 172588,
+      "valid_channel_cells": 4602390,
+      "neighbor_present_frames": 184164,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "93f19473e021e5f5239e952b652db7eb59b4eea4cf4e98fa883c177bad9b91f1",
+        "ego_valid.npy": "8f84dc15205e998ac5a523a5d5012eb6ce9ec3959afd6c638a79edfc3447a97e",
+        "excluded.json": "4f6cb29981d36a89c71e810fa10e44a9d0fa55b652b66f2b2e66c92033dc6cdc",
+        "rows.csv": "f6d63922ca28be0e1308a5ff7f821cc71b550bd8e5337fa31420057db005ba30",
+        "semantic.npy": "936f00e5a7cf0ce73d887fea91333cd2eb6b9eebc2d0089d8a3f21c23f8ff49e",
+        "semantic_valid.npy": "dfec077b9268c1fdc19523f926438075a67ad7cec1c7366b9a492e17ab10068a",
+        "slot_ids.npy": "9614dc94f4727d09c1220b632ef0c16f6f71e485c57b9f70f490124940bb2a52",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "9a8cb3c4317938d88beb71e2c5de5cc71f82e439bfb10bc90010c82d93ddfad1"
+      }
+    },
+    {
+      "shard_id": "file00029",
+      "rows": 2282,
+      "candidates": 2318,
+      "excluded": 36,
+      "global_start": 66556,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00029-of-01000",
+      "raw_source_sha256": "958f838b47332292227a2230ba1d8199c870398a2e80fefb674dce07c42d5f42",
+      "elapsed_seconds": 148.61012725,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "76e319d1af25b9f7:1:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 344,
+      "valid_ego_frames": 178315,
+      "valid_channel_cells": 4567052,
+      "neighbor_present_frames": 176378,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "8a41fba7b38b0edb6ce5dd82257ada5473714bef3fe226e3a267d12a30bb97c8",
+        "ego_valid.npy": "e00e0830cfc882b2c204ba078900d6e4edc901914e8429652b72889a4004fec4",
+        "excluded.json": "e3ceec8dc4ca81723001211173c711c61d35f526b4658bca3e6c0d4456379885",
+        "rows.csv": "4d30af400fd20ddf56b6f744a94f145e084d7179086889874264dfa17dc0ded9",
+        "semantic.npy": "11535f202d923084d6aa2f61e7411447467bc10de1522e4fe002deb36570da4c",
+        "semantic_valid.npy": "8ca2ac129ebcb310acd71bd1140540f23ceb831d0dcf0dc016576096c7b3337d",
+        "slot_ids.npy": "985556df4e3c54a517c05db29f336ec2ce025901f2602dc867515e76f2cf0b45",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "2f25406a81e395b011ac796042a30334d8b90fd07c33974e6931f49383764115"
+      }
+    },
+    {
+      "shard_id": "file00030",
+      "rows": 2196,
+      "candidates": 2235,
+      "excluded": 39,
+      "global_start": 68838,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00030-of-01000",
+      "raw_source_sha256": "60ffc6fbc087957e822b37fe12d454caa7ecacfd8e871670d5fbbd857d2eb88c",
+      "elapsed_seconds": 137.21496474999992,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "b0327a65f6f105ed:49:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 313,
+      "valid_ego_frames": 171339,
+      "valid_channel_cells": 4462792,
+      "neighbor_present_frames": 174468,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "b3711625e5df6c3daf1439bfc5dd11192907bdabf6b12f10efd8e1d1ed6eaf71",
+        "ego_valid.npy": "d691d022ea544d0f4e9a987d75f72a99c6c9f16bffd1a856de148968c44ebbb4",
+        "excluded.json": "5edce2e7b24ede42b76632dcf0535f905d2d3eb28f2cf57cae949b4d2e87160d",
+        "rows.csv": "f93587faf0d9ae9a4e1ad44ce593fe7c5b200c18dbb648f3c44a491935a3cf31",
+        "semantic.npy": "01420d82d803f3297a08dcab9850c633d52af8ab1ccf92238f8c6de085819cda",
+        "semantic_valid.npy": "cf18ccaa4b178a1fec22c00bbf9a495b2539a1502025f2b76e019922107fb1bc",
+        "slot_ids.npy": "8cee5067fe9f0c7e83d220c8732d78a8ed9268d5ef5fcdda2e44cf32ea5a13a8",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "d0f5afb4f93b182d81132fad36e504fc5214cc562eaad3c7ae3c1cadc0fdd25f"
+      }
+    },
+    {
+      "shard_id": "file00031",
+      "rows": 2249,
+      "candidates": 2284,
+      "excluded": 35,
+      "global_start": 71034,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00031-of-01000",
+      "raw_source_sha256": "f16fda4dfdfb0d957ce54bd87687695fdc67abc34a5a9cd4ebbd2e56922f2bb3",
+      "elapsed_seconds": 140.52795579099995,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "56ff1a6b9fb5c322:818:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 331,
+      "valid_ego_frames": 175543,
+      "valid_channel_cells": 4554883,
+      "neighbor_present_frames": 177643,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "3a918855e00f5ac9f1fd76d34c58b6c0e919c6f502f001df3e08e68004b9d2e2",
+        "ego_valid.npy": "27438a37a740e7b2e1cce16e8d5f85bda5aaaf9e060a3a57985993f53171faee",
+        "excluded.json": "c0fc774f3723c8077daf5e89882153c5774b3cf02ca29197de9bc47eb01616e7",
+        "rows.csv": "048cb4bbf0a79b53a0de9e9bc24fbc125891e9b0ee4ad7f044607316bde68931",
+        "semantic.npy": "e49d65319930f6c3eda1316280caf41db7b97fdf3d152ddb9a7210a6b33946c0",
+        "semantic_valid.npy": "160b15ee9a63b6d90514bd3c22eb592c709f88d5995bc4da401a724c87228181",
+        "slot_ids.npy": "64b9e8ee7ab580ff82de10a42578d240bf4c5c94f28c6293aedbd8f36da0b474",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "2697574c191c02c52f704073feabbc8fac6abb3a8162f785fd541e73cb8bf6af"
+      }
+    },
+    {
+      "shard_id": "file00032",
+      "rows": 2076,
+      "candidates": 2101,
+      "excluded": 25,
+      "global_start": 73283,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00032-of-01000",
+      "raw_source_sha256": "a124daa111c574d614a0bf5d3a3b310a93994ec044858d37ef5b31a06b8e8df0",
+      "elapsed_seconds": 143.40841424999996,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "7225f8fa66c0fd35:2664:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 305,
+      "valid_ego_frames": 162306,
+      "valid_channel_cells": 4229356,
+      "neighbor_present_frames": 165850,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "e7d8cbbb16d9674b3c3e90f9d8c0f9925fd7341e9706729fee1bd93e46170feb",
+        "ego_valid.npy": "bf4bb6a2376780c44948e52bc6d4e7b26d23c0804e901a0cae51665c4f5ba9e9",
+        "excluded.json": "3e36d0a3c4a21b682078e883aeb0b399161e8b4e4301aa7046ca4c4e1b0660dc",
+        "rows.csv": "4d45d51e7890145a35487c26b6f333b652465db0e5079e8d8c4cc5c8dc9bc01f",
+        "semantic.npy": "3e94264c6f7d72113568468cc537adf10c6a0d92908e847b22dfb9c235f1a918",
+        "semantic_valid.npy": "ad200f656c749c10344cfbe9d1393ab596b7101abadb7e840612cb757bb6b898",
+        "slot_ids.npy": "b4bf035ecdb7f9b4ea912d0a1a797b5ebfefefb683f8c157d9c60db56ffec80e",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "a210b79ca7119fbc78d3a5199005857b22691b86b67840d818b26fc558ed90c5"
+      }
+    },
+    {
+      "shard_id": "file00033",
+      "rows": 2262,
+      "candidates": 2303,
+      "excluded": 41,
+      "global_start": 75359,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00033-of-01000",
+      "raw_source_sha256": "9717bf2beb91a2c67fe1dc10074b3641185e45a6448bc12b21376bbc91c6f6d0",
+      "elapsed_seconds": 150.14462708400004,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "d53debc9ba691cf7:1027:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 342,
+      "valid_ego_frames": 176798,
+      "valid_channel_cells": 4606057,
+      "neighbor_present_frames": 180348,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "66cd0101559dc15bc5868ed5af1b5d59fecafd8282e1c48d7f681da4f8bd7d12",
+        "ego_valid.npy": "a692b147cee9c64c19ddceb67eb4a556bb9de6f82072b0619def7ae585b40a33",
+        "excluded.json": "de7532de791e96e9204bd7ee326c4e8d5c9b1b684546236df97d53749c515199",
+        "rows.csv": "e6cc3c611aec22a56fb58a81dbec9ba7c059411a22cc266774110b43e4920a9e",
+        "semantic.npy": "41cba465145133fdcae2481ffdf07267109dd37c76c37fc20e32bbf11610185e",
+        "semantic_valid.npy": "9f1eee1a8f56e0af916003d480354e4f7c9ff4d5e328d66baaaa678cbe47cc43",
+        "slot_ids.npy": "a0d4200f2cbaa60086874607d34cc91a57dc43e90f41858fe0f8ec759ee3649c",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "dfb31df00186562aac351d1f34f5552ec9bba339a533aa13ddd20e9f5c796aab"
+      }
+    },
+    {
+      "shard_id": "file00034",
+      "rows": 2125,
+      "candidates": 2156,
+      "excluded": 31,
+      "global_start": 77621,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00034-of-01000",
+      "raw_source_sha256": "8d22791b739c287cf83f59c1bdc3e90fcdd85407d422b9e530dfb8c108b78426",
+      "elapsed_seconds": 137.96454616699998,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "1ce9fd4793341661:889:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 319,
+      "valid_ego_frames": 165497,
+      "valid_channel_cells": 4313992,
+      "neighbor_present_frames": 168761,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "ee0db9056f6087b518e29fc04999de67132132b1201b6b14701737c5bdf0d0f5",
+        "ego_valid.npy": "568020a3f59691f89b8e2ebbf5023ec65c0b870e73a2cce41b3a52f02820f560",
+        "excluded.json": "0b3d3acfdc8629aea2fe27069e657abf34cdff2b15eba97b5bad4a7f353250de",
+        "rows.csv": "e7c491cd8fc4fb00609bf6b8a2ad3c1730984d34267011be76f6f8b3bb5d3924",
+        "semantic.npy": "76090515114d9b24278fabc99d1c89268d205cd2cf91c0ef04dd9c25e6b5e1ad",
+        "semantic_valid.npy": "d37d001c8e06c719098acc6c63cb02376e69c99223bf4c811b52b12f0ca8cd7a",
+        "slot_ids.npy": "17fd34eb4e45ed0d3aeb70872304c242444b883d5113851bf99ee4a4d59fd84a",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "fe2508f4d641b5dd5de521a11957e11b259fe76a67766a29bfebf5c81fa84a0d"
+      }
+    },
+    {
+      "shard_id": "file00035",
+      "rows": 2426,
+      "candidates": 2470,
+      "excluded": 44,
+      "global_start": 79746,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00035-of-01000",
+      "raw_source_sha256": "ccc3348d94d1e2889ad9215b84863f584b0152efe8afbd603ca9191d28560c09",
+      "elapsed_seconds": 155.619452583,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "841368594a06588e:292:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 350,
+      "valid_ego_frames": 189436,
+      "valid_channel_cells": 5077725,
+      "neighbor_present_frames": 203684,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "0be9d0d1bea225c1030834ac99a6260815c7228920dcd828820c74caa9ca36a3",
+        "ego_valid.npy": "efcb56832c54de8e1c5d305d3cbe4b2b61d4b5cd2a6114e8202a5718236d8ecd",
+        "excluded.json": "d23336782fb2cecbe7945480bdfdc66a4c6675e6c80c3199a5a54d587abb65b3",
+        "rows.csv": "6134ed9cb3fa4bb126bda26d455986b6a4beea603f665e55449de9314c5d6604",
+        "semantic.npy": "8dd1a30de6f159fa20be8168c783cee3c65d6341754939ef95c5993b764f65ce",
+        "semantic_valid.npy": "972488816ff2dc49c940ef03635ac17b9e3f46dee07891444190ef6895a01a3d",
+        "slot_ids.npy": "4d504bed83e031f240123443807a1ef795858b2d7e1cf06e7d5a48e528a67b20",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "3f9f50a03594679f5438e0f45f6d141acf4bb22644a486b33d335e0f517714ac"
+      }
+    },
+    {
+      "shard_id": "file00036",
+      "rows": 2061,
+      "candidates": 2106,
+      "excluded": 45,
+      "global_start": 82172,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00036-of-01000",
+      "raw_source_sha256": "046d3adf4077edfb3cd2c24f5e07b2c40dbf1f9a29f05b16e1ed9a2a82574baf",
+      "elapsed_seconds": 141.44476004199998,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "424aa2f262dac6a8:1025:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 327,
+      "valid_ego_frames": 160591,
+      "valid_channel_cells": 3931204,
+      "neighbor_present_frames": 144640,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "c0fd41f84f3fa57eb971f68a0e571aa645ca16f1e11f1588f8c4659a0057bdbf",
+        "ego_valid.npy": "8327de2a18e004e8c527f8137fa27b4fb9f562ec753895145616c3e74e9f723d",
+        "excluded.json": "ab8a80af14818b7c9c2d2fa8b942d6139654884c63f0afdd90ac5bd139cb5921",
+        "rows.csv": "9fb067be9759be444fbda3a3b930fe732c10f641e2366adf29ee253a6c66d034",
+        "semantic.npy": "0fbc2d9e7d36974ef1e95c33bc08c3df1ac11f474f752f8e0ed7051676acd17e",
+        "semantic_valid.npy": "d975556ffd3eee121decd439ae0ad3dfeff9d2efa7bd6f3ad27184377e53a6c4",
+        "slot_ids.npy": "aeb84455d3732ada5939121bfab9dccaae08b928dd211d2deaa9175c8f5b1439",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "db0bc63cbf398ff49c81752be9e463f86e0ca782deb2702f0b3416502d4a1d70"
+      }
+    },
+    {
+      "shard_id": "file00037",
+      "rows": 2527,
+      "candidates": 2573,
+      "excluded": 46,
+      "global_start": 84233,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00037-of-01000",
+      "raw_source_sha256": "a11bfad1f45f272055359a4bf26c52c7b779df4cba79adf508a2a34595d3f349",
+      "elapsed_seconds": 157.19273729099996,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "b5e4ed6f73d44dca:144:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 372,
+      "valid_ego_frames": 197137,
+      "valid_channel_cells": 4819903,
+      "neighbor_present_frames": 176538,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "f9cd4bd6e485c9d1f7775ebf0f3be4ca5df7a80d9250ce72bff7e9e83435b807",
+        "ego_valid.npy": "4ea9a0d06a0dedc30b4bab8ee160b05ec651f97b3fb0219ee49e6ba0ff0ca8a2",
+        "excluded.json": "c0a9f451c3ab09e0a944a80924343afdeeff82e06f8e3209434523b3014ad8cf",
+        "rows.csv": "7a9322fe5d9ad206f2444d50c998910dc17e583ed41a88c233ead472c5e7e39f",
+        "semantic.npy": "b3693345e17b662fa2cac2db617585ee8b238a0483a0eb1d3c46df0d80f874da",
+        "semantic_valid.npy": "78c10e9ce592ddbd44517d7f5249526925af18f73d8b611b7ee36da2c557bd36",
+        "slot_ids.npy": "6e14e4d18b4f5a36bf1b1e3fd9e9e4da7a8e15102e3913a27d08884ec51f7c2e",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "6889c9b595ddeb6824220fb211723fe44ab885e3c706356ca6bb721d53cdb07e"
+      }
+    },
+    {
+      "shard_id": "file00038",
+      "rows": 2433,
+      "candidates": 2479,
+      "excluded": 46,
+      "global_start": 86760,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00038-of-01000",
+      "raw_source_sha256": "9b638851a89cf100c1f9ac4e86ad682beccd3a68829e910ef21d2795b58ded55",
+      "elapsed_seconds": 156.37796125,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "42a4ebfd813c02a3:2580:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 357,
+      "valid_ego_frames": 189826,
+      "valid_channel_cells": 4934679,
+      "neighbor_present_frames": 193249,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "65b33ef134645b59d4e6ebf87230add6a8e6de7ddf46642be9caa44f2231992e",
+        "ego_valid.npy": "05e120dea93633995668f8d8ef11d99e05024c08980b2987aeec91f3ed133b17",
+        "excluded.json": "bd8bb97edadacd607a67eb8fcd7a21d19ba4e5540bfd4f9ce34a846058d000ca",
+        "rows.csv": "de5832c1579cd3ce6693edc54d0e72eb74a1f497386c723e112231691ac1acbd",
+        "semantic.npy": "e1a765e3eeb816a3fa004214271f7b983703012af82affab96c37f00998c6a38",
+        "semantic_valid.npy": "b2e7c034822b44846eeae42ebe98a80717d61227c4b1332718979a01c2922087",
+        "slot_ids.npy": "2bf5c615dd7df44dc2841066b273cbd1ae5ba8c504b7e14fbdfb111ab57e52a2",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "23fe8b113524b8b7859d17f9895bc994b2e1bc6f733a80c2830dd031de1a7860"
+      }
+    },
+    {
+      "shard_id": "file00039",
+      "rows": 2122,
+      "candidates": 2166,
+      "excluded": 44,
+      "global_start": 89193,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00039-of-01000",
+      "raw_source_sha256": "7b4dc6993b900659615ecadbe50b904c5cf6c1015967bea989c0cba438dff4b1",
+      "elapsed_seconds": 140.50208658400004,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "6c9a1024aaf4fc47:680:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 327,
+      "valid_ego_frames": 165592,
+      "valid_channel_cells": 4169367,
+      "neighbor_present_frames": 157905,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "93540b4616e2a6d9e4fb55bd63b0a0a445f66732f4a085a70623c646fc726bb1",
+        "ego_valid.npy": "e6a7a8008c17fd2437ad5995bab63519c3103eee8d90b33040a58fd35a44c0ec",
+        "excluded.json": "6805b7bc2df56d14ebfb6c0372d853422a207c46b7b685bce14bee7448df9f15",
+        "rows.csv": "2e2e72c325d394ff518c99c655da605578c0ea270fb501c26fd8f811c28962cd",
+        "semantic.npy": "535ba98f0e35eb27554cc3d663b702d610a2951ed2a55549fe8c9c3bd8d4c01e",
+        "semantic_valid.npy": "a436c0bbe1365576fc54ff2d46ac3217edcabe65d8a50ee5681946963d0f43e5",
+        "slot_ids.npy": "e3c6e6fee0cbf2acd3c1aa6b6ee36bc036e96490ba5b04f8664fe18450ad56e0",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "d37ed4a5d3fa6ecf32a3c256e58b149822b816a78cfdf5578fa7211dc64dedd5"
+      }
+    },
+    {
+      "shard_id": "file00040",
+      "rows": 2614,
+      "candidates": 2655,
+      "excluded": 41,
+      "global_start": 91315,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00040-of-01000",
+      "raw_source_sha256": "19b2b8cffd1cc6d5c0747fc59afe44c52213eaf82ffa5fc1de872b91a53717b9",
+      "elapsed_seconds": 172.794974917,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "6678a6166c13957d:1957:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 347,
+      "valid_ego_frames": 204140,
+      "valid_channel_cells": 5533103,
+      "neighbor_present_frames": 225211,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "977cfee3ce9e4b792e9c00202dc2bc9e091332b96163d90604e00f9469d4e747",
+        "ego_valid.npy": "a29b275376cd6ca2d2c84b977cc47a32dd61af1a9029eaa1bd6300e8fecb5020",
+        "excluded.json": "34c8229bc53be317d3012c3cd758f668c285f1802a3278ab6a7d9d3115071f33",
+        "rows.csv": "f630b53623d369c7d6a334fc34b0e89ea531aff2bb543e6bf70be0ddda87f61f",
+        "semantic.npy": "8f5e4f9792be3fcd73e941e70c1db3e09c6c03b4c8f2018500a613d79dcb42ac",
+        "semantic_valid.npy": "284522b95f7c55c3212ec5f95956c5243c5d0d853c29d3b50ccc451f92424298",
+        "slot_ids.npy": "48e2ad71819ca0859404ef79cdac3720319652b73cf05cc208539d0745521c87",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "2b357f692bb3392033fa89557fe2409295d092b60f364c0651fc593bc4af0da2"
+      }
+    },
+    {
+      "shard_id": "file00041",
+      "rows": 2043,
+      "candidates": 2076,
+      "excluded": 33,
+      "global_start": 93929,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00041-of-01000",
+      "raw_source_sha256": "355600d39178e2cb87bde0a1d0c65f964acf8c3e7d05b09d51eda7c0fa088dd2",
+      "elapsed_seconds": 136.24497516600002,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "a17519ea4dd7d670:405:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 318,
+      "valid_ego_frames": 159529,
+      "valid_channel_cells": 3983584,
+      "neighbor_present_frames": 149414,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "9c263d51f1b1b4f7cd029fc9157f1350195e1d5cfed62380757c05b325a8ab61",
+        "ego_valid.npy": "97b53dc901f49558024cd341d5f5e827d4b041f59b707a5f7b2b0ca53582357b",
+        "excluded.json": "d4d7fb231d7fd633f790d948bc0e3813b0c8a7c54a94cda02314711338e6a1ee",
+        "rows.csv": "57e280f39d1a1aef992918bd680a56c0c0a76480d874407fe5210b848bf279cc",
+        "semantic.npy": "f1e28fa3d7177a9cfe93b7db81b9d100cd74b2bfd37b4fffc594875ac100f5a3",
+        "semantic_valid.npy": "5f9bfb1d5f06b9e85694bf1cf6612c9250074febbdf70e54b56457ccb992c4b2",
+        "slot_ids.npy": "04371d7553fdbc5a4dc0936ee9f20eda6d1a104645cb229522afeb99c8124f37",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "9f3e893e33c3a05a2a79326e34ecd8ecad5d8b8e5a09b21e4a039fab73bd28f2"
+      }
+    },
+    {
+      "shard_id": "file00042",
+      "rows": 2276,
+      "candidates": 2309,
+      "excluded": 33,
+      "global_start": 95972,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00042-of-01000",
+      "raw_source_sha256": "aa90eab051514bc5f2a10ccfa5c8fe29306601b8f5cf8c380636d8878031697d",
+      "elapsed_seconds": 162.65868924999995,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "460d16d8c40ca57e:177:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 352,
+      "valid_ego_frames": 177678,
+      "valid_channel_cells": 4560605,
+      "neighbor_present_frames": 175743,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "68c608adfcc301e768dd3ffa3d7370f580637df21b195a3feef5ffb11577b419",
+        "ego_valid.npy": "92e534e27cf77e8757ba2855c9e6fe6d1673f07ac27de97a50e2c40185265635",
+        "excluded.json": "e23bbd390482a1375e76039330354777e23dbdfd67ad08967bca65c0e0bfeff6",
+        "rows.csv": "96337e9b5229199898fa2b3dba86bbaeb6ce1da7f46b8201c8b2d31a8208ca89",
+        "semantic.npy": "ccaa07f828ad868e2dc14f396441bd0f2ab5b259c92e634bf1bafb4bf37cf7b8",
+        "semantic_valid.npy": "b1a70e4a1572a92d5f0d0a8f52fe70091a52052842a59afa6c2a4b61051564c0",
+        "slot_ids.npy": "d550ba99c0e539e53dc0a9822848e370e4d688b7947eaf5fbe84696006423411",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "a03210dbf840475c2f1c5502a1a331c38f5d601433df496543ca01062ebf317a"
+      }
+    },
+    {
+      "shard_id": "file00043",
+      "rows": 2058,
+      "candidates": 2102,
+      "excluded": 44,
+      "global_start": 98248,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00043-of-01000",
+      "raw_source_sha256": "e874cb936b07c4b3c28a0fcb3a218e8318fc50f22cdcddc769a619850ba6bb81",
+      "elapsed_seconds": 146.69438858299986,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "5f3f2a3c404c8586:1506:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 328,
+      "valid_ego_frames": 160304,
+      "valid_channel_cells": 3923362,
+      "neighbor_present_frames": 144139,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "0c30d0d19fe48c8b1396b60dbd85d7628d7053c5a7f28438094ec0943a18b8e9",
+        "ego_valid.npy": "96a2352ee4461c15f38febe19bc591eafce8ac772e68765f0b5eb47277cfcd8f",
+        "excluded.json": "37e878c42c1399861d8f88a3c7a8b43c85b3a371aed11956fa3d1172fffea016",
+        "rows.csv": "f3cf224b01a1d9935bb741239d97a3ed86d49a541f7574993c329e3e701f3d03",
+        "semantic.npy": "035862419d2be36198a2d8acce23b988ae7293504f0b7180c1961384472184d9",
+        "semantic_valid.npy": "94c38af206427b51133089b32fa21affd612ea31f43d941d780d4b2224726bd3",
+        "slot_ids.npy": "709811c385ae12e2276147e30fb5fcc2e9fd517435701fb25f57aa0bf0ccb579",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "3d451810934564b100766ab9236871a50f32d9ac7f2bcddc92b9bdef6b9b1e1a"
+      }
+    },
+    {
+      "shard_id": "file00044",
+      "rows": 2173,
+      "candidates": 2196,
+      "excluded": 23,
+      "global_start": 100306,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00044-of-01000",
+      "raw_source_sha256": "013e6a451b2aa4a93f33a200ab8a5c4fd28117316b81a20c8ca1ff09439b56a8",
+      "elapsed_seconds": 151.34580045899997,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "8ede2200bd79e9e1:3568:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 325,
+      "valid_ego_frames": 170111,
+      "valid_channel_cells": 4514444,
+      "neighbor_present_frames": 179941,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "34921ea42827b4cf767cbb55a011f36e5c57fc06827e4d95ec1c5b7f95346600",
+        "ego_valid.npy": "61777e237394a77e98fc3d9cfd6acada72f006a2b3cdf310c344397ac1a4dded",
+        "excluded.json": "060f8a32808d84376e37646bac6efaa4a43ba7aa2361218b22a392822881ea75",
+        "rows.csv": "e7501717827b5d2ed84fe4c8426854513d2586f0d964809cd7a41254f537875d",
+        "semantic.npy": "3ef59e6267fc7c35ca002539265a27d62423fa54176425e0f465988bc55e607a",
+        "semantic_valid.npy": "2c7218f20ab1442c1c3072c1bea017b5859aa4a57c8238566e9d0f6afe8c12b9",
+        "slot_ids.npy": "f567493f4514320ad925f374f6127d6dca2d2e62128d298e5f4294689ad9a52d",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "a7420f9c1492fbd283660bc86de457c2a7625156602f9a7302ceaa3ac9702340"
+      }
+    },
+    {
+      "shard_id": "file00045",
+      "rows": 2343,
+      "candidates": 2379,
+      "excluded": 36,
+      "global_start": 102479,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00045-of-01000",
+      "raw_source_sha256": "617a433ac382225618da9818dd86131d24c8b2fcb09328b49ad9da002c7b007a",
+      "elapsed_seconds": 153.76445104100003,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "ab565466e7a0d005:1819:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 330,
+      "valid_ego_frames": 182488,
+      "valid_channel_cells": 4908525,
+      "neighbor_present_frames": 198664,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "834306ce6486f06a9c0139c2d101c98b934586045b5aa92907ad193456a24ac3",
+        "ego_valid.npy": "8580edbfcdc37a26b95c52406ff826bd91618de14c3edfc245232229e58912ef",
+        "excluded.json": "5b908a016c49e83c51b1505c6b0037a5b44324351b72cf46de054d6225f4da16",
+        "rows.csv": "7105b87ab6d223dd185b5e8ba995641d373f7e61ea73cf6be9e043d836383452",
+        "semantic.npy": "2a43223cbe4ea5f98ea0cbe5d7875e8162d086e353ba77f75e3acea4b613636f",
+        "semantic_valid.npy": "b58b0b39033fb5f31905f4ed7f240336b03382f78d4cbf0a877a062b592f0faa",
+        "slot_ids.npy": "24679633eaf950dd448e68ea0671cc78593dc659f9bd0e23c924083a7d62aa4f",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "82158b90c04b874d0b7360f8bad51fa0b2b2e207c5b2f1ccd1b5a825d17016a1"
+      }
+    },
+    {
+      "shard_id": "file00046",
+      "rows": 2200,
+      "candidates": 2239,
+      "excluded": 39,
+      "global_start": 104822,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00046-of-01000",
+      "raw_source_sha256": "186833ec41316930bdd58902e9094b1196775cf1b3d5fc6b7d6c37583c5e9311",
+      "elapsed_seconds": 154.68096537499991,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "a938920fab70b60b:0:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 328,
+      "valid_ego_frames": 171595,
+      "valid_channel_cells": 4320559,
+      "neighbor_present_frames": 163716,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "db1990563cec86d4ed2f14c12de181fae6bc1377d7641a703e9dfdedac8d655f",
+        "ego_valid.npy": "a1bd556285a644655d45e7f2f914e837a10f5d89769aa6d052f90a2af635fd77",
+        "excluded.json": "a3e1420e2a8784912d37f4b57c260c125322d0c597096b14bbe887443db97003",
+        "rows.csv": "4225dfc678b8d621dfddf1a209872fe75eb34e29d616a24e29759def7a10c9bb",
+        "semantic.npy": "0c026a0ed8e7d15aad84355b743561b91af20efeac88008113915b375474e459",
+        "semantic_valid.npy": "2dfdf44ed111f2f0107cc6f04b948857b76650abb012c88f322e7df6a6a4c9e7",
+        "slot_ids.npy": "23a51d17a1bc02736df93504429d257b34cf47244f482b1c0582ed3d5985e74f",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "568a2c9e2871c99a0a71376584c2595113e26d26b85d3ea68e67cce85991e4f2"
+      }
+    },
+    {
+      "shard_id": "file00047",
+      "rows": 2455,
+      "candidates": 2491,
+      "excluded": 36,
+      "global_start": 107022,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00047-of-01000",
+      "raw_source_sha256": "38cf793d31b9ae9031986ecb2b64480b9ad14c897ae0a8880747aa2ab65032dc",
+      "elapsed_seconds": 148.61963545799995,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "fb721f2e5bc9379c:1028:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 363,
+      "valid_ego_frames": 191939,
+      "valid_channel_cells": 4753886,
+      "neighbor_present_frames": 177108,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "c983727424850f0e7489c9ffc9fd4078ed1e8a0bd29f2a5a594478d9f1c750d9",
+        "ego_valid.npy": "e319747210d4eb3b0929bbea2a64ec5a23025c0780bfe549a34115d659e29e46",
+        "excluded.json": "be8872520167b3d3618d98086dddff3ff199319d9d15a441316fe0af07375eed",
+        "rows.csv": "d07c363885b0dd149ab27a03dee500700010d7b7fade961a14a9a330cc1e9d7d",
+        "semantic.npy": "ce350c2b5831dda8079a1ab4497269cafef3dce68526bf98374351a75f62670f",
+        "semantic_valid.npy": "14a6ae3bfe5f8c0ba2df6c8642a55f3670679a5287727a790ee7d0d76083930b",
+        "slot_ids.npy": "cd365b25ead8898b3253e5ff41e4035c039f41c57b67bca68f98f47183050f56",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "93066014df957d28a06125649895cb8636e3c1ff13d0c16c20f4bc83a2dc0dd2"
+      }
+    },
+    {
+      "shard_id": "file00048",
+      "rows": 2467,
+      "candidates": 2494,
+      "excluded": 27,
+      "global_start": 109477,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00048-of-01000",
+      "raw_source_sha256": "2a23f4a518901c16867e24be8070bffc1324ac7da7bac62026a2d659b65967e8",
+      "elapsed_seconds": 136.39581583299992,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "d2afbec6f17ebaae:1310:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 351,
+      "valid_ego_frames": 192393,
+      "valid_channel_cells": 5059057,
+      "neighbor_present_frames": 199394,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "cc9dc656259479245ddc7606beab3c9c15c430402e5099999b1fde1ff494a3ac",
+        "ego_valid.npy": "98cc9e8b4d9a81a4e9a4baad0835000ad9b14eb80349d318f23a36b0f318cdee",
+        "excluded.json": "2a8a0571c88822bb067381820d130dee0ec013089abeab21973895e3af0aa9c4",
+        "rows.csv": "fa815b711180fee2b87dbf9f4d52b87a54ddb8157d6c12eda6e2c396cc47d2e4",
+        "semantic.npy": "2b23e2249a3c527cff0fbde482e065400d91a617d116b789cc3ac7a015cc443e",
+        "semantic_valid.npy": "3e507662dd671329c19685096d506ac06318dea66346487570453ea63b00672e",
+        "slot_ids.npy": "554b9cdf80312ff2033e6d0d7117d4697c6a7e7e30e250e475a40159b3d9ff50",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "6db1c817b1819e746ed55e55281db68790f7409b94d66c7cb46f793c3715e2f2"
+      }
+    },
+    {
+      "shard_id": "file00049",
+      "rows": 2640,
+      "candidates": 2677,
+      "excluded": 37,
+      "global_start": 111944,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00049-of-01000",
+      "raw_source_sha256": "cbb30f2004624e0a14cf280728858b4a9a04cbd17b311481f9b977ee11128977",
+      "elapsed_seconds": 139.561974834,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "532cae9eb64d644e:1107:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 380,
+      "valid_ego_frames": 206321,
+      "valid_channel_cells": 5397754,
+      "neighbor_present_frames": 211516,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "cf8981a73b5bf7bd0ebded36b6b0e897b5845c332d87100718d374f7adb62697",
+        "ego_valid.npy": "356b96564a7742fb71d6a7515b3cf8ae08298c1cdbefef05ad6f84199461fc4a",
+        "excluded.json": "6e5b61ae3de8c9587ed8490e0389c65cce54f36d43d4f5308627ea31abb8d690",
+        "rows.csv": "4e59441436a9dda8864b816b2b4bd3d562a1402d9aef4ff9097d38fef1f1de2b",
+        "semantic.npy": "61908d76c1e2e705116e08d09241ca16f1159fbd015cd2786854ce19f922e4eb",
+        "semantic_valid.npy": "314336bdad89bcdea2234ec34411d54f9c5564474728a171cc4ae67d62a6f1f4",
+        "slot_ids.npy": "c9332ea2b45ca1a06e594ab27003e5245b8f07f0bdc14c8c83aaa53662b84c81",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "8710b00d80d51e87ac2d8f35109bede43cd0ded54c5c4fbae598dbd329fec2aa"
+      }
+    },
+    {
+      "shard_id": "file00050",
+      "rows": 2259,
+      "candidates": 2307,
+      "excluded": 48,
+      "global_start": 114584,
+      "raw_file": "uncompressed_scenario_training_training.tfrecord-00050-of-01000",
+      "raw_source_sha256": "cd054021ad2454b08bddcc82686262e4716ea345d0d5a0980a3fc1e1b599d3fb",
+      "elapsed_seconds": 120.67885491600009,
+      "attempt": 1,
+      "repeat_tests": [
+        {
+          "identity": "5b0536a2a2dd0b73:1431:0:80",
+          "status": "ORIGINAL_REFERENCE_AND_REPEAT_BITWISE_PASS"
+        }
+      ],
+      "observed_groups": 349,
+      "valid_ego_frames": 175803,
+      "valid_channel_cells": 4335973,
+      "neighbor_present_frames": 161196,
+      "producer_source_sha256": {
+        "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+        "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+        "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+        "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+        "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+        "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+      },
+      "sha256": {
+        "channel_valid.npy": "4868617284c542b6c18cd9f0455cd3c082d79b180345983d814438be5588aa64",
+        "ego_valid.npy": "36a091cfc7ab6b271ece48d5ab62b164b41856275965133fe133bf0eb584b57b",
+        "excluded.json": "1e065640bee4af19032c1df21c19a3feeb0cdfcc3f09acd87044c4a738c1fd19",
+        "rows.csv": "13179d665656f5a5b4bf6ff0e0282a522ec77c93d9be4264273e1dc1651b1476",
+        "semantic.npy": "3a19b9d669925adcc8b60637fe242a7b190c1f42012147f1b8fddf04f20c5766",
+        "semantic_valid.npy": "52851d08864faedb202edea59b1a8c59ca9d7e26511fe1ade8edcb9559e91902",
+        "slot_ids.npy": "997ef33469d45645b88f0e339e1b5ff2a76194b10bd45471f0a0af78d1d3bc20",
+        "time_us.npy": "f9b8bc63994f07acf0d8fcd892ec11bfb49ad4465933855ff2657e94e771ac42",
+        "x.npy": "84e52f4c029b3ba1772dbe286343be03c18917de2e121470609dfe37c675d0c7"
+      }
+    }
+  ],
+  "input_contract": "canonical83_v1",
+  "plan_sha256": "a9b196a9c02411ae4f78425efbf983448f7f3d15e5bbe3e318f464fd0812f982",
+  "source_sha256": {
+    "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+    "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+    "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+    "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+    "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+  },
+  "jobs_sha256": "31400885176757e9f8a13f61671f1e657517120d39bee777e8850e909c5d1326",
+  "source_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "worker_seconds": 7391.628996287999,
+  "finalize_process_wall_seconds": 1286.592535959
+}

@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "optimized_mask_and_normalization_reference_rows": 128,
+  "audit_vs_single_backward_grad_max_abs": 0.0,
+  "bitwise_gradient_equal": true,
+  "repr_shared_grad_l2": 0.013276337645947933,
+  "sem_shared_grad_l2": 0.0209022369235754,
+  "optimizer_steps": 0,
+  "clip_norms": [
+    0.0476529523730278,
+    0.0476529523730278
+  ]
+}
