@@ -1,0 +1,26 @@
+EXPLICIT_PREPARATION_ONLY_REPAIR: metadata fingerprint vs file-byte SHA domains; original evidence retained, F2 unchanged
+P2 metadata 1 /20 PASS 2021.10.01.18.24.31_veh-44
+P2 metadata 2 /20 PASS 2021.08.25.20.20.58_veh-42
+P2 metadata 3 /20 PASS 2021.08.27.13.08.25_veh-42
+P2 metadata 4 /20 PASS 2021.08.23.19.33.55_veh-08
+P2 metadata 5 /20 PASS 2021.07.09.17.06.37_veh-35
+P2 metadata 6 /20 PASS 2021.09.15.14.57.57_veh-45
+P2 metadata 7 /20 PASS 2021.09.27.17.52.47_veh-44
+P2 metadata 8 /20 PASS 2021.06.14.18.42.45_veh-12
+P2 metadata 9 /20 PASS 2021.08.25.14.12.46_veh-08
+P2 metadata 10 /20 PASS 2021.08.31.14.55.32_veh-08
+P2 metadata 11 /20 PASS 2021.08.19.17.42.11_veh-08
+P2 metadata 12 /20 PASS 2021.09.03.16.38.35_veh-08
+P2 metadata 13 /20 PASS 2021.08.23.18.16.02_veh-42
+P2 metadata 14 /20 PASS 2021.08.25.19.45.41_veh-42
+P2 metadata 15 /20 PASS 2021.09.17.18.16.32_veh-45
+P2 metadata 16 /20 PASS 2021.09.28.18.22.59_veh-44
+P2 metadata 17 /20 PASS 2021.09.03.17.40.20_veh-42
+P2 metadata 18 /20 PASS 2021.09.17.12.58.10_veh-45
+P2 metadata 19 /20 PASS 2021.08.19.15.03.05_veh-45
+P2 metadata 20 /20 PASS 2021.09.20.20.32.00_veh-08
+{
+  "status": "PASS",
+  "frozen_roster_sha256": "a09b73814c40f15de366c78447260b38d49bd4cacfc2e0d68a3f597cb6d05c24",
+  "scientific_attempts": 0
+}

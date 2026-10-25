@@ -14,6 +14,7 @@ import hashlib
 from io import StringIO
 import json
 import os
+import sqlite3
 from pathlib import Path
 import sys
 from unittest.mock import patch
@@ -124,10 +125,29 @@ def select():
     return capacity
 
 
-def metadata():
+def historical_db_fingerprint(path):
+    """Reproduce S2 raw-census metadata domain, explicitly NOT file bytes SHA."""
+    from tools.s2_preflight_metadata_census import canonical,token_sha
+    source=json.loads((ROOT/'docs/stageR/r1/r1_fresh_smoke_source_universe_v0.1.json').read_text())
+    path=Path(path);stat=path.stat()
+    with sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True) as connection:
+        connection.execute('PRAGMA query_only=ON')
+        schema=connection.execute("SELECT type,name,tbl_name,COALESCE(sql,'') FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' ORDER BY type,name").fetchall()
+        tokens=[x[0] for x in connection.execute('SELECT DISTINCT lower(hex(lidar_pc_token)) FROM scenario_tag ORDER BY 1')]
+    if (path.stat().st_size,path.stat().st_mtime_ns)!=(stat.st_size,stat.st_mtime_ns):raise ValueError('Source file changed during metadata fingerprint read')
+    return canonical(dict(relative_path=str(path.relative_to(Path(source['source_db']['cache_root']))),size_bytes=stat.st_size,mtime_ns=stat.st_mtime_ns,schema_sha256=canonical(schema),token_set_sha256=token_sha(tokens)))
+
+
+def metadata(*,repair_fingerprint_domain=False):
     from tools.r1_prepare_official_technical_smoke_roster import _official_initial
     from tools.s2r_engineering_closure import precontext_payload
-    dest=OUT/'evidence/P2_Q0_Arm_Specs_v1.json'
+    dest=OUT/'evidence'/('P2_Q0_Verified_Arm_Specs_v1.json' if repair_fingerprint_domain else 'P2_Q0_Arm_Specs_v1.json')
+    if repair_fingerprint_domain:
+        previous=json.loads((OUT/'evidence/P2_Q0_Arm_Specs_v1.json').read_text())
+        if previous['arms'] or len(previous['pair_audits'])!=20 or any(x.get('error')!='ValueError: Current full database differs from frozen raw source SHA' for x in previous['pair_audits']):
+            raise PermissionError('Only the documented zero-entry fingerprint-domain defect may use this separate metadata repair; no roster replacement')
+        print('EXPLICIT_PREPARATION_ONLY_REPAIR: metadata fingerprint vs file-byte SHA domains; original evidence retained, F2 unchanged',flush=True)
+
     if dest.exists():raise FileExistsError('P2 metadata evidence already exists; no replacement')
     cap=json.loads((OUT/'evidence/P2_Q0_Capacity_And_Selection_v1.json').read_text());roster=read_csv(OUT/'P2_Q0_Independent_Session_Roster_v1.csv')
     if cap['selected_count']!=20:raise PermissionError('P2 capacity blocked; do not construct a reduced roster')
@@ -136,7 +156,8 @@ def metadata():
     for number,row in enumerate(roster,1):
         try:
             db=Path(row['db_path']);digest=sha256_file(db)
-            if digest!=row['source_database_sha256']:raise ValueError('Current full database differs from frozen raw source SHA')
+            metadata_fingerprint=historical_db_fingerprint(db)
+            if metadata_fingerprint!=row['source_database_sha256']:raise ValueError('Historical metadata-domain database fingerprint changed')
             shard=ROOT/'docs/stageR/s2_preflight'/row['metadata_shard'];sources[str(shard.relative_to(ROOT))]=sha256_file(shard)
             with gzip.open(shard,'rt') as f:data=json.load(f)
             cols=data['record_columns'];idx=cols.index('scenario_token');records=[x for x in data['records'] if x[idx]==row['scenario_token']]
@@ -144,7 +165,7 @@ def metadata():
             anchor=int(records[0][cols.index('tag_anchor_timestamp_us')])
             initial,route=_official_initial(dict(db_path=row['db_path'],scenario_token=row['scenario_token'],timestamp=anchor))
             if initial['initial_speed_mps']<5.:raise ValueError('Frozen representative initial speed below approved 5m/s')
-            candidate=dict(session_id=row['session_id'],log_id=row['log_id'],scenario_token=row['scenario_token'],db_path=row['db_path'],map_name=row['map_name'],source_fingerprint_sha256=digest)
+            candidate=dict(session_id=row['session_id'],log_id=row['log_id'],scenario_token=row['scenario_token'],db_path=row['db_path'],map_name=row['map_name'],source_fingerprint_sha256=metadata_fingerprint)
             rid=route_id(row['map_name'],route);pre=precontext_payload(candidate,initial,route,rid);pid=precontext_id(pre)
             if rid!=row['route_id'] or pid!=row['precontext_id']:raise ValueError('Frozen route/precontext metadata changed')
             common=dict(**candidate,candidate='TSB_DIRECT_COAST_F2',pair_id=row['pair_id'],role='B',exposure_class=row['exposure_class_before_P2'],
@@ -153,7 +174,7 @@ def metadata():
             sources[row['db_path']]=digest
             map_file=maps/row['map_name']/versions[row['map_name']]['version']/'map.gpkg'
             if str(map_file) not in sources:sources[str(map_file)]=sha256_file(map_file)
-            audit.append(dict(pair_id=row['pair_id'],status='PASS',initial=initial,precontext_id=pid,route_id=rid))
+            audit.append(dict(pair_id=row['pair_id'],status='PASS',initial=initial,precontext_id=pid,route_id=rid,historical_metadata_fingerprint_sha256=metadata_fingerprint,current_full_file_sha256=digest))
         except Exception as error:
             audit.append(dict(pair_id=row['pair_id'],status='BLOCKED',error=type(error).__name__+': '+str(error)))
         print('P2 metadata',number,'/20',audit[-1]['status'],row['session_id'],flush=True)
@@ -169,7 +190,7 @@ def preflight():
     from tools.tsb_coast_p1r_planner import reference_profile
     destination=OUT/'evidence/P2_Q0_40Arm_Production_Preflight_v1.json'
     if destination.exists():raise FileExistsError('P2 one-shot preflight evidence exists; no rerun/replacement')
-    source=json.loads((OUT/'evidence/P2_Q0_Arm_Specs_v1.json').read_text());roster=read_csv(OUT/'P2_Q0_Independent_Session_Roster_v1.csv')
+    source=json.loads((OUT/'evidence/P2_Q0_Verified_Arm_Specs_v1.json').read_text());roster=read_csv(OUT/'P2_Q0_Independent_Session_Roster_v1.csv')
     specs={s['run_id']:s for s in source['arms']};results=[];held=[]
     if len(roster)!=20:raise PermissionError('P2 roster is not exactly20')
     original=json.loads((ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Execution_Source_Binding_v1.json').read_text())
@@ -216,5 +237,5 @@ def preflight():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('mode',choices=['select','metadata','preflight']);args=parser.parse_args()
-    result={'select':select,'metadata':metadata,'preflight':preflight}[args.mode]();print(json.dumps({k:v for k,v in result.items() if k not in ['arms','pair_audits','source_data_sha256','zero_run_guard_calls']},indent=2,ensure_ascii=False))
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('mode',choices=['select','metadata','metadata-fingerprint-domain-repair','preflight']);args=parser.parse_args()
+    result={'select':select,'metadata':metadata,'metadata-fingerprint-domain-repair':lambda:metadata(repair_fingerprint_domain=True),'preflight':preflight}[args.mode]();print(json.dumps({k:v for k,v in result.items() if k not in ['arms','pair_audits','source_data_sha256','zero_run_guard_calls']},indent=2,ensure_ascii=False))

@@ -1,0 +1,111 @@
+{
+  "status": "P2_Q0_BLOCKED_METADATA",
+  "arms": [],
+  "pair_audits": [
+    {
+      "pair_id": "DIRECTCOAST-P2-01",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-02",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-03",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-04",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-05",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-06",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-07",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-08",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-09",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-10",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-11",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-12",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-13",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-14",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-15",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-16",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-17",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-18",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-19",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    },
+    {
+      "pair_id": "DIRECTCOAST-P2-20",
+      "status": "BLOCKED",
+      "error": "ValueError: Current full database differs from frozen raw source SHA"
+    }
+  ],
+  "frozen_roster_sha256": "a09b73814c40f15de366c78447260b38d49bd4cacfc2e0d68a3f597cb6d05c24",
+  "source_data_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/nuplan-maps-v1.0.json": "b9c0a62335dded8b25e634bc63e3f271908b6f4f803398f0250ef7769facc504"
+  },
+  "scientific_attempts": 0
+}

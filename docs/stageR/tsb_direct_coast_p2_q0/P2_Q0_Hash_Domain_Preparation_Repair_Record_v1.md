@@ -1,0 +1,11 @@
+# P2-Q0 新零运行入口哈希口径修正记录 v1
+
+原20名单及排序规则不变，原名单SHA256：a09b73814c40f15de366c78447260b38d49bd4cacfc2e0d68a3f597cb6d05c24。
+
+首次metadata准备在任何official initial查询和任何40arm production factory检查之前，将S2历史observed_db_fingerprint_sha256与整文件SHA256错误比较，20行因此被工具统一阻断，spec数0。错误属于本轮新增准备工具，不是数据库已改变、F2科学失败或候选科学不合格。原evidence/P2_Q0_Arm_Specs_v1.json及P2_Q0_Metadata_v1.log完整保留，未覆盖。
+
+历史指纹按tools/s2_preflight_metadata_census.py原定义，包含relative_path、size_bytes、mtime_ns、schema SHA及token-set SHA，散列JSON后得到；它从来不等于整文件bytes SHA。修正只涉及新Q0准备入口的域识别及前后绑定：原历史指纹按原定义重新核对；另外记录当前完整数据库文件SHA用于未来执行。原名单列source_database_sha256的值保留，其域明确为S2结构化metadata fingerprint，不冒称file SHA；真实file SHA见Verified Arm Specs的source_data_sha256及pair_audits.current_full_file_sha256。
+
+独立的metadata-fingerprint-domain-repair入口只允许在原记录20行均为这个特定错误且无spec时使用，另存P2_Q0_Verified_Arm_Specs_v1.json，拒绝覆盖。固定20身份全部通过正确的历史指纹、完整文件hash、原始LOG、初态/route/precontext核对，产生40 spec；未搜新token、未换SESSION、未读科学结果。修正前后科学attempt均0，F2所有源码/配置逐文件SHA未改。
+
+7项测试通过，新增真实DB回归确保metadata fingerprint与原记录一致且不同于整文件SHA。一次性40arm正式零运行生产预检仍尚未开始；将在本准备入口修正提交冻结后，仅对原20对执行一次。若真正生产预检有阻断，只报告原名单及原因，不修科学代码或替换样本。

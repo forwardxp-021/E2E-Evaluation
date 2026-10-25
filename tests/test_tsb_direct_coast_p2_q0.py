@@ -47,6 +47,12 @@ class P2Q0Tests(unittest.TestCase):
         for row in rows:self.assertEqual(row['rank_sha256'],hashlib.sha256((rule['session_rank_salt']+'|'+row['session_id']).encode()).hexdigest())
         self.assertEqual(hashlib.sha256((OUT/'P2_Q0_Independent_Session_Roster_v1.csv').read_bytes()).hexdigest(),cap['roster_sha256'])
 
+    def test_real_historical_metadata_fingerprint_is_not_full_file_digest(self):
+        from tools.tsb_direct_coast_p2_q0 import historical_db_fingerprint,sha256_file
+        row=read_csv(OUT/'P2_Q0_Independent_Session_Roster_v1.csv')[0]
+        self.assertEqual(historical_db_fingerprint(Path(row['db_path'])),row['source_database_sha256'])
+        self.assertNotEqual(sha256_file(Path(row['db_path'])),row['source_database_sha256'])
+
     def test_zero_run_tool_has_no_launch_model_or_science_analysis_call_sites(self):
         tree=ast.parse((ROOT/'tools/tsb_direct_coast_p2_q0.py').read_text());forbidden={'run','propagate_state','track_trajectory','launch','launch_first_pair_arm','analyze_completed_arm','analyze_completed_pair','measure','fmatch_pair','claim_attempt'}
         for node in ast.walk(tree):
