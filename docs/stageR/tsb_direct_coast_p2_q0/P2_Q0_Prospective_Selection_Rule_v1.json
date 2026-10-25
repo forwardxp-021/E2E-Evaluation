@@ -1,0 +1,47 @@
+{
+  "stage": "TSB_DIRECT_COAST_P2_Q0",
+  "record_type": "PROSPECTIVE_METADATA_SELECTION_RULE_BEFORE_FULL_POOL_INSPECTION",
+  "scientific_execution_authorized": false,
+  "frame": "ALL_248_SESSION_ROWS_IN_FROZEN_S2R_STATIC_CENSUS_ONE_EXISTING_METADATA_REPRESENTATIVE_PER_SESSION",
+  "static_census_path": "docs/stageR/s2r_engineering_closure/S2R_Static_Eligibility_Census_v1.csv",
+  "static_census_sha256": "cf5eb251419cd4a531055721d180578444f9e28626c422f58f8b20ba60abc0f4",
+  "session_rank_salt": "TSB_DIRECT_COAST_P2_Q0_SESSION_RANK_V1",
+  "rank_utf8_formula": "SHA256(salt + \"|\" + session_id)",
+  "tie_break": "session_id_lexicographic",
+  "select": "FIRST_20_IN_FULL_SORTED_ELIGIBLE_SESSION_FRAME",
+  "scenario_choice": "USE_EXISTING_FROZEN_S2R_METADATA_REPRESENTATIVE_NO_NEW_SCENARIO_SEARCH",
+  "static_requirements": [
+    "STATIC_ELIGIBLE",
+    "initial_speed_mps>=5.0",
+    "complete source/SESSION/log/scenario identity and exposure",
+    "S1R approved role policy, E3/E4/UNKNOWN excluded",
+    "source fingerprint known and raw log metadata canonicalized"
+  ],
+  "session_exclusion_policy": [
+    "F2 DEV01 and scientific C2 DEV01 mandatory exclusion",
+    "ALL_20_OLD_B1_SESSIONS_STRICTLY_EXCLUDED_NO_FALLBACK",
+    "BOTH_PREVIOUS_DEV02_DEV03_SESSIONS_STRICTLY_EXCLUDED_NO_FALLBACK",
+    "ALL_E5_SESSIONS_CONSERVATIVELY_PROTECTED_FOR_PRIMARY_C_IN_ADDITION_TO_ANY_EXPLICIT_FROZEN_C_RESERVATIONS"
+  ],
+  "exposure_overlay_order": [
+    "S2R role-aware E3/E4 overrides",
+    "B1 R2 E1-to-E2 benchmark overlay",
+    "Coast DEV01/02/03 identity/exposure records (excluded regardless of label)"
+  ],
+  "unknown_identity_exposure_or_reservation": "FAIL_CLOSED",
+  "capacity_under_20": "P2_Q0_CAPACITY_BLOCKED_NO_RELAXATION",
+  "roster_frozen_before_40arm_preflight": true,
+  "preflight_failure": "RETAIN_ORIGINAL_20_AND_ORDER_REPORT_BLOCKED_NO_REPLACEMENTS",
+  "outcome_fields_forbidden": [
+    "mechanism",
+    "F_match",
+    "collision",
+    "drivable_area",
+    "braking_curve",
+    "H30",
+    "RBR",
+    "BDD"
+  ],
+  "future_role": "B_BENCHMARK_QUALIFICATION_NOT_PRIMARY_V_OR_C_NOT_AUTOMATIC_CLAIM_A",
+  "zero_run_exposure": "METADATA_EVENT_E0_ONLY_DOES_NOT_ERASE_EXISTING_E1_E2; FUTURE_SCIENTIFIC_EXECUTION_MUST_RECORD_E2_BENCHMARK_EXPOSURE; NEVER_RENAME_AS_E5"
+}
