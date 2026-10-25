@@ -1,0 +1,60 @@
+{
+  "status": "E2E_SDC_V1_QUALIFICATION_PASS_20_OF_20",
+  "development_pairs": 3,
+  "development_PASS": 3,
+  "qualification_planned": 20,
+  "qualification_rostered": 20,
+  "qualification_complete": 20,
+  "qualification_PASS": 20,
+  "qualification_scientific_FAIL": 0,
+  "qualification_unrun_or_infrastructure": 0,
+  "attempts": 46,
+  "attempts_by_phase": {
+    "DEVELOPMENT": 6,
+    "QUALIFICATION": 40
+  },
+  "total_CPU_seconds": 451.77066339300006,
+  "maximum_arm_wall_seconds": 13.559259916000002,
+  "qual_coverage_counts": {
+    "POLICY_EXCLUDED": 110,
+    "ELIGIBLE": 37,
+    "EXCLUDED": 101
+  },
+  "qual_anchors_assessed": 1864,
+  "qualification_min_temporal_speed_delta": 1.0856840928720182,
+  "qualification_max_F_deltas": {
+    "mean_speed": 1e-06,
+    "end_minus_start_speed": 2e-06,
+    "path_length": 1e-06,
+    "mean_abs_accel": 0.000765
+  },
+  "qualification_safety_pass_arms": 40,
+  "qualification_mechanism_pass_arms": 40,
+  "qualification_coast_counts": [
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18,
+    18
+  ],
+  "raw_artifacts": 1587,
+  "scientific_failure_retries": 0,
+  "qualification_technical_retries": 0,
+  "controller_or_model_changes": 0,
+  "RBR_H30_BDD_PRIMARY": 0
+}

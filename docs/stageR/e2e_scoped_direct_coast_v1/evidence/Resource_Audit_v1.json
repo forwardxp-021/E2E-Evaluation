@@ -1,0 +1,24 @@
+{
+  "scientific_child_and_measurable_descendant_CPU_seconds": 451.77066339300006,
+  "development_child_CPU_seconds": 51.71653736,
+  "qualification_child_CPU_seconds": 400.054126033,
+  "driver_CPU_not_claimed_exactly_measured": true,
+  "conservative_all_scientific_driver_plus_children_CPU_upper_bound_seconds": 5584.595069885254,
+  "method": "For each scientific execution driver: creation-to-final-write wall envelope of its stdout log times host logical CPU count; bounds all job CPU including parent/children, summed across non-overlapping phases. Metadata-only preparation excluded.",
+  "phase_envelopes": [
+    {
+      "log": "Development_Execution.log",
+      "wall_envelope_seconds": 58.3139374256134,
+      "logical_CPUs": 10,
+      "all_driver_and_child_CPU_upper_bound_seconds": 583.139374256134
+    },
+    {
+      "log": "Qualification_Execution.log",
+      "wall_envelope_seconds": 500.145569562912,
+      "logical_CPUs": 10,
+      "all_driver_and_child_CPU_upper_bound_seconds": 5001.45569562912
+    }
+  ],
+  "budget_seconds": 10800,
+  "within_budget": true
+}

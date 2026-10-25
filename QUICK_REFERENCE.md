@@ -11776,3 +11776,5 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 ### 3. 通过标准
 
 原20资格SESSION全部完成技术、机制、四F、额外平衡、安全、观察映射与真实时序差异才独立资格PASS。额外要求最大实际速度差至少0.5m/s、真实轨迹hash和请求序列不同；未运行指标不得补填。容量不足如实报告，不在资格结果后放宽适用域。离线未来交通筛选不是在线部署能力。全部历史与Primary C保护，RBR/H30/BDD/Primary/V/C为0。
+
+本轮最终结果：`E2E_SDC_V1_QUALIFICATION_PASS_20_OF_20`。开发3/3、独立资格20/20，46首次arm，retry0；资格40arm全部机制、匹配、额外平衡、安全和时序差异通过。最终名单为QUALIFICATION_Frozen_Roster_v2.json；v1是首次科学执行前已保留的静态身份预检阻断稿。37/138个资格候选SESSION适格，适用域是低曲率、走廊及离线交通检查通过的路段；不能外推全交通。完整中文入口：docs/stageR/e2e_scoped_direct_coast_v1/Final_Report_CN_v1.md。账本stopped=true，当前命令禁止重复阶段，RBR/H30/Primary/V/C均未执行。

@@ -1,0 +1,2318 @@
+{
+  "stage": "E2E_SCOPED_DIRECT_COAST_V1",
+  "budget": {
+    "development_attempts": 60,
+    "qualification_attempts": 40,
+    "total_cpu_seconds": 10800,
+    "per_arm_wall_seconds": 1200,
+    "qualification_retry": 0
+  },
+  "cpu_seconds": 451.77066339300006,
+  "cpu_certain": true,
+  "stopped": true,
+  "attempts": [
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "d8a8f6f9da4d5e45d61fd0145da4f625eb295a5c0f2176416b87de1bfcb744f4",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:40Z",
+      "child_pid": 9730,
+      "returncode": 0,
+      "cpu_seconds": 7.971337,
+      "wall_seconds": 8.843932375,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 7.971337,
+        "observed_per_pid": {
+          "(9730, 1792923520.360524)": 7.947948544,
+          "(9732, 1792923524.883362)": 0.022984582
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "56646c364a2e97c4a0092b4554275a65ed88ff6abaa3c06b4ac2abfb124f0167",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:49Z",
+      "child_pid": 9747,
+      "returncode": 0,
+      "cpu_seconds": 7.792662,
+      "wall_seconds": 8.130866166999999,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 7.792662,
+        "observed_per_pid": {
+          "(9747, 1792923529.678016)": 7.770338432,
+          "(9751, 1792923533.762232)": 0.019941791
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "e57ab048d62d09c04356ded9123346b9bab041a73c3526319481a0b5a666f095",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:18:58Z",
+      "child_pid": 9756,
+      "returncode": 0,
+      "cpu_seconds": 8.333960359999999,
+      "wall_seconds": 8.689621333000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 8.333506,
+        "observed_per_pid": {
+          "(9756, 1792923538.313651)": 8.314169152,
+          "(9762, 1792923542.464019)": 0.019791207999999998
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "5fd770edd3077abf6f1f3a164fcfaa10dd13350737c4d8f9c4c3888522b504ae",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:07Z",
+      "child_pid": 9776,
+      "returncode": 0,
+      "cpu_seconds": 8.314823,
+      "wall_seconds": 8.647534583000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 8.314823,
+        "observed_per_pid": {
+          "(9776, 1792923547.502326)": 8.293933504,
+          "(9780, 1792923551.649708)": 0.019820208
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "f283504eda2382cb046249e9a8a19b758dec470a47e037fa492f02b5939c818b",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:16Z",
+      "child_pid": 9788,
+      "returncode": 0,
+      "cpu_seconds": 9.667425,
+      "wall_seconds": 9.912313834000003,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.667425,
+        "observed_per_pid": {
+          "(9788, 1792923556.654713)": 9.619741376,
+          "(9792, 1792923560.689935)": 0.019326291
+        }
+      }
+    },
+    {
+      "phase": "DEVELOPMENT",
+      "run_id": "SDC-DEV-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "1479e9c8b435525a62051d0880c55fcaf5f7bb2a5ee5a68a51df3c93258b0f81",
+      "parent_pid": 9672,
+      "claim_time_utc": "2026-10-25T10:19:27Z",
+      "child_pid": 9799,
+      "returncode": 0,
+      "cpu_seconds": 9.63633,
+      "wall_seconds": 9.848295582999995,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.63633,
+        "observed_per_pid": {
+          "(9799, 1792923567.064666)": 9.568179264,
+          "(9803, 1792923571.103134)": 0.021027416
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "9ee42eebf084c19fcf0ae4a73bd9fa5db4109ba0bbedc0f17acae14044b9494a",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:33:41Z",
+      "child_pid": 16032,
+      "returncode": 0,
+      "cpu_seconds": 9.713789,
+      "wall_seconds": 10.978763959,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.713789,
+        "observed_per_pid": {
+          "(16032, 1792924421.22789)": 9.677214976,
+          "(16147, 1792924427.067562)": 0.021650749
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "96233ff34d060a6eee4a5619ea8fdbd9fa4f621cf5ffff3fe86e86f0882e47e3",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:33:53Z",
+      "child_pid": 16373,
+      "returncode": 0,
+      "cpu_seconds": 9.521093,
+      "wall_seconds": 10.523246708000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.521093,
+        "observed_per_pid": {
+          "(16373, 1792924433.602944)": 9.478836608,
+          "(16465, 1792924439.256235)": 0.020358083
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "2e66edf92a034a8faef951c941daad2166e43421320198191d80103f8a4190e6",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:34:05Z",
+      "child_pid": 16697,
+      "returncode": 0,
+      "cpu_seconds": 9.362697,
+      "wall_seconds": 10.276150291999997,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.362697,
+        "observed_per_pid": {
+          "(16697, 1792924445.534973)": 9.296584320000001,
+          "(16789, 1792924451.082746)": 0.020488874
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "df1a8efc998c5681be36a2ed2afbb93a423c74679a2f985f1902d07fe8960cba",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:34:17Z",
+      "child_pid": 17022,
+      "returncode": 0,
+      "cpu_seconds": 9.392697,
+      "wall_seconds": 10.343122332999997,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.392697,
+        "observed_per_pid": {
+          "(17022, 1792924457.207994)": 9.336723328,
+          "(17112, 1792924462.844143)": 0.024501249
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "8a58f8aa140c2dc65b266632709c54fe12a25e20b04cb275e6a7ad682a0434e0",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:34:28Z",
+      "child_pid": 17296,
+      "returncode": 0,
+      "cpu_seconds": 9.491817,
+      "wall_seconds": 10.410658625000003,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.491817,
+        "observed_per_pid": {
+          "(17296, 1792924468.97325)": 9.419021504,
+          "(17395, 1792924474.581735)": 0.02436775
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "4d0e4796d433dc2fbc9d4d428e0860d5ef56c0e0027574548b3d1538215429ba",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:34:40Z",
+      "child_pid": 17578,
+      "returncode": 0,
+      "cpu_seconds": 9.394677,
+      "wall_seconds": 10.285011084000004,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.394677,
+        "observed_per_pid": {
+          "(17578, 1792924480.781187)": 9.32189568,
+          "(17668, 1792924486.400682)": 0.022655999
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-04-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "d444045d5679b4a5d9045313321f3de278d97998464e4a443539fb12cde22415",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:34:52Z",
+      "child_pid": 17850,
+      "returncode": 0,
+      "cpu_seconds": 10.021268000000001,
+      "wall_seconds": 10.884732874999997,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.021268000000001,
+        "observed_per_pid": {
+          "(17850, 1792924492.530399)": 9.977518016,
+          "(17851, 1792924492.588014)": 0.009571333,
+          "(17942, 1792924498.167119)": 0.025951208
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-04-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "4bb14bbeae75c51aaf52cb90e82b9ddc5d03ba39390a47f4b3cd1bb7c791bde1",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:35:04Z",
+      "child_pid": 18171,
+      "returncode": 0,
+      "cpu_seconds": 10.559286,
+      "wall_seconds": 11.52888025,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.559286,
+        "observed_per_pid": {
+          "(18171, 1792924504.930674)": 10.520088704,
+          "(18262, 1792924511.346641)": 0.029700666
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-05-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "8fd803c2cb40fd41b5ed6096a0eab304569fbf8e7e0e7736e3b5c88c99ce3ad2",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:35:17Z",
+      "child_pid": 18448,
+      "returncode": 0,
+      "cpu_seconds": 10.674167747,
+      "wall_seconds": 11.865994375,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.662306,
+        "observed_per_pid": {
+          "(18448, 1792924517.988315)": 10.639338624,
+          "(18449, 1792924518.05072)": 0.005291832,
+          "(18539, 1792924524.436378)": 0.029537291
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-05-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "19329940fd5075937c728545c42f787ad3cfdbbc4fa6262b49c9bb2ec1c59b4d",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:35:31Z",
+      "child_pid": 18765,
+      "returncode": 0,
+      "cpu_seconds": 10.196306,
+      "wall_seconds": 11.234644584000009,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.196306,
+        "observed_per_pid": {
+          "(18765, 1792924531.307331)": 10.15660352,
+          "(18766, 1792924531.368789)": 0.0053011659999999995,
+          "(18857, 1792924537.30205)": 0.022861123999999997
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-06-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "28f02f8ad507b69b79fc1b92c8eb0c68921080ea4189ece18c5669d5b1a27909",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:35:43Z",
+      "child_pid": 19087,
+      "returncode": 0,
+      "cpu_seconds": 9.954479000000001,
+      "wall_seconds": 11.047110541999999,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.954479000000001,
+        "observed_per_pid": {
+          "(19087, 1792924543.970471)": 9.911629568,
+          "(19177, 1792924550.083297)": 0.024223124
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-06-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "47174844e2367cda3440d8d8d65f19b0e8b0faebc96277f08ae2009223fab6d8",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:35:56Z",
+      "child_pid": 19361,
+      "returncode": 0,
+      "cpu_seconds": 9.781649999999999,
+      "wall_seconds": 10.836326250000013,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.781649999999999,
+        "observed_per_pid": {
+          "(19361, 1792924556.437643)": 9.742847743999999,
+          "(19462, 1792924562.359781)": 0.025638791
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-07-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "2874a21bc309b98d8593fddba6fd9bf9f58292b64192e62d2f0c1f96c1a380ab",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:36:08Z",
+      "child_pid": 19647,
+      "returncode": 0,
+      "cpu_seconds": 11.172937,
+      "wall_seconds": 12.339730374999988,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 11.172937,
+        "observed_per_pid": {
+          "(19647, 1792924568.727543)": 11.141302656,
+          "(19747, 1792924574.900042)": 0.025030498999999998
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-07-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "347df6d270fae8b439567da780eb9e7e331afacc30a0c83b9a671194b0484e5e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:36:22Z",
+      "child_pid": 19974,
+      "returncode": 0,
+      "cpu_seconds": 10.602998,
+      "wall_seconds": 11.614667083,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.602998,
+        "observed_per_pid": {
+          "(19974, 1792924582.511703)": 10.54485696,
+          "(19975, 1792924582.568977)": 0.005499583000000001,
+          "(20064, 1792924588.232905)": 0.021635833
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-08-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "2a4cbc06150d9fe7285fd304a88abbf590fa3c44d62c45b52876565e1347f5b9",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:36:35Z",
+      "child_pid": 20291,
+      "returncode": 0,
+      "cpu_seconds": 10.487430999999999,
+      "wall_seconds": 11.551388708000019,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.487430999999999,
+        "observed_per_pid": {
+          "(20291, 1792924595.525821)": 10.448811392,
+          "(20381, 1792924601.377597)": 0.027699916999999998
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-08-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "bad79c32ff4167f7dd0b46747a038b9e10f692c332cd012da40215ab8b047448",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:36:48Z",
+      "child_pid": 20616,
+      "returncode": 0,
+      "cpu_seconds": 10.327320217,
+      "wall_seconds": 11.399133291999988,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.324468,
+        "observed_per_pid": {
+          "(20616, 1792924608.517661)": 10.301326592,
+          "(20706, 1792924614.392657)": 0.025993625
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-09-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "2bee0150ada1795586bcd4ef8dc819d6cfb649b9c30aac7f21d62f7d29ab8135",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:37:01Z",
+      "child_pid": 20940,
+      "returncode": 0,
+      "cpu_seconds": 12.378999,
+      "wall_seconds": 13.559259916000002,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 12.378999,
+        "observed_per_pid": {
+          "(20940, 1792924621.481779)": 12.337053311999998,
+          "(20941, 1792924621.539995)": 0.005451416,
+          "(21030, 1792924627.62953)": 0.023323249
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-09-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "efbd881bed2b85cbad99bd6c686b06eee980d2cd2973cce2cff0f518dfe2c0e8",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:37:16Z",
+      "child_pid": 21304,
+      "returncode": 0,
+      "cpu_seconds": 11.731344,
+      "wall_seconds": 12.905273207999983,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 11.731344,
+        "observed_per_pid": {
+          "(21304, 1792924636.502441)": 11.67757632,
+          "(21397, 1792924642.55356)": 0.021777916
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-10-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "fbdceaf576efbfc561bb6d758b2523c27f5d894f3348c0df868519a8e76c7c32",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:37:30Z",
+      "child_pid": 21672,
+      "returncode": 0,
+      "cpu_seconds": 9.947073000000001,
+      "wall_seconds": 10.818504917000013,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.947073000000001,
+        "observed_per_pid": {
+          "(21672, 1792924650.805569)": 9.914788352,
+          "(21770, 1792924656.545142)": 0.024360916000000003
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-10-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "feadd52ea7fb9d9c7ca3d92ad7f4d90f660e28faf84b8c735d77e3619194e240",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:37:43Z",
+      "child_pid": 22001,
+      "returncode": 0,
+      "cpu_seconds": 10.127173,
+      "wall_seconds": 11.104105167,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 10.127173,
+        "observed_per_pid": {
+          "(22001, 1792924663.05635)": 10.053764864000001,
+          "(22091, 1792924669.112981)": 0.024482375
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-11-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "fc6f53c5baabba34f5687ac90863ebada1c81f6cbd45ac21dba61ef895b1be74",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:37:55Z",
+      "child_pid": 22275,
+      "returncode": 0,
+      "cpu_seconds": 9.694775,
+      "wall_seconds": 10.715662208000026,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.694775,
+        "observed_per_pid": {
+          "(22275, 1792924675.584163)": 9.637902336000002,
+          "(22368, 1792924681.379059)": 0.023036083
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-11-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "028c33d487495684fd948b140af109db821cda53c27b469983a08a91ac9ebe5e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:38:07Z",
+      "child_pid": 22552,
+      "returncode": 0,
+      "cpu_seconds": 9.597950999999998,
+      "wall_seconds": 10.527542416000017,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.597950999999998,
+        "observed_per_pid": {
+          "(22552, 1792924687.763559)": 9.538913919999999,
+          "(22645, 1792924693.56358)": 0.024455083
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-12-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "c75fdf190f1baca65c0504ddef1b4b6eaabd6deb4c289c66d833b1d66cdfcb7e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:38:19Z",
+      "child_pid": 22828,
+      "returncode": 0,
+      "cpu_seconds": 9.995691,
+      "wall_seconds": 11.02628845800001,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.995691,
+        "observed_per_pid": {
+          "(22828, 1792924699.784188)": 9.963431296,
+          "(22918, 1792924705.860576)": 0.024062666
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-12-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "9b09d0d381b0376e94ab6a17b3aa2de8a0e519c9af3bb107f1719cb0422b9fd3",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:38:32Z",
+      "child_pid": 23101,
+      "returncode": 0,
+      "cpu_seconds": 9.844052,
+      "wall_seconds": 10.834525165999992,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.844052,
+        "observed_per_pid": {
+          "(23101, 1792924712.282658)": 9.778696576,
+          "(23102, 1792924712.338484)": 0.004161125,
+          "(23191, 1792924718.013212)": 0.031656417
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-13-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "97a789074a725ac179926012aa9e810312c60d21fe351467e90ea0154c9d35a7",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:38:44Z",
+      "child_pid": 23300,
+      "returncode": 0,
+      "cpu_seconds": 9.849978,
+      "wall_seconds": 10.762233666999975,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.849978,
+        "observed_per_pid": {
+          "(23300, 1792924724.597371)": 9.799005696,
+          "(23393, 1792924730.333548)": 0.022426874
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-13-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "f2d920098726815dec8a76f291c49a8e02202dea4528671bda570f32e760a788",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:38:56Z",
+      "child_pid": 23623,
+      "returncode": 0,
+      "cpu_seconds": 9.924527000000001,
+      "wall_seconds": 10.84366645800003,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.924527000000001,
+        "observed_per_pid": {
+          "(23623, 1792924736.79778)": 9.875257344,
+          "(23713, 1792924742.59079)": 0.022460291
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-14-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "2eba6dd3df86b7d65ca63b7aa1e54edbbd76d4bf1ec06bd069b512845609931f",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:39:09Z",
+      "child_pid": 23943,
+      "returncode": 0,
+      "cpu_seconds": 9.76362,
+      "wall_seconds": 10.688284124999996,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.76362,
+        "observed_per_pid": {
+          "(23943, 1792924749.063319)": 9.703423232,
+          "(23944, 1792924749.116435)": 0.008300541,
+          "(24041, 1792924754.815829)": 0.021142958
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-14-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "e95c60f1d2588bb6be44931cbb9d7ee01f9d244533bb5f8995785f163b7a7442",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:39:21Z",
+      "child_pid": 24235,
+      "returncode": 0,
+      "cpu_seconds": 9.544348,
+      "wall_seconds": 10.52580974999995,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.544348,
+        "observed_per_pid": {
+          "(24235, 1792924761.200588)": 9.470712576,
+          "(24325, 1792924767.012016)": 0.0225735
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-15-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "55fbc351ab4c4aa484d4f236a67a999cf66d59b69a35a428b6b383fa24f23d0e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:39:33Z",
+      "child_pid": 24515,
+      "returncode": 0,
+      "cpu_seconds": 9.545396,
+      "wall_seconds": 10.520120458999997,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.545396,
+        "observed_per_pid": {
+          "(24515, 1792924773.190493)": 9.486730688,
+          "(24606, 1792924778.966257)": 0.022406874
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-15-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "364fe9292c34b541634cb55d2967b8200de313393d29e2c5da5ce06d798ab096",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:39:45Z",
+      "child_pid": 24790,
+      "returncode": 0,
+      "cpu_seconds": 9.428261,
+      "wall_seconds": 10.278129917000001,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.428261,
+        "observed_per_pid": {
+          "(24790, 1792924785.128161)": 9.374047552,
+          "(24791, 1792924785.184884)": 0.007079666,
+          "(24882, 1792924790.833491)": 0.024484124
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-16-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "d70ce88716ef45e386a649824d5612fcc7da49b5194ed1b827ab2711e5c58b1b",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:39:56Z",
+      "child_pid": 25054,
+      "returncode": 0,
+      "cpu_seconds": 9.684173,
+      "wall_seconds": 10.705574791999993,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.684173,
+        "observed_per_pid": {
+          "(25054, 1792924796.831729)": 9.653087872,
+          "(25162, 1792924802.789769)": 0.022025333
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-16-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "41d63cfa974268bb028eb8d639da5ba2ec327ba613c8cc975772bea149dbef9e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:40:09Z",
+      "child_pid": 25345,
+      "returncode": 0,
+      "cpu_seconds": 9.830423999999999,
+      "wall_seconds": 10.993371083,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.830423999999999,
+        "observed_per_pid": {
+          "(25345, 1792924809.035937)": 9.80065664,
+          "(25436, 1792924815.096817)": 0.022647541
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-17-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "16102c09f74e2b818f700b463ebaf49a7d2c84a21426569ab85ff82a5bbf0c75",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:40:21Z",
+      "child_pid": 25621,
+      "returncode": 0,
+      "cpu_seconds": 9.772407,
+      "wall_seconds": 10.719195624999998,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.772407,
+        "observed_per_pid": {
+          "(25621, 1792924821.46018)": 9.726432895999999,
+          "(25711, 1792924827.1958)": 0.020913083
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-17-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "6daf4528d5f6ce0365af9708af8927df426485417af9123341c1fa74548cb1ad",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:40:33Z",
+      "child_pid": 25940,
+      "returncode": 0,
+      "cpu_seconds": 9.665542924,
+      "wall_seconds": 10.730353208999986,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.663972,
+        "observed_per_pid": {
+          "(25940, 1792924833.610309)": 9.6408288,
+          "(26031, 1792924839.518654)": 0.024714123999999997
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-18-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "5a58087f830075a1c16ad9a1b76262c0e8e9b753f945f7103cd9104858b49537",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:40:45Z",
+      "child_pid": 26218,
+      "returncode": 0,
+      "cpu_seconds": 9.859208,
+      "wall_seconds": 10.75182000000001,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.859208,
+        "observed_per_pid": {
+          "(26218, 1792924845.833421)": 9.826747136,
+          "(26219, 1792924845.887246)": 0.007249624,
+          "(26308, 1792924851.474507)": 0.0227965
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-18-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "e82eaf610f8048f1c66c73a56c19017cec1cc32b0b02e04a9bfc72a0695a386e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:40:58Z",
+      "child_pid": 26548,
+      "returncode": 0,
+      "cpu_seconds": 9.942183,
+      "wall_seconds": 10.939746041999967,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.942183,
+        "observed_per_pid": {
+          "(26548, 1792924858.047386)": 9.893066368000001,
+          "(26638, 1792924863.959051)": 0.022599624
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-19-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "c1a6f3336a2e332110367e7e172a732201c022d04739437dfa917a90278ae4e9",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:41:10Z",
+      "child_pid": 26867,
+      "returncode": 0,
+      "cpu_seconds": 9.761343145,
+      "wall_seconds": 10.708801832999995,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.760043,
+        "observed_per_pid": {
+          "(26867, 1792924870.465319)": 9.731832063999999,
+          "(26868, 1792924870.519908)": 0.0060588740000000006,
+          "(26960, 1792924876.205351)": 0.023452207000000003
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-19-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "fd3721abb644119ee96ba4bb9342df96451b0dc0dbe9f1ec9e3c6f861127f02e",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:41:22Z",
+      "child_pid": 27191,
+      "returncode": 0,
+      "cpu_seconds": 9.69041,
+      "wall_seconds": 10.653738041999986,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.69041,
+        "observed_per_pid": {
+          "(27191, 1792924882.578471)": 9.661748096,
+          "(27283, 1792924888.343222)": 0.022697000000000002
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-20-BASELINE",
+      "status": "COMPLETE_PASS",
+      "token": "931424aabbf7ffad06842d710374b1f07bdfecd929b5480b482f12985ad4e132",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:41:34Z",
+      "child_pid": 27468,
+      "returncode": 0,
+      "cpu_seconds": 9.942628,
+      "wall_seconds": 11.030411875000027,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.942628,
+        "observed_per_pid": {
+          "(27468, 1792924894.603766)": 9.861469568,
+          "(27560, 1792924900.465571)": 0.024695374
+        }
+      }
+    },
+    {
+      "phase": "QUALIFICATION",
+      "run_id": "SDC-QUAL-20-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "token": "89129589843abaf188dcbafeffa7286d73d2282b59da872ad5e4e6028ca819e8",
+      "parent_pid": 15751,
+      "claim_time_utc": "2026-10-25T10:41:47Z",
+      "child_pid": 27794,
+      "returncode": 0,
+      "cpu_seconds": 9.878006,
+      "wall_seconds": 10.789088708000008,
+      "reason": null,
+      "cpu_certain": true,
+      "cpu_accounting": {
+        "method": "max(wait4 child+reaped descendants,sum per-PID sampled maxima)",
+        "wait4_cpu": 9.878006,
+        "observed_per_pid": {
+          "(27794, 1792924907.005597)": 9.832347264,
+          "(27884, 1792924912.700926)": 0.021464166
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "SDC-DEV-01",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.3962903492858736,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565704,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33293
+        },
+        "treatment": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565703,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33277
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.00016
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0007710539333110056,
+        "peak_differences_mps2": [
+          0.1721185176344946,
+          0.17204311488564628
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-DEV-02",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.08.25.17.17.57_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720208,
+        "absolute_speed_difference_integral_m": 2.396290349285845,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.724654,
+          "end_minus_start_speed": -2.461745,
+          "path_length": 45.330192,
+          "mean_abs_accel": 0.348841
+        },
+        "treatment": {
+          "mean_speed": 5.724654,
+          "end_minus_start_speed": -2.461744,
+          "path_length": 45.330192,
+          "mean_abs_accel": 0.348312
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000529
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0025365796899587956,
+        "peak_differences_mps2": [
+          0.17224825159108548,
+          0.17204302856642784
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-DEV-03",
+      "phase": "DEVELOPMENT",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858674,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.334077,
+          "end_minus_start_speed": -2.647831,
+          "path_length": 73.845238,
+          "mean_abs_accel": 0.332164
+        },
+        "treatment": {
+          "mean_speed": 9.334077,
+          "end_minus_start_speed": -2.64783,
+          "path_length": 73.845238,
+          "mean_abs_accel": 0.332164
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009528344087e-06,
+        "peak_differences_mps2": [
+          0.17201632150489843,
+          0.17204318288243314
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-01",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.09.14.34.34_veh-43",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285819,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.384346,
+          "end_minus_start_speed": -2.617595,
+          "path_length": 50.542368,
+          "mean_abs_accel": 0.327431
+        },
+        "treatment": {
+          "mean_speed": 6.384346,
+          "end_minus_start_speed": -2.617594,
+          "path_length": 50.542368,
+          "mean_abs_accel": 0.327431
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009337385727e-06,
+        "peak_differences_mps2": [
+          0.17205272044801134,
+          0.17204315866418796
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-02",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.17.14.45.12_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.3962903492858554,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.819306,
+          "end_minus_start_speed": -2.572097,
+          "path_length": 69.778291,
+          "mean_abs_accel": 0.331927
+        },
+        "treatment": {
+          "mean_speed": 8.819306,
+          "end_minus_start_speed": -2.572095,
+          "path_length": 69.77829,
+          "mean_abs_accel": 0.331788
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000139
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0006668054685992075,
+        "peak_differences_mps2": [
+          0.17211085727284114,
+          0.17204311998251853
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-03",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.25.17.10.24_veh-45",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858474,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.716184,
+          "end_minus_start_speed": -2.588323,
+          "path_length": 84.763686,
+          "mean_abs_accel": 0.329452
+        },
+        "treatment": {
+          "mean_speed": 10.716183,
+          "end_minus_start_speed": -2.588322,
+          "path_length": 84.763685,
+          "mean_abs_accel": 0.329371
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 1e-06,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 8.1e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.00038969627840668153,
+        "peak_differences_mps2": [
+          0.172090494799221,
+          0.17204313353080636
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-04",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.15.13.26.07_veh-45",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858465,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.467916,
+          "end_minus_start_speed": -2.631684,
+          "path_length": 82.802556,
+          "mean_abs_accel": 0.329652
+        },
+        "treatment": {
+          "mean_speed": 10.467916,
+          "end_minus_start_speed": -2.631683,
+          "path_length": 82.802556,
+          "mean_abs_accel": 0.329652
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009359590187e-06,
+        "peak_differences_mps2": [
+          0.1720359640706235,
+          0.1720431698131364
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-05",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.20.14.28.03_veh-45",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285842,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 4.897972,
+          "end_minus_start_speed": -2.445093,
+          "path_length": 38.799341,
+          "mean_abs_accel": 0.351388
+        },
+        "treatment": {
+          "mean_speed": 4.897972,
+          "end_minus_start_speed": -2.445092,
+          "path_length": 38.79934,
+          "mean_abs_accel": 0.3508
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000588
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0028196261088506702,
+        "peak_differences_mps2": [
+          0.1722690503427735,
+          0.172043014727862
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-06",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.20.18.44.47_veh-08",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720208,
+        "absolute_speed_difference_integral_m": 2.396290349285852,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.134531,
+          "end_minus_start_speed": -2.571556,
+          "path_length": 56.46862,
+          "mean_abs_accel": 0.332061
+        },
+        "treatment": {
+          "mean_speed": 7.134531,
+          "end_minus_start_speed": -2.571555,
+          "path_length": 56.46862,
+          "mean_abs_accel": 0.331922
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000139
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0006670045150753978,
+        "peak_differences_mps2": [
+          0.172110871899136,
+          0.17204311997278765
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-07",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858283,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.189796,
+          "end_minus_start_speed": -2.617286,
+          "path_length": 80.605299,
+          "mean_abs_accel": 0.327506
+        },
+        "treatment": {
+          "mean_speed": 10.189796,
+          "end_minus_start_speed": -2.617284,
+          "path_length": 80.605299,
+          "mean_abs_accel": 0.327506
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.393300932406305e-06,
+        "peak_differences_mps2": [
+          0.17205467954863707,
+          0.1720431573606902
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-08",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.25.20.03.09_veh-08",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.3962903492858545,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.320599,
+          "end_minus_start_speed": -2.500383,
+          "path_length": 42.138334,
+          "mean_abs_accel": 0.342975
+        },
+        "treatment": {
+          "mean_speed": 5.320599,
+          "end_minus_start_speed": -2.500382,
+          "path_length": 42.138334,
+          "mean_abs_accel": 0.342586
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000389
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.001871932828749312,
+        "peak_differences_mps2": [
+          0.17219941216366763,
+          0.17204306106201628
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-09",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.085684092872019,
+        "absolute_speed_difference_integral_m": 2.3962903492858767,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.530712,
+          "end_minus_start_speed": -2.621304,
+          "path_length": 59.598478,
+          "mean_abs_accel": 0.328184
+        },
+        "treatment": {
+          "mean_speed": 7.530712,
+          "end_minus_start_speed": -2.621303,
+          "path_length": 59.598478,
+          "mean_abs_accel": 0.328184
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009537225871e-06,
+        "peak_differences_mps2": [
+          0.1720504740474098,
+          0.17204316015885723
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-10",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.20.14.04.18_veh-08",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.396290349285826,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.389242,
+          "end_minus_start_speed": -2.605289,
+          "path_length": 50.580983,
+          "mean_abs_accel": 0.326932
+        },
+        "treatment": {
+          "mean_speed": 6.389242,
+          "end_minus_start_speed": -2.605288,
+          "path_length": 50.580982,
+          "mean_abs_accel": 0.326914
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 1.8e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 8.819764356760018e-05,
+        "peak_differences_mps2": [
+          0.17206834014605477,
+          0.17204314827153055
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-11",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858647,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 11.548448,
+          "end_minus_start_speed": -2.496014,
+          "path_length": 91.338289,
+          "mean_abs_accel": 0.343605
+        },
+        "treatment": {
+          "mean_speed": 11.548448,
+          "end_minus_start_speed": -2.496013,
+          "path_length": 91.338289,
+          "mean_abs_accel": 0.343198
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000407
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0019530518733255064,
+        "peak_differences_mps2": [
+          0.1722053729346058,
+          0.17204305709598344
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-12",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.25.18.29.43_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.3962903492858407,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.869061,
+          "end_minus_start_speed": -2.394816,
+          "path_length": 46.470774,
+          "mean_abs_accel": 0.359078
+        },
+        "treatment": {
+          "mean_speed": 5.869061,
+          "end_minus_start_speed": -2.394815,
+          "path_length": 46.470773,
+          "mean_abs_accel": 0.358313
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000765
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.00367414722602577,
+        "peak_differences_mps2": [
+          0.17233184206648033,
+          0.1720429729490185
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-13",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.15.13.06.21_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858465,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.885023,
+          "end_minus_start_speed": -2.658561,
+          "path_length": 62.397849,
+          "mean_abs_accel": 0.333711
+        },
+        "treatment": {
+          "mean_speed": 7.885023,
+          "end_minus_start_speed": -2.65856,
+          "path_length": 62.397849,
+          "mean_abs_accel": 0.333711
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009368471971e-06,
+        "peak_differences_mps2": [
+          0.17200169342086014,
+          0.17204319261531253
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-14",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.17.17.36.45_veh-45",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.396290349285855,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.257811,
+          "end_minus_start_speed": -2.659363,
+          "path_length": 65.342866,
+          "mean_abs_accel": 0.333847
+        },
+        "treatment": {
+          "mean_speed": 8.257811,
+          "end_minus_start_speed": -2.659362,
+          "path_length": 65.342865,
+          "mean_abs_accel": 0.333847
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009443967137e-06,
+        "peak_differences_mps2": [
+          0.17200086976421858,
+          0.17204319316333994
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-15",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.09.18.12.06_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.39629034928587,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.751373,
+          "end_minus_start_speed": -2.513395,
+          "path_length": 77.141441,
+          "mean_abs_accel": 0.340932
+        },
+        "treatment": {
+          "mean_speed": 9.751373,
+          "end_minus_start_speed": -2.513394,
+          "path_length": 77.14144,
+          "mean_abs_accel": 0.340586
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000346
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.001660104444253907,
+        "peak_differences_mps2": [
+          0.17218384663916453,
+          0.17204307141862074
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-16",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.396290349285844,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 12.729274,
+          "end_minus_start_speed": -2.579493,
+          "path_length": 100.667091,
+          "mean_abs_accel": 0.330824
+        },
+        "treatment": {
+          "mean_speed": 12.729274,
+          "end_minus_start_speed": -2.579492,
+          "path_length": 100.667091,
+          "mean_abs_accel": 0.330712
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000112
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0005361633238853969,
+        "peak_differences_mps2": [
+          0.17210125745688742,
+          0.17204312636980745
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-17",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858563,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.557471,
+          "end_minus_start_speed": -2.663882,
+          "path_length": 44.010178,
+          "mean_abs_accel": 0.334554
+        },
+        "treatment": {
+          "mean_speed": 5.557471,
+          "end_minus_start_speed": -2.66388,
+          "path_length": 44.010178,
+          "mean_abs_accel": 0.334554
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009412880892e-06,
+        "peak_differences_mps2": [
+          0.17199541964054532,
+          0.17204319678960545
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-18",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.09.13.32.12_veh-43",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285845,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.478943,
+          "end_minus_start_speed": -2.52671,
+          "path_length": 82.889275,
+          "mean_abs_accel": 0.338884
+        },
+        "treatment": {
+          "mean_speed": 10.478943,
+          "end_minus_start_speed": -2.526708,
+          "path_length": 82.889275,
+          "mean_abs_accel": 0.338585
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000299
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0014357669701641207,
+        "peak_differences_mps2": [
+          0.17216736192461468,
+          0.17204308238682842
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-19",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.396290349285849,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.514012,
+          "end_minus_start_speed": -2.576407,
+          "path_length": 83.166461,
+          "mean_abs_accel": 0.331246
+        },
+        "treatment": {
+          "mean_speed": 10.514012,
+          "end_minus_start_speed": -2.576405,
+          "path_length": 83.16646,
+          "mean_abs_accel": 0.331122
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000124
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0005972882616935848,
+        "peak_differences_mps2": [
+          0.17210574902546938,
+          0.17204312338131444
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "SDC-QUAL-20",
+      "phase": "QUALIFICATION",
+      "session_id": "2021.09.23.14.44.24_veh-45",
+      "arm_scientific_pass": [
+        true,
+        true
+      ],
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858354,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.305648,
+          "end_minus_start_speed": -2.665125,
+          "path_length": 73.620764,
+          "mean_abs_accel": 0.334759
+        },
+        "treatment": {
+          "mean_speed": 9.305648,
+          "end_minus_start_speed": -2.665124,
+          "path_length": 73.620763,
+          "mean_abs_accel": 0.334759
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009381794648e-06,
+        "peak_differences_mps2": [
+          0.17199405889160602,
+          0.17204319769498966
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    }
+  ],
+  "phases": {
+    "DEVELOPMENT": {
+      "status": "COMPLETE",
+      "binding_sha256": "f424ca423024f9f3b57abf385fc5d95ed084b8bae9ca001489bc2d71a61e4473",
+      "run_ids": [
+        "SDC-DEV-01-BASELINE",
+        "SDC-DEV-01-TREATMENT",
+        "SDC-DEV-02-BASELINE",
+        "SDC-DEV-02-TREATMENT",
+        "SDC-DEV-03-BASELINE",
+        "SDC-DEV-03-TREATMENT"
+      ]
+    },
+    "QUALIFICATION": {
+      "status": "COMPLETE",
+      "binding_sha256": "302ad80b4cf5d1b5e0a633828b497d71f74e9a210bf2a5c959cfb7dff06f23d9",
+      "run_ids": [
+        "SDC-QUAL-01-BASELINE",
+        "SDC-QUAL-01-TREATMENT",
+        "SDC-QUAL-02-BASELINE",
+        "SDC-QUAL-02-TREATMENT",
+        "SDC-QUAL-03-BASELINE",
+        "SDC-QUAL-03-TREATMENT",
+        "SDC-QUAL-04-BASELINE",
+        "SDC-QUAL-04-TREATMENT",
+        "SDC-QUAL-05-BASELINE",
+        "SDC-QUAL-05-TREATMENT",
+        "SDC-QUAL-06-BASELINE",
+        "SDC-QUAL-06-TREATMENT",
+        "SDC-QUAL-07-BASELINE",
+        "SDC-QUAL-07-TREATMENT",
+        "SDC-QUAL-08-BASELINE",
+        "SDC-QUAL-08-TREATMENT",
+        "SDC-QUAL-09-BASELINE",
+        "SDC-QUAL-09-TREATMENT",
+        "SDC-QUAL-10-BASELINE",
+        "SDC-QUAL-10-TREATMENT",
+        "SDC-QUAL-11-BASELINE",
+        "SDC-QUAL-11-TREATMENT",
+        "SDC-QUAL-12-BASELINE",
+        "SDC-QUAL-12-TREATMENT",
+        "SDC-QUAL-13-BASELINE",
+        "SDC-QUAL-13-TREATMENT",
+        "SDC-QUAL-14-BASELINE",
+        "SDC-QUAL-14-TREATMENT",
+        "SDC-QUAL-15-BASELINE",
+        "SDC-QUAL-15-TREATMENT",
+        "SDC-QUAL-16-BASELINE",
+        "SDC-QUAL-16-TREATMENT",
+        "SDC-QUAL-17-BASELINE",
+        "SDC-QUAL-17-TREATMENT",
+        "SDC-QUAL-18-BASELINE",
+        "SDC-QUAL-18-TREATMENT",
+        "SDC-QUAL-19-BASELINE",
+        "SDC-QUAL-19-TREATMENT",
+        "SDC-QUAL-20-BASELINE",
+        "SDC-QUAL-20-TREATMENT"
+      ]
+    }
+  }
+}

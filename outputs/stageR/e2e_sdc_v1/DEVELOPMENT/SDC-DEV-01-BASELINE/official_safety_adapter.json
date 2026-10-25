@@ -1,0 +1,29 @@
+{
+  "canonical_payload": {
+    "collision": {
+      "number_of_all_at_fault_collisions_stat_value": 0
+    },
+    "drivable_area": {
+      "drivable_area_compliance_stat_value": true
+    }
+  },
+  "canonical_payload_sha256": "8818224f20fbc9e0ecaf4059b7d1ea7ac09f866317d35352435dc16d5014fe73",
+  "frozen_arm_safety_pass": true,
+  "frozen_pair_pass_semantics": "each arm: number_of_all_at_fault_collisions_stat_value == 0 AND drivable_area_compliance_stat_value is true; pair: baseline AND treatment",
+  "historical_canonical_schema_version": "r1_official_metric_canonical_payload_v1.0",
+  "posthoc_eligibility_applied": false,
+  "raw_metric_artifact_provenance": {
+    "collision": {
+      "artifact_provenance_sha256": "0e112853372007231d47495373d93b0e814624453a1c30a6914f20fae4c21012",
+      "relative_path": "raw/metrics/no_ego_at_fault_collisions.parquet"
+    },
+    "drivable_area": {
+      "artifact_provenance_sha256": "49cf19c8d4e29e40aac936227485a0b46bca7c8b2b9140ac3492400c2a338e98",
+      "relative_path": "raw/metrics/drivable_area_compliance.parquet"
+    }
+  },
+  "raw_metric_source": "actual_nuPlan_metric_engine_parquet_output",
+  "representation_bdd_rbr_read": false,
+  "schema_version": "r1_b2_8_r3_1_official_safety_adapter_v1.0",
+  "threshold_or_metric_changed": false
+}

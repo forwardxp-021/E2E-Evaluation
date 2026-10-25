@@ -1,0 +1,53 @@
+{
+  "pair_id": "SDC-QUAL-18",
+  "phase": "QUALIFICATION",
+  "session_id": "2021.09.09.13.32.12_veh-43",
+  "arm_scientific_pass": [
+    true,
+    true
+  ],
+  "temporal": {
+    "max_abs_speed_difference_mps": 1.0856840928720217,
+    "absolute_speed_difference_integral_m": 2.396290349285845,
+    "actual_trace_hash_distinct": true,
+    "request_sequences_distinct": true,
+    "pass_gate": true
+  },
+  "F_match": {
+    "version": "P1R_UNCHANGED_FOUR_F_v1",
+    "baseline": {
+      "mean_speed": 10.478943,
+      "end_minus_start_speed": -2.52671,
+      "path_length": 82.889275,
+      "mean_abs_accel": 0.338884
+    },
+    "treatment": {
+      "mean_speed": 10.478943,
+      "end_minus_start_speed": -2.526708,
+      "path_length": 82.889275,
+      "mean_abs_accel": 0.338585
+    },
+    "calipers": {
+      "mean_speed": 0.1,
+      "end_minus_start_speed": 0.15,
+      "path_length": 0.8,
+      "mean_abs_accel": 0.02
+    },
+    "absolute_delta": {
+      "mean_speed": 0.0,
+      "end_minus_start_speed": 2e-06,
+      "path_length": 0.0,
+      "mean_abs_accel": 0.000299
+    },
+    "pass": true
+  },
+  "retained_P1_balance_review": {
+    "negative_dose_delta_mps": 0.0014357669701641207,
+    "peak_differences_mps2": [
+      0.17216736192461468,
+      0.17204308238682842
+    ],
+    "pass": true
+  },
+  "pair_pass": true
+}
