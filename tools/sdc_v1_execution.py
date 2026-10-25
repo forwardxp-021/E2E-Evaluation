@@ -44,11 +44,11 @@ def preflight(phase):
     arms=read(OUT/(phase+'_Arm_Specs_v1.json'))['arms'];proof=[];held=[]
     with zero_run_guard() as calls:
         for spec in arms:
-            a=build_f2_arm(spec,ROOT/'outputs/stageR/e2e_sdc_v1_preflight'/phase/spec['run_id']);held.append(a)
+            a=build_f2_arm(spec,ROOT/'outputs/stageR/e2e_sdc_v1_preflight_r2'/phase/spec['run_id']);held.append(a)
             p=validate_f2_production(a)
             expected=read(OUT/read(OUT/(phase+'_Arm_Specs_v1.json'))['applicability_path'])
             static=next(x for x in expected['rows'] if x['session_id']==spec['session_id'])
-            if p['clock']!=static['evidence']['clock']:raise ValueError('Static/official factory mapping mismatch')
+            if {k:v for k,v in p['clock'].items() if k not in ['observer','shared_original_scenario']}!=static['evidence']['clock']:raise ValueError('Static/official factory mapping mismatch')
             proof.append(dict(run_id=spec['run_id'],status='PASS',clock=p['clock'],config_path=str(a.run_root/'resolved_config.json'),config_sha256=sha(a.run_root/'resolved_config.json')))
             print('preflight',phase,len(proof),'/',len(arms),flush=True)
         if any(calls.values()):raise RuntimeError('Zero-run guard violation')

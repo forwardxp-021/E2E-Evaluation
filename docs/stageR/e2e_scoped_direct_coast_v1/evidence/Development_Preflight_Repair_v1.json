@@ -1,0 +1,7 @@
+{
+  "reason": "Official production validator appends observer/shared_original_scenario annotations; all 81 clock rows exactly equal. Compare unchanged clock core excluding these two non-time annotations.",
+  "old_error_log": "Development_Preflight.log",
+  "original_namespaces_preserved": true,
+  "scientific_attempts": 0,
+  "independent_qualification_inspected": false
+}

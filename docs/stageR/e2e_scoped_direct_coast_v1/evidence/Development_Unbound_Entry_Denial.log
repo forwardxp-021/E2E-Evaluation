@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/sdc_v1_execution.py", line 214, in <module>
+    elif a.execute:print(json.dumps(execute(a.execute),indent=2))
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/sdc_v1_execution.py", line 194, in execute
+    start_phase(phase);auth=read(binding_path(phase))
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/sdc_v1_execution.py", line 61, in start_phase
+    auth=read(binding_path(phase));validate(phase,auth['run_ids'][0])
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/tsb_direct_coast_p2_q1.py", line 46, in read
+    def read(path): return json.loads(Path(path).read_text())
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1266, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1252, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1120, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/e2e_scoped_direct_coast_v1/DEVELOPMENT_Execution_Binding_v1.json'

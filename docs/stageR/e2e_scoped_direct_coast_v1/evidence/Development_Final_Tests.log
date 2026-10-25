@@ -1,0 +1,11 @@
+test_corridor_cannot_use_expanded_drivable_polygon_to_hide_violation (test_sdc_v1.SDCV1Tests) ... ok
+test_duplicate_claim_rejected_but_scientific_failure_continues_frozen_sequence (test_sdc_v1.SDCV1Tests) ... ok
+test_global_cpu_budget_is_not_reset_for_qualification (test_sdc_v1.SDCV1Tests) ... ok
+test_historical_credential_cannot_authorize_new_version (test_sdc_v1.SDCV1Tests) ... ok
+test_incomplete_or_infrastructure_failure_cannot_continue (test_sdc_v1.SDCV1Tests) ... ok
+test_temporal_gate_rejects_identical_trajectories_and_requests (test_sdc_v1.SDCV1Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.005s
+
+OK
