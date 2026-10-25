@@ -1,0 +1,54 @@
+{
+  "roster": [
+    {
+      "pair_id": "SDC-DEV-01",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "log_id": "2021.09.20.13.46.45_veh-42_00401_00526",
+      "scenario_token": "2d04941c562e568b",
+      "anchor_rank": 5,
+      "anchor_rank_hash": "00f249244fe9b1ec2213b8afeaaf56bf7f5e4104da183481d95191fd7548c5d1",
+      "session_rank_hash": "0dcad2705f61f7f5f52fb330d0002e54845ddca217400b23443d59ed4624a3fb",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.20.13.46.45_veh-42_00401_00526.db",
+        "db_sha256": "8e2599b4fa54b9655f17172999558baa5a9e9f0177afc93ed5ef3972a8b43986",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_1191.json.gz",
+        "metadata_shard_sha256": "22cb200d1ac72110a1a48d28241c398536c5cd2241a3346214fe757d5791e9ae"
+      },
+      "exposure_class": "E1_UNRELATED_HISTORICAL_USE"
+    },
+    {
+      "pair_id": "SDC-DEV-02",
+      "session_id": "2021.08.25.17.17.57_veh-42",
+      "log_id": "2021.08.25.17.17.57_veh-42_00327_01003",
+      "scenario_token": "e0c5ef0c18ce5790",
+      "anchor_rank": 12,
+      "anchor_rank_hash": "002da83b5ef1034a6296128abd33231d7ef53f389678151ef2bdb59e6bd40f2c",
+      "session_rank_hash": "29f5ae259b8582e57a5f16517e03ad9451eab23a78e33f4fb1d3826a35bbf8bb",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.17.17.57_veh-42_00327_01003.db",
+        "db_sha256": "175d743f8629f05a81c7800d999507d4e3151bf6cb20c9585120b910319a7ad3",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0510.json.gz",
+        "metadata_shard_sha256": "1874eabd6eafabdb0fd92514b8edd461e3fb6e8b68e02835c974e3cdf513c974"
+      },
+      "exposure_class": "E2_BENCHMARK_ENGINEERING"
+    },
+    {
+      "pair_id": "SDC-DEV-03",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "log_id": "2021.07.09.17.06.37_veh-35_00258_00748",
+      "scenario_token": "e144c3399a4f50d0",
+      "anchor_rank": 8,
+      "anchor_rank_hash": "005d30a4608e5415140c7165e6bb0932cf4c47dfe6ac731e6f8c3310a2be4121",
+      "session_rank_hash": "4dc4b155b4d764c7de3cebd38d735414bdd80e67e19cdf310139f0f5383f7cd1",
+      "data": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.09.17.06.37_veh-35_00258_00748.db",
+        "db_sha256": "736d063c483244355eeec765a5bfc9a00dbfcf0a7a945369f1c2e5e789f79385",
+        "metadata_shard": "docs/stageR/s2_preflight/census/log_0037.json.gz",
+        "metadata_shard_sha256": "0317320c68b73265001d217ba35cc0f75d71ab2453fc2705c903230f3a3d3a6a"
+      },
+      "exposure_class": "E2_BENCHMARK_ENGINEERING"
+    }
+  ],
+  "eligible_SESSION": 6,
+  "selection_rule_sha256": "394ef9b5764a987fb9dd39207380b3c8640b5cec24d3c8e8498c2429e1f43f45"
+}

@@ -11757,3 +11757,22 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Use
 ### 3. 通过标准
 
 原安全结果不变，重建与已有parquet一致，guard无科学执行调用；4.2秒首次角点越界、4.4秒首次超0.3m、6.9秒全部角点恢复、7.4秒首次与停驶车辆盒重叠。碰撞时间/ID来自只读重建，不能声称由聚合parquet直接提供；expert是描述参考，不是已执行因果反事实。账本仍stopped=true和13attempt，历史及用户文件hash受保护。完成停止，仅Owner审查科研路线。
+
+## E2E Scoped DirectCoast v1：自主开发与独立资格
+
+### 1. 命令
+
+```bash
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python -m unittest discover -s tests -p 'test_sdc_v1.py' -v
+# 下列阶段命令仅对本轮独立冻结名单各执行一次，现有阶段/输出拒绝重启：
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/sdc_v1_execution.py --execute DEVELOPMENT
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=.:../nuplan-devkit /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/sdc_v1_execution.py --execute QUALIFICATION
+```
+
+### 2. 期望行为
+
+新版本E2E_SCOPED_DIRECT_COAST_V1独立目录、名单和账本。保持F2制动请求、官方模型、横向控制、测量及安全阈值；用静态道路走廊、初态、逐时刻离线交通可达区间确定适用性。开发池与资格池事前分开；资格规则、完整名单、代码和凭据先提交再运行。科学失败继续原名单，禁止结果驱动换样本/调参；技术不完整暂停，资格retry为0。所有科学CPU共用10800秒账本。
+
+### 3. 通过标准
+
+原20资格SESSION全部完成技术、机制、四F、额外平衡、安全、观察映射与真实时序差异才独立资格PASS。额外要求最大实际速度差至少0.5m/s、真实轨迹hash和请求序列不同；未运行指标不得补填。容量不足如实报告，不在资格结果后放宽适用域。离线未来交通筛选不是在线部署能力。全部历史与Primary C保护，RBR/H30/BDD/Primary/V/C为0。

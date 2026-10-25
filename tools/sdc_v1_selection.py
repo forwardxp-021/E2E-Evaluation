@@ -12,6 +12,7 @@ from shapely.geometry import Point,LineString,mapping
 from shapely.ops import unary_union,substring
 from tools.tsb_direct_coast_p2_q1 import sha,canon,read,write,ROOT
 OUT=ROOT/'docs/stageR/e2e_scoped_direct_coast_v1'
+SOURCE_CACHE={}
 MAPS=ROOT.parent/'nuplan/dataset/maps'
 
 
@@ -60,7 +61,9 @@ def source_spec(row):
     idx=data['record_columns'].index('scenario_token');token=row['static']['representative_scenario_token']
     record=next(x for x in data['records'] if x[idx]==token);anchor=int(record[data['record_columns'].index('tag_anchor_timestamp_us')])
     initial,route=_official_initial(dict(db_path=str(db),scenario_token=token,timestamp=anchor))
-    fingerprint=historical_db_fingerprint(db)
+    key=(str(db),db.stat().st_size,db.stat().st_mtime_ns)
+    if key not in SOURCE_CACHE:SOURCE_CACHE[key]=(historical_db_fingerprint(db),sha(db))
+    fingerprint,full_hash=SOURCE_CACHE[key]
     if fingerprint!=log['observed_db_fingerprint_sha256']:raise ValueError('Frozen metadata fingerprint changed')
     base=dict(session_id=row['session_id'],log_id=log['log_id'],scenario_token=token,db_path=str(db),map_name=log['map_version'],source_fingerprint_sha256=fingerprint)
     rid=route_id(base['map_name'],route);pre=precontext_payload(base,initial,route,rid)
@@ -74,7 +77,7 @@ def source_spec(row):
         ScenarioExtractionInfo(kind,15.,-3. if types else 0.,.5),get_pacifica_parameters())
     from tools.s2r_production_executor import verify_scenario_precontext
     verify_scenario_precontext(scenario,spec)
-    return spec,scenario,dict(db_path=str(db),db_sha256=sha(db),metadata_shard=str(shard.relative_to(ROOT)),metadata_shard_sha256=sha(shard))
+    return spec,scenario,dict(db_path=str(db),db_sha256=full_hash,metadata_shard=str(shard.relative_to(ROOT)),metadata_shard_sha256=sha(shard))
 
 
 def assess(row,rule):
@@ -84,10 +87,10 @@ def assess(row,rule):
     spec,scenario,sources=source_spec(row);ego=scenario.get_ego_state_at_iteration(0);api=scenario.map_api
     clock=CoastCanonicalTimeControllerV1(scenario).require_mapping();domain=rule['physical_domain'];vp=ego.car_footprint.vehicle_parameters
     v=ego.dynamic_car_state.speed;a=ego.dynamic_car_state.rear_axle_acceleration_2d.x
-    bound=v+.2*max(a,0.);distance=7.9*bound+vp.front_length
+    bound=v+.2*max(a,0.);distance=7.9*bound+vp.front_length+domain.get('corridor_longitudinal_margin_m',0.)
     current=dict(rear_axle=dict(x=ego.rear_axle.x,y=ego.rear_axle.y,heading=ego.rear_axle.heading),speed_mps=v,time_us=ego.time_us)
     route=build_native_route_reference_v1_2(api,spec['route_roadblock_ids'],current,distance+1e-6)
-    line=LineString(route['reference_xy']);arc=route['current_route_arc_m'];clip=substring(line,max(0,arc-vp.rear_length),arc+distance)
+    line=LineString(route['reference_xy']);arc=route['current_route_arc_m'];clip=substring(line,max(0,arc-vp.rear_length-domain.get('corridor_longitudinal_margin_m',0.)),arc+distance)
     points=np.array([clip.interpolate(s).coords[0] for s in np.arange(0,clip.length,.5).tolist()+[clip.length]])
     headings=np.unwrap(np.arctan2(np.diff(points,axis=0)[:,1],np.diff(points,axis=0)[:,0]));h0=line.interpolate(min(line.length,arc+.1));hprev=line.interpolate(max(0,arc-.1))
     tangent=np.arctan2(h0.y-hprev.y,h0.x-hprev.x);herr=abs(np.arctan2(np.sin(ego.rear_axle.heading-tangent),np.cos(ego.rear_axle.heading-tangent)))
@@ -106,30 +109,70 @@ def assess(row,rule):
     if not coverage:reasons.append('SWEPT_CORRIDOR_NOT_DRIVABLE')
     # Do not read raw future traffic at all when geometry already rules out the source.
     if not reasons:
-        bytrack={};count=0
-        for i in range(80):
-            for obj in scenario.get_tracked_objects_at_iteration(i).tracked_objects:
-                bytrack.setdefault(obj.track_token,[]).append(obj.box.geometry);count+=1
-        hulls=[unary_union(polys).convex_hull for polys in bytrack.values()]
-        mingap=min((corridor.distance(g) for g in hulls),default=None)
-        conflicts=sum(corridor.intersects(g) for g in hulls)
-        evidence.update(traffic_examined=True,object_samples=count,unique_tracks=len(bytrack),conflicting_actor_hulls=conflicts,minimum_actor_corridor_gap_m=mingap,
+        observations=[{obj.track_token:obj.box.geometry for obj in scenario.get_tracked_objects_at_iteration(i).tracked_objects} for i in range(80)]
+        count=sum(len(x) for x in observations);seen=set();gaps=[];conflicts=[]
+        if domain.get('traffic_time_indexed',False):
+            # Kinematic bounds, not an ego rollout: all F2 requests are <=0,
+            # total negative impulse 2.61, filter residual bound tau*|a0|.
+            vmin=max(0.,v-2.61-.2*abs(a));vmax=bound
+            for i,objects in enumerate(observations):
+                t=i*.1
+                lo=max(0.,arc+t*vmin-vp.rear_length-1.);hi=arc+t*vmax+vp.front_length+1.
+                segment=substring(line,lo,min(line.length,hi))
+                region=segment.buffer(vp.width/2+domain['corridor_lateral_margin_beyond_half_vehicle_width_m'],cap_style=2)
+                adjacent=[observations[j] for j in range(max(0,i-1),min(80,i+2))]
+                for token in set().union(*(set(x) for x in adjacent)):
+                    hull=unary_union([x[token] for x in adjacent if token in x]).convex_hull
+                    seen.add(token);gaps.append(region.distance(hull))
+                    if region.intersects(hull):conflicts.append(dict(index=i,track=token))
+        else:
+            bytrack={}
+            for objects in observations:
+                for token,poly in objects.items():bytrack.setdefault(token,[]).append(poly)
+            seen=set(bytrack)
+            for token,polys in bytrack.items():
+                hull=unary_union(polys).convex_hull;gaps.append(corridor.distance(hull))
+                if corridor.intersects(hull):conflicts.append(dict(track=token))
+        evidence.update(traffic_examined=True,object_samples=count,unique_tracks=len(seen),conflicting_actor_cells=len(conflicts),minimum_actor_corridor_gap_m=min(gaps) if gaps else None,
             corridor_geometry=mapping(corridor),offline_future_traffic_used=True)
         if conflicts:reasons.append('OFFLINE_ACTOR_CORRIDOR_CONFLICT')
     return dict(session_id=row['session_id'],status='ELIGIBLE' if not reasons else 'EXCLUDED',reasons=reasons,spec=spec,evidence=evidence)
 
 
-def census(pool,rule_path):
+def anchor_candidates(row,rule):
+    import copy,hashlib
+    if rule.get('maximum_static_anchors_per_SESSION',1)==1:return [row]
+    shard=ROOT/'docs/stageR/s2_preflight'/row['log']['shard']
+    with gzip.open(shard,'rt') as f:data=json.load(f)
+    cols=data['record_columns'];ti=cols.index('scenario_token');support=cols.index('anchor_timestamp_80_state_support');values=[]
+    for rec in data['records']:
+        if not rec[support]:continue
+        digest=hashlib.sha256((rule['anchor_order_salt']+'|'+row['session_id']+'|'+row['log']['log_id']+'|'+rec[ti]).encode()).hexdigest()
+        values.append((digest,rec[ti]))
+    result=[]
+    for digest,token in sorted(values)[:rule['maximum_static_anchors_per_SESSION']]:
+        item=copy.deepcopy(row);item['static']['representative_scenario_token']=token;item['anchor_rank_hash']=digest;result.append(item)
+    return result
+
+
+def census(pool,rule_path,revision=1):
     cat=read(OUT/'Pool_Split_v1.json');rule=read(rule_path);rows=[]
-    dest=OUT/'evidence'/(pool+'_Applicability_v1.json')
+    dest=OUT/'evidence'/(pool+f'_Applicability_v{revision}.json')
     if dest.exists():raise FileExistsError('Immutable census already exists')
     for i,row in enumerate(cat['rows']):
         if row['policy_reasons'] or row['pool']!=pool:
             rows.append(dict(session_id=row['session_id'],status='POLICY_EXCLUDED',reasons=row['policy_reasons'] or ['OUTSIDE_'+pool+'_POOL'],sources_opened=False));continue
-        try:
-            item=assess(row,rule);item['sources_opened']=True
-        except Exception as error:item=dict(session_id=row['session_id'],status='METADATA_BLOCKED',reasons=[type(error).__name__+': '+str(error)],sources_opened=True)
-        rows.append(item);print(pool,i+1,'/248',row['session_id'],item['status'],item['reasons'],flush=True)
+        trials=[];chosen=None
+        candidates=anchor_candidates(row,rule)
+        for rank,candidate in enumerate(candidates,1):
+            try:
+                item=assess(candidate,rule);item.update(sources_opened=True,anchor_rank=rank,anchor_rank_hash=candidate.get('anchor_rank_hash'))
+            except Exception as error:item=dict(session_id=row['session_id'],status='METADATA_BLOCKED',reasons=[type(error).__name__+': '+str(error)],sources_opened=True,anchor_rank=rank)
+            trials.append(item)
+            if item['status']=='ELIGIBLE':chosen=item;break
+        item=dict(chosen) if chosen else dict(session_id=row['session_id'],status='EXCLUDED',reasons=['NO_STATIC_ELIGIBLE_ANCHOR_IN_FIXED_FRAME'],sources_opened=bool(candidates))
+        item['anchor_trials']=trials;item['predeclared_anchor_count']=len(candidates)
+        rows.append(item);print(pool,i+1,'/248',row['session_id'],item['status'],len(trials),'static anchors',flush=True)
         write(OUT/'evidence'/(pool+'_Applicability_Progress.json'),dict(rows=rows,rule_sha256=sha(rule_path)))
     write(dest,dict(pool=pool,rule_sha256=sha(rule_path),rows=rows,counts=dict(Counter(x['status'] for x in rows))),exclusive=True)
     return rows
@@ -137,6 +180,7 @@ def census(pool,rule_path):
 
 if __name__=='__main__':
     import argparse
-    p=argparse.ArgumentParser();p.add_argument('mode',choices=['catalog','development','qualification']);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['catalog','development','development-v2','development-v3','development-v4','qualification']);a=p.parse_args()
     if a.mode=='catalog':write(OUT/'Pool_Split_v1.json',catalog(),exclusive=True)
+    elif a.mode.startswith('development-v'):census('DEVELOPMENT',OUT/('Development_Design_v'+a.mode.rsplit('v',1)[1]+'.json'),int(a.mode.rsplit('v',1)[1]))
     else:census(a.mode.upper(),OUT/('Development_Design_v1.json' if a.mode=='development' else 'Frozen_Qualification_Protocol_v1.json'))

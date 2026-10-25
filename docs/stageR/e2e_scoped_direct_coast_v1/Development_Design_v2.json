@@ -1,0 +1,30 @@
+{
+  "version": "SDC_V1_DEVELOPMENT_GEOMETRY_ENDPOINT_REPAIR_v2",
+  "source_frame": "One existing S2R representative per each of 248 SESSION; no scenario search",
+  "split_salt": "E2E_SDC_V1_PROSPECTIVE_DEV_SPLIT_20261025",
+  "selection_salt": "E2E_SDC_V1_QUALIFICATION_SESSION_ORDER_20261025",
+  "development_pool": "Original three Coast DEV + seven actually run old P2 SESSION + first ten otherwise-eligible new SESSION by split hash",
+  "qualification_exclusions": "All original B1 twenty, all old P2 twenty (including unrun), all original DEV, all new development-pool SESSION; E3/E4/UNKNOWN; all E5 and raw-source aliases protected",
+  "physical_domain": {
+    "min_initial_speed_mps": 5.0,
+    "maximum_initial_heading_error_rad": 0.1,
+    "maximum_initial_centerline_offset_m": 0.4,
+    "maximum_route_heading_range_rad": 0.15,
+    "corridor_lateral_margin_beyond_half_vehicle_width_m": 1.0,
+    "episode_s": 7.9,
+    "model_positive_initial_accel_speed_bound": "v_bound=v0+tau*max(a0,0), tau=0.2",
+    "forward_coverage": "7.9*v_bound+front_length+1m; rear projection includes rear_length+1m",
+    "drivable_requirement": "unchanged DRIVABLE_AREA union covers entire buffered centerline corridor and actual initial footprint",
+    "traffic_requirement": "No tracked object convex hull over all 80 raw same-index boxes intersects the full corridor; offline future information, no ego rollout/outcomes",
+    "corridor_longitudinal_margin_m": 1.0
+  },
+  "clock": "Original canonical 80-state/79-transition 10Hz clock; 81 metadata tokens required; same-index unique-nearest-cell mapping",
+  "scientific_contract": "Unchanged F2 requests/model/lateral/controller/median3 mechanism/F_match/extra balance/official safety",
+  "added_temporal_gate": {
+    "max_abs_actual_speed_difference_min_mps": 0.5,
+    "nonidentical_actual_trace_hash_required": true,
+    "distinct_request_arrays_required": true
+  },
+  "development_rule_changes": "Only before qualification rule/source/cohort freeze, versioned and logged, no qualification outcomes accessed",
+  "qualification_coverage": "Report all 248 policy exclusions, complete assessable frame, geometric/traffic rejections and selected 20; no replacement"
+}

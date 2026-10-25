@@ -1,0 +1,22 @@
+[
+  {
+    "change": "Add explicit 1m longitudinal corridor endpoint margin",
+    "reason": "Flat-cap buffer of axis ending at exact rear_length excluded tilted rear corners even when entire corridor road-covered; audited v1 area0 but initial-footprint containmentfalse",
+    "scope": "Development-only metadata geometry, no simulation outcome used",
+    "qualification_sources_inspected": false,
+    "prior_evidence": "evidence/DEVELOPMENT_Applicability_v1.json",
+    "scientific_attempts": 0
+  },
+  {
+    "change": "Replace atemporal actor convex hull with time-indexed conservative reachable corridor",
+    "reason": "Whole-window hull rejected traffic that occupies the same road at entirely different times; account time without shrinking model reachable speed bounds or safety threshold",
+    "qualification_sources_inspected": false,
+    "scientific_attempts": 0
+  },
+  {
+    "change": "Define deterministic 16-anchor static frame in each already assigned representative LOG",
+    "reason": "One unrelated historical representative is a narrow arbitrary sampling frame; broaden prospective scene opportunity without loosening physical criteria, only before independent source inspection",
+    "qualification_sources_inspected": false,
+    "scientific_attempts": 0
+  }
+]
