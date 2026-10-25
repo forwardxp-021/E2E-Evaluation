@@ -1,0 +1,66 @@
+{
+  "stage": "E2E_SCOPED_DIRECT_COAST_V1",
+  "phase": "DEVELOPMENT",
+  "owner_approved": true,
+  "budget": {
+    "development_attempts": 60,
+    "qualification_attempts": 40,
+    "total_cpu_seconds": 10800,
+    "per_arm_wall_seconds": 1200,
+    "qualification_retry": 0
+  },
+  "source_commit": "41f072bcb08f1298f80544240b740f979bbe8e49",
+  "source_sha256": {
+    "tools/sdc_v1_selection.py": "f4589627ad18037aff4958b3a4a3cf4e1581c7e1a8b1acacd7980d64379cc845",
+    "tools/sdc_v1_execution.py": "64cfad109b401b4c80209e255285a4b12a0117bae2bd830b421840f6dafb8468",
+    "tools/sdc_v1_prepare.py": "e43cc058eebe455756f52cbebbc1ff5aabdc15ac6af7610bb0d2248ad44b8527",
+    "tests/test_sdc_v1.py": "51885598096e3d0d8da56b1c9586d8c289afa2c17f9c7391d01926563c10253f"
+  },
+  "proof_sha256": {
+    "docs/stageR/e2e_scoped_direct_coast_v1/Owner_Task_Authority_v1.json": "f1090fd03c9f48f27a38279831d4469b4510cf3b1857cf68998950ec5f9b4c04",
+    "docs/stageR/e2e_scoped_direct_coast_v1/Development_Design_v4.json": "394ef9b5764a987fb9dd39207380b3c8640b5cec24d3c8e8498c2429e1f43f45",
+    "docs/stageR/e2e_scoped_direct_coast_v1/Pool_Split_v1.json": "831965101c7650594a68264e53a399a06ab711d1b5d7f28a7ede4759ff4db38c",
+    "docs/stageR/e2e_scoped_direct_coast_v1/DEVELOPMENT_Arm_Specs_v1.json": "e29c7634b4ff063b0c048fcd8fe8af4462b0503d31bd4848710c500b6b86277e",
+    "docs/stageR/e2e_scoped_direct_coast_v1/evidence/DEVELOPMENT_Production_Preflight_v1.json": "1d66db2f39907a1197940519d75dc2e85070b84aa22f0e5b737512615b381734",
+    "docs/stageR/e2e_scoped_direct_coast_v1/DEVELOPMENT_Frozen_Roster_v1.json": "ece0c28fbfcbdb81d3d735b3830e6b202d5e2e76e89b16ef5b2579bd6561e702",
+    "docs/stageR/e2e_scoped_direct_coast_v1/evidence/DEVELOPMENT_Applicability_v4.json": "ac239ab8b1844857ab4b2359f5273878c45252cb24feb8c22db3555abaf572e5",
+    "docs/stageR/tsb_direct_coast_f2/F2_Execution_Source_Binding_v1.json": "12813b9b22f9be096d94682e088af7bab61d4f28cb58d6301cbd1c281d1b9772",
+    "docs/stageR/tsb_direct_coast_f2/F2_Owner_Protocol_v1.json": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/e2e_sdc_v1_preflight_r2/DEVELOPMENT/SDC-DEV-01-BASELINE/resolved_config.json": "0dfcc445a8753a5c767b1a5e6c50da88f0e53277fa067e6f911c13b5bdcdde45",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/e2e_sdc_v1_preflight_r2/DEVELOPMENT/SDC-DEV-01-TREATMENT/resolved_config.json": "68a2b8bea843c0f23f60841c53b13edf90bcaf474f88b1e27c6b2dc0ae17152b",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/e2e_sdc_v1_preflight_r2/DEVELOPMENT/SDC-DEV-02-BASELINE/resolved_config.json": "35bbfd565663c2216c084059bf6ba318fc7546cb0ad0a6968f4001ecea669b60",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/e2e_sdc_v1_preflight_r2/DEVELOPMENT/SDC-DEV-02-TREATMENT/resolved_config.json": "4a8c1ea4688b23c43ab08c0516d1cbef1b939514ae16023314e5c2215cfed0b5",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/e2e_sdc_v1_preflight_r2/DEVELOPMENT/SDC-DEV-03-BASELINE/resolved_config.json": "3b60a7e8150c773751bba3000b993e0a4965b23b7a9ce48327442f7cdee61939",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/e2e_sdc_v1_preflight_r2/DEVELOPMENT/SDC-DEV-03-TREATMENT/resolved_config.json": "554a5ae30baaf151ece4bdeda384ed3d94d9dd64a8a93b9489533f49f32f6d5b"
+  },
+  "data_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.20.13.46.45_veh-42_00401_00526.db": "8e2599b4fa54b9655f17172999558baa5a9e9f0177afc93ed5ef3972a8b43986",
+    "docs/stageR/s2_preflight/census/log_1191.json.gz": "22cb200d1ac72110a1a48d28241c398536c5cd2241a3346214fe757d5791e9ae",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/nuplan-maps-v1.0.json": "b9c0a62335dded8b25e634bc63e3f271908b6f4f803398f0250ef7769facc504",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/us-pa-pittsburgh-hazelwood/9.17.1937/map.gpkg": "d04464f98175934cb2445f86959356583841a22c3d5b219314e561e0072e816a",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.17.17.57_veh-42_00327_01003.db": "175d743f8629f05a81c7800d999507d4e3151bf6cb20c9585120b910319a7ad3",
+    "docs/stageR/s2_preflight/census/log_0510.json.gz": "1874eabd6eafabdb0fd92514b8edd461e3fb6e8b68e02835c974e3cdf513c974",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.09.17.06.37_veh-35_00258_00748.db": "736d063c483244355eeec765a5bfc9a00dbfcf0a7a945369f1c2e5e789f79385",
+    "docs/stageR/s2_preflight/census/log_0037.json.gz": "0317320c68b73265001d217ba35cc0f75d71ab2453fc2705c903230f3a3d3a6a",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/us-nv-las-vegas-strip/9.15.1915/map.gpkg": "f1509eeed9c1c96e1cddf1c5f6d71f7ab9eed8f895de59ab36132308708e8937"
+  },
+  "run_ids": [
+    "SDC-DEV-01-BASELINE",
+    "SDC-DEV-01-TREATMENT",
+    "SDC-DEV-02-BASELINE",
+    "SDC-DEV-02-TREATMENT",
+    "SDC-DEV-03-BASELINE",
+    "SDC-DEV-03-TREATMENT"
+  ],
+  "spec_sha256": {
+    "SDC-DEV-01-BASELINE": "f712bb476b2bbdfea2ba3852d9e647a96f98bbb49c011b20928e6b62d6c43c87",
+    "SDC-DEV-01-TREATMENT": "768457b0b19f5646aa0052353e38a308e7c8ae56cd9ca967b8000e950b284049",
+    "SDC-DEV-02-BASELINE": "c30b2790c195910b9a5bd15819c3881e9b06ea52507ec2a79df4d3fa7fa294a4",
+    "SDC-DEV-02-TREATMENT": "cec32d87892213bf4338c866ae03c4e5d9433c097a0d4c6f96fdf3c2bc635320",
+    "SDC-DEV-03-BASELINE": "fbed0b3cafb3f126c254e7ac6a7c978e1da1b4c7b4a811fc9244339b20e26351",
+    "SDC-DEV-03-TREATMENT": "93f1ad6ebacf706921b3f2c1693fc770319cf54c54170c3feb12ba29fdc9b3a2"
+  },
+  "science": "Unchanged F2 scientific source; only applicability, identity scheduling and prespecified temporal gate added",
+  "qualification_scientific_failure": "Continue original full denominator; no retry, no replacement",
+  "exposure": "B benchmark; source applicability access and execution are E2, never E5"
+}
