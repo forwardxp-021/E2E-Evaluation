@@ -1,0 +1,436 @@
+{
+  "rows": [
+    {
+      "run_id": "SDC-QUAL-01-BASELINE",
+      "session_id": "2021.09.09.14.34.34_veh-43",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "35e5c8f831284a59fcdc2be16af14b369dcac4a2a0e135f424cc6cae22e6bcd1"
+    },
+    {
+      "run_id": "SDC-QUAL-01-TREATMENT",
+      "session_id": "2021.09.09.14.34.34_veh-43",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "012bef608edaa776be7f0def0977643d501c3191b9461b0123f0a8866e1953b9"
+    },
+    {
+      "run_id": "SDC-QUAL-02-BASELINE",
+      "session_id": "2021.08.17.14.45.12_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "8a51fbff6dd237b8f53b0c50daebe2b3c80f1ae190e4890ff27a9526b4fa1958"
+    },
+    {
+      "run_id": "SDC-QUAL-02-TREATMENT",
+      "session_id": "2021.08.17.14.45.12_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "c2fa9875c6e232f8d1be374ac22fd390529e2badc337a34eece350da2d4def11"
+    },
+    {
+      "run_id": "SDC-QUAL-03-BASELINE",
+      "session_id": "2021.08.25.17.10.24_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "351ff1a3227e03928cad84fbd82f085b031f74dee6ea83ef9d1ef94832eb64e3"
+    },
+    {
+      "run_id": "SDC-QUAL-03-TREATMENT",
+      "session_id": "2021.08.25.17.10.24_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "9ded73283cbcb8eaebe169ac09b485c40d95151b4dd6c8e983f2eddee52b5517"
+    },
+    {
+      "run_id": "SDC-QUAL-04-BASELINE",
+      "session_id": "2021.09.15.13.26.07_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "9968b070d1f8ae9329edeb45a866125905de5875c4fd31d7d6c3c7262b46b72c"
+    },
+    {
+      "run_id": "SDC-QUAL-04-TREATMENT",
+      "session_id": "2021.09.15.13.26.07_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "0beedde6692d356e58cf1b5b8a476eb317b146fee84e21a3760a6a18c608861e"
+    },
+    {
+      "run_id": "SDC-QUAL-05-BASELINE",
+      "session_id": "2021.08.20.14.28.03_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "fb3995b087a244cd1558567c63b43ae6e42920be737f6142c00132c6cde08980"
+    },
+    {
+      "run_id": "SDC-QUAL-05-TREATMENT",
+      "session_id": "2021.08.20.14.28.03_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "508fd49267d70f5b770a82ff3aca28497b5e5ea607dd69a00efb9432e63fd885"
+    },
+    {
+      "run_id": "SDC-QUAL-06-BASELINE",
+      "session_id": "2021.08.20.18.44.47_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "cd292deb36846e24f17caf04b37e5709307619547474cbbd55d17083192b53b8"
+    },
+    {
+      "run_id": "SDC-QUAL-06-TREATMENT",
+      "session_id": "2021.08.20.18.44.47_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "74eb964f68cb0b999c0587bb4a1fd5be6645773193cfeb4ccfa7a3b444eae325"
+    },
+    {
+      "run_id": "SDC-QUAL-07-BASELINE",
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "b02204a3e566df07a040a6e81dd230cfe20fa1a7087b92460d2bd7e2c1de7c1c"
+    },
+    {
+      "run_id": "SDC-QUAL-07-TREATMENT",
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "9cf669cf4dfc4371299eb907ad79f6f1a0226f7934f52f877277168bc7288e1b"
+    },
+    {
+      "run_id": "SDC-QUAL-08-BASELINE",
+      "session_id": "2021.08.25.20.03.09_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "ecfa6a704f7e14b6f4752d7ddfb156ca1234d7fe3ed58d7e8eb52729eb65e29f"
+    },
+    {
+      "run_id": "SDC-QUAL-08-TREATMENT",
+      "session_id": "2021.08.25.20.03.09_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "92139475144760c2829410ebac4bc6e43c141a6521c7d287432ec647947a19f7"
+    },
+    {
+      "run_id": "SDC-QUAL-09-BASELINE",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "states": 80,
+      "correction_frames": [
+        61
+      ],
+      "max_arc_shift_m": 0.07971342932101777,
+      "reference_different_frames": 1,
+      "full_reference_bitwise_equal": false,
+      "trace_sha256": "c9fd0a78d3bf22b40f161679462444c522b413da91d3150c9ecef0243cdb7502"
+    },
+    {
+      "run_id": "SDC-QUAL-09-TREATMENT",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "states": 80,
+      "correction_frames": [
+        61
+      ],
+      "max_arc_shift_m": 0.07913014327149526,
+      "reference_different_frames": 1,
+      "full_reference_bitwise_equal": false,
+      "trace_sha256": "087a1c510f835a3d8e4e8fabcf29e03f2eaf9d21d9031e3fdaa7c884983898e4"
+    },
+    {
+      "run_id": "SDC-QUAL-10-BASELINE",
+      "session_id": "2021.09.20.14.04.18_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "b08cafb860f0ff608a860ab8b9aeac86d0eb197e7b759ae92423c94ad2ab3d9f"
+    },
+    {
+      "run_id": "SDC-QUAL-10-TREATMENT",
+      "session_id": "2021.09.20.14.04.18_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "8bfc7d1411279037f84ea2f600c73f081ad33d4278f38ea2706a6e3c8b1dc454"
+    },
+    {
+      "run_id": "SDC-QUAL-11-BASELINE",
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "3154437f0861ff9543cc8196bb764fe61221ff6c9db63bdf1565182c38a833f1"
+    },
+    {
+      "run_id": "SDC-QUAL-11-TREATMENT",
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "f469bd7c393a991424367a9b0c6d09a29e1b3fe3cca8da1a76e6193ac41585c2"
+    },
+    {
+      "run_id": "SDC-QUAL-12-BASELINE",
+      "session_id": "2021.08.25.18.29.43_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "25654ed88c1ea366ff5b57d049cb711135436809decdbb470dc4bea87bfb1d55"
+    },
+    {
+      "run_id": "SDC-QUAL-12-TREATMENT",
+      "session_id": "2021.08.25.18.29.43_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "178bc97c8af4230815d7f13d53e12f739f7327e07672500a0dbbeba1a2a4bc17"
+    },
+    {
+      "run_id": "SDC-QUAL-13-BASELINE",
+      "session_id": "2021.09.15.13.06.21_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "251f9e9be11d28b5abd0220c35976284c6925cffd799524b666d33ed82d01042"
+    },
+    {
+      "run_id": "SDC-QUAL-13-TREATMENT",
+      "session_id": "2021.09.15.13.06.21_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "9bb364d4d63a29633eb755c18338e404d566ae2e8b3d248bb84abe6714374d42"
+    },
+    {
+      "run_id": "SDC-QUAL-14-BASELINE",
+      "session_id": "2021.09.17.17.36.45_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "ec6e3891a06542be5acb9029fbfead4d95459ace02e92db02ab168e7019705a4"
+    },
+    {
+      "run_id": "SDC-QUAL-14-TREATMENT",
+      "session_id": "2021.09.17.17.36.45_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "2fc08a7bf64c194aefb100ba1c2c0982a984a5e7a4076d0ead4293d97f9f8fe2"
+    },
+    {
+      "run_id": "SDC-QUAL-15-BASELINE",
+      "session_id": "2021.09.09.18.12.06_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "80d257569914206e379163190e82af9721f33fad6af363eb2c196c7839b9c8c6"
+    },
+    {
+      "run_id": "SDC-QUAL-15-TREATMENT",
+      "session_id": "2021.09.09.18.12.06_veh-42",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "956969fbfd50ea2fe99845a16c2e863a0cd8c0e44ff438a70303f949ed256edb"
+    },
+    {
+      "run_id": "SDC-QUAL-16-BASELINE",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "states": 80,
+      "correction_frames": [
+        10
+      ],
+      "max_arc_shift_m": 0.16147323632438315,
+      "reference_different_frames": 1,
+      "full_reference_bitwise_equal": false,
+      "trace_sha256": "4109732de843ea5aa8adf7fdfb598734c8ad810c7c782346ec250d60ad25a1ff"
+    },
+    {
+      "run_id": "SDC-QUAL-16-TREATMENT",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "states": 80,
+      "correction_frames": [
+        10
+      ],
+      "max_arc_shift_m": 0.16147323632438315,
+      "reference_different_frames": 1,
+      "full_reference_bitwise_equal": false,
+      "trace_sha256": "3be9436b090e19c72d224990b6b5ea212633c03d123865f2a3e4b8dbe4d48d7c"
+    },
+    {
+      "run_id": "SDC-QUAL-17-BASELINE",
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "1ff229dc177e52f5965f8b47878538c4db3cdead372b5f97d8d17cdd475ca151"
+    },
+    {
+      "run_id": "SDC-QUAL-17-TREATMENT",
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "06b22d2d5ec7c919d6bd616fd0a3efd7db0e085268a871f72a9cc2decf983852"
+    },
+    {
+      "run_id": "SDC-QUAL-18-BASELINE",
+      "session_id": "2021.09.09.13.32.12_veh-43",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "a63698176ee1c6775c87bfaa8dcacf87c08ba8f18b2bf9625f7ad5786a1403fb"
+    },
+    {
+      "run_id": "SDC-QUAL-18-TREATMENT",
+      "session_id": "2021.09.09.13.32.12_veh-43",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "665b881b7051089c41263624c67066b6f7cdbb6abb3421aa831a9bcf50485ba1"
+    },
+    {
+      "run_id": "SDC-QUAL-19-BASELINE",
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "975499da4783c3c9c8d53bcb4846468b553f0b45e18984e03901d4e03de1b226"
+    },
+    {
+      "run_id": "SDC-QUAL-19-TREATMENT",
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "4717b11ce75cc4976d87de5dae3fc4b83ff27ced985cc65fc9b20a20725c294a"
+    },
+    {
+      "run_id": "SDC-QUAL-20-BASELINE",
+      "session_id": "2021.09.23.14.44.24_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "ab589f3c25637fd8a8b6002669c5f2567a4cf02c521d8e8044c76d1afbe91b42"
+    },
+    {
+      "run_id": "SDC-QUAL-20-TREATMENT",
+      "session_id": "2021.09.23.14.44.24_veh-45",
+      "states": 80,
+      "correction_frames": [],
+      "max_arc_shift_m": 0.0,
+      "reference_different_frames": 0,
+      "full_reference_bitwise_equal": true,
+      "trace_sha256": "0f8909b22274b6abb4de45ede034e1065ee9913f6a6a5693a9b5784e03a25120"
+    }
+  ],
+  "all40_arms_bitwise_reference_equal": false,
+  "zero_run_guard": {
+    "SimulationRunner.run": 0,
+    "SimulationRunner._initialize": 0,
+    "Simulation.initialize": 0,
+    "Simulation.propagate": 0,
+    "R2BControllerAwarePlannerV1.initialize": 0,
+    "R2BControllerAwarePlannerV1.compute_trajectory": 0,
+    "R2BControllerAwarePlannerV1.compute_planner_trajectory": 0,
+    "TwoStageController.update_state": 0,
+    "LQRTracker.track_trajectory": 0,
+    "KinematicBicycleModel.propagate_state": 0,
+    "MetricsEngine.compute": 0,
+    "MetricsEngine.write_to_files": 0,
+    "MetricCallback.on_simulation_end": 0,
+    "SimulationLogCallback.on_simulation_end": 0,
+    "MetricFileCallback.on_run_simulation_end": 0,
+    "MultiMainCallback.on_run_simulation_end": 0,
+    "tools.b1_tsb_qualification_executor.claim_budget": 0,
+    "tools.b1_resume_execution.validate_claim": 0,
+    "tools.b1_resume_execution.update_status": 0
+  },
+  "detector_outputs_read": false,
+  "model_propagations": 0
+}

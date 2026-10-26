@@ -1,0 +1,44 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+Historical D-only reference parity 1 /40 SDC-QUAL-01-BASELINE changed frames 0
+Historical D-only reference parity 2 /40 SDC-QUAL-01-TREATMENT changed frames 0
+Historical D-only reference parity 3 /40 SDC-QUAL-02-BASELINE changed frames 0
+Historical D-only reference parity 4 /40 SDC-QUAL-02-TREATMENT changed frames 0
+Historical D-only reference parity 5 /40 SDC-QUAL-03-BASELINE changed frames 0
+Historical D-only reference parity 6 /40 SDC-QUAL-03-TREATMENT changed frames 0
+Historical D-only reference parity 7 /40 SDC-QUAL-04-BASELINE changed frames 0
+Historical D-only reference parity 8 /40 SDC-QUAL-04-TREATMENT changed frames 0
+Historical D-only reference parity 9 /40 SDC-QUAL-05-BASELINE changed frames 0
+Historical D-only reference parity 10 /40 SDC-QUAL-05-TREATMENT changed frames 0
+Historical D-only reference parity 11 /40 SDC-QUAL-06-BASELINE changed frames 0
+Historical D-only reference parity 12 /40 SDC-QUAL-06-TREATMENT changed frames 0
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+Historical D-only reference parity 13 /40 SDC-QUAL-07-BASELINE changed frames 0
+Historical D-only reference parity 14 /40 SDC-QUAL-07-TREATMENT changed frames 0
+Historical D-only reference parity 15 /40 SDC-QUAL-08-BASELINE changed frames 0
+Historical D-only reference parity 16 /40 SDC-QUAL-08-TREATMENT changed frames 0
+Historical D-only reference parity 17 /40 SDC-QUAL-09-BASELINE changed frames 1
+Historical D-only reference parity 18 /40 SDC-QUAL-09-TREATMENT changed frames 1
+Historical D-only reference parity 19 /40 SDC-QUAL-10-BASELINE changed frames 0
+Historical D-only reference parity 20 /40 SDC-QUAL-10-TREATMENT changed frames 0
+Historical D-only reference parity 21 /40 SDC-QUAL-11-BASELINE changed frames 0
+Historical D-only reference parity 22 /40 SDC-QUAL-11-TREATMENT changed frames 0
+Historical D-only reference parity 23 /40 SDC-QUAL-12-BASELINE changed frames 0
+Historical D-only reference parity 24 /40 SDC-QUAL-12-TREATMENT changed frames 0
+Historical D-only reference parity 25 /40 SDC-QUAL-13-BASELINE changed frames 0
+Historical D-only reference parity 26 /40 SDC-QUAL-13-TREATMENT changed frames 0
+Historical D-only reference parity 27 /40 SDC-QUAL-14-BASELINE changed frames 0
+Historical D-only reference parity 28 /40 SDC-QUAL-14-TREATMENT changed frames 0
+Historical D-only reference parity 29 /40 SDC-QUAL-15-BASELINE changed frames 0
+Historical D-only reference parity 30 /40 SDC-QUAL-15-TREATMENT changed frames 0
+Historical D-only reference parity 31 /40 SDC-QUAL-16-BASELINE changed frames 1
+Historical D-only reference parity 32 /40 SDC-QUAL-16-TREATMENT changed frames 1
+Historical D-only reference parity 33 /40 SDC-QUAL-17-BASELINE changed frames 0
+Historical D-only reference parity 34 /40 SDC-QUAL-17-TREATMENT changed frames 0
+Historical D-only reference parity 35 /40 SDC-QUAL-18-BASELINE changed frames 0
+Historical D-only reference parity 36 /40 SDC-QUAL-18-TREATMENT changed frames 0
+Historical D-only reference parity 37 /40 SDC-QUAL-19-BASELINE changed frames 0
+Historical D-only reference parity 38 /40 SDC-QUAL-19-TREATMENT changed frames 0
+Historical D-only reference parity 39 /40 SDC-QUAL-20-BASELINE changed frames 0
+Historical D-only reference parity 40 /40 SDC-QUAL-20-TREATMENT changed frames 0

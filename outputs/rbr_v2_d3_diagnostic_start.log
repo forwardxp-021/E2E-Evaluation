@@ -1,0 +1,62 @@
+2026-10-26 16:48:33,357 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/worker_pool_builder.py:19}  Building WorkerPool...
+2026-10-26 16:48:33,387 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/utils/multithreading/worker_pool.py:101}  Worker: Sequential
+2026-10-26 16:48:33,387 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/utils/multithreading/worker_pool.py:102}  Number of nodes: 1
+Number of CPUs per node: 1
+Number of GPUs per node: 0
+Number of threads across all nodes: 1
+2026-10-26 16:48:33,387 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/worker_pool_builder.py:27}  Building WorkerPool...DONE!
+2026-10-26 16:48:33,387 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:32}  Building experiment folders...
+2026-10-26 16:48:33,387 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:35}  
+
+	Folder where all results are stored: /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/zero_run_stack/raw
+
+2026-10-26 16:48:33,389 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:70}  Building experiment folders...DONE!
+2026-10-26 16:48:33,389 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_callback_builder.py:52}  Building AbstractCallback...
+2026-10-26 16:48:33,389 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_callback_builder.py:68}  Building AbstractCallback: 0...DONE!
+2026-10-26 16:48:33,389 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:47}  Building simulations...
+2026-10-26 16:48:33,389 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:53}  Extracting scenarios...
+2026-10-26 16:48:33,390 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/utils/distributed_scenario_filter.py:83}  Building Scenarios in mode DistributedMode.SINGLE_NODE
+2026-10-26 16:48:33,390 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_building_builder.py:18}  Building AbstractScenarioBuilder...
+2026-10-26 16:48:33,395 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_building_builder.py:21}  Building AbstractScenarioBuilder...DONE!
+2026-10-26 16:48:33,395 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_filter_builder.py:35}  Building ScenarioFilter...
+2026-10-26 16:48:33,396 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_filter_builder.py:44}  Building ScenarioFilter...DONE!
+2026-10-26 16:48:33,397 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:74}  Building metric engines...
+2026-10-26 16:48:33,571 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:76}  Building metric engines...DONE
+2026-10-26 16:48:33,572 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:80}  Building simulations from 1 scenarios...
+2026-10-26 16:48:33,806 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:133}  Building simulations...DONE!
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+{
+  "run_id": "RBR-D2-D-01-TREATMENT",
+  "session_id": "2021.10.14.17.47.55_veh-28",
+  "scope": "FROZEN_REFERENCE_AND_PRIVATE_LQR_ALGEBRA_ONLY_NO_MODEL_PROPAGATION",
+  "reproduced_first_steering_rate_rad_s": 8.32185687171612,
+  "recorded_first_rate_rad_s": 8.32185687171612,
+  "initial_lateral_state": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "initial_velocity": 10.88713469408828,
+  "initial_ego": {
+    "heading": -0.003822455361280228,
+    "tire_steering_angle": 0.0,
+    "tire_steering_rate": 0.0
+  },
+  "reference_velocity": 10.881305975021332,
+  "curvature_profile": [
+    3.283626496395337,
+    2.6158922552157424,
+    1.3984852241177508,
+    0.5446573868443167,
+    0.18623699465769894,
+    0.06165803432650533,
+    0.02002733410886807,
+    0.005862369472870554,
+    0.0009252381163189134,
+    -0.0008049182601763682
+  ],
+  "tracking_horizon": 10,
+  "tracker_dt": 0.1
+}
+First reference states: [{'i': 0, 'x': 332758.17443385755, 'y': 4690047.676459811, 'heading': -0.003822455361280228, 'tire_steering_angle': 0.0, 'vx': 10.88713469408828, 'vy': 0.26208969286911954}, {'i': 1, 'x': 332757.83522925695, 'y': 4690047.677602805, 'heading': 3.1382230348621087, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 2, 'x': 332758.923606539, 'y': 4690047.676455431, 'heading': -0.0010542062064410275, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 3, 'x': 332760.0118227371, 'y': 4690047.677472574, 'heading': 0.0009346880924286483, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 4, 'x': 332761.1001982923, 'y': 4690047.68067835, 'heading': 0.0029454602582017573, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 5, 'x': 332762.1895628471, 'y': 4690047.684772363, 'heading': 0.0037581484735709366, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 6, 'x': 332763.27939782373, 'y': 4690047.6869206475, 'heading': 0.001971199163527061, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}]

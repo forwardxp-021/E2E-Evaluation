@@ -1,0 +1,114 @@
+2026-10-26 17:03:06,625 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/worker_pool_builder.py:19}  Building WorkerPool...
+2026-10-26 17:03:06,640 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/utils/multithreading/worker_pool.py:101}  Worker: Sequential
+2026-10-26 17:03:06,640 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/utils/multithreading/worker_pool.py:102}  Number of nodes: 1
+Number of CPUs per node: 1
+Number of GPUs per node: 0
+Number of threads across all nodes: 1
+2026-10-26 17:03:06,641 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/worker_pool_builder.py:27}  Building WorkerPool...DONE!
+2026-10-26 17:03:06,641 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:32}  Building experiment folders...
+2026-10-26 17:03:06,641 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:35}  
+
+	Folder where all results are stored: /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/patched_reference_v2/raw
+
+2026-10-26 17:03:06,643 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:70}  Building experiment folders...DONE!
+2026-10-26 17:03:06,643 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_callback_builder.py:52}  Building AbstractCallback...
+2026-10-26 17:03:06,643 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_callback_builder.py:68}  Building AbstractCallback: 0...DONE!
+2026-10-26 17:03:06,643 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:47}  Building simulations...
+2026-10-26 17:03:06,643 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:53}  Extracting scenarios...
+2026-10-26 17:03:06,643 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/utils/distributed_scenario_filter.py:83}  Building Scenarios in mode DistributedMode.SINGLE_NODE
+2026-10-26 17:03:06,644 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_building_builder.py:18}  Building AbstractScenarioBuilder...
+2026-10-26 17:03:06,649 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_building_builder.py:21}  Building AbstractScenarioBuilder...DONE!
+2026-10-26 17:03:06,649 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_filter_builder.py:35}  Building ScenarioFilter...
+2026-10-26 17:03:06,650 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_filter_builder.py:44}  Building ScenarioFilter...DONE!
+2026-10-26 17:03:06,651 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:74}  Building metric engines...
+2026-10-26 17:03:06,797 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:76}  Building metric engines...DONE
+2026-10-26 17:03:06,797 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:80}  Building simulations from 1 scenarios...
+2026-10-26 17:03:07,018 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:133}  Building simulations...DONE!
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+{
+  "run_id": "RBR-D2-D-01-TREATMENT",
+  "session_id": "2021.10.14.17.47.55_veh-28",
+  "patched": true,
+  "scope": "REFERENCE_AND_PRIVATE_LQR_ALGEBRA_ONLY_NO_MODEL_PROPAGATION",
+  "reproduced_first_steering_rate_rad_s": -0.0005875645259571656,
+  "recorded_first_rate_rad_s": 8.32185687171612,
+  "initial_lateral_state": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "initial_velocity": 10.88713469408828,
+  "initial_ego": {
+    "heading": -0.003822455361280228,
+    "tire_steering_angle": 0.0,
+    "tire_steering_rate": 0.0
+  },
+  "reference_velocity": 10.897207564352648,
+  "curvature_profile": [
+    0.0012599742729102218,
+    0.001499363972909224,
+    0.001182087728419654,
+    -3.295228601835518e-06,
+    -0.0010691086105092873,
+    -0.0014423641404582405,
+    -0.001582224412073937,
+    -0.0016275501877353383,
+    -0.0016336390196643273,
+    -0.0016207074405154213
+  ],
+  "geometry": {
+    "native_edge_ids": [
+      "51400",
+      "47415",
+      "51756",
+      "52976",
+      "51133",
+      "52162"
+    ],
+    "route_arc": 42.91804263299831,
+    "polyline_project_arc": 44.34643992692266,
+    "arc_difference": 1.4283972939243554,
+    "centers": [
+      [
+        332756.7457239502,
+        4690047.317135418
+      ],
+      [
+        332757.83474965487,
+        4690047.3145747585
+      ],
+      [
+        332758.174117848,
+        4690047.3142064735
+      ]
+    ],
+    "first_polyline_points": [
+      [
+        332713.8276916989,
+        4690047.304599018
+      ],
+      [
+        332714.07769169664,
+        4690047.304629083
+      ],
+      [
+        332714.3276916791,
+        4690047.304721135
+      ],
+      [
+        332714.5776916525,
+        4690047.304836939
+      ],
+      [
+        332714.8276916252,
+        4690047.304952744
+      ]
+    ],
+    "reference_length": 137.67919219326066,
+    "initial_point_line_distance": 0.3622534747794233
+  },
+  "tracking_horizon": 10,
+  "tracker_dt": 0.1
+}
+First reference states: [{'i': 0, 'x': 332758.17443385755, 'y': 4690047.676459811, 'heading': -0.003822455361280228, 'tire_steering_angle': 0.0, 'vx': 10.88713469408828, 'vy': 0.26208969286911954}, {'i': 1, 'x': 332759.26265397895, 'y': 4690047.673552697, 'heading': -0.0026714330406866524, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 2, 'x': 332760.3510447427, 'y': 4690047.672977999, 'heading': -0.0005280251414432146, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 3, 'x': 332761.4394886699, 'y': 4690047.6746720085, 'heading': 0.001556357869399712, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 4, 'x': 332762.5292786633, 'y': 4690047.676244575, 'heading': 0.0014429982152566274, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 5, 'x': 332763.61893747596, 'y': 4690047.675855, 'heading': -0.0003575201758552063, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}, {'i': 6, 'x': 332764.70858968387, 'y': 4690047.673519345, 'heading': -0.0021434830101018537, 'tire_steering_angle': 0.0, 'vx': 10.89028892428153, 'vy': 0.0}]

@@ -1,0 +1,9 @@
+test_behind_start_not_artificially_shifted (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_correct_case_bitwise_preserved (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_endpoint_scalar_in_different_polyline_coordinate (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_rotated_translated_physics_oracle (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.010s
+
+OK

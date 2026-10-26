@@ -1,0 +1,12 @@
+test_behind_start_not_artificially_shifted (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_correct_case_bitwise_preserved (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_endpoint_scalar_in_different_polyline_coordinate (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_rotated_translated_physics_oracle (tests.test_rbr_v2_d3_arc_binding.ArcBindingTests) ... ok
+test_exact_existing_lifecycle_argument_binding_without_simulation (tests.test_rbr_v2_d2_continuation.ContinuationTests) ... ok
+test_failed_id_and_primary_identity_refused (tests.test_rbr_v2_d2_continuation.ContinuationTests) ... ok
+test_same_frozen_cohort_no_replacement_no_budget_reset (tests.test_rbr_v2_d2_continuation.ContinuationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.030s
+
+OK
