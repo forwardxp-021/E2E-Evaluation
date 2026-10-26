@@ -1,0 +1,38 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+{
+  "state": "OWNER_AUTHORIZED_U_ONLY_WITH_DISCLOSED_SOURCE_RISK",
+  "selection": "FIXED_EPOCH_30_NO_U_VAL_CHECKPOINT_SELECTION",
+  "raw_segment_disjointness": "NOT_ESTABLISHED",
+  "official_split": "TRAINING_FILENAME_AND_SCHEMA_CONSISTENT",
+  "official_independent_validation": false,
+  "release_download_receipt": "NOT_AVAILABLE_IN_LOCAL_ASSETS",
+  "source_note": "51 of1000 named training containers; original acquisition segment/global-time mapping remains absent",
+  "official_reference": "https://waymo.com/intl/it/open/data/motion/",
+  "denominator": 168700,
+  "candidate_train_before_test_group_isolation": 134478,
+  "candidates_after_isolation": 118738,
+  "expected_train_rows": 116843,
+  "expected_invalid": 1895,
+  "observed_train_groups": 15829,
+  "scenarios": 17282,
+  "quarantined_groups": 4412,
+  "diagnostic_role": "IN_SAMPLE_NUMERICAL_ONLY",
+  "cfg_sha256": "996d33ec2f8ffaf7c98f0758383dd35bfb04d622f35886582daeda0f0640448b",
+  "jobs_sha256": "31400885176757e9f8a13f61671f1e657517120d39bee777e8850e909c5d1326",
+  "candidate_roster_sha256": "751fc3a02fe0442c4290399392d96e5146cd4233b6ba2e5047adcfbe6e740e0e",
+  "input_metadata_sha256": {
+    "outputs/rbr_v2_uonly_v1/candidate_quality.csv": "b986105517432c96fe997c609955c5be3023499919f30e4c699149be9f1c4968",
+    "outputs/rbr_v2_uonly_v1/dependency_groups.json": "51cfd324f43e1c9e24d0a21d48b6beb847caf7a7d5c2854eea6c3166a2aa7b51",
+    "outputs/rbr_v2_uonly_v1/source_records.csv": "6b0da08c662cd0bb40ba22de2cc1680c542979648601424786a3a1194e842c77",
+    "outputs/rbr_v2_uonly_v1/data_manifest.json": "1c903d2f84156664c08a23b14280d15f359b391d3f51f7996643f41c465a888d"
+  },
+  "source_sha256": {
+    "tools/rbr_v2_prod_data.py": "a30e68f760c7ddb88146016008c27e85821dcc29d166d042d7e4b9b8fbf733c9",
+    "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+    "tools/rbr_v2_waymo_source.py": "071c9e2ab2f94df1ffe299f105aa8f285d8e8140502e0fbadad20d3a1e7d1929",
+    "tools/waymo_lane_utils.py": "ad63bbc1052cc6065f69c9e257b1911a3b0f6a9a40f1e816973a8ed3a85f5a82",
+    "tools/lane_aware_assignment.py": "51bc5b9f8ce0529255507af7131022443bb4892fee4ab1ba134d99532456069b"
+  }
+}

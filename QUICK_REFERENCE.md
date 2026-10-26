@@ -11851,6 +11851,8 @@ OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONPATH=outputs/rbr_v2_uonly_v1/runt
 outputs/rbr_v2_smoke_v1/runtime/bin/python tools/rbr_v2_prod_train.py preflight
 # 首个optimizer step前，必须先提交执行冻结、完整样本清单、normalizer、源码及配置。
 outputs/rbr_v2_smoke_v1/runtime/bin/python tools/rbr_v2_prod_train.py execute
+# 本轮已启动以下结束依赖流程：只等待训练正常完成后重载/出报告，不启动训练。勿与手工export/report并行重复运行。
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/rbr_v2_prod_postprocess.py
 # 两个独立进程核验最终epoch30模型：
 outputs/rbr_v2_smoke_v1/runtime/bin/python tools/rbr_v2_prod_train.py export
 outputs/rbr_v2_smoke_v1/runtime/bin/python tools/rbr_v2_prod_train.py export

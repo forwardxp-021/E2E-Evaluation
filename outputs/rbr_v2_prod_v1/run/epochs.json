@@ -1,0 +1,872 @@
+[
+  {
+    "epoch": 1,
+    "L_repr": 0.13684544832127274,
+    "L_sem": 0.052240898859715466,
+    "total": 0.1890863472092205,
+    "rows": 116843,
+    "train_seconds": 106.29012008299833,
+    "diagnostic_seconds": 0.25566108299972257,
+    "diagnostic": {
+      "L_repr": 0.11936094984412193,
+      "L_sem": 0.023601588516253914,
+      "total": 0.14296253836037584,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.01750910095870495,
+      "sem_to_shared_l2": 0.020059116184711456,
+      "semantic_head_grad_l2": 0.03741796687245369,
+      "temporal_head_grad_l2": 0.041205428540706635
+    },
+    "optimizer_steps": 913,
+    "resources": {
+      "cpu_seconds": 115.364032,
+      "rss_peak_bytes": 1906622464,
+      "mps_current_bytes": 18438656,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 2,
+    "L_repr": 0.09545176886056206,
+    "L_sem": 0.018558969501780164,
+    "total": 0.11401073842883394,
+    "rows": 116843,
+    "train_seconds": 106.22615458499786,
+    "diagnostic_seconds": 0.2515443750016857,
+    "diagnostic": {
+      "L_repr": 0.10496421158313751,
+      "L_sem": 0.018274934278786882,
+      "total": 0.12323914586192439,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.08017077296972275,
+      "sem_to_shared_l2": 0.22126328945159912,
+      "semantic_head_grad_l2": 0.11972731351852417,
+      "temporal_head_grad_l2": 0.053034815937280655
+    },
+    "optimizer_steps": 1826,
+    "resources": {
+      "cpu_seconds": 230.584411,
+      "rss_peak_bytes": 1958707200,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 157302784
+    }
+  },
+  {
+    "epoch": 3,
+    "L_repr": 0.08620470870476026,
+    "L_sem": 0.01658099384854118,
+    "total": 0.10278570257489411,
+    "rows": 116843,
+    "train_seconds": 106.59371125099642,
+    "diagnostic_seconds": 0.25170129199977964,
+    "diagnostic": {
+      "L_repr": 0.09935378283262253,
+      "L_sem": 0.017607418249196354,
+      "total": 0.11696120108181889,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.06790726631879807,
+      "sem_to_shared_l2": 0.10721813142299652,
+      "semantic_head_grad_l2": 0.06028100475668907,
+      "temporal_head_grad_l2": 0.04615139216184616
+    },
+    "optimizer_steps": 2739,
+    "resources": {
+      "cpu_seconds": 347.209047,
+      "rss_peak_bytes": 1958707200,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 4,
+    "L_repr": 0.08144344813372412,
+    "L_sem": 0.015451173081855176,
+    "total": 0.0968946211800299,
+    "rows": 116843,
+    "train_seconds": 107.04284424899743,
+    "diagnostic_seconds": 0.24008966600013082,
+    "diagnostic": {
+      "L_repr": 0.0939982421696186,
+      "L_sem": 0.015294433812415202,
+      "total": 0.10929267598203381,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.06849946826696396,
+      "sem_to_shared_l2": 0.15779221057891846,
+      "semantic_head_grad_l2": 0.06379599869251251,
+      "temporal_head_grad_l2": 0.039757613092660904
+    },
+    "optimizer_steps": 3652,
+    "resources": {
+      "cpu_seconds": 465.105663,
+      "rss_peak_bytes": 1958707200,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 5,
+    "L_repr": 0.07801127757062791,
+    "L_sem": 0.014563648347814886,
+    "total": 0.09257492593637293,
+    "rows": 116843,
+    "train_seconds": 106.15366620899658,
+    "diagnostic_seconds": 0.230334292002226,
+    "diagnostic": {
+      "L_repr": 0.09040222316980362,
+      "L_sem": 0.01599894846574481,
+      "total": 0.10640117163554844,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07128386944532394,
+      "sem_to_shared_l2": 0.20159055292606354,
+      "semantic_head_grad_l2": 0.13686445355415344,
+      "temporal_head_grad_l2": 0.04866119101643562
+    },
+    "optimizer_steps": 4565,
+    "resources": {
+      "cpu_seconds": 580.836853,
+      "rss_peak_bytes": 2245623808,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 6,
+    "L_repr": 0.07524374685612437,
+    "L_sem": 0.013923352692867763,
+    "total": 0.08916709938506634,
+    "rows": 116843,
+    "train_seconds": 106.02729029200418,
+    "diagnostic_seconds": 0.23205199999938486,
+    "diagnostic": {
+      "L_repr": 0.08798767998814583,
+      "L_sem": 0.014704498903803848,
+      "total": 0.10269217889194968,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07400807738304138,
+      "sem_to_shared_l2": 0.19559094309806824,
+      "semantic_head_grad_l2": 0.1260719746351242,
+      "temporal_head_grad_l2": 0.04926862567663193
+    },
+    "optimizer_steps": 5478,
+    "resources": {
+      "cpu_seconds": 696.389569,
+      "rss_peak_bytes": 2365620224,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 7,
+    "L_repr": 0.07282049984194375,
+    "L_sem": 0.013020293918208197,
+    "total": 0.08584079378122653,
+    "rows": 116843,
+    "train_seconds": 106.48391387500669,
+    "diagnostic_seconds": 0.23151291700196452,
+    "diagnostic": {
+      "L_repr": 0.08510685712099075,
+      "L_sem": 0.01308002457894347,
+      "total": 0.09818688169993423,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.09501184523105621,
+      "sem_to_shared_l2": 0.14418932795524597,
+      "semantic_head_grad_l2": 0.06875429302453995,
+      "temporal_head_grad_l2": 0.05873364210128784
+    },
+    "optimizer_steps": 6391,
+    "resources": {
+      "cpu_seconds": 812.77337,
+      "rss_peak_bytes": 2365620224,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 8,
+    "L_repr": 0.071318225092772,
+    "L_sem": 0.012478813834635819,
+    "total": 0.08379703889374747,
+    "rows": 116843,
+    "train_seconds": 106.6121149150058,
+    "diagnostic_seconds": 0.22621233300014865,
+    "diagnostic": {
+      "L_repr": 0.08375910297036171,
+      "L_sem": 0.015987129823287486,
+      "total": 0.09974623279364919,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.0926939994096756,
+      "sem_to_shared_l2": 0.0809585452079773,
+      "semantic_head_grad_l2": 0.05084013193845749,
+      "temporal_head_grad_l2": 0.05254927650094032
+    },
+    "optimizer_steps": 7304,
+    "resources": {
+      "cpu_seconds": 930.160143,
+      "rss_peak_bytes": 2365620224,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 9,
+    "L_repr": 0.07002838387167522,
+    "L_sem": 0.011963671469270904,
+    "total": 0.08199205531628471,
+    "rows": 116843,
+    "train_seconds": 103.94403633400361,
+    "diagnostic_seconds": 0.22443654100061394,
+    "diagnostic": {
+      "L_repr": 0.08168160170316696,
+      "L_sem": 0.01077933005306738,
+      "total": 0.09246093175623435,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.0800810307264328,
+      "sem_to_shared_l2": 0.10984457284212112,
+      "semantic_head_grad_l2": 0.0683654248714447,
+      "temporal_head_grad_l2": 0.043372225016355515
+    },
+    "optimizer_steps": 8217,
+    "resources": {
+      "cpu_seconds": 1044.680683,
+      "rss_peak_bytes": 2518040576,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 10,
+    "L_repr": 0.0687691933377132,
+    "L_sem": 0.011514953018470199,
+    "total": 0.08028414631366758,
+    "rows": 116843,
+    "train_seconds": 103.24812570799622,
+    "diagnostic_seconds": 0.2359369580008206,
+    "diagnostic": {
+      "L_repr": 0.081320870667696,
+      "L_sem": 0.012868391804737766,
+      "total": 0.09418926247243377,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07339418679475784,
+      "sem_to_shared_l2": 0.055867377668619156,
+      "semantic_head_grad_l2": 0.033323511481285095,
+      "temporal_head_grad_l2": 0.04011918604373932
+    },
+    "optimizer_steps": 9130,
+    "resources": {
+      "cpu_seconds": 1157.125199,
+      "rss_peak_bytes": 2652684288,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 157302784
+    }
+  },
+  {
+    "epoch": 11,
+    "L_repr": 0.06723826790076995,
+    "L_sem": 0.010908666121113948,
+    "total": 0.0781469341490009,
+    "rows": 116843,
+    "train_seconds": 103.53157562499473,
+    "diagnostic_seconds": 0.2444930839992594,
+    "diagnostic": {
+      "L_repr": 0.07972446456551552,
+      "L_sem": 0.013145551177856584,
+      "total": 0.0928700157433721,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07684124261140823,
+      "sem_to_shared_l2": 0.15015263855457306,
+      "semantic_head_grad_l2": 0.06606834381818771,
+      "temporal_head_grad_l2": 0.05436808243393898
+    },
+    "optimizer_steps": 10043,
+    "resources": {
+      "cpu_seconds": 1270.507741,
+      "rss_peak_bytes": 2652684288,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 12,
+    "L_repr": 0.06625062738184907,
+    "L_sem": 0.010547619646831234,
+    "total": 0.07679824709584157,
+    "rows": 116843,
+    "train_seconds": 103.25564800199572,
+    "diagnostic_seconds": 0.2405939579984988,
+    "diagnostic": {
+      "L_repr": 0.07925320044159889,
+      "L_sem": 0.012396860716471404,
+      "total": 0.0916500611580703,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.06469715386629105,
+      "sem_to_shared_l2": 0.1362282633781433,
+      "semantic_head_grad_l2": 0.08019603043794632,
+      "temporal_head_grad_l2": 0.0439404621720314
+    },
+    "optimizer_steps": 10956,
+    "resources": {
+      "cpu_seconds": 1383.132427,
+      "rss_peak_bytes": 2652684288,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 157302784
+    }
+  },
+  {
+    "epoch": 13,
+    "L_repr": 0.06540448241048731,
+    "L_sem": 0.010205128010228463,
+    "total": 0.07560961047763268,
+    "rows": 116843,
+    "train_seconds": 103.5877310429969,
+    "diagnostic_seconds": 0.2558295000017097,
+    "diagnostic": {
+      "L_repr": 0.07882320135831833,
+      "L_sem": 0.010686362805250269,
+      "total": 0.0895095641635686,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.1109822690486908,
+      "sem_to_shared_l2": 0.09882338345050812,
+      "semantic_head_grad_l2": 0.06857927143573761,
+      "temporal_head_grad_l2": 0.05090203136205673
+    },
+    "optimizer_steps": 11869,
+    "resources": {
+      "cpu_seconds": 1496.827217,
+      "rss_peak_bytes": 2652684288,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 157302784
+    }
+  },
+  {
+    "epoch": 14,
+    "L_repr": 0.06448545435899972,
+    "L_sem": 0.009652369130980299,
+    "total": 0.07413782340504405,
+    "rows": 116843,
+    "train_seconds": 103.23347608199765,
+    "diagnostic_seconds": 0.24467849999928148,
+    "diagnostic": {
+      "L_repr": 0.0760760847479105,
+      "L_sem": 0.009748077051456553,
+      "total": 0.08582416179936705,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.09032159298658371,
+      "sem_to_shared_l2": 0.08354596048593521,
+      "semantic_head_grad_l2": 0.038752954453229904,
+      "temporal_head_grad_l2": 0.05139557644724846
+    },
+    "optimizer_steps": 12782,
+    "resources": {
+      "cpu_seconds": 1609.43468,
+      "rss_peak_bytes": 2652684288,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 157302784
+    }
+  },
+  {
+    "epoch": 15,
+    "L_repr": 0.06372733742968421,
+    "L_sem": 0.009426250585817397,
+    "total": 0.07315358799492122,
+    "rows": 116843,
+    "train_seconds": 103.43769383399922,
+    "diagnostic_seconds": 0.21552924999923562,
+    "diagnostic": {
+      "L_repr": 0.07680013030767441,
+      "L_sem": 0.00886250119929567,
+      "total": 0.08566263150697008,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.0835191011428833,
+      "sem_to_shared_l2": 0.15874691307544708,
+      "semantic_head_grad_l2": 0.06476821005344391,
+      "temporal_head_grad_l2": 0.047108665108680725
+    },
+    "optimizer_steps": 13695,
+    "resources": {
+      "cpu_seconds": 1721.972892,
+      "rss_peak_bytes": 3185278976,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 16,
+    "L_repr": 0.0630979847480866,
+    "L_sem": 0.009375764287593225,
+    "total": 0.07247374914715032,
+    "rows": 116843,
+    "train_seconds": 103.04998404100843,
+    "diagnostic_seconds": 0.22128204199907486,
+    "diagnostic": {
+      "L_repr": 0.07523749582469463,
+      "L_sem": 0.007321853499060184,
+      "total": 0.08255934932375482,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.10426893830299377,
+      "sem_to_shared_l2": 0.07443872094154358,
+      "semantic_head_grad_l2": 0.03780295327305794,
+      "temporal_head_grad_l2": 0.06509893387556076
+    },
+    "optimizer_steps": 14608,
+    "resources": {
+      "cpu_seconds": 1832.082671,
+      "rss_peak_bytes": 3538862080,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 17,
+    "L_repr": 0.0623948106890279,
+    "L_sem": 0.00930982294878318,
+    "total": 0.07170463368877784,
+    "rows": 116843,
+    "train_seconds": 103.2191986259968,
+    "diagnostic_seconds": 0.22062050000022282,
+    "diagnostic": {
+      "L_repr": 0.07438142597675323,
+      "L_sem": 0.011468759333670817,
+      "total": 0.08585018531042406,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07576095312833786,
+      "sem_to_shared_l2": 0.050730619579553604,
+      "semantic_head_grad_l2": 0.0307737085968256,
+      "temporal_head_grad_l2": 0.043669767677783966
+    },
+    "optimizer_steps": 15521,
+    "resources": {
+      "cpu_seconds": 1942.130797,
+      "rss_peak_bytes": 3576233984,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 18,
+    "L_repr": 0.062131879253593564,
+    "L_sem": 0.009248731951950265,
+    "total": 0.07138061116924518,
+    "rows": 116843,
+    "train_seconds": 103.0796491239962,
+    "diagnostic_seconds": 0.22227887500048382,
+    "diagnostic": {
+      "L_repr": 0.07441920600831509,
+      "L_sem": 0.006949118513330497,
+      "total": 0.08136832452164558,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07007215172052383,
+      "sem_to_shared_l2": 0.16402587294578552,
+      "semantic_head_grad_l2": 0.06336460262537003,
+      "temporal_head_grad_l2": 0.04103441163897514
+    },
+    "optimizer_steps": 16434,
+    "resources": {
+      "cpu_seconds": 2051.806489,
+      "rss_peak_bytes": 3584344064,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 19,
+    "L_repr": 0.0614449426986569,
+    "L_sem": 0.009018328554682518,
+    "total": 0.07046327119934179,
+    "rows": 116843,
+    "train_seconds": 103.58449895700323,
+    "diagnostic_seconds": 0.20985658399877138,
+    "diagnostic": {
+      "L_repr": 0.07246312499046326,
+      "L_sem": 0.007419949931005097,
+      "total": 0.07988307492146836,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.09889288246631622,
+      "sem_to_shared_l2": 0.08212342858314514,
+      "semantic_head_grad_l2": 0.03837423771619797,
+      "temporal_head_grad_l2": 0.061502400785684586
+    },
+    "optimizer_steps": 17347,
+    "resources": {
+      "cpu_seconds": 2163.051874,
+      "rss_peak_bytes": 3584344064,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 20,
+    "L_repr": 0.06079497224280822,
+    "L_sem": 0.008781203125058116,
+    "total": 0.06957617540442004,
+    "rows": 116843,
+    "train_seconds": 103.55688487400403,
+    "diagnostic_seconds": 0.2101699999984703,
+    "diagnostic": {
+      "L_repr": 0.07327890023589134,
+      "L_sem": 0.0076838626332183585,
+      "total": 0.0809627628691097,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.08593147248029709,
+      "sem_to_shared_l2": 0.11906786262989044,
+      "semantic_head_grad_l2": 0.054946817457675934,
+      "temporal_head_grad_l2": 0.052529651671648026
+    },
+    "optimizer_steps": 18260,
+    "resources": {
+      "cpu_seconds": 2274.47523,
+      "rss_peak_bytes": 3584344064,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 21,
+    "L_repr": 0.06077344868735052,
+    "L_sem": 0.008897265039935891,
+    "total": 0.06967071358585997,
+    "rows": 116843,
+    "train_seconds": 103.53943562600034,
+    "diagnostic_seconds": 0.22230558400042355,
+    "diagnostic": {
+      "L_repr": 0.07196325995028019,
+      "L_sem": 0.006838205660324396,
+      "total": 0.07880146561060458,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.08651348948478699,
+      "sem_to_shared_l2": 0.10556833446025848,
+      "semantic_head_grad_l2": 0.050443362444639206,
+      "temporal_head_grad_l2": 0.043204061686992645
+    },
+    "optimizer_steps": 19173,
+    "resources": {
+      "cpu_seconds": 2385.127212,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 22,
+    "L_repr": 0.06019534480159259,
+    "L_sem": 0.008630473329382542,
+    "total": 0.06882581803872603,
+    "rows": 116843,
+    "train_seconds": 103.46454475199789,
+    "diagnostic_seconds": 0.20975695899687707,
+    "diagnostic": {
+      "L_repr": 0.07181421108543873,
+      "L_sem": 0.007792554305272655,
+      "total": 0.07960676539071139,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.0646277591586113,
+      "sem_to_shared_l2": 0.14223507046699524,
+      "semantic_head_grad_l2": 0.035483479499816895,
+      "temporal_head_grad_l2": 0.04214553162455559
+    },
+    "optimizer_steps": 20086,
+    "resources": {
+      "cpu_seconds": 2495.932663,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 23,
+    "L_repr": 0.05978461687499712,
+    "L_sem": 0.008664281939612287,
+    "total": 0.06844889874965603,
+    "rows": 116843,
+    "train_seconds": 103.57889816600073,
+    "diagnostic_seconds": 0.20402137500059325,
+    "diagnostic": {
+      "L_repr": 0.0722671914845705,
+      "L_sem": 0.00961138594066195,
+      "total": 0.08187857742523245,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.10571533441543579,
+      "sem_to_shared_l2": 0.05965676158666611,
+      "semantic_head_grad_l2": 0.032879069447517395,
+      "temporal_head_grad_l2": 0.06622336059808731
+    },
+    "optimizer_steps": 20999,
+    "resources": {
+      "cpu_seconds": 2606.63383,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 24,
+    "L_repr": 0.05938425697726455,
+    "L_sem": 0.008315482861556844,
+    "total": 0.0676997399087485,
+    "rows": 116843,
+    "train_seconds": 103.87703241800045,
+    "diagnostic_seconds": 0.22654224999860162,
+    "diagnostic": {
+      "L_repr": 0.07098744995892048,
+      "L_sem": 0.008835959132346867,
+      "total": 0.07982340909126734,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.08014499396085739,
+      "sem_to_shared_l2": 0.16290979087352753,
+      "semantic_head_grad_l2": 0.11072752624750137,
+      "temporal_head_grad_l2": 0.047633491456508636
+    },
+    "optimizer_steps": 21912,
+    "resources": {
+      "cpu_seconds": 2719.501761,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 25,
+    "L_repr": 0.05900344356212072,
+    "L_sem": 0.0083608020716629,
+    "total": 0.06736424559314891,
+    "rows": 116843,
+    "train_seconds": 103.59572574900812,
+    "diagnostic_seconds": 0.22190629199758405,
+    "diagnostic": {
+      "L_repr": 0.07089062035083771,
+      "L_sem": 0.00894208016806425,
+      "total": 0.07983270051890196,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07688001543283463,
+      "sem_to_shared_l2": 0.14607517421245575,
+      "semantic_head_grad_l2": 0.06120216101408005,
+      "temporal_head_grad_l2": 0.046345729380846024
+    },
+    "optimizer_steps": 22825,
+    "resources": {
+      "cpu_seconds": 2831.35995,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 26,
+    "L_repr": 0.05858127375461418,
+    "L_sem": 0.008245942319895408,
+    "total": 0.0668272160150321,
+    "rows": 116843,
+    "train_seconds": 103.83562804200483,
+    "diagnostic_seconds": 0.2344922089978354,
+    "diagnostic": {
+      "L_repr": 0.07027000933885574,
+      "L_sem": 0.007837895021266488,
+      "total": 0.07810790436012223,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.09515833854675293,
+      "sem_to_shared_l2": 0.0826067179441452,
+      "semantic_head_grad_l2": 0.03946427255868912,
+      "temporal_head_grad_l2": 0.04751967266201973
+    },
+    "optimizer_steps": 23738,
+    "resources": {
+      "cpu_seconds": 2943.161464,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 27,
+    "L_repr": 0.058359023309362136,
+    "L_sem": 0.008169471360647875,
+    "total": 0.0665284946605687,
+    "rows": 116843,
+    "train_seconds": 103.49385295800312,
+    "diagnostic_seconds": 0.21507795799698215,
+    "diagnostic": {
+      "L_repr": 0.07059595920145512,
+      "L_sem": 0.008297722958036142,
+      "total": 0.07889368215949126,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.060963548719882965,
+      "sem_to_shared_l2": 0.18698465824127197,
+      "semantic_head_grad_l2": 0.07902302592992783,
+      "temporal_head_grad_l2": 0.04037899523973465
+    },
+    "optimizer_steps": 24651,
+    "resources": {
+      "cpu_seconds": 3054.191533,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 28,
+    "L_repr": 0.058114589226382796,
+    "L_sem": 0.008030427215181386,
+    "total": 0.06614501650605527,
+    "rows": 116843,
+    "train_seconds": 103.59374891699554,
+    "diagnostic_seconds": 0.2232921670001815,
+    "diagnostic": {
+      "L_repr": 0.07025044038891792,
+      "L_sem": 0.0073222732922514945,
+      "total": 0.07757271368116941,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.0828770250082016,
+      "sem_to_shared_l2": 0.061369944363832474,
+      "semantic_head_grad_l2": 0.028000546619296074,
+      "temporal_head_grad_l2": 0.04104099050164223
+    },
+    "optimizer_steps": 25564,
+    "resources": {
+      "cpu_seconds": 3165.863876,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 29,
+    "L_repr": 0.05802913503364348,
+    "L_sem": 0.008157155318124392,
+    "total": 0.06618629029825247,
+    "rows": 116843,
+    "train_seconds": 103.79444387400144,
+    "diagnostic_seconds": 0.22407804099930217,
+    "diagnostic": {
+      "L_repr": 0.06970210000872612,
+      "L_sem": 0.0092446843079019,
+      "total": 0.07894678431662802,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.09107472747564316,
+      "sem_to_shared_l2": 0.09864550828933716,
+      "semantic_head_grad_l2": 0.04737689718604088,
+      "temporal_head_grad_l2": 0.043814752250909805
+    },
+    "optimizer_steps": 26477,
+    "resources": {
+      "cpu_seconds": 3277.69602,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  },
+  {
+    "epoch": 30,
+    "L_repr": 0.05769683596358237,
+    "L_sem": 0.008033313572554834,
+    "total": 0.06573014951590753,
+    "rows": 116843,
+    "train_seconds": 103.41549358500197,
+    "diagnostic_seconds": 0.21808395800326252,
+    "diagnostic": {
+      "L_repr": 0.06923028640449047,
+      "L_sem": 0.00464200872247448,
+      "total": 0.07387229512696496,
+      "role": "IN_SAMPLE_NUMERICAL_ONLY",
+      "used_for_selection": false
+    },
+    "shared_gradient_audit": {
+      "repr_to_shared_l2": 0.07660838216543198,
+      "sem_to_shared_l2": 0.18456551432609558,
+      "semantic_head_grad_l2": 0.057493552565574646,
+      "temporal_head_grad_l2": 0.04093657433986664
+    },
+    "optimizer_steps": 27390,
+    "resources": {
+      "cpu_seconds": 3388.214951,
+      "rss_peak_bytes": 3658661888,
+      "mps_current_bytes": 17590272,
+      "mps_driver_bytes": 159399936
+    }
+  }
+]

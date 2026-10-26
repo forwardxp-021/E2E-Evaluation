@@ -1,0 +1,80 @@
+Train-only normalizer shard 1/51
+Train-only normalizer shard 2/51
+Train-only normalizer shard 3/51
+Train-only normalizer shard 4/51
+Train-only normalizer shard 5/51
+Train-only normalizer shard 6/51
+Train-only normalizer shard 7/51
+Train-only normalizer shard 8/51
+Train-only normalizer shard 9/51
+Train-only normalizer shard 10/51
+Train-only normalizer shard 11/51
+Train-only normalizer shard 12/51
+Train-only normalizer shard 13/51
+Train-only normalizer shard 14/51
+Train-only normalizer shard 15/51
+Train-only normalizer shard 16/51
+Train-only normalizer shard 17/51
+Train-only normalizer shard 18/51
+Train-only normalizer shard 19/51
+Train-only normalizer shard 20/51
+Train-only normalizer shard 21/51
+Train-only normalizer shard 22/51
+Train-only normalizer shard 23/51
+Train-only normalizer shard 24/51
+Train-only normalizer shard 25/51
+Train-only normalizer shard 26/51
+Train-only normalizer shard 27/51
+Train-only normalizer shard 28/51
+Train-only normalizer shard 29/51
+Train-only normalizer shard 30/51
+Train-only normalizer shard 31/51
+Train-only normalizer shard 32/51
+Train-only normalizer shard 33/51
+Train-only normalizer shard 34/51
+Train-only normalizer shard 35/51
+Train-only normalizer shard 36/51
+Train-only normalizer shard 37/51
+Train-only normalizer shard 38/51
+Train-only normalizer shard 39/51
+Train-only normalizer shard 40/51
+Train-only normalizer shard 41/51
+Train-only normalizer shard 42/51
+Train-only normalizer shard 43/51
+Train-only normalizer shard 44/51
+Train-only normalizer shard 45/51
+Train-only normalizer shard 46/51
+Train-only normalizer shard 47/51
+Train-only normalizer shard 48/51
+Train-only normalizer shard 49/51
+Train-only normalizer shard 50/51
+Train-only normalizer shard 51/51
+{
+  "state": "OWNER_AUTHORIZED_FORMAL_U_ONLY_WITH_DISCLOSED_SOURCE_RISK",
+  "source_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "selection": "FIXED_EPOCH_30_NO_U_VAL_CHECKPOINT_SELECTION",
+  "epochs": 30,
+  "seed": 3407,
+  "batch_size": 128,
+  "rows": 116843,
+  "steps_per_epoch": 913,
+  "expected_committed_steps": 27390,
+  "device": "mps",
+  "device_budget_seconds": 86400,
+  "cfg_sha256": "996d33ec2f8ffaf7c98f0758383dd35bfb04d622f35886582daeda0f0640448b",
+  "data_manifest_sha256": "1377c0f644d94829c0fcb3ec85c7f40221f0cd354bda7d84fe1f592e8110c830",
+  "normalizer_sha256": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+  "actual_training_manifest_sha256": "ca01b5235441ef8e285451a8be57eb29113517b1bb1b67a2480c1c86631336ab",
+  "source_sha256": {
+    "tools/rbr_v2_prod_train.py": "99032306e682fbe95fad3f2741cd1ce9a1af11f2767eff96bee77de3228abefd",
+    "tools/rbr_v2_prod_runtime.py": "a8c12814f1b2c2e720db4b7a908bc89719eab55e1b8f252340f7f23eefb1d518",
+    "tools/rbr_v2_prod_features.py": "a498c44d77c5afa9c1391e7145a56d3bf05f42b248b296758a82bed88ca681fc",
+    "tools/rbr_v2_model.py": "a89a62e43f4e1b0ea5064557b98388c3b170ce0b171fd81222c61361f6c17758",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399"
+  },
+  "gradient_proof_sha256": "cf8e7839a6d34ebbb717835e2fd497870adfee5717525b9ea5f5c27b914149e9",
+  "torch": "2.9.1",
+  "numpy": "2.2.6",
+  "budget_reference_hours": 4.697664625983552,
+  "smoke_checkpoint_loaded": false
+}

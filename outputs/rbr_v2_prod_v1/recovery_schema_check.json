@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "purpose": "ZERO_UPDATE_RECOVERY_COMPATIBILITY_CHECK",
+  "checkpoint": "run/epoch01.pt",
+  "checkpoint_sha256": "fdd6af93df8df06f7686f0050290d75f824182329cd16ac21606cd521e6063dd",
+  "model_state_hash_matches": true,
+  "optimizer_step_values": [
+    913
+  ],
+  "numpy_next_epoch_order_matches": true,
+  "torch_and_mps_rng_restored": true,
+  "optimizer_steps_executed_by_check": 0,
+  "actual_training_resume_performed": false
+}

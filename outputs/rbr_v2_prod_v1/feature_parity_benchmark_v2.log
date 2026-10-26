@@ -1,0 +1,15 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_waymo_source.py:40: UserWarning: MessageFactory class is deprecated. Please use GetMessageClass() instead of MessageFactory.GetPrototype. MessageFactory class will be removed after 2024.
+  return message_factory.MessageFactory(p).GetPrototype(p.FindMessageTypeByName('rbr_motion.Scenario'))
+{'scenario_id': 'ca2c24420a304c5f', 'actor_id': '663', 'old_seconds': 1.672735709, 'prepared_plus_one_seconds': 0.3904077909999999, 'actors': 75, 'status': 'BITWISE_PASS'}
+{'scenario_id': '2cb26642f196b0a7', 'actor_id': '6', 'old_seconds': 2.4817736249999998, 'prepared_plus_one_seconds': 0.3885213750000007, 'actors': 83, 'status': 'BITWISE_PASS'}
+{'scenario_id': '4663a25b8ceffaa5', 'actor_id': '48', 'old_seconds': 1.4514358329999997, 'prepared_plus_one_seconds': 0.3165098750000004, 'actors': 73, 'status': 'BITWISE_PASS'}
+{'scenario_id': 'fa511cf49fec68d3', 'actor_id': '430', 'old_seconds': 1.726230042, 'prepared_plus_one_seconds': 0.2631826670000006, 'actors': 35, 'status': 'BITWISE_PASS'}
+{'scenario_id': 'cf73d3b296c05285', 'actor_id': '69', 'old_seconds': 1.4122976250000008, 'prepared_plus_one_seconds': 0.25017870900000005, 'actors': 69, 'status': 'BITWISE_PASS'}
+{'scenario_id': '72253b51e6698b9e', 'actor_id': '579', 'old_seconds': 1.010776625, 'prepared_plus_one_seconds': 0.20051541700000008, 'actors': 43, 'status': 'BITWISE_PASS'}
+{'scenario_id': '5f3ce41376ce5d3f', 'actor_id': '266', 'old_seconds': 0.5392312090000004, 'prepared_plus_one_seconds': 0.12267245800000026, 'actors': 17, 'status': 'BITWISE_PASS'}
+{'scenario_id': 'ef813999bc2dfe82', 'actor_id': '1063', 'old_seconds': 2.9296371249999993, 'prepared_plus_one_seconds': 0.418583583000002, 'actors': 105, 'status': 'BITWISE_PASS'}
+{'scenario_id': '916b92bcde639bae', 'actor_id': '3624', 'old_seconds': 2.1579334579999987, 'prepared_plus_one_seconds': 0.33497504199999995, 'actors': 78, 'status': 'BITWISE_PASS'}
+{'scenario_id': '9a0209705c611b0d', 'actor_id': '4907', 'old_seconds': 2.7214608329999983, 'prepared_plus_one_seconds': 0.33407437500000015, 'actors': 92, 'status': 'BITWISE_PASS'}
+{'scenario_id': 'be0c124c4f1d316a', 'actor_id': '2488', 'old_seconds': 1.8293113339999998, 'prepared_plus_one_seconds': 0.37893266700000083, 'actors': 79, 'status': 'BITWISE_PASS'}
+{'scenario_id': '382a8f52381692fc', 'actor_id': '4626', 'old_seconds': 1.175527333999998, 'prepared_plus_one_seconds': 0.19976366699999915, 'actors': 46, 'status': 'BITWISE_PASS'}
+ALL PASS

@@ -32,7 +32,8 @@ def verify_normalizer(data):
         np.testing.assert_allclose(std,scaler[label]['std'],atol=1e-7,rtol=1e-7)
         proof[label]=dict(status='PASS',max_mean_difference=float(np.abs(mean-scaler[label]['mean']).max()),
             max_std_difference=float(np.abs(std-scaler[label]['std']).max()),counts=n.tolist())
-    proof.update(fit_rows=data.n,fit_role='TRAIN_ONLY',independent_validation_used=False)
+    proof.update(fit_rows=data.n,fit_role='TRAIN_ONLY',independent_validation_used=False,
+        data_manifest_sha256=data.hash,normalizer_sha256=sha(OUT/'normalizer.json'))
     write(OUT/'normalizer_independent_verification.json',proof)
 
 
@@ -64,7 +65,10 @@ def main():
         if sha(path)!=exported[key]:raise ValueError('Model/interface binding changed')
     for path,h in f['source_sha256'].items():
         if sha(ROOT/path)!=h:raise ValueError('Frozen scientific source changed')
-    verify_normalizer(data)
+    saved=OUT/'normalizer_independent_verification.json'
+    verified=json.loads(saved.read_text()) if saved.exists() else {}
+    if verified.get('data_manifest_sha256')!=data.hash or verified.get('normalizer_sha256')!=sha(OUT/'normalizer.json'):
+        verify_normalizer(data)
     before=json.loads((OUT/'protected_before.json').read_text());changed=[]
     for p,h in before.items():
         if p=='QUICK_REFERENCE.md':continue

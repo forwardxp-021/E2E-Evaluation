@@ -1,0 +1,13 @@
+{
+  "status": "RBR_V2_U_ONLY_TRAINED_CANDIDATE",
+  "additional_status": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "rows": 116843,
+  "epochs": 30,
+  "committed_optimizer_steps": 27390,
+  "selection": "FIXED_EPOCH_30_NO_U_VAL_CHECKPOINT_SELECTION",
+  "training_attempts": 1,
+  "device_seconds": 3140.463882416996,
+  "independent_U_validation_certified": false,
+  "model_interface_pass": true,
+  "downstream_execution": 0
+}

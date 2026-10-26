@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "pid": 61304,
+  "shape": [
+    256,
+    64
+  ],
+  "finite": true,
+  "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+  "reference_max_abs_difference": 0.0,
+  "reference_bitwise_equal": true,
+  "module_parameter_delta_l2": {
+    "gru.": 57.07764125298394,
+    "project.": 17.45969850082735,
+    "semantic.": 8.991965877774778,
+    "temporal.": 31.638803840313482
+  },
+  "optimizer_parameter_step_values": [
+    27390
+  ],
+  "normalizer_sha256": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+  "data_manifest_sha256": "1377c0f644d94829c0fcb3ec85c7f40221f0cd354bda7d84fe1f592e8110c830",
+  "z64_sha256": "5ebbf52627892470204832f7bd6acfcb91c373b37b014a62fb50c20be5527094",
+  "parameter_sha256": "e395d9f0db41dae25bca1965d11d8aa094a8c79c0cc38991e9d1a1b3b8657953",
+  "initial_parameter_sha256": "d2be38102ecf73a9dec922436e41b08642739bc32e321ab3982353d7cbf92c31",
+  "selection": "FIXED_EPOCH_30_NO_U_VAL_CHECKPOINT_SELECTION",
+  "source_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED"
+}
