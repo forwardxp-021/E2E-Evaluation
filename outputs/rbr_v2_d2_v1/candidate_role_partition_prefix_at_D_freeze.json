@@ -1,0 +1,365 @@
+{
+  "status": "CAPACITY_BLOCKED",
+  "not_primary_freeze": true,
+  "not_power_certified": true,
+  "D_fit": [
+    {
+      "run_id": "SDC-DEV-01-BASELINE",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "log_id": "2021.09.20.13.46.45_veh-42_00401_00526",
+      "scenario_token": "2d04941c562e568b",
+      "arm": "BASELINE",
+      "root": "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-BASELINE",
+      "new_role": "D_INTERFACE_FIT_ONLY",
+      "future_V_C_excluded_for_current_pipeline": true
+    },
+    {
+      "run_id": "SDC-DEV-01-TREATMENT",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "log_id": "2021.09.20.13.46.45_veh-42_00401_00526",
+      "scenario_token": "2d04941c562e568b",
+      "arm": "TREATMENT",
+      "root": "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-01-TREATMENT",
+      "new_role": "D_INTERFACE_FIT_ONLY",
+      "future_V_C_excluded_for_current_pipeline": true
+    },
+    {
+      "run_id": "SDC-DEV-02-BASELINE",
+      "session_id": "2021.08.25.17.17.57_veh-42",
+      "log_id": "2021.08.25.17.17.57_veh-42_00327_01003",
+      "scenario_token": "e0c5ef0c18ce5790",
+      "arm": "BASELINE",
+      "root": "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-BASELINE",
+      "new_role": "D_INTERFACE_FIT_ONLY",
+      "future_V_C_excluded_for_current_pipeline": true
+    },
+    {
+      "run_id": "SDC-DEV-02-TREATMENT",
+      "session_id": "2021.08.25.17.17.57_veh-42",
+      "log_id": "2021.08.25.17.17.57_veh-42_00327_01003",
+      "scenario_token": "e0c5ef0c18ce5790",
+      "arm": "TREATMENT",
+      "root": "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-02-TREATMENT",
+      "new_role": "D_INTERFACE_FIT_ONLY",
+      "future_V_C_excluded_for_current_pipeline": true
+    },
+    {
+      "run_id": "SDC-DEV-03-BASELINE",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "log_id": "2021.07.09.17.06.37_veh-35_00258_00748",
+      "scenario_token": "e144c3399a4f50d0",
+      "arm": "BASELINE",
+      "root": "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-BASELINE",
+      "new_role": "D_INTERFACE_FIT_ONLY",
+      "future_V_C_excluded_for_current_pipeline": true
+    },
+    {
+      "run_id": "SDC-DEV-03-TREATMENT",
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "log_id": "2021.07.09.17.06.37_veh-35_00258_00748",
+      "scenario_token": "e144c3399a4f50d0",
+      "arm": "TREATMENT",
+      "root": "outputs/stageR/e2e_sdc_v1/DEVELOPMENT/SDC-DEV-03-TREATMENT",
+      "new_role": "D_INTERFACE_FIT_ONLY",
+      "future_V_C_excluded_for_current_pipeline": true
+    }
+  ],
+  "D_existing_swap_cal": [
+    "2021.07.16.18.19.22_veh-35",
+    "2021.07.24.20.37.45_veh-17",
+    "2021.08.17.14.45.12_veh-42",
+    "2021.08.20.14.28.03_veh-45",
+    "2021.08.20.18.44.47_veh-08",
+    "2021.08.23.16.53.37_veh-08",
+    "2021.08.25.17.10.24_veh-45",
+    "2021.08.25.18.29.43_veh-42",
+    "2021.08.25.20.03.09_veh-08",
+    "2021.09.09.13.32.12_veh-43",
+    "2021.09.09.14.34.34_veh-43",
+    "2021.09.09.16.51.32_veh-42",
+    "2021.09.09.18.12.06_veh-42",
+    "2021.09.15.13.06.21_veh-42",
+    "2021.09.15.13.26.07_veh-45",
+    "2021.09.17.13.27.08_veh-42",
+    "2021.09.17.17.36.45_veh-45",
+    "2021.09.17.18.42.25_veh-08",
+    "2021.09.20.14.04.18_veh-08",
+    "2021.09.23.14.44.24_veh-45"
+  ],
+  "D_new": [
+    "2021.10.14.17.47.55_veh-28",
+    "2021.06.24.14.20.12_veh-47",
+    "2021.09.10.07.02.31_veh-51",
+    "2021.10.15.12.13.23_veh-28",
+    "2021.09.29.08.50.06_veh-53",
+    "2021.09.07.04.01.34_veh-51",
+    "2021.07.23.16.32.39_veh-17",
+    "2021.09.07.02.31.43_veh-51",
+    "2021.10.11.13.27.07_veh-28",
+    "2021.05.21.13.41.26_veh-12",
+    "2021.10.01.13.28.54_veh-28",
+    "2021.08.09.18.37.41_veh-28",
+    "2021.08.26.18.24.36_veh-28",
+    "2021.06.07.13.53.57_veh-35",
+    "2021.10.11.17.07.38_veh-28",
+    "2021.08.31.17.42.52_veh-40",
+    "2021.07.23.17.51.38_veh-26",
+    "2021.06.30.17.20.09_veh-35",
+    "2021.07.14.16.58.38_veh-38",
+    "2021.09.03.14.11.45_veh-40",
+    "2021.07.15.22.36.53_veh-38",
+    "2021.06.08.14.14.51_veh-35",
+    "2021.07.22.17.40.23_veh-47",
+    "2021.09.14.19.35.02_veh-39",
+    "2021.06.24.21.55.23_veh-26",
+    "2021.06.18.18.50.06_veh-30",
+    "2021.07.22.21.43.45_veh-35",
+    "2021.07.23.16.54.45_veh-37",
+    "2021.07.22.21.07.31_veh-47",
+    "2021.07.22.17.54.22_veh-17",
+    "2021.07.13.01.55.44_veh-38",
+    "2021.05.17.16.40.09_veh-35",
+    "2021.05.21.17.47.35_veh-35",
+    "2021.09.20.19.14.01_veh-28",
+    "2021.07.22.19.31.55_veh-37",
+    "2021.07.02.17.50.52_veh-37",
+    "2021.10.08.06.38.01_veh-50",
+    "2021.07.16.02.35.53_veh-37",
+    "2021.08.25.17.55.51_veh-41",
+    "2021.06.24.17.25.34_veh-16"
+  ],
+  "final_calibration_candidates": [
+    {
+      "session_id": "2021.05.12.22.28.35_veh-35",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.05.25.14.16.10_veh-35",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.03.12.02.06_veh-35",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.08.14.35.24_veh-26",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.09.17.23.18_veh-38",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.14.19.22.11_veh-38",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.23.16.54.19_veh-35",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.28.15.02.02_veh-38",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.28.16.57.59_veh-26",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.30.14.54.34_veh-40",
+      "source": "D1_E3_STATIC_ONLY",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.25.18.07.15_veh-45",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.25.19.06.07_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.05.12.22.00.38_veh-35",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.20.13.00.37_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.03.16.25.50_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.03.17.02.10_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.17.16.48.45_veh-43",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.14.18.42.45_veh-12",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.13.14.24.27_veh-45",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.17.12.58.10_veh-45",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.17.18.11.12_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.21.16.42.24_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.25.13.09.17_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.17.13.15.12_veh-45",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.23.13.17.08_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.23.18.16.02_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.23.17.33.08_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.20.19.38.32_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.17.19.18.39_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.10.01.14.16.29_veh-44",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.23.17.31.36_veh-16",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.02.14.10.27_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.30.15.12.56_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.06.03.13.55.17_veh-35",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.19.17.42.11_veh-08",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.27.16.46.47_veh-45",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.23.19.08.29_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.08.20.12.28.52_veh-42",
+      "source": "D1_STATIC",
+      "qualified": false
+    },
+    {
+      "session_id": "2021.09.15.14.57.57_veh-45",
+      "source": "D1_STATIC",
+      "qualified": false
+    }
+  ],
+  "V_AA_candidates": [],
+  "V_AB_candidates": [],
+  "unallocated_candidates": [],
+  "C_metadata_only_new": [
+    "2021.09.29.03.36.01_veh-51",
+    "2021.10.08.07.31.13_veh-50",
+    "2021.10.01.18.26.05_veh-28",
+    "2021.08.24.12.39.05_veh-42",
+    "2021.09.03.05.36.38_veh-53",
+    "2021.09.24.06.20.13_veh-53",
+    "2021.08.30.07.38.06_veh-49",
+    "2021.09.13.18.39.41_veh-39",
+    "2021.07.21.21.06.04_veh-37",
+    "2021.06.04.16.26.58_veh-30",
+    "2021.09.29.08.07.57_veh-50",
+    "2021.10.04.06.22.37_veh-49",
+    "2021.05.13.20.19.39_veh-35",
+    "2021.07.15.23.18.35_veh-14",
+    "2021.07.21.17.06.47_veh-17",
+    "2021.05.28.17.49.23_veh-47",
+    "2021.08.27.04.26.17_veh-53",
+    "2021.09.30.06.30.37_veh-50",
+    "2021.09.28.00.37.22_veh-53",
+    "2021.08.31.08.01.03_veh-49"
+  ],
+  "C_original_protected": "original five unchanged; raw/results not accessed",
+  "uniform_population": "Conditional on official train/val and deterministic one minimum-size >=15s chunk per SESSION; not all nuPlan timeframes",
+  "required_counts": {
+    "final_calibration": 40,
+    "V_AA": 40,
+    "V_AB": 80
+  },
+  "actual_counts": {
+    "final_calibration": 39,
+    "V_AA": 0,
+    "V_AB": 0
+  }
+}

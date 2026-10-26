@@ -1,0 +1,5745 @@
+{
+  "session_id": "2021.10.15.12.13.23_veh-28",
+  "log": {
+    "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+    "session_id": "2021.10.15.12.13.23_veh-28",
+    "database_log_token": "9c50576839fb5ac7",
+    "vehicle_id": "veh-28",
+    "log_date": "2021-10-15",
+    "acquisition_start_timestamp_us": 1634300188899461,
+    "map_location": "us-ma-boston",
+    "map_version": "us-ma-boston",
+    "source_file": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.10.15.12.13.23_veh-28_00021_00100.db",
+    "source_partition": "AWS_V1_1_TRAIN",
+    "source_dataset": "OFFICIAL_NUPLAN_V1_1",
+    "frozen_fingerprint_match": true,
+    "observed_db_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+    "source_stat_unchanged_during_read": true,
+    "shard": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d2_v1/metadata/2021.10.15.12.13.23_veh-28.json.gz",
+    "scenario_count": 1142,
+    "sha256": "397cfd4a527fafab1660ea74458a4c5d09be3950dbcea8107dbb78eba63f4b90"
+  },
+  "status": "ELIGIBLE",
+  "reasons": [],
+  "source_split": "train",
+  "download_sha256": "e8d59e0d407694af6477ef7233c99588d56b2bee048ff03c60837df72c7029df",
+  "representative": {
+    "rank_sha256": "026cea6c6ef181d33f41f1bdd316da28eff805100941aef50bad3b5cec113004",
+    "scenario_token": "4bd49206935654ef",
+    "session_id": "2021.10.15.12.13.23_veh-28",
+    "anchor_timestamp_us": 1634300254799542,
+    "task_types": [
+      "on_intersection",
+      "traversing_intersection"
+    ],
+    "anchor_80_state_support": true,
+    "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+    "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.10.15.12.13.23_veh-28_00021_00100.db",
+    "map_name": "us-ma-boston",
+    "source_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+    "source_partition": "AWS_V1_1_TRAIN",
+    "initial": {
+      "official_simulation_initial_lidar_token": "93da407801425a18",
+      "official_simulation_initial_timestamp_us": 1634300251799714,
+      "official_scenario_types": [
+        "on_intersection",
+        "traversing_intersection"
+      ],
+      "initial_x": 332737.608436,
+      "initial_y": 4690051.541659,
+      "initial_heading": 3.13142486,
+      "initial_speed_mps": 10.447519,
+      "initial_time_us": 1634300251799714,
+      "initial_state_fingerprint": "551114d6b2e7eab705c332042b4a296b294fd991db5b3daba55d919605d8f632"
+    },
+    "route_roadblock_ids": [
+      "50560",
+      "48750",
+      "50708",
+      "48890",
+      "49653",
+      "48927",
+      "50448",
+      "49125",
+      "50038",
+      "49145",
+      "50351",
+      "49367",
+      "50011",
+      "49235",
+      "49946",
+      "49428",
+      "50466",
+      "48730",
+      "51021",
+      "48751",
+      "49897",
+      "49090",
+      "50478",
+      "49159",
+      "50361",
+      "49039",
+      "49837",
+      "49837",
+      "48921",
+      "49784",
+      "48691",
+      "50743",
+      "49122"
+    ],
+    "route_id": "c0dbfae40f817d3229c3bb4ca0e1b00e2a5bc3d4e2227128e4ff0e8628c9e08f",
+    "native_edge_ids": [
+      "51489",
+      "53015",
+      "51151",
+      "52759",
+      "48625"
+    ],
+    "route_reference_builder": "build_native_route_reference_v1_1",
+    "precontext": {
+      "schema_version": "s2r_precontext_v1",
+      "session_id": "2021.10.15.12.13.23_veh-28",
+      "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+      "scenario_token": "4bd49206935654ef",
+      "start_timestamp_us": 1634300251799714,
+      "source_database_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+      "ego_initial_state": {
+        "official_simulation_initial_lidar_token": "93da407801425a18",
+        "official_simulation_initial_timestamp_us": 1634300251799714,
+        "initial_x": 332737.608436,
+        "initial_y": 4690051.541659,
+        "initial_heading": 3.13142486,
+        "initial_speed_mps": 10.447519,
+        "initial_time_us": 1634300251799714,
+        "tire_steering_angle": 0.0,
+        "tire_steering_source": "OFFICIAL_NUPLAN_EGO_QUERY_CONSTANT"
+      },
+      "route_id": "c0dbfae40f817d3229c3bb4ca0e1b00e2a5bc3d4e2227128e4ff0e8628c9e08f",
+      "route_roadblock_ids": [
+        "50560",
+        "48750",
+        "50708",
+        "48890",
+        "49653",
+        "48927",
+        "50448",
+        "49125",
+        "50038",
+        "49145",
+        "50351",
+        "49367",
+        "50011",
+        "49235",
+        "49946",
+        "49428",
+        "50466",
+        "48730",
+        "51021",
+        "48751",
+        "49897",
+        "49090",
+        "50478",
+        "49159",
+        "50361",
+        "49039",
+        "49837",
+        "49837",
+        "48921",
+        "49784",
+        "48691",
+        "50743",
+        "49122"
+      ],
+      "map_identity": {
+        "map_name": "us-ma-boston",
+        "map_version": "nuplan-maps-v1.0"
+      },
+      "traffic_agent_precontext_sha256": "81076cb6aad1880132136b92e0a04783e64c246ee1cdc4e5426f3592ec193d1c",
+      "history_buffer_source_sha256": "b805f37833570894a62177ca63b820a1acd4bf2a85a907a6af359725c1b88eb5",
+      "history_source_row_count": 42,
+      "planner_warmup_state": "FRESH_UNINITIALIZED_PLANNER; COMMON_PREINTERVENTION_TRAJECTORY_CONTRACT",
+      "simulation_initialization": "OFFICIAL_NUPLAN_SCENARIO_AND_FRESH_ARM_FACTORY",
+      "intervention_start_s": 1.1,
+      "intervention_precontext_contract": "BOTH_ARMS_USE_BASELINE_TRAJECTORY_FOR_ABSOLUTE_TIME_LT_1P1"
+    },
+    "precontext_id": "d19d5499be20152fa7cb0f6564ccb58a38756b45480874f4b9e370d788b62aad"
+  },
+  "representative_rejections": [
+    {
+      "rank_sha256": "001f4c69e2ce2feaf563c4771fb6075ec9ef285c42fc141cdfad71e1b49d1a48",
+      "reason": "OFFICIAL_EXACT_SCENARIO_RESOLUTION_NOT_ONE"
+    },
+    {
+      "rank_sha256": "00a4dde319a218d54fa868c584ae421a1ac1cb8004257f49398b78e3db325d2b",
+      "reason": "OFFICIAL_EXACT_SCENARIO_RESOLUTION_NOT_ONE"
+    },
+    {
+      "rank_sha256": "018f48c5017b9362f7ece3c168ecc277253d0f1e6e73435e9274062a90d6e0f1",
+      "reason": "OFFICIAL_EXACT_SCENARIO_RESOLUTION_NOT_ONE"
+    },
+    {
+      "rank_sha256": "019c9e176ade20fdf6d34ff53feb936c0a8e56b6853d91109b14b1e92e2e63d7",
+      "reason": "OFFICIAL_EXACT_SCENARIO_RESOLUTION_NOT_ONE"
+    },
+    {
+      "rank_sha256": "01b836aea7fd63192488ad87a24ce4c34201a38cf8e1bd8b0cf1251a933c433b",
+      "reason": "OFFICIAL_EXACT_SCENARIO_RESOLUTION_NOT_ONE"
+    },
+    {
+      "rank_sha256": "0231ef04132b9a64da68a0151c5b5b058b9745e481d29c8679329b3d8d4d391e",
+      "reason": "OFFICIAL_EXACT_SCENARIO_RESOLUTION_NOT_ONE"
+    }
+  ],
+  "anchor_trials": [
+    {
+      "status": "METADATA_REJECTED",
+      "reasons": [
+        "OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED"
+      ],
+      "anchor_rank": 1
+    },
+    {
+      "status": "METADATA_REJECTED",
+      "reasons": [
+        "OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED"
+      ],
+      "anchor_rank": 2
+    },
+    {
+      "status": "METADATA_REJECTED",
+      "reasons": [
+        "NATIVE_ROUTE_FAIL: current native edge unavailable"
+      ],
+      "anchor_rank": 3
+    },
+    {
+      "status": "METADATA_REJECTED",
+      "reasons": [
+        "OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED"
+      ],
+      "anchor_rank": 4
+    },
+    {
+      "status": "METADATA_REJECTED",
+      "reasons": [
+        "OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED"
+      ],
+      "anchor_rank": 5
+    },
+    {
+      "session_id": "2021.10.15.12.13.23_veh-28",
+      "status": "ELIGIBLE",
+      "reasons": [],
+      "spec": {
+        "session_id": "2021.10.15.12.13.23_veh-28",
+        "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+        "scenario_token": "d1f4c58cc7ab5b2c",
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.10.15.12.13.23_veh-28_00021_00100.db",
+        "map_name": "us-ma-boston",
+        "source_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+        "candidate": "TSB_DIRECT_COAST_F2",
+        "benchmark_version": "E2E_SCOPED_DIRECT_COAST_V1",
+        "role": "B",
+        "exposure_class": "E0_METADATA_ONLY",
+        "route_roadblock_ids": [
+          "50560",
+          "48750",
+          "50708",
+          "48890",
+          "49653",
+          "48927",
+          "50448",
+          "49125",
+          "50038",
+          "49145",
+          "50351",
+          "49367",
+          "50011",
+          "49235",
+          "49946",
+          "49428",
+          "50466",
+          "48730",
+          "51021",
+          "48751",
+          "49897",
+          "49090",
+          "50478",
+          "49159",
+          "50361",
+          "49039",
+          "49837",
+          "49837",
+          "48921",
+          "49784",
+          "48691",
+          "50743",
+          "49122"
+        ],
+        "route_id": "c0dbfae40f817d3229c3bb4ca0e1b00e2a5bc3d4e2227128e4ff0e8628c9e08f",
+        "precontext": {
+          "schema_version": "s2r_precontext_v1",
+          "session_id": "2021.10.15.12.13.23_veh-28",
+          "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+          "scenario_token": "d1f4c58cc7ab5b2c",
+          "start_timestamp_us": 1634300261199669,
+          "source_database_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+          "ego_initial_state": {
+            "official_simulation_initial_lidar_token": "83f7119329c058aa",
+            "official_simulation_initial_timestamp_us": 1634300261199669,
+            "initial_x": 332650.835078,
+            "initial_y": 4690051.757021,
+            "initial_heading": 3.1407047,
+            "initial_speed_mps": 5.946588,
+            "initial_time_us": 1634300261199669,
+            "tire_steering_angle": 0.0,
+            "tire_steering_source": "OFFICIAL_NUPLAN_EGO_QUERY_CONSTANT"
+          },
+          "route_id": "c0dbfae40f817d3229c3bb4ca0e1b00e2a5bc3d4e2227128e4ff0e8628c9e08f",
+          "route_roadblock_ids": [
+            "50560",
+            "48750",
+            "50708",
+            "48890",
+            "49653",
+            "48927",
+            "50448",
+            "49125",
+            "50038",
+            "49145",
+            "50351",
+            "49367",
+            "50011",
+            "49235",
+            "49946",
+            "49428",
+            "50466",
+            "48730",
+            "51021",
+            "48751",
+            "49897",
+            "49090",
+            "50478",
+            "49159",
+            "50361",
+            "49039",
+            "49837",
+            "49837",
+            "48921",
+            "49784",
+            "48691",
+            "50743",
+            "49122"
+          ],
+          "map_identity": {
+            "map_name": "us-ma-boston",
+            "map_version": "nuplan-maps-v1.0"
+          },
+          "traffic_agent_precontext_sha256": "6ee4f333dc9c0be208f6abe366cbf05702048de2e2df1ce3ce2f6f234d7d092d",
+          "history_buffer_source_sha256": "c15fffb7e0697d6c78a1d68677cab93acd98b98b10a4481e643193a9715e1675",
+          "history_source_row_count": 42,
+          "planner_warmup_state": "FRESH_UNINITIALIZED_PLANNER; COMMON_PREINTERVENTION_TRAJECTORY_CONTRACT",
+          "simulation_initialization": "OFFICIAL_NUPLAN_SCENARIO_AND_FRESH_ARM_FACTORY",
+          "intervention_start_s": 1.1,
+          "intervention_precontext_contract": "BOTH_ARMS_USE_BASELINE_TRAJECTORY_FOR_ABSOLUTE_TIME_LT_1P1"
+        },
+        "precontext_id": "1020180ccd5eec89f02f7a0ad70b4e91689c8a64aadcf663915b984717c4adb9",
+        "start_timestamp_us": 1634300261199669
+      },
+      "evidence": {
+        "initial_speed_mps": 5.946587826728614,
+        "initial_acceleration_mps2": -1.7963881615149633,
+        "initial_heading_error_rad": 0.0002947078871247122,
+        "initial_centerline_offset_m": 0.22365422226014928,
+        "route_heading_range_rad": 0.0016236863385969968,
+        "forward_coverage_m": 52.02704383115605,
+        "clock": {
+          "policy": "SAME_INDEX_UNIQUE_NEAREST_CELL_v1",
+          "status": "PASS",
+          "authority": "tools.tsb_coast_p1r_c_clock.CoastCanonicalTimeControllerV1",
+          "episode_start_us": 1634300261199669,
+          "control_step_us": 100000,
+          "iteration_count": 81,
+          "realized_frame_count": 80,
+          "transition_count": 79,
+          "nominal_half_period_us": 50000,
+          "half_period_role": "INDEX_AMBIGUITY_BOUND_NOT_PHYSICAL_ERROR_OR_CAUSALITY_TOLERANCE",
+          "positive_skew_count": 20,
+          "negative_skew_count": 58,
+          "min_raw_minus_sim_us": -199,
+          "max_raw_minus_sim_us": 93,
+          "max_abs_raw_minus_sim_us": 199,
+          "raw_80frame_span_us": 7900038,
+          "simulation_80frame_span_us": 7900000,
+          "strict_event_time_causal_replay": false,
+          "future_frame_selected": false,
+          "observations_retimed_or_interpolated": false,
+          "rows": [
+            {
+              "index": 0,
+              "simulation_time_us": 1634300261199669,
+              "raw_log_time_us": 1634300261199669,
+              "lidar_token": "83f7119329c058aa",
+              "raw_minus_sim_us": 0,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 1,
+              "simulation_time_us": 1634300261299669,
+              "raw_log_time_us": 1634300261299644,
+              "lidar_token": "8e67971918695a3a",
+              "raw_minus_sim_us": -25,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 2,
+              "simulation_time_us": 1634300261399669,
+              "raw_log_time_us": 1634300261399621,
+              "lidar_token": "518bb31f8cf55c02",
+              "raw_minus_sim_us": -48,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 3,
+              "simulation_time_us": 1634300261499669,
+              "raw_log_time_us": 1634300261499601,
+              "lidar_token": "7868b74be1d25af6",
+              "raw_minus_sim_us": -68,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 4,
+              "simulation_time_us": 1634300261599669,
+              "raw_log_time_us": 1634300261599575,
+              "lidar_token": "d71836f3e87f5521",
+              "raw_minus_sim_us": -94,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 5,
+              "simulation_time_us": 1634300261699669,
+              "raw_log_time_us": 1634300261699543,
+              "lidar_token": "5b8adac354515f62",
+              "raw_minus_sim_us": -126,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 6,
+              "simulation_time_us": 1634300261799669,
+              "raw_log_time_us": 1634300261799522,
+              "lidar_token": "60b6a93d54aa5aa4",
+              "raw_minus_sim_us": -147,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 7,
+              "simulation_time_us": 1634300261899669,
+              "raw_log_time_us": 1634300261899506,
+              "lidar_token": "a8d3763ee0d65eb9",
+              "raw_minus_sim_us": -163,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 8,
+              "simulation_time_us": 1634300261999669,
+              "raw_log_time_us": 1634300261999498,
+              "lidar_token": "331f5da6d17c5f12",
+              "raw_minus_sim_us": -171,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 9,
+              "simulation_time_us": 1634300262099669,
+              "raw_log_time_us": 1634300262099506,
+              "lidar_token": "c8c8100451535219",
+              "raw_minus_sim_us": -163,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 10,
+              "simulation_time_us": 1634300262199669,
+              "raw_log_time_us": 1634300262199519,
+              "lidar_token": "dfde3cb3f4e65734",
+              "raw_minus_sim_us": -150,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 11,
+              "simulation_time_us": 1634300262299669,
+              "raw_log_time_us": 1634300262299537,
+              "lidar_token": "07e398b27a6d5306",
+              "raw_minus_sim_us": -132,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 12,
+              "simulation_time_us": 1634300262399669,
+              "raw_log_time_us": 1634300262399559,
+              "lidar_token": "124221c45edd54f4",
+              "raw_minus_sim_us": -110,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 13,
+              "simulation_time_us": 1634300262499669,
+              "raw_log_time_us": 1634300262499587,
+              "lidar_token": "a3d89a638e6b57ad",
+              "raw_minus_sim_us": -82,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 14,
+              "simulation_time_us": 1634300262599669,
+              "raw_log_time_us": 1634300262599623,
+              "lidar_token": "303dfc01cde752e7",
+              "raw_minus_sim_us": -46,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 15,
+              "simulation_time_us": 1634300262699669,
+              "raw_log_time_us": 1634300262699657,
+              "lidar_token": "4890fe874a1c52ef",
+              "raw_minus_sim_us": -12,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 16,
+              "simulation_time_us": 1634300262799669,
+              "raw_log_time_us": 1634300262799693,
+              "lidar_token": "5d9d8c4d51385dd7",
+              "raw_minus_sim_us": 24,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 17,
+              "simulation_time_us": 1634300262899669,
+              "raw_log_time_us": 1634300262899718,
+              "lidar_token": "0af51e2a4afe5fbf",
+              "raw_minus_sim_us": 49,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 18,
+              "simulation_time_us": 1634300262999669,
+              "raw_log_time_us": 1634300262999720,
+              "lidar_token": "3048c015bcf759c9",
+              "raw_minus_sim_us": 51,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 19,
+              "simulation_time_us": 1634300263099669,
+              "raw_log_time_us": 1634300263099704,
+              "lidar_token": "9b79c16542525b33",
+              "raw_minus_sim_us": 35,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 20,
+              "simulation_time_us": 1634300263199669,
+              "raw_log_time_us": 1634300263199684,
+              "lidar_token": "7ed6e809ebcf5ba8",
+              "raw_minus_sim_us": 15,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 21,
+              "simulation_time_us": 1634300263299669,
+              "raw_log_time_us": 1634300263299680,
+              "lidar_token": "461a561012b454ea",
+              "raw_minus_sim_us": 11,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 22,
+              "simulation_time_us": 1634300263399669,
+              "raw_log_time_us": 1634300263399674,
+              "lidar_token": "78ebd5e9d4b3597b",
+              "raw_minus_sim_us": 5,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 23,
+              "simulation_time_us": 1634300263499669,
+              "raw_log_time_us": 1634300263499651,
+              "lidar_token": "8dc206c62c8257b6",
+              "raw_minus_sim_us": -18,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 24,
+              "simulation_time_us": 1634300263599669,
+              "raw_log_time_us": 1634300263599620,
+              "lidar_token": "c203868bbcca5998",
+              "raw_minus_sim_us": -49,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 25,
+              "simulation_time_us": 1634300263699669,
+              "raw_log_time_us": 1634300263699588,
+              "lidar_token": "e27aa93bb1ae50eb",
+              "raw_minus_sim_us": -81,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 26,
+              "simulation_time_us": 1634300263799669,
+              "raw_log_time_us": 1634300263799560,
+              "lidar_token": "4edfddc662e75de3",
+              "raw_minus_sim_us": -109,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 27,
+              "simulation_time_us": 1634300263899669,
+              "raw_log_time_us": 1634300263899538,
+              "lidar_token": "8632f3e99b875956",
+              "raw_minus_sim_us": -131,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 28,
+              "simulation_time_us": 1634300263999669,
+              "raw_log_time_us": 1634300263999521,
+              "lidar_token": "26d6992bebba5c0d",
+              "raw_minus_sim_us": -148,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 29,
+              "simulation_time_us": 1634300264099669,
+              "raw_log_time_us": 1634300264099506,
+              "lidar_token": "adfe6e274fbc5a54",
+              "raw_minus_sim_us": -163,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 30,
+              "simulation_time_us": 1634300264199669,
+              "raw_log_time_us": 1634300264199497,
+              "lidar_token": "d1f4c58cc7ab5b2c",
+              "raw_minus_sim_us": -172,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 31,
+              "simulation_time_us": 1634300264299669,
+              "raw_log_time_us": 1634300264299497,
+              "lidar_token": "e8d6a4eb67d85eb9",
+              "raw_minus_sim_us": -172,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 32,
+              "simulation_time_us": 1634300264399669,
+              "raw_log_time_us": 1634300264399502,
+              "lidar_token": "1dfad437402e533b",
+              "raw_minus_sim_us": -167,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 33,
+              "simulation_time_us": 1634300264499669,
+              "raw_log_time_us": 1634300264499519,
+              "lidar_token": "d2c91f8dca1a5e9b",
+              "raw_minus_sim_us": -150,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 34,
+              "simulation_time_us": 1634300264599669,
+              "raw_log_time_us": 1634300264599543,
+              "lidar_token": "47a7aea1205c5f13",
+              "raw_minus_sim_us": -126,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 35,
+              "simulation_time_us": 1634300264699669,
+              "raw_log_time_us": 1634300264699572,
+              "lidar_token": "be12a330582d5395",
+              "raw_minus_sim_us": -97,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 36,
+              "simulation_time_us": 1634300264799669,
+              "raw_log_time_us": 1634300264799601,
+              "lidar_token": "8601fbde42c65510",
+              "raw_minus_sim_us": -68,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 37,
+              "simulation_time_us": 1634300264899669,
+              "raw_log_time_us": 1634300264899632,
+              "lidar_token": "37200436d70f52d5",
+              "raw_minus_sim_us": -37,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 38,
+              "simulation_time_us": 1634300264999669,
+              "raw_log_time_us": 1634300264999669,
+              "lidar_token": "b5116bf8cfa05543",
+              "raw_minus_sim_us": 0,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 39,
+              "simulation_time_us": 1634300265099669,
+              "raw_log_time_us": 1634300265099708,
+              "lidar_token": "2b77467509955801",
+              "raw_minus_sim_us": 39,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 40,
+              "simulation_time_us": 1634300265199669,
+              "raw_log_time_us": 1634300265199740,
+              "lidar_token": "1792aadaaf8f53cb",
+              "raw_minus_sim_us": 71,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 41,
+              "simulation_time_us": 1634300265299669,
+              "raw_log_time_us": 1634300265299760,
+              "lidar_token": "402dd5a3b03d528f",
+              "raw_minus_sim_us": 91,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 42,
+              "simulation_time_us": 1634300265399669,
+              "raw_log_time_us": 1634300265399762,
+              "lidar_token": "1fd73db4adcc557e",
+              "raw_minus_sim_us": 93,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 43,
+              "simulation_time_us": 1634300265499669,
+              "raw_log_time_us": 1634300265499745,
+              "lidar_token": "f6dd7fe5d40c54bf",
+              "raw_minus_sim_us": 76,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 44,
+              "simulation_time_us": 1634300265599669,
+              "raw_log_time_us": 1634300265599728,
+              "lidar_token": "e9b3ef947f8753cc",
+              "raw_minus_sim_us": 59,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 45,
+              "simulation_time_us": 1634300265699669,
+              "raw_log_time_us": 1634300265699709,
+              "lidar_token": "cf243cfc69a053c5",
+              "raw_minus_sim_us": 40,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 46,
+              "simulation_time_us": 1634300265799669,
+              "raw_log_time_us": 1634300265799691,
+              "lidar_token": "d94e5f99d74f5c92",
+              "raw_minus_sim_us": 22,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 47,
+              "simulation_time_us": 1634300265899669,
+              "raw_log_time_us": 1634300265899678,
+              "lidar_token": "0930916fcb4856d1",
+              "raw_minus_sim_us": 9,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 48,
+              "simulation_time_us": 1634300265999669,
+              "raw_log_time_us": 1634300265999672,
+              "lidar_token": "4be5229b967f51d7",
+              "raw_minus_sim_us": 3,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 49,
+              "simulation_time_us": 1634300266099669,
+              "raw_log_time_us": 1634300266099672,
+              "lidar_token": "383046966d425b92",
+              "raw_minus_sim_us": 3,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 50,
+              "simulation_time_us": 1634300266199669,
+              "raw_log_time_us": 1634300266199667,
+              "lidar_token": "44c25984684257f8",
+              "raw_minus_sim_us": -2,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 51,
+              "simulation_time_us": 1634300266299669,
+              "raw_log_time_us": 1634300266299660,
+              "lidar_token": "4c7fd33befbd50e4",
+              "raw_minus_sim_us": -9,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 52,
+              "simulation_time_us": 1634300266399669,
+              "raw_log_time_us": 1634300266399657,
+              "lidar_token": "c1eddc23443356cd",
+              "raw_minus_sim_us": -12,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 53,
+              "simulation_time_us": 1634300266499669,
+              "raw_log_time_us": 1634300266499655,
+              "lidar_token": "1caacaa5f4095aee",
+              "raw_minus_sim_us": -14,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 54,
+              "simulation_time_us": 1634300266599669,
+              "raw_log_time_us": 1634300266599653,
+              "lidar_token": "ff68672c31d8525c",
+              "raw_minus_sim_us": -16,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 55,
+              "simulation_time_us": 1634300266699669,
+              "raw_log_time_us": 1634300266699647,
+              "lidar_token": "a4df263eb4265213",
+              "raw_minus_sim_us": -22,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 56,
+              "simulation_time_us": 1634300266799669,
+              "raw_log_time_us": 1634300266799635,
+              "lidar_token": "507ea50eb2135a29",
+              "raw_minus_sim_us": -34,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 57,
+              "simulation_time_us": 1634300266899669,
+              "raw_log_time_us": 1634300266899623,
+              "lidar_token": "1283f4e3260b5221",
+              "raw_minus_sim_us": -46,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 58,
+              "simulation_time_us": 1634300266999669,
+              "raw_log_time_us": 1634300266999613,
+              "lidar_token": "442113e6981c5c9b",
+              "raw_minus_sim_us": -56,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 59,
+              "simulation_time_us": 1634300267099669,
+              "raw_log_time_us": 1634300267099603,
+              "lidar_token": "1dae485514be5953",
+              "raw_minus_sim_us": -66,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 60,
+              "simulation_time_us": 1634300267199669,
+              "raw_log_time_us": 1634300267199590,
+              "lidar_token": "30a4f22eee9757e0",
+              "raw_minus_sim_us": -79,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 61,
+              "simulation_time_us": 1634300267299669,
+              "raw_log_time_us": 1634300267299573,
+              "lidar_token": "1d46f02dffc15cbb",
+              "raw_minus_sim_us": -96,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 62,
+              "simulation_time_us": 1634300267399669,
+              "raw_log_time_us": 1634300267399559,
+              "lidar_token": "e8dd1b5fde675ecb",
+              "raw_minus_sim_us": -110,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 63,
+              "simulation_time_us": 1634300267499669,
+              "raw_log_time_us": 1634300267499554,
+              "lidar_token": "ac958539285a5922",
+              "raw_minus_sim_us": -115,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 64,
+              "simulation_time_us": 1634300267599669,
+              "raw_log_time_us": 1634300267599552,
+              "lidar_token": "f304bef0d88e529d",
+              "raw_minus_sim_us": -117,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 65,
+              "simulation_time_us": 1634300267699669,
+              "raw_log_time_us": 1634300267699552,
+              "lidar_token": "657664f7762a5b3f",
+              "raw_minus_sim_us": -117,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 66,
+              "simulation_time_us": 1634300267799669,
+              "raw_log_time_us": 1634300267799549,
+              "lidar_token": "c64817eae52c5a6a",
+              "raw_minus_sim_us": -120,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 67,
+              "simulation_time_us": 1634300267899669,
+              "raw_log_time_us": 1634300267899537,
+              "lidar_token": "6cbc8d2ce1ee58cf",
+              "raw_minus_sim_us": -132,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 68,
+              "simulation_time_us": 1634300267999669,
+              "raw_log_time_us": 1634300267999520,
+              "lidar_token": "d9cabafa83fe5314",
+              "raw_minus_sim_us": -149,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 69,
+              "simulation_time_us": 1634300268099669,
+              "raw_log_time_us": 1634300268099496,
+              "lidar_token": "0e5887ee48c6538a",
+              "raw_minus_sim_us": -173,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 70,
+              "simulation_time_us": 1634300268199669,
+              "raw_log_time_us": 1634300268199475,
+              "lidar_token": "608828061f2b595d",
+              "raw_minus_sim_us": -194,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 71,
+              "simulation_time_us": 1634300268299669,
+              "raw_log_time_us": 1634300268299470,
+              "lidar_token": "5ac0eaa8518d5adc",
+              "raw_minus_sim_us": -199,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 72,
+              "simulation_time_us": 1634300268399669,
+              "raw_log_time_us": 1634300268399484,
+              "lidar_token": "b353a5dacc09525c",
+              "raw_minus_sim_us": -185,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 73,
+              "simulation_time_us": 1634300268499669,
+              "raw_log_time_us": 1634300268499512,
+              "lidar_token": "968bb9fc88965559",
+              "raw_minus_sim_us": -157,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 74,
+              "simulation_time_us": 1634300268599669,
+              "raw_log_time_us": 1634300268599538,
+              "lidar_token": "ed7e42a4a966538b",
+              "raw_minus_sim_us": -131,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 75,
+              "simulation_time_us": 1634300268699669,
+              "raw_log_time_us": 1634300268699568,
+              "lidar_token": "290dba936c4052a2",
+              "raw_minus_sim_us": -101,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 76,
+              "simulation_time_us": 1634300268799669,
+              "raw_log_time_us": 1634300268799604,
+              "lidar_token": "989349cde2495e90",
+              "raw_minus_sim_us": -65,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 77,
+              "simulation_time_us": 1634300268899669,
+              "raw_log_time_us": 1634300268899641,
+              "lidar_token": "5e94fe06d76752e5",
+              "raw_minus_sim_us": -28,
+              "log_time_after_sim_time": false,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 78,
+              "simulation_time_us": 1634300268999669,
+              "raw_log_time_us": 1634300268999677,
+              "lidar_token": "7949d2a45dcc55ca",
+              "raw_minus_sim_us": 8,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 79,
+              "simulation_time_us": 1634300269099669,
+              "raw_log_time_us": 1634300269099707,
+              "lidar_token": "c438b66f57c4569c",
+              "raw_minus_sim_us": 38,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": true
+            },
+            {
+              "index": 80,
+              "simulation_time_us": 1634300269199669,
+              "raw_log_time_us": 1634300269199722,
+              "lidar_token": "c09a4a0f0e8b5ea9",
+              "raw_minus_sim_us": 53,
+              "log_time_after_sim_time": true,
+              "unique_same_index_cell": true,
+              "observed_scientific_frame": false
+            }
+          ]
+        },
+        "sources": {
+          "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.10.15.12.13.23_veh-28_00021_00100.db",
+          "db_sha256": "e8d59e0d407694af6477ef7233c99588d56b2bee048ff03c60837df72c7029df",
+          "metadata_shard": "outputs/rbr_v2_d2_v1/metadata/2021.10.15.12.13.23_veh-28.json.gz",
+          "metadata_shard_sha256": "397cfd4a527fafab1660ea74458a4c5d09be3950dbcea8107dbb78eba63f4b90"
+        },
+        "traffic_examined": true,
+        "minimum_actor_corridor_gap_m": 3.020605218492294,
+        "corridor_drivable_covered": true,
+        "corridor_outside_area_m2": 0.0,
+        "object_samples": 1472,
+        "unique_tracks": 36,
+        "conflicting_actor_cells": 0,
+        "corridor_geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                332652.73160320625,
+                4690049.383741552
+              ],
+              [
+                332652.4816032762,
+                4690049.383889862
+              ],
+              [
+                332652.231603289,
+                4690049.384038176
+              ],
+              [
+                332651.98160335614,
+                4690049.384186488
+              ],
+              [
+                332651.7316034006,
+                4690049.384334799
+              ],
+              [
+                332651.48160343646,
+                4690049.384483111
+              ],
+              [
+                332651.23160347156,
+                4690049.384631424
+              ],
+              [
+                332650.98160352424,
+                4690049.384779736
+              ],
+              [
+                332650.7316035682,
+                4690049.384928049
+              ],
+              [
+                332650.4816036204,
+                4690049.38507636
+              ],
+              [
+                332650.2316036491,
+                4690049.385224673
+              ],
+              [
+                332649.9816037001,
+                4690049.385372985
+              ],
+              [
+                332649.7316037444,
+                4690049.385521297
+              ],
+              [
+                332649.4816037972,
+                4690049.385669609
+              ],
+              [
+                332649.2316038323,
+                4690049.385817921
+              ],
+              [
+                332648.98160386865,
+                4690049.385966234
+              ],
+              [
+                332648.73160392855,
+                4690049.386114545
+              ],
+              [
+                332648.48160395666,
+                4690049.386262858
+              ],
+              [
+                332648.2316040081,
+                4690049.3864111705
+              ],
+              [
+                332647.98160406103,
+                4690049.386559482
+              ],
+              [
+                332647.73160408926,
+                4690049.386707795
+              ],
+              [
+                332647.4816041399,
+                4690049.386856107
+              ],
+              [
+                332647.2316041848,
+                4690049.387004419
+              ],
+              [
+                332646.981604228,
+                4690049.387152731
+              ],
+              [
+                332646.7316042727,
+                4690049.387301044
+              ],
+              [
+                332646.4816043247,
+                4690049.387449355
+              ],
+              [
+                332646.2316043451,
+                4690049.387597669
+              ],
+              [
+                332645.98160440486,
+                4690049.387745981
+              ],
+              [
+                332645.7316044489,
+                4690049.387894293
+              ],
+              [
+                332645.4816045004,
+                4690049.388042605
+              ],
+              [
+                332645.23160454514,
+                4690049.388190916
+              ],
+              [
+                332644.98160458135,
+                4690049.388339228
+              ],
+              [
+                332644.7316046089,
+                4690049.388487542
+              ],
+              [
+                332644.48160467675,
+                4690049.388635853
+              ],
+              [
+                332644.231604705,
+                4690049.388784166
+              ],
+              [
+                332643.9816047645,
+                4690049.388932478
+              ],
+              [
+                332643.73160480056,
+                4690049.38908079
+              ],
+              [
+                332643.4816048528,
+                4690049.389229101
+              ],
+              [
+                332643.2316048725,
+                4690049.389377415
+              ],
+              [
+                332642.98160494055,
+                4690049.389525726
+              ],
+              [
+                332642.73160497687,
+                4690049.389674039
+              ],
+              [
+                332642.4816050128,
+                4690049.389822352
+              ],
+              [
+                332642.23160507175,
+                4690049.389970663
+              ],
+              [
+                332641.9816051162,
+                4690049.390118974
+              ],
+              [
+                332641.731605152,
+                4690049.390267286
+              ],
+              [
+                332641.4816051882,
+                4690049.3904156
+              ],
+              [
+                332641.2316052477,
+                4690049.390563911
+              ],
+              [
+                332640.98160526867,
+                4690049.390712225
+              ],
+              [
+                332640.73160533694,
+                4690049.390860536
+              ],
+              [
+                332640.48160538054,
+                4690049.391008847
+              ],
+              [
+                332640.23160540743,
+                4690049.3911571605
+              ],
+              [
+                332639.9812421384,
+                4690049.391348001
+              ],
+              [
+                332639.97826709255,
+                4690049.3913523285
+              ],
+              [
+                332639.9430292101,
+                4690049.391427987
+              ],
+              [
+                332639.69288477406,
+                4690049.392013362
+              ],
+              [
+                332639.44336549786,
+                4690049.392534936
+              ],
+              [
+                332639.19357637054,
+                4690049.393007835
+              ],
+              [
+                332638.94360959553,
+                4690049.393477257
+              ],
+              [
+                332638.6936100284,
+                4690049.393946742
+              ],
+              [
+                332638.4436104767,
+                4690049.394416225
+              ],
+              [
+                332638.1936109172,
+                4690049.394885709
+              ],
+              [
+                332637.94361136627,
+                4690049.395355191
+              ],
+              [
+                332637.69361178356,
+                4690049.395824676
+              ],
+              [
+                332637.4436122483,
+                4690049.396294159
+              ],
+              [
+                332637.1936126814,
+                4690049.396763642
+              ],
+              [
+                332636.9436131219,
+                4690049.397233126
+              ],
+              [
+                332636.6936135618,
+                4690049.397702609
+              ],
+              [
+                332636.44361400296,
+                4690049.398172093
+              ],
+              [
+                332636.1936144516,
+                4690049.398641575
+              ],
+              [
+                332635.94361488475,
+                4690049.399111059
+              ],
+              [
+                332635.69361531007,
+                4690049.399580544
+              ],
+              [
+                332635.44361578283,
+                4690049.400050025
+              ],
+              [
+                332635.193616191,
+                4690049.400519511
+              ],
+              [
+                332634.9436166486,
+                4690049.400988994
+              ],
+              [
+                332634.6936170885,
+                4690049.401458478
+              ],
+              [
+                332634.44361754565,
+                4690049.401927959
+              ],
+              [
+                332634.1936179624,
+                4690049.402397444
+              ],
+              [
+                332633.9436184195,
+                4690049.402866926
+              ],
+              [
+                332633.693618836,
+                4690049.403336411
+              ],
+              [
+                332633.4436193008,
+                4690049.403805894
+              ],
+              [
+                332633.19361974194,
+                4690049.404275376
+              ],
+              [
+                332632.94362017454,
+                4690049.40474486
+              ],
+              [
+                332632.6936206075,
+                4690049.405214344
+              ],
+              [
+                332632.4436210638,
+                4690049.405683827
+              ],
+              [
+                332632.1936214885,
+                4690049.406153311
+              ],
+              [
+                332631.9436219366,
+                4690049.406622794
+              ],
+              [
+                332631.6936223712,
+                4690049.407092279
+              ],
+              [
+                332631.44362282695,
+                4690049.407561761
+              ],
+              [
+                332631.1936232602,
+                4690049.408031245
+              ],
+              [
+                332630.9436237009,
+                4690049.408500728
+              ],
+              [
+                332630.6936241408,
+                4690049.408970212
+              ],
+              [
+                332630.44362459023,
+                4690049.409439694
+              ],
+              [
+                332630.193625016,
+                4690049.4099091785
+              ],
+              [
+                332629.9436254641,
+                4690049.410378662
+              ],
+              [
+                332629.6936259046,
+                4690049.410848145
+              ],
+              [
+                332629.4436263535,
+                4690049.411317628
+              ],
+              [
+                332629.1936267858,
+                4690049.411787111
+              ],
+              [
+                332628.9436272195,
+                4690049.412256596
+              ],
+              [
+                332628.69362766854,
+                4690049.412726079
+              ],
+              [
+                332628.44362810894,
+                4690049.413195563
+              ],
+              [
+                332628.1936285418,
+                4690049.413665047
+              ],
+              [
+                332627.9436289989,
+                4690049.414134529
+              ],
+              [
+                332627.6936294394,
+                4690049.414604012
+              ],
+              [
+                332627.4436298724,
+                4690049.415073495
+              ],
+              [
+                332627.1936303127,
+                4690049.415542979
+              ],
+              [
+                332626.9436307464,
+                4690049.416012463
+              ],
+              [
+                332626.6936312024,
+                4690049.416481946
+              ],
+              [
+                332626.4436316359,
+                4690049.416951429
+              ],
+              [
+                332626.1936320688,
+                4690049.417420913
+              ],
+              [
+                332625.943632517,
+                4690049.417890397
+              ],
+              [
+                332625.69363295764,
+                4690049.41835988
+              ],
+              [
+                332625.44363339856,
+                4690049.418829364
+              ],
+              [
+                332625.1936338399,
+                4690049.419298847
+              ],
+              [
+                332624.94363427267,
+                4690049.419768332
+              ],
+              [
+                332624.69363472884,
+                4690049.420237814
+              ],
+              [
+                332624.44363516127,
+                4690049.4207072975
+              ],
+              [
+                332624.1936356031,
+                4690049.421176781
+              ],
+              [
+                332623.94363604346,
+                4690049.421646264
+              ],
+              [
+                332623.69363649207,
+                4690049.422115747
+              ],
+              [
+                332623.4436369251,
+                4690049.42258523
+              ],
+              [
+                332623.19363735843,
+                4690049.423054715
+              ],
+              [
+                332622.94363779924,
+                4690049.423524199
+              ],
+              [
+                332622.6936382554,
+                4690049.423993682
+              ],
+              [
+                332622.443638697,
+                4690049.424463164
+              ],
+              [
+                332622.1936391209,
+                4690049.424932648
+              ],
+              [
+                332621.9436395622,
+                4690049.425402133
+              ],
+              [
+                332621.69364000286,
+                4690049.425871617
+              ],
+              [
+                332621.44364046794,
+                4690049.426341099
+              ],
+              [
+                332621.1936408924,
+                4690049.426810582
+              ],
+              [
+                332620.94364133314,
+                4690049.427280066
+              ],
+              [
+                332620.6936417663,
+                4690049.42774955
+              ],
+              [
+                332620.4436422389,
+                4690049.428219031
+              ],
+              [
+                332620.19364263985,
+                4690049.428688516
+              ],
+              [
+                332619.9436431042,
+                4690049.429157998
+              ],
+              [
+                332619.69364353694,
+                4690049.429627482
+              ],
+              [
+                332619.44364396203,
+                4690049.430096967
+              ],
+              [
+                332619.1936444185,
+                4690049.430566451
+              ],
+              [
+                332618.94364488334,
+                4690049.431035931
+              ],
+              [
+                332618.6936452846,
+                4690049.4315054165
+              ],
+              [
+                332618.44364573323,
+                4690049.431974901
+              ],
+              [
+                332618.19364618225,
+                4690049.432444384
+              ],
+              [
+                332617.94364663056,
+                4690049.432913867
+              ],
+              [
+                332617.69364706334,
+                4690049.43338335
+              ],
+              [
+                332617.44364750443,
+                4690049.433852834
+              ],
+              [
+                332617.193647953,
+                4690049.434322316
+              ],
+              [
+                332616.94364838593,
+                4690049.4347918
+              ],
+              [
+                332616.69364881923,
+                4690049.435261284
+              ],
+              [
+                332616.44364927587,
+                4690049.4357307665
+              ],
+              [
+                332616.19364969287,
+                4690049.436200252
+              ],
+              [
+                332615.94365015737,
+                4690049.436669734
+              ],
+              [
+                332615.6936505821,
+                4690049.437139219
+              ],
+              [
+                332615.44365103927,
+                4690049.437608701
+              ],
+              [
+                332615.19365147187,
+                4690049.438078185
+              ],
+              [
+                332614.94365191285,
+                4690049.438547668
+              ],
+              [
+                332614.69365236105,
+                4690049.439017151
+              ],
+              [
+                332614.4436527788,
+                4690049.439486636
+              ],
+              [
+                332614.19365324284,
+                4690049.439956118
+              ],
+              [
+                332613.9436536843,
+                4690049.440425601
+              ],
+              [
+                332613.6936541172,
+                4690049.440895084
+              ],
+              [
+                332613.44365454937,
+                4690049.441364569
+              ],
+              [
+                332613.19365499803,
+                4690049.441834052
+              ],
+              [
+                332612.9436554469,
+                4690049.442303535
+              ],
+              [
+                332612.69365587126,
+                4690049.442773019
+              ],
+              [
+                332612.443656337,
+                4690049.443242501
+              ],
+              [
+                332612.19365673617,
+                4690049.443711987
+              ],
+              [
+                332611.9436572186,
+                4690049.444181468
+              ],
+              [
+                332611.6936576356,
+                4690049.444650953
+              ],
+              [
+                332611.4436580748,
+                4690049.445120437
+              ],
+              [
+                332611.1936585324,
+                4690049.44558992
+              ],
+              [
+                332610.9436589734,
+                4690049.446059402
+              ],
+              [
+                332610.6936594068,
+                4690049.4465288855
+              ],
+              [
+                332610.4436598476,
+                4690049.446998369
+              ],
+              [
+                332610.1936602718,
+                4690049.447467854
+              ],
+              [
+                332609.94366073626,
+                4690049.447937337
+              ],
+              [
+                332609.6936611771,
+                4690049.448406819
+              ],
+              [
+                332609.44366160256,
+                4690049.448876304
+              ],
+              [
+                332609.1936620512,
+                4690049.449345787
+              ],
+              [
+                332608.9436624843,
+                4690049.449815271
+              ],
+              [
+                332608.69366294064,
+                4690049.450284754
+              ],
+              [
+                332608.44366337353,
+                4690049.450754237
+              ],
+              [
+                332608.1936638147,
+                4690049.451223721
+              ],
+              [
+                332607.9436642553,
+                4690049.451693204
+              ],
+              [
+                332607.6936647042,
+                4690049.452162687
+              ],
+              [
+                332607.4436651355,
+                4690049.45263217
+              ],
+              [
+                332607.1936655782,
+                4690049.453101654
+              ],
+              [
+                332606.9436660184,
+                4690049.453571137
+              ],
+              [
+                332606.6936664668,
+                4690049.45404062
+              ],
+              [
+                332606.44366687565,
+                4690049.454510106
+              ],
+              [
+                332606.193667349,
+                4690049.454979588
+              ],
+              [
+                332605.9436677895,
+                4690049.455449071
+              ],
+              [
+                332605.6936682226,
+                4690049.455918554
+              ],
+              [
+                332605.4436686549,
+                4690049.456388039
+              ],
+              [
+                332605.19366910466,
+                4690049.456857522
+              ],
+              [
+                332604.9436695449,
+                4690049.457327005
+              ],
+              [
+                332604.69366999227,
+                4690049.457796488
+              ],
+              [
+                332604.4436704262,
+                4690049.458265971
+              ],
+              [
+                332604.1936708674,
+                4690049.458735455
+              ],
+              [
+                332603.9436713002,
+                4690049.459204939
+              ],
+              [
+                332603.69367175724,
+                4690049.459674422
+              ],
+              [
+                332603.44367217366,
+                4690049.460143907
+              ],
+              [
+                332603.19367263047,
+                4690049.46061339
+              ],
+              [
+                332602.94367307954,
+                4690049.461082873
+              ],
+              [
+                332602.69367350417,
+                4690049.461552357
+              ],
+              [
+                332602.4436739611,
+                4690049.46202184
+              ],
+              [
+                332602.1936743934,
+                4690049.462491323
+              ],
+              [
+                332601.9436748351,
+                4690049.462960807
+              ],
+              [
+                332601.6936752752,
+                4690049.46343029
+              ],
+              [
+                332601.4436757246,
+                4690049.463899773
+              ],
+              [
+                332601.1936761484,
+                4690049.464369257
+              ],
+              [
+                332600.94367660565,
+                4690049.4648387395
+              ],
+              [
+                332600.69367703825,
+                4690049.465308223
+              ],
+              [
+                332600.4436774792,
+                4690049.465777706
+              ],
+              [
+                332600.1936779046,
+                4690049.466247192
+              ],
+              [
+                332599.9436783683,
+                4690049.466716674
+              ],
+              [
+                332599.69367881044,
+                4690049.467186157
+              ],
+              [
+                332599.44367922697,
+                4690049.467655642
+              ],
+              [
+                332599.1936796918,
+                4690049.468125124
+              ],
+              [
+                332598.94368014,
+                4690049.468594606
+              ],
+              [
+                332598.8039415115,
+                4690049.468857028
+              ],
+              [
+                332598.81201103196,
+                4690053.765849451
+              ],
+              [
+                332598.95174962486,
+                4690053.765587029
+              ],
+              [
+                332599.20174914907,
+                4690053.7651175475
+              ],
+              [
+                332599.45174871624,
+                4690053.764648065
+              ],
+              [
+                332599.7017482997,
+                4690053.76417858
+              ],
+              [
+                332599.9517478336,
+                4690053.763709097
+              ],
+              [
+                332600.20174739393,
+                4690053.763239615
+              ],
+              [
+                332600.4517469765,
+                4690053.762770129
+              ],
+              [
+                332600.7017465195,
+                4690053.762300646
+              ],
+              [
+                332600.9517460789,
+                4690053.7618311625
+              ],
+              [
+                332601.2017456297,
+                4690053.76136168
+              ],
+              [
+                332601.4517452059,
+                4690053.760892196
+              ],
+              [
+                332601.70174474845,
+                4690053.760422713
+              ],
+              [
+                332601.9517443164,
+                4690053.75995323
+              ],
+              [
+                332602.2017438747,
+                4690053.759483746
+              ],
+              [
+                332602.45174343436,
+                4690053.759014263
+              ],
+              [
+                332602.70174298546,
+                4690053.75854478
+              ],
+              [
+                332602.95174256084,
+                4690053.758075296
+              ],
+              [
+                332603.20174210373,
+                4690053.757605813
+              ],
+              [
+                332603.4517416709,
+                4690053.75713633
+              ],
+              [
+                332603.7017412465,
+                4690053.756666845
+              ],
+              [
+                332603.9517407815,
+                4690053.756197362
+              ],
+              [
+                332604.20174035674,
+                4690053.755727878
+              ],
+              [
+                332604.45173990756,
+                4690053.755258394
+              ],
+              [
+                332604.7017394656,
+                4690053.754788911
+              ],
+              [
+                332604.95173901814,
+                4690053.7543194285
+              ],
+              [
+                332605.20173858595,
+                4690053.753849945
+              ],
+              [
+                332605.4517381442,
+                4690053.753380462
+              ],
+              [
+                332605.70173771185,
+                4690053.752910977
+              ],
+              [
+                332605.9517372628,
+                4690053.752441494
+              ],
+              [
+                332606.2017368143,
+                4690053.751972011
+              ],
+              [
+                332606.45173637295,
+                4690053.751502529
+              ],
+              [
+                332606.7017359641,
+                4690053.751033043
+              ],
+              [
+                332606.95173549163,
+                4690053.75056356
+              ],
+              [
+                332607.2017350595,
+                4690053.750094077
+              ],
+              [
+                332607.45173461677,
+                4690053.749624593
+              ],
+              [
+                332607.7017341775,
+                4690053.74915511
+              ],
+              [
+                332607.9517337286,
+                4690053.748685627
+              ],
+              [
+                332608.201733296,
+                4690053.748216144
+              ],
+              [
+                332608.4517328548,
+                4690053.74774666
+              ],
+              [
+                332608.7017324139,
+                4690053.747277177
+              ],
+              [
+                332608.9517319656,
+                4690053.746807694
+              ],
+              [
+                332609.2017315405,
+                4690053.74633821
+              ],
+              [
+                332609.45173109183,
+                4690053.745868727
+              ],
+              [
+                332609.7017306584,
+                4690053.745399242
+              ],
+              [
+                332609.95173020154,
+                4690053.74492976
+              ],
+              [
+                332610.2017297611,
+                4690053.744460277
+              ],
+              [
+                332610.45172934484,
+                4690053.743990792
+              ],
+              [
+                332610.7017288881,
+                4690053.7435213085
+              ],
+              [
+                332610.9517284467,
+                4690053.743051825
+              ],
+              [
+                332611.2017279977,
+                4690053.742582343
+              ],
+              [
+                332611.451727556,
+                4690053.74211286
+              ],
+              [
+                332611.70172713284,
+                4690053.741643376
+              ],
+              [
+                332611.9517266919,
+                4690053.741173891
+              ],
+              [
+                332612.20172622544,
+                4690053.74070441
+              ],
+              [
+                332612.45172582625,
+                4690053.740234924
+              ],
+              [
+                332612.7017253446,
+                4690053.739765442
+              ],
+              [
+                332612.9517249282,
+                4690053.739295958
+              ],
+              [
+                332613.2017244713,
+                4690053.738826475
+              ],
+              [
+                332613.45172403863,
+                4690053.738356992
+              ],
+              [
+                332613.70172360644,
+                4690053.737887507
+              ],
+              [
+                332613.95172315754,
+                4690053.737418024
+              ],
+              [
+                332614.2017227081,
+                4690053.736948541
+              ],
+              [
+                332614.45172226813,
+                4690053.736479059
+              ],
+              [
+                332614.7017218504,
+                4690053.736009574
+              ],
+              [
+                332614.9517213861,
+                4690053.735540091
+              ],
+              [
+                332615.2017209531,
+                4690053.735070608
+              ],
+              [
+                332615.45172051253,
+                4690053.734601124
+              ],
+              [
+                332615.7017200634,
+                4690053.734131642
+              ],
+              [
+                332615.95171963866,
+                4690053.733662157
+              ],
+              [
+                332616.20171918214,
+                4690053.733192675
+              ],
+              [
+                332616.45171876514,
+                4690053.7327231895
+              ],
+              [
+                332616.7017183005,
+                4690053.732253707
+              ],
+              [
+                332616.9517178752,
+                4690053.731784223
+              ],
+              [
+                332617.20171742624,
+                4690053.731314739
+              ],
+              [
+                332617.45171697775,
+                4690053.730845257
+              ],
+              [
+                332617.70171654463,
+                4690053.730375773
+              ],
+              [
+                332617.9517161038,
+                4690053.72990629
+              ],
+              [
+                332618.2017156555,
+                4690053.729436807
+              ],
+              [
+                332618.4517152225,
+                4690053.728967324
+              ],
+              [
+                332618.70171478996,
+                4690053.7284978395
+              ],
+              [
+                332618.95171435666,
+                4690053.728028354
+              ],
+              [
+                332619.20171387575,
+                4690053.727558874
+              ],
+              [
+                332619.4517134593,
+                4690053.72708939
+              ],
+              [
+                332619.7017130342,
+                4690053.726619905
+              ],
+              [
+                332619.9517125775,
+                4690053.726150421
+              ],
+              [
+                332620.2017121291,
+                4690053.725680939
+              ],
+              [
+                332620.4517117122,
+                4690053.725211454
+              ],
+              [
+                332620.7017112316,
+                4690053.724741973
+              ],
+              [
+                332620.9517108224,
+                4690053.724272489
+              ],
+              [
+                332621.2017103736,
+                4690053.723803005
+              ],
+              [
+                332621.4517099332,
+                4690053.723333522
+              ],
+              [
+                332621.7017094761,
+                4690053.72286404
+              ],
+              [
+                332621.9517090595,
+                4690053.722394556
+              ],
+              [
+                332622.2017086182,
+                4690053.721925071
+              ],
+              [
+                332622.45170817827,
+                4690053.721455587
+              ],
+              [
+                332622.7017077207,
+                4690053.720986105
+              ],
+              [
+                332622.95170728053,
+                4690053.720516622
+              ],
+              [
+                332623.20170685573,
+                4690053.720047138
+              ],
+              [
+                332623.45170641434,
+                4690053.719577653
+              ],
+              [
+                332623.70170596533,
+                4690053.71910817
+              ],
+              [
+                332623.9517055167,
+                4690053.718638687
+              ],
+              [
+                332624.2017050844,
+                4690053.718169204
+              ],
+              [
+                332624.45170464256,
+                4690053.7176997205
+              ],
+              [
+                332624.7017042021,
+                4690053.717230237
+              ],
+              [
+                332624.95170375396,
+                4690053.716760755
+              ],
+              [
+                332625.2017033292,
+                4690053.71629127
+              ],
+              [
+                332625.45170287986,
+                4690053.715821787
+              ],
+              [
+                332625.7017024389,
+                4690053.715352303
+              ],
+              [
+                332625.95170199824,
+                4690053.71488282
+              ],
+              [
+                332626.2017015581,
+                4690053.7144133365
+              ],
+              [
+                332626.45170112525,
+                4690053.713943852
+              ],
+              [
+                332626.7017006757,
+                4690053.713474369
+              ],
+              [
+                332626.9517002277,
+                4690053.713004886
+              ],
+              [
+                332627.20169980195,
+                4690053.712535402
+              ],
+              [
+                332627.45169935364,
+                4690053.712065918
+              ],
+              [
+                332627.70169891266,
+                4690053.711596435
+              ],
+              [
+                332627.95169846417,
+                4690053.711126952
+              ],
+              [
+                332628.20169802307,
+                4690053.71065747
+              ],
+              [
+                332628.4516975982,
+                4690053.710187986
+              ],
+              [
+                332628.7016971498,
+                4690053.709718502
+              ],
+              [
+                332628.95169670874,
+                4690053.709249019
+              ],
+              [
+                332629.2016962751,
+                4690053.708779534
+              ],
+              [
+                332629.4516958268,
+                4690053.708310051
+              ],
+              [
+                332629.7016953779,
+                4690053.707840568
+              ],
+              [
+                332629.95169494534,
+                4690053.707371085
+              ],
+              [
+                332630.2016945053,
+                4690053.7069016015
+              ],
+              [
+                332630.4516940715,
+                4690053.706432117
+              ],
+              [
+                332630.7016936141,
+                4690053.705962635
+              ],
+              [
+                332630.9516931821,
+                4690053.705493151
+              ],
+              [
+                332631.2016927415,
+                4690053.705023668
+              ],
+              [
+                332631.45169230027,
+                4690053.704554184
+              ],
+              [
+                332631.7016918525,
+                4690053.704084702
+              ],
+              [
+                332631.9516914259,
+                4690053.7036152175
+              ],
+              [
+                332632.2016909778,
+                4690053.703145734
+              ],
+              [
+                332632.4516905451,
+                4690053.70267625
+              ],
+              [
+                332632.7016900888,
+                4690053.702206767
+              ],
+              [
+                332632.9516896638,
+                4690053.701737283
+              ],
+              [
+                332633.2016892152,
+                4690053.701267799
+              ],
+              [
+                332633.4516887661,
+                4690053.700798317
+              ],
+              [
+                332633.70168832527,
+                4690053.700328834
+              ],
+              [
+                332633.9516879088,
+                4690053.699859349
+              ],
+              [
+                332634.2016874437,
+                4690053.699389867
+              ],
+              [
+                332634.45168701897,
+                4690053.698920382
+              ],
+              [
+                332634.7016865538,
+                4690053.698450901
+              ],
+              [
+                332634.9516861299,
+                4690053.697981417
+              ],
+              [
+                332635.2016856883,
+                4690053.697511934
+              ],
+              [
+                332635.45168526407,
+                4690053.697042448
+              ],
+              [
+                332635.70168479136,
+                4690053.696572967
+              ],
+              [
+                332635.95168438205,
+                4690053.696103482
+              ],
+              [
+                332636.2016839249,
+                4690053.695633998
+              ],
+              [
+                332636.4516834763,
+                4690053.695164516
+              ],
+              [
+                332636.7016830431,
+                4690053.694695032
+              ],
+              [
+                332636.95168260316,
+                4690053.694225549
+              ],
+              [
+                332637.2016821627,
+                4690053.693756065
+              ],
+              [
+                332637.4516817216,
+                4690053.693286582
+              ],
+              [
+                332637.7016812729,
+                4690053.692817099
+              ],
+              [
+                332637.9516808556,
+                4690053.692347614
+              ],
+              [
+                332638.20168039046,
+                4690053.691878132
+              ],
+              [
+                332638.4516799579,
+                4690053.691408648
+              ],
+              [
+                332638.7016795177,
+                4690053.690939165
+              ],
+              [
+                332638.95167908486,
+                4690053.69046968
+              ],
+              [
+                332639.2016786354,
+                4690053.690000197
+              ],
+              [
+                332639.4517109716,
+                4690053.689526837
+              ],
+              [
+                332639.70213392825,
+                4690053.689003416
+              ],
+              [
+                332639.95246336627,
+                4690053.688417635
+              ],
+              [
+                332639.9860056027,
+                4690053.688345617
+              ],
+              [
+                332640.23433325754,
+                4690053.688156298
+              ],
+              [
+                332640.48415457044,
+                4690053.688008091
+              ],
+              [
+                332640.73415451084,
+                4690053.68785978
+              ],
+              [
+                332640.9841544666,
+                4690053.687711469
+              ],
+              [
+                332641.23415444564,
+                4690053.687563155
+              ],
+              [
+                332641.4841543781,
+                4690053.687414844
+              ],
+              [
+                332641.7341543499,
+                4690053.6872665305
+              ],
+              [
+                332641.9841542981,
+                4690053.687118218
+              ],
+              [
+                332642.23415424564,
+                4690053.686969907
+              ],
+              [
+                332642.4841542027,
+                4690053.686821596
+              ],
+              [
+                332642.7341541748,
+                4690053.686673283
+              ],
+              [
+                332642.9841541225,
+                4690053.68652497
+              ],
+              [
+                332643.2341540704,
+                4690053.686376659
+              ],
+              [
+                332643.48415405065,
+                4690053.686228345
+              ],
+              [
+                332643.7341539824,
+                4690053.686080034
+              ],
+              [
+                332643.9841539464,
+                4690053.685931722
+              ],
+              [
+                332644.2341538949,
+                4690053.68578341
+              ],
+              [
+                332644.48415386665,
+                4690053.685635097
+              ],
+              [
+                332644.73415380676,
+                4690053.685486786
+              ],
+              [
+                332644.98415378726,
+                4690053.685338472
+              ],
+              [
+                332645.23415372707,
+                4690053.68519016
+              ],
+              [
+                332645.4841536743,
+                4690053.685041849
+              ],
+              [
+                332645.73415363085,
+                4690053.684893537
+              ],
+              [
+                332645.98415359476,
+                4690053.684745225
+              ],
+              [
+                332646.234153551,
+                4690053.684596913
+              ],
+              [
+                332646.48415352264,
+                4690053.684448599
+              ],
+              [
+                332646.7341534546,
+                4690053.684300288
+              ],
+              [
+                332646.9841534179,
+                4690053.684151975
+              ],
+              [
+                332647.2341533747,
+                4690053.684003663
+              ],
+              [
+                332647.4841533298,
+                4690053.683855351
+              ],
+              [
+                332647.73415328714,
+                4690053.683707039
+              ],
+              [
+                332647.98415325093,
+                4690053.683558726
+              ],
+              [
+                332648.23415319,
+                4690053.6834104145
+              ],
+              [
+                332648.48415315454,
+                4690053.683262102
+              ],
+              [
+                332648.73415311845,
+                4690053.683113789
+              ],
+              [
+                332648.98415305855,
+                4690053.682965478
+              ],
+              [
+                332649.23415303015,
+                4690053.682817165
+              ],
+              [
+                332649.48415297904,
+                4690053.682668853
+              ],
+              [
+                332649.7341529263,
+                4690053.682520541
+              ],
+              [
+                332649.98415289,
+                4690053.682372229
+              ],
+              [
+                332650.23415284697,
+                4690053.682223917
+              ],
+              [
+                332650.4841528103,
+                4690053.682075604
+              ],
+              [
+                332650.73415275005,
+                4690053.681927293
+              ],
+              [
+                332650.98415271414,
+                4690053.68177898
+              ],
+              [
+                332651.2341526695,
+                4690053.681630668
+              ],
+              [
+                332651.48415263434,
+                4690053.681482355
+              ],
+              [
+                332651.7341525825,
+                4690053.681334043
+              ],
+              [
+                332651.98415253,
+                4690053.681185732
+              ],
+              [
+                332652.23415248696,
+                4690053.68103742
+              ],
+              [
+                332652.4841524661,
+                4690053.680889106
+              ],
+              [
+                332652.7341523907,
+                4690053.680740796
+              ],
+              [
+                332652.96321941575,
+                4690053.680604901
+              ],
+              [
+                332652.9606702047,
+                4690049.383605657
+              ],
+              [
+                332652.73160320625,
+                4690049.383741552
+              ]
+            ]
+          ]
+        },
+        "offline_future_traffic_used": true
+      },
+      "anchor_rank": 6
+    }
+  ],
+  "selected": {
+    "session_id": "2021.10.15.12.13.23_veh-28",
+    "status": "ELIGIBLE",
+    "reasons": [],
+    "spec": {
+      "session_id": "2021.10.15.12.13.23_veh-28",
+      "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+      "scenario_token": "d1f4c58cc7ab5b2c",
+      "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.10.15.12.13.23_veh-28_00021_00100.db",
+      "map_name": "us-ma-boston",
+      "source_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+      "candidate": "TSB_DIRECT_COAST_F2",
+      "benchmark_version": "E2E_SCOPED_DIRECT_COAST_V1",
+      "role": "B",
+      "exposure_class": "E0_METADATA_ONLY",
+      "route_roadblock_ids": [
+        "50560",
+        "48750",
+        "50708",
+        "48890",
+        "49653",
+        "48927",
+        "50448",
+        "49125",
+        "50038",
+        "49145",
+        "50351",
+        "49367",
+        "50011",
+        "49235",
+        "49946",
+        "49428",
+        "50466",
+        "48730",
+        "51021",
+        "48751",
+        "49897",
+        "49090",
+        "50478",
+        "49159",
+        "50361",
+        "49039",
+        "49837",
+        "49837",
+        "48921",
+        "49784",
+        "48691",
+        "50743",
+        "49122"
+      ],
+      "route_id": "c0dbfae40f817d3229c3bb4ca0e1b00e2a5bc3d4e2227128e4ff0e8628c9e08f",
+      "precontext": {
+        "schema_version": "s2r_precontext_v1",
+        "session_id": "2021.10.15.12.13.23_veh-28",
+        "log_id": "2021.10.15.12.13.23_veh-28_00021_00100",
+        "scenario_token": "d1f4c58cc7ab5b2c",
+        "start_timestamp_us": 1634300261199669,
+        "source_database_fingerprint_sha256": "14f98d70e57671f634fbf8b981a76e064abf45d935d2a210150b7cb087b45e30",
+        "ego_initial_state": {
+          "official_simulation_initial_lidar_token": "83f7119329c058aa",
+          "official_simulation_initial_timestamp_us": 1634300261199669,
+          "initial_x": 332650.835078,
+          "initial_y": 4690051.757021,
+          "initial_heading": 3.1407047,
+          "initial_speed_mps": 5.946588,
+          "initial_time_us": 1634300261199669,
+          "tire_steering_angle": 0.0,
+          "tire_steering_source": "OFFICIAL_NUPLAN_EGO_QUERY_CONSTANT"
+        },
+        "route_id": "c0dbfae40f817d3229c3bb4ca0e1b00e2a5bc3d4e2227128e4ff0e8628c9e08f",
+        "route_roadblock_ids": [
+          "50560",
+          "48750",
+          "50708",
+          "48890",
+          "49653",
+          "48927",
+          "50448",
+          "49125",
+          "50038",
+          "49145",
+          "50351",
+          "49367",
+          "50011",
+          "49235",
+          "49946",
+          "49428",
+          "50466",
+          "48730",
+          "51021",
+          "48751",
+          "49897",
+          "49090",
+          "50478",
+          "49159",
+          "50361",
+          "49039",
+          "49837",
+          "49837",
+          "48921",
+          "49784",
+          "48691",
+          "50743",
+          "49122"
+        ],
+        "map_identity": {
+          "map_name": "us-ma-boston",
+          "map_version": "nuplan-maps-v1.0"
+        },
+        "traffic_agent_precontext_sha256": "6ee4f333dc9c0be208f6abe366cbf05702048de2e2df1ce3ce2f6f234d7d092d",
+        "history_buffer_source_sha256": "c15fffb7e0697d6c78a1d68677cab93acd98b98b10a4481e643193a9715e1675",
+        "history_source_row_count": 42,
+        "planner_warmup_state": "FRESH_UNINITIALIZED_PLANNER; COMMON_PREINTERVENTION_TRAJECTORY_CONTRACT",
+        "simulation_initialization": "OFFICIAL_NUPLAN_SCENARIO_AND_FRESH_ARM_FACTORY",
+        "intervention_start_s": 1.1,
+        "intervention_precontext_contract": "BOTH_ARMS_USE_BASELINE_TRAJECTORY_FOR_ABSOLUTE_TIME_LT_1P1"
+      },
+      "precontext_id": "1020180ccd5eec89f02f7a0ad70b4e91689c8a64aadcf663915b984717c4adb9",
+      "start_timestamp_us": 1634300261199669
+    },
+    "evidence": {
+      "initial_speed_mps": 5.946587826728614,
+      "initial_acceleration_mps2": -1.7963881615149633,
+      "initial_heading_error_rad": 0.0002947078871247122,
+      "initial_centerline_offset_m": 0.22365422226014928,
+      "route_heading_range_rad": 0.0016236863385969968,
+      "forward_coverage_m": 52.02704383115605,
+      "clock": {
+        "policy": "SAME_INDEX_UNIQUE_NEAREST_CELL_v1",
+        "status": "PASS",
+        "authority": "tools.tsb_coast_p1r_c_clock.CoastCanonicalTimeControllerV1",
+        "episode_start_us": 1634300261199669,
+        "control_step_us": 100000,
+        "iteration_count": 81,
+        "realized_frame_count": 80,
+        "transition_count": 79,
+        "nominal_half_period_us": 50000,
+        "half_period_role": "INDEX_AMBIGUITY_BOUND_NOT_PHYSICAL_ERROR_OR_CAUSALITY_TOLERANCE",
+        "positive_skew_count": 20,
+        "negative_skew_count": 58,
+        "min_raw_minus_sim_us": -199,
+        "max_raw_minus_sim_us": 93,
+        "max_abs_raw_minus_sim_us": 199,
+        "raw_80frame_span_us": 7900038,
+        "simulation_80frame_span_us": 7900000,
+        "strict_event_time_causal_replay": false,
+        "future_frame_selected": false,
+        "observations_retimed_or_interpolated": false,
+        "rows": [
+          {
+            "index": 0,
+            "simulation_time_us": 1634300261199669,
+            "raw_log_time_us": 1634300261199669,
+            "lidar_token": "83f7119329c058aa",
+            "raw_minus_sim_us": 0,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 1,
+            "simulation_time_us": 1634300261299669,
+            "raw_log_time_us": 1634300261299644,
+            "lidar_token": "8e67971918695a3a",
+            "raw_minus_sim_us": -25,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 2,
+            "simulation_time_us": 1634300261399669,
+            "raw_log_time_us": 1634300261399621,
+            "lidar_token": "518bb31f8cf55c02",
+            "raw_minus_sim_us": -48,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 3,
+            "simulation_time_us": 1634300261499669,
+            "raw_log_time_us": 1634300261499601,
+            "lidar_token": "7868b74be1d25af6",
+            "raw_minus_sim_us": -68,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 4,
+            "simulation_time_us": 1634300261599669,
+            "raw_log_time_us": 1634300261599575,
+            "lidar_token": "d71836f3e87f5521",
+            "raw_minus_sim_us": -94,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 5,
+            "simulation_time_us": 1634300261699669,
+            "raw_log_time_us": 1634300261699543,
+            "lidar_token": "5b8adac354515f62",
+            "raw_minus_sim_us": -126,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 6,
+            "simulation_time_us": 1634300261799669,
+            "raw_log_time_us": 1634300261799522,
+            "lidar_token": "60b6a93d54aa5aa4",
+            "raw_minus_sim_us": -147,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 7,
+            "simulation_time_us": 1634300261899669,
+            "raw_log_time_us": 1634300261899506,
+            "lidar_token": "a8d3763ee0d65eb9",
+            "raw_minus_sim_us": -163,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 8,
+            "simulation_time_us": 1634300261999669,
+            "raw_log_time_us": 1634300261999498,
+            "lidar_token": "331f5da6d17c5f12",
+            "raw_minus_sim_us": -171,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 9,
+            "simulation_time_us": 1634300262099669,
+            "raw_log_time_us": 1634300262099506,
+            "lidar_token": "c8c8100451535219",
+            "raw_minus_sim_us": -163,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 10,
+            "simulation_time_us": 1634300262199669,
+            "raw_log_time_us": 1634300262199519,
+            "lidar_token": "dfde3cb3f4e65734",
+            "raw_minus_sim_us": -150,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 11,
+            "simulation_time_us": 1634300262299669,
+            "raw_log_time_us": 1634300262299537,
+            "lidar_token": "07e398b27a6d5306",
+            "raw_minus_sim_us": -132,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 12,
+            "simulation_time_us": 1634300262399669,
+            "raw_log_time_us": 1634300262399559,
+            "lidar_token": "124221c45edd54f4",
+            "raw_minus_sim_us": -110,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 13,
+            "simulation_time_us": 1634300262499669,
+            "raw_log_time_us": 1634300262499587,
+            "lidar_token": "a3d89a638e6b57ad",
+            "raw_minus_sim_us": -82,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 14,
+            "simulation_time_us": 1634300262599669,
+            "raw_log_time_us": 1634300262599623,
+            "lidar_token": "303dfc01cde752e7",
+            "raw_minus_sim_us": -46,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 15,
+            "simulation_time_us": 1634300262699669,
+            "raw_log_time_us": 1634300262699657,
+            "lidar_token": "4890fe874a1c52ef",
+            "raw_minus_sim_us": -12,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 16,
+            "simulation_time_us": 1634300262799669,
+            "raw_log_time_us": 1634300262799693,
+            "lidar_token": "5d9d8c4d51385dd7",
+            "raw_minus_sim_us": 24,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 17,
+            "simulation_time_us": 1634300262899669,
+            "raw_log_time_us": 1634300262899718,
+            "lidar_token": "0af51e2a4afe5fbf",
+            "raw_minus_sim_us": 49,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 18,
+            "simulation_time_us": 1634300262999669,
+            "raw_log_time_us": 1634300262999720,
+            "lidar_token": "3048c015bcf759c9",
+            "raw_minus_sim_us": 51,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 19,
+            "simulation_time_us": 1634300263099669,
+            "raw_log_time_us": 1634300263099704,
+            "lidar_token": "9b79c16542525b33",
+            "raw_minus_sim_us": 35,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 20,
+            "simulation_time_us": 1634300263199669,
+            "raw_log_time_us": 1634300263199684,
+            "lidar_token": "7ed6e809ebcf5ba8",
+            "raw_minus_sim_us": 15,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 21,
+            "simulation_time_us": 1634300263299669,
+            "raw_log_time_us": 1634300263299680,
+            "lidar_token": "461a561012b454ea",
+            "raw_minus_sim_us": 11,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 22,
+            "simulation_time_us": 1634300263399669,
+            "raw_log_time_us": 1634300263399674,
+            "lidar_token": "78ebd5e9d4b3597b",
+            "raw_minus_sim_us": 5,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 23,
+            "simulation_time_us": 1634300263499669,
+            "raw_log_time_us": 1634300263499651,
+            "lidar_token": "8dc206c62c8257b6",
+            "raw_minus_sim_us": -18,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 24,
+            "simulation_time_us": 1634300263599669,
+            "raw_log_time_us": 1634300263599620,
+            "lidar_token": "c203868bbcca5998",
+            "raw_minus_sim_us": -49,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 25,
+            "simulation_time_us": 1634300263699669,
+            "raw_log_time_us": 1634300263699588,
+            "lidar_token": "e27aa93bb1ae50eb",
+            "raw_minus_sim_us": -81,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 26,
+            "simulation_time_us": 1634300263799669,
+            "raw_log_time_us": 1634300263799560,
+            "lidar_token": "4edfddc662e75de3",
+            "raw_minus_sim_us": -109,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 27,
+            "simulation_time_us": 1634300263899669,
+            "raw_log_time_us": 1634300263899538,
+            "lidar_token": "8632f3e99b875956",
+            "raw_minus_sim_us": -131,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 28,
+            "simulation_time_us": 1634300263999669,
+            "raw_log_time_us": 1634300263999521,
+            "lidar_token": "26d6992bebba5c0d",
+            "raw_minus_sim_us": -148,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 29,
+            "simulation_time_us": 1634300264099669,
+            "raw_log_time_us": 1634300264099506,
+            "lidar_token": "adfe6e274fbc5a54",
+            "raw_minus_sim_us": -163,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 30,
+            "simulation_time_us": 1634300264199669,
+            "raw_log_time_us": 1634300264199497,
+            "lidar_token": "d1f4c58cc7ab5b2c",
+            "raw_minus_sim_us": -172,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 31,
+            "simulation_time_us": 1634300264299669,
+            "raw_log_time_us": 1634300264299497,
+            "lidar_token": "e8d6a4eb67d85eb9",
+            "raw_minus_sim_us": -172,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 32,
+            "simulation_time_us": 1634300264399669,
+            "raw_log_time_us": 1634300264399502,
+            "lidar_token": "1dfad437402e533b",
+            "raw_minus_sim_us": -167,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 33,
+            "simulation_time_us": 1634300264499669,
+            "raw_log_time_us": 1634300264499519,
+            "lidar_token": "d2c91f8dca1a5e9b",
+            "raw_minus_sim_us": -150,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 34,
+            "simulation_time_us": 1634300264599669,
+            "raw_log_time_us": 1634300264599543,
+            "lidar_token": "47a7aea1205c5f13",
+            "raw_minus_sim_us": -126,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 35,
+            "simulation_time_us": 1634300264699669,
+            "raw_log_time_us": 1634300264699572,
+            "lidar_token": "be12a330582d5395",
+            "raw_minus_sim_us": -97,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 36,
+            "simulation_time_us": 1634300264799669,
+            "raw_log_time_us": 1634300264799601,
+            "lidar_token": "8601fbde42c65510",
+            "raw_minus_sim_us": -68,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 37,
+            "simulation_time_us": 1634300264899669,
+            "raw_log_time_us": 1634300264899632,
+            "lidar_token": "37200436d70f52d5",
+            "raw_minus_sim_us": -37,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 38,
+            "simulation_time_us": 1634300264999669,
+            "raw_log_time_us": 1634300264999669,
+            "lidar_token": "b5116bf8cfa05543",
+            "raw_minus_sim_us": 0,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 39,
+            "simulation_time_us": 1634300265099669,
+            "raw_log_time_us": 1634300265099708,
+            "lidar_token": "2b77467509955801",
+            "raw_minus_sim_us": 39,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 40,
+            "simulation_time_us": 1634300265199669,
+            "raw_log_time_us": 1634300265199740,
+            "lidar_token": "1792aadaaf8f53cb",
+            "raw_minus_sim_us": 71,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 41,
+            "simulation_time_us": 1634300265299669,
+            "raw_log_time_us": 1634300265299760,
+            "lidar_token": "402dd5a3b03d528f",
+            "raw_minus_sim_us": 91,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 42,
+            "simulation_time_us": 1634300265399669,
+            "raw_log_time_us": 1634300265399762,
+            "lidar_token": "1fd73db4adcc557e",
+            "raw_minus_sim_us": 93,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 43,
+            "simulation_time_us": 1634300265499669,
+            "raw_log_time_us": 1634300265499745,
+            "lidar_token": "f6dd7fe5d40c54bf",
+            "raw_minus_sim_us": 76,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 44,
+            "simulation_time_us": 1634300265599669,
+            "raw_log_time_us": 1634300265599728,
+            "lidar_token": "e9b3ef947f8753cc",
+            "raw_minus_sim_us": 59,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 45,
+            "simulation_time_us": 1634300265699669,
+            "raw_log_time_us": 1634300265699709,
+            "lidar_token": "cf243cfc69a053c5",
+            "raw_minus_sim_us": 40,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 46,
+            "simulation_time_us": 1634300265799669,
+            "raw_log_time_us": 1634300265799691,
+            "lidar_token": "d94e5f99d74f5c92",
+            "raw_minus_sim_us": 22,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 47,
+            "simulation_time_us": 1634300265899669,
+            "raw_log_time_us": 1634300265899678,
+            "lidar_token": "0930916fcb4856d1",
+            "raw_minus_sim_us": 9,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 48,
+            "simulation_time_us": 1634300265999669,
+            "raw_log_time_us": 1634300265999672,
+            "lidar_token": "4be5229b967f51d7",
+            "raw_minus_sim_us": 3,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 49,
+            "simulation_time_us": 1634300266099669,
+            "raw_log_time_us": 1634300266099672,
+            "lidar_token": "383046966d425b92",
+            "raw_minus_sim_us": 3,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 50,
+            "simulation_time_us": 1634300266199669,
+            "raw_log_time_us": 1634300266199667,
+            "lidar_token": "44c25984684257f8",
+            "raw_minus_sim_us": -2,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 51,
+            "simulation_time_us": 1634300266299669,
+            "raw_log_time_us": 1634300266299660,
+            "lidar_token": "4c7fd33befbd50e4",
+            "raw_minus_sim_us": -9,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 52,
+            "simulation_time_us": 1634300266399669,
+            "raw_log_time_us": 1634300266399657,
+            "lidar_token": "c1eddc23443356cd",
+            "raw_minus_sim_us": -12,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 53,
+            "simulation_time_us": 1634300266499669,
+            "raw_log_time_us": 1634300266499655,
+            "lidar_token": "1caacaa5f4095aee",
+            "raw_minus_sim_us": -14,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 54,
+            "simulation_time_us": 1634300266599669,
+            "raw_log_time_us": 1634300266599653,
+            "lidar_token": "ff68672c31d8525c",
+            "raw_minus_sim_us": -16,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 55,
+            "simulation_time_us": 1634300266699669,
+            "raw_log_time_us": 1634300266699647,
+            "lidar_token": "a4df263eb4265213",
+            "raw_minus_sim_us": -22,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 56,
+            "simulation_time_us": 1634300266799669,
+            "raw_log_time_us": 1634300266799635,
+            "lidar_token": "507ea50eb2135a29",
+            "raw_minus_sim_us": -34,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 57,
+            "simulation_time_us": 1634300266899669,
+            "raw_log_time_us": 1634300266899623,
+            "lidar_token": "1283f4e3260b5221",
+            "raw_minus_sim_us": -46,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 58,
+            "simulation_time_us": 1634300266999669,
+            "raw_log_time_us": 1634300266999613,
+            "lidar_token": "442113e6981c5c9b",
+            "raw_minus_sim_us": -56,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 59,
+            "simulation_time_us": 1634300267099669,
+            "raw_log_time_us": 1634300267099603,
+            "lidar_token": "1dae485514be5953",
+            "raw_minus_sim_us": -66,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 60,
+            "simulation_time_us": 1634300267199669,
+            "raw_log_time_us": 1634300267199590,
+            "lidar_token": "30a4f22eee9757e0",
+            "raw_minus_sim_us": -79,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 61,
+            "simulation_time_us": 1634300267299669,
+            "raw_log_time_us": 1634300267299573,
+            "lidar_token": "1d46f02dffc15cbb",
+            "raw_minus_sim_us": -96,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 62,
+            "simulation_time_us": 1634300267399669,
+            "raw_log_time_us": 1634300267399559,
+            "lidar_token": "e8dd1b5fde675ecb",
+            "raw_minus_sim_us": -110,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 63,
+            "simulation_time_us": 1634300267499669,
+            "raw_log_time_us": 1634300267499554,
+            "lidar_token": "ac958539285a5922",
+            "raw_minus_sim_us": -115,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 64,
+            "simulation_time_us": 1634300267599669,
+            "raw_log_time_us": 1634300267599552,
+            "lidar_token": "f304bef0d88e529d",
+            "raw_minus_sim_us": -117,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 65,
+            "simulation_time_us": 1634300267699669,
+            "raw_log_time_us": 1634300267699552,
+            "lidar_token": "657664f7762a5b3f",
+            "raw_minus_sim_us": -117,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 66,
+            "simulation_time_us": 1634300267799669,
+            "raw_log_time_us": 1634300267799549,
+            "lidar_token": "c64817eae52c5a6a",
+            "raw_minus_sim_us": -120,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 67,
+            "simulation_time_us": 1634300267899669,
+            "raw_log_time_us": 1634300267899537,
+            "lidar_token": "6cbc8d2ce1ee58cf",
+            "raw_minus_sim_us": -132,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 68,
+            "simulation_time_us": 1634300267999669,
+            "raw_log_time_us": 1634300267999520,
+            "lidar_token": "d9cabafa83fe5314",
+            "raw_minus_sim_us": -149,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 69,
+            "simulation_time_us": 1634300268099669,
+            "raw_log_time_us": 1634300268099496,
+            "lidar_token": "0e5887ee48c6538a",
+            "raw_minus_sim_us": -173,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 70,
+            "simulation_time_us": 1634300268199669,
+            "raw_log_time_us": 1634300268199475,
+            "lidar_token": "608828061f2b595d",
+            "raw_minus_sim_us": -194,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 71,
+            "simulation_time_us": 1634300268299669,
+            "raw_log_time_us": 1634300268299470,
+            "lidar_token": "5ac0eaa8518d5adc",
+            "raw_minus_sim_us": -199,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 72,
+            "simulation_time_us": 1634300268399669,
+            "raw_log_time_us": 1634300268399484,
+            "lidar_token": "b353a5dacc09525c",
+            "raw_minus_sim_us": -185,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 73,
+            "simulation_time_us": 1634300268499669,
+            "raw_log_time_us": 1634300268499512,
+            "lidar_token": "968bb9fc88965559",
+            "raw_minus_sim_us": -157,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 74,
+            "simulation_time_us": 1634300268599669,
+            "raw_log_time_us": 1634300268599538,
+            "lidar_token": "ed7e42a4a966538b",
+            "raw_minus_sim_us": -131,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 75,
+            "simulation_time_us": 1634300268699669,
+            "raw_log_time_us": 1634300268699568,
+            "lidar_token": "290dba936c4052a2",
+            "raw_minus_sim_us": -101,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 76,
+            "simulation_time_us": 1634300268799669,
+            "raw_log_time_us": 1634300268799604,
+            "lidar_token": "989349cde2495e90",
+            "raw_minus_sim_us": -65,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 77,
+            "simulation_time_us": 1634300268899669,
+            "raw_log_time_us": 1634300268899641,
+            "lidar_token": "5e94fe06d76752e5",
+            "raw_minus_sim_us": -28,
+            "log_time_after_sim_time": false,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 78,
+            "simulation_time_us": 1634300268999669,
+            "raw_log_time_us": 1634300268999677,
+            "lidar_token": "7949d2a45dcc55ca",
+            "raw_minus_sim_us": 8,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 79,
+            "simulation_time_us": 1634300269099669,
+            "raw_log_time_us": 1634300269099707,
+            "lidar_token": "c438b66f57c4569c",
+            "raw_minus_sim_us": 38,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": true
+          },
+          {
+            "index": 80,
+            "simulation_time_us": 1634300269199669,
+            "raw_log_time_us": 1634300269199722,
+            "lidar_token": "c09a4a0f0e8b5ea9",
+            "raw_minus_sim_us": 53,
+            "log_time_after_sim_time": true,
+            "unique_same_index_cell": true,
+            "observed_scientific_frame": false
+          }
+        ]
+      },
+      "sources": {
+        "db_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.10.15.12.13.23_veh-28_00021_00100.db",
+        "db_sha256": "e8d59e0d407694af6477ef7233c99588d56b2bee048ff03c60837df72c7029df",
+        "metadata_shard": "outputs/rbr_v2_d2_v1/metadata/2021.10.15.12.13.23_veh-28.json.gz",
+        "metadata_shard_sha256": "397cfd4a527fafab1660ea74458a4c5d09be3950dbcea8107dbb78eba63f4b90"
+      },
+      "traffic_examined": true,
+      "minimum_actor_corridor_gap_m": 3.020605218492294,
+      "corridor_drivable_covered": true,
+      "corridor_outside_area_m2": 0.0,
+      "object_samples": 1472,
+      "unique_tracks": 36,
+      "conflicting_actor_cells": 0,
+      "corridor_geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              332652.73160320625,
+              4690049.383741552
+            ],
+            [
+              332652.4816032762,
+              4690049.383889862
+            ],
+            [
+              332652.231603289,
+              4690049.384038176
+            ],
+            [
+              332651.98160335614,
+              4690049.384186488
+            ],
+            [
+              332651.7316034006,
+              4690049.384334799
+            ],
+            [
+              332651.48160343646,
+              4690049.384483111
+            ],
+            [
+              332651.23160347156,
+              4690049.384631424
+            ],
+            [
+              332650.98160352424,
+              4690049.384779736
+            ],
+            [
+              332650.7316035682,
+              4690049.384928049
+            ],
+            [
+              332650.4816036204,
+              4690049.38507636
+            ],
+            [
+              332650.2316036491,
+              4690049.385224673
+            ],
+            [
+              332649.9816037001,
+              4690049.385372985
+            ],
+            [
+              332649.7316037444,
+              4690049.385521297
+            ],
+            [
+              332649.4816037972,
+              4690049.385669609
+            ],
+            [
+              332649.2316038323,
+              4690049.385817921
+            ],
+            [
+              332648.98160386865,
+              4690049.385966234
+            ],
+            [
+              332648.73160392855,
+              4690049.386114545
+            ],
+            [
+              332648.48160395666,
+              4690049.386262858
+            ],
+            [
+              332648.2316040081,
+              4690049.3864111705
+            ],
+            [
+              332647.98160406103,
+              4690049.386559482
+            ],
+            [
+              332647.73160408926,
+              4690049.386707795
+            ],
+            [
+              332647.4816041399,
+              4690049.386856107
+            ],
+            [
+              332647.2316041848,
+              4690049.387004419
+            ],
+            [
+              332646.981604228,
+              4690049.387152731
+            ],
+            [
+              332646.7316042727,
+              4690049.387301044
+            ],
+            [
+              332646.4816043247,
+              4690049.387449355
+            ],
+            [
+              332646.2316043451,
+              4690049.387597669
+            ],
+            [
+              332645.98160440486,
+              4690049.387745981
+            ],
+            [
+              332645.7316044489,
+              4690049.387894293
+            ],
+            [
+              332645.4816045004,
+              4690049.388042605
+            ],
+            [
+              332645.23160454514,
+              4690049.388190916
+            ],
+            [
+              332644.98160458135,
+              4690049.388339228
+            ],
+            [
+              332644.7316046089,
+              4690049.388487542
+            ],
+            [
+              332644.48160467675,
+              4690049.388635853
+            ],
+            [
+              332644.231604705,
+              4690049.388784166
+            ],
+            [
+              332643.9816047645,
+              4690049.388932478
+            ],
+            [
+              332643.73160480056,
+              4690049.38908079
+            ],
+            [
+              332643.4816048528,
+              4690049.389229101
+            ],
+            [
+              332643.2316048725,
+              4690049.389377415
+            ],
+            [
+              332642.98160494055,
+              4690049.389525726
+            ],
+            [
+              332642.73160497687,
+              4690049.389674039
+            ],
+            [
+              332642.4816050128,
+              4690049.389822352
+            ],
+            [
+              332642.23160507175,
+              4690049.389970663
+            ],
+            [
+              332641.9816051162,
+              4690049.390118974
+            ],
+            [
+              332641.731605152,
+              4690049.390267286
+            ],
+            [
+              332641.4816051882,
+              4690049.3904156
+            ],
+            [
+              332641.2316052477,
+              4690049.390563911
+            ],
+            [
+              332640.98160526867,
+              4690049.390712225
+            ],
+            [
+              332640.73160533694,
+              4690049.390860536
+            ],
+            [
+              332640.48160538054,
+              4690049.391008847
+            ],
+            [
+              332640.23160540743,
+              4690049.3911571605
+            ],
+            [
+              332639.9812421384,
+              4690049.391348001
+            ],
+            [
+              332639.97826709255,
+              4690049.3913523285
+            ],
+            [
+              332639.9430292101,
+              4690049.391427987
+            ],
+            [
+              332639.69288477406,
+              4690049.392013362
+            ],
+            [
+              332639.44336549786,
+              4690049.392534936
+            ],
+            [
+              332639.19357637054,
+              4690049.393007835
+            ],
+            [
+              332638.94360959553,
+              4690049.393477257
+            ],
+            [
+              332638.6936100284,
+              4690049.393946742
+            ],
+            [
+              332638.4436104767,
+              4690049.394416225
+            ],
+            [
+              332638.1936109172,
+              4690049.394885709
+            ],
+            [
+              332637.94361136627,
+              4690049.395355191
+            ],
+            [
+              332637.69361178356,
+              4690049.395824676
+            ],
+            [
+              332637.4436122483,
+              4690049.396294159
+            ],
+            [
+              332637.1936126814,
+              4690049.396763642
+            ],
+            [
+              332636.9436131219,
+              4690049.397233126
+            ],
+            [
+              332636.6936135618,
+              4690049.397702609
+            ],
+            [
+              332636.44361400296,
+              4690049.398172093
+            ],
+            [
+              332636.1936144516,
+              4690049.398641575
+            ],
+            [
+              332635.94361488475,
+              4690049.399111059
+            ],
+            [
+              332635.69361531007,
+              4690049.399580544
+            ],
+            [
+              332635.44361578283,
+              4690049.400050025
+            ],
+            [
+              332635.193616191,
+              4690049.400519511
+            ],
+            [
+              332634.9436166486,
+              4690049.400988994
+            ],
+            [
+              332634.6936170885,
+              4690049.401458478
+            ],
+            [
+              332634.44361754565,
+              4690049.401927959
+            ],
+            [
+              332634.1936179624,
+              4690049.402397444
+            ],
+            [
+              332633.9436184195,
+              4690049.402866926
+            ],
+            [
+              332633.693618836,
+              4690049.403336411
+            ],
+            [
+              332633.4436193008,
+              4690049.403805894
+            ],
+            [
+              332633.19361974194,
+              4690049.404275376
+            ],
+            [
+              332632.94362017454,
+              4690049.40474486
+            ],
+            [
+              332632.6936206075,
+              4690049.405214344
+            ],
+            [
+              332632.4436210638,
+              4690049.405683827
+            ],
+            [
+              332632.1936214885,
+              4690049.406153311
+            ],
+            [
+              332631.9436219366,
+              4690049.406622794
+            ],
+            [
+              332631.6936223712,
+              4690049.407092279
+            ],
+            [
+              332631.44362282695,
+              4690049.407561761
+            ],
+            [
+              332631.1936232602,
+              4690049.408031245
+            ],
+            [
+              332630.9436237009,
+              4690049.408500728
+            ],
+            [
+              332630.6936241408,
+              4690049.408970212
+            ],
+            [
+              332630.44362459023,
+              4690049.409439694
+            ],
+            [
+              332630.193625016,
+              4690049.4099091785
+            ],
+            [
+              332629.9436254641,
+              4690049.410378662
+            ],
+            [
+              332629.6936259046,
+              4690049.410848145
+            ],
+            [
+              332629.4436263535,
+              4690049.411317628
+            ],
+            [
+              332629.1936267858,
+              4690049.411787111
+            ],
+            [
+              332628.9436272195,
+              4690049.412256596
+            ],
+            [
+              332628.69362766854,
+              4690049.412726079
+            ],
+            [
+              332628.44362810894,
+              4690049.413195563
+            ],
+            [
+              332628.1936285418,
+              4690049.413665047
+            ],
+            [
+              332627.9436289989,
+              4690049.414134529
+            ],
+            [
+              332627.6936294394,
+              4690049.414604012
+            ],
+            [
+              332627.4436298724,
+              4690049.415073495
+            ],
+            [
+              332627.1936303127,
+              4690049.415542979
+            ],
+            [
+              332626.9436307464,
+              4690049.416012463
+            ],
+            [
+              332626.6936312024,
+              4690049.416481946
+            ],
+            [
+              332626.4436316359,
+              4690049.416951429
+            ],
+            [
+              332626.1936320688,
+              4690049.417420913
+            ],
+            [
+              332625.943632517,
+              4690049.417890397
+            ],
+            [
+              332625.69363295764,
+              4690049.41835988
+            ],
+            [
+              332625.44363339856,
+              4690049.418829364
+            ],
+            [
+              332625.1936338399,
+              4690049.419298847
+            ],
+            [
+              332624.94363427267,
+              4690049.419768332
+            ],
+            [
+              332624.69363472884,
+              4690049.420237814
+            ],
+            [
+              332624.44363516127,
+              4690049.4207072975
+            ],
+            [
+              332624.1936356031,
+              4690049.421176781
+            ],
+            [
+              332623.94363604346,
+              4690049.421646264
+            ],
+            [
+              332623.69363649207,
+              4690049.422115747
+            ],
+            [
+              332623.4436369251,
+              4690049.42258523
+            ],
+            [
+              332623.19363735843,
+              4690049.423054715
+            ],
+            [
+              332622.94363779924,
+              4690049.423524199
+            ],
+            [
+              332622.6936382554,
+              4690049.423993682
+            ],
+            [
+              332622.443638697,
+              4690049.424463164
+            ],
+            [
+              332622.1936391209,
+              4690049.424932648
+            ],
+            [
+              332621.9436395622,
+              4690049.425402133
+            ],
+            [
+              332621.69364000286,
+              4690049.425871617
+            ],
+            [
+              332621.44364046794,
+              4690049.426341099
+            ],
+            [
+              332621.1936408924,
+              4690049.426810582
+            ],
+            [
+              332620.94364133314,
+              4690049.427280066
+            ],
+            [
+              332620.6936417663,
+              4690049.42774955
+            ],
+            [
+              332620.4436422389,
+              4690049.428219031
+            ],
+            [
+              332620.19364263985,
+              4690049.428688516
+            ],
+            [
+              332619.9436431042,
+              4690049.429157998
+            ],
+            [
+              332619.69364353694,
+              4690049.429627482
+            ],
+            [
+              332619.44364396203,
+              4690049.430096967
+            ],
+            [
+              332619.1936444185,
+              4690049.430566451
+            ],
+            [
+              332618.94364488334,
+              4690049.431035931
+            ],
+            [
+              332618.6936452846,
+              4690049.4315054165
+            ],
+            [
+              332618.44364573323,
+              4690049.431974901
+            ],
+            [
+              332618.19364618225,
+              4690049.432444384
+            ],
+            [
+              332617.94364663056,
+              4690049.432913867
+            ],
+            [
+              332617.69364706334,
+              4690049.43338335
+            ],
+            [
+              332617.44364750443,
+              4690049.433852834
+            ],
+            [
+              332617.193647953,
+              4690049.434322316
+            ],
+            [
+              332616.94364838593,
+              4690049.4347918
+            ],
+            [
+              332616.69364881923,
+              4690049.435261284
+            ],
+            [
+              332616.44364927587,
+              4690049.4357307665
+            ],
+            [
+              332616.19364969287,
+              4690049.436200252
+            ],
+            [
+              332615.94365015737,
+              4690049.436669734
+            ],
+            [
+              332615.6936505821,
+              4690049.437139219
+            ],
+            [
+              332615.44365103927,
+              4690049.437608701
+            ],
+            [
+              332615.19365147187,
+              4690049.438078185
+            ],
+            [
+              332614.94365191285,
+              4690049.438547668
+            ],
+            [
+              332614.69365236105,
+              4690049.439017151
+            ],
+            [
+              332614.4436527788,
+              4690049.439486636
+            ],
+            [
+              332614.19365324284,
+              4690049.439956118
+            ],
+            [
+              332613.9436536843,
+              4690049.440425601
+            ],
+            [
+              332613.6936541172,
+              4690049.440895084
+            ],
+            [
+              332613.44365454937,
+              4690049.441364569
+            ],
+            [
+              332613.19365499803,
+              4690049.441834052
+            ],
+            [
+              332612.9436554469,
+              4690049.442303535
+            ],
+            [
+              332612.69365587126,
+              4690049.442773019
+            ],
+            [
+              332612.443656337,
+              4690049.443242501
+            ],
+            [
+              332612.19365673617,
+              4690049.443711987
+            ],
+            [
+              332611.9436572186,
+              4690049.444181468
+            ],
+            [
+              332611.6936576356,
+              4690049.444650953
+            ],
+            [
+              332611.4436580748,
+              4690049.445120437
+            ],
+            [
+              332611.1936585324,
+              4690049.44558992
+            ],
+            [
+              332610.9436589734,
+              4690049.446059402
+            ],
+            [
+              332610.6936594068,
+              4690049.4465288855
+            ],
+            [
+              332610.4436598476,
+              4690049.446998369
+            ],
+            [
+              332610.1936602718,
+              4690049.447467854
+            ],
+            [
+              332609.94366073626,
+              4690049.447937337
+            ],
+            [
+              332609.6936611771,
+              4690049.448406819
+            ],
+            [
+              332609.44366160256,
+              4690049.448876304
+            ],
+            [
+              332609.1936620512,
+              4690049.449345787
+            ],
+            [
+              332608.9436624843,
+              4690049.449815271
+            ],
+            [
+              332608.69366294064,
+              4690049.450284754
+            ],
+            [
+              332608.44366337353,
+              4690049.450754237
+            ],
+            [
+              332608.1936638147,
+              4690049.451223721
+            ],
+            [
+              332607.9436642553,
+              4690049.451693204
+            ],
+            [
+              332607.6936647042,
+              4690049.452162687
+            ],
+            [
+              332607.4436651355,
+              4690049.45263217
+            ],
+            [
+              332607.1936655782,
+              4690049.453101654
+            ],
+            [
+              332606.9436660184,
+              4690049.453571137
+            ],
+            [
+              332606.6936664668,
+              4690049.45404062
+            ],
+            [
+              332606.44366687565,
+              4690049.454510106
+            ],
+            [
+              332606.193667349,
+              4690049.454979588
+            ],
+            [
+              332605.9436677895,
+              4690049.455449071
+            ],
+            [
+              332605.6936682226,
+              4690049.455918554
+            ],
+            [
+              332605.4436686549,
+              4690049.456388039
+            ],
+            [
+              332605.19366910466,
+              4690049.456857522
+            ],
+            [
+              332604.9436695449,
+              4690049.457327005
+            ],
+            [
+              332604.69366999227,
+              4690049.457796488
+            ],
+            [
+              332604.4436704262,
+              4690049.458265971
+            ],
+            [
+              332604.1936708674,
+              4690049.458735455
+            ],
+            [
+              332603.9436713002,
+              4690049.459204939
+            ],
+            [
+              332603.69367175724,
+              4690049.459674422
+            ],
+            [
+              332603.44367217366,
+              4690049.460143907
+            ],
+            [
+              332603.19367263047,
+              4690049.46061339
+            ],
+            [
+              332602.94367307954,
+              4690049.461082873
+            ],
+            [
+              332602.69367350417,
+              4690049.461552357
+            ],
+            [
+              332602.4436739611,
+              4690049.46202184
+            ],
+            [
+              332602.1936743934,
+              4690049.462491323
+            ],
+            [
+              332601.9436748351,
+              4690049.462960807
+            ],
+            [
+              332601.6936752752,
+              4690049.46343029
+            ],
+            [
+              332601.4436757246,
+              4690049.463899773
+            ],
+            [
+              332601.1936761484,
+              4690049.464369257
+            ],
+            [
+              332600.94367660565,
+              4690049.4648387395
+            ],
+            [
+              332600.69367703825,
+              4690049.465308223
+            ],
+            [
+              332600.4436774792,
+              4690049.465777706
+            ],
+            [
+              332600.1936779046,
+              4690049.466247192
+            ],
+            [
+              332599.9436783683,
+              4690049.466716674
+            ],
+            [
+              332599.69367881044,
+              4690049.467186157
+            ],
+            [
+              332599.44367922697,
+              4690049.467655642
+            ],
+            [
+              332599.1936796918,
+              4690049.468125124
+            ],
+            [
+              332598.94368014,
+              4690049.468594606
+            ],
+            [
+              332598.8039415115,
+              4690049.468857028
+            ],
+            [
+              332598.81201103196,
+              4690053.765849451
+            ],
+            [
+              332598.95174962486,
+              4690053.765587029
+            ],
+            [
+              332599.20174914907,
+              4690053.7651175475
+            ],
+            [
+              332599.45174871624,
+              4690053.764648065
+            ],
+            [
+              332599.7017482997,
+              4690053.76417858
+            ],
+            [
+              332599.9517478336,
+              4690053.763709097
+            ],
+            [
+              332600.20174739393,
+              4690053.763239615
+            ],
+            [
+              332600.4517469765,
+              4690053.762770129
+            ],
+            [
+              332600.7017465195,
+              4690053.762300646
+            ],
+            [
+              332600.9517460789,
+              4690053.7618311625
+            ],
+            [
+              332601.2017456297,
+              4690053.76136168
+            ],
+            [
+              332601.4517452059,
+              4690053.760892196
+            ],
+            [
+              332601.70174474845,
+              4690053.760422713
+            ],
+            [
+              332601.9517443164,
+              4690053.75995323
+            ],
+            [
+              332602.2017438747,
+              4690053.759483746
+            ],
+            [
+              332602.45174343436,
+              4690053.759014263
+            ],
+            [
+              332602.70174298546,
+              4690053.75854478
+            ],
+            [
+              332602.95174256084,
+              4690053.758075296
+            ],
+            [
+              332603.20174210373,
+              4690053.757605813
+            ],
+            [
+              332603.4517416709,
+              4690053.75713633
+            ],
+            [
+              332603.7017412465,
+              4690053.756666845
+            ],
+            [
+              332603.9517407815,
+              4690053.756197362
+            ],
+            [
+              332604.20174035674,
+              4690053.755727878
+            ],
+            [
+              332604.45173990756,
+              4690053.755258394
+            ],
+            [
+              332604.7017394656,
+              4690053.754788911
+            ],
+            [
+              332604.95173901814,
+              4690053.7543194285
+            ],
+            [
+              332605.20173858595,
+              4690053.753849945
+            ],
+            [
+              332605.4517381442,
+              4690053.753380462
+            ],
+            [
+              332605.70173771185,
+              4690053.752910977
+            ],
+            [
+              332605.9517372628,
+              4690053.752441494
+            ],
+            [
+              332606.2017368143,
+              4690053.751972011
+            ],
+            [
+              332606.45173637295,
+              4690053.751502529
+            ],
+            [
+              332606.7017359641,
+              4690053.751033043
+            ],
+            [
+              332606.95173549163,
+              4690053.75056356
+            ],
+            [
+              332607.2017350595,
+              4690053.750094077
+            ],
+            [
+              332607.45173461677,
+              4690053.749624593
+            ],
+            [
+              332607.7017341775,
+              4690053.74915511
+            ],
+            [
+              332607.9517337286,
+              4690053.748685627
+            ],
+            [
+              332608.201733296,
+              4690053.748216144
+            ],
+            [
+              332608.4517328548,
+              4690053.74774666
+            ],
+            [
+              332608.7017324139,
+              4690053.747277177
+            ],
+            [
+              332608.9517319656,
+              4690053.746807694
+            ],
+            [
+              332609.2017315405,
+              4690053.74633821
+            ],
+            [
+              332609.45173109183,
+              4690053.745868727
+            ],
+            [
+              332609.7017306584,
+              4690053.745399242
+            ],
+            [
+              332609.95173020154,
+              4690053.74492976
+            ],
+            [
+              332610.2017297611,
+              4690053.744460277
+            ],
+            [
+              332610.45172934484,
+              4690053.743990792
+            ],
+            [
+              332610.7017288881,
+              4690053.7435213085
+            ],
+            [
+              332610.9517284467,
+              4690053.743051825
+            ],
+            [
+              332611.2017279977,
+              4690053.742582343
+            ],
+            [
+              332611.451727556,
+              4690053.74211286
+            ],
+            [
+              332611.70172713284,
+              4690053.741643376
+            ],
+            [
+              332611.9517266919,
+              4690053.741173891
+            ],
+            [
+              332612.20172622544,
+              4690053.74070441
+            ],
+            [
+              332612.45172582625,
+              4690053.740234924
+            ],
+            [
+              332612.7017253446,
+              4690053.739765442
+            ],
+            [
+              332612.9517249282,
+              4690053.739295958
+            ],
+            [
+              332613.2017244713,
+              4690053.738826475
+            ],
+            [
+              332613.45172403863,
+              4690053.738356992
+            ],
+            [
+              332613.70172360644,
+              4690053.737887507
+            ],
+            [
+              332613.95172315754,
+              4690053.737418024
+            ],
+            [
+              332614.2017227081,
+              4690053.736948541
+            ],
+            [
+              332614.45172226813,
+              4690053.736479059
+            ],
+            [
+              332614.7017218504,
+              4690053.736009574
+            ],
+            [
+              332614.9517213861,
+              4690053.735540091
+            ],
+            [
+              332615.2017209531,
+              4690053.735070608
+            ],
+            [
+              332615.45172051253,
+              4690053.734601124
+            ],
+            [
+              332615.7017200634,
+              4690053.734131642
+            ],
+            [
+              332615.95171963866,
+              4690053.733662157
+            ],
+            [
+              332616.20171918214,
+              4690053.733192675
+            ],
+            [
+              332616.45171876514,
+              4690053.7327231895
+            ],
+            [
+              332616.7017183005,
+              4690053.732253707
+            ],
+            [
+              332616.9517178752,
+              4690053.731784223
+            ],
+            [
+              332617.20171742624,
+              4690053.731314739
+            ],
+            [
+              332617.45171697775,
+              4690053.730845257
+            ],
+            [
+              332617.70171654463,
+              4690053.730375773
+            ],
+            [
+              332617.9517161038,
+              4690053.72990629
+            ],
+            [
+              332618.2017156555,
+              4690053.729436807
+            ],
+            [
+              332618.4517152225,
+              4690053.728967324
+            ],
+            [
+              332618.70171478996,
+              4690053.7284978395
+            ],
+            [
+              332618.95171435666,
+              4690053.728028354
+            ],
+            [
+              332619.20171387575,
+              4690053.727558874
+            ],
+            [
+              332619.4517134593,
+              4690053.72708939
+            ],
+            [
+              332619.7017130342,
+              4690053.726619905
+            ],
+            [
+              332619.9517125775,
+              4690053.726150421
+            ],
+            [
+              332620.2017121291,
+              4690053.725680939
+            ],
+            [
+              332620.4517117122,
+              4690053.725211454
+            ],
+            [
+              332620.7017112316,
+              4690053.724741973
+            ],
+            [
+              332620.9517108224,
+              4690053.724272489
+            ],
+            [
+              332621.2017103736,
+              4690053.723803005
+            ],
+            [
+              332621.4517099332,
+              4690053.723333522
+            ],
+            [
+              332621.7017094761,
+              4690053.72286404
+            ],
+            [
+              332621.9517090595,
+              4690053.722394556
+            ],
+            [
+              332622.2017086182,
+              4690053.721925071
+            ],
+            [
+              332622.45170817827,
+              4690053.721455587
+            ],
+            [
+              332622.7017077207,
+              4690053.720986105
+            ],
+            [
+              332622.95170728053,
+              4690053.720516622
+            ],
+            [
+              332623.20170685573,
+              4690053.720047138
+            ],
+            [
+              332623.45170641434,
+              4690053.719577653
+            ],
+            [
+              332623.70170596533,
+              4690053.71910817
+            ],
+            [
+              332623.9517055167,
+              4690053.718638687
+            ],
+            [
+              332624.2017050844,
+              4690053.718169204
+            ],
+            [
+              332624.45170464256,
+              4690053.7176997205
+            ],
+            [
+              332624.7017042021,
+              4690053.717230237
+            ],
+            [
+              332624.95170375396,
+              4690053.716760755
+            ],
+            [
+              332625.2017033292,
+              4690053.71629127
+            ],
+            [
+              332625.45170287986,
+              4690053.715821787
+            ],
+            [
+              332625.7017024389,
+              4690053.715352303
+            ],
+            [
+              332625.95170199824,
+              4690053.71488282
+            ],
+            [
+              332626.2017015581,
+              4690053.7144133365
+            ],
+            [
+              332626.45170112525,
+              4690053.713943852
+            ],
+            [
+              332626.7017006757,
+              4690053.713474369
+            ],
+            [
+              332626.9517002277,
+              4690053.713004886
+            ],
+            [
+              332627.20169980195,
+              4690053.712535402
+            ],
+            [
+              332627.45169935364,
+              4690053.712065918
+            ],
+            [
+              332627.70169891266,
+              4690053.711596435
+            ],
+            [
+              332627.95169846417,
+              4690053.711126952
+            ],
+            [
+              332628.20169802307,
+              4690053.71065747
+            ],
+            [
+              332628.4516975982,
+              4690053.710187986
+            ],
+            [
+              332628.7016971498,
+              4690053.709718502
+            ],
+            [
+              332628.95169670874,
+              4690053.709249019
+            ],
+            [
+              332629.2016962751,
+              4690053.708779534
+            ],
+            [
+              332629.4516958268,
+              4690053.708310051
+            ],
+            [
+              332629.7016953779,
+              4690053.707840568
+            ],
+            [
+              332629.95169494534,
+              4690053.707371085
+            ],
+            [
+              332630.2016945053,
+              4690053.7069016015
+            ],
+            [
+              332630.4516940715,
+              4690053.706432117
+            ],
+            [
+              332630.7016936141,
+              4690053.705962635
+            ],
+            [
+              332630.9516931821,
+              4690053.705493151
+            ],
+            [
+              332631.2016927415,
+              4690053.705023668
+            ],
+            [
+              332631.45169230027,
+              4690053.704554184
+            ],
+            [
+              332631.7016918525,
+              4690053.704084702
+            ],
+            [
+              332631.9516914259,
+              4690053.7036152175
+            ],
+            [
+              332632.2016909778,
+              4690053.703145734
+            ],
+            [
+              332632.4516905451,
+              4690053.70267625
+            ],
+            [
+              332632.7016900888,
+              4690053.702206767
+            ],
+            [
+              332632.9516896638,
+              4690053.701737283
+            ],
+            [
+              332633.2016892152,
+              4690053.701267799
+            ],
+            [
+              332633.4516887661,
+              4690053.700798317
+            ],
+            [
+              332633.70168832527,
+              4690053.700328834
+            ],
+            [
+              332633.9516879088,
+              4690053.699859349
+            ],
+            [
+              332634.2016874437,
+              4690053.699389867
+            ],
+            [
+              332634.45168701897,
+              4690053.698920382
+            ],
+            [
+              332634.7016865538,
+              4690053.698450901
+            ],
+            [
+              332634.9516861299,
+              4690053.697981417
+            ],
+            [
+              332635.2016856883,
+              4690053.697511934
+            ],
+            [
+              332635.45168526407,
+              4690053.697042448
+            ],
+            [
+              332635.70168479136,
+              4690053.696572967
+            ],
+            [
+              332635.95168438205,
+              4690053.696103482
+            ],
+            [
+              332636.2016839249,
+              4690053.695633998
+            ],
+            [
+              332636.4516834763,
+              4690053.695164516
+            ],
+            [
+              332636.7016830431,
+              4690053.694695032
+            ],
+            [
+              332636.95168260316,
+              4690053.694225549
+            ],
+            [
+              332637.2016821627,
+              4690053.693756065
+            ],
+            [
+              332637.4516817216,
+              4690053.693286582
+            ],
+            [
+              332637.7016812729,
+              4690053.692817099
+            ],
+            [
+              332637.9516808556,
+              4690053.692347614
+            ],
+            [
+              332638.20168039046,
+              4690053.691878132
+            ],
+            [
+              332638.4516799579,
+              4690053.691408648
+            ],
+            [
+              332638.7016795177,
+              4690053.690939165
+            ],
+            [
+              332638.95167908486,
+              4690053.69046968
+            ],
+            [
+              332639.2016786354,
+              4690053.690000197
+            ],
+            [
+              332639.4517109716,
+              4690053.689526837
+            ],
+            [
+              332639.70213392825,
+              4690053.689003416
+            ],
+            [
+              332639.95246336627,
+              4690053.688417635
+            ],
+            [
+              332639.9860056027,
+              4690053.688345617
+            ],
+            [
+              332640.23433325754,
+              4690053.688156298
+            ],
+            [
+              332640.48415457044,
+              4690053.688008091
+            ],
+            [
+              332640.73415451084,
+              4690053.68785978
+            ],
+            [
+              332640.9841544666,
+              4690053.687711469
+            ],
+            [
+              332641.23415444564,
+              4690053.687563155
+            ],
+            [
+              332641.4841543781,
+              4690053.687414844
+            ],
+            [
+              332641.7341543499,
+              4690053.6872665305
+            ],
+            [
+              332641.9841542981,
+              4690053.687118218
+            ],
+            [
+              332642.23415424564,
+              4690053.686969907
+            ],
+            [
+              332642.4841542027,
+              4690053.686821596
+            ],
+            [
+              332642.7341541748,
+              4690053.686673283
+            ],
+            [
+              332642.9841541225,
+              4690053.68652497
+            ],
+            [
+              332643.2341540704,
+              4690053.686376659
+            ],
+            [
+              332643.48415405065,
+              4690053.686228345
+            ],
+            [
+              332643.7341539824,
+              4690053.686080034
+            ],
+            [
+              332643.9841539464,
+              4690053.685931722
+            ],
+            [
+              332644.2341538949,
+              4690053.68578341
+            ],
+            [
+              332644.48415386665,
+              4690053.685635097
+            ],
+            [
+              332644.73415380676,
+              4690053.685486786
+            ],
+            [
+              332644.98415378726,
+              4690053.685338472
+            ],
+            [
+              332645.23415372707,
+              4690053.68519016
+            ],
+            [
+              332645.4841536743,
+              4690053.685041849
+            ],
+            [
+              332645.73415363085,
+              4690053.684893537
+            ],
+            [
+              332645.98415359476,
+              4690053.684745225
+            ],
+            [
+              332646.234153551,
+              4690053.684596913
+            ],
+            [
+              332646.48415352264,
+              4690053.684448599
+            ],
+            [
+              332646.7341534546,
+              4690053.684300288
+            ],
+            [
+              332646.9841534179,
+              4690053.684151975
+            ],
+            [
+              332647.2341533747,
+              4690053.684003663
+            ],
+            [
+              332647.4841533298,
+              4690053.683855351
+            ],
+            [
+              332647.73415328714,
+              4690053.683707039
+            ],
+            [
+              332647.98415325093,
+              4690053.683558726
+            ],
+            [
+              332648.23415319,
+              4690053.6834104145
+            ],
+            [
+              332648.48415315454,
+              4690053.683262102
+            ],
+            [
+              332648.73415311845,
+              4690053.683113789
+            ],
+            [
+              332648.98415305855,
+              4690053.682965478
+            ],
+            [
+              332649.23415303015,
+              4690053.682817165
+            ],
+            [
+              332649.48415297904,
+              4690053.682668853
+            ],
+            [
+              332649.7341529263,
+              4690053.682520541
+            ],
+            [
+              332649.98415289,
+              4690053.682372229
+            ],
+            [
+              332650.23415284697,
+              4690053.682223917
+            ],
+            [
+              332650.4841528103,
+              4690053.682075604
+            ],
+            [
+              332650.73415275005,
+              4690053.681927293
+            ],
+            [
+              332650.98415271414,
+              4690053.68177898
+            ],
+            [
+              332651.2341526695,
+              4690053.681630668
+            ],
+            [
+              332651.48415263434,
+              4690053.681482355
+            ],
+            [
+              332651.7341525825,
+              4690053.681334043
+            ],
+            [
+              332651.98415253,
+              4690053.681185732
+            ],
+            [
+              332652.23415248696,
+              4690053.68103742
+            ],
+            [
+              332652.4841524661,
+              4690053.680889106
+            ],
+            [
+              332652.7341523907,
+              4690053.680740796
+            ],
+            [
+              332652.96321941575,
+              4690053.680604901
+            ],
+            [
+              332652.9606702047,
+              4690049.383605657
+            ],
+            [
+              332652.73160320625,
+              4690049.383741552
+            ]
+          ]
+        ]
+      },
+      "offline_future_traffic_used": true
+    },
+    "anchor_rank": 6
+  },
+  "zero_run_guard": {
+    "SimulationRunner.run": 0,
+    "SimulationRunner._initialize": 0,
+    "Simulation.initialize": 0,
+    "Simulation.propagate": 0,
+    "R2BControllerAwarePlannerV1.initialize": 0,
+    "R2BControllerAwarePlannerV1.compute_trajectory": 0,
+    "R2BControllerAwarePlannerV1.compute_planner_trajectory": 0,
+    "TwoStageController.update_state": 0,
+    "LQRTracker.track_trajectory": 0,
+    "KinematicBicycleModel.propagate_state": 0,
+    "MetricsEngine.compute": 0,
+    "MetricsEngine.write_to_files": 0,
+    "MetricCallback.on_simulation_end": 0,
+    "SimulationLogCallback.on_simulation_end": 0,
+    "MetricFileCallback.on_run_simulation_end": 0,
+    "MultiMainCallback.on_run_simulation_end": 0,
+    "tools.b1_tsb_qualification_executor.claim_budget": 0,
+    "tools.b1_resume_execution.validate_claim": 0,
+    "tools.b1_resume_execution.update_status": 0
+  },
+  "wall_seconds": 0.20413416699999942,
+  "scanner_sha256": "1df28bf1454042b209f93f2f75468cbb3ef1ad49e18d0d832c802a17ddaf1820",
+  "frozen_SDC_source_sha256": "8859ea49ce9f652faf888fc7eb9aa1ed7377ed736f672ccdfd3389bf62a14097",
+  "new_scientific_runs": 0
+}

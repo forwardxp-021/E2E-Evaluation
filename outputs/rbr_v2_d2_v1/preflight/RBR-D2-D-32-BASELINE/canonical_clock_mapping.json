@@ -1,0 +1,836 @@
+{
+  "authority": "tools.tsb_coast_p1r_c_clock.CoastCanonicalTimeControllerV1",
+  "control_step_us": 100000,
+  "episode_start_us": 1621271880751022,
+  "future_frame_selected": false,
+  "half_period_role": "INDEX_AMBIGUITY_BOUND_NOT_PHYSICAL_ERROR_OR_CAUSALITY_TOLERANCE",
+  "iteration_count": 81,
+  "max_abs_raw_minus_sim_us": 385,
+  "max_raw_minus_sim_us": 193,
+  "min_raw_minus_sim_us": -385,
+  "negative_skew_count": 61,
+  "nominal_half_period_us": 50000,
+  "observations_retimed_or_interpolated": false,
+  "observer": "nuplan.planning.simulation.observation.tracks_observation.TracksObservation",
+  "policy": "SAME_INDEX_UNIQUE_NEAREST_CELL_v1",
+  "positive_skew_count": 18,
+  "raw_80frame_span_us": 7900037,
+  "realized_frame_count": 80,
+  "rows": [
+    {
+      "index": 0,
+      "lidar_token": "eab0d8758db65fe1",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271880751022,
+      "raw_minus_sim_us": 0,
+      "simulation_time_us": 1621271880751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 1,
+      "lidar_token": "d175f5aaeaa65495",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271880850957,
+      "raw_minus_sim_us": -65,
+      "simulation_time_us": 1621271880851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 2,
+      "lidar_token": "56cb3c51a19f5211",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271880950886,
+      "raw_minus_sim_us": -136,
+      "simulation_time_us": 1621271880951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 3,
+      "lidar_token": "26a1089c3daa5de9",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881050816,
+      "raw_minus_sim_us": -206,
+      "simulation_time_us": 1621271881051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 4,
+      "lidar_token": "6b3d61bce49c505d",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881150756,
+      "raw_minus_sim_us": -266,
+      "simulation_time_us": 1621271881151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 5,
+      "lidar_token": "570512b6dff05471",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881250710,
+      "raw_minus_sim_us": -312,
+      "simulation_time_us": 1621271881251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 6,
+      "lidar_token": "6317fc1261ce504f",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881350680,
+      "raw_minus_sim_us": -342,
+      "simulation_time_us": 1621271881351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 7,
+      "lidar_token": "ec74e474a1335950",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881450662,
+      "raw_minus_sim_us": -360,
+      "simulation_time_us": 1621271881451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 8,
+      "lidar_token": "4dc2b844801c57cc",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881550669,
+      "raw_minus_sim_us": -353,
+      "simulation_time_us": 1621271881551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 9,
+      "lidar_token": "115280faa33258db",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881650696,
+      "raw_minus_sim_us": -326,
+      "simulation_time_us": 1621271881651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 10,
+      "lidar_token": "109f6dd6cf075822",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881750719,
+      "raw_minus_sim_us": -303,
+      "simulation_time_us": 1621271881751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 11,
+      "lidar_token": "f1f81d3e6f7c5332",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881850731,
+      "raw_minus_sim_us": -291,
+      "simulation_time_us": 1621271881851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 12,
+      "lidar_token": "f14e6fe7d6135fa5",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271881950750,
+      "raw_minus_sim_us": -272,
+      "simulation_time_us": 1621271881951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 13,
+      "lidar_token": "0ea8c0fbe38f55ae",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882050782,
+      "raw_minus_sim_us": -240,
+      "simulation_time_us": 1621271882051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 14,
+      "lidar_token": "215b2cda3a66567d",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882150825,
+      "raw_minus_sim_us": -197,
+      "simulation_time_us": 1621271882151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 15,
+      "lidar_token": "5d4ce613a5aa5e75",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882250865,
+      "raw_minus_sim_us": -157,
+      "simulation_time_us": 1621271882251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 16,
+      "lidar_token": "6b40fcb0618451fb",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882350909,
+      "raw_minus_sim_us": -113,
+      "simulation_time_us": 1621271882351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 17,
+      "lidar_token": "361316f1dc595532",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882450955,
+      "raw_minus_sim_us": -67,
+      "simulation_time_us": 1621271882451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 18,
+      "lidar_token": "88821d617d915a65",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882550992,
+      "raw_minus_sim_us": -30,
+      "simulation_time_us": 1621271882551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 19,
+      "lidar_token": "65c3c6324d405efe",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882651017,
+      "raw_minus_sim_us": -5,
+      "simulation_time_us": 1621271882651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 20,
+      "lidar_token": "b5ad19ecb4b65c94",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882751039,
+      "raw_minus_sim_us": 17,
+      "simulation_time_us": 1621271882751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 21,
+      "lidar_token": "b7bc8fcdc00e5815",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882851056,
+      "raw_minus_sim_us": 34,
+      "simulation_time_us": 1621271882851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 22,
+      "lidar_token": "a5dde8b0ad56522f",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271882951070,
+      "raw_minus_sim_us": 48,
+      "simulation_time_us": 1621271882951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 23,
+      "lidar_token": "8a25c02106b352f9",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883051079,
+      "raw_minus_sim_us": 57,
+      "simulation_time_us": 1621271883051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 24,
+      "lidar_token": "93566d07dacb5dc8",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883151092,
+      "raw_minus_sim_us": 70,
+      "simulation_time_us": 1621271883151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 25,
+      "lidar_token": "26c0cbb4f2d85178",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883251110,
+      "raw_minus_sim_us": 88,
+      "simulation_time_us": 1621271883251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 26,
+      "lidar_token": "3ef6458477e45f4f",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883351119,
+      "raw_minus_sim_us": 97,
+      "simulation_time_us": 1621271883351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 27,
+      "lidar_token": "342bfc48d5775882",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883451102,
+      "raw_minus_sim_us": 80,
+      "simulation_time_us": 1621271883451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 28,
+      "lidar_token": "5e2dc5596af755a3",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883551046,
+      "raw_minus_sim_us": 24,
+      "simulation_time_us": 1621271883551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 29,
+      "lidar_token": "e5945ff5dde05879",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883650977,
+      "raw_minus_sim_us": -45,
+      "simulation_time_us": 1621271883651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 30,
+      "lidar_token": "e6efc6da20ea5f61",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883750903,
+      "raw_minus_sim_us": -119,
+      "simulation_time_us": 1621271883751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 31,
+      "lidar_token": "efab984547d3524f",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883850828,
+      "raw_minus_sim_us": -194,
+      "simulation_time_us": 1621271883851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 32,
+      "lidar_token": "3dcdb1ef06b15248",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271883950755,
+      "raw_minus_sim_us": -267,
+      "simulation_time_us": 1621271883951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 33,
+      "lidar_token": "8e1d960a6a79587f",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884050709,
+      "raw_minus_sim_us": -313,
+      "simulation_time_us": 1621271884051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 34,
+      "lidar_token": "f48fb9f3d3fe5221",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884150688,
+      "raw_minus_sim_us": -334,
+      "simulation_time_us": 1621271884151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 35,
+      "lidar_token": "2bb9b34b28c9571f",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884250663,
+      "raw_minus_sim_us": -359,
+      "simulation_time_us": 1621271884251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 36,
+      "lidar_token": "29a52827e0c25c8e",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884350637,
+      "raw_minus_sim_us": -385,
+      "simulation_time_us": 1621271884351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 37,
+      "lidar_token": "03a7b00949c75468",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884450637,
+      "raw_minus_sim_us": -385,
+      "simulation_time_us": 1621271884451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 38,
+      "lidar_token": "8c2d5991e6395338",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884550667,
+      "raw_minus_sim_us": -355,
+      "simulation_time_us": 1621271884551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 39,
+      "lidar_token": "1116b0ccfbe25577",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884650704,
+      "raw_minus_sim_us": -318,
+      "simulation_time_us": 1621271884651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 40,
+      "lidar_token": "5e0b24b66e93568b",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884750722,
+      "raw_minus_sim_us": -300,
+      "simulation_time_us": 1621271884751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 41,
+      "lidar_token": "662a911008685941",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884850736,
+      "raw_minus_sim_us": -286,
+      "simulation_time_us": 1621271884851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 42,
+      "lidar_token": "e6441f2f985557c5",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271884950749,
+      "raw_minus_sim_us": -273,
+      "simulation_time_us": 1621271884951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 43,
+      "lidar_token": "e0eb8974f0925e12",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885050759,
+      "raw_minus_sim_us": -263,
+      "simulation_time_us": 1621271885051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 44,
+      "lidar_token": "b7ba1952372c518d",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885150761,
+      "raw_minus_sim_us": -261,
+      "simulation_time_us": 1621271885151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 45,
+      "lidar_token": "c2fe009aa3b15325",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885250768,
+      "raw_minus_sim_us": -254,
+      "simulation_time_us": 1621271885251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 46,
+      "lidar_token": "ae082b76dd1a51cf",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885350782,
+      "raw_minus_sim_us": -240,
+      "simulation_time_us": 1621271885351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 47,
+      "lidar_token": "526807530a1a5b8d",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885450807,
+      "raw_minus_sim_us": -215,
+      "simulation_time_us": 1621271885451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 48,
+      "lidar_token": "9b59d6996eb750e7",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885550842,
+      "raw_minus_sim_us": -180,
+      "simulation_time_us": 1621271885551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 49,
+      "lidar_token": "6d80fbb823cd5006",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885650884,
+      "raw_minus_sim_us": -138,
+      "simulation_time_us": 1621271885651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 50,
+      "lidar_token": "98351dcbc0ae5891",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885750929,
+      "raw_minus_sim_us": -93,
+      "simulation_time_us": 1621271885751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 51,
+      "lidar_token": "5df1de131500511e",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885850986,
+      "raw_minus_sim_us": -36,
+      "simulation_time_us": 1621271885851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 52,
+      "lidar_token": "90e837b195175f33",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271885951048,
+      "raw_minus_sim_us": 26,
+      "simulation_time_us": 1621271885951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 53,
+      "lidar_token": "2912d57a6f405b14",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886051114,
+      "raw_minus_sim_us": 92,
+      "simulation_time_us": 1621271886051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 54,
+      "lidar_token": "d5d194d761b25b4a",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886151170,
+      "raw_minus_sim_us": 148,
+      "simulation_time_us": 1621271886151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 55,
+      "lidar_token": "cdd925bd89535860",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886251202,
+      "raw_minus_sim_us": 180,
+      "simulation_time_us": 1621271886251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 56,
+      "lidar_token": "43f543d6b02e5365",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886351215,
+      "raw_minus_sim_us": 193,
+      "simulation_time_us": 1621271886351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 57,
+      "lidar_token": "a27ac301ede956dd",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886451195,
+      "raw_minus_sim_us": 173,
+      "simulation_time_us": 1621271886451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 58,
+      "lidar_token": "0f5d323b71785ec8",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886551143,
+      "raw_minus_sim_us": 121,
+      "simulation_time_us": 1621271886551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 59,
+      "lidar_token": "538e3251b8c355cc",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886651071,
+      "raw_minus_sim_us": 49,
+      "simulation_time_us": 1621271886651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 60,
+      "lidar_token": "6a02302e410a5430",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886751002,
+      "raw_minus_sim_us": -20,
+      "simulation_time_us": 1621271886751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 61,
+      "lidar_token": "ce9659cf8ebb5e86",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886850945,
+      "raw_minus_sim_us": -77,
+      "simulation_time_us": 1621271886851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 62,
+      "lidar_token": "b01516f17a0c50df",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271886950890,
+      "raw_minus_sim_us": -132,
+      "simulation_time_us": 1621271886951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 63,
+      "lidar_token": "e2cff7d1c2bd5ecb",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887050844,
+      "raw_minus_sim_us": -178,
+      "simulation_time_us": 1621271887051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 64,
+      "lidar_token": "3142d8cb6a5e5533",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887150815,
+      "raw_minus_sim_us": -207,
+      "simulation_time_us": 1621271887151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 65,
+      "lidar_token": "999bc9998eb15636",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887250799,
+      "raw_minus_sim_us": -223,
+      "simulation_time_us": 1621271887251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 66,
+      "lidar_token": "f19dc53b86bc5431",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887350785,
+      "raw_minus_sim_us": -237,
+      "simulation_time_us": 1621271887351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 67,
+      "lidar_token": "b3d254c8aa835386",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887450782,
+      "raw_minus_sim_us": -240,
+      "simulation_time_us": 1621271887451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 68,
+      "lidar_token": "52147436618752ac",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887550797,
+      "raw_minus_sim_us": -225,
+      "simulation_time_us": 1621271887551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 69,
+      "lidar_token": "2abc615d70465738",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887650812,
+      "raw_minus_sim_us": -210,
+      "simulation_time_us": 1621271887651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 70,
+      "lidar_token": "f6924b8631015251",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887750821,
+      "raw_minus_sim_us": -201,
+      "simulation_time_us": 1621271887751022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 71,
+      "lidar_token": "74c83da25b8056e6",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887850829,
+      "raw_minus_sim_us": -193,
+      "simulation_time_us": 1621271887851022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 72,
+      "lidar_token": "46d6394f55435cd6",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271887950846,
+      "raw_minus_sim_us": -176,
+      "simulation_time_us": 1621271887951022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 73,
+      "lidar_token": "33ea252dca325cd3",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888050867,
+      "raw_minus_sim_us": -155,
+      "simulation_time_us": 1621271888051022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 74,
+      "lidar_token": "428bb23e4ff35cee",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888150889,
+      "raw_minus_sim_us": -133,
+      "simulation_time_us": 1621271888151022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 75,
+      "lidar_token": "774767e9136455c1",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888250912,
+      "raw_minus_sim_us": -110,
+      "simulation_time_us": 1621271888251022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 76,
+      "lidar_token": "21d1b2ec01045517",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888350944,
+      "raw_minus_sim_us": -78,
+      "simulation_time_us": 1621271888351022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 77,
+      "lidar_token": "7693ac33543e5930",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888450979,
+      "raw_minus_sim_us": -43,
+      "simulation_time_us": 1621271888451022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 78,
+      "lidar_token": "79bc5f5c82cb57f1",
+      "log_time_after_sim_time": false,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888551017,
+      "raw_minus_sim_us": -5,
+      "simulation_time_us": 1621271888551022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 79,
+      "lidar_token": "801d6a360279517b",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": true,
+      "raw_log_time_us": 1621271888651059,
+      "raw_minus_sim_us": 37,
+      "simulation_time_us": 1621271888651022,
+      "unique_same_index_cell": true
+    },
+    {
+      "index": 80,
+      "lidar_token": "cef24808b7d75378",
+      "log_time_after_sim_time": true,
+      "observed_scientific_frame": false,
+      "raw_log_time_us": 1621271888751107,
+      "raw_minus_sim_us": 85,
+      "simulation_time_us": 1621271888751022,
+      "unique_same_index_cell": true
+    }
+  ],
+  "shared_original_scenario": true,
+  "simulation_80frame_span_us": 7900000,
+  "status": "PASS",
+  "strict_event_time_causal_replay": false,
+  "transition_count": 79
+}

@@ -1,0 +1,198 @@
+{
+  "scope": "METADATA_ONLY_MULTINOMIAL_BOOTSTRAP_SUPPORT_NOT_POWER_OR_INTERVAL_COVERAGE",
+  "seed": 2026091104,
+  "rows": [
+    {
+      "name": "current_D",
+      "role_pool_sizes": [
+        20,
+        20,
+        20
+      ],
+      "required_original_IDs_per_release": 20,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        8,
+        8,
+        8
+      ],
+      "median_unique_by_role": [
+        13.0,
+        13.0,
+        13.0
+      ],
+      "max_unique_by_role": [
+        17,
+        17,
+        17
+      ],
+      "replicates_with_insufficient_source_support": 2000,
+      "source_support_gate_pass": false
+    },
+    {
+      "name": "paired_small",
+      "role_pool_sizes": [
+        40,
+        40,
+        80
+      ],
+      "required_original_IDs_per_release": 20,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        19,
+        19,
+        42
+      ],
+      "median_unique_by_role": [
+        25.0,
+        25.0,
+        51.0
+      ],
+      "max_unique_by_role": [
+        31,
+        32,
+        61
+      ],
+      "replicates_with_insufficient_source_support": 6,
+      "source_support_gate_pass": false
+    },
+    {
+      "name": "paired_medium",
+      "role_pool_sizes": [
+        60,
+        60,
+        120
+      ],
+      "required_original_IDs_per_release": 20,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        29,
+        29,
+        63
+      ],
+      "median_unique_by_role": [
+        38.0,
+        38.0,
+        76.0
+      ],
+      "max_unique_by_role": [
+        46,
+        47,
+        86
+      ],
+      "replicates_with_insufficient_source_support": 0,
+      "source_support_gate_pass": true
+    },
+    {
+      "name": "paired_large",
+      "role_pool_sizes": [
+        80,
+        80,
+        160
+      ],
+      "required_original_IDs_per_release": 20,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        41,
+        42,
+        89
+      ],
+      "median_unique_by_role": [
+        51.0,
+        51.0,
+        101.0
+      ],
+      "max_unique_by_role": [
+        61,
+        61,
+        115
+      ],
+      "replicates_with_insufficient_source_support": 0,
+      "source_support_gate_pass": true
+    },
+    {
+      "name": "unpaired_small",
+      "role_pool_sizes": [
+        80,
+        80,
+        160
+      ],
+      "required_original_IDs_per_release": 40,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        41,
+        42,
+        89
+      ],
+      "median_unique_by_role": [
+        51.0,
+        51.0,
+        101.0
+      ],
+      "max_unique_by_role": [
+        61,
+        61,
+        115
+      ],
+      "replicates_with_insufficient_source_support": 0,
+      "source_support_gate_pass": true
+    },
+    {
+      "name": "unpaired_medium",
+      "role_pool_sizes": [
+        120,
+        120,
+        240
+      ],
+      "required_original_IDs_per_release": 40,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        65,
+        65,
+        134
+      ],
+      "median_unique_by_role": [
+        76.0,
+        76.0,
+        152.0
+      ],
+      "max_unique_by_role": [
+        89,
+        86,
+        170
+      ],
+      "replicates_with_insufficient_source_support": 0,
+      "source_support_gate_pass": true
+    },
+    {
+      "name": "unpaired_large",
+      "role_pool_sizes": [
+        160,
+        160,
+        320
+      ],
+      "required_original_IDs_per_release": 40,
+      "outer_replicates": 2000,
+      "min_unique_by_role": [
+        88,
+        89,
+        184
+      ],
+      "median_unique_by_role": [
+        101.0,
+        101.0,
+        202.0
+      ],
+      "max_unique_by_role": [
+        115,
+        116,
+        219
+      ],
+      "replicates_with_insufficient_source_support": 0,
+      "source_support_gate_pass": true
+    }
+  ],
+  "real_new_samples_created": 0,
+  "RBR_H30_results_used": false,
+  "interpretation": "Even a supported envelope still requires D-only power and coverage validation; no new sample-size rule, no changed m, no duplicate-ID rescue"
+}

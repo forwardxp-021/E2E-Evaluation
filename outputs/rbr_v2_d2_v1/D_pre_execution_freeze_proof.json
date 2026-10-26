@@ -1,0 +1,12 @@
+{
+  "status": "PASS_BEFORE_FIRST_SCIENTIFIC_ATTEMPT",
+  "arms": 80,
+  "unique_new_SESSION": 40,
+  "zero_scientific_calls_in_preflight": true,
+  "unchanged_F2_source_config_files": 1075,
+  "unchanged_official_map_and_DB_bindings": 45,
+  "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+  "binding_sha256": "6541d1d52b8b71811d7c5670161b15d2a75c6e9b3478dc8fcdc16d34ab8e0330",
+  "preflight_sha256": "8ab23e116c69a91faca4045847a0a006f88dc0fe706634f9df9d8c0ce0b921dc",
+  "technical_retry_authorized": 0
+}
