@@ -55,6 +55,8 @@ def validate(phase,run_id=None):
   if sha(ROOT/name)!=h:raise PermissionError('Frozen phase source changed '+name)
  for name,h in c['previous_D2_ledgers'].items():
   if sha(ROOT/name)!=h or not read(ROOT/name)['stopped']:raise PermissionError('D2 stopped ledger mutation')
+ for name,h in c.get('proof_sha256',{}).items():
+  if sha(ROOT/name)!=h:raise PermissionError('Compatibility evidence changed '+name)
  return c
 
 

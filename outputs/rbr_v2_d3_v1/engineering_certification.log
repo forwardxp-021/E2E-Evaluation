@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d3_freeze.py", line 71, in <module>
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['certify','freeze']);a=p.parse_args();certify() if a.mode=='certify' else freeze()
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d3_freeze.py", line 27, in certify
+    base=old[previous];y=trace(base);v=controls(base)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d3_freeze.py", line 12, in trace
+    def trace(root):return [json.loads(l)['current_ego'] for l in (root/'trace/realized_current_ego.jsonl').read_text().splitlines()]
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1266, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1252, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1120, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/rbr_v2_d2_D/RBR-D2-D-01-BASELINE/trace/realized_current_ego.jsonl'

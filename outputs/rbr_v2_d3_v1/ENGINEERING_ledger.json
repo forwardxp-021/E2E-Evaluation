@@ -1,0 +1,529 @@
+{
+  "stage": "RBR_V2_D3_ENGINEERING",
+  "stopped": true,
+  "attempts": [
+    {
+      "run_id": "D3-ENG-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "aff66ae6d08f8099a858ef9f6d65ede47cafc1bab36a0068d3040d860a9e65c6",
+      "ordinal": 1,
+      "returncode": 0,
+      "wall_seconds": 9.97123575,
+      "cpu_seconds": 10.691037999999999,
+      "reason": null,
+      "wait4_cpu": 10.691037999999999,
+      "observed_pid_cpu": {
+        "(95905, 1793005806.09823)": 10.664384704,
+        "(95958, 1793005810.682786)": 0.020169666
+      },
+      "CPU_conservative_wall_upper_seconds": 99.7123575
+    },
+    {
+      "run_id": "D3-ENG-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "6da5bf7413a64d4ff6bac68c8a17d7dc9637e9d4cc2cad33e9c9786dc18b865f",
+      "ordinal": 2,
+      "returncode": 0,
+      "wall_seconds": 9.071778125,
+      "cpu_seconds": 10.353767,
+      "reason": null,
+      "wait4_cpu": 10.353767,
+      "observed_pid_cpu": {
+        "(96174, 1793005816.072153)": 10.317281152,
+        "(96230, 1793005820.243997)": 0.019319832
+      },
+      "CPU_conservative_wall_upper_seconds": 90.71778125
+    },
+    {
+      "run_id": "D3-ENG-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "cc83692a6afa004abcb71a1f8b2f2da46d5cfcd1a7e05e83f00d066b5d5176dc",
+      "ordinal": 3,
+      "returncode": 0,
+      "wall_seconds": 10.745297707999999,
+      "cpu_seconds": 12.294253999999999,
+      "reason": null,
+      "wait4_cpu": 12.294253999999999,
+      "observed_pid_cpu": {
+        "(96449, 1793005825.947763)": 12.269656064,
+        "(96506, 1793005830.182835)": 0.020184582
+      },
+      "CPU_conservative_wall_upper_seconds": 107.45297707999998
+    },
+    {
+      "run_id": "D3-ENG-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "93dbe2fe690dde181799990b996263d4ad59fcd5285a858feef2e41a7b3e50ba",
+      "ordinal": 4,
+      "returncode": 0,
+      "wall_seconds": 10.44682075,
+      "cpu_seconds": 11.991558999999999,
+      "reason": null,
+      "wait4_cpu": 11.991558999999999,
+      "observed_pid_cpu": {
+        "(96734, 1793005836.69606)": 11.935728512,
+        "(96790, 1793005840.812978)": 0.019211208
+      },
+      "CPU_conservative_wall_upper_seconds": 104.4682075
+    },
+    {
+      "run_id": "D3-ENG-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "8989b0ae559b85c62871af1bbce78b6800565fa9093c29fdc80a104faf5d9477",
+      "ordinal": 5,
+      "returncode": 0,
+      "wall_seconds": 8.801547167000003,
+      "cpu_seconds": 10.224992,
+      "reason": null,
+      "wait4_cpu": 10.224992,
+      "observed_pid_cpu": {
+        "(97017, 1793005847.148758)": 10.169656320000001,
+        "(97065, 1793005851.319887)": 0.020601374
+      },
+      "CPU_conservative_wall_upper_seconds": 88.01547167000003
+    },
+    {
+      "run_id": "D3-ENG-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "3b1ebb3dea1bc08ab31b8ba21a5a0903e146b28ac20ffb1e6c53b876b877be1e",
+      "ordinal": 6,
+      "returncode": 0,
+      "wall_seconds": 8.497008833000002,
+      "cpu_seconds": 10.181671999999999,
+      "reason": null,
+      "wait4_cpu": 10.181671999999999,
+      "observed_pid_cpu": {
+        "(97247, 1793005855.953141)": 10.140132736,
+        "(97295, 1793005859.98344)": 0.019845458
+      },
+      "CPU_conservative_wall_upper_seconds": 84.97008833000002
+    },
+    {
+      "run_id": "D3-ENG-04-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "00f0489bbf1a0ead6748d7649e89ff20fa91ac431fac17ad884f8655dd3b7960",
+      "ordinal": 7,
+      "returncode": 0,
+      "wall_seconds": 8.321965625000004,
+      "cpu_seconds": 10.103592,
+      "reason": null,
+      "wait4_cpu": 10.103592,
+      "observed_pid_cpu": {
+        "(97431, 1793005864.455581)": 10.078200448,
+        "(97482, 1793005868.391416)": 0.019272749
+      },
+      "CPU_conservative_wall_upper_seconds": 83.21965625000004
+    },
+    {
+      "run_id": "D3-ENG-04-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "8e056497601f9040f2173f35ecd43c4700467a61eaaa242e9ba86674078556d5",
+      "ordinal": 8,
+      "returncode": 0,
+      "wall_seconds": 8.230967417000002,
+      "cpu_seconds": 10.05807,
+      "reason": null,
+      "wait4_cpu": 10.05807,
+      "observed_pid_cpu": {
+        "(97619, 1793005872.780236)": 9.99972096,
+        "(97669, 1793005876.685674)": 0.019196957
+      },
+      "CPU_conservative_wall_upper_seconds": 82.30967417000002
+    },
+    {
+      "run_id": "D3-ENG-05-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "5f470ffaf9313081f14d02274308f5c4ee5466952e918b9a2a0778c6d0fdc44e",
+      "ordinal": 9,
+      "returncode": 0,
+      "wall_seconds": 11.447737874999987,
+      "cpu_seconds": 13.190939,
+      "reason": null,
+      "wait4_cpu": 13.190939,
+      "observed_pid_cpu": {
+        "(97806, 1793005881.016156)": 13.121946112,
+        "(97856, 1793005885.26527)": 0.019369333000000002
+      },
+      "CPU_conservative_wall_upper_seconds": 114.47737874999987
+    },
+    {
+      "run_id": "D3-ENG-05-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "e0d81e348e9b4abd4f395b38536d1321383c6223eeaa232c2ae49594947d4b59",
+      "ordinal": 10,
+      "returncode": 0,
+      "wall_seconds": 11.535888416000006,
+      "cpu_seconds": 13.135576,
+      "reason": null,
+      "wait4_cpu": 13.135576,
+      "observed_pid_cpu": {
+        "(98097, 1793005892.46769)": 13.100585216,
+        "(98143, 1793005896.934139)": 0.019755583
+      },
+      "CPU_conservative_wall_upper_seconds": 115.35888416000006
+    },
+    {
+      "run_id": "D3-ENG-06-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "a4d972dfa72b9db1160da9a8b7aef6077a8e3a988165e93767a8adcfd6b04ffe",
+      "ordinal": 11,
+      "returncode": 0,
+      "wall_seconds": 8.72038637499999,
+      "cpu_seconds": 10.471904,
+      "reason": null,
+      "wait4_cpu": 10.471904,
+      "observed_pid_cpu": {
+        "(98368, 1793005904.011419)": 10.420620096,
+        "(98415, 1793005908.014646)": 0.019284374
+      },
+      "CPU_conservative_wall_upper_seconds": 87.2038637499999
+    },
+    {
+      "run_id": "D3-ENG-06-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 95844,
+      "ticket": "71ab56b2211ab67d770b06d0c978f3276a4da8fb9bc6035422b469cc7f25f499",
+      "ordinal": 12,
+      "returncode": 0,
+      "wall_seconds": 9.144176250000001,
+      "cpu_seconds": 10.790224,
+      "reason": null,
+      "wait4_cpu": 10.790224,
+      "observed_pid_cpu": {
+        "(98596, 1793005912.734847)": 10.755325312,
+        "(98645, 1793005916.991166)": 0.019784916
+      },
+      "CPU_conservative_wall_upper_seconds": 91.44176250000001
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "D3-ENG-01",
+      "session_id": "2021.10.14.17.47.55_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858496,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.352227,
+          "end_minus_start_speed": -2.59784,
+          "path_length": 73.988255,
+          "mean_abs_accel": 0.3278
+        },
+        "treatment": {
+          "mean_speed": 9.352227,
+          "end_minus_start_speed": -2.597838,
+          "path_length": 73.988254,
+          "mean_abs_accel": 0.327746
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 5.4e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0002623653915860835,
+        "peak_differences_mps2": [
+          0.17208113830035643,
+          0.17204313975619812
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-ENG-02",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.085684092872019,
+        "absolute_speed_difference_integral_m": 2.3962903492858767,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.530712,
+          "end_minus_start_speed": -2.621304,
+          "path_length": 59.598478,
+          "mean_abs_accel": 0.328184
+        },
+        "treatment": {
+          "mean_speed": 7.530712,
+          "end_minus_start_speed": -2.621303,
+          "path_length": 59.598478,
+          "mean_abs_accel": 0.328184
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009537225871e-06,
+        "peak_differences_mps2": [
+          0.1720504740474098,
+          0.17204316015885723
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-ENG-03",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.396290349285844,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 12.729274,
+          "end_minus_start_speed": -2.579493,
+          "path_length": 100.667091,
+          "mean_abs_accel": 0.330824
+        },
+        "treatment": {
+          "mean_speed": 12.729274,
+          "end_minus_start_speed": -2.579492,
+          "path_length": 100.667091,
+          "mean_abs_accel": 0.330712
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000112
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0005361633238853969,
+        "peak_differences_mps2": [
+          0.17210125745688742,
+          0.17204312636980745
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-ENG-04",
+      "session_id": "2021.09.20.13.46.45_veh-42",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.3962903492858736,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565704,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33293
+        },
+        "treatment": {
+          "mean_speed": 10.308173,
+          "end_minus_start_speed": -2.565703,
+          "path_length": 81.540345,
+          "mean_abs_accel": 0.33277
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.00016
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0007710539333110056,
+        "peak_differences_mps2": [
+          0.1721185176344946,
+          0.17204311488564628
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-ENG-05",
+      "session_id": "2021.06.24.14.20.12_veh-47",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285849,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.708273,
+          "end_minus_start_speed": -2.393001,
+          "path_length": 61.000441,
+          "mean_abs_accel": 0.359266
+        },
+        "treatment": {
+          "mean_speed": 7.708273,
+          "end_minus_start_speed": -2.392999,
+          "path_length": 61.000441,
+          "mean_abs_accel": 0.358491
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000775
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0037208469324570004,
+        "peak_differences_mps2": [
+          0.1723352736435544,
+          0.17204297066580665
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-ENG-06",
+      "session_id": "2021.09.10.07.02.31_veh-51",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.396290349285838,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.774029,
+          "end_minus_start_speed": -2.628198,
+          "path_length": 53.620858,
+          "mean_abs_accel": 0.329096
+        },
+        "treatment": {
+          "mean_speed": 6.774029,
+          "end_minus_start_speed": -2.628197,
+          "path_length": 53.620858,
+          "mean_abs_accel": 0.329095
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 1e-06
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009355149295e-06,
+        "peak_differences_mps2": [
+          0.17204001348814657,
+          0.1720431671188294
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    }
+  ],
+  "cpu_seconds": 133.487587,
+  "contract_sha256": "7750742974dbaa4123861b42e8e17d55fbdf8ae18a2d602591e6c6740369a239",
+  "stop_reason": "ALL_FROZEN_FIRST_ARMS_COMPLETE",
+  "driver_cpu_seconds": 10.139394000000001,
+  "wall_seconds": 115.79179524999999
+}

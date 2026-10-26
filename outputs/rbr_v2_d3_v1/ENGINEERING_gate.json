@@ -1,0 +1,121 @@
+{
+  "status": "ENGINEERING_COMPATIBILITY_A_CERTIFIED_FOR_D_ONLY",
+  "kind": "A_ENDPOINT_COORDINATE_COMPATIBILITY_REPAIR_NOT_NEW_BEHAVIOR_INTERVENTION",
+  "technical_version": "SDC_D3_ENDPOINT_ARC_BINDING_COMPAT_V1",
+  "engineering_complete_arms": 12,
+  "engineering_complete_pairs": 6,
+  "all_original_mechanism_F_match_balance_and_official_safety_pass": true,
+  "legacy_reference_calls": 3200,
+  "legacy_bitwise_identical_reference_calls": 3196,
+  "legacy_bug_affected_reference_calls": 4,
+  "unaffected_case_policy": "Exact original arc and geometry retained; only endpoint-clamped coordinate mismatch repaired",
+  "targeted_physical_replays": [
+    {
+      "new_run_id": "D3-ENG-02-BASELINE",
+      "prior_run_id": "SDC-QUAL-09-BASELINE",
+      "all_longitudinal_control_and_model_values_exact": {
+        "longitudinal_requested_acceleration": true,
+        "model_realized_acceleration": true,
+        "realized_speed": true,
+        "speed_before": true
+      },
+      "all80_speeds_bitwise_equal": true,
+      "max_abs_XY_coordinate_difference_m": 3.8585858419537544e-06,
+      "max_position_norm_difference_m": 3.859192973236116e-06,
+      "max_abs_heading_difference_rad": 4.580522725561309e-07,
+      "official_safety_new": true,
+      "official_safety_old": true
+    },
+    {
+      "new_run_id": "D3-ENG-02-TREATMENT",
+      "prior_run_id": "SDC-QUAL-09-TREATMENT",
+      "all_longitudinal_control_and_model_values_exact": {
+        "longitudinal_requested_acceleration": true,
+        "model_realized_acceleration": true,
+        "realized_speed": true,
+        "speed_before": true
+      },
+      "all80_speeds_bitwise_equal": true,
+      "max_abs_XY_coordinate_difference_m": 3.516674041748047e-06,
+      "max_position_norm_difference_m": 3.5172442332856274e-06,
+      "max_abs_heading_difference_rad": 4.174548688951063e-07,
+      "official_safety_new": true,
+      "official_safety_old": true
+    },
+    {
+      "new_run_id": "D3-ENG-03-BASELINE",
+      "prior_run_id": "SDC-QUAL-16-BASELINE",
+      "all_longitudinal_control_and_model_values_exact": {
+        "longitudinal_requested_acceleration": true,
+        "model_realized_acceleration": true,
+        "realized_speed": true,
+        "speed_before": true
+      },
+      "all80_speeds_bitwise_equal": true,
+      "max_abs_XY_coordinate_difference_m": 0.000258471816778183,
+      "max_position_norm_difference_m": 0.0003330087952817483,
+      "max_abs_heading_difference_rad": 9.345060481003031e-06,
+      "official_safety_new": true,
+      "official_safety_old": true
+    },
+    {
+      "new_run_id": "D3-ENG-03-TREATMENT",
+      "prior_run_id": "SDC-QUAL-16-TREATMENT",
+      "all_longitudinal_control_and_model_values_exact": {
+        "longitudinal_requested_acceleration": true,
+        "model_realized_acceleration": true,
+        "realized_speed": true,
+        "speed_before": true
+      },
+      "all80_speeds_bitwise_equal": true,
+      "max_abs_XY_coordinate_difference_m": 0.0002519233385100961,
+      "max_position_norm_difference_m": 0.0003245659847127632,
+      "max_abs_heading_difference_rad": 9.210406084037002e-06,
+      "official_safety_new": true,
+      "official_safety_old": true
+    },
+    {
+      "new_run_id": "D3-ENG-04-BASELINE",
+      "prior_run_id": "SDC-DEV-01-BASELINE",
+      "all_longitudinal_control_and_model_values_exact": {
+        "longitudinal_requested_acceleration": true,
+        "model_realized_acceleration": true,
+        "realized_speed": true,
+        "speed_before": true
+      },
+      "all80_speeds_bitwise_equal": true,
+      "max_abs_XY_coordinate_difference_m": 0.000771978055126965,
+      "max_position_norm_difference_m": 0.000995164218245676,
+      "max_abs_heading_difference_rad": 3.42928218515226e-05,
+      "official_safety_new": true,
+      "official_safety_old": true
+    },
+    {
+      "new_run_id": "D3-ENG-04-TREATMENT",
+      "prior_run_id": "SDC-DEV-01-TREATMENT",
+      "all_longitudinal_control_and_model_values_exact": {
+        "longitudinal_requested_acceleration": true,
+        "model_realized_acceleration": true,
+        "realized_speed": true,
+        "speed_before": true
+      },
+      "all80_speeds_bitwise_equal": true,
+      "max_abs_XY_coordinate_difference_m": 0.0007982378592714667,
+      "max_position_norm_difference_m": 0.0010290541761254028,
+      "max_abs_heading_difference_rad": 3.601060807234546e-05,
+      "official_safety_new": true,
+      "official_safety_old": true
+    }
+  ],
+  "legacy_D20_calibration_reuse": "Explicit D-only physical compatibility certificate: same frozen intervention/control/model/clock/measurement;3196 correct reference calls exact; all4 affected legacy arms replayed with exact longitudinal history, preserved paired qualification/safety, and measured sub-millimeter lateral differences. This is NOT a fresh20-pair qualification or Primary certificate.",
+  "RBR_H30_outputs_used": false,
+  "scientific_safety_or_F_match_thresholds_changed": false,
+  "route_ids_or_native_geometry_replaced": false,
+  "old_D2_failures_unchanged": true,
+  "evidence_sha256": {
+    "outputs/rbr_v2_d3_v1/ENGINEERING_ledger.json": "de86c2019b8c55c77f1ef41b38a42ef4e84e6e462734faebf2a738dc44629d54",
+    "outputs/rbr_v2_d3_v1/legacy_D20_reference_compatibility.json": "0f6ec0b0574ba41f177c2b9e8f7b759f12a832f97682a792d37339b4a7463b11",
+    "outputs/rbr_v2_d3_v1/patched_reference_v2_diagnosis.json": "9df64d7835ded132a375c9b32f11983d7c6d9bda4503227ad440d912cd9399ba",
+    "docs/stageR/tsb_direct_coast_f2/F2_Owner_Protocol_v1.json": "cf4ef5e0b25c19ba65b5b7110f19e602b683e7838c54f177388e02f7c77b2f6c"
+  }
+}

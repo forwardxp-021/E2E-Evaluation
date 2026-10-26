@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d3_preflight.py", line 30, in <module>
+    p=argparse.ArgumentParser();p.add_argument('phase',choices=['ENGINEERING','SCIENCE']);a=p.parse_args();preflight(a.phase)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d3_preflight.py", line 17, in preflight
+    c=read(contract(phase));rows=[];objects=[]
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_download.py", line 21, in read
+    def read(p):return json.loads(Path(p).read_text())
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1266, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1252, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/pathlib.py", line 1120, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/docs/stageR/rbr_v2_d3_v1/SCIENCE_Protocol_v1.json'
