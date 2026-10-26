@@ -1,0 +1,30 @@
+{
+  "stage": "RBR_V2_D2_D_ONLY_V1",
+  "binding_sha256": "6541d1d52b8b71811d7c5670161b15d2a75c6e9b3478dc8fcdc16d34ab8e0330",
+  "stopped": true,
+  "attempts": [
+    {
+      "run_id": "RBR-D2-D-01-BASELINE",
+      "status": "TECHNICAL_FAIL",
+      "ticket": "8f96f42dce8ee45847dc7273cbeeb602ee14e3d06c2d358398dd05b7e90e46d2",
+      "parent_pid": 37685,
+      "index": 1,
+      "returncode": 1,
+      "wall_seconds": 6.549099833,
+      "cpu_seconds": 7.311698722,
+      "reason": null,
+      "wait4_cpu": 7.309269,
+      "observed_pid_cpu": {
+        "(37740, 1792994384.150444)": 7.288179264,
+        "(37874, 1792994389.231176)": 0.023519458
+      },
+      "CPU_conservative_wall_upper_seconds": 65.49099833
+    }
+  ],
+  "pairs": [],
+  "cpu_seconds": 7.311698722,
+  "cpu_wall_upper_seconds": 65.49099833,
+  "stop_reason": "TECHNICAL_FAILURE_NO_RETRY",
+  "driver_cpu_seconds": 0.402987,
+  "scientific_wall_seconds": 6.555685832999999
+}
