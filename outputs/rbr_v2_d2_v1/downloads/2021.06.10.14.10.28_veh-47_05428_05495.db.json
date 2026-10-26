@@ -1,0 +1,23 @@
+{
+  "session_id": "2021.06.10.14.10.28_veh-47",
+  "filename": "2021.06.10.14.10.28_veh-47_05428_05495.db",
+  "archive": "public/nuplan-v1.1/nuplan-v1.1_train_vegas_3.zip",
+  "archive_size": 151596886608,
+  "etag": "\"923d58e73c9a7c2cc5cafb79ff40a685-9036\"",
+  "official_split": "train",
+  "member": "data/cache/train_vegas_3/2021.06.10.14.10.28_veh-47_05428_05495.db",
+  "compressed_bytes": 16152669,
+  "uncompressed_bytes": 28184576,
+  "crc32": 3524676697,
+  "compression": 8,
+  "header_offset": 13803399428,
+  "flags": 0,
+  "SESSION_rank": "2f2d9f8e3e49760a755a682280ff8232362a4df6ff2d0fa4b988ebb48594cd3b",
+  "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.10.14.10.28_veh-47_05428_05495.db",
+  "sha256": "63980b61b65b92c5fa16db47b4c06bab9e69d4908dba86c2f6705df5c8cd9830",
+  "crc_verified": true,
+  "official_object_etag_verified": true,
+  "wall_seconds": 17.300363292,
+  "license": "CC-BY-NC-SA-4.0 plus Motional Dataset Terms; noncommercial PhD research",
+  "license_sha256": "1a218286e733f6d6135fc5698d614cda2be94ea096f6eee280278458e570636a"
+}

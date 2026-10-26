@@ -1,0 +1,7 @@
+{
+  "pid": 88109,
+  "reason": "Switch subsequent unmaterialized members to bounded-memory resumable ranged chunks; allow current ThreadPoolExecutor futures to finish and certify; no scientific runs",
+  "signal": "SIGINT_MAIN_THREAD_ONLY",
+  "budget_reset": false,
+  "utc": "2026-10-26T05:21:49Z"
+}

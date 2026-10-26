@@ -11939,7 +11939,8 @@ PYTHONPATH=outputs/rbr_v2_uonly_v1/runtime_packages:../nuplan-devkit:. /Users/li
 ```bash
 # 只读已有8个状态、7次控制和地图；不运行runner、传播模型或重新判定安全。
 /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/rbr_v2_d2_route_diagnostic.py
-# 两个来源框达到终止状态后，生成最终互斥角色、容量/失败分母/中文报告。
+# 两个来源框达到终止状态后，重算全部保留源/无损缓存的SHA，再生成最终报告。
+/Users/liuqing/miniconda3/envs/nuplan/bin/python tools/rbr_v2_d2_closeout.py verify-sources
 /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/rbr_v2_d2_closeout.py finalize
 # 只核验历史资产与用户原Quick前缀。
 /Users/liuqing/miniconda3/envs/nuplan/bin/python tools/rbr_v2_d2_closeout.py protected

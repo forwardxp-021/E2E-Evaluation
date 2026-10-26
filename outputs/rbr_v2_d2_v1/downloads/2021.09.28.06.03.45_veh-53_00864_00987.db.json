@@ -1,0 +1,23 @@
+{
+  "session_id": "2021.09.28.06.03.45_veh-53",
+  "filename": "2021.09.28.06.03.45_veh-53_00864_00987.db",
+  "archive": "public/nuplan-v1.1/nuplan-v1.1_train_singapore.zip",
+  "archive_size": 34959594178,
+  "etag": "\"fd44464d9ce2e3439b1124838f0f2890-4168\"",
+  "official_split": "train",
+  "member": "data/cache/train_singapore/2021.09.28.06.03.45_veh-53_00864_00987.db",
+  "compressed_bytes": 5055959,
+  "uncompressed_bytes": 9314304,
+  "crc32": 99806548,
+  "compression": 8,
+  "header_offset": 22814989622,
+  "flags": 0,
+  "SESSION_rank": "30f1ff612ec792f7c8fcc94cd51dfc6f4f48b3496d605f4a3d61836127d55cbf",
+  "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.09.28.06.03.45_veh-53_00864_00987.db",
+  "sha256": "61f62f6ba3e1f901f076a368816c077c99e77f6c70a83fcdd5c5db996c909b70",
+  "crc_verified": true,
+  "official_object_etag_verified": true,
+  "wall_seconds": 8.702277334000001,
+  "license": "CC-BY-NC-SA-4.0 plus Motional Dataset Terms; noncommercial PhD research",
+  "license_sha256": "1a218286e733f6d6135fc5698d614cda2be94ea096f6eee280278458e570636a"
+}

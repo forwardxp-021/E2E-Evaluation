@@ -1,0 +1,23 @@
+{
+  "session_id": "2021.07.23.17.51.38_veh-26",
+  "filename": "2021.07.23.17.51.38_veh-26_00854_01027.db",
+  "archive": "public/nuplan-v1.1/nuplan-v1.1_train_vegas_6.zip",
+  "archive_size": 175541219902,
+  "etag": "\"9d562e3f0d2fec70a47a5e54dc6f9544-5232\"",
+  "official_split": "train",
+  "member": "data/cache/train_vegas_6/2021.07.23.17.51.38_veh-26_00854_01027.db",
+  "compressed_bytes": 51913718,
+  "uncompressed_bytes": 87486464,
+  "crc32": 3118080312,
+  "compression": 8,
+  "header_offset": 139245136511,
+  "flags": 0,
+  "SESSION_rank": "36694c28d5045f0cfbc423cfc958df3e4aa86b9c8dd1df89c3a8b875dca77a22",
+  "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.17.51.38_veh-26_00854_01027.db",
+  "sha256": "ad0bceead94bc365d823870e9cfee2929adbdfd3918d1de2fd1d4aa2fce6f99f",
+  "crc_verified": true,
+  "official_object_etag_verified": true,
+  "wall_seconds": 19.026717417000015,
+  "license": "CC-BY-NC-SA-4.0 plus Motional Dataset Terms; noncommercial PhD research",
+  "license_sha256": "1a218286e733f6d6135fc5698d614cda2be94ea096f6eee280278458e570636a"
+}

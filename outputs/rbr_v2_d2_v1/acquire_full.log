@@ -1,0 +1,751 @@
+source 1 / 1253 2021.06.25.21.44.31_veh-16 EXCLUDED eligible 3 download_GB 1.205
+source 2 / 1253 2021.07.22.16.37.00_veh-47 EXCLUDED eligible 3 download_GB 1.205
+source 3 / 1253 2021.07.13.20.25.13_veh-26 EXCLUDED eligible 3 download_GB 1.205
+source 4 / 1253 2021.06.11.20.03.24_veh-26 EXCLUDED eligible 3 download_GB 1.205
+source 5 / 1253 2021.09.24.18.01.39_veh-28 EXCLUDED eligible 3 download_GB 1.205
+source 6 / 1253 2021.09.03.14.42.51_veh-40 EXCLUDED eligible 3 download_GB 1.205
+source 7 / 1253 2021.05.26.18.45.36_veh-30 EXCLUDED eligible 3 download_GB 1.205
+source 8 / 1253 2021.10.14.17.47.55_veh-28 ELIGIBLE eligible 3 download_GB 1.205
+source 9 / 1253 2021.09.28.06.03.19_veh-49 EXCLUDED eligible 3 download_GB 1.205
+source 10 / 1253 2021.06.24.14.20.12_veh-47 ELIGIBLE eligible 3 download_GB 1.205
+source 11 / 1253 2021.05.19.16.30.14_veh-27 EXCLUDED eligible 3 download_GB 1.205
+source 12 / 1253 2021.06.12.11.42.45_veh-47 EXCLUDED eligible 3 download_GB 1.205
+source 13 / 1253 2021.06.21.16.44.54_veh-35 EXCLUDED eligible 3 download_GB 1.205
+source 14 / 1253 2021.09.07.08.12.04_veh-49 EXCLUDED eligible 3 download_GB 1.205
+source 15 / 1253 2021.09.16.17.56.05_veh-28 EXCLUDED eligible 3 download_GB 1.205
+source 16 / 1253 2021.09.10.07.02.31_veh-51 ELIGIBLE eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 17 / 1253 2021.09.03.08.13.30_veh-53 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 18 / 1253 2021.10.04.18.25.22_veh-28 EXCLUDED eligible 3 download_GB 1.205
+source 19 / 1253 2021.06.12.13.57.31_veh-38 EXCLUDED eligible 3 download_GB 1.205
+source 20 / 1253 2021.07.07.16.57.29_veh-12 EXCLUDED eligible 3 download_GB 1.205
+source 21 / 1253 2021.05.28.16.10.40_veh-47 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 22 / 1253 2021.09.28.08.53.05_veh-53 EXCLUDED eligible 3 download_GB 1.205
+source 23 / 1253 2021.07.26.01.54.30_veh-17 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 24 / 1253 2021.09.21.07.20.21_veh-49 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 25 / 1253 2021.06.08.18.59.48_veh-12 EXCLUDED eligible 3 download_GB 1.205
+source 26 / 1253 2021.07.07.01.47.59_veh-26 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 27 / 1253 2021.07.07.16.35.42_veh-35 EXCLUDED eligible 3 download_GB 1.205
+source 28 / 1253 2021.09.03.07.05.12_veh-53 EXCLUDED eligible 3 download_GB 1.205
+source 29 / 1253 2021.09.10.06.56.28_veh-52 EXCLUDED eligible 3 download_GB 1.205
+source 30 / 1253 2021.05.26.12.22.14_veh-38 EXCLUDED eligible 3 download_GB 1.205
+source 31 / 1253 2021.09.10.06.21.57_veh-52 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 32 / 1253 2021.09.28.05.46.14_veh-50 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 33 / 1253 2021.06.21.18.53.17_veh-35 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 34 / 1253 2021.09.01.12.45.08_veh-40 EXCLUDED eligible 3 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 35 / 1253 2021.10.15.12.13.23_veh-28 ELIGIBLE eligible 4 download_GB 1.205
+source 36 / 1253 2021.06.02.14.43.48_veh-38 EXCLUDED eligible 4 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 37 / 1253 2021.05.21.19.28.34_veh-12 EXCLUDED eligible 4 download_GB 1.205
+source 38 / 1253 2021.09.30.14.47.42_veh-28 EXCLUDED eligible 4 download_GB 1.205
+source 39 / 1253 2021.09.23.02.17.18_veh-49 EXCLUDED eligible 4 download_GB 1.205
+source 40 / 1253 2021.06.01.12.00.24_veh-35 EXCLUDED eligible 4 download_GB 1.205
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 41 / 1253 2021.10.13.17.10.30_veh-28 EXCLUDED eligible 4 download_GB 1.249
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 42 / 1253 2021.09.30.03.55.10_veh-50 EXCLUDED eligible 4 download_GB 1.249
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 43 / 1253 2021.09.07.15.28.24_veh-40 EXCLUDED eligible 4 download_GB 1.249
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 44 / 1253 2021.06.25.14.42.38_veh-38 EXCLUDED eligible 4 download_GB 1.271
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 45 / 1253 2021.06.15.14.48.10_veh-38 EXCLUDED eligible 4 download_GB 1.314
+source 46 / 1253 2021.09.10.08.00.27_veh-51 EXCLUDED eligible 4 download_GB 1.314
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 47 / 1253 2021.05.14.17.13.58_veh-30 EXCLUDED eligible 4 download_GB 1.351
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 48 / 1253 2021.07.06.17.30.06_veh-38 EXCLUDED eligible 4 download_GB 1.351
+source 49 / 1253 2021.05.26.13.02.21_veh-30 EXCLUDED eligible 4 download_GB 1.393
+source 50 / 1253 2021.06.02.17.58.34_veh-35 EXCLUDED eligible 4 download_GB 1.393
+source 51 / 1253 2021.06.08.13.23.30_veh-16 EXCLUDED eligible 4 download_GB 1.393
+source 52 / 1253 2021.08.24.15.09.18_veh-45 EXCLUDED eligible 4 download_GB 1.393
+source 53 / 1253 2021.05.21.13.48.27_veh-27 EXCLUDED eligible 4 download_GB 1.433
+source 54 / 1253 2021.09.27.01.35.14_veh-50 EXCLUDED eligible 4 download_GB 1.433
+source 55 / 1253 2021.10.04.03.30.52_veh-49 EXCLUDED eligible 4 download_GB 1.433
+source 56 / 1253 2021.06.11.16.10.55_veh-16 EXCLUDED eligible 4 download_GB 1.456
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 57 / 1253 2021.10.21.13.54.43_veh-28 EXCLUDED eligible 4 download_GB 1.459
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 58 / 1253 2021.09.29.08.50.06_veh-53 ELIGIBLE eligible 5 download_GB 1.459
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 59 / 1253 2021.07.19.17.15.36_veh-47 EXCLUDED eligible 5 download_GB 1.491
+source 60 / 1253 2021.10.08.03.32.58_veh-51 EXCLUDED eligible 5 download_GB 1.491
+source 61 / 1253 2021.05.28.12.36.49_veh-12 EXCLUDED eligible 5 download_GB 1.491
+source 62 / 1253 2021.05.28.12.26.01_veh-30 EXCLUDED eligible 5 download_GB 1.542
+source 63 / 1253 2021.09.27.03.10.15_veh-50 EXCLUDED eligible 5 download_GB 1.542
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 64 / 1253 2021.07.06.23.12.06_veh-26 EXCLUDED eligible 5 download_GB 1.655
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 65 / 1253 2021.07.07.01.53.56_veh-38 EXCLUDED eligible 5 download_GB 1.655
+source 66 / 1253 2021.06.02.19.29.01_veh-47 EXCLUDED eligible 5 download_GB 1.655
+source 67 / 1253 2021.10.07.07.18.59_veh-52 EXCLUDED eligible 5 download_GB 1.655
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 68 / 1253 2021.09.28.01.47.51_veh-49 EXCLUDED eligible 5 download_GB 1.674
+source 69 / 1253 2021.06.22.16.39.31_veh-35 EXCLUDED eligible 5 download_GB 1.733
+source 70 / 1253 2021.06.02.12.54.34_veh-35 EXCLUDED eligible 5 download_GB 1.733
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 71 / 1253 2021.09.07.04.01.34_veh-51 ELIGIBLE eligible 6 download_GB 1.733
+source 72 / 1253 2021.06.02.17.54.55_veh-38 EXCLUDED eligible 6 download_GB 1.733
+source 73 / 1253 2021.09.02.07.47.07_veh-51 EXCLUDED eligible 6 download_GB 1.733
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 74 / 1253 2021.07.21.01.44.59_veh-12 EXCLUDED eligible 6 download_GB 1.908
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 75 / 1253 2021.09.08.03.54.54_veh-51 EXCLUDED eligible 6 download_GB 1.908
+source 76 / 1253 2021.06.02.15.15.09_veh-12 EXCLUDED eligible 6 download_GB 1.908
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 77 / 1253 2021.06.09.20.26.11_veh-35 EXCLUDED eligible 6 download_GB 1.908
+source 78 / 1253 2021.05.27.19.42.22_veh-47 EXCLUDED eligible 6 download_GB 1.908
+source 79 / 1253 2021.10.04.15.44.57_veh-28 EXCLUDED eligible 6 download_GB 1.908
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 80 / 1253 2021.06.04.18.31.53_veh-38 EXCLUDED eligible 6 download_GB 1.908
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 81 / 1253 2021.07.16.16.08.35_veh-35 EXCLUDED eligible 6 download_GB 1.979
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 82 / 1253 2021.09.27.07.42.51_veh-51 EXCLUDED eligible 6 download_GB 1.979
+source 83 / 1253 2021.07.23.21.07.18_veh-47 EXCLUDED eligible 6 download_GB 2.039
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 84 / 1253 2021.10.08.02.05.47_veh-51 EXCLUDED eligible 6 download_GB 2.039
+source 85 / 1253 2021.06.29.14.49.56_veh-38 EXCLUDED eligible 6 download_GB 2.039
+source 86 / 1253 2021.10.12.13.49.33_veh-28 EXCLUDED eligible 6 download_GB 2.039
+source 87 / 1253 2021.06.15.12.52.19_veh-38 EXCLUDED eligible 6 download_GB 2.039
+source 88 / 1253 2021.10.13.19.37.51_veh-28 EXCLUDED eligible 6 download_GB 2.039
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 89 / 1253 2021.07.23.16.32.39_veh-17 ELIGIBLE eligible 7 download_GB 2.284
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 90 / 1253 2021.05.18.19.35.24_veh-25 EXCLUDED eligible 7 download_GB 2.303
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 91 / 1253 2021.09.02.09.01.05_veh-51 EXCLUDED eligible 7 download_GB 2.303
+source 92 / 1253 2021.07.07.20.25.22_veh-38 EXCLUDED eligible 7 download_GB 2.303
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 93 / 1253 2021.09.10.07.07.06_veh-49 EXCLUDED eligible 7 download_GB 2.303
+source 94 / 1253 2021.05.27.14.15.01_veh-47 EXCLUDED eligible 7 download_GB 2.303
+source 95 / 1253 2021.09.21.13.35.38_veh-28 EXCLUDED eligible 7 download_GB 2.303
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 96 / 1253 2021.09.27.07.38.19_veh-53 EXCLUDED eligible 7 download_GB 2.303
+source 97 / 1253 2021.09.13.14.16.34_veh-28 EXCLUDED eligible 7 download_GB 2.329
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 98 / 1253 2021.05.18.21.31.22_veh-30 EXCLUDED eligible 7 download_GB 2.329
+source 99 / 1253 2021.06.08.17.29.54_veh-16 EXCLUDED eligible 7 download_GB 2.329
+source 100 / 1253 2021.09.28.04.07.40_veh-50 EXCLUDED eligible 7 download_GB 2.337
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 101 / 1253 2021.10.07.08.12.29_veh-52 EXCLUDED eligible 7 download_GB 2.337
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 102 / 1253 2021.09.29.00.19.12_veh-50 EXCLUDED eligible 7 download_GB 2.343
+source 103 / 1253 2021.06.04.16.36.09_veh-35 EXCLUDED eligible 7 download_GB 2.355
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 104 / 1253 2021.08.27.03.47.52_veh-53 EXCLUDED eligible 7 download_GB 2.36
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 105 / 1253 2021.07.24.16.51.13_veh-26 EXCLUDED eligible 7 download_GB 2.395
+source 106 / 1253 2021.09.07.07.21.50_veh-51 EXCLUDED eligible 7 download_GB 2.403
+source 107 / 1253 2021.09.21.08.34.39_veh-49 EXCLUDED eligible 7 download_GB 2.403
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 108 / 1253 2021.06.29.19.37.20_veh-26 EXCLUDED eligible 7 download_GB 2.502
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 109 / 1253 2021.07.16.18.49.56_veh-26 EXCLUDED eligible 7 download_GB 2.502
+source 110 / 1253 2021.09.23.01.59.54_veh-51 EXCLUDED eligible 7 download_GB 2.502
+source 111 / 1253 2021.09.28.07.07.41_veh-52 EXCLUDED eligible 7 download_GB 2.514
+source 112 / 1253 2021.10.01.17.52.06_veh-28 EXCLUDED eligible 7 download_GB 2.514
+source 113 / 1253 2021.09.24.05.44.10_veh-51 EXCLUDED eligible 7 download_GB 2.514
+source 114 / 1253 2021.05.20.12.12.04_veh-27 EXCLUDED eligible 7 download_GB 2.567
+source 115 / 1253 2021.08.25.17.22.01_veh-41 EXCLUDED eligible 7 download_GB 2.567
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 116 / 1253 2021.09.24.08.02.36_veh-51 EXCLUDED eligible 7 download_GB 2.567
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 117 / 1253 2021.09.07.02.31.43_veh-51 ELIGIBLE eligible 8 download_GB 2.567
+source 118 / 1253 2021.07.09.18.57.22_veh-37 EXCLUDED eligible 8 download_GB 2.593
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 119 / 1253 2021.08.24.17.34.27_veh-45 EXCLUDED eligible 8 download_GB 2.593
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 120 / 1253 2021.10.11.13.27.07_veh-28 ELIGIBLE eligible 9 download_GB 2.593
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 121 / 1253 2021.08.24.13.20.17_veh-08 EXCLUDED eligible 9 download_GB 2.597
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 122 / 1253 2021.05.21.13.41.26_veh-12 ELIGIBLE eligible 10 download_GB 2.693
+source 123 / 1253 2021.07.23.18.11.29_veh-37 EXCLUDED eligible 10 download_GB 2.693
+source 124 / 1253 2021.06.17.11.59.07_veh-38 EXCLUDED eligible 10 download_GB 2.693
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 125 / 1253 2021.09.29.01.46.47_veh-49 EXCLUDED eligible 10 download_GB 2.707
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 126 / 1253 2021.10.05.08.05.31_veh-53 EXCLUDED eligible 10 download_GB 2.707
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 127 / 1253 2021.08.30.08.18.56_veh-49 EXCLUDED eligible 10 download_GB 2.713
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 128 / 1253 2021.08.27.02.49.18_veh-51 EXCLUDED eligible 10 download_GB 2.713
+source 129 / 1253 2021.06.08.17.25.03_veh-35 EXCLUDED eligible 10 download_GB 2.735
+source 130 / 1253 2021.06.14.19.53.56_veh-47 EXCLUDED eligible 10 download_GB 2.748
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 131 / 1253 2021.10.01.13.28.54_veh-28 ELIGIBLE eligible 11 download_GB 2.76
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 132 / 1253 2021.07.13.21.32.12_veh-12 EXCLUDED eligible 11 download_GB 3.139
+source 133 / 1253 2021.09.15.13.16.40_veh-28 EXCLUDED eligible 11 download_GB 3.139
+source 134 / 1253 2021.06.02.12.49.42_veh-38 EXCLUDED eligible 11 download_GB 3.139
+source 135 / 1253 2021.09.29.08.24.44_veh-49 EXCLUDED eligible 11 download_GB 3.139
+source 136 / 1253 2021.10.04.07.37.18_veh-49 EXCLUDED eligible 11 download_GB 3.139
+source 137 / 1253 2021.09.02.18.03.07_veh-39 EXCLUDED eligible 11 download_GB 3.139
+source 138 / 1253 2021.05.27.18.21.51_veh-30 EXCLUDED eligible 11 download_GB 3.139
+source 139 / 1253 2021.08.23.19.22.43_veh-28 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 140 / 1253 2021.07.15.21.07.10_veh-12 EXCLUDED eligible 11 download_GB 3.139
+source 141 / 1253 2021.08.25.18.10.09_veh-28 EXCLUDED eligible 11 download_GB 3.139
+source 142 / 1253 2021.07.24.18.06.35_veh-35 EXCLUDED eligible 11 download_GB 3.139
+source 143 / 1253 2021.07.06.16.27.42_veh-26 EXCLUDED eligible 11 download_GB 3.139
+source 144 / 1253 2021.06.14.14.25.15_veh-26 EXCLUDED eligible 11 download_GB 3.139
+source 145 / 1253 2021.09.30.19.04.00_veh-28 EXCLUDED eligible 11 download_GB 3.139
+source 146 / 1253 2021.09.06.07.03.16_veh-53 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 147 / 1253 2021.08.30.07.00.41_veh-49 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 148 / 1253 2021.10.20.18.10.22_veh-28 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 149 / 1253 2021.09.06.02.21.00_veh-51 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 150 / 1253 2021.06.04.17.09.53_veh-47 EXCLUDED eligible 11 download_GB 3.139
+source 151 / 1253 2021.06.12.19.12.40_veh-35 EXCLUDED eligible 11 download_GB 3.139
+source 152 / 1253 2021.09.15.08.44.21_veh-51 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 153 / 1253 2021.09.28.06.24.06_veh-50 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 154 / 1253 2021.09.27.05.48.55_veh-50 EXCLUDED eligible 11 download_GB 3.139
+source 155 / 1253 2021.05.20.14.22.28_veh-30 EXCLUDED eligible 11 download_GB 3.139
+source 156 / 1253 2021.10.08.08.24.52_veh-50 EXCLUDED eligible 11 download_GB 3.139
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 157 / 1253 2021.06.10.16.35.05_veh-16 EXCLUDED eligible 11 download_GB 3.254
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 158 / 1253 2021.06.07.17.46.49_veh-35 EXCLUDED eligible 11 download_GB 3.254
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 159 / 1253 2021.09.06.01.44.26_veh-51 EXCLUDED eligible 11 download_GB 3.254
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 160 / 1253 2021.06.24.17.08.56_veh-35 EXCLUDED eligible 11 download_GB 3.254
+source 161 / 1253 2021.06.01.18.47.18_veh-35 EXCLUDED eligible 11 download_GB 3.282
+source 162 / 1253 2021.09.09.03.00.29_veh-51 EXCLUDED eligible 11 download_GB 3.284
+source 163 / 1253 2021.06.24.15.54.32_veh-16 EXCLUDED eligible 11 download_GB 3.315
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 164 / 1253 2021.08.09.18.37.41_veh-28 ELIGIBLE eligible 12 download_GB 3.315
+source 165 / 1253 2021.10.12.17.43.00_veh-28 EXCLUDED eligible 12 download_GB 3.315
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 166 / 1253 2021.10.12.08.16.50_veh-49 EXCLUDED eligible 12 download_GB 3.315
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 167 / 1253 2021.07.16.01.22.41_veh-14 EXCLUDED eligible 12 download_GB 3.456
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 168 / 1253 2021.08.24.14.40.55_veh-28 EXCLUDED eligible 12 download_GB 3.456
+source 169 / 1253 2021.06.09.14.15.32_veh-38 EXCLUDED eligible 12 download_GB 3.522
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 170 / 1253 2021.09.27.02.14.28_veh-53 EXCLUDED eligible 12 download_GB 3.527
+source 171 / 1253 2021.09.03.17.35.53_veh-40 EXCLUDED eligible 12 download_GB 3.527
+source 172 / 1253 2021.07.06.16.53.36_veh-14 EXCLUDED eligible 12 download_GB 3.527
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 173 / 1253 2021.09.30.06.13.47_veh-53 EXCLUDED eligible 12 download_GB 3.527
+source 174 / 1253 2021.09.15.14.50.05_veh-28 EXCLUDED eligible 12 download_GB 3.527
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 175 / 1253 2021.08.26.18.24.36_veh-28 ELIGIBLE eligible 13 download_GB 3.535
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 176 / 1253 2021.09.28.08.05.03_veh-53 EXCLUDED eligible 13 download_GB 3.535
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 177 / 1253 2021.09.23.04.02.57_veh-51 EXCLUDED eligible 13 download_GB 3.535
+source 178 / 1253 2021.09.02.13.11.17_veh-40 EXCLUDED eligible 13 download_GB 3.542
+source 179 / 1253 2021.06.29.16.25.03_veh-38 EXCLUDED eligible 13 download_GB 3.567
+source 180 / 1253 2021.06.23.22.05.48_veh-16 EXCLUDED eligible 13 download_GB 3.635
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 181 / 1253 2021.09.07.19.49.48_veh-39 EXCLUDED eligible 13 download_GB 3.659
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 182 / 1253 2021.06.07.13.53.57_veh-35 ELIGIBLE eligible 14 download_GB 3.771
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 183 / 1253 2021.09.27.04.05.07_veh-50 EXCLUDED eligible 14 download_GB 3.771
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 184 / 1253 2021.10.08.02.09.20_veh-53 EXCLUDED eligible 14 download_GB 3.771
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 185 / 1253 2021.09.03.05.20.45_veh-51 EXCLUDED eligible 14 download_GB 3.771
+source 186 / 1253 2021.08.24.12.40.19_veh-45 EXCLUDED eligible 14 download_GB 3.771
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+source 187 / 1253 2021.09.01.07.19.19_veh-51 EXCLUDED eligible 14 download_GB 3.771
+source 188 / 1253 2021.07.19.16.17.27_veh-35 EXCLUDED eligible 14 download_GB 3.771
+source 189 / 1253 2021.06.10.14.11.49_veh-12 EXCLUDED eligible 14 download_GB 3.771
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+Traceback (most recent call last):
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_acquire.py", line 126, in <module>
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--max-batches',type=int);a=p.parse_args();run(a.max_batches)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_acquire.py", line 113, in run
+    try:result=scan(receipt)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_acquire.py", line 65, in scan
+    item=assess(anchor,rule);item.update(anchor_rank=rank)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/sdc_v1_selection.py", line 94, in assess
+    route=build_native_route_reference_v1_2(api,spec['route_roadblock_ids'],current,distance+1e-6)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/b1_native_route_infrastructure.py", line 111, in build_native_route_reference_v1_2
+    path, initial = resolve_native_path_v1_2(map_api, route_roadblock_ids, current_ego, required_forward_m)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/b1_native_route_infrastructure.py", line 78, in resolve_native_path_v1_2
+    raise ValueError("NATIVE_ROUTE_REPAIR_FAIL: no native path on the unchanged ordered route")
+ValueError: NATIVE_ROUTE_REPAIR_FAIL: no native path on the unchanged ordered route

@@ -1,0 +1,23 @@
+{
+  "session_id": "2021.09.24.18.01.39_veh-28",
+  "filename": "2021.09.24.18.01.39_veh-28_01293_01361.db",
+  "archive": "public/nuplan-v1.1/nuplan-v1.1_train_boston.zip",
+  "archive_size": 38161149300,
+  "etag": "\"99a4a5c487c1ffb8d2fdc3321cbea2c5-4550\"",
+  "official_split": "train",
+  "member": "data/cache/train_boston/2021.09.24.18.01.39_veh-28_01293_01361.db",
+  "compressed_bytes": 5334836,
+  "uncompressed_bytes": 10031104,
+  "crc32": 2127579980,
+  "compression": 8,
+  "header_offset": 18271620260,
+  "flags": 0,
+  "SESSION_rank": "0378c327472b35e03368faede70659c5aa45447d392a11d8e788521727f59459",
+  "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.09.24.18.01.39_veh-28_01293_01361.db",
+  "sha256": "a6d40f577a678d6c71f37c83ad41a605976319db7c68a5a5868bf2cf0d856a3c",
+  "crc_verified": true,
+  "official_object_etag_verified": true,
+  "wall_seconds": 6.358054207999999,
+  "license": "CC-BY-NC-SA-4.0 plus Motional Dataset Terms; noncommercial PhD research",
+  "license_sha256": "1a218286e733f6d6135fc5698d614cda2be94ea096f6eee280278458e570636a"
+}

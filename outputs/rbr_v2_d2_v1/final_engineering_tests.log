@@ -1,0 +1,24 @@
+test_constant_pipeline (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_duplicate_support_and_shared_draws (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_near_constant_scaling_and_role_disjoint (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_negative_unbiased_and_label_swap (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_original_sap_decisions (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_pair_exchange (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_synthetic_aa_deterministic_and_firewall (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_threshold_and_ties (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_out_of_bounds_before_request (tests.test_rbr_v2_d2_download.RangeTests) ... ok
+test_real_zip_central_directory_range_reader (tests.test_rbr_v2_d2_download.RangeTests) ... ok
+test_unexpected_whole_archive_metadata_refused (tests.test_rbr_v2_d2_download.RangeTests) ... ok
+test_cached_kernel_is_original_unbiased_mmd (tests.test_rbr_v2_d2_statistics.PairedTests) ... ok
+test_same_draws_and_real_unique_support (tests.test_rbr_v2_d2_statistics.PairedTests) ... ok
+test_corrupt_archive_refused (tests.test_rbr_v2_d2_cache.CacheTests) ... ok
+test_lossless_own_source_roundtrip_and_mtime (tests.test_rbr_v2_d2_cache.CacheTests) ... ok
+test_segmented_sqlite_crc_sha_and_no_redownload (tests.test_rbr_v2_d2_fast_download.MemberTests) ... ok
+test_exact_existing_lifecycle_argument_binding_without_simulation (tests.test_rbr_v2_d2_continuation.ContinuationTests) ... ok
+test_failed_id_and_primary_identity_refused (tests.test_rbr_v2_d2_continuation.ContinuationTests) ... ok
+test_same_frozen_cohort_no_replacement_no_budget_reset (tests.test_rbr_v2_d2_continuation.ContinuationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.043s
+
+OK

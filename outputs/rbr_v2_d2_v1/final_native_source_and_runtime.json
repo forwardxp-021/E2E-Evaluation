@@ -1,0 +1,20 @@
+{
+  "unchanged_native_F2_source_config_files": 1075,
+  "source_binding_sha256": "12813b9b22f9be096d94682e088af7bab61d4f28cb58d6301cbd1c281d1b9772",
+  "Python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "packages": {
+    "numpy": "1.26.4",
+    "torch": "1.9.0.post2",
+    "requests": "2.32.5",
+    "shapely": "2.0.7",
+    "geopandas": "1.0.1",
+    "scipy": "1.13.1",
+    "pandas": "2.3.3"
+  },
+  "nuplan_devkit_HEAD": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "nuplan_existing_dirty_paths": [
+    "requirements_torch.txt"
+  ],
+  "new_dependency_installations": 0
+}

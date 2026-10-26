@@ -1,0 +1,6 @@
+[
+  {
+    "attempt": 1,
+    "error": "ProxyError(MaxRetryError(\"HTTPSConnectionPool(host='motional-nuplan.s3.ap-northeast-1.amazonaws.com', port=443): Max retries exceeded with url: /public/nuplan-v1.1/nuplan-v1.1_train_singapore.zip (Caused by ProxyError('Cannot connect to proxy.', ConnectionResetError(54, 'Connection reset by peer')))\"))"
+  }
+]

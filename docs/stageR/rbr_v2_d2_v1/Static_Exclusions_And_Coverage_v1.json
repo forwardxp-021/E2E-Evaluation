@@ -1,0 +1,81 @@
+{
+  "first": {
+    "SESSION_exclusion_reasons": {
+      "NO_SDC_ANCHOR_IN_FIXED16": 449,
+      "NO_BROAD_STATIC_REPRESENTATIVE_IN_FIXED_PREFIX": 507,
+      "REPRESENTATIVE_INITIAL_SPEED_LT_5": 177
+    },
+    "anchor_diagnostic_reasons_multiple_per_trial": {
+      "INITIAL_OFFSET": 962,
+      "SWEPT_CORRIDOR_NOT_DRIVABLE": 2125,
+      "OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED": 3979,
+      "CURVED_ROUTE": 1198,
+      "OFFLINE_ACTOR_CORRIDOR_CONFLICT": 243,
+      "NATIVE_ROUTE_FAIL: insufficient native forward coverage": 1,
+      "SPEED_DOMAIN": 1805,
+      "INITIAL_HEADING": 168,
+      "NATIVE_ROUTE_CURSOR_FAIL: repeated occurrence is not uniquely resolved by native topology": 19,
+      "NATIVE_ROUTE_FAIL: current native edge unavailable": 397,
+      "NATIVE_ROUTE_REPAIR_FAIL: no native path on the unchanged ordered route": 23
+    },
+    "map_location_counts": {
+      "las_vegas": {
+        "processed": 610,
+        "eligible": 69
+      },
+      "us-ma-boston": {
+        "processed": 256,
+        "eligible": 36
+      },
+      "sg-one-north": {
+        "processed": 365,
+        "eligible": 11
+      },
+      "us-pa-pittsburgh-hazelwood": {
+        "processed": 22,
+        "eligible": 4
+      }
+    },
+    "sum_static_scan_wall_seconds": 596.4573906780065,
+    "warning": "Anchor reason counts overlap; do not sum them as distinct SESSION."
+  },
+  "second": {
+    "SESSION_exclusion_reasons": {
+      "NO_BROAD_STATIC_REPRESENTATIVE_IN_FIXED_PREFIX": 18,
+      "REPRESENTATIVE_INITIAL_SPEED_LT_5": 54,
+      "NO_SDC_ANCHOR_IN_FIXED16": 128
+    },
+    "anchor_diagnostic_reasons_multiple_per_trial": {
+      "OFFICIAL_UNIQUE_RUNNABLE_IDENTITY_REQUIRED": 701,
+      "OFFLINE_ACTOR_CORRIDOR_CONFLICT": 79,
+      "SPEED_DOMAIN": 897,
+      "INITIAL_OFFSET": 376,
+      "CURVED_ROUTE": 469,
+      "SWEPT_CORRIDOR_NOT_DRIVABLE": 892,
+      "NATIVE_ROUTE_FAIL: current native edge unavailable": 143,
+      "INITIAL_HEADING": 105,
+      "NATIVE_ROUTE_REPAIR_FAIL: no native path on the unchanged ordered route": 13,
+      "NATIVE_ROUTE_CURSOR_FAIL: repeated occurrence is not uniquely resolved by native topology": 4
+    },
+    "map_location_counts": {
+      "las_vegas": {
+        "processed": 118,
+        "eligible": 22
+      },
+      "us-ma-boston": {
+        "processed": 46,
+        "eligible": 15
+      },
+      "us-pa-pittsburgh-hazelwood": {
+        "processed": 6,
+        "eligible": 3
+      },
+      "sg-one-north": {
+        "processed": 75,
+        "eligible": 5
+      }
+    },
+    "sum_static_scan_wall_seconds": 196.3500541160065,
+    "warning": "Anchor reason counts overlap; do not sum them as distinct SESSION."
+  }
+}

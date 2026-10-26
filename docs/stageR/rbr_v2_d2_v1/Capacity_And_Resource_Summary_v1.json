@@ -1,0 +1,95 @@
+{
+  "new_raw_SESSION": 1253,
+  "new_raw_LOGs": 1498,
+  "official_splits": {
+    "train": 1345,
+    "val": 153
+  },
+  "new_static_eligible_SESSION": 162,
+  "first_frame": {
+    "processed": 1253,
+    "eligible": 120,
+    "stop": "SOURCE_FRAME_EXHAUSTED"
+  },
+  "second_frame": {
+    "processed": 245,
+    "eligible": 45,
+    "new_eligible_SESSION_increment": 42,
+    "stop": "DOWNLOAD_50GB_BUDGET_STOP"
+  },
+  "total_mutually_disjoint_potential_final_cal_V_sources": 161,
+  "unpaired320_deficit": 159,
+  "paired160_deficit": 0,
+  "D_new_bound_SESSION": 40,
+  "D_existing_swap_cal_bound_SESSION": 20,
+  "D_fit_existing_SESSION": 3,
+  "unpaired_minimum_planning_counts_satisfied": false,
+  "paired_minimum_planning_counts_satisfied": true,
+  "planning_counts_are_not_power_certificate": true,
+  "C_original_protected": 5,
+  "C_new_index_only": 20,
+  "C_scientific_capacity": "NOT_ACCESSED_NOT_CERTIFIED",
+  "planning_envelopes_exclude_extra_D_and_C": true,
+  "download_bytes": 49988732225,
+  "download_hard_limit_bytes": 50000000000,
+  "local_raw_DB_bytes": 85398618112,
+  "acquisition_ledger_elapsed_wall_seconds": 25049.334614,
+  "acquisition_wall_scope": "Since first public-source budget ledger initialization, includes catalog/engineering/scan/cache/wait time; not isolated network throughput",
+  "scientific_first_attempts": 2,
+  "technical_failed_attempts": 2,
+  "complete_pairs": 0,
+  "technical_retries": 0,
+  "scientific_CPU_seconds": 15.592373722000001,
+  "scientific_wall_seconds": 12.905446916999999,
+  "source_process_resource_measurement": {
+    "processes": {
+      "(86933, 1792990828.707883)": {
+        "pid": 86933,
+        "command": [
+          "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+          "-u",
+          "tools/rbr_v2_d2_round2.py",
+          "run"
+        ],
+        "cumulative_CPU_seconds": 499.584888832,
+        "observed_peak_RSS_bytes": 1189756928
+      },
+      "(94807, 1792992364.235617)": {
+        "pid": 94807,
+        "command": [
+          "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+          "-u",
+          "tools/rbr_v2_d2_fast_acquire.py"
+        ],
+        "cumulative_CPU_seconds": 881.2005703680001,
+        "observed_peak_RSS_bytes": 653066240
+      }
+    },
+    "measured_source_CPU_seconds": 1380.7854592,
+    "coverage": "Still-live first-source segmented process and second-source process; earlier terminated catalog/setup/single-transfer processes NOT fully metered. This is NOT total task CPU.",
+    "monitor_wall_seconds": 5236.18197125
+  },
+  "conditional_cost": {
+    "observed_first_frame_yield": 0.09577015163607343,
+    "observed_second_frame_yield": 0.1836734693877551,
+    "observed_second_frame_incremental_yield": 0.17142857142857143,
+    "observed_combined_yield": 0.12928970470869913,
+    "conditional_additional_new_SESSION_for_paired_at_observed_combined_yield": 0,
+    "conditional_additional_new_SESSION_for_unpaired_at_observed_combined_yield": 1230,
+    "mean_compressed_bytes_per_downloaded_LOG": 33368743.02670227,
+    "second_frame_mean_compressed_bytes_per_LOG": 46257632.24489796,
+    "second_frame_unscanned_SESSION": 984,
+    "paired_additional_second_frame_LOG_scenario": 0,
+    "unpaired_additional_second_frame_LOG_scenario": 928,
+    "paired_additional_second_frame_GB_scenario": 0.0,
+    "unpaired_additional_second_frame_GB_scenario": 42.92708272326531,
+    "warning": "Deterministic unequal-duration source frames; no IID rate or confidence interval claimed. Further complete LOGs can establish new eligible SESSION from already downloaded short-log prefixes, but never add another independent SESSION for the same prefix. Scenarios must continue the original fixed frame/order, not failed-only outcome-driven searching. No guaranteed acquisition budget or approved extension."
+  },
+  "source_coverage": "SESSION/LOG header and exact raw hash auditable; no claim that distinct SESSION imply all environmental/route factors statistically independent",
+  "real_AA_FPR": "NOT_ESTABLISHED",
+  "AB_detection_rates": "NOT_ESTABLISHED",
+  "DeltaBDD": "NOT_ESTABLISHED",
+  "H30_saturation": "NOT_ESTABLISHED",
+  "power": "NOT_ESTABLISHED",
+  "CI_coverage": "NOT_ESTABLISHED"
+}

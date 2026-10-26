@@ -1,0 +1,13 @@
+{
+  "raw_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.09.29.03.38.25_veh-50_00720_00817.db",
+  "raw_sha256": "2d2b9dc1e690ae5abd73bff8934ee6f8b596a9086a8343100bc031bc87aceade",
+  "raw_bytes": 6574080,
+  "raw_mtime_ns": 1792995769101202094,
+  "archive_path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/lossless_excluded_cache/2021.09.29.03.38.25_veh-50_00720_00817.db.zlib",
+  "archive_sha256": "4ebeba2ff69bd35d1c24ae01a3a4ed4f3d8e0b6e5b178e6a301d7ceb68b84965",
+  "archive_bytes": 3571596,
+  "transform": "zlib_level1_lossless_verified_full_stream",
+  "SESSION": "2021.09.29.03.38.25_veh-50",
+  "scope": "ONLY_THIS_D2_NEW_DOWNLOAD_EXCLUDED_STATIC_CACHE",
+  "scientific_data_mutated": false
+}

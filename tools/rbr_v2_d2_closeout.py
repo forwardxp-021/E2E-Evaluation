@@ -15,7 +15,7 @@ DOC=ROOT/'docs/stageR/rbr_v2_d2_v1'
 def csvfile(path,rows,columns=None):
  path.parent.mkdir(parents=True,exist_ok=True)
  with path.open('w',newline='',encoding='utf-8') as f:
-  w=csv.DictWriter(f,fieldnames=columns or list(rows[0]));w.writeheader();w.writerows(rows)
+  w=csv.DictWriter(f,fieldnames=columns or list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
 
 
 def protected():
@@ -60,9 +60,24 @@ def main():
  if not (OUT/'acquisition_status.json').exists() or not (OUT/'round2_status.json').exists():raise RuntimeError('Source scan still active; no final capacity claim')
  if (DOC/'Final_Report_CN_v1.md').exists():raise FileExistsError('Preserve already closed report; no silent revision')
  from tools.rbr_v2_d2_roles import allocate
+ from tools.rbr_v2_d2_execute import validate
+ validate(all_data=True)
+ native=read(ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Execution_Source_Binding_v1.json')['source_config_sha256']
+ for name,h in native.items():
+  if sha(ROOT/name)!=h:raise ValueError('Frozen native/F2 source or config changed '+name)
+ import importlib.metadata,platform
+ write(OUT/'final_native_source_and_runtime.json',dict(unchanged_native_F2_source_config_files=len(native),source_binding_sha256=sha(ROOT/'docs/stageR/tsb_direct_coast_f2/F2_Execution_Source_Binding_v1.json'),
+      Python=sys.version,platform=platform.platform(),packages={name:importlib.metadata.version(name) for name in ['numpy','torch','requests','shapely','geopandas','scipy','pandas']},
+      nuplan_devkit_HEAD=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT.parent/'nuplan-devkit').decode().strip(),
+      nuplan_existing_dirty_paths=subprocess.check_output(['git','diff','--name-only'],cwd=ROOT.parent/'nuplan-devkit').decode().splitlines(),new_dependency_installations=0))
  allocate();DOC.mkdir(exist_ok=True,parents=True)
  b=read(OUT/'D_execution_binding.json');cfg=read(ROOT/'configs/rbr_v2_d2_v1/interface_contract.json');plan=read(OUT/'acquisition_plan.json');plan2=read(OUT/'round2_source_plan.json')
+ if sha(ROOT/cfg['checkpoint'])!=cfg['checkpoint_sha256'] or sha(ROOT/cfg['normalizer'])!=cfg['normalizer_sha256']:raise ValueError('Official model/normalizer changed')
+ verified=read(OUT/'source_storage_verification.json')
+ if verified['verified_LOGs']!=len(list((OUT/'downloads').glob('*.json'))) or not verified['all_storage_hashes_match']:raise ValueError('Complete source storage rehash missing')
  first=[read(p) for p in sorted((OUT/'static').glob('*.json'))];second=[read(p) for p in sorted((OUT/'round2/static').glob('*.json'))];allnew=combined()
+ # A disk/budget stop in frame1 can leave frame2-only excluded SESSION; they still belong to the examined denominator.
+ for r in second:allnew.setdefault(r['session_id'],r)
  eligible={s:r for s,r in allnew.items() if r['status']=='ELIGIBLE'};prior={r['session_id']:r for r in first};second_increment=sum(r['status']=='ELIGIBLE' and prior.get(r['session_id'],{}).get('status')!='ELIGIBLE' for r in second)
  receipts=[read(p) for p in sorted((OUT/'downloads').glob('*.json'))];new_sessions={r['session_id'] for r in receipts};raw_by_name={r['filename']:r for r in receipts};source_rows=[];headers=defaultdict(set)
  for frame,records in [('FIRST_COST_MINIMUM',first),('SECOND_COMPLETENESS',second)]:
@@ -81,6 +96,15 @@ def main():
  for r in receipts:hashes[r['sha256']].add(r['session_id'])
  if any(len(s)>1 for s in hashes.values()):raise ValueError('Exact raw DB duplicated across independent SESSION')
  csvfile(DOC/'Official_Source_And_Static_Audit_v1.csv',source_rows)
+ frame_details={}
+ for name,records in [('first',first),('second',second)]:
+  maps=defaultdict(lambda:dict(processed=0,eligible=0))
+  for r in records:
+   key=r['log']['map_location'];maps[key]['processed']+=1;maps[key]['eligible']+=int(r['status']=='ELIGIBLE')
+  frame_details[name]=dict(SESSION_exclusion_reasons=dict(Counter(x for r in records for x in r['reasons'])),
+      anchor_diagnostic_reasons_multiple_per_trial=dict(Counter(x for r in records for t in r['anchor_trials'] for x in t.get('reasons',[]))),map_location_counts=dict(maps),
+      sum_static_scan_wall_seconds=sum(r['wall_seconds'] for r in records),warning='Anchor reason counts overlap; do not sum them as distinct SESSION.')
+ write(DOC/'Static_Exclusions_And_Coverage_v1.json',frame_details)
  ledgers=[read(OUT/p) for p in ['science_ledger.json','science_continuation_ledger.json']];attempts=[a for d in ledgers for a in d['attempts']]
  if not all(d['stopped'] for d in ledgers) or len({a['run_id'] for a in attempts})!=len(attempts):raise ValueError('Live ledger or duplicate scientific attempt')
  attempts_by_id={a['run_id']:a for a in attempts};armrows=[]
@@ -101,6 +125,7 @@ def main():
   exposures.append(dict(session_id=sid,role=role,exposure=exposure,new_scientific_attempts=n,new_detector_outputs_read=False,future_same_claim_V_C_excluded=role.startswith('D_'),new_raw_source_access=sid in new_sessions))
  csvfile(DOC/'SESSION_Roles_And_Exposure_v1.csv',exposures)
  budget=read(OUT/'download_budget.json');end1=read(OUT/'acquisition_status.json');end2=read(OUT/'round2_status.json');resource=read(OUT/'source_process_resource_measurement.json') if (OUT/'source_process_resource_measurement.json').exists() else None
+ ledger_elapsed=(datetime.datetime.now(datetime.timezone.utc)-datetime.datetime.strptime(budget['start_utc'],'%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=datetime.timezone.utc)).total_seconds()
  if budget['reserved_bytes'] or budget['received_bytes']>budget['limit_bytes']:raise ValueError('Unresolved network reservation or download budget violation')
  oldfit=set(roles['D_fit']);nominal=len(roles['V_AA_candidates'])+len(roles['V_AB_candidates'])+len(roles['final_calibration_candidates'])+len(roles['unallocated_candidates'])
  # Count all available candidate sources, not merely the prefix allocated to one insufficient envelope.
@@ -111,13 +136,22 @@ def main():
  new_rate=second_increment/len(second) if second else 0
  # Descriptive cost scenarios only: neither random-source yield nor future eligibility is guaranteed.
  source_mean_bytes=sum(r['compressed_bytes'] for r in receipts)/len(receipts)
+ second_mean_bytes=sum(raw_by_name[Path(r['log']['source_file']).name]['compressed_bytes'] for r in second)/len(second) if second else None
  cost=dict(observed_first_frame_yield=first_rate,observed_second_frame_yield=second_rate,observed_second_frame_incremental_yield=new_rate,observed_combined_yield=combined_rate,
       conditional_additional_new_SESSION_for_paired_at_observed_combined_yield=math_ceil(deficit_paired/combined_rate),conditional_additional_new_SESSION_for_unpaired_at_observed_combined_yield=math_ceil(deficit_unpaired/combined_rate),
-      mean_compressed_bytes_per_downloaded_LOG=source_mean_bytes,warning='Deterministic unequal-duration source frames; no IID rate or confidence interval claimed. Additional source/byte scenarios are not a guaranteed acquisition budget or approved extension.')
+      mean_compressed_bytes_per_downloaded_LOG=source_mean_bytes,second_frame_mean_compressed_bytes_per_LOG=second_mean_bytes,second_frame_unscanned_SESSION=len(plan2['rows'])-len(second),
+      paired_additional_second_frame_LOG_scenario=math_ceil(deficit_paired/new_rate) if new_rate else None,
+      unpaired_additional_second_frame_LOG_scenario=math_ceil(deficit_unpaired/new_rate) if new_rate else None,
+      paired_additional_second_frame_GB_scenario=math_ceil(deficit_paired/new_rate)*second_mean_bytes/1e9 if new_rate else None,
+      unpaired_additional_second_frame_GB_scenario=math_ceil(deficit_unpaired/new_rate)*second_mean_bytes/1e9 if new_rate else None,
+      warning='Deterministic unequal-duration source frames; no IID rate or confidence interval claimed. Further complete LOGs can establish new eligible SESSION from already downloaded short-log prefixes, but never add another independent SESSION for the same prefix. Scenarios must continue the original fixed frame/order, not failed-only outcome-driven searching. No guaranteed acquisition budget or approved extension.')
  write(DOC/'Capacity_And_Resource_Summary_v1.json',dict(new_raw_SESSION=len(new_sessions),new_raw_LOGs=len(receipts),official_splits=dict(Counter(r['official_split'] for r in receipts)),new_static_eligible_SESSION=len(eligible),first_frame=dict(processed=len(first),eligible=sum(r['status']=='ELIGIBLE' for r in first),stop=end1['stop_reason']),
        second_frame=dict(processed=len(second),eligible=sum(r['status']=='ELIGIBLE' for r in second),new_eligible_SESSION_increment=second_increment,stop=end2['stop_reason']),
        total_mutually_disjoint_potential_final_cal_V_sources=available,unpaired320_deficit=deficit_unpaired,paired160_deficit=deficit_paired,D_new_bound_SESSION=40,D_existing_swap_cal_bound_SESSION=20,D_fit_existing_SESSION=len(oldfit),
-       C_original_protected=len(roles['original_C_protected']),C_new_index_only=len(plan['new_C_METADATA_ONLY']),download_bytes=budget['received_bytes'],download_hard_limit_bytes=budget['limit_bytes'],local_raw_DB_bytes=sum(r['uncompressed_bytes'] for r in receipts),
+       unpaired_minimum_planning_counts_satisfied=available>=320,paired_minimum_planning_counts_satisfied=available>=160,planning_counts_are_not_power_certificate=True,
+       C_original_protected=len(roles['original_C_protected']),C_new_index_only=len(plan['new_C_METADATA_ONLY']),C_scientific_capacity='NOT_ACCESSED_NOT_CERTIFIED',planning_envelopes_exclude_extra_D_and_C=True,
+       download_bytes=budget['received_bytes'],download_hard_limit_bytes=budget['limit_bytes'],local_raw_DB_bytes=sum(r['uncompressed_bytes'] for r in receipts),
+       acquisition_ledger_elapsed_wall_seconds=ledger_elapsed,acquisition_wall_scope='Since first public-source budget ledger initialization, includes catalog/engineering/scan/cache/wait time; not isolated network throughput',
        scientific_first_attempts=len(attempts),technical_failed_attempts=sum(a['status']=='TECHNICAL_FAIL' for a in attempts),complete_pairs=0,technical_retries=0,scientific_CPU_seconds=scientific_cpu,scientific_wall_seconds=scientific_wall,
        source_process_resource_measurement=resource,conditional_cost=cost,source_coverage='SESSION/LOG header and exact raw hash auditable; no claim that distinct SESSION imply all environmental/route factors statistically independent',
        real_AA_FPR='NOT_ESTABLISHED',AB_detection_rates='NOT_ESTABLISHED',DeltaBDD='NOT_ESTABLISHED',H30_saturation='NOT_ESTABLISHED',power='NOT_ESTABLISHED',CI_coverage='NOT_ESTABLISHED'))
@@ -146,7 +180,7 @@ def main():
 
 16MiB分段Range、并发4段、断点分片与ETag/Content-Range校验降低整块失败重传；ZIP CRC、长度、SQLite header、完整原始SHA与数据库LOG/SESSION header同时闭合。已认证缓存不重复下载。为保留磁盘余量，仅本轮新增且静态排除的DB进行zlib无损缓存，独立完整解压SHA验证后才移除自己的解压副本；原路径、mtime、raw SHA、压缩缓存SHA和恢复入口全部留存。未处理任何旧数据或C。原四幅官方地图直接复用，版本及SHA保持。
 
-实际网络负载**{budget['received_bytes']/1e9:.6f} GB**，上限50.000000 GB；原始SQLite解压总量{sum(r['uncompressed_bytes'] for r in receipts)/1e9:.3f} GB。第一框终止原因`{end1['stop_reason']}`，第二框`{end2['stop_reason']}`；无自动扩容。逐LOG来源表与原始收据定位到本地可恢复缓存。确定性顺序/预算截断有选择限制，不把未扫描来源当作不适格。
+实际网络负载**{budget['received_bytes']/1e9:.6f} GB**，上限50.000000 GB；原始SQLite解压总量{sum(r['uncompressed_bytes'] for r in receipts)/1e9:.3f} GB。从首次来源预算账本建立至本报告约{ledger_elapsed/3600:.2f}小时，包括目录、工程修复、扫描、缓存和等待，不冒充纯网络传输时间。第一框终止原因`{end1['stop_reason']}`，第二框`{end2['stop_reason']}`；无自动扩容。逐LOG来源表与原始收据定位到本地可恢复缓存。确定性顺序/预算截断有选择限制，不把未扫描来源当作不适格。
 
 ## D执行真实失败及停止原因
 
@@ -164,11 +198,13 @@ def main():
 
 `candidate_role_partition_final.json`按事前固定的元数据hash规则给出互斥D_fit、D_new、D_cal、final-cal候选、V_AA、V_AB、C身份；这是候选容量，不是激活的Primary名单。20个新C仍只有目录身份，不宣称静态资格或闭环通过。不同scenario、同SESSION其它LOG、重复随机释放与bootstrap副本从不增加独立源数。
 
+320/160仅是final-cal/V的最低规划包络，不包括额外D_fit、功效/覆盖开发与C资源。原C五个未检查其科学结果，新增C二十个未访问原始数据；**C适用性及确认实验容量仍未认证**，不能用25个保留身份冒充25个合格确认源。
+
 原SAP保留ΔBDD、α=.05、m20、π=.50、δ*=.10、SESSION聚类和非配对优先。源码支持负值保留的无偏MMD²、相同median正距离带宽、严格报警阈值、相同身份/预算及paired依赖；本轮仅运行确定性代码检查，不产生真实性能。拟议D controlled-swap null也不能冒充operational A/A FPR。源域功效/覆盖没有认证，不能凭320/160最低数或重复释放宣称功效达到要求。
 
 纯抽样支持检查显示40/40/80配对最小包络的2000个cluster bootstrap中6次唯一源不足m20；60/60/120包络与非配对80/80/160的该项检查未出现不足。这只是唯一来源占用检查，不是新增样本、功效模拟、区间覆盖或修改SAP。所有规划包络与缺口保留在角色审计中，不因本轮D失败更改分组规则。
 
-当前至少有两个独立阻断：**真实独立静态候选及其闭环资格/角色容量尚未认证**，以及**冻结SDC在新增来源存在运行时路线限制，D完整统计证据缺失**。不能判断方法本身一定无检测价值，也不能断言H30已饱和；目前首先缺合法可用的实际实验数据和统计认证。
+实际来源身份和静态资格已核验；最低配对计数是否满足见上述实际数字，不能再笼统称“没有独立来源”。但原非配对最低规划仍缺{deficit_unpaired}个；无论最低计数是否满足，候选闭环资格、最终角色适用性、D误报/功效/覆盖证据都未认证。另一个独立阻断是**冻结SDC在新增来源存在运行时路线限制，D完整统计证据缺失**。不能判断方法本身一定无检测价值，也不能断言H30已饱和；目前缺合法可用的实际实验数据和统计认证。
 
 ## 成本、测试与保护
 
@@ -193,8 +229,51 @@ def math_ceil(x):
  import math
  return int(math.ceil(x))
 
+
+def verify_sources():
+ if not (OUT/'round2_status.json').exists():raise RuntimeError('Do not hash actively changing source storage')
+ rows=[]
+ for receipt in sorted((OUT/'downloads').glob('*.json')):
+  r=read(receipt);p=Path(r['path']);packed=OUT/'cache_transforms'/(p.name+'.json')
+  if p.exists():actual=sha(p);expected=r['sha256'];kind='RAW_SQLITE';stored=p
+  elif packed.exists():
+   c=read(packed)
+   if c['raw_sha256']!=r['sha256']:raise ValueError('Packed raw/source receipt identity conflict')
+   stored=Path(c['archive_path']);actual=sha(stored);expected=c['archive_sha256'];kind='LOSSLESS_ZLIB_PRIOR_RAW_STREAM_VERIFIED'
+  else:raise FileNotFoundError('Certified source storage missing '+str(p))
+  if actual!=expected:raise ValueError('Certified source content changed '+str(stored))
+  rows.append(dict(receipt=str(receipt.relative_to(ROOT)),receipt_sha256=sha(receipt),raw_sha256=r['sha256'],storage_kind=kind,storage_path=str(stored),storage_sha256=actual))
+  if len(rows)%100==0:print('Final source storage rehash',len(rows),'LOGs',flush=True)
+ write(OUT/'source_storage_verification.json',dict(verified_LOGs=len(rows),all_storage_hashes_match=True,rows=rows,scope='Rehash every retained raw DB or certified lossless archive; packed raw SHA was independently verified before removal of unpacked owned cache. No new network or science.'))
+ print('All',len(rows),'certified source storage hashes verified',flush=True)
+
+
+def manifest():
+ if not (DOC/'Final_Report_CN_v1.md').exists():raise RuntimeError('Final report required before manifest')
+ candidates=list(OUT.rglob('*'))+list((ROOT/'outputs/stageR/rbr_v2_d2_D').rglob('*'))+list((ROOT/'configs/rbr_v2_d2_v1').rglob('*'))+list(DOC.rglob('*'))
+ candidates+=list((ROOT/'tools').glob('rbr_v2_d2_*.py'))+list((ROOT/'tests').glob('test_rbr_v2_d2_*.py'))
+ index=OUT/'Provenance_File_Index_v1.json';target=DOC/'Manifest_v1.json'
+ files={}
+ for p in sorted(set(candidates)):
+  if not p.is_file() or p in [index,target] or p.suffix in ['.lock','.writing'] or p.name.startswith('final_manifest_packaging'):continue
+  files[str(p.relative_to(ROOT))]=dict(sha256=sha(p),bytes=p.stat().st_size)
+ write(index,dict(files=files,large_data_policy='This index binds both Git deliverables and retained local metadata/cache receipts. Raw SQLite/lossless archives are separately verified in source_storage_verification.json and not committed to Git.',
+      restoration='tools/rbr_v2_d2_round2.py restore --path <raw_path>; verify raw SHA against receipt; no scientific run identity may be reused'))
+ cfg=read(ROOT/'configs/rbr_v2_d2_v1/interface_contract.json')
+ write(target,dict(status='BDD_D2_CAPACITY_OR_SCIENTIFIC_FEASIBILITY_BLOCKED',provenance_index=str(index.relative_to(ROOT)),provenance_index_sha256=sha(index),bound_files=len(files),
+      checkpoint_sha256=sha(ROOT/cfg['checkpoint']),normalizer_sha256=sha(ROOT/cfg['normalizer']),D_execution_binding_sha256=sha(OUT/'D_execution_binding.json'),
+      original_stopped_ledger_sha256=sha(OUT/'science_ledger.json'),continuation_stopped_ledger_sha256=sha(OUT/'science_continuation_ledger.json'),
+      official_license_sha256=sha(OUT/'official_LICENSE.txt'),source_storage_verification_sha256=sha(OUT/'source_storage_verification.json'),protected_assets_sha256=sha(OUT/'protected_after.json'),
+      original_D1_manifest_sha256=sha(ROOT/'docs/stageR/rbr_v2_d1_v1/Manifest_v1.json'),
+      prior_commits=subprocess.check_output(['git','log','-4','--format=%H'],cwd=ROOT).decode().splitlines(),
+      scientific_restrictions=dict(RBR_training=0,new_seeds=0,real_RBR_H30_detection_comparison=0,Primary=0,V=0,C=0,technical_retry=0),
+      U_source_risk='U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED',complete_D_pairs=0,real_FPR_power_coverage='NOT_ESTABLISHED'))
+ print('Manifest binds',len(files),'files and exact retained source storage identities',flush=True)
+
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('mode',choices=['monitor','finalize','protected']);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('mode',choices=['monitor','finalize','protected','verify-sources','manifest']);a=p.parse_args()
  if a.mode=='monitor':monitor()
  elif a.mode=='protected':protected()
+ elif a.mode=='verify-sources':verify_sources()
+ elif a.mode=='manifest':manifest()
  else:main()

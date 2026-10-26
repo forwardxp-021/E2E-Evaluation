@@ -1,0 +1,12 @@
+test_out_of_bounds_before_request (tests.test_rbr_v2_d2_download.RangeTests) ... ok
+test_real_zip_central_directory_range_reader (tests.test_rbr_v2_d2_download.RangeTests) ... ok
+test_unexpected_whole_archive_metadata_refused (tests.test_rbr_v2_d2_download.RangeTests) ... ok
+test_cached_kernel_is_original_unbiased_mmd (tests.test_rbr_v2_d2_statistics.PairedTests) ... ok
+test_same_draws_and_real_unique_support (tests.test_rbr_v2_d2_statistics.PairedTests) ... ok
+test_corrupt_archive_refused (tests.test_rbr_v2_d2_cache.CacheTests) ... ok
+test_lossless_own_source_roundtrip_and_mtime (tests.test_rbr_v2_d2_cache.CacheTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.015s
+
+OK

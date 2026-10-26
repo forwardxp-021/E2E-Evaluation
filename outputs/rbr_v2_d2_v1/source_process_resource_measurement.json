@@ -1,0 +1,28 @@
+{
+  "processes": {
+    "(86933, 1792990828.707883)": {
+      "pid": 86933,
+      "command": [
+        "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+        "-u",
+        "tools/rbr_v2_d2_round2.py",
+        "run"
+      ],
+      "cumulative_CPU_seconds": 499.584888832,
+      "observed_peak_RSS_bytes": 1189756928
+    },
+    "(94807, 1792992364.235617)": {
+      "pid": 94807,
+      "command": [
+        "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+        "-u",
+        "tools/rbr_v2_d2_fast_acquire.py"
+      ],
+      "cumulative_CPU_seconds": 881.2005703680001,
+      "observed_peak_RSS_bytes": 653066240
+    }
+  },
+  "measured_source_CPU_seconds": 1380.7854592,
+  "coverage": "Still-live first-source segmented process and second-source process; earlier terminated catalog/setup/single-transfer processes NOT fully metered. This is NOT total task CPU.",
+  "monitor_wall_seconds": 5236.18197125
+}

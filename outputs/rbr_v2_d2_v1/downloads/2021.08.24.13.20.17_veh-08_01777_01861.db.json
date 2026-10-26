@@ -1,0 +1,23 @@
+{
+  "session_id": "2021.08.24.13.20.17_veh-08",
+  "filename": "2021.08.24.13.20.17_veh-08_01777_01861.db",
+  "archive": "public/nuplan-v1.1/nuplan-v1.1_val.zip",
+  "archive_size": 96957279835,
+  "etag": "\"44b64699fa6f4ddc48a7157787bcbb73-5780\"",
+  "official_split": "val",
+  "member": "data/cache/val/2021.08.24.13.20.17_veh-08_01777_01861.db",
+  "compressed_bytes": 3840857,
+  "uncompressed_bytes": 7204864,
+  "crc32": 2295583218,
+  "compression": 8,
+  "header_offset": 17535902844,
+  "flags": 0,
+  "SESSION_rank": "1a6aa30e0f67c8fb1462f04c44369f7185945a8c1a54cabf5d7932aa39ad896f",
+  "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.08.24.13.20.17_veh-08_01777_01861.db",
+  "sha256": "ba42f5447fb35d7dcc51f918201080547eb43dd191d6512bbbcc251e614a0ccd",
+  "crc_verified": true,
+  "official_object_etag_verified": true,
+  "wall_seconds": 8.868869791999998,
+  "license": "CC-BY-NC-SA-4.0 plus Motional Dataset Terms; noncommercial PhD research",
+  "license_sha256": "1a218286e733f6d6135fc5698d614cda2be94ea096f6eee280278458e570636a"
+}

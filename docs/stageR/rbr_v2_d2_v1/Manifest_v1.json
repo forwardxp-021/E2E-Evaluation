@@ -1,0 +1,33 @@
+{
+  "status": "BDD_D2_CAPACITY_OR_SCIENTIFIC_FEASIBILITY_BLOCKED",
+  "provenance_index": "outputs/rbr_v2_d2_v1/Provenance_File_Index_v1.json",
+  "provenance_index_sha256": "60df71d35c0d12bfb1a37865c4dbd2851d5deee598b87e59e2416a89d0afacec",
+  "bound_files": 6163,
+  "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+  "normalizer_sha256": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+  "D_execution_binding_sha256": "6541d1d52b8b71811d7c5670161b15d2a75c6e9b3478dc8fcdc16d34ab8e0330",
+  "original_stopped_ledger_sha256": "4d5d38576d614a920c9245708e6dd29c53eb881467aa7f9ef35880c8733d7477",
+  "continuation_stopped_ledger_sha256": "d45be36004f6412c271e9f9abb45a826ae7fb31cbd124cae298c871f8983bff0",
+  "official_license_sha256": "1a218286e733f6d6135fc5698d614cda2be94ea096f6eee280278458e570636a",
+  "source_storage_verification_sha256": "d50686a53db19bce6c7b749d2a59dc3fbcd0ead1b3a0e6d512cf9e2e4e54f58e",
+  "protected_assets_sha256": "63a4c8a559950cffc4c8b94eaf3f832e31d2de67be1ce133134c56c0bc2230c5",
+  "original_D1_manifest_sha256": "fda1abe5e6303d080886f630e5decf0070649ed424c3ec19adaea991ca5b0f06",
+  "prior_commits": [
+    "ca824c4a561f4e14031dc6cab022283f30f6579c",
+    "077d62478482631138806dd20dcd75da6340de51",
+    "6015bf852431a90ec81cd3cbe125375510521a87",
+    "f0fe56c89541953708638abe47cf08c081bc5997"
+  ],
+  "scientific_restrictions": {
+    "RBR_training": 0,
+    "new_seeds": 0,
+    "real_RBR_H30_detection_comparison": 0,
+    "Primary": 0,
+    "V": 0,
+    "C": 0,
+    "technical_retry": 0
+  },
+  "U_source_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "complete_D_pairs": 0,
+  "real_FPR_power_coverage": "NOT_ESTABLISHED"
+}
