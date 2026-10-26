@@ -1,0 +1,51 @@
+{
+  "AA": {
+    "alarm_probability": {
+      "RBR64": 0.0411,
+      "H30": 0.0435
+    },
+    "delta": -0.0024,
+    "conditional_MC_SE": 0.002835529584187455
+  },
+  "AB": {
+    "alarm_probability": {
+      "RBR64": 0.041,
+      "H30": 0.0447
+    },
+    "delta": -0.0037,
+    "conditional_MC_SE": 0.0028652141185598183
+  },
+  "thresholds": {
+    "RBR64": {
+      "value": 0.012116534625139508,
+      "rank_1based": 1900,
+      "draws": 1999,
+      "alpha": 0.05,
+      "alarm_comparison": "strict_gt"
+    },
+    "H30": {
+      "value": 0.017462386006871333,
+      "rank_1based": 1900,
+      "draws": 1999,
+      "alpha": 0.05,
+      "alarm_comparison": "strict_gt"
+    }
+  },
+  "scientific_interval": "NOT_ESTABLISHED_UNLESS_CLUSTER_COVERAGE_VALIDATED",
+  "scope": "DETERMINISTIC_SYNTHETIC_GAUSSIAN_AA_ONLY_NOT_RBR_H30_SCIENTIFIC_PERFORMANCE",
+  "seed": 2026102601,
+  "real_data_used": false,
+  "power_or_source_interval_validation": false,
+  "planted_drift": false,
+  "synthetic_widths": {
+    "RBR64": 64,
+    "H30": 30
+  },
+  "pool_SESSION_counts": {
+    "D_fit": 80,
+    "cal": 80,
+    "AA": 80,
+    "AB_null": 160
+  },
+  "warning": "Representation names denote tensor widths only; independent Gaussian numbers are not actual learned or handcrafted data."
+}

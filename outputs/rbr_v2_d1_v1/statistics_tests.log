@@ -1,0 +1,13 @@
+test_constant_pipeline (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_duplicate_support_and_shared_draws (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_near_constant_scaling_and_role_disjoint (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_negative_unbiased_and_label_swap (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_original_sap_decisions (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_pair_exchange (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_synthetic_aa_deterministic_and_firewall (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_threshold_and_ties (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.012s
+
+OK

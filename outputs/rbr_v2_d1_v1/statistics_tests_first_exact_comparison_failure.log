@@ -1,0 +1,19 @@
+test_constant_pipeline (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_duplicate_support_and_shared_draws (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_negative_unbiased_and_label_swap (tests.test_rbr_v2_d1_statistics.SAPTests) ... FAIL
+test_pair_exchange (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_synthetic_aa_deterministic_and_firewall (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+test_threshold_and_ties (tests.test_rbr_v2_d1_statistics.SAPTests) ... ok
+
+======================================================================
+FAIL: test_negative_unbiased_and_label_swap (tests.test_rbr_v2_d1_statistics.SAPTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tests/test_rbr_v2_d1_statistics.py", line 9, in test_negative_unbiased_and_label_swap
+    self.assertEqual(mmd2(x,x+1,1),mmd2(x+1,x,1))
+AssertionError: -0.1472694208614137 != -0.14726942086141392
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.011s
+
+FAILED (failures=1)

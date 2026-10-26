@@ -1,0 +1,32 @@
+{
+  "verified_original_D_source_map_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.09.20.13.46.45_veh-42_00401_00526.db": "8e2599b4fa54b9655f17172999558baa5a9e9f0177afc93ed5ef3972a8b43986",
+    "docs/stageR/s2_preflight/census/log_1191.json.gz": "22cb200d1ac72110a1a48d28241c398536c5cd2241a3346214fe757d5791e9ae",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/nuplan-maps-v1.0.json": "b9c0a62335dded8b25e634bc63e3f271908b6f4f803398f0250ef7769facc504",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/us-pa-pittsburgh-hazelwood/9.17.1937/map.gpkg": "d04464f98175934cb2445f86959356583841a22c3d5b219314e561e0072e816a",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/train_pittsburgh/2021.08.25.17.17.57_veh-42_00327_01003.db": "175d743f8629f05a81c7800d999507d4e3151bf6cb20c9585120b910319a7ad3",
+    "docs/stageR/s2_preflight/census/log_0510.json.gz": "1874eabd6eafabdb0fd92514b8edd461e3fb6e8b68e02835c974e3cdf513c974",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.09.17.06.37_veh-35_00258_00748.db": "736d063c483244355eeec765a5bfc9a00dbfcf0a7a945369f1c2e5e789f79385",
+    "docs/stageR/s2_preflight/census/log_0037.json.gz": "0317320c68b73265001d217ba35cc0f75d71ab2453fc2705c903230f3a3d3a6a",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/us-nv-las-vegas-strip/9.15.1915/map.gpkg": "f1509eeed9c1c96e1cddf1c5f6d71f7ab9eed8f895de59ab36132308708e8937"
+  },
+  "official_source_sha256": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/actor_state/dynamic_car_state.py": "e36a40703eee1c2ebe8efd4458defbd8deb57626d1c99ec722a9f52e1b12c43d",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/simulation_log.py": "5025c347cd65557865c87c3ca97948be553bc488329f607ca255b6dc5e598a90",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/lane.py": "19fd6416a6896ec2fc90ee905fe89eb0dcdcf8f1d627e994a26f6b3f3188146a",
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/lane_connector.py": "56bdb87e2a888dab1d671a92cdd7f1695760c336d6b3e9f8a523ee86fbc35a2c"
+  },
+  "metadata_runtime": {
+    "python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+    "numpy": "1.26.4",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "dependencies": {
+      "shapely": "2.0.7",
+      "geopandas": "1.0.1",
+      "torch": "1.9.0.post2",
+      "numpy": "1.26.4"
+    }
+  },
+  "scientific_runner_called": false
+}
