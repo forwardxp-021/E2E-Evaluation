@@ -1,0 +1,58 @@
+/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/maps/nuplan_map/utils.py:413: RuntimeWarning: invalid value encountered in cast
+  return elements.iloc[np.where(elements[column_label].to_numpy().astype(int) == int(desired_value))]
+2026-10-26 14:12:52,893 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/worker_pool_builder.py:19}  Building WorkerPool...
+2026-10-26 14:12:52,908 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/utils/multithreading/worker_pool.py:101}  Worker: Sequential
+2026-10-26 14:12:52,908 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/utils/multithreading/worker_pool.py:102}  Number of nodes: 1
+Number of CPUs per node: 1
+Number of GPUs per node: 0
+Number of threads across all nodes: 1
+2026-10-26 14:12:52,908 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/worker_pool_builder.py:27}  Building WorkerPool...DONE!
+2026-10-26 14:12:52,908 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:32}  Building experiment folders...
+2026-10-26 14:12:52,909 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:35}  
+
+	Folder where all results are stored: /Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/stageR/rbr_v2_d2_D/RBR-D2-D-01-TREATMENT/raw
+
+2026-10-26 14:12:52,911 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/folder_builder.py:70}  Building experiment folders...DONE!
+2026-10-26 14:12:52,911 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_callback_builder.py:52}  Building AbstractCallback...
+2026-10-26 14:12:52,911 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_callback_builder.py:68}  Building AbstractCallback: 0...DONE!
+2026-10-26 14:12:52,911 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:47}  Building simulations...
+2026-10-26 14:12:52,911 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:53}  Extracting scenarios...
+2026-10-26 14:12:52,911 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/common/utils/distributed_scenario_filter.py:83}  Building Scenarios in mode DistributedMode.SINGLE_NODE
+2026-10-26 14:12:52,912 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_building_builder.py:18}  Building AbstractScenarioBuilder...
+2026-10-26 14:12:52,917 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_building_builder.py:21}  Building AbstractScenarioBuilder...DONE!
+2026-10-26 14:12:52,917 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_filter_builder.py:35}  Building ScenarioFilter...
+2026-10-26 14:12:52,917 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/scenario_filter_builder.py:44}  Building ScenarioFilter...DONE!
+2026-10-26 14:12:52,918 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:74}  Building metric engines...
+2026-10-26 14:12:53,077 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:76}  Building metric engines...DONE
+2026-10-26 14:12:53,077 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:80}  Building simulations from 1 scenarios...
+2026-10-26 14:12:53,295 INFO {/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/script/builders/simulation_builder.py:133}  Building simulations...DONE!
+Traceback (most recent call last):
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_continue.py", line 84, in <module>
+    if a.child:raise SystemExit(child(*a.child))
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_continue.py", line 42, in child
+    with patch.object(original,'STATE',STATE),patch.object(p,'lifecycle_f2',dispatch):code=original.child(run_id,ticket)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_execute.py", line 56, in child
+    try:p.lifecycle_f2(arm)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_continue.py", line 41, in dispatch
+    def dispatch(arm):return invoke_frozen_lifecycle(lifecycle,arm,spec,CONTRACT)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d2_continue.py", line 30, in invoke_frozen_lifecycle
+    return lifecycle(arm,spec,contract)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/tsb_direct_coast_f2_production.py", line 228, in lifecycle_f2
+    report=arm.runner.run()
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/runner/simulations_runner.py", line 113, in run
+    trajectory = self.planner.compute_trajectory(planner_input)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/tsb_coast_p1r_planner.py", line 47, in compute_trajectory
+    result=super().compute_trajectory(current_input)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v3_1.py", line 43, in compute_trajectory
+    return super().compute_trajectory(current_input)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_2.py", line 82, in compute_trajectory
+    return super().compute_trajectory(current_input)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_official_technical_smoke_planner_v2_1.py", line 115, in compute_trajectory
+    return self.compute_planner_trajectory(current_input)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/tsb_coast_p1r_planner.py", line 62, in compute_planner_trajectory
+    route=build_native_route_reference_v1_2(self._initialization.map_api,self._row['route_roadblock_ids'],current,float(distance[-1])+1e-9)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/b1_native_route_infrastructure.py", line 104, in build_native_route_reference_v1_2
+    return build_native_route_reference_v1_1(map_api, route_roadblock_ids, current_ego, required_forward_m)
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/r1_closed_loop_benchmark_v2_1.py", line 395, in build_native_route_reference_v1_1
+    raise ValueError("NATIVE_ROUTE_FAIL: current native edge unavailable")
+ValueError: NATIVE_ROUTE_FAIL: current native edge unavailable

@@ -1,0 +1,37 @@
+{
+  "stage": "RBR_V2_D2_ORIGINAL_REMAINING_FIRST_ARMS",
+  "original_stopped_ledger_sha256": "4d5d38576d614a920c9245708e6dd29c53eb881467aa7f9ef35880c8733d7477",
+  "authorization_sha256": "f6507d57a3cf1f68fa3772e3c6a4c8d6bf3ae041883d3e996d0afe3a35ea3606",
+  "stopped": true,
+  "attempts": [
+    {
+      "run_id": "RBR-D2-D-01-TREATMENT",
+      "status": "TECHNICAL_FAIL",
+      "ticket": "461009bdf771ab3b66ccd3db99d45fe6dec931729aab4c54ce3bb24e811361a9",
+      "parent_pid": 54072,
+      "original_ordinal": 2,
+      "returncode": 1,
+      "wall_seconds": 6.34308125,
+      "cpu_seconds": 7.503306,
+      "reason": null,
+      "wait4_cpu": 7.503306,
+      "observed_pid_cpu": {
+        "(54094, 1792995168.426966)": 7.412496384000001,
+        "(54144, 1792995172.902127)": 0.020677458
+      },
+      "CPU_conservative_wall_upper_seconds": 63.4308125
+    }
+  ],
+  "pairs": [],
+  "cpu_seconds": 7.503306,
+  "prior_CPU_seconds": 7.7146857220000005,
+  "total_arm_budget_including_prior": 80,
+  "failed_prior_run_ids": [
+    "RBR-D2-D-01-BASELINE"
+  ],
+  "stop_reason": "CONTINUATION_TECHNICAL_FAILURE_NO_RETRY",
+  "driver_cpu_seconds": 0.374382,
+  "wall_seconds": 6.349761084,
+  "total_attempts_including_prior": 2,
+  "retry_count": 0
+}
