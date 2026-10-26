@@ -1,0 +1,20 @@
+{
+  "status": "EXISTING_ARTIFACT_COMPLETION_VERIFIED_NO_RERUN",
+  "original_ledger_sha256": "9472b2464e93e651fa6b2310249d501ca8ab45046bb75de0384e4734a388b8f8",
+  "original_monitor_status": "TECHNICAL_FAIL",
+  "original_monitor_reason": "LIVE_DESCENDANT_CPU_UNCERTAIN",
+  "actual_child_returncode": 0,
+  "existing_completion_sha256": "181ed095dd3d32f2d1e0d9670c7e6d9270e2a8aafd2864ad57a3ff10895b439e",
+  "existing_manifest_sha256": "41a6c4a929889b24580abc469f9aa4d19b0f4a7724545f941ee05b397e0f1dad",
+  "all_bound_artifacts_valid": true,
+  "frames": 80,
+  "model_transitions": 79,
+  "original_process_group": 9351,
+  "process_group_absent_at_audit": true,
+  "audit_utc": "2026-10-26T10:05:05.620503+00:00",
+  "uncertain_attempt_CPU_full_interval_hardware_upper_seconds": 4863.030422955936,
+  "CPU_upper_scope": "Conservatively covers original arm wall plus entire interval from stopped-ledger write to verified process-group absence; not actual measured CPU",
+  "original_failed_monitor_record_permanently_unchanged": true,
+  "new_scientific_attempts_for_recovery": 0,
+  "pair_review_sha256": "392f1d9b9ac3c8ff2cff783905a75adcaefdf58ba0c20407df2c2b3931ff7eac"
+}

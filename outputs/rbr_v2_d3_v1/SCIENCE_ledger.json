@@ -1,0 +1,1080 @@
+{
+  "stage": "RBR_V2_D3_D_ONLY_SCIENCE",
+  "stopped": true,
+  "attempts": [
+    {
+      "run_id": "D3-D-01-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "da031ee80174aa52e688717f797aad20f27435bd27fb3bac07429d2e29d0b11b",
+      "ordinal": 1,
+      "returncode": 0,
+      "wall_seconds": 10.4697655,
+      "cpu_seconds": 11.105839,
+      "reason": null,
+      "wait4_cpu": 11.105839,
+      "observed_pid_cpu": {
+        "(3776, 1793008391.537141)": 11.0750496,
+        "(3777, 1793008391.598248)": 0.005971791000000001,
+        "(3827, 1793008396.660823)": 0.019169916000000002
+      },
+      "CPU_conservative_wall_upper_seconds": 104.697655
+    },
+    {
+      "run_id": "D3-D-01-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "587b232c93a472d07eb9a770da131e944ba664a418fc891ba26fdba75dd3ebbb",
+      "ordinal": 2,
+      "returncode": 0,
+      "wall_seconds": 8.872056541000001,
+      "cpu_seconds": 10.599858000000001,
+      "reason": null,
+      "wait4_cpu": 10.599858000000001,
+      "observed_pid_cpu": {
+        "(4021, 1793008402.009885)": 10.534338432,
+        "(4071, 1793008406.078029)": 0.019036624000000002
+      },
+      "CPU_conservative_wall_upper_seconds": 88.72056541
+    },
+    {
+      "run_id": "D3-D-02-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "59c01752d343aa88720b08c0c72645b22a9292427e22e9dd7ceefa175f218936",
+      "ordinal": 3,
+      "returncode": 0,
+      "wall_seconds": 11.416122542,
+      "cpu_seconds": 12.959249,
+      "reason": null,
+      "wait4_cpu": 12.959249,
+      "observed_pid_cpu": {
+        "(4290, 1793008411.678053)": 12.915600640000001,
+        "(4351, 1793008416.179797)": 0.02032525
+      },
+      "CPU_conservative_wall_upper_seconds": 114.16122542
+    },
+    {
+      "run_id": "D3-D-02-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "06cf0aae70e503d45b5cba5283a5f9678f81a206a2bdbc4ba67bfff0a1c2b5ac",
+      "ordinal": 4,
+      "returncode": 0,
+      "wall_seconds": 11.199795332999997,
+      "cpu_seconds": 12.686056,
+      "reason": null,
+      "wait4_cpu": 12.686056,
+      "observed_pid_cpu": {
+        "(4584, 1793008423.097554)": 12.652325632,
+        "(4633, 1793008427.456694)": 0.019310541
+      },
+      "CPU_conservative_wall_upper_seconds": 111.99795332999997
+    },
+    {
+      "run_id": "D3-D-03-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "fbf230b6f0819d8faff1df7ec1f1b8fabae27df22a5b0361256e1ad425833819",
+      "ordinal": 5,
+      "returncode": 0,
+      "wall_seconds": 8.836035000000003,
+      "cpu_seconds": 10.287251,
+      "reason": null,
+      "wait4_cpu": 10.287251,
+      "observed_pid_cpu": {
+        "(4862, 1793008434.303379)": 10.235751232,
+        "(4914, 1793008438.453323)": 0.019476624999999997
+      },
+      "CPU_conservative_wall_upper_seconds": 88.36035000000003
+    },
+    {
+      "run_id": "D3-D-03-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "7cdcf1adbc19dffef1a9b9a00dfae1936da3ee5164485b087fc7920ee80ca29b",
+      "ordinal": 6,
+      "returncode": 0,
+      "wall_seconds": 8.631978667000006,
+      "cpu_seconds": 10.248552,
+      "reason": null,
+      "wait4_cpu": 10.248552,
+      "observed_pid_cpu": {
+        "(5054, 1793008443.142482)": 10.164820416,
+        "(5106, 1793008447.193172)": 0.019128
+      },
+      "CPU_conservative_wall_upper_seconds": 86.31978667000006
+    },
+    {
+      "run_id": "D3-D-04-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "f7d4d9ced82cf41884bd9e87e829e58b1bed16fb8e32b577f09cf1612790a076",
+      "ordinal": 7,
+      "returncode": 0,
+      "wall_seconds": 8.836605166999995,
+      "cpu_seconds": 10.385919000000001,
+      "reason": null,
+      "wait4_cpu": 10.385919000000001,
+      "observed_pid_cpu": {
+        "(5246, 1793008451.779538)": 10.352272256,
+        "(5296, 1793008455.829447)": 0.019483041
+      },
+      "CPU_conservative_wall_upper_seconds": 88.36605166999995
+    },
+    {
+      "run_id": "D3-D-04-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "327395461692f1a7727d1fff4399589051b5225cd0b5eccf2a405fbb8ee578c3",
+      "ordinal": 8,
+      "returncode": 0,
+      "wall_seconds": 8.723279540999997,
+      "cpu_seconds": 10.401373999999999,
+      "reason": null,
+      "wait4_cpu": 10.401373999999999,
+      "observed_pid_cpu": {
+        "(5476, 1793008460.619227)": 10.364722175999999,
+        "(5522, 1793008464.679404)": 0.020896708
+      },
+      "CPU_conservative_wall_upper_seconds": 87.23279540999997
+    },
+    {
+      "run_id": "D3-D-05-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "0022529f5518e57cb87e76fad6e137a3c6c741841ae68c910f4544b8fa5c8285",
+      "ordinal": 9,
+      "returncode": 0,
+      "wall_seconds": 8.368576375000004,
+      "cpu_seconds": 10.279303,
+      "reason": null,
+      "wait4_cpu": 10.279303,
+      "observed_pid_cpu": {
+        "(5655, 1793008469.347765)": 10.253622911999999,
+        "(5723, 1793008473.12816)": 0.019392916
+      },
+      "CPU_conservative_wall_upper_seconds": 83.68576375000004
+    },
+    {
+      "run_id": "D3-D-05-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "d91346452b92f946a6a45021087d52f563cda3ce640bd23f1f55ef14f99ff56c",
+      "ordinal": 10,
+      "returncode": 0,
+      "wall_seconds": 8.305725334000002,
+      "cpu_seconds": 10.164333,
+      "reason": null,
+      "wait4_cpu": 10.164333,
+      "observed_pid_cpu": {
+        "(5858, 1793008477.719579)": 10.093635776000001,
+        "(5907, 1793008481.490079)": 0.019422874
+      },
+      "CPU_conservative_wall_upper_seconds": 83.05725334000002
+    },
+    {
+      "run_id": "D3-D-06-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "795e6ba53a72c1da48c1cf1601e74040a5869e2773be905b858b037e03441000",
+      "ordinal": 11,
+      "returncode": 0,
+      "wall_seconds": 8.346267249999997,
+      "cpu_seconds": 10.28058,
+      "reason": null,
+      "wait4_cpu": 10.28058,
+      "observed_pid_cpu": {
+        "(6050, 1793008486.030766)": 10.20007616,
+        "(6100, 1793008489.787654)": 0.020253374
+      },
+      "CPU_conservative_wall_upper_seconds": 83.46267249999997
+    },
+    {
+      "run_id": "D3-D-06-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "48b6cb4479a8b541e08cdbb80d29a706dcec2a5e63d66ee3708a2ecff6e85125",
+      "ordinal": 12,
+      "returncode": 0,
+      "wall_seconds": 8.264096625000008,
+      "cpu_seconds": 10.192653,
+      "reason": null,
+      "wait4_cpu": 10.192653,
+      "observed_pid_cpu": {
+        "(6243, 1793008494.379927)": 10.123064704,
+        "(6292, 1793008498.117596)": 0.019262875
+      },
+      "CPU_conservative_wall_upper_seconds": 82.64096625000008
+    },
+    {
+      "run_id": "D3-D-07-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "6778dfc328e5d708d1383fa9360a4fdbbfc2435ec77f7a76b2e6b0402ea8f2e0",
+      "ordinal": 13,
+      "returncode": 0,
+      "wall_seconds": 9.649893291999987,
+      "cpu_seconds": 11.527067,
+      "reason": null,
+      "wait4_cpu": 11.527067,
+      "observed_pid_cpu": {
+        "(6433, 1793008502.649684)": 11.482581696,
+        "(6482, 1793008506.502183)": 0.019703290999999998
+      },
+      "CPU_conservative_wall_upper_seconds": 96.49893291999987
+    },
+    {
+      "run_id": "D3-D-07-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "59389a62ef2a41d3a5d44693ea68bd63eda23286fbbfe871c7b804b13e5d4330",
+      "ordinal": 14,
+      "returncode": 0,
+      "wall_seconds": 9.645788083,
+      "cpu_seconds": 11.345619,
+      "reason": null,
+      "wait4_cpu": 11.345619,
+      "observed_pid_cpu": {
+        "(6660, 1793008512.30296)": 11.297416064,
+        "(6707, 1793008516.213431)": 0.019242291
+      },
+      "CPU_conservative_wall_upper_seconds": 96.45788083
+    },
+    {
+      "run_id": "D3-D-08-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "a98fb649e1dbf6d6aa84b53c52a1d02bd15486ec56b87ca0ae4ddbb14fc12f65",
+      "ordinal": 15,
+      "returncode": 0,
+      "wall_seconds": 8.525412875,
+      "cpu_seconds": 10.323139000000001,
+      "reason": null,
+      "wait4_cpu": 10.323139000000001,
+      "observed_pid_cpu": {
+        "(6887, 1793008521.955322)": 10.290422335999999,
+        "(6937, 1793008525.800449)": 0.019506624
+      },
+      "CPU_conservative_wall_upper_seconds": 85.25412875
+    },
+    {
+      "run_id": "D3-D-08-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "e02d659637caa8483e4e91d054f4db5e48f02f9440d0fe1f538a168bc37ae981",
+      "ordinal": 16,
+      "returncode": 0,
+      "wall_seconds": 8.511814833000017,
+      "cpu_seconds": 10.416579,
+      "reason": null,
+      "wait4_cpu": 10.416579,
+      "observed_pid_cpu": {
+        "(7075, 1793008530.484905)": 10.354851392,
+        "(7123, 1793008534.240896)": 0.019308290999999998
+      },
+      "CPU_conservative_wall_upper_seconds": 85.11814833000017
+    },
+    {
+      "run_id": "D3-D-09-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "75336f00f4e9ed0d2330339b3a6ae0cf1eaa66fa9f7ab4e61a2b281017f29d19",
+      "ordinal": 17,
+      "returncode": 0,
+      "wall_seconds": 8.693728792000002,
+      "cpu_seconds": 10.57943,
+      "reason": null,
+      "wait4_cpu": 10.57943,
+      "observed_pid_cpu": {
+        "(7300, 1793008539.002495)": 10.538486016,
+        "(7350, 1793008542.784374)": 0.021447166
+      },
+      "CPU_conservative_wall_upper_seconds": 86.93728792000002
+    },
+    {
+      "run_id": "D3-D-09-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "a8aa62e7b964eb7382a9a47776998b9da3b1374b3d8b0070cb285213444f09be",
+      "ordinal": 18,
+      "returncode": 0,
+      "wall_seconds": 8.705482625000002,
+      "cpu_seconds": 10.616496999999999,
+      "reason": null,
+      "wait4_cpu": 10.616496999999999,
+      "observed_pid_cpu": {
+        "(7532, 1793008547.699479)": 10.578394816,
+        "(7581, 1793008551.501714)": 0.019291541
+      },
+      "CPU_conservative_wall_upper_seconds": 87.05482625000002
+    },
+    {
+      "run_id": "D3-D-10-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "031322ea757887edcc0ae0d0c34cc74a088d344e612a10a8b57fcdd862a723a3",
+      "ordinal": 19,
+      "returncode": 0,
+      "wall_seconds": 9.797076250000003,
+      "cpu_seconds": 11.494717,
+      "reason": null,
+      "wait4_cpu": 11.494717,
+      "observed_pid_cpu": {
+        "(7763, 1793008556.410692)": 11.447920384,
+        "(7811, 1793008560.302495)": 0.019542291
+      },
+      "CPU_conservative_wall_upper_seconds": 97.97076250000003
+    },
+    {
+      "run_id": "D3-D-10-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "254759c2b005a6521c442a1c2fc87bca3c55f51066a3bce1094d207f0135b827",
+      "ordinal": 20,
+      "returncode": 0,
+      "wall_seconds": 9.787560041999996,
+      "cpu_seconds": 11.439101996,
+      "reason": null,
+      "wait4_cpu": 11.43871,
+      "observed_pid_cpu": {
+        "(7993, 1793008566.21195)": 11.419311872,
+        "(8043, 1793008570.051584)": 0.019790124
+      },
+      "CPU_conservative_wall_upper_seconds": 97.87560041999996
+    },
+    {
+      "run_id": "D3-D-11-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "fab259292bdd92c2a6c262a28eec38bf98afeb376814d413ad21b75a8f7ce62e",
+      "ordinal": 21,
+      "returncode": 0,
+      "wall_seconds": 8.718173374999992,
+      "cpu_seconds": 10.51869,
+      "reason": null,
+      "wait4_cpu": 10.51869,
+      "observed_pid_cpu": {
+        "(8234, 1793008576.005842)": 10.443727551999999,
+        "(8285, 1793008579.853426)": 0.019231332
+      },
+      "CPU_conservative_wall_upper_seconds": 87.18173374999992
+    },
+    {
+      "run_id": "D3-D-11-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "75c38b6765509201f820c2b3013bb4302f210293b0386c91d7df4ee31607b5dd",
+      "ordinal": 22,
+      "returncode": 0,
+      "wall_seconds": 8.69215595899999,
+      "cpu_seconds": 10.540218,
+      "reason": null,
+      "wait4_cpu": 10.540218,
+      "observed_pid_cpu": {
+        "(8465, 1793008584.727804)": 10.514202176,
+        "(8515, 1793008588.499488)": 0.022480041
+      },
+      "CPU_conservative_wall_upper_seconds": 86.9215595899999
+    },
+    {
+      "run_id": "D3-D-12-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "43053e9b9739825c3417817928d14acd769c9b1f1a3316ca80badf1ee5c542a9",
+      "ordinal": 23,
+      "returncode": 0,
+      "wall_seconds": 8.661583125000021,
+      "cpu_seconds": 10.537393,
+      "reason": null,
+      "wait4_cpu": 10.537393,
+      "observed_pid_cpu": {
+        "(8697, 1793008593.425959)": 10.466401856000001,
+        "(8746, 1793008597.181488)": 0.019147749
+      },
+      "CPU_conservative_wall_upper_seconds": 86.61583125000021
+    },
+    {
+      "run_id": "D3-D-12-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "2b6a6cc0208adb3fa93ba11fcd91b6f2a8ffca6d77ffa8ccbd089f7c202d343d",
+      "ordinal": 24,
+      "returncode": 0,
+      "wall_seconds": 8.693127875000016,
+      "cpu_seconds": 10.619502,
+      "reason": null,
+      "wait4_cpu": 10.619502,
+      "observed_pid_cpu": {
+        "(8924, 1793008602.091472)": 10.58963456,
+        "(8972, 1793008605.863205)": 0.022296874
+      },
+      "CPU_conservative_wall_upper_seconds": 86.93127875000016
+    },
+    {
+      "run_id": "D3-D-13-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 3595,
+      "ticket": "46b47d28332bf300a8f3d26dc514e601d26e266e788fa49bfcf6c3b087525b96",
+      "ordinal": 25,
+      "returncode": 0,
+      "wall_seconds": 8.519937292000009,
+      "cpu_seconds": 10.438611,
+      "reason": null,
+      "wait4_cpu": 10.438611,
+      "observed_pid_cpu": {
+        "(9161, 1793008610.790954)": 10.415233728,
+        "(9209, 1793008614.558263)": 0.019511166
+      },
+      "CPU_conservative_wall_upper_seconds": 85.19937292000009
+    },
+    {
+      "run_id": "D3-D-13-TREATMENT",
+      "status": "TECHNICAL_FAIL",
+      "parent_pid": 3595,
+      "ticket": "10ce998e48b9e8a51b937c5548685c107800230798ead1d5c2b7acb153490603",
+      "ordinal": 26,
+      "returncode": 0,
+      "wall_seconds": 8.561185959,
+      "cpu_seconds": 10.540802,
+      "reason": "LIVE_DESCENDANT_CPU_UNCERTAIN",
+      "wait4_cpu": 10.540802,
+      "observed_pid_cpu": {
+        "(9351, 1793008619.315501)": 10.468447104,
+        "(9445, 1793008623.186966)": 0.019264541
+      },
+      "CPU_conservative_wall_upper_seconds": 85.61185959
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "D3-D-01",
+      "session_id": "2021.10.14.17.47.55_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858496,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.352227,
+          "end_minus_start_speed": -2.59784,
+          "path_length": 73.988255,
+          "mean_abs_accel": 0.3278
+        },
+        "treatment": {
+          "mean_speed": 9.352227,
+          "end_minus_start_speed": -2.597838,
+          "path_length": 73.988254,
+          "mean_abs_accel": 0.327746
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 5.4e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0002623653915860835,
+        "peak_differences_mps2": [
+          0.17208113830035643,
+          0.17204313975619812
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-02",
+      "session_id": "2021.06.24.14.20.12_veh-47",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285849,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.708273,
+          "end_minus_start_speed": -2.393001,
+          "path_length": 61.000441,
+          "mean_abs_accel": 0.359266
+        },
+        "treatment": {
+          "mean_speed": 7.708273,
+          "end_minus_start_speed": -2.392999,
+          "path_length": 61.000441,
+          "mean_abs_accel": 0.358491
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000775
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0037208469324570004,
+        "peak_differences_mps2": [
+          0.1723352736435544,
+          0.17204297066580665
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-03",
+      "session_id": "2021.09.10.07.02.31_veh-51",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.396290349285838,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.774029,
+          "end_minus_start_speed": -2.628198,
+          "path_length": 53.620858,
+          "mean_abs_accel": 0.329096
+        },
+        "treatment": {
+          "mean_speed": 6.774029,
+          "end_minus_start_speed": -2.628197,
+          "path_length": 53.620858,
+          "mean_abs_accel": 0.329095
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 1e-06
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009355149295e-06,
+        "peak_differences_mps2": [
+          0.17204001348814657,
+          0.1720431671188294
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-04",
+      "session_id": "2021.10.15.12.13.23_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.085684092872019,
+        "absolute_speed_difference_integral_m": 2.3962903492858563,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 4.049438,
+          "end_minus_start_speed": -2.970956,
+          "path_length": 32.097774,
+          "mean_abs_accel": 0.381559
+        },
+        "treatment": {
+          "mean_speed": 4.049438,
+          "end_minus_start_speed": -2.970955,
+          "path_length": 32.097774,
+          "mean_abs_accel": 0.381559
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009421762677e-06,
+        "peak_differences_mps2": [
+          0.17161207838729098,
+          0.17204345184791237
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-05",
+      "session_id": "2021.09.29.08.50.06_veh-53",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720244,
+        "absolute_speed_difference_integral_m": 2.396290349285847,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.957453,
+          "end_minus_start_speed": -2.687411,
+          "path_length": 55.070195,
+          "mean_abs_accel": 0.338078
+        },
+        "treatment": {
+          "mean_speed": 6.957452,
+          "end_minus_start_speed": -2.687409,
+          "path_length": 55.070195,
+          "mean_abs_accel": 0.338078
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 1e-06,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009310740374e-06,
+        "peak_differences_mps2": [
+          0.17196504618748065,
+          0.17204321699875536
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-06",
+      "session_id": "2021.09.07.04.01.34_veh-51",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858536,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.726863,
+          "end_minus_start_speed": -2.454029,
+          "path_length": 45.347664,
+          "mean_abs_accel": 0.350066
+        },
+        "treatment": {
+          "mean_speed": 5.726863,
+          "end_minus_start_speed": -2.454028,
+          "path_length": 45.347664,
+          "mean_abs_accel": 0.349512
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000554
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0026597638665979417,
+        "peak_differences_mps2": [
+          0.17225730338234868,
+          0.17204302254376103
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-07",
+      "session_id": "2021.07.23.16.32.39_veh-17",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720253,
+        "absolute_speed_difference_integral_m": 2.3962903492858403,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.958118,
+          "end_minus_start_speed": -2.634323,
+          "path_length": 86.675057,
+          "mean_abs_accel": 0.330155
+        },
+        "treatment": {
+          "mean_speed": 10.958118,
+          "end_minus_start_speed": -2.634321,
+          "path_length": 86.675057,
+          "mean_abs_accel": 0.330154
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 1e-06
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009403999108e-06,
+        "peak_differences_mps2": [
+          0.1720339350635811,
+          0.17204317116313916
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-08",
+      "session_id": "2021.09.07.02.31.43_veh-51",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858296,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.65601,
+          "end_minus_start_speed": -2.707904,
+          "path_length": 68.488875,
+          "mean_abs_accel": 0.341209
+        },
+        "treatment": {
+          "mean_speed": 8.65601,
+          "end_minus_start_speed": -2.707902,
+          "path_length": 68.488875,
+          "mean_abs_accel": 0.341208
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 1e-06
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009253008777e-06,
+        "peak_differences_mps2": [
+          0.17193938067404702,
+          0.17204323407544564
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-09",
+      "session_id": "2021.10.11.13.27.07_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720164,
+        "absolute_speed_difference_integral_m": 2.3962903492858603,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.984495,
+          "end_minus_start_speed": -2.636978,
+          "path_length": 78.98352,
+          "mean_abs_accel": 0.330491
+        },
+        "treatment": {
+          "mean_speed": 9.984495,
+          "end_minus_start_speed": -2.636977,
+          "path_length": 78.98352,
+          "mean_abs_accel": 0.330491
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009372912863e-06,
+        "peak_differences_mps2": [
+          0.1720297187155566,
+          0.1720431739685182
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-10",
+      "session_id": "2021.05.21.13.41.26_veh-12",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858563,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.677664,
+          "end_minus_start_speed": -2.581507,
+          "path_length": 68.659337,
+          "mean_abs_accel": 0.330473
+        },
+        "treatment": {
+          "mean_speed": 8.677664,
+          "end_minus_start_speed": -2.581506,
+          "path_length": 68.659337,
+          "mean_abs_accel": 0.330367
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000106
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0005094545654107385,
+        "peak_differences_mps2": [
+          0.1720992948500566,
+          0.17204312767565
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-11",
+      "session_id": "2021.10.01.13.28.54_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858527,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.321001,
+          "end_minus_start_speed": -2.566672,
+          "path_length": 65.841251,
+          "mean_abs_accel": 0.33237
+        },
+        "treatment": {
+          "mean_speed": 8.321001,
+          "end_minus_start_speed": -2.566671,
+          "path_length": 65.84125,
+          "mean_abs_accel": 0.332198
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000172
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.000826789019118479,
+        "peak_differences_mps2": [
+          0.17212261314721644,
+          0.17204311216068646
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-12",
+      "session_id": "2021.08.09.18.37.41_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.39629034928585,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.827655,
+          "end_minus_start_speed": -2.663988,
+          "path_length": 46.144409,
+          "mean_abs_accel": 0.334785
+        },
+        "treatment": {
+          "mean_speed": 5.827655,
+          "end_minus_start_speed": -2.663987,
+          "path_length": 46.144409,
+          "mean_abs_accel": 0.334785
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009403999108e-06,
+        "peak_differences_mps2": [
+          0.1719980556842593,
+          0.1720431950357053
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    }
+  ],
+  "cpu_seconds": 280.528332996,
+  "contract_sha256": "de751cbeb80a458b8fd305970a846705fddd721d68bea9306816c7c31dc073d3",
+  "stop_reason": "INFRASTRUCTURE_STOP_NO_SCIENTIFIC_RETRY",
+  "driver_cpu_seconds": 14.802219,
+  "wall_seconds": 236.34759154099999
+}
