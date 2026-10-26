@@ -1,0 +1,24 @@
+{
+  "status": "RBR_V2_D3_REAL_D_EVIDENCE_COMPLETE_STATISTICAL_FEASIBILITY_BLOCKED",
+  "engineering_pairs_passed": 6,
+  "new_scientific_complete_pairs": 40,
+  "new_scientific_pairs_passed": 40,
+  "real_D_statistics": true,
+  "Primary_ready": false,
+  "calibration_transfer_status": "RBR_HELD_OUT_SWAP_AA_DIAGNOSTIC_FAILURE",
+  "held_out_swap_AA_alarm": {
+    "RBR64": 1.0,
+    "H30": 0.0212
+  },
+  "paired_AB_alarm": {
+    "RBR64": 0.0,
+    "H30": 0.2462
+  },
+  "conditional_raw_delta_BDD": -0.2462,
+  "valid_FPR_controlled_superiority": "NOT_ESTABLISHED",
+  "H30_saturation_observed": false,
+  "source_CI_power_coverage": "NOT_ESTABLISHED",
+  "new_downloads": 0,
+  "new_training": 0,
+  "V_C": 0
+}

@@ -1,0 +1,2366 @@
+{
+  "stage": "D3_REMAINING54_FIRST_ARMS_INFRASTRUCTURE_ONLY",
+  "stopped": true,
+  "attempts": [
+    {
+      "run_id": "D3-D-14-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "fd944e6ca5a00431eb440fcd971ded2c80c54c98499575941d082318d6bba4f1",
+      "original_ordinal": 27,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.900011584,
+      "cpu_seconds_measured": 11.645435,
+      "cpu_seconds_budget_charged": 109.00011583999999,
+      "hardware_CPU_upper_seconds": 109.00011583999999,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.645435
+    },
+    {
+      "run_id": "D3-D-14-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "93b6021a57d89c6aba537a3616d203c8e2e91b1d375f2af668b591aaca5e29ba",
+      "original_ordinal": 28,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.939724958,
+      "cpu_seconds_measured": 11.333838,
+      "cpu_seconds_budget_charged": 99.39724958,
+      "hardware_CPU_upper_seconds": 99.39724958,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.333838
+    },
+    {
+      "run_id": "D3-D-15-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "24b0a5c923d23b802d4f579e977bd30a0f8e44cb2e562d27968fda1467dcf675",
+      "original_ordinal": 29,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.042564584,
+      "cpu_seconds_measured": 10.617723999999999,
+      "cpu_seconds_budget_charged": 90.42564584000002,
+      "hardware_CPU_upper_seconds": 90.42564584000002,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.617723999999999
+    },
+    {
+      "run_id": "D3-D-15-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "c9415884d4af72a26b97617a287caaf0d87e908ffb96e52cf594f322bff41ab9",
+      "original_ordinal": 30,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.715387833000001,
+      "cpu_seconds_measured": 10.445711,
+      "cpu_seconds_budget_charged": 87.15387833000001,
+      "hardware_CPU_upper_seconds": 87.15387833000001,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.445711
+    },
+    {
+      "run_id": "D3-D-16-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "2b48e8434d9524c6b356365eb244eb7be9adbe824656d8d82763aee974c00b5b",
+      "original_ordinal": 31,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.912365209,
+      "cpu_seconds_measured": 10.588218,
+      "cpu_seconds_budget_charged": 89.12365209000001,
+      "hardware_CPU_upper_seconds": 89.12365209000001,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.588218
+    },
+    {
+      "run_id": "D3-D-16-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "4f64b584436c2c0e35771ebcbaf76d2efc2227dfd86d9305cacffbab3f2d17a9",
+      "original_ordinal": 32,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.84957,
+      "cpu_seconds_measured": 10.502054000000001,
+      "cpu_seconds_budget_charged": 88.4957,
+      "hardware_CPU_upper_seconds": 88.4957,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.502054000000001
+    },
+    {
+      "run_id": "D3-D-17-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "2103fa3c3fe8c2e9d638121f2bdcc8ad880b1cc8f9f7112d3a68630cc3058f9d",
+      "original_ordinal": 33,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.979158458,
+      "cpu_seconds_measured": 11.571245,
+      "cpu_seconds_budget_charged": 99.79158458,
+      "hardware_CPU_upper_seconds": 99.79158458,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.571245
+    },
+    {
+      "run_id": "D3-D-17-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "9de449cd9210dcbf5475cf10929dfee0b6602931b3137810510ebbb3915e0ee8",
+      "original_ordinal": 34,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.069061874999989,
+      "cpu_seconds_measured": 11.568607,
+      "cpu_seconds_budget_charged": 100.69061874999989,
+      "hardware_CPU_upper_seconds": 100.69061874999989,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.568607
+    },
+    {
+      "run_id": "D3-D-18-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "1caafa4b7bf32651349fee389f6cb3b9f2f2896bb1f257576fd6dcec7b35cda0",
+      "original_ordinal": 35,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.823145916000001,
+      "cpu_seconds_measured": 11.375074,
+      "cpu_seconds_budget_charged": 98.23145916000001,
+      "hardware_CPU_upper_seconds": 98.23145916000001,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.375074
+    },
+    {
+      "run_id": "D3-D-18-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "94096c9fe6bf90f4a549cc653d7a447dfe750d250b305e1cd984a8e4bcb44b50",
+      "original_ordinal": 36,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.757761083000005,
+      "cpu_seconds_measured": 11.40075,
+      "cpu_seconds_budget_charged": 97.57761083000005,
+      "hardware_CPU_upper_seconds": 97.57761083000005,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.40075
+    },
+    {
+      "run_id": "D3-D-19-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "fa5e1bf0099f945d871afe344c592e2d731c2003cc1367cce94c13cd8f0ed963",
+      "original_ordinal": 37,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.848550207999992,
+      "cpu_seconds_measured": 10.393353,
+      "cpu_seconds_budget_charged": 88.48550207999992,
+      "hardware_CPU_upper_seconds": 88.48550207999992,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.393353
+    },
+    {
+      "run_id": "D3-D-19-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "5631259cc85cb1e6039abf99f240cfb47d4a8f96efe92b2e34956dff545684d8",
+      "original_ordinal": 38,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.847914541000009,
+      "cpu_seconds_measured": 10.528265000000001,
+      "cpu_seconds_budget_charged": 88.47914541000009,
+      "hardware_CPU_upper_seconds": 88.47914541000009,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.528265000000001
+    },
+    {
+      "run_id": "D3-D-20-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "b18804ca237afeaf082f1d08ae910fa9c65ca53a42ec0f8ba88c07b59b8b9349",
+      "original_ordinal": 39,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.893448750000005,
+      "cpu_seconds_measured": 10.591671000000002,
+      "cpu_seconds_budget_charged": 88.93448750000005,
+      "hardware_CPU_upper_seconds": 88.93448750000005,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.591671000000002
+    },
+    {
+      "run_id": "D3-D-20-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "0892c322484823101fdd901edbc932d52d72aaf18ca57922181d98fd52ccc0a0",
+      "original_ordinal": 40,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.836714375000014,
+      "cpu_seconds_measured": 10.556842,
+      "cpu_seconds_budget_charged": 88.36714375000014,
+      "hardware_CPU_upper_seconds": 88.36714375000014,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.556842
+    },
+    {
+      "run_id": "D3-D-21-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "17d4e3967948d0b00d6005835182da815fb14880090efd0bf7d39192c4410c35",
+      "original_ordinal": 41,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.883212250000014,
+      "cpu_seconds_measured": 10.571947999999999,
+      "cpu_seconds_budget_charged": 88.83212250000014,
+      "hardware_CPU_upper_seconds": 88.83212250000014,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.571947999999999
+    },
+    {
+      "run_id": "D3-D-21-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "a5f2c04ace3d375bc35f21e7b91a401ef2234c9cef752748b6256881e971bf6b",
+      "original_ordinal": 42,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.913689582999979,
+      "cpu_seconds_measured": 10.632195999999999,
+      "cpu_seconds_budget_charged": 89.13689582999979,
+      "hardware_CPU_upper_seconds": 89.13689582999979,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.632195999999999
+    },
+    {
+      "run_id": "D3-D-22-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "414f649f546e8eabb91f072be313489b5f40b194c3fd28c166d66d4434cf7164",
+      "original_ordinal": 43,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.399038583999982,
+      "cpu_seconds_measured": 11.068313999999999,
+      "cpu_seconds_budget_charged": 93.99038583999982,
+      "hardware_CPU_upper_seconds": 93.99038583999982,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [
+        {
+          "pid": 14171,
+          "creation_time": 1793009635.109855,
+          "cmdline": [
+            "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+            "-B",
+            "-c",
+            "from multiprocessing.resource_tracker import main;main(7)"
+          ],
+          "pgid": 14120
+        }
+      ],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.068313999999999
+    },
+    {
+      "run_id": "D3-D-22-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "cbea4e9c11f939580ef085f93aed5be62a58251f3c4132864aa0e3cc62fd7fae",
+      "original_ordinal": 44,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.412968041999989,
+      "cpu_seconds_measured": 10.979091,
+      "cpu_seconds_budget_charged": 94.12968041999989,
+      "hardware_CPU_upper_seconds": 94.12968041999989,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.979091
+    },
+    {
+      "run_id": "D3-D-23-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "f97fa45a3066a590bb957ee68d87228e7a9c080f5296d4cc9db55067ad874822",
+      "original_ordinal": 45,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.266713416999977,
+      "cpu_seconds_measured": 11.783657000000002,
+      "cpu_seconds_budget_charged": 102.66713416999977,
+      "hardware_CPU_upper_seconds": 102.66713416999977,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.783657000000002
+    },
+    {
+      "run_id": "D3-D-23-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "bcfb246c9415b97db46a0779fcff6932176dec11168f4aca62b4f70f3d028009",
+      "original_ordinal": 46,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.196498290999983,
+      "cpu_seconds_measured": 11.593660999999999,
+      "cpu_seconds_budget_charged": 101.96498290999983,
+      "hardware_CPU_upper_seconds": 101.96498290999983,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.593660999999999
+    },
+    {
+      "run_id": "D3-D-24-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "50a0b1a388004b2b7a16512a7b35249a119f426c3c438582c8b39ee7ceed991a",
+      "original_ordinal": 47,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.761819833000004,
+      "cpu_seconds_measured": 10.211183,
+      "cpu_seconds_budget_charged": 87.61819833000004,
+      "hardware_CPU_upper_seconds": 87.61819833000004,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.211183
+    },
+    {
+      "run_id": "D3-D-24-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "54f3537d442ab620550a7a67784116062ccc64d49fc1a44319618da31826edc7",
+      "original_ordinal": 48,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.689862917,
+      "cpu_seconds_measured": 10.334674,
+      "cpu_seconds_budget_charged": 86.89862916999999,
+      "hardware_CPU_upper_seconds": 86.89862916999999,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.334674
+    },
+    {
+      "run_id": "D3-D-25-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "037a2350bd411aa45fe6efee124ef26356a970f8fe4f7878c57d18e4c3dc55b7",
+      "original_ordinal": 49,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.229320874999985,
+      "cpu_seconds_measured": 10.930978999999999,
+      "cpu_seconds_budget_charged": 92.29320874999985,
+      "hardware_CPU_upper_seconds": 92.29320874999985,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.930978999999999
+    },
+    {
+      "run_id": "D3-D-25-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "23d2e008396d69ad778c0894e86bf766a9d29732adca7cd39a3bb520c061b81d",
+      "original_ordinal": 50,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.407945000000012,
+      "cpu_seconds_measured": 11.07296,
+      "cpu_seconds_budget_charged": 94.07945000000012,
+      "hardware_CPU_upper_seconds": 94.07945000000012,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.07296
+    },
+    {
+      "run_id": "D3-D-26-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "e86e15287cb0f64ecf853410dd76b5ac06f1d59c081606f1e41a2e431becb2dc",
+      "original_ordinal": 51,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.319788458000005,
+      "cpu_seconds_measured": 11.860589999999998,
+      "cpu_seconds_budget_charged": 103.19788458000005,
+      "hardware_CPU_upper_seconds": 103.19788458000005,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.860589999999998
+    },
+    {
+      "run_id": "D3-D-26-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "cd4daed4c1546e5629cb17d077244d895f20bf3a808ba36f500e781f04cdbd48",
+      "original_ordinal": 52,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.282194792000013,
+      "cpu_seconds_measured": 11.753556,
+      "cpu_seconds_budget_charged": 102.82194792000013,
+      "hardware_CPU_upper_seconds": 102.82194792000013,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.753556
+    },
+    {
+      "run_id": "D3-D-27-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "feb09e2418383df102578102467458fefc3c135234335aec4f457a9676c299c1",
+      "original_ordinal": 53,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.795135749999986,
+      "cpu_seconds_measured": 11.227276,
+      "cpu_seconds_budget_charged": 97.95135749999986,
+      "hardware_CPU_upper_seconds": 97.95135749999986,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.227276
+    },
+    {
+      "run_id": "D3-D-27-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "4e7a82f9bd9d43b7edf5ac4e62b710b425d27c35c56457b4b5fcbeb4729def22",
+      "original_ordinal": 54,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.795686499999988,
+      "cpu_seconds_measured": 11.205278,
+      "cpu_seconds_budget_charged": 97.95686499999988,
+      "hardware_CPU_upper_seconds": 97.95686499999988,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.205278
+    },
+    {
+      "run_id": "D3-D-28-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "bd134c8b0c48731a99d9457d608749bb17a82579dc0cacdfb1c17437040b716a",
+      "original_ordinal": 55,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.760574667000014,
+      "cpu_seconds_measured": 11.202349,
+      "cpu_seconds_budget_charged": 97.60574667000014,
+      "hardware_CPU_upper_seconds": 97.60574667000014,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.202349
+    },
+    {
+      "run_id": "D3-D-28-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "a0b03ec591f158b5f8f58c86c814a6abbdeae7ba665c673ea77cc221b8d194ac",
+      "original_ordinal": 56,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.816582790999973,
+      "cpu_seconds_measured": 11.213195,
+      "cpu_seconds_budget_charged": 98.16582790999973,
+      "hardware_CPU_upper_seconds": 98.16582790999973,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.213195
+    },
+    {
+      "run_id": "D3-D-29-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "290ce4c8d0050e618fa6759d7f1929a4f1a463062e2c480a7c603aedb3770747",
+      "original_ordinal": 57,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.190232915999957,
+      "cpu_seconds_measured": 11.767498,
+      "cpu_seconds_budget_charged": 101.90232915999957,
+      "hardware_CPU_upper_seconds": 101.90232915999957,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.767498
+    },
+    {
+      "run_id": "D3-D-29-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "47be4ec2082a6811c5e4b2ed71f11be47e752645595f7ec93fa1cf5c1d158238",
+      "original_ordinal": 58,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.125455124999974,
+      "cpu_seconds_measured": 11.543647,
+      "cpu_seconds_budget_charged": 101.25455124999974,
+      "hardware_CPU_upper_seconds": 101.25455124999974,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.543647
+    },
+    {
+      "run_id": "D3-D-30-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "68cebb80f86fc87983e89880022f2a1e23b06157992e25b7f50d53e84bed6529",
+      "original_ordinal": 59,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 11.061664708000023,
+      "cpu_seconds_measured": 12.510715,
+      "cpu_seconds_budget_charged": 110.61664708000023,
+      "hardware_CPU_upper_seconds": 110.61664708000023,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 12.510715
+    },
+    {
+      "run_id": "D3-D-30-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "95e3e632eff0ac517d7f191f419a32fbc8488fe0f07035a8b9248689bb4fe66d",
+      "original_ordinal": 60,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.936763834000033,
+      "cpu_seconds_measured": 12.697861,
+      "cpu_seconds_budget_charged": 109.36763834000033,
+      "hardware_CPU_upper_seconds": 109.36763834000033,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 12.697861
+    },
+    {
+      "run_id": "D3-D-31-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "dfd351b3c08603a80dd6149024ed0241c73112b6d30430ab8af2ce4dac8e22c8",
+      "original_ordinal": 61,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 12.015278666999961,
+      "cpu_seconds_measured": 13.736804999999999,
+      "cpu_seconds_budget_charged": 120.15278666999961,
+      "hardware_CPU_upper_seconds": 120.15278666999961,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 13.736804999999999
+    },
+    {
+      "run_id": "D3-D-31-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "77e79006dfc74e8e8f5d600e3d5c4db62a36d69e7dbd3c31a65e2693a78f0bda",
+      "original_ordinal": 62,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 12.008648791000041,
+      "cpu_seconds_measured": 13.695502,
+      "cpu_seconds_budget_charged": 120.08648791000041,
+      "hardware_CPU_upper_seconds": 120.08648791000041,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 13.695502
+    },
+    {
+      "run_id": "D3-D-32-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "b9730fd3d20828e6e460c074540164b20d0a1de0dbdb2f2548af2ae1713573a3",
+      "original_ordinal": 63,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.141275000000007,
+      "cpu_seconds_measured": 10.841437,
+      "cpu_seconds_budget_charged": 91.41275000000007,
+      "hardware_CPU_upper_seconds": 91.41275000000007,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.841437
+    },
+    {
+      "run_id": "D3-D-32-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "95038aff503e646d4e4bdda0755ef8f4245089e3add2ad7a17ad576c5d42d8a4",
+      "original_ordinal": 64,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.033314874999974,
+      "cpu_seconds_measured": 10.577806,
+      "cpu_seconds_budget_charged": 90.33314874999974,
+      "hardware_CPU_upper_seconds": 90.33314874999974,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.577806
+    },
+    {
+      "run_id": "D3-D-33-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "a5c1368ee48740ffe70bc336efb6b01b5ac1586cc55fede52b6b04e8789adf76",
+      "original_ordinal": 65,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.009815250000031,
+      "cpu_seconds_measured": 11.593695,
+      "cpu_seconds_budget_charged": 100.09815250000031,
+      "hardware_CPU_upper_seconds": 100.09815250000031,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.593695
+    },
+    {
+      "run_id": "D3-D-33-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "a28b1739dfa14874c5570d08d3ae8e93ad6a671c653b37d799f8f5472c258838",
+      "original_ordinal": 66,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.074636249999969,
+      "cpu_seconds_measured": 11.500608,
+      "cpu_seconds_budget_charged": 100.74636249999969,
+      "hardware_CPU_upper_seconds": 100.74636249999969,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.500608
+    },
+    {
+      "run_id": "D3-D-34-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "5603d503a4de2eac147235f21b78037f8a903918d5b9f4b469113eb2d5f0b6e3",
+      "original_ordinal": 67,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.912269249999952,
+      "cpu_seconds_measured": 10.44519,
+      "cpu_seconds_budget_charged": 89.12269249999952,
+      "hardware_CPU_upper_seconds": 89.12269249999952,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.44519
+    },
+    {
+      "run_id": "D3-D-34-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "e0d4dd64cf81c427103c88377911bc23ab37be97f64bbd641f5090c364cfacc5",
+      "original_ordinal": 68,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.750160208000011,
+      "cpu_seconds_measured": 10.545744000000001,
+      "cpu_seconds_budget_charged": 87.50160208000011,
+      "hardware_CPU_upper_seconds": 87.50160208000011,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.545744000000001
+    },
+    {
+      "run_id": "D3-D-35-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "da4cc7b4c5d97bd20f9c560147ce5c698c1bc286feba5dad5f0dd80056ea3ecd",
+      "original_ordinal": 69,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.131380917000001,
+      "cpu_seconds_measured": 10.99889,
+      "cpu_seconds_budget_charged": 91.31380917000001,
+      "hardware_CPU_upper_seconds": 91.31380917000001,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.99889
+    },
+    {
+      "run_id": "D3-D-35-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "c5364e707eaa4322415db6f0c0f7f3e5f41d18a79dfa7dc2b74334f2dc0d9e76",
+      "original_ordinal": 70,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.107321582999987,
+      "cpu_seconds_measured": 11.011125,
+      "cpu_seconds_budget_charged": 91.07321582999987,
+      "hardware_CPU_upper_seconds": 91.07321582999987,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.011125
+    },
+    {
+      "run_id": "D3-D-36-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "10571aef93a09f178289be03bbc05de7d76388894512add80ba4fe760003934a",
+      "original_ordinal": 71,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.096376541999973,
+      "cpu_seconds_measured": 11.986547,
+      "cpu_seconds_budget_charged": 100.96376541999973,
+      "hardware_CPU_upper_seconds": 100.96376541999973,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.986547
+    },
+    {
+      "run_id": "D3-D-36-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "dbba08cbee28a69adba3adbb5889a89f88d1596a2937ea2f745c225593f4692d",
+      "original_ordinal": 72,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.069385083999975,
+      "cpu_seconds_measured": 11.780698000000001,
+      "cpu_seconds_budget_charged": 100.69385083999975,
+      "hardware_CPU_upper_seconds": 100.69385083999975,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.780698000000001
+    },
+    {
+      "run_id": "D3-D-37-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "4f645d906624452b60e0842e5836db06ee4aec1625233ccb34de041fcb196f4c",
+      "original_ordinal": 73,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.407628415999966,
+      "cpu_seconds_measured": 10.020813,
+      "cpu_seconds_budget_charged": 84.07628415999966,
+      "hardware_CPU_upper_seconds": 84.07628415999966,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.020813
+    },
+    {
+      "run_id": "D3-D-37-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "1f3a3f8e67ff2accb28721ca67bfd4ef917de65d43da47e2b4e637827fed60c2",
+      "original_ordinal": 74,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.297094000000016,
+      "cpu_seconds_measured": 10.214853,
+      "cpu_seconds_budget_charged": 82.97094000000016,
+      "hardware_CPU_upper_seconds": 82.97094000000016,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.214853
+    },
+    {
+      "run_id": "D3-D-38-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "f6441734c345cffe8b3bf42edbd40fc4dfbf5867a9d74e275881205097163a2c",
+      "original_ordinal": 75,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.111654375,
+      "cpu_seconds_measured": 12.002305,
+      "cpu_seconds_budget_charged": 101.11654375,
+      "hardware_CPU_upper_seconds": 101.11654375,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 12.002305
+    },
+    {
+      "run_id": "D3-D-38-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "726af316506ae585932321d02a975d8c5b26f7b84c9c9682a995ac57749ccedc",
+      "original_ordinal": 76,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 10.082115832999989,
+      "cpu_seconds_measured": 11.909531999999999,
+      "cpu_seconds_budget_charged": 100.82115832999989,
+      "hardware_CPU_upper_seconds": 100.82115832999989,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [
+        {
+          "pid": 21929,
+          "creation_time": 1793009957.84477,
+          "cmdline": [
+            "/Users/liuqing/miniconda3/envs/nuplan/bin/python",
+            "-B",
+            "-c",
+            "from multiprocessing.resource_tracker import main;main(7)"
+          ],
+          "pgid": 21877
+        }
+      ],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.909531999999999
+    },
+    {
+      "run_id": "D3-D-39-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "9c593fdd98c7764b20a772e9d3b348176af5429c25c9d928d9349945c3cf4f1a",
+      "original_ordinal": 77,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.59779999999995,
+      "cpu_seconds_measured": 10.48785,
+      "cpu_seconds_budget_charged": 85.9779999999995,
+      "hardware_CPU_upper_seconds": 85.9779999999995,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.48785
+    },
+    {
+      "run_id": "D3-D-39-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "f1b9f1d7fa54621d7d29756d690c96be557ca44daa3905ee67c4e0fb92e0a66f",
+      "original_ordinal": 78,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 8.560459625000021,
+      "cpu_seconds_measured": 10.488311,
+      "cpu_seconds_budget_charged": 85.60459625000021,
+      "hardware_CPU_upper_seconds": 85.60459625000021,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 10.488311
+    },
+    {
+      "run_id": "D3-D-40-BASELINE",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "12efe643d8fd095872a681fc36fca67f80a142aea963f412fe63368e7bac39c4",
+      "original_ordinal": 79,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.507157290999999,
+      "cpu_seconds_measured": 11.295687,
+      "cpu_seconds_budget_charged": 95.07157290999999,
+      "hardware_CPU_upper_seconds": 95.07157290999999,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.295687
+    },
+    {
+      "run_id": "D3-D-40-TREATMENT",
+      "status": "COMPLETE_PASS",
+      "parent_pid": 10141,
+      "ticket": "8e13dc67405213cc0bbba180b55d88caa5e5fac3c5e04bd11d731d05e23a1c42",
+      "original_ordinal": 80,
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 9.610363667000058,
+      "cpu_seconds_measured": 11.347599,
+      "cpu_seconds_budget_charged": 96.10363667000058,
+      "hardware_CPU_upper_seconds": 96.10363667000058,
+      "cpu_bound_semantics": "Every arm charged full elapsed wall times hardware CPU count, including post-parent cleanup; conservative upper bound, not actual measured consumption",
+      "post_parent_helpers_observed": [],
+      "post_parent_cleanup_forced": false,
+      "wait4_CPU_seconds": 11.347599
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "D3-D-14",
+      "session_id": "2021.06.07.13.53.57_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858403,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.768628,
+          "end_minus_start_speed": -2.593196,
+          "path_length": 85.177899,
+          "mean_abs_accel": 0.328597
+        },
+        "treatment": {
+          "mean_speed": 10.768628,
+          "end_minus_start_speed": -2.593195,
+          "path_length": 85.177899,
+          "mean_abs_accel": 0.328529
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 6.8e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.000326233153272959,
+        "peak_differences_mps2": [
+          0.1720858314164886,
+          0.17204313663361148
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-15",
+      "session_id": "2021.10.11.17.07.38_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285848,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.356796,
+          "end_minus_start_speed": -2.670411,
+          "path_length": 74.024693,
+          "mean_abs_accel": 0.335716
+        },
+        "treatment": {
+          "mean_speed": 9.356795,
+          "end_minus_start_speed": -2.67041,
+          "path_length": 74.024692,
+          "mean_abs_accel": 0.335716
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 1e-06,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.393300936403108e-06,
+        "peak_differences_mps2": [
+          0.17198936406659726,
+          0.17204320081871316
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-16",
+      "session_id": "2021.08.31.17.42.52_veh-40",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.3962903492858483,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.938023,
+          "end_minus_start_speed": -2.556757,
+          "path_length": 62.815996,
+          "mean_abs_accel": 0.334171
+        },
+        "treatment": {
+          "mean_speed": 7.938023,
+          "end_minus_start_speed": -2.556756,
+          "path_length": 62.815995,
+          "mean_abs_accel": 0.333974
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000197
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0009454489382387798,
+        "peak_differences_mps2": [
+          0.17213133248802848,
+          0.1720431063592187
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-17",
+      "session_id": "2021.07.23.17.51.38_veh-26",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.396290349285901,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.809974,
+          "end_minus_start_speed": -2.596971,
+          "path_length": 69.704639,
+          "mean_abs_accel": 0.328112
+        },
+        "treatment": {
+          "mean_speed": 8.809974,
+          "end_minus_start_speed": -2.59697,
+          "path_length": 69.704638,
+          "mean_abs_accel": 0.328061
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 5.1e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.000245850625838262,
+        "peak_differences_mps2": [
+          0.17207992476614464,
+          0.17204314056363756
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-18",
+      "session_id": "2021.06.30.17.20.09_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.085684092872019,
+        "absolute_speed_difference_integral_m": 2.3962903492858674,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.330091,
+          "end_minus_start_speed": -2.746112,
+          "path_length": 42.214088,
+          "mean_abs_accel": 0.347212
+        },
+        "treatment": {
+          "mean_speed": 5.330091,
+          "end_minus_start_speed": -2.746111,
+          "path_length": 42.214087,
+          "mean_abs_accel": 0.347212
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009483935166e-06,
+        "peak_differences_mps2": [
+          0.17189367285258683,
+          0.1720432644874208
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-19",
+      "session_id": "2021.07.14.16.58.38_veh-38",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.085684092872019,
+        "absolute_speed_difference_integral_m": 2.396290349285845,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.214223,
+          "end_minus_start_speed": -2.623151,
+          "path_length": 57.098208,
+          "mean_abs_accel": 0.328483
+        },
+        "treatment": {
+          "mean_speed": 7.214223,
+          "end_minus_start_speed": -2.62315,
+          "path_length": 57.098207,
+          "mean_abs_accel": 0.328483
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.393300943064446e-06,
+        "peak_differences_mps2": [
+          0.17204837902021808,
+          0.17204316155278576
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-20",
+      "session_id": "2021.09.03.14.11.45_veh-40",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720164,
+        "absolute_speed_difference_integral_m": 2.3962903492858505,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.286177,
+          "end_minus_start_speed": -2.5909,
+          "path_length": 73.466593,
+          "mean_abs_accel": 0.329009
+        },
+        "treatment": {
+          "mean_speed": 9.286177,
+          "end_minus_start_speed": -2.590898,
+          "path_length": 73.466593,
+          "mean_abs_accel": 0.328936
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 7.3e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.00035448031033524785,
+        "peak_differences_mps2": [
+          0.17208790706758492,
+          0.1720431352525722
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-21",
+      "session_id": "2021.07.15.22.36.53_veh-38",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720253,
+        "absolute_speed_difference_integral_m": 2.3962903492858514,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 18.020242,
+          "end_minus_start_speed": -2.532683,
+          "path_length": 142.465349,
+          "mean_abs_accel": 0.337769
+        },
+        "treatment": {
+          "mean_speed": 18.020242,
+          "end_minus_start_speed": -2.532681,
+          "path_length": 142.465348,
+          "mean_abs_accel": 0.337484
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000285
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0013694771611207912,
+        "peak_differences_mps2": [
+          0.17216249083213597,
+          0.1720430856278199
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-22",
+      "session_id": "2021.06.08.14.14.51_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858367,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.593135,
+          "end_minus_start_speed": -2.56298,
+          "path_length": 83.791407,
+          "mean_abs_accel": 0.333224
+        },
+        "treatment": {
+          "mean_speed": 10.593135,
+          "end_minus_start_speed": -2.562978,
+          "path_length": 83.791407,
+          "mean_abs_accel": 0.333049
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000175
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0008389043626069181,
+        "peak_differences_mps2": [
+          0.17212350340409444,
+          0.1720431115683354
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-23",
+      "session_id": "2021.07.22.17.40.23_veh-47",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285862,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 12.592233,
+          "end_minus_start_speed": -2.638972,
+          "path_length": 99.584558,
+          "mean_abs_accel": 0.330891
+        },
+        "treatment": {
+          "mean_speed": 12.592233,
+          "end_minus_start_speed": -2.638971,
+          "path_length": 99.584557,
+          "mean_abs_accel": 0.330891
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009443967137e-06,
+        "peak_differences_mps2": [
+          0.1720284513638788,
+          0.1720431748117619
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-24",
+      "session_id": "2021.09.14.19.35.02_veh-39",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.3962903492858505,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 6.899974,
+          "end_minus_start_speed": -2.459347,
+          "path_length": 54.615009,
+          "mean_abs_accel": 0.349021
+        },
+        "treatment": {
+          "mean_speed": 6.899974,
+          "end_minus_start_speed": -2.459346,
+          "path_length": 54.615008,
+          "mean_abs_accel": 0.348477
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000544
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0026100478551618345,
+        "peak_differences_mps2": [
+          0.17225365016185634,
+          0.17204302497444957
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-25",
+      "session_id": "2021.06.24.21.55.23_veh-26",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858607,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.592379,
+          "end_minus_start_speed": -2.680237,
+          "path_length": 83.785901,
+          "mean_abs_accel": 0.337159
+        },
+        "treatment": {
+          "mean_speed": 10.592379,
+          "end_minus_start_speed": -2.680236,
+          "path_length": 83.785901,
+          "mean_abs_accel": 0.337159
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009479494274e-06,
+        "peak_differences_mps2": [
+          0.1719763059619197,
+          0.17204320950700946
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-26",
+      "session_id": "2021.06.18.18.50.06_veh-30",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.08568409287202,
+        "absolute_speed_difference_integral_m": 2.39629034928584,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 11.581358,
+          "end_minus_start_speed": -2.502415,
+          "path_length": 91.598047,
+          "mean_abs_accel": 0.342384
+        },
+        "treatment": {
+          "mean_speed": 11.581358,
+          "end_minus_start_speed": -2.502414,
+          "path_length": 91.598047,
+          "mean_abs_accel": 0.341992
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000392
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0018864607610118433,
+        "peak_differences_mps2": [
+          0.17220047970183572,
+          0.17204306035171868
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-27",
+      "session_id": "2021.07.22.21.43.45_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.3962903492858487,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.13185,
+          "end_minus_start_speed": -2.652036,
+          "path_length": 64.347576,
+          "mean_abs_accel": 0.332891
+        },
+        "treatment": {
+          "mean_speed": 8.13185,
+          "end_minus_start_speed": -2.652035,
+          "path_length": 64.347576,
+          "mean_abs_accel": 0.332891
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.393300943064446e-06,
+        "peak_differences_mps2": [
+          0.17201213954967187,
+          0.1720431856649114
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-28",
+      "session_id": "2021.07.23.16.54.45_veh-37",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.3962903492858634,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.091902,
+          "end_minus_start_speed": -2.55713,
+          "path_length": 71.931633,
+          "mean_abs_accel": 0.334112
+        },
+        "treatment": {
+          "mean_speed": 9.091902,
+          "end_minus_start_speed": -2.557129,
+          "path_length": 71.931632,
+          "mean_abs_accel": 0.333916
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000196
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0009394645149596315,
+        "peak_differences_mps2": [
+          0.1721308927420182,
+          0.1720431066517918
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-29",
+      "session_id": "2021.07.22.21.07.31_veh-47",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858327,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.760575,
+          "end_minus_start_speed": -2.588896,
+          "path_length": 77.214303,
+          "mean_abs_accel": 0.329293
+        },
+        "treatment": {
+          "mean_speed": 9.760575,
+          "end_minus_start_speed": -2.588895,
+          "path_length": 77.214302,
+          "mean_abs_accel": 0.329211
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 8.2e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0003925716741872698,
+        "peak_differences_mps2": [
+          0.17209070608839028,
+          0.17204313339022548
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-30",
+      "session_id": "2021.07.22.17.54.22_veh-17",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858407,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.480243,
+          "end_minus_start_speed": -2.729194,
+          "path_length": 59.200204,
+          "mean_abs_accel": 0.344646
+        },
+        "treatment": {
+          "mean_speed": 7.480243,
+          "end_minus_start_speed": -2.729193,
+          "path_length": 59.200204,
+          "mean_abs_accel": 0.344646
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009372912863e-06,
+        "peak_differences_mps2": [
+          0.17191510065939752,
+          0.17204325023030265
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-31",
+      "session_id": "2021.07.13.01.55.44_veh-38",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.3962903492858443,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.983916,
+          "end_minus_start_speed": -2.339703,
+          "path_length": 47.377802,
+          "mean_abs_accel": 0.367386
+        },
+        "treatment": {
+          "mean_speed": 5.983916,
+          "end_minus_start_speed": -2.339702,
+          "path_length": 47.377802,
+          "mean_abs_accel": 0.366421
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.000965
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.004632472358909734,
+        "peak_differences_mps2": [
+          0.17240226149293747,
+          0.17204292609505245
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-32",
+      "session_id": "2021.05.17.16.40.09_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720226,
+        "absolute_speed_difference_integral_m": 2.3962903492858363,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 3.925064,
+          "end_minus_start_speed": -2.5527,
+          "path_length": 31.113681,
+          "mean_abs_accel": 0.334868
+        },
+        "treatment": {
+          "mean_speed": 3.925064,
+          "end_minus_start_speed": -2.552699,
+          "path_length": 31.11368,
+          "mean_abs_accel": 0.33466
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000208
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.001001064934659901,
+        "peak_differences_mps2": [
+          0.17213541924986764,
+          0.17204310364007114
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-33",
+      "session_id": "2021.05.21.17.47.35_veh-35",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.396290349285836,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.184121,
+          "end_minus_start_speed": -2.563204,
+          "path_length": 80.560216,
+          "mean_abs_accel": 0.333211
+        },
+        "treatment": {
+          "mean_speed": 10.184121,
+          "end_minus_start_speed": -2.563202,
+          "path_length": 80.560215,
+          "mean_abs_accel": 0.333038
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.000173
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.0008312965996224442,
+        "peak_differences_mps2": [
+          0.17212294437221942,
+          0.17204311194030453
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-34",
+      "session_id": "2021.09.20.19.14.01_veh-28",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285854,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.927015,
+          "end_minus_start_speed": -2.674515,
+          "path_length": 78.529392,
+          "mean_abs_accel": 0.336394
+        },
+        "treatment": {
+          "mean_speed": 9.927015,
+          "end_minus_start_speed": -2.674514,
+          "path_length": 78.529392,
+          "mean_abs_accel": 0.336393
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 1e-06
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009417321784e-06,
+        "peak_differences_mps2": [
+          0.17198487380937166,
+          0.1720432038063393
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-35",
+      "session_id": "2021.07.22.19.31.55_veh-37",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720208,
+        "absolute_speed_difference_integral_m": 2.3962903492858425,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 5.338514,
+          "end_minus_start_speed": -2.611646,
+          "path_length": 42.280168,
+          "mean_abs_accel": 0.326624
+        },
+        "treatment": {
+          "mean_speed": 5.338514,
+          "end_minus_start_speed": -2.611644,
+          "path_length": 42.280168,
+          "mean_abs_accel": 0.326624
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009395117324e-06,
+        "peak_differences_mps2": [
+          0.17206147702295738,
+          0.1720431528379578
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-36",
+      "session_id": "2021.07.02.17.50.52_veh-37",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.396290349285874,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 11.651654,
+          "end_minus_start_speed": -2.606649,
+          "path_length": 92.153785,
+          "mean_abs_accel": 0.326964
+        },
+        "treatment": {
+          "mean_speed": 11.651654,
+          "end_minus_start_speed": -2.606647,
+          "path_length": 92.153785,
+          "mean_abs_accel": 0.326942
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 2.2e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.00010837918535333557,
+        "peak_differences_mps2": [
+          0.17206982312145414,
+          0.17204314728481762
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-37",
+      "session_id": "2021.10.08.06.38.01_veh-50",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720182,
+        "absolute_speed_difference_integral_m": 2.3962903492858603,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 10.744732,
+          "end_minus_start_speed": -2.616812,
+          "path_length": 84.989434,
+          "mean_abs_accel": 0.327297
+        },
+        "treatment": {
+          "mean_speed": 10.744732,
+          "end_minus_start_speed": -2.616811,
+          "path_length": 84.989434,
+          "mean_abs_accel": 0.327297
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009461730705e-06,
+        "peak_differences_mps2": [
+          0.17205350849121004,
+          0.17204315813986426
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-38",
+      "session_id": "2021.07.16.02.35.53_veh-37",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720235,
+        "absolute_speed_difference_integral_m": 2.3962903492858296,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 8.376366,
+          "end_minus_start_speed": -2.69177,
+          "path_length": 66.279486,
+          "mean_abs_accel": 0.338877
+        },
+        "treatment": {
+          "mean_speed": 8.376366,
+          "end_minus_start_speed": -2.691769,
+          "path_length": 66.279485,
+          "mean_abs_accel": 0.338877
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 1e-06,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009297417698e-06,
+        "peak_differences_mps2": [
+          0.17196129834530893,
+          0.17204321949241574
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-39",
+      "session_id": "2021.08.25.17.55.51_veh-41",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720208,
+        "absolute_speed_difference_integral_m": 2.3962903492858447,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 7.116381,
+          "end_minus_start_speed": -2.603538,
+          "path_length": 56.325123,
+          "mean_abs_accel": 0.327131
+        },
+        "treatment": {
+          "mean_speed": 7.116381,
+          "end_minus_start_speed": -2.603536,
+          "path_length": 56.325123,
+          "mean_abs_accel": 0.327097
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 2e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 3.4e-05
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 0.00016079681339631335,
+        "peak_differences_mps2": [
+          0.17207367486151526,
+          0.1720431447220534
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    },
+    {
+      "pair_id": "D3-D-40",
+      "session_id": "2021.06.24.17.25.34_veh-16",
+      "temporal": {
+        "max_abs_speed_difference_mps": 1.0856840928720217,
+        "absolute_speed_difference_integral_m": 2.39629034928584,
+        "actual_trace_hash_distinct": true,
+        "request_sequences_distinct": true,
+        "pass_gate": true
+      },
+      "arm_pass": [
+        true,
+        true
+      ],
+      "F_match": {
+        "version": "P1R_UNCHANGED_FOUR_F_v1",
+        "baseline": {
+          "mean_speed": 9.35059,
+          "end_minus_start_speed": -2.64922,
+          "path_length": 73.97568,
+          "mean_abs_accel": 0.332396
+        },
+        "treatment": {
+          "mean_speed": 9.35059,
+          "end_minus_start_speed": -2.649219,
+          "path_length": 73.97568,
+          "mean_abs_accel": 0.332396
+        },
+        "calipers": {
+          "mean_speed": 0.1,
+          "end_minus_start_speed": 0.15,
+          "path_length": 0.8,
+          "mean_abs_accel": 0.02
+        },
+        "absolute_delta": {
+          "mean_speed": 0.0,
+          "end_minus_start_speed": 1e-06,
+          "path_length": 0.0,
+          "mean_abs_accel": 0.0
+        },
+        "pass": true
+      },
+      "retained_P1_balance_review": {
+        "negative_dose_delta_mps": 1.3933009381794648e-06,
+        "peak_differences_mps2": [
+          0.17201483718952915,
+          0.1720431838700236
+        ],
+        "pass": true
+      },
+      "pair_pass": true
+    }
+  ],
+  "authorization_sha256": "d0fe678992f612a27250904738b29cd771a2fd9a3fb98721071454b6d476c158",
+  "original_stopped_ledger_sha256": "9472b2464e93e651fa6b2310249d501ca8ab45046bb75de0384e4734a388b8f8",
+  "prior_measured_CPU_seconds": 295.330551996,
+  "prior_conservatively_charged_CPU_seconds": 5147.820172951936,
+  "cpu_seconds": 605.760412,
+  "cpu_seconds_budget_charged": 5181.84663331,
+  "retry_count": 0,
+  "total_scientific_attempt_cap": 80,
+  "stop_reason": "ALL_ORIGINAL80_FIRST_ATTEMPTS_COMPLETE",
+  "driver_cpu_seconds": 48.579973,
+  "wall_seconds": 519.3211815000001,
+  "total_first_attempts": 80
+}

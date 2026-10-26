@@ -1,0 +1,114 @@
+{
+  "scope": "POST_STATISTICS_FIXED_PHYSICAL_TARGET_DIAGNOSTIC_ONLY_NO_THRESHOLD_OR_POOL_CHANGE",
+  "rows": [
+    {
+      "new_engineering_run": "D3-ENG-02-BASELINE",
+      "original_run": "SDC-QUAL-09-BASELINE",
+      "SESSION": "2021.07.16.18.19.22_veh-35",
+      "representations": {
+        "RBR64": {
+          "raw_max_abs_difference": 2.980232238769531e-07,
+          "raw_L2_difference": 9.398369229529635e-07,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999999998168
+        },
+        "H30": {
+          "raw_max_abs_difference": 4.233220067817456e-07,
+          "raw_L2_difference": 4.335699594159595e-07,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999789303643
+        }
+      }
+    },
+    {
+      "new_engineering_run": "D3-ENG-02-TREATMENT",
+      "original_run": "SDC-QUAL-09-TREATMENT",
+      "SESSION": "2021.07.16.18.19.22_veh-35",
+      "representations": {
+        "RBR64": {
+          "raw_max_abs_difference": 2.682209014892578e-07,
+          "raw_L2_difference": 9.653103916207328e-07,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999999997226
+        },
+        "H30": {
+          "raw_max_abs_difference": 3.8579765693214085e-07,
+          "raw_L2_difference": 3.951816289774497e-07,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999824945934
+        }
+      }
+    },
+    {
+      "new_engineering_run": "D3-ENG-03-BASELINE",
+      "original_run": "SDC-QUAL-16-BASELINE",
+      "SESSION": "2021.09.09.16.51.32_veh-42",
+      "representations": {
+        "RBR64": {
+          "raw_max_abs_difference": 3.5881996154785156e-05,
+          "raw_L2_difference": 0.00011598230776144192,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999961121735
+        },
+        "H30": {
+          "raw_max_abs_difference": 1.2238367126826688e-05,
+          "raw_L2_difference": 1.2405264907164649e-05,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999829054279021
+        }
+      }
+    },
+    {
+      "new_engineering_run": "D3-ENG-03-TREATMENT",
+      "original_run": "SDC-QUAL-16-TREATMENT",
+      "SESSION": "2021.09.09.16.51.32_veh-42",
+      "representations": {
+        "RBR64": {
+          "raw_max_abs_difference": 3.483891487121582e-05,
+          "raw_L2_difference": 0.00011363152589183301,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999963364862
+        },
+        "H30": {
+          "raw_max_abs_difference": 1.2226666711967482e-05,
+          "raw_L2_difference": 1.2393186429657332e-05,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999829389627948
+        }
+      }
+    },
+    {
+      "new_engineering_run": "D3-ENG-04-BASELINE",
+      "original_run": "SDC-DEV-01-BASELINE",
+      "SESSION": "2021.09.20.13.46.45_veh-42",
+      "representations": {
+        "RBR64": {
+          "raw_max_abs_difference": 0.00017583370208740234,
+          "raw_L2_difference": 0.0005042666452936828,
+          "same_source_old_vs_repaired_frozen_kernel": 0.99999991133203
+        },
+        "H30": {
+          "raw_max_abs_difference": 5.3952545375324235e-05,
+          "raw_L2_difference": 5.454456786751971e-05,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9996703324264674
+        }
+      }
+    },
+    {
+      "new_engineering_run": "D3-ENG-04-TREATMENT",
+      "original_run": "SDC-DEV-01-TREATMENT",
+      "SESSION": "2021.09.20.13.46.45_veh-42",
+      "representations": {
+        "RBR64": {
+          "raw_max_abs_difference": 0.00017982721328735352,
+          "raw_L2_difference": 0.0005157525301910937,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9999999080128402
+        },
+        "H30": {
+          "raw_max_abs_difference": 5.619392001676715e-05,
+          "raw_L2_difference": 5.682800736076557e-05,
+          "same_source_old_vs_repaired_frozen_kernel": 0.9996420604013546
+        }
+      }
+    }
+  ],
+  "targets_fixed_before_any_detector_outputs": true,
+  "replaced_calibration_vectors": 0,
+  "refitted_scalers": 0,
+  "new_SESSION": 0,
+  "new_rollout": 0,
+  "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+  "main_D_statistics_sha256_unchanged": "292f17e68dff2dfc9d1ef7ddfe7a5983d6cea7dcbbecec0ef8cc4747b32d9f12"
+}

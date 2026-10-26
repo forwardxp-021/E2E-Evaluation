@@ -1,0 +1,848 @@
+{
+  "expected_rows": [
+    {
+      "run_id": "SDC-QUAL-01-BASELINE",
+      "session_id": "2021.09.09.14.34.34_veh-43",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-01-TREATMENT",
+      "session_id": "2021.09.09.14.34.34_veh-43",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-02-BASELINE",
+      "session_id": "2021.08.17.14.45.12_veh-42",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-02-TREATMENT",
+      "session_id": "2021.08.17.14.45.12_veh-42",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-03-BASELINE",
+      "session_id": "2021.08.25.17.10.24_veh-45",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-03-TREATMENT",
+      "session_id": "2021.08.25.17.10.24_veh-45",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-04-BASELINE",
+      "session_id": "2021.09.15.13.26.07_veh-45",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-04-TREATMENT",
+      "session_id": "2021.09.15.13.26.07_veh-45",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-05-BASELINE",
+      "session_id": "2021.08.20.14.28.03_veh-45",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-05-TREATMENT",
+      "session_id": "2021.08.20.14.28.03_veh-45",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-06-BASELINE",
+      "session_id": "2021.08.20.18.44.47_veh-08",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-06-TREATMENT",
+      "session_id": "2021.08.20.18.44.47_veh-08",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-07-BASELINE",
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-07-TREATMENT",
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-08-BASELINE",
+      "session_id": "2021.08.25.20.03.09_veh-08",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-08-TREATMENT",
+      "session_id": "2021.08.25.20.03.09_veh-08",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-09-BASELINE",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-09-TREATMENT",
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-10-BASELINE",
+      "session_id": "2021.09.20.14.04.18_veh-08",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-10-TREATMENT",
+      "session_id": "2021.09.20.14.04.18_veh-08",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-11-BASELINE",
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-11-TREATMENT",
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-12-BASELINE",
+      "session_id": "2021.08.25.18.29.43_veh-42",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-12-TREATMENT",
+      "session_id": "2021.08.25.18.29.43_veh-42",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-13-BASELINE",
+      "session_id": "2021.09.15.13.06.21_veh-42",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-13-TREATMENT",
+      "session_id": "2021.09.15.13.06.21_veh-42",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-14-BASELINE",
+      "session_id": "2021.09.17.17.36.45_veh-45",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-14-TREATMENT",
+      "session_id": "2021.09.17.17.36.45_veh-45",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-15-BASELINE",
+      "session_id": "2021.09.09.18.12.06_veh-42",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-15-TREATMENT",
+      "session_id": "2021.09.09.18.12.06_veh-42",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-16-BASELINE",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-16-TREATMENT",
+      "session_id": "2021.09.09.16.51.32_veh-42",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-17-BASELINE",
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-17-TREATMENT",
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-18-BASELINE",
+      "session_id": "2021.09.09.13.32.12_veh-43",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-18-TREATMENT",
+      "session_id": "2021.09.09.13.32.12_veh-43",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-19-BASELINE",
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-19-TREATMENT",
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-20-BASELINE",
+      "session_id": "2021.09.23.14.44.24_veh-45",
+      "arm": "BASELINE",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "SDC-QUAL-20-TREATMENT",
+      "session_id": "2021.09.23.14.44.24_veh-45",
+      "arm": "TREATMENT",
+      "role": "D_SWAP_CAL_EXISTING_B_REUSE",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-01-BASELINE",
+      "session_id": "2021.10.14.17.47.55_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-01-TREATMENT",
+      "session_id": "2021.10.14.17.47.55_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-02-BASELINE",
+      "session_id": "2021.06.24.14.20.12_veh-47",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-02-TREATMENT",
+      "session_id": "2021.06.24.14.20.12_veh-47",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-03-BASELINE",
+      "session_id": "2021.09.10.07.02.31_veh-51",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-03-TREATMENT",
+      "session_id": "2021.09.10.07.02.31_veh-51",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-04-BASELINE",
+      "session_id": "2021.10.15.12.13.23_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-04-TREATMENT",
+      "session_id": "2021.10.15.12.13.23_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-05-BASELINE",
+      "session_id": "2021.09.29.08.50.06_veh-53",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-05-TREATMENT",
+      "session_id": "2021.09.29.08.50.06_veh-53",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-06-BASELINE",
+      "session_id": "2021.09.07.04.01.34_veh-51",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-06-TREATMENT",
+      "session_id": "2021.09.07.04.01.34_veh-51",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-07-BASELINE",
+      "session_id": "2021.07.23.16.32.39_veh-17",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-07-TREATMENT",
+      "session_id": "2021.07.23.16.32.39_veh-17",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-08-BASELINE",
+      "session_id": "2021.09.07.02.31.43_veh-51",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-08-TREATMENT",
+      "session_id": "2021.09.07.02.31.43_veh-51",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-09-BASELINE",
+      "session_id": "2021.10.11.13.27.07_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-09-TREATMENT",
+      "session_id": "2021.10.11.13.27.07_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-10-BASELINE",
+      "session_id": "2021.05.21.13.41.26_veh-12",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-10-TREATMENT",
+      "session_id": "2021.05.21.13.41.26_veh-12",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-11-BASELINE",
+      "session_id": "2021.10.01.13.28.54_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-11-TREATMENT",
+      "session_id": "2021.10.01.13.28.54_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-12-BASELINE",
+      "session_id": "2021.08.09.18.37.41_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-12-TREATMENT",
+      "session_id": "2021.08.09.18.37.41_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-13-BASELINE",
+      "session_id": "2021.08.26.18.24.36_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-13-TREATMENT",
+      "session_id": "2021.08.26.18.24.36_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-14-BASELINE",
+      "session_id": "2021.06.07.13.53.57_veh-35",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-14-TREATMENT",
+      "session_id": "2021.06.07.13.53.57_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-15-BASELINE",
+      "session_id": "2021.10.11.17.07.38_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-15-TREATMENT",
+      "session_id": "2021.10.11.17.07.38_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-16-BASELINE",
+      "session_id": "2021.08.31.17.42.52_veh-40",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-16-TREATMENT",
+      "session_id": "2021.08.31.17.42.52_veh-40",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-17-BASELINE",
+      "session_id": "2021.07.23.17.51.38_veh-26",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-17-TREATMENT",
+      "session_id": "2021.07.23.17.51.38_veh-26",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-18-BASELINE",
+      "session_id": "2021.06.30.17.20.09_veh-35",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-18-TREATMENT",
+      "session_id": "2021.06.30.17.20.09_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-19-BASELINE",
+      "session_id": "2021.07.14.16.58.38_veh-38",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-19-TREATMENT",
+      "session_id": "2021.07.14.16.58.38_veh-38",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-20-BASELINE",
+      "session_id": "2021.09.03.14.11.45_veh-40",
+      "arm": "BASELINE",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-20-TREATMENT",
+      "session_id": "2021.09.03.14.11.45_veh-40",
+      "arm": "TREATMENT",
+      "role": "D_AA_SWAP",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-21-BASELINE",
+      "session_id": "2021.07.15.22.36.53_veh-38",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-21-TREATMENT",
+      "session_id": "2021.07.15.22.36.53_veh-38",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-22-BASELINE",
+      "session_id": "2021.06.08.14.14.51_veh-35",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-22-TREATMENT",
+      "session_id": "2021.06.08.14.14.51_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-23-BASELINE",
+      "session_id": "2021.07.22.17.40.23_veh-47",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-23-TREATMENT",
+      "session_id": "2021.07.22.17.40.23_veh-47",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-24-BASELINE",
+      "session_id": "2021.09.14.19.35.02_veh-39",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-24-TREATMENT",
+      "session_id": "2021.09.14.19.35.02_veh-39",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-25-BASELINE",
+      "session_id": "2021.06.24.21.55.23_veh-26",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-25-TREATMENT",
+      "session_id": "2021.06.24.21.55.23_veh-26",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-26-BASELINE",
+      "session_id": "2021.06.18.18.50.06_veh-30",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-26-TREATMENT",
+      "session_id": "2021.06.18.18.50.06_veh-30",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-27-BASELINE",
+      "session_id": "2021.07.22.21.43.45_veh-35",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-27-TREATMENT",
+      "session_id": "2021.07.22.21.43.45_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-28-BASELINE",
+      "session_id": "2021.07.23.16.54.45_veh-37",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-28-TREATMENT",
+      "session_id": "2021.07.23.16.54.45_veh-37",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-29-BASELINE",
+      "session_id": "2021.07.22.21.07.31_veh-47",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-29-TREATMENT",
+      "session_id": "2021.07.22.21.07.31_veh-47",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-30-BASELINE",
+      "session_id": "2021.07.22.17.54.22_veh-17",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-30-TREATMENT",
+      "session_id": "2021.07.22.17.54.22_veh-17",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-31-BASELINE",
+      "session_id": "2021.07.13.01.55.44_veh-38",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-31-TREATMENT",
+      "session_id": "2021.07.13.01.55.44_veh-38",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-32-BASELINE",
+      "session_id": "2021.05.17.16.40.09_veh-35",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-32-TREATMENT",
+      "session_id": "2021.05.17.16.40.09_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-33-BASELINE",
+      "session_id": "2021.05.21.17.47.35_veh-35",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-33-TREATMENT",
+      "session_id": "2021.05.21.17.47.35_veh-35",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-34-BASELINE",
+      "session_id": "2021.09.20.19.14.01_veh-28",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-34-TREATMENT",
+      "session_id": "2021.09.20.19.14.01_veh-28",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-35-BASELINE",
+      "session_id": "2021.07.22.19.31.55_veh-37",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-35-TREATMENT",
+      "session_id": "2021.07.22.19.31.55_veh-37",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-36-BASELINE",
+      "session_id": "2021.07.02.17.50.52_veh-37",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-36-TREATMENT",
+      "session_id": "2021.07.02.17.50.52_veh-37",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-37-BASELINE",
+      "session_id": "2021.10.08.06.38.01_veh-50",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-37-TREATMENT",
+      "session_id": "2021.10.08.06.38.01_veh-50",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-38-BASELINE",
+      "session_id": "2021.07.16.02.35.53_veh-37",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-38-TREATMENT",
+      "session_id": "2021.07.16.02.35.53_veh-37",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-39-BASELINE",
+      "session_id": "2021.08.25.17.55.51_veh-41",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-39-TREATMENT",
+      "session_id": "2021.08.25.17.55.51_veh-41",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-40-BASELINE",
+      "session_id": "2021.06.24.17.25.34_veh-16",
+      "arm": "BASELINE",
+      "role": "D_AB",
+      "technical80_history_available": true
+    },
+    {
+      "run_id": "D3-D-40-TREATMENT",
+      "session_id": "2021.06.24.17.25.34_veh-16",
+      "arm": "TREATMENT",
+      "role": "D_AB",
+      "technical80_history_available": true
+    }
+  ],
+  "expected": 120,
+  "available": 120,
+  "incomplete_not_imputed": true,
+  "scientific_failures_not_filtered": true
+}

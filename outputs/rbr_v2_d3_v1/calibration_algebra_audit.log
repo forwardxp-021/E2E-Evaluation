@@ -1,0 +1,4 @@
+  File "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/tools/rbr_v2_d3_calibration_audit.py", line 34
+    direct_original_formula_vs_cached_20_draws_max_abs_error=max(errors)))
+                                                                         ^
+SyntaxError: unmatched ')'

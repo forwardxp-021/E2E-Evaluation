@@ -1,0 +1,8 @@
+{
+  "reason": "Empty stale Git index lock; no git process or lsof holder found before recovery",
+  "original": ".git/index.lock",
+  "preserved_as": ".git/index.lock.d3_stale_20261026_3",
+  "bytes": 0,
+  "time_unix": 1793015146.693544,
+  "worktree_reset": false
+}

@@ -1,0 +1,23 @@
+{
+  "adapter_enabled": true,
+  "adapter_type": "ScriptedLongitudinalRequestTrackerV1",
+  "arm": "TREATMENT",
+  "base_tracker": "OFFICIAL_LQR_LATERAL_ONLY",
+  "candidate": "TSB_DIRECT_COAST_F2",
+  "clock_source_sha256": "bf12496bf02f0cafd197b9fbbb4693cd809b1ff58ae35b24edaf2d1230c0fb7c",
+  "common_precontext_unchanged": true,
+  "direct_request_segments_us": [
+    [
+      1100000,
+      2100000,
+      -1.305
+    ],
+    [
+      3900000,
+      4900000,
+      -1.305
+    ]
+  ],
+  "episode_anchor_us": 1623176205950512,
+  "version": "F2_DIRECT_REQUEST_STACK_v1"
+}

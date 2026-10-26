@@ -1,0 +1,129 @@
+{
+  "scope": "Local pure-Python requests import dependency only; no network, no existing runtime mutation, no NumPy/Torch/model replacement",
+  "packages": [
+    {
+      "package": "requests",
+      "version": "2.32.5",
+      "original_package": "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/requests",
+      "local_overlay": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/inference_dependency_overlay/requests",
+      "files_sha256": {
+        "requests/cookies.py": "6cd8be8aa123e0d3d9d34fa86feac7bf392f39bccdde5129830de0ea9692dd7c",
+        "requests/auth.py": "905ef9b6a9cb72d67d31ffe19bd4d9223e1c4169cde6ec51cfca16b31e70991d",
+        "requests/sessions.py": "0a5d5da449ce7f0af3ccf6e4bbe7a67a935e37846dff4ff9f08cb6c7e2464e6f",
+        "requests/hooks.py": "0a2bb2b221c0dfd57951f702057148c7cdc8ac3a6ec1f37d45c4d482fdbc7ed4",
+        "requests/compat.py": "27bb088d1e97a031a9e494d5ccec642b97d2a145546bf3e373b8916610161a62",
+        "requests/models.py": "32365d67893bb67c3ed67cf93ca4a18e63e6ab29342fa0dc8b09c59e06ff564e",
+        "requests/certs.py": "67d49be35d009efea35054f2b2cd23145854eb1b2df1cb442ea7f2f04bf6de0c",
+        "requests/__init__.py": "e3168011198f0c804fb1ad8fb23a54f6bd3aca8a0afb69992874d90215915adb",
+        "requests/status_codes.py": "889500780db96da4ddc3ee8f7c3d1e178aa1a48343251248fb268cab1b382c42",
+        "requests/packages.py": "fe0d2067af355320252874631fa91a9db6a8c71d9e01beaacdc5e2383c932287",
+        "requests/__version__.py": "40a0dc78af0afee8eac030dcde862b474a1d381620295390439bc56a9fc6fdc8",
+        "requests/api.py": "fd96fd39aeedcd5222cd32b016b3e30c463d7a3b66fce9d2444467003c46b10b",
+        "requests/_internal_utils.py": "9cc4329abe21b37d93a95a3901b0ab99c24486f3d487bc57965bb2ab0b252e24",
+        "requests/utils.py": "5aa53ceab677c2f842fad42359c8ed1ff1c4299c1607789609957a496e4311d4",
+        "requests/exceptions.py": "8c93d2d545804ecf3a4a155468ba2b4e225bd52686ba83445a020225ea7e5646",
+        "requests/structures.py": "f886e6855cf4e92fb968f499b94b6167afba0fd5ce8d1b935c739a6d8d38d573",
+        "requests/help.py": "80f5f977f1fb5ddf3c6830017a386a1a097d075545453b79066898bcbdcfcc84",
+        "requests/adapters.py": "f275f5d7781b6f5db7694b71d844e400dffa22c617f8cd9f4682c696e4c47119"
+      }
+    },
+    {
+      "package": "urllib3",
+      "version": "1.26.12",
+      "original_package": "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/urllib3",
+      "local_overlay": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/inference_dependency_overlay/urllib3",
+      "files_sha256": {
+        "urllib3/filepost.py": "e5bfeaaa04475652fbb8bb5d018073061f861e653901f255b7fd8dd174b73de6",
+        "urllib3/fields.py": "92f2c30a0fc9987d652e3514118fc52d2f14858ee106f0cfb951136d8f2676b3",
+        "urllib3/_version.py": "1a1b860544ff32d4711c41c36fe2d8b39c8b3de616942c0504f8c66665496d58",
+        "urllib3/request.py": "645488a97d02e968b38b179c0a1677fe8932bbb044bf4959bb5553d2cea1e123",
+        "urllib3/__init__.py": "8972dc6222724a7d0635b58e3990c30298012f52603f8e0467c8b5efad12f0c7",
+        "urllib3/poolmanager.py": "d0a38e2440a878b6158d41efbfed21e0eab7145410db26fe1678e46e3f2024ed",
+        "urllib3/response.py": "07430cd28f29d62f0843b41286745927353ef261c29f6030de61210a8137f7de",
+        "urllib3/connection.py": "f3defac0beac19e54c5b42675efc79983d34c97bbceee423c6d07dfd52fc771f",
+        "urllib3/_collections.py": "469d6657206073f52501ca7a3376add6c909057479278dcd6b0453bd6da0fd76",
+        "urllib3/exceptions.py": "d0c9e7a372874cd7d745f63beb7f0db9f38f9146fa9973a6f8baa3fb8c76c3c0",
+        "urllib3/connectionpool.py": "bc4ce4d62244c35a91daf1c1a3b9b763df220df9daeab2a4533dc0c8ae6524a4",
+        "urllib3/util/queue.py": "9d1817f3f797fbf564bf1a17d3de905a8cfc3ecd101d4004c482c263fecf9dc3",
+        "urllib3/util/ssltransport.py": "340faee6b313ac3143142f10cd129410a306d39eb584e0f8a814ebdd9e29bfa1",
+        "urllib3/util/proxy.py": "cd4bcf3c226ba7a74e17437818055b39c97aa3ee2e5ca4ab1a24e492be6f512e",
+        "urllib3/util/wait.py": "7ce5f4fdf6a8cc6d8fee25688d0a04d666f277078dc93726fa15c47c5ad3b4b2",
+        "urllib3/util/request.py": "7d688069af29c1d2cb22aa132c1c420b67b879df349aecca5377b71d6593cc54",
+        "urllib3/util/timeout.py": "4126c150d381f7287a0270e7eb54ab2d0d21839a33d08f7eb97106f75009b888",
+        "urllib3/util/__init__.py": "2449929a6aaa2f26b0f0fe75814226661f06c20f62d7349ef83a2a022b67da77",
+        "urllib3/util/response.py": "189a60dc4822f6a6895d1c01879c2ff8c36e4566a7e4122ee34a117a8c563f6f",
+        "urllib3/util/ssl_.py": "734b188920badbbdabeae3e4c50a68e6b60f3fd402d5e47aa08ef4d38818a99a",
+        "urllib3/util/retry.py": "8844a0d8fbd588d7570516383292f887492ac0e3a41e4c662e7d649211473d4f",
+        "urllib3/util/url.py": "9bc72b58ac8d1a39f19aac34159e02a731d5223bfc0e8ae7c16db620920eabe8",
+        "urllib3/util/connection.py": "e4bc760753d6dbd2b1067d93d3190dd420604416b780654904aa10a11a201159",
+        "urllib3/util/ssl_match_hostname.py": "22be1c65512398093c8140081d64a2ef0b4e3bcdd4098001636c450f5425fd60",
+        "urllib3/contrib/securetransport.py": "40e8556d6ac541329b995fafb721baf5a99e924295c5791d8e4f68ca668ed008",
+        "urllib3/contrib/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "urllib3/contrib/socks.py": "6918bd7965e8f5911bf795d4c5e7f8676d421659e78db122028f473ac7a832de",
+        "urllib3/contrib/_appengine_environ.py": "6c36f2384856d8228b25c42a00a032ac41cdf9a925b321c52aaeaf17c645b269",
+        "urllib3/contrib/pyopenssl.py": "61e2bd080ec3e0c7dd6aaa2b01667ca061df2a7847cc04925176b61887edc6c2",
+        "urllib3/contrib/appengine.py": "8f3e75e636580431539e1478cea7de682a3a25d0e0010a986eacc72bdb0391fc",
+        "urllib3/contrib/ntlmpool.py": "7a3f601af7c06f61add3495a7c5a78e52228473f90c2b438582866ea04260253",
+        "urllib3/contrib/_securetransport/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "urllib3/contrib/_securetransport/low_level.py": "076241076fcd44fd36c4ae8309ad4f6bd22ec6b3f0c730f365b8b14246fb53d3",
+        "urllib3/contrib/_securetransport/bindings.py": "e1793ae2a2243c1b74f40e6af9120552e0e135cf665e29556a99bb5a7627cd1c",
+        "urllib3/packages/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "urllib3/packages/six.py": "6fd2ccd30057bfb13b4ab6c28c09b8c3037e86b1fe88dc6fd7c2e058d30c28fa",
+        "urllib3/packages/backports/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "urllib3/packages/backports/makefile.py": "9dbcedde2d1a80f54fd3b8eaaa08e16988cc9ae022fd6e44d04cb0662bd53bc1"
+      }
+    },
+    {
+      "package": "idna",
+      "version": "3.11",
+      "original_package": "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/idna",
+      "local_overlay": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/inference_dependency_overlay/idna",
+      "files_sha256": {
+        "idna/intranges.py": "6a652d91d8587101bc66bf82a0c33f91545a731922bc2d568313756fadca29d5",
+        "idna/package_data.py": "fc251abcec686e76f2346d852f21e837c4073f740cf56d6d2aec3b7aaf50c019",
+        "idna/compat.py": "4732f2e90402765f7bf3868585bd845fd10a1822638343f73e294675e5d7731f",
+        "idna/idnadata.py": "486f2385a184e778a20fa078f69b76a704effd4bc295c89613e379e28476a785",
+        "idna/__init__.py": "30fa8d0cb65b5ea19a35d5f1005862a853ca1105e3bb68cd42109ecbafb97893",
+        "idna/core.py": "3f6ebf5d5c9cb8c4d9d51da634ad594445733399af4f375a6c15dfc99554d4b7",
+        "idna/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "idna/codec.py": "33648658dedcb3fe81df6426293c9337ac50199798420436c225f7fc347a9681",
+        "idna/uts46data.py": "1fd277e55903d05f4bf6628eaa378d19dd80f956ba1653e8cfa273e0aee1fa9b"
+      }
+    },
+    {
+      "package": "certifi",
+      "version": "2025.8.3",
+      "original_package": "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/certifi",
+      "local_overlay": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/inference_dependency_overlay/certifi",
+      "files_sha256": {
+        "certifi/__init__.py": "d1ae6ba3829361ea77ecea3467c4f27023d768394e12dbee8f6a4d599ff5b7c6",
+        "certifi/core.py": "5c55f2727746e697f7edac9e17c377d8752e0da7ecca191531b3b80403d61dad",
+        "certifi/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "certifi/cacert.pem": "9102e6a3644a071ba6cdbd4a53698f291c4a64b18450a08bc046548b6db5cc8b",
+        "certifi/__main__.py": "c410688fdd394d45812d118034e71fee88ba7beddd30fe1c1281bd3b232cd758"
+      }
+    },
+    {
+      "package": "charset_normalizer",
+      "version": "3.4.3",
+      "original_package": "/Users/liuqing/miniconda3/envs/nuplan/lib/python3.9/site-packages/charset_normalizer",
+      "local_overlay": "/Users/liuqing/Projects/01_E2E_QA_Code/E2E-Evaluation/outputs/rbr_v2_d3_v1/inference_dependency_overlay/charset_normalizer",
+      "files_sha256": {
+        "charset_normalizer/md.py": "fbfa0dde1dff5fdf679057ea6a60f7caee390c2ff07e4e68747d13aff090897b",
+        "charset_normalizer/version.py": "84137789dd62a381cc54fb720e7f4821155285b04cd24815b3785a56da6964e1",
+        "charset_normalizer/legacy.py": "b180734a9cec46b83fc05e0b3f9dfaa46eb8048b70ed3aad73748c4001ef14b3",
+        "charset_normalizer/models.py": "94a5e13a720fb626a46cade2fff27dc2939fcf1dc90d32a3ec39f7460d156912",
+        "charset_normalizer/__init__.py": "38a47146fd99867aa4d34b6a90dd1cd41b498e6d7ae5f5972f2744e7620ab877",
+        "charset_normalizer/api.py": "574ee2f1a55e083f13d9f4a26b70be7e7d22f6df2a420b84061b2ab33837d8db",
+        "charset_normalizer/utils.py": "b137a33e0add94db0a36e7197c90b127de653132c0d128472cb1379f9c294fd4",
+        "charset_normalizer/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "charset_normalizer/constant.py": "ed4558e2575886640c1d476043fb20666cdc434c71631a41ba7a9267e5c967c5",
+        "charset_normalizer/__main__.py": "cb3631311f8884a44763071295abc4bfca06770c6c47cf66af65f4f6a5c6769b",
+        "charset_normalizer/cd.py": "58a4e8d470dbf87f477c20dcdc17f0ab98f34b6e598b2f521366bbe12813abcf",
+        "charset_normalizer/cli/__init__.py": "0fc23cea5164dbea72e3926fab19e24e2ad28ffb05c84eac8da63fd3e1b5b217",
+        "charset_normalizer/cli/__main__.py": "74c6971ba2095d1beaabccf6b6283b41bf37f81a564e59f9e68a2292ee7fbaf8"
+      }
+    }
+  ],
+  "new_download_bytes": 0
+}

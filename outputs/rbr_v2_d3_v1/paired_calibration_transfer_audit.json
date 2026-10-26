@@ -1,0 +1,160 @@
+{
+  "status": "NUMERICAL_AND_IDENTITY_AUDIT_PASS_CALIBRATION_TRANSFER_DIAGNOSTIC_FAILURE",
+  "rows": [
+    {
+      "role": "cal",
+      "representation": "RBR64",
+      "independent_SESSION": 20,
+      "baseline_off_diagonal_kernel_mean": 0.41296594619034227,
+      "baseline_identical_shared_log_score": -0.058703405380965745,
+      "shared_log_formula_value": -0.05870340538096577,
+      "shared_log_diagnostic_only_not_independent_AA": true,
+      "BT_same_SESSION_kernel_mean": 0.9797170106207409,
+      "BT_same_SESSION_kernel_min": 0.8491843053722179,
+      "score_quantiles": [
+        -0.05887050577599362,
+        -0.058664796870793276,
+        -0.058164529713021995,
+        -0.057149250303853295,
+        -0.05504404380255634
+      ],
+      "frozen_threshold": -0.05714889926761901,
+      "baseline_mask_valid_fraction_mean": 0.17820030120481928,
+      "baseline_pairwise_standardized_distance_median": 17.2892717721976,
+      "direct_original_formula_vs_cached_20_draws_max_abs_error": 0.0
+    },
+    {
+      "role": "cal",
+      "representation": "H30",
+      "independent_SESSION": 20,
+      "baseline_off_diagonal_kernel_mean": 0.09312078514733843,
+      "baseline_identical_shared_log_score": -0.09068792148526614,
+      "shared_log_formula_value": -0.09068792148526617,
+      "shared_log_diagnostic_only_not_independent_AA": true,
+      "BT_same_SESSION_kernel_mean": 0.0,
+      "BT_same_SESSION_kernel_min": 0.0,
+      "score_quantiles": [
+        -0.06594333808666906,
+        -0.057142200271544964,
+        -0.045853326394300814,
+        -0.028903223226046524,
+        0.0038691592946227815
+      ],
+      "frozen_threshold": -0.02885281386240468,
+      "baseline_mask_valid_fraction_mean": 0.17820030120481928,
+      "baseline_pairwise_standardized_distance_median": 28.626064023142064,
+      "direct_original_formula_vs_cached_20_draws_max_abs_error": 0.0
+    },
+    {
+      "role": "aa",
+      "representation": "RBR64",
+      "independent_SESSION": 20,
+      "baseline_off_diagonal_kernel_mean": 0.5612789817217149,
+      "baseline_identical_shared_log_score": -0.043872101827828525,
+      "shared_log_formula_value": -0.04387210182782852,
+      "shared_log_diagnostic_only_not_independent_AA": true,
+      "BT_same_SESSION_kernel_mean": 0.9828729204738632,
+      "BT_same_SESSION_kernel_min": 0.9617749110706015,
+      "score_quantiles": [
+        -0.04429149820490408,
+        -0.04403090485130399,
+        -0.043638746468413925,
+        -0.04200816762256239,
+        -0.038367495631990156
+      ],
+      "frozen_threshold": -0.05714889926761901,
+      "baseline_mask_valid_fraction_mean": 0.15686746987951808,
+      "baseline_pairwise_standardized_distance_median": 8.334575039060091,
+      "direct_original_formula_vs_cached_20_draws_max_abs_error": 0.0
+    },
+    {
+      "role": "aa",
+      "representation": "H30",
+      "independent_SESSION": 20,
+      "baseline_off_diagonal_kernel_mean": 0.037635170967979865,
+      "baseline_identical_shared_log_score": -0.09623648290320201,
+      "shared_log_formula_value": -0.09623648290320203,
+      "shared_log_diagnostic_only_not_independent_AA": true,
+      "BT_same_SESSION_kernel_mean": 0.0,
+      "BT_same_SESSION_kernel_min": 0.0,
+      "score_quantiles": [
+        -0.06791612672368463,
+        -0.057636993165211654,
+        -0.04843306231078788,
+        -0.03378647376755598,
+        -0.011102359876832932
+      ],
+      "frozen_threshold": -0.02885281386240468,
+      "baseline_mask_valid_fraction_mean": 0.15686746987951808,
+      "baseline_pairwise_standardized_distance_median": 81.30598071775583,
+      "direct_original_formula_vs_cached_20_draws_max_abs_error": 0.0
+    },
+    {
+      "role": "ab",
+      "representation": "RBR64",
+      "independent_SESSION": 20,
+      "baseline_off_diagonal_kernel_mean": 0.3392231327707805,
+      "baseline_identical_shared_log_score": -0.06607768672292191,
+      "shared_log_formula_value": -0.06607768672292195,
+      "shared_log_diagnostic_only_not_independent_AA": true,
+      "BT_same_SESSION_kernel_mean": 0.9840499263476241,
+      "BT_same_SESSION_kernel_min": 0.9673463848708687,
+      "score_quantiles": [
+        -0.06477123134647822,
+        -0.06432954549468352,
+        -0.06376613879850385,
+        -0.06305119994586658,
+        -0.062107709985052884
+      ],
+      "frozen_threshold": -0.05714889926761901,
+      "baseline_mask_valid_fraction_mean": 0.2467771084337349,
+      "baseline_pairwise_standardized_distance_median": 17.946258761645815,
+      "direct_original_formula_vs_cached_20_draws_max_abs_error": 0.0
+    },
+    {
+      "role": "ab",
+      "representation": "H30",
+      "independent_SESSION": 20,
+      "baseline_off_diagonal_kernel_mean": 0.054314249129960745,
+      "baseline_identical_shared_log_score": -0.0945685750870039,
+      "shared_log_formula_value": -0.09456857508700393,
+      "shared_log_diagnostic_only_not_independent_AA": true,
+      "BT_same_SESSION_kernel_mean": 0.0,
+      "BT_same_SESSION_kernel_min": 0.0,
+      "score_quantiles": [
+        -0.04499622238478257,
+        -0.041139601660863806,
+        -0.03352099781181882,
+        -0.020687535412059744,
+        -0.008540829240428496
+      ],
+      "frozen_threshold": -0.02885281386240468,
+      "baseline_mask_valid_fraction_mean": 0.2467771084337349,
+      "baseline_pairwise_standardized_distance_median": 47.03281226278966,
+      "direct_original_formula_vs_cached_20_draws_max_abs_error": 0.0
+    }
+  ],
+  "direct_vs_cached_max_abs_error": 0.0,
+  "source_groups_unchanged": true,
+  "shared_log_MMD_identity": "For m identical rows on both sides with the fixed unbiased two-sample formula, MMD2(X,X)=2/m*(mean_offdiag_K-1), generally negative. This is a structural shared-source term, not numerical error.",
+  "inference": "RBR score ranges are disjoint across fixed calibration/held-out AA/AB pools. Source-dependent background kernel geometry and small paired-calibration pools are an evidenced calibration-transfer problem. Direct formula parity rules out cached-kernel/index-order arithmetic error; it does not prove a unique population cause.",
+  "illegal_rescues_not_performed": [
+    "negative score clamp",
+    "new bandwidth",
+    "refit scaler",
+    "recalibrate on held-out AA/AB",
+    "select another checkpoint",
+    "choose successful subset",
+    "use shared-log diagnostic as independent operational AA"
+  ],
+  "baseline_identity_scope": "Algebra check only, never a replacement AA experiment",
+  "new_model_forward_or_gradient_calls": 0,
+  "Primary_V_C": false,
+  "source_sha256": {
+    "outputs/rbr_v2_d3_v1/D_statistics_results.json": "292f17e68dff2dfc9d1ef7ddfe7a5983d6cea7dcbbecec0ef8cc4747b32d9f12",
+    "outputs/rbr_v2_d3_v1/interface/input_manifest.json": "b3a75351751c28ec8513880498c26446e9ac7fe979cbffb5c72042b4503214c2",
+    "outputs/rbr_v2_d3_v1/interface/RBR64.npy": "a6546bec42a64d84a7eb90afe384a717ea14bec0ea81d939cda2386ee46ea3fe",
+    "outputs/rbr_v2_d3_v1/interface/H30.npy": "aec3cb67700b9bd998777cb405d25e0c45710918ccec8f2daee160e2066b7011",
+    "outputs/rbr_v2_d1_v1/D_fit_engineering_scalers.json": "a7010b2ca843ad8d868eec733bcff9296d2a03b21b804b92cae08219c743a2e5"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "status": "RBR_V2_D3_REAL_D_EVIDENCE_COMPLETE_STATISTICAL_FEASIBILITY_BLOCKED",
+  "provenance_index": "outputs/rbr_v2_d3_v1/Provenance_File_Index_v1.json",
+  "provenance_index_sha256": "95d8b089bb08bb873d521bf6faf7b6861ba0ce8b39f6c8a0e9ddfb4ed20149c9",
+  "bound_files": 4212,
+  "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+  "normalizer_sha256": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+  "D2_manifest_sha256": "0603846bcdda76b30ca124a82054d321b4487a30993201dfc70584b39920317c",
+  "engineering_gate_sha256": "5f90eff0b207bbb994e044e148350d8a01ceb48448efe90287eb1ebc35a70318",
+  "science_analysis_view_sha256": "3904d5bb1d36ae7411b5b3ed14143c84612d37f73e76ddfe5a6d09d820803351",
+  "original_D3_stopped_ledger_sha256": "9472b2464e93e651fa6b2310249d501ca8ab45046bb75de0384e4734a388b8f8",
+  "continuation_ledger_sha256": "e36d659e799296d0917602b2a578565fe39502081bc463564bd7451ac5457b2c",
+  "source_independence_risk": "U_SOURCE_COMPLETE_INDEPENDENCE_NOT_ESTABLISHED",
+  "stage_commits": [
+    "db9916d9fa24567aa820a45f267c253f85aef69c",
+    "c4eaa8a04f85516a7f8aeeda17df38d3da734b44",
+    "314b5a767bcbb191b8faac11f9425f07f5e5bf7e",
+    "6d0148792966db4586e4d57f6becfe3106347ea9"
+  ],
+  "Primary_V_C": 0,
+  "training": 0,
+  "downloads": 0
+}

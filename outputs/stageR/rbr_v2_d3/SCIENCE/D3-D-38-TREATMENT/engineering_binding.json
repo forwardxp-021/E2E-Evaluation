@@ -1,0 +1,12 @@
+{
+  "version": "SDC_D3_ENDPOINT_ARC_BINDING_COMPAT_V1",
+  "parent_control": "F2_DIRECT_REQUEST_STACK_v1",
+  "parent_config_hash": "0da332a380d56aa8d60854bfeb13b761d9dbe5d9e184ca7bfdf8c55b298248eb",
+  "actual_config_hash": "89ff191aefed74a6b00c542c6aebdd70709f432f622a56e38a5ff57018519d29",
+  "source_sha256": {
+    "tools/rbr_v2_d3_arc_binding.py": "6fbfd2af94dd6149ed6642bb47e92dfb1797fd9268eef91be590232734659869",
+    "tools/rbr_v2_d3_production.py": "08d888a717a566f75c1c30988fc9793e67754dcb8f62f12171555d59a7b40b98"
+  },
+  "change": "Rebind endpoint-clamped first-edge arc to the same stitched native reference being sampled; no new path, no LQR/model/longitudinal/clock/metric change",
+  "correct_cases": "ORIGINAL_CONSISTENT_ARC_USES_EXACT_ORIGINAL_FLOAT"
+}

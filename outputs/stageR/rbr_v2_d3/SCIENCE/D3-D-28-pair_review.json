@@ -1,0 +1,52 @@
+{
+  "pair_id": "D3-D-28",
+  "session_id": "2021.07.23.16.54.45_veh-37",
+  "temporal": {
+    "max_abs_speed_difference_mps": 1.0856840928720182,
+    "absolute_speed_difference_integral_m": 2.3962903492858634,
+    "actual_trace_hash_distinct": true,
+    "request_sequences_distinct": true,
+    "pass_gate": true
+  },
+  "arm_pass": [
+    true,
+    true
+  ],
+  "F_match": {
+    "version": "P1R_UNCHANGED_FOUR_F_v1",
+    "baseline": {
+      "mean_speed": 9.091902,
+      "end_minus_start_speed": -2.55713,
+      "path_length": 71.931633,
+      "mean_abs_accel": 0.334112
+    },
+    "treatment": {
+      "mean_speed": 9.091902,
+      "end_minus_start_speed": -2.557129,
+      "path_length": 71.931632,
+      "mean_abs_accel": 0.333916
+    },
+    "calipers": {
+      "mean_speed": 0.1,
+      "end_minus_start_speed": 0.15,
+      "path_length": 0.8,
+      "mean_abs_accel": 0.02
+    },
+    "absolute_delta": {
+      "mean_speed": 0.0,
+      "end_minus_start_speed": 1e-06,
+      "path_length": 1e-06,
+      "mean_abs_accel": 0.000196
+    },
+    "pass": true
+  },
+  "retained_P1_balance_review": {
+    "negative_dose_delta_mps": 0.0009394645149596315,
+    "peak_differences_mps2": [
+      0.1721308927420182,
+      0.1720431066517918
+    ],
+    "pass": true
+  },
+  "pair_pass": true
+}
