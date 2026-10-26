@@ -1,0 +1,105 @@
+{
+  "dependent_equal_marginal_null": {
+    "m": 3,
+    "exact64_dataset_mean": -0.17293294335267748,
+    "predicted_mean": -0.17293294335267745,
+    "paired_kernel_expectation": 0.8270670566473226,
+    "independent_kernel_expectation": 0.5676676416183064
+  },
+  "conditional_orientation_moments": {
+    "exact256_mean": -0.021387975043685226,
+    "formula_mean": -0.021387975043685226,
+    "exact256_variance": 0.003518674683381094,
+    "formula_variance": 0.0035186746833810937
+  },
+  "prospective_binomial_precision_planning": [
+    {
+      "independent_AA_release_blocks": 48,
+      "AA_sources_at_m20": 960,
+      "largest_FPR_count_passing_one_sided_975_upper": 0,
+      "probability_gate_pass_at_true_FPR005": 0.08525759033430842,
+      "zero_error_975_upper": 0.07397278534728025
+    },
+    {
+      "independent_AA_release_blocks": 200,
+      "AA_sources_at_m20": 4000,
+      "largest_FPR_count_passing_one_sided_975_upper": 7,
+      "probability_gate_pass_at_true_FPR005": 0.21330470278470298,
+      "zero_error_975_upper": 0.018275340355136227
+    },
+    {
+      "independent_AA_release_blocks": 500,
+      "AA_sources_at_m20": 10000,
+      "largest_FPR_count_passing_one_sided_975_upper": 25,
+      "probability_gate_pass_at_true_FPR005": 0.5529388564087534,
+      "zero_error_975_upper": 0.0073506100519077355
+    },
+    {
+      "independent_AA_release_blocks": 1000,
+      "AA_sources_at_m20": 20000,
+      "largest_FPR_count_passing_one_sided_975_upper": 58,
+      "probability_gate_pass_at_true_FPR005": 0.889438478239188,
+      "zero_error_975_upper": 0.00368208389686564
+    }
+  ],
+  "pool_covariate_shifts": [
+    {
+      "groups": [
+        "cal",
+        "aa"
+      ],
+      "map_total_variation": 0.9,
+      "covariate_descriptive_KS": {
+        "initial_speed_mps": 0.25,
+        "mask_valid_fraction": 0.45,
+        "neighbor_presence_fraction": 0.25,
+        "UTC_hour": 0.25
+      },
+      "no_causal_attribution": true
+    },
+    {
+      "groups": [
+        "cal",
+        "ab"
+      ],
+      "map_total_variation": 0.9000000000000001,
+      "covariate_descriptive_KS": {
+        "initial_speed_mps": 0.2,
+        "mask_valid_fraction": 0.25,
+        "neighbor_presence_fraction": 0.3,
+        "UTC_hour": 0.4
+      },
+      "no_causal_attribution": true
+    },
+    {
+      "groups": [
+        "aa",
+        "ab"
+      ],
+      "map_total_variation": 0.45000000000000007,
+      "covariate_descriptive_KS": {
+        "initial_speed_mps": 0.35,
+        "mask_valid_fraction": 0.45,
+        "neighbor_presence_fraction": 0.45,
+        "UTC_hour": 0.45
+      },
+      "no_causal_attribution": true
+    }
+  ],
+  "descriptive_RBR_raw_direction_coherence": 0.891890287399292,
+  "all64_channel_sign_coherence_quantiles": [
+    0.5,
+    0.5858333333333333,
+    0.9166666666666666,
+    1.0,
+    1.0
+  ],
+  "RBR_distance_correlations_descriptive_only": {
+    "initial_speed": -0.16532370102806337,
+    "mask_valid_fraction": -0.18773643907998466,
+    "mask_BT_change": 0.37588116391531656,
+    "braking_spread_change": -0.14787440955821066,
+    "braking_centroid_change": 0.07891080855793278
+  },
+  "no_feature_or_model_selection": true
+}

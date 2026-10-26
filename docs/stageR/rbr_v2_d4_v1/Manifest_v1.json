@@ -1,0 +1,370 @@
+{
+  "status": "D4_PROSPECTIVE_SAP_AMENDMENT_REQUIRED",
+  "files": {
+    "outputs/rbr_v2_d4_v1/synthetic_execution.log": {
+      "sha256": "d4de24bcb28df1463417eeb580177bd7b69356288f72e9ef0534783ce2899438",
+      "bytes": 291
+    },
+    "outputs/rbr_v2_d4_v1/session_covariates.csv": {
+      "sha256": "893fb50f21e58972118bf198f204de7afa1078a70bd645f5ff4b68ca8061a0e8",
+      "bytes": 8305
+    },
+    "outputs/rbr_v2_d4_v1/exploratory_conditional_randomization.csv": {
+      "sha256": "0981c50839c688fa79bfe6ad29cc789beb45cf1d5d5c58fac302da8027ff80ee",
+      "bytes": 91132
+    },
+    "outputs/rbr_v2_d4_v1/theory_execution.log": {
+      "sha256": "8124dae03f56e64b793e1513db71d4269819251df377af028dc7f55b1878a41b",
+      "bytes": 66
+    },
+    "outputs/rbr_v2_d4_v1/compile_all.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "outputs/rbr_v2_d4_v1/compile_checks.json": {
+      "sha256": "dd06a15756a8a3d4b78b20882a2ed97dac10db916dfbd162e7ecc45a79ddc5dc",
+      "bytes": 341
+    },
+    "outputs/rbr_v2_d4_v1/compile_all_python39.log": {
+      "sha256": "8296b07f74208f38a9cb25f40268e919d19c7550e0095573cbb98019181b8e99",
+      "bytes": 149
+    },
+    "outputs/rbr_v2_d4_v1/synthetic_resources.json": {
+      "sha256": "32ffa0eeb365cf157615b3646ded77b74ca16ac5c6a11e22b672a7f2e85413aa",
+      "bytes": 172
+    },
+    "outputs/rbr_v2_d4_v1/no_tmp.log": {
+      "sha256": "6cf63873da585d146875a771fd999b0bcf0c1ece8382b5fd1abe202c1c9b5158",
+      "bytes": 62
+    },
+    "outputs/rbr_v2_d4_v1/protection.json": {
+      "sha256": "2d0c456564deb6d2fe0f75d75064078445cec83a5a32784afcefb00f05876218",
+      "bytes": 299
+    },
+    "outputs/rbr_v2_d4_v1/real_execution.log": {
+      "sha256": "796a59d0b173b62e80e96732e04b7563df8001e7e3a9f78734343a981006b4be",
+      "bytes": 70
+    },
+    "outputs/rbr_v2_d4_v1/synthetic_results.json": {
+      "sha256": "36a48c89d9268516d4025e807b6e3927e1cd9b787f4f0f396ae4d27808ca9eab",
+      "bytes": 4496
+    },
+    "outputs/rbr_v2_d4_v1/real_diagnostics.json": {
+      "sha256": "d4981a57f591c22bc67634394b7099dc33de19fd6d1af3ece890183e4da14894",
+      "bytes": 195690
+    },
+    "outputs/rbr_v2_d4_v1/quick_section.md": {
+      "sha256": "4c801a1d3853a1c6419e8997cb9e4a97649cfd3e004d27740cd74ae83625aa5a",
+      "bytes": 1346
+    },
+    "outputs/rbr_v2_d4_v1/primitive_tests.log": {
+      "sha256": "006ba2e6e18954ad086677bc060e3290380048985a443818578f6ef51ed1b21b",
+      "bytes": 98
+    },
+    "outputs/rbr_v2_d4_v1/all_H30_physical_changes.csv": {
+      "sha256": "5531369b05f43d94f8acd01861446b1f1b3b0722d55acd0abfe1cadb1f0b28cd",
+      "bytes": 2856
+    },
+    "outputs/rbr_v2_d4_v1/mathematical_checks.json": {
+      "sha256": "3723f07daaae39a46e8bdb46fcc48ee423ad53b9408c786511a95a9e0425a1f8",
+      "bytes": 3153
+    },
+    "outputs/rbr_v2_d4_v1/synthetic_replicates.csv": {
+      "sha256": "b06843e9b79487267702ebdee8fa15368944c70a4db0e67c26bc4ab9db1f54ce",
+      "bytes": 715533
+    },
+    "outputs/rbr_v2_d4_v1/report_execution.log": {
+      "sha256": "81972b87c9124f5d36dbf40ef3c3e024aa5b3be4f88ffb62781fe945ca91024a",
+      "bytes": 60
+    },
+    "outputs/rbr_v2_d4_v1/D4_Exposure_Update.csv": {
+      "sha256": "648a05193ad473d118b9fab605e067d35f87ef97cfd0f0a1bf780f4950118337",
+      "bytes": 6419
+    },
+    "outputs/rbr_v2_d4_v1/scaler_channel_sensitivity.csv": {
+      "sha256": "82e01ad2dee4738e276be5eb2ca0d6bcd9ca35a9a4d38d8aef41871460cc37d8",
+      "bytes": 67727
+    },
+    "outputs/rbr_v2_d4_v1/frozen_D3_score_moments.csv": {
+      "sha256": "9b5e7c8adbae3f50f85392fc20a5a729cf098d39de79547b5af9d355a1f488da",
+      "bytes": 558
+    },
+    "outputs/rbr_v2_d4_v1/real_resources.json": {
+      "sha256": "4e89f054cb9e8b5fd95e71c392f9cd199e4ea021d73820ddbc35e8a15534597c",
+      "bytes": 189
+    },
+    "outputs/rbr_v2_d4_v1/paired_representation_response.csv": {
+      "sha256": "6c7af375eda17639baed0a8a34a6d099e6c661dfbb396f3fd8d978aaa3f45b4f",
+      "bytes": 10218
+    },
+    "outputs/rbr_v2_d4_v1/compile_owned_python39.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "outputs/rbr_v2_d4_v1/compile_all_python313.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/stageR/rbr_v2_d4_v1/Status_v1.json": {
+      "sha256": "bc416b11ef5b064732f560e2ff05215b0730460d4337fe0481a41495abe5b94f",
+      "bytes": 327
+    },
+    "docs/stageR/rbr_v2_d4_v1/Scientific_Report_CN_v1.md": {
+      "sha256": "76d2725134ec490dbd8f2aa4f686215abba008a578bfcff4751a588f63dec612",
+      "bytes": 19483
+    },
+    "docs/stageR/rbr_v2_d4_v1/D4_Background_And_Synthetic_Stress.png": {
+      "sha256": "af96f39fd9b5ac8db9f2f8395643d469cd7790ba5709b9460bdfa53d4efd45bf",
+      "bytes": 132287
+    },
+    "docs/stageR/rbr_v2_d4_v1/D4_Conditional_Orbit_Background.png": {
+      "sha256": "3503dc3bc5a38f991b12b7f16b1f8e749b760fbb70446235f08bb7d8cee8c253",
+      "bytes": 159694
+    },
+    "configs/rbr_v2_d4_v1/analysis_plan.json": {
+      "sha256": "ef76fa33a78c6fc9a33cd4031656cf6b78446aac2a8cdf4a658428ba90c63812",
+      "bytes": 4373
+    },
+    "tools/rbr_v2_d4_report.py": {
+      "sha256": "e0533144416adc87a0f1b8ab4aaecf95e9cc7dcf960a28a9098adcf0da5820cb",
+      "bytes": 26168
+    },
+    "tools/rbr_v2_d4_analysis.py": {
+      "sha256": "c0d8d733a76ab4b0fcde935d8808c257a8df0b1a85e0591a5741a23ac04941f5",
+      "bytes": 12581
+    },
+    "tools/rbr_v2_d4_theory.py": {
+      "sha256": "6f60dde2f84aeaf9ea883c6e317caef255fc96966a1d237f4b8b4c167e80a8d8",
+      "bytes": 5305
+    },
+    "tools/rbr_v2_d4_randomization.py": {
+      "sha256": "71f53b6de14f190dc92d922df208770fc925daab8e3c04214edcc47ce58031d4",
+      "bytes": 2268
+    },
+    "tests/test_rbr_v2_d4_randomization.py": {
+      "sha256": "5735acf68ae4a956c44d6e5b9bef0cf44ff1bd1dcecf9770ed7d0202fbf363ff",
+      "bytes": 1533
+    }
+  },
+  "protected_statistical_sources": {
+    "docs/stageR/s1/S1_BDD_Statistical_Analysis_Plan_Draft_v0.1.md": "86dd7d909be8d66249201fbbc5ac2dd9acd1eb8e1b73ed69737cd138370f145e",
+    "docs/stageR/s1r_owner_amendment/S1R_Owner_Approval_Record_v1.md": "7ab9995ce7294bd623b70365377a22e786cf02edc69f388546cc4f0b7493ebba",
+    "docs/stageR/s1r_owner_amendment/S1R_Data_Role_Contract_UBVC_v1.md": "473597fdde0c84b4d7096014eb80fa884843d93b61e700485d3ece8351be87ed",
+    "docs/stageR/s1r_owner_amendment/S1R_Primary_Freeze_Point_v1.md": "3ac558962bdbd1980a6b68cafd87e3ffb26835e3a3c6f1b04da324b81634fe0a",
+    "tools/rbr_v2_d1_statistics.py": "21e131628f14333f5a1019f771c17130f6e30ee8dd2edf4cf67f8dc0820f902d",
+    "tools/rbr_v2_d2_statistics.py": "5a51db6f2aa28ab86dbcd573e2f5b3ccfa9ee62cf4b16cc29347de5c88ce25dc",
+    "tools/rbr_v2_d3_interface.py": "37686ca070ed83659b21454b67a907c6739dbf7cb0b879ccd21a175a35bc3f0e",
+    "outputs/rbr_v2_d3_v1/D_statistics_results.json": "292f17e68dff2dfc9d1ef7ddfe7a5983d6cea7dcbbecec0ef8cc4747b32d9f12",
+    "outputs/rbr_v2_d3_v1/interface/input_manifest.json": "b3a75351751c28ec8513880498c26446e9ac7fe979cbffb5c72042b4503214c2",
+    "outputs/rbr_v2_d3_v1/interface/RBR64.npy": "a6546bec42a64d84a7eb90afe384a717ea14bec0ea81d939cda2386ee46ea3fe",
+    "outputs/rbr_v2_d3_v1/interface/H30.npy": "aec3cb67700b9bd998777cb405d25e0c45710918ccec8f2daee160e2066b7011",
+    "outputs/rbr_v2_d1_v1/D_fit_engineering_scalers.json": "a7010b2ca843ad8d868eec733bcff9296d2a03b21b804b92cae08219c743a2e5",
+    "outputs/rbr_v2_prod_v1/normalizer.json": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+    "outputs/rbr_v2_prod_v1/run/epoch30.pt": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+    "outputs/rbr_v2_d3_v1/D_AB_PAIRED_PI50_H30_statistics.npy": "de79e8841c8b4a0abda273947ab64c8d265ae170d47d279cb8710ec4f1e0a65c",
+    "outputs/rbr_v2_d3_v1/D_AB_PAIRED_PI50_RBR64_statistics.npy": "7f8d778f171d816cf38929a0c84400ff07f5541549040fff380c20c86e670823",
+    "outputs/rbr_v2_d3_v1/D_AA_CONTROLLED_SWAP_RBR64_statistics.npy": "96879d7e929ee979e2d0560114f41af2f50748bcbd3c1d5f7d43744657091c9f",
+    "outputs/rbr_v2_d3_v1/D_SWAP_CAL_H30_statistics.npy": "c8ae20657c2a9beb9b7fcd988f6e99be18d303af2c777fba0df72d77418c98cd",
+    "outputs/rbr_v2_d3_v1/D_SWAP_CAL_RBR64_statistics.npy": "83eeee7780e7c640b0d7eed1da97d888b722a0c15985b41786214f02c8fa48c8",
+    "outputs/rbr_v2_d3_v1/D_AA_CONTROLLED_SWAP_H30_statistics.npy": "3e3bc4170e7c6a78766f91d409ffebf0ad745db0d9c299378bcef11a3934875a",
+    "outputs/rbr_v2_d3_v1/D_AB_PAIRED_PI50_RBR64_alarms.npy": "9cadcf53dfd7b70ebb4244ad752bba278fa74a65df9b59df131df7b3e403fb9e",
+    "outputs/rbr_v2_d3_v1/D_AA_CONTROLLED_SWAP_RBR64_alarms.npy": "d1550b98fcb0298fdc73bc0316f26500fe21f415140f7665d85f3818dbe899fe",
+    "outputs/rbr_v2_d3_v1/D_AB_PAIRED_PI50_H30_alarms.npy": "fba8e6cd6b489dc8c5033e230cb9aab70a60edb557a299396f8b43a041428932",
+    "outputs/rbr_v2_d3_v1/D_AA_CONTROLLED_SWAP_H30_alarms.npy": "2d858ff65a74e821dfaf277af4d7297d5788d2065620970a5ec9ed19f33132e2"
+  },
+  "additional_real_read_sources": {
+    "outputs/rbr_v2_d3_v1/interface/batch001/inputs/SDC-QUAL-01-BASELINE.npz": "42b394040c23c7d26c19b8fd21abe7f48ab091969d74e5ae08ef96641c47d915",
+    "outputs/rbr_v2_d3_v1/interface/batch001/inputs/SDC-QUAL-01-TREATMENT.npz": "d93e8e98ace59e65a7889eb404942a35d1efca4f35c19e31643cce6fb7d6e294",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-01-BASELINE/execution_manifest.json": "87cab8fdedbf07b9c2add915345ffe05e5db2394d3ebaa03b33aa46e73364443",
+    "outputs/rbr_v2_d3_v1/interface/batch001/inputs/SDC-QUAL-02-BASELINE.npz": "f190c1d0c9a566dcdddb5097974be5d5bc4e5807e0e896739f17940464312200",
+    "outputs/rbr_v2_d3_v1/interface/batch001/inputs/SDC-QUAL-02-TREATMENT.npz": "3f243b9d4e332eb7ea22a7ce487e047b19517a2af4c95628d98a2b7d71af6c09",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-02-BASELINE/execution_manifest.json": "16e895ade8d1bba3f67dcc22d112716704567538a961b5a6b41a33bda2c6fe9f",
+    "outputs/rbr_v2_d3_v1/interface/batch001/inputs/SDC-QUAL-03-BASELINE.npz": "3ba0389e50b0eb4273a87816cc545e65410d45d8afad3b44dfbaee37c703c2a7",
+    "outputs/rbr_v2_d3_v1/interface/batch001/inputs/SDC-QUAL-03-TREATMENT.npz": "496d585eef8fb4772ccd6d1fbe344d423ef430492024c4a0e9ad8a5e06e23fa7",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-03-BASELINE/execution_manifest.json": "51697caec4c81590414784475505eac45bec66142b315994e39530ec21fc8326",
+    "outputs/rbr_v2_d3_v1/interface/batch002/inputs/SDC-QUAL-04-BASELINE.npz": "8584fd180c4b1cb799508b7794c60f8dfcb810989c3e01a59b49e0f131e6156c",
+    "outputs/rbr_v2_d3_v1/interface/batch002/inputs/SDC-QUAL-04-TREATMENT.npz": "3e3062ded088cce4cda7f9d3f23899dad833f6c5d8fd13dc0fd7bbb178549712",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-04-BASELINE/execution_manifest.json": "3d4a5cdc51f83946d75819d65f91588f258900b001480eac01dd7f7ca71c414b",
+    "outputs/rbr_v2_d3_v1/interface/batch002/inputs/SDC-QUAL-05-BASELINE.npz": "37215d468dc89fd9652898841d01a27b78bb2d57911acd50224727a4e658d380",
+    "outputs/rbr_v2_d3_v1/interface/batch002/inputs/SDC-QUAL-05-TREATMENT.npz": "7e59d6f70be36b1f623ffcafef527a0ec85dda767d0aab02f595da1ebb16d99e",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-05-BASELINE/execution_manifest.json": "d8ffdf2cbc0b26af4aad4259bf94d6b8223f03ef70179e74389452d33f54e835",
+    "outputs/rbr_v2_d3_v1/interface/batch002/inputs/SDC-QUAL-06-BASELINE.npz": "57d2d37f32e401af41a4e37c029289555c0487b0779db162c8b2cec88769b8c3",
+    "outputs/rbr_v2_d3_v1/interface/batch002/inputs/SDC-QUAL-06-TREATMENT.npz": "762e6b70ecadcdf14f6918b0b8a3dcab132af6cc82124413aa41861669feff69",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-06-BASELINE/execution_manifest.json": "924e594999cfc477aad3ffdc3328e8faea90fc2195462b890af1cbbb767f9091",
+    "outputs/rbr_v2_d3_v1/interface/batch003/inputs/SDC-QUAL-07-BASELINE.npz": "b1ab28260550b88903d46ddb4d4fe09060e0e20d39b13fb4d0023dc88b39611b",
+    "outputs/rbr_v2_d3_v1/interface/batch003/inputs/SDC-QUAL-07-TREATMENT.npz": "fef999216f782986c0c7838d8db0c92cdd6aa8a0dc4d1d2ffcc873cd8ea554f3",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-07-BASELINE/execution_manifest.json": "8d2a3aa97c4bfbbbd18224679d659e196744c9e4c15324cd6af41b601111bf85",
+    "outputs/rbr_v2_d3_v1/interface/batch003/inputs/SDC-QUAL-08-BASELINE.npz": "32b00a61b3c11c845036e36ebb334d0e9896b169cc5a256b33e15ef6f00783e5",
+    "outputs/rbr_v2_d3_v1/interface/batch003/inputs/SDC-QUAL-08-TREATMENT.npz": "290f568a6da854ba028e963d9a0190abf3f04a74287ed42990f6530bffb2e6d5",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-08-BASELINE/execution_manifest.json": "9824c9eae80274ce5271fa7217967b8234512fa13bd8a68a738712c809209d34",
+    "outputs/rbr_v2_d3_v1/interface/batch003/inputs/SDC-QUAL-09-BASELINE.npz": "6496dfd6a746ac3abf37d00f3bbc7d9f4a0e556d0b629e3aff3032c2d185add4",
+    "outputs/rbr_v2_d3_v1/interface/batch003/inputs/SDC-QUAL-09-TREATMENT.npz": "5b200bba73bdab2ac0b5063036d0fa8b9956ce8fa94efee96c0a0beeec709ffa",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-09-BASELINE/execution_manifest.json": "7c9c1e0150391407c23d2120519e48414ac1f738f3e588fbc544cae403ca5b4f",
+    "outputs/rbr_v2_d3_v1/interface/batch004/inputs/SDC-QUAL-10-BASELINE.npz": "7d2fae6ee6ae30c84c8b8daad0e4ae4ce9aab4bf36e39d4ea62ef2635ce55f68",
+    "outputs/rbr_v2_d3_v1/interface/batch004/inputs/SDC-QUAL-10-TREATMENT.npz": "ab1bf14c2e9eced79fa893aab09740febbedaf6d9a42f4f1d34b542c9f344e83",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-10-BASELINE/execution_manifest.json": "28e86337457709f7a8faa3236506b85d8d60503b8bdfcd927aec379eed92c1a4",
+    "outputs/rbr_v2_d3_v1/interface/batch004/inputs/SDC-QUAL-11-BASELINE.npz": "6fb8d82e5c8889dd1a48c88678ffd470ed97ced3b83ead0ccfbc77e9930c628f",
+    "outputs/rbr_v2_d3_v1/interface/batch004/inputs/SDC-QUAL-11-TREATMENT.npz": "e5c70ecf3483736cb3133e9004049bdc87608cedfacb064686adb88c8b145649",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-11-BASELINE/execution_manifest.json": "79eadd7b01e7461322b321fad284eb6faf9f7ffb014eb18ec2e384f80a602f61",
+    "outputs/rbr_v2_d3_v1/interface/batch004/inputs/SDC-QUAL-12-BASELINE.npz": "2e384645bacff129eec81d38d1fd96d769d35440e26673bdd0517c2a8c01f569",
+    "outputs/rbr_v2_d3_v1/interface/batch004/inputs/SDC-QUAL-12-TREATMENT.npz": "7847c34ece5a9ed966c158a84326505c28b51d614363a9111acfbc9253cc85ce",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-12-BASELINE/execution_manifest.json": "cabb53295a906934ef27fba707bd90f39d70f02adfd1c516d1d3e39bc1340bbf",
+    "outputs/rbr_v2_d3_v1/interface/batch005/inputs/SDC-QUAL-13-BASELINE.npz": "e66a0ef34a5ceeddbb8c12d1a78d48888f7635125b72a0538f984a38d788b602",
+    "outputs/rbr_v2_d3_v1/interface/batch005/inputs/SDC-QUAL-13-TREATMENT.npz": "bb6959479fa3d08a1c9309797880d7ffdb347b8cfc3f89488e9cff31af16f99f",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-13-BASELINE/execution_manifest.json": "6a1597dd2ec496dc3d82f1eaed795a36ad55ab5de79d18393ac138c61c6e8b74",
+    "outputs/rbr_v2_d3_v1/interface/batch005/inputs/SDC-QUAL-14-BASELINE.npz": "bdb1ae38325fca59bfd4cd891ebb07c13c6a17c88d0069d418510a63ef2ffdaa",
+    "outputs/rbr_v2_d3_v1/interface/batch005/inputs/SDC-QUAL-14-TREATMENT.npz": "f333781d0c599ec9bef2cb2316299e4d230ffd6ac236a92605698ecf16f03875",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-14-BASELINE/execution_manifest.json": "62aac5ea6a1b817e01caef16e91a7d7275dcf39a9c6d4f9d12f9d62726ac7c9e",
+    "outputs/rbr_v2_d3_v1/interface/batch005/inputs/SDC-QUAL-15-BASELINE.npz": "ddfdeb3edb32627ed5839b7781a2308dacd5d5b207a2a91cad8206bd2fa98fbd",
+    "outputs/rbr_v2_d3_v1/interface/batch005/inputs/SDC-QUAL-15-TREATMENT.npz": "ddb86f3fc41f4af7d161af9070e43769918dba40c297b1bafec82c2888e852f0",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-15-BASELINE/execution_manifest.json": "bc6a51e9f3c7fcd2c1c276ab6ba9828083e5c04cf23ada72b2fa3c6f3c218934",
+    "outputs/rbr_v2_d3_v1/interface/batch006/inputs/SDC-QUAL-16-BASELINE.npz": "ea9b4b30fbf65731153003e052a42b0f887ba66c32520528d9191b0a2f92b1a4",
+    "outputs/rbr_v2_d3_v1/interface/batch006/inputs/SDC-QUAL-16-TREATMENT.npz": "2ade15a0d74dbe4c12b667db477695403335d7974085fc9c226fe07f8cd56816",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-16-BASELINE/execution_manifest.json": "944c16e6f2d98400e9c6e4c50a5d02df343353781c6b140b16f0f819cccf6b72",
+    "outputs/rbr_v2_d3_v1/interface/batch006/inputs/SDC-QUAL-17-BASELINE.npz": "e1fc9fd7da17399a07dc37f8e9e86c0a98bbf1c11c6da16bf8e94367cb32366d",
+    "outputs/rbr_v2_d3_v1/interface/batch006/inputs/SDC-QUAL-17-TREATMENT.npz": "343b52a5cd0f8210ce1dfb5e82fc5f4d6c4797afc53fbe4f5e8e56e9e9d04c5f",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-17-BASELINE/execution_manifest.json": "7fbb35863e42b3ec47e589e4679c0d277a7b23e063f15b5fa5f1f3958f6b7d69",
+    "outputs/rbr_v2_d3_v1/interface/batch006/inputs/SDC-QUAL-18-BASELINE.npz": "b42aeaf44f49892f93f4b73fdaa254e5b6f0a22216f194ee96e8bf657f2d2c32",
+    "outputs/rbr_v2_d3_v1/interface/batch006/inputs/SDC-QUAL-18-TREATMENT.npz": "53a25305e8ddaebb684c841584f17791dc94730102d9d9f3a7fe0e1dc4cd5dc3",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-18-BASELINE/execution_manifest.json": "48a91e1107fdf7a22eccc292cba1767a3eb8f8ad0c874f5f3bdd679d52a62c27",
+    "outputs/rbr_v2_d3_v1/interface/batch007/inputs/SDC-QUAL-19-BASELINE.npz": "5d94ebb7665155218f62e370e87dd5ce1d3f582ef759bd9be076961199262662",
+    "outputs/rbr_v2_d3_v1/interface/batch007/inputs/SDC-QUAL-19-TREATMENT.npz": "9f069f4d451a2225912dbca920a077bb87f507f358f6263352b82ce3452489d6",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-19-BASELINE/execution_manifest.json": "ecd25171536db5137bd2f1cbd8b4c3f5d4802b6e29b0105290bb562f24b7ba25",
+    "outputs/rbr_v2_d3_v1/interface/batch007/inputs/SDC-QUAL-20-BASELINE.npz": "b310e9dd0ad5327b116b85f8f17ddb02d60e02fe738c645037f669d292f05f20",
+    "outputs/rbr_v2_d3_v1/interface/batch007/inputs/SDC-QUAL-20-TREATMENT.npz": "bbb1ec940265765611bb9434a3ec07065b1e8cf6414fcfb3b67c94c219a5a096",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-20-BASELINE/execution_manifest.json": "8816b93be297e727ce00726265ab32a2ac2cd177573d531d9d59bba3fcceb907",
+    "outputs/rbr_v2_d3_v1/interface/batch007/inputs/D3-D-01-BASELINE.npz": "0cda9b880876434101918e59a4eceb7cee0d19d7f24c09919e38c7bfd4f0c638",
+    "outputs/rbr_v2_d3_v1/interface/batch007/inputs/D3-D-01-TREATMENT.npz": "663e114cee17dfff8d579a37d743b70123402a2c6642a6727bdecec636fafcca",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-01-BASELINE/execution_manifest.json": "1280c58865bf7f6fe453e8cdec07776f17aa5cfcb3fef8f948f5df6ff2efe9cf",
+    "outputs/rbr_v2_d3_v1/interface/batch008/inputs/D3-D-02-BASELINE.npz": "69f76a36e66b4430082c1e6663bbe06e5b48fcdf3ccdd66c0bc653fc1dc5b179",
+    "outputs/rbr_v2_d3_v1/interface/batch008/inputs/D3-D-02-TREATMENT.npz": "75b390a381fcec7f702f369bcca8010a29f52d7792ee1d06ae46738152837ad2",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-02-BASELINE/execution_manifest.json": "c297386b90e7cce3a62409752eaa626a1c1643482345be3540eccf2c5fbf6291",
+    "outputs/rbr_v2_d3_v1/interface/batch008/inputs/D3-D-03-BASELINE.npz": "328292177bc40af77881084b5589f5a92f4bc53bec33f955d20b4a036c730d4a",
+    "outputs/rbr_v2_d3_v1/interface/batch008/inputs/D3-D-03-TREATMENT.npz": "bbf5dbbe536ce01deff82466385f2c030ebcf99f91e5be875791c4eaac298207",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-03-BASELINE/execution_manifest.json": "d4f869b91ee3b605fbedb8ae21c6c9f564023aa3b74968aa0707ed095206ffc6",
+    "outputs/rbr_v2_d3_v1/interface/batch008/inputs/D3-D-04-BASELINE.npz": "2edfe48c7fd2f407b5a6151c794b2c9696560b4eb9f5aaa5f39acf170b8db5ec",
+    "outputs/rbr_v2_d3_v1/interface/batch008/inputs/D3-D-04-TREATMENT.npz": "59293ae1cff3e06d2b071eafe88559138a2666a37c425fce31f38df6b7805d28",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-04-BASELINE/execution_manifest.json": "6722059b36a25269d56538323b95657a456595b34cf106b9cf8d7e30ad1945d4",
+    "outputs/rbr_v2_d3_v1/interface/batch009/inputs/D3-D-05-BASELINE.npz": "8b13dd75dc38f4b1959717a0e5df647faceee1d2ffc406c78a277304da1f7d0c",
+    "outputs/rbr_v2_d3_v1/interface/batch009/inputs/D3-D-05-TREATMENT.npz": "c15caad23a2656fb296e268d3a3862aaa998649d1a668f57397c70bb0646d8a2",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-05-BASELINE/execution_manifest.json": "ace8650a8092f86177e8d5c9ac388254fe5fb5cb62a43fc2a37e28bf38de9a26",
+    "outputs/rbr_v2_d3_v1/interface/batch009/inputs/D3-D-06-BASELINE.npz": "2181aa32a8560afda7553949936e82033dbea400cb61b2d1cca9fd8773255d97",
+    "outputs/rbr_v2_d3_v1/interface/batch009/inputs/D3-D-06-TREATMENT.npz": "cbc7370f7d2e43db65c84570ad1eda3a35d6d5e56359cfdaf5ea08fff508ce1c",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-06-BASELINE/execution_manifest.json": "cf0674902855ac977d2c125593d7df9e61d7a6adc29ded915fda72fa0be181db",
+    "outputs/rbr_v2_d3_v1/interface/batch009/inputs/D3-D-07-BASELINE.npz": "5b0b3e50cd97d0764136e0acdd310922a23a3164041afad0810ba8e840333053",
+    "outputs/rbr_v2_d3_v1/interface/batch009/inputs/D3-D-07-TREATMENT.npz": "2e61bd9e24266444e293dd574a50d345353a578ce1351ef063e4a7aff3a5336f",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-07-BASELINE/execution_manifest.json": "62624bff6e8a4fc0b343d304ae834739851101701cff5f97048b370675d2fbe3",
+    "outputs/rbr_v2_d3_v1/interface/batch010/inputs/D3-D-08-BASELINE.npz": "a6045981be7b7cd1723461e3d0dc06cfa616a8372fae6e5bf25f9ca5fa8d704b",
+    "outputs/rbr_v2_d3_v1/interface/batch010/inputs/D3-D-08-TREATMENT.npz": "95cb1bccc556d600b44429169145b4daae17060d98565ceda0db0c68735bfaca",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-08-BASELINE/execution_manifest.json": "597071fd00f13c62e7c7dce80062e73034c38750a324fce065b3071179e1dd52",
+    "outputs/rbr_v2_d3_v1/interface/batch010/inputs/D3-D-09-BASELINE.npz": "6447b598177be216467f0e30ded846c344b23963a2da32ef26eb6139953f51bf",
+    "outputs/rbr_v2_d3_v1/interface/batch010/inputs/D3-D-09-TREATMENT.npz": "3c4f57cc8ab3add46298e36fd221ff8fdcb05483ae367383f905793b96d25eab",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-09-BASELINE/execution_manifest.json": "26045d57bcf9e332c139c1facb38ad0331a8bc5e822944bafd0050b19153bf3f",
+    "outputs/rbr_v2_d3_v1/interface/batch010/inputs/D3-D-10-BASELINE.npz": "3306f7bc59d7fe13d00acbfbe870c9cae4be1c68bf0237c33256310c12baaafe",
+    "outputs/rbr_v2_d3_v1/interface/batch010/inputs/D3-D-10-TREATMENT.npz": "cbb57a746066b04b34604ab84a60f74965c3c6bcb997bcbfc5ec1cfcf00d9108",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-10-BASELINE/execution_manifest.json": "047dab9aff6094aa0d4c4f0d214d51c3edc68601b10d39ed7df7fcbdfdf808e0",
+    "outputs/rbr_v2_d3_v1/interface/batch011/inputs/D3-D-11-BASELINE.npz": "98e8a01cab63334e20b7afafa8d91b2be410378ebb5204b0f164833f9b6e0feb",
+    "outputs/rbr_v2_d3_v1/interface/batch011/inputs/D3-D-11-TREATMENT.npz": "ad534aa5a724d3f4a8a263710fe1ee0c9185462a42ee25e10e66426cf6a7a034",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-11-BASELINE/execution_manifest.json": "8a6079a6dc20d6ee04bbfa8a09b7bf153865e95882408cfa253e48b8793a2c47",
+    "outputs/rbr_v2_d3_v1/interface/batch011/inputs/D3-D-12-BASELINE.npz": "36045a5e8b964443cc7ffc10d94de675e8d267cc9561f78ccc8d0e40cf6f1a62",
+    "outputs/rbr_v2_d3_v1/interface/batch011/inputs/D3-D-12-TREATMENT.npz": "0e99256bbd2573682bcecd9a1b7b3d7eeaca27ef7c2ae248d33a7ff07d07e826",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-12-BASELINE/execution_manifest.json": "98f214190015d71ec32f48f9f8f82037c32393fa314a93b5e008c6c626af9f9d",
+    "outputs/rbr_v2_d3_v1/interface/batch011/inputs/D3-D-13-BASELINE.npz": "50650795fe1d59b7257b8f5080dfd88e1efd11d6449471b3ef93b63558504eb9",
+    "outputs/rbr_v2_d3_v1/interface/batch011/inputs/D3-D-13-TREATMENT.npz": "17108560c88e5ba810c0152f7b594159fb8664040bddf2e846e177f72a82f243",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-13-BASELINE/execution_manifest.json": "cfc99d7bca79635d1ba39d11db8563d2ab3a8890acfbe3c4a687eced5ee05b11",
+    "outputs/rbr_v2_d3_v1/interface/batch012/inputs/D3-D-14-BASELINE.npz": "aace1b2d77089287f2d7ef53e3df4bcd61961cb276c5e4d4d5b0e3144a2430d3",
+    "outputs/rbr_v2_d3_v1/interface/batch012/inputs/D3-D-14-TREATMENT.npz": "3e937ff10abc79d58859d1fa54004b9d40e9b6b0fb7ffedb37740baec0c3cd03",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-14-BASELINE/execution_manifest.json": "7743f17c556413b38d371ae77aeff6cce9d456023d8d30c5606e505fa58ff443",
+    "outputs/rbr_v2_d3_v1/interface/batch012/inputs/D3-D-15-BASELINE.npz": "0b4cc0742d204daa49e5839a3808d5df841287aa52247eed2be20e2c26f37631",
+    "outputs/rbr_v2_d3_v1/interface/batch012/inputs/D3-D-15-TREATMENT.npz": "5e0c03e1289b1ebd752396354d7a876a554d94f634407b54841e5c5d6a2079be",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-15-BASELINE/execution_manifest.json": "4270400446a2f6fba8fe9ddfaf423570415864f6b59d6ab19a19aa5b1f937008",
+    "outputs/rbr_v2_d3_v1/interface/batch012/inputs/D3-D-16-BASELINE.npz": "21c130686cdf241ff07185788124c4521d0e3b306723a96e53b0b5d4710db6ad",
+    "outputs/rbr_v2_d3_v1/interface/batch012/inputs/D3-D-16-TREATMENT.npz": "7c4ba5882e686ae7a758bd10feba042423adc0b84c4123669467dc6001e58e05",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-16-BASELINE/execution_manifest.json": "73088d0e997c87c247961ce3e3e63e8ada22f4f387869fc5eecbc0a550eb067d",
+    "outputs/rbr_v2_d3_v1/interface/batch013/inputs/D3-D-17-BASELINE.npz": "3f5b62ab9d6c267cfd03c9e8f7ecb5b45c73f62048b48ad97a37ff8a800cd887",
+    "outputs/rbr_v2_d3_v1/interface/batch013/inputs/D3-D-17-TREATMENT.npz": "7856c684a61b851f142bd002f54b60b2fe683a37920d52d49b923eee8dd14658",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-17-BASELINE/execution_manifest.json": "523bf13b35eb9c0b56bd7c83966728922f2fc4c73738aee32651c77b202c7083",
+    "outputs/rbr_v2_d3_v1/interface/batch013/inputs/D3-D-18-BASELINE.npz": "9bdafcae370f326145228b290e1ead225705eb006473fcc893921da334d8648e",
+    "outputs/rbr_v2_d3_v1/interface/batch013/inputs/D3-D-18-TREATMENT.npz": "a37397a51a05fe0ff44bf6d603fbb356fca3aad2d7074cd96cdb4046bace73e7",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-18-BASELINE/execution_manifest.json": "7b21804336ff1f46adbf69dbd99580a70c0e2248b23507f75d9b71b415e3a037",
+    "outputs/rbr_v2_d3_v1/interface/batch013/inputs/D3-D-19-BASELINE.npz": "0e29bc2aab245944e413d1603028031d46fac6d7fd9d00da13e5f9ec31e3a2b1",
+    "outputs/rbr_v2_d3_v1/interface/batch013/inputs/D3-D-19-TREATMENT.npz": "6dd4522e99aebf1af25743a9d903c431981724152335cf153f57641ae8f755b7",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-19-BASELINE/execution_manifest.json": "1a37a012d5ca008c07de54a6c7954ac7477c005f67628c2b01ac4d30528d8312",
+    "outputs/rbr_v2_d3_v1/interface/batch014/inputs/D3-D-20-BASELINE.npz": "0efe0bedcf9ddda7f80bba601a40878c34f96780aaa97cd2fda9b0eaf7ff112f",
+    "outputs/rbr_v2_d3_v1/interface/batch014/inputs/D3-D-20-TREATMENT.npz": "6325f1470fe5b4b84f1260232408659fbc9272d7908c0aa9698c6b6b8e4ca0bd",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-20-BASELINE/execution_manifest.json": "7a56c75802fc72ea0d1fbca9e4f8e1b0693365e7db273955959acc51993dd6bd",
+    "outputs/rbr_v2_d3_v1/interface/batch014/inputs/D3-D-21-BASELINE.npz": "c024db698722a1b18c715bacc35c4d84e78367c80aaacbfa96208f13298ca64d",
+    "outputs/rbr_v2_d3_v1/interface/batch014/inputs/D3-D-21-TREATMENT.npz": "dc41af538a9d21ea3f00fbab05585c44d58fe139461133cb19339c1c03d39e40",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-21-BASELINE/execution_manifest.json": "e7dbe5be2d1a7e90270b68b72335951094bc95435541c3e7d99870e2a3bf3a57",
+    "outputs/rbr_v2_d3_v1/interface/batch014/inputs/D3-D-22-BASELINE.npz": "6d6edfae85958c5701f73920ca3f079c0da610aab4890c207b91158f326c4a06",
+    "outputs/rbr_v2_d3_v1/interface/batch014/inputs/D3-D-22-TREATMENT.npz": "4b98ed4813b352ba1c6effc02d05de4f1bc13260949415c8ae4808e8665d2b51",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-22-BASELINE/execution_manifest.json": "33a79c574ca718f64e6bd0114afeeb0afa97b72473a15e56038f106140854d7b",
+    "outputs/rbr_v2_d3_v1/interface/batch015/inputs/D3-D-23-BASELINE.npz": "8bfe67417da036e773790b70613c500413de63b389a8ed538f28018e4225a81f",
+    "outputs/rbr_v2_d3_v1/interface/batch015/inputs/D3-D-23-TREATMENT.npz": "0cc0c30373094dd418985907e07911ac7cf449a327fff56ac92c03b6b44b41eb",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-23-BASELINE/execution_manifest.json": "cf35ff8acd87b66bd686d4ad6d80d2a6ccfaf13173398062ea1b56d922fd03a0",
+    "outputs/rbr_v2_d3_v1/interface/batch015/inputs/D3-D-24-BASELINE.npz": "79038531137b010281bcd63508c98538d9fe3abf80a4227a7683dc2fead9539d",
+    "outputs/rbr_v2_d3_v1/interface/batch015/inputs/D3-D-24-TREATMENT.npz": "38f2ecc1d61c0bdc8406aaa1352880b3f2d3fa91d6463f6209f8296755f3ed32",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-24-BASELINE/execution_manifest.json": "2c544bcf59fea4ab45e01d4cfb0684bc48cfa598f716c1c759f33d78281363f1",
+    "outputs/rbr_v2_d3_v1/interface/batch015/inputs/D3-D-25-BASELINE.npz": "5a286a3fd231958934ddc06371e8b6e340f8bee67e73344538ac24e2d4ec1754",
+    "outputs/rbr_v2_d3_v1/interface/batch015/inputs/D3-D-25-TREATMENT.npz": "a971335f40ccc5fb4736517250da3072f41f05d3d233201305452d4e8b9238a9",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-25-BASELINE/execution_manifest.json": "b07e61371ab172c824856b848cca18419988eaf79029a45d04aee067c1d0a0ce",
+    "outputs/rbr_v2_d3_v1/interface/batch016/inputs/D3-D-26-BASELINE.npz": "a28fa0faa24045f58515f701544e6fe5f186560eebc5a59358ca07bc6cac88e4",
+    "outputs/rbr_v2_d3_v1/interface/batch016/inputs/D3-D-26-TREATMENT.npz": "67b4e3c6f907189ae246c6f9365187876a1bbe0c121bdd5ee8369d2738a946fc",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-26-BASELINE/execution_manifest.json": "16b1e2fac1f1fa272752f270fd9a5ae3e6843dbbb8858d6bb2240c6c3a4a6bdc",
+    "outputs/rbr_v2_d3_v1/interface/batch016/inputs/D3-D-27-BASELINE.npz": "dc54f46d7ff99c9d71c3867eddb7aa7c1b2b64a668b63dfdad907c08bbc0c208",
+    "outputs/rbr_v2_d3_v1/interface/batch016/inputs/D3-D-27-TREATMENT.npz": "aabcae7267d488ebcb69d49206aaea2d8f583b112c229d88845336d8cc8d5512",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-27-BASELINE/execution_manifest.json": "acae87c54e8485ec4d7a5b9b2fc5daffb5f849c81f37f37db44641288bac4446",
+    "outputs/rbr_v2_d3_v1/interface/batch016/inputs/D3-D-28-BASELINE.npz": "7802f7bc8df47dbe6a6886e88a9a0a4a36953d110ad5d8d1587bff26ecf8224f",
+    "outputs/rbr_v2_d3_v1/interface/batch016/inputs/D3-D-28-TREATMENT.npz": "e72d9012fd4d2330146c252a298eb6f4fd093835e9518892b777f9b4a322e84e",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-28-BASELINE/execution_manifest.json": "abc171141162f52a32aae1e42b835a827d898532314178dedb6e464bd14b65c9",
+    "outputs/rbr_v2_d3_v1/interface/batch017/inputs/D3-D-29-BASELINE.npz": "0824c2a1b5a0bdc27deb9ca3557aee9706dfcae338f7ebe38802902e8e76ebb4",
+    "outputs/rbr_v2_d3_v1/interface/batch017/inputs/D3-D-29-TREATMENT.npz": "e4c96663d66cb3a7a5342027092bc4416fc12d737f344310f9eb7098859779d1",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-29-BASELINE/execution_manifest.json": "5356d3f3d67577e7aec64b9a350caac632e71b19685b1b8abb76559763b3249f",
+    "outputs/rbr_v2_d3_v1/interface/batch017/inputs/D3-D-30-BASELINE.npz": "0f727eb766d364931eb899c6ec532e59b870b051af9d00f8c4edca384d3324fe",
+    "outputs/rbr_v2_d3_v1/interface/batch017/inputs/D3-D-30-TREATMENT.npz": "a289e6338c1e41607108378b2622675be2550608fb738cc61a9858659cf228b4",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-30-BASELINE/execution_manifest.json": "0cc1e417d77ec76b6ea544001bd855d708974b094dd9236dfbca3502405efbec",
+    "outputs/rbr_v2_d3_v1/interface/batch017/inputs/D3-D-31-BASELINE.npz": "417fad22cd7a4473a1d46b8ca19eee58c719bf050a49019e3b4063be76a453bd",
+    "outputs/rbr_v2_d3_v1/interface/batch017/inputs/D3-D-31-TREATMENT.npz": "21de016aec6cf24e5b0abb3de3feed333601f7df115cae0f1e5aa66c88b5c3c4",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-31-BASELINE/execution_manifest.json": "a6acd80f8c68d8a2618a62e28e900bd79255ed054edcdf5ef30d34e58c8cbdc4",
+    "outputs/rbr_v2_d3_v1/interface/batch018/inputs/D3-D-32-BASELINE.npz": "ef4df7938c5aad884f8098e319289a7162e75c8f81d6682ac679aea7056201f9",
+    "outputs/rbr_v2_d3_v1/interface/batch018/inputs/D3-D-32-TREATMENT.npz": "ab6e195dd841b60c7ff4eff9683255f3cba7d127af51a7c4ab3efc9da3c86162",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-32-BASELINE/execution_manifest.json": "d51405e321d5cd42a9e3b58ed9cd5192a914c1aafd642149d38b5c1ea6853440",
+    "outputs/rbr_v2_d3_v1/interface/batch018/inputs/D3-D-33-BASELINE.npz": "f8b2d6f4a6919b4d6bc4512d0d12ec0708e823b7c28d4b441511c79b20f19fdf",
+    "outputs/rbr_v2_d3_v1/interface/batch018/inputs/D3-D-33-TREATMENT.npz": "2ecabb7f010a3d7976ea581811424110b6b8f4afe18bd49976d653bea5e52a0c",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-33-BASELINE/execution_manifest.json": "4fd9cc45578df5c93312c25a1571046d9deb053541487a80c66183b1806558a2",
+    "outputs/rbr_v2_d3_v1/interface/batch018/inputs/D3-D-34-BASELINE.npz": "33d0897d749df8b4b0cdcd3d5ec0e5a21d1edf312106e83ae979d44bb774a5cb",
+    "outputs/rbr_v2_d3_v1/interface/batch018/inputs/D3-D-34-TREATMENT.npz": "ca7bbdbc5937e0c544d3d925adac645dedf95ebc3924e8e016196bd8e56e80aa",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-34-BASELINE/execution_manifest.json": "2c5adbb1f23a340574727b33479d6c0198c2c2c5003c06d38b4baae5805eb58c",
+    "outputs/rbr_v2_d3_v1/interface/batch019/inputs/D3-D-35-BASELINE.npz": "57177e06914875061c260d452702302478298462a57a57d00ac0eb7d6103a6a6",
+    "outputs/rbr_v2_d3_v1/interface/batch019/inputs/D3-D-35-TREATMENT.npz": "ff3e2f29a7f8e039d009869fcfe9588538625837619262c8c1583ad3044faad8",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-35-BASELINE/execution_manifest.json": "b2af6e163745bb255984343f99e1f12be45fa4bc738abe54d210440e4a228e7c",
+    "outputs/rbr_v2_d3_v1/interface/batch019/inputs/D3-D-36-BASELINE.npz": "d35b2d31b7f45f1c660553cc672872c27add518c0d79f2305aae6bf841832582",
+    "outputs/rbr_v2_d3_v1/interface/batch019/inputs/D3-D-36-TREATMENT.npz": "b60c95d42bf1d115301d8594f27837b8ac60c3e3e83b72663b17c2fe9bc87b16",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-36-BASELINE/execution_manifest.json": "60a229bda8f1a8648addd462e0aa2816a247095126a12ae6de80bb5e891fd6d4",
+    "outputs/rbr_v2_d3_v1/interface/batch019/inputs/D3-D-37-BASELINE.npz": "b1db98d2024518fb72b82d53df8f0cce0724a4b2649125ccadf96667a1f61f3e",
+    "outputs/rbr_v2_d3_v1/interface/batch019/inputs/D3-D-37-TREATMENT.npz": "5e540e51bfb17b7d0779384a5d566e08fa0443de39652ffb756ac2dceadcdbe2",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-37-BASELINE/execution_manifest.json": "f6ca8472534e20c46e6aa1fd8d2f28ca2941147cbe162e449f43bb1d4cd18695",
+    "outputs/rbr_v2_d3_v1/interface/batch020/inputs/D3-D-38-BASELINE.npz": "08724d2377697ffe6b104bfbe837b5124c523b52bc69635e3c59eb5970ae0afd",
+    "outputs/rbr_v2_d3_v1/interface/batch020/inputs/D3-D-38-TREATMENT.npz": "166ab1d5ffd4297033c78ebc8f84779412a7f8c436de3c8a52b4c17697d16c8d",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-38-BASELINE/execution_manifest.json": "c94ac3e36c8657d339c77eb5257a37f00d9065c469e2db8d79f82c4a8193ba93",
+    "outputs/rbr_v2_d3_v1/interface/batch020/inputs/D3-D-39-BASELINE.npz": "d9bea5454fcfe3ba815747531708962aa4716df1772767a849c88f4e37580195",
+    "outputs/rbr_v2_d3_v1/interface/batch020/inputs/D3-D-39-TREATMENT.npz": "05b8e4178bccbd6def68ca08e56d82cecb0353d0f3832d1477f63136e7e48ef9",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-39-BASELINE/execution_manifest.json": "0d54f82ac7472d5d7108bb19200ef86e2373b1953f6ac48896398b42c254a689",
+    "outputs/rbr_v2_d3_v1/interface/batch020/inputs/D3-D-40-BASELINE.npz": "31202d0fa2714769347208458af4b07cc1571ced334c45568986f99e44231c45",
+    "outputs/rbr_v2_d3_v1/interface/batch020/inputs/D3-D-40-TREATMENT.npz": "08ace4ba478de01e24903d5412112203ac0470b200bf27de3eb7255613e65bed",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-40-BASELINE/execution_manifest.json": "aea5a3cbebde84348c20536bd2564a45deef3f5b23e22a48386ed9888f6b130d",
+    "outputs/rbr_v2_prod_v1/data_manifest.json": "1377c0f644d94829c0fcb3ec85c7f40221f0cd354bda7d84fe1f592e8110c830",
+    "outputs/rbr_v2_prod_v1/normalizer.json": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+    "outputs/rbr_v2_d1_v1/input_manifest.json": "8bd11584d28cad901704c913812c382b8c4b0901ace03d3b05db13f4ce0813bb",
+    "outputs/rbr_v2_d1_v1/RBR64.npy": "a6a7d777cbea1d17175af8c85193f3f9a11fd1fcd19082ba34f40173747ebb35",
+    "outputs/rbr_v2_d1_v1/H30.npy": "1b6cfe302d1a02471508c0681e3b35723b5c5558a2600b87e029f515441e7987",
+    "outputs/rbr_v2_d3_v1/paired_calibration_transfer_audit.json": "2cfc8ff46477b9c91566cd650202c3f84115609c5ee53a56d30b1e4289771c3a",
+    "tools/s1_protocol_schema.py": "6ba7b96b61be2e4c729c1d21e678e34610ef647f1a43b488b750ff42338f17a0",
+    "tools/stage6l_prepare_context_representation_ablation.py": "293e420b82b8c983d91d35d5f10ba4e57b7b745ad71308ebb9ef5e8170ee319d"
+  },
+  "starting_commit": "c66e2c906d6f5f92040635821e84cc087e6e4e05",
+  "new_vehicle_simulation": 0,
+  "new_model_inference": 0,
+  "Primary_V_C": 0,
+  "SAP_mutated": false
+}

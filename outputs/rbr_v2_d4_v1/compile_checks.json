@@ -1,0 +1,18 @@
+{
+  "compile_all_python39": {
+    "exit_code": 1,
+    "result": "KNOWN_UNMODIFIED_HISTORICAL_PYTHON_VERSION_SYNTAX_FAILURE"
+  },
+  "compile_all_python313": {
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  "compile_owned_python39": {
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  "no_tmp": {
+    "exit_code": 0,
+    "result": "PASS"
+  }
+}

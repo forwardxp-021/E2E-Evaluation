@@ -1,0 +1,160 @@
+{
+  "plan_sha256": "ef76fa33a78c6fc9a33cd4031656cf6b78446aac2a8cdf4a658428ba90c63812",
+  "rows": [
+    {
+      "case": "exchangeable_null",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.049,
+      "synthetic_binomial_Wilson95": [
+        0.037261034647360615,
+        0.06419070150661013
+      ],
+      "reference_global_threshold_alarm_rate": 0.04,
+      "orbit_mean_quantiles": [
+        -0.08271682291174343,
+        -0.07868140450548776,
+        -0.0738537699472668,
+        -0.06825663965441729,
+        -0.06078056019344846
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "source_variance_null",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.04,
+      "synthetic_binomial_Wilson95": [
+        0.02951097368545276,
+        0.05400964412125796
+      ],
+      "reference_global_threshold_alarm_rate": 0.0,
+      "orbit_mean_quantiles": [
+        -0.09493212876615767,
+        -0.09357229792846247,
+        -0.09237665731401157,
+        -0.09097731402772401,
+        -0.08940644374074827
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "symmetric_mask_null",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.043,
+      "synthetic_binomial_Wilson95": [
+        0.03207865341171336,
+        0.057419003844084014
+      ],
+      "reference_global_threshold_alarm_rate": 1.0,
+      "orbit_mean_quantiles": [
+        -0.043449582277846746,
+        -0.034960850575427665,
+        -0.027276283631458613,
+        -0.019069157119373417,
+        -0.010353909100757761
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "extreme_scale_null",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.0,
+      "synthetic_binomial_Wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551234
+      ],
+      "reference_global_threshold_alarm_rate": 1.0,
+      "orbit_mean_quantiles": [
+        -0.003353645349738183,
+        0.0,
+        0.0,
+        0.0,
+        1.0694365716311458e-05
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "identical_null",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.0,
+      "synthetic_binomial_Wilson95": [
+        2.168404344971009e-19,
+        0.0038267584855551234
+      ],
+      "reference_global_threshold_alarm_rate": 0.0,
+      "orbit_mean_quantiles": [
+        -0.091132668135602,
+        -0.08615067164114061,
+        -0.08138484132361348,
+        -0.07580529750790758,
+        -0.07005698911726765
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "known_effect",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.992,
+      "synthetic_binomial_Wilson95": [
+        0.9842936654690199,
+        0.995940804181194
+      ],
+      "reference_global_threshold_alarm_rate": 1.0,
+      "orbit_mean_quantiles": [
+        -0.06548416740272454,
+        -0.060911012318792174,
+        -0.05640680769814337,
+        -0.05128837873535819,
+        -0.046167915828189035
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "known_effect_large_background",
+      "replicates": 1000,
+      "conditional_rejection_rate": 0.042,
+      "synthetic_binomial_Wilson95": [
+        0.031220885546165447,
+        0.056284425226603055
+      ],
+      "reference_global_threshold_alarm_rate": 0.001,
+      "orbit_mean_quantiles": [
+        -0.07739266254922719,
+        -0.07519146974522792,
+        -0.07273147105019516,
+        -0.07037854051358879,
+        -0.06769030942775893
+      ],
+      "exchangeability_assumed": true,
+      "population_claim": false
+    },
+    {
+      "case": "label_dependent_mask_invalid_null",
+      "replicates": 1000,
+      "conditional_rejection_rate": 1.0,
+      "synthetic_binomial_Wilson95": [
+        0.996173241514445,
+        1.0
+      ],
+      "reference_global_threshold_alarm_rate": 1.0,
+      "orbit_mean_quantiles": [
+        -0.0440223576355357,
+        -0.03860425991134669,
+        -0.03140531508193024,
+        -0.02468713781499622,
+        -0.019228813957262225
+      ],
+      "exchangeability_assumed": false,
+      "population_claim": false
+    }
+  ],
+  "wall_seconds": 2.936985834,
+  "scope": "SYNTHETIC_SIZE_POWER_ONLY_NOT_RBR_H30_PERFORMANCE",
+  "reference_threshold": -0.06781796172125615
+}
