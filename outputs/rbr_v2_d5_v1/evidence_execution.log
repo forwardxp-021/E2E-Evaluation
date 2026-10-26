@@ -1,0 +1,4 @@
+synthetic claim distinction {'case': 'matched_task_null', 'replicates': 500, 'conditional_behavior_equal': True, 'raw_alarm_fraction': 0.048, 'oracle_task_standardized_alarm_fraction': 0.038}
+synthetic claim distinction {'case': 'task_mix_only', 'replicates': 500, 'conditional_behavior_equal': True, 'raw_alarm_fraction': 1.0, 'oracle_task_standardized_alarm_fraction': 0.038}
+synthetic claim distinction {'case': 'known_behavior_change_balanced_tasks', 'replicates': 500, 'conditional_behavior_equal': False, 'raw_alarm_fraction': 0.894, 'oracle_task_standardized_alarm_fraction': 0.874}
+synthetic claim distinction {'case': 'coarse_task_balance_residual_confounding', 'replicates': 500, 'conditional_behavior_equal': True, 'raw_alarm_fraction': 0.998, 'oracle_task_standardized_alarm_fraction': 1.0}

@@ -1,0 +1,144 @@
+{
+  "status": "D5_EXPLORATORY_CLAIM_AND_DESIGN_EVIDENCE_ONLY",
+  "plan_sha256": "f8d004fe13b97b3acf314aa1cedb9fe280ad87e33e5bb427e8891e2371293a40",
+  "synthetic_external_threshold": 0.12746232744528485,
+  "synthetic": [
+    {
+      "case": "matched_task_null",
+      "replicates": 500,
+      "conditional_behavior_equal": true,
+      "raw_alarm_fraction": 0.048,
+      "oracle_task_standardized_alarm_fraction": 0.038
+    },
+    {
+      "case": "task_mix_only",
+      "replicates": 500,
+      "conditional_behavior_equal": true,
+      "raw_alarm_fraction": 1.0,
+      "oracle_task_standardized_alarm_fraction": 0.038
+    },
+    {
+      "case": "known_behavior_change_balanced_tasks",
+      "replicates": 500,
+      "conditional_behavior_equal": false,
+      "raw_alarm_fraction": 0.894,
+      "oracle_task_standardized_alarm_fraction": 0.874
+    },
+    {
+      "case": "coarse_task_balance_residual_confounding",
+      "replicates": 500,
+      "conditional_behavior_equal": true,
+      "raw_alarm_fraction": 0.998,
+      "oracle_task_standardized_alarm_fraction": 1.0
+    }
+  ],
+  "H30_unit_diagnostic": [
+    {
+      "units": "SI",
+      "invertible_conversion_factor": 1.0,
+      "constant_columns": [
+        21,
+        27,
+        28,
+        29
+      ],
+      "sigma": 6.251606750717093,
+      "same_BT_kernel_min": 0.0,
+      "same_BT_kernel_median": 0.0,
+      "same_BT_kernel_max": 0.0,
+      "same_BT_underflow_fraction": 1.0,
+      "max_BT_kernel_change_from_SI": 0.0,
+      "max_BB_kernel_change_from_SI": 0.0,
+      "alarm_not_recomputed": true
+    },
+    {
+      "units": "g",
+      "invertible_conversion_factor": 0.10197162129779283,
+      "constant_columns": [
+        20,
+        21,
+        27,
+        28,
+        29
+      ],
+      "sigma": 6.176364386984687,
+      "same_BT_kernel_min": 0.0,
+      "same_BT_kernel_median": 0.0,
+      "same_BT_kernel_max": 0.0,
+      "same_BT_underflow_fraction": 1.0,
+      "max_BT_kernel_change_from_SI": 0.0,
+      "max_BB_kernel_change_from_SI": 0.009473210680348454,
+      "alarm_not_recomputed": true
+    },
+    {
+      "units": "kmh_per_second",
+      "invertible_conversion_factor": 3.6,
+      "constant_columns": [
+        21,
+        27,
+        28,
+        29
+      ],
+      "sigma": 6.251606751259342,
+      "same_BT_kernel_min": 0.0,
+      "same_BT_kernel_median": 0.0,
+      "same_BT_kernel_max": 0.0,
+      "same_BT_underflow_fraction": 1.0,
+      "max_BT_kernel_change_from_SI": 0.0,
+      "max_BB_kernel_change_from_SI": 1.8009760349713133e-10,
+      "alarm_not_recomputed": true
+    }
+  ],
+  "equal_marginals_nonexchangeable_counterexample": {
+    "joint": [
+      [
+        0.0,
+        0.3333333333333333,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.3333333333333333
+      ],
+      [
+        0.3333333333333333,
+        0.0,
+        0.0
+      ]
+    ],
+    "joint_vs_swap_total_variation": 1.0
+  },
+  "saturation_bound": [
+    {
+      "assumed_population_H_alarm": 0.8,
+      "maximum_possible_RBR_increment": 0.19999999999999996
+    },
+    {
+      "assumed_population_H_alarm": 0.9,
+      "maximum_possible_RBR_increment": 0.09999999999999998
+    },
+    {
+      "assumed_population_H_alarm": 0.95,
+      "maximum_possible_RBR_increment": 0.050000000000000044
+    },
+    {
+      "assumed_population_H_alarm": 0.99,
+      "maximum_possible_RBR_increment": 0.010000000000000009
+    },
+    {
+      "assumed_population_H_alarm": 1.0,
+      "maximum_possible_RBR_increment": 0.0
+    }
+  ],
+  "interpretation": "Oracle source sampling is a synthetic design contrast, not an implemented conditional two-sample method or validation of real task exchangeability. All unit variants retained; none selected.",
+  "resources": {
+    "wall_seconds": 0.152674792,
+    "CPU_seconds": 0.151665
+  },
+  "new_vehicle_model_propagation": 0,
+  "new_model_forward": 0,
+  "training": 0,
+  "downloads": 0,
+  "Primary_V_C": 0
+}
