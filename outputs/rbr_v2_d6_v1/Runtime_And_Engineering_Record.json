@@ -1,0 +1,33 @@
+{
+  "Python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "dependencies": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "shapely": "2.0.7",
+    "geopandas": "1.0.1"
+  },
+  "engineering_repairs": [
+    {
+      "original_log": "static_attempt01_coordinate_rounding.log",
+      "cause": "Frozen initial xy is serialized to6 decimals; original assertion used1e-8m. Verified5.01e-7 rounding bound then queried raw t0 coordinates. Task thresholds and anchor unchanged."
+    },
+    {
+      "original_log": "numeric_attempt01_norm_vs_longitudinal.log",
+      "cause": "Oracle initially used speed norm atstate0; official model advances longitudinal vx and sets vy0. Corrected algebra input to saved speed_before vx; original physical traces unchanged."
+    },
+    {
+      "original_log": "tests_attempt01_float_equality.log",
+      "cause": "Literal float equality for4e-5 replaced by numerical comparison; physical bound unchanged."
+    }
+  ],
+  "new_dependencies": 0,
+  "new_model_forward": 0,
+  "new_vehicle_propagation": 0,
+  "training": 0,
+  "downloads": 0,
+  "Primary_V_C": 0,
+  "nuplan_devkit_HEAD": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "canonical83_source_sha256": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+  "map_api_source_sha256": "b8373566478cead45d780d3c0832a27b2e5f0291bf2f756a8248c4cdbbdaaa03"
+}

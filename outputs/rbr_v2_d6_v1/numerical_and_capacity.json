@@ -1,0 +1,462 @@
+{
+  "physical_tail_diagnostics": [
+    {
+      "signed_bin_seconds": 5,
+      "initial_acceleration_coefficient": 3.852828322736476e-10,
+      "observed_baseline_SD": 1.820963648106548e-10,
+      "predicted_SD_from_a0": 1.8209624661386383e-10,
+      "residual_SD": 1.1815494680809786e-15,
+      "initial_acceleration_SD": 0.47263005605328856,
+      "feature_level_mean": -0.0041154070737777874
+    },
+    {
+      "signed_bin_seconds": 6,
+      "initial_acceleration_coefficient": 6.681393761930173e-12,
+      "observed_baseline_SD": 3.157859163919517e-12,
+      "predicted_SD_from_a0": 3.15782750821515e-12,
+      "residual_SD": 1.1385632475834105e-15,
+      "initial_acceleration_SD": 0.47263005605328856,
+      "feature_level_mean": -7.13674548861043e-05
+    }
+  ],
+  "derivative_probes": [
+    {
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "probe": "one_ULP",
+      "epsilon_speed": 1.7763568394002505e-15,
+      "initial_norm_minus_longitudinal_speed": 0.001375415319930795,
+      "analytic_speed_max_error_n1to79": 3.552713678800501e-15,
+      "proxy_max_difference": 8.526512829121202e-14,
+      "analytic_proxy_bound": 7.105427357601027e-14,
+      "roundoff_allowance": 1.7145377487626582e-12,
+      "signed_bin5_delta": -1.420738526825005e-15,
+      "signed_bin6_delta": 1.4210908925310628e-15,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.08.23.16.53.37_veh-08",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.001375415319930795,
+      "analytic_speed_max_error_n1to79": 3.552713678800501e-15,
+      "proxy_max_difference": 3.999999997006398e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.7145377487626582e-12,
+      "signed_bin5_delta": -1.420738526825005e-15,
+      "signed_bin6_delta": 2.0991030780237452e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.05.17.16.40.09_veh-35",
+      "probe": "one_ULP",
+      "epsilon_speed": 8.881784197001252e-16,
+      "initial_norm_minus_longitudinal_speed": 0.001363358585698471,
+      "analytic_speed_max_error_n1to79": 1.7763568394002505e-15,
+      "proxy_max_difference": 4.263256414560601e-14,
+      "analytic_proxy_bound": 3.5527136788005136e-14,
+      "roundoff_allowance": 7.783174826282544e-13,
+      "signed_bin5_delta": -3.5561831257524545e-16,
+      "signed_bin6_delta": -3.5526594686918767e-16,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.05.17.16.40.09_veh-35",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.001363358585698471,
+      "analytic_speed_max_error_n1to79": 1.7763568394002505e-15,
+      "proxy_max_difference": 4.0000000012696546e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 7.783174826282544e-13,
+      "signed_bin5_delta": -3.5561831257524545e-16,
+      "signed_bin6_delta": 2.099103035391154e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "probe": "one_ULP",
+      "epsilon_speed": 8.881784197001252e-16,
+      "initial_norm_minus_longitudinal_speed": 0.0007410659038500356,
+      "analytic_speed_max_error_n1to79": 1.7763568394002505e-15,
+      "proxy_max_difference": 4.973799150320701e-14,
+      "analytic_proxy_bound": 3.5527136788005136e-14,
+      "roundoff_allowance": 1.01736049912574e-12,
+      "signed_bin5_delta": 3.5475095083725705e-16,
+      "signed_bin6_delta": 0.0,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.17.18.42.25_veh-08",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.0007410659038500356,
+      "analytic_speed_max_error_n1to79": 1.7763568394002505e-15,
+      "proxy_max_difference": 4.0000000012696546e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.01736049912574e-12,
+      "signed_bin5_delta": 3.5475095083725705e-16,
+      "signed_bin6_delta": 2.0991031490780188e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.07.22.21.43.45_veh-35",
+      "probe": "one_ULP",
+      "epsilon_speed": 1.7763568394002505e-15,
+      "initial_norm_minus_longitudinal_speed": 0.0022478659676625767,
+      "analytic_speed_max_error_n1to79": 5.329070518200751e-15,
+      "proxy_max_difference": 7.105427357601002e-14,
+      "analytic_proxy_bound": 7.105427357601027e-14,
+      "roundoff_allowance": 1.381586909958097e-12,
+      "signed_bin5_delta": 1.420738526825005e-15,
+      "signed_bin6_delta": 0.0,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.07.22.21.43.45_veh-35",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.0022478659676625767,
+      "analytic_speed_max_error_n1to79": 5.329070518200751e-15,
+      "proxy_max_difference": 3.9999999962958555e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.381586909958097e-12,
+      "signed_bin5_delta": 7.103692634125025e-16,
+      "signed_bin6_delta": 2.0991031490780188e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.07.14.16.58.38_veh-38",
+      "probe": "one_ULP",
+      "epsilon_speed": 1.7763568394002505e-15,
+      "initial_norm_minus_longitudinal_speed": 0.0023042527715162464,
+      "analytic_speed_max_error_n1to79": 7.105427357601002e-15,
+      "proxy_max_difference": 9.237055564881302e-14,
+      "analytic_proxy_bound": 7.105427357601027e-14,
+      "roundoff_allowance": 1.2472336377433527e-12,
+      "signed_bin5_delta": 0.0,
+      "signed_bin6_delta": 0.0,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.07.14.16.58.38_veh-38",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.0023042527715162464,
+      "analytic_speed_max_error_n1to79": 7.105427357601002e-15,
+      "proxy_max_difference": 3.9999999991380264e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.2472336377433527e-12,
+      "signed_bin5_delta": -3.5475095083725705e-16,
+      "signed_bin6_delta": 2.099103099339973e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.29.08.50.06_veh-53",
+      "probe": "one_ULP",
+      "epsilon_speed": 1.7763568394002505e-15,
+      "initial_norm_minus_longitudinal_speed": 1.3854046880368287e-05,
+      "analytic_speed_max_error_n1to79": 3.552713678800501e-15,
+      "proxy_max_difference": 8.526512829121202e-14,
+      "analytic_proxy_bound": 7.105427357601027e-14,
+      "roundoff_allowance": 1.219525554424113e-12,
+      "signed_bin5_delta": -3.5561831257524545e-16,
+      "signed_bin6_delta": 0.0,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.29.08.50.06_veh-53",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 1.3854046880368287e-05,
+      "analytic_speed_max_error_n1to79": 3.552713678800501e-15,
+      "proxy_max_difference": 3.9999999962958555e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.219525554424113e-12,
+      "signed_bin5_delta": 0.0,
+      "signed_bin6_delta": 2.0991031668415872e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.03.14.11.45_veh-40",
+      "probe": "one_ULP",
+      "epsilon_speed": 1.7763568394002505e-15,
+      "initial_norm_minus_longitudinal_speed": 0.0016197998496494392,
+      "analytic_speed_max_error_n1to79": 5.329070518200751e-15,
+      "proxy_max_difference": 6.394884621840902e-14,
+      "analytic_proxy_bound": 7.105427357601027e-14,
+      "roundoff_allowance": 1.5399759405400935e-12,
+      "signed_bin5_delta": 7.103692634125025e-16,
+      "signed_bin6_delta": -7.105454462655314e-16,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.03.14.11.45_veh-40",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.0016197998496494392,
+      "analytic_speed_max_error_n1to79": 5.329070518200751e-15,
+      "proxy_max_difference": 3.9999999962958555e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.5399759405400935e-12,
+      "signed_bin5_delta": 7.103692634125025e-16,
+      "signed_bin6_delta": 2.0991030709182907e-07,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "probe": "one_ULP",
+      "epsilon_speed": 1.7763568394002505e-15,
+      "initial_norm_minus_longitudinal_speed": 0.0005426453110892737,
+      "analytic_speed_max_error_n1to79": 5.329070518200751e-15,
+      "proxy_max_difference": 8.526512829121202e-14,
+      "analytic_proxy_bound": 7.105427357601027e-14,
+      "roundoff_allowance": 1.8619631444077264e-12,
+      "signed_bin5_delta": 0.0,
+      "signed_bin6_delta": 0.0,
+      "measurement_uncertainty_certified": false
+    },
+    {
+      "session_id": "2021.09.17.13.27.08_veh-42",
+      "probe": "arithmetic_stress_1e-6",
+      "epsilon_speed": 1e-06,
+      "initial_norm_minus_longitudinal_speed": 0.0005426453110892737,
+      "analytic_speed_max_error_n1to79": 5.329070518200751e-15,
+      "proxy_max_difference": 3.999999992743142e-05,
+      "analytic_proxy_bound": 4.000000000000014e-05,
+      "roundoff_allowance": 1.8619631444077264e-12,
+      "signed_bin5_delta": 0.0,
+      "signed_bin6_delta": 2.0991029856532437e-07,
+      "measurement_uncertainty_certified": false
+    }
+  ],
+  "RBR_scaler_sensitivity": [
+    {
+      "variant": "frozen3",
+      "sigma": 11.273485164011671,
+      "minimum_scale": 0.042441363707858164,
+      "per_channel_baseline_SD_over_fit_scale_quantiles": [
+        0.44687150760864247,
+        0.4900352377377316,
+        1.1155893684674147,
+        3.3988472864048602,
+        5.143821376154254
+      ]
+    },
+    {
+      "variant": "LOO_0",
+      "sigma": 11.313708498984761,
+      "minimum_scale": 0.0006793439388275146,
+      "per_channel_baseline_SD_over_fit_scale_quantiles": [
+        1.472033873822275,
+        1.8085956159517307,
+        4.772890275577403,
+        50.336709088244575,
+        360.0949021563509
+      ]
+    },
+    {
+      "variant": "LOO_1",
+      "sigma": 11.313708498984761,
+      "minimum_scale": 0.007197737693786621,
+      "per_channel_baseline_SD_over_fit_scale_quantiles": [
+        0.4210683869220228,
+        0.49412813440653564,
+        1.1083294186836041,
+        5.623785997597439,
+        29.278713809146897
+      ]
+    },
+    {
+      "variant": "LOO_2",
+      "sigma": 11.313708498984761,
+      "minimum_scale": 0.021892331540584564,
+      "per_channel_baseline_SD_over_fit_scale_quantiles": [
+        0.42156132961014386,
+        0.4503783540892373,
+        0.9948615204457076,
+        3.3186557624775617,
+        7.8607534944320605
+      ]
+    }
+  ],
+  "actual_same_version_D3_baseline_q_cells": {
+    "5to10_empty": 0,
+    "5to10_busy": 1,
+    "10to15_empty": 0,
+    "10to15_busy": 5
+  },
+  "bootstrap_support": [
+    {
+      "pool": "D_new_science",
+      "cell_counts": [
+        0,
+        1,
+        0,
+        5
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 0,
+      "minimum_unique_across_replicates": 0,
+      "coverage_certified": false
+    },
+    {
+      "pool": "final_calibration_candidates",
+      "cell_counts": [
+        0,
+        1,
+        0,
+        9
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 0,
+      "minimum_unique_across_replicates": 0,
+      "coverage_certified": false
+    },
+    {
+      "pool": "V_AA_candidates",
+      "cell_counts": [
+        0,
+        4,
+        0,
+        4
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 0,
+      "minimum_unique_across_replicates": 0,
+      "coverage_certified": false
+    },
+    {
+      "pool": "V_AB_candidates",
+      "cell_counts": [
+        0,
+        2,
+        0,
+        12
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 0,
+      "minimum_unique_across_replicates": 0,
+      "coverage_certified": false
+    },
+    {
+      "pool": "strict_future_optimistic_combined",
+      "cell_counts": [
+        0,
+        7,
+        0,
+        22
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 0,
+      "minimum_unique_across_replicates": 0,
+      "coverage_certified": false
+    },
+    {
+      "pool": "hypothetical_original80_pool_equal_cells",
+      "cell_counts": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 1940,
+      "minimum_unique_across_replicates": 8,
+      "coverage_certified": false
+    },
+    {
+      "pool": "hypothetical120_pool_equal_cells",
+      "cell_counts": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "replicates": 2000,
+      "bootstrap_replicates_with_all_cells_at_least10_unique": 2000,
+      "minimum_unique_across_replicates": 13,
+      "coverage_certified": false
+    }
+  ],
+  "single_numeric_pipeline_certified": false,
+  "reason": "Floating arithmetic/analytic filter can be verified, but sensor/measurement resolution and all30-feature error floors not certified; no floor adopted. RBR three-fit source stability insufficient.",
+  "delta010_power_at_design_gain020": "NOT_ESTABLISHED_REAL_AA_AB_SUPPORT_AND_COVERAGE_MISSING",
+  "protected_read_sources": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan-devkit/nuplan/planning/simulation/controller/motion_model/kinematic_bicycle.py": "df48a288aed0a88f0484184560b184c28d499bbb6fb967600abf55a59a44ba2d",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-01-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "8be327b4857a174bf0a837a2b28efe70c9b1c3165e2f1d4e4a64fb7a27518f2d",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-02-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "9a25ba39d326f70bc2909678a747fe3300db25c1a1c916b650e64089632f5f6b",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-03-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "8e23aae063af07171621387a617fcd2ac440b4bd146d8b9505d8ff656fd790de",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-04-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "255c6ae5c4272c6a4c1e9bc51ef9b56835327c193279a5baa0375435ddc12223",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-05-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "8d5fe9fe96333e9caa2937a45237830e40bcd02f0f89c02f75a130b7a6bd3670",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-06-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "7ef7848e8f8d4d055725f6809b8475c0155f8fb74c27972c618f1f323283f29a",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-07-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "1bf34b4c2cdd601ddf007000dc929a4bd44c02f4c84ea13f42b901edd43de39f",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-08-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "4848a2192bb71cc564b7df8b599acded68504a9ab3240f7296ec9a10167e2066",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-09-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "453fd67855dc805346b0a6d6513821d7ccae29d54b58ee4bd701432339da38d1",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-10-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "c94cfd4300deb4af4e604974e05e4e6b2e58dbd09fdd5505b089c44d6bd2d62f",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-11-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "81c051c3ed947d72790354a8146d228a9a10fe69638b98e6d92141e1c3b48005",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-12-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "62ebd2c86be6154d760c83714cee2633c6de95670ad1aa2c287765d1126e4039",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-13-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "6abc7cac96078bff3a6daf9d36ead5c3c9ff90d5f1338a3a44d86fcf46a91ed9",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-14-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "3e70f7c3bcbf1cb2a21a2989baa05f81818c4a28eb3c86c80c7d895bb36ec00b",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-15-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "bacc81159c587ce64c6357fbf17624f3a24294ebf4844b750d55703bf9feef7c",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-16-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "e9ea437f23ece0fc231ad904200ce36cec1d2d0ee3e3d792a9c2f0e69489f5a8",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-17-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "59526927e33d21cc001d07ffacf869133e3484fb23fc93aa119220bb59b4fa8a",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-18-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "a8250979a38a938eaa01f38b97b390c5ec990781c94c4f0a0b1a6ed811885572",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-19-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "e80e7c95213606d7d6175d2dc367993da731ae9465db3589f7b90c2aa78ceedf",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-20-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "b5bf682a467d08a9087ab9455ffbe76b4232dc9c66ad40db13eae9affade0b9a",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-01-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "6732d44b0af919840546815d7337a70b9d79b43ce84d926871ffbe70b5f2e9da",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-02-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "9467588646676aa5e37d45da8589baeec779632ed6d4be6406a9583dad9136d6",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-03-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "cf99c8e2769c959c6251ba1f3fa73b384e5d5b4b9e54170f314e1f85056c06ed",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-04-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "7555101f7e0981a0c9d9fea6ccd7f619760777ee77ea7f887b8554fea8c30dfd",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-05-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "2920cd36717e77e0218056bb3372f1bc98e8e934d7bfec5b3e76fb849554aa89",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-06-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "3bb24ebd99c50e2d85ef4b9e1823b60658844ffc6fd91ef27af4827971751716",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-07-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "8aee5fb8f02f80a765c240362d9dfcf7d8090a8ef9199d953b3899a20cf1420c",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-08-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "cc1f7d80c88db63e2007ea247c723c5bb40b3603dabe88ebe8b09a123dca3ff1",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-09-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "f43a920d6e5cdc8e31d71f5e6f42b42d6069bc63597ba3f820040d5f6b3cd541",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-10-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "c326b983e2dd2e98cd6d901415b8232b504c992ac550613274caaa30367687a7",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-11-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "ce0f49f9230af9f719bc1a65258f9628ebcdca66df1e3b7856709fe6ea152954",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-12-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "c5b8aa0993fb95db56f98b1ab78eb86dadff3398c53f4d4e88c8bef8ddacb402",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-13-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "c774f8ee1cdf53071d95dd5c426bea079169de91e624fdca73a7543aa5721003",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-14-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "d16efdfede19d38bc11107652c30b46da754cf92a1d8a34dcb0eaf3953c0f2eb",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-15-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "2ae4a073bddc10537f59d8d9f3fff58aeb6c5c5d675264045d015d4e2554a193",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-16-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "a8b07965e64999c6ff25dd9477501dc0aafd0b16d323eba57b9c3d63f6e16812",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-17-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "8522041aef23bd7889addd2eb31575eb8047a64813ebbc8510337de13ad26242",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-18-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "900f05c7da5020a841ef3826507b86af95e0b5ffb35f1758e94de1bcd2aaf168",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-19-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "a50d0b2ead02eeec7241a97d6769bbde2646439185b3620934b794a84a32f7b4",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-20-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "764ff8ff3ce546582c7fe6dfda6b5eee1cec6a03d429f10311816dc1b1aca83a",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-21-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "48566e0bde0e1b2c3665ba22e737d75644662a292696450d3aa878ed42f2d837",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-22-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "0cabf3885fb1585126f34a23aeac0fed9e85941de4bbe828dc8121b76c012c99",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-23-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "e073ab89f22512eefbab665093a93bd3b1d119d1d905400bb1891baf8fb66354",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-24-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "324976ebae1b1b2b7147fdd06928bf4fb47a56f012358c8617eb12f95b1ee801",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-25-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "78a132b61f392da6f7185cb99c4c6bb9c48667a09ec0356095d5c16f4e1d1e88",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-26-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "26a06369fb960d2865b2955307db6923832462dba8ec5d1d09e1b4ff7fb022f7",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-27-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "0faa87b5695ca8aab88872ee6b205d0f17ea598498a45496286840aac0f13677",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-28-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "eb88fd2a11ecbdb77eef0710776986c8446980134188a64b19f6ca18446850cd",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-29-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "83764fc54e4525ae5edbf2dcfb82b6713b3aef05e8281dab5b5ac5058f45cf3d",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-30-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "1a662265981aa477bd441588fa8cddc27580a82169947f7d2ae84b9865c3bac6",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-31-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "43f3be7ba81976276f198cdd4cbd45f181de3887ceafe0fdf0d037308958faff",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-32-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "73cd90a073677845027496cac241fe00d7604c618f1a5bfb771d90e7683831c6",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-33-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "6b0acf9dad6e0b6bab8f17ce9431ed08611fbd3da8cbda9d886d980e40527b99",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-34-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "40e527ce750c3d12bf7b05491ffc369ed8aa01b9db753652696ed08ec7beb56b",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-35-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "1fe0442aa1c2dbe07337b7d1f77164ff210bdc382347d1bae138ae958761ddcf",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-36-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "a2de3f5e77ba77177caeb65faf829e99289d59393012ee634884854f3c74a911",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-37-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "bf8ee0ac6682cf26134d43ce5571e8b5d16544079b21ad263b1dbf9a39c25b28",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-38-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "f0875665055bf7904504e8a7ce4696ca1b172d84a4e2556befbc4d16b6cd0d4a",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-39-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "9464084f554a9302050620e5b51b7b7a71b88164918ad7756269dfa33d06f56f",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-40-BASELINE/telemetry/actual_lqr_controller_telemetry.jsonl": "c972d909f71160e6ac61711489e4ec27c7fbcb65e05274b61570dc871f1effbb",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-19-BASELINE/trace/realized_current_ego.jsonl": "975499da4783c3c9c8d53bcb4846468b553f0b45e18984e03901d4e03de1b226",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-32-BASELINE/trace/realized_current_ego.jsonl": "08a44ae9b40b1aa45fea2d78f198275fccae2f817b69c531f4e80c7ada1b1e6a",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-17-BASELINE/trace/realized_current_ego.jsonl": "1ff229dc177e52f5965f8b47878538c4db3cdead372b5f97d8d17cdd475ca151",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-27-BASELINE/trace/realized_current_ego.jsonl": "8cacd3db5fcfd4a82ae7942a6ff5aa4b6859a1219956b3d238e7155c00f5d513",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-19-BASELINE/trace/realized_current_ego.jsonl": "1c596a751d5a0edfe7dd3724913c8aa0d05e6ebf89b424b9ab361a4153cbdb6f",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-05-BASELINE/trace/realized_current_ego.jsonl": "2ec9c968df58e8ba00fbb0ea463e877434fa3f0680d37eaec4aa05981f2d63d4",
+    "outputs/stageR/rbr_v2_d3/SCIENCE/D3-D-20-BASELINE/trace/realized_current_ego.jsonl": "e0fdf3f46f21e08ad1fa5d035b943faf73ae20eddebbc37fd008047e032054e6",
+    "outputs/stageR/e2e_sdc_v1/QUALIFICATION/SDC-QUAL-11-BASELINE/trace/realized_current_ego.jsonl": "3154437f0861ff9543cc8196bb764fe61221ff6c9db63bdf1565182c38a833f1"
+  },
+  "wall_seconds": 0.538432708,
+  "CPU_seconds": 0.436988,
+  "new_vehicle_propagation": 0,
+  "new_model_forward": 0,
+  "new_training": 0,
+  "downloads": 0,
+  "Primary_V_C": 0
+}

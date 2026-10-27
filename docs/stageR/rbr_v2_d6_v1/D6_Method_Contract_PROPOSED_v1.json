@@ -1,0 +1,85 @@
+{
+  "status": "PROPOSED_ONLY",
+  "scientific_execution_authorized": false,
+  "task": {
+    "map": "us-nv-las-vegas-strip",
+    "prior_static": "unchanged frozen SDC eligibility, first eligible original source/anchor only",
+    "current_topology": "exactly one LANE and zero LANE_CONNECTOR at initial rear axle; exactly one outgoing edge",
+    "speed_range_mps": [
+      5,
+      15
+    ],
+    "speed_bins_mps": [
+      [
+        5,
+        10
+      ],
+      [
+        10,
+        15
+      ]
+    ],
+    "traffic_radius_m": 50,
+    "traffic_categories": [
+      "vehicle",
+      "pedestrian",
+      "bicycle"
+    ],
+    "traffic_bins": [
+      "no_dynamic_actor_within50m",
+      "at_least_one_dynamic_actor_within50m"
+    ],
+    "q": "Four speed x traffic cells each weight1/4, no empty-cell renormalization",
+    "release": "Five reference and five different target SESSION per cell;20+20 per draw;exact10 target treatment by fixed random identity assignment"
+  },
+  "cells": [
+    "5to10_empty",
+    "5to10_busy",
+    "10to15_empty",
+    "10to15_busy"
+  ],
+  "weights": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "m_each_side": 20,
+  "independent_SESSION_per_cell_per_side": 5,
+  "required_unique_SESSION_each_cell_each_pool": 10,
+  "AA": {
+    "same_frozen_version": true,
+    "target_treatment_count": 0,
+    "reference_target_SESSION_overlap": 0,
+    "external_calibration_evaluation_SESSION_overlap": 0
+  },
+  "AB": {
+    "target_treatment_count": 10,
+    "assignment_seed": 2026091103
+  },
+  "calibration": {
+    "draws": 1999,
+    "seed": 2026091101,
+    "order_rank_1based": 1900,
+    "comparison": "strict_gt",
+    "nominal_alpha": 0.05
+  },
+  "statistic": "Original unbiased-form quadratic MMD2 and RBF; no paired cross-source identity in either side",
+  "representation": {
+    "checkpoint": "outputs/rbr_v2_prod_v1/run/epoch30.pt",
+    "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+    "normalizer_sha256": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+    "H30_raw_features": "unchanged30",
+    "scaler_status": "BLOCKED_NO_NEW_PHYSICAL_FLOOR_ADOPTED"
+  },
+  "preflight": "tools.rbr_v2_d6_contract.validate_pool; rejects missing/under10 cells, duplicate SESSION and V/C roles",
+  "executable_science_entry": null,
+  "blockers": [
+    "two empty q cells",
+    "only29 strict future sources",
+    "only6 exact-version D3 baseline sources within q",
+    "numerical preprocessing not certified",
+    "source bootstrap/CI/power not certified"
+  ],
+  "no_empty_cell_renormalization": true
+}

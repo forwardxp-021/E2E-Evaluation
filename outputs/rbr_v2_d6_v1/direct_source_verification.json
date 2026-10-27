@@ -1,0 +1,646 @@
+{
+  "raw_initial_frame_LOGs": [
+    {
+      "session_id": "2021.05.12.22.00.38_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.05.12.22.00.38_veh-35_01008_01518.db",
+      "sha256": "9f1c54f870544ea4c54fb68daf967ec7e2ca067b467dd81b49c13a3e20e8895a",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.12.22.28.35_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.05.12.22.28.35_veh-35_00620_01164.db",
+      "sha256": "c11837e65382092704731226fa63249a6c720e3ce57a319229c1b15a15faf1d8",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.14.16.27.17_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.14.16.27.17_veh-35_00005_00134.db",
+      "sha256": "29c239ec7e60849b68a45543fe288122e8a5f460460201ba4c9fabc59b2f507d",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.14.16.44.42_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.14.16.44.42_veh-35_00272_00421.db",
+      "sha256": "d32df2a1022af812b1d3e656da853357477e4e925fc0e4898ce1d41703073d60",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.17.16.40.09_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.17.16.40.09_veh-35_02126_02204.db",
+      "sha256": "3934ebf4aa156bf695f619410d63cbcf697461e9d321119abf71adfd96b7c691",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.18.20.57.37_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.18.20.57.37_veh-35_05157_05225.db",
+      "sha256": "c0be1ce1350f0500ebfa7ae8509c281051a347753eb5dd245256df5da5e9aa61",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.19.12.10.11_veh-25",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.19.12.10.11_veh-25_01676_01808.db",
+      "sha256": "0a54fdc25e570200bd3bbec950baeb878269e57875fe9d275450484bea244876",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.20.12.12.04_veh-27",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.20.12.12.04_veh-27_04866_05086.db",
+      "sha256": "3501d79f65f3d5cb2d183775dfa67e802dfffb08d9d13092d5d5da52fba4d918",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.21.12.42.04_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.21.12.42.04_veh-35_04558_04646.db",
+      "sha256": "3f8e3e0a0d5b8013e2de4c86444f7aba42b8dd4426f0b418fcc064d223f6d0e8",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.21.13.41.26_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.21.13.41.26_veh-12_03734_03812.db",
+      "sha256": "66b762b9afcf63ed537700a5d2404bfc7e458b822021c6961c39d1545d9af954",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.21.17.47.35_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.21.17.47.35_veh-35_00836_00902.db",
+      "sha256": "d5b76941f10ea43d07895997c59aa88f89d2690e817718a33b4e518b0dc828b8",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.21.19.28.34_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.21.19.28.34_veh-12_03179_03351.db",
+      "sha256": "58539be940c4322700800c01dda5675df7143df84f303ef93de9ff3df9f6af2b",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.25.14.16.10_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.05.25.14.16.10_veh-35_01690_02183.db",
+      "sha256": "ad44beaa6b0972ade651c22f2b8b09affc9e8bc1ad8cb8027a5876bf8027d450",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.26.12.22.44_veh-25",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.26.12.22.44_veh-25_00016_00287.db",
+      "sha256": "97f2ab1a3754c2d85083523c5313e3d32d14787d7f666cb366e4dd4f1e9d0c12",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.26.12.29.50_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.26.12.29.50_veh-35_00876_00964.db",
+      "sha256": "05933c4388c90bcb6c4addc071091ba1c3f6c5019901dfd9c5636afe8f1d6e67",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.26.14.26.29_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.26.14.26.29_veh-47_00831_00923.db",
+      "sha256": "ffad3c4955331e91fac9bf34935c8e09a730191580626828f6db5a50373d21b0",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.26.18.55.53_veh-17",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.26.18.55.53_veh-17_00534_00638.db",
+      "sha256": "9409df5034691c8ab35bf517b72fd5a0658c11b86b2473915e0f18693d9d1e98",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.27.17.44.06_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.27.17.44.06_veh-35_02743_02871.db",
+      "sha256": "4eacea8fc79ce1bd6f2eccf59057ccea0a2a4ee82bee91e5118afa75bc663b49",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.05.28.16.10.40_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.05.28.16.10.40_veh-47_04299_04471.db",
+      "sha256": "beeb3c36567a8752a5c5b5b8a400b594f1cdae3ef461faeede4d82ea926f44e1",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.02.12.41.05_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.02.12.41.05_veh-47_03673_03807.db",
+      "sha256": "13715e7c7bc425824e76d70068d8497fbf8c2584f1daede44605eb33852ba17b",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.02.19.29.01_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.02.19.29.01_veh-47_00685_00867.db",
+      "sha256": "f5f265fa608c713b3b64bd5c0baa6e7527a152dd546f45f6b626176091e9c2d3",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.03.12.02.06_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.03.12.02.06_veh-35_00233_00609.db",
+      "sha256": "deb9a23c2aee75228f112932df30f34b9214c4cb7c050cee8191ac9d4552390c",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.03.13.55.17_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.03.13.55.17_veh-35_00073_00426.db",
+      "sha256": "d99efd115989076667d3233d224893ebadbc64cfa97a658ce7ee9013bb2d098c",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.04.11.37.56_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.04.11.37.56_veh-47_00667_00753.db",
+      "sha256": "12b64dcb665a8beaf2db5c99928a73bb0faf0c689863e39279cd3ff1579bb632",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.04.14.29.33_veh-30",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.04.14.29.33_veh-30_00311_00472.db",
+      "sha256": "97e5e225a53efb82ebbd66b8ec09c42d06f26b6dddb158c486142760d73f28c5",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.04.19.10.47_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.04.19.10.47_veh-47_00388_00551.db",
+      "sha256": "fc3a7fe3b96a4187cc4bfa78df69fe94a6184e309f7c8571bdce5625c0a826b5",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.07.13.53.57_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.07.13.53.57_veh-35_02065_02184.db",
+      "sha256": "5f397e5791794702c53ae8d522f027e59171137c8709766c45c2bb610a418805",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.08.12.11.33_veh-16",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.08.12.11.33_veh-16_00785_00891.db",
+      "sha256": "49a00d0cf7c79e922507fad451b4da6aa24abacf5d55491cf1507d244105d881",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.08.13.14.49_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.08.13.14.49_veh-47_01085_01163.db",
+      "sha256": "706e39ede5b9a36c3de731aead13f6770b538210cb10eab18b133af24e7c2834",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.08.14.14.51_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.08.14.14.51_veh-35_00012_00082.db",
+      "sha256": "c3e109a9abf3cd5cec861fff077f17c258dcd83e33b3f1d211e97d2e9bb43fa3",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.08.14.35.24_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.08.14.35.24_veh-26_02555_03004.db",
+      "sha256": "6ddbbdc835ed87bf3d32e87e2441be32e733450493c73f72871cba557420140e",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.09.17.23.18_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.09.17.23.18_veh-38_02526_03027.db",
+      "sha256": "746206d7a08af0c3b6d42cc0019663421f2ddf3d45c410b88096e723dc6c47a3",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.11.16.44.04_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.11.16.44.04_veh-12_02991_03076.db",
+      "sha256": "863167ce0f6fdeb3c6ec5cf6b671ab4fd62f2088bae863709e3ca3ee2ebeb37e",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.14.18.42.45_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.14.18.42.45_veh-12_03445_03902.db",
+      "sha256": "ac254a11dd96cf489e835af0da989e4049c31d87d68d40d34e832975ac3bef55",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.14.19.22.11_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.14.19.22.11_veh-38_01480_01860.db",
+      "sha256": "2acd777c13b3c1e1711f160e325a6dff0eead727bacbda0f6eae1450fb84b220",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.14.19.53.56_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.14.19.53.56_veh-47_00775_00922.db",
+      "sha256": "afc23ea6986a295618a27fce5fe480d2971a49052827c3270dfb2f23d1336c63",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.17.11.59.07_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.17.11.59.07_veh-38_05627_05763.db",
+      "sha256": "d624f42d80d42b819dc8828d0f6750bb9cf7f27b1c611a93d704b0cd36786102",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.18.18.50.06_veh-30",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.18.18.50.06_veh-30_02092_02466.db",
+      "sha256": "5cec0fb8544a20eb62954ca569658328d1fa9817e5ca10c51bf2e98d119964d9",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.21.16.44.54_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.21.16.44.54_veh-35_00411_00884.db",
+      "sha256": "4e67b3e991cd20a3c5a078d6936f6f23f5ec3cf3dfee8ce2a69665bad0ad517f",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.21.22.56.42_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.21.22.56.42_veh-38_02401_02519.db",
+      "sha256": "0ceaaea42f38be59f27fac7a4567438d60993f4c6b67b3326ab4d089c2bc9613",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.23.14.06.20_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.23.14.06.20_veh-26_02505_02775.db",
+      "sha256": "035570ee555aa09e713384cba87ab69ecab42861fcdfad87d404978f8b63d04c",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.23.16.54.19_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.23.16.54.19_veh-35_00808_01256.db",
+      "sha256": "862453b5ded7e436e15f472c3e9a52c7c5996730cd6d68cfb94a46f53a764365",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.23.17.31.36_veh-16",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.23.17.31.36_veh-16_00016_00377.db",
+      "sha256": "1201472eda2ac7af5b16f5230f74930755fb4cd55cbf7bf6c41e59d6be47b836",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.13.31.08_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.13.31.08_veh-47_00015_00148.db",
+      "sha256": "169b4a8ca698fbb8cf4461f84b029d6775aae786251eb3a3331ada867062f0be",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.14.20.12_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.14.20.12_veh-47_00015_01331.db",
+      "sha256": "de1cde4605478d2b6fe9c892e35c9c4232dc460e0fd06ee69b869e55994b8761",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.14.26.26_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.14.26.26_veh-35_00859_01100.db",
+      "sha256": "c1af4afd1f45a34858c075c90c7275f3a5e344fc644f72564357deb115effeff",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.14.29.38_veh-16",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.14.29.38_veh-16_00016_00651.db",
+      "sha256": "8c846e4a9ecb5cc8f4cd7cd9216dfd221285b0d13570882bf44bc9da92c0f61b",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.14.54.04_veh-16",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.14.54.04_veh-16_00005_02926.db",
+      "sha256": "23bb540111fdf2ef4118115ee1692a0cd950a7cf97208356c05110fa035876b9",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.15.54.32_veh-16",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.15.54.32_veh-16_00133_00787.db",
+      "sha256": "6ad47ea7305e0f4a0390e69814e3eed623ee2850e7ac6339e8957f7ad5d99a3f",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.17.25.34_veh-16",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.17.25.34_veh-16_03081_03343.db",
+      "sha256": "818ae702a485de3ca2edc952a89c55b3622ccf32a0cc92a5ae2846de086f4988",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.21.00.48_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.21.00.48_veh-35_03266_03457.db",
+      "sha256": "98f99b6f3ec63f2638ed2515f1cde5e9f17bd3e0ba7303839891b85a89641e09",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.24.21.55.23_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.24.21.55.23_veh-26_00528_00616.db",
+      "sha256": "d408ade4a2f99d10d86f7e39eaf35c6fb856e18cba76b18d00d3825839b39b3e",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.25.16.02.11_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.25.16.02.11_veh-35_00016_00509.db",
+      "sha256": "90ae9118d3cd5c67ab97e0ac44c61d90c2619fb3b3253aa2e15597c270ddd22f",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.25.23.29.57_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.25.23.29.57_veh-38_03166_03795.db",
+      "sha256": "934b8169a697a5987f244a1e1c1ce322fac1a328cd7f0151618e5655ee2b1de9",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.28.15.02.02_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.28.15.02.02_veh-38_02398_02848.db",
+      "sha256": "7297fcfc46d059bbe911e0447245593e1d7b71ff04d144d76376bb4b0a75849c",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.28.16.57.59_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.06.28.16.57.59_veh-26_00016_00484.db",
+      "sha256": "8f7c378f255c4ce367b2963d430b1b84dc5477b640f4d36310f5aa9ad38c4dd8",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.29.16.25.03_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.29.16.25.03_veh-38_02034_02189.db",
+      "sha256": "79fbe5dfa1485cf284a26d547f60f6b686ba66ef93f9a0888ffea20fe1ac7539",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.29.19.37.20_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.29.19.37.20_veh-26_05215_05843.db",
+      "sha256": "abad4d99eafff0b44f00a9bb79ae8af86dcb9d7c5474db10713971b34629ac3f",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.30.13.49.41_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.30.13.49.41_veh-26_02855_02924.db",
+      "sha256": "8170726595e7de61f81fdce345567dc315d6797b63b3060dcd68263b8f7b589c",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.30.13.52.24_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.30.13.52.24_veh-35_02087_02322.db",
+      "sha256": "2373a9c63467c9f7a9de3ed747dfbc7bf39992e9ac7395c833597b28f579eedc",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.30.13.57.34_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.30.13.57.34_veh-37_01636_01716.db",
+      "sha256": "3456f1464010330f34dcea4a9bd6eb0314ec500e4b29d8d6714fdedfe8d067d5",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.06.30.17.20.09_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.06.30.17.20.09_veh-35_01063_01147.db",
+      "sha256": "a94b46b8f5a805e6a198ee044d41a07c0ebda5c7919dd1505d2b32cc2e8b2561",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.02.15.47.11_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.02.15.47.11_veh-37_00023_00748.db",
+      "sha256": "30b92724ade3681ec5f679723351cd0a6e987d3a3bdacad8c29bc9d06d6b84f0",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.02.17.50.52_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.02.17.50.52_veh-37_01812_02199.db",
+      "sha256": "725f649c2845611f1dcd6e524f6c6ac5f3ff22011848a79faacf905f6ce51947",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.06.16.21.11_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.06.16.21.11_veh-35_00245_00438.db",
+      "sha256": "66b68077f10922c120734825ab54b6670bb01540c7c55b7acdc94a7ce15f841f",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.06.20.37.44_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.06.20.37.44_veh-26_00022_00153.db",
+      "sha256": "8ce0b8d792609971c31aa09d2e5476fa74ffae98e4c1e769739e064b7ee64e2e",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.07.01.46.29_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.07.01.46.29_veh-12_01198_01516.db",
+      "sha256": "bc41f3072eb862a33d9831ea0bf52a4f2319acc07a4c6f4cd8b7bb5e0b4d3438",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.07.16.57.29_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.07.16.57.29_veh-12_04346_04623.db",
+      "sha256": "ff08a77f108c352f9655f95b89ee0bd2d328b10e461a5bf6fd2ba5f83d3a0c8e",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.07.20.25.22_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.07.20.25.22_veh-38_00770_01043.db",
+      "sha256": "49d00f513c1be5f8120ea6f4147837dbc14eb227885a240f2a619fc6201d8cb3",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.07.20.45.06_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.07.20.45.06_veh-37_03999_04154.db",
+      "sha256": "b3d4fd187e3d7cf3729c2d806a4ae115a61685fa93e3a1eabf8fd6a8015c23d9",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.09.17.06.37_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.09.17.06.37_veh-35_00258_00748.db",
+      "sha256": "736d063c483244355eeec765a5bfc9a00dbfcf0a7a945369f1c2e5e789f79385",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.13.01.55.44_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.13.01.55.44_veh-38_00631_00744.db",
+      "sha256": "bc56b47f933858eb12eb7cd0dcac6fcca6c2da6bd1ea30d107ceb7b82a14aeba",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.13.16.22.57_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.13.16.22.57_veh-35_05192_05329.db",
+      "sha256": "0617ef40d459bbc946ccd82c52ad03abff8e60a61e0bc669ce5a16390edec5b3",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.13.16.53.58_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.13.16.53.58_veh-37_00016_00486.db",
+      "sha256": "88c62a5f3a74818b4ff6a9d256c50cb50b3df4eaac1b423e52750233a66a2175",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.13.17.36.02_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.13.17.36.02_veh-12_05616_05694.db",
+      "sha256": "e2e957065123feb37cbce4b3db2b59d4b1b628510adf89fc98f1b40960c0d31e",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.14.16.58.38_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.14.16.58.38_veh-38_00016_00144.db",
+      "sha256": "1a93c9e38d9060545e6235bc98ccaa8c4ec9308c377e03f621709c1bda1c6ece",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.14.23.51.56_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.14.23.51.56_veh-37_01400_01578.db",
+      "sha256": "32691332f75567706b41b75336c409789a2f75da04f0e1087bfee9b92fed6fc6",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.15.22.36.53_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.15.22.36.53_veh-38_00032_00258.db",
+      "sha256": "e3bc50fe0737bf382671e115296a833f83bc410cb502750b47740b063778ec14",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.15.23.36.06_veh-17",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.15.23.36.06_veh-17_00043_01091.db",
+      "sha256": "7f92f2523c9c10352277599c010bc19344cc530d7da6aac74c1e572ed97dba89",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.16.00.24.14_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.16.00.24.14_veh-38_00094_00346.db",
+      "sha256": "55c5531e3728da34ee5d21a36da51e22ce5bbae75d8bf7f7c8a22019e5835ec8",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.16.02.35.53_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.16.02.35.53_veh-37_00024_00237.db",
+      "sha256": "3d6bf811f33515d325cbed67edbda69fd71e31c716aca026d2cbdb362f58d389",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.16.02.53.40_veh-17",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.16.02.53.40_veh-17_00016_01588.db",
+      "sha256": "e46030e39b06481ae80b1dac826f7ea58d1b876a63d7bc1930f8ffd6ce38ba27",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.16.18.19.22_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.16.18.19.22_veh-35_00440_00858.db",
+      "sha256": "b524a31afc8984d2b2a4203999eebf40567dedf4c3750e9241c7334bebab243b",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.17.22.20.17_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.17.22.20.17_veh-12_00049_00392.db",
+      "sha256": "bee18b993e833863c853829b341f8e67e4fac606e62208e7857a9008975c9f42",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.19.16.17.27_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.19.16.17.27_veh-35_05854_06022.db",
+      "sha256": "3694937f47baf3735e35177800486d246b1e557befc96c105b8965a41cdc1d38",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.19.21.34.07_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.19.21.34.07_veh-35_00439_00551.db",
+      "sha256": "cf05611d02775c7831c752de9dfc9b47c3da717505a87a598a722d083a9288dd",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.21.16.18.22_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.21.16.18.22_veh-38_04333_04441.db",
+      "sha256": "57751b035bacbf1821456d35508f4b30ecee34d976f3961b4f10cede9337d1e9",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.21.18.06.16_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.21.18.06.16_veh-38_01243_01427.db",
+      "sha256": "525cb63bfc9266547e98ebcbaaf082c30ceee1a95b89a4aaa82ed9c0677ad840",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.21.21.27.19_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.21.21.27.19_veh-47_02259_02545.db",
+      "sha256": "58604216cb4ea4c770c907acf168112600b04dfe11a495bfb6c0f5bdb64999a1",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.21.22.59.47_veh-38",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.21.22.59.47_veh-38_00031_00349.db",
+      "sha256": "363d9ccec48115c6ddeaf257ff6918b8dbde437a360b01cd2be390c1d28f9b5a",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.16.04.21_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.16.04.21_veh-35_00546_00639.db",
+      "sha256": "3b4bdbb9be74612cb3356d326d0a50a8e847e08bf13f286ca5589fb7cedbbdb2",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.16.18.55_veh-12",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.16.18.55_veh-12_00148_00438.db",
+      "sha256": "8f07675c106c56dffe2fcbb89b13ab0d9e634788b4361d8c3b876a4d4eefbc06",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.17.40.23_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.17.40.23_veh-47_01693_01897.db",
+      "sha256": "b4007c1ac754e21110e1d8f058e2a59ccca735f85acd1132c25b4dcb98cc8ff5",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.17.54.22_veh-17",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.17.54.22_veh-17_02164_02368.db",
+      "sha256": "0a61f9e7f7b2fe46663b74c034d0dc0557199a336fac4fe2bdc2c76b762dcbaf",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.19.31.55_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.19.31.55_veh-37_01943_02092.db",
+      "sha256": "68682582dda3fff126b8c014cbb10c10d0ce3a5c89748719119985d23ff1c855",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.21.07.31_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.21.07.31_veh-47_04556_04823.db",
+      "sha256": "8afbae834fe5f399cbe4d033f327d607b3b8206a4d49259cac030351f662bae4",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.22.21.43.45_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.22.21.43.45_veh-35_00019_00122.db",
+      "sha256": "4825d69e9bfac4dc7bbbd00e75ad25fe0b47e412f3447b14d912fc1aa97899f2",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.23.15.59.40_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.15.59.40_veh-47_00015_00116.db",
+      "sha256": "65a8b146daf0f81c0b927a656474e4a114005d93a8a69526dafe055891101a08",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.23.16.09.49_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.16.09.49_veh-37_00016_00412.db",
+      "sha256": "c7c8bb71ecfa85fc7f6a1f1ad981f786431d55ee0e7f7be751265c2ea2f83272",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.23.16.32.39_veh-17",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.16.32.39_veh-17_00960_01437.db",
+      "sha256": "c18777dec29cb35c662fff4c5d8c7e8038c4ebd89c88d278c1b1d1eb7d88f5c2",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.23.16.54.45_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.16.54.45_veh-37_00019_00397.db",
+      "sha256": "daa8e05cfdf6c9d406e24222be306aaecb0f8e819558a377ee6169ec07dd6fa8",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.23.17.51.38_veh-26",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.17.51.38_veh-26_00854_01027.db",
+      "sha256": "ad0bceead94bc365d823870e9cfee2929adbdfd3918d1de2fd1d4aa2fce6f99f",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.23.21.07.18_veh-47",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.23.21.07.18_veh-47_00721_00947.db",
+      "sha256": "8aae00c0ecc42e24aa6eb45d0a8d7eb01f0eb3514cf64d6aac5b34dcafeb21ed",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.24.20.37.45_veh-17",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/mini/2021.07.24.20.37.45_veh-17_00015_00375.db",
+      "sha256": "125570b448ef412833b5b4fe1e78012daf827476ecf945cbfc094d54a84bba0b",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.24.22.52.16_veh-35",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.24.22.52.16_veh-35_00720_00813.db",
+      "sha256": "3b24bb292c8b2ded2a5ab56f62a194f712c264980b97b96350ba1895f8b70562",
+      "prior_source_hash_matched": true
+    },
+    {
+      "session_id": "2021.07.24.22.58.17_veh-37",
+      "path": "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/data/cache/d2_trainval_v1/2021.07.24.22.58.17_veh-37_00015_00186.db",
+      "sha256": "f3586148a292e616a372910652facefa4018c33d6d065914ec200c866c079fda",
+      "prior_source_hash_matched": true
+    }
+  ],
+  "map_files": {
+    "/Users/liuqing/Projects/01_E2E_QA_Code/nuplan/dataset/maps/us-nv-las-vegas-strip/9.15.1915/map.gpkg": "f1509eeed9c1c96e1cddf1c5f6d71f7ab9eed8f895de59ab36132308708e8937"
+  },
+  "map_index_sha256": "b9c0a62335dded8b25e634bc63e3f271908b6f4f803398f0250ef7769facc504",
+  "network_requests": 0,
+  "raw_C_access": 0
+}

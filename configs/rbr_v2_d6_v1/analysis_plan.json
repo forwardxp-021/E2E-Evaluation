@@ -1,0 +1,73 @@
+{
+  "status": "CANDIDATE_ONLY_NO_EXECUTION",
+  "start_commit": "81a0702ce3a0fc7cafd783f1e973c7268064e63b",
+  "protected": {
+    "outputs/rbr_v2_d2_v1/candidate_role_partition_final.json": "6438e0943f16aeec6266507f46ff77cdaab752f90fd1d2da189adf0837861a69",
+    "outputs/rbr_v2_d2_v1/download_budget.json": "e4016750a5af62da197cfd5c3bf4645d239efdb2cbfdb9b61dfbf4d0f1670124",
+    "outputs/rbr_v2_d1_v1/SESSION_Capacity_Audit.csv": "5434f3126af70d7b22f4c54c02c1bcabe05cdff9cb73875c67d56956087ed22b",
+    "docs/stageR/e2e_scoped_direct_coast_v1/Frozen_Qualification_Protocol_v1.json": "646f29dfb46a080d2e8ced08ff6526f569b229c9651f33c24c7b3205b9846263",
+    "outputs/rbr_v2_d1_v1/D_fit_engineering_scalers.json": "a7010b2ca843ad8d868eec733bcff9296d2a03b21b804b92cae08219c743a2e5",
+    "tools/s1_protocol_schema.py": "6ba7b96b61be2e4c729c1d21e678e34610ef647f1a43b488b750ff42338f17a0",
+    "tools/r1_closed_loop_benchmark_v2_1.py": "592c755390f565db229a765901aa4a2af50de78f895ef564dd985b71480f6dbd",
+    "tools/r1_context_mechanism_core.py": "81be3d676e55ebdb5615883902f025d4408611fc0994dda602b1554023c0653e",
+    "tools/rbr_v2_d1_statistics.py": "21e131628f14333f5a1019f771c17130f6e30ee8dd2edf4cf67f8dc0820f902d",
+    "outputs/rbr_v2_d3_v1/interface/input_manifest.json": "b3a75351751c28ec8513880498c26446e9ac7fe979cbffb5c72042b4503214c2",
+    "outputs/rbr_v2_d3_v1/interface/H30.npy": "aec3cb67700b9bd998777cb405d25e0c45710918ccec8f2daee160e2066b7011",
+    "outputs/rbr_v2_d3_v1/interface/RBR64.npy": "a6546bec42a64d84a7eb90afe384a717ea14bec0ea81d939cda2386ee46ea3fe",
+    "outputs/rbr_v2_prod_v1/run/epoch30.pt": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+    "outputs/rbr_v2_prod_v1/normalizer.json": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+    "docs/stageR/rbr_v2_d5_v1/SAP_D5_Task_Conditioned_Unpaired_Amendment_PROPOSED_v1.md": "16cecb877817b5c2be358d4cffd0abb21f0ac6a425a241519fb4ef4a8e53cd58"
+  },
+  "task": {
+    "map": "us-nv-las-vegas-strip",
+    "prior_static": "unchanged frozen SDC eligibility, first eligible original source/anchor only",
+    "current_topology": "exactly one LANE and zero LANE_CONNECTOR at initial rear axle; exactly one outgoing edge",
+    "speed_range_mps": [
+      5,
+      15
+    ],
+    "speed_bins_mps": [
+      [
+        5,
+        10
+      ],
+      [
+        10,
+        15
+      ]
+    ],
+    "traffic_radius_m": 50,
+    "traffic_categories": [
+      "vehicle",
+      "pedestrian",
+      "bicycle"
+    ],
+    "traffic_bins": [
+      "no_dynamic_actor_within50m",
+      "at_least_one_dynamic_actor_within50m"
+    ],
+    "q": "Four speed x traffic cells each weight1/4, no empty-cell renormalization",
+    "release": "Five reference and five different target SESSION per cell;20+20 per draw;exact10 target treatment by fixed random identity assignment"
+  },
+  "static_access": "initial frame and static maps only; no new future traffic read; no C raw/metadata beyond reserved IDs; no V/C scientific outputs",
+  "source_order": "D2 frozen round1 then first eligible round2; old representative and fixed anchor preserved; no alternatives",
+  "numerical": {
+    "real_trace_probe_count": 8,
+    "trace_order_salt": "D6_H30_NUMERIC_TRACE_FIXED_20261027",
+    "speed_stress_mps": [
+      1e-06
+    ],
+    "ULP_stress": true,
+    "analytic_beta": 0.6666666666666666,
+    "dt": 0.1,
+    "synthetic_seed": 2026102706,
+    "bootstrap_replicates": 2000
+  },
+  "restrictions": {
+    "vehicle_propagation": 0,
+    "model_forward": 0,
+    "training": 0,
+    "download": 0,
+    "Primary_V_C": 0
+  }
+}

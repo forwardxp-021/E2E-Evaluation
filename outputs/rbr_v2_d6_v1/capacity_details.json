@@ -1,0 +1,207 @@
+{
+  "strict_future_role_cells": {
+    "final_calibration_candidates": {
+      "5to10_empty": 0,
+      "5to10_busy": 1,
+      "10to15_empty": 0,
+      "10to15_busy": 6
+    },
+    "V_AA_candidates": {
+      "5to10_empty": 0,
+      "5to10_busy": 4,
+      "10to15_empty": 0,
+      "10to15_busy": 4
+    },
+    "V_AB_candidates": {
+      "5to10_empty": 0,
+      "5to10_busy": 2,
+      "10to15_empty": 0,
+      "10to15_busy": 12
+    },
+    "unallocated_candidates": {
+      "5to10_empty": 0,
+      "5to10_busy": 0,
+      "10to15_empty": 0,
+      "10to15_busy": 0
+    }
+  },
+  "source_counts_before_q": {
+    "D_fit": 3,
+    "D_development_complete": 60,
+    "pending_E3_calibration": 10,
+    "strict_unexposed_future": 151,
+    "protected_C": 25
+  },
+  "source_counts_after_q": {
+    "D_fit": 0,
+    "D_development_complete": 8,
+    "pending_E3_calibration": 3,
+    "strict_unexposed_future": 29
+  },
+  "strict320_shortfall": 291,
+  "optimistic320_shortfall": 288,
+  "q_loss_total": 184,
+  "strict_future_loss": 122,
+  "D2_scanned_distinct": 1253,
+  "D2_new_q": 34,
+  "D2_q_yield": 0.02713487629688747,
+  "D2_empty_cell_observed_count": 0,
+  "finite_download_cost_for_full_q": "NOT_ESTABLISHED: two positive target-weight cells have zero observed yield; no defensible finite extrapolation",
+  "covered_busy_component_cost_only": {
+    "missing_sources": 131,
+    "SESSION_scenario": 4828,
+    "raw_LOG_scenario": 5773,
+    "observed_LOGs_per_SESSION": 1.1955307262569832,
+    "compressed_GB_scenario": 192.6377534931522,
+    "assumed_rate": 0.02713487629688747,
+    "assumed_compressed_bytes_per_LOG": 33368743.02670227,
+    "not_full_q_cost": true,
+    "not_authorized": true
+  },
+  "missing_fields_in_target_city": {
+    "lane_count": 0,
+    "connector_count": 0,
+    "out_degree": 60,
+    "lane_speed_limit_mps": 60,
+    "nearest_connector_distance_m": 0,
+    "actor_count50": 0
+  },
+  "coarse_city_speed_role_differences": [
+    {
+      "speed_bin": [
+        5,
+        10
+      ],
+      "role": "D_new_science",
+      "n": 8,
+      "unique_lane_single_successor_fraction": 0.125,
+      "actor_count50_range": [
+        3,
+        205
+      ],
+      "route_heading_range": [
+        8.759097891442025e-09,
+        0.05632984813389763
+      ]
+    },
+    {
+      "speed_bin": [
+        5,
+        10
+      ],
+      "role": "final_calibration_candidates",
+      "n": 5,
+      "unique_lane_single_successor_fraction": 0.2,
+      "actor_count50_range": [
+        2,
+        20
+      ],
+      "route_heading_range": [
+        0.003531875609847468,
+        0.03838972888121173
+      ]
+    },
+    {
+      "speed_bin": [
+        5,
+        10
+      ],
+      "role": "V_AA_candidates",
+      "n": 5,
+      "unique_lane_single_successor_fraction": 0.8,
+      "actor_count50_range": [
+        3,
+        39
+      ],
+      "route_heading_range": [
+        0.010947157315182476,
+        0.0906837502445248
+      ]
+    },
+    {
+      "speed_bin": [
+        5,
+        10
+      ],
+      "role": "V_AB_candidates",
+      "n": 7,
+      "unique_lane_single_successor_fraction": 0.2857142857142857,
+      "actor_count50_range": [
+        3,
+        90
+      ],
+      "route_heading_range": [
+        7.915381683432088e-09,
+        0.04722034613376924
+      ]
+    },
+    {
+      "speed_bin": [
+        10,
+        15
+      ],
+      "role": "D_new_science",
+      "n": 14,
+      "unique_lane_single_successor_fraction": 0.35714285714285715,
+      "actor_count50_range": [
+        9,
+        67
+      ],
+      "route_heading_range": [
+        0.0032186126181783514,
+        0.07753828909717875
+      ]
+    },
+    {
+      "speed_bin": [
+        10,
+        15
+      ],
+      "role": "final_calibration_candidates",
+      "n": 21,
+      "unique_lane_single_successor_fraction": 0.42857142857142855,
+      "actor_count50_range": [
+        3,
+        79
+      ],
+      "route_heading_range": [
+        0.0023124032228722946,
+        0.11676094865407638
+      ]
+    },
+    {
+      "speed_bin": [
+        10,
+        15
+      ],
+      "role": "V_AA_candidates",
+      "n": 11,
+      "unique_lane_single_successor_fraction": 0.36363636363636365,
+      "actor_count50_range": [
+        9,
+        65
+      ],
+      "route_heading_range": [
+        0.009060586690673667,
+        0.14053540050543956
+      ]
+    },
+    {
+      "speed_bin": [
+        10,
+        15
+      ],
+      "role": "V_AB_candidates",
+      "n": 27,
+      "unique_lane_single_successor_fraction": 0.4444444444444444,
+      "actor_count50_range": [
+        1,
+        84
+      ],
+      "route_heading_range": [
+        0.0012298189742045995,
+        0.09393538520988964
+      ]
+    }
+  ]
+}
