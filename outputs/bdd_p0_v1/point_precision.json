@@ -1,0 +1,32 @@
+{
+  "results": {
+    "RAW_IID": {
+      "alarm_fraction": {
+        "RBR64": 0.0616,
+        "H30": 0.0284
+      },
+      "delta_raw_alarm": 0.0332,
+      "interpretation": "FINITE_POOL_REAL_LOG_RANDOM_SPLIT_AA_NOT_A_POLICY_VERSION_RESULT",
+      "conditional_MC_SE_delta": 0.002535827092272695
+    },
+    "ACTIVITY_Q": {
+      "alarm_fraction": {
+        "RBR64": 0.0394,
+        "H30": 0.056
+      },
+      "delta_raw_alarm": -0.0166,
+      "interpretation": "FINITE_POOL_REAL_LOG_RANDOM_SPLIT_AA_NOT_A_POLICY_VERSION_RESULT",
+      "conditional_MC_SE_delta": 0.0028971163815650954
+    },
+    "ACTIVITY_STRESS": {
+      "alarm_fraction": {
+        "RBR64": 0.331,
+        "H30": 0.2587
+      },
+      "delta_raw_alarm": 0.0723,
+      "interpretation": "ARTIFICIAL_TASK_COMPOSITION_SHIFT_OF_REAL_LOGS_NO_WITHIN_TASK_INTERVENTION_NO_TRUE_POLICY_VERSION",
+      "conditional_MC_SE_delta": 0.005656011849970321
+    }
+  },
+  "scientific_interval": "NOT_ESTABLISHED; conditional MC precision does not count new independent sources"
+}

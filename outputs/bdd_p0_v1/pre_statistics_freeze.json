@@ -1,0 +1,17 @@
+{
+  "status": "FIXED_BEFORE_ANY_P0_DETECTOR_OUTCOME",
+  "source_hashes": {
+    "tools/bdd_p0_analysis.py": "c7e27349520ea879397a0d8ed7d9dbe7287932b392f3b36a5e91d6942b40e10a",
+    "tools/bdd_p0_data.py": "abf9f94d1f3611a7a5edeb8e56c2ee8ab6dba0adbe2163cbfdd2da6ff223b93d",
+    "tools/rbr_v2_d1_statistics.py": "21e131628f14333f5a1019f771c17130f6e30ee8dd2edf4cf67f8dc0820f902d",
+    "configs/bdd_p0_v1/protocol.json": "7038bc12e0e1d8284dc7ce9f410d6a28414f8e9aeb9f828dcb1c3379cc6470ce",
+    "outputs/bdd_p0_v1/detector_fit.json": "d1a660748a39d4b502f32a9fd885195c84dfec6564579adb71f3931d1cc1b7ee",
+    "outputs/bdd_p0_v1/dataset_manifest.json": "50bb3c8621160ad1b2be24665da575b9468979be3ad346b9ada5a47604119523",
+    "outputs/bdd_p0_v1/identity_roster.json": "ff9ef49a3385553654b9e4ba26928c44abc0234395fb5e8538cec81762d2b497",
+    "outputs/bdd_p0_v1/RBR64.npy": "9e851240c85469b1225a574cfbc36a9429ad6c5373caadf157b2f5456e86c284",
+    "outputs/bdd_p0_v1/H30.npy": "9073e5a22977aecb778a62f4cac3ca983125ca74eed6efc94cacbf5f685d27da"
+  },
+  "pipeline_choice": "No post-outcome choice; all predefined supported designs run, unsupported retained",
+  "time": "2026-10-27T01:31:49.523791+00:00",
+  "V_C_Primary": false
+}

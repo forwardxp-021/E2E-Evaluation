@@ -1,0 +1,67 @@
+{
+  "status": "PROSPECTIVE_BDD_P0_DEVELOPMENT_ONLY_NOT_PRIMARY",
+  "start_commit": "98ff618c7a41482ba0c5a85e6dc1e5b5877b530d",
+  "protected": {
+    "outputs/rbr_v2_prod_v1/run/epoch30.pt": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+    "outputs/rbr_v2_prod_v1/normalizer.json": "0e8c9d7daff352ade93232981e2a110cb8daaebe2ac4d283c639b501a95fddc5",
+    "tools/rbr_v2_canonical83.py": "268c4b80ead97037c6057e012e0d0d0bd89a54825f753f5136e26420488e1399",
+    "tools/rbr_v2_model.py": "a89a62e43f4e1b0ea5064557b98388c3b170ce0b171fd81222c61361f6c17758",
+    "tools/s1_protocol_schema.py": "6ba7b96b61be2e4c729c1d21e678e34610ef647f1a43b488b750ff42338f17a0",
+    "tools/rbr_v2_d1_statistics.py": "21e131628f14333f5a1019f771c17130f6e30ee8dd2edf4cf67f8dc0820f902d",
+    "outputs/rbr_v2_d3_v1/D_statistics_results.json": "292f17e68dff2dfc9d1ef7ddfe7a5983d6cea7dcbbecec0ef8cc4747b32d9f12",
+    "outputs/rbr_v2_d4_v1/real_diagnostics.json": "d4981a57f591c22bc67634394b7099dc33de19fd6d1af3ece890183e4da14894",
+    "outputs/rbr_v2_d2_v1/candidate_role_partition_final.json": "6438e0943f16aeec6266507f46ff77cdaab752f90fd1d2da189adf0837861a69",
+    "outputs/rbr_v2_d2_v1/download_budget.json": "e4016750a5af62da197cfd5c3bf4645d239efdb2cbfdb9b61dfbf4d0f1670124",
+    "docs/stageR/s1/S1_BDD_Statistical_Analysis_Plan_Draft_v0.1.md": "86dd7d909be8d66249201fbbc5ac2dd9acd1eb8e1b73ed69737cd138370f145e"
+  },
+  "source_frame": "All existing D2 first-source downloaded SESSION databases, independent of SDC eligibility/status. Exclude every legacy/reserved/E3 identity from fresh roles and vehicle-calendar-day +/-1 around those identities. E3 knownD63 allowed explicitly for development fit only.",
+  "dependency_unit": "Vehicle + SESSION-name calendar date; one SESSION per dependency block by fixed identity hash. Exact raw time overlap audited before inference; no scenario/chunk as extra source.",
+  "source_salt": "BDD_P0_SOURCE_V1_20261027",
+  "role_salt": "BDD_P0_CAL_HOLDOUT_V1_20261027",
+  "window_salt": "BDD_P0_NORMAL_RAW_WINDOW_V1_20261027",
+  "roles": "Existing E3 development fit; fresh groups alternating CAL and HELDOUT within map sorted by identity hash; HELDOUT reused only for prespecified A/A and composition diagnostics, shared-source dependence retained. Not old SAP V/C.",
+  "window": "Every10th lidar index with full7.9s support is a candidate, fixed hash ordering; first quality-valid80x83 window. No scenario tags, SDC applicability or detection outcomes. Record every invalid candidate.",
+  "quality": {
+    "ego_valid_frames": 80,
+    "max_interpolation_gap_us": 150000,
+    "finite_required": true,
+    "neighbor_missing": "preserve channel mask; never impute a neighbor",
+    "stationary_allowed": true
+  },
+  "tasks": {
+    "LOW": "initial ego speed<2m/s",
+    "JUNCTION": "speed>=2 and initial rear point in LANE_CONNECTOR",
+    "LANE": "speed>=2 and initial rear point in LANE and no connector",
+    "OTHER": "other moving topology; retained for raw A/A and coverage, not full-task controlled design"
+  },
+  "designs": {
+    "RAW_IID": "Uniform sources; same external calibration/heldout frame",
+    "ACTIVITY_Q": "m20 each side:10 LOW,10 MOVING, whole40 source IDs distinct",
+    "FULL_TASK_Q": "m20 each side:5 LOW,5 JUNCTION,10 LANE; OTHER not evaluable; no quota changes if support missing",
+    "ACTIVITY_STRESS": "reference10LOW10MOVING; target5LOW15MOVING; uniform within each activity from same heldout pool",
+    "FULL_TASK_STRESS": "reference5LOW5JUNCTION10LANE;target5LOW10JUNCTION5LANE"
+  },
+  "preprocessing": "Original D1 population mean/SD per raw representation on development-fit raw human windows only; SD<=1e-12 scale1; original median-positive-squared-distance bandwidth. One fit each, no alternative scaler chosen.",
+  "m": 20,
+  "pi": "NOT_A_BEHAVIOR_INTERVENTION; compositions declared separately",
+  "alpha": 0.05,
+  "calibration_draws": 1999,
+  "rank": 1900,
+  "evaluation_draws": 10000,
+  "calibration_seed": 2026091101,
+  "evaluation_seed": 2026091102,
+  "stress_seed": 2026091103,
+  "source_bootstrap": {
+    "outer": 200,
+    "inner": 500,
+    "seed": 2026102707,
+    "scope": "EXPLORATORY source-resampling diagnostic; no formal SAP coverage claim; failed unique support retained, no dropping"
+  },
+  "scaler_stability": "20 predetermined source bootstrap fits in development only; report kernel/scales, never choose alternate",
+  "restrictions": {
+    "new_download_bytes": 0,
+    "new_vehicle_propagation": 0,
+    "new_optimizer_steps": 0,
+    "Primary_V_C": 0
+  }
+}

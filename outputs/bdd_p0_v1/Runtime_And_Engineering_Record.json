@@ -1,0 +1,25 @@
+{
+  "Python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20) \n[Clang 16.0.6 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "dependencies": {
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "shapely": "2.0.7",
+    "geopandas": "1.0.1"
+  },
+  "nuplan_devkit_HEAD": "e9241677997dd86bfc0bcd44817ab04fe631405b",
+  "engineering_events": [
+    {
+      "log": "extraction_attempt01_json_int64.log",
+      "cause": "First feature NPZ completed but receipt JSON could not serialize NumPy int64; metadata converted to Python int; initial NPZ bitwise parity verified, no window/source/feature change"
+    },
+    {
+      "log": "diagnostics_attempt01_syntax.log",
+      "cause": "Diagnostic packaging syntax fixed; no detector statistic or preprocessing changed"
+    }
+  ],
+  "new_vehicle_propagation": 0,
+  "new_training_steps": 0,
+  "new_download_bytes": 0,
+  "Primary_V_C": 0
+}

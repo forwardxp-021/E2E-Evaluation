@@ -1,0 +1,11 @@
+{
+  "status": "REVERSIBLE_STALE_EMPTY_LOCK_RENAMED",
+  "original": ".git/index.lock",
+  "backup": ".git/index.lock.bdd_p0_stale_20261029_1",
+  "old_bytes": 0,
+  "old_mtime_unix": 1793064443.726585,
+  "lsof_exit": 1,
+  "lsof_stdout": "",
+  "active_mutating_git_processes": [],
+  "note": "No lock contents deleted. Old empty lock had no open holder."
+}

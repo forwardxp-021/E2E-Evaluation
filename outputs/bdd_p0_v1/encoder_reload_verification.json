@@ -1,0 +1,15 @@
+{
+  "new_process": true,
+  "rows": 16,
+  "shape": [
+    16,
+    64
+  ],
+  "max_abs_error": 0.0,
+  "bitwise_equal": true,
+  "tolerance": 1e-05,
+  "device": "mps",
+  "torch": "2.9.1",
+  "checkpoint_sha256": "5b0e5738c0b67d32865545764bc4bcd12152a507f62bcb0f323233a3bb8deed3",
+  "new_optimizer_steps": 0
+}

@@ -1,0 +1,498 @@
+{
+  "development_source_bootstrap_fits": {
+    "RBR64": [
+      {
+        "rep": 0,
+        "sigma": 7.592823615690303,
+        "minimum_nonconstant_scale": 0.12860281765460968,
+        "fixed57_kernel_max_abs_change": 0.060049385599375726,
+        "constant_columns": []
+      },
+      {
+        "rep": 1,
+        "sigma": 7.834811889493582,
+        "minimum_nonconstant_scale": 0.12122435867786407,
+        "fixed57_kernel_max_abs_change": 0.16285809736659818,
+        "constant_columns": []
+      },
+      {
+        "rep": 2,
+        "sigma": 7.7858446642757055,
+        "minimum_nonconstant_scale": 0.1207568570971489,
+        "fixed57_kernel_max_abs_change": 0.08119932976137684,
+        "constant_columns": []
+      },
+      {
+        "rep": 3,
+        "sigma": 7.597613572341575,
+        "minimum_nonconstant_scale": 0.15243007242679596,
+        "fixed57_kernel_max_abs_change": 0.05091508431347966,
+        "constant_columns": []
+      },
+      {
+        "rep": 4,
+        "sigma": 7.973904487200489,
+        "minimum_nonconstant_scale": 0.1147223487496376,
+        "fixed57_kernel_max_abs_change": 0.07358513493895624,
+        "constant_columns": []
+      },
+      {
+        "rep": 5,
+        "sigma": 8.064108518082222,
+        "minimum_nonconstant_scale": 0.11919576674699783,
+        "fixed57_kernel_max_abs_change": 0.13724494950413044,
+        "constant_columns": []
+      },
+      {
+        "rep": 6,
+        "sigma": 7.980218032879486,
+        "minimum_nonconstant_scale": 0.12924906611442566,
+        "fixed57_kernel_max_abs_change": 0.06552838351508128,
+        "constant_columns": []
+      },
+      {
+        "rep": 7,
+        "sigma": 7.67642878550474,
+        "minimum_nonconstant_scale": 0.14010347425937653,
+        "fixed57_kernel_max_abs_change": 0.054881616667141,
+        "constant_columns": []
+      },
+      {
+        "rep": 8,
+        "sigma": 7.629657761084014,
+        "minimum_nonconstant_scale": 0.12704315781593323,
+        "fixed57_kernel_max_abs_change": 0.12874142516787335,
+        "constant_columns": []
+      },
+      {
+        "rep": 9,
+        "sigma": 7.778397493045367,
+        "minimum_nonconstant_scale": 0.12043554335832596,
+        "fixed57_kernel_max_abs_change": 0.10530813889936164,
+        "constant_columns": []
+      },
+      {
+        "rep": 10,
+        "sigma": 7.7029286450475025,
+        "minimum_nonconstant_scale": 0.09077679365873337,
+        "fixed57_kernel_max_abs_change": 0.09129968534255595,
+        "constant_columns": []
+      },
+      {
+        "rep": 11,
+        "sigma": 7.665041488664573,
+        "minimum_nonconstant_scale": 0.14429529011249542,
+        "fixed57_kernel_max_abs_change": 0.07075468184984116,
+        "constant_columns": []
+      },
+      {
+        "rep": 12,
+        "sigma": 7.710350253885855,
+        "minimum_nonconstant_scale": 0.1459517478942871,
+        "fixed57_kernel_max_abs_change": 0.07826355471681173,
+        "constant_columns": []
+      },
+      {
+        "rep": 13,
+        "sigma": 7.502675660011311,
+        "minimum_nonconstant_scale": 0.14832660555839539,
+        "fixed57_kernel_max_abs_change": 0.09184723154368707,
+        "constant_columns": []
+      },
+      {
+        "rep": 14,
+        "sigma": 7.815348845815336,
+        "minimum_nonconstant_scale": 0.12432114034891129,
+        "fixed57_kernel_max_abs_change": 0.09568398331995404,
+        "constant_columns": []
+      },
+      {
+        "rep": 15,
+        "sigma": 7.623205755534277,
+        "minimum_nonconstant_scale": 0.12473209202289581,
+        "fixed57_kernel_max_abs_change": 0.06903099237452454,
+        "constant_columns": []
+      },
+      {
+        "rep": 16,
+        "sigma": 7.59196696128932,
+        "minimum_nonconstant_scale": 0.1229364350438118,
+        "fixed57_kernel_max_abs_change": 0.05448489707814119,
+        "constant_columns": []
+      },
+      {
+        "rep": 17,
+        "sigma": 7.855528965457924,
+        "minimum_nonconstant_scale": 0.10369446873664856,
+        "fixed57_kernel_max_abs_change": 0.08130798679316764,
+        "constant_columns": []
+      },
+      {
+        "rep": 18,
+        "sigma": 7.527113162172623,
+        "minimum_nonconstant_scale": 0.14508265256881714,
+        "fixed57_kernel_max_abs_change": 0.07156482976378231,
+        "constant_columns": []
+      },
+      {
+        "rep": 19,
+        "sigma": 7.681126627540425,
+        "minimum_nonconstant_scale": 0.11519996076822281,
+        "fixed57_kernel_max_abs_change": 0.08072078283815531,
+        "constant_columns": []
+      }
+    ],
+    "H30": [
+      {
+        "rep": 0,
+        "sigma": 4.929813889203746,
+        "minimum_nonconstant_scale": 0.05056339062180202,
+        "fixed57_kernel_max_abs_change": 0.12598544613127066,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 1,
+        "sigma": 4.76981562400522,
+        "minimum_nonconstant_scale": 0.02079702926578453,
+        "fixed57_kernel_max_abs_change": 0.49840254580195054,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 2,
+        "sigma": 4.911870609194943,
+        "minimum_nonconstant_scale": 0.044483907147709806,
+        "fixed57_kernel_max_abs_change": 0.16722982832171424,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 3,
+        "sigma": 5.028959624611785,
+        "minimum_nonconstant_scale": 0.04531946827988801,
+        "fixed57_kernel_max_abs_change": 0.091097571846634,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 4,
+        "sigma": 4.350297964613407,
+        "minimum_nonconstant_scale": 0.03186052314403078,
+        "fixed57_kernel_max_abs_change": 0.5203456128623121,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 5,
+        "sigma": 4.639129144642526,
+        "minimum_nonconstant_scale": 0.019439224855692674,
+        "fixed57_kernel_max_abs_change": 0.5563073308121689,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 6,
+        "sigma": 5.0709756883225605,
+        "minimum_nonconstant_scale": 0.04499685099401372,
+        "fixed57_kernel_max_abs_change": 0.14850673480577298,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 7,
+        "sigma": 5.079805017905006,
+        "minimum_nonconstant_scale": 0.049432233227199196,
+        "fixed57_kernel_max_abs_change": 0.11947847188654753,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 8,
+        "sigma": 5.0749844657127525,
+        "minimum_nonconstant_scale": 0.03342202017631914,
+        "fixed57_kernel_max_abs_change": 0.18246587146658896,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 9,
+        "sigma": 4.910408389595409,
+        "minimum_nonconstant_scale": 0.05143273790075268,
+        "fixed57_kernel_max_abs_change": 0.13501371212004495,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 10,
+        "sigma": 4.805860722125895,
+        "minimum_nonconstant_scale": 0.04905955771270573,
+        "fixed57_kernel_max_abs_change": 0.1122579476976765,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 11,
+        "sigma": 4.766224383038764,
+        "minimum_nonconstant_scale": 0.048289090426623535,
+        "fixed57_kernel_max_abs_change": 0.061660115345646804,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 12,
+        "sigma": 4.90397841465825,
+        "minimum_nonconstant_scale": 0.04534952282550742,
+        "fixed57_kernel_max_abs_change": 0.08051419620447592,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 13,
+        "sigma": 5.019393141422151,
+        "minimum_nonconstant_scale": 0.05656253444485897,
+        "fixed57_kernel_max_abs_change": 0.19531274599168058,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 14,
+        "sigma": 4.932829214144928,
+        "minimum_nonconstant_scale": 0.058749498626101154,
+        "fixed57_kernel_max_abs_change": 0.16906970002602684,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 15,
+        "sigma": 4.884281638146491,
+        "minimum_nonconstant_scale": 0.056286769215598186,
+        "fixed57_kernel_max_abs_change": 0.12762948745702618,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 16,
+        "sigma": 4.784855425121311,
+        "minimum_nonconstant_scale": 0.05348321167550442,
+        "fixed57_kernel_max_abs_change": 0.10293551309136534,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 17,
+        "sigma": 4.852438868743661,
+        "minimum_nonconstant_scale": 0.03926647982875767,
+        "fixed57_kernel_max_abs_change": 0.10167270282650787,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 18,
+        "sigma": 4.950539319349384,
+        "minimum_nonconstant_scale": 0.04324565715012696,
+        "fixed57_kernel_max_abs_change": 0.11366452097117996,
+        "constant_columns": [
+          27,
+          29
+        ]
+      },
+      {
+        "rep": 19,
+        "sigma": 4.85752249640417,
+        "minimum_nonconstant_scale": 0.04435690760545748,
+        "fixed57_kernel_max_abs_change": 0.14420128939346633,
+        "constant_columns": [
+          27,
+          29
+        ]
+      }
+    ]
+  },
+  "original_fit_not_replaced": true,
+  "all_unit_variants": [
+    {
+      "unit": "SI",
+      "constant_columns": [
+        27,
+        29
+      ],
+      "sigma": 4.7940402827296875,
+      "kernel_max_abs_change": 0.0
+    },
+    {
+      "unit": "g",
+      "constant_columns": [
+        27,
+        29
+      ],
+      "sigma": 4.7940402827296875,
+      "kernel_max_abs_change": 1.6653345369377348e-16
+    },
+    {
+      "unit": "kmh_per_s",
+      "constant_columns": [
+        27,
+        29
+      ],
+      "sigma": 4.7940402827296875,
+      "kernel_max_abs_change": 1.6653345369377348e-16
+    }
+  ],
+  "role_contexts": {
+    "D_P0_CAL": {
+      "SESSION": 68,
+      "blocks": 68,
+      "maps": {
+        "sg-one-north": 19,
+        "us-ma-boston": 8,
+        "us-nv-las-vegas-strip": 41
+      },
+      "tasks": {
+        "LOW": 28,
+        "LANE": 31,
+        "JUNCTION": 9
+      },
+      "mask_fraction_quantiles": [
+        0.10813253012048193,
+        0.10813253012048193,
+        0.14412650602409638,
+        0.5471084337349396,
+        0.8911144578313253
+      ],
+      "neighbor_presence_quantiles": [
+        0.0,
+        0.0,
+        0.0,
+        0.4958750113844869,
+        1.0
+      ],
+      "speed_quantiles": [
+        8.678480803670664e-05,
+        0.000257345293490653,
+        4.286010591626798,
+        9.901551238304643,
+        11.378927982177174
+      ]
+    },
+    "D_P0_FIT_EXPOSED": {
+      "SESSION": 57,
+      "blocks": 57,
+      "maps": {
+        "us-pa-pittsburgh-hazelwood": 17,
+        "us-nv-las-vegas-strip": 25,
+        "us-ma-boston": 11,
+        "sg-one-north": 4
+      },
+      "tasks": {
+        "LOW": 14,
+        "JUNCTION": 16,
+        "LANE": 27
+      },
+      "mask_fraction_quantiles": [
+        0.10813253012048193,
+        0.10813253012048193,
+        0.14698795180722893,
+        0.5331325301204817,
+        0.7918674698795181
+      ],
+      "neighbor_presence_quantiles": [
+        0.0,
+        0.0,
+        0.0,
+        0.4960000038146967,
+        0.8174999952316284
+      ],
+      "speed_quantiles": [
+        0.0004033826324097225,
+        0.0008831662658529883,
+        6.735356950180902,
+        11.99041426688219,
+        13.822809468469849
+      ]
+    },
+    "D_P0_HELDOUT": {
+      "SESSION": 65,
+      "blocks": 65,
+      "maps": {
+        "sg-one-north": 18,
+        "us-ma-boston": 7,
+        "us-nv-las-vegas-strip": 40
+      },
+      "tasks": {
+        "JUNCTION": 19,
+        "LANE": 23,
+        "LOW": 23
+      },
+      "mask_fraction_quantiles": [
+        0.10813253012048193,
+        0.10813253012048193,
+        0.15090361445783132,
+        0.44478915662650603,
+        0.5783132530120482
+      ],
+      "neighbor_presence_quantiles": [
+        0.0,
+        0.0,
+        0.0,
+        0.3960000038146972,
+        0.5249999761581421
+      ],
+      "speed_quantiles": [
+        7.118661600443277e-05,
+        0.0006590262893579961,
+        5.471972602463805,
+        12.625427161627618,
+        15.926184812692204
+      ]
+    }
+  },
+  "normalized_valid_absolute_quantiles": [
+    0.09130420827321759,
+    1.3013241042270398,
+    2.7992461836668348,
+    15.028551878720542
+  ],
+  "source_velocity_oracle": {
+    "body_rotated_world_RMSE_median": 0.14339900289909313,
+    "wrong_unrotated_RMSE_median": 3.999093559149553
+  },
+  "dataset_sha256": "50bb3c8621160ad1b2be24665da575b9468979be3ad346b9ada5a47604119523",
+  "no_alarm_or_quota_or_feature_selection": true
+}

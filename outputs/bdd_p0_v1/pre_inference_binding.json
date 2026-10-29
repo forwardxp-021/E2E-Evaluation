@@ -1,0 +1,12 @@
+{
+  "protocol_sha256": "7038bc12e0e1d8284dc7ce9f410d6a28414f8e9aeb9f828dcb1c3379cc6470ce",
+  "identity_roster_sha256": "ff9ef49a3385553654b9e4ba26928c44abc0234395fb5e8538cec81762d2b497",
+  "dataset_manifest_sha256": "50bb3c8621160ad1b2be24665da575b9468979be3ad346b9ada5a47604119523",
+  "source_hashes": {
+    "tools/bdd_p0_data.py": "abf9f94d1f3611a7a5edeb8e56c2ee8ab6dba0adbe2163cbfdd2da6ff223b93d",
+    "tools/bdd_p0_analysis.py": "c7e27349520ea879397a0d8ed7d9dbe7287932b392f3b36a5e91d6942b40e10a",
+    "tests/test_bdd_p0_statistics.py": "62f4abd6eca999bf2030b095b19d02d6f8ed8a622aee42c8b1eb410f682c324a"
+  },
+  "time": "2026-10-27T01:30:22.073622+00:00",
+  "training": false
+}

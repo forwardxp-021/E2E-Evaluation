@@ -1,0 +1,3326 @@
+{
+  "status": "REAL_HUMAN_LOG_DEVELOPMENT_RESULTS_NOT_PRIMARY",
+  "results": {
+    "RAW_IID": {
+      "alarm_fraction": {
+        "RBR64": 0.0616,
+        "H30": 0.0284
+      },
+      "delta_raw_alarm": 0.0332,
+      "interpretation": "FINITE_POOL_REAL_LOG_RANDOM_SPLIT_AA_NOT_A_POLICY_VERSION_RESULT"
+    },
+    "ACTIVITY_Q": {
+      "alarm_fraction": {
+        "RBR64": 0.0394,
+        "H30": 0.056
+      },
+      "delta_raw_alarm": -0.0166,
+      "interpretation": "FINITE_POOL_REAL_LOG_RANDOM_SPLIT_AA_NOT_A_POLICY_VERSION_RESULT"
+    },
+    "ACTIVITY_STRESS": {
+      "alarm_fraction": {
+        "RBR64": 0.331,
+        "H30": 0.2587
+      },
+      "delta_raw_alarm": 0.0723,
+      "interpretation": "ARTIFICIAL_TASK_COMPOSITION_SHIFT_OF_REAL_LOGS_NO_WITHIN_TASK_INTERVENTION_NO_TRUE_POLICY_VERSION"
+    }
+  },
+  "thresholds": {
+    "RAW_IID": {
+      "RBR64": 0.03253321427867262,
+      "H30": 0.053793985171682324
+    },
+    "ACTIVITY_Q": {
+      "RBR64": 0.018048293986176467,
+      "H30": 0.024578843379616577
+    }
+  },
+  "unsupported_designs": {
+    "FULL_TASK_Q": "INSUFFICIENT_UNIQUE_SUPPORT FULL_TASK_Q required10 available9",
+    "FULL_TASK_STRESS": "No supported matched reference calibration"
+  },
+  "kernel_geometry": {
+    "D_P0_CAL": {
+      "RBR64": {
+        "offdiag_quantiles": [
+          0.011018401896411519,
+          0.08949618128789318,
+          0.36372035750147935,
+          0.7943445425082837,
+          0.9999999894030452
+        ],
+        "underflow_fraction": 0.0,
+        "sigma": 7.489461993752445,
+        "constant_columns": []
+      },
+      "H30": {
+        "offdiag_quantiles": [
+          0.0015758438065142971,
+          0.02801624837506886,
+          0.3395974362866895,
+          0.916611555151371,
+          0.9956079537995118
+        ],
+        "underflow_fraction": 0.0,
+        "sigma": 4.7940402827296875,
+        "constant_columns": [
+          27,
+          29
+        ]
+      }
+    },
+    "D_P0_HELDOUT": {
+      "RBR64": {
+        "offdiag_quantiles": [
+          0.03655380503422177,
+          0.09658275087191859,
+          0.3354473682125306,
+          0.774214088175178,
+          0.9999998836661653
+        ],
+        "underflow_fraction": 0.0,
+        "sigma": 7.489461993752445,
+        "constant_columns": []
+      },
+      "H30": {
+        "offdiag_quantiles": [
+          0.015002421501266478,
+          0.09304266542921744,
+          0.3709766581597369,
+          0.8117683009086369,
+          0.997030417864708
+        ],
+        "underflow_fraction": 0.0,
+        "sigma": 4.7940402827296875,
+        "constant_columns": [
+          27,
+          29
+        ]
+      }
+    }
+  },
+  "source_bootstrap": {
+    "RAW_IID": {
+      "replicates": [
+        {
+          "rep": 0,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 47,
+          "unique_eval": 39
+        },
+        {
+          "rep": 1,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.04,
+            "H30": 0.02
+          },
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 2,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.04,
+            "H30": 0.028
+          },
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 3,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.034,
+            "H30": 0.02
+          },
+          "unique_cal": 40,
+          "unique_eval": 41
+        },
+        {
+          "rep": 4,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.076,
+            "H30": 0.048
+          },
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 5,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.016
+          },
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 6,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 43
+        },
+        {
+          "rep": 7,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.096,
+            "H30": 0.022
+          },
+          "unique_cal": 40,
+          "unique_eval": 43
+        },
+        {
+          "rep": 8,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.11,
+            "H30": 0.056
+          },
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 9,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.026,
+            "H30": 0.034
+          },
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 10,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.058,
+            "H30": 0.042
+          },
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 11,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 46,
+          "unique_eval": 38
+        },
+        {
+          "rep": 12,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.084,
+            "H30": 0.024
+          },
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 13,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.052,
+            "H30": 0.06
+          },
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 14,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.07,
+            "H30": 0.06
+          },
+          "unique_cal": 41,
+          "unique_eval": 40
+        },
+        {
+          "rep": 15,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.064,
+            "H30": 0.022
+          },
+          "unique_cal": 46,
+          "unique_eval": 44
+        },
+        {
+          "rep": 16,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.094,
+            "H30": 0.036
+          },
+          "unique_cal": 40,
+          "unique_eval": 40
+        },
+        {
+          "rep": 17,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 38,
+          "unique_eval": 45
+        },
+        {
+          "rep": 18,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 46,
+          "unique_eval": 38
+        },
+        {
+          "rep": 19,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.06,
+            "H30": 0.016
+          },
+          "unique_cal": 47,
+          "unique_eval": 43
+        },
+        {
+          "rep": 20,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 48,
+          "unique_eval": 39
+        },
+        {
+          "rep": 21,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.076,
+            "H30": 0.036
+          },
+          "unique_cal": 40,
+          "unique_eval": 40
+        },
+        {
+          "rep": 22,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 23,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.05,
+            "H30": 0.038
+          },
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 24,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 44,
+          "unique_eval": 38
+        },
+        {
+          "rep": 25,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.054,
+            "H30": 0.068
+          },
+          "unique_cal": 51,
+          "unique_eval": 43
+        },
+        {
+          "rep": 26,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.068
+          },
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 27,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.044,
+            "H30": 0.034
+          },
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 28,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.052
+          },
+          "unique_cal": 40,
+          "unique_eval": 43
+        },
+        {
+          "rep": 29,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 43,
+          "unique_eval": 39
+        },
+        {
+          "rep": 30,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.038,
+            "H30": 0.05
+          },
+          "unique_cal": 42,
+          "unique_eval": 44
+        },
+        {
+          "rep": 31,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 44,
+          "unique_eval": 39
+        },
+        {
+          "rep": 32,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.058,
+            "H30": 0.042
+          },
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 33,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 44,
+          "unique_eval": 39
+        },
+        {
+          "rep": 34,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.09,
+            "H30": 0.052
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 35,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.062,
+            "H30": 0.038
+          },
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 36,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.072,
+            "H30": 0.06
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 37,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.058,
+            "H30": 0.034
+          },
+          "unique_cal": 44,
+          "unique_eval": 43
+        },
+        {
+          "rep": 38,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.016
+          },
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 39,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.056,
+            "H30": 0.048
+          },
+          "unique_cal": 41,
+          "unique_eval": 40
+        },
+        {
+          "rep": 40,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 44,
+          "unique_eval": 38
+        },
+        {
+          "rep": 41,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.114,
+            "H30": 0.066
+          },
+          "unique_cal": 50,
+          "unique_eval": 41
+        },
+        {
+          "rep": 42,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.042
+          },
+          "unique_cal": 41,
+          "unique_eval": 43
+        },
+        {
+          "rep": 43,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.048,
+            "H30": 0.04
+          },
+          "unique_cal": 45,
+          "unique_eval": 40
+        },
+        {
+          "rep": 44,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 45,
+          "unique_eval": 39
+        },
+        {
+          "rep": 45,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.094,
+            "H30": 0.096
+          },
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 46,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.098,
+            "H30": 0.038
+          },
+          "unique_cal": 47,
+          "unique_eval": 43
+        },
+        {
+          "rep": 47,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 37,
+          "unique_eval": 40
+        },
+        {
+          "rep": 48,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 45,
+          "unique_eval": 39
+        },
+        {
+          "rep": 49,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 46,
+          "unique_eval": 39
+        },
+        {
+          "rep": 50,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.132,
+            "H30": 0.052
+          },
+          "unique_cal": 41,
+          "unique_eval": 40
+        },
+        {
+          "rep": 51,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.03,
+            "H30": 0.032
+          },
+          "unique_cal": 47,
+          "unique_eval": 43
+        },
+        {
+          "rep": 52,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.04,
+            "H30": 0.018
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 53,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.038,
+            "H30": 0.024
+          },
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 54,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 55,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.08,
+            "H30": 0.042
+          },
+          "unique_cal": 42,
+          "unique_eval": 45
+        },
+        {
+          "rep": 56,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 40,
+          "unique_eval": 39
+        },
+        {
+          "rep": 57,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.054,
+            "H30": 0.034
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 58,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 46,
+          "unique_eval": 38
+        },
+        {
+          "rep": 59,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.064,
+            "H30": 0.03
+          },
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 60,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.12,
+            "H30": 0.04
+          },
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 61,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available36",
+          "unique_cal": 44,
+          "unique_eval": 36
+        },
+        {
+          "rep": 62,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.072,
+            "H30": 0.048
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 63,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.05,
+            "H30": 0.034
+          },
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 64,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 43,
+          "unique_eval": 39
+        },
+        {
+          "rep": 65,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.052,
+            "H30": 0.024
+          },
+          "unique_cal": 46,
+          "unique_eval": 45
+        },
+        {
+          "rep": 66,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.068,
+            "H30": 0.02
+          },
+          "unique_cal": 40,
+          "unique_eval": 41
+        },
+        {
+          "rep": 67,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.08,
+            "H30": 0.048
+          },
+          "unique_cal": 43,
+          "unique_eval": 45
+        },
+        {
+          "rep": 68,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 42,
+          "unique_eval": 38
+        },
+        {
+          "rep": 69,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 43,
+          "unique_eval": 37
+        },
+        {
+          "rep": 70,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.074,
+            "H30": 0.02
+          },
+          "unique_cal": 40,
+          "unique_eval": 43
+        },
+        {
+          "rep": 71,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.05,
+            "H30": 0.054
+          },
+          "unique_cal": 46,
+          "unique_eval": 46
+        },
+        {
+          "rep": 72,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available36",
+          "unique_cal": 42,
+          "unique_eval": 36
+        },
+        {
+          "rep": 73,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 38,
+          "unique_eval": 45
+        },
+        {
+          "rep": 74,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.056,
+            "H30": 0.044
+          },
+          "unique_cal": 48,
+          "unique_eval": 48
+        },
+        {
+          "rep": 75,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 37
+        },
+        {
+          "rep": 76,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.07,
+            "H30": 0.03
+          },
+          "unique_cal": 47,
+          "unique_eval": 46
+        },
+        {
+          "rep": 77,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.088,
+            "H30": 0.048
+          },
+          "unique_cal": 44,
+          "unique_eval": 44
+        },
+        {
+          "rep": 78,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.048,
+            "H30": 0.034
+          },
+          "unique_cal": 47,
+          "unique_eval": 42
+        },
+        {
+          "rep": 79,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.066,
+            "H30": 0.04
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 80,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.096,
+            "H30": 0.06
+          },
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 81,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.074,
+            "H30": 0.026
+          },
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 82,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 38,
+          "unique_eval": 40
+        },
+        {
+          "rep": 83,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 43,
+          "unique_eval": 39
+        },
+        {
+          "rep": 84,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.04,
+            "H30": 0.012
+          },
+          "unique_cal": 41,
+          "unique_eval": 43
+        },
+        {
+          "rep": 85,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.096,
+            "H30": 0.052
+          },
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 86,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 44,
+          "unique_eval": 37
+        },
+        {
+          "rep": 87,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.036,
+            "H30": 0.02
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 88,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.042,
+            "H30": 0.048
+          },
+          "unique_cal": 41,
+          "unique_eval": 46
+        },
+        {
+          "rep": 89,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.042,
+            "H30": 0.044
+          },
+          "unique_cal": 42,
+          "unique_eval": 47
+        },
+        {
+          "rep": 90,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.066,
+            "H30": 0.046
+          },
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 91,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.052,
+            "H30": 0.018
+          },
+          "unique_cal": 46,
+          "unique_eval": 46
+        },
+        {
+          "rep": 92,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 41,
+          "unique_eval": 39
+        },
+        {
+          "rep": 93,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.104,
+            "H30": 0.044
+          },
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 94,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.034,
+            "H30": 0.042
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 95,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 96,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 45,
+          "unique_eval": 39
+        },
+        {
+          "rep": 97,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.074,
+            "H30": 0.03
+          },
+          "unique_cal": 48,
+          "unique_eval": 41
+        },
+        {
+          "rep": 98,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.032,
+            "H30": 0.01
+          },
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 99,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.058,
+            "H30": 0.024
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 100,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 39
+        },
+        {
+          "rep": 101,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 43,
+          "unique_eval": 39
+        },
+        {
+          "rep": 102,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 43,
+          "unique_eval": 39
+        },
+        {
+          "rep": 103,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.08,
+            "H30": 0.078
+          },
+          "unique_cal": 41,
+          "unique_eval": 40
+        },
+        {
+          "rep": 104,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available36",
+          "unique_cal": 51,
+          "unique_eval": 36
+        },
+        {
+          "rep": 105,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 45,
+          "unique_eval": 39
+        },
+        {
+          "rep": 106,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.068,
+            "H30": 0.042
+          },
+          "unique_cal": 46,
+          "unique_eval": 41
+        },
+        {
+          "rep": 107,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.024
+          },
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 108,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.054,
+            "H30": 0.05
+          },
+          "unique_cal": 40,
+          "unique_eval": 42
+        },
+        {
+          "rep": 109,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.05,
+            "H30": 0.006
+          },
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 110,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.036,
+            "H30": 0.072
+          },
+          "unique_cal": 47,
+          "unique_eval": 40
+        },
+        {
+          "rep": 111,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.068,
+            "H30": 0.048
+          },
+          "unique_cal": 46,
+          "unique_eval": 41
+        },
+        {
+          "rep": 112,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.034
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 113,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.056,
+            "H30": 0.034
+          },
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 114,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.048,
+            "H30": 0.048
+          },
+          "unique_cal": 48,
+          "unique_eval": 42
+        },
+        {
+          "rep": 115,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.038,
+            "H30": 0.022
+          },
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 116,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 48,
+          "unique_eval": 38
+        },
+        {
+          "rep": 117,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 118,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 41,
+          "unique_eval": 38
+        },
+        {
+          "rep": 119,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 120,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.056,
+            "H30": 0.05
+          },
+          "unique_cal": 46,
+          "unique_eval": 43
+        },
+        {
+          "rep": 121,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.042,
+            "H30": 0.008
+          },
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 122,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.048,
+            "H30": 0.028
+          },
+          "unique_cal": 48,
+          "unique_eval": 43
+        },
+        {
+          "rep": 123,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.068,
+            "H30": 0.038
+          },
+          "unique_cal": 43,
+          "unique_eval": 44
+        },
+        {
+          "rep": 124,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.066,
+            "H30": 0.056
+          },
+          "unique_cal": 48,
+          "unique_eval": 41
+        },
+        {
+          "rep": 125,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 39
+        },
+        {
+          "rep": 126,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.054,
+            "H30": 0.032
+          },
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 127,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.054,
+            "H30": 0.018
+          },
+          "unique_cal": 47,
+          "unique_eval": 42
+        },
+        {
+          "rep": 128,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.062,
+            "H30": 0.052
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 129,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.06,
+            "H30": 0.006
+          },
+          "unique_cal": 45,
+          "unique_eval": 40
+        },
+        {
+          "rep": 130,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.062,
+            "H30": 0.02
+          },
+          "unique_cal": 45,
+          "unique_eval": 44
+        },
+        {
+          "rep": 131,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.084,
+            "H30": 0.036
+          },
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 132,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.048,
+            "H30": 0.044
+          },
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 133,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.05,
+            "H30": 0.038
+          },
+          "unique_cal": 40,
+          "unique_eval": 46
+        },
+        {
+          "rep": 134,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.038,
+            "H30": 0.02
+          },
+          "unique_cal": 46,
+          "unique_eval": 42
+        },
+        {
+          "rep": 135,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.072,
+            "H30": 0.05
+          },
+          "unique_cal": 40,
+          "unique_eval": 40
+        },
+        {
+          "rep": 136,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.094,
+            "H30": 0.056
+          },
+          "unique_cal": 45,
+          "unique_eval": 43
+        },
+        {
+          "rep": 137,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.034
+          },
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 138,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 38,
+          "unique_eval": 41
+        },
+        {
+          "rep": 139,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.056,
+            "H30": 0.024
+          },
+          "unique_cal": 48,
+          "unique_eval": 42
+        },
+        {
+          "rep": 140,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.078,
+            "H30": 0.026
+          },
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 141,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.064,
+            "H30": 0.03
+          },
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 142,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 46,
+          "unique_eval": 38
+        },
+        {
+          "rep": 143,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.074,
+            "H30": 0.068
+          },
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 144,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.076,
+            "H30": 0.024
+          },
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 145,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.06
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 146,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.104,
+            "H30": 0.022
+          },
+          "unique_cal": 46,
+          "unique_eval": 42
+        },
+        {
+          "rep": 147,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.04
+          },
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 148,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 45,
+          "unique_eval": 39
+        },
+        {
+          "rep": 149,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 38,
+          "unique_eval": 43
+        },
+        {
+          "rep": 150,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.078,
+            "H30": 0.022
+          },
+          "unique_cal": 46,
+          "unique_eval": 40
+        },
+        {
+          "rep": 151,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.09,
+            "H30": 0.03
+          },
+          "unique_cal": 47,
+          "unique_eval": 40
+        },
+        {
+          "rep": 152,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.094,
+            "H30": 0.054
+          },
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 153,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 154,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.08,
+            "H30": 0.044
+          },
+          "unique_cal": 45,
+          "unique_eval": 40
+        },
+        {
+          "rep": 155,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.072,
+            "H30": 0.012
+          },
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 156,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.048,
+            "H30": 0.054
+          },
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 157,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.032,
+            "H30": 0.05
+          },
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 158,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 159,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.066,
+            "H30": 0.054
+          },
+          "unique_cal": 47,
+          "unique_eval": 41
+        },
+        {
+          "rep": 160,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 40
+        },
+        {
+          "rep": 161,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.034,
+            "H30": 0.04
+          },
+          "unique_cal": 45,
+          "unique_eval": 43
+        },
+        {
+          "rep": 162,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 43,
+          "unique_eval": 38
+        },
+        {
+          "rep": 163,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.036,
+            "H30": 0.042
+          },
+          "unique_cal": 43,
+          "unique_eval": 45
+        },
+        {
+          "rep": 164,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.078,
+            "H30": 0.03
+          },
+          "unique_cal": 41,
+          "unique_eval": 46
+        },
+        {
+          "rep": 165,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 45,
+          "unique_eval": 37
+        },
+        {
+          "rep": 166,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 167,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.07,
+            "H30": 0.066
+          },
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 168,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 42,
+          "unique_eval": 38
+        },
+        {
+          "rep": 169,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.08,
+            "H30": 0.064
+          },
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 170,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.076,
+            "H30": 0.036
+          },
+          "unique_cal": 40,
+          "unique_eval": 40
+        },
+        {
+          "rep": 171,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available35",
+          "unique_cal": 41,
+          "unique_eval": 35
+        },
+        {
+          "rep": 172,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.068,
+            "H30": 0.07
+          },
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 173,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.072,
+            "H30": 0.082
+          },
+          "unique_cal": 44,
+          "unique_eval": 44
+        },
+        {
+          "rep": 174,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.062,
+            "H30": 0.034
+          },
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 175,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 45,
+          "unique_eval": 37
+        },
+        {
+          "rep": 176,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.088,
+            "H30": 0.014
+          },
+          "unique_cal": 45,
+          "unique_eval": 40
+        },
+        {
+          "rep": 177,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 37,
+          "unique_eval": 41
+        },
+        {
+          "rep": 178,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.024
+          },
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 179,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 43,
+          "unique_eval": 37
+        },
+        {
+          "rep": 180,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.064,
+            "H30": 0.038
+          },
+          "unique_cal": 49,
+          "unique_eval": 42
+        },
+        {
+          "rep": 181,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 44,
+          "unique_eval": 38
+        },
+        {
+          "rep": 182,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.078,
+            "H30": 0.03
+          },
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 183,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.066,
+            "H30": 0.026
+          },
+          "unique_cal": 42,
+          "unique_eval": 44
+        },
+        {
+          "rep": 184,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.056,
+            "H30": 0.026
+          },
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 185,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 42
+        },
+        {
+          "rep": 186,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.108,
+            "H30": 0.066
+          },
+          "unique_cal": 48,
+          "unique_eval": 41
+        },
+        {
+          "rep": 187,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 47,
+          "unique_eval": 37
+        },
+        {
+          "rep": 188,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.052,
+            "H30": 0.036
+          },
+          "unique_cal": 44,
+          "unique_eval": 44
+        },
+        {
+          "rep": 189,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 46,
+          "unique_eval": 39
+        },
+        {
+          "rep": 190,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.038
+          },
+          "unique_cal": 44,
+          "unique_eval": 43
+        },
+        {
+          "rep": 191,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.026
+          },
+          "unique_cal": 46,
+          "unique_eval": 41
+        },
+        {
+          "rep": 192,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.082,
+            "H30": 0.02
+          },
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 193,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.046,
+            "H30": 0.026
+          },
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 194,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available38",
+          "unique_cal": 41,
+          "unique_eval": 38
+        },
+        {
+          "rep": 195,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 39
+        },
+        {
+          "rep": 196,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 39,
+          "unique_eval": 43
+        },
+        {
+          "rep": 197,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available37",
+          "unique_cal": 37,
+          "unique_eval": 38
+        },
+        {
+          "rep": 198,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT RAW_IID required40 available39",
+          "unique_cal": 41,
+          "unique_eval": 39
+        },
+        {
+          "rep": 199,
+          "status": "COMPUTED",
+          "alarm_fraction": {
+            "RBR64": 0.072,
+            "H30": 0.036
+          },
+          "unique_cal": 42,
+          "unique_eval": 42
+        }
+      ],
+      "failed_replicates": 66,
+      "source_domain_CI": "NOT_ESTABLISHED: all replicates/support and independent coverage certification required; diagnostic200x500 is not original SAP inference"
+    },
+    "ACTIVITY_Q": {
+      "replicates": [
+        {
+          "rep": 0,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 46,
+          "unique_eval": 43
+        },
+        {
+          "rep": 1,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 2,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 42,
+          "unique_eval": 38
+        },
+        {
+          "rep": 3,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 40,
+          "unique_eval": 45
+        },
+        {
+          "rep": 4,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 38
+        },
+        {
+          "rep": 5,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 6,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 48,
+          "unique_eval": 41
+        },
+        {
+          "rep": 7,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 8,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 9,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 10,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 44
+        },
+        {
+          "rep": 11,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 12,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 44,
+          "unique_eval": 39
+        },
+        {
+          "rep": 13,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 14,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 41,
+          "unique_eval": 39
+        },
+        {
+          "rep": 15,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 16,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 17,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 18,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 44,
+          "unique_eval": 45
+        },
+        {
+          "rep": 19,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 39,
+          "unique_eval": 39
+        },
+        {
+          "rep": 20,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available11",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 21,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 36
+        },
+        {
+          "rep": 22,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 46,
+          "unique_eval": 38
+        },
+        {
+          "rep": 23,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 24,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 45,
+          "unique_eval": 43
+        },
+        {
+          "rep": 25,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 39,
+          "unique_eval": 40
+        },
+        {
+          "rep": 26,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 27,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 28,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 29,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 44
+        },
+        {
+          "rep": 30,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 45,
+          "unique_eval": 43
+        },
+        {
+          "rep": 31,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 32,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 48,
+          "unique_eval": 41
+        },
+        {
+          "rep": 33,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 43,
+          "unique_eval": 44
+        },
+        {
+          "rep": 34,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 35,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 36,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 37,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 40,
+          "unique_eval": 45
+        },
+        {
+          "rep": 38,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 48,
+          "unique_eval": 44
+        },
+        {
+          "rep": 39,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 40,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 37,
+          "unique_eval": 35
+        },
+        {
+          "rep": 41,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 46,
+          "unique_eval": 36
+        },
+        {
+          "rep": 42,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available12",
+          "unique_cal": 43,
+          "unique_eval": 37
+        },
+        {
+          "rep": 43,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 44,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 45,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 45,
+          "unique_eval": 38
+        },
+        {
+          "rep": 46,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available11",
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 47,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 48,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 49,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 39
+        },
+        {
+          "rep": 50,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 44,
+          "unique_eval": 38
+        },
+        {
+          "rep": 51,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 52,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 53,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 54,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 55,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 56,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 38
+        },
+        {
+          "rep": 57,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 46,
+          "unique_eval": 43
+        },
+        {
+          "rep": 58,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 59,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 60,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 61,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 48,
+          "unique_eval": 39
+        },
+        {
+          "rep": 62,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 39,
+          "unique_eval": 39
+        },
+        {
+          "rep": 63,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 45,
+          "unique_eval": 39
+        },
+        {
+          "rep": 64,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 65,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 66,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 43,
+          "unique_eval": 36
+        },
+        {
+          "rep": 67,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 46,
+          "unique_eval": 43
+        },
+        {
+          "rep": 68,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 69,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 41,
+          "unique_eval": 35
+        },
+        {
+          "rep": 70,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 41,
+          "unique_eval": 40
+        },
+        {
+          "rep": 71,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 72,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 73,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 74,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 75,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 76,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 44,
+          "unique_eval": 38
+        },
+        {
+          "rep": 77,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 40,
+          "unique_eval": 41
+        },
+        {
+          "rep": 78,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 41,
+          "unique_eval": 39
+        },
+        {
+          "rep": 79,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 46,
+          "unique_eval": 47
+        },
+        {
+          "rep": 80,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 37
+        },
+        {
+          "rep": 81,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 82,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 45,
+          "unique_eval": 38
+        },
+        {
+          "rep": 83,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 40,
+          "unique_eval": 43
+        },
+        {
+          "rep": 84,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 45
+        },
+        {
+          "rep": 85,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 40,
+          "unique_eval": 36
+        },
+        {
+          "rep": 86,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 38,
+          "unique_eval": 37
+        },
+        {
+          "rep": 87,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 44
+        },
+        {
+          "rep": 88,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 45,
+          "unique_eval": 40
+        },
+        {
+          "rep": 89,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 90,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 91,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 39,
+          "unique_eval": 46
+        },
+        {
+          "rep": 92,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 93,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 47,
+          "unique_eval": 43
+        },
+        {
+          "rep": 94,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 95,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 96,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 40,
+          "unique_eval": 37
+        },
+        {
+          "rep": 97,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 38,
+          "unique_eval": 43
+        },
+        {
+          "rep": 98,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 43
+        },
+        {
+          "rep": 99,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available11",
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 100,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 42,
+          "unique_eval": 42
+        },
+        {
+          "rep": 101,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 47
+        },
+        {
+          "rep": 102,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 42,
+          "unique_eval": 38
+        },
+        {
+          "rep": 103,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 47,
+          "unique_eval": 41
+        },
+        {
+          "rep": 104,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 105,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 106,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 107,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 46,
+          "unique_eval": 45
+        },
+        {
+          "rep": 108,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 47,
+          "unique_eval": 41
+        },
+        {
+          "rep": 109,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 47,
+          "unique_eval": 43
+        },
+        {
+          "rep": 110,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 40,
+          "unique_eval": 42
+        },
+        {
+          "rep": 111,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 112,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 42,
+          "unique_eval": 43
+        },
+        {
+          "rep": 113,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 114,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 115,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 116,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 47,
+          "unique_eval": 39
+        },
+        {
+          "rep": 117,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available12",
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 118,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 46,
+          "unique_eval": 39
+        },
+        {
+          "rep": 119,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 120,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 121,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available12",
+          "unique_cal": 48,
+          "unique_eval": 39
+        },
+        {
+          "rep": 122,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 46,
+          "unique_eval": 41
+        },
+        {
+          "rep": 123,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 43,
+          "unique_eval": 42
+        },
+        {
+          "rep": 124,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 125,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 47,
+          "unique_eval": 40
+        },
+        {
+          "rep": 126,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 127,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 43,
+          "unique_eval": 36
+        },
+        {
+          "rep": 128,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 47,
+          "unique_eval": 41
+        },
+        {
+          "rep": 129,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 130,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 131,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 132,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 43,
+          "unique_eval": 46
+        },
+        {
+          "rep": 133,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 39,
+          "unique_eval": 38
+        },
+        {
+          "rep": 134,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 135,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 43,
+          "unique_eval": 37
+        },
+        {
+          "rep": 136,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 48,
+          "unique_eval": 42
+        },
+        {
+          "rep": 137,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 50,
+          "unique_eval": 45
+        },
+        {
+          "rep": 138,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 139,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 45,
+          "unique_eval": 43
+        },
+        {
+          "rep": 140,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 46,
+          "unique_eval": 39
+        },
+        {
+          "rep": 141,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 41,
+          "unique_eval": 42
+        },
+        {
+          "rep": 142,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 41,
+          "unique_eval": 46
+        },
+        {
+          "rep": 143,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 42,
+          "unique_eval": 36
+        },
+        {
+          "rep": 144,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available12",
+          "unique_cal": 46,
+          "unique_eval": 40
+        },
+        {
+          "rep": 145,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 41,
+          "unique_eval": 38
+        },
+        {
+          "rep": 146,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 147,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 41,
+          "unique_eval": 45
+        },
+        {
+          "rep": 148,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available11",
+          "unique_cal": 50,
+          "unique_eval": 39
+        },
+        {
+          "rep": 149,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 150,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available12",
+          "unique_cal": 43,
+          "unique_eval": 43
+        },
+        {
+          "rep": 151,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 44,
+          "unique_eval": 39
+        },
+        {
+          "rep": 152,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available10",
+          "unique_cal": 49,
+          "unique_eval": 40
+        },
+        {
+          "rep": 153,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 38,
+          "unique_eval": 38
+        },
+        {
+          "rep": 154,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 155,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 39,
+          "unique_eval": 41
+        },
+        {
+          "rep": 156,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 37,
+          "unique_eval": 41
+        },
+        {
+          "rep": 157,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 49,
+          "unique_eval": 44
+        },
+        {
+          "rep": 158,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 48,
+          "unique_eval": 41
+        },
+        {
+          "rep": 159,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 160,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available11",
+          "unique_cal": 46,
+          "unique_eval": 42
+        },
+        {
+          "rep": 161,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 162,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 41,
+          "unique_eval": 38
+        },
+        {
+          "rep": 163,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 47,
+          "unique_eval": 44
+        },
+        {
+          "rep": 164,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 47,
+          "unique_eval": 40
+        },
+        {
+          "rep": 165,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 40
+        },
+        {
+          "rep": 166,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 42,
+          "unique_eval": 40
+        },
+        {
+          "rep": 167,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 39,
+          "unique_eval": 39
+        },
+        {
+          "rep": 168,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 41
+        },
+        {
+          "rep": 169,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 50,
+          "unique_eval": 42
+        },
+        {
+          "rep": 170,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 41,
+          "unique_eval": 37
+        },
+        {
+          "rep": 171,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 45,
+          "unique_eval": 42
+        },
+        {
+          "rep": 172,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 47,
+          "unique_eval": 43
+        },
+        {
+          "rep": 173,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available15",
+          "unique_cal": 42,
+          "unique_eval": 38
+        },
+        {
+          "rep": 174,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 44,
+          "unique_eval": 45
+        },
+        {
+          "rep": 175,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available11",
+          "unique_cal": 41,
+          "unique_eval": 38
+        },
+        {
+          "rep": 176,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 44,
+          "unique_eval": 42
+        },
+        {
+          "rep": 177,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 48,
+          "unique_eval": 43
+        },
+        {
+          "rep": 178,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 41,
+          "unique_eval": 41
+        },
+        {
+          "rep": 179,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 42,
+          "unique_eval": 44
+        },
+        {
+          "rep": 180,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 39,
+          "unique_eval": 43
+        },
+        {
+          "rep": 181,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 48,
+          "unique_eval": 42
+        },
+        {
+          "rep": 182,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 41,
+          "unique_eval": 43
+        },
+        {
+          "rep": 183,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 40
+        },
+        {
+          "rep": 184,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 41,
+          "unique_eval": 43
+        },
+        {
+          "rep": 185,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available12",
+          "unique_cal": 45,
+          "unique_eval": 41
+        },
+        {
+          "rep": 186,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available14",
+          "unique_cal": 44,
+          "unique_eval": 43
+        },
+        {
+          "rep": 187,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 42,
+          "unique_eval": 41
+        },
+        {
+          "rep": 188,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 42,
+          "unique_eval": 39
+        },
+        {
+          "rep": 189,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 41,
+          "unique_eval": 39
+        },
+        {
+          "rep": 190,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 45,
+          "unique_eval": 40
+        },
+        {
+          "rep": 191,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available13",
+          "unique_cal": 44,
+          "unique_eval": 38
+        },
+        {
+          "rep": 192,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 40,
+          "unique_eval": 44
+        },
+        {
+          "rep": 193,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 42,
+          "unique_eval": 44
+        },
+        {
+          "rep": 194,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 44,
+          "unique_eval": 39
+        },
+        {
+          "rep": 195,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available16",
+          "unique_cal": 40,
+          "unique_eval": 40
+        },
+        {
+          "rep": 196,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 41,
+          "unique_eval": 44
+        },
+        {
+          "rep": 197,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available19",
+          "unique_cal": 41,
+          "unique_eval": 45
+        },
+        {
+          "rep": 198,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available17",
+          "unique_cal": 43,
+          "unique_eval": 41
+        },
+        {
+          "rep": 199,
+          "status": "INSUFFICIENT_SOURCE_SUPPORT",
+          "reason": "INSUFFICIENT_UNIQUE_SUPPORT ACTIVITY_Q required20 available18",
+          "unique_cal": 43,
+          "unique_eval": 44
+        }
+      ],
+      "failed_replicates": 200,
+      "source_domain_CI": "NOT_ESTABLISHED: all replicates/support and independent coverage certification required; diagnostic200x500 is not original SAP inference"
+    }
+  },
+  "source_domain_power_coverage": "NOT_ESTABLISHED",
+  "policy_version_comparison": "NOT_ESTABLISHED_NO_POLICY_VERSION_DATA",
+  "m": 20,
+  "alpha": 0.05,
+  "no_checkpoint_or_H_or_quota_selection": true,
+  "wall_seconds": 8.334684625,
+  "Primary_V_C": 0
+}
